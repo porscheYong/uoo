@@ -40,6 +40,7 @@
         <module>uoo-monitor</module>
         <module>uoo-web</module>
         <module>uoo-user-in-action</module>
+        <module>uoo-organization-in-action</module>
     </modules>
 
     <!-- 基本依赖 -->
