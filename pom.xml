@@ -44,6 +44,7 @@
         <module>uoo-user</module>
         <module>uoo-staff</module>
         <module>uoo-organization</module>
+        <module>uoo-datasync</module>
     </modules>
 
     <!-- 基本依赖 -->
