@@ -43,6 +43,7 @@
         <module>uoo-organization-in-action</module>
         <module>uoo-user</module>
         <module>uoo-staff</module>
+        <module>uoo-organization</module>
     </modules>
 
     <!-- 基本依赖 -->
