@@ -46,6 +46,7 @@
         <module>uoo-organization</module>
         <module>uoo-datasync</module>
         <module>uoo-infocheck</module>
+        <module>uoo-im</module>
     </modules>
 
     <!-- 基本依赖 -->
