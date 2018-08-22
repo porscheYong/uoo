@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/head::head"/>
+<body>
+
+  <div th:replace="common/nav::nav"/>
+
+  <!-- js -->
+  <!-- 暂时没用到jquery和bootstrap -->
+  <!--
+    <script th:replace="common/js::jquery"/>
+    <script th:replace="common/js::bootstrap"/>
+  -->
+  <script th:replace="common/js::layui"/>
+  <script th:replace="common/js::uoo"/>
+  <script>
+      layui.use('element', function(){
+          var element = layui.element;
+      });
+  </script>
+</body>
+</html>

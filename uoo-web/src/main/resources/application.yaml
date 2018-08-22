@@ -3,6 +3,8 @@
 spring:
   application:
     name: uoo-web
+  thymeleaf:
+    cache: false
 server:
   port: 8080
 eureka:
