@@ -30,6 +30,7 @@
     <modules>
         <module>uoo-common</module>
         <module>uoo-register</module>
+        <module>uoo-monitor</module>
     </modules>
 
     <!-- 基本依赖 -->
