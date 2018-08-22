@@ -24,6 +24,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <spring-cloud.version>Edgware.SR4</spring-cloud.version>
+        <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
+        <thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
     </properties>
 
     <!-- 项目模块 -->
@@ -31,6 +33,7 @@
         <module>uoo-common</module>
         <module>uoo-register</module>
         <module>uoo-monitor</module>
+        <module>uoo-web</module>
     </modules>
 
     <!-- 基本依赖 -->

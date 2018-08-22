@@ -1,0 +1,45 @@
+### DEV ###
+---
+spring:
+  application:
+    name: uoo-web
+server:
+  port: 8080
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+...
+### DEV END ###
+
+### FAT ###
+---
+spring:
+  application:
+    name: FAT-uoo-web-1
+  profiles: FAT-uoo-web-1
+server:
+  port: 8080
+eureka:
+  client:
+    service-url:
+      defaultZone: http://FAT-uoo-register-1:8761/eureka/, http://FAT-uoo-register-2:8762/eureka/
+...
+---
+spring:
+  application:
+    name: FAT-uoo-web-2
+  profiles: FAT-uoo-web-2
+server:
+  port: 8081
+eureka:
+  client:
+    service-url:
+      defaultZone: http://FAT-uoo-register-1:8761/eureka/, http://FAT-uoo-register-2:8762/eureka/
+...
+### FAT END ###
+
+### PROD ###
+# 生产环境配置
+# 暂无
+### PROD END ###
