@@ -41,6 +41,7 @@
         <module>uoo-web</module>
         <module>uoo-user-in-action</module>
         <module>uoo-organization-in-action</module>
+        <module>uoo-user</module>
     </modules>
 
     <!-- 基本依赖 -->
