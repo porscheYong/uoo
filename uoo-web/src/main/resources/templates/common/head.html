@@ -1,0 +1,46 @@
+<!-- 并非HTML标签，必须放在<html>标签之前，声明该文档是HTML5文档 -->
+<!DOCTYPE html>
+<!-- 向搜索引擎表示该页面是中文简体页面，对页面本身不会有影响 -->
+<html lang="zh-Hans" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+  <!-- 浏览器以UTF-8的编码格式打开页面，避免中文字符乱码 -->
+  <meta charset="UTF-8">
+  <!-- 优先使用webkit内核访问 -->
+  <meta name="renderer" content="webkit">
+  <!-- IE使用最新引擎渲染网页，避免使用兼容模式 -->
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- 设置移动设备屏幕大小和缩放，好的设计是不需要用户去操作页面缩放的 -->
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <!-- 网页关键字，让搜索引擎搜索 -->
+  <meta name="keywords" content="xxx">
+  <!-- 网页描述文字，让搜索引擎搜索 -->
+  <meta name="description" content="xxx">
+  <!-- 禁止百度转码 -->
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <!-- 禁止快照 -->
+  <meta name="robots" content="noarchive">
+  <!-- IOS设备启用webapp模式，隐藏工具栏和菜单栏 -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- 启用webapp模式，隐藏工具栏和菜单栏 -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+  <meta name="HandheldFriendly" content="True">
+  <!-- 微软的老式浏览器 -->
+  <meta name="MobileOptimized" content="320">
+  <!-- 设置页面的标题 -->
+  <title>Index</title>
+  <!-- 设置页面的favicon -->
+  <link rel="icon" type="image/x-icon" href="../../static/img/logo_in_action.png" th:href="@{/img/logo_in_action.png}">
+  <link rel="shortcut icon" type="image/x-icon" href="../../static/img/logo_in_action.png" th:href="@{/img/logo_in_action.png}">
+  <!-- css -->
+  <!-- 暂时没用到bootstrap和font-awesome -->
+  <!--
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:replace="common/css::bootstrap">
+    <link rel="stylesheet" href="../../static/css/font-awesome.min.css" th:replace="common/css::font-awesome">
+  -->
+  <link rel="stylesheet" href="../../static/layui/layui.js" th:replace="common/css::layui">
+  <link rel="stylesheet" href="../../static/css/uoo.css" th:replace="common/css::uoo">
+</head>
+<body/>
+</html>
