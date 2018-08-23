@@ -38,6 +38,7 @@
         <module>uoo-common</module>
         <module>uoo-register</module>
         <module>uoo-monitor</module>
+        <module>uoo-gateway</module>
         <module>uoo-web</module>
         <module>uoo-user-in-action</module>
         <module>uoo-organization-in-action</module>
