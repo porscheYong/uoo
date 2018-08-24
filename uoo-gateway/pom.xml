@@ -19,6 +19,10 @@
     </parent>
 
     <dependencies>
+        <dependency>
+            <groupId>cn.ffcs.uoo</groupId>
+            <artifactId>uoo-common</artifactId>
+        </dependency>
         <!-- spring cloud -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
