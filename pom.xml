@@ -26,7 +26,8 @@
         <spring-cloud.version>Edgware.SR4</spring-cloud.version>
         <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
         <thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
-        <uoo-common.version>0.0.1-SNAPSHOT</uoo-common.version>
+        <common-tool.version>0.0.1-SNAPSHOT</common-tool.version>
+        <common-abstract.version>0.0.1-SNAPSHOT</common-abstract.version>
         <mybatis-spring-boot-starter.version>1.3.2</mybatis-spring-boot-starter.version>
         <druid-spring-boot-starter.version>1.1.9</druid-spring-boot-starter.version>
         <pagehelper-spring-boot-starter.version>1.2.5</pagehelper-spring-boot-starter.version>
@@ -36,18 +37,9 @@
 
     <!-- 项目模块 -->
     <modules>
-        <module>uoo-common</module>
-        <module>uoo-register</module>
-        <module>uoo-monitor</module>
-        <module>uoo-gateway</module>
+        <module>uoo-base</module>
+        <module>uoo-core</module>
         <module>uoo-web</module>
-        <module>uoo-personnel</module>
-        <module>uoo-user</module>
-        <module>uoo-organization</module>
-        <module>uoo-datasync</module>
-        <module>uoo-infocheck</module>
-        <module>uoo-im</module>
-        <module>uoo-selfservice</module>
     </modules>
 
     <!-- 基本依赖 -->
@@ -77,9 +69,14 @@
             </dependency>
             <!-- common -->
             <dependency>
-                <groupId>cn.ffcs.uoo</groupId>
-                <artifactId>uoo-common</artifactId>
-                <version>${uoo-common.version}</version>
+                <groupId>cn.ffcs.uoo.base.common</groupId>
+                <artifactId>common-tool</artifactId>
+                <version>${common-tool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.ffcs.uoo.base.common</groupId>
+                <artifactId>common-abstract</artifactId>
+                <version>${common-abstract.version}</version>
             </dependency>
             <!-- db -->
             <dependency>

@@ -1,0 +1,81 @@
+### DEV ###
+---
+server:
+  port: 30030
+spring:
+  application:
+    name: uoo-region
+  # 目前使用的是我的阿里云上的mysql数据库
+  datasource:
+    url: jdbc:mysql://47.96.228.88:3306/UooInAction?useSSL=true&useUnicode=true&characterEncoding=utf-8&verifyServerCertificate=false
+    username: root
+    password: ffcs123
+  zipkin:
+    base-url: http://localhost:20010
+  sleuth:
+    sampler:
+      percentage: 1.0
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+...
+### DEV END ###
+
+### FAT ###
+---
+server:
+  port: 30030
+spring:
+  application:
+    name: FAT-uoo-region-1
+  profiles: FAT-uoo-region-1
+  # 目前使用的是我的阿里云上的mysql数据库
+  datasource:
+    url: jdbc:mysql://47.96.228.88:3306/UooInAction?useSSL=true&useUnicode=true&characterEncoding=utf-8&verifyServerCertificate=false
+    username: root
+    password: ffcs123
+  zipkin:
+    base-url: http://localhost:20010
+  sleuth:
+    sampler:
+      percentage: 1.0
+eureka:
+  client:
+    service-url:
+      defaultZone: http://FAT-uoo-register-1:8761/eureka/, http://FAT-uoo-register-2:8762/eureka/
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+...
+---
+server:
+  port: 30031
+spring:
+  application:
+    name: FAT-uoo-region-2
+  profiles: FAT-uoo-region-2
+  # 目前使用的是我的阿里云上的mysql数据库
+  datasource:
+    url: jdbc:mysql://47.96.228.88:3306/UooInAction?useSSL=true&useUnicode=true&characterEncoding=utf-8&verifyServerCertificate=false
+    username: root
+    password: ffcs123
+  zipkin:
+    base-url: http://localhost:20010
+  sleuth:
+    sampler:
+      percentage: 1.0
+eureka:
+  client:
+    service-url:
+      defaultZone: http://FAT-uoo-register-1:8761/eureka/, http://FAT-uoo-register-2:8762/eureka/
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+...
+### FAT END ###
+
+### PROD ###
+# 生产环境配置
+# 暂无
+### PROD END ###
