@@ -53,7 +53,7 @@ public class MySQLGenerator {
     /**文件路径
      *
      */
-    private static String packageName="user";
+    private static String packageName="area";
 
     private static String preffix_packageName="cn.ffcs.uoo";
     /**作者
@@ -63,7 +63,7 @@ public class MySQLGenerator {
     /**table名字
      *
      */
-    private static String table="user";
+    private static String table="tb_locations";
     /**table前缀
      *
      */
@@ -135,7 +135,7 @@ public class MySQLGenerator {
                         // 自定义 service 实现类父类
                         // .setSuperServiceImplClass("com.baomidou.demo.TestServiceImpl")
                         // 自定义 controller 父类
-                        .setSuperControllerClass("com.tdx."+packageName+".controller.AbstractController")
+                        .setSuperControllerClass("cn.ffcs.uoo."+packageName+".controller.BaseController")
                 // 【实体】是否生成字段常量（默认 false）
                 // public static final String ID = "test_id";
                 // .setEntityColumnConstant(true)

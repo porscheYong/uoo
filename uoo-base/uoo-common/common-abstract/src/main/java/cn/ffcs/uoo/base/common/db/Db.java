@@ -1,6 +1,6 @@
 package cn.ffcs.uoo.base.common.db;
 
-import cn.ffcs.uoo.base.common.util.SpringContextHolder;
+import cn.ffcs.uoo.base.common.tool.util.SpringContextHolder;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 import java.util.HashMap;

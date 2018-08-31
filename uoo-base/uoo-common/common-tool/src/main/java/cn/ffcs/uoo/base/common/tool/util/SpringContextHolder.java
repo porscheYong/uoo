@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.base.common.util;
+package cn.ffcs.uoo.base.common.tool.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
