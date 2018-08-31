@@ -30,7 +30,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Version 1.0.0
 */
 @SpringBootApplication
-@MapperScan(basePackages={"cn.ffcs.uoo.demo.user.dao"})
+@MapperScan(basePackages={"cn.ffcs.uoo.**.dao"})
 public class AbsApplication {
     private final static Logger logger = LoggerFactory.getLogger(AbsApplication.class);
 
