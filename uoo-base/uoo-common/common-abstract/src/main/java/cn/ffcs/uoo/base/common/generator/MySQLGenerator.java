@@ -53,7 +53,7 @@ public class MySQLGenerator {
     /**文件路径
      *
      */
-    private static String packageName="area";
+    private static String packageName="personnel";
 
     private static String preffix_packageName="cn.ffcs.uoo";
     /**作者
@@ -63,7 +63,7 @@ public class MySQLGenerator {
     /**table名字
      *
      */
-    private static String table="tb_locations";
+    private static String table="tb_personnel";
     /**table前缀
      *
      */

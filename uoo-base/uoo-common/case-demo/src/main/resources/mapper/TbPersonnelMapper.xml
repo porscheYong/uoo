@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.personnel.dao.TbPersonnelMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.personnel.entity.TbPersonnel">
+        <id column="PERSONNEL_ID" property="personnelId" />
+        <result column="USER_ID" property="userId" />
+        <result column="PSN_NAME" property="psnName" />
+        <result column="PSN_CODE" property="psnCode" />
+        <result column="NC_CODE" property="ncCode" />
+        <result column="PSN_NBR" property="psnNbr" />
+        <result column="NATIONALITY" property="nationality" />
+        <result column="GENDER" property="gender" />
+        <result column="NATION" property="nation" />
+        <result column="MARRIAGE" property="marriage" />
+        <result column="PLITICAL_STATUS" property="pliticalStatus" />
+        <result column="IMAGE" property="image" />
+        <result column="REASON" property="reason" />
+        <result column="TO_WORK_TIME" property="toWorkTime" />
+        <result column="SERVING_AGE" property="servingAge" />
+        <result column="LENGTH_SERVICE" property="lengthService" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+        <result column="UUID" property="uuid" />
+        <result column="NOTES" property="notes" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        PERSONNEL_ID, USER_ID, PSN_NAME, PSN_CODE, NC_CODE, PSN_NBR, NATIONALITY, GENDER, NATION, MARRIAGE, PLITICAL_STATUS, IMAGE, REASON, TO_WORK_TIME, SERVING_AGE, LENGTH_SERVICE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, UUID, NOTES
+    </sql>
+
+</mapper>
