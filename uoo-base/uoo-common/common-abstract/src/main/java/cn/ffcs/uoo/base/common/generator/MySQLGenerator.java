@@ -154,7 +154,7 @@ public class MySQLGenerator {
                         //.setModuleName("User")
                         .setParent(preffix_packageName+"."+packageName)
                         .setController("controller")
-                        .setEntity("entity")
+                        .setEntity("vo")
                         .setMapper("dao")
                         .setService("service")
                         .setServiceImpl("service.impl")

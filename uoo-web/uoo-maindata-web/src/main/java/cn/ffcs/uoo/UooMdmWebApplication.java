@@ -1,8 +1,12 @@
-package cn.ffcs.uoo.base.register;
+package cn.ffcs.uoo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+
 /**
  *  ┏┓　　　┏┓
  *┏┛┻━━━┛┻┓
@@ -21,18 +25,25 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  *　　┗┓┓┏━┳┓┏┛
  *　　　┃┫┫　┃┫┫
  *　　　┗┻┛　┗┻┛
- * @ClassName UooRegisterApplication
- * @Description     启动前，测试环境为了模拟，最好配置下HOST
+ * @ClassName UooMaindataWebApplication
+ * @Description 
  * @author WCNGS@QQ.COM
- * @date 2018/9/6 15:54
+ * @date 2018/9/8 20:41
  * @Version 1.0.0
 */
+@EnableDiscoveryClient
 @SpringBootApplication
-@EnableEurekaServer
-public class UooRegisterApplication {
+public class UooMdmWebApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(UooRegisterApplication.class, args);
+        SpringApplication.run(UooMdmWebApplication.class, args);
     }
+
+    @Bean
+    @LoadBalanced
+    RestTemplate restTemplate(){
+        return new RestTemplate();
+    }
+
 
 }

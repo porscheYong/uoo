@@ -1,0 +1,10 @@
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: false             #抓取注
+    register-with-eureka: false
+    serviceUrl:
+      defaultZone: http://localhost:${server.port}/eureka/
+server:
+  port: 8762

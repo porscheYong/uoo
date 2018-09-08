@@ -1,8 +1,4 @@
-package cn.ffcs.uoo.base.register;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+package cn.ffcs.uoo.base.common.vo;
 /**
  *  ┏┓　　　┏┓
  *┏┛┻━━━┛┻┓
@@ -21,18 +17,37 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  *　　┗┓┓┏━┳┓┏┛
  *　　　┃┫┫　┃┫┫
  *　　　┗┻┛　┗┻┛
- * @ClassName UooRegisterApplication
- * @Description     启动前，测试环境为了模拟，最好配置下HOST
+ * @ClassName BaseVo
+ * @Description 
  * @author WCNGS@QQ.COM
- * @date 2018/9/6 15:54
+ * @date 2018/9/6 15:31
  * @Version 1.0.0
 */
-@SpringBootApplication
-@EnableEurekaServer
-public class UooRegisterApplication {
+public abstract class BaseVo {
 
-    public static void main(String[] args) {
-        SpringApplication.run(UooRegisterApplication.class, args);
+    /**
+     * 分页的序号
+     */
+    private int pageNo;
+
+    /**
+     * 每页的大小
+     */
+    private int pageSize;
+
+    public int getPageNo() {
+        return pageNo;
     }
 
+    public void setPageNo(int pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
 }
