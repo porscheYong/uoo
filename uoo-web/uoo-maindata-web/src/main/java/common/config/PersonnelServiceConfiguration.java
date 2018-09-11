@@ -1,11 +1,11 @@
-package cn.ffcs.uoo;
+package common.config;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import feign.Contract;
+import feign.Logger;
+import feign.Retryer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  *  ┏┓　　　┏┓
@@ -25,25 +25,26 @@ import org.springframework.web.client.RestTemplate;
  *　　┗┓┓┏━┳┓┏┛
  *　　　┃┫┫　┃┫┫
  *　　　┗┻┛　┗┻┛
- * @ClassName UooMaindataWebApplication
+ * @ClassName PersonnelServiceConfiguration
  * @Description 
  * @author WCNGS@QQ.COM
- * @date 2018/9/8 20:41
+ * @date 2018/9/8 21:52
  * @Version 1.0.0
 */
-@EnableDiscoveryClient
-@SpringBootApplication
-public class UooMdmWebApplication {
+public class PersonnelServiceConfiguration {
 
-    public static void main(String[] args) {
-        SpringApplication.run(UooMdmWebApplication.class, args);
+    @Bean
+    Logger.Level feignLoggerLevel() {
+        return Logger.Level.FULL;
     }
 
     @Bean
-    @LoadBalanced
-    RestTemplate restTemplate(){
-        return new RestTemplate();
+    public Retryer feignRetryer() {
+        return new Retryer.Default(200, SECONDS.toMillis(2), 10);
     }
-
-
+//
+//    @Bean
+//    public Contract feignContract() {
+//        return new feign.Contract.Default();
+//    }
 }

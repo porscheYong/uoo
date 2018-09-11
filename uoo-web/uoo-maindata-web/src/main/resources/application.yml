@@ -3,15 +3,20 @@ server:
 spring:
   application:
     name: uoo-web
+
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:${eureka.server.port}/eureka/
   instance:
-    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
     prefer-ip-address: true
   server:
     port: 8762
+feign:
+  hystrix:
+    enabled: true
 
 logging:
-  level: warn
+  level:
+    cn.ffcs.uoo.web.maindata.personnel.service.PersonnelService: debug

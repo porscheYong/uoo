@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.aspect;
+package cn.ffcs.uoo.web.aspect;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -34,7 +34,7 @@ import java.util.Arrays;
  *　　　┃┫┫　┃┫┫
  *　　　┗┻┛　┗┻┛
  * @ClassName WebLogAspect
- * @Description 
+ * @Description 拦截Controller访问日志，可以使用消息队列将日志缓存到文件或者数据库中
  * @author WCNGS@QQ.COM
  * @date 2018/9/8 20:54
  * @Version 1.0.0
@@ -53,8 +53,19 @@ public class WebLogAspect {
 
     }
 
+
+    /**
+     * @author WCNGS@QQ.COM
+     * @See
+     * @date 2018/9/8 21:33
+     * @param joinPoint
+     * @return void
+     * @throws
+     * @since
+     */
     @Before("pointCut()")
     public void doBefore(JoinPoint joinPoint) throws Throwable{
+
         startTime.set(System.currentTimeMillis());
 
         ServletRequestAttributes requestAttributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();

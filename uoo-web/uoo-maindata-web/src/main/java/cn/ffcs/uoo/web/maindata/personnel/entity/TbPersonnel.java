@@ -1,35 +1,23 @@
-package cn.ffcs.uoo.web.maindata.personnel.vo;
+package cn.ffcs.uoo.web.maindata.personnel.entity;
 
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- *  ┏┓　　　┏┓
- *┏┛┻━━━┛┻┓
- *┃　　　　　　　┃ 　
- *┃　　　━　　　┃
- *┃　┳┛　┗┳　┃
- *┃　　　　　　　┃
- *┃　　　┻　　　┃
- *┃　　　　　　　┃
- *┗━┓　　　┏━┛
- *　　┃　　　┃神兽保佑
- *　　┃　　　┃代码无BUG！
- *　　┃　　　┗━━━┓
- *　　┃　　　　　　　┣┓
- *　　┃　　　　　　　┏┛
- *　　┗┓┓┏━┳┓┏┛
- *　　　┃┫┫　┃┫┫
- *　　　┗┻┛　┗┻┛
- * @ClassName TbPersonnelVo
- * @Description 参照人员Entity定义
+ * <p>
+ * 
+ * </p>
+ *
  * @author WCNGS@QQ.COM
- * @date 2018/9/8 20:35
- * @Version 1.0.0
-*/
-public class TbPersonnelVo implements Serializable {
+ * @since 2018-09-06
+ */
+public class TbPersonnel extends Model<TbPersonnel> {
 
     private static final long serialVersionUID = 1L;
 
@@ -61,6 +49,7 @@ public class TbPersonnelVo implements Serializable {
     /**
      * 性别
      */
+    @TableField("GENDER")
     private String gender;
     /**
      * 民族
@@ -117,14 +106,17 @@ public class TbPersonnelVo implements Serializable {
     /**
      * 状态变更的时间
      */
+    @TableField("STATUS_DATE")
     private Date statusDate;
     /**
      * UUID
      */
+    @TableField("UUID")
     private String uuid;
     /**
      * 备注
      */
+    @TableField("NOTES")
     private String notes;
 
 
@@ -313,11 +305,14 @@ public class TbPersonnelVo implements Serializable {
         this.notes = notes;
     }
 
-
+    @Override
+    protected Serializable pkVal() {
+        return this.personnelId;
+    }
 
     @Override
     public String toString() {
-        return "TbPersonnelVo{" +
+        return "TbPersonnel{" +
         ", personnelId=" + personnelId +
         ", psnName=" + psnName +
         ", psnCode=" + psnCode +

@@ -40,7 +40,7 @@ public class TbPersonnelController extends BaseController {
     })
     @UooLog(value = "人员查询", key = "getPersonnel")
     @RequestMapping(value = "/getPage/pageNo={pageNo}&pageSize={pageSize}",method = RequestMethod.GET)
-    public Page<TbPersonnel> getPersonnel(@PathVariable(value = "pageNo") Integer pageNo,@PathVariable(value = "pageSize",required = false) Integer pageSize) {
+    public Page<TbPersonnel> getPersonnel(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize) {
 
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
@@ -65,5 +65,10 @@ public class TbPersonnelController extends BaseController {
         return tbPersonnelService.selectPage(new Page<TbPersonnel>(0, 12));
     }
 
+
+    @RequestMapping(value = "/test",method = RequestMethod.GET)
+    public String test() {
+        return "Hello Uoo";
+    }
 }
 

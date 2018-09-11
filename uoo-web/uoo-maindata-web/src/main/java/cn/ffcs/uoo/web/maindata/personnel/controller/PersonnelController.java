@@ -1,12 +1,12 @@
 package cn.ffcs.uoo.web.maindata.personnel.controller;
 
+import cn.ffcs.uoo.web.maindata.personnel.entity.TbPersonnel;
+import cn.ffcs.uoo.web.maindata.personnel.service.PersonnelService;
+import com.baomidou.mybatisplus.plugins.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *  ┏┓　　　┏┓
@@ -38,23 +38,30 @@ public class PersonnelController {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private static String PERSONNEL_SERVICE="http://PERSONNEL-SERVICE/personnel/";
-
     @Autowired
-    private RestTemplate restTemplate;
-
+    private PersonnelService personnelService;
 
     @RequestMapping(value = "/testPage",method = RequestMethod.GET)
-    public String testPersonnel() {
+    public Page<TbPersonnel> testPersonnel() {
         log.error(" testPersonnel was be Requseted");
-        return restTemplate.getForEntity(PERSONNEL_SERVICE+"testPage",String.class).getBody();
+        return personnelService.testPersonnel();
+    }
+
+
+    @RequestMapping(value = "/getPage/",method = RequestMethod.POST)
+    public Page<TbPersonnel> getPersonnelCondition(@RequestBody TbPersonnel tbPersonnel){
+        return personnelService.getPersonnelCondition(tbPersonnel);
+    }
+
+    @RequestMapping(value = "/getPage/pageNo={pageNo}&pageSize={pageSize}",method = RequestMethod.GET)
+    public Page<TbPersonnel> getPersonnel(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+        return personnelService.getPersonnel(pageNo,pageSize);
     }
 
 
     @RequestMapping(value = "/test",method = RequestMethod.GET)
     public String test() {
-
-        return "Hello Uoo";
+        return personnelService.test();
     }
 
 }

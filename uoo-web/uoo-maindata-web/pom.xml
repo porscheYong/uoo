@@ -23,7 +23,11 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus</artifactId>
         </dependency>
-
+<!--        <dependency>
+            <groupId>cn.ffcs.uoo</groupId>
+            <artifactId>uoo-entity</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>-->
     </dependencies>
 
     <build>

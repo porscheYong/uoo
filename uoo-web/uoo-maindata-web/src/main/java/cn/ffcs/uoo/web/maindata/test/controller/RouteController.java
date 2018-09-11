@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.web.maindata.web.controller;
+package cn.ffcs.uoo.web.maindata.test.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
