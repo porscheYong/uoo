@@ -25,7 +25,6 @@
         <module>uoo-region</module>
         <module>uoo-public</module>
         <module>uoo-data-share</module>
-        <module>uoo-entity</module>
     </modules>
 
     <dependencies>
