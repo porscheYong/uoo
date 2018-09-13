@@ -21,7 +21,7 @@
     <modules>
         <module>common-tool</module>
         <module>common-abstract</module>
-        <module>case-demo</module>
+        
     </modules>
 
 

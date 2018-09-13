@@ -19,14 +19,7 @@
     </parent>
 
     <dependencies>
-        <dependency>
-            <groupId>cn.ffcs.uoo.base.common</groupId>
-            <artifactId>common-tool</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.ffcs.uoo.base.common</groupId>
-            <artifactId>common-abstract</artifactId>
-        </dependency>
+
         <!-- spring cloud -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
