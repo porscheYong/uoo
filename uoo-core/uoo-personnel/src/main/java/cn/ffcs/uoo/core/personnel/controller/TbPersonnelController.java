@@ -59,6 +59,31 @@ public class TbPersonnelController extends BaseController {
         return tbPersonnelService.selectPage(new Page<TbPersonnel>(tbPersonnelVo.getPageNo(), pageSize),wrapper);
     }
 
+    @ApiOperation(value = "新增人员信息",notes = "人员信息新增")
+    @ApiImplicitParam(name = "tbPersonnel",value = "人员信息",required = true,dataType = "TbPersonnel")
+    @UooLog(value = "新增人员信息",key = "addPersonnel")
+    @RequestMapping(value = "/add",method = RequestMethod.PUT)
+    public void addPersonnel(@RequestBody TbPersonnel tbPersonnel) {
+        tbPersonnelService.insert(tbPersonnel);
+    }
+
+    @ApiOperation(value = "修改人员信息",notes = "人员信息修改")
+    @ApiImplicitParam(name = "tbPersonnel",value = "人员信息",required = true,dataType = "TbPersonnel")
+    @UooLog(value = "修改人员信息",key = "updatePersonnel")
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    public void updatePersonnel(@RequestBody TbPersonnel tbPersonnel) {
+        Wrapper wrapper = Condition.create().eq(StringUtils.isNotEmpty(tbPersonnel.getPsnNbr()),"PSN_NBR",tbPersonnel.getPsnNbr());
+        tbPersonnelService.update(tbPersonnel,wrapper);
+    }
+
+    @ApiOperation(value="删除人员信息",notes="人员信息删除")
+    @ApiImplicitParam(name = "tbPersonnel",value = "人员信息",required = true,dataType = "TbPersonnel")
+    @UooLog(value = "删除人员信息",key = "deletePersonnel")
+    @RequestMapping(value="/delete",method = RequestMethod.DELETE)
+    public void deletePersonnel(@RequestBody TbPersonnel tbPersonnel) {
+        tbPersonnelService.deleteById(tbPersonnel.getPersonnelId());
+    }
+
     @UooLog(value = "测试条件查询", key = "testPersonnel")
     @RequestMapping(value = "/testPage",method = RequestMethod.GET)
     public Page<TbPersonnel> testPersonnel() {

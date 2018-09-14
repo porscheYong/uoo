@@ -1,27 +1,17 @@
 package cn.ffcs.uoo.base.common.generator;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.baomidou.mybatisplus.enums.FieldFill;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
-import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
-import com.baomidou.mybatisplus.generator.config.FileOutConfig;
-import com.baomidou.mybatisplus.generator.config.GlobalConfig;
-import com.baomidou.mybatisplus.generator.config.PackageConfig;
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
-import com.baomidou.mybatisplus.generator.config.TemplateConfig;
+import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.po.TableFill;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+
+import java.io.File;
+import java.util.*;
 
 /**
  *code is far away from bug with the animal protecting
@@ -59,11 +49,11 @@ public class MySQLGenerator {
     /**作者
      *
      */
-    private static String authorName="WCNGS@QQ.COM";
+    private static String authorName="zhanglu";
     /**table名字
      *
      */
-    private static String table="tb_personnel";
+    private static String table="tb_acct_ext";
     /**table前缀
      *
      */
@@ -80,7 +70,7 @@ public class MySQLGenerator {
                 // 全局配置
                 new GlobalConfig()
 
-                        .setOutputDir("D:\\data"+"/src/main/java")
+                        .setOutputDir("C:\\data"+"/src/main/java")
                         .setFileOverride(true)
                         .setActiveRecord(true)
                         .setEnableCache(false)
@@ -111,7 +101,7 @@ public class MySQLGenerator {
                         })
                         .setDriverName("com.mysql.jdbc.Driver")
                         .setUsername("root")
-                        .setPassword("123456")
+                        .setPassword("root")
                         .setUrl("jdbc:mysql://127.0.0.1:3306/springboot?characterEncoding=utf8")
         ).setStrategy(
                 // 策略配置
