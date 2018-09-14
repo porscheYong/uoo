@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.personnel.dao.TbAcctExtMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.personnel.entity.TbAcctExt">
+        <id column="ACCT_EXT_ID" property="acctExtId" />
+        <result column="ACCT_ID" property="acctId" />
+        <result column="PK_ACCT" property="pkAcct" />
+        <result column="NAME" property="name" />
+        <result column="CONTACT_WAY" property="contactWay" />
+        <result column="WORK_EMAIL" property="workEmail" />
+        <result column="CERT_TYPE" property="certType" />
+        <result column="CERT_NO" property="certNo" />
+        <result column="GENDER" property="gender" />
+        <result column="NATION" property="nation" />
+        <result column="NATIVE_PLACE" property="nativePlace" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ACCT_EXT_ID, ACCT_ID, PK_ACCT, NAME, CONTACT_WAY, WORK_EMAIL, CERT_TYPE, CERT_NO, GENDER, NATION, NATIVE_PLACE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+</mapper>
