@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.personnel.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.constant.EnumSystemCode;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.personnel.entity.TbPersonnel;
@@ -63,8 +64,9 @@ public class TbPersonnelController extends BaseController {
     @ApiImplicitParam(name = "tbPersonnel",value = "人员信息",required = true,dataType = "TbPersonnel")
     @UooLog(value = "新增人员信息",key = "addPersonnel")
     @RequestMapping(value = "/add",method = RequestMethod.PUT)
-    public void addPersonnel(@RequestBody TbPersonnel tbPersonnel) {
+    public String addPersonnel(@RequestBody TbPersonnel tbPersonnel) {
         tbPersonnelService.insert(tbPersonnel);
+        return EnumSystemCode.OPERATION_SUCCESS.toString();
     }
 
     @ApiOperation(value = "修改人员信息",notes = "人员信息修改")
