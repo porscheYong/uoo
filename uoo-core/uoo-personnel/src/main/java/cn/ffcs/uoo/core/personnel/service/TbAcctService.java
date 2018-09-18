@@ -13,4 +13,15 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface TbAcctService extends IService<TbAcct> {
 
+    /**
+     * 保存主账号
+     * @param tbAcct
+     */
+    long saveAcct(TbAcct tbAcct);
+
+    /**
+     * 失效一条数据
+     * @param tbAcct
+     */
+    void removeAcct(TbAcct tbAcct);
 }

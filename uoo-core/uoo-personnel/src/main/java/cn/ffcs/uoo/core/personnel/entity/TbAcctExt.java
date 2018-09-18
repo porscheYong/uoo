@@ -26,17 +26,12 @@ public class TbAcctExt extends Model<TbAcctExt> {
      * 主账号扩展标识
      */
     @TableId("ACCT_EXT_ID")
-    private BigDecimal acctExtId;
-    /**
-     * 主账号标识
-     */
-    @TableField("ACCT_ID")
-    private BigDecimal acctId;
+    private Long acctExtId;
     /**
      * 主账号标识
      */
     @TableField("PK_ACCT")
-    private BigDecimal pkAcct;
+    private Long pkAcct;
     /**
      * 姓名
      */
@@ -109,27 +104,19 @@ public class TbAcctExt extends Model<TbAcctExt> {
     private Date statusDate;
 
 
-    public BigDecimal getAcctExtId() {
+    public Long getAcctExtId() {
         return acctExtId;
     }
 
-    public void setAcctExtId(BigDecimal acctExtId) {
+    public void setAcctExtId(Long acctExtId) {
         this.acctExtId = acctExtId;
     }
 
-    public BigDecimal getAcctId() {
-        return acctId;
-    }
-
-    public void setAcctId(BigDecimal acctId) {
-        this.acctId = acctId;
-    }
-
-    public BigDecimal getPkAcct() {
+    public Long getPkAcct() {
         return pkAcct;
     }
 
-    public void setPkAcct(BigDecimal pkAcct) {
+    public void setPkAcct(Long pkAcct) {
         this.pkAcct = pkAcct;
     }
 
@@ -254,7 +241,6 @@ public class TbAcctExt extends Model<TbAcctExt> {
     public String toString() {
         return "TbAcctExt{" +
         ", acctExtId=" + acctExtId +
-        ", acctId=" + acctId +
         ", pkAcct=" + pkAcct +
         ", name=" + name +
         ", contactWay=" + contactWay +

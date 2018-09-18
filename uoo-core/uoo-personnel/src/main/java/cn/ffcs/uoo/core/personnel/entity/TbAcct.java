@@ -26,17 +26,12 @@ public class TbAcct extends Model<TbAcct> {
      * 主账号标识
      */
     @TableId("ACCT_ID")
-    private BigDecimal acctId;
+    private Long acctId;
     /**
      * 用户标识
      */
     @TableField("USER_ID")
     private String userId;
-    /**
-     * 主账号扩展标识
-     */
-    @TableField("ACCT_EXT_ID")
-    private BigDecimal acctExtId;
     /**
      * 主账号
      */
@@ -93,12 +88,11 @@ public class TbAcct extends Model<TbAcct> {
     @TableField("STATUS_DATE")
     private Date statusDate;
 
-
-    public BigDecimal getAcctId() {
+    public Long getAcctId() {
         return acctId;
     }
 
-    public void setAcctId(BigDecimal acctId) {
+    public void setAcctId(Long acctId) {
         this.acctId = acctId;
     }
 
@@ -108,14 +102,6 @@ public class TbAcct extends Model<TbAcct> {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public BigDecimal getAcctExtId() {
-        return acctExtId;
-    }
-
-    public void setAcctExtId(BigDecimal acctExtId) {
-        this.acctExtId = acctExtId;
     }
 
     public String getAcct() {
@@ -216,7 +202,6 @@ public class TbAcct extends Model<TbAcct> {
         return "TbAcct{" +
         ", acctId=" + acctId +
         ", userId=" + userId +
-        ", acctExtId=" + acctExtId +
         ", acct=" + acct +
         ", salt=" + salt +
         ", password=" + password +

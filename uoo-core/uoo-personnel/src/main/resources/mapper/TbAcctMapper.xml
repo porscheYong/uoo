@@ -6,7 +6,6 @@
     <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.personnel.entity.TbAcct">
         <id column="ACCT_ID" property="acctId" />
         <result column="USER_ID" property="userId" />
-        <result column="ACCT_EXT_ID" property="acctExtId" />
         <result column="ACCT" property="acct" />
         <result column="SALT" property="salt" />
         <result column="PASSWORD" property="password" />
@@ -22,7 +21,101 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ACCT_ID, USER_ID, ACCT_EXT_ID, ACCT, SALT, PASSWORD, SYMMETRY_PASSWORD, RESOURCE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        ACCT_ID, USER_ID, ACCT, SALT, PASSWORD, SYMMETRY_PASSWORD, RESOURCE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
+
+    <insert id="save" parameterType="cn.ffcs.uoo.core.personnel.entity.TbAcct">
+        <selectKey keyProperty="acctId" resultType="java.lang.Long" order="BEFORE">
+            select SEQ_TB_ACCT_ID.NEXTVAL from dual
+        </selectKey>
+        insert into TB_ACCT
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                ACCT_ID,
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="acct != null">
+                ACCT,
+            </if>
+            <if test="salt != null">
+                SALT,
+            </if>
+            <if test="password != null">
+                PASSWORD,
+            </if>
+            <if test="symmetryPassword != null">
+                SYMMETRY_PASSWORD,
+            </if>
+            <if test="resource != null">
+                RESOURCE,
+            </if>
+            <if test="statusCd != null">
+                STATUS_CD,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="createUser != null">
+                CREATE_USER,
+            </if>
+            <if test="updateDate != null">
+                UPDATE_DATE,
+            </if>
+            <if test="updateUser != null">
+                UPDATE_USER,
+            </if>
+            <if test="statusDate != null">
+                STATUS_DATE
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{acctId,jdbcType=DECIMAL},
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="acct != null">
+                #{acct,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="symmetryPassword != null">
+                #{symmetryPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="resource != null">
+                #{resource,jdbcType=VARCHAR},
+            </if>
+            <if test="statusCd != null">
+                #{statusCd,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=DATE},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=DECIMAL},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=DATE},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=DECIMAL},
+            </if>
+            <if test="statusDate != null">
+                #{statusDate,jdbcType=DATE}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="delete" parameterType="cn.ffcs.uoo.core.personnel.entity.TbAcct">
+        UPDATE
+          TB_ACCT
+        SET
+          STATUS_CD = 1100
+        WHERE
+          ACCT_ID = #{acctId}
+    </update>
 
 </mapper>
