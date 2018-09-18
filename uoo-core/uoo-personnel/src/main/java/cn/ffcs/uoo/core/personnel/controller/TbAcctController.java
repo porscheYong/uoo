@@ -133,7 +133,7 @@ public class TbAcctController extends BaseController {
         ResponseResult<Void> result = new ResponseResult<Void>();
         // 校验  todo
         // 1.删除主账号
-        // resource 与关键字重复，需要重新写方法 todo
+        // resource 与关键字重复，需要重新写方法  todo
         List<TbAcct> acctList = tbAcctService.selectList(new EntityWrapper<TbAcct>().eq("acct", acct));
         TbAcct tbAcct = acctList.get(0);
         tbAcct.setStatusCd("1100");
