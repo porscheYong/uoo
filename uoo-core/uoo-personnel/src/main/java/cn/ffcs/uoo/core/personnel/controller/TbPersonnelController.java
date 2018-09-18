@@ -5,7 +5,11 @@ import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.common.constant.EnumSystemCode;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.personnel.entity.TbCert;
+import cn.ffcs.uoo.core.personnel.entity.TbContact;
 import cn.ffcs.uoo.core.personnel.entity.TbPersonnel;
+import cn.ffcs.uoo.core.personnel.service.TbCertService;
+import cn.ffcs.uoo.core.personnel.service.TbContactService;
 import cn.ffcs.uoo.core.personnel.service.TbPersonnelService;
 import cn.ffcs.uoo.core.personnel.vo.TbPersonnelVo;
 import com.baomidou.mybatisplus.mapper.Condition;
@@ -30,9 +34,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/personnel")
 public class TbPersonnelController extends BaseController {
-
     @Autowired
     private TbPersonnelService tbPersonnelService;
+    @Autowired
+    private TbCertService tbCertService;
+    @Autowired
+    private TbContactService tbContactService;
 
     @ApiOperation(value = "人员查询", notes = "分页查询")
     @ApiImplicitParams({
@@ -63,19 +70,25 @@ public class TbPersonnelController extends BaseController {
     @ApiOperation(value = "新增人员信息",notes = "人员信息新增")
     @ApiImplicitParam(name = "tbPersonnel",value = "人员信息",required = true,dataType = "TbPersonnel")
     @UooLog(value = "新增人员信息",key = "addPersonnel")
-    @RequestMapping(value = "/add",method = RequestMethod.PUT)
-    public String addPersonnel(@RequestBody TbPersonnel tbPersonnel) {
+    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    public String addPersonnel(@RequestBody TbPersonnel tbPersonnel, @RequestBody TbCert tbCert, @RequestBody TbContact tbContact) {
         tbPersonnelService.insert(tbPersonnel);
+        tbCertService.insert(tbCert);
+        tbContactService.insert(tbContact);
         return EnumSystemCode.OPERATION_SUCCESS.toString();
     }
 
     @ApiOperation(value = "修改人员信息",notes = "人员信息修改")
     @ApiImplicitParam(name = "tbPersonnel",value = "人员信息",required = true,dataType = "TbPersonnel")
     @UooLog(value = "修改人员信息",key = "updatePersonnel")
-    @RequestMapping(value = "/update",method = RequestMethod.POST)
-    public void updatePersonnel(@RequestBody TbPersonnel tbPersonnel) {
-        Wrapper wrapper = Condition.create().eq(StringUtils.isNotEmpty(tbPersonnel.getPsnNbr()),"PSN_NBR",tbPersonnel.getPsnNbr());
-        tbPersonnelService.update(tbPersonnel,wrapper);
+    @RequestMapping(value = "/update",method = RequestMethod.PUT)
+    public void updatePersonnel(@RequestBody TbPersonnel tbPersonnel, @RequestBody TbCert tbCert, @RequestBody TbContact tbContact) {
+        Wrapper personnelWrapper = Condition.create().eq(StringUtils.isNotEmpty(tbPersonnel.getPsnNbr()),"PSN_NBR",tbPersonnel.getPsnNbr());
+        tbPersonnelService.update(tbPersonnel,personnelWrapper);
+        Wrapper certWrapper = Condition.create().eq(StringUtils.isNotEmpty(tbCert.getCertNo()),"CERT_NO", tbCert.getCertNo());
+        tbCertService.update(tbCert,certWrapper);
+        Wrapper contactWrapper =  Condition.create().eq(StringUtils.isNotEmpty(tbContact.getContent()),"CONTENT", tbContact.getContent());
+        tbContactService.update(tbContact,contactWrapper);
     }
 
     @ApiOperation(value="删除人员信息",notes="人员信息删除")
@@ -84,6 +97,17 @@ public class TbPersonnelController extends BaseController {
     @RequestMapping(value="/delete",method = RequestMethod.DELETE)
     public void deletePersonnel(@RequestBody TbPersonnel tbPersonnel) {
         tbPersonnelService.deleteById(tbPersonnel.getPersonnelId());
+        // 根据personnelId查询tbContact
+        Wrapper contactWrapper = Condition.create().eq("PERSONNEL_ID",tbPersonnel.getPersonnelId());
+        TbContact tbContact = tbContactService.selectOne(contactWrapper);
+        // 根据id删除tbContact
+        tbContactService.deleteById(tbContact.getContactId());
+
+        // 根据personnelId查询tbCert
+        Wrapper certWrapper = Condition.create().eq("PERSONNEL_ID",tbPersonnel.getPersonnelId());
+        TbCert tbCert = tbCertService.selectOne(certWrapper);
+        // 根据id删除tbCert
+        tbCertService.deleteById(tbCert.getCertId());
     }
 
     @UooLog(value = "测试条件查询", key = "testPersonnel")
