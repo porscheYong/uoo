@@ -7,7 +7,6 @@
     <artifactId>uoo-data-share</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-
     <name>uoo-data-share</name>
     <description>uoo-data-share：数据共享微服务</description>
 
@@ -19,7 +18,7 @@
     </parent>
 
 	<modules>
-        <module>uoo-rabbitmq-manage</module>
+        <module>queues-manager</module>
     </modules>
 
 
