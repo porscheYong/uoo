@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * <p>
  * 主账号 Mapper 接口
@@ -30,4 +32,6 @@ public interface TbAcctMapper extends BaseMapper<TbAcct> {
      * @param tbAcct
      */
     void delete(TbAcct tbAcct);
+
+    List<TbAcct> selectAcctList(TbAcct tbAcct);
 }

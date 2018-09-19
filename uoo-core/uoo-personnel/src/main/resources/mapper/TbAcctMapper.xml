@@ -21,7 +21,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ACCT_ID, USER_ID, ACCT, SALT, PASSWORD, SYMMETRY_PASSWORD, RESOURCE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        ACCT_ID, USER_ID, ACCT, SALT, PASSWORD, SYMMETRY_PASSWORD, "RESOURCE", STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
     <insert id="save" parameterType="cn.ffcs.uoo.core.personnel.entity.TbAcct">
@@ -113,9 +113,23 @@
         UPDATE
           TB_ACCT
         SET
-          STATUS_CD = 1100
+          STATUS_CD = #{statusCd}, UPDATE_DATE = #{updateDate}, UPDATE_USER = #{updateUser}
         WHERE
-          ACCT_ID = #{acctId}
+          ACCT = #{acct}
     </update>
 
+    <select id="selectAcctList" parameterType="cn.ffcs.uoo.core.personnel.entity.TbAcct" resultMap="BaseResultMap">
+        SELECT
+          <include refid="Base_Column_List" />
+        FROM
+          TB_ACCT
+        WHERE 1=1
+        AND STATUS_CD = 1000
+        <if test="acctId != null">
+            AND ACCT_ID = #{acctId}
+        </if>
+        <if test="acct != null">
+            AND ACCT = #{acct}
+        </if>
+    </select>
 </mapper>

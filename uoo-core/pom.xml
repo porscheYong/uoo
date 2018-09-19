@@ -25,6 +25,7 @@
         <module>uoo-region</module>
         <module>uoo-public</module>
         <module>uoo-data-share</module>
+        <module>uoo-acitivity</module>
     </modules>
 
     <dependencies>

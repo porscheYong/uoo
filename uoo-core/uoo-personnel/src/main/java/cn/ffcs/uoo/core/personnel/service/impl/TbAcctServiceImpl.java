@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -34,6 +35,16 @@ public class TbAcctServiceImpl extends ServiceImpl<TbAcctMapper, TbAcct> impleme
     @Override
     public void removeAcct(TbAcct tbAcct) {
         tbAcctMapper.delete(tbAcct);
+    }
+
+    @Override
+    public List<TbAcct> selectAcctList(TbAcct tbAcct) {
+        return tbAcctMapper.selectAcctList(tbAcct);
+    }
+
+    public TbAcct selectOneAcct(TbAcct tbAcct) {
+        List<TbAcct> acctList = selectAcctList(tbAcct);
+        return acctList.get(0);
     }
 
 

@@ -3,6 +3,8 @@ package cn.ffcs.uoo.core.personnel.service;
 import cn.ffcs.uoo.core.personnel.entity.TbAcct;
 import com.baomidou.mybatisplus.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 主账号 服务类
@@ -24,4 +26,6 @@ public interface TbAcctService extends IService<TbAcct> {
      * @param tbAcct
      */
     void removeAcct(TbAcct tbAcct);
+
+    List<TbAcct> selectAcctList(TbAcct tbAcct);
 }

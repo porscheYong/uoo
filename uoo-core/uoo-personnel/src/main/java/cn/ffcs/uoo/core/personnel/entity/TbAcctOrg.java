@@ -66,7 +66,7 @@ public class TbAcctOrg extends Model<TbAcctOrg> {
      * 创建人
      */
     @TableField("CREATE_USER")
-    private BigDecimal createUser;
+    private Long createUser;
     /**
      * 修改时间
      */
@@ -76,7 +76,7 @@ public class TbAcctOrg extends Model<TbAcctOrg> {
      * 修改人
      */
     @TableField("UPDATE_USER")
-    private BigDecimal updateUser;
+    private Long updateUser;
     /**
      * 状态变更的时间
      */
@@ -148,11 +148,11 @@ public class TbAcctOrg extends Model<TbAcctOrg> {
         this.createDate = createDate;
     }
 
-    public BigDecimal getCreateUser() {
+    public Long getCreateUser() {
         return createUser;
     }
 
-    public void setCreateUser(BigDecimal createUser) {
+    public void setCreateUser(Long createUser) {
         this.createUser = createUser;
     }
 
@@ -164,11 +164,11 @@ public class TbAcctOrg extends Model<TbAcctOrg> {
         this.updateDate = updateDate;
     }
 
-    public BigDecimal getUpdateUser() {
+    public Long getUpdateUser() {
         return updateUser;
     }
 
-    public void setUpdateUser(BigDecimal updateUser) {
+    public void setUpdateUser(Long updateUser) {
         this.updateUser = updateUser;
     }
 
