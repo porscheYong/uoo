@@ -13,4 +13,7 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface TbAcctOrgService extends IService<TbAcctOrg> {
 
+    long saveAcctOrg(TbAcctOrg tbAcctOrg);
+
+    void removeAcctOrg(TbAcctOrg tbAcctOrg);
 }

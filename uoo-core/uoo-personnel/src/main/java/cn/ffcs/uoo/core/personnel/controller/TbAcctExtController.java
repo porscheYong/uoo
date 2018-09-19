@@ -17,5 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/tbAcctExt")
 public class TbAcctExtController extends BaseController {
 
+
 }
 

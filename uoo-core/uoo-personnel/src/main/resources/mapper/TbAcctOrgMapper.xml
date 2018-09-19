@@ -23,4 +23,91 @@
         ACCT_ORG_ID, ACCT_ID, ORG_ID, RELA_TYPE, SORT, DOUBLE_NAME, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
+    <insert id="save" parameterType="cn.ffcs.uoo.core.personnel.entity.TbAcctOrg">
+        <selectKey keyProperty="acctOrgId" resultType="java.lang.Long" order="BEFORE">
+            SELECT seq_tb_acct_org_id.nextval from dual
+        </selectKey>
+        insert into TB_ACCT_ORG
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ACCT_ORG_ID,
+            <if test="acctId != null">
+                ACCT_ID,
+            </if>
+            <if test="orgId != null">
+                ORG_ID,
+            </if>
+            <if test="relaType != null">
+                RELA_TYPE,
+            </if>
+            <if test="sort != null">
+                SORT,
+            </if>
+            <if test="doubleName != null">
+                DOUBLE_NAME,
+            </if>
+            <if test="statusCd != null">
+                STATUS_CD,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="createUser != null">
+                CREATE_USER,
+            </if>
+            <if test="updateDate != null">
+                UPDATE_DATE,
+            </if>
+            <if test="updateUser != null">
+                UPDATE_USER,
+            </if>
+            <if test="statusDate != null">
+                STATUS_DATE
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{acctOrgId,jdbcType=DECIMAL},
+            <if test="acctId != null">
+                #{acctId,jdbcType=DECIMAL},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=DECIMAL},
+            </if>
+            <if test="relaType != null">
+                #{relaType,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=DECIMAL},
+            </if>
+            <if test="doubleName != null">
+                #{doubleName,jdbcType=VARCHAR},
+            </if>
+            <if test="statusCd != null">
+                #{statusCd,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=DATE},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=DECIMAL},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=DATE},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=DECIMAL},
+            </if>
+            <if test="statusDate != null">
+                #{statusDate,jdbcType=DATE}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="delete" parameterType="cn.ffcs.uoo.core.personnel.entity.TbAcctOrg">
+        UPDATE
+        TB_ACCT_ORG
+        SET
+        STATUS_CD = 1100
+        WHERE
+        ACCT_ORG_ID = #{acctOrgId}
+    </update>
 </mapper>

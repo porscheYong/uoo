@@ -6,6 +6,8 @@ import cn.ffcs.uoo.core.personnel.service.TbAcctExtService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * <p>
  * 主账号扩展 服务实现类
@@ -17,4 +19,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class TbAcctExtServiceImpl extends ServiceImpl<TbAcctExtMapper, TbAcctExt> implements TbAcctExtService {
 
+    @Resource
+    private TbAcctExtMapper tbAcctExtMapper;
+
+    @Override
+    public long saveAcctExt(TbAcctExt tbAcctExt) {
+        return tbAcctExtMapper.save(tbAcctExt);
+    }
+
+    @Override
+    public void removeAcctExt(TbAcctExt tbAcctExt) {
+        tbAcctExtMapper.delete(tbAcctExt);
+    }
 }

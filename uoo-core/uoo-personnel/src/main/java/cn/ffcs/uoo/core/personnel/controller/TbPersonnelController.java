@@ -2,7 +2,6 @@ package cn.ffcs.uoo.core.personnel.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
-import cn.ffcs.uoo.base.common.constant.EnumSystemCode;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.personnel.entity.TbCert;
@@ -11,6 +10,7 @@ import cn.ffcs.uoo.core.personnel.entity.TbPersonnel;
 import cn.ffcs.uoo.core.personnel.service.TbCertService;
 import cn.ffcs.uoo.core.personnel.service.TbContactService;
 import cn.ffcs.uoo.core.personnel.service.TbPersonnelService;
+import cn.ffcs.uoo.core.personnel.vo.PersonnelRelationInfoVo;
 import cn.ffcs.uoo.core.personnel.vo.TbPersonnelVo;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -67,21 +67,36 @@ public class TbPersonnelController extends BaseController {
         return tbPersonnelService.selectPage(new Page<TbPersonnel>(tbPersonnelVo.getPageNo(), pageSize),wrapper);
     }
 
+    @ApiOperation(value = "人员综合信息查询", notes = "人员综合信息分页")
+    @ApiImplicitParam(name = "tbPersonnelVo",value = "人员查询条件",required = true,dataType = "TbPersonnelVo")
+    @UooLog(value = "人员综合信息查询",key = "getPersonnelRelationInfo")
+    @RequestMapping(value = "/allInfoPage",method = RequestMethod.POST)
+    public Page<PersonnelRelationInfoVo> getPersonnelRelationInfo(TbPersonnelVo tbPersonnelVo) {
+        return tbPersonnelService.getPersonnelRelationInfo(tbPersonnelVo);
+    }
+
     @ApiOperation(value = "新增人员信息",notes = "人员信息新增")
-    @ApiImplicitParam(name = "tbPersonnel",value = "人员信息",required = true,dataType = "TbPersonnel")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tbPersonnel",value = "人员信息",required = true,dataType = "TbPersonnel"),
+            @ApiImplicitParam(name = "tbCert",value = "证件信息",required = true,dataType = "TbCert"),
+            @ApiImplicitParam(name = "tbContact",value = "联系方式信息",required = true,dataType = "TbContact")
+    })
     @UooLog(value = "新增人员信息",key = "addPersonnel")
-    @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public String addPersonnel(@RequestBody TbPersonnel tbPersonnel, @RequestBody TbCert tbCert, @RequestBody TbContact tbContact) {
+    @RequestMapping(value = "",method = RequestMethod.POST)
+    public void addPersonnel(@RequestBody TbPersonnel tbPersonnel, @RequestBody TbCert tbCert, @RequestBody TbContact tbContact) {
         tbPersonnelService.insert(tbPersonnel);
         tbCertService.insert(tbCert);
         tbContactService.insert(tbContact);
-        return EnumSystemCode.OPERATION_SUCCESS.toString();
     }
 
     @ApiOperation(value = "修改人员信息",notes = "人员信息修改")
-    @ApiImplicitParam(name = "tbPersonnel",value = "人员信息",required = true,dataType = "TbPersonnel")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tbPersonnel",value = "人员信息",required = true,dataType = "TbPersonnel"),
+            @ApiImplicitParam(name = "tbCert",value = "证件信息",required = true,dataType = "TbCert"),
+            @ApiImplicitParam(name = "tbContact",value = "联系方式信息",required = true,dataType = "TbContact")
+    })
     @UooLog(value = "修改人员信息",key = "updatePersonnel")
-    @RequestMapping(value = "/update",method = RequestMethod.PUT)
+    @RequestMapping(value = "",method = RequestMethod.PUT)
     public void updatePersonnel(@RequestBody TbPersonnel tbPersonnel, @RequestBody TbCert tbCert, @RequestBody TbContact tbContact) {
         Wrapper personnelWrapper = Condition.create().eq(StringUtils.isNotEmpty(tbPersonnel.getPsnNbr()),"PSN_NBR",tbPersonnel.getPsnNbr());
         tbPersonnelService.update(tbPersonnel,personnelWrapper);
@@ -94,7 +109,7 @@ public class TbPersonnelController extends BaseController {
     @ApiOperation(value="删除人员信息",notes="人员信息删除")
     @ApiImplicitParam(name = "tbPersonnel",value = "人员信息",required = true,dataType = "TbPersonnel")
     @UooLog(value = "删除人员信息",key = "deletePersonnel")
-    @RequestMapping(value="/delete",method = RequestMethod.DELETE)
+    @RequestMapping(value="",method = RequestMethod.DELETE)
     public void deletePersonnel(@RequestBody TbPersonnel tbPersonnel) {
         tbPersonnelService.deleteById(tbPersonnel.getPersonnelId());
         // 根据personnelId查询tbContact

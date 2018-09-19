@@ -34,4 +34,29 @@
         PERSONNEL_ID, USER_ID, PSN_NAME, PSN_CODE, NC_CODE, PSN_NBR, NATIONALITY, GENDER, NATION, MARRIAGE, PLITICAL_STATUS, IMAGE, REASON, TO_WORK_TIME, SERVING_AGE, LENGTH_SERVICE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, UUID, NOTES
     </sql>
 
+    <select id="getPersonnelRelationInfo" resultType="PersonnelRelationInfoVo">
+      SELECT t.psn_name,t.psn_code,t.nc_code,
+        t.psn_nbr,t.nationality,t.gender,
+        t.nation,t.marriage,t.plitical_status,t.reason,
+        c.contact_type,c.content,e.cert_name,e.cert_type,
+        e.cert_no,e.address,e.issuing,e.is_real,e.resource
+      FROM TB_PERSONNEL T
+      LEFT JOIN TB_CONTACT C ON T.PERSONNEL_ID = C.PERSONNEL_ID
+      LEFT JOIN TB_CERT E ON T.PERSONNEL_ID = E.PERSONNEL_ID
+      <where>
+          <if test="psnName != null and psnName != '' ">
+              AND t.psn_name = #{psnName}
+          </if>
+          <if test="psnNbr != null and psnNbr != '' ">
+              AND t.psn_nbr = #{psnNbr}
+          </if>
+          <if test="certNo != null and certNo != '' " >
+              AND e.cert_no = #{certNo}
+          </if>
+          <if test="statusCd != null and statusCd != '' ">
+              AND t.status_cd = #{statusCd}
+          </if>
+      </where>
+    </select>
+
 </mapper>

@@ -26,17 +26,12 @@ public class TbAcctExt extends Model<TbAcctExt> {
      * 主账号扩展标识
      */
     @TableId("ACCT_EXT_ID")
-    private BigDecimal acctExtId;
-    /**
-     * 主账号标识
-     */
-    @TableField("ACCT_ID")
-    private BigDecimal acctId;
+    private Long acctExtId;
     /**
      * 主账号标识
      */
     @TableField("PK_ACCT")
-    private BigDecimal pkAcct;
+    private Long pkAcct;
     /**
      * 姓名
      */
@@ -91,7 +86,7 @@ public class TbAcctExt extends Model<TbAcctExt> {
      * 创建人
      */
     @TableField("CREATE_USER")
-    private BigDecimal createUser;
+    private Long createUser;
     /**
      * 修改时间
      */
@@ -101,7 +96,7 @@ public class TbAcctExt extends Model<TbAcctExt> {
      * 修改人
      */
     @TableField("UPDATE_USER")
-    private BigDecimal updateUser;
+    private Long updateUser;
     /**
      * 状态变更的时间
      */
@@ -109,27 +104,19 @@ public class TbAcctExt extends Model<TbAcctExt> {
     private Date statusDate;
 
 
-    public BigDecimal getAcctExtId() {
+    public Long getAcctExtId() {
         return acctExtId;
     }
 
-    public void setAcctExtId(BigDecimal acctExtId) {
+    public void setAcctExtId(Long acctExtId) {
         this.acctExtId = acctExtId;
     }
 
-    public BigDecimal getAcctId() {
-        return acctId;
-    }
-
-    public void setAcctId(BigDecimal acctId) {
-        this.acctId = acctId;
-    }
-
-    public BigDecimal getPkAcct() {
+    public Long getPkAcct() {
         return pkAcct;
     }
 
-    public void setPkAcct(BigDecimal pkAcct) {
+    public void setPkAcct(Long pkAcct) {
         this.pkAcct = pkAcct;
     }
 
@@ -213,11 +200,11 @@ public class TbAcctExt extends Model<TbAcctExt> {
         this.createDate = createDate;
     }
 
-    public BigDecimal getCreateUser() {
+    public Long getCreateUser() {
         return createUser;
     }
 
-    public void setCreateUser(BigDecimal createUser) {
+    public void setCreateUser(Long createUser) {
         this.createUser = createUser;
     }
 
@@ -229,11 +216,11 @@ public class TbAcctExt extends Model<TbAcctExt> {
         this.updateDate = updateDate;
     }
 
-    public BigDecimal getUpdateUser() {
+    public Long getUpdateUser() {
         return updateUser;
     }
 
-    public void setUpdateUser(BigDecimal updateUser) {
+    public void setUpdateUser(Long updateUser) {
         this.updateUser = updateUser;
     }
 
@@ -254,7 +241,6 @@ public class TbAcctExt extends Model<TbAcctExt> {
     public String toString() {
         return "TbAcctExt{" +
         ", acctExtId=" + acctExtId +
-        ", acctId=" + acctId +
         ", pkAcct=" + pkAcct +
         ", name=" + name +
         ", contactWay=" + contactWay +

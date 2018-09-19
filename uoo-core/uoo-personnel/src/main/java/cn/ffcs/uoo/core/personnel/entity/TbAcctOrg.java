@@ -26,17 +26,17 @@ public class TbAcctOrg extends Model<TbAcctOrg> {
      * 主账号与组织关系标识
      */
     @TableId("ACCT_ORG_ID")
-    private BigDecimal acctOrgId;
+    private long acctOrgId;
     /**
      * 主账号标识
      */
     @TableField("ACCT_ID")
-    private BigDecimal acctId;
+    private long acctId;
     /**
      * 组织标识
      */
     @TableField("ORG_ID")
-    private BigDecimal orgId;
+    private long orgId;
     /**
      * 关系类型 主归属、兼职、借调
      */
@@ -66,7 +66,7 @@ public class TbAcctOrg extends Model<TbAcctOrg> {
      * 创建人
      */
     @TableField("CREATE_USER")
-    private BigDecimal createUser;
+    private Long createUser;
     /**
      * 修改时间
      */
@@ -76,7 +76,7 @@ public class TbAcctOrg extends Model<TbAcctOrg> {
      * 修改人
      */
     @TableField("UPDATE_USER")
-    private BigDecimal updateUser;
+    private Long updateUser;
     /**
      * 状态变更的时间
      */
@@ -84,27 +84,27 @@ public class TbAcctOrg extends Model<TbAcctOrg> {
     private Date statusDate;
 
 
-    public BigDecimal getAcctOrgId() {
+    public long getAcctOrgId() {
         return acctOrgId;
     }
 
-    public void setAcctOrgId(BigDecimal acctOrgId) {
+    public void setAcctOrgId(long acctOrgId) {
         this.acctOrgId = acctOrgId;
     }
 
-    public BigDecimal getAcctId() {
+    public long getAcctId() {
         return acctId;
     }
 
-    public void setAcctId(BigDecimal acctId) {
+    public void setAcctId(long acctId) {
         this.acctId = acctId;
     }
 
-    public BigDecimal getOrgId() {
+    public long getOrgId() {
         return orgId;
     }
 
-    public void setOrgId(BigDecimal orgId) {
+    public void setOrgId(long orgId) {
         this.orgId = orgId;
     }
 
@@ -148,11 +148,11 @@ public class TbAcctOrg extends Model<TbAcctOrg> {
         this.createDate = createDate;
     }
 
-    public BigDecimal getCreateUser() {
+    public Long getCreateUser() {
         return createUser;
     }
 
-    public void setCreateUser(BigDecimal createUser) {
+    public void setCreateUser(Long createUser) {
         this.createUser = createUser;
     }
 
@@ -164,11 +164,11 @@ public class TbAcctOrg extends Model<TbAcctOrg> {
         this.updateDate = updateDate;
     }
 
-    public BigDecimal getUpdateUser() {
+    public Long getUpdateUser() {
         return updateUser;
     }
 
-    public void setUpdateUser(BigDecimal updateUser) {
+    public void setUpdateUser(Long updateUser) {
         this.updateUser = updateUser;
     }
 
