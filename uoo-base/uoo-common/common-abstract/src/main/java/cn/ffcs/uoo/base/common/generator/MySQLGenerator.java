@@ -109,10 +109,10 @@ public class MySQLGenerator {
                                 return super.processTypeConvert(fieldType);
                             }
                         })
-                        .setDriverName("com.mysql.jdbc.Driver")
-                        .setUsername("root")
-                        .setPassword("123456")
-                        .setUrl("jdbc:mysql://127.0.0.1:3306/springboot?characterEncoding=utf8")
+                        .setDriverName("oracle.jdbc.driver.OracleDriver")
+                        .setUsername("octopus")
+                        .setPassword("octopus")
+                        .setUrl("jdbc:oracle:thin:@134.96.167.19:1521:uomdb1")
         ).setStrategy(
                 // 策略配置
                 new StrategyConfig()

@@ -7,9 +7,10 @@ spring:
     name: uoo-organization
   # 目前使用的是我的阿里云上的mysql数据库
   datasource:
-    url: jdbc:mysql://47.96.228.88:3306/UooInAction?useSSL=true&useUnicode=true&characterEncoding=utf-8&verifyServerCertificate=false
-    username: root
-    password: ffcs123
+    #url: jdbc:mysql://47.96.228.88:3306/UooInAction?useSSL=true&useUnicode=true&characterEncoding=utf-8&verifyServerCertificate=false
+    url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
+    username: octopus
+    password: octopus
   zipkin:
     base-url: http://localhost:20010
   sleuth:
@@ -19,6 +20,9 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+    fetch-registry: false
+    register-with-eureka: false
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 ...
