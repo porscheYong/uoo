@@ -133,6 +133,7 @@ public class ReceiveDataController {
             List<String> errors = new ArrayList<>();
             errors.add("message not send.");
             resultMap.put("errors",errors);
+
         }
     }
 }
