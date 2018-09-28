@@ -43,7 +43,7 @@ public class MySQLGenerator {
     /**文件路径
      *
      */
-    private static String packageName="personnel";
+    private static String packageName="leaveDemo";
 
     private static String preffix_packageName="cn.ffcs.uoo";
     /**作者
@@ -53,7 +53,7 @@ public class MySQLGenerator {
     /**table名字
      *
      */
-    private static String table="tb_acct_ext";
+    private static String table="ati_delegate_info";
     /**table前缀
      *
      */
@@ -101,8 +101,8 @@ public class MySQLGenerator {
                         })
                         .setDriverName("com.mysql.jdbc.Driver")
                         .setUsername("root")
-                        .setPassword("root")
-                        .setUrl("jdbc:mysql://127.0.0.1:3306/springboot?characterEncoding=utf8")
+                        .setPassword("ok")
+                        .setUrl("jdbc:mysql://115.193.60.15:3306/test?characterEncoding=utf8")
         ).setStrategy(
                 // 策略配置
                 new StrategyConfig()
