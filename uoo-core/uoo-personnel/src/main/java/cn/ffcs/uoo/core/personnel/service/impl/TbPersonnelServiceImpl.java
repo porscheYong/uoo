@@ -7,7 +7,6 @@ import cn.ffcs.uoo.core.personnel.vo.PersonnelRelationInfoVo;
 import cn.ffcs.uoo.core.personnel.vo.TbPersonnelVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,15 +21,22 @@ import java.util.List;
  */
 @Service
 public class TbPersonnelServiceImpl extends ServiceImpl<TbPersonnelMapper, TbPersonnel> implements TbPersonnelService {
-    @Autowired
-    private TbPersonnelMapper tbPersonnelMapper;
-
     @Override
     public Page<PersonnelRelationInfoVo> getPersonnelRelationInfo(TbPersonnelVo tbPersonnelVo) {
-        List<PersonnelRelationInfoVo> list = tbPersonnelMapper.getPersonnelRelationInfo(tbPersonnelVo);
+        List<PersonnelRelationInfoVo> list = baseMapper.getPersonnelRelationInfo(tbPersonnelVo);
         int pageSize = tbPersonnelVo.getPageSize() == 0?12:tbPersonnelVo.getPageSize();
         Page<PersonnelRelationInfoVo> page = new Page<PersonnelRelationInfoVo>(tbPersonnelVo.getPageNo(),pageSize);
         page.setRecords(list);
         return page;
+    }
+
+    @Override
+    public Long getId() {
+        return baseMapper.getId();
+    }
+
+    @Override
+    public void delete(TbPersonnel tbPersonnel) {
+        baseMapper.delete(tbPersonnel);
     }
 }

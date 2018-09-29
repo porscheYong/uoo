@@ -27,4 +27,16 @@
         CERT_ID, PERSONNEL_ID, CERT_NAME, CERT_TYPE, CERT_NO, ADDRESS, ISSUING, UUID, IS_REAL, RESOURCE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
+    <select id="getId" resultType="java.lang.Long">
+        SELECT seq_tb_personnel_id.nextval FROM dual
+    </select>
+
+    <update id="delete" parameterType="cn.ffcs.uoo.core.personnel.entity.TbCert">
+        UPDATE
+        TB_CERT
+        SET
+        STATUS_CD = 1100
+        WHERE
+        CERT_ID = #{certId}
+    </update>
 </mapper>

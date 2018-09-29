@@ -35,6 +35,7 @@ public class TbContactController extends BaseController {
     @UooLog(value = "新增联系方式", key = "addContact")
     @RequestMapping(value = "", method = RequestMethod.POST)
     public void addContact(@RequestBody TbContact tbContact) {
+        tbContact.setContactId(tbContactService.getId());
         tbContactService.insert(tbContact);
     }
 
@@ -51,7 +52,7 @@ public class TbContactController extends BaseController {
     @UooLog(value = "删除联系方式", key = "delContact")
     @RequestMapping(value = "", method = RequestMethod.DELETE)
     public void delContact(@RequestBody TbContact tbContact) {
-        tbContactService.deleteById(tbContact.getContactId());
+        tbContactService.delete(tbContact);
     }
 }
 

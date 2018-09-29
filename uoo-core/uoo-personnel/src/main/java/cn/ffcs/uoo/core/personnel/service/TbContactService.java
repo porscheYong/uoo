@@ -12,5 +12,7 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-09-13
  */
 public interface TbContactService extends IService<TbContact> {
+    public Long getId();
 
+    public void delete(TbContact tbContact);
 }

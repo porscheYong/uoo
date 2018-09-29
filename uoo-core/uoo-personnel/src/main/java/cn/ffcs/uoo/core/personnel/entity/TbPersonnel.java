@@ -26,7 +26,7 @@ public class TbPersonnel extends Model<TbPersonnel> {
      * 人员标识
      */
     @TableId("PERSONNEL_ID")
-    private BigDecimal personnelId;
+    private Long personnelId;
 
     /**
      * 人员姓名
@@ -140,11 +140,11 @@ public class TbPersonnel extends Model<TbPersonnel> {
     private String notes;
 
 
-    public BigDecimal getPersonnelId() {
+    public Long getPersonnelId() {
         return personnelId;
     }
 
-    public void setPersonnelId(BigDecimal personnelId) {
+    public void setPersonnelId(Long personnelId) {
         this.personnelId = personnelId;
     }
 
