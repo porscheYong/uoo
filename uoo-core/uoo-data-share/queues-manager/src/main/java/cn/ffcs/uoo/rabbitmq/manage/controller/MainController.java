@@ -16,7 +16,7 @@ import cn.ffcs.uoo.rabbitmq.manage.service.RabbitMqService;
 import cn.ffcs.uoo.rabbitmq.manage.vo.SystemQueueVo;
 
 @RestController
-public class TestController {
+public class MainController {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	

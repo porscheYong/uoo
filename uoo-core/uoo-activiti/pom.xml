@@ -13,6 +13,16 @@
     <packaging>pom</packaging>
     <modules>
         <module>activiti-core</module>
+        <module>activiti-common</module>
     </modules>
+
+    <dependencies>
+        <!--Activiti基础JAR包-->
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-spring-boot-starter-basic</artifactId>
+            <version>5.21.0</version>
+        </dependency>
+    </dependencies>
 
 </project>
