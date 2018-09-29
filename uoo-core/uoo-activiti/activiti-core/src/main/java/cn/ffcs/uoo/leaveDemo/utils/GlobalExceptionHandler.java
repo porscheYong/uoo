@@ -3,6 +3,7 @@ package cn.ffcs.uoo.leaveDemo.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +25,22 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResponseResult<Void> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         LOGGER.error(e.getMessage(), e);
+        return setJsonObject();
+    }
+
+    /**
+     * 处理参数映射到对象数据异常
+     * @param exception 参数映射异常
+     * @return
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseBody
+    public ResponseResult<Void> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+        LOGGER.error(exception.getMessage(), exception);
+        return setJsonObject();
+    }
+
+    private ResponseResult<Void> setJsonObject() {
         ResponseResult<Void> result = new ResponseResult<>();
         result.setState(ResponseResult.PARAMETER_ERROR);
         result.setMessage("参数无效或格式不正确！");

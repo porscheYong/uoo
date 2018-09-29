@@ -29,21 +29,24 @@ public class DeptLeaderAssignProcessor extends OaBaseTaskListenerService impleme
     public void notify(DelegateTask delegateTask) {
         System.out.println("进入第一审批人环节");
 
+        // 本环节任务候选人
+        List<String> originalCandidates = new ArrayList<>();
+        originalCandidates.add("lisi");
+        taskService.setVariable(delegateTask.getId(), ApprovalConstant.TASK_DEF_KEYS[2], originalCandidates);
+
         //分配候选人之前先查看是否有任务改派
         List<String> deptLeaderUsers = (List<String>) runtimeService.getVariable(delegateTask.getProcessInstanceId(),delegateTask.getProcessInstanceId() + ApprovalConstant.TASK_DEF_KEYS[2]);
         if(deptLeaderUsers!=null) {
             delegateTask.addCandidateUsers(deptLeaderUsers);
-            taskService.setVariable(delegateTask.getId(),ApprovalConstant.TASK_DEF_KEYS[2],deptLeaderUsers);
+            taskService.setVariable(delegateTask.getId(),delegateTask.getId() + ApprovalConstant.TASK_DEF_KEYS[2],deptLeaderUsers);
             return;
         }
 
-        // 本环节任务候选人
-        deptLeaderUsers = new ArrayList<>();
-        deptLeaderUsers.add("lisi");
-        delegateTask.addCandidateUsers(deptLeaderUsers);
+        // 添加本环节任务候选人
+        delegateTask.addCandidateUsers(originalCandidates);
 
         //添加委托人
-        deptLeaderUsers = addDelegateUsers(deptLeaderUsers,delegateTask);
-        taskService.setVariable(delegateTask.getId(), ApprovalConstant.TASK_DEF_KEYS[2],deptLeaderUsers);
+        deptLeaderUsers = addDelegateUsers(originalCandidates,delegateTask);
+        taskService.setVariable(delegateTask.getId(), delegateTask.getId() + ApprovalConstant.TASK_DEF_KEYS[2],deptLeaderUsers);
     }
 }

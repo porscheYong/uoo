@@ -55,7 +55,10 @@ public class AtiTaskService {
 //        leaveService.insert(leave);
         // 添加相关变量
         Map<String, Object> vars = new HashMap<>();
-        vars.put("startProcessVars", startProcessVars);
+        vars.put("applyUser", startProcessVars.get("applyUser"));
+        vars.put("categoryId", startProcessVars.get("categoryId"));
+        vars.put("procDefKey", startProcessVars.get("procDefKey"));
+        vars.put("vars", startProcessVars.get("vars"));
         // 启动流程
         ProcessInstance processInstance = runtimeService.
                 startProcessInstanceByKey((String) startProcessVars.get("procDefKey"), "oa_leave", vars);
@@ -140,10 +143,10 @@ public class AtiTaskService {
     /**
      * 已办任务
      *
-     * @param assignName
-     * @param categoryId
-     * @param startTime
-     * @param endTime
+     * @param assignName 任务办理人
+     * @param categoryId 流程分类标识
+     * @param startTime 任务接收时间
+     * @param endTime 任务处理时间
      * @return
      */
     public List<HistoricTaskVo> getHistToricTaskList(String assignName, String categoryId, String startTime, String endTime) {
@@ -235,7 +238,7 @@ public class AtiTaskService {
                     }
                 }
                 if ((null != startTime && !startTime.isEmpty()) && (null != endTime && !endTime.isEmpty())) {
-                    List<HistoricTaskInstance> histList = histTaskQuery.processVariableValueEquals("categoryId", Long.valueOf(categoryId))
+                    List<HistoricTaskInstance> histList = histTaskQuery.processVariableValueEquals("categoryId", categoryId)
                             .taskCompletedAfter(sdf.parse(startTime)).taskCompletedBefore(sdf.parse(endTime)).list();
                     if (null == histList || histList.size() == 0) {
                         return null;
@@ -256,28 +259,21 @@ public class AtiTaskService {
     /**
      * 流程流转信息
      *
-     * @param procInsId
+     * @param procInsId 流程实例标识
      * @return
      */
     public List<HistoricFlow> histoicFlowList(String procInsId) {
         List<HistoricFlow> actList = Lists.newArrayList();
+        // 获取历史待办并排序
         List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processInstanceId(procInsId)
-                .orderByHistoricActivityInstanceStartTime().asc().orderByHistoricActivityInstanceEndTime().asc().list();
+                .orderByHistoricActivityInstanceStartTime().desc().orderByHistoricActivityInstanceEndTime().desc().list();
 
-        boolean start = false;
+        boolean end = false;
         Map<String, Integer> actMap = Maps.newHashMap();
 
         for (int i = 0; i < list.size(); i++) {
 
             HistoricActivityInstance histIns = list.get(i);
-
-            // 过滤开始节点前的节点
-            if (ApprovalConstant.TASK_DEF_KEYS[0].equals(histIns.getActivityId())) {
-                start = true;
-            }
-            if (!start) {
-                continue;
-            }
 
             //只显示开始节点，结束节点，用户任务节点
             if (ApprovalConstant.USER_ACTIVITY_TYPE.equals(histIns.getActivityType())
@@ -285,10 +281,7 @@ public class AtiTaskService {
                     || ApprovalConstant.END_ACTIVITY_TYPE.equals(histIns.getActivityType())) {
 
                 // 给节点增加一个序号
-                Integer actNum = actMap.get(histIns.getId());
-                if (actNum == null) {
-                    actMap.put(histIns.getId(), actMap.size() + 1);
-                }
+                actMap.computeIfAbsent(histIns.getId(), V -> actMap.size() + 1);
 
                 HistoricFlow historicFlow = new HistoricFlow();
                 historicFlow.setActNum(actMap.get(histIns.getId()));
@@ -298,7 +291,7 @@ public class AtiTaskService {
                 historicFlow.setTaskDefKey(histIns.getActivityName());
                 historicFlow.setAssignee(histIns.getAssignee());
 
-//                // 获取意见评论内容
+                // 获取意见评论内容
                 if (StringUtils.isNotBlank(histIns.getTaskId())) {
                     List<Comment> commentList = taskService.getTaskComments(histIns.getTaskId());
                     if (commentList.size() > 0) {
@@ -322,7 +315,8 @@ public class AtiTaskService {
         historicTask.setStartTime(taskInstance.getStartTime());
         historicTask.setEndTime(taskInstance.getEndTime());
         historicTask.setName(taskInstance.getName());
-        historicTask.setAtiCategoryId(Long.valueOf(taskInstance.getCategory()));
+        // 在任务执行时添加category
+//        historicTask.setAtiCategoryId(Long.valueOf(taskInstance.getCategory()));
 
         List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().
                 processDefinitionId(taskInstance.getProcessDefinitionId()).list();
@@ -384,7 +378,7 @@ public class AtiTaskService {
         }
         // 其他用户环节，获取在监听器中设置的用户变量
         List<String> currentUsers = (List<String>) taskService
-                .getVariable(currentTask.getId(), currentTask.getTaskDefinitionKey());
+                .getVariable(currentTask.getId(), currentTask.getId() + currentTask.getTaskDefinitionKey());
         map.put("names", currentUsers);
 
         return map;

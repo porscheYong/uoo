@@ -5,13 +5,15 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
  * <p>
- *  Mapper 接口
+ *  AtiDelegateInfoMapper 接口
  * </p>
  *
- * @author zhanglu
+ * @author liuxiaodong
  * @since 2018-09-27
  */
 public interface AtiDelegateInfoMapper extends BaseMapper<AtiDelegateInfo> {
+
+    Long insertOneDelegateInfo(AtiDelegateInfo atiDelegateInfo);
 
     void modifyOneDelegateInfo(AtiDelegateInfo atiDelegateInfo);
 

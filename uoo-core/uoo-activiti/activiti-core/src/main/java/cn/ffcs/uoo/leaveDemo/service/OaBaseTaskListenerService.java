@@ -10,12 +10,13 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
- * 监听器类继承此类
+ * 监听器类继承此类,处理任务委托等
  *
  * @author liuxiaodong
  * @date 2018/9/27
@@ -30,22 +31,21 @@ public class OaBaseTaskListenerService {
     /**
      * 添加委托人
      *
-     * @param users
-     * @param delegateTask
+     * @param users 任务候选人
+     * @param delegateTask delegateTask对象
      */
-    public List<String> addDelegateUsers(List<String> users, DelegateTask delegateTask) {
+    List<String> addDelegateUsers(List<String> users, DelegateTask delegateTask) {
         String processDefinitionId = delegateTask.getProcessDefinitionId();
-
+        List<String> candidates = new ArrayList<>();
+        candidates.addAll(users);
         for (String assignee : users) {
-            Wrapper<AtiDelegateInfo> wrapper = new EntityWrapper<>();
-            wrapper.eq("ASSIGNEE", assignee);
-            List<AtiDelegateInfo> delegateInfoList = atiDelegateInfoService.selectList(wrapper);
+            List<AtiDelegateInfo> delegateInfoList = atiDelegateInfoService.delegateInfoList(assignee);
             if (null != delegateInfoList && delegateInfoList.size() > 0) {
                 for (AtiDelegateInfo delegateInfo : delegateInfoList) {
                     //设置一个流程委托
                     if (processDefinitionId.equals(delegateInfo.getProcDefId())) {
                         delegateTask.addCandidateUser(delegateInfo.getAttorney());
-                        users.add(delegateInfo.getAttorney());
+                        candidates.add(delegateInfo.getAttorney());
                         continue;
                     }
 
@@ -55,12 +55,12 @@ public class OaBaseTaskListenerService {
                         List<ProcessDefinition> processDefinitionList = repositoryService.createProcessDefinitionQuery().
                                 processDefinitionCategory(String.valueOf(atiCategoryId)).active().list();
                         if (processDefinitionList == null || processDefinitionList.size() == 0) {
-                            return users;
+                            return candidates;
                         }
                         for (ProcessDefinition processDefinition : processDefinitionList) {
-                            if (processDefinition.getId().equals(delegateInfo.getProcDefId())) {
+                            if (processDefinition.getId().equals(delegateTask.getProcessDefinitionId())) {
                                 delegateTask.addCandidateUser(delegateInfo.getAttorney());
-                                users.add(delegateInfo.getAttorney());
+                                candidates.add(delegateInfo.getAttorney());
                                 break;
                             }
                         }
@@ -69,7 +69,7 @@ public class OaBaseTaskListenerService {
             }
         }
 
-        return users;
+        return candidates;
     }
 
 }

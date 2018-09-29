@@ -20,6 +20,7 @@ import javax.annotation.Resource;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -34,6 +35,8 @@ public class AtiProcessService {
     private RuntimeService runtimeService;
     @Resource
     private TaskService taskService;
+    @Resource
+    private AtiTaskService atiTaskService;
 
     /**
      * 部署 BPMN 文件
@@ -140,9 +143,9 @@ public class AtiProcessService {
 
     /**
      * 任务改派
-     * @param procInstId
-     * @param taskDefKey
-     * @param users
+     * @param procInstId 流程实例标识
+     * @param taskDefKey 指定流程中的环节，用任务定义KEY表示
+     * @param users 指定的用户代理
      */
     public void alterAssignee(String procInstId,String taskDefKey,List<String> users) {
 
@@ -160,6 +163,8 @@ public class AtiProcessService {
             for(String user : users) {
                 taskService.addCandidateUser(currentTask.getId(), user);
             }
+            taskService.setVariable(currentTask.getId(), currentTask.getId() + taskDefKey, users);
+            runtimeService.setVariable(procInstId, procInstId + taskDefKey, users);
 
             return;
         }
@@ -180,11 +185,28 @@ public class AtiProcessService {
 
     /**
      * 取消任务改派
-     * @param procInstId
-     * @param variable
+     * @param procInstId 流程实例标识
+     * @param taskDefKey 流程中的环节
      */
-    public void removeTaskAlternative(String procInstId, String variable) {
-        runtimeService.removeVariable(procInstId, variable);
+    public void removeTaskAlternative(String procInstId, String taskDefKey) {
+        runtimeService.removeVariable(procInstId, procInstId + taskDefKey);
+
+        Map<String, Object> map = atiTaskService.getCurrentTaskAssignNames(procInstId);
+        Task currentTask = taskService.createTaskQuery().processInstanceId(procInstId).active().singleResult();
+        if (null != map) {
+            if (taskDefKey.equals(currentTask.getTaskDefinitionKey())) {
+                List<String> names = (List<String>) map.get("names");
+                for (String name : names) {
+                    taskService.deleteCandidateUser(currentTask.getId(), name);
+                }
+                List<String> originalCandidates = (List<String>) taskService.getVariable(currentTask.getId(), taskDefKey);
+                for (String originalCandidate : originalCandidates) {
+                    taskService.addCandidateUser(currentTask.getId(), originalCandidate);
+                }
+                taskService.setVariable(currentTask.getId(), currentTask.getId() + taskDefKey, originalCandidates);
+            }
+        }
+
     }
 
 

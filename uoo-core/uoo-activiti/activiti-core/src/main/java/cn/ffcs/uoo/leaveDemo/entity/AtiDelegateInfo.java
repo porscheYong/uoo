@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 
@@ -37,10 +38,12 @@ public class AtiDelegateInfo extends Model<AtiDelegateInfo> {
     private String procDefId;
 
     @TableField("start_time")
-    private String startTime;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date startTime;
 
     @TableField("end_time")
-    private String endTime;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date endTime;
 
     @TableField("delegate_reason")
     private String delegateReason;
@@ -89,19 +92,19 @@ public class AtiDelegateInfo extends Model<AtiDelegateInfo> {
         this.procDefId = procDefId;
     }
 
-    public String getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 

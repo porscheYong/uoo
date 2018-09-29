@@ -4,15 +4,15 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.ffcs.uoo.leaveDemo.entity.AtiDelegateInfo">
-        <id column="ati_delegate_info_id" property="atiDelegateInfoId" />
-        <result column="assignee" property="assignee" />
-        <result column="attorney" property="attorney" />
-        <result column="ati_category_id" property="atiCategoryId" />
-        <result column="proc_def_id" property="procDefId" />
-        <result column="start_time" property="startTime" />
-        <result column="end_time" property="endTime" />
-        <result column="delegate_reason" property="delegateReason" />
-        <result column="status_cd" property="statusCd" />
+        <id column="ati_delegate_info_id" property="atiDelegateInfoId"/>
+        <result column="assignee" property="assignee"/>
+        <result column="attorney" property="attorney"/>
+        <result column="ati_category_id" property="atiCategoryId"/>
+        <result column="proc_def_id" property="procDefId"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="delegate_reason" property="delegateReason"/>
+        <result column="status_cd" property="statusCd"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -20,11 +20,69 @@
         ati_delegate_info_id, assignee, attorney, ati_category_id, proc_def_id, start_time, end_time, delegate_reason, status_cd
     </sql>
 
+
+    <insert id="insertOneDelegateInfo" parameterType="cn.ffcs.uoo.leaveDemo.entity.AtiDelegateInfo">
+        <selectKey keyProperty="atiDelegateInfoId" resultType="java.lang.Long" order="BEFORE">
+            select seq_ati_delegate_info_id.nextval from dual
+        </selectKey>
+        insert into ATI_DELEGATE_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ati_delegate_info_id,
+            <if test="assignee != null">
+                assignee,
+            </if>
+            <if test="attorney != null">
+                attorney,
+            </if>
+            <if test="atiCategoryId != null">
+                ati_category_id,
+            </if>
+            <if test="procDefId != null">
+                proc_def_id,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="delegateReason != null">
+                delegate_reason,
+            </if>
+            status_cd
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{atiDelegateInfoId},
+            <if test="assignee != null">
+                #{assignee},
+            </if>
+            <if test="attorney != null">
+                #{attorney},
+            </if>
+            <if test="atiCategoryId != null">
+                #{atiCategoryId},
+            </if>
+            <if test="procDefId != null">
+                #{procDefId},
+            </if>
+            <if test="startTime != null">
+                #{startTime},
+            </if>
+            <if test="endTime != null">
+                #{endTime},
+            </if>
+            <if test="delegateReason != null">
+                #{delegateReason},
+            </if>
+            1000
+        </trim>
+    </insert>
+
     <update id="modifyOneDelegateInfo" parameterType="cn.ffcs.uoo.leaveDemo.entity.AtiDelegateInfo">
         UPDATE
-          ATI_DELEGATE_INFO
+        ATI_DELEGATE_INFO
         SET
-          ATI_DELEGATE_INFO_ID = #{atiDelegateInfoId}
+        ATI_DELEGATE_INFO_ID = #{atiDelegateInfoId}
         <if test="assignee != null">
             , ASSIGNEE = #{assignee}
         </if>
@@ -47,7 +105,7 @@
             , DELEGATE_REASON = #{delegateReason}
         </if>
         WHERE
-          ATI_DELEGATE_INFO_ID = #{atiDelegateInfoId}
+        ATI_DELEGATE_INFO_ID = #{atiDelegateInfoId}
     </update>
 
     <update id="removeOneDelegateInfo">
