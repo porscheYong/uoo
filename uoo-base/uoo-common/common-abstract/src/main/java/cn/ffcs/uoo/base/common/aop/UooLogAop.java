@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 
 /**
@@ -42,7 +43,6 @@ import java.lang.reflect.Method;
 public class UooLogAop {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
-
 
     @Pointcut(value = "@annotation(cn.ffcs.uoo.base.common.annotion.UooLog)")
     public void cutService() {

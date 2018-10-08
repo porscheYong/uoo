@@ -99,10 +99,17 @@ public class MySQLGenerator {
                                 return super.processTypeConvert(fieldType);
                             }
                         })
+<<<<<<< HEAD
                         .setDriverName("com.mysql.jdbc.Driver")
                         .setUsername("root")
                         .setPassword("ok")
                         .setUrl("jdbc:mysql://115.193.60.15:3306/test?characterEncoding=utf8")
+=======
+                        .setDriverName("oracle.jdbc.driver.OracleDriver")
+                        .setUsername("octopus")
+                        .setPassword("octopus")
+                        .setUrl("jdbc:oracle:thin:@134.96.167.19:1521:uomdb1")
+>>>>>>> gzb
         ).setStrategy(
                 // 策略配置
                 new StrategyConfig()
