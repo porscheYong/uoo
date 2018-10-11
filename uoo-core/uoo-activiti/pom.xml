@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>activiti-core</module>
-        <module>activiti-common</module>
     </modules>
 
     <dependencies>

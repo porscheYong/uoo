@@ -5,8 +5,8 @@ spring:
       druid:
         url: jdbc:oracle:thin:@134.64.14.90:1521:ahorgmng
         driver-class-name:  oracle.jdbc.OracleDriver
-        username: uom
-        password: uom12345
+        username: uecc
+        password: uecc
   #      url: jdbc:mysql://127.0.0.1:3306/springboot?characterEncoding=utf8&useSSL=false
   #      driver-class-name:  com.mysql.jdbc.Driver
   #      username: root

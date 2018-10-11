@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.leaveDemo.dao.AtiBaseFormMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.leaveDemo.entity.AtiBaseForm">
+        <id column="ATI_BASE_FORM_ID" property="atiBaseFormId" />
+        <result column="FORM_SENDER" property="formSender" />
+        <result column="FORM_THEME" property="formTheme" />
+        <result column="FORM_CONTENT" property="formContent" />
+        <result column="PROC_DEF_ID" property="procDefId" />
+        <result column="PROC_INST_ID" property="procInstId" />
+        <result column="URGENT" property="urgent" />
+        <result column="LEVEL" property="level" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ATI_BASE_FORM_ID, FORM_SENDER, FORM_THEME, FORM_CONTENT, PROC_DEF_ID, PROC_INST_ID, URGENT, "LEVEL"
+    </sql>
+
+    <insert id="addAtiBaseForm" parameterType="cn.ffcs.uoo.leaveDemo.entity.AtiBaseForm">
+        <selectKey keyProperty="atiBaseFormId" resultType="java.lang.Long" order="BEFORE">
+            select ati_base_form_id_seq.nextval from dual
+        </selectKey>
+        insert into ATI_BASE_FORM
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ATI_BASE_FORM_ID,
+            <if test="formSender != null">
+                FORM_SENDER,
+            </if>
+            <if test="formTheme != null">
+                FORM_THEME,
+            </if>
+            <if test="formContent != null">
+                FORM_CONTENT,
+            </if>
+            <if test="procDefId != null">
+                PROC_DEF_ID,
+            </if>
+            <if test="procInstId != null">
+                PROC_INST_ID,
+            </if>
+            <if test="urgent != null">
+                URGENT,
+            </if>
+            <if test="level != null">
+                LEVEL,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{atiBaseFormId,jdbcType=DECIMAL},
+            <if test="formSender != null">
+                #{formSender,jdbcType=VARCHAR},
+            </if>
+            <if test="formTheme != null">
+                #{formTheme,jdbcType=OTHER},
+            </if>
+            <if test="formContent != null">
+                #{formContent,jdbcType=OTHER},
+            </if>
+            <!--<if test="act.procDefId != null">-->
+            <!--#{act.procDefId,jdbcType=OTHER},-->
+            <!--</if>-->
+            <if test="procDefId != null">
+                #{procDefId,jdbcType=OTHER},
+            </if>
+            <if test="procInstId != null">
+                #{procInstId,jdbcType=VARCHAR},
+            </if>
+            <if test="urgent != null">
+                #{urgent,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateProcInstIdByBaseFormId">
+        UPDATE ati_base_form
+        SET
+          proc_inst_id = #{procInstId}
+        WHERE ati_base_form_id = #{atiBaseFormId}
+    </update>
+</mapper>

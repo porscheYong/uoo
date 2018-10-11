@@ -10,15 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>activiti-core</artifactId>
     <name>activiti-core</name>
-    <modules>
-        <module>../activiti-common</module>
-    </modules>
+
     <dependencies>
-        <dependency>
-            <groupId>cn.ffcs.uoo</groupId>
-            <artifactId>activiti-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>

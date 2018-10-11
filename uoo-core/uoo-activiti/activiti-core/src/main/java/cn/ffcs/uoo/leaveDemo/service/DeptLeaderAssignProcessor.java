@@ -1,6 +1,9 @@
 package cn.ffcs.uoo.leaveDemo.service;
 
 import cn.ffcs.uoo.leaveDemo.constant.ApprovalConstant;
+import cn.ffcs.uoo.ueccUser.dao.AtiUserMapper;
+import cn.ffcs.uoo.ueccUser.entity.AtiUser;
+import cn.ffcs.uoo.ueccUser.service.AtiUserService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
@@ -24,14 +27,21 @@ public class DeptLeaderAssignProcessor extends OaBaseTaskListenerService impleme
     private RuntimeService runtimeService;
     @Resource
     private TaskService taskService;
+    @Resource
+    private AtiUserService atiUserService;
 
     @Override
     public void notify(DelegateTask delegateTask) {
         System.out.println("进入第一审批人环节");
 
         // 本环节任务候选人
+        String  applyUserName = (String) delegateTask.getVariable("applyUserId");
         List<String> originalCandidates = new ArrayList<>();
-        originalCandidates.add("lisi");
+        List<AtiUser> atiUsers = atiUserService.getDeptLeaderUsersByNo(applyUserName);
+        for (AtiUser atiUser: atiUsers) {
+            originalCandidates.add(atiUser.getNo());
+        }
+
         taskService.setVariable(delegateTask.getId(), ApprovalConstant.TASK_DEF_KEYS[2], originalCandidates);
 
         //分配候选人之前先查看是否有任务改派

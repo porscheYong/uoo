@@ -15,34 +15,34 @@ import java.io.Serializable;
  * @author zhanglu
  * @since 2018-09-27
  */
-@TableName("ati_category")
-public class AtiCategory extends Model<AtiCategory> {
+@TableName("ati_act_category")
+public class AtiActCategory extends Model<AtiActCategory> {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId("ATI_CATEGORY_ID")
-    private BigDecimal atiCategoryId;
+    @TableId("ATI_ACT_CATEGORY_ID")
+    private Long atiActCategoryId;
     @TableField("PARENT_CATEGORY_ID")
-    private BigDecimal parentCategoryId;
+    private Long parentCategoryId;
     @TableField("CATEGORY_CODE")
     private String categoryCode;
-    @TableField("CATEGORY_NAME")
-    private String categoryName;
+    @TableField("NAME")
+    private String name;
 
 
-    public BigDecimal getAtiCategoryId() {
-        return atiCategoryId;
+    public Long getAtiActCategoryId() {
+        return atiActCategoryId;
     }
 
-    public void setAtiCategoryId(BigDecimal atiCategoryId) {
-        this.atiCategoryId = atiCategoryId;
+    public void setAtiActCategoryId(Long atiActCategoryId) {
+        this.atiActCategoryId = atiActCategoryId;
     }
 
-    public BigDecimal getParentCategoryId() {
+    public Long getParentCategoryId() {
         return parentCategoryId;
     }
 
-    public void setParentCategoryId(BigDecimal parentCategoryId) {
+    public void setParentCategoryId(Long parentCategoryId) {
         this.parentCategoryId = parentCategoryId;
     }
 
@@ -54,26 +54,26 @@ public class AtiCategory extends Model<AtiCategory> {
         this.categoryCode = categoryCode;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getName() {
+        return name;
     }
 
     public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+        this.name = name;
     }
 
     @Override
     protected Serializable pkVal() {
-        return this.atiCategoryId;
+        return this.atiActCategoryId;
     }
 
     @Override
     public String toString() {
-        return "AtiCategory{" +
-        ", atiCategoryId=" + atiCategoryId +
+        return "AtiActCategory{" +
+        ", atiActCategoryId=" + atiActCategoryId +
         ", parentCategoryId=" + parentCategoryId +
         ", categoryCode=" + categoryCode +
-        ", categoryName=" + categoryName +
+        ", name=" + name +
         "}";
     }
 }

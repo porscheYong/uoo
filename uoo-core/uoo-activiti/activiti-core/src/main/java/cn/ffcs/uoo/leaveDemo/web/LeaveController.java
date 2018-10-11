@@ -4,9 +4,9 @@ import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.leaveDemo.constant.ApprovalConstant;
-import cn.ffcs.uoo.leaveDemo.entity.AtiCategory;
+import cn.ffcs.uoo.leaveDemo.entity.AtiActCategory;
 import cn.ffcs.uoo.leaveDemo.entity.AtiDelegateInfo;
-import cn.ffcs.uoo.leaveDemo.service.AtiCategoryService;
+import cn.ffcs.uoo.leaveDemo.service.AtiActCategoryService;
 import cn.ffcs.uoo.leaveDemo.service.AtiDelegateInfoService;
 import cn.ffcs.uoo.leaveDemo.service.AtiProcessService;
 import cn.ffcs.uoo.leaveDemo.service.AtiTaskService;
@@ -15,7 +15,10 @@ import cn.ffcs.uoo.leaveDemo.vo.HistoricFlow;
 import cn.ffcs.uoo.leaveDemo.vo.HistoricTaskVo;
 import cn.ffcs.uoo.leaveDemo.vo.ProcessDefinitionVo;
 import cn.ffcs.uoo.leaveDemo.vo.TaskVo;
+import cn.ffcs.uoo.ueccUser.entity.AtiUser;
+import cn.ffcs.uoo.ueccUser.service.AtiUserService;
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -53,9 +56,28 @@ public class LeaveController extends BaseController {
     @Resource
     private TaskService taskService;
     @Resource
-    private AtiCategoryService atiCategoryService;
+    private AtiActCategoryService atiActCategoryService;
     @Resource
     private AtiDelegateInfoService atiDelegateInfoService;
+    @Resource
+    private AtiUserService atiUserService;
+
+
+    public void valResponseResult(ResponseResult<Void> result,String category, MultipartFile file){
+        if (StringUtils.isEmpty(category)) {
+            result.setState(ResponseResult.PARAMETER_ERROR);
+            result.setMessage("流程分类不允许为空！");
+        }
+        AtiActCategory atiCategory = atiActCategoryService.selectById(category);
+        if (null == atiCategory) {
+            result.setState(ResponseResult.PARAMETER_ERROR);
+            result.setMessage("流程分类不存在！");
+        }
+        if (null == file) {
+            result.setState(ResponseResult.PARAMETER_ERROR);
+            result.setMessage("请选择要部署的流程文件！");
+        }
+    }
 
     /**
      * 流程部署
@@ -68,20 +90,24 @@ public class LeaveController extends BaseController {
     public ResponseResult<Void> deploy(String category, MultipartFile file) {
         ResponseResult<Void> result = new ResponseResult<>();
 
-        if (StringUtils.isEmpty(category)) {
-            result.setState(ResponseResult.PARAMETER_ERROR);
-            result.setMessage("流程分类不允许为空！");
-            return result;
-        }
-        AtiCategory atiCategory = atiCategoryService.selectById(category);
-        if (null == atiCategory) {
-            result.setState(ResponseResult.PARAMETER_ERROR);
-            result.setMessage("流程分类不存在！");
-            return result;
-        }
-        if (null == file) {
-            result.setState(ResponseResult.PARAMETER_ERROR);
-            result.setMessage("请选择要部署的流程文件！");
+        valResponseResult(result,category,file);
+//        if (StringUtils.isEmpty(category)) {
+//            result.setState(ResponseResult.PARAMETER_ERROR);
+//            result.setMessage("流程分类不允许为空！");
+//            return result;
+//        }
+//        AtiActCategory atiCategory = atiActCategoryService.selectById(category);
+//        if (null == atiCategory) {
+//            result.setState(ResponseResult.PARAMETER_ERROR);
+//            result.setMessage("流程分类不存在！");
+//            return result;
+//        }
+//        if (null == file) {
+//            result.setState(ResponseResult.PARAMETER_ERROR);
+//            result.setMessage("请选择要部署的流程文件！");
+//            return result;
+//        }
+        if(null!=result && StringUtils.isEmpty(result.getMessage())){
             return result;
         }
         String fileName = file.getOriginalFilename();
@@ -117,7 +143,7 @@ public class LeaveController extends BaseController {
         if (StringUtils.isNotEmpty(categoryId)) {
             try {
                 Long atiCategoryId = Long.valueOf(categoryId);
-                AtiCategory atiCategory = atiCategoryService.selectById(atiCategoryId);
+                AtiActCategory atiCategory = atiActCategoryService.selectById(atiCategoryId);
                 if (null == atiCategory) {
                     result.setState(ResponseResult.PARAMETER_ERROR);
                     result.setMessage("参数无效，流程分类标识不存在！");
@@ -224,17 +250,26 @@ public class LeaveController extends BaseController {
     /**
      * 启动请假流程
      *
-     * @param startProcessVars 启动流程需要的变量，包括applyUser,categoryId,procDefKey,vars
+     * @param startProcessJson 启动流程需要的变量，包括formSender,categoryId,procDefKey,vars
      * @return
      */
     @RequestMapping(value = "/startProcess", method = RequestMethod.POST)
-    public ResponseResult<Void> startLeaveProcess(@RequestBody Map<String, Object> startProcessVars) {
+    public ResponseResult<String> startLeaveProcess(String startProcessJson) {
 
-        ResponseResult<Void> result = new ResponseResult<>();
+        ResponseResult<String> result = new ResponseResult<>();
 
-        if (StringUtils.isEmpty((String) startProcessVars.get("applyUser"))) {
+        Map<String, Object> startProcessVars = JSON.parseObject(startProcessJson);
+
+        String formSender = (String) startProcessVars.get("formSender");
+        if (StringUtils.isEmpty(formSender)) {
             result.setState(ResponseResult.PARAMETER_ERROR);
             result.setMessage("创建人不允许为空！");
+            return result;
+        }
+        AtiUser user = atiUserService.selectOne(new EntityWrapper<AtiUser>().eq("no", formSender));
+        if (user == null || "n18004840170".equals(formSender) || "n13514713646".equals(formSender)) {
+            result.setMessage("当前用户不允许发起流程！");
+            result.setState(ResponseResult.PARAMETER_ERROR);
             return result;
         }
         if (StringUtils.isEmpty((String) startProcessVars.get("categoryId"))) {
@@ -243,9 +278,9 @@ public class LeaveController extends BaseController {
             return result;
         }
         try {
-            AtiCategory atiCategory = atiCategoryService.
+            AtiActCategory atiActCategory = atiActCategoryService.
                     selectById(Long.valueOf((String) startProcessVars.get("categoryId")));
-            if (null == atiCategory) {
+            if (null == atiActCategory) {
                 result.setState(ResponseResult.PARAMETER_ERROR);
                 result.setMessage("流程分类不存在！");
                 return result;
@@ -261,8 +296,9 @@ public class LeaveController extends BaseController {
             result.setMessage("流程定义不允许为空！");
             return result;
         }
+        String procInstId;
         try {
-            atiTaskService.startLeaveProcess(startProcessVars);
+            procInstId = atiTaskService.startLeaveProcess(startProcessVars);
         } catch (Exception e) {
             e.printStackTrace();
             result.setState(ResponseResult.STATE_ERROR);
@@ -270,6 +306,7 @@ public class LeaveController extends BaseController {
             return result;
         }
 
+        result.setData(procInstId);
         result.setState(ResponseResult.STATE_OK);
         result.setMessage("请假流程已启动！");
         return result;
@@ -308,18 +345,20 @@ public class LeaveController extends BaseController {
     }
 
     /**
-     * 处理 请假流程
+     * 签收
      *
-     * @param taskId    待办任务标识
-     * @param procInsId 流程实例标识
-     * @param comment   任务处理意见
-     * @param user      处理人
-     * @param flag      是否同意，1：同意，0：不同意
+     * @param taskId     待办任务标识
+     * @param assignName 处理人
      * @return
      */
-    @RequestMapping(value = "/completeProcess", method = RequestMethod.POST)
-    public ResponseResult<Void> completeLeaveProcess(String taskId, String user, String procInsId, String comment, String flag) {
+    @RequestMapping(value = "/claim", method = RequestMethod.POST)
+    public ResponseResult<Void> claim(String taskId, String assignName) {
         ResponseResult<Void> result = new ResponseResult<>();
+        if (StringUtils.isEmpty(taskId)) {
+            result.setState(ResponseResult.PARAMETER_ERROR);
+            result.setMessage("任务标识不允许为空！");
+            return result;
+        }
         Task currentTask;
         try {
             currentTask = taskService.createTaskQuery().taskId(taskId).singleResult();
@@ -334,10 +373,65 @@ public class LeaveController extends BaseController {
             result.setMessage("任务不存在或已处理完毕！");
             return result;
         }
+        if (StringUtils.isEmpty(assignName)) {
+            result.setState(ResponseResult.PARAMETER_ERROR);
+            result.setMessage("签收人不允许为空！");
+            return result;
+        }
+        Map<String, Object> map = atiTaskService.getCurrentTaskAssignNames(currentTask.getProcessInstanceId());
+        boolean isAssignee = false;
+        if (null != map) {
+            List<String> names = (List<String>) map.get("names");
+            if (null != names && names.size() > 0) {
+                for (String name : names) {
+                    if (assignName.equals(name)) {
+                        isAssignee = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (!isAssignee) {
+            result.setState(ResponseResult.PARAMETER_ERROR);
+            result.setMessage(assignName + "不允许签收当前任务！");
+            return result;
+        }
+        // 任务签收
+        try {
+            atiTaskService.claim(taskId, assignName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(ResponseResult.STATE_ERROR);
+            result.setMessage("执行失败！");
+            return result;
+        }
+
+        result.setState(ResponseResult.STATE_OK);
+        result.setMessage("任务已签收！");
+        return result;
+    }
+
+    /**
+     * 处理 请假流程
+     *
+     * @param taskId     待办任务
+     * @param procInstId 流程实例标识
+     * @param comment    任务处理意见
+     * @param flag       是否同意，1：同意，0：不同意
+     * @return
+     */
+    @RequestMapping(value = "/completeProcess", method = RequestMethod.POST)
+    public ResponseResult<Void> completeLeaveProcess(String taskId, String procInstId, String comment, String flag) {
+        ResponseResult<Void> result = new ResponseResult<>();
+        if (StringUtils.isEmpty(taskId)) {
+            result.setState(ResponseResult.PARAMETER_ERROR);
+            result.setMessage("任务标识不允许为空！");
+            return result;
+        }
         ProcessInstance processInstance;
         try {
             processInstance = runtimeService.createProcessInstanceQuery().
-                    processInstanceId(procInsId).active().singleResult();
+                    processInstanceId(procInstId).active().singleResult();
         } catch (Exception e) {
             e.printStackTrace();
             result.setState(ResponseResult.PARAMETER_ERROR);
@@ -349,54 +443,22 @@ public class LeaveController extends BaseController {
             result.setMessage("流程实例不存在！");
             return result;
         }
-        if (StringUtils.isEmpty(user)) {
-            result.setState(ResponseResult.PARAMETER_ERROR);
-            result.setMessage("签收人不允许为空！");
-            return result;
-        }
-        Map<String, Object> map = atiTaskService.getCurrentTaskAssignNames(procInsId);
-        boolean isAssignee = false;
-        if (null != map) {
-            List<String> names = (List<String>) map.get("names");
-            if (null != names && names.size() > 0) {
-                for (String name : names) {
-                    if (user.equals(name)) {
-                        isAssignee = true;
-                        break;
-                    }
-                }
-            }
-        }
-        if (!isAssignee) {
-            result.setState(ResponseResult.PARAMETER_ERROR);
-            result.setMessage(user + "不允许签收当前任务！");
-            return result;
-        }
-        Task task = taskService.createTaskQuery().processInstanceId(procInsId).active().singleResult();
-        if (null != task && !task.getId().equals(currentTask.getId())) {
-            result.setState(ResponseResult.PARAMETER_ERROR);
-            result.setMessage("参数无效！");
-            return result;
-        }
         if (!"0".equals(flag) && !"1".equals(flag)) {
             result.setState(ResponseResult.PARAMETER_ERROR);
             result.setMessage("参数无效！");
             return result;
         }
-        // 任务签收
-        try {
-            atiTaskService.claim(taskId, user);
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.setState(ResponseResult.STATE_ERROR);
-            result.setMessage("执行失败！");
+        Task currentTask = taskService.createTaskQuery().processInstanceId(procInstId).active().singleResult();
+        if (!currentTask.getId().equals(taskId)) {
+            result.setState(ResponseResult.PARAMETER_ERROR);
+            result.setMessage("参数无效！");
             return result;
         }
         // 任务处理
         Map<String, Object> vars = new HashMap<>();
         vars.put("pass", flag);
         try {
-            atiTaskService.completeLeaveProcess(taskId, procInsId, comment, vars);
+            atiTaskService.completeLeaveProcess(taskId, procInstId, comment, vars);
         } catch (Exception e) {
             e.printStackTrace();
             result.setState(ResponseResult.STATE_ERROR);
@@ -423,13 +485,7 @@ public class LeaveController extends BaseController {
             result.setMessage("流程实例ID不允许为空！");
             return result;
         }
-        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().
-                processInstanceId(procInstId).singleResult();
-        if (null == processInstance) {
-            result.setState(ResponseResult.PARAMETER_ERROR);
-            result.setMessage("流程实例不存在！");
-            return result;
-        }
+
         List<HistoricFlow> historicFlowList;
         try {
             historicFlowList = atiTaskService.histoicFlowList(procInstId);
@@ -456,12 +512,12 @@ public class LeaveController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/taskHistoric", method = RequestMethod.GET)
-    public ResponseResult<List<HistoricTaskVo>> getHistoricTasks(String assignName, String categoryId, String startTime, String endTime) {
+    public ResponseResult<List<HistoricTaskVo>> getHistoricTasks(String assignName, String categoryId, String isOnApproval, String startTime, String endTime) {
         ResponseResult<List<HistoricTaskVo>> result = new ResponseResult<>();
         if (StringUtils.isNotEmpty(categoryId)) {
-            AtiCategory atiCategory;
+            AtiActCategory atiCategory;
             try {
-                atiCategory = atiCategoryService.selectById(Long.valueOf(categoryId));
+                atiCategory = atiActCategoryService.selectById(Long.valueOf(categoryId));
             } catch (Exception e) {
                 e.printStackTrace();
                 result.setState(ResponseResult.PARAMETER_ERROR);
@@ -473,6 +529,11 @@ public class LeaveController extends BaseController {
                 result.setMessage("流程分类不存在！");
                 return result;
             }
+        }
+        if (StringUtils.isNotEmpty(isOnApproval) && !"0".equals(isOnApproval) && !"1".equals(isOnApproval)) {
+            result.setState(ResponseResult.PARAMETER_ERROR);
+            result.setMessage("参数无效！");
+            return result;
         }
         Date startDate;
         try {
@@ -499,7 +560,7 @@ public class LeaveController extends BaseController {
         }
         List<HistoricTaskVo> historicFlowList;
         try {
-            historicFlowList = atiTaskService.getHistToricTaskList(assignName, categoryId, startTime, endTime);
+            historicFlowList = atiTaskService.getHistToricTaskList(assignName, categoryId, isOnApproval, startTime, endTime);
         } catch (Exception e) {
             e.printStackTrace();
             result.setState(ResponseResult.STATE_ERROR);
@@ -652,7 +713,7 @@ public class LeaveController extends BaseController {
             return result;
         }
         Long categoryId = atiDelegateInfo.getAtiCategoryId();
-        AtiCategory category = atiCategoryService.selectById(categoryId);
+        AtiActCategory category = atiActCategoryService.selectById(categoryId);
         if (null == category) {
             result.setState(ResponseResult.PARAMETER_ERROR);
             result.setMessage("流程分类不存在！");
@@ -698,6 +759,7 @@ public class LeaveController extends BaseController {
 
     /**
      * 任务委托信息列表
+     *
      * @param assignee 原任务办理人
      * @return
      */
@@ -813,6 +875,42 @@ public class LeaveController extends BaseController {
 
         result.setState(ResponseResult.STATE_OK);
         result.setMessage("执行成功！");
+        return result;
+    }
+
+    /**
+     * 当前环节任务与候选人
+     *
+     * @param procInstId 流程实例标识
+     * @return
+     */
+    @RequestMapping(value = "/currentTaskAssignNames", method = RequestMethod.GET)
+    public ResponseResult<Map<String, Object>> getCurrentTaskAssignNames(String procInstId) {
+        ResponseResult<Map<String, Object>> result = new ResponseResult<>();
+        if (StringUtils.isEmpty(procInstId)) {
+            result.setState(ResponseResult.PARAMETER_ERROR);
+            result.setMessage("流程实例ID不允许为空！");
+            return result;
+        }
+        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().
+                processInstanceId(procInstId).active().singleResult();
+        if (null == processInstance) {
+            result.setState(ResponseResult.PARAMETER_ERROR);
+            result.setMessage("流程实例不存在！");
+            return result;
+        }
+        Map<String, Object> map;
+        try {
+            map = atiTaskService.getCurrentTaskAssignNames(procInstId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(ResponseResult.STATE_ERROR);
+            result.setMessage("执行失败！");
+            return result;
+        }
+        result.setData(map);
+        result.setState(ResponseResult.STATE_OK);
+        result.setMessage("获取当前任务与候选人成功！");
         return result;
     }
 

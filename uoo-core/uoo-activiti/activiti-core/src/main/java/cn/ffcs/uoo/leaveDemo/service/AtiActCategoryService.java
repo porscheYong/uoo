@@ -1,6 +1,6 @@
 package cn.ffcs.uoo.leaveDemo.service;
 
-import cn.ffcs.uoo.leaveDemo.entity.AtiCategory;
+import cn.ffcs.uoo.leaveDemo.entity.AtiActCategory;
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.service.IService;
  * @author zhanglu
  * @since 2018-09-27
  */
-public interface AtiCategoryService extends IService<AtiCategory> {
+public interface AtiActCategoryService extends IService<AtiActCategory> {
 
 }

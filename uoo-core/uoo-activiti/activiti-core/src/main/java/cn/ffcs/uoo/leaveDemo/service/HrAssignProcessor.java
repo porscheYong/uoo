@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.leaveDemo.service;
 
 import cn.ffcs.uoo.leaveDemo.constant.ApprovalConstant;
+import cn.ffcs.uoo.ueccUser.entity.AtiUser;
+import cn.ffcs.uoo.ueccUser.service.AtiUserService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 第二审批人监听器
  * Created by liuxiaodong on 2018/9/20.
  */
 @Service
@@ -23,6 +26,8 @@ public class HrAssignProcessor extends OaBaseTaskListenerService implements Task
     private RuntimeService runtimeService;
     @Resource
     private TaskService taskService;
+    @Resource
+    private AtiUserService atiUserService;
 
     @Override
     public void notify(DelegateTask delegateTask) {
@@ -31,7 +36,11 @@ public class HrAssignProcessor extends OaBaseTaskListenerService implements Task
 
         // 本环节任务候选人
         List<String> originalCandidates = new ArrayList<>();
-        originalCandidates.add("wangwu");
+        String applyUserName = (String) delegateTask.getVariable("applyUserId");
+        List<AtiUser> atiUsers = atiUserService.getHrUsersByNo(applyUserName);
+        for (AtiUser atiUser : atiUsers) {
+            originalCandidates.add(atiUser.getNo());
+        }
         taskService.setVariable(delegateTask.getId(), ApprovalConstant.TASK_DEF_KEYS[3], originalCandidates);
 
         //分配候选人之前先查看是否有任务改派

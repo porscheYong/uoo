@@ -3,6 +3,7 @@ package cn.ffcs.uoo.leaveDemo.vo;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 历史任务对象
@@ -13,8 +14,6 @@ public class HistoricTaskVo implements Serializable {
     private static final long serialVersionUID = 6175246883737961306L;
 
     private String procDefName;
-
-    private Long atiCategoryId;
 
     private String processInstanceId;
 
@@ -36,20 +35,16 @@ public class HistoricTaskVo implements Serializable {
 
     private String assignee;
 
+    private Map<String, Object> procVars;
+
+    private Map<String, Object> taskVars;
+
     public String getProcDefName() {
         return procDefName;
     }
 
     public void setProcDefName(String procDefName) {
         this.procDefName = procDefName;
-    }
-
-    public Long getAtiCategoryId() {
-        return atiCategoryId;
-    }
-
-    public void setAtiCategoryId(Long atiCategoryId) {
-        this.atiCategoryId = atiCategoryId;
     }
 
     public String getProcessInstanceId() {
@@ -114,5 +109,21 @@ public class HistoricTaskVo implements Serializable {
 
     public void setAssignee(String assignee) {
         this.assignee = assignee;
+    }
+
+    public Map<String, Object> getProcVars() {
+        return procVars;
+    }
+
+    public void setProcVars(Map<String, Object> procVars) {
+        this.procVars = procVars;
+    }
+
+    public Map<String, Object> getTaskVars() {
+        return taskVars;
+    }
+
+    public void setTaskVars(Map<String, Object> taskVars) {
+        this.taskVars = taskVars;
     }
 }

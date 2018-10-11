@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.ffcs.uoo.leaveDemo.dao.AtiCategoryMapper">
+<mapper namespace="cn.ffcs.uoo.leaveDemo.dao.AtiActCategoryMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.leaveDemo.entity.AtiCategory">
-        <id column="ATI_CATEGORY_ID" property="atiCategoryId" />
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.leaveDemo.entity.AtiActCategory">
+        <id column="ATI_ACT_CATEGORY_ID" property="atiActCategoryId" />
         <result column="PARENT_CATEGORY_ID" property="parentCategoryId" />
         <result column="CATEGORY_CODE" property="categoryCode" />
-        <result column="CATEGORY_NAME" property="categoryName" />
+        <result column="NAME" property="name" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ATI_CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_CODE, CATEGORY_NAME
+        ATI_ACT_CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_CODE, NAME
     </sql>
 
 </mapper>

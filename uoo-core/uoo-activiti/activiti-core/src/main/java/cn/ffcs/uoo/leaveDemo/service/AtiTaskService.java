@@ -4,9 +4,11 @@ package cn.ffcs.uoo.leaveDemo.service;
 import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.leaveDemo.constant.ApprovalConstant;
+import cn.ffcs.uoo.leaveDemo.entity.AtiSpecificForm;
 import cn.ffcs.uoo.leaveDemo.vo.HistoricFlow;
 import cn.ffcs.uoo.leaveDemo.vo.HistoricTaskVo;
 import cn.ffcs.uoo.leaveDemo.vo.TaskVo;
+import cn.ffcs.uoo.leaveDemo.vo.UeccVo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.activiti.engine.*;
@@ -19,6 +21,7 @@ import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
@@ -43,30 +46,50 @@ public class AtiTaskService {
     @Resource
     private RepositoryService repositoryService;
 
+    @Resource
+    private UeccService ueccService;
+    @Resource
+    private AtiBaseFormService atiBaseFormService;
+    @Resource
+    private AtiSpecificFormService atiSpecificFormService;
+
     /**
      * 启动请假流程
+     *
      * @param startProcessVars 启动流程需要的变量
      */
-    public void startLeaveProcess(Map<String, Object> startProcessVars) {
+    @Transactional
+    public String startLeaveProcess(Map<String, Object> startProcessVars) {
         //  引擎自动把createUser保存到 activiti:initiator中
-        identityService.setAuthenticatedUserId((String) startProcessVars.get("applyUser"));
+        identityService.setAuthenticatedUserId((String) startProcessVars.get("formSender"));
 
-//        leaveService.addLeave(leave);
-//        leaveService.insert(leave);
         // 添加相关变量
         Map<String, Object> vars = new HashMap<>();
-        vars.put("applyUser", startProcessVars.get("applyUser"));
+        vars.put("formSender", startProcessVars.get("formSender"));
         vars.put("categoryId", startProcessVars.get("categoryId"));
         vars.put("procDefKey", startProcessVars.get("procDefKey"));
         vars.put("vars", startProcessVars.get("vars"));
+
+        // *持久化
+        UeccVo ueccVo = ueccService.getOneUeccVo(startProcessVars);
+        atiBaseFormService.addAtiBaseForm(ueccVo);
+        List<AtiSpecificForm> specificForms = ueccService.getSpecificForms(ueccVo);
+        for (AtiSpecificForm atiSpecificForm : specificForms) {
+            atiSpecificFormService.insert(atiSpecificForm);
+        }
+
         // 启动流程
         ProcessInstance processInstance = runtimeService.
-                startProcessInstanceByKey((String) startProcessVars.get("procDefKey"), "oa_leave", vars);
+                startProcessInstanceByKey((String) startProcessVars.get("procDefKey"), "ati_base_form", vars);
+
+        // 更新流程实例id
+        atiBaseFormService.updateProcInstIdByBaseFormId(processInstance.getId(), ueccVo.getAtiBaseFormId());
 
         Task currentTask = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
-        claim(currentTask.getId(), (String) startProcessVars.get("applyUser"));
+        claim(currentTask.getId(), (String) startProcessVars.get("formSender"));
         completeLeaveProcess(currentTask.getId(), processInstance.getId(), null, null);
 
+        return processInstance.getId();
 
     }
 
@@ -117,10 +140,10 @@ public class AtiTaskService {
     /**
      * 处理任务
      *
-     * @param taskId 任务标识
+     * @param taskId    任务标识
      * @param procInsId 流程实例标识
-     * @param comment 处理意见
-     * @param vars 处理意见标识变量
+     * @param comment   处理意见
+     * @param vars      处理意见标识变量
      */
     public void completeLeaveProcess(String taskId, String procInsId, String comment, Map<String, Object> vars) {
 
@@ -145,21 +168,27 @@ public class AtiTaskService {
      *
      * @param assignName 任务办理人
      * @param categoryId 流程分类标识
-     * @param startTime 任务接收时间
-     * @param endTime 任务处理时间
+     * @param startTime  任务接收时间
+     * @param endTime    任务处理时间
      * @return
      */
-    public List<HistoricTaskVo> getHistToricTaskList(String assignName, String categoryId, String startTime, String endTime) {
+    public List<HistoricTaskVo> getHistToricTaskList(String assignName, String categoryId, String isOnApproval, String startTime, String endTime) {
         List<HistoricTaskVo> historicTasks = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         HistoricTaskInstanceQuery histTaskQuery = historyService.createHistoricTaskInstanceQuery()
-                .taskAssignee(assignName).finished().includeProcessVariables()
-                .orderByHistoricTaskInstanceEndTime().desc();
+                .taskAssignee(assignName).includeProcessVariables().orderByHistoricTaskInstanceEndTime().desc();
 
+        if (StringUtils.isEmpty(startTime)) {
+            startTime = "1000-01-01";
+        }
+        if (StringUtils.isEmpty(endTime)) {
+            endTime = "9999-12-31";
+        }
         try {
-            if (null == categoryId || categoryId.isEmpty()) {
-                if ((null == startTime || startTime.isEmpty()) && (null == endTime || endTime.isEmpty())) {
-                    List<HistoricTaskInstance> histList = histTaskQuery.list();
+            if (StringUtils.isEmpty(categoryId)) {
+                if (StringUtils.isEmpty(isOnApproval)) {
+                    List<HistoricTaskInstance> histList = histTaskQuery.taskCompletedAfter(sdf.parse(startTime)).
+                            taskCompletedBefore(sdf.parse(endTime)).list();
                     if (null == histList || histList.size() == 0) {
                         return null;
                     }
@@ -168,33 +197,20 @@ public class AtiTaskService {
                         historicTasks.add(historicTask);
                     }
                 }
-                if ((null == startTime || startTime.isEmpty()) && (null != endTime && !endTime.isEmpty())) {
-                    List<HistoricTaskInstance> histList = histTaskQuery.taskCompletedBefore(sdf.parse(endTime)).list();
+                if ("0".equals(isOnApproval)) {
+                    List<HistoricTaskInstance> histList = histTaskQuery.taskCompletedAfter(sdf.parse(startTime)).
+                            taskCompletedBefore(sdf.parse(endTime)).processUnfinished().list();
                     if (null == histList || histList.size() == 0) {
                         return null;
                     }
                     for (HistoricTaskInstance taskInstance : histList) {
-                        if (taskInstance.getEndTime().getTime() <= sdf.parse(endTime).getTime()) {
-                            HistoricTaskVo historicTask = setHistoricTask(taskInstance);
-                            historicTasks.add(historicTask);
-                        }
+                        HistoricTaskVo historicTask = setHistoricTask(taskInstance);
+                        historicTasks.add(historicTask);
                     }
                 }
-                if ((null != startTime && !startTime.isEmpty()) && (null == endTime || endTime.isEmpty())) {
-                    List<HistoricTaskInstance> histList = histTaskQuery.taskCompletedAfter(sdf.parse(startTime)).list();
-                    if (null == histList || histList.size() == 0) {
-                        return null;
-                    }
-                    for (HistoricTaskInstance taskInstance : histList) {
-                        if (taskInstance.getStartTime().getTime() >= sdf.parse(startTime).getTime()) {
-                            HistoricTaskVo historicTask = setHistoricTask(taskInstance);
-                            historicTasks.add(historicTask);
-                        }
-                    }
-                }
-                if ((null != startTime && !startTime.isEmpty()) && (null != endTime && !endTime.isEmpty())) {
-                    List<HistoricTaskInstance> histList = histTaskQuery.taskCompletedAfter(sdf.parse(startTime))
-                            .taskCompletedBefore(sdf.parse(endTime)).list();
+                if ("1".equals(isOnApproval)) {
+                    List<HistoricTaskInstance> histList = histTaskQuery.taskCompletedAfter(sdf.parse(startTime)).
+                            taskCompletedBefore(sdf.parse(endTime)).processFinished().list();
                     if (null == histList || histList.size() == 0) {
                         return null;
                     }
@@ -204,41 +220,10 @@ public class AtiTaskService {
                     }
                 }
             }
-            if (null != categoryId && !categoryId.isEmpty()) {
-                if ((null == startTime || startTime.isEmpty()) && (null == endTime || endTime.isEmpty())) {
-                    List<HistoricTaskInstance> histList = histTaskQuery.processVariableValueEquals("categoryId", Long.valueOf(categoryId)).list();
-                    if (null == histList || histList.size() == 0) {
-                        return null;
-                    }
-                    for (HistoricTaskInstance taskInstance : histList) {
-                        HistoricTaskVo historicTask = setHistoricTask(taskInstance);
-                        historicTasks.add(historicTask);
-                    }
-                }
-                if ((null == startTime || startTime.isEmpty()) && (null != endTime && !endTime.isEmpty())) {
-                    List<HistoricTaskInstance> histList = histTaskQuery.processVariableValueEquals("categoryId", Long.valueOf(categoryId))
-                            .taskCompletedBefore(sdf.parse(endTime)).list();
-                    if (null == histList || histList.size() == 0) {
-                        return null;
-                    }
-                    for (HistoricTaskInstance taskInstance : histList) {
-                        HistoricTaskVo historicTask = setHistoricTask(taskInstance);
-                        historicTasks.add(historicTask);
-                    }
-                }
-                if ((null != startTime && !startTime.isEmpty()) && (null == endTime || endTime.isEmpty())) {
-                    List<HistoricTaskInstance> histList = histTaskQuery.processVariableValueEquals("categoryId", Long.valueOf(categoryId))
-                            .taskCompletedAfter(sdf.parse(startTime)).list();
-                    if (null == histList || histList.size() == 0) {
-                        return null;
-                    }
-                    for (HistoricTaskInstance taskInstance : histList) {
-                        HistoricTaskVo historicTask = setHistoricTask(taskInstance);
-                        historicTasks.add(historicTask);
-                    }
-                }
-                if ((null != startTime && !startTime.isEmpty()) && (null != endTime && !endTime.isEmpty())) {
-                    List<HistoricTaskInstance> histList = histTaskQuery.processVariableValueEquals("categoryId", categoryId)
+            if (StringUtils.isNotEmpty(categoryId)) {
+                if (StringUtils.isEmpty(isOnApproval)) {
+                    List<HistoricTaskInstance> histList = histTaskQuery
+                            .processVariableValueEquals("categoryId", categoryId)
                             .taskCompletedAfter(sdf.parse(startTime)).taskCompletedBefore(sdf.parse(endTime)).list();
                     if (null == histList || histList.size() == 0) {
                         return null;
@@ -248,6 +233,31 @@ public class AtiTaskService {
                         historicTasks.add(historicTask);
                     }
                 }
+                if ("0".equals(isOnApproval)) {
+                    List<HistoricTaskInstance> histList = histTaskQuery
+                            .processVariableValueEquals("categoryId", categoryId)
+                            .taskCompletedAfter(sdf.parse(startTime)).taskCompletedBefore(sdf.parse(endTime)).processUnfinished().list();
+                    if (null == histList || histList.size() == 0) {
+                        return null;
+                    }
+                    for (HistoricTaskInstance taskInstance : histList) {
+                        HistoricTaskVo historicTask = setHistoricTask(taskInstance);
+                        historicTasks.add(historicTask);
+                    }
+                }
+                if ("1".equals(isOnApproval)) {
+                    List<HistoricTaskInstance> histList = histTaskQuery
+                            .processVariableValueEquals("categoryId", categoryId)
+                            .taskCompletedAfter(sdf.parse(startTime)).taskCompletedBefore(sdf.parse(endTime)).processFinished().list();
+                    if (null == histList || histList.size() == 0) {
+                        return null;
+                    }
+                    for (HistoricTaskInstance taskInstance : histList) {
+                        HistoricTaskVo historicTask = setHistoricTask(taskInstance);
+                        historicTasks.add(historicTask);
+                    }
+                }
+
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -315,12 +325,14 @@ public class AtiTaskService {
         historicTask.setStartTime(taskInstance.getStartTime());
         historicTask.setEndTime(taskInstance.getEndTime());
         historicTask.setName(taskInstance.getName());
-        // 在任务执行时添加category
-//        historicTask.setAtiCategoryId(Long.valueOf(taskInstance.getCategory()));
+        historicTask.setTaskVars(taskInstance.getTaskLocalVariables());
+        historicTask.setProcVars(taskInstance.getProcessVariables());
 
         List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().
                 processDefinitionId(taskInstance.getProcessDefinitionId()).list();
-        historicTask.setProcDefName(list.get(0).getName());
+        if (null != list && list.size() > 0) {
+            historicTask.setProcDefName(list.get(0).getName());
+        }
 
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(taskInstance.getProcessInstanceId()).singleResult();
         if (null != processInstance) {
@@ -336,6 +348,7 @@ public class AtiTaskService {
         TaskVo taskVo = new TaskVo();
         taskVo.setTaskId(task.getId());
         taskVo.setTaskName(task.getName());
+        taskVo.setProcDefKey(task.getProcessDefinitionId().split(":")[0]);
         taskVo.setTaskDefKey(task.getTaskDefinitionKey());
         taskVo.setProcDefId(task.getProcessDefinitionId());
         taskVo.setProcInsId(task.getProcessInstanceId());
@@ -347,6 +360,7 @@ public class AtiTaskService {
 
     /**
      * 获取当前流程任务和签收人
+     *
      * @param procInstId 流程实例标识
      * @return
      */
@@ -373,7 +387,7 @@ public class AtiTaskService {
         if (ApprovalConstant.TASK_DEF_KEYS[4].equals(currentTask.getTaskDefinitionKey())) {
             String applyUser = (String) runtimeService.getVariable(procInstId, "applyUserId");
             names.add(applyUser);
-            map.put("names",names);
+            map.put("names", names);
             return map;
         }
         // 其他用户环节，获取在监听器中设置的用户变量
