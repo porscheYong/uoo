@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.user.dao.TbAcctExtMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.user.entity.TbAcctExt">
+        <id column="ACCT_EXT_ID" property="acctExtId" />
+        <result column="PK_ACCT" property="pkAcct" />
+        <result column="NAME" property="name" />
+        <result column="CONTACT_WAY" property="contactWay" />
+        <result column="WORK_EMAIL" property="workEmail" />
+        <result column="CERT_TYPE" property="certType" />
+        <result column="CERT_NO" property="certNo" />
+        <result column="GENDER" property="gender" />
+        <result column="NATION" property="nation" />
+        <result column="NATIVE_PLACE" property="nativePlace" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ACCT_EXT_ID, PK_ACCT, NAME, CONTACT_WAY, WORK_EMAIL, CERT_TYPE, CERT_NO, GENDER, NATION, NATIVE_PLACE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+    <insert id="save" parameterType="cn.ffcs.uoo.core.user.entity.TbAcctExt">
+        <selectKey keyProperty="acctExtId" resultType="java.lang.Long" order="BEFORE">
+            SELECT SEQ_TB_ACCT_EXT_ID.NEXTVAL from dual
+        </selectKey>
+        insert into TB_ACCT_EXT
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ACCT_EXT_ID,
+            <if test="pkAcct != null">
+                PK_ACCT,
+            </if>
+            <if test="name != null">
+                NAME,
+            </if>
+            <if test="contactWay != null">
+                CONTACT_WAY,
+            </if>
+            <if test="workEmail != null">
+                WORK_EMAIL,
+            </if>
+            <if test="certType != null">
+                CERT_TYPE,
+            </if>
+            <if test="certNo != null">
+                CERT_NO,
+            </if>
+            <if test="gender != null">
+                GENDER,
+            </if>
+            <if test="nation != null">
+                NATION,
+            </if>
+            <if test="nativePlace != null">
+                NATIVE_PLACE,
+            </if>
+            <if test="statusCd != null">
+                STATUS_CD,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="createUser != null">
+                CREATE_USER,
+            </if>
+            <if test="updateDate != null">
+                UPDATE_DATE,
+            </if>
+            <if test="updateUser != null">
+                UPDATE_USER,
+            </if>
+            <if test="statusDate != null">
+                STATUS_DATE
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{acctExtId,jdbcType=DECIMAL},
+            <if test="pkAcct != null">
+                #{pkAcct,jdbcType=DECIMAL},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="contactWay != null">
+                #{contactWay,jdbcType=VARCHAR},
+            </if>
+            <if test="workEmail != null">
+                #{workEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="certType != null">
+                #{certType,jdbcType=VARCHAR},
+            </if>
+            <if test="certNo != null">
+                #{certNo,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=VARCHAR},
+            </if>
+            <if test="nation != null">
+                #{nation,jdbcType=VARCHAR},
+            </if>
+            <if test="nativePlace != null">
+                #{nativePlace,jdbcType=VARCHAR},
+            </if>
+            <if test="statusCd != null">
+                #{statusCd,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=DATE},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=DECIMAL},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=DATE},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=DECIMAL},
+            </if>
+            <if test="statusDate != null">
+                #{statusDate,jdbcType=DATE}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="delete" parameterType="cn.ffcs.uoo.core.user.entity.TbAcctExt">
+        UPDATE
+        TB_ACCT_EXT
+        SET
+        STATUS_CD = 1100
+        WHERE
+        ACCT_EXT_ID = #{acctExtId}
+    </update>
+</mapper>
