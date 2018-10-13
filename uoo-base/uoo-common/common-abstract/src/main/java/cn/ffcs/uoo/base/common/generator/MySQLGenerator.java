@@ -43,7 +43,7 @@ public class MySQLGenerator {
     /**文件路径
      *
      */
-    private static String packageName="leaveDemo";
+    private static String packageName="personnel";
 
     private static String preffix_packageName="cn.ffcs.uoo";
     /**作者
@@ -53,7 +53,7 @@ public class MySQLGenerator {
     /**table名字
      *
      */
-    private static String table="ati_delegate_info";
+    private static String table="tb_acct_ext";
     /**table前缀
      *
      */
@@ -99,17 +99,10 @@ public class MySQLGenerator {
                                 return super.processTypeConvert(fieldType);
                             }
                         })
-<<<<<<< HEAD
                         .setDriverName("com.mysql.jdbc.Driver")
                         .setUsername("root")
-                        .setPassword("ok")
-                        .setUrl("jdbc:mysql://115.193.60.15:3306/test?characterEncoding=utf8")
-=======
-                        .setDriverName("oracle.jdbc.driver.OracleDriver")
-                        .setUsername("octopus")
-                        .setPassword("octopus")
-                        .setUrl("jdbc:oracle:thin:@134.96.167.19:1521:uomdb1")
->>>>>>> gzb
+                        .setPassword("root")
+                        .setUrl("jdbc:mysql://127.0.0.1:3306/springboot?characterEncoding=utf8")
         ).setStrategy(
                 // 策略配置
                 new StrategyConfig()

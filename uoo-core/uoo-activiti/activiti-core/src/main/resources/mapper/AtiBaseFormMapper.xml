@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.ffcs.uoo.leaveDemo.dao.AtiBaseFormMapper">
+<mapper namespace="cn.ffcs.uoo.oa.dao.AtiBaseFormMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.leaveDemo.entity.AtiBaseForm">
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.oa.entity.AtiBaseForm">
         <id column="ATI_BASE_FORM_ID" property="atiBaseFormId" />
         <result column="FORM_SENDER" property="formSender" />
         <result column="FORM_THEME" property="formTheme" />
@@ -19,7 +19,7 @@
         ATI_BASE_FORM_ID, FORM_SENDER, FORM_THEME, FORM_CONTENT, PROC_DEF_ID, PROC_INST_ID, URGENT, "LEVEL"
     </sql>
 
-    <insert id="addAtiBaseForm" parameterType="cn.ffcs.uoo.leaveDemo.entity.AtiBaseForm">
+    <insert id="addAtiBaseForm" parameterType="cn.ffcs.uoo.oa.entity.AtiBaseForm">
         <selectKey keyProperty="atiBaseFormId" resultType="java.lang.Long" order="BEFORE">
             select ati_base_form_id_seq.nextval from dual
         </selectKey>
@@ -83,4 +83,13 @@
           proc_inst_id = #{procInstId}
         WHERE ati_base_form_id = #{atiBaseFormId}
     </update>
+
+    <select id="getBaseFormByProcInstId" resultType="cn.ffcs.uoo.oa.entity.AtiBaseForm">
+        SELECT
+          <include refid="Base_Column_List"/>
+        FROM
+          ati_base_form
+        WHERE
+        proc_inst_id = #{procInstId}
+    </select>
 </mapper>
