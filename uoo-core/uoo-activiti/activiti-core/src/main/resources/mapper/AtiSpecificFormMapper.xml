@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.oa.dao.AtiSpecificFormMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.oa.entity.AtiSpecificForm">
+        <id column="ATI_SPECIFIC_FORM_ID" property="atiSpecificFormId" />
+        <result column="ATI_BASE_FORM_ID" property="atiBaseFormId" />
+        <result column="ATI_ACT_CATEGORY_ID" property="atiActCategoryId" />
+        <result column="PARAMETER" property="parameter" />
+        <result column="PARAM_VALUE" property="paramValue" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ATI_SPECIFIC_FORM_ID, ATI_BASE_FORM_ID, ATI_ACT_CATEGORY_ID, PARAMETER, PARAM_VALUE
+    </sql>
+
+    <insert id="insert" parameterType="cn.ffcs.uoo.oa.entity.AtiSpecificForm">
+        insert into ATI_SPECIFIC_FORM (ATI_SPECIFIC_FORM_ID, ATI_BASE_FORM_ID,
+        ATI_ACT_CATEGORY_ID, PARAMETER, PARAM_VALUE
+        )
+        values (ATI_SPECIFIC_FORM_ID_SEQ.Nextval, #{atiBaseFormId,jdbcType=DECIMAL},
+        #{atiActCategoryId,jdbcType=DECIMAL}, #{parameter,jdbcType=VARCHAR}, #{paramValue,jdbcType=VARCHAR}
+        )
+    </insert>
+</mapper>

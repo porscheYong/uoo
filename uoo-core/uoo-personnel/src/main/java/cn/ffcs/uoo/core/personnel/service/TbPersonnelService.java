@@ -16,4 +16,8 @@ import com.baomidou.mybatisplus.plugins.Page;
  */
 public interface TbPersonnelService extends IService<TbPersonnel> {
     public Page<PersonnelRelationInfoVo> getPersonnelRelationInfo(TbPersonnelVo tbPersonnelVo);
+
+    public Long getId();
+
+    public void delete(TbPersonnel tbPersonnel);
 }

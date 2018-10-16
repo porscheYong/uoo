@@ -26,12 +26,12 @@ public class TbContact extends Model<TbContact> {
      * 联系方式标识
      */
     @TableId("CONTACT_ID")
-    private BigDecimal contactId;
+    private Long contactId;
     /**
      * 人员标识
      */
     @TableField("PERSONNEL_ID")
-    private BigDecimal personnelId;
+    private Long personnelId;
     /**
      * 联系类型 邮箱、手机等
      */
@@ -79,19 +79,19 @@ public class TbContact extends Model<TbContact> {
     private Date statusDate;
 
 
-    public BigDecimal getContactId() {
+    public Long getContactId() {
         return contactId;
     }
 
-    public void setContactId(BigDecimal contactId) {
+    public void setContactId(Long contactId) {
         this.contactId = contactId;
     }
 
-    public BigDecimal getPersonnelId() {
+    public Long getPersonnelId() {
         return personnelId;
     }
 
-    public void setPersonnelId(BigDecimal personnelId) {
+    public void setPersonnelId(Long personnelId) {
         this.personnelId = personnelId;
     }
 

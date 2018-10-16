@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.ueccUser.dao.AtiUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.ueccUser.entity.AtiUser">
+        <id column="ATI_USER_ID" property="atiUserId" />
+        <result column="NAME" property="name" />
+        <result column="IDENTITY_ID" property="identityId" />
+        <result column="PHONE" property="phone" />
+        <result column="MAIL" property="mail" />
+        <result column="NO" property="no" />
+        <result column="PASSWORD" property="password" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        u.ATI_USER_ID, u.NAME, u.IDENTITY_ID, u.PHONE, u.MAIL, u.NO, u.PASSWORD
+    </sql>
+
+    <select id="getDeptLeaderUsersByNo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ati_user u left join ati_user_role ur
+        on u.ati_user_id = ur.ati_user_id
+        left join ati_role r on ur.ati_role_id = r.ati_role_id
+        left join ati_user_org uo on uo.ati_user_id = u.ati_user_id
+        left join ati_org o on uo.ati_org_id = o.ati_org_id
+        where r.role_code='3000' and
+        o.ati_org_id in (
+        select g.ati_org_id
+        from ati_user u left join ati_user_org uo
+        on u.ati_user_id = uo.ati_user_id
+        left join ati_org  g on uo.ati_org_id = g.ati_org_id
+        where u.no= #{no})
+    </select>
+
+    <select id="getHrUsersByNo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ati_user u left join ati_user_role ur
+        on u.ati_user_id = ur.ati_user_id
+        left join ati_role r on ur.ati_role_id = r.ati_role_id
+        left join ati_user_org uo on uo.ati_user_id = u.ati_user_id
+        left join ati_org o on uo.ati_org_id = o.ati_org_id
+        where r.role_code='2000' and
+        o.ati_org_id in (
+        select g.ati_org_id
+        from ati_user u left join ati_user_org uo
+        on u.ati_user_id = uo.ati_user_id
+        left join ati_org  g on uo.ati_org_id = g.ati_org_id
+        where u.no= #{no})
+    </select>
+</mapper>

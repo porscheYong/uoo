@@ -26,12 +26,12 @@ public class TbCert extends Model<TbCert> {
      * 证件标识
      */
     @TableId("CERT_ID")
-    private BigDecimal certId;
+    private Long certId;
     /**
      * 人员标识
      */
     @TableField("PERSONNEL_ID")
-    private BigDecimal personnelId;
+    private Long personnelId;
     /**
      * 证件姓名
      */
@@ -104,19 +104,19 @@ public class TbCert extends Model<TbCert> {
     private Date statusDate;
 
 
-    public BigDecimal getCertId() {
+    public Long getCertId() {
         return certId;
     }
 
-    public void setCertId(BigDecimal certId) {
+    public void setCertId(Long certId) {
         this.certId = certId;
     }
 
-    public BigDecimal getPersonnelId() {
+    public Long getPersonnelId() {
         return personnelId;
     }
 
-    public void setPersonnelId(BigDecimal personnelId) {
+    public void setPersonnelId(Long personnelId) {
         this.personnelId = personnelId;
     }
 

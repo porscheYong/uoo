@@ -12,5 +12,7 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-09-14
  */
 public interface TbCertService extends IService<TbCert> {
+    public Long getId();
 
+    public void delete(TbCert tbCert);
 }

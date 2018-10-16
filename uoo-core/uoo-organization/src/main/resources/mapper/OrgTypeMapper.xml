@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.organization.dao.OrgTypeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.organization.entity.OrgType">
+        <id column="ORG_TYPE_ID" property="orgTypeId" />
+        <result column="ORG_TYPE_CODE" property="orgTypeCode" />
+        <result column="ORG_TYPE_NAME" property="orgTypeName" />
+        <result column="ORG_TYPE_DESC" property="orgTypeDesc" />
+        <result column="SUP_PK_ORG_TYPE" property="supPkOrgType" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ORG_TYPE_ID, ORG_TYPE_CODE, ORG_TYPE_NAME, ORG_TYPE_DESC, SUP_PK_ORG_TYPE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+</mapper>

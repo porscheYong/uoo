@@ -25,6 +25,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private UserMapper userMapper;
 
+
     public void testUserDemo(){
         System.out.println("------");
     }

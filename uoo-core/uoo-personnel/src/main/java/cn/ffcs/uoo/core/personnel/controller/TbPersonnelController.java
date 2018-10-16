@@ -84,8 +84,14 @@ public class TbPersonnelController extends BaseController {
     @UooLog(value = "新增人员信息",key = "addPersonnel")
     @RequestMapping(value = "",method = RequestMethod.POST)
     public void addPersonnel(@RequestBody TbPersonnel tbPersonnel, @RequestBody TbCert tbCert, @RequestBody TbContact tbContact) {
+        Long personnelId = tbPersonnelService.getId();
+        tbPersonnel.setPersonnelId(personnelId);
         tbPersonnelService.insert(tbPersonnel);
+        Long certId = tbCertService.getId();
+        tbCert.setCertId(certId);
         tbCertService.insert(tbCert);
+        Long contactId = tbContactService.getId();
+        tbContact.setContactId(contactId);
         tbContactService.insert(tbContact);
     }
 
@@ -111,18 +117,18 @@ public class TbPersonnelController extends BaseController {
     @UooLog(value = "删除人员信息",key = "deletePersonnel")
     @RequestMapping(value="",method = RequestMethod.DELETE)
     public void deletePersonnel(@RequestBody TbPersonnel tbPersonnel) {
-        tbPersonnelService.deleteById(tbPersonnel.getPersonnelId());
+        tbPersonnelService.delete(tbPersonnel);
         // 根据personnelId查询tbContact
         Wrapper contactWrapper = Condition.create().eq("PERSONNEL_ID",tbPersonnel.getPersonnelId());
         TbContact tbContact = tbContactService.selectOne(contactWrapper);
         // 根据id删除tbContact
-        tbContactService.deleteById(tbContact.getContactId());
+        tbContactService.delete(tbContact);
 
         // 根据personnelId查询tbCert
         Wrapper certWrapper = Condition.create().eq("PERSONNEL_ID",tbPersonnel.getPersonnelId());
         TbCert tbCert = tbCertService.selectOne(certWrapper);
         // 根据id删除tbCert
-        tbCertService.deleteById(tbCert.getCertId());
+        tbCertService.delete(tbCert);
     }
 
     @UooLog(value = "测试条件查询", key = "testPersonnel")

@@ -22,4 +22,16 @@
         CONTACT_ID, PERSONNEL_ID, CONTACT_TYPE, CONTENT, UUID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
+    <select id="getId" resultType="java.lang.Long">
+        SELECT seq_tb_contact_id.nextval FROM dual
+    </select>
+
+    <update id="delete" parameterType="cn.ffcs.uoo.core.personnel.entity.TbContact">
+        UPDATE
+        TB_CONTACT
+        SET
+        STATUS_CD = 1100
+        WHERE
+        CONTACT_ID = #{contactId}
+    </update>
 </mapper>

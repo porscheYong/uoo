@@ -34,6 +34,7 @@ public class TbCertController extends BaseController {
     @UooLog(value = "新增证件信息", key = "addCert")
     @RequestMapping(value = "", method = RequestMethod.POST)
     public void addCert(TbCert tbCert) {
+        tbCert.setCertId(tbCertService.getId());
         tbCertService.insert(tbCert);
     }
 
@@ -50,7 +51,7 @@ public class TbCertController extends BaseController {
     @UooLog(value = "删除证件信息", key = "delCert")
     @RequestMapping(value="", method = RequestMethod.DELETE)
     public void delCert(TbCert tbCert) {
-        tbCertService.deleteById(tbCert.getCertId());
+        tbCertService.delete(tbCert);
     }
 }
 
