@@ -1,0 +1,16 @@
+.Contents {
+	padding: 10px;
+	}
+.Panel {
+	background: #FFF;
+	border-radius: 4px;
+	box-shadow: 0 2px 2px rgba(0,0,0,.1);
+	float: left;
+	width: 100%;
+	}
+.LightGrayBg {
+	background: #F6F7F8
+	}
+h3 {
+	
+	}
