@@ -13,7 +13,7 @@
         <result column="ISSUING" property="issuing" />
         <result column="UUID" property="uuid" />
         <result column="IS_REAL" property="isReal" />
-        <result column="RESOURCE" property="resource" />
+        <result column="SOURCE" property="source" />
         <result column="STATUS_CD" property="statusCd" />
         <result column="CREATE_DATE" property="createDate" />
         <result column="CREATE_USER" property="createUser" />
@@ -28,7 +28,17 @@
     </sql>
 
     <select id="getId" resultType="java.lang.Long">
-        SELECT seq_tb_personnel_id.nextval FROM dual
+        SELECT seq_tb_cert_id.nextval FROM dual
+    </select>
+
+    <select id="getTbCertByPersonnelId" resultType="cn.ffcs.uoo.core.personnel.entity.TbCert">
+        SELECT * FROM tb_cert t
+        <where>
+            t.status_cd = 1000
+            <if test="personnelId != null and personnelId != '' ">
+                 and t.personnel_id = #{personnelId}
+            </if>
+        </where>
     </select>
 
     <update id="delete" parameterType="cn.ffcs.uoo.core.personnel.entity.TbCert">

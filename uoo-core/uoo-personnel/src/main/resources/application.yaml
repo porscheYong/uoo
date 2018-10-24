@@ -3,26 +3,24 @@ spring:
     name: personnel-service
   datasource:
     druid:
-<<<<<<< HEAD
-      url: jdbc:oracle:thin:@134.64.14.90:1521:ahorgmng
+      url: jdbc:oracle:thin:@134.129.68.156:1521:fjtpdb
       driver-class-name:  oracle.jdbc.OracleDriver
-      username: uom
-      password: uom12345
+      username: uoo137
+      password: uoo137
 #      url: jdbc:mysql://127.0.0.1:3306/springboot?characterEncoding=utf8&useSSL=false
 #      driver-class-name:  com.mysql.jdbc.Driver
 #      username: root
 #      password: 123456
-=======
+#=======
 #      url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
 #      driver-class-name:  oracle.jdbc.OracleDriver
 #      username: uom
 #      password: uom
 
-      url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
-      username: octopus
-      password: octopus
+#      url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
+#     username: octopus
+#     password: octopus
 
->>>>>>> gzb
       initial-size: 10
       min-idle: 4
       max-active: 30

@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.personnel.service.impl;
 import cn.ffcs.uoo.core.personnel.dao.TbPersonnelMapper;
 import cn.ffcs.uoo.core.personnel.entity.TbPersonnel;
 import cn.ffcs.uoo.core.personnel.service.TbPersonnelService;
+import cn.ffcs.uoo.core.personnel.vo.PersonnelOrgVo;
 import cn.ffcs.uoo.core.personnel.vo.PersonnelRelationInfoVo;
 import cn.ffcs.uoo.core.personnel.vo.TbPersonnelVo;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -39,4 +40,19 @@ public class TbPersonnelServiceImpl extends ServiceImpl<TbPersonnelMapper, TbPer
     public void delete(TbPersonnel tbPersonnel) {
         baseMapper.delete(tbPersonnel);
     }
+
+    @Override
+    public Page<PersonnelOrgVo> getPersonnelOrg(TbPersonnelVo tbPersonnelVo){
+        List<PersonnelOrgVo> list = baseMapper.getPersonnelOrg(tbPersonnelVo);
+        int pageSize = tbPersonnelVo.getPageSize() == 0 ? 12 : tbPersonnelVo.getPageSize();
+        Page<PersonnelOrgVo> page = new Page<PersonnelOrgVo>(tbPersonnelVo.getPageNo(),pageSize);
+        page.setRecords(list);
+        return page;
+    }
+
+    @Override
+    public Long getPsnNbrId(){ return baseMapper.getPsnNbrId();}
+
+    @Override
+    public Long getPsnCodeId(){ return baseMapper.getPsnCodeId();}
 }

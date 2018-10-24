@@ -15,4 +15,11 @@ public interface TbCertService extends IService<TbCert> {
     public Long getId();
 
     public void delete(TbCert tbCert);
+
+    /**
+     *  根据人员标识 获取证件信息
+     * @param personnelId
+     * @return
+     */
+    public TbCert getTbCertByPersonnelId(Integer personnelId);
 }

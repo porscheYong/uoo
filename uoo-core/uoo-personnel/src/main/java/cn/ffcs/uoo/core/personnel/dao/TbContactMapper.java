@@ -14,7 +14,9 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @MyBatisDao
 public interface TbContactMapper extends BaseMapper<TbContact> {
+
     public Long getId();
 
     public void delete(TbContact tbContact);
+
 }
