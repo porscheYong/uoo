@@ -6,6 +6,7 @@ import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.dictionary.entity.TbDictionaryItem;
 import cn.ffcs.uoo.core.dictionary.service.TbDictionaryItemService;
 import cn.ffcs.uoo.core.dictionary.vo.ResponseResult;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -24,6 +25,7 @@ import java.util.List;
  * @author zhanglu
  * @since 2018-10-22
  */
+@Api(description = "字典项目",value = "DictionaryItem")
 @RestController
 @RequestMapping("/tbDictionaryItem")
 public class TbDictionaryItemController extends BaseController {
@@ -39,7 +41,7 @@ public class TbDictionaryItemController extends BaseController {
         tbDictionaryItemService.updateById(tbDictionaryItem);
 
         responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("成功");
+        responseResult.setMessage("修改成功");
         return responseResult;
     }
 
