@@ -41,7 +41,7 @@ public class OracleGeneratorPublic {
     /**文件路径
      *
      */
-    private static String packageName="dictionary";
+    private static String packageName="expando";
 
     private static String localhostUrl="C:\\dev_code\\uoo\\uoo-core\\uoo-public";
 
@@ -53,7 +53,7 @@ public class OracleGeneratorPublic {
     /**table名字
      *
      */
-    private static String table="tb_dictionary_item";
+    private static String table="tb_expandorow";
     /**table前缀
      *
      */
