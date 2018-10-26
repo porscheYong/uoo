@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.expando.dao.TbSystemtableMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.expando.entity.TbSystemtable">
+        <id column="TABLE_ID" property="tableId" />
+        <result column="RESOURCE_ID" property="resourceId" />
+        <result column="TABLE_NAME" property="tableName" />
+        <result column="TABLE_DESC" property="tableDesc" />
+        <result column="VER_NUM" property="verNum" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        TABLE_ID, RESOURCE_ID, TABLE_NAME, TABLE_DESC, VER_NUM, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+    <insert id="save" parameterType="cn.ffcs.uoo.core.expando.entity.TbSystemtable">
+        <selectKey keyProperty="tableId" resultType="java.lang.Long" order="BEFORE">
+            SELECT SEQ_TABLE_ID.NEXTVAL FROM dual
+        </selectKey>
+        insert into TB_SYSTEMTABLE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                TABLE_ID,
+            <if test="resourceId != null">
+                RESOURCE_ID,
+            </if>
+            <if test="tableName != null">
+                TABLE_NAME,
+            </if>
+            <if test="tableDesc != null">
+                TABLE_DESC,
+            </if>
+            <if test="verNum != null">
+                VER_NUM,
+            </if>
+            <if test="statusCd != null">
+                STATUS_CD,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="createUser != null">
+                CREATE_USER,
+            </if>
+            <if test="updateDate != null">
+                UPDATE_DATE,
+            </if>
+            <if test="updateUser != null">
+                UPDATE_USER,
+            </if>
+            <if test="statusDate != null">
+                STATUS_DATE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                #{tableId,jdbcType=DECIMAL},
+            <if test="resourceId != null">
+                #{resourceId,jdbcType=VARCHAR},
+            </if>
+            <if test="tableName != null">
+                #{tableName,jdbcType=VARCHAR},
+            </if>
+            <if test="tableDesc != null">
+                #{tableDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="verNum != null">
+                #{verNum,jdbcType=DECIMAL},
+            </if>
+            <if test="statusCd != null">
+                #{statusCd,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=DATE},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=DECIMAL},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=DATE},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=DECIMAL},
+            </if>
+            <if test="statusDate != null">
+                #{statusDate,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="remove" parameterType="cn.ffcs.uoo.core.expando.entity.TbSystemtable">
+        UPDATE TB_SYSTEMTABLE
+        SET STATUS_CD = #{statusCd}, UPDATE_DATE = #{updateDate}, UPDATE_USER = #{updateUser}, STATUS_DATE = #{statusDate}
+        WHERE TABLE_ID = #{tableId}
+    </update>
+
+</mapper>
