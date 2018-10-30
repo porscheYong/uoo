@@ -7,6 +7,8 @@ import cn.ffcs.uoo.core.expando.service.TbExpandovalueService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 扩展值 服务实现类
@@ -33,5 +35,10 @@ public class TbExpandovalueServiceImpl extends ServiceImpl<TbExpandovalueMapper,
         tbExpandovalue.setUpdateUser(updateUser);
         tbExpandovalue.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
         baseMapper.remove(tbExpandovalue);
+    }
+
+    @Override
+    public List<TbExpandovalue> selectValueList(TbExpandovalue tbExpandovalue) {
+        return baseMapper.selectValueList(tbExpandovalue);
     }
 }

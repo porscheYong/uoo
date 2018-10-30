@@ -2,8 +2,9 @@ package cn.ffcs.uoo.core.expando.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
-import cn.ffcs.uoo.core.dictionary.vo.ResponseResult;
+import cn.ffcs.uoo.core.vo.ResponseResult;
 import cn.ffcs.uoo.core.expando.entity.TbExpandocolumn;
 import cn.ffcs.uoo.core.expando.entity.TbExpandovalue;
 import cn.ffcs.uoo.core.expando.service.TbExpandocolumnService;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,21 +55,6 @@ public class TbExpandocolumnController extends BaseController {
             responseResult.setMessage("请输入扩展列标识");
             return responseResult;
         }
-        if (tbExpandocolumn.getTableId() == null) {
-            responseResult.setState(ResponseResult.STATE_ERROR);
-            responseResult.setMessage("请输入系统表标识");
-            return responseResult;
-        }
-        if (tbExpandocolumn.getColLenght() == null) {
-            responseResult.setState(ResponseResult.STATE_ERROR);
-            responseResult.setMessage("请输入字段长度");
-            return responseResult;
-        }
-        if (tbExpandocolumn.getOrder() == null) {
-            responseResult.setState(ResponseResult.STATE_ERROR);
-            responseResult.setMessage("请输入排序");
-            return responseResult;
-        }
 
         tbExpandocolumnService.updateById(tbExpandocolumn);
 
@@ -94,7 +81,7 @@ public class TbExpandocolumnController extends BaseController {
             responseResult.setMessage("请输入字段长度");
             return responseResult;
         }
-        if (tbExpandocolumn.getOrder() == null) {
+        if (tbExpandocolumn.getSort() == null) {
             responseResult.setState(ResponseResult.STATE_ERROR);
             responseResult.setMessage("请输入排序");
             return responseResult;
@@ -134,7 +121,10 @@ public class TbExpandocolumnController extends BaseController {
         wrapper.eq("COLUMN_ID", columnId);
         // 生效状态
         wrapper.eq("STATUS_CD", "1000");
-        List<TbExpandovalue> tbExpandovalueList = tbExpandovalueService.selectList(wrapper);
+        TbExpandovalue tbExpandovalue = new TbExpandovalue();
+        tbExpandovalue.setColumnId(columnId);
+        tbExpandovalue.setStatusCd("1000");
+        List<TbExpandovalue> tbExpandovalueList = tbExpandovalueService.selectValueList(tbExpandovalue);
 
         // 该扩展列存在有效扩展值，不能删除
         if(tbExpandovalueList != null && tbExpandovalueList.size() > 0) {
@@ -147,6 +137,44 @@ public class TbExpandocolumnController extends BaseController {
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("删除扩展列成功");
         return responseResult;
+    }
+
+    @ApiOperation(value = "查询扩展字段列表", notes = "查询扩展字段列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tableId", value = "系统表标识",required = true, dataType = "Long", paramType = "path")
+    })
+    @UooLog(value = "查询扩展字段列表", key = "queryListByTableId")
+    @RequestMapping(value = "/getList/{tableId}", method = RequestMethod.GET)
+    public List<TbExpandocolumn> queryListByTableId(@PathVariable Long tableId) {
+        // 校验必填项
+        if(tableId == null) {
+            return null;
+        }
+
+        Wrapper<TbExpandocolumn> wrapper = new EntityWrapper<TbExpandocolumn>();
+        wrapper.eq("TABLE_ID", tableId);
+        wrapper.eq("STATUS_CD", "1000");
+        List<TbExpandocolumn> tbExpandocolumnList = tbExpandocolumnService.selectList(wrapper);
+        return tbExpandocolumnList;
+    }
+
+    @ApiOperation(value = "根据表标识资源标识查询扩展字段列表", notes = "根据表标识资源标识查询扩展字段列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tableId", value = "系统表标识",required = true, dataType = "Long", paramType = "path"),
+            @ApiImplicitParam(name = "resourceId", value = "资源标识",required = true, dataType = "String", paramType = "path")
+    })
+    @UooLog(value = "根据表标识资源标识查询扩展字段列表", key = "queryColumnList")
+    @RequestMapping(value = "/getColumnList/{tableId}/{resourceId}", method = RequestMethod.GET)
+    public List<TbExpandocolumn> queryColumnList(@PathVariable  Long tableId, @PathVariable String resourceId) {
+        // 校验必填项
+        if(tableId == null) {
+            return null;
+        }
+        if(StringUtils.isEmpty(resourceId)) {
+            return null;
+        }
+
+        return tbExpandocolumnService.queryColumnList(tableId, resourceId);
     }
 }
 

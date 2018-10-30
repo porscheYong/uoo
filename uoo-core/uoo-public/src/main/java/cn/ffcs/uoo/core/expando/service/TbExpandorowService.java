@@ -3,6 +3,8 @@ package cn.ffcs.uoo.core.expando.service;
 import cn.ffcs.uoo.core.expando.entity.TbExpandorow;
 import com.baomidou.mybatisplus.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 保留，如通讯号码就对应多个 服务类
@@ -25,4 +27,11 @@ public interface TbExpandorowService extends IService<TbExpandorow> {
      * @param updateUser
      */
     void remove(Long rowId, Long updateUser);
+
+    /**
+     * 查询扩展行列表
+     * @param tbExpandorow
+     * @return
+     */
+    List<TbExpandorow> queryRowList(TbExpandorow tbExpandorow);
 }

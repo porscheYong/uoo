@@ -3,6 +3,8 @@ package cn.ffcs.uoo.core.expando.dao;
 import cn.ffcs.uoo.core.expando.entity.TbExpandorow;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  * 扩展行
@@ -25,4 +27,6 @@ public interface TbExpandorowMapper extends BaseMapper<TbExpandorow> {
      * @param tbExpandorow
      */
     void remove(TbExpandorow tbExpandorow);
+
+    List<TbExpandorow> queryRowList(TbExpandorow tbExpandorow);
 }

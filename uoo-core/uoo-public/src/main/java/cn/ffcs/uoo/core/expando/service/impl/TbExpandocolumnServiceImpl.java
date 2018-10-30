@@ -7,6 +7,8 @@ import cn.ffcs.uoo.core.expando.service.TbExpandocolumnService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 扩展列 服务实现类
@@ -33,5 +35,10 @@ public class TbExpandocolumnServiceImpl extends ServiceImpl<TbExpandocolumnMappe
         tbExpandocolumn.setStatusCd("1100");
         tbExpandocolumn.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
         baseMapper.remove(tbExpandocolumn);
+    }
+
+    @Override
+    public List<TbExpandocolumn> queryColumnList(Long tableId, String resourceId) {
+        return baseMapper.queryColumnList(tableId, resourceId);
     }
 }

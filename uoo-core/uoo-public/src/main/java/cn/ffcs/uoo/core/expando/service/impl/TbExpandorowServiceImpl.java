@@ -7,6 +7,8 @@ import cn.ffcs.uoo.core.expando.service.TbExpandorowService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 保留，如通讯号码就对应多个 服务实现类
@@ -33,5 +35,10 @@ public class TbExpandorowServiceImpl extends ServiceImpl<TbExpandorowMapper, TbE
         tbExpandorow.setUpdateUser(updateUser);
         tbExpandorow.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
         baseMapper.remove(tbExpandorow);
+    }
+
+    @Override
+    public List<TbExpandorow> queryRowList(TbExpandorow tbExpandorow) {
+        return baseMapper.queryRowList(tbExpandorow);
     }
 }

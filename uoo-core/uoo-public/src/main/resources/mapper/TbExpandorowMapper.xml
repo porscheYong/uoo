@@ -94,4 +94,21 @@
         WHERE ROW_ID = #{rowId}
     </update>
 
+    <select id="queryRowList" parameterType="cn.ffcs.uoo.core.expando.entity.TbExpandorow" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM TB_EXPANDOROW WHERE STATUS_CD = '1000'
+        <if test="tableId != null">
+            AND TABLE_ID = #{tableId}
+        </if>
+        <if test="resourceId != null and resourceId != ''">
+            AND RESOURCE_ID = #{resourceId}
+        </if>
+        <if test="recordId != null and recordId != ''">
+            AND RECORD_ID = #{recordId}
+        </if>
+        <if test="statusCd != null and statusCd != ''">
+            AND STATUS_CD = #{statusCd}
+        </if>
+    </select>
+
 </mapper>

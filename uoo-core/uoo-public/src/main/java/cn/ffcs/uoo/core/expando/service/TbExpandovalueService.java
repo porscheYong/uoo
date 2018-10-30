@@ -3,6 +3,8 @@ package cn.ffcs.uoo.core.expando.service;
 import cn.ffcs.uoo.core.expando.entity.TbExpandovalue;
 import com.baomidou.mybatisplus.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 扩展值 服务类
@@ -25,4 +27,11 @@ public interface TbExpandovalueService extends IService<TbExpandovalue> {
      * @param updateUser
      */
     void remove(Long valueId, Long updateUser);
+
+    /**
+     * 查询扩展值
+     * @param tbExpandovalue
+     * @return
+     */
+    List<TbExpandovalue> selectValueList(TbExpandovalue tbExpandovalue);
 }

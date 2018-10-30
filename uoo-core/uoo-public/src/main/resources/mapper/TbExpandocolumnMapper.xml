@@ -14,7 +14,7 @@
         <result column="COL_DESC" property="colDesc" />
         <result column="VER_NUM" property="verNum" />
         <result column="DEFAULT_VALUE" property="defaultValue" />
-        <result column="ORDER" property="order" />
+        <result column="SORT" property="sort" />
         <result column="EDITABLE" property="editable" />
         <result column="STATUS_CD" property="statusCd" />
         <result column="CREATE_DATE" property="createDate" />
@@ -27,7 +27,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        COLUMN_ID, TABLE_ID, COLUMN_NAME, COLUMN_CNNAME, COLUM_TYPE, COL_LENGHT, COL_NULLABLE, COL_DESC, VER_NUM, DEFAULT_VALUE, ORDER, EDITABLE, STATUS_CD, CREATE_DATE, CREATE_USER, LABEL, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        COLUMN_ID, TABLE_ID, COLUMN_NAME, COLUMN_CNNAME, COLUM_TYPE, COL_LENGHT, COL_NULLABLE, COL_DESC, VER_NUM, DEFAULT_VALUE, SORT, EDITABLE, STATUS_CD, CREATE_DATE, CREATE_USER, LABEL, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
     <insert id="save" parameterType="cn.ffcs.uoo.core.expando.entity.TbExpandocolumn">
@@ -64,8 +64,8 @@
             <if test="defaultValue != null">
                 DEFAULT_VALUE,
             </if>
-            <if test="order != null">
-                ORDER,
+            <if test="sort != null">
+                SORT,
             </if>
             <if test="editable != null">
                 EDITABLE,
@@ -121,8 +121,8 @@
             <if test="defaultValue != null">
                 #{defaultValue,jdbcType=VARCHAR},
             </if>
-            <if test="order != null">
-                #{order,jdbcType=DECIMAL},
+            <if test="sort != null">
+                #{sort,jdbcType=DECIMAL},
             </if>
             <if test="editable != null">
                 #{editable,jdbcType=VARCHAR},
@@ -156,5 +156,15 @@
         SET STATUS_CD = #{statusCd}, UPDATE_DATE = #{updateDate}, UPDATE_USER = #{updateUser}, STATUS_DATE = #{statusDate}
         WHERE COLUMN_ID = #{columnId}
     </update>
+    
+    <select id="queryColumnList" resultMap="BaseResultMap">
+        SELECT C.*
+          FROM TB_SYSTEMTABLE S, TB_EXPANDOCOLUMN C
+         WHERE S.STATUS_CD = '1000'
+           AND C.STATUS_CD = '1000'
+           AND S.TABLE_ID = C.TABLE_ID
+           AND S.TABLE_ID = #{tableId}
+           AND S.RESOURCE_ID = #{resourceId}
+    </select>
 
 </mapper>

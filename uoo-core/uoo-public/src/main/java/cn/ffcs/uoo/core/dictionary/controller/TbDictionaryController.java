@@ -6,7 +6,7 @@ import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.dictionary.entity.TbDictionary;
 import cn.ffcs.uoo.core.dictionary.service.TbDictionaryItemService;
 import cn.ffcs.uoo.core.dictionary.service.TbDictionaryService;
-import cn.ffcs.uoo.core.dictionary.vo.ResponseResult;
+import cn.ffcs.uoo.core.vo.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

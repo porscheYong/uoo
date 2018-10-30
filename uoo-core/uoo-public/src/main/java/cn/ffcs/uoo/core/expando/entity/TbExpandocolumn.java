@@ -73,8 +73,8 @@ public class TbExpandocolumn extends Model<TbExpandocolumn> {
     /**
      * 排序
      */
-    @TableField("ORDER")
-    private Long order;
+    @TableField("SORT")
+    private Long sort;
     /**
      * 可否编辑
      */
@@ -197,12 +197,12 @@ public class TbExpandocolumn extends Model<TbExpandocolumn> {
         this.defaultValue = defaultValue;
     }
 
-    public Long getOrder() {
-        return order;
+    public Long getSort() {
+        return sort;
     }
 
-    public void setOrder(Long order) {
-        this.order = order;
+    public void setSort(Long sort) {
+        this.sort = sort;
     }
 
     public String getEditable() {
@@ -287,7 +287,7 @@ public class TbExpandocolumn extends Model<TbExpandocolumn> {
         ", colDesc=" + colDesc +
         ", verNum=" + verNum +
         ", defaultValue=" + defaultValue +
-        ", order=" + order +
+        ", sort=" + sort +
         ", editable=" + editable +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +

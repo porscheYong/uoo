@@ -3,7 +3,7 @@ package cn.ffcs.uoo.core.expando.controller;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.controller.BaseController;
-import cn.ffcs.uoo.core.dictionary.vo.ResponseResult;
+import cn.ffcs.uoo.core.vo.ResponseResult;
 import cn.ffcs.uoo.core.expando.entity.TbExpandocolumn;
 import cn.ffcs.uoo.core.expando.entity.TbExpandorow;
 import cn.ffcs.uoo.core.expando.entity.TbSystemtable;
@@ -115,10 +115,10 @@ public class TbSystemtableController extends BaseController {
         }
 
         // 是否存在有效扩展行
-        Wrapper<TbExpandorow> tbExpandorowWrapper = new EntityWrapper<TbExpandorow>();
-        tbExpandorowWrapper.eq("TABLE_ID", tableId);
-        tbExpandorowWrapper.eq("STATUS_CD", "1000");
-        List<TbExpandorow> tbExpandorowList = tbExpandorowService.selectList(tbExpandorowWrapper);
+        TbExpandorow tbExpandorow = new TbExpandorow();
+        tbExpandorow.setTableId(tableId);
+        tbExpandorow.setStatusCd("1000");
+        List<TbExpandorow> tbExpandorowList = tbExpandorowService.queryRowList(tbExpandorow);
 
         // 该系统表登记存在有效扩展行，不能删除
         if(tbExpandocolumnList != null && tbExpandocolumnList.size() > 0) {

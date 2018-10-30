@@ -3,6 +3,8 @@ package cn.ffcs.uoo.core.expando.service;
 import cn.ffcs.uoo.core.expando.entity.TbExpandocolumn;
 import com.baomidou.mybatisplus.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 扩展列 服务类
@@ -25,4 +27,12 @@ public interface TbExpandocolumnService extends IService<TbExpandocolumn> {
      * @param updateUser
      */
     void remove(Long columnId, Long updateUser);
+
+    /**
+     *  查询扩展列
+     * @param tableId 表标识
+     * @param resourceId 资源标识
+     * @return
+     */
+    List<TbExpandocolumn> queryColumnList(Long tableId, String resourceId);
 }

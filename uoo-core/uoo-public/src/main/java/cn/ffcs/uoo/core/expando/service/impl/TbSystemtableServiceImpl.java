@@ -27,7 +27,8 @@ public class TbSystemtableServiceImpl extends ServiceImpl<TbSystemtableMapper, T
     public void remove(Long tableId, Long updateUser) {
         TbSystemtable tbSystemtable = new TbSystemtable();
         tbSystemtable.setTableId(tableId);
-        tbSystemtable.setStatusCd("1000");
+        // 失效状态
+        tbSystemtable.setStatusCd("1100");
         tbSystemtable.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbSystemtable.setUpdateUser(updateUser);
         tbSystemtable.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));

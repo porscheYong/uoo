@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.core.dictionary.vo;
+package cn.ffcs.uoo.core.vo;
 
 import java.io.Serializable;
 
