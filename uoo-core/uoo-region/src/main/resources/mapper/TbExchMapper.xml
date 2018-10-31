@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.region.dao.TbExchMapper">
+	<resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.region.entity.TbExch">
+		<id column="EXCH_ID" property="exchId" />
+		<result column="COMMON_REGION_ID" property="commonRegionId" />
+		<result column="SRC_EXCH_DESC" property="srcExchDesc" />
+		<result column="SRC_EXCH_ID" property="srcExchId" />
+
+		<result column="STATUS_CD" property="statusCd" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_DATE" property="updateDate" />
+		<result column="UPDATE_USER" property="updateUser" />
+		<result column="STATUS_DATE" property="statusDate" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		EXCH_ID, COMMON_REGION_ID, SRC_EXCH_DESC, SRC_EXCH_ID,
+		STATUS_CD, CREATE_DATE,CREATE_USER, UPDATE_DATE, UPDATE_USER,
+		STATUS_DATE
+	</sql>
+	<select id="getId" resultType="java.lang.Long">
+		SELECT SEQ_TB_EXCH.nextval FROM dual
+	</select>
+</mapper>

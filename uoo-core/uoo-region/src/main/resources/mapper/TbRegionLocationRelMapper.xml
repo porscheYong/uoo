@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.region.dao.TbRegionLocationRelMapper">
+	<resultMap id="BaseResultMap"
+		type="cn.ffcs.uoo.core.region.entity.TbRegionLocationRel">
+		<!-- <id column="EXCH_ID" property="exchId" /> -->
+		<result column="COMMON_REGION_ID" property="commonRegionId" />
+		<result column="REGION_LOC_REL_ID" property="regionLocRelId" />
+		<result column="LOC_ID" property="locId" />
+
+		<result column="STATUS_CD" property="statusCd" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_DATE" property="updateDate" />
+		<result column="UPDATE_USER" property="updateUser" />
+		<result column="STATUS_DATE" property="statusDate" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		COMMON_REGION_ID, REGION_LOC_REL_ID, LOC_ID,
+		STATUS_CD, CREATE_DATE,CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+	</sql>
+	<select id="getId" resultType="java.lang.Long">
+		SELECT SEQ_TB_REGION_LOCATION_REL.nextval FROM dual
+	</select>
+</mapper>
