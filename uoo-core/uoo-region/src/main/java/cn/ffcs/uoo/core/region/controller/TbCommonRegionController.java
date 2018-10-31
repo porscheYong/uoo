@@ -86,7 +86,7 @@ public class TbCommonRegionController extends BaseController {
         commonRegion.setCreateDate(new Date());
         commonRegion.setUpdateDate(new Date());
         commonRegion.setStatusDate(new Date());
-        
+        commonRegion.setCommonRegionId(regionService.getId());
         regionService.insert(commonRegion);
         return ResponseResult.createSuccessResult("success");
     }

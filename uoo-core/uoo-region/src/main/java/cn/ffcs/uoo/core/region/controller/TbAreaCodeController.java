@@ -83,7 +83,7 @@ public class TbAreaCodeController extends BaseController {
         areaCode.setUpdateDate(new Date());
         areaCode.setStatusDate(new Date());
         areaCode.setStatusCd(DeleteConsts.VALID);
-        
+        areaCode.setAreaCodeId(areaCodeService.getId());
         areaCodeService.insert(areaCode);
         return ResponseResult.createSuccessResult("success");
     }

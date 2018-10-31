@@ -73,7 +73,7 @@ public class TbPoliticalLocationController extends BaseController {
         polLoc.setCreateDate(new Date());
         polLoc.setUpdateDate(new Date());
         polLoc.setStatusDate(new Date());
-        
+        polLoc.setLocId(polLocSvc.getId());
         polLocSvc.insert(polLoc);
         return ResponseResult.createSuccessResult("success");
     }
