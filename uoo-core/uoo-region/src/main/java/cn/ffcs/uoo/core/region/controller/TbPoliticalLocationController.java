@@ -85,8 +85,14 @@ public class TbPoliticalLocationController extends BaseController {
     @Transactional
     public ResponseResult updatePoliticalLocation(TbPoliticalLocation polLoc) {
         // TODO 数据校验 获取操作者
+        if(polLoc.getUpLocId()!=null&&polLoc.getUpLocId().longValue()!=0){
+            TbPoliticalLocation region = polLocSvc.selectById(polLoc.getUpLocId());
+            if(region==null){
+                return ResponseResult.createErrorResult("上一级区域不存在");
+            }
+        }
         polLoc.setUpdateDate(new Date());
-        polLoc.setStatusDate(new Date());
+        //polLoc.setStatusDate(new Date());
         polLocSvc.updateById(polLoc);
         return ResponseResult.createSuccessResult("success");
     }

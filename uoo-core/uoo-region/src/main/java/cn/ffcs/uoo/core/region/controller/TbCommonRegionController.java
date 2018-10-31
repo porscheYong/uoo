@@ -71,11 +71,8 @@ public class TbCommonRegionController extends BaseController {
     public ResponseResult addCommonRegion(TbCommonRegion commonRegion) {
         // TODO 数据校验  获取操作者
         //查询上级是否存在 -1为最顶层
-        if(commonRegion.getUpRegionId()==null){
-            return ResponseResult.createErrorResult("请选择上一级区域");
-        }
         
-        if(commonRegion.getUpRegionId()!=null&&commonRegion.getUpRegionId().longValue()!=-1){
+        if(commonRegion.getUpRegionId()!=null){
             TbCommonRegion region = regionService.selectById(commonRegion.getUpRegionId());
             if(region==null){
                 return ResponseResult.createErrorResult("上一级区域不存在");
@@ -98,7 +95,12 @@ public class TbCommonRegionController extends BaseController {
     @Transactional
     public ResponseResult updateCommonRegion(TbCommonRegion commonRegion) {
         // TODO 数据校验 获取操作者
-        
+        if(commonRegion.getUpRegionId()!=null){
+            TbCommonRegion region = regionService.selectById(commonRegion.getUpRegionId());
+            if(region==null){
+                return ResponseResult.createErrorResult("上一级区域不存在");
+            }
+        }
         commonRegion.setUpdateDate(new Date());
         commonRegion.setStatusDate(new Date());
         
