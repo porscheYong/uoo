@@ -30,51 +30,14 @@
     <script src="../../../static/js/core/respond.js"></script>
     <script src="../../../static/js/core/excanvas.js"></script>
     <![endif]-->
-    <style type="text/css">
-      table.dataTable {
-        table-layout: fixed;
-      }
-      
-      th {
-          text-align: center;
-          white-space: nowrap;
-      }
-      table.dataTable tbody td {
-          text-align: center;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-      }
-      div.tag {
-          border-radius: 2px;
-          /*display: block;
-          float: left;*/
-          padding: 5px 9px;
-          background: #00a4ff;
-          text-decoration: none;
-          line-height: 1;
-          color: #fff;
-          margin-bottom: 5px;
-      }
-      div.tag a {
-          text-decoration: none;
-          color: #fff;    
-      }
-    </style>
   </head>
 
   <body style="background: #fff;">
     <div>
         <div class="board-title">
-          <span class="name ft18">编辑-市场部 100000571001</span>
+          <span class="name ft18">添加子节点</span>
         </div>
         <div class="nav-tabs-brief" style="padding-top: 35px;">
-          <ul class="nav nav-tabs tab-title" role="tablist" id="myTabs">
-            <li role="presentation" class="active" style="width: 10%;"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">基础信息</a>
-            </li>
-            <li role="presentation" class="" style="width: 10%;"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">关系信息</a>
-            </li>
-          </ul>
 
           <div class="tab-content">
             <div class="tab-pane active" id="tab_content1">
@@ -89,9 +52,9 @@
 
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="orgScale" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">规模</label>
+                      <label for="idCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">规模</label>
                       <!-- <input type="code" id="idCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="100~200"> -->
-                      <select id="orgScale" class="col-md-8 col-sm-8 col-xs-12">
+                      <select  class="col-md-8 col-sm-8 col-xs-12">
                         <option></option>
                         <option>100~200</option>
                         <option>300~400</option>
@@ -117,9 +80,9 @@
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="cityTown" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">城乡属性</label>
+                      <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">城乡属性</label>
                       <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="城市"> -->
-                      <select id="cityTown" class="col-md-8 col-sm-8 col-xs-12">
+                      <select  class="col-md-8 col-sm-8 col-xs-12">
                         <option></option>
                         <option>城市</option>
                         <option>农村</option>
@@ -129,17 +92,17 @@
 
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="createTime" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">成立时间</label>
-                      <input type="code" id="createTime" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="2018-10-27">
+                      <label for="createDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">成立时间</label>
+                      <input type="code" id="createDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="2018-10-27">
                     </div>
                   </div>
                 </div>
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="locId " class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">行政管理区域</label>
+                      <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">行政管理区域</label>
                       <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市公司直属"> -->
-                      <select id="locId" class="col-md-8 col-sm-8 col-xs-12">
+                      <select  class="col-md-8 col-sm-8 col-xs-12">
                         <option></option>
                         <option>市公司直属</option>
                         <option>省公司直属</option>
@@ -157,9 +120,9 @@
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="orgPositionLevel" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织最高岗位级别</label>
+                      <label for="idTel" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织最高岗位级别</label>
                       <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" value="总经理"> -->
-                      <select id="orgPositionLevel"  class="col-md-8 col-sm-8 col-xs-12">
+                      <select  class="col-md-8 col-sm-8 col-xs-12">
                         <option></option>
                         <option>总经理</option>
                         <option>副总经理 </option>
@@ -169,15 +132,15 @@
 
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="officePhone" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织办公电话</label>
-                      <input type="code" id="officePhone" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="0571-92345678">
+                      <label for="idCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织办公电话</label>
+                      <input type="code" id="idCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="0571-92345678">
                     </div>
                   </div>
                 </div>
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="address" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">地址</label>
+                      <label for="idMark" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">地址</label>
                       <div class="col-md-10 col-sm-10 col-xs-12" style="width: 84%;position: relative;padding: 0;">
                         <input id="address" class="ui-input" style="width: 100%;position: relative;" size="40" name="tel" readonly="readonly">
                       </div>
@@ -187,17 +150,17 @@
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="orgTypeList" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织类别</label>
-                      <input type="tel" id="orgTypeList" class="ui-input col-md-10 col-sm-10 col-xs-12" style="width: 84%" size="40" name="tel" required data-toggle="modal" data-target="#myModal">
+                      <label for="orgType" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织类别</label>
+                      <input type="tel" id="orgType" class="ui-input col-md-10 col-sm-10 col-xs-12" style="width: 84%" size="40" name="tel" required data-toggle="modal" data-target="#myModal">
                     </div>
                   </div>
                 </div>
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="orgContent" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织简介</label>
+                      <label for="idMark" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织简介</label>
                       <div class="ui-textarea-x" class="col-md-10 col-sm-10 col-xs-12" style="width: 84%">
-                        <textarea id="orgContent" maxlength="140" rows="5">附件</textarea>
+                        <textarea id="idMark" maxlength="140" rows="5">附件</textarea>
                         <div class="ui-textarea"></div>
                       </div>
                     </div>
@@ -209,14 +172,9 @@
                 <div style="margin-left: 17%;">
                     <!-- <input type="submit" id="formSubmit" class="clip">
                     <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
-                    <button id="saveBtn" class="ui-button ui-button-primary">保存</button>
-                    <button id="cancelBtn" class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
+                    <button class="ui-button ui-button-primary">保存</button>
+                    <button class="ui-button ui-button-cancel" style="margin-left: 10px;">取消</button>
                 </div>
-              </div>
-            </div>
-            <div class="tab-pane" id="tab_content2">
-              <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden;">
-                <table id="orgRelTable" class="stripe" width="100%"></table>
               </div>
             </div>
           </div>
@@ -281,9 +239,90 @@
     <script type="text/javascript" src="../../../static/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- init -->
     <script type="text/javascript" src="../../../static/js/init.js"></script>
-    <script type="text/javascript" src="../../../static/js/organization/edit.js"></script>
+    <script type="text/javascript" src="../../../static/js/organization/add.js"></script>
 
     <script type="text/javascript">
+      seajs.use('../../../static/vendors/lulu/js/common/ui/Select', function () {
+        $('select').selectMatch();
+      })
+      var data = [
+            {
+                value: 'A',
+                label: 'a',
+                children: [
+                    {
+                        value: 'AA1',
+                        label: 'aa1',
+                    },
+                    {
+                        value: 'BB1',
+                        label: 'bb1'
+                    }
+                ]
+            },
+            {
+                value: 'B',
+                label: 'b',
+                children: [
+                    {
+                        value: 'AA2',
+                        label: 'aa2',
+                        children: [
+                            {
+                                value: 'AAA3',
+                                label: 'aaa3',
+                                children: [
+                                    {
+                                        value: 'AAA3',
+                                        label: 'aaa3',
+                                        children: [
+                                            {
+                                                value: 'AAA3',
+                                                label: 'aaa3',
+                                            },
+                                            {
+                                                value: 'BBB3',
+                                                label: 'bbb3'
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                value: 'BBB3',
+                                label: 'bbb3'
+                            }
+                        ]
+                    },
+                    {
+                        value: 'BB2',
+                        label: 'bb2',
+                        children: [
+                            {
+                                value: 'AAA4',
+                                label: 'aaa4',
+                            },
+                            {
+                                value: 'BBB4',
+                                label: 'bbb4'
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                value: 'C',
+                label: 'c',
+            }
+        ]
+        $('#address').cascader({
+            data: data,
+            value: ["B", "BB2", "BBB4"],
+            success: function (valData,labelData) {
+                console.log(valData);
+                console.log(labelData);
+            }
+        })
       if(typeof $.fn.tagsInput !== 'undefined'){  
          
           $('#orgType').tagsInput({

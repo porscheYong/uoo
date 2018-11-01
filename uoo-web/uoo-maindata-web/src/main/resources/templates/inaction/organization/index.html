@@ -14,10 +14,6 @@
     <link href="../../../static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- ztree -->
     <link href="../../../static/vendors/zTree/zTreeStyle.css" rel="stylesheet">
-    <!-- jquery datatable -->
-    <link href="../../../static/vendors/datatable/datatables.css" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="../../../static/vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- lulu ui -->
     <link href="../../../static/vendors/lulu/css/common/ui.css" rel="stylesheet">
 
@@ -46,19 +42,89 @@
           text-overflow: ellipsis;
       }
     </style>
+    <script type="text/javascript">
+      function layerOpen(obj) {
+        layer.open({
+          type: obj.type || 1,
+          title: obj.title,
+          scrollbar: obj.scrollbar || false,
+          closeBtn: obj.closeBtn, //关闭按钮是否显示
+          shade: obj.shade || 0.3,
+          shadeClose: obj.shadeClose || true,
+          area: obj.area || ['600px', '400px'],
+          content: obj.content,
+          btn: obj.btn,
+          success: function(layero, index){
+            if (obj.success) {
+              obj.success()
+            }
+          },
+          yes: function (index, layero) {
+            if (obj.confirm) {
+              obj.confirm()
+            }
+          },
+          btn2: function (index, layero) {
+            if (obj.cancel) {
+              obj.cancel()
+            }
+          }
+        })
+      }
+    </script>
   </head>
 
   <body class="nav-md">
     <div class="container">
       <div class="main-container">
-        <div class="content-left">
+        <div class="content-left" style="overflow: auto;">
           <!-- <iframe name="standardTree" class="layadmin-iframe" src="tree.html" frameborder="0" width="250px"></iframe> -->
           <div style="display: inline-block;width: 100%;padding-top: 10px;">
               <ul id="standardTree" class="ztree"></ul>
           </div>
         </div>
         <div class="content-right">
-          <iframe id="orgFrame" name="standardOrg" class="layadmin-iframe" src="orgList.html" frameborder="0" width="100%" height="99%"></iframe>
+          <iframe id="orgFrame" name="standardOrg" class="layadmin-iframe" src="list.html" frameborder="0" width="100%" height="99%"></iframe>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div id="myModal" style="display: none;">
+        <div class="modal-body" style="padding: 20px;">
+          <div style="display: inline-block;">
+            <div>
+              <span class="ui-input ui-search-input">
+                <input type="search" placeholder="搜索组织类别">
+                <a href="javascript:" class="ui-icon-search">搜索</a>
+              </span>
+            </div>
+            <div style="width: 300px;height: 290px;display: inline-block;overflow: auto;">
+                <ul id="orgTree" class="ztree"></ul>
+            </div>
+          </div>
+          <div style="display: inline-block;vertical-align: top;">
+            <h3>选择</h3>
+            <div style="display: inline-block;" id="tags_2">
+              <div class="tag">
+                  <span>
+                      ads&nbsp;
+                  </span>
+                  <a href="#" class="tag-remove">x</a>
+              </div>
+              <div class="tag">
+                  <span>
+                      adverts&nbsp;
+                  </span>
+                  <a href="#" class="tag-remove">x</a>
+              </div>
+              <div class="tag">
+                  <span>
+                      rts&nbsp;
+                  </span>
+                  <a href="#" class="tag-remove">x</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -70,16 +136,11 @@
     <!-- ztree -->
     <script type="text/javascript" src="../../../static/vendors/zTree/jquery.ztree.core.js"></script>
     <script type="text/javascript" src="../../../static/vendors/zTree/jquery.ztree.excheck.js"></script>
-    <!-- jquery datatable -->
-    <script type="text/javascript" src="../../../static/vendors/datatable/datatables.js"></script>
-    <!-- NProgress -->
-    <script src="../../../static/vendors/nprogress/nprogress.js"></script>
+    <!-- layer -->
+    <script type="text/javascript" src="../../../static/vendors/layer/layer.js"></script>
     <!-- init -->
     <script src="../../../static/js/init.js"></script>
-    <script type="text/javascript" src="../../../static/js/table_init.js"></script>
-    <script type="text/javascript" src="../../../static/js/standard_tree.js"></script>
-    <!-- Custom Theme Scripts -->
-    <!-- <script src="./build/js/custom.js"></script> -->
+    <script type="text/javascript" src="../../../static/js/organization/index.js"></script>
   
   </body>
 </html>
