@@ -52,7 +52,7 @@ public class TbExchController extends BaseController {
     })
     @UooLog(value = "局向列表", key = "listExch")
     @GetMapping("listExch/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listCommonRegion(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize) {
+    public ResponseResult listExch(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize) {
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         @SuppressWarnings("unchecked")
