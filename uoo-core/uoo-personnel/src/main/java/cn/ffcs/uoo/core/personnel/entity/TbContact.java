@@ -48,6 +48,11 @@ public class TbContact extends Model<TbContact> {
     @TableField("UUID")
     private String uuid;
     /**
+     * 是否首选
+     */
+    @TableField("FIRST_FLAG")
+    private String firstFlag;
+    /**
      * 状态
      */
     @TableField("STATUS_CD")

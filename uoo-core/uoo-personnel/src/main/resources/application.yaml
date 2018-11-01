@@ -7,19 +7,19 @@ spring:
       driver-class-name:  oracle.jdbc.OracleDriver
       username: uoo137
       password: uoo137
-#      url: jdbc:mysql://127.0.0.1:3306/springboot?characterEncoding=utf8&useSSL=false
-#      driver-class-name:  com.mysql.jdbc.Driver
-#      username: root
-#      password: 123456
-#=======
-#      url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
-#      driver-class-name:  oracle.jdbc.OracleDriver
-#      username: uom
-#      password: uom
+      #      url: jdbc:mysql://127.0.0.1:3306/springboot?characterEncoding=utf8&useSSL=false
+      #      driver-class-name:  com.mysql.jdbc.Driver
+      #      username: root
+      #      password: 123456
+      #=======
+      #      url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
+      #      driver-class-name:  oracle.jdbc.OracleDriver
+      #      username: uom
+      #      password: uom
 
-#      url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
-#     username: octopus
-#     password: octopus
+      #      url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
+      #     username: octopus
+      #     password: octopus
 
       initial-size: 10
       min-idle: 4
@@ -97,16 +97,31 @@ spring:
 #      aop-patterns: cn.ffcs.uoo.**.service.*
 
 
+#mybatis
 mybatis-plus:
   mapper-locations: classpath:mapper/**Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: cn.ffcs.uoo
   global-config:
-#    id-type: 1
-#    key-generator: com.baomidou.mybatisplus.incrementer.OracleKeyGenerator
-    id-type: 0
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    id-type: 1
+    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
     field-strategy: 2
+    #驼峰下划线转换
     db-column-underline: true
+    #刷新mapper 调试神器
     refresh-mapper: true
+    #数据库大写下划线转换
+    #capital-mode: true
+    #序列接口实现类配置
+    #key-generator: com.baomidou.springboot.xxx
+    #逻辑删除配置（下面3个配置）
+    logic-delete-value: 0
+    logic-not-delete-value: 1
+    #自定义SQL注入器
+    #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+    #自定义填充策略接口实现
+    #meta-object-handler: com.baomidou.springboot.xxx
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false

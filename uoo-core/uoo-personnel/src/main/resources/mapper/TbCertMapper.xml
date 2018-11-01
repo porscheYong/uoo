@@ -36,17 +36,17 @@
         <where>
             t.status_cd = 1000
             <if test="personnelId != null and personnelId != '' ">
-                 and t.personnel_id = #{personnelId}
+                and t.personnel_id = #{personnelId}
             </if>
         </where>
     </select>
 
     <update id="delete" parameterType="cn.ffcs.uoo.core.personnel.entity.TbCert">
         UPDATE
-        TB_CERT
+                TB_CERT
         SET
-        STATUS_CD = 1100
+            STATUS_CD = 1100
         WHERE
-        CERT_ID = #{certId}
+                CERT_ID = #{certId}
     </update>
 </mapper>

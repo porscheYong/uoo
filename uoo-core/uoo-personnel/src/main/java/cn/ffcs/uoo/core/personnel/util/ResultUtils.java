@@ -35,6 +35,13 @@ public class ResultUtils {
         return result;
     }
 
+    public static Object error(EumPersonnelResponseCode eumPersonnelResponseCode){
+        ResponseResult result = new ResponseResult();
+        result.setCode(eumPersonnelResponseCode.getCode());
+        result.setMessage(eumPersonnelResponseCode.getMsg());
+        return result;
+    }
+
     public static Object error(int code, String msg){
         ResponseResult result = new ResponseResult();
         result.setCode(code);

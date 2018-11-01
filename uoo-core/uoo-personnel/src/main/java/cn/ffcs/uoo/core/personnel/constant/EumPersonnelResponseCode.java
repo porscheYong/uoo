@@ -19,6 +19,8 @@ public enum  EumPersonnelResponseCode {
     IMG_NOT_EMPTY(10, "图片不能空"),
     IMG_FORMAT_ERROR(11, "图片上传失败"),
     SAVE_IMG_ERROE(12, "图片保存失败"),
+    CONTACT_IS_NULL(13, "手机、邮箱、QQ号、微信号、固话不能为空"),
+    CERT_IS_EXIST(14, "身份证已被占用"),
     ;
 
     @Getter

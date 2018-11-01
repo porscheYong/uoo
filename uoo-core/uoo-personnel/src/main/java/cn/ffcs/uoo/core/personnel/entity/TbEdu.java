@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author wudj
@@ -329,29 +329,29 @@ public class TbEdu extends Model<TbEdu> {
     @Override
     public String toString() {
         return "TbEdu{" +
-        ", eduId=" + eduId +
-        ", personnelId=" + personnelId +
-        ", school=" + school +
-        ", schoolType=" + schoolType +
-        ", major=" + major +
-        ", majortype=" + majortype +
-        ", education=" + education +
-        ", edusystem=" + edusystem +
-        ", degree=" + degree +
-        ", firstEducation=" + firstEducation +
-        ", lastEducation=" + lastEducation +
-        ", lastDegree=" + lastDegree +
-        ", begindate=" + begindate +
-        ", enddate=" + enddate +
-        ", certifcode=" + certifcode +
-        ", isFullTimeHighEdu=" + isFullTimeHighEdu +
-        ", isInServiceHighEdu=" + isInServiceHighEdu +
-        ", statusCd=" + statusCd +
-        ", createDate=" + createDate +
-        ", createUser=" + createUser +
-        ", updateDate=" + updateDate +
-        ", updateUser=" + updateUser +
-        ", statusDate=" + statusDate +
-        "}";
+                ", eduId=" + eduId +
+                ", personnelId=" + personnelId +
+                ", school=" + school +
+                ", schoolType=" + schoolType +
+                ", major=" + major +
+                ", majortype=" + majortype +
+                ", education=" + education +
+                ", edusystem=" + edusystem +
+                ", degree=" + degree +
+                ", firstEducation=" + firstEducation +
+                ", lastEducation=" + lastEducation +
+                ", lastDegree=" + lastDegree +
+                ", begindate=" + begindate +
+                ", enddate=" + enddate +
+                ", certifcode=" + certifcode +
+                ", isFullTimeHighEdu=" + isFullTimeHighEdu +
+                ", isInServiceHighEdu=" + isInServiceHighEdu +
+                ", statusCd=" + statusCd +
+                ", createDate=" + createDate +
+                ", createUser=" + createUser +
+                ", updateDate=" + updateDate +
+                ", updateUser=" + updateUser +
+                ", statusDate=" + statusDate +
+                "}";
     }
 }

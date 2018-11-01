@@ -32,11 +32,12 @@
         SET
         STATUS_CD = 1100
         WHERE
+        1 = 1
         <if test="psnjobId != null and psnjobId != '' ">
-            PSNJOB_ID = #{psnjobId}
+            and PSNJOB_ID = #{psnjobId}
         </if>
         <if test="personnelId != null and personnelId != '' ">
-            PERSONNEL_ID = #{personnelId}
+            and PERSONNEL_ID = #{personnelId}
         </if>
     </update>
 

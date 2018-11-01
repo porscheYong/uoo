@@ -3,8 +3,10 @@ package cn.ffcs.uoo.core.personnel.dao;
 import cn.ffcs.uoo.core.personnel.entity.TbPersonnel;
 import cn.ffcs.uoo.core.personnel.vo.PersonnelOrgVo;
 import cn.ffcs.uoo.core.personnel.vo.PersonnelRelationInfoVo;
+import cn.ffcs.uoo.core.personnel.vo.PsonOrgVo;
 import cn.ffcs.uoo.core.personnel.vo.TbPersonnelVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 
 import java.util.List;
 
@@ -28,4 +30,6 @@ public interface TbPersonnelMapper extends BaseMapper<TbPersonnel> {
     public Long getPsnNbrId();
 
     public Long getPsnCodeId();
+
+    public List<PsonOrgVo> getPsnOrg(Pagination page, PsonOrgVo psonOrgVo);
 }

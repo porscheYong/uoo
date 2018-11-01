@@ -99,7 +99,7 @@ public class FormPersonnelVo {
     private Page<TbContactVo> tbContactVoList;
 
     /**  3、归属组织信息 */
-
+    private Page<PsonOrgVo> psonOrgVoList;
 
     /**  4、工作履历信息 */
 

@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.personnel.service;
 import cn.ffcs.uoo.core.personnel.entity.TbPersonnel;
 import cn.ffcs.uoo.core.personnel.vo.PersonnelOrgVo;
 import cn.ffcs.uoo.core.personnel.vo.PersonnelRelationInfoVo;
+import cn.ffcs.uoo.core.personnel.vo.PsonOrgVo;
 import cn.ffcs.uoo.core.personnel.vo.TbPersonnelVo;
 import com.baomidou.mybatisplus.service.IService;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -35,4 +36,10 @@ public interface TbPersonnelService extends IService<TbPersonnel> {
      * @return
      */
     public Long getPsnCodeId();
+
+    /**
+     * 人员归属组织
+     * @return
+     */
+    public Page<PsonOrgVo> selectPsonOrgPage(PsonOrgVo psonOrgVo);
 }

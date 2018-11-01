@@ -44,11 +44,12 @@
         SET
         STATUS_CD = 1100
         WHERE
+        1 = 1
         <if test="eduId != null and eduId != '' ">
-            EDU_ID = #{eduId}
+            and EDU_ID = #{eduId}
         </if>
         <if test="personnelId != null and personnelId != '' ">
-            PERSONNEL_ID = #{personnelId}
+            and PERSONNEL_ID = #{personnelId}
         </if>
     </update>
 

@@ -5,6 +5,7 @@ import cn.ffcs.uoo.core.personnel.entity.TbPersonnel;
 import cn.ffcs.uoo.core.personnel.service.TbPersonnelService;
 import cn.ffcs.uoo.core.personnel.vo.PersonnelOrgVo;
 import cn.ffcs.uoo.core.personnel.vo.PersonnelRelationInfoVo;
+import cn.ffcs.uoo.core.personnel.vo.PsonOrgVo;
 import cn.ffcs.uoo.core.personnel.vo.TbPersonnelVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -55,4 +56,13 @@ public class TbPersonnelServiceImpl extends ServiceImpl<TbPersonnelMapper, TbPer
 
     @Override
     public Long getPsnCodeId(){ return baseMapper.getPsnCodeId();}
+
+    @Override
+    public Page<PsonOrgVo> selectPsonOrgPage(PsonOrgVo psonOrgVo){
+        Page<PsonOrgVo> page = new Page<PsonOrgVo>(psonOrgVo.getPageNo()==0?1:psonOrgVo.getPageNo()
+                ,psonOrgVo.getPageSize()==0?10:psonOrgVo.getPageSize());
+        List<PsonOrgVo> list = baseMapper.getPsnOrg(page, psonOrgVo);
+        page.setRecords(list);
+        return page;
+    }
 }
