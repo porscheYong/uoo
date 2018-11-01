@@ -9,14 +9,14 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author wudj
  * @since 2018-10-11
  */
-@TableName("TB_SLVACCT_USER_REF")
-public class TbSlvacctUserRef extends Model<TbSlvacctUserRef> {
+@TableName("TB_SLVACCT_USER_REL")
+public class TbSlvacctUserRel extends Model<TbSlvacctUserRel> {
 
     private static final long serialVersionUID = 1L;
 
@@ -146,16 +146,16 @@ public class TbSlvacctUserRef extends Model<TbSlvacctUserRef> {
 
     @Override
     public String toString() {
-        return "TbSlvacctUserRef{" +
-        ", slvacctUserId=" + slvacctUserId +
-        ", userId=" + userId +
-        ", slaveAcctId=" + slaveAcctId +
-        ", statusCd=" + statusCd +
-        ", createDate=" + createDate +
-        ", createUser=" + createUser +
-        ", updateDate=" + updateDate +
-        ", updateUser=" + updateUser +
-        ", statusDate=" + statusDate +
-        "}";
+        return "{" +
+                ", slvacctUserId=" + slvacctUserId +
+                ", userId=" + userId +
+                ", slaveAcctId=" + slaveAcctId +
+                ", statusCd=" + statusCd +
+                ", createDate=" + createDate +
+                ", createUser=" + createUser +
+                ", updateDate=" + updateDate +
+                ", updateUser=" + updateUser +
+                ", statusDate=" + statusDate +
+                "}";
     }
 }

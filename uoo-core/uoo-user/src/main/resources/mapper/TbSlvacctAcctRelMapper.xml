@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.ffcs.uoo.core.user.dao.TbSlvacctUserRefMapper">
+<mapper namespace="cn.ffcs.uoo.core.user.dao.TbSlvacctAcctRelMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.user.entity.TbSlvacctUserRef">
-        <id column="SLVACCT_USER_ID" property="slvacctUserId" />
-        <result column="USER_ID" property="userId" />
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.user.entity.TbSlvacctAcctRel">
+        <id column="SLVACCT_ACCT_ID" property="slvacctAcctId" />
+        <result column="ACCT_ID" property="acctId" />
         <result column="SLAVE_ACCT_ID" property="slaveAcctId" />
         <result column="STATUS_CD" property="statusCd" />
         <result column="CREATE_DATE" property="createDate" />
@@ -17,7 +17,11 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        SLVACCT_USER_ID, USER_ID, SLAVE_ACCT_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        SLVACCT_ACCT_ID, ACCT_ID, SLAVE_ACCT_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
+
+    <select id="getId" resultType="java.lang.Long">
+        select SEQ_TB_SLVACCT_ACCT_ID.nextval from dual
+    </select>
 
 </mapper>

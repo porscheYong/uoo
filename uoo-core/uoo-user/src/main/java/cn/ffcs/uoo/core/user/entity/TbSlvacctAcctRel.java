@@ -7,33 +7,37 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * <p>
- * 用户表
+ * 从账号主账号关系
  * </p>
  *
  * @author zhanglu
  * @since 2018-09-14
  */
-@TableName("tb_user")
+@TableName("tb_slvacct_acct_rel")
 @Data
-public class TbUser extends Model<TbUser> {
+public class TbSlvacctAcctRel extends Model<TbSlvacctAcctRel> {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户标识
+     * 从账号主账号关系标识
      */
-    @TableId("USER_ID")
-    private String userId;
+    @TableId("SLVACCT_ACCT_ID")
+    private Long slvacctAcctId;
     /**
-     * 人员标识
+     * 主账号标识
      */
-    @TableField("PERSONNEL_ID")
-    private Long personnelId;
+    @TableField("ACCT_ID")
+    private Long acctId;
+    /**
+     * 从账号标识
+     */
+    @TableField("SLAVE_ACCT_ID")
+    private Long slaveAcctId;
     /**
      * 状态
      */
@@ -48,7 +52,7 @@ public class TbUser extends Model<TbUser> {
      * 创建人
      */
     @TableField("CREATE_USER")
-    private BigDecimal createUser;
+    private Long createUser;
     /**
      * 修改时间
      */
@@ -58,7 +62,7 @@ public class TbUser extends Model<TbUser> {
      * 修改人
      */
     @TableField("UPDATE_USER")
-    private BigDecimal updateUser;
+    private Long updateUser;
     /**
      * 状态变更的时间
      */
@@ -66,22 +70,24 @@ public class TbUser extends Model<TbUser> {
     private Date statusDate;
 
 
+
     @Override
     protected Serializable pkVal() {
-        return this.userId;
+        return this.slvacctAcctId;
     }
 
     @Override
     public String toString() {
-        return "TbUser{" +
-        ", userId=" + userId +
-        ", personnelId=" + personnelId +
-        ", statusCd=" + statusCd +
-        ", createDate=" + createDate +
-        ", createUser=" + createUser +
-        ", updateDate=" + updateDate +
-        ", updateUser=" + updateUser +
-        ", statusDate=" + statusDate +
-        "}";
+        return "TbSlvacctAcctRef{" +
+                ", slvacctAcctId=" + slvacctAcctId +
+                ", acctId=" + acctId +
+                ", slaveAcctId=" + slaveAcctId +
+                ", statusCd=" + statusCd +
+                ", createDate=" + createDate +
+                ", createUser=" + createUser +
+                ", updateDate=" + updateDate +
+                ", updateUser=" + updateUser +
+                ", statusDate=" + statusDate +
+                "}";
     }
 }

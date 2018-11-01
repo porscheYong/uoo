@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -14,10 +15,11 @@ import java.util.Date;
  * 从账号
  * </p>
  *
- * @author zhanglu
- * @since 2018-09-14
+ * @author wudj
+ * @since 2018-10-30
  */
 @TableName("tb_slave_acct")
+@Data
 public class TbSlaveAcct extends Model<TbSlaveAcct> {
 
     private static final long serialVersionUID = 1L;
@@ -26,7 +28,7 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
      * 从账号标识
      */
     @TableId("SLAVE_ACCT_ID")
-    private BigDecimal slaveAcctId;
+    private Long slaveAcctId;
     /**
      * 从账号
      */
@@ -43,6 +45,11 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
     @TableField("PASSWORD")
     private String password;
     /**
+     * 来源
+     */
+    @TableField("SOURCE")
+    private String source;
+    /**
      * 密码可被解密的
      */
     @TableField("SYMMETRY_PASSWORD")
@@ -53,10 +60,10 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
     @TableField("SLAVE_ACCT_TYPE")
     private String slaveAcctType;
     /**
-     * 资源标识
+     * 业务系统标识
      */
-    @TableField("RESOURCE_ID")
-    private BigDecimal resourceId;
+    @TableField("BUSINESS_SYSTEM_ID")
+    private Long businessSystemId;
     /**
      * 状态
      */
@@ -71,7 +78,7 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
      * 创建人
      */
     @TableField("CREATE_USER")
-    private BigDecimal createUser;
+    private Long createUser;
     /**
      * 修改时间
      */
@@ -81,117 +88,13 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
      * 修改人
      */
     @TableField("UPDATE_USER")
-    private BigDecimal updateUser;
+    private Long updateUser;
     /**
      * 状态变更的时间
      */
     @TableField("STATUS_DATE")
     private Date statusDate;
 
-
-    public BigDecimal getSlaveAcctId() {
-        return slaveAcctId;
-    }
-
-    public void setSlaveAcctId(BigDecimal slaveAcctId) {
-        this.slaveAcctId = slaveAcctId;
-    }
-
-    public String getSlaveAcct() {
-        return slaveAcct;
-    }
-
-    public void setSlaveAcct(String slaveAcct) {
-        this.slaveAcct = slaveAcct;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getSymmetryPassword() {
-        return symmetryPassword;
-    }
-
-    public void setSymmetryPassword(String symmetryPassword) {
-        this.symmetryPassword = symmetryPassword;
-    }
-
-    public String getSlaveAcctType() {
-        return slaveAcctType;
-    }
-
-    public void setSlaveAcctType(String slaveAcctType) {
-        this.slaveAcctType = slaveAcctType;
-    }
-
-    public BigDecimal getResourceId() {
-        return resourceId;
-    }
-
-    public void setResourceId(BigDecimal resourceId) {
-        this.resourceId = resourceId;
-    }
-
-    public String getStatusCd() {
-        return statusCd;
-    }
-
-    public void setStatusCd(String statusCd) {
-        this.statusCd = statusCd;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public BigDecimal getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(BigDecimal createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public BigDecimal getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(BigDecimal updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    public Date getStatusDate() {
-        return statusDate;
-    }
-
-    public void setStatusDate(Date statusDate) {
-        this.statusDate = statusDate;
-    }
 
     @Override
     protected Serializable pkVal() {
@@ -207,7 +110,7 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
         ", password=" + password +
         ", symmetryPassword=" + symmetryPassword +
         ", slaveAcctType=" + slaveAcctType +
-        ", resourceId=" + resourceId +
+        ", businessSystemId=" + businessSystemId +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
         ", createUser=" + createUser +

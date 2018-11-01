@@ -10,10 +10,12 @@ import java.util.List;
  * 主账号 服务类
  * </p>
  *
- * @author zhanglu
- * @since 2018-09-14
+ * @author wudj
+ * @since 2018-10-24
  */
 public interface TbAcctService extends IService<TbAcct> {
+
+    public Long getId();
 
     /**
      * 保存主账号

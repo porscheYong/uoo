@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface TbAcctExtService extends IService<TbAcctExt> {
 
-    long saveAcctExt(TbAcctExt tbAcctExt);
-
     void removeAcctExt(TbAcctExt tbAcctExt);
+
+    Long getId();
 }

@@ -1,6 +1,6 @@
 package cn.ffcs.uoo.core.user.service;
 
-import cn.ffcs.uoo.core.user.entity.TbSlvacctUserRef;
+import cn.ffcs.uoo.core.user.entity.TbSlvacctUserRel;
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -11,6 +11,8 @@ import com.baomidou.mybatisplus.service.IService;
  * @author wudj
  * @since 2018-10-11
  */
-public interface TbSlvacctUserRefService extends IService<TbSlvacctUserRef> {
+public interface TbSlvacctUserRelService extends IService<TbSlvacctUserRel> {
+
+    public Long getId();
 
 }

@@ -1,6 +1,6 @@
 package cn.ffcs.uoo.core.user.dao;
 
-import cn.ffcs.uoo.core.user.entity.TbSlvacctAcctRef;
+import cn.ffcs.uoo.core.user.entity.TbSlvacctAcctRel;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,8 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @author zhanglu
  * @since 2018-09-14
  */
-public interface TbSlvacctAcctRefMapper extends BaseMapper<TbSlvacctAcctRef> {
+public interface TbSlvacctAcctRelMapper extends BaseMapper<TbSlvacctAcctRel> {
+
+    public Long getId();
 
 }

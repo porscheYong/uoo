@@ -2,8 +2,11 @@ package cn.ffcs.uoo.core.user.controller;
 
 
 import cn.ffcs.uoo.base.controller.BaseController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * <p>
@@ -17,6 +20,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/tbAcctExt")
 public class TbAcctExtController extends BaseController {
 
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @GetMapping("/msg")
+    public String getMsg(){
+        return "sdfsdfsdfsdfs";
+    }
+
+    @GetMapping("/personnel")
+    public Object getPersonnel(){
+        return restTemplate.getForObject(
+                "http://PERSONNEL-SERVICE/personnel/getPage/pageNo=1&pageSize=20",
+                Object.class
+                );
+    }
 
 }
 
