@@ -121,7 +121,7 @@ public class TbAreaCodeController extends BaseController {
     @PostMapping("deleteAreaCode")
     @Transactional
     public ResponseResult deleteAreaCode(TbAreaCode areaCode) {
-        if(areaCode==null){
+        if(areaCode==null||areaCode.getAreaCodeId()==null){
             return ResponseResult.createErrorResult("不能删除空数据");
         }
         TbAreaCode ac=new TbAreaCode();

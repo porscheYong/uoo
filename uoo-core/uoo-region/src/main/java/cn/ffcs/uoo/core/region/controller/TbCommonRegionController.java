@@ -121,7 +121,7 @@ public class TbCommonRegionController extends BaseController {
     @SuppressWarnings("unchecked")
     public ResponseResult deleteCommonRegion(TbCommonRegion commonRegion) {
         //
-        if(commonRegion==null){
+        if(commonRegion==null||commonRegion.getCommonRegionId()==null){
             return ResponseResult.createErrorResult("不能删除空数据");
         }
         //有没有下级

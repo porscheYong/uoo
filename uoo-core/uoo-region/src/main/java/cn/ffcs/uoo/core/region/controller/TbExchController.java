@@ -121,7 +121,7 @@ public class TbExchController extends BaseController {
     @PostMapping("deleteExch")
     @Transactional
     public ResponseResult deleteExch(TbExch exch) {
-        if(exch==null){
+        if(exch==null||exch.getExchId()==null){
             return ResponseResult.createErrorResult("不能删除空数据");
         }
         TbExch ac=new TbExch();

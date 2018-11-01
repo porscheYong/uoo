@@ -110,7 +110,7 @@ public class TbPoliticalLocationController extends BaseController {
     @Transactional(rollbackFor=Exception.class)
     public ResponseResult deletePoliticalLocation(TbPoliticalLocation polLoc) {
         //
-        if(polLoc==null){
+        if(polLoc==null||polLoc.getLocId()==null){
             return ResponseResult.createErrorResult("不能删除空数据");
         }
         //有下级也不能删除
