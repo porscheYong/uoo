@@ -69,7 +69,7 @@ public class TbCommonRegionController extends BaseController {
     @PostMapping("addCommonRegion")
     @Transactional
     public ResponseResult addCommonRegion(TbCommonRegion commonRegion) {
-        // TODO 数据校验  获取操作者
+        //  数据校验  获取操作者
         //查询上级是否存在 -1为最顶层
         
         if(commonRegion.getUpRegionId()!=null){
@@ -94,7 +94,11 @@ public class TbCommonRegionController extends BaseController {
     @PostMapping("updateCommonRegion")
     @Transactional
     public ResponseResult updateCommonRegion(TbCommonRegion commonRegion) {
-        // TODO 数据校验 获取操作者
+        Long id = commonRegion.getCommonRegionId();
+        if(id==null||regionService.selectById(id)==null){
+            return ResponseResult.createErrorResult("修改数据异常");
+        }
+        //  数据校验 获取操作者
         if(commonRegion.getUpRegionId()!=null){
             TbCommonRegion region = regionService.selectById(commonRegion.getUpRegionId());
             if(region==null){
@@ -102,7 +106,7 @@ public class TbCommonRegionController extends BaseController {
             }
         }
         commonRegion.setUpdateDate(new Date());
-        commonRegion.setStatusDate(new Date());
+        //commonRegion.setStatusDate(new Date());
         
         regionService.updateById(commonRegion);
         return ResponseResult.createSuccessResult("success");
@@ -132,7 +136,7 @@ public class TbCommonRegionController extends BaseController {
         }
         List<TbExch> exchDatas=exchSvc.selectList(Condition.create().eq("COMMON_REGION_ID", commonRegion.getCommonRegionId()).eq("STATUS_CD",DeleteConsts.VALID));
         if(exchDatas!=null&&!exchDatas.isEmpty()){
-            return ResponseResult.createErrorResult("当前区域有区号信息依赖，请先修改区号信息");
+            return ResponseResult.createErrorResult("当前区域有局向信息依赖，请先修改局向信息");
         }
         TbCommonRegion r=new TbCommonRegion();
         r.setCommonRegionId(commonRegion.getCommonRegionId());

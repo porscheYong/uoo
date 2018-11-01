@@ -44,9 +44,9 @@ public class TbPoliticalLocationController extends BaseController {
     
     @SuppressWarnings("unchecked")
     @ApiOperation(value = "行政区域列表", notes = "行政区域列表")
-    @UooLog(value = "行政区域列表", key = "listAllCommonRegion")
-    @GetMapping("listAllCommonRegion")
-    public ResponseResult listAllCommonRegion() {
+    @UooLog(value = "行政区域列表", key = "listAllPoliticalLocation")
+    @GetMapping("listAllPoliticalLocation")
+    public ResponseResult listAllPoliticalLocation() {
         //只查询有效的
         Wrapper<TbPoliticalLocation> wrapper = Condition.create().eq("STATUS_CD",DeleteConsts.VALID);
         List<TbPoliticalLocation> list = polLocSvc.selectList(wrapper);
@@ -57,11 +57,11 @@ public class TbPoliticalLocationController extends BaseController {
     @ApiOperation(value = "新增行政区域", notes = "新增行政区域")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "polLoc", value = "行政区域信息", required = true, dataType = "TbPoliticalLocation"), })
-    @UooLog(value = "新增行政区域", key = "addCommonRegion")
-    @PostMapping("addCommonRegion")
+    @UooLog(value = "新增行政区域", key = "addPoliticalLocation")
+    @PostMapping("addPoliticalLocation")
     @Transactional
-    public ResponseResult addCommonRegion(TbPoliticalLocation polLoc) {
-        // TODO 数据校验  获取操作者
+    public ResponseResult addPoliticalLocation(TbPoliticalLocation polLoc) {
+        // 数据校验  获取操作者
         //查询上级是否存在  
         if(polLoc.getUpLocId()!=null&&polLoc.getUpLocId().longValue()!=0){
             TbPoliticalLocation region = polLocSvc.selectById(polLoc.getUpLocId());
@@ -84,7 +84,11 @@ public class TbPoliticalLocationController extends BaseController {
     @PostMapping("updatePoliticalLocation")
     @Transactional
     public ResponseResult updatePoliticalLocation(TbPoliticalLocation polLoc) {
-        // TODO 数据校验 获取操作者
+        Long id = polLoc.getLocId();
+        if(id==null||polLocSvc.selectById(id)==null){
+            return ResponseResult.createErrorResult("修改数据异常");
+        }
+        // 数据校验 获取操作者
         if(polLoc.getUpLocId()!=null&&polLoc.getUpLocId().longValue()!=0){
             TbPoliticalLocation region = polLocSvc.selectById(polLoc.getUpLocId());
             if(region==null){
@@ -123,7 +127,7 @@ public class TbPoliticalLocationController extends BaseController {
         polLocSvc.updateById(r);
         Wrapper<TbRegionLocationRel> wrapper = Condition.create().eq("LOC_ID", polLoc.getLocId());
         regLocRelSvc.delete(wrapper);
-        //polLocSvc.deleteById(polLoc.getCommonRegionId());
+        //polLocSvc.deleteById(polLoc.getPoliticalLocationId());
         return ResponseResult.createSuccessResult("success");
     }
 }
