@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.base.auth.mapper.UserLoginHisMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="cn.ffcs.uoo.base.auth.entity.UserLoginHis">
+		<id column="LOGIN_HIS_ID" property="loginHisId" />
+		<result column="LOGIN_ACCOUNT_ID" property="loginAccountId" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="ACCOUNT" property="account" />
+		<result column="PWD_SMS_TEL" property="pwdSmsTel" />
+		<result column="PWD_SMS_CODE" property="pwdSmsCode" />
+		<result column="REGION_ID" property="regionId" />
+		<result column="SYSTEM_INFO_ID" property="systemInfoId" />
+		<result column="LOGIN_LIMIT_IP_VAL" property="loginLimitIpVal" />
+		<result column="LOGIN_LIMIT_MAC_VAL" property="loginLimitMacVal" />
+		<result column="LOGIN_METHOD" property="loginMethod" />
+		<result column="STATUS_CD" property="statusCd" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		LOGIN_HIS_ID, LOGIN_ACCOUNT_ID, CREATE_DATE, ACCOUNT, PWD_SMS_TEL, PWD_SMS_CODE,
+		REGION_ID, SYSTEM_INFO_ID, LOGIN_LIMIT_IP_VAL, LOGIN_LIMIT_MAC_VAL,
+		LOGIN_METHOD, STATUS_CD
+	</sql>
+	<select id="getId" resultType="java.lang.Long">
+		SELECT SEQ_TB_USER_LOGIN_HIS.nextval FROM dual
+	</select>
+</mapper>

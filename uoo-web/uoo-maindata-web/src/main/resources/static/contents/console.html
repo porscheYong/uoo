@@ -6,8 +6,8 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <link href="../layuiadmin/layui/css/layui.css" rel="stylesheet" media="all">
-  <link href="../layuiadmin/style/admin.css" rel="stylesheet" media="all">
+  <link href="../vendors/layuiadmin/layui/css/layui.css" rel="stylesheet" media="all">
+  <link href="../vendors/layuiadmin/style/admin.css" rel="stylesheet" media="all">
 <link id="layuicss-layer" href="https://www.layui.com/admin/std/dist/layuiadmin/layui/css/modules/layer/default/layer.css?v=3.1.1" rel="stylesheet" media="all">
 </head>
 
@@ -208,106 +208,6 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="layui-col-md4">
-        <div class="layui-card">
-          <div class="layui-card-header">版本信息</div>
-          <div class="layui-card-body layui-text">
-            <table class="layui-table">
-              <colgroup>
-                <col width="100">
-                <col>
-              </colgroup>
-              <tbody>
-                <tr>
-                  <td>当前版本</td>
-                  <td>
-                    <script type="text/html" template="">
-                      v{{ layui.admin.v }}
-                      <a href="http://fly.layui.com/docs/3/" target="_blank" style="padding-left: 15px;">更新日志</a>
-                    </script> v1.1.0 std <a style="padding-left: 15px;" href="http://fly.layui.com/docs/3/" target="_blank">更新日志</a> 
-                  </td>
-                </tr>
-                <tr>
-                  <td>基于框架</td>
-                  <td>
-                    <script type="text/html" template="">
-                      layui-v{{ layui.v }}
-                    </script> layui-v2.4.3 
-                 </td>
-                </tr>
-                <tr>
-                  <td>主要特色</td>
-                  <td>零门槛 / 响应式 / 清爽 / 极简</td>
-                </tr>
-                <tr>
-                  <td>获取渠道</td>
-                  <td style="padding-bottom: 0px;">
-                    <div class="layui-btn-container">
-                      <a class="layui-btn layui-btn-danger" href="http://www.layui.com/admin/" target="_blank">获取授权</a>
-                      <a class="layui-btn" href="http://fly.layui.com/download/layuiAdmin/" target="_blank">立即下载</a>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        
-        <div class="layui-card">
-          <div class="layui-card-header">效果报告</div>
-          <div class="layui-card-body layadmin-takerates">
-            <div class="layui-progress" lay-showpercent="yes">
-              <h3>转化率（日同比 28% <span class="layui-edge layui-edge-top" lay-tips="增长" lay-offset="-15"></span>）</h3>
-              <div class="layui-progress-bar" style="width: 65%;" lay-percent="65%"><span class="layui-progress-text">65%</span></div>
-            </div>
-            <div class="layui-progress" lay-showpercent="yes">
-              <h3>签到率（日同比 11% <span class="layui-edge layui-edge-bottom" lay-tips="下降" lay-offset="-15"></span>）</h3>
-              <div class="layui-progress-bar" style="width: 32%;" lay-percent="32%"><span class="layui-progress-text">32%</span></div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="layui-card">
-          <div class="layui-card-header">实时监控</div>
-          <div class="layui-card-body layadmin-takerates">
-            <div class="layui-progress" lay-showpercent="yes">
-              <h3>CPU使用率</h3>
-              <div class="layui-progress-bar" style="width: 58%;" lay-percent="58%"><span class="layui-progress-text">58%</span></div>
-            </div>
-            <div class="layui-progress" lay-showpercent="yes">
-              <h3>内存占用率</h3>
-              <div class="layui-progress-bar layui-bg-red" style="width: 90%;" lay-percent="90%"><span class="layui-progress-text">90%</span></div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="layui-card">
-          <div class="layui-card-header">产品动态</div>
-          <div class="layui-card-body">
-            <div class="layui-carousel layadmin-carousel layadmin-news" style="width: 100%; height: 280px;" lay-arrow="none" lay-indicator="inside" lay-anim="fade" lay-filter="news" data-anim="fade" data-autoplay="true">
-              <div carousel-item="">
-                <div><a class="layui-bg-red" href="http://fly.layui.com/docs/2/" target="_blank">layuiAdmin 快速上手文档</a></div>
-                <div><a class="layui-bg-green" href="http://fly.layui.com/vipclub/list/layuiadmin/" target="_blank">layuiAdmin 会员讨论专区</a></div> 
-                <div class="layui-this"><a class="layui-bg-blue" href="http://www.layui.com/admin/#get" target="_blank">获得 layui 官方后台模板系统</a></div>
-              </div>
-            <div class="layui-carousel-ind"><ul><li></li><li></li><li class="layui-this"></li></ul></div><button class="layui-icon layui-carousel-arrow" lay-type="sub"></button><button class="layui-icon layui-carousel-arrow" lay-type="add"></button></div>
-          </div>
-        </div>
-
-        <div class="layui-card">
-          <div class="layui-card-header">
-            作者心语
-            <i class="layui-icon layui-icon-tips" lay-tips="要支持的噢" lay-offset="5"></i>
-          </div>
-          <div class="layui-card-body layui-text layadmin-text">
-            <p>一直以来，layui 秉承无偿开源的初心，虔诚致力于服务各层次前后端 Web 开发者，在商业横飞的当今时代，这一信念从未动摇。即便身单力薄，仍然重拾决心，埋头造轮，以尽可能地填补产品本身的缺口。</p>
-            <p>在过去的一段的时间，我一直在寻求持久之道，已维持你眼前所见的一切。而 layuiAdmin 是我们尝试解决的手段之一。我相信真正有爱于 layui 生态的你，定然不会错过这一拥抱吧。</p>
-            <p>子曰：君子不用防，小人防不住。请务必通过官网正规渠道，获得 <a href="http://www.layui.com/admin/" target="_blank">layuiAdmin</a>！</p>
-            <p>—— 贤心（<a href="http://www.layui.com/" target="_blank">layui.com</a>）</p>
           </div>
         </div>
       </div>
