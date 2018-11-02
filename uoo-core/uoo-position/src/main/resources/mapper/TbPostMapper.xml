@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.position.dao.TbPostMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.position.entity.TbPost">
+        <id column="POST_ID" property="postId" />
+        <result column="PARENT_POST_ID" property="parentPostId" />
+        <result column="POST_NAME" property="postName" />
+        <result column="POST_TYPE" property="postType" />
+        <result column="EFF_DATE" property="effDate" />
+        <result column="EXP_DATE" property="expDate" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        POST_ID, PARENT_POST_ID, POST_NAME, POST_TYPE, EFF_DATE, EXP_DATE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+    <insert id="save" parameterType="cn.ffcs.uoo.core.position.entity.TbPost">
+        <selectKey keyProperty="postId" resultType="java.lang.Long" order="BEFORE">
+            SELECT SEQ_POST_ID.NEXTVAL FROM dual
+        </selectKey>
+        insert into TB_POST
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                POST_ID,
+            <if test="parentPostId != null">
+                PARENT_POST_ID,
+            </if>
+            <if test="postName != null">
+                POST_NAME,
+            </if>
+            <if test="postType != null">
+                POST_TYPE,
+            </if>
+            <if test="effDate != null">
+                EFF_DATE,
+            </if>
+            <if test="expDate != null">
+                EXP_DATE,
+            </if>
+            <if test="statusCd != null">
+                STATUS_CD,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="createUser != null">
+                CREATE_USER,
+            </if>
+            <if test="updateDate != null">
+                UPDATE_DATE,
+            </if>
+            <if test="updateUser != null">
+                UPDATE_USER,
+            </if>
+            <if test="statusDate != null">
+                STATUS_DATE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                #{postId,jdbcType=DECIMAL},
+            <if test="parentPostId != null">
+                #{parentPostId,jdbcType=DECIMAL},
+            </if>
+            <if test="postName != null">
+                #{postName,jdbcType=VARCHAR},
+            </if>
+            <if test="postType != null">
+                #{postType,jdbcType=VARCHAR},
+            </if>
+            <if test="effDate != null">
+                #{effDate,jdbcType=DATE},
+            </if>
+            <if test="expDate != null">
+                #{expDate,jdbcType=DATE},
+            </if>
+            <if test="statusCd != null">
+                #{statusCd,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=DATE},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=DECIMAL},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=DATE},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=DECIMAL},
+            </if>
+            <if test="statusDate != null">
+                #{statusDate,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="remove" parameterType="cn.ffcs.uoo.core.position.entity.TbPost">
+        UPDATE TB_POST
+        SET STATUS_CD=#{statusCd},UPDATE_DATE=#{updateDate},UPDATE_USER=#{updateUser},STATUS_DATE=#{statusDate}
+        WHERE POST_ID=#{postId}
+    </update>
+    
+    <select id="queryPostListByOrgId" resultType="OrgPostInfoVo">
+        SELECT R.ORG_POST_ID,
+           R.POST_ID,
+           R.ORG_ID,
+           P.PARENT_POST_ID,
+           P.POST_NAME,
+           P.POST_TYPE
+        FROM TB_POST P, TB_ORG_POST_REL R
+        WHERE P.STATUS_CD = '1000'
+        AND R.STATUS_CD = '1000'
+        AND P.POST_ID = R.POST_ID
+        AND R.ORG_ID = #{orgId}
+    </select>
+</mapper>
