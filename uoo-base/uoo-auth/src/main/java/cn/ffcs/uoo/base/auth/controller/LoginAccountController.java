@@ -2,7 +2,6 @@ package cn.ffcs.uoo.base.auth.controller;
 
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,11 +15,11 @@ import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 
-import cn.ffcs.uoo.base.auth.service.ILoginAccountService;
-import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.auth.consts.StatusCD;
 import cn.ffcs.uoo.base.auth.entity.LoginAccount;
+import cn.ffcs.uoo.base.auth.service.ILoginAccountService;
 import cn.ffcs.uoo.base.auth.vo.ResponseResult;
+import cn.ffcs.uoo.base.common.annotion.UooLog;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -100,7 +99,6 @@ public class LoginAccountController {
         if(loginAccount==null||loginAccount.getLoginAccountId()==null){
             return ResponseResult.createErrorResult("不能删除空数据");
         }
-        
         LoginAccount r=new LoginAccount();
         r.setLoginAccountId(loginAccount.getLoginAccountId());
         r.setStatusCd(StatusCD.INVALID);
