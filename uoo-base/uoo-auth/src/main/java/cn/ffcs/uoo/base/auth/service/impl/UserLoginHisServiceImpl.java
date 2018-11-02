@@ -1,13 +1,13 @@
 package cn.ffcs.uoo.base.auth.service.impl;
 
-import cn.ffcs.uoo.base.auth.entity.UserLoginHis;
-import cn.ffcs.uoo.base.auth.mapper.SysuserLoginLimitMapper;
-import cn.ffcs.uoo.base.auth.mapper.UserLoginHisMapper;
-import cn.ffcs.uoo.base.auth.service.IUserLoginHisService;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+
+import cn.ffcs.uoo.base.auth.entity.UserLoginHis;
+import cn.ffcs.uoo.base.auth.mapper.UserLoginHisMapper;
+import cn.ffcs.uoo.base.auth.service.IUserLoginHisService;
 
 /**
  * <p>

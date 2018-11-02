@@ -2,17 +2,29 @@ package cn.ffcs.uoo.core.region.vo;
 
 import java.util.List;
 
-import cn.ffcs.uoo.base.common.vo.BaseVo;
-import lombok.Data;
+import com.baomidou.mybatisplus.plugins.Page;
 
-@Data
+import cn.ffcs.uoo.base.common.vo.BaseVo;
+
 public class ResponseResult extends BaseVo{
-    public static final int STATE_OK = 1;
-    public static final int STATE_ERROR = -1;
+    public static final int STATE_OK = 1;//返回结果正常
+    public static final int STATE_ERROR = -1;//返回结果异常
 
     private int state = STATE_OK;
     private String message;
     private Object data;
+    
+    //补充分页数据
+    private long totalRecords;
+    
+    
+    public long getTotalRecords() {
+        return totalRecords;
+    }
+
+    public void setTotalRecords(long totalRecords) {
+        this.totalRecords = totalRecords;
+    }
 
     public int getState() {
         return state;
@@ -81,12 +93,13 @@ public class ResponseResult extends BaseVo{
         return result;
     }
     
-    public static ResponseResult createSuccessResult(List<? extends Object> datas, String message,int pageNo,int pageSize) {
+    public static ResponseResult createSuccessResult(List<? extends Object> datas, String message,Page<? extends Object> page) {
         ResponseResult result = new ResponseResult();
         result.setData(datas);
         result.setMessage(message);
-        result.setPageNo(pageNo);
-        result.setPageSize(pageSize);
+        result.setPageNo(page.getCurrent());
+        result.setPageSize(page.getSize());
+        result.setTotalRecords(page.getTotal());
         return result;
     }
 

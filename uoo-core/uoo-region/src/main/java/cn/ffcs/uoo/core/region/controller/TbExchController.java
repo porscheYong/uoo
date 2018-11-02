@@ -19,8 +19,8 @@ import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.region.consts.DeleteConsts;
 import cn.ffcs.uoo.core.region.entity.TbExch;
-import cn.ffcs.uoo.core.region.service.ITbExchService;
 import cn.ffcs.uoo.core.region.service.ITbCommonRegionService;
+import cn.ffcs.uoo.core.region.service.ITbExchService;
 import cn.ffcs.uoo.core.region.vo.ResponseResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -45,6 +45,20 @@ public class TbExchController extends BaseController {
     @Autowired
     private ITbCommonRegionService regionService;
     
+    @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),
+    })
+    @UooLog(value = "根据ID获取单条数据", key = "getExch")
+    @GetMapping("getExch/id={id}")
+    public ResponseResult getExch(@PathVariable(value = "id") Long id){
+        TbExch obj = exchService.selectById(id);
+        if(obj==null||!DeleteConsts.VALID.equals(obj.getStatusCd())){
+            return ResponseResult.createErrorResult("无效数据");
+        }
+        return ResponseResult.createSuccessResult(obj, "");
+    }
+    
     @ApiOperation(value = "局向列表", notes = "局向列表")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "pageNo", value = "分页的序号", required = true, dataType = "Integer",paramType="path"),
@@ -59,7 +73,7 @@ public class TbExchController extends BaseController {
         Wrapper<TbExch> wrapper = Condition.create().eq("STATUS_CD",DeleteConsts.VALID).orderBy("UPDATE_DATE", false);
         Page<TbExch> page = exchService.selectPage(new Page<TbExch>(pageNo, pageSize), wrapper);
        //  = exchService.selectPage();
-        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", pageNo, pageSize);
+        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", page);
         return result;
     }
     
