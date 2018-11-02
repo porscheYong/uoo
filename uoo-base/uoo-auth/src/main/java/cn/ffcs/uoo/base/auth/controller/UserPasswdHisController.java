@@ -15,7 +15,10 @@ import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 
+import cn.ffcs.uoo.base.auth.consts.StatusCD;
+import cn.ffcs.uoo.base.auth.entity.LoginAccount;
 import cn.ffcs.uoo.base.auth.entity.UserPasswdHis;
+import cn.ffcs.uoo.base.auth.service.ILoginAccountService;
 import cn.ffcs.uoo.base.auth.service.IUserPasswdHisService;
 import cn.ffcs.uoo.base.auth.vo.ResponseResult;
 import cn.ffcs.uoo.base.common.annotion.UooLog;
@@ -34,7 +37,8 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/auth/userPasswdHis")
 public class UserPasswdHisController {
-
+    @Autowired
+    private ILoginAccountService loginAccountService;
     @Autowired
     private IUserPasswdHisService userPasswdHisService;
     
@@ -63,7 +67,14 @@ public class UserPasswdHisController {
     @Transactional
     public ResponseResult addUserPasswdHis(UserPasswdHis userPasswdHis) {
         //  数据校验  获取操作者
-        
+        Long loginAccountId = userPasswdHis.getLoginAccountId();
+        if(loginAccountId==null){
+            return ResponseResult.createErrorResult("请输入系统用户标识");
+        }
+        LoginAccount loginAccount = loginAccountService.selectById(loginAccountId);
+        if(loginAccount==null||!StatusCD.VALID.equals(loginAccount.getStatusCd())){
+            return ResponseResult.createErrorResult("无效的系统用户标识");
+        }
         userPasswdHis.setCreateDate(new Date());
         userPasswdHis.setPasswdHisId(userPasswdHisService.getId());
         userPasswdHisService.insert(userPasswdHis);
@@ -79,6 +90,14 @@ public class UserPasswdHisController {
         Long id = userPasswdHis.getPasswdHisId();
         if(id==null||userPasswdHisService.selectById(id)==null){
             return ResponseResult.createErrorResult("修改数据异常");
+        }
+        Long loginAccountId = userPasswdHis.getLoginAccountId();
+        if(loginAccountId==null){
+            return ResponseResult.createErrorResult("请输入系统用户标识");
+        }
+        LoginAccount loginAccount = loginAccountService.selectById(loginAccountId);
+        if(loginAccount==null||!StatusCD.VALID.equals(loginAccount.getStatusCd())){
+            return ResponseResult.createErrorResult("无效的系统用户标识");
         }
         //userPasswdHis.setUpdateDate(new Date());
         userPasswdHisService.updateById(userPasswdHis);
