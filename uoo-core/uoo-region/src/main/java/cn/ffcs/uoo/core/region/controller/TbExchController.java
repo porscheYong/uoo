@@ -52,7 +52,7 @@ public class TbExchController extends BaseController {
     })
     @UooLog(value = "局向列表", key = "listExch")
     @GetMapping("listExch/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listCommonRegion(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize) {
+    public ResponseResult listExch(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize) {
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         @SuppressWarnings("unchecked")
@@ -121,7 +121,7 @@ public class TbExchController extends BaseController {
     @PostMapping("deleteExch")
     @Transactional
     public ResponseResult deleteExch(TbExch exch) {
-        if(exch==null){
+        if(exch==null||exch.getExchId()==null){
             return ResponseResult.createErrorResult("不能删除空数据");
         }
         TbExch ac=new TbExch();

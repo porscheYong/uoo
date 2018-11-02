@@ -50,7 +50,7 @@ public class TbAreaCodeController extends BaseController {
     })
     @UooLog(value = "区号列表", key = "listAreaCode")
     @GetMapping("listAreaCode/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listCommonRegion(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize) {
+    public ResponseResult listAreaCode(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize) {
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         @SuppressWarnings("unchecked")
@@ -121,7 +121,7 @@ public class TbAreaCodeController extends BaseController {
     @PostMapping("deleteAreaCode")
     @Transactional
     public ResponseResult deleteAreaCode(TbAreaCode areaCode) {
-        if(areaCode==null){
+        if(areaCode==null||areaCode.getAreaCodeId()==null){
             return ResponseResult.createErrorResult("不能删除空数据");
         }
         TbAreaCode ac=new TbAreaCode();

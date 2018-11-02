@@ -147,6 +147,9 @@ public class TbRegionLocationRelController extends BaseController {
     @Transactional(rollbackFor=Exception.class)
     public ResponseResult deleteRegionLocationRel(TbRegionLocationRel regionLocationRel) {
         Long id = regionLocationRel.getRegionLocRelId();
+        if(id==null){
+            return ResponseResult.createErrorResult("不能删除空数据");
+        }
         relSvc.deleteById(id);
         return ResponseResult.createSuccessResult("success");
     }
