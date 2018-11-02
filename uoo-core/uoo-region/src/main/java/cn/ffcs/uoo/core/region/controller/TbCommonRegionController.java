@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,6 +51,20 @@ public class TbCommonRegionController extends BaseController {
     @Autowired
     private ITbExchService exchSvc;
 
+    @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),
+    })
+    @UooLog(value = "根据ID获取单条数据", key = "getCommonRegion")
+    @GetMapping("getCommonRegion/id={id}")
+    public ResponseResult getCommonRegion(@PathVariable(value = "id") Long id){
+        TbCommonRegion obj = regionService.selectById(id);
+        if(obj==null||!DeleteConsts.VALID.equals(obj.getStatusCd())){
+            return ResponseResult.createErrorResult("无效数据");
+        }
+        return ResponseResult.createSuccessResult(obj, "");
+    }
+    
     @ApiOperation(value = "公共管理区域列表", notes = "公共管理区域列表")
     @UooLog(value = "公共管理区域列表", key = "listAllCommonRegion")
     @GetMapping("listAllCommonRegion")

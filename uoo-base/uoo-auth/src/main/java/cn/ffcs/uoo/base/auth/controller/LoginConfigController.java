@@ -39,6 +39,22 @@ public class LoginConfigController {
     @Autowired
     private ILoginAccountService loginAccountService;
     
+    
+    @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),
+    })
+    @UooLog(value = "根据ID获取单条数据", key = "getLoginConfig")
+    @GetMapping("getLoginConfig/id={id}")
+    public ResponseResult getLoginConfig(@PathVariable(value = "id") Long id){
+        LoginConfig obj = loginConfigService.selectById(id);
+        if(obj==null ){
+            return ResponseResult.createErrorResult("无效数据");
+        }
+        return ResponseResult.createSuccessResult(obj, "");
+    }
+    
+    
     @ApiOperation(value = "系统用户登录配置列表", notes = "系统用户登录配置列表")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "pageNo", value = "分页的序号", required = true, dataType = "Integer",paramType="path"),
@@ -51,7 +67,7 @@ public class LoginConfigController {
         pageSize = pageSize==null?20:pageSize;
         //Wrapper<LoginConfig> wrapper = Condition.create().eq("STATUS_CD",StatusCD.VALID)/*.orderBy("UPDATE_DATE", false)*/;
         Page<LoginConfig> page = loginConfigService.selectPage(new Page<LoginConfig>(pageNo, pageSize)/*, wrapper*/);
-        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", pageNo, pageSize);
+        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", page);
         return result;
     }
 

@@ -42,6 +42,20 @@ public class UserLoginHisController {
     @Autowired
     private IUserLoginHisService userLoginHisService;
     
+    @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),
+    })
+    @UooLog(value = "根据ID获取单条数据", key = "getUserLoginHis")
+    @GetMapping("getUserLoginHis/id={id}")
+    public ResponseResult getUserLoginHis(@PathVariable(value = "id") Long id){
+        UserLoginHis obj = userLoginHisService.selectById(id);
+        if(obj==null||!StatusCD.VALID.equals(obj.getStatusCd())){
+            return ResponseResult.createErrorResult("无效数据");
+        }
+        return ResponseResult.createSuccessResult(obj, "");
+    }
+    
     @ApiOperation(value = "系统用户登录历史列表", notes = "系统用户登录历史列表")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "pageNo", value = "分页的序号", required = true, dataType = "Integer",paramType="path"),
@@ -55,7 +69,7 @@ public class UserLoginHisController {
         @SuppressWarnings("unchecked")
         Wrapper<UserLoginHis> wrapper = Condition.create().eq("STATUS_CD",StatusCD.VALID).orderBy("CREATE_DATE", false);
         Page<UserLoginHis> page = userLoginHisService.selectPage(new Page<UserLoginHis>(pageNo, pageSize), wrapper);
-        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", pageNo, pageSize);
+        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", page);
         return result;
     }
 

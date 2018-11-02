@@ -42,6 +42,20 @@ public class UserPasswdHisController {
     @Autowired
     private IUserPasswdHisService userPasswdHisService;
     
+    @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),
+    })
+    @UooLog(value = "根据ID获取单条数据", key = "getUserPasswdHis")
+    @GetMapping("getUserPasswdHis/id={id}")
+    public ResponseResult getUserPasswdHis(@PathVariable(value = "id") Long id){
+        UserPasswdHis obj = userPasswdHisService.selectById(id);
+        if(obj==null){
+            return ResponseResult.createErrorResult("无效数据");
+        }
+        return ResponseResult.createSuccessResult(obj, "");
+    }
+    
     @ApiOperation(value = "系统用户历史账号密码列表", notes = "系统用户历史账号密码列表")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "pageNo", value = "分页的序号", required = true, dataType = "Integer",paramType="path"),
@@ -55,7 +69,7 @@ public class UserPasswdHisController {
         @SuppressWarnings("unchecked")
         Wrapper<UserPasswdHis> wrapper = Condition.create()/*.eq("STATUS_CD",StatusCD.VALID)*/.orderBy("CREATE_DATE", false);
         Page<UserPasswdHis> page = userPasswdHisService.selectPage(new Page<UserPasswdHis>(pageNo, pageSize), wrapper);
-        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", pageNo, pageSize);
+        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", page);
         return result;
     }
 

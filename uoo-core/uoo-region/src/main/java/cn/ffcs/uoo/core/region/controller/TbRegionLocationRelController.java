@@ -167,7 +167,7 @@ public class TbRegionLocationRelController extends BaseController {
         @SuppressWarnings("unchecked")
         Wrapper<TbRegionLocationRel> wrapper = Condition.create().eq("STATUS_CD",DeleteConsts.VALID).orderBy("UPDATE_DATE", false);
         Page<TbRegionLocationRel> page = relSvc.selectPage(new Page<TbRegionLocationRel>(pageNo, pageSize), wrapper);
-        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", pageNo, pageSize);
+        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", page);
         return result;
     }
     @ApiOperation(value = "行政区域和公用管理区域关系列表", notes = "根据公用管理区域获取行政区域和公用管理区域关系列表")
@@ -184,7 +184,7 @@ public class TbRegionLocationRelController extends BaseController {
         @SuppressWarnings("unchecked")
         Wrapper<TbRegionLocationRel> wrapper = Condition.create().eq("STATUS_CD",DeleteConsts.VALID).eq("COMMON_REGION_ID", regId).orderBy("UPDATE_DATE", false);
         Page<TbRegionLocationRel> page = relSvc.selectPage(new Page<TbRegionLocationRel>(pageNo, pageSize), wrapper);
-        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", pageNo, pageSize);
+        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", page);
         return result;
     }
     @ApiOperation(value = "行政区域和公用管理区域关系列表", notes = "根据行政区域获取行政区域和公用管理区域关系列表")
@@ -201,7 +201,7 @@ public class TbRegionLocationRelController extends BaseController {
         @SuppressWarnings("unchecked")
         Wrapper<TbRegionLocationRel> wrapper = Condition.create().eq("STATUS_CD",DeleteConsts.VALID).eq("LOC_ID", locId).orderBy("UPDATE_DATE", false);
         Page<TbRegionLocationRel> page = relSvc.selectPage(new Page<TbRegionLocationRel>(pageNo, pageSize), wrapper);
-        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", pageNo, pageSize);
+        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", page);
         return result;
     }
     @ApiOperation(value = "新增行政区域和公用管理区域关系", notes = "新增行政区域和公用管理区域关系")
@@ -283,4 +283,17 @@ public class TbRegionLocationRelController extends BaseController {
         return ResponseResult.createSuccessResult("success");
     }
     
+    @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),
+    })
+    @UooLog(value = "根据ID获取单条数据", key = "getRegionLocationRel")
+    @GetMapping("getRegionLocationRel/id={id}")
+    public ResponseResult getRegionLocationRel(@PathVariable(value = "id") Long id){
+        TbRegionLocationRel loc = relSvc.selectById(id);
+        if(loc==null||!DeleteConsts.VALID.equals(loc.getStatusCd())){
+            return ResponseResult.createErrorResult("无效数据");
+        }
+        return ResponseResult.createSuccessResult(loc, "");
+    }
 }

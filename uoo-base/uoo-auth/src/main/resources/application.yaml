@@ -22,7 +22,7 @@ eureka:
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
   #实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: ccn.ffcs.uoo.base.auth.entity
+  typeAliasesPackage: cn.ffcs.uoo.base.auth.entity
   global-config:
     id-type: 2
     field-strategy: 2

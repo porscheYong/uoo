@@ -43,6 +43,20 @@ public class TbAreaCodeController extends BaseController {
     @Autowired
     private ITbCommonRegionService regionService;
     
+    @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),
+    })
+    @UooLog(value = "根据ID获取单条数据", key = "getAreaCode")
+    @GetMapping("getAreaCode/id={id}")
+    public ResponseResult getAreaCode(@PathVariable(value = "id") Long id){
+        TbAreaCode obj = areaCodeService.selectById(id);
+        if(obj==null||!DeleteConsts.VALID.equals(obj.getStatusCd())){
+            return ResponseResult.createErrorResult("无效数据");
+        }
+        return ResponseResult.createSuccessResult(obj, "");
+    }
+    
     @ApiOperation(value = "区号列表", notes = "区号列表")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "pageNo", value = "分页的序号", required = true, dataType = "Integer",paramType="path"),
@@ -57,7 +71,7 @@ public class TbAreaCodeController extends BaseController {
         Wrapper<TbAreaCode> wrapper = Condition.create().eq("STATUS_CD",DeleteConsts.VALID).orderBy("UPDATE_DATE", false);
         Page<TbAreaCode> page = areaCodeService.selectPage(new Page<TbAreaCode>(pageNo, pageSize), wrapper);
        //  = areaCodeService.selectPage();
-        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", pageNo, pageSize);
+        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", page);
         return result;
     }
     
