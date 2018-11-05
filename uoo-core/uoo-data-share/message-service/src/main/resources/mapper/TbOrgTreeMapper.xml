@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.message.server.dao.TbOrgTreeMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.uoo.message.server.pojo.TbOrgTree">
+    <result column="ORG_TREE_ID" jdbcType="DECIMAL" property="orgTreeId" />
+    <result column="ORG_TREE_NAME" jdbcType="VARCHAR" property="orgTreeName" />
+    <result column="ORG_TREE_TYPE" jdbcType="DECIMAL" property="orgTreeType" />
+    <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+    <result column="SORT" jdbcType="VARCHAR" property="sort" />
+  </resultMap>
+  <insert id="insert" parameterType="cn.ffcs.uoo.message.server.pojo.TbOrgTree">
+    insert into TB_ORG_TREE (ORG_TREE_ID, ORG_TREE_NAME, ORG_TREE_TYPE, 
+      ORG_ID, STATUS_CD, CREATE_DATE, 
+      CREATE_USER, UPDATE_DATE, UPDATE_USER, 
+      STATUS_DATE, SORT)
+    values (#{orgTreeId,jdbcType=DECIMAL}, #{orgTreeName,jdbcType=VARCHAR}, #{orgTreeType,jdbcType=DECIMAL}, 
+      #{orgId,jdbcType=VARCHAR}, #{statusCd,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE}, 
+      #{createUser,jdbcType=DECIMAL}, #{updateDate,jdbcType=DATE}, #{updateUser,jdbcType=DECIMAL}, 
+      #{statusDate,jdbcType=DATE}, #{sort,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ffcs.uoo.message.server.pojo.TbOrgTree">
+    insert into TB_ORG_TREE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orgTreeId != null">
+        ORG_TREE_ID,
+      </if>
+      <if test="orgTreeName != null">
+        ORG_TREE_NAME,
+      </if>
+      <if test="orgTreeType != null">
+        ORG_TREE_TYPE,
+      </if>
+      <if test="orgId != null">
+        ORG_ID,
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD,
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="createUser != null">
+        CREATE_USER,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="updateUser != null">
+        UPDATE_USER,
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE,
+      </if>
+      <if test="sort != null">
+        SORT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orgTreeId != null">
+        #{orgTreeId,jdbcType=DECIMAL},
+      </if>
+      <if test="orgTreeName != null">
+        #{orgTreeName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgTreeType != null">
+        #{orgTreeType,jdbcType=DECIMAL},
+      </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="statusCd != null">
+        #{statusCd,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=DECIMAL},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=DATE},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=DECIMAL},
+      </if>
+      <if test="statusDate != null">
+        #{statusDate,jdbcType=DATE},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

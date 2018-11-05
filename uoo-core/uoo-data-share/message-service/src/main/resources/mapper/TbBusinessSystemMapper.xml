@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.message.server.dao.TbBusinessSystemMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.uoo.message.server.pojo.TbBusinessSystem">
+    <id column="BUSINESS_SYSTEM_ID" jdbcType="DECIMAL" property="businessSystemId" />
+    <result column="SYSTEM_CODE" jdbcType="VARCHAR" property="systemCode" />
+    <result column="SYSTEM_NAME" jdbcType="VARCHAR" property="systemName" />
+    <result column="SYSTEM_DESC" jdbcType="VARCHAR" property="systemDesc" />
+    <result column="SYSTEM_URL" jdbcType="VARCHAR" property="systemUrl" />
+    <result column="INTF_TYPE" jdbcType="DECIMAL" property="intfType" />
+    <result column="UUID" jdbcType="VARCHAR" property="uuid" />
+    <result column="EFF_DATE" jdbcType="DATE" property="effDate" />
+    <result column="EXP_DATE" jdbcType="DATE" property="expDate" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    BUSINESS_SYSTEM_ID, SYSTEM_CODE, SYSTEM_NAME, SYSTEM_DESC, SYSTEM_URL, INTF_TYPE, 
+    UUID, EFF_DATE, EXP_DATE, STATUS_CD, STATUS_DATE, CREATE_USER, CREATE_DATE, UPDATE_USER, 
+    UPDATE_DATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from TB_BUSINESS_SYSTEM
+    where BUSINESS_SYSTEM_ID = #{businessSystemId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from TB_BUSINESS_SYSTEM
+    where BUSINESS_SYSTEM_ID = #{businessSystemId,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="cn.ffcs.uoo.message.server.pojo.TbBusinessSystem">
+    insert into TB_BUSINESS_SYSTEM (BUSINESS_SYSTEM_ID, SYSTEM_CODE, SYSTEM_NAME, 
+      SYSTEM_DESC, SYSTEM_URL, INTF_TYPE, 
+      UUID, EFF_DATE, EXP_DATE, STATUS_CD, 
+      STATUS_DATE, CREATE_USER, CREATE_DATE, 
+      UPDATE_USER, UPDATE_DATE)
+    values (#{businessSystemId,jdbcType=DECIMAL}, #{systemCode,jdbcType=VARCHAR}, #{systemName,jdbcType=VARCHAR}, 
+      #{systemDesc,jdbcType=VARCHAR}, #{systemUrl,jdbcType=VARCHAR}, #{intfType,jdbcType=DECIMAL}, 
+      #{uuid,jdbcType=VARCHAR}, #{effDate,jdbcType=DATE}, #{expDate,jdbcType=DATE}, #{statusCd,jdbcType=VARCHAR}, 
+      #{statusDate,jdbcType=DATE}, #{createUser,jdbcType=DECIMAL}, #{createDate,jdbcType=DATE}, 
+      #{updateUser,jdbcType=DECIMAL}, #{updateDate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ffcs.uoo.message.server.pojo.TbBusinessSystem">
+    insert into TB_BUSINESS_SYSTEM
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="businessSystemId != null">
+        BUSINESS_SYSTEM_ID,
+      </if>
+      <if test="systemCode != null">
+        SYSTEM_CODE,
+      </if>
+      <if test="systemName != null">
+        SYSTEM_NAME,
+      </if>
+      <if test="systemDesc != null">
+        SYSTEM_DESC,
+      </if>
+      <if test="systemUrl != null">
+        SYSTEM_URL,
+      </if>
+      <if test="intfType != null">
+        INTF_TYPE,
+      </if>
+      <if test="uuid != null">
+        UUID,
+      </if>
+      <if test="effDate != null">
+        EFF_DATE,
+      </if>
+      <if test="expDate != null">
+        EXP_DATE,
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD,
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE,
+      </if>
+      <if test="createUser != null">
+        CREATE_USER,
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="updateUser != null">
+        UPDATE_USER,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="businessSystemId != null">
+        #{businessSystemId,jdbcType=DECIMAL},
+      </if>
+      <if test="systemCode != null">
+        #{systemCode,jdbcType=VARCHAR},
+      </if>
+      <if test="systemName != null">
+        #{systemName,jdbcType=VARCHAR},
+      </if>
+      <if test="systemDesc != null">
+        #{systemDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="systemUrl != null">
+        #{systemUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="intfType != null">
+        #{intfType,jdbcType=DECIMAL},
+      </if>
+      <if test="uuid != null">
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="effDate != null">
+        #{effDate,jdbcType=DATE},
+      </if>
+      <if test="expDate != null">
+        #{expDate,jdbcType=DATE},
+      </if>
+      <if test="statusCd != null">
+        #{statusCd,jdbcType=VARCHAR},
+      </if>
+      <if test="statusDate != null">
+        #{statusDate,jdbcType=DATE},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=DECIMAL},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ffcs.uoo.message.server.pojo.TbBusinessSystem">
+    update TB_BUSINESS_SYSTEM
+    <set>
+      <if test="systemCode != null">
+        SYSTEM_CODE = #{systemCode,jdbcType=VARCHAR},
+      </if>
+      <if test="systemName != null">
+        SYSTEM_NAME = #{systemName,jdbcType=VARCHAR},
+      </if>
+      <if test="systemDesc != null">
+        SYSTEM_DESC = #{systemDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="systemUrl != null">
+        SYSTEM_URL = #{systemUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="intfType != null">
+        INTF_TYPE = #{intfType,jdbcType=DECIMAL},
+      </if>
+      <if test="uuid != null">
+        UUID = #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="effDate != null">
+        EFF_DATE = #{effDate,jdbcType=DATE},
+      </if>
+      <if test="expDate != null">
+        EXP_DATE = #{expDate,jdbcType=DATE},
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE = #{statusDate,jdbcType=DATE},
+      </if>
+      <if test="createUser != null">
+        CREATE_USER = #{createUser,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=DATE},
+      </if>
+      <if test="updateUser != null">
+        UPDATE_USER = #{updateUser,jdbcType=DECIMAL},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=DATE},
+      </if>
+    </set>
+    where BUSINESS_SYSTEM_ID = #{businessSystemId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ffcs.uoo.message.server.pojo.TbBusinessSystem">
+    update TB_BUSINESS_SYSTEM
+    set SYSTEM_CODE = #{systemCode,jdbcType=VARCHAR},
+      SYSTEM_NAME = #{systemName,jdbcType=VARCHAR},
+      SYSTEM_DESC = #{systemDesc,jdbcType=VARCHAR},
+      SYSTEM_URL = #{systemUrl,jdbcType=VARCHAR},
+      INTF_TYPE = #{intfType,jdbcType=DECIMAL},
+      UUID = #{uuid,jdbcType=VARCHAR},
+      EFF_DATE = #{effDate,jdbcType=DATE},
+      EXP_DATE = #{expDate,jdbcType=DATE},
+      STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+      STATUS_DATE = #{statusDate,jdbcType=DATE},
+      CREATE_USER = #{createUser,jdbcType=DECIMAL},
+      CREATE_DATE = #{createDate,jdbcType=DATE},
+      UPDATE_USER = #{updateUser,jdbcType=DECIMAL},
+      UPDATE_DATE = #{updateDate,jdbcType=DATE}
+    where BUSINESS_SYSTEM_ID = #{businessSystemId,jdbcType=DECIMAL}
+  </update>
+</mapper>
