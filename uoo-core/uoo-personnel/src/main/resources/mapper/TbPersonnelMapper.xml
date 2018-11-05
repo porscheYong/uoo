@@ -105,33 +105,24 @@
 
     <select id="getPsnOrg" resultType="cn.ffcs.uoo.core.personnel.vo.PsonOrgVo">
         WITH ORGTREE AS
-        (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),
-        '//',
-        '/') FULL_NAME,
-        ORG_NAME,
-        ORG_ID,
-        SUP_ORG_ID,
-        SORT,
-        LOC_ID,
-        AREA_CODE_ID,
-        ORG_CODE,
-        STATUS_CD
+        (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//','/') FULL_NAME,
+        ORG_NAME,ORG_ID,SUP_ORG_ID,SORT, LOC_ID, AREA_CODE_ID,ORG_CODE,STATUS_CD
         FROM (SELECT A.*, B.SUP_ORG_ID
         FROM TB_ORG A, TB_ORG_REL B
-        WHERE A.ORG_ID = B.ORG_ID
-        AND A.STATUS_CD = 1000
-        AND B.STATUS_CD = 1000) AA
-        START WITH ORG_ID = #{psonOrgVo.orgRootId}
+        WHERE A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000
+        AND A.ORG_ID = B.ORG_ID) AA
+        START WITH ORG_ID = #{orgRootId}
         CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID)
         SELECT *
-        FROM (SELECT AA.PROPERTY property, --属性专兼职
-        AA.DOUBLE_NAME doubleName, --重名
-        C.ORG_TREE_NAME orgTreeName, --树名称
-        ORG.ORG_NAME orgName, --组织名称
-        (SELECT B.FULL_NAME FROM ORGTREE B WHERE B.ORG_ID = AA.ORG_ID) FULLNAME, --全路径
-        PER.PSN_NAME PsnName, --人员姓名
-        POST.POST_NAME postName --职位名称
-        FROM (SELECT A.*
+        FROM (SELECT AA.PROPERTY ,
+        AA.DOUBLE_NAME ,
+        AA.ORG_TREE_NAME ,
+        ORG.ORG_NAME ,
+        (SELECT B.FULL_NAME FROM ORGTREE B WHERE B.ORG_ID = AA.ORG_ID) full_name,
+        PER.PSN_NAME ,
+        POST.POST_NAME
+        FROM (SELECT A.*,C.Org_Tree_Name
         FROM TB_ORG_PERSON_REL        A,
         TB_ORGTREE_ORGPERSON_REL B,
         TB_ORG_TREE              C
@@ -140,12 +131,12 @@
         AND C.STATUS_CD = '1000'
         AND A.ORG_PERSON_ID = B.ORG_PERSON_ID
         AND B.ORG_TREE_ID = C.ORG_TREE_ID
-        AND C.ORG_ID = #{psonOrgVo.orgRootId}
-        <if test = "psonOrgVo.orgId != null and psonOrgVo.orgId != ''" >
-          AND A.ORG_ID = #{psonOrgVo.orgId}
+        AND C.ORG_ID = #{orgRootId}
+        <if test = "orgId != null and orgId != ''" >
+          AND A.ORG_ID = #{orgId}
         </if>
-        <if test ="psonOrgVo.personId != null and psonOrgVo.personId != ''" >
-            AND A.PERSONNEL_ID = #{psonOrgVo.personId}
+        <if test ="personId != null and personId != ''" >
+            AND A.PERSONNEL_ID = #{personId}
         </if>
         ) AA
         LEFT JOIN TB_ORG ORG
@@ -156,8 +147,34 @@
         AND ORG.STATUS_CD = AA.STATUS_CD
         LEFT JOIN TB_POST POST
         ON POST.POST_ID = AA.POST_ID
-        AND ORG.STATUS_CD = AA.STATUS_CD) AB
-        where 1 = 1
+        AND ORG.STATUS_CD = AA.STATUS_CD) AB where 1 = 1
+    </select>
+
+    <select id="getPsnByUser" resultType="cn.ffcs.uoo.core.personnel.vo.PsnByUserVo">
+        select t1.personnel_id,
+               t1.psn_name,
+               t1.psn_code,
+               t2.content      mobile_phone,
+               t3.content      email,
+               t4.cert_type,
+               t4.cert_no
+        from tb_personnel t1
+                 left join tb_contact t2
+                     on t1.personnel_id = t2.personnel_id
+                            and t2.contact_type = '1'
+                            and t2.first_flag = 1
+                            and t2.status_cd = 1000
+                 left join tb_contact t3
+                     on t1.personnel_id = t3.personnel_id
+                            and t3.contact_type = '2'
+                            and t3.status_cd = 1000
+                 left join tb_cert t4
+                     on t1.personnel_id = t4.personnel_id
+                            and t4.status_cd = 1000
+        where t1.status_cd = 1000
+        <if test ="personnelId != null and personnelId != ''" >
+            and t1.personnel_id = #{personnelId}
+        </if>
     </select>
 
 

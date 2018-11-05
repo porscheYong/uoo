@@ -116,10 +116,10 @@ public class TbPersonnelController extends BaseController {
     })
 
     @UooLog(value = "查看人员信息", key = "getFormPersonnel")
-    @RequestMapping(value = "/getFormPersonnel/personnelId={personnelId}",method = RequestMethod.GET)
-    public Object getFormPersonnel(@PathVariable(value = "personnelId") Long personnelId,
-                                   @PathVariable(value = "orgRootId") Long orgRootId,
-                                   @PathVariable(value = "orgId") Long orgId){
+    @RequestMapping(value = "/getFormPersonnel",method = RequestMethod.GET)
+    public Object getFormPersonnel(String personnelId,
+                                   String orgRootId,
+                                   String orgId){
         FormPersonnelVo formPersonnelVo = new FormPersonnelVo();
         /**  1、基本信息    */
         TbPersonnel tbPersonnel = tbPersonnelService.selectById(personnelId);
@@ -137,10 +137,13 @@ public class TbPersonnelController extends BaseController {
 
         /**  3、归属组织信息 (需要调用uoo-organization)*/
         PsonOrgVo psonOrgVo = new PsonOrgVo();
-        psonOrgVo.setOrgId(orgId);
-        psonOrgVo.setOrgRootId(orgRootId);
-        psonOrgVo.setPersonId(personnelId);
-        formPersonnelVo.setPsonOrgVoList(tbPersonnelService.selectPsonOrgPage(psonOrgVo));
+        psonOrgVo.setOrgId(Long.valueOf(orgId));
+        psonOrgVo.setOrgRootId(Long.valueOf(orgRootId));
+        psonOrgVo.setPersonId(Long.valueOf(personnelId));
+        Page<PsonOrgVo> psonOrgVoPage = tbPersonnelService.selectPsonOrgPage(psonOrgVo);
+        if(psonOrgVoPage.getRecords().size() > 0){
+            formPersonnelVo.setPsonOrgVoList(psonOrgVoPage);
+        }
 
         /**  4、工作履历信息 */
         Wrapper tbPsnjobwrapper= Condition.create().eq(true,"PERSONNEL_ID", personnelId);
@@ -197,7 +200,6 @@ public class TbPersonnelController extends BaseController {
 
     @ApiOperation(value = "修改人员信息",notes = "人员信息修改")
     @ApiImplicitParam(name = "editFormPersonnelVo",value = "人员信息",required = true,dataType = "EditFormPersonnelVo")
-
     @UooLog(value = "修改人员信息",key = "updatePersonnel")
     @RequestMapping(value = "updatePersonnel",method = RequestMethod.PUT)
     public Object updatePersonnel(@RequestBody EditFormPersonnelVo editFormPersonnelVo) {
@@ -326,6 +328,8 @@ public class TbPersonnelController extends BaseController {
 
         return ResultUtils.success(null);
     }
+
+
 
     @ApiOperation(value="图片上传",notes="图片上传")
     @UooLog(value = "图片上传",key = "uploadImg")
@@ -486,6 +490,17 @@ public class TbPersonnelController extends BaseController {
         }
 
         return ResultUtils.success(null);
+    }
+
+    @ApiOperation(value = "用户对应人员基本信息", notes = "用户对应人员基本信息")
+    @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "String",paramType="path")
+    @UooLog(value = "查看人员信息", key = "getPsnByUser")
+    @RequestMapping(value = "/getPsnByUser",method = RequestMethod.GET)
+    public Object getPsnByUser(String personnelId){
+        PsnByUserVo psnByUserVo = new PsnByUserVo();
+        psnByUserVo.setPersonnelId(Long.valueOf(personnelId));
+        psnByUserVo = tbPersonnelService.getPsnByUser(psnByUserVo);
+        return ResultUtils.success(psnByUserVo);
     }
 
 

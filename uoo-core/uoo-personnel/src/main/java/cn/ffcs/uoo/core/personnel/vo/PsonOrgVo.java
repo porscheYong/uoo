@@ -35,6 +35,10 @@ public class PsonOrgVo extends BaseVo {
      */
     private String orgName;
     /**
+     * 组织树
+     */
+    private String orgTreeName;
+    /**
      * 组织全程
      */
     private String fullName;
@@ -251,4 +255,8 @@ public class PsonOrgVo extends BaseVo {
     public void setRefType(String refType) {
         this.refType = refType;
     }
+
+    public String getOrgTreeName(){return orgTreeName;}
+
+    public void setOrgTreeName(String orgTreeName){ this.orgTreeName = orgTreeName;}
 }
