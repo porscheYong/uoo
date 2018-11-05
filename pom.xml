@@ -42,8 +42,10 @@
     <!-- 项目模块 -->
     <modules>
         <module>uoo-base</module>
-        <module>uoo-core</module>
-        <module>uoo-web</module>
+        <module>uoo-common</module>
+        <module>uoo-business</module>
+        <module>uoo-business-api</module>
+        <module>uoo-business-web</module>
     </modules>
 
     <!-- 基本依赖 -->
@@ -82,12 +84,12 @@
             </dependency>
             <!-- common -->
             <dependency>
-                <groupId>cn.ffcs.uoo.base.common</groupId>
+                <groupId>cn.ffcs.uoo</groupId>
                 <artifactId>common-tool</artifactId>
                 <version>${common-tool.version}</version>
             </dependency>
             <dependency>
-                <groupId>cn.ffcs.uoo.base.common</groupId>
+                <groupId>cn.ffcs.uoo</groupId>
                 <artifactId>common-abstract</artifactId>
                 <version>${common-abstract.version}</version>
             </dependency>

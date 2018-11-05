@@ -3,27 +3,26 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cn.ffcs.uoo</groupId>
-    <artifactId>uoo-base</artifactId>
+
+    <artifactId>base-common</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>uoo-base</name>
-    <description>uoo-base：基础模块域</description>
+    <name>base-common</name>
+    <description>base-common：通用工具（与具体业务无关的一些通用代码，其它模块需要依赖这个模块）</description>
 
     <parent>
-        <groupId>cn.ffcs</groupId>
-        <artifactId>uoo</artifactId>
+        <groupId>cn.ffcs.uoo</groupId>
+        <artifactId>uoo-base</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <modules>
-        <module>base-common</module>
-        <module>uoo-register</module>
-        <module>uoo-gateway</module>
-        <module>uoo-monitor</module>
-        <module>uoo-sleuth</module>
+        <module>common-tool</module>
+        <module>common-abstract</module>
+        
     </modules>
+
 
 </project>
