@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.organization.dao.OrgOrgtreeRelMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.organization.entity.OrgOrgtreeRel">
+        <result column="ORG_ORGTREE_ID" property="orgOrgtreeId" />
+        <result column="ORG_ID" property="orgId" />
+        <result column="ORG_TREE_ID" property="orgTreeId" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ORG_ORGTREE_ID, ORG_ID, ORG_TREE_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+
+    <!-- 获取OrgIdSeq -->
+    <select id="getId" resultType="java.lang.Long">
+        SELECT SEQ_TB_ORG_ORGTREE_REL_ID.NEXTVAL FROM DUAL
+    </select>
+
+
+    <update id="delete" parameterType="cn.ffcs.uoo.core.organization.entity.OrgOrgtreeRel">
+        UPDATE
+        TB_ORG_ORGTREE_REL
+        SET
+        STATUS_CD = #{statusCd}, UPDATE_DATE = #{updateDate}, UPDATE_USER = #{updateUser}
+        WHERE
+        ORG_ORGTREE_REL_ID = #{orgOrgtreeRelId}
+    </update>
+
+</mapper>

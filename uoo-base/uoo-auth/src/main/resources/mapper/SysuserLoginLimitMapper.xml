@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.base.auth.mapper.SysuserLoginLimitMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap"
+		type="cn.ffcs.uoo.base.auth.entity.SysuserLoginLimit">
+		<id column="LOGIN_LIMIT_ID" property="loginLimitId" />
+		<result column="LOGIN_ACCOUNT_ID" property="loginAccountId" />
+		<result column="LOGIN_SAFE_LEVEL" property="loginSafeLevel" />
+		<result column="LOGIN_LIMIT_IP_VAL" property="loginLimitIpVal" />
+		<result column="LOGIN_LIMIT_MAC_VAL" property="loginLimitMacVal" />
+		<result column="LOGIN_LIMIT_DATETIME_CRON" property="loginLimitDatetimeCron" />
+		<result column="REGION_ID" property="regionId" />
+		<result column="EFF_DATE" property="effDate" />
+		<result column="EXP_DATE" property="expDate" />
+		<result column="STATUS_CD" property="statusCd" />
+		<result column="STATUS_DATE" property="statusDate" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_DATE" property="updateDate" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		LOGIN_LIMIT_ID, LOGIN_ACCOUNT_ID, LOGIN_SAFE_LEVEL, LOGIN_LIMIT_IP_VAL,
+		LOGIN_LIMIT_MAC_VAL, LOGIN_LIMIT_DATETIME_CRON, REGION_ID, EFF_DATE,
+		EXP_DATE, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER,
+		UPDATE_DATE, UPDATE_USER
+	</sql>
+	<select id="getId" resultType="java.lang.Long">
+		SELECT SEQ_TB_SYSUSER_LOGIN_LIMIT.nextval FROM dual
+	</select>
+</mapper>

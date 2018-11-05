@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.organization.dao.PositionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.organization.entity.Position">
+        <id column="POSITION_ID" property="positionId" />
+        <result column="POSITION_CODE" property="positionCode" />
+        <result column="POSITION_TYPE" property="positionType" />
+        <result column="POSITION_DESC" property="positionDesc" />
+        <result column="POSITION_NAME" property="positionName" />
+        <result column="PARENT_POSITION_ID" property="parentPositionId" />
+        <result column="EFF_DATE" property="effDate" />
+        <result column="EXP_DATE" property="expDate" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        POSITION_ID, POSITION_CODE, POSITION_TYPE, POSITION_DESC, POSITION_NAME, PARENT_POSITION_ID, EFF_DATE, EXP_DATE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+
+    <!-- 获取postSeq -->
+    <select id="getId" resultType="java.lang.Long">
+        SELECT SEQ_TB_POSITION_ID.NEXTVAL FROM DUAL
+    </select>
+
+
+    <update id="delete" parameterType="cn.ffcs.uoo.core.organization.entity.Position">
+        UPDATE
+        TB_POSITION
+        SET
+        STATUS_CD = #{statusCd}, UPDATE_DATE = #{updateDate}, UPDATE_USER = #{updateUser}
+        WHERE
+        POSITION_ID = #{positionId}
+    </update>
+
+    <select id="getOrgPositionByOrgId" resultType="cn.ffcs.uoo.core.organization.entity.Position">
+        SELECT B.POSITION_ID positionId,
+        B.POSITION_CODE positionCode,
+        B.POSITION_TYPE positionType,
+        B.POSITION_DESC positionDesc,
+        B.POSITION_NAME positionName,
+        B.PARENT_POSITION_ID parentPositionId,
+        B.EFF_DATE effDate,
+        B.EXP_DATE expDate,
+        A.STATUS_CD statusCd,
+        A.CREATE_DATE createDate,
+        A.CREATE_USER createUser,
+        A.UPDATE_DATE updateDate,
+        A.UPDATE_USER updateUser,
+        A.STATUS_DATE statusDate
+        FROM Tb_Org_Position_Rel A, TB_POSITION B
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND A.POSITION_ID = B.POSITION_ID
+        <if test="orgId != null and orgId != ''">
+            AND A.ORG_ID = #{orgId}
+        </if>
+    </select>
+
+    <select id="selectPositionTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+        SELECT A.POSITION_ID ID,A.PARENT_POSITION_ID PID,A.POSITION_NAME NAME
+        FROM TB_POSITION A
+        WHERE A.STATUS_CD = '1000'
+        <if test="positionCode != null and positionCode!=''">
+            AND A.POSITION_CODE = #{positionCode}
+        </if>
+        <if test="positionType !=null and positionType!=''">
+            AND A.POSITION_TYPE = #{positionType}
+        </if>
+        <if test="pid!=null and pid!=''">
+            AND A.PARENT_POSITION_ID = #{pid}
+        </if>
+    </select>
+</mapper>

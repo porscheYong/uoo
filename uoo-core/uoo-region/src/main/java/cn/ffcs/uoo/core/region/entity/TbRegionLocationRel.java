@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 /**
@@ -22,16 +23,16 @@ public class TbRegionLocationRel extends Model<TbRegionLocationRel> {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 区域关系标识
+     */
+    @TableId("REGION_LOC_REL_ID")
+    private Long regionLocRelId;
+    /**
      * 公共管理区域标识
      */
     @TableField("COMMON_REGION_ID")
     private Long commonRegionId;
 
-    /**
-     * 区域关系标识
-     */
-    @TableField("REGION_LOC_REL_ID")
-    private Long regionLocRelId;
 
     /**
      * 行政区域标识

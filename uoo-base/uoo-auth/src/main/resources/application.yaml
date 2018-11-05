@@ -1,0 +1,94 @@
+### DEV ###
+---
+server:
+  port: 20030
+spring:
+  application:
+    name: uoo-auth
+  # 目前使用的是我的阿里云上的mysql数据库
+  datasource:
+    url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
+    username: octopus
+    password: octopus
+  zipkin:
+    base-url: http://localhost:20010
+  sleuth:
+    sampler:
+      percentage: 1.0
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8762/eureka
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: cn.ffcs.uoo.base.auth.entity
+  global-config:
+    id-type: 2
+    field-strategy: 2
+    db-column-underline: true
+    refresh-mapper: true
+    #刷新mapper 调试神器
+    refresh: true
+  # 原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+...
+### DEV END ###
+
+### FAT ###
+---
+server:
+  port: 20030
+spring:
+  application:
+    name: FAT-uoo-auth-1
+  profiles: FAT-uoo-auth-1
+  # 目前使用的是我的阿里云上的mysql数据库
+  datasource:
+    url: jdbc:mysql://localhost:3306/springboot?useSSL=true&useUnicode=true&characterEncoding=utf-8&verifyServerCertificate=false
+    username: root
+    password: 123456
+  zipkin:
+    base-url: http://localhost:20010
+  sleuth:
+    sampler:
+      percentage: 1.0
+eureka:
+  client:
+    service-url:
+      defaultZone: http://FAT-uoo-register-1:8761/eureka/, http://FAT-uoo-register-2:8762/eureka/
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+...
+---
+server:
+  port: 20031
+spring:
+  application:
+    name: FAT-uoo-auth-2
+  profiles: FAT-uoo-auth-2
+  # 目前使用的是我的阿里云上的mysql数据库
+  datasource:
+    url: jdbc:mysql://localhost:3306/springboot?useSSL=true&useUnicode=true&characterEncoding=utf-8&verifyServerCertificate=false
+    username: root
+    password: 123456
+  zipkin:
+    base-url: http://localhost:20010
+  sleuth:
+    sampler:
+      percentage: 1.0
+eureka:
+  client:
+    service-url:
+      defaultZone: http://FAT-uoo-register-1:8761/eureka/, http://FAT-uoo-register-2:8762/eureka/
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+...
+### FAT END ###
+
+### PROD ###
+# 生产环境配置
+# 暂无
+### PROD END ###

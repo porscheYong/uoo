@@ -9,6 +9,7 @@
         <result column="CONTACT_TYPE" property="contactType" />
         <result column="CONTENT" property="content" />
         <result column="UUID" property="uuid" />
+        <result column="FIRST_FLAG" property="firstFlag"/>
         <result column="STATUS_CD" property="statusCd" />
         <result column="CREATE_DATE" property="createDate" />
         <result column="CREATE_USER" property="createUser" />
@@ -19,7 +20,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        CONTACT_ID, PERSONNEL_ID, CONTACT_TYPE, CONTENT, UUID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        CONTACT_ID, PERSONNEL_ID, CONTACT_TYPE, CONTENT, UUID, FIRST_FLAG, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
     <select id="getId" resultType="java.lang.Long">
@@ -32,6 +33,13 @@
         SET
         STATUS_CD = 1100
         WHERE
-        CONTACT_ID = #{contactId}
+        1 = 1
+        <if test="contactId != null and contactId != '' ">
+            and CONTACT_ID = #{contactId}
+        </if>
+        <if test="personnelId != null and personnelId != '' ">
+            and PERSONNEL_ID = #{personnelId}
+        </if>
     </update>
+
 </mapper>

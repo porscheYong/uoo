@@ -1,8 +1,7 @@
 package cn.ffcs.uoo.core.personnel.service;
 
 import cn.ffcs.uoo.core.personnel.entity.TbPersonnel;
-import cn.ffcs.uoo.core.personnel.vo.PersonnelRelationInfoVo;
-import cn.ffcs.uoo.core.personnel.vo.TbPersonnelVo;
+import cn.ffcs.uoo.core.personnel.vo.*;
 import com.baomidou.mybatisplus.service.IService;
 import com.baomidou.mybatisplus.plugins.Page;
 
@@ -20,4 +19,31 @@ public interface TbPersonnelService extends IService<TbPersonnel> {
     public Long getId();
 
     public void delete(TbPersonnel tbPersonnel);
+
+    public Page<PersonnelOrgVo> getPersonnelOrg(TbPersonnelVo tbPersonnelVo);
+
+    /**
+     * 员工工号  序
+     * @return
+     */
+    public Long getPsnNbrId();
+
+    /**
+     * 人员编码
+     * @return
+     */
+    public Long getPsnCodeId();
+
+    /**
+     * 人员归属组织
+     * @return
+     */
+    public Page<PsonOrgVo> selectPsonOrgPage(PsonOrgVo psonOrgVo);
+
+    /**
+     * 用户关联人员基础信息
+     * @param psnByUserVo
+     * @return
+     */
+    public PsnByUserVo getPsnByUser(PsnByUserVo psnByUserVo);
 }

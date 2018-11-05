@@ -43,6 +43,20 @@ public class TbAreaCodeController extends BaseController {
     @Autowired
     private ITbCommonRegionService regionService;
     
+    @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),
+    })
+    @UooLog(value = "根据ID获取单条数据", key = "getAreaCode")
+    @GetMapping("getAreaCode/id={id}")
+    public ResponseResult getAreaCode(@PathVariable(value = "id") Long id){
+        TbAreaCode obj = areaCodeService.selectById(id);
+        if(obj==null||!DeleteConsts.VALID.equals(obj.getStatusCd())){
+            return ResponseResult.createErrorResult("无效数据");
+        }
+        return ResponseResult.createSuccessResult(obj, "");
+    }
+    
     @ApiOperation(value = "区号列表", notes = "区号列表")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "pageNo", value = "分页的序号", required = true, dataType = "Integer",paramType="path"),
@@ -50,14 +64,14 @@ public class TbAreaCodeController extends BaseController {
     })
     @UooLog(value = "区号列表", key = "listAreaCode")
     @GetMapping("listAreaCode/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listCommonRegion(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize) {
+    public ResponseResult listAreaCode(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize) {
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         @SuppressWarnings("unchecked")
-        Wrapper<TbAreaCode> wrapper = Condition.create().eq("STATUS_CD",DeleteConsts.VALID);
+        Wrapper<TbAreaCode> wrapper = Condition.create().eq("STATUS_CD",DeleteConsts.VALID).orderBy("UPDATE_DATE", false);
         Page<TbAreaCode> page = areaCodeService.selectPage(new Page<TbAreaCode>(pageNo, pageSize), wrapper);
        //  = areaCodeService.selectPage();
-        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", pageNo, pageSize);
+        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", page);
         return result;
     }
     
@@ -68,7 +82,7 @@ public class TbAreaCodeController extends BaseController {
     @PostMapping("addAreaCode")
     @Transactional
     public ResponseResult addAreaCode(TbAreaCode areaCode) {
-        // TODO 数据校验  获取操作者
+        //  数据校验  获取操作者
         //查询公共管理区域是否存在
         if(areaCode.getCommonRegionId()==null){
             return ResponseResult.createErrorResult("请选择公共管理区域");
@@ -94,7 +108,10 @@ public class TbAreaCodeController extends BaseController {
     @PostMapping("updateAreaCode")
     @Transactional
     public ResponseResult updateAreaCode(TbAreaCode areaCode) {
-        // TODO 数据校验 获取操作者
+        Long id = areaCode.getAreaCodeId();
+        if(id==null||areaCodeService.selectById(id)==null){
+            return ResponseResult.createErrorResult("修改数据异常");
+        }
         
         //查询公共管理区域是否存在
         if(areaCode.getCommonRegionId()==null){
@@ -106,7 +123,7 @@ public class TbAreaCodeController extends BaseController {
             return ResponseResult.createErrorResult("公共管理区域不存在");
         }
         areaCode.setUpdateDate(new Date());
-        areaCode.setStatusDate(new Date());
+        //areaCode.setStatusDate(new Date());
         areaCodeService.updateById(areaCode);
         return ResponseResult.createSuccessResult("success");
     }
@@ -117,8 +134,8 @@ public class TbAreaCodeController extends BaseController {
     @UooLog(value = "删除区号", key = "deleteAreaCode")
     @PostMapping("deleteAreaCode")
     @Transactional
-    public ResponseResult deleteCommonRegion(TbAreaCode areaCode) {
-        if(areaCode==null){
+    public ResponseResult deleteAreaCode(TbAreaCode areaCode) {
+        if(areaCode==null||areaCode.getAreaCodeId()==null){
             return ResponseResult.createErrorResult("不能删除空数据");
         }
         TbAreaCode ac=new TbAreaCode();

@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -25,18 +26,18 @@ public class OrgTree extends Model<OrgTree> {
     /**
      * 组织树标识
      */
-    @TableId(value = "ORG_TREE_ID", type = IdType.AUTO)
+    @TableId(value = "ORG_TREE_ID")
     private Long orgTreeId;
-    /**
-     * 组织树编码
-     */
-    @TableField("ORG_TREE_CODE")
-    private String orgTreeCode;
     /**
      * 组织树名称
      */
     @TableField("ORG_TREE_NAME")
     private String orgTreeName;
+    /**
+     * 标准组织树、专业组织树
+     */
+    @TableField("ORG_TREE_TYPE")
+    private Integer orgTreeType;
     /**
      * 组织节点标识
      */
@@ -73,6 +74,64 @@ public class OrgTree extends Model<OrgTree> {
     @TableField("STATUS_DATE")
     private Date statusDate;
 
+    /**
+     * 排序
+     */
+    @TableField("SORT")
+    private Double sort;
+
+
+
+    /**
+     * 组织关系类型
+     */
+    @TableField(exist=false)
+    private List<OrgRelType> orgRelTypeList;
+
+    /**
+     * 组织类别
+     */
+    @TableField(exist=false)
+    private List<OrgType> orgTypeList;
+
+    /**
+     * 用工性质
+     */
+    @TableField(exist=false)
+    private List<String> userTypeList;
+
+
+    public List<String> getUserTypeList() {
+        return userTypeList;
+    }
+
+    public void setUserTypeList(List<String> userTypeList) {
+        this.userTypeList = userTypeList;
+    }
+
+    public List<OrgRelType> getOrgRelTypeList() {
+        return orgRelTypeList;
+    }
+
+    public void setOrgRelTypeList(List<OrgRelType> orgRelTypeList) {
+        this.orgRelTypeList = orgRelTypeList;
+    }
+
+    public List<OrgType> getOrgTypeList() {
+        return orgTypeList;
+    }
+
+    public void setOrgTypeList(List<OrgType> orgTypeList) {
+        this.orgTypeList = orgTypeList;
+    }
+
+    public Double getSort() {
+        return sort;
+    }
+
+    public void setSort(Double sort) {
+        this.sort = sort;
+    }
 
     public Long getOrgTreeId() {
         return orgTreeId;
@@ -82,20 +141,20 @@ public class OrgTree extends Model<OrgTree> {
         this.orgTreeId = orgTreeId;
     }
 
-    public String getOrgTreeCode() {
-        return orgTreeCode;
-    }
-
-    public void setOrgTreeCode(String orgTreeCode) {
-        this.orgTreeCode = orgTreeCode;
-    }
-
     public String getOrgTreeName() {
         return orgTreeName;
     }
 
     public void setOrgTreeName(String orgTreeName) {
         this.orgTreeName = orgTreeName;
+    }
+
+    public Integer getOrgTreeType() {
+        return orgTreeType;
+    }
+
+    public void setOrgTreeType(Integer orgTreeType) {
+        this.orgTreeType = orgTreeType;
     }
 
     public String getOrgId() {
@@ -163,9 +222,10 @@ public class OrgTree extends Model<OrgTree> {
     public String toString() {
         return "OrgTree{" +
         ", orgTreeId=" + orgTreeId +
-        ", orgTreeCode=" + orgTreeCode +
         ", orgTreeName=" + orgTreeName +
+        ", orgTreeType=" + orgTreeType +
         ", orgId=" + orgId +
+        ", sort=" + sort +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
         ", createUser=" + createUser +

@@ -17,4 +17,6 @@ public interface TbCertMapper extends BaseMapper<TbCert> {
     public Long getId();
 
     public void delete(TbCert tbCert);
+
+    public TbCert getTbCertByPersonnelId(Integer personnelId);
 }

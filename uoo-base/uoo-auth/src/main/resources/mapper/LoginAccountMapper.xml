@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.base.auth.mapper.LoginAccountMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="cn.ffcs.uoo.base.auth.entity.LoginAccount">
+		<id column="LOGIN_ACCOUNT_ID" property="loginAccountId" />
+		<result column="ACCOUNT" property="account" />
+		<result column="ACCOUNT_TYPE" property="accountType" />
+		<result column="PASSWORD" property="password" />
+		<result column="STAFF_ID" property="staffId" />
+		<result column="PWD_SMS_TEL" property="pwdSmsTel" />
+		<result column="PWD_EFF_TIME" property="pwdEffTime" />
+		<result column="PWD_EXP_TIME" property="pwdExpTime" />
+		<result column="EFF_DATE" property="effDate" />
+		<result column="SYSTEM_INFO_ID" property="systemInfoId" />
+		<result column="EXP_DATE" property="expDate" />
+		<result column="STATUS_CD" property="statusCd" />
+		<result column="STATUS_DATE" property="statusDate" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_DATE" property="updateDate" />
+		<result column="UPDATE_USER" property="updateUser" />
+		<result column="ACCOUNT_ORGID" property="accountOrgid" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		LOGIN_ACCOUNT_ID, ACCOUNT, ACCOUNT_TYPE, PASSWORD, STAFF_ID, PWD_SMS_TEL, PWD_EFF_TIME,
+		PWD_EXP_TIME, EFF_DATE, SYSTEM_INFO_ID, EXP_DATE, STATUS_CD,
+		STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER,
+		ACCOUNT_ORGID
+	</sql>
+	<select id="getId" resultType="java.lang.Long">
+		SELECT SEQ_TB_LOGIN_ACCOUNT.nextval FROM dual
+	</select>
+</mapper>

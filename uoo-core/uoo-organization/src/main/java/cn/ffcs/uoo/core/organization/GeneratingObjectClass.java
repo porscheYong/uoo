@@ -19,7 +19,7 @@ import java.io.File;
  * </p>
  *
  * @author ffcs-gzb
- * @since 2018/8/31
+ * @since 2018/10/15
  */
 public class GeneratingObjectClass {
     public static String scDir = "cn.ffcs.uoo.core.organization";
@@ -34,10 +34,19 @@ public class GeneratingObjectClass {
 //    public static String modelName1="uoo-user";
 //    public static String[] tabeNamesList1={"TB_ACCT","TB_ACCT_ORG","TB_ACCT_EXT","TB_SLAVE_ACCT","TB_SLAVE_ACCT_ORG_REF","TB_SLVACCT_ACCT_REF"
 //    ,"TB_SLVACCT_USER_REF","TB_USER","TB_ACCT_CROSS_REL"};
-    public static String[] tabeNamesList={"TB_ORG","TB_ORG_REF","TB_ORG_PSNDOC_REF","TB_ORG_REF_TYPE","TB_ORG_TREE",
-"TB_OGT_ORG_REFTYPE_CONF","TB_OGT_ORGTYPE_CONF","TB_ORG_TYPE","TB_ORG_TYPE_REF","TB_ORG_CONTACT_REL","TB_ORG_CERT_REF",
-"TB_ORG_CROSS_REL"};
-    public static String modelName="uoo-organization";
+//    public static String[] tabeNamesList={"TB_ORG","TB_ORG_REF","TB_ORG_PSNDOC_REF","TB_ORG_REF_TYPE","TB_ORG_TREE",
+//"TB_OGT_ORG_REFTYPE_CONF","TB_OGT_ORGTYPE_CONF","TB_ORG_TYPE","TB_ORG_TYPE_REF","TB_ORG_CONTACT_REL","TB_ORG_CERT_REF",
+//"TB_ORG_CROSS_REL"};
+//public static String[] tabeNamesList={"TB_ORG_PSNDOC_REF","TB_ORG_CONTACT_REL","TB_ORG_CERT_REF","TB_ORG_ORGTREE_REF"};
+//public static String[] tabeNamesList={"TB_ORG","TB_ORG_ORGTYPE_REL","TB_ORG_REL","TB_ORG_TYPE","TB_ORG_CROSS_REL"
+//,"TB_ORG_CONTACT_REL","TB_ORG_CERT_REL","TB_ORG_TREE","TB_ORG_PERSON_REL","TB_ORG_REL_TYPE","TB_OGT_ORGTYPE_CONF"
+//,"TB_OGT_ORG_RELTYPE_CONF","TB_ORG_ORGTREE_REL","TB_ORG_LEVEL"};
+  //  public static String[] tabeNamesList={"TB_ORG_LEVEL"};
+
+//    public static String[] tabeNamesList={"TB_POSITION200","TB_POST","TB_POST_LOCATION","TB_POSITION","TB_ORG_POSITION_REL"
+//    ,"TB_POST2","TB_ORG_POST_REL"};
+    public static String[] tabeNamesList = {"TB_TREE_STAFF_TYPE_REL","TB_ORGTREE_ORGPERSON_REL"};
+public static String modelName="uoo-organization";
     public static void main(String[] args) {
         File f = new File(modelName);
         String path = f.getAbsolutePath();
@@ -58,8 +67,6 @@ public class GeneratingObjectClass {
         gc.setBaseColumnList(true);// XML columList
         gc.setAuthor("ffcs-gzb");// 类作者
         gc.setIdType(IdType.AUTO);
-        // 文件名 // 自定义文件命名，注意 %s 会自动填充表实体属性
-        //String s = tabelNames[0].replace("TB_","");
         gc.setMapperName("%sMapper");
         gc.setXmlName("%sMapper");
         gc.setServiceName("%sService");
@@ -78,7 +85,7 @@ public class GeneratingObjectClass {
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
-    //    strategy.setTablePrefix(new String[] { "TB_"});
+        strategy.setTablePrefix(new String[] { "TB_"});
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
         strategy.setInclude(tabelNames); // 需要生成相关代码的表名
         // 自定义 dao 父类

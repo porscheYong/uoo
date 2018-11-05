@@ -25,7 +25,7 @@ public class OgtOrgtypeConf extends Model<OgtOrgtypeConf> {
     /**
      * 组织树组织分类标识
      */
-    @TableId(value = "OGT_ORGTYPE_CONF_ID", type = IdType.AUTO)
+    @TableId(value = "OGT_ORGTYPE_CONF_ID")
     private Long ogtOrgtypeConfId;
     /**
      * 组织类别标识

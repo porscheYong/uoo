@@ -5,7 +5,6 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.user.entity.TbUser">
         <id column="USER_ID" property="userId" />
-        <result column="TB__PERSONNEL_ID" property="tbPersonnelId" />
         <result column="PERSONNEL_ID" property="personnelId" />
         <result column="STATUS_CD" property="statusCd" />
         <result column="CREATE_DATE" property="createDate" />
@@ -19,5 +18,126 @@
     <sql id="Base_Column_List">
         USER_ID, TB__PERSONNEL_ID, PERSONNEL_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
+
+    <select id="getId"  resultType="java.lang.Long">
+        SELECT SEQ_TB_USER_ID.NEXTVAL from dual
+    </select>
+
+    <select id="getRoleByUserId" resultType="cn.ffcs.uoo.core.user.entity.TbRoles">
+        select t1.role_id, t1.role_name
+        from tb_roles t1, tb_user_role t2
+        <where> 1 = 1
+          and t1.status_cd = 1000
+          and t2.status_cd = 1000
+          and t1.role_id = t2.role_id
+            <if test="userId != null and userId != '' " >
+              and t2.user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getSlaveAcctInfo" resultType="cn.ffcs.uoo.core.user.vo.ListSlaveAcctVo">
+        select t2.slave_acct_id,
+               t2.slave_acct,
+               t2.slave_acct_type,
+               t1.host_obj_id,
+               t1.host_obj_name
+        from TB_SLAVE_ACCT_HOST_REL t1, tb_slave_acct t2, TB_SLVACCT_ACCT_REL t3
+        <where> t1.status_cd = 1000
+          and t2.status_cd = 1000
+          and t3.status_cd = 1000
+          and t1.slave_acct_id = t2.slave_acct_id
+          and t2.slave_acct_id = t3.slave_acct_id
+            <if test="acctId != null and acctId != '' " >
+                and t3.acct_id = #{acctId}
+            </if>
+        </where>
+        union all
+        select t1.slave_acct_id,
+               t1.slave_acct,
+               t1.slave_acct_type,
+               null host_obj_id,
+               '' host_obj_name
+        from tb_slave_acct t1, TB_SLVACCT_USER_REL t2
+        <where> t1.status_cd = 1000
+          and t2.status_cd = 1000
+          and t1.slave_acct_id = t2.slave_acct_id
+            <if test="userId != null and userId != '' " >
+                and t2.user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getUserOrg" resultType="cn.ffcs.uoo.core.user.vo.ListUserOrgVo">
+        WITH ORGTREE AS(
+        SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'),
+        '->',
+        '//'),
+        '//',
+        '/') FULL_NAME,
+        ORG_NAME,
+        ORG_ID,
+        SUP_ORG_ID,
+        SORT,
+        LOC_ID,
+        AREA_CODE_ID,
+        ORG_CODE,
+        STATUS_CD
+        FROM (SELECT A.*, B.SUP_ORG_ID
+        FROM TB_ORG A, TB_ORG_REL B
+        WHERE A.ORG_ID = B.ORG_ID
+        AND A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000) AA
+        START WITH ORG_ID = #{orgRootId}
+        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID
+        ),
+        TBSLAVEACCT AS(
+        SELECT T1.SLAVE_ACCT_ID, T1.SLAVE_ACCT, T1.SLAVE_ACCT_TYPE, T2.USER_ID
+        FROM TB_SLAVE_ACCT T1, TB_SLVACCT_USER_REL T2
+        WHERE T1.STATUS_CD = 1000
+        AND T2.STATUS_CD = 1000
+        AND T1.SLAVE_ACCT_ID = T2.SLAVE_ACCT_ID
+        UNION ALL
+        SELECT A1.SLAVE_ACCT_ID, A1.SLAVE_ACCT, A1.SLAVE_ACCT_TYPE, A3.USER_ID
+        FROM TB_SLAVE_ACCT A1, TB_SLVACCT_ACCT_REL A2, TB_ACCT A3
+        WHERE A1.STATUS_CD = 1000
+        AND A2.STATUS_CD = 1000
+        AND A3.STATUS_CD = 1000
+        AND A1.SLAVE_ACCT_ID = A2.SLAVE_ACCT_ID
+        AND A2.ACCT_ID = A3.ACCT_ID
+        ),
+        ORGUSER AS(
+        SELECT A.*, D.USER_ID
+        FROM TB_ORG_PERSON_REL        A,
+        TB_ORGTREE_ORGPERSON_REL B,
+        TB_ORG_TREE              C,
+        TB_USER                  D
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000'
+        AND D.STATUS_CD = '1000'
+        AND A.PERSONNEL_ID = D.PERSONNEL_ID
+        AND A.ORG_PERSON_ID = B.ORG_PERSON_ID
+        AND B.ORG_TREE_ID = C.ORG_TREE_ID
+        AND C.ORG_ID = #{orgRootId}
+        <if test="orgId != null and orgId != ''">
+            AND A.ORG_ID = #{orgId}
+        </if>
+        )
+        SELECT OUSER.USER_ID,
+        PER.PSN_NAME,
+        (SELECT B.FULL_NAME FROM ORGTREE B WHERE B.ORG_ID = OUSER.ORG_ID) FULL_NAME,
+        (SELECT TAT.ACCT
+        FROM TB_ACCT TAT
+        WHERE TAT.STATUS_CD = 1000
+        AND TAT.USER_ID = OUSER.USER_ID) ACCT,
+        (SELECT WM_CONCAT(TBA.SLAVE_ACCT)
+        FROM TBSLAVEACCT TBA
+        WHERE TBA.USER_ID = OUSER.USER_ID) SLAVE_ACCT,
+        TCT.CONTENT,
+        TCERT.CERT_NO,
+        OUSER.STATUS_CD FROM ORGUSER OUSER LEFT JOIN TB_PERSONNEL PER ON PER.PERSONNEL_ID = OUSER.PERSONNEL_ID AND PER.STATUS_CD = OUSER.STATUS_CD LEFT JOIN TB_CONTACT TCT ON TCT.PERSONNEL_ID = OUSER.PERSONNEL_ID AND TCT.CONTACT_TYPE = '1' AND TCT.STATUS_CD = OUSER.STATUS_CD LEFT JOIN TB_CERT TCERT ON TCERT.PERSONNEL_ID = OUSER.PERSONNEL_ID AND TCERT.STATUS_CD = OUSER.STATUS_CD
+
+    </select>
 
 </mapper>

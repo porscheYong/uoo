@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface OrgTreeMapper extends BaseMapper<OrgTree> {
 
+    public Long getId();
+
 }

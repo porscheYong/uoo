@@ -16,15 +16,10 @@ import org.springframework.stereotype.Component;
 public interface TbAcctExtMapper extends BaseMapper<TbAcctExt> {
 
     /**
-     * 插入一条记录
-     * @param tbAcctExt
-     * @return
-     */
-    long save(TbAcctExt tbAcctExt);
-
-    /**
      * 失效一条记录
      * @param tbAcctExt
      */
     void delete(TbAcctExt tbAcctExt);
+
+    Long getId();
 }

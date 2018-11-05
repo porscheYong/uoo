@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +18,7 @@ import java.util.Date;
  * @since 2018-09-14
  */
 @TableName("tb_acct")
+@Data
 public class TbAcct extends Model<TbAcct> {
 
     private static final long serialVersionUID = 1L;
@@ -31,6 +33,26 @@ public class TbAcct extends Model<TbAcct> {
      */
     @TableField("USER_ID")
     private String userId;
+    /**
+     * 工号
+     */
+    @TableField("ACCT_NBR")
+    private String acctNbr;
+    /**
+     * 手机号
+     */
+    @TableField("ACCT_PHONE")
+    private String acctPhone;
+    /**
+     * 邮箱
+     */
+    @TableField("ACCT_EMAIL")
+    private String acctEmail;
+    /**
+     * 身份证
+     */
+    @TableField("ACCT_CERT")
+    private String acctCert;
     /**
      * 主账号
      */
@@ -52,10 +74,15 @@ public class TbAcct extends Model<TbAcct> {
     @TableField("SYMMETRY_PASSWORD")
     private String symmetryPassword;
     /**
+     *账号类别/性质
+     */
+    @TableField("ACCT_TYPE")
+    private String acctType;
+    /**
      * 来源
      */
-    @TableField("RESOURCE")
-    private String resource;
+    @TableField("SOURCE")
+    private String source;
     /**
      * 状态
      */
@@ -87,109 +114,6 @@ public class TbAcct extends Model<TbAcct> {
     @TableField("STATUS_DATE")
     private Date statusDate;
 
-    public Long getAcctId() {
-        return acctId;
-    }
-
-    public void setAcctId(Long acctId) {
-        this.acctId = acctId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getAcct() {
-        return acct;
-    }
-
-    public void setAcct(String acct) {
-        this.acct = acct;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getSymmetryPassword() {
-        return symmetryPassword;
-    }
-
-    public void setSymmetryPassword(String symmetryPassword) {
-        this.symmetryPassword = symmetryPassword;
-    }
-
-    public String getResource() {
-        return resource;
-    }
-
-    public void setResource(String resource) {
-        this.resource = resource;
-    }
-
-    public String getStatusCd() {
-        return statusCd;
-    }
-
-    public void setStatusCd(String statusCd) {
-        this.statusCd = statusCd;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Long getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(Long createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public Long getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(Long updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    public Date getStatusDate() {
-        return statusDate;
-    }
-
-    public void setStatusDate(Date statusDate) {
-        this.statusDate = statusDate;
-    }
 
     @Override
     protected Serializable pkVal() {
@@ -205,7 +129,7 @@ public class TbAcct extends Model<TbAcct> {
         ", salt=" + salt +
         ", password=" + password +
         ", symmetryPassword=" + symmetryPassword +
-        ", resource=" + resource +
+        ", source=" + source +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
         ", createUser=" + createUser +

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.organization.dao.OrgLevelMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.organization.entity.OrgLevel">
+        <id column="ORG_LEVEL_ID" property="orgLevelId" />
+        <result column="ORG_ID" property="orgId" />
+        <result column="ORG_TREE_ID" property="orgTreeId" />
+        <result column="ORG_LEVEL" property="orgLevel" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ORG_LEVEL_ID, ORG_ID, ORG_TREE_ID, ORG_LEVEL, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+
+
+    <select id="getId" resultType="java.lang.Long">
+        SELECT SEQ_TB_ORG_LEVEL_ID.NEXTVAL FROM DUAL
+    </select>
+
+
+    <update id="delete" parameterType="cn.ffcs.uoo.core.organization.entity.OrgLevel">
+        UPDATE
+        TB_ORG_LEVEL
+        SET
+        STATUS_CD = #{statusCd}, UPDATE_DATE = #{updateDate}, UPDATE_USER = #{updateUser}
+        WHERE
+        ORG_LEVEL_ID = #{orgLevelId}
+    </update>
+
+</mapper>

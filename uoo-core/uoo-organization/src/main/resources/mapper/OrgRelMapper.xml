@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.organization.dao.OrgRelMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.organization.entity.OrgRel">
+        <result column="ORG_REL_ID" property="orgRelId" />
+        <result column="ORG_ID" property="orgId" />
+        <result column="SUP_ORG_ID" property="supOrgId" />
+        <result column="ORG_REL_TYPE_ID" property="orgRelTypeId" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ORG_REL_ID, ORG_ID, SUP_ORG_ID, ORG_REL_TYPE_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+    <!-- 获取OrgIdSeq -->
+    <select id="getId" resultType="java.lang.Long">
+        SELECT SEQ_TB_ORG_REL_ID.NEXTVAL FROM DUAL
+    </select>
+
+
+    <update id="delete" parameterType="cn.ffcs.uoo.core.organization.entity.OrgRel">
+        UPDATE
+        TB_ORG_REL
+        SET
+        STATUS_CD = #{statusCd}, UPDATE_DATE = #{updateDate}, UPDATE_USER = #{updateUser}
+        WHERE
+        ORG_REL_ID = #{orgRelId}
+    </update>
+
+
+    <select id="queryOrgTreeRoot" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+        SELECT A.ORG_NAME NAME, B.ORG_ID ID ,B.SUP_ORG_ID PID
+        FROM TB_ORG A, TB_ORG_REL B
+        WHERE A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000
+        AND A.ORG_ID = B.ORG_ID
+        <if test="orgRootId != null">
+            AND A.ORG_ID = #{orgRootId}
+        </if>
+        ORDER BY A.ORG_LEVEL
+    </select>
+
+
+
+    <select id="queryOrgTreeChilden" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+        SELECT A.ORG_NAME NAME, B.ORG_ID ID ,B.SUP_ORG_ID PID
+        FROM TB_ORG A, TB_ORG_REL B
+        WHERE A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000
+        AND A.ORG_ID = B.ORG_ID
+        <if test="pid != null">
+            AND B.SUP_ORG_ID = #{pid}
+        </if>
+  <!--      <if test="orgRootId != null">
+            AND A.ORG_ID = #{orgRootId}
+        </if>-->
+
+        ORDER BY A.ORG_LEVEL
+    </select>
+
+
+    <select id="isLeaf" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+        SELECT A.ORG_NAME NAME, B.ORG_ID ID ,B.SUP_ORG_ID PID
+        FROM TB_ORG A, TB_ORG_REL B
+        WHERE A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000
+        AND A.ORG_ID = B.ORG_ID
+        <if test="pid != null">
+            AND B.SUP_ORG_ID = #{pid}
+        </if>
+     <!--   <if test="orgRootId != null">
+            AND A.ORG_ID = #{orgRootId}
+        </if>-->
+        ORDER BY A.ORG_LEVEL
+    </select>
+    
+    
+    <select id="getOrgRelType" resultType="cn.ffcs.uoo.core.organization.vo.OrgRefTypeVo">
+        SELECT ORGNAME,SUPORGNAME,ORT.REF_NAME REFNAME,ORT.CREATE_DATE createDate
+        FROM (SELECT (SELECT O.ORG_NAME
+        FROM TB_ORG O
+        WHERE O.STATUS_CD = '1000'
+        AND O.ORG_ID = B.ORG_ID) ORGNAME,
+        (SELECT O.ORG_NAME
+        FROM TB_ORG O
+        WHERE O.STATUS_CD = '1000'
+        AND O.ORG_ID = B.SUP_ORG_ID) SUPORGNAME,
+        B.ORG_REL_TYPE_ID
+        FROM TB_ORG_REL B
+        WHERE B.STATUS_CD = '1000'
+        <if test="org.orgId != null">
+            AND B.ORG_ID = #{org.orgId}
+        </if>
+        ) BB LEFT JOIN (SELECT * FROM TB_ORG_REL_TYPE WHERE STATUS_CD = '1000') ORT
+        ON ORT.ORG_REL_TYPE_ID = BB.ORG_REL_TYPE_ID
+    </select>
+
+
+    <select id="selectOrgRelTypePage" resultType="cn.ffcs.uoo.core.organization.vo.OrgRefTypeVo">
+        SELECT ORGNAME,SUPORGNAME,ORT.REF_NAME REFNAME,to_char(ORT.CREATE_DATE,'YYYY-MM-DD hh24:mi:ss') createDate
+        FROM (SELECT (SELECT O.ORG_NAME
+        FROM TB_ORG O
+        WHERE O.STATUS_CD = '1000'
+        AND O.ORG_ID = B.ORG_ID) ORGNAME,
+        (SELECT O.ORG_NAME
+        FROM TB_ORG O
+        WHERE O.STATUS_CD = '1000'
+        AND O.ORG_ID = B.SUP_ORG_ID) SUPORGNAME,
+        B.ORG_REL_TYPE_ID
+        FROM TB_ORG_REL B
+        WHERE B.STATUS_CD = '1000'
+        <if test="orgRefTypeVo.orgId != null">
+            AND B.ORG_ID = #{orgRefTypeVo.orgId}
+        </if>
+        ) BB LEFT JOIN (SELECT * FROM TB_ORG_REL_TYPE WHERE STATUS_CD = '1000') ORT
+        ON ORT.ORG_REL_TYPE_ID = BB.ORG_REL_TYPE_ID
+    </select>
+
+
+
+    <select id="selectOrgRel" resultType="cn.ffcs.uoo.core.organization.entity.OrgRel">
+        SELECT *
+        FROM TB_ORG_TREE A, TB_OGT_ORG_REFTYPE_CONF B, TB_ORG_REL C
+        WHERE A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND B.ORG_REF_TYPE_ID = C.ORG_REF_TYPE_ID
+        <if test="org.orgTreeId != null and org.orgTreeId != ''">
+          AND A.ORG_TREE_ID = {#org.orgTreeId}
+        </if>
+        <if test="org.orgId != null and org.orgId != ''">
+            AND C.ORG_ID =  {#org.orgId}
+        </if>
+    </select>
+
+
+    <!-- 检索组织信息 -->
+    <select id="selectFuzzyOrgRel" resultType="cn.ffcs.uoo.core.organization.entity.Org">
+        SELECT *
+        FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') fullName,
+        ORG_NAME orgName,LEVEL lv,ORG_ID orgId
+        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.SUP_ORG_ID
+        FROM TB_ORG A, TB_ORG_REL B
+        WHERE A.ORG_ID = B.ORG_ID
+        AND A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000) AA
+        START WITH ORG_ID = ${orgRootId}
+        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID)
+        WHERE 1=1
+        <if test="search != null and search != ''">
+           AND FULLNAME like '%'||#{search}||'%'
+        </if>
+
+    </select>
+
+    <!-- 检索组织数量 -->
+    <select id="selectFuzzyOrgRelCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM (
+        SELECT *
+        FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') fullName,
+        ORG_NAME orgName,LEVEL lv,ORG_ID orgId
+        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.SUP_ORG_ID
+        FROM TB_ORG A, TB_ORG_REL B
+        WHERE A.ORG_ID = B.ORG_ID
+        AND A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000) AA
+        START WITH ORG_ID = ${orgRootId}
+        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID)
+        WHERE 1=1
+        <if test="search != null and search != ''">
+            AND FULLNAME like '%'||#{search}||'%'
+        </if>
+        )
+    </select>
+    <!--组织检索翻页-->
+    <select id="selectFuzzyOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
+        SELECT *
+        FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') fullName,
+        ORG_NAME ORGNAME,ORG_ID ORGID,CREATE_DATE ORGRELCREATDATE,ORG_CODE ORGCODE
+        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.SUP_ORG_ID,to_char(B.CREATE_DATE,'YYYY-MM-DD') CREATE_DATE,A.ORG_CODE
+        FROM TB_ORG A, TB_ORG_REL B
+        WHERE A.ORG_ID = B.ORG_ID
+        AND A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000) AA
+        START WITH ORG_ID = ${orgVo.orgRootId}
+        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID)
+        WHERE 1=1
+        <if test="orgVo.search != null and orgVo.search != ''">
+            AND FULLNAME like '%'||#{orgVo.search}||'%'
+        </if>
+    </select>
+    <!--检索出的组织树-->
+    <select id="selectFuzzyOrgRelTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+       SELECT *
+        FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULLNAME,
+        ORG_NAME ORGNAME,LEVEL LV,ORG_ID ORGID
+        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.SUP_ORG_ID
+        FROM TB_ORG A, TB_ORG_REL B
+        WHERE A.ORG_ID = B.ORG_ID
+        AND A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000
+        AND B.ORG_REL_TYPE_ID in (
+        select A.ORG_REL_TYPE_ID
+          from tb_org_rel_type A, tb_ogt_org_reltype_conf B, tb_org_tree C
+         where A.STATUS_CD = '1000'
+           and B.STATUS_CD = '1000'
+           and C.STATUS_CD = '1000'
+           AND A.ORG_REL_TYPE_ID = B.ORG_REL_TYPE_ID
+           AND C.ORG_TREE_ID = B.ORG_TREE_ID
+           AND C.ORG_ID =  #{orgRootId})) AA
+        START WITH ORG_ID =  #{orgleafId}
+        CONNECT BY PRIOR  AA.SUP_ORG_ID = AA.ORG_ID )
+    </select>
+    <!--检索出完检索出完整的组织树-->
+    <select id="selectFuzzyFullOrgRelTree">
+        SELECT * FROM (
+        WITH FUZZYORGTREE AS(
+        SELECT *
+        FROM (SELECT ORG_ID ORGID,SUP_ORG_ID supOrgId
+        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.SUP_ORG_ID
+        FROM TB_ORG A, TB_ORG_REL B
+        WHERE A.ORG_ID = B.ORG_ID
+        AND A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000
+        AND B.ORG_REL_TYPE_ID in (
+        select A.ORG_REL_TYPE_ID
+         FROM TB_ORG_REL_TYPE A, TB_OGT_ORG_RELTYPE_CONF B, TB_ORG_TREE C
+         WHERE A.STATUS_CD = '1000'
+           AND B.STATUS_CD = '1000'
+           AND C.STATUS_CD = '1000'
+           AND A.ORG_REL_TYPE_ID = B.ORG_REL_TYPE_ID
+           AND C.ORG_TREE_ID = B.ORG_TREE_ID
+           AND C.ORG_ID =  #{orgRootId})) AA
+        START WITH ORG_ID = #{orgleafId}
+        CONNECT BY PRIOR  AA.SUP_ORG_ID = AA.ORG_ID )
+        ),
+        ROOTTREE AS (
+          SELECT *
+        FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') fullName,
+        ORG_NAME ORGNAME,ORG_ID ORGID,CREATE_DATE ORGRELCREATDATE,ORG_CODE ORGCODE,SUP_ORG_ID supOrgId
+        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.SUP_ORG_ID,to_char(B.CREATE_DATE,'YYYY-MM-DD') CREATE_DATE,A.ORG_CODE
+        FROM TB_ORG A, TB_ORG_REL B
+        WHERE A.ORG_ID = B.ORG_ID
+        AND A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000) AA
+        START WITH ORG_ID = #{orgRootId}
+        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID))
+        SELECT ROOTTREE.* FROM ROOTTREE,FUZZYORGTREE WHERE ROOTTREE.SUPORGID = FUZZYORGTREE.SUPORGID
+        )
+    </select>
+
+
+    <select id="getOrgRel" resultType="cn.ffcs.uoo.core.organization.entity.OrgRel">
+        SELECT D.ORG_REL_ID orgRelId,D.ORG_ID orgId,D.SUP_ORG_ID supOrgId,D.ORG_REL_TYPE_ID orgRelTypeId,
+        D.STATUS_CD statusCd ,D.CREATE_DATE createDate,D.CREATE_USER createUser,
+        D.UPDATE_DATE updateDate,D.UPDATE_USER updateUser,D.STATUS_DATE statusDate
+        FROM TB_ORG_TREE  A,
+        TB_OGT_ORG_RELTYPE_CONF B,
+        TB_ORG_REL_TYPE         C,
+        TB_ORG_REL              D
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000'
+        AND D.STATUS_CD = '1000'
+        AND A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND B.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND D.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND A.ORG_TREE_ID = #{orgTreeId}
+        AND D.ORG_ID = #{orgId}
+    </select>
+</mapper>

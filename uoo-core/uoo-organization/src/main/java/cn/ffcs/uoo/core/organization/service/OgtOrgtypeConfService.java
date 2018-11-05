@@ -12,5 +12,27 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-09-25
  */
 public interface OgtOrgtypeConfService extends IService<OgtOrgtypeConf> {
+    /**
+     * 获取seq
+     * @return
+     */
+    public Long getId();
+
+    /**
+     * 失效数据
+     * @param ogtOrgtypeConf
+     */
+    public void delete(OgtOrgtypeConf ogtOrgtypeConf);
+
+    /**
+     * 新增
+     */
+    public void add(OgtOrgtypeConf ogtOrgtypeConf);
+
+    /**
+     * 更新
+     */
+    public void update(OgtOrgtypeConf ogtOrgtypeConf);
+
 
 }

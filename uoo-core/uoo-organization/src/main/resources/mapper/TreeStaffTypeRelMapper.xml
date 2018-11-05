@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.organization.dao.TreeStaffTypeRelMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.organization.entity.TreeStaffTypeRel">
+        <result column="TREE_STAFF_TYPE_ID" property="treeStaffTypeId" />
+        <result column="ORG_TREE_ID" property="orgTreeId" />
+        <result column="USER_TYPE_ID" property="userTypeId" />
+        <result column="EFF_DATE" property="effDate" />
+        <result column="EXP_DATE" property="expDate" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="STATUS_DATE" property="statusDate" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        TREE_STAFF_TYPE_ID, ORG_TREE_ID, USER_TYPE_ID, EFF_DATE, EXP_DATE, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
+    </sql>
+
+
+    <!-- 获取OrgIdSeq -->
+    <select id="getId" resultType="java.lang.Long">
+        SELECT SEQ_TB_TREE_STAFF_TYPE_REL.NEXTVAL FROM DUAL
+    </select>
+
+
+    <update id="delete" parameterType="cn.ffcs.uoo.core.organization.entity.TreeStaffTypeRel">
+        UPDATE
+        TB_TREE_STAFF_TYPE_REL
+        SET
+        STATUS_CD = #{statusCd}, UPDATE_DATE = #{updateDate}, UPDATE_USER = #{updateUser}
+        WHERE
+        TREE_STAFF_TYPE_ID = #{treeStaffTypeId}
+    </update>
+</mapper>

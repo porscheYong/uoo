@@ -29,4 +29,9 @@ public class TbCertServiceImpl extends ServiceImpl<TbCertMapper, TbCert> impleme
     public void delete(TbCert tbCert) {
         tbCertMapper.delete(tbCert);
     }
+
+    @Override
+    public TbCert getTbCertByPersonnelId(Integer personnelId){
+        return  tbCertMapper.getTbCertByPersonnelId(personnelId);
+    }
 }

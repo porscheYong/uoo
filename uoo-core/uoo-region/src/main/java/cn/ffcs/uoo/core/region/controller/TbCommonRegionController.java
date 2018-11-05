@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,6 +51,20 @@ public class TbCommonRegionController extends BaseController {
     @Autowired
     private ITbExchService exchSvc;
 
+    @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),
+    })
+    @UooLog(value = "根据ID获取单条数据", key = "getCommonRegion")
+    @GetMapping("getCommonRegion/id={id}")
+    public ResponseResult getCommonRegion(@PathVariable(value = "id") Long id){
+        TbCommonRegion obj = regionService.selectById(id);
+        if(obj==null||!DeleteConsts.VALID.equals(obj.getStatusCd())){
+            return ResponseResult.createErrorResult("无效数据");
+        }
+        return ResponseResult.createSuccessResult(obj, "");
+    }
+    
     @ApiOperation(value = "公共管理区域列表", notes = "公共管理区域列表")
     @UooLog(value = "公共管理区域列表", key = "listAllCommonRegion")
     @GetMapping("listAllCommonRegion")
@@ -69,7 +84,7 @@ public class TbCommonRegionController extends BaseController {
     @PostMapping("addCommonRegion")
     @Transactional
     public ResponseResult addCommonRegion(TbCommonRegion commonRegion) {
-        // TODO 数据校验  获取操作者
+        //  数据校验  获取操作者
         //查询上级是否存在 -1为最顶层
         
         if(commonRegion.getUpRegionId()!=null){
@@ -94,7 +109,11 @@ public class TbCommonRegionController extends BaseController {
     @PostMapping("updateCommonRegion")
     @Transactional
     public ResponseResult updateCommonRegion(TbCommonRegion commonRegion) {
-        // TODO 数据校验 获取操作者
+        Long id = commonRegion.getCommonRegionId();
+        if(id==null||regionService.selectById(id)==null){
+            return ResponseResult.createErrorResult("修改数据异常");
+        }
+        //  数据校验 获取操作者
         if(commonRegion.getUpRegionId()!=null){
             TbCommonRegion region = regionService.selectById(commonRegion.getUpRegionId());
             if(region==null){
@@ -102,7 +121,7 @@ public class TbCommonRegionController extends BaseController {
             }
         }
         commonRegion.setUpdateDate(new Date());
-        commonRegion.setStatusDate(new Date());
+        //commonRegion.setStatusDate(new Date());
         
         regionService.updateById(commonRegion);
         return ResponseResult.createSuccessResult("success");
@@ -117,7 +136,7 @@ public class TbCommonRegionController extends BaseController {
     @SuppressWarnings("unchecked")
     public ResponseResult deleteCommonRegion(TbCommonRegion commonRegion) {
         //
-        if(commonRegion==null){
+        if(commonRegion==null||commonRegion.getCommonRegionId()==null){
             return ResponseResult.createErrorResult("不能删除空数据");
         }
         //有没有下级
@@ -132,7 +151,7 @@ public class TbCommonRegionController extends BaseController {
         }
         List<TbExch> exchDatas=exchSvc.selectList(Condition.create().eq("COMMON_REGION_ID", commonRegion.getCommonRegionId()).eq("STATUS_CD",DeleteConsts.VALID));
         if(exchDatas!=null&&!exchDatas.isEmpty()){
-            return ResponseResult.createErrorResult("当前区域有区号信息依赖，请先修改区号信息");
+            return ResponseResult.createErrorResult("当前区域有局向信息依赖，请先修改局向信息");
         }
         TbCommonRegion r=new TbCommonRegion();
         r.setCommonRegionId(commonRegion.getCommonRegionId());

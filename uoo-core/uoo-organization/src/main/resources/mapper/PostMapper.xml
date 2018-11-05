@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.organization.dao.PostMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.organization.entity.Post">
+        <id column="POST_ID" property="postId" />
+        <result column="PARENT_POST_ID" property="parentPostId" />
+        <result column="POST_NAME" property="postName" />
+        <result column="POST_TYPE" property="postType" />
+        <result column="EFF_DATE" property="effDate" />
+        <result column="EXP_DATE" property="expDate" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        POST_ID, PARENT_POST_ID, POST_NAME, POST_TYPE, EFF_DATE, EXP_DATE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+    <!-- 获取postSeq -->
+    <select id="getId" resultType="java.lang.Long">
+        SELECT SEQ_TB_POST_ID.NEXTVAL FROM DUAL
+    </select>
+
+
+    <update id="delete" parameterType="cn.ffcs.uoo.core.organization.entity.Post">
+        UPDATE
+        TB_POST
+        SET
+        STATUS_CD = #{statusCd}, UPDATE_DATE = #{updateDate}, UPDATE_USER = #{updateUser}
+        WHERE
+        POST_ID = #{postId}
+    </update>
+
+
+    <select id="selectPostTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+        SELECT A.POST_ID id,A.PARENT_POST_ID pid,A.POST_NAME name
+        FROM TB_POST A
+        WHERE A.STATUS_CD = '1000'
+        <if test="pid != null and pid != ''">
+            AND A.PARENT_POST_ID = #{pid}
+        </if>
+        <if test="postType != null and postType != ''">
+            AND A.POST_TYPE = #{postType}
+        </if>
+    </select>
+
+    <select id="getOrgPostByOrgId" resultType="cn.ffcs.uoo.core.organization.entity.Post">
+        SELECT A.POST_ID postId,
+        A.PARENT_POST_ID parentPostId,
+        A.POST_NAME postName,
+        A.POST_TYPE postType,
+        A.EFF_DATE effDate,
+        A.EXP_DATE expDate,
+        B.STATUS_CD statusCd,
+        B.CREATE_DATE createDate,
+        B.CREATE_USER createUser,
+        B.UPDATE_DATE updateDate,
+        B.UPDATE_USER updateUser,
+        B.STATUS_DATE statusDate
+        FROM TB_POST A,TB_ORG_POST_REL B
+        WHERE A.POST_ID=B.POST_ID
+        AND A.STATUS_CD='1000'
+        AND B.STATUS_CD='1000'
+        <if test="orgId != null and orgId != ''">
+           AND B.ORG_ID = #{orgId}
+        </if>
+    </select>
+
+</mapper>

@@ -34,29 +34,29 @@
         PERSONNEL_ID, USER_ID, PSN_NAME, PSN_CODE, NC_CODE, PSN_NBR, NATIONALITY, GENDER, NATION, MARRIAGE, PLITICAL_STATUS, IMAGE, REASON, TO_WORK_TIME, SERVING_AGE, LENGTH_SERVICE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, UUID, NOTES
     </sql>
 
-    <select id="getPersonnelRelationInfo" resultType="PersonnelRelationInfoVo">
-      SELECT t.psn_name,t.psn_code,t.nc_code,
+    <select id="getPersonnelRelationInfo" resultType="cn.ffcs.uoo.core.personnel.vo.PersonnelRelationInfoVo">
+        SELECT t.psn_name,t.psn_code,t.nc_code,
         t.psn_nbr,t.nationality,t.gender,
         t.nation,t.marriage,t.plitical_status,t.reason,
         c.contact_type,c.content,e.cert_name,e.cert_type,
-        e.cert_no,e.address,e.issuing,e.is_real,e.resource
-      FROM TB_PERSONNEL T
-      LEFT JOIN TB_CONTACT C ON T.PERSONNEL_ID = C.PERSONNEL_ID
-      LEFT JOIN TB_CERT E ON T.PERSONNEL_ID = E.PERSONNEL_ID
-      <where>
-          <if test="psnName != null and psnName != '' ">
-              AND t.psn_name = #{psnName}
-          </if>
-          <if test="psnNbr != null and psnNbr != '' ">
-              AND t.psn_nbr = #{psnNbr}
-          </if>
-          <if test="certNo != null and certNo != '' " >
-              AND e.cert_no = #{certNo}
-          </if>
-          <if test="statusCd != null and statusCd != '' ">
-              AND t.status_cd = #{statusCd}
-          </if>
-      </where>
+        e.cert_no,e.address,e.issuing,e.is_real,e.source
+        FROM TB_PERSONNEL T
+        LEFT JOIN TB_CONTACT C ON T.PERSONNEL_ID = C.PERSONNEL_ID
+        LEFT JOIN TB_CERT E ON T.PERSONNEL_ID = E.PERSONNEL_ID
+        <where>
+            <if test="psnName != null and psnName != '' ">
+                AND t.psn_name = #{psnName}
+            </if>
+            <if test="psnNbr != null and psnNbr != '' ">
+                AND t.psn_nbr = #{psnNbr}
+            </if>
+            <if test="certNo != null and certNo != '' " >
+                AND e.cert_no = #{certNo}
+            </if>
+            <if test="statusCd != null and statusCd != '' ">
+                AND t.status_cd = #{statusCd}
+            </if>
+        </where>
     </select>
 
     <select id="getId" resultType="java.lang.Long">
@@ -65,11 +65,117 @@
 
     <update id="delete" parameterType="cn.ffcs.uoo.core.personnel.entity.TbPersonnel">
         UPDATE
-           TB_PERSONNEL
+                TB_PERSONNEL
         SET
             STATUS_CD = 1100
         WHERE
-            personnel_id = #{personnelId}
+                personnel_id = #{personnelId}
     </update>
+
+    <select id="getPersonnelOrg" resultType="cn.ffcs.uoo.core.personnel.vo.PersonnelOrgVo">
+        select t1.personnel_id,
+        t1.psn_name,
+        t2.user_id,
+        t4.double_name,
+        t3.acct,
+        t4.org_id,
+        t4.status_cd
+        from tb_personnel t1, tb_user t2, tb_acct t3, tb_acct_org t4
+        <where>
+            t1.status_cd = 1000
+            and t2.status_cd = 1000
+            and t3.status_cd = 1000
+            and t4.status_cd = 1000
+            and t1.personnel_id = t2.personnel_id
+            and t2.user_id = t3.user_id
+            and t3.acct_id = t4.acct_id
+            <if test="orgId != null and orgId != '' ">
+                and t4.org_id = = #{orgId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getPsnNbrId" resultType="java.lang.Long">
+        SELECT seq_psn_nbr_id.nextval FROM dual
+    </select>
+
+    <select id="getPsnCodeId" resultType="java.lang.Long">
+        SELECT seq_psn_code_id.nextval FROM dual
+    </select>
+
+    <select id="getPsnOrg" resultType="cn.ffcs.uoo.core.personnel.vo.PsonOrgVo">
+        WITH ORGTREE AS
+        (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//','/') FULL_NAME,
+        ORG_NAME,ORG_ID,SUP_ORG_ID,SORT, LOC_ID, AREA_CODE_ID,ORG_CODE,STATUS_CD
+        FROM (SELECT A.*, B.SUP_ORG_ID
+        FROM TB_ORG A, TB_ORG_REL B
+        WHERE A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000
+        AND A.ORG_ID = B.ORG_ID) AA
+        START WITH ORG_ID = #{orgRootId}
+        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID)
+        SELECT *
+        FROM (SELECT AA.PROPERTY ,
+        AA.DOUBLE_NAME ,
+        AA.ORG_TREE_NAME ,
+        ORG.ORG_NAME ,
+        (SELECT B.FULL_NAME FROM ORGTREE B WHERE B.ORG_ID = AA.ORG_ID) full_name,
+        PER.PSN_NAME ,
+        POST.POST_NAME
+        FROM (SELECT A.*,C.Org_Tree_Name
+        FROM TB_ORG_PERSON_REL        A,
+        TB_ORGTREE_ORGPERSON_REL B,
+        TB_ORG_TREE              C
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000'
+        AND A.ORG_PERSON_ID = B.ORG_PERSON_ID
+        AND B.ORG_TREE_ID = C.ORG_TREE_ID
+        AND C.ORG_ID = #{orgRootId}
+        <if test = "orgId != null and orgId != ''" >
+          AND A.ORG_ID = #{orgId}
+        </if>
+        <if test ="personId != null and personId != ''" >
+            AND A.PERSONNEL_ID = #{personId}
+        </if>
+        ) AA
+        LEFT JOIN TB_ORG ORG
+        ON ORG.ORG_ID = AA.ORG_ID
+        AND ORG.Status_Cd = AA.Status_Cd
+        LEFT JOIN TB_PERSONNEL PER
+        ON PER.PERSONNEL_ID = AA.PERSONNEL_ID
+        AND ORG.STATUS_CD = AA.STATUS_CD
+        LEFT JOIN TB_POST POST
+        ON POST.POST_ID = AA.POST_ID
+        AND ORG.STATUS_CD = AA.STATUS_CD) AB where 1 = 1
+    </select>
+
+    <select id="getPsnByUser" resultType="cn.ffcs.uoo.core.personnel.vo.PsnByUserVo">
+        select t1.personnel_id,
+               t1.psn_name,
+               t1.psn_code,
+               t2.content      mobile_phone,
+               t3.content      email,
+               t4.cert_type,
+               t4.cert_no
+        from tb_personnel t1
+                 left join tb_contact t2
+                     on t1.personnel_id = t2.personnel_id
+                            and t2.contact_type = '1'
+                            and t2.first_flag = 1
+                            and t2.status_cd = 1000
+                 left join tb_contact t3
+                     on t1.personnel_id = t3.personnel_id
+                            and t3.contact_type = '2'
+                            and t3.status_cd = 1000
+                 left join tb_cert t4
+                     on t1.personnel_id = t4.personnel_id
+                            and t4.status_cd = 1000
+        where t1.status_cd = 1000
+        <if test ="personnelId != null and personnelId != ''" >
+            and t1.personnel_id = #{personnelId}
+        </if>
+    </select>
+
 
 </mapper>
