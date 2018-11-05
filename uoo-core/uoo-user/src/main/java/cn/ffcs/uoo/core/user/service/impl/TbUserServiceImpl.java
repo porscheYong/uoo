@@ -9,6 +9,7 @@ import cn.ffcs.uoo.core.user.vo.ListUserOrgVo;
 import cn.ffcs.uoo.core.user.vo.PsonOrgVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import feign.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> impleme
 
     @Override
     public List<TbRoles> getRoleByUserId(Long userId){
-        return  baseMapper.getRoleByUserId(userId);
+        return  baseMapper.getRoleByUserId(String.valueOf(userId));
     }
 
     @Override

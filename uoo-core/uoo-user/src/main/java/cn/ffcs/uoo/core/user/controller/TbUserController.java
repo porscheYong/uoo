@@ -25,6 +25,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -69,10 +71,10 @@ public class TbUserController extends BaseController {
 
 
     @ApiOperation(value = "用户信息", notes = "用户信息")
-    @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Integer",paramType="path")
+    @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "String",paramType="path")
     @UooLog(value = "用户组织条件查询", key = "getUser")
-    @RequestMapping(value = "/getUserByPersonnelId/personnelId={personnelId}", method = RequestMethod.GET)
-    public Object getUser(@PathVariable(value = "personnelId") Integer personnelId){
+    @RequestMapping(value = "/getUserByPersonnelId", method = RequestMethod.GET)
+    public Object getUser(String personnelId){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         map.put(BaseUnitConstants.TABLE_PERSONNEL_ID, personnelId);
@@ -87,10 +89,19 @@ public class TbUserController extends BaseController {
          * todo
          *  人员信息 调用personnel接口
          */
-         restTemplate.getForObject(
-                "http://PERSONNEL-SERVICE/personnel/getFormPersonnel/personnelId=" + personnelId,
-                Object.class
+        //ResponseResult result = (ResponseResult) restTemplate.getForObject(
+        ResponseResult result = restTemplate.getForObject(
+                "http://PERSONNEL-SERVICE/personnel/getPsnByUser?personnelId=" + personnelId,
+                ResponseResult.class
         );
+
+        JSONObject jsonObject= JSONObject.fromObject(result); // 将数据转成json字符串
+        ResponseResult per = (ResponseResult)JSONObject.toBean(jsonObject, ResponseResult.class); //将json转成需要的对象
+        if("0".equals(per.getCode())){
+            editFormUserVo.setPsnByUserVo((PsnByUserVo) per.getData());
+        }else{
+            return  ResultUtils.error(per.getCode(), per.getMessage());
+        }
 
         /**
          * 角色信息

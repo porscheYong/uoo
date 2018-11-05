@@ -41,6 +41,8 @@ public class EditFormUserVo {
      * 创建时间
      */
     private Date createDate;
+
+    private PsnByUserVo psnByUserVo;
     /**
      * 角色
      */

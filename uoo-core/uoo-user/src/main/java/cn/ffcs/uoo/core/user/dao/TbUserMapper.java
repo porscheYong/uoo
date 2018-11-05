@@ -7,6 +7,7 @@ import cn.ffcs.uoo.core.user.vo.ListUserOrgVo;
 import cn.ffcs.uoo.core.user.vo.PsonOrgVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,9 +23,9 @@ public interface TbUserMapper extends BaseMapper<TbUser> {
 
     public Long getId();
 
-    public List<TbRoles> getRoleByUserId(Long userId);
+    public List<TbRoles> getRoleByUserId(@Param("userId") String userId);
 
-    public List<ListSlaveAcctVo> getSlaveAcctInfo(Long userId, Long acctId);
+    public List<ListSlaveAcctVo> getSlaveAcctInfo(@Param("userId") Long userId,@Param("acctId") Long acctId);
 
     public List<ListUserOrgVo> getUserOrg(Pagination page, PsonOrgVo psonOrgVo);
 

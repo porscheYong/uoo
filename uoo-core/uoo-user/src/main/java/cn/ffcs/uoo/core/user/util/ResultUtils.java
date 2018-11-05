@@ -21,6 +21,13 @@ public class ResultUtils {
         return result;
     }
 
+    public static Object error(int code, String msg){
+        ResponseResult result = new ResponseResult();
+        result.setCode(code);
+        result.setMessage(msg);
+        return result;
+    }
+
     public static Object successfulTip(EumUserResponeCode eumUserResponeCode){
         ResponseResult result = new ResponseResult();
         result.setCode(eumUserResponeCode.getCode());
