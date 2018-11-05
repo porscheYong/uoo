@@ -23,12 +23,12 @@ public class TbAcctExtServiceImpl extends ServiceImpl<TbAcctExtMapper, TbAcctExt
     private TbAcctExtMapper tbAcctExtMapper;
 
     @Override
-    public long saveAcctExt(TbAcctExt tbAcctExt) {
-        return tbAcctExtMapper.save(tbAcctExt);
+    public void removeAcctExt(TbAcctExt tbAcctExt) {
+        tbAcctExtMapper.delete(tbAcctExt);
     }
 
     @Override
-    public void removeAcctExt(TbAcctExt tbAcctExt) {
-        tbAcctExtMapper.delete(tbAcctExt);
+    public Long getId(){
+        return baseMapper.getId();
     }
 }

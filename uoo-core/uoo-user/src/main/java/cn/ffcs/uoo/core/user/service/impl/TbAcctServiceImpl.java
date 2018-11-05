@@ -1,9 +1,11 @@
 package cn.ffcs.uoo.core.user.service.impl;
 
+
 import cn.ffcs.uoo.core.user.dao.TbAcctMapper;
 import cn.ffcs.uoo.core.user.entity.TbAcct;
 import cn.ffcs.uoo.core.user.service.TbAcctService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,23 +25,29 @@ public class TbAcctServiceImpl extends ServiceImpl<TbAcctMapper, TbAcct> impleme
     @Resource
     private TbAcctMapper tbAcctMapper;
 
+    @Override
+    public Long getId(){
+        return tbAcctMapper.getId();
+    }
     /**
      * 保存主账号
      * @param tbAcct
      */
     @Override
     public long saveAcct(TbAcct tbAcct) {
-        return tbAcctMapper.save(tbAcct);
+
+        //return baseMapper.save(tbAcct);
+        return 1L;
     }
 
     @Override
     public void removeAcct(TbAcct tbAcct) {
-        tbAcctMapper.delete(tbAcct);
+        baseMapper.delete(tbAcct);
     }
 
     @Override
     public List<TbAcct> selectAcctList(TbAcct tbAcct) {
-        return tbAcctMapper.selectAcctList(tbAcct);
+        return baseMapper.selectAcctList(tbAcct);
     }
 
     public TbAcct selectOneAcct(TbAcct tbAcct) {

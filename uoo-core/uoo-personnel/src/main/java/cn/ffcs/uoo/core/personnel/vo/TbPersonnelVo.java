@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.core.personnel.vo;
 
 import cn.ffcs.uoo.base.common.vo.BaseVo;
+import lombok.Data;
+
 /**
  *  ┏┓　　　┏┓
  *┏┛┻━━━┛┻┓
@@ -25,6 +27,8 @@ import cn.ffcs.uoo.base.common.vo.BaseVo;
  * @date 2018/9/7 11:12
  * @Version 1.0.0
 */
+
+@Data
 public class TbPersonnelVo extends BaseVo {
 
 
@@ -48,35 +52,5 @@ public class TbPersonnelVo extends BaseVo {
      */
     private String statusCd;
 
-    public String getPsnName() {
-        return psnName;
-    }
-
-    public void setPsnName(String psnName) {
-        this.psnName = psnName;
-    }
-
-    public String getPsnNbr() {
-        return psnNbr;
-    }
-
-    public void setPsnNbr(String psnNbr) {
-        this.psnNbr = psnNbr;
-    }
-
-    public String getStatusCd() {
-        return statusCd;
-    }
-
-    public void setStatusCd(String statusCd) {
-        this.statusCd = statusCd;
-    }
-
-    public String getCertNo() {
-        return certNo;
-    }
-
-    public void setCertNo(String certNo) {
-        this.certNo = certNo;
-    }
+    private String orgId;
 }

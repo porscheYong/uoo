@@ -10,7 +10,7 @@
         <result column="PASSWORD" property="password" />
         <result column="SYMMETRY_PASSWORD" property="symmetryPassword" />
         <result column="SLAVE_ACCT_TYPE" property="slaveAcctType" />
-        <result column="RESOURCE_ID" property="resourceId" />
+        <result column="SOURCE" property="source" />
         <result column="STATUS_CD" property="statusCd" />
         <result column="CREATE_DATE" property="createDate" />
         <result column="CREATE_USER" property="createUser" />
@@ -21,7 +21,53 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        SLAVE_ACCT_ID, SLAVE_ACCT, SALT, PASSWORD, SYMMETRY_PASSWORD, SLAVE_ACCT_TYPE, RESOURCE_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        SLAVE_ACCT_ID, SLAVE_ACCT, SALT, PASSWORD, SYMMETRY_PASSWORD, SLAVE_ACCT_TYPE, SOURCE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
+
+    <select id="getId" resultType="java.lang.Long">
+        select seq_tb_slave_acct_id.nextval from dual
+    </select>
+
+    <select id="getUserList" resultType="cn.ffcs.uoo.core.user.entity.ListUser">
+        select t1.user_id, t3.psn_name, t2.create_date
+        from TB_SLVACCT_USER_REL t1, TB_USER t2, TB_PERSONNEL t3
+        <where> t1.status_cd = 1000
+          and t2.status_cd = 1000
+          and t3.status_cd = 1000
+          and t1.user_id = t2.user_id
+          and t2.personnel_id = t3.personnel_id
+            <if test="slaveAcctId != null and slaveAcctId != '' " >
+                and t1.slave_acct_id = #{slaveAcctId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getApplyUserList" resultType="cn.ffcs.uoo.core.user.entity.ListUser">
+        select t2.user_id, t3.psn_name, t2.create_date
+        from TB_SLVACCT_ACCT_REL t1, TB_ACCT t, TB_USER t2, TB_PERSONNEL t3
+        <where> t.status_cd = 1000
+          and t1.status_cd = 1000
+          and t2.status_cd = 1000
+          and t3.status_cd = 1000
+          and t2.personnel_id = t3.personnel_id
+          and t2.user_id = t.user_id
+          and t1.acct_id = t.acct_id
+            <if test="slaveAcctId != null and slaveAcctId != '' " >
+                and t1.slave_acct_id = #{slaveAcctId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getAcct" resultType="cn.ffcs.uoo.core.user.entity.TbAcct">
+        select t2.*
+        from TB_SLVACCT_ACCT_REL t1, TB_ACCT t2
+        <where> t1.status_cd = 1000
+          and t2.status_cd = 1000
+          and t1.acct_id = t2.acct_id
+            <if test="slaveAcctId != null and slaveAcctId != '' " >
+                and t1.slave_acct_id = #{slaveAcctId}
+            </if>
+        </where>
+    </select>
 
 </mapper>
