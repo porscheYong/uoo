@@ -26,6 +26,8 @@
         <module>uoo-public</module>
         <module>uoo-data-share</module>
         <module>uoo-activiti</module>
+        <module>uoo-permission</module>
+        <module>uoo-position</module>
     </modules>
 
     <dependencies>

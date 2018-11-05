@@ -36,6 +36,10 @@ uoo(pom)
 
 ...... uoo-data-share(jar)：数据共享微服务
 
+...... uoo-permission 权限微服务（包含角色、权限等）
+
+...... uoo-position职位微服务（包含职位、职能、岗位等）
+
 ... uoo-web(pom)
 
 ...... uoo-maindata-web(jar)：主数据web微服务

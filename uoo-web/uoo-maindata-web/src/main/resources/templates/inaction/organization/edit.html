@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>编辑</title>
+
+    <!-- Bootstrap -->
+    <link href="../../../static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../../static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- ztree -->
+    <link href="../../../static/vendors/zTree/zTreeStyle.css" rel="stylesheet">
+    <!-- jquery datatable -->
+    <link href="../../../static/vendors/datatable/datatables.css" rel="stylesheet">
+    <!-- jquery cascader -->
+    <link href="../../../static/vendors/cascader/cascader.css" rel="stylesheet">
+    <!-- jquery tagsinput -->
+    <link href="../../../static/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../static/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="../../../static/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../static/css/reset.css" rel="stylesheet">
+    <link href="../../../static/css/custom.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="../../../static/js/core/html5shiv.js"></script>
+    <script src="../../../static/js/core/respond.js"></script>
+    <script src="../../../static/js/core/excanvas.js"></script>
+    <![endif]-->
+  </head>
+
+  <body class="nav-md">
+    <div class="container">
+      <div class="main-container">
+        <div class="content-left">
+          <div style="display: inline-block;width: 100%;padding-top: 10px;">
+              <ul id="treeDemo" class="ztree"></ul>
+          </div>
+        </div>
+        
+        <div class="content-right">
+            <div class="board-title">
+              <span class="name ft18">编辑-市场部 100000571001</span>
+            </div>
+            <div class="nav-tabs-brief" style="padding-top: 35px;">
+              <ul class="nav nav-tabs tab-title" role="tablist" id="myTabs">
+                <li role="presentation" class="active" style="width: 10%;"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">基础信息</a>
+                </li>
+                <li role="presentation" class="" style="width: 10%;"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">关系信息</a>
+                </li>
+              </ul>
+
+              <div class="tab-content">
+                <div class="tab-pane active" id="tab_content1">
+                  <form action="/submit" method="post" style="padding: 10px;">
+                    <div class="row" style="margin-bottom: 10px;">
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                          <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织名称</label>
+                          <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市场营销战略部">
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                          <label for="idCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">规模</label>
+                          <!-- <input type="code" id="idCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="100~200"> -->
+                          <select  class="col-md-8 col-sm-8 col-xs-12">
+                            <option></option>
+                            <option>100~200</option>
+                            <option>300~400</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                          <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织简称</label>
+                          <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市场部">
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                          <label for="idCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">英文简称</label>
+                          <input type="code" id="idCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="market">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                          <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">城乡属性</label>
+                          <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="城市"> -->
+                          <select  class="col-md-8 col-sm-8 col-xs-12">
+                            <option></option>
+                            <option>城市</option>
+                            <option>农村</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                          <label for="createDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">成立时间</label>
+                          <input type="code" id="createDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="2018-10-27">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                          <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">行政管理区域</label>
+                          <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市公司直属"> -->
+                          <select  class="col-md-8 col-sm-8 col-xs-12">
+                            <option></option>
+                            <option>市公司直属</option>
+                            <option>省公司直属</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                          <label for="idCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">联系人</label>
+                          <input type="code" id="idCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="董世仓">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                          <label for="idTel" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织最高岗位级别</label>
+                          <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" value="总经理"> -->
+                          <select  class="col-md-8 col-sm-8 col-xs-12">
+                            <option></option>
+                            <option>总经理</option>
+                            <option>副总经理 </option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                          <label for="idCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织办公电话</label>
+                          <input type="code" id="idCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="0571-92345678">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                      <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                          <label for="idMark" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">地址</label>
+                          <div class="col-md-10 col-sm-10 col-xs-12" style="width: 84%;position: relative;padding: 0;">
+                            <input id="address" class="ui-input" style="width: 100%;position: relative;" size="40" name="tel" readonly="readonly">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                      <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                          <label for="orgType" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织类别</label>
+                          <input type="tel" id="orgType" class="ui-input col-md-10 col-sm-10 col-xs-12" style="width: 84%" size="40" name="tel" required data-toggle="modal" data-target="#myModal">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                      <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                          <label for="idMark" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织简介</label>
+                          <div class="ui-textarea-x" class="col-md-10 col-sm-10 col-xs-12" style="width: 84%">
+                            <textarea id="idMark" maxlength="140" rows="5">附件</textarea>
+                            <div class="ui-textarea"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </form>
+                  <div class="row" style="margin-bottom: 10px;">
+                    <div style="margin-left: 17%;">
+                        <!-- <input type="submit" id="formSubmit" class="clip">
+                        <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
+                        <button class="ui-button ui-button-primary">注册</button>
+                        <button class="ui-button ui-button-cancel" style="margin-left: 10px;">取消</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="tab_content2">
+                  <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden;">
+                    <table id="example" class="stripe" width="100%"></table>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h2 class="modal-title" id="myModalLabel">选择组织类别</h2>
+              </div>
+              <div class="modal-body">
+                <div style="display: inline-block;">
+                  <div>
+                    <span class="ui-input ui-search-input">
+                      <input type="search" placeholder="搜索组织类别">
+                      <a href="javascript:" class="ui-icon-search">搜索</a>
+                    </span>
+                  </div>
+                  <div style="width: 300px;height: 290px;display: inline-block;overflow: auto;">
+                      <ul id="orgTree" class="ztree"></ul>
+                  </div>
+                </div>
+                <div style="display: inline-block;vertical-align: top;">
+                  <h3>选择</h3>
+                  <div style="display: inline-block;" id="tags_2">
+                    <div class="tag">
+                        <span>
+                            ads&nbsp;
+                        </span>
+                        <a href="#" class="tag-remove">x</a>
+                    </div>
+                    <div class="tag">
+                        <span>
+                            adverts&nbsp;
+                        </span>
+                        <a href="#" class="tag-remove">x</a>
+                    </div>
+                    <div class="tag">
+                        <span>
+                            rts&nbsp;
+                        </span>
+                        <a href="#" class="tag-remove">x</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="ui-button ui-button-primary">确认</button>
+                <button class="ui-button ui-button-cancel" data-dismiss="modal" style="margin-left: 10px;">取消</button>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- Modal -->
+        <div id="myModal" style="display: none;">
+
+              <div class="modal-body" style="padding: 20px;">
+                <div style="display: inline-block;">
+                  <div>
+                    <span class="ui-input ui-search-input">
+                      <input type="search" placeholder="搜索组织类别">
+                      <a href="javascript:" class="ui-icon-search">搜索</a>
+                    </span>
+                  </div>
+                  <div style="width: 300px;height: 290px;display: inline-block;overflow: auto;">
+                      <ul id="orgTree" class="ztree"></ul>
+                  </div>
+                </div>
+                <div style="display: inline-block;vertical-align: top;">
+                  <h3>选择</h3>
+                  <div style="display: inline-block;" id="tags_2">
+                    <div class="tag">
+                        <span>
+                            ads&nbsp;
+                        </span>
+                        <a href="#" class="tag-remove">x</a>
+                    </div>
+                    <div class="tag">
+                        <span>
+                            adverts&nbsp;
+                        </span>
+                        <a href="#" class="tag-remove">x</a>
+                    </div>
+                    <div class="tag">
+                        <span>
+                            rts&nbsp;
+                        </span>
+                        <a href="#" class="tag-remove">x</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="../../../static/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="../../../static/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- ztree -->
+    <script type="text/javascript" src="../../../static/vendors/zTree/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../../../static/vendors/zTree/jquery.ztree.excheck.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" src="../../../static/vendors/datatable/datatables.js"></script>
+    <!-- sea js -->
+    <script type="text/javascript" src="../../../static/vendors/lulu/js/plugin/sea.js"></script>
+    <!-- laydate -->
+    <script type="text/javascript" src="../../../static/vendors/laydate/laydate.js"></script>
+    <!-- layer -->
+    <script type="text/javascript" src="../../../static/vendors/layer/layer.js"></script>
+    <!-- jquery cascader -->
+    <script type="text/javascript" src="../../../static/vendors/cascader/cascader.js"></script>
+    <!-- jquery tagsinput -->
+    <script type="text/javascript" src="../../../static/vendors/tagsinput/jquery.tagsinput.js"></script>
+    <!-- NProgress -->
+    <script type="text/javascript" src="../../../static/vendors/nprogress/nprogress.js"></script>
+    <!-- init -->
+    <script type="text/javascript" src="../../../static/js/init.js"></script>
+    <script type="text/javascript" src="../../../static/js/table_init.js"></script>
+    <script type="text/javascript" src="../../../static/js/tree_init.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="./build/js/custom.js"></script>
+    <script type="text/javascript">
+      seajs.use('../../../static/vendors/lulu/js/common/ui/Select', function () {
+        $('select').selectMatch();
+      })
+      var data = [
+            {
+                value: 'A',
+                label: 'a',
+                children: [
+                    {
+                        value: 'AA1',
+                        label: 'aa1',
+                    },
+                    {
+                        value: 'BB1',
+                        label: 'bb1'
+                    }
+                ]
+            },
+            {
+                value: 'B',
+                label: 'b',
+                children: [
+                    {
+                        value: 'AA2',
+                        label: 'aa2',
+                        children: [
+                            {
+                                value: 'AAA3',
+                                label: 'aaa3',
+                                children: [
+                                    {
+                                        value: 'AAA3',
+                                        label: 'aaa3',
+                                        children: [
+                                            {
+                                                value: 'AAA3',
+                                                label: 'aaa3',
+                                            },
+                                            {
+                                                value: 'BBB3',
+                                                label: 'bbb3'
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                value: 'BBB3',
+                                label: 'bbb3'
+                            }
+                        ]
+                    },
+                    {
+                        value: 'BB2',
+                        label: 'bb2',
+                        children: [
+                            {
+                                value: 'AAA4',
+                                label: 'aaa4',
+                            },
+                            {
+                                value: 'BBB4',
+                                label: 'bbb4'
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                value: 'C',
+                label: 'c',
+            }
+        ]
+        $('#address').cascader({
+            data: data,
+            value: ["B", "BB2", "BBB4"],
+            success: function (valData,labelData) {
+                console.log(valData);
+                console.log(labelData);
+            }
+        })
+      if(typeof $.fn.tagsInput !== 'undefined'){  
+         
+          $('#orgType').tagsInput({
+            width: 'auto'
+          });
+      
+      }
+      $('#orgType').addTag('foo')
+
+      // $('#orgType_tagsinput').on('click', function() {
+      //   $('#myModal').modal('show')
+      // })
+      // $('#myModal').on('show.bs.modal', function (event) {
+      //   alert(1)
+      //   // var btnThis = $(event.relatedTarget)
+      //   // var modal = $(this);
+      //   // var modalId = btnThis.data('id');
+      //   // var content = btnThis.closest('tr').find('td').eq(2).text();
+      //   // modal.find('.content').val(content);         
+      // });
+
+      $('#orgType_tagsinput').on('click', function() {
+          layer.open({
+            type: 1,
+            title: '选中组织类别',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['70%', '85%'],
+            maxmin: true,
+            content: $('#myModal'),
+            success: function(layero, index){
+              initOrgTree()
+            },
+            btn: ['确认', '取消'],
+            yes: function(index, layero){
+              alert(1)
+            },
+            btn2: function(index, layero){},
+            cancel: function(){}
+          });
+      })
+
+    </script>
+	
+  </body>
+</html>

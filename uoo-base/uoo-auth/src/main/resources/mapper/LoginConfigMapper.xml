@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.base.auth.mapper.LoginConfigMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="cn.ffcs.uoo.base.auth.entity.LoginConfig">
+		<id column="LOGIN_CONF_ID" property="loginConfId" />
+		<result column="LOGIN_ACCOUNT_ID" property="loginAccountId" />
+		<result column="PWD_ERR_CNT" property="pwdErrCnt" />
+		<result column="LOGINED_NUM" property="loginedNum" />
+		<result column="LAST_LOGIN_TIME" property="lastLoginTime" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		LOGIN_CONF_ID, LOGIN_ACCOUNT_ID, PWD_ERR_CNT, LOGINED_NUM, LAST_LOGIN_TIME
+	</sql>
+	<select id="getId" resultType="java.lang.Long">
+		SELECT SEQ_TB_LOGIN_CONFIG.nextval FROM dual
+	</select>
+</mapper>

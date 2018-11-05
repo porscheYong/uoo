@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.ffcs.uoo.leaveDemo.dao.AtiDelegateInfoMapper">
+<mapper namespace="cn.ffcs.uoo.oa.dao.AtiDelegateInfoMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.leaveDemo.entity.AtiDelegateInfo">
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.oa.entity.AtiDelegateInfo">
         <id column="ati_delegate_info_id" property="atiDelegateInfoId"/>
         <result column="assignee" property="assignee"/>
         <result column="attorney" property="attorney"/>
@@ -21,7 +21,7 @@
     </sql>
 
 
-    <insert id="insertOneDelegateInfo" parameterType="cn.ffcs.uoo.leaveDemo.entity.AtiDelegateInfo">
+    <insert id="insertOneDelegateInfo" parameterType="cn.ffcs.uoo.oa.entity.AtiDelegateInfo">
         <selectKey keyProperty="atiDelegateInfoId" resultType="java.lang.Long" order="BEFORE">
             select seq_ati_delegate_info_id.nextval from dual
         </selectKey>
@@ -78,7 +78,7 @@
         </trim>
     </insert>
 
-    <update id="modifyOneDelegateInfo" parameterType="cn.ffcs.uoo.leaveDemo.entity.AtiDelegateInfo">
+    <update id="modifyOneDelegateInfo" parameterType="cn.ffcs.uoo.oa.entity.AtiDelegateInfo">
         UPDATE
         ATI_DELEGATE_INFO
         SET

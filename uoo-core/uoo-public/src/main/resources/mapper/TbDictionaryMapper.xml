@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.dictionary.dao.TbDictionaryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.dictionary.entity.TbDictionary">
+        <id column="DICTIONARY_ID" property="dictionaryId" />
+        <result column="DICTIONARY_NAME" property="dictionaryName" />
+        <result column="DICTIONARY_CNNAME" property="dictionaryCnname" />
+        <result column="EDITABLE" property="editable" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="LABEL" property="label" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        DICTIONARY_ID, DICTIONARY_NAME, DICTIONARY_CNNAME, EDITABLE, STATUS_CD, CREATE_DATE, CREATE_USER, LABEL, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+    <insert id="save" parameterType="cn.ffcs.uoo.core.dictionary.entity.TbDictionary">
+        <selectKey keyProperty="dictionaryId" resultType="java.lang.Long" order="BEFORE">
+            select SEQ_DICTIONARY_ID.NEXTVAL from dual
+        </selectKey>
+        insert into TB_DICTIONARY
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                DICTIONARY_ID,
+            <if test="dictionaryName != null">
+                DICTIONARY_NAME,
+            </if>
+            <if test="dictionaryCnname != null">
+                DICTIONARY_CNNAME,
+            </if>
+            <if test="editable != null">
+                EDITABLE,
+            </if>
+            <if test="statusCd != null">
+                STATUS_CD,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="createUser != null">
+                CREATE_USER,
+            </if>
+            <if test="label != null">
+                LABEL,
+            </if>
+            <if test="updateDate != null">
+                UPDATE_DATE,
+            </if>
+            <if test="updateUser != null">
+                UPDATE_USER,
+            </if>
+            <if test="statusDate != null">
+                STATUS_DATE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                #{dictionaryId,jdbcType=DECIMAL},
+            <if test="dictionaryName != null">
+                #{dictionaryName,jdbcType=VARCHAR},
+            </if>
+            <if test="dictionaryCnname != null">
+                #{dictionaryCnname,jdbcType=VARCHAR},
+            </if>
+            <if test="editable != null">
+                #{editable,jdbcType=VARCHAR},
+            </if>
+            <if test="statusCd != null">
+                #{statusCd,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=DATE},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=DECIMAL},
+            </if>
+            <if test="label != null">
+                #{label,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=DATE},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=DECIMAL},
+            </if>
+            <if test="statusDate != null">
+                #{statusDate,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectDicList" parameterType="cn.ffcs.uoo.core.dictionary.entity.TbDictionary" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM TB_DICTIONARY WHERE STATUS_CD = '1000'
+        <if test="dictionaryId != null">
+            AND DICTIONARY_ID = #{dictionaryId}
+        </if>
+        <if test="dictionaryName != null">
+            AND DICTIONARY_NAME = #{dictionaryName}
+        </if>
+    </select>
+
+    <update id="remove" parameterType="cn.ffcs.uoo.core.dictionary.entity.TbDictionary">
+        UPDATE TB_DICTIONARY
+        SET STATUS_CD = #{statusCd}, UPDATE_DATE = #{updateDate}, UPDATE_USER = #{updateUser}, STATUS_DATE = #{statusDate}
+        WHERE DICTIONARY_ID = #{dictionaryId}
+    </update>
+
+</mapper>
