@@ -5,9 +5,10 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.organization.entity.OrgTree">
         <id column="ORG_TREE_ID" property="orgTreeId" />
-        <result column="ORG_TREE_CODE" property="orgTreeCode" />
         <result column="ORG_TREE_NAME" property="orgTreeName" />
+        <result column="ORG_TREE_TYPE" property="orgTreeType" />
         <result column="ORG_ID" property="orgId" />
+        <result column="SORT" property="sort" />
         <result column="STATUS_CD" property="statusCd" />
         <result column="CREATE_DATE" property="createDate" />
         <result column="CREATE_USER" property="createUser" />
@@ -18,7 +19,11 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ORG_TREE_ID, ORG_TREE_CODE, ORG_TREE_NAME, ORG_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        ORG_TREE_ID, ORG_TREE_NAME, ORG_TREE_TYPE, ORG_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
+    <!-- 获取组织树Seq -->
+    <select id="getId" resultType="java.lang.Long">
+        SELECT SEQ_TB_ORG_TREE_ID.NEXTVAL FROM DUAL
+    </select>
 
 </mapper>

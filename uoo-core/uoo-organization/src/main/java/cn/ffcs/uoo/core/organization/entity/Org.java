@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.core.organization.entity;
 
 import java.util.Date;
+
+import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -8,6 +10,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -25,7 +28,7 @@ public class Org extends Model<Org> {
     /**
      * 组织标识
      */
-    @TableId(value = "ORG_ID", type = IdType.AUTO)
+    @TableId(value = "ORG_ID")
     private Long orgId;
     /**
      * 行政区域标识
@@ -82,11 +85,13 @@ public class Org extends Model<Org> {
      */
     @TableField("ORG_SCALE")
     private String orgScale;
+    @TableField("ORG_LEVEL")
+    private String orgLevel;
     /**
      * 组织行政级别 一级、二级正副、三级正副、四级正副、五级正副
      */
-    @TableField("ORG_LEVEL")
-    private String orgLevel;
+    @TableField("ORG_POSITION_LEVEL")
+    private String orgPositionLevel;
     /**
      * 组织行政级别
      */
@@ -142,6 +147,162 @@ public class Org extends Model<Org> {
      */
     @TableField("STATUS_DATE")
     private Date statusDate;
+
+
+
+
+
+    /**
+     *  组织树ID
+     */
+    @TableField(exist=false)
+    private Long orgTreeId;
+    /**
+     * 组织树根节点
+     */
+    @TableField(exist=false)
+    private Long orgRootId;
+    /**
+     *  组织树编码
+     */
+    @TableField(exist=false)
+    private String refCode;
+    /**
+     * 组织上级节点
+     */
+    @TableField(exist=false)
+    private Long supOrgId;
+    /**
+     * 组织类别关系
+     */
+    @TableField(exist=false)
+    private List<OrgOrgtypeRel> orgTypeRefList;
+    /**
+     * 组织岗位关系
+     */
+    @TableField(exist=false)
+    private List<OrgPositionRel> orgPositionList;
+    /**
+     *  组织类别
+     */
+    @TableField(exist=false)
+    private List<OrgType> orgTypeList;
+    /**
+     * 组织岗位
+     */
+    @TableField(exist=false)
+    private List<Position> positionList;
+    /**
+     * 组织职位
+     */
+    @TableField(exist=false)
+    private List<Post> postList;
+    /**
+     * 层级
+     */
+    @TableField(exist=false)
+    private String lv;
+
+    /**
+     * 人员
+     */
+    @TableField(exist=false)
+    private List<PsonOrgVo> psonOrgVoList;
+
+    public List<PsonOrgVo> getPsonOrgVoList() {
+        return psonOrgVoList;
+    }
+
+    public void setPsonOrgVoList(List<PsonOrgVo> psonOrgVoList) {
+        this.psonOrgVoList = psonOrgVoList;
+    }
+
+    public Long getOrgRootId() {
+        return orgRootId;
+    }
+
+    public void setOrgRootId(Long orgRootId) {
+        this.orgRootId = orgRootId;
+    }
+
+    public String getLv() {
+        return lv;
+    }
+
+    public void setLv(String lv) {
+        this.lv = lv;
+    }
+
+    public Long getSupOrgId() {
+        return supOrgId;
+    }
+
+    public void setSupOrgId(Long supOrgId) {
+        this.supOrgId = supOrgId;
+    }
+
+    public List<Post> getPostList() {
+        return postList;
+    }
+
+    public void setPostList(List<Post> postList) {
+        this.postList = postList;
+    }
+
+    public List<Position> getPositionList() {
+        return positionList;
+    }
+
+    public void setPositionList(List<Position> positionList) {
+        this.positionList = positionList;
+    }
+
+    public String getRefCode() {
+        return refCode;
+    }
+
+    public void setRefCode(String refCode) {
+        this.refCode = refCode;
+    }
+
+    public List<OrgType> getOrgTypeList() {
+        return orgTypeList;
+    }
+
+    public void setOrgTypeList(List<OrgType> orgTypeList) {
+        this.orgTypeList = orgTypeList;
+    }
+
+    public Long getOrgTreeId() {
+        return orgTreeId;
+    }
+
+    public List<OrgOrgtypeRel> getOrgTypeRefList() {
+        return orgTypeRefList;
+    }
+
+    public List<OrgPositionRel> getOrgPositionList() {
+        return orgPositionList;
+    }
+
+    public void setOrgTreeId(Long orgTreeId) {
+        this.orgTreeId = orgTreeId;
+    }
+
+    public void setOrgTypeRefList(List<OrgOrgtypeRel> orgTypeRefList) {
+        this.orgTypeRefList = orgTypeRefList;
+    }
+
+    public void setOrgPositionList(List<OrgPositionRel> orgPositionList) {
+        this.orgPositionList = orgPositionList;
+    }
+
+
+
+
+
+
+
 
 
     public Long getOrgId() {
@@ -246,6 +407,14 @@ public class Org extends Model<Org> {
 
     public void setOrgLevel(String orgLevel) {
         this.orgLevel = orgLevel;
+    }
+
+    public String getOrgPositionLevel() {
+        return orgPositionLevel;
+    }
+
+    public void setOrgPositionLevel(String orgPositionLevel) {
+        this.orgPositionLevel = orgPositionLevel;
     }
 
     public Double getSort() {
@@ -357,6 +526,7 @@ public class Org extends Model<Org> {
         ", foundingTime=" + foundingTime +
         ", orgScale=" + orgScale +
         ", orgLevel=" + orgLevel +
+        ", orgPositionLevel=" + orgPositionLevel +
         ", sort=" + sort +
         ", orgContent=" + orgContent +
         ", orgDesc=" + orgDesc +

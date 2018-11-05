@@ -25,7 +25,7 @@ public class PoliticalLocation extends Model<PoliticalLocation> {
     /**
      * 行政区域标识
      */
-    @TableId(value = "LOC_ID", type = IdType.AUTO)
+    @TableId(value = "LOC_ID")
     private Long locId;
     /**
      * 行政区域编码
