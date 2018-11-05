@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.position.dao.TbPositionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.position.entity.TbPosition">
+        <id column="POSITION_ID" property="positionId" />
+        <result column="POSITION_CODE" property="positionCode" />
+        <result column="POSITION_TYPE" property="positionType" />
+        <result column="POSITION_DESC" property="positionDesc" />
+        <result column="POSITION_NAME" property="positionName" />
+        <result column="PARENT_POSITION_ID" property="parentPositionId" />
+        <result column="EFF_DATE" property="effDate" />
+        <result column="EXP_DATE" property="expDate" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        POSITION_ID, POSITION_CODE, POSITION_TYPE, POSITION_DESC, POSITION_NAME, PARENT_POSITION_ID, EFF_DATE, EXP_DATE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+    <insert id="save" parameterType="cn.ffcs.uoo.core.position.entity.TbPosition">
+        <selectKey keyProperty="positionId" resultType="java.lang.Long" order="BEFORE">
+            SELECT SEQ_POSITION_ID.NEXTVAL FROM dual
+        </selectKey>
+        insert into TB_POSITION
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                POSITION_ID,
+            <if test="positionCode != null">
+                POSITION_CODE,
+            </if>
+            <if test="positionType != null">
+                POSITION_TYPE,
+            </if>
+            <if test="positionDesc != null">
+                POSITION_DESC,
+            </if>
+            <if test="positionName != null">
+                POSITION_NAME,
+            </if>
+            <if test="parentPositionId != null">
+                PARENT_POSITION_ID,
+            </if>
+            <if test="effDate != null">
+                EFF_DATE,
+            </if>
+            <if test="expDate != null">
+                EXP_DATE,
+            </if>
+            <if test="statusCd != null">
+                STATUS_CD,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="createUser != null">
+                CREATE_USER,
+            </if>
+            <if test="updateDate != null">
+                UPDATE_DATE,
+            </if>
+            <if test="updateUser != null">
+                UPDATE_USER,
+            </if>
+            <if test="statusDate != null">
+                STATUS_DATE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                #{positionId,jdbcType=DECIMAL},
+            <if test="positionCode != null">
+                #{positionCode,jdbcType=VARCHAR},
+            </if>
+            <if test="positionType != null">
+                #{positionType,jdbcType=VARCHAR},
+            </if>
+            <if test="positionDesc != null">
+                #{positionDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="positionName != null">
+                #{positionName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentPositionId != null">
+                #{parentPositionId,jdbcType=DECIMAL},
+            </if>
+            <if test="effDate != null">
+                #{effDate,jdbcType=DATE},
+            </if>
+            <if test="expDate != null">
+                #{expDate,jdbcType=DATE},
+            </if>
+            <if test="statusCd != null">
+                #{statusCd,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=DATE},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=DECIMAL},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=DATE},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=DECIMAL},
+            </if>
+            <if test="statusDate != null">
+                #{statusDate,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="remove" parameterType="cn.ffcs.uoo.core.position.entity.TbPosition">
+        UPDATE TB_POSITION
+        SET STATUS_CD=#{statusCd},UPDATE_DATE=#{updateDate},UPDATE_USER=#{updateUser},STATUS_DATE=#{statusDate}
+        WHERE POSITION_ID=#{positionId}
+    </update>
+
+    <select id="queryOrgPositionInfoList" resultType="OrgPositionInfoVo">
+        SELECT R.ORG_POSITION_ID,
+           R.ORG_ID,
+           R.POSITION_ID,
+           R.ORG_TREE_ID,
+           P.POSITION_CODE,
+           P.POSITION_TYPE,
+           P.POSITION_DESC,
+           P.POSITION_NAME,
+           P.PARENT_POSITION_ID
+        FROM TB_ORG_POSITION_REL R, TB_POSITION P
+        WHERE R.POSITION_ID = P.POSITION_ID
+        AND R.STATUS_CD = '1000'
+        AND P.STATUS_CD = '1000'
+        AND R.ORG_ID = #{orgId}
+    </select>
+</mapper>

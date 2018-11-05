@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.expando.dao.TbExpandovalueMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.expando.entity.TbExpandovalue">
+        <id column="VALUE_ID" property="valueId" />
+        <result column="RESOURCE_ID" property="resourceId" />
+        <result column="TABLE_ID" property="tableId" />
+        <result column="COLUMN_ID" property="columnId" />
+        <result column="ROW_ID" property="rowId" />
+        <result column="RECORD_ID" property="recordId" />
+        <result column="DATA_" property="data" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        VALUE_ID, RESOURCE_ID, TABLE_ID, COLUMN_ID, ROW_ID, RECORD_ID, DATA_, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+    <insert id="save" parameterType="cn.ffcs.uoo.core.expando.entity.TbExpandovalue">
+        <selectKey keyProperty="valueId" resultType="java.lang.Long" order="BEFORE">
+            SELECT SEQ_VALUE_ID.NEXTVAL FROM dual
+        </selectKey>
+        insert into TB_EXPANDOVALUE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                VALUE_ID,
+            <if test="resourceId != null">
+                RESOURCE_ID,
+            </if>
+            <if test="tableId != null">
+                TABLE_ID,
+            </if>
+            <if test="columnId != null">
+                COLUMN_ID,
+            </if>
+            <if test="rowId != null">
+                ROW_ID,
+            </if>
+            <if test="recordId != null">
+                RECORD_ID,
+            </if>
+            <if test="data != null">
+                DATA_,
+            </if>
+            <if test="statusCd != null">
+                STATUS_CD,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="createUser != null">
+                CREATE_USER,
+            </if>
+            <if test="updateDate != null">
+                UPDATE_DATE,
+            </if>
+            <if test="updateUser != null">
+                UPDATE_USER,
+            </if>
+            <if test="statusDate != null">
+                STATUS_DATE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                #{valueId,jdbcType=DECIMAL},
+            <if test="resourceId != null">
+                #{resourceId,jdbcType=VARCHAR},
+            </if>
+            <if test="tableId != null">
+                #{tableId,jdbcType=DECIMAL},
+            </if>
+            <if test="columnId != null">
+                #{columnId,jdbcType=DECIMAL},
+            </if>
+            <if test="rowId != null">
+                #{rowId,jdbcType=DECIMAL},
+            </if>
+            <if test="recordId != null">
+                #{recordId,jdbcType=VARCHAR},
+            </if>
+            <if test="data != null">
+                #{data,jdbcType=VARCHAR},
+            </if>
+            <if test="statusCd != null">
+                #{statusCd,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=DATE},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=DECIMAL},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=DATE},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=DECIMAL},
+            </if>
+            <if test="statusDate != null">
+                #{statusDate,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="remove" parameterType="cn.ffcs.uoo.core.expando.entity.TbExpandovalue">
+        UPDATE TB_EXPANDOVALUE
+        SET STATUS_CD = #{statusCd}, UPDATE_DATE = #{updateDate}, UPDATE_USER = #{updateUser}, STATUS_DATE = #{statusDate}
+        WHERE VALUE_ID = #{valueId}
+    </update>
+    
+    <select id="selectValueList" parameterType="cn.ffcs.uoo.core.expando.entity.TbExpandovalue" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM TB_EXPANDOVALUE
+        WHERE STATUS_CD = '1000'
+        <if test="resourceId != null and resourceId != ''">
+          AND RESOURCE_ID = #{resourceId}
+        </if>
+        <if test="tableId != null">
+          AND TABLE_ID = #{tableId}
+        </if>
+        <if test="columnId != null">
+          AND COLUMN_ID = #{columnId}
+        </if>
+        <if test="recordId != null and recordId != ''">
+          AND RECORD_ID = #{recordId}
+        </if>
+        <if test="statusCd != null and statusCd != ''">
+          AND STATUS_CD = #{statusCd}
+        </if>
+        <if test="valueId != null">
+            AND VALUE_ID = #{valueId}
+        </if>
+    </select>
+</mapper>

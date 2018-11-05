@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.expando.dao.TbExpandocolumnMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.expando.entity.TbExpandocolumn">
+        <id column="COLUMN_ID" property="columnId" />
+        <result column="TABLE_ID" property="tableId" />
+        <result column="COLUMN_NAME" property="columnName" />
+        <result column="COLUMN_CNNAME" property="columnCnname" />
+        <result column="COLUM_TYPE" property="columType" />
+        <result column="COL_LENGHT" property="colLenght" />
+        <result column="COL_NULLABLE" property="colNullable" />
+        <result column="COL_DESC" property="colDesc" />
+        <result column="VER_NUM" property="verNum" />
+        <result column="DEFAULT_VALUE" property="defaultValue" />
+        <result column="SORT" property="sort" />
+        <result column="EDITABLE" property="editable" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="LABEL" property="label" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        COLUMN_ID, TABLE_ID, COLUMN_NAME, COLUMN_CNNAME, COLUM_TYPE, COL_LENGHT, COL_NULLABLE, COL_DESC, VER_NUM, DEFAULT_VALUE, SORT, EDITABLE, STATUS_CD, CREATE_DATE, CREATE_USER, LABEL, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+    <insert id="save" parameterType="cn.ffcs.uoo.core.expando.entity.TbExpandocolumn">
+        <selectKey keyProperty="columnId" resultType="java.lang.Long" order="BEFORE" >
+            SELECT SEQ_COLUMN_ID.NEXTVAL FROM dual
+        </selectKey>
+        insert into TB_EXPANDOCOLUMN
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                COLUMN_ID,
+            <if test="tableId != null">
+                TABLE_ID,
+            </if>
+            <if test="columnName != null">
+                COLUMN_NAME,
+            </if>
+            <if test="columnCnname != null">
+                COLUMN_CNNAME,
+            </if>
+            <if test="columType != null">
+                COLUM_TYPE,
+            </if>
+            <if test="colLenght != null">
+                COL_LENGHT,
+            </if>
+            <if test="colNullable != null">
+                COL_NULLABLE,
+            </if>
+            <if test="colDesc != null">
+                COL_DESC,
+            </if>
+            <if test="verNum != null">
+                VER_NUM,
+            </if>
+            <if test="defaultValue != null">
+                DEFAULT_VALUE,
+            </if>
+            <if test="sort != null">
+                SORT,
+            </if>
+            <if test="editable != null">
+                EDITABLE,
+            </if>
+            <if test="statusCd != null">
+                STATUS_CD,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="createUser != null">
+                CREATE_USER,
+            </if>
+            <if test="label != null">
+                LABEL,
+            </if>
+            <if test="updateDate != null">
+                UPDATE_DATE,
+            </if>
+            <if test="updateUser != null">
+                UPDATE_USER,
+            </if>
+            <if test="statusDate != null">
+                STATUS_DATE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                #{columnId,jdbcType=DECIMAL},
+            <if test="tableId != null">
+                #{tableId,jdbcType=DECIMAL},
+            </if>
+            <if test="columnName != null">
+                #{columnName,jdbcType=VARCHAR},
+            </if>
+            <if test="columnCnname != null">
+                #{columnCnname,jdbcType=VARCHAR},
+            </if>
+            <if test="columType != null">
+                #{columType,jdbcType=VARCHAR},
+            </if>
+            <if test="colLenght != null">
+                #{colLenght,jdbcType=DECIMAL},
+            </if>
+            <if test="colNullable != null">
+                #{colNullable,jdbcType=DECIMAL},
+            </if>
+            <if test="colDesc != null">
+                #{colDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="verNum != null">
+                #{verNum,jdbcType=DECIMAL},
+            </if>
+            <if test="defaultValue != null">
+                #{defaultValue,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=DECIMAL},
+            </if>
+            <if test="editable != null">
+                #{editable,jdbcType=VARCHAR},
+            </if>
+            <if test="statusCd != null">
+                #{statusCd,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=DATE},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=DECIMAL},
+            </if>
+            <if test="label != null">
+                #{label,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=DATE},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=DECIMAL},
+            </if>
+            <if test="statusDate != null">
+                #{statusDate,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="remove" parameterType="cn.ffcs.uoo.core.expando.entity.TbExpandocolumn">
+        UPDATE TB_EXPANDOCOLUMN
+        SET STATUS_CD = #{statusCd}, UPDATE_DATE = #{updateDate}, UPDATE_USER = #{updateUser}, STATUS_DATE = #{statusDate}
+        WHERE COLUMN_ID = #{columnId}
+    </update>
+    
+    <select id="queryColumnList" resultMap="BaseResultMap">
+        SELECT C.*
+          FROM TB_SYSTEMTABLE S, TB_EXPANDOCOLUMN C
+         WHERE S.STATUS_CD = '1000'
+           AND C.STATUS_CD = '1000'
+           AND S.TABLE_ID = C.TABLE_ID
+           AND S.TABLE_ID = #{tableId}
+           AND S.RESOURCE_ID = #{resourceId}
+    </select>
+
+</mapper>
