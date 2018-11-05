@@ -22,4 +22,49 @@
         ORG_TYPE_ID, ORG_TYPE_CODE, ORG_TYPE_NAME, ORG_TYPE_DESC, SUP_PK_ORG_TYPE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
+    <select id="getOrgTypeByOrgId" resultType="cn.ffcs.uoo.core.organization.entity.OrgType">
+        SELECT  B.ORG_TYPE_ID orgTypeId,
+        B.ORG_TYPE_CODE orgTypeCode,
+        B.ORG_TYPE_NAME orgTypeName,
+        B.ORG_TYPE_DESC orgTypeDesc,
+        B.SUP_PK_ORG_TYPE supPkOrgType,
+        A.STATUS_CD statusCd,
+        A.CREATE_DATE createDate,
+        A.CREATE_USER createUser,
+        A.UPDATE_DATE updateDate,
+        A.UPDATE_USER updateUser,
+        A.STATUS_DATE statusDate
+        FROM TB_ORG_ORGTYPE_REL A, TB_ORG_TYPE B
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND A.ORG_TYPE_ID = B.ORG_TYPE_ID
+        <if test="orgId != null || orgId != ''">
+            AND A.ORG_ID = #{orgId}
+        </if>
+    </select>
+
+    <!--查询组织类别树-->
+    <select id="selectOrgTypeTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+        select T.ORG_TYPE_ID id, T.SUP_PK_ORG_TYPE pid, T.ORG_TYPE_NAME name
+        from tb_org_type T
+        where T.STATUS_CD = 1000
+        <if test="supOrgTypeId != null">
+            AND T.SUP_PK_ORG_TYPE = #{supOrgTypeId}
+        </if>
+  <!--      <if test="orgTypeCode != null and orgTypeCode != ''">
+            AND T.ORG_TYPE_CODE = #{orgTypeCode}
+        </if>-->
+        ORDER BY T.ORG_TYPE_ID ASC
+    </select>
+    <!--查询组织类别树是否存在子节点-->
+    <select id="isLeaf" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+        select T.ORG_TYPE_ID id, T.SUP_PK_ORG_TYPE pid, T.ORG_TYPE_NAME name
+        from tb_org_type T
+        where T.STATUS_CD = 1000
+        <if test="supOrgTypeId != null || supOrgTypeId != ''">
+            AND T.SUP_PK_ORG_TYPE = #{supOrgTypeId}
+        </if>
+        ORDER BY T.ORG_TYPE_ID ASC
+    </select>
+
 </mapper>

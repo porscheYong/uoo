@@ -13,4 +13,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface OgtOrgtypeConfMapper extends BaseMapper<OgtOrgtypeConf> {
 
+    public Long getId();
+
+    public void delete(OgtOrgtypeConf ogtOrgtypeConf);
 }

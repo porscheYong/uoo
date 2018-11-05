@@ -17,6 +17,7 @@
         <result column="FOUNDING_TIME" property="foundingTime" />
         <result column="ORG_SCALE" property="orgScale" />
         <result column="ORG_LEVEL" property="orgLevel" />
+        <result column="ORG_POSITION_LEVEL" property="orgPositionLevel" />
         <result column="SORT" property="sort" />
         <result column="ORG_CONTENT" property="orgContent" />
         <result column="ORG_DESC" property="orgDesc" />
@@ -32,7 +33,144 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE, SHORT_NAME, ORG_NAME_EN, FULL_NAME, CITY_TOWN, OFFICE_PHONE, FOUNDING_TIME, ORG_SCALE, ORG_LEVEL, SORT, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE, SHORT_NAME, ORG_NAME_EN, FULL_NAME, CITY_TOWN, OFFICE_PHONE, FOUNDING_TIME, ORG_SCALE, ORG_LEVEL, ORG_POSITION_LEVEL, SORT, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
+    <!-- 获取OrgIdSeq -->
+    <select id="getId" resultType="java.lang.Long">
+        SELECT seq_tb_org_id.nextval FROM dual
+    </select>
 
+
+    <update id="delete" parameterType="cn.ffcs.uoo.core.organization.entity.Org">
+        UPDATE
+        TB_ORG
+        SET
+        STATUS_CD = #{statusCd}, UPDATE_DATE = #{updateDate}, UPDATE_USER = #{updateUser}
+        WHERE
+        ORG_ID = #{orgId}
+    </update>
+
+
+    <!--条件查询组织树总量 -->
+    <select id="queryOrgCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM TB_ORG A, TB_ORG_REF B, TB_ORG_REF_TYPE C
+        WHERE A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000
+        AND C.STATUS_CD = 1000
+        AND A.ORG_ID = B.ORG_ID
+        <if test="org.orgId != null">
+            AND B.SUP_ORG_ID = #{org.orgId}
+        </if>
+        <if test="org.refCode != null">
+            AND C.REF_CODE = #{org.refCode}
+        </if>
+        AND B.ORG_REF_TYPE_ID = C.ORG_REF_TYPE_ID
+        ORDER BY A.ORG_LEVEL
+    </select>
+
+    <select id="getOrgList" resultType="cn.ffcs.uoo.core.organization.entity.Org">
+        SELECT  A.ORG_ID orgId,A.ORG_NAME orgName,A.FULL_NAME fullName
+        FROM TB_ORG A, TB_ORG_REF B, TB_ORG_REF_TYPE C
+        WHERE A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000
+        AND C.STATUS_CD = 1000
+        AND A.ORG_ID = B.ORG_ID
+        <if test="orgId != null and orgId != ''">
+            AND B.ORG_ID = #{orgId}
+        </if>
+        <if test="refCode != null and orgId != ''">
+            AND C.REF_CODE = #{refCode}
+        </if>
+        AND B.ORG_REF_TYPE_ID = C.ORG_REF_TYPE_ID
+        ORDER BY A.ORG_LEVEL
+    </select>
+
+
+    <select id="getOrgCodeSeq" resultType="java.lang.Long">
+        SELECT seq_org_code.nextval FROM dual
+    </select>
+
+
+    <select id="selectOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
+        <!--SELECT D.ORG_ID orgId,-->
+        <!--D.ORG_NAME orgName,-->
+        <!--D.FULL_NAME fullName,-->
+        <!--D.STATUS_CD statusCd,-->
+        <!--D.ORG_CODE orgCode,-->
+        <!--D.LOC_ID locId,-->
+        <!--PL.LOC_CODE locCode,-->
+        <!--PL.LOC_NAME locName,-->
+        <!--D.AREA_CODE_ID areaCodeId-->
+        <!--FROM (-->
+        <!--SELECT A.*-->
+        <!--FROM TB_ORG A, TB_ORG_REL B-->
+        <!--WHERE A.STATUS_CD = 1000-->
+        <!--AND B.STATUS_CD = 1000-->
+        <!--AND A.ORG_ID = B.ORG_ID-->
+        <!--<if test="orgVo.orgId != null || orgVo.orgId != ''">-->
+            <!--AND B.SUP_ORG_ID = #{orgVo.orgId}-->
+        <!--</if>-->
+        <!--ORDER BY A.ORG_LEVEL-->
+        <!--) D LEFT JOIN TB_POLITICAL_LOCATION PL ON PL.LOC_ID=D.LOC_ID-->
+
+
+        WITH ORGTREE AS(
+        SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,
+        ORG_NAME,ORG_ID,SUP_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD
+        FROM (SELECT A.* ,B.SUP_ORG_ID
+        FROM TB_ORG A, TB_ORG_REL B
+        WHERE A.ORG_ID = B.ORG_ID
+        AND A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000) AA
+        START WITH ORG_ID = #{orgVo.orgRootId}
+        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID
+        )
+        SELECT D.ORG_ID ORGID,
+        D.ORG_NAME ORGNAME,
+        D.FULL_NAME FULLNAME,
+        D.STATUS_CD STATUSCD,
+        D.ORG_CODE ORGCODE,
+        D.LOC_ID LOCID,
+        PL.LOC_CODE LOCCODE,
+        PL.LOC_NAME LOCNAME
+        FROM (SELECT * FROM ORGTREE WHERE 1=1
+        <if test="orgVo.orgId != null and orgVo.orgId != ''">
+           AND SUP_ORG_ID = #{orgVo.orgId}
+        </if>
+        ORDER BY SORT
+        ) D LEFT JOIN ( SELECT * FROM  TB_POLITICAL_LOCATION WHERE STATUS_CD='1000') PL ON PL.LOC_ID=D.LOC_ID
+
+    </select>
+
+    <select id="selectOrgPage" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
+        SELECT A.Org_Id orgId,
+        A.Org_Name orgName,
+        A.ORG_CODE orgCode,
+        A.FULL_NAME fullName,
+        A.STATUS_CD statusCd,
+        to_char(A.CREATE_DATE,'YYYY-MM-DD hh24:mi:ss') createDate
+        FROM TB_ORG A
+        WHERE 1=1
+        <if test="orgVo.search != null and orgVo.search != ''">
+            AND A.ORG_NAME like '%'||#{orgVo.search}||'%'
+        </if>
+        <if test="orgVo.statusCd != null and orgVo.statusCd != ''">
+            AND A.STATUS_CD = #{orgVo.statusCd}
+        </if>
+        ORDER BY A.SORT
+    </select>
+
+    <select id="getSysFullName" resultType="java.lang.String">
+        SELECT FULL_NAME fullName FROM (
+        SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,
+        ORG_NAME,ORG_ID,SUP_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD
+        FROM (SELECT A.* ,B.SUP_ORG_ID
+        FROM TB_ORG A, TB_ORG_REL B
+        WHERE A.ORG_ID = B.ORG_ID
+        AND A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000) AA
+        START WITH ORG_ID = #{orgRootId}
+        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID ) AA where AA.ORG_ID = #{orgId}
+    </select>
 </mapper>

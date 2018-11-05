@@ -20,4 +20,17 @@
         OGT_ORGTYPE_CONF_ID, ORG_TYPE_ID, ORG_TREE_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
+    <select id="getId" resultType="java.lang.Long">
+        SELECT SEQ_TB_OGT_ORGTYPE_CONF_ID.nextval FROM dual
+    </select>
+
+    <update id="delete" parameterType="cn.ffcs.uoo.core.organization.entity.OgtOrgtypeConf">
+        UPDATE
+          TB_OGT_ORGTYPE_CONF
+        SET
+          STATUS_CD = #{statusCd}, UPDATE_DATE = #{updateDate}, UPDATE_USER = #{updateUser}
+        WHERE
+          OGT_ORGTYPE_CONF_ID = #{ogtOrgtypeConfId}
+    </update>
+
 </mapper>

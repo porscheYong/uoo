@@ -25,7 +25,7 @@ public class AreaCode extends Model<AreaCode> {
     /**
      * 区号标识
      */
-    @TableId(value = "AREA_CODE_ID", type = IdType.AUTO)
+    @TableId(value = "AREA_CODE_ID")
     private Long areaCodeId;
     /**
      * 公共管理区域标识
