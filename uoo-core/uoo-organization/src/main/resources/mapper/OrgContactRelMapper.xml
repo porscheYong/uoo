@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.organization.dao.OrgContactRelMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.organization.entity.OrgContactRel">
+        <id column="ORG_CONTACT_REL_ID" property="orgContactRelId" />
+        <result column="ORG_ID" property="orgId" />
+        <result column="PERSONNEL_ID" property="personnelId" />
+        <result column="SORT" property="sort" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ORG_CONTACT_REL_ID, ORG_ID, PERSONNEL_ID, SORT, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+
+    <select id="getId" resultType="java.lang.Long">
+        SELECT SEQ_TB_ORG_CONTACT_REL_ID.NEXTVAL FROM DUAL
+    </select>
+
+
+    <update id="delete" parameterType="cn.ffcs.uoo.core.organization.entity.OrgContactRel">
+        UPDATE
+        TB_ORG_CONTACT_REL
+        SET
+        STATUS_CD = #{statusCd}, UPDATE_DATE = #{updateDate}, UPDATE_USER = #{updateUser}
+        WHERE
+        ORG_CONTACT_REL_ID = #{orgContactRelId}
+    </update>
+
+    <select id="selectOrgContactPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
+        SELECT AA.ORG_CONTACT_REL_ID orgContactRelId, AA.PERSONNEL_ID personId, AA.PSN_NAME psnName, TCT.CONTENT mobile
+        FROM (SELECT A.ORG_CONTACT_REL_ID, B.PERSONNEL_ID, B.PSN_NAME
+        FROM TB_ORG_CONTACT_REL A, TB_PERSONNEL B
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND A.PERSONNEL_ID = B.PERSONNEL_ID
+        AND A.ORG_ID=#{psonOrgVo.orgId}) AA
+        LEFT JOIN TB_CONTACT TCT ON TCT.PERSONNEL_ID = AA.PERSONNEL_ID
+                  AND TCT.CONTACT_TYPE = '1'
+                  AND TCT.STATUS_CD = '1000'
+    </select>
+
+    <select id="getOrgContact" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
+        SELECT AA.ORG_CONTACT_REL_ID orgContactRelId, AA.PERSONNEL_ID personId, AA.PSN_NAME psnName, TCT.CONTENT mobile
+        FROM (SELECT A.ORG_CONTACT_REL_ID, B.PERSONNEL_ID, B.PSN_NAME
+        FROM TB_ORG_CONTACT_REL A, TB_PERSONNEL B
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND A.PERSONNEL_ID = B.PERSONNEL_ID
+        AND A.ORG_ID=#{orgId}) AA
+        LEFT JOIN TB_CONTACT TCT ON TCT.PERSONNEL_ID = AA.PERSONNEL_ID
+                  AND TCT.CONTACT_TYPE = '1'
+                  AND TCT.STATUS_CD = '1000'
+    </select>
+
+</mapper>

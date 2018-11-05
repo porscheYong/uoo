@@ -31,7 +31,7 @@ public interface OrgMapper extends BaseMapper<Org> {
      * @param id
      * @return
      */
-    //public Org queryOrgById(Long id);
+    public Org queryOrgById(Long id);
 
 
     /**

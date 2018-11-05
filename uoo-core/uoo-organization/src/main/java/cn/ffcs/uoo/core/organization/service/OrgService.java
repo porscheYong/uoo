@@ -67,7 +67,7 @@ public interface OrgService extends IService<Org> {
 
     /**
      * 获取系统路径
-     * @param
+     * @param orgRelType
      * @param id
      * @return
      */

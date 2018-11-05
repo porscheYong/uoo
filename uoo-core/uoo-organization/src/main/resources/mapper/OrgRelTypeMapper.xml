@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.organization.dao.OrgRelTypeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.organization.entity.OrgRelType">
+        <id column="ORG_REL_TYPE_ID" property="orgRelTypeId" />
+        <result column="REF_DESC" property="refDesc" />
+        <result column="REF_NAME" property="refName" />
+        <result column="REF_CODE" property="refCode" />
+        <result column="PARENT_ORG_REL_TYPE_ID" property="parentOrgRelTypeId" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ORG_REL_TYPE_ID, REF_DESC, REF_NAME, REF_CODE, PARENT_ORG_REL_TYPE_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+    <select id="getId" resultType="java.lang.Long">
+        SELECT seq_tb_org_rel_type_id.nextval FROM dual
+    </select>
+
+    <select id="getOrgRelType" resultType="cn.ffcs.uoo.core.organization.entity.OrgRelType">
+        select C.ORG_REL_TYPE_ID orgRelTypeId,
+        C.REF_DESC refCode,
+        C.REF_NAME refName,
+        C.REF_CODE refCode,
+        C.PARENT_ORG_REL_TYPE_ID parentOrgRelTypeId,
+        C.STATUS_CD statusCd
+        FROM TB_ORG_TREE A, TB_OGT_ORG_RELTYPE_CONF B, TB_ORG_REL_TYPE C
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000'
+        AND A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND B.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        <if test="orgRootId != null and orgRootId != ''">
+          AND A.ORG_ID = #{orgRootId}
+        </if>
+    </select>
+</mapper>
