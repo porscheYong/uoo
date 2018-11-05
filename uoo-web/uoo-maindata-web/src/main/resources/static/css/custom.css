@@ -750,13 +750,6 @@ ul.tab-title.right li {
 .lh32 {
     line-height: 32px;
     }
-.Icon {
-    width: 24px;
-    height: 24px;
-    background: #CCC;
-    margin: 0 4px;
-    display: inline-block
-    }
 .Contents {
     padding: 10px;
     }
@@ -801,18 +794,46 @@ ul.tab-title.right li {
     }
 .board-title { /*模块标题*/
     padding: 10px 0;
-    float: left;
-    width: 100%;
+    /*float: left;
+    width: 100%;*/
     }
 .board-title .name {
     border-left: 5px solid #008aff;
     font: bold 16px/22px microsoft yahei,helvetia,pingfang sc,Arial,Tahoma;
-    padding: 0 30px 0 10px;
-    float: left;
+    padding: 0 15px 0 10px;
+    /*float: left;*/
     color: #232c45
     }
 .board-content {
     padding: 10px 10px 30px 10px;
+    }
+.icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    }
+.icon-edit {
+    background: url(../images/ico_edit.svg);
+    cursor: pointer;
+    }
+.icon-cal {
+    background: url(../images/ico_calendar.svg);
+    }
+.icon-sort {
+    background: url(../images/ico_sort.svg);
+    }
+.icon-user {
+    background: url(../images/ico_user.svg);
+    }
+.icon-input {
+    margin: 0 2px -7px -34px;
+    display: inline-block;
+    opacity: 0.5;
+    }
+.search {
+    background: url(../images/ico_zoomer.svg) 4px 4px no-repeat;
+    background-size: 24px 24px;
+    padding: 0 34px 0 32px !important;
     }
 .Place {
     padding: 0 10px 0 15px;

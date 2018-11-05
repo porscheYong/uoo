@@ -286,12 +286,12 @@
     <script type="text/javascript">
       if(typeof $.fn.tagsInput !== 'undefined'){  
          
-          $('#orgType').tagsInput({
+          $('#orgTypeList').tagsInput({
             width: 'auto'
           });
       
       }
-      $('#orgType').addTag('foo')
+      $('#orgTypeList').addTag('foo')
 
       // $('#orgType_tagsinput').on('click', function() {
       //   $('#myModal').modal('show')
@@ -305,7 +305,7 @@
       //   // modal.find('.content').val(content);         
       // });
 
-      $('#orgType_tagsinput').on('click', function() {
+      $('#orgTypeList_tagsinput').on('click', function() {
           var dialog =$("#myModal",parent.document)
           parent.layerOpen({
             type: 1,

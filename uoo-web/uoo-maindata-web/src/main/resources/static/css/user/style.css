@@ -1,0 +1,559 @@
+input,
+select,
+textarea {
+	border: none;
+	outline: none;
+	}
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+	font: 14px;
+	color: #c6cbd2;
+	}
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+	font: 14px;
+	color: #c6cbd2;
+	}
+input[type="checkbox"],
+input[type="radio"] {
+	margin: 0 5px
+	}
+fieldset {
+	border: 1px solid #c6cbd2;
+	border-radius: 6px;
+	margin: 10px 0 20px 0;
+	}
+legend {
+	font-weight: bold;
+	margin: 0 0 0 20px;
+	color: #5f6c7e
+	}
+.fleft {
+	float: left
+	}
+.fright {
+	float: right
+	}
+.clear {
+	clear: both
+	}
+.tleft {
+	text-align: left
+	}
+.tcenter {
+	text-align: center
+	}
+.tiright {
+	text-align: right
+	}
+.ulhide,
+.ulhide ul,
+.ulhide li {
+	margin: 0;
+	padding: 0;
+	list-style: none
+	}
+.inLine li {
+	display: inline-block;
+	margin: 0 -3px 0 0;
+	}
+.Middle {
+    align-items: center;
+    justify-content: center;
+	display: flex;
+	height: 100%;
+	}
+.Center {
+	margin: 0 auto;
+	}
+.ColFull {
+	width: 100%;
+	}
+.Col1 {
+	width: 10%;
+	}
+.Col2 {
+	width: 20%;
+	}
+.Col3 {
+	width: 30%
+	}
+.Col4 {
+	width: 40%
+	}
+.Col4Li li {
+	float: left;
+	width: 25%
+	}
+.Col5 {
+	width: 50%
+	}
+.Col6 {
+	width: 60%
+	}
+.Col7 {
+	width: 70%
+	}
+.Col8 {
+	width: 80%
+	}
+.Font24 {
+	font-size: 24px;
+	}
+.Font18 {
+	font-size: 18px;
+	}
+.Font16 {
+	font-size: 16px;
+	}
+.Font14 {
+	font-size: 14px;
+	}
+.Font12 {
+	font-size: 12px;
+	}
+.Black {
+	color: #232c45
+	}
+.Red {
+	color: #ee4063
+	}
+.Gray1 {
+	color: #dce1e6
+	}
+.Gray2 {
+	color: #c6cbd2
+	}
+.Gray3 {
+	color: #959da9
+	}
+.Green {
+	color: #41c500
+	}
+.WhiteBg {
+	background: #FFF
+	}
+.inBlk {
+	display: inline-block
+	}
+.lh32 {
+	line-height: 32px !important;
+	}
+.lh30 {
+	line-height: 30px;
+	}
+.lh28 {
+	line-height: 28px;
+	}
+.key-words span {
+	padding: 0 10px 0 5px;
+	}
+.Relative {
+	position: relative
+	}
+.Absolute {
+	position: absolute
+	}
+.Fixed {
+	position: fixed;
+	}
+.FixedBot {
+	bottom: 0;
+	}
+.FixedTop {
+	top: 0;
+	}
+.TopTabTree {
+	right: 15px;
+	left: 225px;
+	}
+.bdTop {
+	border-top: 1px solid #dce1e6
+	}
+.SelectLabel label {
+	display: block;
+	border-radius: 4px;
+	width: 100%;
+	}
+.SelectLabel label:hover {
+	background: #e5f6ff
+	}
+.BotBtn {
+	bottom: 20px;
+	height: 60px;
+	clear: both;
+	padding: 10px 0 0 0;
+	text-align: center;
+	background: #FFF;
+	border-radius: 0 0 6px 6px;
+	left: 15px;
+	right: 15px;
+	}
+.BotBtnTree {
+	left: 215px;
+	}
+.Tag {
+	height:24px;
+	line-height: 24px;
+	background: #c6cbd2;
+	border-radius: 4px;
+	margin: 5px 2px;
+	color: #FFF;
+	padding: 0 10px;
+	display: inline-block
+	}
+/*.Icon {
+	width: 24px;
+	height: 24px;
+	margin: 0 4px;
+	display: inline-block
+	}*/
+.IconEdit {
+	background: url(../images/ico_edit.svg);
+	}
+.IconCal {
+	background: url(../images/ico_calendar.svg);
+	}
+.IconSort {
+	background: url(../images/ico_sort.svg);
+	}
+.IconUser {
+	background: url(../images/ico_user.svg);
+	}
+.IconInput {
+	margin: 0 2px -7px -34px;
+	display: inline-block;
+	opacity: 0.5;
+	}
+.intIcon {
+	padding: 0 24px 0 5px !important;
+	}
+.IconInput:hover {
+	opacity: 1;
+	}
+.Search {
+	background: url(../images/ico_zoomer.svg) 4px 4px no-repeat;
+	background-size: 24px 24px;
+	padding: 0 34px 0 32px !important;
+	}
+.Contents {
+	padding: 10px;
+	}
+.Tab { /*选项卡*/
+	border-bottom: 1px solid #dce1e6;
+	margin: 0 0 10px 0;
+	padding: 0 0 0 30px;
+	}
+.Tab li {
+	display: inline-block;
+	}
+.Tab a {
+	font-weight: bold;
+	color: #959da9;
+	line-height: 36px;
+	height: 32px;
+	display: inline-block;
+	padding: 0 20px;
+	text-align: center;
+	}
+.Tab .Current {
+	border-bottom: 3px solid #ee4063;
+	margin: 0 0 -3px 0;
+	color: #232c45
+	}
+.Tab .Current a {
+	color: #232c45
+	}
+.Tab2 {
+	text-align: center;
+	clear: both
+	}
+.Tab2 li {
+	display: inline-block;
+	border: 1px solid #00a4ff;
+	margin: 0 -5px 0 0;
+	overflow: hidden
+	}
+.Tab2 a {
+	width: 150px;
+	display: inline-block;
+	line-height: 32px;
+	color: #00a4ff;
+	}
+.Tab2 a:hover {
+	background: #e5f6ff;
+	}
+.Tab2 .Current a {
+	background: #00a4ff;
+	color: #FFF;
+	}
+.Tab2 li:first-child {
+	border-radius: 4px 0 0 4px
+	}
+.Tab2 li:last-child {
+	border-radius: 0 4px 4px 0
+	}
+.avatar {
+	width: 120px;
+	height: 120px;
+	border-radius: 60px;
+	border: 1px solid #dce1e6
+	}
+.WhitePanel { /*外内容面板*/
+	background: #FFF;
+	border-radius: 6px;
+	box-shadow: 0px 1px 3px rgba(0,0,0,0.05);
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	bottom: 15px;
+	overflow: hidden;
+	padding: 10px;
+	left: 15px;
+	}
+.ContentFull { /*内全内容*/
+	overflow: auto;
+	width: 100%;
+	height: 100%;
+	}
+.ContentLeft { /*内左内容*/
+	background: #F6F7F8;
+	width: 200px;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	float: left
+	}
+.ContentRight { /*内右内容*/
+	padding: 0 0 0 200px;
+	height: 100%;
+	overflow: auto;
+	}
+.BotBtnContent { /*内右内容带固定按钮*/
+	left: 210px;
+	top: 10px;
+	right: 10px;
+	bottom: 70px;
+	position: absolute;
+	overflow: auto;
+	}
+.TopTabFulContent { /*满屏内容带顶部固定按钮*/
+	left: 15px;
+	top: 70px;
+	right: 15px;
+	bottom: 15px;
+	position: absolute;
+	overflow: auto;
+	}
+.BtnTabContent { /*顶部按钮顶部tab固定*/
+	left: 210px;
+	top: 100px;
+	right: 10px;
+	bottom: 70px;
+	position: absolute;
+	overflow: auto;
+	}
+.LightGrayBg {
+	background: #F6F7F8;
+	}
+.EidtArea:hover {
+	background: #CCC;
+	border-radius: 4px;
+	}
+.BoardTitle { /*模块标题*/
+	padding: 10px 0;
+	float: left;
+	width: 100%;
+	}
+.BoardTitle .Name {
+	border-left: 5px solid #008aff;
+	font: bold 16px/24px microsoft yahei,helvetia,pingfang sc,Arial,Tahoma;
+	padding: 0 30px 0 10px;
+	height: 24px;
+	float: left;
+	color: #232c45
+	}
+.BoardContent {
+	padding: 10px 10px 30px 10px;
+	float: left;
+	width: 100%;
+	}
+.Place {
+	padding: 0 10px 10px 15px;
+	clear: both
+	}
+.Place a {
+	background: url(../images/ico_place_arrow.svg) no-repeat center right;
+	padding: 0 20px 0 0;
+	color: #959da9
+	}
+.Place a:last-child {
+	background: none;
+	}
+.FunctionBtn a {
+	background: #CCC;
+	color: #232c45;
+	margin: 0 10px 0 0;
+	display: inline-block;
+	text-decoration: none;
+	border-radius: 12px;
+	padding: 0 10px 0 0;
+	line-height: 24px;
+	height: 24px;
+	}
+.FunctionBtn a .ico {
+	width: 18px;
+	height: 18px;
+	background: #999;
+	float: left;
+	margin: 3px 6px 3px 3px;
+	border-radius: 9px;
+	}
+.TableStyle table { /*表格*/
+	background: #FFF;
+	width: 100%;
+	line-height: 150%;
+	border-collapse: collapse;
+	}
+.TableStyle .Title {
+	line-height: 28px;
+	color: #5f6c7e;
+	font-weight: bold;
+	text-align: center
+	}
+.TableStyle .Title td {
+	border-right: 1px solid #66cbff;
+	border-bottom: 1px solid #66cbff
+	}
+.TableStyle .Title td:last-child {
+	border-right: none;
+	}
+.TableStyle tr.Title:hover {
+	background: inherit !important;
+	}
+.TableStyle td {
+	padding: 2px 4px;
+	height: 32px;
+	border-bottom: 1px solid #d5f1ff;
+	}
+.TableStyle tr:nth-child(even) {
+	background: #fafdff
+	}
+.TableStyle tr:hover {
+	background: #d9f2ff !important;
+	}
+.FormList {
+	line-height: 46px;
+	}
+.FormListEnd {
+	height: 60px;
+	clear: both;
+	}
+.FormList input,
+.FormList select,
+.FormList textarea {
+	border: 1px solid #dce1e6;
+	border-radius: 4px;
+	padding: 5px;
+	height: 36px;
+	}
+.FormList textarea {
+	height: auto;
+	margin: 4px 0 -14px 0
+	}
+.FormList input:hover,
+.FormList select:hover,
+.FormList textarea:hover {
+	border: 1px solid #00a4ff;
+	box-shadow: 1px 2px 3px rgba(0,164,255,.2)
+	}
+.FormList input:disabled {
+	background: #f4f5f6
+	}
+.FormList input:disabled:hover,
+.FormList select:disabled:hover {
+	border: 1px solid #CCC;
+	box-shadow: none
+	}
+.FormList label {
+	padding: 0 10px;
+	display: inline-block
+	}
+.FormList label input {
+	height: 32px;
+	display: inline-block;
+	vertical-align: middle;
+	padding: 0;
+	border: none;
+	margin: 0 6px 0 0 !important
+	}
+.FormList label input:hover {
+	border: none;
+	box-shadow: none;
+	}
+.Btn {
+	background: #959da9;
+	height: 36px;
+	border-radius: 4px;
+	border: none !important;
+	width: 120px;
+	padding: 0 10px;
+	margin: 0 5px;
+	color: #FFF;
+	opacity: 0.8
+	}
+.Btn:disabled {
+	background: #c6cbd2 !important;
+	box-shadow: none;
+	color: #959da9;
+	opacity: 1;
+	}
+.Btn:hover {
+	opacity: 1
+	}
+.BtnBlue {
+	background: #00a4ff;
+	box-shadow: 1px 4px 8px rgba(0,164,255,.4);
+	opacity: 1;
+	}
+.BtnBlue:hover {
+	background: #008aff;
+	}
+.BtnRed {
+	background: #ee4063;
+	}
+.Label {
+	width: 150px;
+	color: #959da9;
+	text-align: right;
+	padding: 0 8px 0 0;
+	vertical-align: top;
+	display: inline-block
+	}
+.PopLayer { /*弹出数据选择*/
+	border: 1px solid #dce1e6;
+	border-radius: 4px;
+	height: 280px;
+	overflow: auto;
+	display: inline-block;
+	background: #FFF;
+	line-height: 21px;
+	}
+.PopLayer ul {
+	border-bottom: 1px solid #dce1e6;
+	float: left;
+	width: 100%;
+	padding: 5px;
+	}
+.PopLayer ul:hover {
+	background: #d9f2ff;
+	}
+.PopLayer ul:last-child {
+	border: none
+	}
+.PopLayer ul li {
+	clear: both
+	}
+	
