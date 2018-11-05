@@ -20,6 +20,7 @@
 	<modules>
         <module>queues-manager</module>
         <module>message-service</module>
+        <module>rabbitmq-monitor</module>
     </modules>
 
 
