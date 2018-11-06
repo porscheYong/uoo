@@ -82,7 +82,7 @@ public class TbAreaCodeController extends BaseController {
     @UooLog(value = "新增区号", key = "addAreaCode")
     @PostMapping("addAreaCode")
     @Transactional
-    public ResponseResult addAreaCode(@RequestBody TbAreaCode areaCode) {
+    public ResponseResult addAreaCode(TbAreaCode areaCode) {
         //  数据校验  获取操作者
         //查询公共管理区域是否存在
         if(areaCode.getCommonRegionId()==null){
