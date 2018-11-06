@@ -40,7 +40,7 @@ import io.swagger.annotations.ApiOperation;
  * @since 2018-10-30
  */
 @RestController
-@RequestMapping("/tbCommonRegion/")
+@RequestMapping("/region/commonRegion/")
 public class TbCommonRegionController extends BaseController {
     @Autowired
     private ITbCommonRegionService regionService;

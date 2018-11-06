@@ -41,7 +41,7 @@ import io.swagger.annotations.ApiOperation;
  * @since 2018-10-30
  */
 @RestController
-@RequestMapping("/tbRegionLocationRel")
+@RequestMapping("/region/regionLocationRel")
 public class TbRegionLocationRelController extends BaseController {
     
     @Autowired
@@ -99,7 +99,7 @@ public class TbRegionLocationRelController extends BaseController {
     @SuppressWarnings("unchecked")
     @ApiOperation(value = "新增行政区域和公用管理区域关系", notes = "选择某个公共区域进行添加行政区域信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "polLoc", value = "行政区域和公用管理区域关系", required = true, dataType = "LocRegRelByReg"), })
+            @ApiImplicitParam(name = "locRegRelByReg", value = "行政区域和公用管理区域关系", required = true, dataType = "LocRegRelByReg"), })
     @UooLog(value = "新增行政区域和公用管理区域关系", key = "addLocRegRelByReg")
     @PostMapping("addLocRegRelByReg")
     @Transactional(rollbackFor=Exception.class)

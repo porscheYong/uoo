@@ -35,7 +35,7 @@ import io.swagger.annotations.ApiOperation;
  * @since 2018-10-30
  */
 @RestController
-@RequestMapping("/tbExch")
+@RequestMapping("/region/exch")
 public class TbExchController extends BaseController {
     
 

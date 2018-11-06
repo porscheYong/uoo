@@ -36,7 +36,7 @@ import io.swagger.annotations.ApiOperation;
  * @since 2018-10-30
  */
 @RestController
-@RequestMapping("tbPoliticalLocation")
+@RequestMapping("/region/politicalLocation")
 public class TbPoliticalLocationController extends BaseController {
     @Autowired
     private ITbPoliticalLocationService polLocSvc;

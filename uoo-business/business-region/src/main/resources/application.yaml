@@ -4,8 +4,7 @@ server:
   port: 30030
 spring:
   application:
-    name: uoo-region
-  # 目前使用的是我的阿里云上的mysql数据库
+    name: uoo-region-provider
   datasource:
     url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
     username: octopus
@@ -19,6 +18,8 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8762/eureka
+      prefer-ip-address: true
+      instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
   #实体扫描，多个package用逗号或者分号分隔
@@ -43,13 +44,11 @@ server:
   port: 30030
 spring:
   application:
-    name: FAT-uoo-region-1
-  profiles: FAT-uoo-region-1
-  # 目前使用的是我的阿里云上的mysql数据库
+    name: uoo-region-provider
   datasource:
-    url: jdbc:mysql://localhost:3306/springboot?useSSL=true&useUnicode=true&characterEncoding=utf-8&verifyServerCertificate=false
-    username: root
-    password: 123456
+    url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
+    username: octopus
+    password: octopus
   zipkin:
     base-url: http://localhost:20010
   sleuth:
@@ -58,22 +57,35 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://FAT-uoo-register-1:8761/eureka/, http://FAT-uoo-register-2:8762/eureka/
-mybatis:
-  mapper-locations: classpath:mapper/*.xml
+      defaultZone: http://localhost:8762/eureka
+      prefer-ip-address: true
+      instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: ccn.ffcs.uoo.core.region.entity
+  global-config:
+    id-type: 2
+    field-strategy: 2
+    db-column-underline: true
+    refresh-mapper: true
+    #刷新mapper 调试神器
+    refresh: true
+  # 原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
 ...
 ---
 server:
   port: 30031
 spring:
   application:
-    name: FAT-uoo-region-2
-  profiles: FAT-uoo-region-2
-  # 目前使用的是我的阿里云上的mysql数据库
+    name: uoo-region-provider
   datasource:
-    url: jdbc:mysql://localhost:3306/springboot?useSSL=true&useUnicode=true&characterEncoding=utf-8&verifyServerCertificate=false
-    username: root
-    password: 123456
+    url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
+    username: octopus
+    password: octopus
   zipkin:
     base-url: http://localhost:20010
   sleuth:
@@ -82,9 +94,24 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://FAT-uoo-register-1:8761/eureka/, http://FAT-uoo-register-2:8762/eureka/
-mybatis:
-  mapper-locations: classpath:mapper/*.xml
+      defaultZone: http://localhost:8762/eureka
+      prefer-ip-address: true
+      instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: ccn.ffcs.uoo.core.region.entity
+  global-config:
+    id-type: 2
+    field-strategy: 2
+    db-column-underline: true
+    refresh-mapper: true
+    #刷新mapper 调试神器
+    refresh: true
+  # 原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
 ...
 ### FAT END ###
 
