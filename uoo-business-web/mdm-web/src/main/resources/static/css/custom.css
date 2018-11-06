@@ -19,7 +19,8 @@ h2 {
  }
 
 .container {
-    width: 100% !important;
+    width: 100%;
+    height: 100%;
     padding: 0
 }
 
@@ -1041,4 +1042,12 @@ ul.tab-title.right li {
 
 .ui-select {
     padding: 0;
+}
+
+.loadingMask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
 }

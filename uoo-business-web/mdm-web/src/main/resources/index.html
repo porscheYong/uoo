@@ -15,10 +15,10 @@
 <link href="../../../static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <!-- ztree -->
 <link href="../../../static/vendors/zTree/zTreeStyle.css" rel="stylesheet">
+<!-- toastr -->
+<link href="../../../static/vendors/toastr/toastr.css" rel="stylesheet">
 <!-- jquery datatable -->
 <link href="../../../static/vendors/datatable/datatables.css" rel="stylesheet">
-<!-- NProgress -->
-<link href="../../../static/vendors/nprogress/nprogress.css" rel="stylesheet">
 <!-- lulu ui -->
 <link href="../../../static/vendors/lulu/css/common/ui.css" rel="stylesheet">
 
@@ -170,20 +170,12 @@
   </div>
 </div>
 
-<script src="static/vendors/layuiadmin/layui/layui.js"></script> 
-
-<script>
-	layui.config({
-		base: 'static/vendors/layuiadmin/' //静态资源所在路径
-		}).extend({
-		index: 'lib/index' //主入口模块
-		}).use('index');
-
-    // var router = layui.router();
-    // console.log(router);//弹出提示 “xxx” 
-
-</script>
-
+<!-- toastr -->
+<script type="text/javascript" src="static/js/core/jquery.js"></script>
+<!-- toastr -->
+<script type="text/javascript" src="static/vendors/toastr/toastr.js"></script> 
+<script type="text/javascript" src="static/vendors/layuiadmin/layui/layui.js"></script> 
+<script type="text/javascript" src="static/js/index.js"></script>
 
 </body>
 </html>
