@@ -173,8 +173,10 @@
 .typeahead-input {
   position: relative;
   background-color: transparent;
-  background-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);
   outline: none;
+  background: url(../../images/ico_zoomer.svg) 7px 7px no-repeat;
+  background-size: 24px 24px;
+  padding: 9px 32px !important;
 }
 
 .typeahead-menu {
