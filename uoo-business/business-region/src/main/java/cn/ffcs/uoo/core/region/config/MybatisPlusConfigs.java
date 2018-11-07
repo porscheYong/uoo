@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.core.region.config;
 
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,5 +15,11 @@ public class MybatisPlusConfigs {
         page.setDialectType("oracle");
         return page;
     }
-
+    @Bean
+    public MapperScannerConfigurer mapperScannerConfigurer(){
+        MapperScannerConfigurer scannerConfigurer = new MapperScannerConfigurer();
+        //可以通过环境变量获取你的mapper路径,这样mapper扫描可以通过配置文件配置了
+        scannerConfigurer.setBasePackage("cn.ffcs.uoo.core.region.dao");
+        return scannerConfigurer;
+    }
 }

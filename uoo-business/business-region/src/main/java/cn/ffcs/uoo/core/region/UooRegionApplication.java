@@ -13,7 +13,7 @@ import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboar
 @EnableFeignClients
 @EnableHystrixDashboard
 @EnableCircuitBreaker
-@MapperScan(basePackages={"cn.ffcs.uoo.core.region.dao"})
+@MapperScan(basePackages={"cn.ffcs.uoo.**.dao"})
 public class UooRegionApplication {
 
     public static void main(String[] args) {
