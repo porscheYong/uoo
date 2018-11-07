@@ -15,7 +15,6 @@
         <module>api-user</module>
         <module>api-org</module>
         <module>api-auth</module>
-        <module>api-auth</module>
     </modules>
 
 
