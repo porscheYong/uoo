@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 
 @Configuration
-public class MybatisPlusConfig {
+public class MybatisPlusConfigs {
 
     @Bean
     public PaginationInterceptor paginationInterceptor() {
