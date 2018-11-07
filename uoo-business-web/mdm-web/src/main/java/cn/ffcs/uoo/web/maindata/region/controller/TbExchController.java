@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.ffcs.uoo.web.maindata.region.entity.TbExch;
+import cn.ffcs.uoo.web.maindata.region.dto.TbExch;
 import cn.ffcs.uoo.web.maindata.region.service.ExchService;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
 import io.swagger.annotations.ApiImplicitParam;

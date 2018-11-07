@@ -3,10 +3,11 @@ package cn.ffcs.uoo.web.maindata.region.service;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import cn.ffcs.uoo.web.maindata.region.entity.TbExch;
+import cn.ffcs.uoo.web.maindata.region.dto.TbExch;
 import cn.ffcs.uoo.web.maindata.region.service.fallback.ExchServiceHystrix;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
 import common.config.PersonnelServiceConfiguration;
@@ -22,14 +23,14 @@ public interface ExchService {
     public ResponseResult listExch(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize);
     
      
-    @PostMapping("/region/exch/addExch")
+    @RequestMapping(value="/region/exch/addExch",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult addExch(@RequestBody TbExch exch);
      
-    @PostMapping("/region/exch/updateExch")
+    @RequestMapping(value="/region/exch/updateExch",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult updateExch(@RequestBody TbExch exch) ;
     
     
-    @PostMapping("/region/exch/deleteExch")
+    @RequestMapping(value="/region/exch/deleteExch",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult deleteExch(@RequestBody TbExch exch) ;
     
 

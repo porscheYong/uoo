@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -83,7 +84,7 @@ public class TbExchController extends BaseController {
     @UooLog(value = "新增局向", key = "addExch")
     @PostMapping("addExch")
     @Transactional
-    public ResponseResult addExch(TbExch exch) {
+    public ResponseResult addExch(@RequestBody TbExch exch) {
         //查询公共管理区域是否存在
         if(exch.getCommonRegionId()==null){
             return ResponseResult.createErrorResult("请选择公共管理区域");
@@ -108,7 +109,7 @@ public class TbExchController extends BaseController {
     @UooLog(value = "修改局向", key = "updateExch")
     @PostMapping("updateExch")
     @Transactional
-    public ResponseResult updateExch(TbExch exch) {
+    public ResponseResult updateExch(@RequestBody TbExch exch) {
         Long id = exch.getExchId();
         if(id==null||exchService.selectById(id)==null){
             return ResponseResult.createErrorResult("修改数据异常");
@@ -134,7 +135,7 @@ public class TbExchController extends BaseController {
     @UooLog(value = "删除局向", key = "deleteExch")
     @PostMapping("deleteExch")
     @Transactional
-    public ResponseResult deleteExch(TbExch exch) {
+    public ResponseResult deleteExch(@RequestBody TbExch exch) {
         if(exch==null||exch.getExchId()==null){
             return ResponseResult.createErrorResult("不能删除空数据");
         }

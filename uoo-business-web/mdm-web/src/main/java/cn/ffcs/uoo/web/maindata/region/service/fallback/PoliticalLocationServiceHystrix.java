@@ -2,7 +2,7 @@ package cn.ffcs.uoo.web.maindata.region.service.fallback;
 
 import org.springframework.stereotype.Service;
 
-import cn.ffcs.uoo.web.maindata.region.entity.TbPoliticalLocation;
+import cn.ffcs.uoo.web.maindata.region.dto.TbPoliticalLocation;
 import cn.ffcs.uoo.web.maindata.region.service.PoliticalLocationService;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
 

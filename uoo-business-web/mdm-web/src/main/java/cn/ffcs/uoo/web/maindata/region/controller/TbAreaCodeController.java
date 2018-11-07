@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.ffcs.uoo.web.maindata.region.entity.TbAreaCode;
+import cn.ffcs.uoo.web.maindata.region.dto.TbAreaCode;
 import cn.ffcs.uoo.web.maindata.region.service.AreaCodeService;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
 import io.swagger.annotations.ApiImplicitParam;

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.ffcs.uoo.web.maindata.region.entity.TbRegionLocationRel;
+import cn.ffcs.uoo.web.maindata.region.dto.TbRegionLocationRel;
 import cn.ffcs.uoo.web.maindata.region.service.RegionLocationRelService;
 import cn.ffcs.uoo.web.maindata.region.vo.LocRegRelByLoc;
 import cn.ffcs.uoo.web.maindata.region.vo.LocRegRelByReg;

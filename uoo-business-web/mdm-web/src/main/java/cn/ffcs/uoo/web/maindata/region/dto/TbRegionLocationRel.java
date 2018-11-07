@@ -1,37 +1,32 @@
-package cn.ffcs.uoo.web.maindata.region.entity;
+package cn.ffcs.uoo.web.maindata.region.dto;
 
 import java.util.Date;
 
 /**
  * <p>
- * 区号
+ * 行政区域和公用管理区域关系。
  * </p>
  *
  * @author zxs
  * @since 2018-10-30
  */
-public class TbAreaCode  {
+public class TbRegionLocationRel {
 
 
     /**
-     * 区号标识
+     * 区域关系标识
      */
-    private Long areaCodeId;
-
+    private Long regionLocRelId;
     /**
      * 公共管理区域标识
      */
     private Long commonRegionId;
 
-    /**
-     * 区号编码
-     */
-    private String areaNbr;
 
     /**
-     * 区号
+     * 行政区域标识
      */
-    private String areaCode;
+    private Long locId;
 
     /**
      * 状态
@@ -63,14 +58,7 @@ public class TbAreaCode  {
      */
     private Date statusDate;
 
-
-    public Long getAreaCodeId() {
-        return areaCodeId;
-    }
-
-    public void setAreaCodeId(Long areaCodeId) {
-        this.areaCodeId = areaCodeId;
-    }
+     
 
     public Long getCommonRegionId() {
         return commonRegionId;
@@ -80,20 +68,21 @@ public class TbAreaCode  {
         this.commonRegionId = commonRegionId;
     }
 
-    public String getAreaNbr() {
-        return areaNbr;
+
+    public Long getRegionLocRelId() {
+        return regionLocRelId;
     }
 
-    public void setAreaNbr(String areaNbr) {
-        this.areaNbr = areaNbr;
+    public void setRegionLocRelId(Long regionLocRelId) {
+        this.regionLocRelId = regionLocRelId;
     }
 
-    public String getAreaCode() {
-        return areaCode;
+    public Long getLocId() {
+        return locId;
     }
 
-    public void setAreaCode(String areaCode) {
-        this.areaCode = areaCode;
+    public void setLocId(Long locId) {
+        this.locId = locId;
     }
 
     public String getStatusCd() {
@@ -146,10 +135,10 @@ public class TbAreaCode  {
 
     @Override
     public String toString() {
-        return "TbAreaCode [areaCodeId=" + areaCodeId + ", commonRegionId=" + commonRegionId + ", areaNbr=" + areaNbr
-                + ", areaCode=" + areaCode + ", statusCd=" + statusCd + ", createDate=" + createDate + ", createUser="
-                + createUser + ", updateDate=" + updateDate + ", updateUser=" + updateUser + ", statusDate="
-                + statusDate + "]";
+        return "TbRegionLocationRel [commonRegionId=" + commonRegionId + ", regionLocRelId="
+                + regionLocRelId + ", locId=" + locId + ", statusCd=" + statusCd + ", createDate=" + createDate
+                + ", createUser=" + createUser + ", updateDate=" + updateDate + ", updateUser=" + updateUser
+                + ", statusDate=" + statusDate + "]";
     }
 
 }

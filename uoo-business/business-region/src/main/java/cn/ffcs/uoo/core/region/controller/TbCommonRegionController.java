@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,6 +51,8 @@ public class TbCommonRegionController extends BaseController {
     private ITbAreaCodeService areaCodeSvc;
     @Autowired
     private ITbExchService exchSvc;
+    /*@Autowired
+    private ITbPoliticalLocationService locSvc;*/
 
     @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
     @ApiImplicitParams({
@@ -83,23 +86,39 @@ public class TbCommonRegionController extends BaseController {
     @UooLog(value = "新增公共管理区域", key = "addCommonRegion")
     @PostMapping("addCommonRegion")
     @Transactional
-    public ResponseResult addCommonRegion(TbCommonRegion commonRegion) {
+    public ResponseResult addCommonRegion(@RequestBody TbCommonRegion commonRegion/*,TbRegionLocationRel regionLocationRel*/) {
         //  数据校验  获取操作者
-        //查询上级是否存在 -1为最顶层
+        //查询上级是否存在 
         
         if(commonRegion.getUpRegionId()!=null){
             TbCommonRegion region = regionService.selectById(commonRegion.getUpRegionId());
             if(region==null){
-                return ResponseResult.createErrorResult("上一级区域不存在");
+                return ResponseResult.createErrorResult("选择的上一级区域不存在");
             }
         }
         commonRegion.setStatusCd(DeleteConsts.VALID);
-        
         commonRegion.setCreateDate(new Date());
         commonRegion.setUpdateDate(new Date());
         commonRegion.setStatusDate(new Date());
         commonRegion.setCommonRegionId(regionService.getId());
         regionService.insert(commonRegion);
+        
+        //查看是否选中了行政区域
+        /*Long locId = regionLocationRel.getLocId();
+        if(locId!=null){
+            TbPoliticalLocation obj = locSvc.selectById(locId);
+            if(obj!=null&&DeleteConsts.VALID.equals(obj.getStatusCd())){
+                TbRegionLocationRel rel=new TbRegionLocationRel();
+                rel.setCommonRegionId(commonRegion.getCommonRegionId());
+                rel.setLocId(locId);
+                rel.setRegionLocRelId(regLocRelSvc.getId());
+                regLocRelSvc.insert(rel);
+            }else{
+                return ResponseResult.createErrorResult("选择的行政区域无效");
+            }
+        }*/
+        
+        
         return ResponseResult.createSuccessResult("success");
     }
     @ApiOperation(value = "修改公共管理区域", notes = "修改公共管理区域")
@@ -108,7 +127,7 @@ public class TbCommonRegionController extends BaseController {
     @UooLog(value = "修改公共管理区域", key = "updateCommonRegion")
     @PostMapping("updateCommonRegion")
     @Transactional
-    public ResponseResult updateCommonRegion(TbCommonRegion commonRegion) {
+    public ResponseResult updateCommonRegion(@RequestBody TbCommonRegion commonRegion/*,TbRegionLocationRel regionLocationRel*/) {
         Long id = commonRegion.getCommonRegionId();
         if(id==null||regionService.selectById(id)==null){
             return ResponseResult.createErrorResult("修改数据异常");
@@ -124,6 +143,24 @@ public class TbCommonRegionController extends BaseController {
         //commonRegion.setStatusDate(new Date());
         
         regionService.updateById(commonRegion);
+        
+      //查看是否选中了行政区域
+       /* Long locId = regionLocationRel.getLocId();
+        if(locId!=null){
+            TbPoliticalLocation obj = locSvc.selectById(locId);
+            if(obj!=null&&DeleteConsts.VALID.equals(obj.getStatusCd())){
+                
+                TbRegionLocationRel rel=new TbRegionLocationRel();
+                rel.setCommonRegionId(commonRegion.getCommonRegionId());
+                rel.setLocId(locId);
+                rel.setRegionLocRelId(regLocRelSvc.getId());
+                regLocRelSvc.insert(rel);
+            }else{
+                return ResponseResult.createErrorResult("选择的行政区域无效");
+            }
+        }*/
+        
+        
         return ResponseResult.createSuccessResult("success");
     }
     
@@ -134,7 +171,7 @@ public class TbCommonRegionController extends BaseController {
     @PostMapping("deleteCommonRegion")
     @Transactional(rollbackFor=Exception.class)
     @SuppressWarnings("unchecked")
-    public ResponseResult deleteCommonRegion(TbCommonRegion commonRegion) {
+    public ResponseResult deleteCommonRegion(@RequestBody TbCommonRegion commonRegion) {
         //
         if(commonRegion==null||commonRegion.getCommonRegionId()==null){
             return ResponseResult.createErrorResult("不能删除空数据");

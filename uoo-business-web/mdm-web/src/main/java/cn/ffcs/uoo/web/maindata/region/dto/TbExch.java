@@ -1,32 +1,37 @@
-package cn.ffcs.uoo.web.maindata.region.entity;
+package cn.ffcs.uoo.web.maindata.region.dto;
 
 import java.util.Date;
 
 /**
  * <p>
- * 行政区域和公用管理区域关系。
+ * 描述信令所指的方向,如到某个局(每局对应一个DPC)的信令,可称到某局的局向。
  * </p>
  *
  * @author zxs
  * @since 2018-10-30
  */
-public class TbRegionLocationRel {
+public class TbExch {
 
 
     /**
-     * 区域关系标识
+     * 局向标识
      */
-    private Long regionLocRelId;
+    private Long exchId;
+
     /**
      * 公共管理区域标识
      */
     private Long commonRegionId;
 
+    /**
+     * 资源局向描述
+     */
+    private String srcExchDesc;
 
     /**
-     * 行政区域标识
+     * 资源局向标识
      */
-    private Long locId;
+    private Long srcExchId;
 
     /**
      * 状态
@@ -58,7 +63,13 @@ public class TbRegionLocationRel {
      */
     private Date statusDate;
 
-     
+    public Long getExchId() {
+        return exchId;
+    }
+
+    public void setExchId(Long exchId) {
+        this.exchId = exchId;
+    }
 
     public Long getCommonRegionId() {
         return commonRegionId;
@@ -68,21 +79,20 @@ public class TbRegionLocationRel {
         this.commonRegionId = commonRegionId;
     }
 
-
-    public Long getRegionLocRelId() {
-        return regionLocRelId;
+    public String getSrcExchDesc() {
+        return srcExchDesc;
     }
 
-    public void setRegionLocRelId(Long regionLocRelId) {
-        this.regionLocRelId = regionLocRelId;
+    public void setSrcExchDesc(String srcExchDesc) {
+        this.srcExchDesc = srcExchDesc;
     }
 
-    public Long getLocId() {
-        return locId;
+    public Long getSrcExchId() {
+        return srcExchId;
     }
 
-    public void setLocId(Long locId) {
-        this.locId = locId;
+    public void setSrcExchId(Long srcExchId) {
+        this.srcExchId = srcExchId;
     }
 
     public String getStatusCd() {
@@ -135,10 +145,10 @@ public class TbRegionLocationRel {
 
     @Override
     public String toString() {
-        return "TbRegionLocationRel [commonRegionId=" + commonRegionId + ", regionLocRelId="
-                + regionLocRelId + ", locId=" + locId + ", statusCd=" + statusCd + ", createDate=" + createDate
-                + ", createUser=" + createUser + ", updateDate=" + updateDate + ", updateUser=" + updateUser
-                + ", statusDate=" + statusDate + "]";
+        return "TbExch [exchId=" + exchId + ", commonRegionId=" + commonRegionId + ", srcExchDesc=" + srcExchDesc
+                + ", srcExchId=" + srcExchId + ", statusCd=" + statusCd + ", createDate=" + createDate + ", createUser="
+                + createUser + ", updateDate=" + updateDate + ", updateUser=" + updateUser + ", statusDate="
+                + statusDate + "]";
     }
 
 }

@@ -2,7 +2,7 @@ package cn.ffcs.uoo.web.maindata.region.service.fallback;
 
 import org.springframework.stereotype.Service;
 
-import cn.ffcs.uoo.web.maindata.region.entity.TbRegionLocationRel;
+import cn.ffcs.uoo.web.maindata.region.dto.TbRegionLocationRel;
 import cn.ffcs.uoo.web.maindata.region.service.RegionLocationRelService;
 import cn.ffcs.uoo.web.maindata.region.vo.LocRegRelByLoc;
 import cn.ffcs.uoo.web.maindata.region.vo.LocRegRelByReg;

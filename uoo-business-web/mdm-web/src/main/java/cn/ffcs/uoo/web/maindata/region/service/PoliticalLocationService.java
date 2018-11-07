@@ -3,15 +3,15 @@ package cn.ffcs.uoo.web.maindata.region.service;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import cn.ffcs.uoo.web.maindata.region.entity.TbPoliticalLocation;
+import cn.ffcs.uoo.web.maindata.region.dto.TbPoliticalLocation;
 import cn.ffcs.uoo.web.maindata.region.service.fallback.PoliticalLocationServiceHystrix;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
-import common.config.PersonnelServiceConfiguration;
 
-@FeignClient(value = "uoo-region-provider",configuration = {PersonnelServiceConfiguration.class},fallback = PoliticalLocationServiceHystrix.class)
+@FeignClient(value = "uoo-region-provider",/*configuration = {PersonnelServiceConfiguration.class},*/fallback = PoliticalLocationServiceHystrix.class)
 public interface PoliticalLocationService {
 
     
@@ -22,14 +22,15 @@ public interface PoliticalLocationService {
     public ResponseResult listAllPoliticalLocation();
 
     
-    @PostMapping("/region/politicalLocation/addPoliticalLocation")
+    @RequestMapping(value="/region/politicalLocation/addPoliticalLocation",method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    //@PostMapping("/region/politicalLocation/addPoliticalLocation")
     public ResponseResult addPoliticalLocation(@RequestBody TbPoliticalLocation polLoc) ;
     
-    @PostMapping("/region/politicalLocation/updatePoliticalLocation")
+    @RequestMapping(value="/region/politicalLocation/updatePoliticalLocation",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult updatePoliticalLocation(@RequestBody TbPoliticalLocation polLoc) ;
     
      
-    @PostMapping("/region/politicalLocation/deletePoliticalLocation")
+    @RequestMapping(value="/region/politicalLocation/deletePoliticalLocation",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult deletePoliticalLocation(@RequestBody TbPoliticalLocation polLoc);
 
 }

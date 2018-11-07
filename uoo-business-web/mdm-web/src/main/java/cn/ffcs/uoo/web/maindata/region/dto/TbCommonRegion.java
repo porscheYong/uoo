@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.web.maindata.region.entity;
+package cn.ffcs.uoo.web.maindata.region.dto;
 
 import java.util.Date;
 

@@ -2,7 +2,7 @@ package cn.ffcs.uoo.web.maindata.region.service.fallback;
 
 import org.springframework.stereotype.Service;
 
-import cn.ffcs.uoo.web.maindata.region.entity.TbExch;
+import cn.ffcs.uoo.web.maindata.region.dto.TbExch;
 import cn.ffcs.uoo.web.maindata.region.service.ExchService;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
 @Service

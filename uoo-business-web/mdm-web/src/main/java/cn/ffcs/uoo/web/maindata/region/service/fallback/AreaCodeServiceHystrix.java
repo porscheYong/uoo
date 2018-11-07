@@ -2,7 +2,7 @@ package cn.ffcs.uoo.web.maindata.region.service.fallback;
 
 import org.springframework.stereotype.Service;
 
-import cn.ffcs.uoo.web.maindata.region.entity.TbAreaCode;
+import cn.ffcs.uoo.web.maindata.region.dto.TbAreaCode;
 import cn.ffcs.uoo.web.maindata.region.service.AreaCodeService;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
 
