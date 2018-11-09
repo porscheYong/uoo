@@ -14,11 +14,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,7 +39,7 @@ public class TbExpandovalueController extends BaseController {
     @ApiImplicitParam(name = "tbExpandovalue", value = "扩展值", required = true, dataType = "TbExpandovalue")
     @UooLog(value = "新增扩展值", key = "addTbExpandovalue")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<TbExpandovalue> addTbExpandovalue(TbExpandovalue tbExpandovalue) {
+    public ResponseResult<TbExpandovalue> addTbExpandovalue(@RequestBody TbExpandovalue tbExpandovalue) {
         ResponseResult<TbExpandovalue> responseResult = new ResponseResult<TbExpandovalue>();
 
         // 校验必填项
@@ -84,7 +80,7 @@ public class TbExpandovalueController extends BaseController {
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbExpandovalue> removeTbExpandovalue(Long valueId, Long updateUser) {
+    public ResponseResult<TbExpandovalue> removeTbExpandovalue(@RequestBody Long valueId, @RequestBody Long updateUser) {
         ResponseResult<TbExpandovalue> responseResult = new ResponseResult<TbExpandovalue>();
 
         // 校验必填项
@@ -128,7 +124,7 @@ public class TbExpandovalueController extends BaseController {
     @ApiImplicitParam(name = "tbExpandovalue", value = "扩展值", required = true, dataType = "TbExpandovalue")
     @UooLog(value = "修改扩展值", key = "updateTbExpandovalue")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult<TbExpandovalue> updateTbExpandovalue(TbExpandovalue tbExpandovalue) {
+    public ResponseResult<TbExpandovalue> updateTbExpandovalue(@RequestBody TbExpandovalue tbExpandovalue) {
         ResponseResult<TbExpandovalue> responseResult = new ResponseResult<TbExpandovalue>();
 
         // 校验必填项

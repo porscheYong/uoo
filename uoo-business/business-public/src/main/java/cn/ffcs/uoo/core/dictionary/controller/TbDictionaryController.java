@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,7 +40,7 @@ public class TbDictionaryController extends BaseController {
     @ApiImplicitParam(name = "tbDictionary", value = "字典定义", required = true, dataType = "TbDictionary")
     @UooLog(value = "修改字典定义", key = "updateTbDictionary")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult<TbDictionary> updateTbDictionary(TbDictionary tbDictionary) {
+    public ResponseResult<TbDictionary> updateTbDictionary(@RequestBody TbDictionary tbDictionary) {
         ResponseResult<TbDictionary> responseResult = new ResponseResult<TbDictionary>();
         tbDictionaryService.updateById(tbDictionary);
 
@@ -52,7 +53,7 @@ public class TbDictionaryController extends BaseController {
     @ApiImplicitParam(name = "tbDictionary", value = "字典定义", required = true, dataType = "TbDictionary")
     @UooLog(value = "新增字典定义", key = "addTbDictionary")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<TbDictionary> addTbDictionary(TbDictionary tbDictionary) {
+    public ResponseResult<TbDictionary> addTbDictionary(@RequestBody TbDictionary tbDictionary) {
         ResponseResult<TbDictionary> responseResult = new ResponseResult<TbDictionary>();
         // 校验字典定义是否存在
         List<TbDictionary> tbDictionaryList = tbDictionaryService.selectDicList(tbDictionary);
@@ -76,7 +77,7 @@ public class TbDictionaryController extends BaseController {
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "String")
     })
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbDictionary> removeTbDictionary(String dictionaryName, Long updateUser) {
+    public ResponseResult<TbDictionary> removeTbDictionary(@RequestBody String dictionaryName, @RequestBody Long updateUser) {
         ResponseResult<TbDictionary> responseResult = new ResponseResult<TbDictionary>();
 
         // 查询出该字典列名对应的字典

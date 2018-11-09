@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,7 +36,7 @@ public class TbPostLocationController extends BaseController {
     @ApiImplicitParam(name = "tbPostLocation", value = "职位行政区域", required = true, dataType = "TbPostLocation")
     @UooLog(value = "新增职位行政区域", key = "addTbPostLocation")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<TbPostLocation> addTbPostLocation(TbPostLocation tbPostLocation) {
+    public ResponseResult<TbPostLocation> addTbPostLocation(@RequestBody TbPostLocation tbPostLocation) {
         ResponseResult<TbPostLocation> responseResult = new ResponseResult<TbPostLocation>();
         // 校验必填项
         if(tbPostLocation.getRegionId() == null) {
@@ -62,7 +63,7 @@ public class TbPostLocationController extends BaseController {
     })
     @UooLog(value = "删除职位行政区域", key = "removeTbPostLocation")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbPostLocation> removeTbPostLocation(Long postLocationId, Long updateUser) {
+    public ResponseResult<TbPostLocation> removeTbPostLocation(@RequestBody Long postLocationId, @RequestBody Long updateUser) {
         ResponseResult<TbPostLocation> responseResult = new ResponseResult<TbPostLocation>();
 
         // 校验必填项

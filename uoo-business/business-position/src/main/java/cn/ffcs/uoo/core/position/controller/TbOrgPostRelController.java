@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,7 +37,7 @@ public class TbOrgPostRelController extends BaseController {
     @ApiImplicitParam(name = "tbOrgPostRel", value = "组织职位关系", required = true, dataType = "TbOrgPostRel")
     @UooLog(value = "新增组织职位关系", key = "addTbOrgPostRel")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<TbOrgPostRel> addTbOrgPostRel(TbOrgPostRel tbOrgPostRel) {
+    public ResponseResult<TbOrgPostRel> addTbOrgPostRel(@RequestBody TbOrgPostRel tbOrgPostRel) {
         ResponseResult<TbOrgPostRel> responseResult = new ResponseResult<TbOrgPostRel>();
 
         // 校验必填项
@@ -64,7 +65,7 @@ public class TbOrgPostRelController extends BaseController {
     })
     @UooLog(value = "删除组织职位关系", key = "removeTbOrgPostRel")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbOrgPostRel> removeTbOrgPostRel(Long orgPostId, Long updateUser) {
+    public ResponseResult<TbOrgPostRel> removeTbOrgPostRel(@RequestBody Long orgPostId, @RequestBody Long updateUser) {
         ResponseResult<TbOrgPostRel> responseResult = new ResponseResult<TbOrgPostRel>();
 
         // 校验必填项

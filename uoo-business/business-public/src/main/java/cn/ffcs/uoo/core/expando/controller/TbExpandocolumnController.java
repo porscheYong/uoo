@@ -16,11 +16,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,7 +42,7 @@ public class TbExpandocolumnController extends BaseController {
     @ApiImplicitParam(name = "tbExpandocolumn", value = "扩展列", required = true, dataType = "TbExpandocolumn")
     @UooLog(value = "修改扩展值", key = "updateTbExpandovalue")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult<TbExpandocolumn> updateTbExpandocolumn(TbExpandocolumn tbExpandocolumn) {
+    public ResponseResult<TbExpandocolumn> updateTbExpandocolumn(@RequestBody TbExpandocolumn tbExpandocolumn) {
         ResponseResult<TbExpandocolumn> responseResult = new ResponseResult<TbExpandocolumn>();
 
         // 校验必填项
@@ -67,7 +63,7 @@ public class TbExpandocolumnController extends BaseController {
     @ApiImplicitParam(name = "tbExpandocolumn", value = "扩展列", required = true, dataType = "TbExpandocolumn")
     @UooLog(value = "新增扩展列", key = "addTbExpandocolumn")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<TbExpandocolumn> addTbExpandocolumn(TbExpandocolumn tbExpandocolumn) {
+    public ResponseResult<TbExpandocolumn> addTbExpandocolumn(@RequestBody TbExpandocolumn tbExpandocolumn) {
         ResponseResult<TbExpandocolumn> responseResult = new ResponseResult<TbExpandocolumn>();
 
         // 校验必填项
@@ -101,7 +97,7 @@ public class TbExpandocolumnController extends BaseController {
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbExpandocolumn> removeTbExpandocolumn(Long columnId, Long updateUser) {
+    public ResponseResult<TbExpandocolumn> removeTbExpandocolumn(@RequestBody Long columnId, @RequestBody Long updateUser) {
         ResponseResult<TbExpandocolumn> responseResult = new ResponseResult<TbExpandocolumn>();
 
         // 校验必填项
