@@ -30,7 +30,7 @@
 
     <insert id="insertSelective" parameterType="cn.ffcs.uoo.core.permission.entity.TbUserRole">
         <selectKey keyProperty="userRoleId" resultType="java.lang.Long" order="BEFORE">
-            SELECT SEQ_USER_ROLE_ID.NEXTVAL FROM dual
+            SELECT SEQ_TB_USER_ROLE_ID.NEXTVAL FROM dual
         </selectKey>
         insert into TB_USER_ROLE
         <trim prefix="(" suffix=")" suffixOverrides=",">

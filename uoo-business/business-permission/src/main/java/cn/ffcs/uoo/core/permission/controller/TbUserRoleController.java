@@ -41,8 +41,8 @@ public class TbUserRoleController extends BaseController {
     })
     @UooLog(value = "删除用户角色关系", key = "removeTbUserRole")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbUserRole> removeTbUserRole(Long userRoleId, Long updateStaff) {
-        ResponseResult<TbUserRole> responseResult = new ResponseResult<TbUserRole>();
+    public ResponseResult removeTbUserRole(Long userRoleId, Long updateStaff) {
+        ResponseResult responseResult = new ResponseResult();
 
         // 校验必填项
         if(userRoleId == null) {
@@ -66,8 +66,8 @@ public class TbUserRoleController extends BaseController {
     @ApiImplicitParam(name = "tbUserRole", value = "用户角色关系", required = true, dataType = "TbUserRole")
     @UooLog(value = "新增用户角色关系", key = "addTbUserRole")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<TbUserRole> addTbUserRole(TbUserRole tbUserRole) {
-        ResponseResult<TbUserRole> responseResult = new ResponseResult<TbUserRole>();
+    public ResponseResult addTbUserRole(TbUserRole tbUserRole) {
+        ResponseResult responseResult = new ResponseResult();
 
         // 校验必填项
         if(StringUtils.isEmpty(tbUserRole.getStatusCd())) {
