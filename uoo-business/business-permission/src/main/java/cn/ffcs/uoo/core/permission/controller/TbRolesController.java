@@ -48,8 +48,8 @@ public class TbRolesController extends BaseController {
     })
     @UooLog(value = "删除角色", key = "removeTbRoles")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbRoles> removeTbRoles(Long roleId, Long updateStaff) {
-        ResponseResult<TbRoles> responseResult = new ResponseResult<TbRoles>();
+    public ResponseResult removeTbRoles(Long roleId, Long updateStaff) {
+        ResponseResult responseResult = new ResponseResult();
 
         // 校验必填项
         if(roleId == null) {
@@ -87,8 +87,8 @@ public class TbRolesController extends BaseController {
     @ApiImplicitParam(name = "tbRoles", value = "角色", required = true, dataType = "TbRoles")
     @UooLog(value = "修改角色", key = "updateTbRoles")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult<TbRoles> updateTbRoles(TbRoles tbRoles) {
-        ResponseResult<TbRoles> responseResult = new ResponseResult<TbRoles>();
+    public ResponseResult updateTbRoles(TbRoles tbRoles) {
+        ResponseResult responseResult = new ResponseResult();
         // 校验必填项
         if(tbRoles.getRoleId() == null) {
             responseResult.setState(ResponseResult.STATE_ERROR);
@@ -107,8 +107,8 @@ public class TbRolesController extends BaseController {
     @ApiImplicitParam(name = "tbRoles", value = "角色", required = true, dataType = "TbRoles")
     @UooLog(value = "新增角色", key = "addTbRoles")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<TbRoles> addTbRoles(TbRoles tbRoles) {
-        ResponseResult<TbRoles> responseResult = new ResponseResult<TbRoles>();
+    public ResponseResult addTbRoles(TbRoles tbRoles) {
+        ResponseResult responseResult = new ResponseResult();
 
         // 校验必填项
         if(tbRoles.getRegionId() == null ) {
