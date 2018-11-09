@@ -1,5 +1,8 @@
 ### DEV ###
 ---
+uoo: 
+  serviceName: 
+    region: uoo-region-provider
 server:
   port: 11400
 spring:
