@@ -1,5 +1,8 @@
 package cn.ffcs.uoo.core.region.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +27,10 @@ public class TbCommonRegionServiceImpl extends ServiceImpl<TbCommonRegionMapper,
     @Override
     public Long getId() {
         return mapper.getId();
+    }
+    @SuppressWarnings("rawtypes")
+    @Override
+    public List<Map> selectUnionPolLoc(Map<String,Object> params) {
+        return mapper.selectUnionPolLoc(params);
     }
 }

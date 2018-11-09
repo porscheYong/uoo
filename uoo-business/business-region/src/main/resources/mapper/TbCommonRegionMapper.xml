@@ -29,6 +29,31 @@
 		STATUS_DATE
 	</sql>
 	<select id="getId" resultType="java.lang.Long">
-		SELECT SEQ_TB_COMMON_REGION.nextval FROM dual
+		SELECT
+		SEQ_TB_COMMON_REGION.nextval FROM dual
 	</select>
+
+	<select id="selectUnionPolLoc" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		SELECT
+		a.COMMON_REGION_ID, a.UP_REGION_ID, a.REGION_NAME,
+        a.REGION_PY_NAME,a.REGION_NBR,a.REGION_TYPE,
+        a.REGION_DESC,a.REGION_LEVEL,a.REGION_SORT,a.PROVINCE_NBR,a.CITY_FLAG,
+        a.STATUS_CD,
+		b.LOC_ID ,b.LOC_CODE,b.LOC_NAME 
+		FROM
+		TB_COMMON_REGION a
+		LEFT JOIN TB_REGION_LOCATION_REL c ON c.COMMON_REGION_ID =
+		a.COMMON_REGION_ID
+		LEFT JOIN TB_POLITICAL_LOCATION b ON c.LOC_ID = b.LOC_ID
+		<where>
+		  <if test="commonRegionId != null and commonRegionId != '' ">
+              and a.COMMON_REGION_ID = #{commonRegionId}
+          </if>
+		  <if test="statusCd != null and statusCd != '' ">
+		      and a.STATUS_CD = #{statusCd}
+		  </if>
+		</where>
+		
+	</select>
+
 </mapper>
