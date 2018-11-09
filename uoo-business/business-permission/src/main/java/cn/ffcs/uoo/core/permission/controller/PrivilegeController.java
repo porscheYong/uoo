@@ -1,18 +1,25 @@
 package cn.ffcs.uoo.core.permission.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+
 import cn.ffcs.uoo.core.permission.consts.StatusCD;
+import cn.ffcs.uoo.core.permission.entity.PrivDataRel;
 import cn.ffcs.uoo.core.permission.entity.Privilege;
+import cn.ffcs.uoo.core.permission.service.IPrivDataRelService;
 import cn.ffcs.uoo.core.permission.service.IPrivilegeService;
 import cn.ffcs.uoo.core.permission.vo.ResponseResult;
 
@@ -29,11 +36,20 @@ import cn.ffcs.uoo.core.permission.vo.ResponseResult;
 public class PrivilegeController {
     @Autowired
     private RestTemplate restTemplate;
-    @Autowired
-    private IPrivilegeService privilegeService;
     @Value("${uoo.serviceName.region}")
     private String regionServiceName;
+    @Autowired
+    private IPrivilegeService privilegeService;
+    @Autowired
+    private IPrivDataRelService relSvc;
 
+    @GetMapping("/lisAllPrivilege")
+    public ResponseResult lisAllPrivilege(){
+        Wrapper<Privilege> wrapper =Condition.create().eq("STATUS_CD", StatusCD.VALID);
+        List<Privilege> selectList = privilegeService.selectList(wrapper);
+        return ResponseResult.createSuccessResult(selectList, "");
+    }
+    
     @Transactional
     @RequestMapping(value = "/addPrivilege", method = RequestMethod.POST)
     public ResponseResult addPrivilege(@RequestBody Privilege privilege) {
@@ -79,6 +95,7 @@ public class PrivilegeController {
         return ResponseResult.createSuccessResult("success");
     }
     
+    @SuppressWarnings("unchecked")
     @Transactional
     @RequestMapping(value = "/deletePrivilege", method = RequestMethod.POST)
     public ResponseResult deletePrivilege(@RequestBody Privilege privilege) {
@@ -90,10 +107,22 @@ public class PrivilegeController {
         if (obj == null ) {
             return ResponseResult.createErrorResult("不能删除无效数据");
         }
+        Wrapper<PrivDataRel> wrapper = Condition.create().eq("PRIV_ID", privId);
+        List<PrivDataRel> selectList = relSvc.selectList(wrapper);
+        if(selectList!=null){
+            for (PrivDataRel privDataRel : selectList) {
+                if(StatusCD.VALID.equals(privDataRel.getStatusCd())){
+                    return ResponseResult.createErrorResult("请先删除相关权限数据信息");
+                }
+            }
+            
+        }
+        
         obj.setStatusCd(StatusCD.INVALID);
         obj.setStatusDate(new Date());
         obj.setUpdateDate(new Date());
         privilegeService.updateById(obj);
         return ResponseResult.createSuccessResult("success");
     }
+    
 }

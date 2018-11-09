@@ -3,6 +3,7 @@
 uoo: 
   serviceName: 
     region: uoo-region-provider
+    position: uoo-position
 server:
   port: 11400
 spring:

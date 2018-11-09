@@ -1,5 +1,9 @@
 package cn.ffcs.uoo.core.permission.service.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +31,9 @@ public class PrivGrantServiceImpl extends ServiceImpl<PrivGrantMapper, PrivGrant
     @Override
     public Long getId() {
         return mapper.getId();
+    }
+    @Override
+    public List<Map> selectPrivGrantByGranObj(HashMap<String, Object> params) {
+        return mapper.selectPrivGrantByGranObj(params);
     }
 }

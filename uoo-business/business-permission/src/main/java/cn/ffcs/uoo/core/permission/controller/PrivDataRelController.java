@@ -1,9 +1,27 @@
 package cn.ffcs.uoo.core.permission.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import java.util.Date;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+
+import cn.ffcs.uoo.core.permission.consts.StatusCD;
+import cn.ffcs.uoo.core.permission.entity.DataPrivRule;
+import cn.ffcs.uoo.core.permission.entity.PrivDataRel;
+import cn.ffcs.uoo.core.permission.entity.Privilege;
+import cn.ffcs.uoo.core.permission.service.IDataPrivRuleService;
+import cn.ffcs.uoo.core.permission.service.IPrivDataRelService;
+import cn.ffcs.uoo.core.permission.service.IPrivilegeService;
+import cn.ffcs.uoo.core.permission.vo.ResponseResult;
 
 /**
  * <p>
@@ -16,6 +34,71 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequestMapping("/permission/privDataRel")
 public class PrivDataRelController {
-
+    @Autowired
+    private IPrivDataRelService relSvc;
+    @Autowired
+    private IDataPrivRuleService ruleSvc;
+    @Autowired
+    private IPrivilegeService privilegeService;
+    
+    @Transactional
+    @RequestMapping(value="addPrivDataRel",method=RequestMethod.POST)
+    public ResponseResult addPrivDataRel(@RequestBody PrivDataRel privDataRel){
+        Long privId = privDataRel.getPrivId();
+        if(privId==null){
+            return ResponseResult.createErrorResult("权限标识不能为空");
+        }
+        Privilege privilege = privilegeService.selectById(privId);
+        if(!StatusCD.VALID.equals(privilege.getStatusCd())){
+            return ResponseResult.createErrorResult("无效的权限标识");
+        }
+        privDataRel.setCreateDate(new Date());
+        privDataRel.setPrivDataRelId(relSvc.getId());
+        privDataRel.setStatusCd(StatusCD.VALID);
+        relSvc.insert(privDataRel);
+        return ResponseResult.createSuccessResult("success");
+    }
+    
+    @Transactional
+    @RequestMapping(value="updatePrivDataRel",method=RequestMethod.POST)
+    public ResponseResult updatePrivDataRel(@RequestBody PrivDataRel privDataRel){
+        Long privId = privDataRel.getPrivId();
+        if(privId==null){
+            return ResponseResult.createErrorResult("权限标识不能为空");
+        }
+        Privilege privilege = privilegeService.selectById(privId);
+        if(!StatusCD.VALID.equals(privilege.getStatusCd())){
+            return ResponseResult.createErrorResult("无效的权限标识");
+        }
+        privDataRel.setUpdateDate(new Date());
+        relSvc.updateById(privDataRel);
+        return ResponseResult.createSuccessResult("success");
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Transactional
+    @RequestMapping(value="deletePrivDataRel",method=RequestMethod.POST)
+    public ResponseResult deletePrivDataRel(@RequestBody PrivDataRel privDataRel){
+        if(privDataRel.getPrivDataRelId()==null){
+            return ResponseResult.createErrorResult("不能删除无效数据");
+        }
+        Wrapper<DataPrivRule> wrapper = Condition.create().eq("PRIV_DATA_REL_ID", privDataRel.getPrivDataRelId());
+        List<DataPrivRule> selectList = ruleSvc.selectList(wrapper);
+        if(selectList!=null){
+            for (DataPrivRule dpr : selectList) {
+                if(StatusCD.VALID.equals(dpr.getStatusCd())){
+                    return ResponseResult.createErrorResult("请先删除相关数据权限规则");
+                }
+            }
+            
+        }
+        PrivDataRel del=new PrivDataRel();
+        del.setUpdateDate(new Date());
+        del.setStatusCd(StatusCD.INVALID);
+        del.setStatusDate(new Date());
+        del.setPrivDataRelId(privDataRel.getPrivDataRelId());
+        relSvc.updateById(del);
+        return ResponseResult.createSuccessResult("success");
+    }
 }
 

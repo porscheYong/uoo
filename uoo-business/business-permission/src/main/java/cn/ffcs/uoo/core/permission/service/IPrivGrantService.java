@@ -1,7 +1,12 @@
 package cn.ffcs.uoo.core.permission.service;
 
-import cn.ffcs.uoo.core.permission.entity.PrivGrant;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.baomidou.mybatisplus.service.IService;
+
+import cn.ffcs.uoo.core.permission.entity.PrivGrant;
 
 /**
  * <p>
@@ -16,4 +21,5 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface IPrivGrantService extends IService<PrivGrant> {
     Long getId();
+    List<Map> selectPrivGrantByGranObj(HashMap<String, Object> params);
 }

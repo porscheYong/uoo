@@ -74,7 +74,13 @@ public class CommonRegionDTO   {
     private String cityFlag;
     
     private List<Long> polLocIds;
-
+    private long operateUser;
+    public long getOperateUser() {
+        return operateUser;
+    }
+    public void setOperateUser(long operateUser) {
+        this.operateUser = operateUser;
+    }
     public Long getCommonRegionId() {
         return commonRegionId;
     }

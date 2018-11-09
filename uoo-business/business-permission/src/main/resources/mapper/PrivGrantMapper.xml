@@ -2,27 +2,47 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ffcs.uoo.core.permission.dao.PrivGrantMapper">
 
-    <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.permission.entity.PrivGrant">
-        <id column="PRIV_GRANT_ID" property="privGrantId" />
-        <result column="PRIV_ID" property="privId" />
-        <result column="GRANT_OBJ_TYPE" property="grantObjType" />
-        <result column="GRANT_OBJ_ID" property="grantObjId" />
-        <result column="EFF_DATE" property="effDate" />
-        <result column="EXP_DATE" property="expDate" />
-        <result column="STATUS_CD" property="statusCd" />
-        <result column="STATUS_DATE" property="statusDate" />
-        <result column="CREATE_DATE" property="createDate" />
-        <result column="CREATE_USER" property="createUser" />
-        <result column="UPDATE_DATE" property="updateDate" />
-        <result column="UPDATE_USER" property="updateUser" />
-    </resultMap>
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.permission.entity.PrivGrant">
+		<id column="PRIV_GRANT_ID" property="privGrantId" />
+		<result column="PRIV_ID" property="privId" />
+		<result column="GRANT_OBJ_TYPE" property="grantObjType" />
+		<result column="GRANT_OBJ_ID" property="grantObjId" />
+		<result column="EFF_DATE" property="effDate" />
+		<result column="EXP_DATE" property="expDate" />
+		<result column="STATUS_CD" property="statusCd" />
+		<result column="STATUS_DATE" property="statusDate" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_DATE" property="updateDate" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
 
-    <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        PRIV_GRANT_ID, PRIV_ID, GRANT_OBJ_TYPE, GRANT_OBJ_ID, EFF_DATE, EXP_DATE, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
-    </sql>
-    <select id="getId" resultType="java.lang.Long">
-        SELECT SEQ_TB_PRIV_GRANT.nextval FROM dual
-    </select>
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		PRIV_GRANT_ID, PRIV_ID, GRANT_OBJ_TYPE, GRANT_OBJ_ID, EFF_DATE, EXP_DATE, STATUS_CD,
+		STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
+	</sql>
+	<select id="getId" resultType="java.lang.Long">
+		SELECT SEQ_TB_PRIV_GRANT.nextval FROM dual
+	</select>
+	<select id="selectPrivGrantByGranObj" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
+		SELECT
+		a.PRIV_ID,
+		a.PRIV_CODE,
+		a.PRIV_NAME
+		FROM
+		TB_PRIVILEGE a,
+		TB_PRIV_GRANT b
+		WHERE
+		a.PRIV_ID = b.PRIV_ID
+		<if test="GRANT_OBJ_TYPE != null and GRANT_OBJ_TYPE != ''">
+		  AND b.GRANT_OBJ_TYPE = #{GRANT_OBJ_TYPE}
+		</if>
+		<if test="GRANT_OBJ_ID != null and GRANT_OBJ_ID != ''">
+		  AND b.GRANT_OBJ_ID = #{GRANT_OBJ_ID}
+		</if>
+
+	</select>
 </mapper>

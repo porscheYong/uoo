@@ -1,6 +1,11 @@
 package cn.ffcs.uoo.core.permission.dao;
 
 import cn.ffcs.uoo.core.permission.entity.PrivGrant;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -16,4 +21,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface PrivGrantMapper extends BaseMapper<PrivGrant> {
     Long getId();
+    List<Map> selectPrivGrantByGranObj(HashMap<String, Object> params);
 }

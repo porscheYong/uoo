@@ -172,7 +172,7 @@ public class TbCommonRegionController extends BaseController {
                                                                                     */) {
         // 数据校验 获取操作者
         // 查询上级是否存在
-        if (commonRegion.getUpRegionId() != null) {
+        if (commonRegion.getUpRegionId() != null && commonRegion.getUpRegionId() != 0) {
             TbCommonRegion region = regionService.selectById(commonRegion.getUpRegionId());
             if (region == null) {
                 return ResponseResult.createErrorResult("选择的上一级区域不存在");
@@ -193,6 +193,7 @@ public class TbCommonRegionController extends BaseController {
         }
 
         TbCommonRegion reg = commonRegion.convertEntity();
+        reg.setCreateUser(commonRegion.getOperateUser());
         reg.setStatusCd(DeleteConsts.VALID);
         reg.setCreateDate(new Date());
         reg.setUpdateDate(new Date());
@@ -227,7 +228,7 @@ public class TbCommonRegionController extends BaseController {
             return ResponseResult.createErrorResult("修改数据异常");
         }
         // 数据校验 获取操作者
-        if (commonRegion.getUpRegionId() != null) {
+        if (commonRegion.getUpRegionId() != null && commonRegion.getUpRegionId() != 0) {
             TbCommonRegion region = regionService.selectById(commonRegion.getUpRegionId());
             if (region == null) {
                 return ResponseResult.createErrorResult("上一级区域不存在");
@@ -249,8 +250,8 @@ public class TbCommonRegionController extends BaseController {
         }
 
         TbCommonRegion reg = commonRegion.convertEntity();
-
         reg.setUpdateDate(new Date());
+        reg.setUpdateUser(commonRegion.getOperateUser());
         regionService.updateById(reg);
 
         // 先删除之前的关系 再添加新的
