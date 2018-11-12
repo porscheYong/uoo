@@ -33,7 +33,7 @@ function initOrgTable (results) {
         'columns': [
             { 'data': "orgName", 'title': '部门', 'className': 'row-name',
               'render': function (data, type, row, meta) {
-                return '<a href="edit.html?id='+ row.orgId +'">'+ row.orgName +'</a>'
+                return '<a href="list.html?id='+ row.orgId +'" onclick="parent.openTreeById('+orgId+','+row.orgId+')">'+ row.orgName +'</a>'
               }
             },
             { 'data': "orgTypeSplit",

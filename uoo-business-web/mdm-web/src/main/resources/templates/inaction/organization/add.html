@@ -14,8 +14,6 @@
     <link href="../../../static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- jquery datatable -->
     <link href="../../../static/vendors/datatable/datatables.css" rel="stylesheet">
-    <!-- jquery cascader -->
-    <link href="../../../static/vendors/cascader/cascader.css" rel="stylesheet">
     <!-- jquery tagsinput -->
     <link href="../../../static/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
     <!-- lulu ui -->
@@ -142,7 +140,7 @@
                     <div class="form-item" style="width: 100%">
                       <label for="idMark" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">地址</label>
                       <div class="col-md-10 col-sm-10 col-xs-12" style="width: 84%;position: relative;padding: 0;">
-                        <input id="address" class="ui-input" style="width: 100%;position: relative;" size="40" name="tel" readonly="readonly">
+                        <input id="address" class="ui-input" style="width: 100%;position: relative;" size="40" name="tel">
                       </div>
                     </div>
                   </div>
@@ -233,8 +231,6 @@
     <script type="text/javascript" src="../../../static/vendors/laydate/laydate.js"></script>
     <!-- layer -->
     <script type="text/javascript" src="../../../static/vendors/layer/layer.js"></script>
-    <!-- jquery cascader -->
-    <script type="text/javascript" src="../../../static/vendors/cascader/cascader.js"></script>
     <!-- jquery tagsinput -->
     <script type="text/javascript" src="../../../static/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- init -->
@@ -245,84 +241,7 @@
       seajs.use('../../../static/vendors/lulu/js/common/ui/Select', function () {
         $('select').selectMatch();
       })
-      var data = [
-            {
-                value: 'A',
-                label: 'a',
-                children: [
-                    {
-                        value: 'AA1',
-                        label: 'aa1',
-                    },
-                    {
-                        value: 'BB1',
-                        label: 'bb1'
-                    }
-                ]
-            },
-            {
-                value: 'B',
-                label: 'b',
-                children: [
-                    {
-                        value: 'AA2',
-                        label: 'aa2',
-                        children: [
-                            {
-                                value: 'AAA3',
-                                label: 'aaa3',
-                                children: [
-                                    {
-                                        value: 'AAA3',
-                                        label: 'aaa3',
-                                        children: [
-                                            {
-                                                value: 'AAA3',
-                                                label: 'aaa3',
-                                            },
-                                            {
-                                                value: 'BBB3',
-                                                label: 'bbb3'
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                value: 'BBB3',
-                                label: 'bbb3'
-                            }
-                        ]
-                    },
-                    {
-                        value: 'BB2',
-                        label: 'bb2',
-                        children: [
-                            {
-                                value: 'AAA4',
-                                label: 'aaa4',
-                            },
-                            {
-                                value: 'BBB4',
-                                label: 'bbb4'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                value: 'C',
-                label: 'c',
-            }
-        ]
-        $('#address').cascader({
-            data: data,
-            value: ["B", "BB2", "BBB4"],
-            success: function (valData,labelData) {
-                console.log(valData);
-                console.log(labelData);
-            }
-        })
+
       if(typeof $.fn.tagsInput !== 'undefined'){  
          
           $('#orgType').tagsInput({

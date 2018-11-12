@@ -911,7 +911,7 @@ layer.close = function(index){
       for(var i = 0; i < 2; i++){
         wrap.unwrap();
       }
-      wrap.css('display', wrap.data('display')).removeClass(WRAP);
+      wrap.css('display', 'none').removeClass(WRAP);
     } else {
       //低版本IE 回收 iframe
       if(type === ready.type[2]){
