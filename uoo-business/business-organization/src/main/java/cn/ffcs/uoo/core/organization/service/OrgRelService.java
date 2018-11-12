@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.organization.service;
 import cn.ffcs.uoo.core.organization.entity.Org;
 import cn.ffcs.uoo.core.organization.entity.OrgRel;
 import cn.ffcs.uoo.core.organization.entity.OrgRelType;
+import cn.ffcs.uoo.core.organization.entity.OrgTree;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.vo.OrgRefTypeVo;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
@@ -112,4 +113,15 @@ public interface OrgRelService extends IService<OrgRel> {
          * 获取树的组织关系
          */
         public List<OrgRel> getOrgRel(String orgTreeId,String orgId);
+
+        /**
+         * 获取指定组织树和层级
+         * @param orgRootId
+         * @param lv
+         * @param curOrgId
+         * @param isFull
+         * @return
+         */
+        public List<TreeNodeVo> selectTarOrgRelTreeAndLv(String orgRootId, String lv, String curOrgId, boolean isFull);
+
 }
