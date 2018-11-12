@@ -79,6 +79,7 @@ public class TbExpandovalueController extends BaseController {
             @ApiImplicitParam(name = "valueId", value = "扩展值标识", required = true, dataType = "Long"),
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
+    @UooLog(value = "删除扩展值", key = "removeTbExpandovalue")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
     public ResponseResult<TbExpandovalue> removeTbExpandovalue(@RequestBody Long valueId, @RequestBody Long updateUser) {
         ResponseResult<TbExpandovalue> responseResult = new ResponseResult<TbExpandovalue>();

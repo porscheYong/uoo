@@ -86,6 +86,7 @@ public class TbSystemtableController extends BaseController {
             @ApiImplicitParam(name = "tableId", value = "系统表标识", required = true, dataType = "Long"),
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
+    @UooLog(value = "删除系统表登记", key = "removeTbSystemtable")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
     public ResponseResult<TbSystemtable> removeTbSystemtable(@RequestBody Long tableId, @RequestBody Long updateUser) {
         ResponseResult<TbSystemtable> responseResult = new ResponseResult<TbSystemtable>();

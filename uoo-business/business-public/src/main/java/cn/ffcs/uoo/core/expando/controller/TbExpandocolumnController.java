@@ -40,7 +40,7 @@ public class TbExpandocolumnController extends BaseController {
 
     @ApiOperation(value = "修改扩展列", notes = "修改扩展列")
     @ApiImplicitParam(name = "tbExpandocolumn", value = "扩展列", required = true, dataType = "TbExpandocolumn")
-    @UooLog(value = "修改扩展值", key = "updateTbExpandovalue")
+    @UooLog(value = "修改扩展列", key = "updateTbExpandovalue")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseResult<TbExpandocolumn> updateTbExpandocolumn(@RequestBody TbExpandocolumn tbExpandocolumn) {
         ResponseResult<TbExpandocolumn> responseResult = new ResponseResult<TbExpandocolumn>();
@@ -96,6 +96,7 @@ public class TbExpandocolumnController extends BaseController {
             @ApiImplicitParam(name = "columnId", value = "扩展列标识", required = true, dataType = "Long"),
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
+    @UooLog(value = "删除扩展列", key = "removeTbExpandocolumn")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
     public ResponseResult<TbExpandocolumn> removeTbExpandocolumn(@RequestBody Long columnId, @RequestBody Long updateUser) {
         ResponseResult<TbExpandocolumn> responseResult = new ResponseResult<TbExpandocolumn>();
