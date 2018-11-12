@@ -34,8 +34,8 @@ import cn.ffcs.uoo.core.permission.vo.ResponseResult;
 @RestController
 @RequestMapping("/permission/privilege")
 public class PrivilegeController {
-    @Autowired
-    private RestTemplate restTemplate;
+    /*@Autowired
+    private RestTemplate restTemplate;*/
     @Value("${uoo.serviceName.region}")
     private String regionServiceName;
     @Autowired
@@ -55,13 +55,13 @@ public class PrivilegeController {
     public ResponseResult addPrivilege(@RequestBody Privilege privilege) {
         // regionId 校验
         Long regionId = privilege.getRegionId();
-        ResponseResult result = restTemplate.getForObject(
+       /* ResponseResult result = restTemplate.getForObject(
                 "http://" + regionServiceName + "/region/commonRegion/getCommonRegion/id=" + regionId,
                 ResponseResult.class);
 
         if (result.getState() != ResponseResult.STATE_OK) {
             return ResponseResult.createErrorResult("公用管理区域是无效数据");
-        }
+        }*/
         privilege.setPrivId(privilegeService.getId());
         privilege.setStatusCd(StatusCD.VALID);
         privilege.setCreateDate(new Date());
@@ -82,13 +82,13 @@ public class PrivilegeController {
         }
         // regionId 校验
         Long regionId = privilege.getRegionId();
-        ResponseResult result = restTemplate.getForObject(
+       /* ResponseResult result = restTemplate.getForObject(
                 "http://" + regionServiceName + "/region/commonRegion/getCommonRegion/id=" + regionId,
                 ResponseResult.class);
 
         if (result.getState() != ResponseResult.STATE_OK) {
             return ResponseResult.createErrorResult("公用管理区域是无效数据");
-        }
+        }*/
         // privilege.setPrivId(privilegeService.getId());
         privilege.setStatusCd(StatusCD.VALID);
         privilege.setUpdateDate(new Date());
