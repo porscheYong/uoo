@@ -21,11 +21,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -53,7 +49,7 @@ public class TbPostController extends BaseController {
     @ApiImplicitParam(name = "tbPost", value = "职位", required = true, dataType = "TbPost")
     @UooLog(value = "新增职位", key = "addTbPost")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<TbPost> addTbPost(TbPost tbPost) {
+    public ResponseResult<TbPost> addTbPost(@RequestBody TbPost tbPost) {
         ResponseResult<TbPost> responseResult = new ResponseResult<TbPost>();
 
         tbPostService.insert(tbPost);
@@ -70,7 +66,7 @@ public class TbPostController extends BaseController {
     })
     @UooLog(value = "删除职位", key = "removeTbPost")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbPost> removeTbPost(Long postId, Long updateUser) {
+    public ResponseResult<TbPost> removeTbPost(@RequestBody Long postId, @RequestBody Long updateUser) {
         ResponseResult<TbPost> responseResult = new ResponseResult<TbPost>();
 
         // 校验必填项
@@ -139,7 +135,7 @@ public class TbPostController extends BaseController {
     @ApiImplicitParam(name = "tbPost", value = "职位", required = true, dataType = "TbPost")
     @UooLog(value = "修改职位", key = "updateTbPost")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult<TbPost> updateTbPost(TbPost tbPost) {
+    public ResponseResult<TbPost> updateTbPost(@RequestBody TbPost tbPost) {
         ResponseResult<TbPost> responseResult = new ResponseResult<TbPost>();
         // 校验必填项
         if(tbPost.getPostId() == null) {
