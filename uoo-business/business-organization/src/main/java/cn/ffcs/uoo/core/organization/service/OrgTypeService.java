@@ -31,6 +31,15 @@ public interface OrgTypeService extends IService<OrgType> {
      */
     public List<TreeNodeVo> selectOrgTypeTree(String orgTypeId,String orgTypeCode);
 
+
+    /**
+     * 查询组织类别树
+     * @param orgTypeId
+     * @param orgTypeCode
+     * @return
+     */
+    public List<TreeNodeVo> selectFullOrgTypeTreeByOrgId(String orgTypeId,String orgTypeCode,String orgId);
+
     /**
      * 是否存在子节点
      * @param treeNodeVo

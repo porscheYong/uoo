@@ -96,5 +96,31 @@ public class OrgTypeController {
         return ret;
     }
 
+
+    @ApiOperation(value = "查询组织类别树全信息-web", notes = "查询组织类别树全信息")
+    @ApiImplicitParams({
+
+    })
+    @UooLog(value = "查询组织类别树全信息", key = "getFullOrgTypeTree")
+    @RequestMapping(value = "/getFullOrgTypeTree", method = RequestMethod.GET)
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<List<TreeNodeVo>> getFullOrgTypeTree(String id,String orgTypeCode,String orgId){
+        ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
+        ret.setState(ResponseResult.STATE_OK);
+        if (StrUtil.isNullOrEmpty(orgId)) {
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织id不能为空");
+        }
+        List<TreeNodeVo> treeNodeVos = new ArrayList<>();
+        if(StrUtil.isNullOrEmpty(id)){
+            ret.setData(orgTypeService.selectFullOrgTypeTreeByOrgId(id,orgTypeCode,orgId));
+        }else{
+            ret.setData(orgTypeService.selectOrgTypeTree(id,orgTypeCode));
+        }
+
+        ret.setMessage("成功");
+        return ret;
+    }
+
 }
 
