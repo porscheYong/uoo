@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import cn.ffcs.uoo.web.maindata.region.dto.CommonRegionDTO;
 import cn.ffcs.uoo.web.maindata.region.dto.TbCommonRegion;
 import cn.ffcs.uoo.web.maindata.region.service.fallback.CommonRegionServiceHystrix;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
@@ -21,10 +22,10 @@ public interface CommonRegionService {
     public ResponseResult listAllCommonRegion();
 
     @RequestMapping(value="/region/commonRegion/addCommonRegion",method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult addCommonRegion(@RequestBody TbCommonRegion commonRegion);
+    public ResponseResult addCommonRegion(@RequestBody CommonRegionDTO commonRegion);
      
     @RequestMapping(value="/region/commonRegion/updateCommonRegion",method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult updateCommonRegion(@RequestBody TbCommonRegion commonRegion) ;
+    public ResponseResult updateCommonRegion(@RequestBody CommonRegionDTO commonRegion) ;
     
     @RequestMapping(value="/region/commonRegion/deleteCommonRegion",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult deleteCommonRegion(@RequestBody TbCommonRegion commonRegion);

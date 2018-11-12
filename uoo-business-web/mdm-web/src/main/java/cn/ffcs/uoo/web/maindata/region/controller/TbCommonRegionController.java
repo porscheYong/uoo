@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.ffcs.uoo.web.maindata.region.dto.CommonRegionDTO;
 import cn.ffcs.uoo.web.maindata.region.dto.TbCommonRegion;
 import cn.ffcs.uoo.web.maindata.region.service.CommonRegionService;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
@@ -48,20 +49,20 @@ public class TbCommonRegionController {
 
     @ApiOperation(value = "新增公共管理区域", notes = "新增公共管理区域")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "commonRegion", value = "公共管理区域信息", required = true, dataType = "TbCommonRegion"), })
+            @ApiImplicitParam(name = "commonRegion", value = "公共管理区域信息", required = true, dataType = "CommonRegionDTO"), })
     //@UooLog(value = "新增公共管理区域", key = "addCommonRegion")
     @PostMapping("addCommonRegion")
     //@Transactional
-    public ResponseResult addCommonRegion(TbCommonRegion commonRegion) {
+    public ResponseResult addCommonRegion(CommonRegionDTO commonRegion) {
         return regionService.addCommonRegion(commonRegion);
     }
     @ApiOperation(value = "修改公共管理区域", notes = "修改公共管理区域")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "commonRegion", value = "公共管理区域信息", required = true, dataType = "TbCommonRegion"), })
+            @ApiImplicitParam(name = "commonRegion", value = "公共管理区域信息", required = true, dataType = "CommonRegionDTO"), })
     //@UooLog(value = "修改公共管理区域", key = "updateCommonRegion")
     @PostMapping("updateCommonRegion")
     //@Transactional
-    public ResponseResult updateCommonRegion(TbCommonRegion commonRegion) {
+    public ResponseResult updateCommonRegion(CommonRegionDTO commonRegion) {
         return regionService.updateCommonRegion(commonRegion);
     }
     
