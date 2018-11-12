@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +36,7 @@ import io.swagger.annotations.ApiOperation;
  * @since 2018-10-30
  */
 @RestController
-@RequestMapping("/tbAreaCode")
+@RequestMapping("/region/areaCode")
 public class TbAreaCodeController extends BaseController {
     
     @Autowired
@@ -81,7 +82,7 @@ public class TbAreaCodeController extends BaseController {
     @UooLog(value = "新增区号", key = "addAreaCode")
     @PostMapping("addAreaCode")
     @Transactional
-    public ResponseResult addAreaCode(TbAreaCode areaCode) {
+    public ResponseResult addAreaCode(@RequestBody TbAreaCode areaCode) {
         //  数据校验  获取操作者
         //查询公共管理区域是否存在
         if(areaCode.getCommonRegionId()==null){
@@ -107,7 +108,7 @@ public class TbAreaCodeController extends BaseController {
     @UooLog(value = "修改区号", key = "updateAreaCode")
     @PostMapping("updateAreaCode")
     @Transactional
-    public ResponseResult updateAreaCode(TbAreaCode areaCode) {
+    public ResponseResult updateAreaCode(@RequestBody TbAreaCode areaCode) {
         Long id = areaCode.getAreaCodeId();
         if(id==null||areaCodeService.selectById(id)==null){
             return ResponseResult.createErrorResult("修改数据异常");
@@ -134,7 +135,7 @@ public class TbAreaCodeController extends BaseController {
     @UooLog(value = "删除区号", key = "deleteAreaCode")
     @PostMapping("deleteAreaCode")
     @Transactional
-    public ResponseResult deleteAreaCode(TbAreaCode areaCode) {
+    public ResponseResult deleteAreaCode(@RequestBody TbAreaCode areaCode) {
         if(areaCode==null||areaCode.getAreaCodeId()==null){
             return ResponseResult.createErrorResult("不能删除空数据");
         }

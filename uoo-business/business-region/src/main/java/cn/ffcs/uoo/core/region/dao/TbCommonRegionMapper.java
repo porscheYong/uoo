@@ -1,6 +1,11 @@
 package cn.ffcs.uoo.core.region.dao;
 
+import cn.ffcs.uoo.base.common.annotion.MyBatisDao;
 import cn.ffcs.uoo.core.region.entity.TbCommonRegion;
+
+import java.util.List;
+import java.util.Map;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -11,8 +16,10 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @author zxs
  * @since 2018-10-30
  */
+@MyBatisDao
 public interface TbCommonRegionMapper extends BaseMapper<TbCommonRegion> {
-
+    @SuppressWarnings("rawtypes")
+    public List<Map> selectUnionPolLoc(Map<String,Object> params);
     public Long getId();
 
 }

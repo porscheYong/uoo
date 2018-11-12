@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.permission.dao.PrivilegeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.permission.entity.Privilege">
+        <id column="PRIV_ID" property="privId" />
+        <result column="PRIV_CODE" property="privCode" />
+        <result column="PRIV_NAME" property="privName" />
+        <result column="PRIV_TYPE" property="privType" />
+        <result column="PRIV_DESC" property="privDesc" />
+        <result column="SYSTEM_INFO_ID" property="systemInfoId" />
+        <result column="REGION_ID" property="regionId" />
+        <result column="EFF_DATE" property="effDate" />
+        <result column="EXP_DATE" property="expDate" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="STATUS_DATE" property="statusDate" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        PRIV_ID, PRIV_CODE, PRIV_NAME, PRIV_TYPE, PRIV_DESC, SYSTEM_INFO_ID, REGION_ID, EFF_DATE, EXP_DATE, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
+    </sql>
+    <select id="getId" resultType="java.lang.Long">
+        SELECT SEQ_TB_PRIVILEGE.nextval FROM dual
+    </select>
+</mapper>

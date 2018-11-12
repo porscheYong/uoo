@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,7 +37,7 @@ import io.swagger.annotations.ApiOperation;
  * @since 2018-10-30
  */
 @RestController
-@RequestMapping("tbPoliticalLocation")
+@RequestMapping("/region/politicalLocation")
 public class TbPoliticalLocationController extends BaseController {
     @Autowired
     private ITbPoliticalLocationService polLocSvc;
@@ -74,7 +75,7 @@ public class TbPoliticalLocationController extends BaseController {
     @UooLog(value = "新增行政区域", key = "addPoliticalLocation")
     @PostMapping("addPoliticalLocation")
     @Transactional
-    public ResponseResult addPoliticalLocation(TbPoliticalLocation polLoc) {
+    public ResponseResult addPoliticalLocation(@RequestBody TbPoliticalLocation polLoc) {
         // 数据校验  获取操作者
         //查询上级是否存在  
         if(polLoc.getUpLocId()!=null&&polLoc.getUpLocId().longValue()!=0){
@@ -97,7 +98,7 @@ public class TbPoliticalLocationController extends BaseController {
     @UooLog(value = "修改行政区域", key = "updatePoliticalLocation")
     @PostMapping("updatePoliticalLocation")
     @Transactional
-    public ResponseResult updatePoliticalLocation(TbPoliticalLocation polLoc) {
+    public ResponseResult updatePoliticalLocation(@RequestBody TbPoliticalLocation polLoc) {
         Long id = polLoc.getLocId();
         if(id==null||polLocSvc.selectById(id)==null){
             return ResponseResult.createErrorResult("修改数据异常");
@@ -122,7 +123,7 @@ public class TbPoliticalLocationController extends BaseController {
     @UooLog(value = "删除行政区域", key = "deletePoliticalLocation")
     @PostMapping("deletePoliticalLocation")
     @Transactional(rollbackFor=Exception.class)
-    public ResponseResult deletePoliticalLocation(TbPoliticalLocation polLoc) {
+    public ResponseResult deletePoliticalLocation(@RequestBody TbPoliticalLocation polLoc) {
         //
         if(polLoc==null||polLoc.getLocId()==null){
             return ResponseResult.createErrorResult("不能删除空数据");
