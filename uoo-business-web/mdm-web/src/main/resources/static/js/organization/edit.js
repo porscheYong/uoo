@@ -3,85 +3,93 @@ seajs.use('../../../static/vendors/lulu/js/common/ui/Select', function () {
   $('select').selectMatch();
 })
 
-// 地址级联选择
-var data = [
-  {
-      value: 'A',
-      label: 'a',
-      children: [
-          {
-              value: 'AA1',
-              label: 'aa1',
-          },
-          {
-              value: 'BB1',
-              label: 'bb1'
-          }
-      ]
-  },
-  {
-      value: 'B',
-      label: 'b',
-      children: [
-          {
-              value: 'AA2',
-              label: 'aa2',
-              children: [
-                  {
-                      value: 'AAA3',
-                      label: 'aaa3',
-                      children: [
-                          {
-                              value: 'AAA3',
-                              label: 'aaa3',
-                              children: [
-                                  {
-                                      value: 'AAA3',
-                                      label: 'aaa3',
-                                  },
-                                  {
-                                      value: 'BBB3',
-                                      label: 'bbb3'
-                                  }
-                              ]
-                          }
-                      ]
-                  },
-                  {
-                      value: 'BBB3',
-                      label: 'bbb3'
-                  }
-              ]
-          },
-          {
-              value: 'BB2',
-              label: 'bb2',
-              children: [
-                  {
-                      value: 'AAA4',
-                      label: 'aaa4',
-                  },
-                  {
-                      value: 'BBB4',
-                      label: 'bbb4'
-                  }
-              ]
-          }
-      ]
-  },
-  {
-      value: 'C',
-      label: 'c',
-  }
-]
-$('#address').cascader({
-    data: data,
-    value: ["B", "BB2", "BBB4"],
-    success: function (valData,labelData) {
-        console.log(valData);
-        console.log(labelData);
-    }
+// tags init
+if(typeof $.fn.tagsInput !== 'undefined'){  
+  $('#orgTypeList').tagsInput();
+}
+
+$('#orgTypeList_tagsinput').on('click', function() {
+    var dialog =$("#myModal",parent.document)
+    parent.layerOpen({
+      type: 1,
+      title: '选中组织类别',
+      shadeClose: true,
+      shade: 0.8,
+      area: ['70%', '85%'],
+      maxmin: true,
+      content: dialog,
+      success: function(layero, index){
+        initOrgTypeTree();
+      },
+      btn: ['确认', '取消'],
+      confirm: function(index, layero){
+        alert(1)
+      }
+    })
+    // layer.open({
+    //   type: 1,
+    //   title: '选中组织类别',
+    //   shadeClose: true,
+    //   shade: 0.8,
+    //   area: ['70%', '85%'],
+    //   maxmin: true,
+    //   content: dialog,
+    //   success: function(layero, index){
+    //     initOrgTree()
+    //   },
+    //   btn: ['确认', '取消'],
+    //   yes: function(index, layero){
+    //     alert(1)
+    //   },
+    //   btn2: function(index, layero){},
+    //   cancel: function(){}
+    // });
 })
+
+// 组织类别初始化
+function initOrgTypeTree (orgId) {
+  var setting = {
+    view: {
+        showLine: false,
+        showIcon: false,
+        dblClickExpand: false
+    },
+    data: {
+        // key: {
+        //     name: "label",
+        //     isParent: "leaf",
+        // },
+        simpleData: {
+            enable:true,
+            idKey: "id",
+            pIdKey: "pId",
+            rootPId: ""
+        }
+    },
+    // callback: {
+    //     onClick: onNodeClick,
+    //     onCheck: onNodeCheck
+    // },
+    check: {
+        enable: true,
+        chkStyle: 'checkbox',
+        chkboxType: { "Y": "", "N": "" }
+    }
+  };
+  $http.get('orgType/getFullOrgTypeTree', null, function (data) {
+      console.log(data)
+      // $.fn.zTree.init($("#standardTree"), setting, data);
+      // var zTree = $.fn.zTree.getZTreeObj("standardTree");
+      // var nodes = zTree.getNodes();
+      // zTree.expandNode(nodes[0], true);
+      // zTree.selectNode(nodes[0], true);
+      // onNodeClick(null, null, nodes[0]);
+      parent.postMessage(data);
+  }, function (err) {
+      console.log(err)
+  })
+}
+
 // 组织关系信息初始化
 function initOrgRelTable (results) {
     var table = $("#orgRelTable").DataTable({
@@ -208,12 +216,25 @@ function initOrgRelTable (results) {
     });
 }
 
+var orgScale
+
 // 获取组织基础信息
 function getOrg (orgId) {
     $http.get('org/getOrg', {
         orgId: orgId
     }, function (data) {
-        console.log(data)
+        $('#orgName').val(data.orgName).focus();
+        var cityVillage = [{"itemId":1000,"dictionaryId":1000,"parItemId":null,"itemValue":"1","itemCnname":"城市","sort":0,"statusCd":"1000","createDate":1542006293000,"createUser":0,"updateDate":1542006293000,"updateUser":0,"statusDate":1542006293000},
+                   {"itemId":1001,"dictionaryId":1000,"parItemId":null,"itemValue":"2","itemCnname":"农村","sort":0,"statusCd":"1000","createDate":1542006293000,"createUser":0,"updateDate":1542006293000,"updateUser":0,"statusDate":1542006293000}];
+        var option;
+        var cityTown = 1000;
+        for (var i = 0; i < cityVillage.length; i++) {
+          var select = cityTown === cityVillage[i].itemId? 'selected' : '';
+          option = "<option value='" + cityVillage[i].itemValue + "' " + select + ">" + cityVillage[i].itemCnname +"</option>";
+          $('#cityVillage').append(option);
+        }
+        $('#cityVillage').selectMatch();
+        parent.postMessage(data.orgTypeList, '*');
     }, function (err) {
         console.log(err)
     })
@@ -245,3 +266,12 @@ function cancel () {
   var url = "list.html?id=" + orgId;
   window.location.href = url;
 }
+
+function getCityVillage (orgId) {
+    $http.get('tbDictionaryItem/getList/CITY_VILLAGE', {}, function (data) {
+        console.log(data)
+    }, function (err) {
+        console.log(err)
+    })
+}
+getCityVillage()

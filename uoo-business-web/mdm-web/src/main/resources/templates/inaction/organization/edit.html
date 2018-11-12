@@ -14,8 +14,6 @@
     <link href="../../../static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- jquery datatable -->
     <link href="../../../static/vendors/datatable/datatables.css" rel="stylesheet">
-    <!-- jquery cascader -->
-    <link href="../../../static/vendors/cascader/cascader.css" rel="stylesheet">
     <!-- jquery tagsinput -->
     <link href="../../../static/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
     <!-- lulu ui -->
@@ -117,12 +115,12 @@
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="cityTown" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">城乡属性</label>
+                      <label for="cityVillage" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">城乡属性</label>
                       <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="城市"> -->
-                      <select id="cityTown" class="col-md-8 col-sm-8 col-xs-12">
+                      <select id="cityVillage" class="col-md-8 col-sm-8 col-xs-12">
                         <option></option>
-                        <option>城市</option>
-                        <option>农村</option>
+                       <!--  <option>城市</option>
+                        <option>农村</option> -->
                       </select>
                     </div>
                   </div>
@@ -179,7 +177,7 @@
                     <div class="form-item" style="width: 100%">
                       <label for="address" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">地址</label>
                       <div class="col-md-10 col-sm-10 col-xs-12" style="width: 84%;position: relative;padding: 0;">
-                        <input id="address" class="ui-input" style="width: 100%;position: relative;" size="40" name="tel" readonly="readonly">
+                        <input id="address" class="ui-input" style="width: 100%;position: relative;" size="40" name="tel">
                       </div>
                     </div>
                   </div>
@@ -275,8 +273,6 @@
     <script type="text/javascript" src="../../../static/vendors/laydate/laydate.js"></script>
     <!-- layer -->
     <script type="text/javascript" src="../../../static/vendors/layer/layer.js"></script>
-    <!-- jquery cascader -->
-    <script type="text/javascript" src="../../../static/vendors/cascader/cascader.js"></script>
     <!-- jquery tagsinput -->
     <script type="text/javascript" src="../../../static/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- init -->
@@ -284,14 +280,10 @@
     <script type="text/javascript" src="../../../static/js/organization/edit.js"></script>
 
     <script type="text/javascript">
-      if(typeof $.fn.tagsInput !== 'undefined'){  
-         
-          $('#orgTypeList').tagsInput({
-            width: 'auto'
-          });
-      
-      }
-      $('#orgTypeList').addTag('foo')
+      // if(typeof $.fn.tagsInput !== 'undefined'){  
+      //   $('#orgTypeList').tagsInput();
+      // }
+      // $('#orgTypeList').addTag([{'name': 'foo', 'id': '233'}, {'name': 'bbb', 'id': '222'}, {'name': 'ccc', 'id': '211'}, {'name': 'ddd', 'id': '111'}])
 
       // $('#orgType_tagsinput').on('click', function() {
       //   $('#myModal').modal('show')
@@ -305,47 +297,47 @@
       //   // modal.find('.content').val(content);         
       // });
 
-      $('#orgTypeList_tagsinput').on('click', function() {
-          var dialog =$("#myModal",parent.document)
-          parent.layerOpen({
-            type: 1,
-            title: '选中组织类别',
-            shadeClose: true,
-            shade: 0.8,
-            area: ['70%', '85%'],
-            maxmin: true,
-            content: dialog,
-            success: function(layero, index){
-              // initOrgTree()
-            },
-            btn: ['确认', '取消'],
-            yes: function(index, layero){
-              alert(1)
-            },
-            btn2: function(index, layero){},
-            cancel: function(){
-              $(dialog).css('display', 'none')
-            }
-          })
-          // layer.open({
-          //   type: 1,
-          //   title: '选中组织类别',
-          //   shadeClose: true,
-          //   shade: 0.8,
-          //   area: ['70%', '85%'],
-          //   maxmin: true,
-          //   content: dialog,
-          //   success: function(layero, index){
-          //     initOrgTree()
-          //   },
-          //   btn: ['确认', '取消'],
-          //   yes: function(index, layero){
-          //     alert(1)
-          //   },
-          //   btn2: function(index, layero){},
-          //   cancel: function(){}
-          // });
-      })
+      // $('#orgTypeList_tagsinput').on('click', function() {
+      //     var dialog =$("#myModal",parent.document)
+      //     parent.layerOpen({
+      //       type: 1,
+      //       title: '选中组织类别',
+      //       shadeClose: true,
+      //       shade: 0.8,
+      //       area: ['70%', '85%'],
+      //       maxmin: true,
+      //       content: dialog,
+      //       success: function(layero, index){
+      //         // initOrgTree()
+      //         alert(3)
+      //       },
+      //       btn: ['确认', '取消'],
+      //       confirm: function(index, layero){
+      //         alert(1)
+      //       },
+      //       cancel: function(index, layero){
+      //         alert(2)
+      //       }
+      //     })
+      //     // layer.open({
+      //     //   type: 1,
+      //     //   title: '选中组织类别',
+      //     //   shadeClose: true,
+      //     //   shade: 0.8,
+      //     //   area: ['70%', '85%'],
+      //     //   maxmin: true,
+      //     //   content: dialog,
+      //     //   success: function(layero, index){
+      //     //     initOrgTree()
+      //     //   },
+      //     //   btn: ['确认', '取消'],
+      //     //   yes: function(index, layero){
+      //     //     alert(1)
+      //     //   },
+      //     //   btn2: function(index, layero){},
+      //     //   cancel: function(){}
+      //     // });
+      // })
     </script>
 	
   </body>

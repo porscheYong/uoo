@@ -298,7 +298,7 @@
       var r = data.getRoot(setting),
         children = data.nodeChildren(setting, n);
       n.level = level;
-      n.tId = setting.treeId + "_" + (++r.zId);
+      n.tId = setting.treeId + "_" + n.id;
       n.parentTId = parentNode ? parentNode.tId : null;
       n.open = (typeof n.open == "string") ? tools.eqs(n.open, "true") : !!n.open;
       var isParent = data.nodeIsParent(setting, n);
