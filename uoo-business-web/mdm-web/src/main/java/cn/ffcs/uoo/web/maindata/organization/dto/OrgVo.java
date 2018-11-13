@@ -14,7 +14,7 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018/10/18
  */
-public class OrgVo {
+public class OrgVo  extends BaseVo{
 
     private Long orgId;
     private String orgName;

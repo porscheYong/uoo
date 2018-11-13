@@ -4,7 +4,6 @@ package cn.ffcs.uoo.web.maindata.organization.dto;/**
  * @date: 2018-10-17
  */
 
-import cn.ffcs.uoo.base.common.vo.BaseVo;
 
 /**
  * <p>
