@@ -8,6 +8,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 字典前端客户端
@@ -23,5 +24,5 @@ public interface TbDictionaryClient {
     ResponseResult<TbDictionary> addTbDictionary(@RequestBody TbDictionary tbDictionary);
 
     @RequestMapping(value = "/tbDictionary/del", method = RequestMethod.POST)
-    ResponseResult<TbDictionary> removeTbDictionary(@RequestBody String dictionaryName, @RequestBody Long updateUser);
+    ResponseResult<TbDictionary> removeTbDictionary(@RequestParam("dictionaryName") String dictionaryName, @RequestParam("updateUser") Long updateUser);
 }

@@ -49,7 +49,7 @@ public class TbDictionaryItemController {
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbDictionaryItem> removeTbDictionaryItem(@RequestBody Long itemId, @RequestBody Long updateUser) {
+    public ResponseResult<TbDictionaryItem> removeTbDictionaryItem(@RequestParam("itemId") Long itemId, @RequestParam("updateUser") Long updateUser) {
         return tbDictionaryItemClient.removeTbDictionaryItem(itemId, updateUser);
     }
 

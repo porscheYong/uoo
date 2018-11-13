@@ -8,6 +8,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(value = "uoo-position",configuration = {PersonnelServiceConfiguration.class},fallback = TbPostLocationClientHystrix.class)
 public interface TbPostLocationClient {
@@ -15,5 +16,5 @@ public interface TbPostLocationClient {
     ResponseResult<TbPostLocation> addTbPostLocation(@RequestBody TbPostLocation tbPostLocation);
 
     @RequestMapping(value = "/tbPostLocation/del", method = RequestMethod.POST)
-    ResponseResult<TbPostLocation> removeTbPostLocation(@RequestBody Long postLocationId, @RequestBody Long updateUser);
+    ResponseResult<TbPostLocation> removeTbPostLocation(@RequestParam("postLocationId") Long postLocationId, @RequestParam("updateUser") Long updateUser);
 }

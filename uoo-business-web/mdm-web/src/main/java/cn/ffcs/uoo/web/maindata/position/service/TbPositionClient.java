@@ -6,10 +6,7 @@ import cn.ffcs.uoo.web.maindata.position.vo.OrgPositionInfoVo;
 import cn.ffcs.uoo.web.maindata.position.vo.ResponseResult;
 import common.config.PersonnelServiceConfiguration;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,17 +19,17 @@ public interface TbPositionClient {
     ResponseResult<TbPosition> updateTbPosition(@RequestBody TbPosition tbPosition);
 
     @RequestMapping(value = "/tbPosition/del", method = RequestMethod.POST)
-    ResponseResult<TbPosition> removeTbPosition(@RequestBody Long positionId, @RequestBody Long updateUser);
+    ResponseResult<TbPosition> removeTbPosition(@RequestParam("positionId") Long positionId, @RequestParam("updateUser") Long updateUser);
 
     @RequestMapping(value = "/tbPosition/getOrgPositionInfoList/{orgId}", method = RequestMethod.GET)
-    List<OrgPositionInfoVo> queryOrgPositionInfoList(@PathVariable Long orgId);
+    List<OrgPositionInfoVo> queryOrgPositionInfoList(@PathVariable("orgId") Long orgId);
 
     @RequestMapping(value = "/tbPosition/get/{positionName}", method = RequestMethod.GET)
-    List<TbPosition> queryPositionList(@PathVariable String positionName);
+    List<TbPosition> queryPositionList(@PathVariable("positionName") String positionName);
 
     @RequestMapping(value = "/tbPosition/getParent", method = RequestMethod.GET)
     List<TbPosition> queryParentPositionList();
 
     @RequestMapping(value = "/tbPosition/getChildren/{parentPositionId}", method = RequestMethod.GET)
-    List<TbPosition> queryChildPositionList(@PathVariable Long parentPositionId);
+    List<TbPosition> queryChildPositionList(@PathVariable("parentPositionId") Long parentPositionId);
 }
