@@ -4,9 +4,9 @@ package cn.ffcs.uoo.web.maindata.organization.service.fallback;/**
  * @date: 2018-11-12
  */
 
-import cn.ffcs.uoo.web.maindata.busipublic.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgTree;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgType;
+import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgTreeService;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgTypeService;
 import org.springframework.stereotype.Component;

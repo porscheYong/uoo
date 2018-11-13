@@ -1,8 +1,8 @@
 package cn.ffcs.uoo.web.maindata.organization.service;
 
 
-import cn.ffcs.uoo.web.maindata.busipublic.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgRelType;
+import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgRelServiceHystrix;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgRelTypeServiceHystrix;
 import com.baomidou.mybatisplus.service.IService;

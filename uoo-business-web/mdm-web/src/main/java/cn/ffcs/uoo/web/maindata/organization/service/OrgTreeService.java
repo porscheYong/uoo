@@ -1,8 +1,8 @@
 package cn.ffcs.uoo.web.maindata.organization.service;
 
 
-import cn.ffcs.uoo.web.maindata.busipublic.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgTree;
+import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.dto.SolrReqVo;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgTreeServiceHystrix;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgTypeServiceHystrix;

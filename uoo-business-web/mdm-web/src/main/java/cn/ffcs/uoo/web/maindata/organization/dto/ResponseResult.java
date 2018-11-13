@@ -1,13 +1,18 @@
-package cn.ffcs.uoo.web.maindata.busipublic.vo;
+package cn.ffcs.uoo.web.maindata.organization.dto;
 
 import java.io.Serializable;
 
 /**
- * 封装接口返回类
+ * 封装json格式类
+ * Created by liuxiaodong on 2018/9/17.
  */
 public class ResponseResult<T> implements Serializable {
-    public static final int STATE_OK = 1;
-    public static final int STATE_ERROR = -1;
+
+    public static final int STATE_OK = 1000;
+
+    public static final int PARAMETER_ERROR = 1100;
+
+    public static final int STATE_ERROR = 1200;
 
 
     private int state;

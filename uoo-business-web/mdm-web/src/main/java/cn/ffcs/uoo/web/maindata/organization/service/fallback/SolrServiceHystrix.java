@@ -4,7 +4,7 @@ package cn.ffcs.uoo.web.maindata.organization.service.fallback;/**
  * @date: 2018-11-12
  */
 
-import cn.ffcs.uoo.web.maindata.busipublic.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.dto.SolrReqVo;
 import cn.ffcs.uoo.web.maindata.organization.dto.TreeNodeVo;
 import cn.ffcs.uoo.web.maindata.organization.service.SolrService;

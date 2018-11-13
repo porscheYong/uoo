@@ -1,7 +1,7 @@
 package cn.ffcs.uoo.web.maindata.organization.controller;
 
 
-import cn.ffcs.uoo.web.maindata.busipublic.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.dto.SolrReqVo;
 import cn.ffcs.uoo.web.maindata.organization.service.SolrService;
 import com.baomidou.mybatisplus.mapper.Condition;

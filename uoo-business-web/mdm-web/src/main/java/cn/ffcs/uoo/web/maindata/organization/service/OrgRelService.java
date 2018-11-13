@@ -1,10 +1,6 @@
 package cn.ffcs.uoo.web.maindata.organization.service;
 
-import cn.ffcs.uoo.web.maindata.busipublic.vo.ResponseResult;
-import cn.ffcs.uoo.web.maindata.organization.dto.Org;
-import cn.ffcs.uoo.web.maindata.organization.dto.OrgRefTypeVo;
-import cn.ffcs.uoo.web.maindata.organization.dto.OrgVo;
-import cn.ffcs.uoo.web.maindata.organization.dto.TreeNodeVo;
+import cn.ffcs.uoo.web.maindata.organization.dto.*;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgRelServiceHystrix;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgServiceHystrix;
 import com.baomidou.mybatisplus.plugins.Page;

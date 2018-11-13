@@ -63,4 +63,11 @@ public interface OrgPersonRelService extends IService<OrgPersonRel> {
      */
     public Page<PsonOrgVo> selectPerOrOrgRelPage(PsonOrgVo psonOrgVo);
 
+    /**
+     * 组织人员检索
+     * @param psonOrgVo
+     * @return
+     */
+    public Page<PsonOrgVo> selectFuzzyOrgPsnPage(PsonOrgVo psonOrgVo);
+
 }

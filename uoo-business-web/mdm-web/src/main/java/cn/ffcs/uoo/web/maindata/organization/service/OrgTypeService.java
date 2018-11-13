@@ -1,7 +1,8 @@
 package cn.ffcs.uoo.web.maindata.organization.service;
 
-import cn.ffcs.uoo.web.maindata.busipublic.vo.ResponseResult;
+
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgType;
+import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.dto.TreeNodeVo;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgTypeServiceHystrix;
 import common.config.PersonnelServiceConfiguration;

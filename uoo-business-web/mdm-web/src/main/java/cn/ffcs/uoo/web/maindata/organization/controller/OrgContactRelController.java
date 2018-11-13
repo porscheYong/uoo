@@ -1,8 +1,8 @@
 package cn.ffcs.uoo.web.maindata.organization.controller;
 
 
-import cn.ffcs.uoo.web.maindata.busipublic.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.dto.PsonOrgVo;
+import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgContactRelService;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;

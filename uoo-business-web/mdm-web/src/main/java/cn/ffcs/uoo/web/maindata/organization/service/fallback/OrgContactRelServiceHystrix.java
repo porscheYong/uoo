@@ -4,9 +4,8 @@ package cn.ffcs.uoo.web.maindata.organization.service.fallback;/**
  * @date: 2018-11-12
  */
 
-import cn.ffcs.uoo.web.maindata.busipublic.expando.dto.TbExpandocolumn;
-import cn.ffcs.uoo.web.maindata.busipublic.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.dto.PsonOrgVo;
+import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgContactRelService;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.stereotype.Component;

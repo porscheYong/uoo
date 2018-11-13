@@ -4,11 +4,7 @@ package cn.ffcs.uoo.web.maindata.organization.service.fallback;/**
  * @date: 2018-11-12
  */
 
-import cn.ffcs.uoo.web.maindata.busipublic.vo.ResponseResult;
-import cn.ffcs.uoo.web.maindata.organization.dto.Org;
-import cn.ffcs.uoo.web.maindata.organization.dto.OrgRefTypeVo;
-import cn.ffcs.uoo.web.maindata.organization.dto.OrgVo;
-import cn.ffcs.uoo.web.maindata.organization.dto.TreeNodeVo;
+import cn.ffcs.uoo.web.maindata.organization.dto.*;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgRelService;
 import com.baomidou.mybatisplus.plugins.Page;
 
