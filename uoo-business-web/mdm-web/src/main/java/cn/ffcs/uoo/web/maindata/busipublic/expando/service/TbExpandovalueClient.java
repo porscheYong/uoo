@@ -10,10 +10,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,12 +20,12 @@ public interface TbExpandovalueClient {
     ResponseResult<TbExpandovalue> addTbExpandovalue(@RequestBody TbExpandovalue tbExpandovalue);
 
     @RequestMapping(value = "/tbExpandovalue/del", method = RequestMethod.POST)
-    ResponseResult<TbExpandovalue> removeTbExpandovalue(@RequestBody Long valueId, @RequestBody Long updateUser);
+    ResponseResult<TbExpandovalue> removeTbExpandovalue(@RequestParam("valueId") Long valueId, @RequestParam("updateUser") Long updateUser);
 
     @RequestMapping(value = "/tbExpandovalue/update", method = RequestMethod.POST)
     ResponseResult<TbExpandovalue> updateTbExpandovalue(@RequestBody TbExpandovalue tbExpandovalue);
 
     @RequestMapping(value = "/tbExpandovalue/getList/{resourceId}/{tableId}/{columnId}/{recordId}", method = RequestMethod.GET)
-    List<TbExpandovalue> queryValueList(@PathVariable String resourceId, @PathVariable Long tableId,
-                                               @PathVariable Long columnId, @PathVariable String recordId);
+    List<TbExpandovalue> queryValueList(@PathVariable("resourceId") String resourceId, @PathVariable("tableId") Long tableId,
+                                               @PathVariable("columnId") Long columnId, @PathVariable("recordId") String recordId);
 }
