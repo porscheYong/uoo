@@ -1,4 +1,4 @@
-var base = 'http://192.168.119.1:11100/'; //开发地址
+var base = 'http://UOO-ORGANIZATION/'; //开发地址
 
 // 全局异步封装
 var $http = {
@@ -80,4 +80,13 @@ function getQueryString(name)
   var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
   var r = window.location.search.substr(1).match(reg);
   if(r!=null)return  unescape(r[2]); return null;
+}
+
+// 时间戳格式化
+function getDate (value) {
+  var dataObj = new Date(value)
+  var year  = dataObj.getFullYear()
+  var month = dataObj.getMonth() + 1
+  var date  = dataObj.getDate()
+  return year + '-' + month + '-' + date
 }
