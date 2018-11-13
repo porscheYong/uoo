@@ -4,7 +4,6 @@ package cn.ffcs.uoo.web.maindata.organization.dto;/**
  * @date: 2018-10-24
  */
 
-import cn.ffcs.uoo.base.common.vo.BaseVo;
 
 /**
  * <p>
@@ -14,7 +13,7 @@ import cn.ffcs.uoo.base.common.vo.BaseVo;
  * @author ffcs-gzb
  * @since 2018/10/24
  */
-public class PsonOrgVo extends BaseVo {
+public class PsonOrgVo {
 
     /**
      * 主键id
