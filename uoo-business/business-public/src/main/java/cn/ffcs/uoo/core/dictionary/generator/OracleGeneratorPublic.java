@@ -43,7 +43,7 @@ public class OracleGeneratorPublic {
      */
     private static String packageName="expando";
 
-    private static String localhostUrl="C:\\dev_code\\uoo\\uoo-core\\uoo-public";
+    private static String localhostUrl="D:\\dev_code\\uoo\\uoo-core\\uoo-public";
 
     private static String preffix_packageName="cn.ffcs.uoo.core";
     /**作者

@@ -224,41 +224,21 @@ public class OrgPersonRelController {
     }
 
 
-//    @ApiOperation(value = "查询组织人员关系列表", notes = "查询组织人员关系列表")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "orgPsndocRef", value = "组织人员", required = true, dataType = "OrgPsndocRef"),
-//    })
-//    @UooLog(value = "查询组织人员", key = "getOrgPsnPage")
-//    @RequestMapping(value = "/getOrgPsnPage", method = RequestMethod.GET)
-//    @Transactional(rollbackFor = Exception.class)
-//    public ResponseResult<Page<OrgPersonRel>> getOrgPsnPage(OrgPersonRel orgPsndocRef){
-//        ResponseResult<Page<OrgPersonRel>> ret = new ResponseResult<Page<OrgPersonRel>>();
-//        if(StrUtil.isNullOrEmpty(orgPsndocRef.getOrgId())){
-//            ret.setState(ResponseResult.PARAMETER_ERROR);
-//            ret.setMessage("组织标识不能为空");
-//            return ret;
-//        }
-//        if(!StrUtil.isNullOrEmpty(orgPsndocRef.getRefType())){
-//            ret.setState(ResponseResult.PARAMETER_ERROR);
-//            ret.setMessage("组织关系类型不能为空");
-//            return ret;
-//        }
-//
-//        Org org = new Org();
-//        org.setOrgId(orgPsndocRef.getOrgId());
-//        org.setRefCode(orgPsndocRef.getRefType());
-//        //查询组织信息
-//        List<Org> orgList = orgService.getOrgList(org);
-//        if(orgList == null || orgList.size() <0){
-//            ret.setState(ResponseResult.PARAMETER_ERROR);
-//            ret.setMessage("组织不存在");
-//            return ret;
-//        }
-//        //调用接口给 wudj 接口提供组织id 和 组织全程
-//        // TODO: 2018/10/22
-//
-//        return ret;
-//    }
+    @ApiOperation(value = "查询组织人员信息", notes = "查询组织人员信息")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "查询组织人员信息", key = "getOrgPsn")
+    @RequestMapping(value = "/getOrgPsn", method = RequestMethod.GET)
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<List<PsonOrgVo>> getFuzzyOrgPsnPage(PsonOrgVo psonOrgVo){
+        ResponseResult<List<PsonOrgVo>> ret = new ResponseResult<List<PsonOrgVo>>();
+        Page<PsonOrgVo> page = orgPersonRelService.selectFuzzyOrgPsnPage(psonOrgVo);
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setMessage("成功");
+        return ret;
+    }
+
+
 
 
 
@@ -267,6 +247,7 @@ public class OrgPersonRelController {
     })
     @UooLog(value = "查询人员组织信息列表",key = "getPerOrgRelList")
     @RequestMapping(value = "/getPerOrgRelList",method = RequestMethod.GET)
+    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(PsonOrgVo psonOrgVo){
         ResponseResult<List<PsonOrgVo>> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(psonOrgVo.getPersonId())){
@@ -292,6 +273,7 @@ public class OrgPersonRelController {
     })
     @UooLog(value = "查询人员组织信息翻页",key = "getPerOrgRelPage")
     @RequestMapping(value = "/getPerOrgRelPage",method = RequestMethod.GET)
+    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(PsonOrgVo psonOrgVo){
         ResponseResult<Page<PsonOrgVo>> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(psonOrgVo.getOrgId())){
@@ -317,6 +299,7 @@ public class OrgPersonRelController {
     })
     @UooLog(value = "查询人员",key = "getPerOrOrgRelPage")
     @RequestMapping(value = "/getPerOrOrgRelPage",method = RequestMethod.GET)
+    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<Page<PsonOrgVo>> getPerOrOrgRelPage(PsonOrgVo psonOrgVo){
         ResponseResult<Page<PsonOrgVo>> ret = new ResponseResult<>();
         Page<PsonOrgVo> page = orgPersonRelService.selectPerOrgRelPage(psonOrgVo);

@@ -17,6 +17,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
@@ -58,7 +59,7 @@ public class OrgTreeController {
 //    })
     @UooLog(value = "新增组织树信息",key = "addOrgTree")
     @RequestMapping(value = "/addOrgTree",method = RequestMethod.POST)
-    @ResponseBody
+    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<String> addOrgTree(OrgTree orgTree){
         ResponseResult<String> ret = new ResponseResult<>();
         String msg = orgTreeService.judgeOrgTreeParams(orgTree);
@@ -126,7 +127,7 @@ public class OrgTreeController {
     })
     @UooLog(value = "修改组织树组织树信息",key = "updateOrgTree")
     @RequestMapping(value = "/updateOrgTree",method = RequestMethod.POST)
-    @ResponseBody
+    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<String> updateOrgTree(OrgTree orgTree){
         ResponseResult<String> ret = new ResponseResult<>();
         String msg = orgTreeService.judgeOrgTreeParams(orgTree);
@@ -272,8 +273,9 @@ public class OrgTreeController {
     })
     @UooLog(value = "查询组织树列表",key = "getOrgTreeList")
     @RequestMapping(value = "/getOrgTreeList",method = RequestMethod.GET)
-    public List<OrgTree> getOrgTreeList(OrgTree orgTree){
-
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<List<OrgTree>>  getOrgTreeList(OrgTree orgTree){
+        ResponseResult<List<OrgTree>> ret = new ResponseResult<List<OrgTree>>();
         Wrapper orgTreeWrapper = Condition.create().eq("STATUS_CD","1000").orderBy("SORT");
         if(orgTree != null){
             if(!StrUtil.isNullOrEmpty(orgTree.getOrgId())){
@@ -281,7 +283,9 @@ public class OrgTreeController {
             }
         }
         List<OrgTree> orgTreeList = orgTreeService.selectList(orgTreeWrapper);
-        return orgTreeList;
+        ret.setData(orgTreeList);
+        ret.setState(ResponseResult.STATE_OK);
+        return ret;
     }
 }
 

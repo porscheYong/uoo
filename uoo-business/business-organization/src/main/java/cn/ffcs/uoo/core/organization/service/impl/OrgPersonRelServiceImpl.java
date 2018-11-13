@@ -135,4 +135,18 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
         page.setRecords(list);
         return page;
     }
+
+    /**
+     * 查询组织人员检索
+     * @param psonOrgVo
+     * @return
+     */
+    @Override
+    public Page<PsonOrgVo> selectFuzzyOrgPsnPage(PsonOrgVo psonOrgVo){
+        Page<PsonOrgVo> page = new Page<PsonOrgVo>(psonOrgVo.getPageNo()==0?1:psonOrgVo.getPageNo()
+                ,psonOrgVo.getPageSize()==0?10:psonOrgVo.getPageSize());
+        List<PsonOrgVo> list = baseMapper.selectFuzzyOrgPsnPage(page,psonOrgVo);
+        page.setRecords(list);
+        return page;
+    }
 }

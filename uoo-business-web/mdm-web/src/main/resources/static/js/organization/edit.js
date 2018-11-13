@@ -224,16 +224,21 @@ function getOrg (orgId) {
         orgId: orgId
     }, function (data) {
         $('#orgName').val(data.orgName).focus();
+        laydate.render({
+          elem: '#createDate',
+          value: new Date(data.createDate)
+        });
+        // $('#createDate').val(getDate(data.createDate));
         var cityVillage = [{"itemId":1000,"dictionaryId":1000,"parItemId":null,"itemValue":"1","itemCnname":"城市","sort":0,"statusCd":"1000","createDate":1542006293000,"createUser":0,"updateDate":1542006293000,"updateUser":0,"statusDate":1542006293000},
                    {"itemId":1001,"dictionaryId":1000,"parItemId":null,"itemValue":"2","itemCnname":"农村","sort":0,"statusCd":"1000","createDate":1542006293000,"createUser":0,"updateDate":1542006293000,"updateUser":0,"statusDate":1542006293000}];
         var option;
-        var cityTown = 1000;
+        var cityTown = '1';
         for (var i = 0; i < cityVillage.length; i++) {
-          var select = cityTown === cityVillage[i].itemId? 'selected' : '';
+          var select = cityTown === cityVillage[i].itemValue? 'selected' : '';
           option = "<option value='" + cityVillage[i].itemValue + "' " + select + ">" + cityVillage[i].itemCnname +"</option>";
-          $('#cityVillage').append(option);
+          $('#cityTown').append(option);
         }
-        $('#cityVillage').selectMatch();
+        $('#cityTown').selectMatch();
         parent.postMessage(data.orgTypeList, '*');
     }, function (err) {
         console.log(err)
@@ -275,3 +280,27 @@ function getCityVillage (orgId) {
     })
 }
 getCityVillage()
+
+// 更新组织信息
+function updateOrg () {
+  var orgId = orgId;
+  var orgName = $('#orgName').val();
+  var shortName = $('#shortName').val();
+  var orgNameEn = $('#orgNameEn').val();
+  var cityTown = $("#cityTown").val();
+  var date = $('#createDate').val();
+  var time;
+  if (date) {
+    time = new Date(createDate).getTime();
+  }
+  var createDate = time
+  var locId = $('#locId').val();
+  var orgPositionLevel = $('#orgPositionLevel').val();
+  var officePhone = $('#officePhone').val();
+  var address = $('#address').val();
+}
+
+// $('#saveBtn').on('click', function () {
+//   var time = new Date($('#createDate').val()).getTime();
+//   console.log(time)
+// })

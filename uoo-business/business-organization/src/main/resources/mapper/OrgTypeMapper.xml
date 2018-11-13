@@ -63,8 +63,35 @@
         where T.STATUS_CD = 1000
         <if test="supOrgTypeId != null || supOrgTypeId != ''">
             AND T.SUP_PK_ORG_TYPE = #{supOrgTypeId}
-        </if>
+    </if>
         ORDER BY T.ORG_TYPE_ID ASC
+    </select>
+
+    <select id="selectFullOrgTypeTreeByOrgId" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+        SELECT * FROM (
+        WITH ORG_TYPE_NODE AS(
+        SELECT * FROM (
+        SELECT * FROM TB_ORG_TYPE A WHERE A.STATUS_CD='1000') AA
+        START WITH ORG_TYPE_ID IN (SELECT ORG_TYPE_ID FROM (SELECT * FROM TB_ORG_TYPE A WHERE A.SUP_PK_ORG_TYPE=#{orgTypeId} AND A.STATUS_CD='1000'))
+        CONNECT BY PRIOR AA.ORG_TYPE_ID = AA.SUP_PK_ORG_TYPE
+        ),
+        SEARCH_ORG_TYPE AS(
+            SELECT * FROM TB_ORG_ORGTYPE_REL A WHERE A.STATUS_CD='1000' AND A.ORG_ID=#{orgId}
+        ),
+        SEARCH_NODE AS(
+        SELECT DISTINCT AA.ORG_TYPE_ID
+        FROM (SELECT * FROM TB_ORG_TYPE A WHERE A.STATUS_CD = '1000') AA
+        START WITH ORG_TYPE_ID IN (SELECT ORG_TYPE_ID FROM SEARCH_ORG_TYPE)
+        CONNECT BY AA.ORG_TYPE_ID = PRIOR AA.SUP_PK_ORG_TYPE
+        )
+        SELECT ORG_TYPE_NODE.ORG_TYPE_ID id,
+               ORG_TYPE_NODE.ORG_TYPE_NAME name,
+               ORG_TYPE_NODE.SUP_PK_ORG_TYPE pid,
+               DECODE(SEARCH_NODE.ORG_TYPE_ID, NULL,'false','true') open
+          FROM ORG_TYPE_NODE
+          LEFT JOIN SEARCH_NODE ON ORG_TYPE_NODE.ORG_TYPE_ID =
+                                   SEARCH_NODE.ORG_TYPE_ID
+        )
     </select>
 
 </mapper>

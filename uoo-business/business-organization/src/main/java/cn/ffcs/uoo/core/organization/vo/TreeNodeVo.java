@@ -16,7 +16,7 @@ public class TreeNodeVo {
     private String iconClose;
     private String iconOpen;
     private String name;
-    private boolean open;
+    private String open;
     private boolean isParent;
     private String level;
 
@@ -84,11 +84,11 @@ public class TreeNodeVo {
         this.name = name;
     }
 
-    public boolean isOpen() {
+    public String getOpen() {
         return open;
     }
 
-    public void setOpen(boolean open) {
+    public void setOpen(String open) {
         this.open = open;
     }
 
