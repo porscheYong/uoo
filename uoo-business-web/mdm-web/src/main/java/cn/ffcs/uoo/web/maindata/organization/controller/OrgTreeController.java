@@ -12,10 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -41,7 +38,7 @@ public class OrgTreeController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/addOrgTree", method = RequestMethod.POST)
-    public ResponseResult<String> addOrgTree(OrgTree orgTree){
+    public ResponseResult<String> addOrgTree(@RequestBody OrgTree orgTree){
         return orgTreeService.addOrgTree(orgTree);
     }
 
@@ -50,7 +47,7 @@ public class OrgTreeController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/updateOrgTree", method = RequestMethod.POST)
-    public ResponseResult<String> updateOrgTree(OrgTree orgTree){
+    public ResponseResult<String> updateOrgTree(@RequestBody OrgTree orgTree){
         return orgTreeService.updateOrgTree(orgTree);
     }
 
@@ -60,7 +57,7 @@ public class OrgTreeController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getOrgTreeList", method = RequestMethod.POST)
-    public ResponseResult<List<OrgTree>> getOrgTreeList(OrgTree orgTree){
+    public ResponseResult<List<OrgTree>> getOrgTreeList(@RequestBody OrgTree orgTree){
         return orgTreeService.getOrgTreeList(orgTree);
     }
 

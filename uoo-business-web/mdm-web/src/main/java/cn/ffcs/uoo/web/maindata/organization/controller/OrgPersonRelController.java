@@ -10,9 +10,10 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.solr.common.SolrInputDocument;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +41,7 @@ public class OrgPersonRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/addOrgPsn", method = RequestMethod.POST)
-    public ResponseResult addOrgPsn(PsonOrgVo psonOrgVo){
+    public ResponseResult addOrgPsn(@RequestBody PsonOrgVo psonOrgVo){
         return orgPersonRelService.addOrgPsn(psonOrgVo);
     }
 
@@ -48,7 +49,7 @@ public class OrgPersonRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/updateOrgPsn", method = RequestMethod.POST)
-    public ResponseResult<String> updateOrgPsn(PsonOrgVo psonOrgVo){
+    public ResponseResult<String> updateOrgPsn(@RequestBody PsonOrgVo psonOrgVo){
         return orgPersonRelService.updateOrgPsn(psonOrgVo);
     }
 
@@ -56,7 +57,7 @@ public class OrgPersonRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/deleteOrgPsn", method = RequestMethod.POST)
-    public ResponseResult<String> deleteOrgPsn(PsonOrgVo psonOrgVo){
+    public ResponseResult<String> deleteOrgPsn(@RequestBody PsonOrgVo psonOrgVo){
         return orgPersonRelService.deleteOrgPsn(psonOrgVo);
     }
 
@@ -64,7 +65,7 @@ public class OrgPersonRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getPerOrgRelList", method = RequestMethod.GET)
-    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(PsonOrgVo psonOrgVo){
+    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(@RequestBody PsonOrgVo psonOrgVo){
         return orgPersonRelService.getPerOrgRelList(psonOrgVo);
     }
 
@@ -72,7 +73,7 @@ public class OrgPersonRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getPerOrgRelPage", method = RequestMethod.GET)
-    public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(PsonOrgVo psonOrgVo){
+    public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(@RequestBody PsonOrgVo psonOrgVo){
         return orgPersonRelService.getPerOrgRelPage(psonOrgVo);
     }
 
