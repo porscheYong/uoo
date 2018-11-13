@@ -22,5 +22,8 @@
     <sql id="Base_Column_List">
         COMP_ID, COMP_NAME, COMP_TYPE, COMP_DESC, URL_ADDR, MENU_ID, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
     </sql>
+    <select id="getId" resultType="java.lang.Long">
+        SELECT SEQ_TB_FUNC_COMP_ID.nextval FROM dual
+    </select>
 
 </mapper>

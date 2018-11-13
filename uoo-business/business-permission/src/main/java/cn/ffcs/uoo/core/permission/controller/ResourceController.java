@@ -18,8 +18,8 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/resource")
 public class ResourceController {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    /*@Autowired
+    private RestTemplate restTemplate;*/
 //
 //    @RequestMapping(value = "/test", method = RequestMethod.GET)
 //    @Transactional(rollbackFor = Exception.class)

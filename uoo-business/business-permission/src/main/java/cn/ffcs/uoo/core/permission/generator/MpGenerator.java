@@ -38,7 +38,7 @@ public class MpGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir("D://");
+        gc.setOutputDir("D://mpgen");
         gc.setFileOverride(true);
         gc.setActiveRecord(true);// 不需要ActiveRecord特性的请改为false
         gc.setEnableCache(false);// XML 二级缓存
@@ -77,7 +77,7 @@ public class MpGenerator {
     // strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
         strategy.setTablePrefix(new String[] { "TB_", "tsys_" });// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude(new String[] { "TB_PRIV_GRANT","TB_DATA_PRIV_RULE","TB_PRIVILEGE","TB_PRIV_DATA_REL" }); // 需要生成的表
+        strategy.setInclude(new String[] { "TB_USER_ROLE","TB_ROLES","TB_POST_ROLE"  }); // 需要生成的表
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类
         // strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");
@@ -131,7 +131,7 @@ public class MpGenerator {
          focList.add(new FileOutConfig("/templates/mapper.xml.vm") {
             @Override
             public String outputFile(TableInfo tableInfo) {
-                return "/develop/code/xml/" + tableInfo.getEntityName() + "Mapper.xml";
+                return "D://mpgen/xml/" + tableInfo.getEntityName() + "Mapper.xml";
             }
         });
         cfg.setFileOutConfigList(focList);

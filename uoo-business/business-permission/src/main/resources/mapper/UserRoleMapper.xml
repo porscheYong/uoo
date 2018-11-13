@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.permission.dao.UserRoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.permission.entity.UserRole">
+        <id column="USER_ROLE_ID" property="userRoleId" />
+        <result column="ACCT_TYPE" property="acctType" />
+        <result column="ACCT_ID" property="acctId" />
+        <result column="ROLE_ID" property="roleId" />
+        <result column="EFF_DATE" property="effDate" />
+        <result column="EXP_DATE" property="expDate" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="STATUS_DATE" property="statusDate" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        USER_ROLE_ID, ACCT_TYPE, ACCT_ID, ROLE_ID, EFF_DATE, EXP_DATE, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
+    </sql>
+    <select id="getId" resultType="Long">
+        SELECT SEQ_TB_USER_ROLE_ID.NEXTVAL FROM dual
+    </select>
+    
+    <select id="selectUserPersonnelList" resultType="UserPersonnelVo">
+      SELECT ROWNUM NUM,
+           P.PSN_CODE,
+           P.PSN_NAME,
+           G.ORG_NAME,
+           T.CONTENT,
+           C.CERT_NO,
+           A.ACCT,
+           S.SLAVE_ACCT,
+           U.STATUS_CD
+      FROM TB_USER_ROLE R, TB_USER U
+      LEFT JOIN TB_ACCT A ON A.STATUS_CD = '1000' AND A.USER_ID = U.USER_ID
+      LEFT JOIN TB_SLVACCT_ACCT_REF F ON F.STATUS_CD = '1000' AND F.ACCT_ID = A.ACCT_ID
+      LEFT JOIN TB_SLAVE_ACCT S ON S.STATUS_CD = '1000' AND S.SLAVE_ACCT_ID = R.SLAVE_ACCT_ID,
+      TB_PERSONNEL P
+      LEFT JOIN TB_ORG_PSNDOC_REF F ON F.STATUS_CD = '1000' AND P.PERSONNEL_ID = F.PERSONNEL_ID
+      LEFT JOIN TB_ORG G ON G.STATUS_CD = '1000' AND F.ORG_ID = G.ORG_ID
+      LEFT JOIN TB_CERT C ON C.STATUS_CD = '1000' AND C.PERSONNEL_ID = P.PERSONNEL_ID
+      LEFT JOIN TB_CONTACT T ON T.STATUS_CD = '1000' AND T.PERSONNEL_ID = P.PERSONNEL_ID
+     WHERE R.USER_ID = U.USER_ID
+       AND U.PERSONNEL_ID = P.PERSONNEL_ID
+       AND R.STATUS_CD = '1000'
+       AND U.STATUS_CD = '1000'
+       AND P.STATUS_CD = '1000'
+       AND R.ROLE_ID = #{roleId}
+    </select>
+</mapper>

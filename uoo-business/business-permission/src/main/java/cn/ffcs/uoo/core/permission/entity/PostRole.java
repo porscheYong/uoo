@@ -1,57 +1,37 @@
 package cn.ffcs.uoo.core.permission.entity;
 
-import java.io.Serializable;
 import java.util.Date;
-
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
+import java.io.Serializable;
 
 /**
  * <p>
- * 定义权限关联的功能菜单、功能组件，一个权限可包含多个功能菜单或功能组件。
+ * 记录系统职位授予的角色关系，一个系统职位可以包含多个角色，一个角色可以分配给多个系统职位。
  * </p>
  *
- * @author ffcs-gzb
- * @since 2018-10-30
+ * @author zengxsh
+ * @since 2018-11-13
  */
-@TableName("TB_PRIV_FUNC_REL")
-public class PrivFuncRel extends Model<PrivFuncRel> {
+@TableName("TB_POST_ROLE")
+public class PostRole extends Model<PostRole> {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 权限功能关联标识,主键
+     * 系统岗位角色标识
      */
-    @TableId(value = "PRIV_FUNC_ID", type = IdType.AUTO)
-    private Long privFuncId;
+    @TableId("POST_ROLE_ID")
+    private Long postRoleId;
     /**
-     * 权限标识，外键
+     * 角色标识
      */
-    @TableField("PRIV_ID")
-    private Long privId;
-    /**
-     * 菜单标识，主键
-     */
-    @TableField("MENU_ID")
-    private Long menuId;
-    /**
-     * 模块组件标识，主键
-     */
-    @TableField("COMP_ID")
-    private Long compId;
-    /**
-     * 权限对象类型，LOVB=STF-C-0021；
-     */
-    @TableField("PRIV_REF_TYPE")
-    private String privRefType;
-    /**
-     * 根据权限对象类型，如果为"业务对象",则填写业务对象ID;
-     */
-    @TableField("PRIV_REF_ID")
-    private String privRefId;
+    @TableField("ROLE_ID")
+    private Long roleId;
+    @TableField("POST_ID")
+    private Long postId;
     /**
      * 生效时间
      */
@@ -62,11 +42,6 @@ public class PrivFuncRel extends Model<PrivFuncRel> {
      */
     @TableField("EXP_DATE")
     private Date expDate;
-    /**
-     * 权限的归属系统
-     */
-    @TableField("SYSTEM_INFO_ID")
-    private Long systemInfoId;
     /**
      * 状态
      */
@@ -99,52 +74,28 @@ public class PrivFuncRel extends Model<PrivFuncRel> {
     private Long updateUser;
 
 
-    public Long getPrivFuncId() {
-        return privFuncId;
+    public Long getPostRoleId() {
+        return postRoleId;
     }
 
-    public void setPrivFuncId(Long privFuncId) {
-        this.privFuncId = privFuncId;
+    public void setPostRoleId(Long postRoleId) {
+        this.postRoleId = postRoleId;
     }
 
-    public Long getPrivId() {
-        return privId;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setPrivId(Long privId) {
-        this.privId = privId;
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
-    public Long getMenuId() {
-        return menuId;
+    public Long getPostId() {
+        return postId;
     }
 
-    public void setMenuId(Long menuId) {
-        this.menuId = menuId;
-    }
-
-    public Long getCompId() {
-        return compId;
-    }
-
-    public void setCompId(Long compId) {
-        this.compId = compId;
-    }
-
-    public String getPrivRefType() {
-        return privRefType;
-    }
-
-    public void setPrivRefType(String privRefType) {
-        this.privRefType = privRefType;
-    }
-
-    public String getPrivRefId() {
-        return privRefId;
-    }
-
-    public void setPrivRefId(String privRefId) {
-        this.privRefId = privRefId;
+    public void setPostId(Long postId) {
+        this.postId = postId;
     }
 
     public Date getEffDate() {
@@ -161,14 +112,6 @@ public class PrivFuncRel extends Model<PrivFuncRel> {
 
     public void setExpDate(Date expDate) {
         this.expDate = expDate;
-    }
-
-    public Long getSystemInfoId() {
-        return systemInfoId;
-    }
-
-    public void setSystemInfoId(Long systemInfoId) {
-        this.systemInfoId = systemInfoId;
     }
 
     public String getStatusCd() {
@@ -221,21 +164,17 @@ public class PrivFuncRel extends Model<PrivFuncRel> {
 
     @Override
     protected Serializable pkVal() {
-        return this.privFuncId;
+        return this.postRoleId;
     }
 
     @Override
     public String toString() {
-        return "PrivFuncRel{" +
-        ", privFuncId=" + privFuncId +
-        ", privId=" + privId +
-        ", menuId=" + menuId +
-        ", compId=" + compId +
-        ", privRefType=" + privRefType +
-        ", privRefId=" + privRefId +
+        return "PostRole{" +
+        ", postRoleId=" + postRoleId +
+        ", roleId=" + roleId +
+        ", postId=" + postId +
         ", effDate=" + effDate +
         ", expDate=" + expDate +
-        ", systemInfoId=" + systemInfoId +
         ", statusCd=" + statusCd +
         ", statusDate=" + statusDate +
         ", createDate=" + createDate +

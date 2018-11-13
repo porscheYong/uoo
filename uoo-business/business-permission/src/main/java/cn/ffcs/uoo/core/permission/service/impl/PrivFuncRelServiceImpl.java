@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.core.permission.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -18,5 +19,11 @@ import cn.ffcs.uoo.core.permission.service.PrivFuncRelService;
  */
 @Service
 public class PrivFuncRelServiceImpl extends ServiceImpl<PrivFuncRelMapper, PrivFuncRel> implements PrivFuncRelService {
+    @Autowired
+    PrivFuncRelMapper mapper;
+    @Override
+    public Long getId() {
+        return mapper.getId();
+    }
 
 }

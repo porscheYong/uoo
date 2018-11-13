@@ -13,5 +13,5 @@ import cn.ffcs.uoo.core.permission.entity.PrivFuncRel;
  * @since 2018-10-30
  */
 public interface PrivFuncRelService extends IService<PrivFuncRel> {
-
+    Long getId();
 }

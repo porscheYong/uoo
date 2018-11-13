@@ -14,4 +14,6 @@ import cn.ffcs.uoo.core.permission.entity.FuncComp;
  */
 public interface FuncCompMapper extends BaseMapper<FuncComp> {
 
+    Long getId();
+
 }

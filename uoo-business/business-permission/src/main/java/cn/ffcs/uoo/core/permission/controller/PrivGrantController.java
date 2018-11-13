@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,22 +14,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.client.RestTemplate;
 
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 
+import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.core.permission.consts.PrivGrantObjectTypeConsts;
 import cn.ffcs.uoo.core.permission.consts.StatusCD;
 import cn.ffcs.uoo.core.permission.entity.PrivGrant;
 import cn.ffcs.uoo.core.permission.entity.Privilege;
-import cn.ffcs.uoo.core.permission.entity.TbRoles;
+import cn.ffcs.uoo.core.permission.entity.Roles;
 import cn.ffcs.uoo.core.permission.service.IPrivGrantService;
 import cn.ffcs.uoo.core.permission.service.IPrivilegeService;
-import cn.ffcs.uoo.core.permission.service.TbRolesService;
+import cn.ffcs.uoo.core.permission.service.IRolesService;
 import cn.ffcs.uoo.core.permission.vo.BatchAddPositionPrivGrantVO;
 import cn.ffcs.uoo.core.permission.vo.BatchAddRolePrivGrantVO;
 import cn.ffcs.uoo.core.permission.vo.ResponseResult;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * <p>
@@ -46,17 +48,19 @@ import cn.ffcs.uoo.core.permission.vo.ResponseResult;
 @Controller
 @RequestMapping("/permission/privGrant")
 public class PrivGrantController {
-    @Autowired
-    private RestTemplate restTemplate;
-    @Value("${uoo.serviceName.position}")
-    private String positionServiceName;
+     
     @Autowired
     private IPrivGrantService grantSvc;
     @Autowired
-    private TbRolesService roleSvc;
+    private IRolesService roleSvc;
     @Autowired
     private IPrivilegeService privSvc;
     
+    @ApiOperation(value = "给角色授权", notes = "给角色授权")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "batchAddRolePrivGrantVO", value = "batchAddRolePrivGrantVO", required = true, dataType = "BatchAddRolePrivGrantVO"  ),
+    })
+    @UooLog(key="batchAddRolePrivGrant",value="给角色授权")
     @SuppressWarnings("unchecked")
     @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value="batchAddRolePrivGrant",method=RequestMethod.POST)
@@ -64,7 +68,7 @@ public class PrivGrantController {
         long roleId = batchAddRolePrivGrantVO.getRoleId();
         List<Long> privIds = batchAddRolePrivGrantVO.getPrivIds();
         //先把角色的所有权限清空，再重新保存
-        TbRoles role = roleSvc.selectById(Long.valueOf(roleId));
+        Roles role = roleSvc.selectById(Long.valueOf(roleId));
         if(role==null){
             return ResponseResult.createErrorResult("角色不存在");
         }
@@ -96,7 +100,11 @@ public class PrivGrantController {
         }
         return ResponseResult.createSuccessResult("success");
     }
-    
+    @ApiOperation(value = "给职位授权", notes = "给职位授权")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "batchAddPositionPrivGrantVO", value = "batchAddPositionPrivGrantVO", required = true, dataType = "BatchAddPositionPrivGrantVO"  ),
+    })
+    @UooLog(key="batchAddPositionPrivGrant",value="给职位授权")
     @SuppressWarnings("unchecked")
     @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value="batchAddPositionPrivGrant",method=RequestMethod.POST)
@@ -136,16 +144,29 @@ public class PrivGrantController {
         }
         return ResponseResult.createSuccessResult("success");
     }
+    @ApiOperation(value = "获取角色的授权", notes = "获取角色的授权")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "roleId", value = "roleId", required = true, dataType = "Long" ,paramType="path"),
+        //@ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
+    })
+    @UooLog(key="listAllPrivGrantByRole",value="获取角色的授权")
     @GetMapping("listAllPrivGrantByRole/{roleId}")
-    public ResponseResult listAllPrivGrantByRole(@PathVariable long roleId){
+    public ResponseResult listAllPrivGrantByRole(@PathVariable(value="roleId",required=true) long roleId){
         HashMap<String, Object> params = new HashMap<>();
         params.put("GRANT_OBJ_TYPE", PrivGrantObjectTypeConsts.GRANT_OBJECT_TYPE_ROLE);
         params.put("GRANT_OBJ_ID", roleId);
         List<Map> list = grantSvc.selectPrivGrantByGranObj(params);
         return ResponseResult.createSuccessResult(list, "");
     }
+    
+    @ApiOperation(value = "获取职位的授权", notes = "获取职位的授权")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "roleId", value = "posId", required = true, dataType = "Long" ,paramType="path"),
+        //@ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
+    })
+    @UooLog(key="listAllPrivGrantByPosition",value="获取角色的授权")
     @GetMapping("listAllPrivGrantByPosition/{posId}")
-    public ResponseResult listAllPrivGrantByPosition(@PathVariable long posId){
+    public ResponseResult listAllPrivGrantByPosition(@PathVariable(value="posId",required=true) long posId){
         HashMap<String, Object> params = new HashMap<>();
         params.put("GRANT_OBJ_TYPE", PrivGrantObjectTypeConsts.GRANT_OBJECT_TYPE_POSITION);
         params.put("GRANT_OBJ_ID", posId);

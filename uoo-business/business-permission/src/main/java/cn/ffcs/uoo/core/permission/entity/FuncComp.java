@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
 
 /**
  * <p>
@@ -25,8 +24,8 @@ public class FuncComp extends Model<FuncComp> {
     /**
      * 模块组件标识，主键
      */
-    @TableId(value = "COMP_ID", type = IdType.AUTO)
-    private Integer compId;
+    @TableId(value = "COMP_ID")
+    private Long compId;
     /**
      * 模块组件名称
      */
@@ -51,7 +50,7 @@ public class FuncComp extends Model<FuncComp> {
      * 菜单标识，主键
      */
     @TableField("MENU_ID")
-    private Integer menuId;
+    private Long menuId;
     /**
      * 模块组件状态
      */
@@ -84,11 +83,11 @@ public class FuncComp extends Model<FuncComp> {
     private Long updateUser;
 
 
-    public Integer getCompId() {
+    public Long getCompId() {
         return compId;
     }
 
-    public void setCompId(Integer compId) {
+    public void setCompId(Long compId) {
         this.compId = compId;
     }
 
@@ -124,11 +123,11 @@ public class FuncComp extends Model<FuncComp> {
         this.urlAddr = urlAddr;
     }
 
-    public Integer getMenuId() {
+    public Long getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(Integer menuId) {
+    public void setMenuId(Long menuId) {
         this.menuId = menuId;
     }
 
