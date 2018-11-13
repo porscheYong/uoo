@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 import common.config.PersonnelServiceConfiguration;
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -26,17 +27,17 @@ import java.util.List;
 public interface OrgPersonRelService{
 
     @RequestMapping(value="/orgPersonRel/addOrgPsn",method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult<String> addOrgPsn(PsonOrgVo psonOrgVo);
+    public ResponseResult<String> addOrgPsn(@RequestBody PsonOrgVo psonOrgVo);
 
     @RequestMapping(value="/orgPersonRel/updateOrgPsn",method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult<String> updateOrgPsn(PsonOrgVo psonOrgVo);
+    public ResponseResult<String> updateOrgPsn(@RequestBody PsonOrgVo psonOrgVo);
 
     @RequestMapping(value="/orgPersonRel/deleteOrgPsn",method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult<String> deleteOrgPsn(PsonOrgVo psonOrgVo);
+    public ResponseResult<String> deleteOrgPsn(@RequestBody PsonOrgVo psonOrgVo);
 
     @RequestMapping(value="/orgPersonRel/getPerOrgRelList",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(PsonOrgVo psonOrgVo);
+    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(@RequestBody PsonOrgVo psonOrgVo);
 
     @RequestMapping(value="/orgPersonRel/getPerOrgRelPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(PsonOrgVo psonOrgVo);
+    public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(@RequestBody PsonOrgVo psonOrgVo);
 }

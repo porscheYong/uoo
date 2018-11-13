@@ -10,6 +10,7 @@ import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.dto.TreeNodeVo;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgService;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgTypeService;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -23,6 +24,7 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018/11/12
  */
+@Component
 public class OrgTypeServiceHystrix implements OrgTypeService {
 
     @Override

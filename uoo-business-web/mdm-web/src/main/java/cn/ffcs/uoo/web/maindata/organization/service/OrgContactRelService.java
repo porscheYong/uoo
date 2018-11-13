@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 import common.config.PersonnelServiceConfiguration;
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -30,6 +31,6 @@ public interface OrgContactRelService {
      * @param psonOrgVo
      */
     @RequestMapping(value="/orgContactRel/getOrgContactPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<Page<PsonOrgVo>> getOrgContactPage(PsonOrgVo psonOrgVo);
+    public ResponseResult<Page<PsonOrgVo>> getOrgContactPage(@RequestBody PsonOrgVo psonOrgVo);
 
 }

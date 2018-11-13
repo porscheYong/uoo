@@ -8,6 +8,7 @@ import cn.ffcs.uoo.web.maindata.organization.dto.OrgRelType;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgRelTypeService;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgService;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018/11/12
  */
+@Component
 public class OrgRelTypeServiceHystrix implements OrgRelTypeService {
 
     @Override

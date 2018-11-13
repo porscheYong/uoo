@@ -7,6 +7,8 @@ package cn.ffcs.uoo.web.maindata.organization.service.fallback;/**
 import cn.ffcs.uoo.web.maindata.organization.dto.*;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgRelService;
 import com.baomidou.mybatisplus.plugins.Page;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018/11/12
  */
+@Component
 public class OrgRelServiceHystrix implements OrgRelService {
 
     @Override

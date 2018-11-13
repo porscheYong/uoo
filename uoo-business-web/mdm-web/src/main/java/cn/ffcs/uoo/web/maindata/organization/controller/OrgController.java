@@ -10,9 +10,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -36,7 +34,7 @@ public class OrgController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
-    public ResponseResult addOrg(Org org) {
+    public ResponseResult addOrg(@RequestBody Org org) {
         return orgService.addOrg(org);
     }
 
@@ -45,7 +43,7 @@ public class OrgController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
-    public ResponseResult updateOrg(Org org) {
+    public ResponseResult updateOrg(@RequestBody Org org) {
         return orgService.updateOrg(org);
     }
 
@@ -53,8 +51,8 @@ public class OrgController {
     @ApiOperation(value = "获取组织信息", notes = "获取组织信息")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getOrg", method = RequestMethod.POST)
-    public ResponseResult getOrg(String orgId) {
+    @RequestMapping(value = "/getOrg/orgId={orgId}", method = RequestMethod.POST)
+    public ResponseResult getOrg(@PathVariable(value = "orgId") String orgId) {
         return orgService.getOrg(orgId);
     }
 
@@ -62,7 +60,7 @@ public class OrgController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getOrgRelPage", method = RequestMethod.POST)
-    public ResponseResult getOrgRelPage(OrgVo orgVo) {
+    public ResponseResult getOrgRelPage(@RequestBody OrgVo orgVo) {
         return orgService.getOrgRelPage(orgVo);
     }
 
@@ -71,7 +69,7 @@ public class OrgController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getOrgPage", method = RequestMethod.POST)
-    public ResponseResult getOrgPage(OrgVo orgVo) {
+    public ResponseResult getOrgPage(@RequestBody OrgVo orgVo) {
         return orgService.getOrgPage(orgVo);
     }
 }

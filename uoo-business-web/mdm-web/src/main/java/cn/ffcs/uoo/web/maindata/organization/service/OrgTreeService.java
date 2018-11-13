@@ -3,19 +3,15 @@ package cn.ffcs.uoo.web.maindata.organization.service;
 
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgTree;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
-import cn.ffcs.uoo.web.maindata.organization.dto.SolrReqVo;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgTreeServiceHystrix;
-import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgTypeServiceHystrix;
-import cn.ffcs.uoo.web.maindata.organization.service.fallback.SolrServiceHystrix;
 import common.config.PersonnelServiceConfiguration;
-import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrInputDocument;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -29,14 +25,14 @@ import java.util.Map;
 public interface OrgTreeService {
 
     @RequestMapping(value="/orgTree/addOrgTree",method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult<String> addOrgTree(OrgTree orgTree);
+    public ResponseResult<String> addOrgTree(@RequestBody OrgTree orgTree);
 
 
     @RequestMapping(value="/orgTree/updateOrgTree",method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult<String> updateOrgTree(OrgTree orgTree);
+    public ResponseResult<String> updateOrgTree(@RequestBody OrgTree orgTree);
 
     @RequestMapping(value="/orgTree/getOrgTreeList",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<List<OrgTree>> getOrgTreeList(OrgTree orgTree);
+    public ResponseResult<List<OrgTree>> getOrgTreeList(@RequestBody OrgTree orgTree);
 
 
 }
