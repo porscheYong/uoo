@@ -272,8 +272,8 @@ public class OrgTreeController {
     })
     @UooLog(value = "查询组织树列表",key = "getOrgTreeList")
     @RequestMapping(value = "/getOrgTreeList",method = RequestMethod.GET)
-    public List<OrgTree> getOrgTreeList(OrgTree orgTree){
-
+    public ResponseResult<List<OrgTree>>  getOrgTreeList(OrgTree orgTree){
+        ResponseResult<List<OrgTree>> ret = new ResponseResult<List<OrgTree>>();
         Wrapper orgTreeWrapper = Condition.create().eq("STATUS_CD","1000").orderBy("SORT");
         if(orgTree != null){
             if(!StrUtil.isNullOrEmpty(orgTree.getOrgId())){
@@ -281,7 +281,9 @@ public class OrgTreeController {
             }
         }
         List<OrgTree> orgTreeList = orgTreeService.selectList(orgTreeWrapper);
-        return orgTreeList;
+        ret.setData(orgTreeList);
+        ret.setState(ResponseResult.STATE_OK);
+        return ret;
     }
 }
 

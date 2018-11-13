@@ -1,7 +1,8 @@
 ### DEV ###
 ---
 server:
-  port: 30024
+  port: 11100
+  #port: 30024
 spring:
   application:
     name: uoo-organization
@@ -17,15 +18,15 @@ spring:
       percentage: 1.0
   data:
     solr:
-      #host: http://localhost:8888/uooSolr
-      host: http://134.96.253.221:8762/uooSolr
+      host: http://localhost:8888/uooSolr
+      #host: http://134.96.253.221:8762/uooSolr
       repositories:
         enabled: true
 eureka:
   client:
     service-url:
-       defaultZone: http://134.96.253.221:8762/eureka
-   #   defaultZone: http://localhost:8762/eureka
+      defaultZone: http://134.96.253.221:8762/eureka
+      #defaultZone: http://localhost:8762/eureka
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   global-config:

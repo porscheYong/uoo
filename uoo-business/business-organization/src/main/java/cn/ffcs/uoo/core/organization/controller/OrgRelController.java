@@ -128,6 +128,53 @@ public class OrgRelController {
     }
 
 
+    @ApiOperation(value = "组织树以及层级获取-web", notes = "组织树以及层级获取")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "组织树以及层级获取", key = "getTarOrgRelTreeAndLv")
+    @RequestMapping(value = "/getTarOrgRelTreeAndLv", method = RequestMethod.GET)
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<List<TreeNodeVo>> getTarOrgRelTreeAndLv(String orgRootId,String lv,String curOrgid,boolean isFull) throws IOException {
+        ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
+        if(StrUtil.isNullOrEmpty(orgRootId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树标识不能为空");
+            return ret;
+        }
+        if(StrUtil.isNullOrEmpty(orgRootId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("层级不能为空");
+            return ret;
+        }
+        if(StrUtil.isNullOrEmpty(isFull)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("是否全量不能为空");
+            return ret;
+        }
+        if(!isFull){
+            if(StrUtil.isNullOrEmpty(curOrgid)){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("当前节点不能为空");
+                return ret;
+            }
+        }
+        Wrapper orgTreeConfWrapper = Condition.create().eq("ORG_ID",orgRootId).eq("STATUS_CD","1000");
+        OrgTree orgTree  = orgTreeService.selectOne(orgTreeConfWrapper);
+        if(orgTree == null){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树不存在");
+            return ret;
+        }
+        List<TreeNodeVo> treeNodeVos = new ArrayList<>();
+        treeNodeVos = orgRelService.selectTarOrgRelTreeAndLv(orgTree.getOrgId(),lv,curOrgid,isFull);
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setMessage("组织树查询成功");
+        ret.setData(treeNodeVos);
+        return ret;
+    }
+
+
+
 
     @ApiOperation(value = "新增组织关系-web", notes = "新增组织关系")
     @ApiImplicitParams({
