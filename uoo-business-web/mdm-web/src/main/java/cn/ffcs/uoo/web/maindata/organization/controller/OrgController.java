@@ -53,8 +53,8 @@ public class OrgController {
     @ApiOperation(value = "获取组织信息", notes = "获取组织信息")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getOrg/orgId={orgId}", method = RequestMethod.GET)
-    public ResponseResult getOrg(@PathVariable(value = "orgId") String orgId) {
+    @RequestMapping(value = "/getOrg", method = RequestMethod.GET)
+    public ResponseResult getOrg(@RequestParam(value = "orgId",required = false) String orgId) {
         return orgService.getOrg(orgId);
     }
 
@@ -79,8 +79,9 @@ public class OrgController {
     @ApiOperation(value = "查询组织扩展信息", notes = "查询组织扩展信息")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getOrgExtByOrgId/orgId={orgId}&orgRootId={orgRootId}", method = RequestMethod.GET)
-    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@PathVariable(value = "orgRootId")String orgRootId ,@PathVariable(value = "orgId") String orgId){
+    @RequestMapping(value = "/getOrgExtByOrgId", method = RequestMethod.GET)
+    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@RequestParam(value = "orgRootId",required = false)String orgRootId ,
+                                                                   @RequestParam(value = "orgId",required = false) String orgId){
         return orgService.getOrgExtByOrgId(orgRootId,orgId);
     }
 

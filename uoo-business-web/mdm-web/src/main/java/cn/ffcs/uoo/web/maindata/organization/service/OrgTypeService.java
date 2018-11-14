@@ -10,6 +10,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -25,12 +26,15 @@ import java.util.List;
 public interface OrgTypeService {
 
 
-    @RequestMapping(value = "/orgType/getOrgTypeList/orgTypeCode={orgTypeCode}", method = RequestMethod.GET, headers = {"Content-Type=application/json"})
-    public ResponseResult<List<OrgType>> getOrgTypeList(@PathVariable(value = "orgTypeCode")String orgTypeCode);
+    @RequestMapping(value = "/orgType/getOrgTypeList", method = RequestMethod.GET, headers = {"Content-Type=application/json"})
+    public ResponseResult<List<OrgType>> getOrgTypeList(@RequestParam(value = "orgTypeCode",required = false)String orgTypeCode);
 
-    @RequestMapping(value = "/orgType/getOrgTypeTree/id={id}&orgTypeCode={orgTypeCode}", method = RequestMethod.GET, headers = {"Content-Type=application/json"})
-    public ResponseResult<List<TreeNodeVo>> getOrgTypeTree(@PathVariable(value = "id")String id, @PathVariable(value = "orgTypeCode")String orgTypeCode);
+    @RequestMapping(value = "/orgType/getOrgTypeTree", method = RequestMethod.GET, headers = {"Content-Type=application/json"})
+    public ResponseResult<List<TreeNodeVo>> getOrgTypeTree(@RequestParam(value = "id",required = false)String id,
+                                                           @RequestParam(value = "orgTypeCode",required = false)String orgTypeCode);
 
     @RequestMapping(value = "/orgType/getFullOrgTypeTree", method = RequestMethod.GET, headers = {"Content-Type=application/json"})
-    public ResponseResult<List<TreeNodeVo>> getFullOrgTypeTree(@PathVariable(value = "id")String id,@PathVariable(value = "orgTypeCode")String orgTypeCode,@PathVariable(value = "orgId")String orgId);
+    public ResponseResult<List<TreeNodeVo>> getFullOrgTypeTree(@RequestParam(value = "id")String id,
+                                                               @RequestParam(value = "orgTypeCode")String orgTypeCode,
+                                                               @RequestParam(value = "orgId")String orgId);
 }
