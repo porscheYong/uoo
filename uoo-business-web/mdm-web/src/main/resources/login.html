@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="static/css/login.css" />
+
+<title>用户组织运营平台</title>
+</head>
+
+<body>
+
+<div class="Gradient">
+	<div class="LogoBg"></div>
+    <div class="Main">
+        <div class="FormArea">
+            <div class="FormHead">
+                浙江用户组织运营平台
+            </div>
+             <form action="templates/index.html" method="POST">  <!-- main.html -->
+                <input class="Input user" type="text" placeholder="用户名/邮箱/手机" />
+                <input class="Input psw" type="password" placeholder="请输入密码" />
+                <input class="Input code" type="text" placeholder="请输入验证码" />
+                <input class="Input BtnSubmit" type="submit" value="登录" onclick="return check()"/>
+            </form>
+           <label id='errorAcc'></label>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="static/js/core/jquery.js"></script>
+<script type="text/javascript" src="static/js/login/login.js"></script>
+<script type="text/javascript" src="static/js/login/md5.js"></script>
+
+</body>
+</html>
