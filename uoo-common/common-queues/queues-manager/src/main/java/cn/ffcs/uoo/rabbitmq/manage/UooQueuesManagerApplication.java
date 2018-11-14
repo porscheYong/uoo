@@ -15,9 +15,9 @@ import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboar
 @EnableCircuitBreaker
 @SpringBootApplication
 @MapperScan(basePackages= {"cn.ffcs.uoo.rabbitmq.manage.dao"})
-public class App {
+public class UooQueuesManagerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(App.class,args);
+        SpringApplication.run(UooQueuesManagerApplication.class,args);
     }
 }
