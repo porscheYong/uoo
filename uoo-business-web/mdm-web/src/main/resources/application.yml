@@ -6,7 +6,7 @@ spring:
   mvc: 
     static-path-pattern: /**
   resources: 
-    static-locations: classpath:/templates/,classpath:/static/
+    static-locations: classpath:/templates/,classpath:/static/,classpath:/META-INF/resources/,classpath:/META-INF/resources/webjars/
   devtools: 
     livereload: 
       enabled: true
