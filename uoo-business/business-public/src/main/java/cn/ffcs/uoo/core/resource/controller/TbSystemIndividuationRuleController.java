@@ -1,10 +1,9 @@
-package cn.ffcs.uoo.core.organization.controller;
+package cn.ffcs.uoo.core.resource.controller;
 
 
 import cn.ffcs.uoo.base.controller.BaseController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -13,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author ffcs-gzb
- * @since 2018-09-25
+ * @since 2018-11-14
  */
 @RestController
-@RequestMapping("/orgCrossRel")
-public class OrgCrossRelController extends BaseController {
+@RequestMapping("/tbSystemIndividuationRule")
+public class TbSystemIndividuationRuleController extends BaseController {
 
 }
 

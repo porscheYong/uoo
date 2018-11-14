@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.organization.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.service.*;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
@@ -44,7 +45,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/orgRel")
 @Api(value = "/org", description = "组织关系相关操作")
-public class OrgRelController {
+public class OrgRelController extends BaseController {
 
 
     @Autowired

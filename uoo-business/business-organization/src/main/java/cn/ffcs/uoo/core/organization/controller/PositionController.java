@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.organization.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.organization.entity.OrgType;
 import cn.ffcs.uoo.core.organization.entity.Position;
 import cn.ffcs.uoo.core.organization.service.PositionService;
@@ -40,7 +41,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/position")
 @Api(value = "/position", description = "组织岗位相关操作")
-public class PositionController {
+public class PositionController extends BaseController {
 
     @Autowired
     private PositionService positionService;

@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.organization.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.organization.service.OrgContactRelService;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
@@ -29,7 +30,7 @@ import java.io.IOException;
 @Controller
 @RequestMapping("/orgContactRel")
 @Api(value = "/org", description = "组织联系人相关操作")
-public class OrgContactRelController {
+public class OrgContactRelController extends BaseController {
 
     @Autowired
     private OrgContactRelService orgContactRelService;

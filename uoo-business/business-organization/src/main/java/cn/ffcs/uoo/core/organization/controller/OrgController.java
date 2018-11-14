@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.organization.controller;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
+import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.service.*;
 import cn.ffcs.uoo.core.organization.service.impl.OrgServiceImpl;
@@ -45,7 +46,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/org" , produces = {"application/json;charset=UTF-8"})
 @Api(value = "/org", description = "组织相关操作")
-public class OrgController {
+public class OrgController extends BaseController {
 
     @Autowired
     private OrgService orgService;
