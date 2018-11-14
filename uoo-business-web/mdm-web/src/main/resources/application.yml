@@ -3,6 +3,10 @@ server:
 spring:
   application:
     name: uoo-web
+  mvc: 
+    static-path-pattern: /**
+  resources: 
+    static-locations: classpath:/templates/,classpath:/static/
 
 eureka:
   client:
