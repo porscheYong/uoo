@@ -1,24 +1,43 @@
 package cn.ffcs.uoo.rabbitmq.manage.pojo;
 
-public class SystemQueueRela {
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+
+import java.io.Serializable;
+
+@TableName("SYSTEM_QUEUE_RELA")
+public class SystemQueueRela extends Model<SystemQueueRela> {
+
+    @TableId("QUEUE_NAME")
     private String queueName;
 
+    @TableField("SYSTEM_NAME")
     private String systemName;
 
+    @TableField("DOUBLE_NAME")
     private String doubleName;
 
+    @TableField("CHARGE_PERSON")
     private String chargePerson;
 
+    @TableField("CHARGE_CONTACT")
     private String chargeContact;
 
+    @TableField("STATUS")
     private String status;
 
+    @TableField("IP")
     private String ip;
 
+    @TableField("PORT")
     private String port;
 
+    @TableField("USERNAME")
     private String username;
 
+    @TableField("PASSWORD")
     private String password;
 
     public String getQueueName() {
@@ -99,5 +118,10 @@ public class SystemQueueRela {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    protected Serializable pkVal() {
+        return this.queueName;
     }
 }
