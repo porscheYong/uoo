@@ -26,4 +26,13 @@
         SELECT SEQ_TB_ORG_TREE_ID.NEXTVAL FROM DUAL
     </select>
 
+    <select id="getOrgTreeNameByOrgId" resultType="java.lang.String">
+        SELECT TO_CHAR(WM_CONCAT(B.ORG_TREE_NAME))
+        FROM TB_ORG_ORGTREE_REL A, TB_ORG_TREE B
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND A.ORG_ID = #{orgId}
+    </select>
+
 </mapper>

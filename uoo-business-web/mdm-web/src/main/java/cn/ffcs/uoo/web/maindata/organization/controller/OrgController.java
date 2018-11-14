@@ -13,6 +13,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -51,7 +53,7 @@ public class OrgController {
     @ApiOperation(value = "获取组织信息", notes = "获取组织信息")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getOrg/orgId={orgId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/getOrg/orgId={orgId}", method = RequestMethod.GET)
     public ResponseResult getOrg(@PathVariable(value = "orgId") String orgId) {
         return orgService.getOrg(orgId);
     }
@@ -59,7 +61,7 @@ public class OrgController {
     @ApiOperation(value = "获取组织关系分页", notes = "获取组织关系分页")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getOrgRelPage", method = RequestMethod.POST)
+    @RequestMapping(value = "/getOrgRelPage", method = RequestMethod.GET)
     public ResponseResult getOrgRelPage(@RequestBody OrgVo orgVo) {
         return orgService.getOrgRelPage(orgVo);
     }
@@ -68,9 +70,18 @@ public class OrgController {
     @ApiOperation(value = "获取组织分页", notes = "获取组织分页")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getOrgPage", method = RequestMethod.POST)
+    @RequestMapping(value = "/getOrgPage", method = RequestMethod.GET)
     public ResponseResult getOrgPage(@RequestBody OrgVo orgVo) {
         return orgService.getOrgPage(orgVo);
     }
-}
 
+
+    @ApiOperation(value = "查询组织扩展信息", notes = "查询组织扩展信息")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/getOrgExtByOrgId/orgId={orgId}&orgRootId={orgRootId}", method = RequestMethod.GET)
+    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@PathVariable(value = "orgRootId")String orgRootId ,@PathVariable(value = "orgId") String orgId){
+        return orgService.getOrgExtByOrgId(orgRootId,orgId);
+    }
+
+}
