@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.permission.dao.SystemOrgTreeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.permission.entity.SystemOrgTree">
+        <id column="SYSTEM_ORG_TREE_ID" property="systemOrgTreeId" />
+        <result column="BUSINESS_SYSTEM_ID" property="businessSystemId" />
+        <result column="ORG_TREE_ID" property="orgTreeId" />
+        <result column="EFF_DATE" property="effDate" />
+        <result column="EXP_DATE" property="expDate" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="STATUS_DATE" property="statusDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        SYSTEM_ORG_TREE_ID, BUSINESS_SYSTEM_ID, ORG_TREE_ID, EFF_DATE, EXP_DATE, STATUS_CD, STATUS_DATE, CREATE_USER, CREATE_DATE, UPDATE_USER, UPDATE_DATE
+    </sql>
+
+</mapper>
