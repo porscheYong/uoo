@@ -17,12 +17,12 @@ import cn.ffcs.uoo.rabbitmq.manage.vo.SystemQueueVo;
 
 @RestController
 public class MainController {
-	
+
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	
+
     @Autowired
-    private RabbitMqService rabbitMqService;    
-    
+    private RabbitMqService rabbitMqService;
+
     @PostMapping(value="queue/add")
     public Map<String, Object> add(@RequestBody SystemQueueVo vo){
     	try {
@@ -34,8 +34,8 @@ public class MainController {
     		return resultMap;
     	}
     }
-    
-    
+
+
     @PostMapping(value="queue/del")
     public Map<String, Object> del(@RequestBody SystemQueueVo vo){
     	try {
@@ -47,7 +47,7 @@ public class MainController {
     		return resultMap;
     	}
     }
-    
+
     @PostMapping(value="queue/update")
     public Map<String, Object> update(@RequestBody SystemQueueVo vo){
     	try {
