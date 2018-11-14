@@ -7,6 +7,9 @@ spring:
     static-path-pattern: /**
   resources: 
     static-locations: classpath:/templates/,classpath:/static/
+  devtools: 
+    livereload: 
+      enabled: true
 
 eureka:
   client:
