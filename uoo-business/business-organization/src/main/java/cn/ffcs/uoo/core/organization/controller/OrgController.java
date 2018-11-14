@@ -624,6 +624,11 @@ public class OrgController {
             ret.setMessage("组织标识为空");
             return ret;
         }
+        if(StrUtil.isNullOrEmpty(orgRootId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树根节点标识为空");
+            return ret;
+        }
         HashMap<String,String> listMap = new HashMap<String,String>();
         String fullName = orgService.getSysFullName(orgRootId,orgId);
         String followOrg = orgTreeService.getOrgTreeNameByOrgId(orgId);
