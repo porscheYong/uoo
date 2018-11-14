@@ -208,6 +208,20 @@ public class Org extends Model<Org> {
      */
     @TableField(exist=false)
     private List<PsonOrgVo> psonOrgVoList;
+    /**
+     * 身份证标识
+     */
+    @TableField(exist=false)
+    private List<String> certIdList;
+
+
+    public List<String> getCertIdList() {
+        return certIdList;
+    }
+
+    public void setCertIdList(List<String> certIdList) {
+        this.certIdList = certIdList;
+    }
 
     public List<PsonOrgVo> getPsonOrgVoList() {
         return psonOrgVoList;

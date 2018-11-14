@@ -6,6 +6,8 @@ import cn.ffcs.uoo.core.organization.service.OrgCertRelService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * <p>
  * 解决智慧BSS组织机构接入过程中的法人信息问题 服务实现类
@@ -16,5 +18,53 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OrgCertRelServiceImpl extends ServiceImpl<OrgCertRelMapper, OrgCertRel> implements OrgCertRelService {
+    /**
+     * 获取seq
+     * @return
+     */
+    @Override
+    public Long getId(){
+        return baseMapper.getId();
+    }
+
+    /**
+     * 失效状态
+     * @param orgCertRel
+     */
+    @Override
+    public void delete(OrgCertRel orgCertRel){
+        orgCertRel.setStatusCd("1100");
+        orgCertRel.setStatusDate(new Date());
+        orgCertRel.setUpdateDate(new Date());
+        orgCertRel.setUpdateUser(0L);
+        updateById(orgCertRel);
+    }
+
+
+
+    /**
+     * 新增
+     */
+    @Override
+    public void add(OrgCertRel orgCertRel){
+        orgCertRel.setCreateDate(new Date());
+        orgCertRel.setCreateUser(0L);
+        orgCertRel.setStatusCd("1000");
+        orgCertRel.setStatusDate(new Date());
+        insert(orgCertRel);
+    }
+
+    /**
+     * 更新
+     */
+    @Override
+    public void update(OrgCertRel orgCertRel){
+        orgCertRel.setUpdateDate(new Date());
+        orgCertRel.setUpdateUser(0L);
+        orgCertRel.setStatusDate(new Date());
+        updateById(orgCertRel);
+    }
+
+
 
 }

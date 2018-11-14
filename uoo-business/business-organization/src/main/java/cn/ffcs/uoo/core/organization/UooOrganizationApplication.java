@@ -24,7 +24,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-@EnableSwagger2
+@EnableHystrixDashboard
+@EnableCircuitBreaker
 @MapperScan(basePackages={"cn.ffcs.uoo.**.dao"})
 public class UooOrganizationApplication {
 
