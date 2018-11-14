@@ -1,8 +1,8 @@
 package cn.ffcs.uoo.core.permission.controller;
 
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author ffcs-gzb
  * @since 2018-10-30
  */
-@Controller
+@RestController
 @RequestMapping("/systemOrgTree")
 public class SystemOrgTreeController {
 

@@ -189,6 +189,7 @@ public class TbRolesController extends BaseController {
         role.setCreateDate(new Date());
         role.setRoleId(tbRolesService.getId());
         role.setStatusCd(StatusCD.VALID);
+        role.setStatusDate(new Date());
         tbRolesService.insert(role);
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增角色成功");

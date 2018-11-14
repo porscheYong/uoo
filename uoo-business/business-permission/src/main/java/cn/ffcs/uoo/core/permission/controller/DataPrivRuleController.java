@@ -4,11 +4,11 @@ package cn.ffcs.uoo.core.permission.controller;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.core.permission.consts.StatusCD;
@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiOperation;
  * @author zengxsh
  * @since 2018-11-08
  */
-@Controller
+@RestController
 @RequestMapping("/permission/dataPrivRule")
 public class DataPrivRuleController {
     @Autowired

@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.web.maindata.personnel.entity;
+package cn.ffcs.uoo.web.maindata.personnel.dto;
 
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;

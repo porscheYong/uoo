@@ -69,6 +69,7 @@ public class FuncCompController {
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         
+        @SuppressWarnings("unchecked")
         Wrapper<FuncComp> wrapper = Condition.create().eq("STATUS_CD",StatusCD.VALID).orderBy("UPDATE_DATE", false);
         Page<FuncComp> page = funcCompService.selectPage(new Page<FuncComp>(pageNo, pageSize), wrapper);
         

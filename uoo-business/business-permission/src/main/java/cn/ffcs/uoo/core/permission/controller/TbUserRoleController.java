@@ -79,6 +79,12 @@ public class TbUserRoleController extends BaseController {
         if(roleId==null){
             return ResponseResult.createErrorResult("角色不能为空");
         }
+        tbUserRole.setCreateDate(new Date());
+        tbUserRole.setStatusCd(StatusCD.VALID);
+        tbUserRole.setEffDate(new Date());
+        tbUserRole.setStatusDate(new Date());
+        tbUserRole.setUserRoleId(userRoleService.getId());
+        userRoleService.insert(tbUserRole);
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增成功");
         return responseResult;

@@ -4,11 +4,8 @@ package cn.ffcs.uoo.core.permission.controller;
 import java.util.Date;
 import java.util.List;
 
-import org.mockito.internal.debugging.WarningsPrinterImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,15 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.core.permission.consts.StatusCD;
 import cn.ffcs.uoo.core.permission.entity.FuncMenu;
 import cn.ffcs.uoo.core.permission.service.FuncMenuService;
-import cn.ffcs.uoo.core.permission.vo.MenuVO;
 import cn.ffcs.uoo.core.permission.vo.ResponseResult;
-import cn.ffcs.uoo.core.permission.vo.TreeNodeVo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -82,6 +76,7 @@ public class FuncMenuController {
     @RequestMapping(value = "/getFuncMenuPage", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult getFuncMenuPage(){
+        @SuppressWarnings("unchecked")
         Wrapper<FuncMenu> w=Condition.create().eq("STATUS_CD", StatusCD.VALID);
         List<FuncMenu> list = funcMenuService.selectList(w);
         return ResponseResult.createSuccessResult(list, "success");
@@ -108,6 +103,7 @@ public class FuncMenuController {
             }
             currentLevel=pa.getMenuLevel()+1;
         }
+        funcMenu.setMenuId(funcMenuService.getId());
         funcMenu.setMenuLevel(currentLevel);
         funcMenu.setCreateDate(new Date());
         funcMenu.setStatusCd(StatusCD.VALID);
@@ -136,8 +132,8 @@ public class FuncMenuController {
         }
         funcMenu.setMenuLevel(currentLevel);
         funcMenu.setCreateDate(new Date());
-        funcMenu.setMenuId(funcMenuService.getId());
-        funcMenuService.insert(funcMenu);
+        
+        funcMenuService.updateById(funcMenu);
         return ResponseResult.createSuccessResult("success");
     }
     
@@ -152,6 +148,7 @@ public class FuncMenuController {
          
         //有下级不能删除
         Long menuId = funcMenu.getMenuId();
+        @SuppressWarnings("unchecked")
         Wrapper<FuncMenu> w=Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PAR_MENU_ID", menuId);
         List<FuncMenu> list = funcMenuService.selectList(w);
         if(list!=null&&!list.isEmpty()){

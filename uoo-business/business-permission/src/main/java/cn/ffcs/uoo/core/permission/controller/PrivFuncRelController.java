@@ -1,6 +1,10 @@
 package cn.ffcs.uoo.core.permission.controller;
 
 
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,13 +30,6 @@ import cn.ffcs.uoo.core.permission.vo.ResponseResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-
-import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.test.context.transaction.AfterTransaction;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -113,7 +110,7 @@ public class PrivFuncRelController {
         if(priv==null || !StatusCD.VALID.equals(priv.getStatusCd())){
             return ResponseResult.createErrorResult("无效的权限标识");
         }
-        
+        privFuncRel.setPrivFuncId(privFuncRelService.getId());
         privFuncRel.setStatusCd(StatusCD.VALID);
         privFuncRel.setStatusDate(new Date());
         privFuncRel.setCreateDate(new Date());

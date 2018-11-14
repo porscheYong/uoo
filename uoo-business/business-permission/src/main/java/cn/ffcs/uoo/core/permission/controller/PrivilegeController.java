@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -20,7 +18,6 @@ import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.core.permission.consts.StatusCD;
-import cn.ffcs.uoo.core.permission.entity.FuncComp;
 import cn.ffcs.uoo.core.permission.entity.PrivDataRel;
 import cn.ffcs.uoo.core.permission.entity.Privilege;
 import cn.ffcs.uoo.core.permission.service.IPrivDataRelService;
@@ -85,6 +82,7 @@ public class PrivilegeController {
         privilege.setStatusCd(StatusCD.VALID);
         privilege.setCreateDate(new Date());
         privilege.setUpdateDate(new Date());
+        privilegeService.insert(privilege);
         return ResponseResult.createSuccessResult("success");
     }
 
@@ -116,6 +114,7 @@ public class PrivilegeController {
         // privilege.setPrivId(privilegeService.getId());
         privilege.setStatusCd(StatusCD.VALID);
         privilege.setUpdateDate(new Date());
+        privilegeService.updateById(privilege);
         return ResponseResult.createSuccessResult("success");
     }
     @ApiOperation(value = "删除权限", notes = "删除权限")
