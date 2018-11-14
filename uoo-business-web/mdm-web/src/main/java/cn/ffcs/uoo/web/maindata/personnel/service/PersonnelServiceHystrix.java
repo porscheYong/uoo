@@ -1,9 +1,11 @@
 package cn.ffcs.uoo.web.maindata.personnel.service;
 
 
-import cn.ffcs.uoo.web.maindata.personnel.entity.TbPersonnel;
-import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.stereotype.Component;
+
+import com.baomidou.mybatisplus.plugins.Page;
+
+import cn.ffcs.uoo.web.maindata.personnel.dto.TbPersonnel;
 
 /**
  *  ┏┓　　　┏┓

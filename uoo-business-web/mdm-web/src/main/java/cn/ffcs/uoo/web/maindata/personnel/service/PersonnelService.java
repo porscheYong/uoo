@@ -1,14 +1,16 @@
 package cn.ffcs.uoo.web.maindata.personnel.service;
 
 
-import cn.ffcs.uoo.web.maindata.personnel.entity.TbPersonnel;
-import com.baomidou.mybatisplus.plugins.Page;
-import common.config.PersonnelServiceConfiguration;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.baomidou.mybatisplus.plugins.Page;
+
+import cn.ffcs.uoo.web.maindata.personnel.dto.TbPersonnel;
+import common.config.PersonnelServiceConfiguration;
 
 /**
  *  ┏┓　　　┏┓
