@@ -21,5 +21,7 @@ public interface TbCommonRegionMapper extends BaseMapper<TbCommonRegion> {
     @SuppressWarnings("rawtypes")
     public List<Map> selectUnionPolLoc(Map<String,Object> params);
     public Long getId();
+    public List<Map> getTreeCommonRegion(Map<String, Object> params);
+    public List<Map> getChildCommonRegionInfo(Map<String, Object> params);
 
 }
