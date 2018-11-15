@@ -48,6 +48,8 @@ public interface OrgRelMapper extends BaseMapper<OrgRel> {
 
     public List<TreeNodeVo> isLeaf(@Param("orgRootId")String orgRootId,@Param("pid")String pid);
 
+    public int leafCount(@Param("orgRootId")String orgRootId,@Param("pid")String pid);
+
     public List<OrgRefTypeVo> getOrgRelType(@Param("org")Org org);
 
     public List<OrgRefTypeVo> selectOrgRelTypePage(Pagination page,@Param("orgRefTypeVo")OrgRefTypeVo orgRefTypeVo);
