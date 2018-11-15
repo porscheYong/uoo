@@ -11,6 +11,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -25,8 +26,8 @@ import java.util.List;
 @FeignClient(value = "uoo-organization",configuration = {PersonnelServiceConfiguration.class},fallback = OrgRelTypeServiceHystrix.class)
 public interface OrgRelTypeService{
 
-    @RequestMapping(value="/orgRelType/getOrgRelTypeList/orgRelCode={orgRelCode}",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<List<OrgRelType>> getOrgRelTypeList(@PathVariable(value = "orgRelCode")String orgRelCode);
+    @RequestMapping(value="/orgRelType/getOrgRelTypeList",method = RequestMethod.GET,headers={"Content-Type=application/json"})
+    public ResponseResult<List<OrgRelType>> getOrgRelTypeList(@RequestParam(value = "orgRelCode",required = false)String orgRelCode);
 
 
 }

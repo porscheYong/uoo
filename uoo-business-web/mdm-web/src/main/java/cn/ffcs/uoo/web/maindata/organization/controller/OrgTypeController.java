@@ -13,10 +13,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -42,26 +39,27 @@ public class OrgTypeController {
     @ApiOperation(value = "获取组织类别", notes = "获取组织类别")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getOrgTypeList/orgTypeCode={orgTypeCode}", method = RequestMethod.POST)
-    public ResponseResult<List<OrgType>> getOrgTypeList(@PathVariable(value = "orgTypeCode")String orgTypeCode){
+    @RequestMapping(value = "/getOrgTypeList", method = RequestMethod.POST)
+    public ResponseResult<List<OrgType>> getOrgTypeList(@RequestParam(value = "orgTypeCode",required = false)String orgTypeCode){
         return orgTypeService.getOrgTypeList(orgTypeCode);
     }
 
     @ApiOperation(value = "获取组织类别树", notes = "获取组织类别树")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getOrgTypeTree/id={id}&orgTypeCode={orgTypeCode}", method = RequestMethod.POST)
-    public ResponseResult<List<TreeNodeVo>> getOrgTypeTree(@PathVariable(value = "id")String id, @PathVariable(value = "orgTypeCode")String orgTypeCode){
+    @RequestMapping(value = "/getOrgTypeTree", method = RequestMethod.POST)
+    public ResponseResult<List<TreeNodeVo>> getOrgTypeTree(@RequestParam(value = "id",required = false)String id,
+                                                           @RequestParam(value = "orgTypeCode",required = false)String orgTypeCode){
         return orgTypeService.getOrgTypeTree(id,orgTypeCode);
     }
 
     @ApiOperation(value = "获取完整组织类别树", notes = "获取完整组织类别树")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getFullOrgTypeTree/id={id}&orgTypeCode={orgTypeCode}&orgId={orgId}", method = RequestMethod.POST)
-    public ResponseResult<List<TreeNodeVo>> getFullOrgTypeTree(@PathVariable(value = "id")String id,
-                                                               @PathVariable(value = "orgTypeCode")String orgTypeCode,
-                                                               @PathVariable(value = "orgId")String orgId){
+    @RequestMapping(value = "/getFullOrgTypeTree", method = RequestMethod.POST)
+    public ResponseResult<List<TreeNodeVo>> getFullOrgTypeTree(@RequestParam(value = "id")String id,
+                                                               @RequestParam(value = "orgTypeCode")String orgTypeCode,
+                                                               @RequestParam(value = "orgId")String orgId){
         return orgTypeService.getFullOrgTypeTree(id,orgTypeCode,orgId);
     }
 

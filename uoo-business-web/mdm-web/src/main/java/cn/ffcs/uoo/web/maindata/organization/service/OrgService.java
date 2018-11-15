@@ -9,10 +9,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 import common.config.PersonnelServiceConfiguration;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,8 +31,8 @@ public interface OrgService{
     @RequestMapping(value="/org/updateOrg",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<Void> updateOrg(@RequestBody Org org);
 
-    @RequestMapping(value="/org/getOrg/orgId={orgId}",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<Org> getOrg(@PathVariable(value = "orgId") String orgId);
+    @RequestMapping(value="/org/getOrg",method = RequestMethod.GET,headers={"Content-Type=application/json"})
+    public ResponseResult<Org> getOrg(@RequestParam(value = "orgId",required = false) String orgId);
 
     @RequestMapping(value="/org/getOrgRelPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
     public ResponseResult<Page<OrgVo>> getOrgRelPage(@RequestBody OrgVo orgVo);
@@ -43,7 +40,8 @@ public interface OrgService{
     @RequestMapping(value="/org/getOrgPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
     public ResponseResult<Page<OrgVo>> getOrgPage(@RequestBody OrgVo orgVo);
 
-    @RequestMapping(value = "/getOrgExtByOrgId/orgId={orgId}&orgRootId={orgRootId}", method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@PathVariable(value = "orgRootId")String orgRootId , @PathVariable(value = "orgId")String orgId);
+    @RequestMapping(value = "/getOrgExtByOrgId", method = RequestMethod.GET,headers={"Content-Type=application/json"})
+    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@RequestParam(value = "orgRootId",required = false)String orgRootId ,
+                                                                   @RequestParam(value = "orgId",required = false) String orgId);
 
 }

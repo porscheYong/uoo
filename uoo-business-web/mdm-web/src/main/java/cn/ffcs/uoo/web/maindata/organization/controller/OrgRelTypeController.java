@@ -11,10 +11,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -40,8 +37,8 @@ public class OrgRelTypeController {
     @ApiOperation(value = "组织关系类型", notes = "组织关系类型")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getOrgRelTypeList/orgRelCode={orgRelCode}", method = RequestMethod.POST)
-    public ResponseResult<List<OrgRelType>> getOrgRelTypeList(@PathVariable(value = "orgRelCode")String orgRelCode){
+    @RequestMapping(value = "/getOrgRelTypeList", method = RequestMethod.POST)
+    public ResponseResult<List<OrgRelType>> getOrgRelTypeList(@RequestParam(value = "orgRelCode",required = false)String orgRelCode){
         return orgRefTypeService.getOrgRelTypeList(orgRelCode);
     }
 
