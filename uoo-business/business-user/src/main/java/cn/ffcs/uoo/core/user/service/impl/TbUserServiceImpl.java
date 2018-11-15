@@ -4,12 +4,10 @@ import cn.ffcs.uoo.core.user.dao.TbUserMapper;
 import cn.ffcs.uoo.core.user.entity.TbRoles;
 import cn.ffcs.uoo.core.user.entity.TbUser;
 import cn.ffcs.uoo.core.user.service.TbUserService;
-import cn.ffcs.uoo.core.user.vo.ListSlaveAcctVo;
-import cn.ffcs.uoo.core.user.vo.ListUserOrgVo;
-import cn.ffcs.uoo.core.user.vo.PsonOrgVo;
+import cn.ffcs.uoo.core.user.vo.*;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import feign.Param;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,4 +46,30 @@ public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> impleme
         page.setRecords(list);
         return  page;
     }
+
+
+    @Override
+    public List<ListUserVo> getUserList( Long personnelId){
+        return  baseMapper.getUserList(personnelId);
+    }
+
+    @Override
+    public PersonnelInfoVo getPersonnelInfo( Long personnelId){
+        return baseMapper.getPersonnelInfo(personnelId);
+    }
+
+    @Override
+    public Page<ListAcctOrgVo> getAcctOrg(ListAcctOrgVo acctOrgVo){
+        Page<ListAcctOrgVo> page = new Page<ListAcctOrgVo>(acctOrgVo.getPageNo()== 0 ? 1 : acctOrgVo.getPageNo()
+            ,acctOrgVo.getPageSize() == 0 ? 5 : acctOrgVo.getPageSize());
+        List<ListAcctOrgVo> list = baseMapper.getAcctOrg(page, acctOrgVo);
+        page.setRecords(list);
+        return  page;
+    }
+
+    @Override
+    public List<ListAcctOrgVo> getSlaveAcctOrg(ListAcctOrgVo acctOrgVo){
+        return baseMapper.getSlaveAcctOrg(acctOrgVo);
+    }
+
 }

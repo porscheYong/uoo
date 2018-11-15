@@ -140,4 +140,78 @@
 
     </select>
 
+    <select id="getUserList" resultType="cn.ffcs.uoo.core.user.vo.ListUserVo">
+        select ROWNUM id, at.*
+        from (select '1' type, t.acct_id, '主账号' name, t.acct
+              from TB_ACCT t
+              where t.status_cd = 1000
+                <if test="personnelId != null and personnelId != '' " >
+                    and t.personnel_id = #{personnelId}
+                </if>
+              union
+              select '2' type,t1.slave_acct_id acct_id, '从账号' name, t1.slave_acct as acct
+              from TB_SLAVE_ACCT t1, TB_ACCT t2
+              where t1.status_cd = 1000
+                and t2.status_cd = 1000
+                and t1.slave_acct_type = '1'
+                and t1.acct_id = t2.acct_id
+                <if test="personnelId != null and personnelId != '' " >
+                  and t2.personnel_id = #{personnelId}
+                </if>
+        ) at
+    </select>
+
+    <select id="getPersonnelInfo" resultType="cn.ffcs.uoo.core.user.vo.PersonnelInfoVo">
+        select t1.personnel_id,
+        t1.psn_name,
+        t1.psn_nbr,
+        t1.psn_code,
+        t2.content      mobile_phone,
+        t3.content      email,
+        t4.cert_type,
+        t4.cert_no
+        from tb_personnel t1
+        left join tb_contact t2
+        on t1.personnel_id = t2.personnel_id
+        and t1.status_cd = t2.status_cd
+        and t2.contact_type = '1'
+        and t2.first_flag = '1'
+        left join tb_contact t3
+        on t1.personnel_id = t3.personnel_id
+        and t1.status_cd = t3.status_cd
+        and t3.contact_type = '2'
+        and t3.first_flag = '1'
+        left join tb_cert t4
+        on t1.personnel_id = t4.personnel_id
+        and t1.status_cd = t4.status_cd
+        where t1.status_cd = 1000
+        <if test="personnelId != null and personnelId != '' " >
+            and t1.personnel_id = #{personnelId}
+        </if>
+    </select>
+
+    <select id="getAcctOrg" resultType="cn.ffcs.uoo.core.user.vo.ListAcctOrgVo">
+        select ROWNUM id, t1.org_id, t1.full_name
+          from tb_org t1, TB_account_ORG_REL t2
+         where t1.status_cd = 1000
+           and t2.status_cd = 1000
+           and t1.org_id = t2.org_id
+        <if test="acctOrgVo.acctId != null and acctOrgVo.acctId != '' " >
+            and t2.acct_id = #{acctOrgVo.acctId}
+        </if>
+
+    </select>
+
+    <select id="getSlaveAcctOrg" resultType="cn.ffcs.uoo.core.user.vo.ListAcctOrgVo">
+        select ROWNUM id, t2.acct_host_id,t1.org_id, t1.full_name
+        from tb_org t1, TB_account_ORG_REL t2
+        where t1.status_cd = 1000
+        and t2.status_cd = 1000
+        and t1.org_id = t2.org_id
+        <if test="acctOrgVo.acctId != null and acctOrgVo.acctId != '' " >
+            and t2.ACCT_HOST_ID = #{acctOrgVo.acctId}
+        </if>
+
+    </select>
+
 </mapper>

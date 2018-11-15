@@ -43,7 +43,7 @@ public class MyUserSQLGenerator {
      */
     private static String packageName="user";
 
-    private static String localhostUrl="D:\\FFwork\\workspace_uoo\\uoo-core\\uoo-user";
+    private static String localhostUrl="D:\\FFwork\\wspace_uoo\\uoo-business\\business-user";
 
     private static String preffix_packageName="cn.ffcs.uoo.core";
     /**作者
@@ -53,7 +53,7 @@ public class MyUserSQLGenerator {
     /**table名字
      *
      */
-    private static String table="tb_acct_cross_rel";
+    private static String table="TB_USER_ROLE";
     /**table前缀
      *
      */
@@ -84,7 +84,7 @@ public class MyUserSQLGenerator {
                         .setXmlName("%sMapper")
                         .setServiceName("%sService")
                         .setServiceImplName("%sServiceImpl")
-                        .setControllerName("%sController")
+                       // .setControllerName("%sController")
         ).setDataSource(
                 // 数据源配置
                 new DataSourceConfig()
@@ -101,12 +101,12 @@ public class MyUserSQLGenerator {
 //                            }
 //                        })
                         .setDriverName("oracle.jdbc.driver.OracleDriver")
-                        .setUsername("uoo137")
-                        .setPassword("uoo137")
-                        .setUrl("jdbc:oracle:thin:@134.129.68.156:1521:fjtpdb")
-//                        .setUsername("octopus")
-//                        .setPassword("octopus")
-//                        .setUrl("jdbc:oracle:thin:@134.96.167.19:1521:uomdb1")
+//                        .setUsername("uoo137")
+//                        .setPassword("uoo137")
+//                        .setUrl("jdbc:oracle:thin:@134.129.68.156:1521:fjtpdb")
+                        .setUsername("octopus")
+                        .setPassword("octopus")
+                        .setUrl("jdbc:oracle:thin:@134.96.167.19:1521:uomdb1")
         ).setStrategy(
                 // 策略配置
                 new StrategyConfig()

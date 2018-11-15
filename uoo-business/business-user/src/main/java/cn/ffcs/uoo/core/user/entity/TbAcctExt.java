@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.FieldFill;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -77,32 +79,38 @@ public class TbAcctExt extends Model<TbAcctExt> {
     /**
      * 状态
      */
-    @TableField("STATUS_CD")
+    @JsonIgnore
+    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT_UPDATE)
     private String statusCd;
     /**
      * 创建时间
      */
-    @TableField("CREATE_DATE")
+    @JsonIgnore
+    @TableField(value = "CREATE_DATE", fill = FieldFill.INSERT)
     private Date createDate;
     /**
      * 创建人
      */
-    @TableField("CREATE_USER")
+    @JsonIgnore
+    @TableField(value = "CREATE_USER", fill = FieldFill.INSERT)
     private Long createUser;
     /**
      * 修改时间
      */
-    @TableField("UPDATE_DATE")
+    @JsonIgnore
+    @TableField(value = "UPDATE_DATE", fill = FieldFill.INSERT_UPDATE)
     private Date updateDate;
     /**
      * 修改人
      */
-    @TableField("UPDATE_USER")
+    @JsonIgnore
+    @TableField(value = "UPDATE_USER", fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
     /**
      * 状态变更的时间
      */
-    @TableField("STATUS_DATE")
+    @JsonIgnore
+    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT_UPDATE)
     private Date statusDate;
 
     @Override

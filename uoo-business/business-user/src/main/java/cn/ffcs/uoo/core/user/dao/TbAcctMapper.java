@@ -2,7 +2,9 @@ package cn.ffcs.uoo.core.user.dao;
 
 
 import cn.ffcs.uoo.core.user.entity.TbAcct;
+import cn.ffcs.uoo.core.user.entity.TbRoles;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -33,4 +35,9 @@ public interface TbAcctMapper extends BaseMapper<TbAcct> {
     public void delete(TbAcct tbAcct);
 
     public List<TbAcct> selectAcctList(TbAcct tbAcct);
+
+    // todo--新版本-----------------------------------------------------------
+
+    public List<TbRoles> getTbRoles(@Param("acctType") Long acctType,@Param("acctId") Long acctId);
+
 }
