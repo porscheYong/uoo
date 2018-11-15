@@ -13,6 +13,9 @@ import cn.ffcs.uoo.web.maindata.organization.service.OrgService;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * <p>
  *
@@ -60,6 +63,15 @@ public class OrgServiceHystrix implements OrgService {
     @Override
     public ResponseResult<Page<OrgVo>> getOrgPage(OrgVo orgVo){
         ResponseResult<Page<OrgVo>> responseResult = new ResponseResult<Page<OrgVo>>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
+
+
+    @Override
+    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(String orgRootId,String orgId){
+        ResponseResult<HashMap<String,String>> responseResult = new ResponseResult<HashMap<String,String>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
         return responseResult;

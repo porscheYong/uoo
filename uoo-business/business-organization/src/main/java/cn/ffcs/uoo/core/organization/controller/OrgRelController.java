@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.organization.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.service.*;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
@@ -18,12 +19,9 @@ import io.swagger.models.auth.In;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,7 +42,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/orgRel")
 @Api(value = "/org", description = "组织关系相关操作")
-public class OrgRelController {
+public class OrgRelController extends BaseController {
 
 
     @Autowired
@@ -84,8 +82,12 @@ public class OrgRelController {
     @UooLog(value = "查询组织树", key = "getOrgRelTree")
     @RequestMapping(value = "/getOrgRelTree", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<List<TreeNodeVo>> getOrgRelTree(String id, String orgRootId,String relCode, boolean isOpen,
-                                                boolean isAsync, boolean isRoot) throws IOException {
+    public ResponseResult<List<TreeNodeVo>> getOrgRelTree(@RequestParam(value = "id",required = false)String id,
+                                                          @RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                          @RequestParam(value = "relCode",required = false)String relCode,
+                                                          @RequestParam(value = "isOpen",required = false)boolean isOpen,
+                                                          @RequestParam(value = "isAsync",required = false)boolean isAsync,
+                                                          @RequestParam(value = "isRoot",required = false)boolean isRoot) throws IOException {
         //System.out.println(new Date());
         ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(orgRootId)){
@@ -106,7 +108,7 @@ public class OrgRelController {
     })
     @UooLog(value = "重构组织树获取", key = "getOrgRelTree")
     @RequestMapping(value = "/getRestructOrgRelTree", method = RequestMethod.GET)
-    @Transactional(rollbackFor = Exception.class)
+    //@Transactional(rollbackFor = Exception.class)
     public ResponseResult<List<TreeNodeVo>> getRestructOrgRelTree(String id,String orgRootId,boolean isFull) throws IOException {
         ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(id)){

@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.organization.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.organization.entity.Org;
 import cn.ffcs.uoo.core.organization.entity.OrgPersonRel;
 import cn.ffcs.uoo.core.organization.entity.OrgTree;
@@ -39,7 +40,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/orgPersonRel")
-public class OrgPersonRelController {
+public class OrgPersonRelController extends BaseController {
 
     @Autowired
     private OrgPersonRelService orgPersonRelService;

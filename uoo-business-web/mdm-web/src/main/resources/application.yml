@@ -3,6 +3,13 @@ server:
 spring:
   application:
     name: uoo-web
+  mvc: 
+    static-path-pattern: /**
+  resources: 
+    static-locations: classpath:/templates/,classpath:/static/,classpath:/META-INF/resources/,classpath:/META-INF/resources/webjars/
+  devtools: 
+    livereload: 
+      enabled: true
 
 eureka:
   client:
