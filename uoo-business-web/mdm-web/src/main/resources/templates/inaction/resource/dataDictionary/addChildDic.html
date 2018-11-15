@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>添加下级字典</title>
+
+    <!-- Bootstrap -->
+    <link href="../../../../static/css/dataDictionary/bootstrap.min.css" rel="stylesheet">
+
+    <!-- lulu ui -->
+    <link href="../../../../static/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../../static/css/dataDictionary/reset.css" rel="stylesheet">
+    <link href="../../../../static/css/custom.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="./vendors/html5shiv.js"></script>
+    <script src="./vendors/respond.js"></script>
+    <script src="./vendors/excanvas.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      table.dataTable {
+        table-layout: fixed;
+      }
+      
+      th {
+          text-align: center;
+          white-space: nowrap;
+      }
+      table.dataTable tbody td {
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+      div.tag {
+          border-radius: 2px;
+          /*display: block;
+          float: left;*/
+          padding: 5px 9px;
+          background: #00a4ff;
+          text-decoration: none;
+          line-height: 1;
+          color: #fff;
+          margin-bottom: 5px;
+      }
+      div.tag a {
+          text-decoration: none;
+          color: #fff;    
+      }
+      .col-md-6 {
+        width: 36%;
+      }
+    </style>
+
+  </head>
+
+      <div class="main-container">
+
+        <div class="content">
+            <div class="header" style="width: 98%;height:40px;margin-left:10px;border-bottom: 2px solid rgb(204,204,204);">
+                <!-- <a href="dataDictionary.html" style="margin-left:0px;">返回</a> -->
+                <span style="font: bold 16px/22px microsoft yahei,helvetia,pingfang sc,Arial,Tahoma;color: #232c45;padding: 0 15px 0 10px;">添加下级字典</span>
+            </div>
+           
+            <div class="tab-content" style="margin-left:18%;margin-top: 2%">
+              <div class="tab-pane active" id="tab_content1">
+                <form action="/submit" method="post" style="padding: 10px;">
+
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                            <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">分类</label>
+                            <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="城市"> -->
+                            <select  class="col-md-8 col-sm-8 col-xs-12" >
+                                <option></option>
+                                <option>公共属性</option>
+                            </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                            <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">上级字典</label>
+                            <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="城市"> -->
+                            <select  class="col-md-8 col-sm-8 col-xs-12" >
+                                <option></option>
+                                <option>类型级别</option>
+                            </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                        <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">字典名称</label>
+                        <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" >
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                        <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">编码</label>
+                        <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="系统自动生成" style="color:rgb(149,157,169);" disabled>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                        <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">可见性</label>
+                        <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="城市"> -->
+                        <select  class="col-md-8 col-sm-8 col-xs-12" >
+                            <option></option>
+                            <option>可见</option>
+                            <option>不可见</option>
+                        </select>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                        <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">排序号</label>
+                        <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市公司直属"> -->
+                        <select  class="col-md-8 col-sm-8 col-xs-12">
+                            <option></option>
+                            <option>01</option>
+                            <option>02</option>
+                        </select>
+                        </div>
+                    </div>
+                    </div>
+                </form>
+
+                <div class="row">
+                  <div style="margin-left: 7%;">
+                      <!-- <input type="submit" id="formSubmit" class="clip">
+                      <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
+                      <button class="ui-button ui-button-primary">保存</button>
+                      <button class="ui-button ui-button-cancel"  onclick="window.history.back()" style="margin-left: 40px;">取消</button>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="tab_content2">
+                <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden;">
+                  <table id="example" class="stripe" width="100%"></table>
+                </div>
+              </div>
+            </div>
+           
+        </div>
+
+
+
+    <!-- jQuery -->
+    <script src="../../../../static/js/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../../../../static/js/bootstrap.min.js"></script>
+    <!-- sea js -->
+    <script src="../../../../static/vendors/lulu/js/plugin/sea.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="../../../../static/js/custom.js"></script>
+
+    <script type="text/javascript">
+      seajs.use('../../../../static/vendors/lulu/js/common/ui/Select', function () {
+        $('select').selectMatch();
+      })
+      
+
+    </script>
+	
+  </body>
+</html>

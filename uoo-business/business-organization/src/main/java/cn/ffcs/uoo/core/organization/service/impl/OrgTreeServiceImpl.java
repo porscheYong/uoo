@@ -7,7 +7,10 @@ import cn.ffcs.uoo.core.organization.util.StrUtil;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -76,5 +79,10 @@ public class OrgTreeServiceImpl extends ServiceImpl<OrgTreeMapper, OrgTree> impl
             return "用工性质不能为空";
         }
         return null;
+    }
+
+    @Override
+    public String getOrgTreeNameByOrgId(String orgId){
+        return baseMapper.getOrgTreeNameByOrgId(orgId);
     }
 }

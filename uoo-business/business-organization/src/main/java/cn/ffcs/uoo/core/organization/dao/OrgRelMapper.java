@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.organization.dao;
 
 import cn.ffcs.uoo.core.organization.entity.Org;
 import cn.ffcs.uoo.core.organization.entity.OrgRel;
+import cn.ffcs.uoo.core.organization.entity.OrgTree;
 import cn.ffcs.uoo.core.organization.vo.OrgRefTypeVo;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
 import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
@@ -47,10 +48,13 @@ public interface OrgRelMapper extends BaseMapper<OrgRel> {
 
     public List<TreeNodeVo> isLeaf(@Param("orgRootId")String orgRootId,@Param("pid")String pid);
 
+    public int leafCount(@Param("orgRootId")String orgRootId,@Param("pid")String pid);
+
     public List<OrgRefTypeVo> getOrgRelType(@Param("org")Org org);
 
     public List<OrgRefTypeVo> selectOrgRelTypePage(Pagination page,@Param("orgRefTypeVo")OrgRefTypeVo orgRefTypeVo);
 
     public List<OrgRel> getOrgRel(@Param("orgTreeId")String orgTreeId, @Param("orgId")String orgId);
 
+    public List<TreeNodeVo> selectTarOrgRelTreeAndLv(@Param("orgRootId")String orgRootId, @Param("lv")String lv, @Param("curOrgId")String curOrgId, @Param("isFull")boolean isFull);
 }

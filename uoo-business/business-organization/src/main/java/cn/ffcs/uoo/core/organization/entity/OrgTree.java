@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.core.organization.entity;
 
 import java.util.Date;
+
+import cn.ffcs.uoo.core.organization.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -100,6 +102,20 @@ public class OrgTree extends Model<OrgTree> {
     @TableField(exist=false)
     private List<String> userTypeList;
 
+    /**
+     * 现有组织树
+     */
+    @TableField(exist=false)
+    private List<TreeNodeVo> treeNodeList;
+
+
+    public List<TreeNodeVo> getTreeNodeList() {
+        return treeNodeList;
+    }
+
+    public void setTreeNodeList(List<TreeNodeVo> treeNodeList) {
+        this.treeNodeList = treeNodeList;
+    }
 
     public List<String> getUserTypeList() {
         return userTypeList;

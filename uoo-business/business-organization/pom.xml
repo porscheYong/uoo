@@ -68,6 +68,13 @@
             <artifactId>spring-data-solr</artifactId>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+
     </dependencies>
 
 
@@ -79,7 +86,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!--自动生成数据-->
+            <!--自动生成数据
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
@@ -121,7 +128,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
-
+-->
 
 
         </plugins>

@@ -9,10 +9,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -51,7 +48,7 @@ public class TbDictionaryController {
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "String")
     })
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbDictionary> removeTbDictionary(@RequestBody String dictionaryName, @RequestBody Long updateUser) {
+    public ResponseResult<TbDictionary> removeTbDictionary(@RequestParam("dictionaryName") String dictionaryName, @RequestParam("updateUser") Long updateUser) {
         return tbDictionaryClient.removeTbDictionary(dictionaryName, updateUser);
     }
 }

@@ -4,6 +4,7 @@ import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.core.organization.entity.Org;
 import cn.ffcs.uoo.core.organization.entity.OrgRel;
 import cn.ffcs.uoo.core.organization.dao.OrgRelMapper;
+import cn.ffcs.uoo.core.organization.entity.OrgTree;
 import cn.ffcs.uoo.core.organization.entity.OrgType;
 import cn.ffcs.uoo.core.organization.service.OrgRelService;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
@@ -86,8 +87,16 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
      * @return
      */
     public boolean isLeaf(TreeNodeVo treeNodeVo,String orgRootId){
-        List<TreeNodeVo> li = orgRelMapper.isLeaf(orgRootId,treeNodeVo.getId());
-        if(li==null || li.size()<0){
+//        List<TreeNodeVo> li = orgRelMapper.isLeaf(orgRootId,treeNodeVo.getId());
+//        if(li==null || li.size()<1){
+//            treeNodeVo.setParent(false);
+//            return false;
+//        }
+//        treeNodeVo.setParent(true);
+//        return true;
+
+        int count = orgRelMapper.leafCount(orgRootId,treeNodeVo.getId());
+        if(count>0){
             treeNodeVo.setParent(false);
             return false;
         }
@@ -195,5 +204,23 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
     @Override
     public List<OrgRel> getOrgRel(String orgTreeId, String orgId){
         return baseMapper.getOrgRel(orgTreeId,orgId);
+    }
+
+    /**
+     * 获取指定组织树层级
+     * @param orgRootId
+     * @param lv
+     * @param curOrgId
+     * @param isFull
+     * @return
+     */
+    @Override
+    public List<TreeNodeVo> selectTarOrgRelTreeAndLv(String orgRootId, String lv, String curOrgId, boolean isFull){
+        List<TreeNodeVo> list = new ArrayList<TreeNodeVo>();
+        list = baseMapper.selectTarOrgRelTreeAndLv(orgRootId,lv,curOrgId,isFull);
+        if(list!=null && list.size()>0){
+            return list;
+        }
+        return null;
     }
 }

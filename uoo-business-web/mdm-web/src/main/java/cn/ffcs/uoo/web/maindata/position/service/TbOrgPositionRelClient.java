@@ -8,12 +8,13 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(value = "uoo-position",configuration = {PersonnelServiceConfiguration.class},fallback = TbOrgPositionRelClientHystrix.class)
+@FeignClient(value = "business-position",configuration = {PersonnelServiceConfiguration.class},fallback = TbOrgPositionRelClientHystrix.class)
 public interface TbOrgPositionRelClient {
     @RequestMapping(value = "/tbOrgPositionRel/add", method = RequestMethod.POST)
     ResponseResult<TbOrgPositionRel> addTbOrgPositionRel(@RequestBody TbOrgPositionRel tbOrgPositionRel);
 
     @RequestMapping(value = "/tbOrgPositionRel/del", method = RequestMethod.POST)
-    ResponseResult<TbOrgPositionRel> removeTbOrgPositionRel(@RequestBody Long orgPositionId, @RequestBody Long updateUser);
+    ResponseResult<TbOrgPositionRel> removeTbOrgPositionRel(@RequestParam("orgPositionId") Long orgPositionId, @RequestParam("updateUser") Long updateUser);
 }

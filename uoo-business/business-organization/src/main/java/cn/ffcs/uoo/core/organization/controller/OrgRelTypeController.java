@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.core.organization.controller;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.service.OrgRelTypeService;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
@@ -30,7 +31,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/orgRelType")
-public class OrgRelTypeController {
+public class OrgRelTypeController extends BaseController {
 
     @Autowired
     private OrgRelTypeService orgRefTypeService;

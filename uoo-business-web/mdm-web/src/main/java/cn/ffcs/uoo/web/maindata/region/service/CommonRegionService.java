@@ -11,22 +11,36 @@ import cn.ffcs.uoo.web.maindata.region.dto.CommonRegionDTO;
 import cn.ffcs.uoo.web.maindata.region.dto.TbCommonRegion;
 import cn.ffcs.uoo.web.maindata.region.service.fallback.CommonRegionServiceHystrix;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
+import io.swagger.annotations.ApiOperation;
 
-@FeignClient(value = "uoo-region-provider",/*configuration = {PersonnelServiceConfiguration.class},*/fallback = CommonRegionServiceHystrix.class)
+@FeignClient(value = "uoo-region-provider", /*
+                                             * configuration =
+                                             * {PersonnelServiceConfiguration.
+                                             * class},
+                                             */fallback = CommonRegionServiceHystrix.class)
 public interface CommonRegionService {
 
     @GetMapping("/region/commonRegion/getCommonRegion/id={id}")
     public ResponseResult getCommonRegion(@PathVariable(value = "id") Long id);
-    
+
     @GetMapping("/region/commonRegion/listAllCommonRegion")
     public ResponseResult listAllCommonRegion();
 
-    @RequestMapping(value="/region/commonRegion/addCommonRegion",method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    @RequestMapping(value = "/region/commonRegion/addCommonRegion", method = RequestMethod.POST, headers = {
+            "Content-Type=application/json" })
     public ResponseResult addCommonRegion(@RequestBody CommonRegionDTO commonRegion);
-     
-    @RequestMapping(value="/region/commonRegion/updateCommonRegion",method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult updateCommonRegion(@RequestBody CommonRegionDTO commonRegion) ;
-    
-    @RequestMapping(value="/region/commonRegion/deleteCommonRegion",method = RequestMethod.POST,headers={"Content-Type=application/json"})
+
+    @RequestMapping(value = "/region/commonRegion/updateCommonRegion", method = RequestMethod.POST, headers = {
+            "Content-Type=application/json" })
+    public ResponseResult updateCommonRegion(@RequestBody CommonRegionDTO commonRegion);
+
+    @RequestMapping(value = "/region/commonRegion/deleteCommonRegion", method = RequestMethod.POST, headers = {
+            "Content-Type=application/json" })
     public ResponseResult deleteCommonRegion(@RequestBody TbCommonRegion commonRegion);
+
+    @GetMapping("/region/commonRegion/getChildCommonRegionInfo/{id}")
+    public ResponseResult getChildCommonRegionInfo(@PathVariable(value = "id") Long id);
+
+    @GetMapping("/region/commonRegion/getTreeCommonRegion/{id}")
+    public ResponseResult getTreeCommonRegion(@PathVariable(value = "id") Long id);
 }

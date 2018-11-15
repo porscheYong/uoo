@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.organization.vo;
 
 
 import cn.ffcs.uoo.base.common.vo.BaseVo;
+import cn.ffcs.uoo.core.organization.entity.OrgCertRel;
 import cn.ffcs.uoo.core.organization.entity.OrgType;
 import cn.ffcs.uoo.core.organization.entity.Position;
 import cn.ffcs.uoo.core.organization.entity.Post;
@@ -21,27 +22,206 @@ import java.util.List;
 public class OrgVo extends BaseVo{
 
     private Long orgId;
+    private Long locId;
+    private String areaCodeId;
     private String orgName;
     private String orgCode;
+    private String shortName;
+    private String orgNameEn;
     private String fullName;
-    private Long locId;
+    private String cityTown;
+    private String officePhone;
+    private String foundingTime;
+    private String orgScale;
+    private String orgLevel;
+    private String orgPositionLevel;
+    private String sort;
+    private String orgContent;
+    private String orgDesc;
+    private String address;
+    private String uuid;
+    private String statusCd;
+    private String createDate;
+    //组织树
+    private Long orgTreeId;
+    /**
+     * 组织树根节点
+     */
+    private String orgRootId;
+    /**
+     * 组织树编码
+     */
+    private String refCode;
+    /**
+     * 组织上级节点
+     */
+    private Long supOrgId;
+    /**
+     * 层级
+     */
+    private String lv;
+
     private String locName;
     private String locCode;
-    private String statusCd;
-    private String refCode;
-    private String areaCodeId;
-    private String createDate;
+
 
     private List<OrgType> orgTypeList;
     private String orgTypeSplit;
     private List<Position> positionList;
     private List<Post> postList;
+    private List<PsonOrgVo> psonOrgVoList;
 
+    //身份证信息
+    private List<String> certId;
 
     //检索
     private String search;
-    private String orgRootId;
     private String orgRelCreatDate;
+
+
+    public Long getOrgTreeId() {
+        return orgTreeId;
+    }
+
+    public void setOrgTreeId(Long orgTreeId) {
+        this.orgTreeId = orgTreeId;
+    }
+
+    public Long getSupOrgId() {
+        return supOrgId;
+    }
+
+    public void setSupOrgId(Long supOrgId) {
+        this.supOrgId = supOrgId;
+    }
+
+    public String getLv() {
+        return lv;
+    }
+
+    public void setLv(String lv) {
+        this.lv = lv;
+    }
+
+    public List<PsonOrgVo> getPsonOrgVoList() {
+        return psonOrgVoList;
+    }
+
+    public void setPsonOrgVoList(List<PsonOrgVo> psonOrgVoList) {
+        this.psonOrgVoList = psonOrgVoList;
+    }
+
+    public List<String> getCertId() {
+        return certId;
+    }
+
+    public void setCertId(List<String> certId) {
+        this.certId = certId;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public String getOrgNameEn() {
+        return orgNameEn;
+    }
+
+    public void setOrgNameEn(String orgNameEn) {
+        this.orgNameEn = orgNameEn;
+    }
+
+    public String getCityTown() {
+        return cityTown;
+    }
+
+    public void setCityTown(String cityTown) {
+        this.cityTown = cityTown;
+    }
+
+    public String getOfficePhone() {
+        return officePhone;
+    }
+
+    public void setOfficePhone(String officePhone) {
+        this.officePhone = officePhone;
+    }
+
+    public String getFoundingTime() {
+        return foundingTime;
+    }
+
+    public void setFoundingTime(String foundingTime) {
+        this.foundingTime = foundingTime;
+    }
+
+    public String getOrgScale() {
+        return orgScale;
+    }
+
+    public void setOrgScale(String orgScale) {
+        this.orgScale = orgScale;
+    }
+
+    public String getOrgLevel() {
+        return orgLevel;
+    }
+
+    public void setOrgLevel(String orgLevel) {
+        this.orgLevel = orgLevel;
+    }
+
+    public String getOrgPositionLevel() {
+        return orgPositionLevel;
+    }
+
+    public void setOrgPositionLevel(String orgPositionLevel) {
+        this.orgPositionLevel = orgPositionLevel;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+    public String getOrgContent() {
+        return orgContent;
+    }
+
+    public void setOrgContent(String orgContent) {
+        this.orgContent = orgContent;
+    }
+
+    public String getOrgDesc() {
+        return orgDesc;
+    }
+
+    public void setOrgDesc(String orgDesc) {
+        this.orgDesc = orgDesc;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
     public String getOrgTypeSplit() {
         return orgTypeSplit;

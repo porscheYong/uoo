@@ -30,6 +30,20 @@ public class TbCommonRegionController {
     @Autowired
     private CommonRegionService regionService;
 
+    @ApiOperation(value = "根据ID获取下一级信息", notes = "根据ID获取下一级信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long", paramType = "path"), })
+    @GetMapping("getChildCommonRegionInfo/{id}")
+    public ResponseResult getChildCommonRegionInfo(@PathVariable(value="id") Long id){
+        return regionService.getChildCommonRegionInfo(id);
+         
+    }
+    @ApiOperation(value = "公共管理区域树", notes = "公共管理区域树")
+    @GetMapping("getTreeCommonRegion/{id}")
+    public ResponseResult getTreeCommonRegion(@PathVariable(value="id") Long id ){
+        return regionService.getTreeCommonRegion(id);
+    }
+    
     @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),

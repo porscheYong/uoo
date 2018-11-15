@@ -60,28 +60,80 @@
         <if test="pid != null">
             AND B.SUP_ORG_ID = #{pid}
         </if>
-  <!--      <if test="orgRootId != null">
-            AND A.ORG_ID = #{orgRootId}
-        </if>-->
-
         ORDER BY A.ORG_LEVEL
+    <!--    SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.SUP_ORG_ID PID
+        FROM TB_ORG_REL              A,
+        TB_ORG                  B,
+        TB_ORG_REL_TYPE         C,
+        TB_OGT_ORG_RELTYPE_CONF D,
+        TB_ORG_TREE             E
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000'
+        AND D.STATUS_CD = '1000'
+        AND E.STATUS_CD = '1000'
+        AND E.ORG_TREE_ID = D.ORG_TREE_ID
+        AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
+        AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND A.ORG_ID=B.ORG_ID
+        AND E.ORG_ID = #{orgRootId}
+        AND A.SUP_ORG_ID=#{pid}
+        ORDER BY B.ORG_LEVEL
+        -->
+
     </select>
 
 
     <select id="isLeaf" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-        SELECT A.ORG_NAME NAME, B.ORG_ID ID ,B.SUP_ORG_ID PID
-        FROM TB_ORG A, TB_ORG_REL B
-        WHERE A.STATUS_CD = 1000
-        AND B.STATUS_CD = 1000
-        AND A.ORG_ID = B.ORG_ID
-        <if test="pid != null">
-            AND B.SUP_ORG_ID = #{pid}
-        </if>
-     <!--   <if test="orgRootId != null">
-            AND A.ORG_ID = #{orgRootId}
-        </if>-->
-        ORDER BY A.ORG_LEVEL
+        <!--SELECT A.ORG_NAME NAME, B.ORG_ID ID ,B.SUP_ORG_ID PID-->
+        <!--FROM TB_ORG A, TB_ORG_REL B-->
+        <!--WHERE A.STATUS_CD = 1000-->
+        <!--AND B.STATUS_CD = 1000-->
+        <!--AND A.ORG_ID = B.ORG_ID-->
+        <!--<if test="pid != null">-->
+            <!--AND B.SUP_ORG_ID = #{pid}-->
+        <!--</if>-->
+        SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.SUP_ORG_ID PID
+        FROM TB_ORG_REL              A,
+        TB_ORG                  B,
+        TB_ORG_REL_TYPE         C,
+        TB_OGT_ORG_RELTYPE_CONF D,
+        TB_ORG_TREE             E
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000'
+        AND D.STATUS_CD = '1000'
+        AND E.STATUS_CD = '1000'
+        AND E.ORG_TREE_ID = D.ORG_TREE_ID
+        AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
+        AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND A.ORG_ID=B.ORG_ID
+        AND E.ORG_ID = #{orgRootId}
+        AND A.SUP_ORG_ID=#{pid}
+
     </select>
+
+
+    <select id="leafCount" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+        SELECT  count(1)
+        FROM TB_ORG_REL              A,
+        TB_ORG                  B,
+        TB_ORG_REL_TYPE         C,
+        TB_OGT_ORG_RELTYPE_CONF D,
+        TB_ORG_TREE             E
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000'
+        AND D.STATUS_CD = '1000'
+        AND E.STATUS_CD = '1000'
+        AND E.ORG_TREE_ID = D.ORG_TREE_ID
+        AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
+        AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND A.ORG_ID=B.ORG_ID
+        AND E.ORG_ID = #{orgRootId}
+        AND A.SUP_ORG_ID=#{pid}
+    </select>
+
     
     
     <select id="getOrgRelType" resultType="cn.ffcs.uoo.core.organization.vo.OrgRefTypeVo">
@@ -274,5 +326,23 @@
         AND D.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
         AND A.ORG_TREE_ID = #{orgTreeId}
         AND D.ORG_ID = #{orgId}
+    </select>
+
+    <!-- 获取指定组织树的层级 -->
+    <select id="selectTarOrgRelTreeAndLv" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+        SELECT lv level,ORG_NAME name,ORG_ID id,SUP_ORG_ID pid FROM (
+        SELECT
+        REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,
+        ORG_NAME,ORG_ID,SUP_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD,LEVEL lv
+        FROM (SELECT A.* ,B.SUP_ORG_ID
+        FROM TB_ORG A, TB_ORG_REL B
+        WHERE A.ORG_ID = B.ORG_ID
+        AND A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000) AA
+        START WITH ORG_ID = #{orgRootId}
+        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID) WHERE level &lt; #{lv}
+        <if test="curOrgId != null and curOrgId != ''">
+            AND SUP_ORG_ID =  #{curOrgId}
+        </if>
     </select>
 </mapper>

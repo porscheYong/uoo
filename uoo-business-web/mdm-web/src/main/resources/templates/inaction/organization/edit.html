@@ -9,24 +9,24 @@
     <title>编辑</title>
 
     <!-- Bootstrap -->
-    <link href="../../../static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="../../../static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- jquery datatable -->
-    <link href="../../../static/vendors/datatable/datatables.css" rel="stylesheet">
+    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
     <!-- jquery tagsinput -->
-    <link href="../../../static/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
+    <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
     <!-- lulu ui -->
-    <link href="../../../static/vendors/lulu/css/common/ui.css" rel="stylesheet">
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="../../../static/css/reset.css" rel="stylesheet">
-    <link href="../../../static/css/custom.css" rel="stylesheet">
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
-    <script src="../../../static/js/core/html5shiv.js"></script>
-    <script src="../../../static/js/core/respond.js"></script>
-    <script src="../../../static/js/core/excanvas.js"></script>
+    <script src="/js/core/html5shiv.js"></script>
+    <script src="/js/core/respond.js"></script>
+    <script src="/js/core/excanvas.js"></script>
     <![endif]-->
     <style type="text/css">
       table.dataTable {
@@ -66,7 +66,7 @@
         <div class="board-title">
           <span class="name ft18">编辑-市场部 100000571001</span>
         </div>
-        <div class="nav-tabs-brief" style="padding-top: 35px;">
+        <div class="nav-tabs-brief" style="padding-top: 35px; overflow-x: hidden;">
           <ul class="nav nav-tabs tab-title" role="tablist" id="myTabs">
             <li role="presentation" class="active" style="width: 10%;"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">基础信息</a>
             </li>
@@ -81,7 +81,7 @@
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="orgName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织名称</label>
-                      <input type="tel" id="orgName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市场营销战略部">
+                      <input type="tel" id="orgName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required>
                     </div>
                   </div>
 
@@ -115,9 +115,9 @@
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="cityVillage" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">城乡属性</label>
+                      <label for="cityTown" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">城乡属性</label>
                       <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="城市"> -->
-                      <select id="cityVillage" class="col-md-8 col-sm-8 col-xs-12">
+                      <select id="cityTown" class="col-md-8 col-sm-8 col-xs-12">
                         <option></option>
                        <!--  <option>城市</option>
                         <option>农村</option> -->
@@ -127,8 +127,8 @@
 
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="createTime" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">成立时间</label>
-                      <input type="code" id="createTime" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="2018-10-27">
+                      <label for="createDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">成立时间</label>
+                      <input type="code" id="createDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}">
                     </div>
                   </div>
                 </div>
@@ -262,22 +262,22 @@
     </div> -->
 
     <!-- jQuery -->
-    <script type="text/javascript" src="../../../static/js/core/jquery.js"></script>
+    <script type="text/javascript" src="/js/core/jquery.js"></script>
     <!-- Bootstrap -->
-    <script type="text/javascript" src="../../../static/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- jquery datatable -->
-    <script type="text/javascript" src="../../../static/vendors/datatable/datatables.js"></script>
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
     <!-- sea js -->
-    <script type="text/javascript" src="../../../static/vendors/lulu/js/plugin/sea.js"></script>
+    <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
     <!-- laydate -->
-    <script type="text/javascript" src="../../../static/vendors/laydate/laydate.js"></script>
+    <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
     <!-- layer -->
-    <script type="text/javascript" src="../../../static/vendors/layer/layer.js"></script>
+    <script type="text/javascript" src="/vendors/layer/layer.js"></script>
     <!-- jquery tagsinput -->
-    <script type="text/javascript" src="../../../static/vendors/tagsinput/jquery.tagsinput.js"></script>
+    <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- init -->
-    <script type="text/javascript" src="../../../static/js/init.js"></script>
-    <script type="text/javascript" src="../../../static/js/organization/edit.js"></script>
+    <script type="text/javascript" src="/js/init.js"></script>
+    <script type="text/javascript" src="/js/organization/edit.js"></script>
 
     <script type="text/javascript">
       // if(typeof $.fn.tagsInput !== 'undefined'){  

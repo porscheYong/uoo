@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.permission.dao.MemuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.permission.entity.Memu">
+        <id column="PK_MEMU" property="pkMemu" />
+        <result column="MENU_NAME" property="menuName" />
+        <result column="MENU_CODE" property="menuCode" />
+        <result column="MENU_URL" property="menuUrl" />
+        <result column="STATUS" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        PK_MEMU, MENU_NAME, MENU_CODE, MENU_URL, STATUS
+    </sql>
+
+    <select id="getId" resultType="java.lang.Long">
+        SELECT SEQ_TB_MEMU_ID.nextval FROM dual
+    </select>
+</mapper>

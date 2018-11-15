@@ -69,7 +69,7 @@ public class TbDictionaryItemController extends BaseController {
     })
     @UooLog(value = "删除字典项目", key = "removeTbDictionaryItem")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbDictionaryItem> removeTbDictionaryItem(@RequestBody Long itemId, @RequestBody Long updateUser) {
+    public ResponseResult<TbDictionaryItem> removeTbDictionaryItem(@RequestParam("itemId") Long itemId, @RequestParam("updateUser") Long updateUser) {
         ResponseResult<TbDictionaryItem> responseResult = new ResponseResult<TbDictionaryItem>();
 
         // 判断是否有下级字典项目
@@ -114,6 +114,7 @@ public class TbDictionaryItemController extends BaseController {
         Wrapper<TbDictionaryItem> tbDictionaryItemWrapper = new EntityWrapper<TbDictionaryItem>();
         tbDictionaryItemWrapper.eq("DICTIONARY_ID", tbDictionaryList.get(0).getDictionaryId());
         tbDictionaryItemWrapper.eq("STATUS_CD", "1000");
+        tbDictionaryItemWrapper.orderBy("SORT");
         return tbDictionaryItemService.selectList(tbDictionaryItemWrapper);
     }
 }

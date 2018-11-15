@@ -5,15 +5,16 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 
+import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.core.permission.consts.StatusCD;
 import cn.ffcs.uoo.core.permission.entity.DataPrivRule;
 import cn.ffcs.uoo.core.permission.entity.PrivDataRel;
@@ -22,6 +23,9 @@ import cn.ffcs.uoo.core.permission.service.IDataPrivRuleService;
 import cn.ffcs.uoo.core.permission.service.IPrivDataRelService;
 import cn.ffcs.uoo.core.permission.service.IPrivilegeService;
 import cn.ffcs.uoo.core.permission.vo.ResponseResult;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * <p>
@@ -31,7 +35,7 @@ import cn.ffcs.uoo.core.permission.vo.ResponseResult;
  * @author zengxsh
  * @since 2018-11-08
  */
-@Controller
+@RestController
 @RequestMapping("/permission/privDataRel")
 public class PrivDataRelController {
     @Autowired
@@ -41,6 +45,11 @@ public class PrivDataRelController {
     @Autowired
     private IPrivilegeService privilegeService;
     
+    @ApiOperation(value = "添加权限与业务对象之间多对多的关系", notes = "添加权限与业务对象之间多对多的关系")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "privDataRel", value = "privDataRel", required = true, dataType = "PrivDataRel"  ),
+    })
+    @UooLog(key="addPrivDataRel",value="添加权限与业务对象之间多对多的关系")
     @Transactional
     @RequestMapping(value="addPrivDataRel",method=RequestMethod.POST)
     public ResponseResult addPrivDataRel(@RequestBody PrivDataRel privDataRel){
@@ -59,6 +68,11 @@ public class PrivDataRelController {
         return ResponseResult.createSuccessResult("success");
     }
     
+    @ApiOperation(value = "修改权限与业务对象之间多对多的关系", notes = "修改权限与业务对象之间多对多的关系")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "privDataRel", value = "privDataRel", required = true, dataType = "PrivDataRel"  ),
+    })
+    @UooLog(key="updatePrivDataRel",value="修改权限与业务对象之间多对多的关系")
     @Transactional
     @RequestMapping(value="updatePrivDataRel",method=RequestMethod.POST)
     public ResponseResult updatePrivDataRel(@RequestBody PrivDataRel privDataRel){
@@ -74,7 +88,11 @@ public class PrivDataRelController {
         relSvc.updateById(privDataRel);
         return ResponseResult.createSuccessResult("success");
     }
-    
+    @ApiOperation(value = "删除权限与业务对象之间多对多的关系", notes = "删除权限与业务对象之间多对多的关系")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "privDataRel", value = "privDataRel", required = true, dataType = "PrivDataRel"  ),
+    })
+    @UooLog(key="deletePrivDataRel",value="删除权限与业务对象之间多对多的关系")
     @SuppressWarnings("unchecked")
     @Transactional
     @RequestMapping(value="deletePrivDataRel",method=RequestMethod.POST)

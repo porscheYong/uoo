@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.organization.controller;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
+import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.service.*;
 import cn.ffcs.uoo.core.organization.service.impl.OrgServiceImpl;
@@ -23,12 +24,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +47,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/org" , produces = {"application/json;charset=UTF-8"})
 @Api(value = "/org", description = "组织相关操作")
-public class OrgController {
+public class OrgController extends BaseController {
 
     @Autowired
     private OrgService orgService;
@@ -93,7 +97,11 @@ public class OrgController {
     @Autowired
     private OrgContactRelService orgContactRelService;
 
+    @Autowired
     private SolrService solrService;
+
+    @Autowired
+    private OrgCertRelService orgCertRelService;
 
 
     @ApiOperation(value = "新增组织信息-web", notes = "新增组织信息")
@@ -102,14 +110,13 @@ public class OrgController {
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<Void> addOrg(Org org){
         ResponseResult<Void> ret = new ResponseResult<Void>();
-
+        
         String msg = orgService.JudgeOrgParams(org);
         if(!StrUtil.isNullOrEmpty(msg)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage(msg);
             return ret;
         };
-        //Wrapper orgTreeConfWrapper = Condition.create().eq("ORG_TREE_ID",org.getOrgTreeId()).eq("STATUS_CD","1000");
         Wrapper orgTreeConfWrapper = Condition.create().eq("ORG_ID",org.getOrgRootId()).eq("STATUS_CD","1000");
         OrgTree orgTree  = orgTreeService.selectOne(orgTreeConfWrapper);
         if(orgTree == null){
@@ -245,6 +252,22 @@ public class OrgController {
             solrService.addDataIntoSolr("org",input);
         }
 
+        //新增组织证件
+        Wrapper orgCertWrapper = Condition.create()
+                .eq("ORG_ID",org.getOrgId())
+                .eq("STATUS_CD","1000");
+        List<OrgCertRel> orgCertRelcurList = orgCertRelService.selectList(orgCertWrapper);
+        List<String> cerList = org.getCertIdList();
+        if(orgCertRelcurList == null){
+            for(String certId : cerList){
+                OrgCertRel orgCertRel = new OrgCertRel();
+                Long orgCertRelId = orgCertRel.getOrgCertId();
+                orgCertRel.setOrgCertId(orgCertRelId);
+                orgCertRel.setOrgId(org.getOrgId());
+                orgCertRel.setCertId(Integer.valueOf(certId));
+                orgCertRel.insert();
+            }
+        }
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("新增成功");
         return ret;
@@ -413,6 +436,42 @@ public class OrgController {
             }
         }
 
+        //更新组织证件
+        Wrapper orgCertWrapper = Condition.create()
+                .eq("ORG_ID",org.getOrgId())
+                .eq("STATUS_CD","1000");
+        List<OrgCertRel> orgCertRelcurList = orgCertRelService.selectList(orgCertWrapper);
+        List<String> cerList = org.getCertIdList();
+        for(String certId : cerList){
+            for(OrgCertRel ocr : orgCertRelcurList){
+                isExists = false;
+                if(ocr.getCertId().longValue() == Integer.valueOf(certId)){
+                    isExists = true;
+                    break;
+                }
+            }
+            if(!isExists){
+                OrgCertRel orgCertRel = new OrgCertRel();
+                Long orgCertRelId = orgCertRel.getOrgCertId();
+                orgCertRel.setOrgCertId(orgCertRelId);
+                orgCertRel.setOrgId(org.getOrgId());
+                orgCertRel.setCertId(Integer.valueOf(certId));
+                orgCertRel.insert();
+            }
+        }
+        for(OrgCertRel ocr : orgCertRelcurList){
+            for(String certId : cerList){
+                isExists = false;
+                if(ocr.getCertId().longValue() == Integer.valueOf(certId)){
+                    isExists = true;
+                    break;
+                }
+            }
+            if(!isExists){
+                orgCertRelService.delete(ocr);
+            }
+        }
+
         if (!"1000".equals(org.getStatusCd())){
             //删除组织关系
             List<OrgRel> orList = orgRelService.getOrgRel(orgTree.getOrgTreeId().toString(),org.getOrgId().toString());
@@ -465,7 +524,7 @@ public class OrgController {
     })
     @UooLog(value = "查询组织信息", key = "getOrg")
     @RequestMapping(value = "/getOrg", method = RequestMethod.GET)
-    @Transactional(rollbackFor = Exception.class)
+    //@Transactional(rollbackFor = Exception.class)
     public ResponseResult<Org> getOrg(String orgId){
         ResponseResult<Org> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(orgId)){
@@ -494,6 +553,14 @@ public class OrgController {
         if(psonOrgVoList!=null && psonOrgVoList.size()>0){
             org.setPsonOrgVoList(psonOrgVoList);
         }
+        //组织证件类型
+        Wrapper orgCertWrapper = Condition.create()
+                .eq("ORG_ID",org.getOrgId())
+                .eq("STATUS_CD","1000");
+//        List<Cert> orgCertRelcurList = orgCertRelService.selectOrgCerRelByOrgId(orgCertWrapper);
+//        orgCertRelService.getId();
+
+
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("查询成功");
         ret.setData(org);
@@ -542,6 +609,36 @@ public class OrgController {
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("查询成功");
         ret.setData(page);
+        return ret;
+    }
+
+
+    @ApiOperation(value = "查询组织额外信息", notes = "查询组织额外信息")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "查询组织额外信息", key = "getOrgExtByOrgId")
+    @RequestMapping(value = "/getOrgExtByOrgId", method = RequestMethod.GET)
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(String orgRootId, String orgId){
+        ResponseResult<HashMap<String,String>> ret = new ResponseResult<>();
+        if(StrUtil.isNullOrEmpty(orgId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织标识为空");
+            return ret;
+        }
+        if(StrUtil.isNullOrEmpty(orgRootId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树根节点标识为空");
+            return ret;
+        }
+        HashMap<String,String> listMap = new HashMap<String,String>();
+        String fullName = orgService.getSysFullName(orgRootId,orgId);
+        String followOrg = orgTreeService.getOrgTreeNameByOrgId(orgId);
+        listMap.put("FULL_NAME",fullName);
+        listMap.put("FOLLOW_ORG",followOrg);
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setMessage("查询成功");
+        ret.setData(listMap);
         return ret;
     }
 

@@ -12,10 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -77,7 +74,7 @@ public class TbDictionaryController extends BaseController {
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "String")
     })
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbDictionary> removeTbDictionary(@RequestBody String dictionaryName, @RequestBody Long updateUser) {
+    public ResponseResult<TbDictionary> removeTbDictionary(@RequestParam("dictionaryName") String dictionaryName, @RequestParam("updateUser") Long updateUser) {
         ResponseResult<TbDictionary> responseResult = new ResponseResult<TbDictionary>();
 
         // 查询出该字典列名对应的字典

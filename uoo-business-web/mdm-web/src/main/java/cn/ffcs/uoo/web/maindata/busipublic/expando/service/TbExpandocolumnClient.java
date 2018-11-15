@@ -6,10 +6,7 @@ import cn.ffcs.uoo.web.maindata.busipublic.expando.service.fallback.TbExpandocol
 import cn.ffcs.uoo.web.maindata.busipublic.vo.ResponseResult;
 import common.config.PersonnelServiceConfiguration;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,7 +15,7 @@ import java.util.List;
  * @author zhanglu
  * @date 2018-11-09
  */
-@FeignClient(value = "uoo-public",configuration = {PersonnelServiceConfiguration.class},fallback = TbExpandocolumnClientHystrix.class)
+@FeignClient(value = "business-public",configuration = {PersonnelServiceConfiguration.class},fallback = TbExpandocolumnClientHystrix.class)
 public interface TbExpandocolumnClient {
     @RequestMapping(value = "/tbExpandocolumn/update", method = RequestMethod.POST)
     ResponseResult<TbExpandocolumn> updateTbExpandocolumn(@RequestBody TbExpandocolumn tbExpandocolumn);
@@ -27,11 +24,11 @@ public interface TbExpandocolumnClient {
     ResponseResult<TbExpandocolumn> addTbExpandocolumn(@RequestBody TbExpandocolumn tbExpandocolumn);
 
     @RequestMapping(value = "/tbExpandocolumn/del", method = RequestMethod.POST)
-    ResponseResult<TbExpandocolumn> removeTbExpandocolumn(@RequestBody Long columnId, @RequestBody Long updateUser);
+    ResponseResult<TbExpandocolumn> removeTbExpandocolumn(@RequestParam("columnId") Long columnId, @RequestParam("updateUser") Long updateUser);
 
     @RequestMapping(value = "/tbExpandocolumn/getList/{tableId}", method = RequestMethod.GET)
-    List<TbExpandocolumn> queryListByTableId(@PathVariable Long tableId);
+    List<TbExpandocolumn> queryListByTableId(@PathVariable("tableId") Long tableId);
 
     @RequestMapping(value = "/tbExpandocolumn/getColumnList/{tableId}/{resourceId}", method = RequestMethod.GET)
-    List<TbExpandocolumn> queryColumnList(@PathVariable Long tableId, @PathVariable String resourceId);
+    List<TbExpandocolumn> queryColumnList(@PathVariable("tableId") Long tableId, @PathVariable("resourceId") String resourceId);
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.system.dao.SysDeptMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysDept">
+    <id column="DEPT_ID" jdbcType="DECIMAL" property="deptId" />
+    <result column="DEPT_NAME" jdbcType="VARCHAR" property="deptName" />
+    <result column="DEPT_CODE" jdbcType="VARCHAR" property="deptCode" />
+    <result column="P_DEPT_ID" jdbcType="DECIMAL" property="pDeptId" />
+    <result column="P_DEPT_IDS" jdbcType="VARCHAR" property="pDeptIds" />
+    <result column="SIMPLE_NAME" jdbcType="VARCHAR" property="simpleName" />
+    <result column="FULL_NAME" jdbcType="VARCHAR" property="fullName" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+    <result column="NOTES" jdbcType="VARCHAR" property="notes" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DEPT_ID, DEPT_NAME, DEPT_CODE, P_DEPT_ID, P_DEPT_IDS, SIMPLE_NAME, FULL_NAME, STATUS_CD, 
+    CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, NOTES
+  </sql>
+
+</mapper>
