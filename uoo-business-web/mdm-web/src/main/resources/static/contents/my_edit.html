@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+
+<title>个人信息-编辑</title>
+</head>
+
+<body>
+
+<div class="WhitePanel">
+    <div class="ContentFull">
+    	<form action="my.html">
+            <div class="BoardTitle"><span class="Name">基本信息</span></div>
+            <div class="BoardContent ulhide">
+                <div class="fleft Col2 tcenter">
+                    <img class="BigFace" src="../images/face/zqz.png" alt="头像" />
+                    <div class="KeyWords">
+                        <span><a href="#">编辑</a></span>
+                        <a href="#">删除</a>
+                    </div>
+                </div>
+                <div class="fleft Col8 FormList">
+                    <ul class="fleft Col5">
+                        <li>
+                            <span class="Label"><span class="Red">* </span>姓名</span>
+                            <input class="Col6" type="text" value="张庆忠" />
+                        </li>
+                        <li>
+                            <span class="Label"><span class="Red">* </span>性别</span>
+                            <label class="Col2" for="man"><input id="man" name="sex" type="radio" checked />男</label>
+                            <label class="Col2" for="female"><input id="female" name="sex" type="radio" />女</label>
+                        </li>
+                        <li>
+                            <span class="Label"><span class="Red">* </span>证件类型</span>
+                            <select class="Col6">
+                                <option>请选择</option>
+                                <option selected>身份证</option>
+                                <option>护照</option>
+                            </select>
+                        </li>
+                        <li>
+                            <span class="Label"><span class="Red">* </span>证件号码</span>
+                            <input class="Col6" type="text" value="350111198902345678" />
+                        </li>
+                        <li>
+                            <span class="Label"><span class="Red">* </span>籍贯</span>
+                            <input class="Col6" type="text" value="福建龙岩" />
+                        </li>
+                        <li>
+                        	<span class="Label">民族</span>
+                            <input class="Col6" type="text" value="汉" />
+                        </li>
+                        <li>
+                        	<span class="Label"><span class="Red">* </span>联系电话</span>
+                            <input class="Col6" type="text" value="18905712345" />
+                        </li>
+                    </ul>
+                    <ul class="fleft Col5">
+                        <li>
+                            <span class="Label">员工工号</span>
+                            <input class="Col6" type="text" value="100005713012" disabled />
+                        </li>
+                        <li>
+                            <span class="Label">人员编码</span>
+                            <input class="Col6" type="text" value="5713012" disabled />
+                        </li>
+                        <li>
+                            <span class="Label">人力编码</span>
+                            <input class="Col6" type="text" value="5713012" disabled />
+                        </li>
+                        <li>
+                            <span class="Label">首次工作时间</span>
+                            <input class="Col6" type="text" value="2003-06" />
+                            <a href="#" class="Icon IconInput IconCal"></a>
+                        </li>
+                        <li>
+                            <span class="Label">婚姻状况</span>
+                            <label for="married"><input id="married" name="marriage" type="radio" />已婚</label>
+                            <label for="unmarried"><input id="unmarried" name="marriage" type="radio" checked />未婚</label>
+                            <label for="divorce"><input id="divorce" name="marriage" type="radio" />离异</label>
+                        </li>
+                        <li>
+                            <span class="Label">政治面貌</span>
+                            <select class="Col6">
+                                <option>群众</option>
+                                <option>共产党员</option>
+                                <option>其他</option>
+                            </select>
+                        </li>
+                        <li>
+                            <span class="Label"><span class="Red">* </span>邮箱</span>
+                            <input class="Col6" type="text" value="18905712345@189.cn" />
+                        </li>
+                    </ul>
+                    <ul class="clear ColFull">
+                        <li>
+                        	<span class="Label"><span class="Red">* </span>详细地址</span>
+                            <input class="Col8" type="text" value="浙江省杭州市余杭区育士路50号" />
+                        </li>
+					</ul>
+                </div>
+                <div class="Contents clear"><!--间隙--></div>
+                <div class="BotBtn bdTop">
+                    <input class="Btn BtnBlue" type="submit" value="保存" />
+                    <input class="Btn" type="button" value="取消" onClick="javascript:history.go(-1)" />
+                </div>
+            </div>
+        </form>
+        <!--基本信息End-->
+
+    	<form action="my.html">
+            <div class="BoardTitle"><span class="Name">工作经历</span></div>
+            <div class="BoardContent">
+                <ul class="ulhide Center Col6 FormList">
+                    <li>
+                        <span class="Label"><span class="Red">* </span>时间</span>
+                        <input class="Col3" type="text" value="2012-08" />
+                        <a href="#" class="Icon IconInput IconCal"></a>
+                        <input class="Col3" type="text" value="至今" />
+                        <a href="#" class="Icon IconInput IconCal"></a>
+                    </li>
+                    <li>
+                        <span class="Label"><span class="Red">* </span>单位名称</span>
+                        <input class="Col6" type="text" value="北京福富软件技术股份有限公司福州分公司" />
+                    </li>
+                    <li>
+                        <span class="Label"><span class="Red">* </span>职位</span>
+                        <select class="Col6">
+                            <option>请选择</option>
+                            <option selected>高层管理</option>
+                            <option>中层管理</option>
+                            <option>普通职员</option>
+                        </select>
+                    </li>
+                    <li>
+                        <span class="Label"><span class="Red">* </span>岗位描述</span>
+                        <textarea class="Col6" rows="5" type="text" value="">1. 负责UI设计创意提案
+2. 设计规范制定</textarea>
+                    </li>
+                    <li>
+                        <span class="Label"><span class="Red">* </span>专业</span>
+                        <input class="Col6" type="text" value="" />
+                    </li>
+                </ul>
+                <div class="Contents"><!--间隙--></div>
+                <div class="BotBtn bdTop">
+                    <input class="Btn BtnBlue" type="submit" value="保存" />
+                    <input class="Btn" type="button" value="取消" onClick="location.href='my.html'" />
+                </div>
+            </div>
+        </form>
+        <!--工作经历End-->
+
+    	<form action="my.html">
+            <div class="BoardTitle"><span class="Name">教育经历</span></div>
+            <div class="BoardContent">
+                <ul class="ulhide Center Col6 FormList">
+                    <li>
+                        <span class="Label"><span class="Red">* </span>时间</span>
+                        <input class="Col3" type="text" value="2004-09" />
+                        <a href="#" class="Icon IconInput IconCal"></a>
+                        <input class="Col3" type="text" value="2008-06" />
+                        <a href="#" class="Icon IconInput IconCal"></a>
+                    </li>
+                    <li>
+                        <span class="Label"><span class="Red">* </span>学校</span>
+                        <input class="Col6" type="text" value="浙江大学" />
+                    </li>
+                    <li>
+                        <span class="Label"><span class="Red">* </span>专业</span>
+                        <input class="Col6" type="text" value="计算机科学技术" />
+                    </li>
+                    <li>
+                        <span class="Label"><span class="Red">* </span>学习方式</span>
+                        <select class="Col6">
+                            <option>请选择</option>
+                            <option selected>全日制</option>
+                            <option>函授</option>
+                            <option>其他</option>
+                        </select>
+                    </li>
+                    <li>
+                        <span class="Label"><span class="Red">* </span>学位</span>
+                        <select class="Col6">
+                            <option>请选择</option>
+                            <option>无</option>
+                            <option>学士</option>
+                            <option selected>硕士</option>
+                            <option>博士</option>
+                            <option>其他</option>
+                        </select>
+                    </li>
+                </ul>
+                <div class="Contents"><!--间隙--></div>
+                <div class="BotBtn bdTop">
+                    <input class="Btn BtnBlue" type="submit" value="保存" />
+                    <input class="Btn" type="button" value="取消" onClick="location.href='my.html'" />
+                </div>
+            </div>
+        </form>
+        <!--工作经历End-->
+    </div>
+</div>
+
+</body>
+</html>
