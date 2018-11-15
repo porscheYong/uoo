@@ -1,6 +1,6 @@
 spring:
   application:
-    name: queues-manager
+    name: queues-monitor
   datasource:
       druid:
         url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
@@ -82,10 +82,12 @@ spring:
           reset-enable: false
   #      aop-patterns: cn.ffcs.uoo.**.service.*
 
-  rabbitmq:
-    username: root
-    password: 123
-    host: 134.96.253.221
+
+rabbitmq:
+  ip: 192.168.75.129
+  port: 15672
+  username: root
+  password: 123
 
 mybatis-plus:
   mapper-locations: classpath:mapper/**Mapper.xml
@@ -102,11 +104,11 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
 
 server:
-  port: 9400
+  port: 9500
 
 eureka:
   instance:
-    appname: queues-manager
+    appname: queues-monitor
     hostname: localhost
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
