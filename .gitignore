@@ -161,7 +161,7 @@ GitHub.sublime-settings
 nbproject/private/
 build/
 nbbuild/
-dist/
+
 nbdist/
 .nb-gradle/
 ### VisualStudioCode template
@@ -549,7 +549,7 @@ tramp
 
 # cask packages
 .cask/
-dist/
+
 
 # Flycheck
 flycheck_*.el
