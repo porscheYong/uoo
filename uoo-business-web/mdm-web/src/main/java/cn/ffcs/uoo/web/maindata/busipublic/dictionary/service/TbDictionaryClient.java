@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author zhanglu
  * @date 2018-11-08
  */
-@FeignClient(value = "uoo-public",configuration = {PersonnelServiceConfiguration.class},fallback = TbDictionaryClientHystrix.class)
+@FeignClient(value = "business-public",configuration = {PersonnelServiceConfiguration.class},fallback = TbDictionaryClientHystrix.class)
 public interface TbDictionaryClient {
     @RequestMapping(value = "/tbDictionary/update", method = RequestMethod.POST)
     ResponseResult<TbDictionary> updateTbDictionary(@RequestBody TbDictionary tbDictionary);

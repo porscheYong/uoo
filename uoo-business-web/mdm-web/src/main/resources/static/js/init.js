@@ -1,4 +1,4 @@
-var base = 'http://UOO-ORGANIZATION/'; //开发地址
+var base = 'http://134.96.253.221:11100/'; //开发地址
 
 // 全局异步封装
 var $http = {

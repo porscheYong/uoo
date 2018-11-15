@@ -131,6 +131,8 @@ function initOrgPersonnelTable (results) {
         //     crossDomain: true
         // }
     });
+    var loading = parent.loading;
+    loading.screenMaskDisable('container');
 }
 
 var orgId = getQueryString('id');

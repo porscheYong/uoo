@@ -125,6 +125,14 @@
         AND B.STATUS_CD = 1000) AA
         START WITH ORG_ID = #{orgVo.orgRootId}
         CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID
+        ),ORGTYPE AS(
+        SELECT
+        A.ORG_ID,
+        B.ORG_TYPE_NAME
+        FROM TB_ORG_ORGTYPE_REL A, TB_ORG_TYPE B
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND A.ORG_TYPE_ID = B.ORG_TYPE_ID
         )
         SELECT D.ORG_ID ORGID,
         D.ORG_NAME ORGNAME,
@@ -133,7 +141,8 @@
         D.ORG_CODE ORGCODE,
         D.LOC_ID LOCID,
         PL.LOC_CODE LOCCODE,
-        PL.LOC_NAME LOCNAME
+        PL.LOC_NAME LOCNAME,
+        (select to_char(wm_concat(a.ORG_TYPE_NAME)) from ORGTYPE a where a.ORG_ID = D.ORG_ID  ) ORGTYPESPLIT
         FROM (SELECT * FROM ORGTREE WHERE 1=1
         <if test="orgVo.orgId != null and orgVo.orgId != ''">
            AND SUP_ORG_ID = #{orgVo.orgId}

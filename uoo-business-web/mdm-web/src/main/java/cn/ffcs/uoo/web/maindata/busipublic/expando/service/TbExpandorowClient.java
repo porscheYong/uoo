@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@FeignClient(value = "uoo-public",configuration = {PersonnelServiceConfiguration.class},fallback = TbExpandorowClientHystrix.class)
+@FeignClient(value = "business-public",configuration = {PersonnelServiceConfiguration.class},fallback = TbExpandorowClientHystrix.class)
 public interface TbExpandorowClient {
     @RequestMapping(value = "/tbExpandorow/getList/{tableId}/{resourceId}/{recordId}", method = RequestMethod.GET)
     List<TbExpandorow> queryRowList(@PathVariable("tableId") Long tableId, @PathVariable("resourceId") String resourceId, @PathVariable("recordId") String recordId);
