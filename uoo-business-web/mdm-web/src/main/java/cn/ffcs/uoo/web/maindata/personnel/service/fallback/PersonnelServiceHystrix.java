@@ -1,7 +1,10 @@
-package cn.ffcs.uoo.web.maindata.personnel.service;
+package cn.ffcs.uoo.web.maindata.personnel.service.fallback;
 
 
 import cn.ffcs.uoo.web.maindata.personnel.entity.TbPersonnel;
+import cn.ffcs.uoo.web.maindata.personnel.service.PersonnelService;
+import cn.ffcs.uoo.web.maindata.personnel.vo.EditFormPersonnelVo;
+import cn.ffcs.uoo.web.maindata.personnel.vo.PersonnelVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.stereotype.Component;
 
@@ -30,28 +33,26 @@ import org.springframework.stereotype.Component;
  * @Version 1.0.0
 */
 @Component
-public class PersonnelServiceHystrix implements PersonnelService{
+public class PersonnelServiceHystrix implements PersonnelService {
+
 
     @Override
-    public Page<TbPersonnel> testPersonnel() {
-        Page<TbPersonnel> page = new Page<TbPersonnel>();
-        page.setSize(12);
-        page.setCurrent(0);
-        return page;
-    }
-
-    @Override
-    public Page<TbPersonnel> getPersonnelCondition(TbPersonnel tbPersonnel) {
+    public Object getFormPersonnel(Long personnelId, Long orgRootId, Long orgId) {
         return null;
     }
 
     @Override
-    public Page<TbPersonnel> getPersonnel(Integer pageNo, Integer pageSize) {
+    public Object savePersonnel(EditFormPersonnelVo editFormPersonnelVo) {
         return null;
     }
 
     @Override
-    public String test() {
-        return " service is error";
+    public Object deletePersonnel(Long personnelId) {
+        return null;
+    }
+
+    @Override
+    public Object upPersonnel(PersonnelVo personnelVo) {
+        return null;
     }
 }
