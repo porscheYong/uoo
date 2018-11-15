@@ -21,7 +21,7 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018/10/21
  */
-@FeignClient(value = "uoo-organization",configuration = {PersonnelServiceConfiguration.class},fallback = OrgTreeServiceHystrix.class)
+@FeignClient(value = "business-organization",configuration = {PersonnelServiceConfiguration.class},fallback = OrgTreeServiceHystrix.class)
 public interface OrgTreeService {
 
     @RequestMapping(value="/orgTree/addOrgTree",method = RequestMethod.POST,headers={"Content-Type=application/json"})

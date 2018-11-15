@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -523,7 +524,7 @@ public class OrgController extends BaseController {
     })
     @UooLog(value = "查询组织信息", key = "getOrg")
     @RequestMapping(value = "/getOrg", method = RequestMethod.GET)
-    @Transactional(rollbackFor = Exception.class)
+    //@Transactional(rollbackFor = Exception.class)
     public ResponseResult<Org> getOrg(String orgId){
         ResponseResult<Org> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(orgId)){

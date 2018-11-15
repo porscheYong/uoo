@@ -20,7 +20,7 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018-09-25
  */
-@FeignClient(value = "uoo-organization",fallback = OrgRelServiceHystrix.class)
+@FeignClient(value = "business-organization",fallback = OrgRelServiceHystrix.class)
 public interface OrgRelService {
 
    @RequestMapping(value="/orgRel/getOrgRelTree",method = RequestMethod.GET)
