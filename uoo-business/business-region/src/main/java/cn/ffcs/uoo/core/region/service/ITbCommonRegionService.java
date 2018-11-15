@@ -19,4 +19,8 @@ public interface ITbCommonRegionService extends IService<TbCommonRegion> {
     public Long getId();
     @SuppressWarnings("rawtypes")
     public List<Map> selectUnionPolLoc(Map<String,Object> params);
+    @SuppressWarnings("rawtypes")
+    public List<Map> getChildCommonRegionInfo(Map<String,Object> params);
+    @SuppressWarnings("rawtypes")
+    public List<Map> getTreeCommonRegion(Map<String,Object> params);
 }

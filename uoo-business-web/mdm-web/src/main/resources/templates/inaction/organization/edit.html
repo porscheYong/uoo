@@ -64,24 +64,24 @@
   <body style="background: #fff;">
     <div>
         <div class="board-title">
-          <span class="name ft18">编辑-市场部 100000571001</span>
+          <span class="name ft18">编辑-<span id="orgName"></span></span>
         </div>
         <div class="nav-tabs-brief" style="padding-top: 35px; overflow-x: hidden;">
           <ul class="nav nav-tabs tab-title" role="tablist" id="myTabs">
-            <li role="presentation" class="active" style="width: 10%;"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">基础信息</a>
+            <li role="presentation" class="active col-md-2 col-sm-2 col-xs-6"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">基础信息</a>
             </li>
-            <li role="presentation" class="" style="width: 10%;"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">关系信息</a>
+            <li role="presentation" class="col-md-2 col-sm-2 col-xs-6"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">关系信息</a>
             </li>
           </ul>
 
           <div class="tab-content">
             <div class="tab-pane active" id="tab_content1">
-              <form action="/submit" method="post" style="padding: 10px;">
+              <form action="/submit" method="post" style="padding: 10px;" id="immediateForm">
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="orgName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织名称</label>
-                      <input type="tel" id="orgName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required>
+                      <input id="orgName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required>
                     </div>
                   </div>
 
@@ -101,14 +101,14 @@
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="shortName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织简称</label>
-                      <input type="tel" id="shortName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市场部">
+                      <input id="shortName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市场部">
                     </div>
                   </div>
 
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="orgNameEn" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">英文简称</label>
-                      <input type="code" id="orgNameEn" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="market">
+                      <input type="code" id="orgNameEn" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" value="market">
                     </div>
                   </div>
                 </div>
@@ -128,7 +128,7 @@
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="createDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">成立时间</label>
-                      <input type="code" id="createDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}">
+                      <input id="createDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" pattern="\d{4}">
                     </div>
                   </div>
                 </div>
@@ -148,7 +148,7 @@
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="idCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">联系人</label>
-                      <input type="code" id="idCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="董世仓">
+                      <input id="idCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" value="董世仓">
                     </div>
                   </div>
                 </div>

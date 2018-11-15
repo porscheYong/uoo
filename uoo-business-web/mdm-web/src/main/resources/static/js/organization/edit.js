@@ -1,3 +1,8 @@
+var orgId = getQueryString('id');
+var orgName = getQueryString('name');
+
+$('#orgName').html(orgName);
+
 // lulu ui select插件
 seajs.use('/vendors/lulu/js/common/ui/Select', function () {
   $('select').selectMatch();
@@ -76,7 +81,7 @@ function initOrgTypeTree (orgId) {
         chkboxType: { "Y": "", "N": "" }
     }
   };
-  $http.get('orgType/getFullOrgTypeTree', null, function (data) {
+  $http.get('http://134.96.253.221:11100/orgType/getFullOrgTypeTree', null, function (data) {
       console.log(data)
       // $.fn.zTree.init($("#standardTree"), setting, data);
       // var zTree = $.fn.zTree.getZTreeObj("standardTree");
@@ -216,11 +221,21 @@ function initOrgRelTable (results) {
     });
 }
 
-var orgScale
+var orgScale;
+
+// 获取城乡字典数据
+function getCityVillage () {
+    $http.get('http://134.96.253.221:11500/tbDictionaryItem/getList/CITY_VILLAGE', {}, function (data) {
+        console.log(data)
+    }, function (err) {
+        console.log(err)
+    })
+}
+getCityVillage()
 
 // 获取组织基础信息
 function getOrg (orgId) {
-    $http.get('org/getOrg', {
+    $http.get('http://134.96.253.221:11100/org/getOrg', {
         orgId: orgId
     }, function (data) {
         $('#orgName').val(data.orgName).focus();
@@ -247,7 +262,7 @@ function getOrg (orgId) {
 
 // 获取组织关系信息
 function getOrgRel (orgId) {
-    $http.get('orgRel/getOrgRelTypePage', {
+    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTypePage', {
         orgId: orgId
     }, function (data) {
         initOrgRelTable(data.records);
@@ -256,7 +271,6 @@ function getOrgRel (orgId) {
     })
 }
 
-var orgId = getQueryString('id');
 getOrg(orgId);
 getOrgRel(orgId);
 
@@ -271,15 +285,6 @@ function cancel () {
   var url = "list.html?id=" + orgId;
   window.location.href = url;
 }
-
-function getCityVillage (orgId) {
-    $http.get('tbDictionaryItem/getList/CITY_VILLAGE', {}, function (data) {
-        console.log(data)
-    }, function (err) {
-        console.log(err)
-    })
-}
-getCityVillage()
 
 // 更新组织信息
 function updateOrg () {
@@ -300,7 +305,13 @@ function updateOrg () {
   var address = $('#address').val();
 }
 
-// $('#saveBtn').on('click', function () {
-//   var time = new Date($('#createDate').val()).getTime();
-//   console.log(time)
-// })
+$('#saveBtn').on('click', function () {
+    seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+        var immediateForm = $('#immediateForm');
+        var immediateValidate = new Validate(immediateForm);
+        immediateValidate.immediate();
+    })
+
+  var time = new Date($('#createDate').val()).getTime();
+  console.log(time)
+})

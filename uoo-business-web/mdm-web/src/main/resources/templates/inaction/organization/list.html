@@ -47,8 +47,21 @@
   <body style="background: #fff;">
     <div>
       <div class="board-title">
-        <span class="name ft18">杭州分公司</span
+        <span class="name ft18" id="orgName"></span
         ><a class="icon icon-edit" id="editBtn" style="vertical-align: top;"></a>
+        <div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;">
+          <!--<span class="breadcrumb-item">-->
+            <!--<a href="javascript:viod(0);">杭州</a-->
+            <!--&gt;<span class="breadcrumb-separator" style="margin: 0 9px;">/</span>-->
+          <!--</span>-->
+          <!--<span class="breadcrumb-item">-->
+            <!--<a href="javascript:viod(0);">浙江分公司</a-->
+            <!--&gt;<span class="breadcrumb-separator" style="margin: 0 9px;">/</span>-->
+          <!--</span>-->
+          <!--<span class="breadcrumb-item">-->
+            <!--<a href="javascript:viod(0);">杭州分公司</a>-->
+          <!--</span>-->
+        </div>
       </div>
       <div class="board-title">
         <span class="name ft18">下级组织</span>
@@ -56,14 +69,14 @@
           <a class="button-add" id="searchBtn" href=""><span class="fa fa-plus-circle icon-add"></span>添加</a>
         </div>
       </div>
-      <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 50px;">
+      <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px; height: 450px;">
           <table id="orgTable" class="stripe" width="100%"></table>
       </div>
 
       <div class="board-title">
           <span class="name ft18">组织人员</span>
       </div>
-      <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 50px;">
+      <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
           <table id="personnelTable" class="stripe" width="100%"></table>
       </div>
     </div>

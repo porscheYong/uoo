@@ -231,6 +231,7 @@ function getOrgRel (orgId) {
 }
 
 var orgId = getQueryString('id');
+
 getOrg(orgId);
 getOrgRel(orgId);
 

@@ -29,6 +29,22 @@ public class TbPoliticalLocationController  {
     @Autowired
     private PoliticalLocationService polLocSvc;
     
+    @ApiOperation(value = "根据ID获取下一级信息", notes = "根据ID获取下一级信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long", paramType = "path"), })
+    //@UooLog(value = "根据ID获取下一级信息", key = "getChildPoliticalLocationInfo")
+    @GetMapping("getChildPoliticalLocationInfo/{id}")
+    public ResponseResult getChildPoliticalLocationInfo(@PathVariable(value="id") Long id){
+        return polLocSvc.getChildPoliticalLocationInfo(id);
+        
+    }
+    @ApiOperation(value = "行政区域树", notes = "行政区域树")
+    //@UooLog(value = "行政区域树", key = "getTreePoliticalLocation")
+    @GetMapping("getTreePoliticalLocation/{id}")
+    public ResponseResult getTreePoliticalLocation(@PathVariable(value="id") Long id ){
+        return polLocSvc.getTreePoliticalLocation(id);
+    }
+    
     @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),

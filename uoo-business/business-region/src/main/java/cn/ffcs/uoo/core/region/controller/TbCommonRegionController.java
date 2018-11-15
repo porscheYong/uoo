@@ -33,6 +33,7 @@ import cn.ffcs.uoo.core.region.service.ITbPoliticalLocationService;
 import cn.ffcs.uoo.core.region.service.ITbRegionLocationRelService;
 import cn.ffcs.uoo.core.region.vo.CommonRegionDTO;
 import cn.ffcs.uoo.core.region.vo.ResponseResult;
+import cn.ffcs.uoo.core.region.vo.ZTreeNode;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -102,7 +103,90 @@ public class TbCommonRegionController extends BaseController {
 
         return ResponseResult.createSuccessResult(m, "");
     }
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @ApiOperation(value = "根据ID获取下一级信息", notes = "根据ID获取下一级信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long", paramType = "path"), })
+    @UooLog(value = "根据ID获取下一级信息", key = "getChildCommonRegionInfo")
+    @GetMapping("getChildCommonRegionInfo/{id}")
+    public ResponseResult getChildCommonRegionInfo(@PathVariable(value="id") Long id){
+        Map<String, Object> params = new HashMap<>();
+        params.put("statusCd", DeleteConsts.VALID);
+        params.put("upRegionId", id);
+        params.put("statusCd", DeleteConsts.VALID);
+        List<Map> list = regionService.getChildCommonRegionInfo(params);
+        List<Map> result = new ArrayList<>();
+        Map<Long, Integer> keys = new HashMap<>();
+        if (list != null) {
+            for (Map m : list) {
+                Object key = m.get("COMMON_REGION_ID");
+                Long lk = Long.valueOf(key.toString());
+                if (keys.containsKey(lk)) {
+                    Map map = result.get(keys.get(lk));
+                    List<Long> locIds = (List<Long>) map.get("LOC_ID");
+                    if (m.get("LOC_ID") != null)
+                        locIds.add(Long.valueOf(m.get("LOC_ID").toString()));
+                    map.put("LOC_ID", locIds);
 
+                    List<String> locCodes = (List<String>) map.get("LOC_CODE");
+                    if (m.get("LOC_CODE") != null)
+                        locCodes.add(m.get("LOC_CODE").toString());
+                    map.put("LOC_CODE", locCodes);
+
+                    List<String> locNames = (List<String>) map.get("LOC_NAME");
+                    if (m.get("LOC_NAME") != null)
+                        locNames.add(m.get("LOC_NAME").toString());
+                    map.put("LOC_NAME", locNames);
+
+                    result.set(keys.get(lk), map);
+                } else {
+                    List<Long> locIds = new ArrayList<>();
+                    if (m.get("LOC_ID") != null)
+                        locIds.add(Long.valueOf(m.get("LOC_ID").toString()));
+                    m.put("LOC_ID", locIds);
+                    List<String> locCodes = new ArrayList<>();
+                    if (m.get("LOC_CODE") != null)
+                        locCodes.add(m.get("LOC_CODE").toString());
+                    m.put("LOC_CODE", locCodes);
+                    List<String> locNames = new ArrayList<>();
+                    if (m.get("LOC_NAME") != null)
+                        locNames.add(m.get("LOC_NAME").toString());
+                    m.put("LOC_NAME", locNames);
+                    result.add(m);
+                    keys.put(lk, result.size() - 1);
+                }
+
+            }
+        }else{
+            return ResponseResult.createErrorResult("暂无数据");
+        }
+        return ResponseResult.createSuccessResult(result,"success");
+    }
+    @ApiOperation(value = "公共管理区域树", notes = "公共管理区域树")
+    @UooLog(value = "公共管理区域树", key = "getTreeCommonRegion")
+    @GetMapping("getTreeCommonRegion/{id}")
+    public ResponseResult getTreeCommonRegion(@PathVariable(value="id") Long id ){
+        Map<String, Object> params = new HashMap<>();
+        params.put("statusCd", DeleteConsts.VALID);
+        params.put("upRegionId", id);
+        List<Map> list = regionService.getTreeCommonRegion(params);
+        if(list==null || list.isEmpty()){
+            return ResponseResult.createErrorResult("暂无数据");
+        }
+        List<ZTreeNode> ztlist=new ArrayList<>();
+        
+        for (Map map : list) {
+            ZTreeNode n=new ZTreeNode();
+            n.setId(Long.valueOf(map.get("COMMON_REGION_ID").toString()));
+            n.setName(map.get("REGION_NAME").toString());
+            Object upid = map.get("UP_REGION_ID");
+            n.setpId(upid==null?0:Long.valueOf(upid.toString()));
+            n.setOpen(n.getpId()==0);
+            ztlist.add(n);
+        }
+        return ResponseResult.createSuccessResult(ztlist,"success");
+    }
+    
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @ApiOperation(value = "公共管理区域列表", notes = "公共管理区域列表")
     @UooLog(value = "公共管理区域列表", key = "listAllCommonRegion")
@@ -154,6 +238,8 @@ public class TbCommonRegionController extends BaseController {
                 }
 
             }
+        }else{
+            return ResponseResult.createErrorResult("暂无数据");
         }
 
         ResponseResult rr = ResponseResult.createSuccessResult(result, "");

@@ -1,5 +1,23 @@
+var orgId = getQueryString('id');
+var orgName = getQueryString('name');
+
+// 获取组织完整路径
+function getOrgExtInfo () {
+    var pathArry = parent.nodeArr;
+    console.log(pathArry)
+    var pathStr = '';
+    for (var i = pathArry.length - 1; i >= 0; i--) {
+        if (i === 0) {
+            pathStr +=  '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a></span>';
+        } else {
+            pathStr += '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+        }
+    }
+    $('.breadcrumb').html(pathStr);
+}
+
 function getOrgList (orgId) {
-    $http.get('org/getOrgRelPage', {
+    $http.get('http://134.96.253.221:11100/org/getOrgRelPage', {
         orgId: orgId,
         orgRootId: '1'
     }, function (data) {
@@ -10,7 +28,7 @@ function getOrgList (orgId) {
 }
 
 function getOrgPersonnerList (orgId) {
-    $http.get('orgPersonRel/getPerOrgRelPage', {
+    $http.get('http://134.96.253.221:11100/orgPersonRel/getPerOrgRelPage', {
         orgId: orgId,
         orgRootId: '1'
     }, function (data) {
@@ -68,7 +86,7 @@ function initOrgTable (results) {
                 'next':       '下一页',  
                 'previous':   '上一页'  
             },  
-            'info': '总_TOTAL_人',  
+            'info': '总_TOTAL_条',
             'infoEmpty': '没有数据'
         },
         "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
@@ -276,15 +294,16 @@ function initOrgPersonnelTable (results) {
     });
 }
 
-var orgId = getQueryString('id');
+$('#orgName').html(orgName);
+getOrgExtInfo();
 getOrgList(orgId);
 getOrgPersonnerList(orgId);
 
 $('#editBtn').on('click', function () {
-    var url = 'edit.html?id=' + orgId;
+    var url = 'edit.html?id=' + orgId + '&name=' + orgName;
     $(this).attr('href', url);
 })
 $('#searchBtn').on('click', function () {
-   var url = 'search.html?id=' + orgId;
+    var url = 'search.html?id=' + orgId;
    $(this).attr('href', url);
 })

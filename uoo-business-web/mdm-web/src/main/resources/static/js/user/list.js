@@ -1,5 +1,10 @@
+var orgId = getQueryString('id');
+var orgName = getQueryString('name');
+
+$('#orgName').html(orgName);
+
 function getOrgPersonnerList (orgId) {
-    $http.get('orgPersonRel/getPerOrgRelPage', {
+    $http.get('http://134.96.253.221:11100/orgPersonRel/getPerOrgRelPage', {
         orgId: orgId,
         orgRootId: '1'
     }, function (data) {
