@@ -87,8 +87,16 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
      * @return
      */
     public boolean isLeaf(TreeNodeVo treeNodeVo,String orgRootId){
-        List<TreeNodeVo> li = orgRelMapper.isLeaf(orgRootId,treeNodeVo.getId());
-        if(li==null || li.size()<0){
+//        List<TreeNodeVo> li = orgRelMapper.isLeaf(orgRootId,treeNodeVo.getId());
+//        if(li==null || li.size()<1){
+//            treeNodeVo.setParent(false);
+//            return false;
+//        }
+//        treeNodeVo.setParent(true);
+//        return true;
+
+        int count = orgRelMapper.leafCount(orgRootId,treeNodeVo.getId());
+        if(count>0){
             treeNodeVo.setParent(false);
             return false;
         }

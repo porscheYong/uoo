@@ -116,6 +116,11 @@ spring:
       #host: http://134.96.253.221:8762/uooSolr
       repositories:
         enabled: true
+  rabbitmq:
+    host: 134.96.253.221
+    port: 5672
+    username: root
+    password: 123
 #eureka:
 #  client:
 #    service-url:
