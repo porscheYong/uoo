@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(value = "uoo-position",configuration = {PersonnelServiceConfiguration.class},fallback = TbPositionClientHystrix.class)
+@FeignClient(value = "business-position",configuration = {PersonnelServiceConfiguration.class},fallback = TbPositionClientHystrix.class)
 public interface TbPositionClient {
     @RequestMapping(value = "/tbPosition/add", method = RequestMethod.POST)
     ResponseResult<TbPosition> addTbPosition(@RequestBody TbPosition tbPosition);

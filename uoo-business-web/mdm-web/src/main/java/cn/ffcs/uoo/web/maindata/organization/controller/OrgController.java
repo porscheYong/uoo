@@ -26,7 +26,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/org" , produces = {"application/json;charset=UTF-8"})
-@Api(value = "/org", description = "组织相关操作")
 public class OrgController {
 
     @Resource
@@ -57,6 +56,7 @@ public class OrgController {
     public ResponseResult getOrg(@RequestParam(value = "orgId",required = false) String orgId) {
         return orgService.getOrg(orgId);
     }
+
 
     @ApiOperation(value = "获取组织关系分页", notes = "获取组织关系分页")
     @ApiImplicitParams({

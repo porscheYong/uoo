@@ -1,5 +1,5 @@
 // lulu ui select插件
-seajs.use('../../../static/vendors/lulu/js/common/ui/Select', function () {
+seajs.use('/vendors/lulu/js/common/ui/Select', function () {
   $('select').selectMatch();
 })
 

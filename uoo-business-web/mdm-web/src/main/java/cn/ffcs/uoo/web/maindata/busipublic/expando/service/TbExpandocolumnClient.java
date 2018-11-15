@@ -15,7 +15,7 @@ import java.util.List;
  * @author zhanglu
  * @date 2018-11-09
  */
-@FeignClient(value = "uoo-public",configuration = {PersonnelServiceConfiguration.class},fallback = TbExpandocolumnClientHystrix.class)
+@FeignClient(value = "business-public",configuration = {PersonnelServiceConfiguration.class},fallback = TbExpandocolumnClientHystrix.class)
 public interface TbExpandocolumnClient {
     @RequestMapping(value = "/tbExpandocolumn/update", method = RequestMethod.POST)
     ResponseResult<TbExpandocolumn> updateTbExpandocolumn(@RequestBody TbExpandocolumn tbExpandocolumn);

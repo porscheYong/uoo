@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(value = "uoo-position",configuration = {PersonnelServiceConfiguration.class},fallback = TbOrgPositionRelClientHystrix.class)
+@FeignClient(value = "business-position",configuration = {PersonnelServiceConfiguration.class},fallback = TbOrgPositionRelClientHystrix.class)
 public interface TbOrgPositionRelClient {
     @RequestMapping(value = "/tbOrgPositionRel/add", method = RequestMethod.POST)
     ResponseResult<TbOrgPositionRel> addTbOrgPositionRel(@RequestBody TbOrgPositionRel tbOrgPositionRel);
