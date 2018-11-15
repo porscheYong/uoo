@@ -35,7 +35,15 @@ public class BaseUnitConstants {
      */
     public static final String TBCERT_CERT_NO = "CERT_NO";
 
-    public static final String TBPERSONNEL_PERSOONEL_ID = "PERSOONEL_ID";
+    public static final String TBCONTACT_CONTACT_TYPE = "CONTACT_TYPE";
+
+    public static final String TBPERSONNEL_PERSONNEL_ID = "PERSONNEL_ID";
+
+    public static final String TBEDU_EDU_ID = "EDU_ID";
+
+    public static final String TBFAMILY_FAMILY_ID = "FAMILY_ID";
+
+    public static final String TBPSNJOB_PSNJOB_ID = "PSNJOB_ID";
 
     /**
      * 是推导
