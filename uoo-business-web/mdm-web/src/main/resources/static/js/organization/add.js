@@ -1,7 +1,7 @@
-
+var base = "http://134.96.253.221:11100/";
 
 function getOrgList (orgId) {
-    $http.get('org/getOrgRelPage', {
+    $http.get(base + 'org/getOrgRelPage', {
         orgId: orgId,
         orgRootId: '1'
     }, function (data) {
@@ -12,7 +12,7 @@ function getOrgList (orgId) {
 }
 
 function getOrgPersonnerList (orgId) {
-    $http.get('orgPersonRel/getPerOrgRelPage', {
+    $http.get(base + 'orgPersonRel/getPerOrgRelPage', {
         orgId: orgId
     }, function (data) {
         initOrgPersonnelTable(data.records)
@@ -274,7 +274,7 @@ function initOrgPersonnelTable (results) {
 }
 
 function getOrg (orgId) {
-    $http.get('org/getOrg', {
+    $http.get(base + 'org/getOrg', {
         orgId: orgId
     }, function (data) {
         console.log(data)
