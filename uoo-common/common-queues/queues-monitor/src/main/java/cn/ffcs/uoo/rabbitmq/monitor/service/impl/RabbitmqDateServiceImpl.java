@@ -1,8 +1,11 @@
 package cn.ffcs.uoo.rabbitmq.monitor.service.impl;
 
 import cn.ffcs.uoo.rabbitmq.monitor.config.RabbitMQConfig;
+import cn.ffcs.uoo.rabbitmq.monitor.dao.RabbitmqIndexMapper;
+import cn.ffcs.uoo.rabbitmq.monitor.pojo.RabbitmqIndex;
 import cn.ffcs.uoo.rabbitmq.monitor.service.RabbitmqDateService;
 import cn.ffcs.uoo.rabbitmq.monitor.util.RabbitMqDateUtil;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class RabbitmqDateServiceImpl implements RabbitmqDateService {
+public class RabbitmqDateServiceImpl extends ServiceImpl<RabbitmqIndexMapper,RabbitmqIndex> implements RabbitmqDateService {
 
     @Autowired
     private RabbitMQConfig rabbitMQConfig;
@@ -93,5 +96,15 @@ public class RabbitmqDateServiceImpl implements RabbitmqDateService {
         resultMap.put("nodes",nodeList);
         resultMap.put("queues",queueList);
         return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> test(){
+        int x = baseMapper.test1();
+        int y = baseMapper.test2();
+       Map<String,Object> map =  new HashMap<>();
+        map .put("x",x);
+        map .put("y",y);
+        return map;
     }
 }
