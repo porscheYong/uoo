@@ -1,18 +1,15 @@
 package cn.ffcs.uoo.web.maindata.personnel.controller;
 
-import cn.ffcs.uoo.web.maindata.personnel.entity.TbPersonnel;
+
 import cn.ffcs.uoo.web.maindata.personnel.service.PersonnelService;
 import cn.ffcs.uoo.web.maindata.personnel.vo.EditFormPersonnelVo;
 import cn.ffcs.uoo.web.maindata.personnel.vo.PersonnelVo;
-import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

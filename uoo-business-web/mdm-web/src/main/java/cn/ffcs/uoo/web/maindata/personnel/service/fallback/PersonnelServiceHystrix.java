@@ -1,11 +1,9 @@
 package cn.ffcs.uoo.web.maindata.personnel.service.fallback;
 
 
-import cn.ffcs.uoo.web.maindata.personnel.entity.TbPersonnel;
 import cn.ffcs.uoo.web.maindata.personnel.service.PersonnelService;
 import cn.ffcs.uoo.web.maindata.personnel.vo.EditFormPersonnelVo;
 import cn.ffcs.uoo.web.maindata.personnel.vo.PersonnelVo;
-import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.stereotype.Component;
 
 /**

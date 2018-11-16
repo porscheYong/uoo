@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @date 2018/11/14 14:28
  * @Version 1.0.0
  */
-@FeignClient(value = "uoo-user",configuration = {PersonnelServiceConfiguration.class},fallback = SlaveAcctServiceHystrix.class)
+@FeignClient(value = "business-user",configuration = {PersonnelServiceConfiguration.class},fallback = SlaveAcctServiceHystrix.class)
 public interface SlaveAcctService {
 
     @RequestMapping(value = "/tbSlaveAcct/addTbSlaveAcct", method = RequestMethod.POST, headers={"Content-Type=application/json"})

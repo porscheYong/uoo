@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @date 2018/11/14 14:28
  * @Version 1.0.0
  */
-@FeignClient(value = "personnel-service",configuration = {PersonnelServiceConfiguration.class},fallback = EduServiceHystrix.class)
+@FeignClient(value = "business-personnel",configuration = {PersonnelServiceConfiguration.class},fallback = EduServiceHystrix.class)
 public interface EduService {
 
     @RequestMapping(value = "/tbEdu/saveTbEdu", method = RequestMethod.POST, headers={"Content-Type=application/json"})

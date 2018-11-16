@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @date 2018/11/14 14:28
  * @Version 1.0.0
  */
-@FeignClient(value = "uoo-user",configuration = {PersonnelServiceConfiguration.class},fallback = UserServiceHystrix.class)
+@FeignClient(value = "business-user",configuration = {PersonnelServiceConfiguration.class},fallback = UserServiceHystrix.class)
 public interface UserService {
 
     @RequestMapping(value = "/tbUser/getUserList", method = RequestMethod.GET, headers={"Content-Type=application/json"})
@@ -26,4 +26,7 @@ public interface UserService {
 
     @RequestMapping(value = "/tbUser/getFormSlaveAcct", method = RequestMethod.GET, headers={"Content-Type=application/json"})
     public Object getFormSlaveAcct(@RequestParam("acctId") Long acctId);
+
+    @RequestMapping(value = "/tbUser/getPsnUser", method = RequestMethod.GET, headers={"Content-Type=application/json"})
+    public Object addUser(@RequestParam("userType") String userType, @RequestParam("personnelId") Long personnelId);
 }

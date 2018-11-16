@@ -50,6 +50,15 @@ public class UserController {
         return null;
     }
 
+    @ApiOperation(value = "创建用户", notes = "创建用户")
+    @ApiImplicitParams ({
+            @ApiImplicitParam(name = "userType", value = "用户类型", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long", paramType = "path")
+    })
+    @RequestMapping(value = "/getPsnUser", method = RequestMethod.GET)
+    public Object addUser(String userType, Long personnelId){
+        return userService.addUser(userType, personnelId);
+    }
 
 
 }

@@ -19,4 +19,9 @@ public class UserServiceHystrix implements UserService {
     public Object getFormSlaveAcct(Long acctId) {
         return null;
     }
+
+    @Override
+    public Object addUser(String userType, Long personnelId) {
+        return null;
+    }
 }
