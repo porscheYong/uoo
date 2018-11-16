@@ -215,6 +215,7 @@ public class OrgController extends BaseController {
             orgOrgtreeRef.setOrgOrgtreeId(orgOrgtreeRefId);
             orgOrgtreeRef.setOrgId(org.getOrgId());
             orgOrgtreeRef.setOrgTreeId(orgOrgRel.getOrgTreeId());
+            orgOrgtreeRef.setOrgBizName(org.getOrgName());
             orgOrgtreeRef.setStatusCd("1000");
             orgOrgtreeRef.insert();
 

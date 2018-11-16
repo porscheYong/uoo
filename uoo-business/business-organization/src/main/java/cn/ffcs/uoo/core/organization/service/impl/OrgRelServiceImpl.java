@@ -97,11 +97,11 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
 
         int count = orgRelMapper.leafCount(orgRootId,treeNodeVo.getId());
         if(count>0){
-            treeNodeVo.setParent(false);
-            return false;
+            treeNodeVo.setParent(true);
+            return true;
         }
-        treeNodeVo.setParent(true);
-        return true;
+        treeNodeVo.setParent(false);
+        return false;
     }
 
 
