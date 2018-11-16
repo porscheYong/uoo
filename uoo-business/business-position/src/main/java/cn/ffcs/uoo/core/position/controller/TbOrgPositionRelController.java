@@ -34,6 +34,7 @@ public class TbOrgPositionRelController extends BaseController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseResult<TbOrgPositionRel> addTbOrgPositionRel(@RequestBody TbOrgPositionRel tbOrgPositionRel) {
         ResponseResult<TbOrgPositionRel> responseResult = new ResponseResult<TbOrgPositionRel>();
+
         tbOrgPositionRelService.save(tbOrgPositionRel);
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增岗位组织关系成功");

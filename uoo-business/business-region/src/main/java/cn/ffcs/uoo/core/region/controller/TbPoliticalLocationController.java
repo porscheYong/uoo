@@ -1,8 +1,11 @@
 package cn.ffcs.uoo.core.region.controller;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +27,7 @@ import cn.ffcs.uoo.core.region.entity.TbRegionLocationRel;
 import cn.ffcs.uoo.core.region.service.ITbPoliticalLocationService;
 import cn.ffcs.uoo.core.region.service.ITbRegionLocationRelService;
 import cn.ffcs.uoo.core.region.vo.ResponseResult;
+import cn.ffcs.uoo.core.region.vo.ZTreeNode;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +47,55 @@ public class TbPoliticalLocationController extends BaseController {
     private ITbPoliticalLocationService polLocSvc;
     @Autowired
     private ITbRegionLocationRelService regLocRelSvc;
+    
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @ApiOperation(value = "根据ID获取下一级信息", notes = "根据ID获取下一级信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long", paramType = "path"), })
+    @UooLog(value = "根据ID获取下一级信息", key = "getChildPoliticalLocationInfo")
+    @GetMapping("getChildPoliticalLocationInfo/{id}")
+    public ResponseResult getChildPoliticalLocationInfo(@PathVariable(value="id") Long id){
+        Map<String, Object> params = new HashMap<>();
+        params.put("statusCd", DeleteConsts.VALID);
+        params.put("upRegionId", id);
+        params.put("statusCd", DeleteConsts.VALID);
+        List<Map> list = polLocSvc.getChildPoliticalLocationInfo(params);
+        if (list == null) {
+            return ResponseResult.createErrorResult("暂无数据");
+        }
+        return ResponseResult.createSuccessResult(list,"success");
+    }
+    @ApiOperation(value = "行政区域树", notes = "行政区域树")
+    @UooLog(value = "行政区域树", key = "getTreePoliticalLocation")
+    @GetMapping("getTreePoliticalLocation/{id}")
+    public ResponseResult getTreePoliticalLocation(@PathVariable(value="id") Long id ){
+        Map<String, Object> params = new HashMap<>();
+        params.put("statusCd", DeleteConsts.VALID);
+        params.put("upLocId", id);
+        long a = System.currentTimeMillis();
+        List<Map> list = polLocSvc.getTreePoliticalLocation(params);
+        long b = System.currentTimeMillis();
+        if(list==null || list.isEmpty()){
+            return ResponseResult.createErrorResult("暂无数据");
+        }
+        List<ZTreeNode> ztlist=new ArrayList<>();
+        
+        for (Map map : list) {
+            ZTreeNode n=new ZTreeNode();
+            n.setId(Long.valueOf(map.get("LOC_ID").toString()));
+            n.setName(map.get("LOC_NAME").toString());
+            Object upid = map.get("UP_LOC_ID");
+            n.setpId(upid==null?0:Long.valueOf(upid.toString()));
+            n.setOpen(n.getpId()==0);
+            ztlist.add(n);
+        }
+        long c = System.currentTimeMillis();
+        System.err.println(b-a);
+        System.err.println(c-b);
+        System.err.println(c-a);
+        return ResponseResult.createSuccessResult(ztlist,"success");
+    }
     
     @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
     @ApiImplicitParams({

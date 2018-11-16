@@ -27,4 +27,54 @@
 	<select id="getId" resultType="java.lang.Long">
 		SELECT SEQ_TB_POLITICAL_LOCATION.nextval FROM dual
 	</select>
+	
+	<select id="getChildPoliticalLocationInfo" resultType="java.util.HashMap"
+        parameterType="java.util.HashMap">
+        SELECT
+        LOC_ID, LOC_CODE, LOC_NAME, LOC_DESC, LOC_TYPE, LOC_ABBR,
+        UP_LOC_ID,
+        STATUS_CD, CREATE_DATE,CREATE_USER, UPDATE_DATE,
+        UPDATE_USER, STATUS_DATE
+        FROM
+        TB_POLITICAL_LOCATION a
+        <where>
+            <if test="locId != null and locId != '' ">
+                and a.LOC_ID = #{locId}
+            </if>
+            <if test="statusCd != null and statusCd != '' ">
+                and a.STATUS_CD = #{statusCd}
+            </if>
+            <if test="upLocId !=null and upLocId lt 1">
+                and a.UP_LOC_ID &lt; 1
+            </if>
+            <if test="upLocId !=null and upLocId gte 1">
+                and a.UP_LOC_ID = #{upLocId}
+            </if>
+        </where>
+
+    </select>
+    <select id="getTreePoliticalLocation" resultType="java.util.HashMap"
+        parameterType="java.util.HashMap">
+        SELECT
+        a.LOC_ID, a.UP_LOC_ID, a.LOC_NAME 
+
+        FROM
+        TB_POLITICAL_LOCATION a
+
+        <where>
+            <if test="locId != null and locId != '' ">
+                and a.LOC_ID = #{locId}
+            </if>
+            <if test="statusCd != null and statusCd != '' ">
+                and a.STATUS_CD = #{statusCd}
+            </if>
+            <if test="upLocId !=null and upLocId lt 1">
+                and a.UP_LOC_ID &lt; 1
+            </if>
+            <if test="upLocId !=null and upLocId gte 1">
+                and a.UP_LOC_ID = #{upLocId}
+            </if>
+        </where>
+
+    </select>
 </mapper>

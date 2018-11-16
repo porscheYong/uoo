@@ -1,12 +1,13 @@
 // NProgress
-if (typeof NProgress != 'undefined') {
-  $(document).ready(function () {
-      NProgress.start();
-  });
-}
+// if (typeof NProgress != 'undefined') {
+//   $(document).ready(function () {
+//       NProgress.start();
+//   });
+// }
 
 // loadingMask
 var loading = new Loading();
+loading.screenMaskEnable('container');
 
 var setting = {
     async: {

@@ -85,6 +85,7 @@ spring:
   rabbitmq:
     username: root
     password: 123
+    host: 134.96.253.221
 
 mybatis-plus:
   mapper-locations: classpath:mapper/**Mapper.xml
@@ -98,6 +99,7 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
 
 server:
   port: 9400

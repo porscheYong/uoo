@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
@@ -27,9 +28,9 @@ import java.io.IOException;
  * @author ffcs-gzb
  * @since 2018-10-21
  */
-@Controller
+@RestController
 @RequestMapping("/orgContactRel")
-@Api(value = "/org", description = "组织联系人相关操作")
+@Api(value = "/orgContactRel", description = "组织联系人相关操作")
 public class OrgContactRelController extends BaseController {
 
     @Autowired

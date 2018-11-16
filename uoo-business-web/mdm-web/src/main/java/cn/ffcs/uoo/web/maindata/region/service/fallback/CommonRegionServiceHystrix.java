@@ -34,4 +34,14 @@ public class CommonRegionServiceHystrix implements CommonRegionService{
         return ResponseResult.createErrorResult("系统数据异常");
     }
 
+    @Override
+    public ResponseResult getChildCommonRegionInfo(Long id) {
+        return ResponseResult.createErrorResult("系统数据异常");
+    }
+
+    @Override
+    public ResponseResult getTreeCommonRegion(Long id) {
+        return ResponseResult.createErrorResult("系统数据异常");
+    }
+
 }

@@ -88,7 +88,14 @@ textarea:-ms-input-placeholder {
 	background: url(../images/login/ico_psw.png) no-repeat left center
 	}
 .code {
-	background: url(../images/login/ico_check.png) no-repeat left center
+	background: url(../images/login/ico_check.png) no-repeat left center;
+	width: 144px;
+	height: 36px;
+	border: none;
+	border-bottom: 1px solid #c6cbd2;
+	padding: 0 10px 0 40px;
+	margin: 0 0 20px 0;
+	display: none;
 	}
 .BtnSubmit {
 	background: #00a4ff;
@@ -108,4 +115,15 @@ label{
 	display: none;
 	color: red;
 	font-size: 15px;
+}
+.rendomcode{
+	display: inline-block;
+}
+#canvas{
+	float: right;
+	display: none;
+	border:1px solid #ccc;
+	border-radius: 5px;
+	cursor: pointer;
+
 }

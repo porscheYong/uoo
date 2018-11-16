@@ -14,7 +14,7 @@ import java.util.List;
  * @author zhanglu
  * @date 2018-11-08
  */
-@FeignClient(value = "uoo-public",configuration = {PersonnelServiceConfiguration.class},fallback = TbDictionaryItemClientHystrix.class)
+@FeignClient(value = "business-public",configuration = {PersonnelServiceConfiguration.class},fallback = TbDictionaryItemClientHystrix.class)
 public interface TbDictionaryItemClient {
     @RequestMapping(value = "/tbDictionaryItem/update", method = RequestMethod.POST)
     ResponseResult<TbDictionaryItem> updateTbDictionaryItem(@RequestBody TbDictionaryItem tbDictionaryItem);
