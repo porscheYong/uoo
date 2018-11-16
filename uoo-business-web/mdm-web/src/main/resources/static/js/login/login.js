@@ -81,7 +81,7 @@ function check(){
             dataType: "json",
 			success:function(result){
                 if(result.state==1000){
-                    window.location.href = "templates/index.html";
+                    window.location.href = "/index.html";
                 }else{
                     alert("用户名不存在或密码不正确！");
                     $(".psw").val('');

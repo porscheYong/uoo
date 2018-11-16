@@ -4,7 +4,7 @@
 
   $.support.cors = true;
 
-  remoteHost = 'http://192.168.58.128:30024';
+  remoteHost = 'http://134.96.253.221:11100';
   template = Handlebars.compile($("#result-template").html());
   empty = Handlebars.compile($("#empty-template").html());
 
