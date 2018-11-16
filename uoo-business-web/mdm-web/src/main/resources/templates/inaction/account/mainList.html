@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>主账号列表</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- jquery datatable -->
+    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="../../../static/js/core/html5shiv.js"></script>
+    <script src="../../../static/js/core/respond.js"></script>
+    <script src="../../../static/js/core/excanvas.js"></script>
+    <![endif]-->
+    <style type="text/css">
+
+        table.dataTable 
+        {
+            table-layout: fixed;
+        }
+
+        th 
+        {
+            text-align: center;
+            white-space: nowrap;
+        }
+        table.dataTable tbody td 
+        {
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .row-account
+        .row-name
+        {
+            width: 20%;
+        }
+        .row-org
+        {
+            width: 50%;
+        }
+        .row-state
+        {
+            width: 10%;
+        }
+        .col-sm-12{
+            margin-top: -5%;
+        }
+    </style>
+  </head>
+
+  <body style="background: #fff;">
+    <div>
+      <div class="board-title">
+         <span class="name ft18" id="orgName"></span>   <!--杭州分公司 -->
+         <div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;"></div>   <!-- 完整路径-->
+      </div>
+
+        <div class="board-title">
+            <span class="name ft18">主账号</span>
+            <div class="fright">
+                <a class="button-add" id="addBtn" href=""><span class="fa fa-plus-circle icon-add"></span>添加</a>
+            </div>
+        </div>
+      <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;">
+          <table id="mainTable" class="stripe" width="100%"></table>
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- init -->
+    <script src="/js/init.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+    <script type="text/javascript" src="/js/account/mainData.js"></script>
+    <script type="text/javascript" src="/js/account/mainList.js"></script>
+ 
+
+    <script>
+      
+    </script>
+  </body>
+</html>
