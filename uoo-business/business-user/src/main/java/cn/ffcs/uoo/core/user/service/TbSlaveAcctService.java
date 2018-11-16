@@ -3,6 +3,8 @@ package cn.ffcs.uoo.core.user.service;
 import cn.ffcs.uoo.core.user.entity.ListUser;
 import cn.ffcs.uoo.core.user.entity.TbAcct;
 import cn.ffcs.uoo.core.user.entity.TbSlaveAcct;
+import cn.ffcs.uoo.core.user.vo.ListSlaveAcctOrgVo;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.List;
@@ -28,4 +30,42 @@ public interface TbSlaveAcctService extends IService<TbSlaveAcct> {
     //从账号(应用)关联主账号
     public List<TbAcct> getAcct(Long slaveAcctId);
 
+    // todo ----新版本---------------------------------------------------------------------
+
+    /**
+     * 从账号关联 主账号组织关系
+     * @param slaveAcctOrgVo
+     * @return
+     */
+    public Page<ListSlaveAcctOrgVo> getSlaveAcctOrg(ListSlaveAcctOrgVo slaveAcctOrgVo);
+
+    /**
+     * 保存 从账号
+     * @param tbSlaveAcct
+     * @return
+     */
+    public Object addTbSlaveAcct(TbSlaveAcct tbSlaveAcct);
+
+    /**
+     * 验证 从账号是否已存在
+     * @param slaveAcct
+     * @param acctHostId
+     * @param resourceObjId
+     * @return
+     */
+    public boolean checkSlaveAcct(String slaveAcct, Long acctHostId , Long resourceObjId);
+
+    /**
+     * 删除 从账号
+     * @param slaveAcctId
+     * @return
+     */
+    public Object delTbSlaveAcct(Long slaveAcctId);
+
+    /**
+     * 更新 从账号
+     * @param tbSlaveAcct
+     * @return
+     */
+    public Object updateTbSlaveAcct(TbSlaveAcct tbSlaveAcct);
 }

@@ -46,4 +46,11 @@ public interface TbPersonnelService extends IService<TbPersonnel> {
      * @return
      */
     public PsnByUserVo getPsnByUser(PsnByUserVo psnByUserVo);
+
+    /**
+     * 根据personnelId 删除 人员基础信息
+     * @param personnelId
+     * @return
+     */
+    public Object delTbPersonnelByPsnId(Long personnelId);
 }

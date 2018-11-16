@@ -122,13 +122,13 @@ mybatis-plus:
     #自定义SQL注入器
     #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
     #自定义填充策略接口实现
-    #meta-object-handler: com.baomidou.springboot.xxx
+    meta-object-handler: cn.ffcs.uoo.base.common.tool.util.UooMetaObjectHandler
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
 
 server:
-  port: 8081
+  port: 11200
 
 eureka:
   instance:
