@@ -45,18 +45,22 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .row-account
-        .row-name
+        .row-name,
+        .row-type,
+        .row-acc
         {
             width: 20%;
         }
         .row-org
         {
-            width: 50%;
+            width: 45%;
         }
-        .row-state
+        .row-mobile
         {
-            width: 10%;
+            width: 20%;
+        }
+        .row-state{
+            width: 15%;
         }
         .col-sm-12{
             margin-top: -5%;
@@ -72,9 +76,9 @@
       </div>
 
         <div class="board-title">
-            <span class="name ft18">主账号</span>
+            <span class="name ft18">组织用户</span>
             <div class="fright">
-                <a class="button-add" id="addBtn" href=""><span class="fa fa-plus-circle icon-add"></span>添加</a>
+                <a class="button-add" id="addBtn" href="add.html"><span class="fa fa-plus-circle icon-add"></span>添加</a>
             </div>
         </div>
       <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;">
@@ -85,7 +89,7 @@
     <!-- jQuery -->
     <script src="/js/core/jquery.js"></script>
     <!-- Bootstrap -->
-    <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- init -->
     <script src="/js/init.js"></script>
     <!-- jquery datatable -->

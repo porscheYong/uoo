@@ -42,13 +42,15 @@ function initMainTable(){
         },
         "scrollY": "375px",
         'columns': [
-            { 'data': "account", 'title': '账号', 'className': 'row-account' ,
+            { 'data': "name", 'title': '人员姓名', 'className': 'row-name' ,
             'render': function (data, type, row, meta) {
-                return '<a href="list.html?account='+ row.account +'" onclick="">'+ row.account +'</a>'
+                return '<a href="list.html?account='+ row.acc +'" onclick="">'+ row.name +'</a>'
               }
             },
-            { 'data': "name", 'title': '人员姓名', 'className': 'row-name' },
+            { 'data': "type", 'title': '用户类型', 'className': 'row-type' },
+            { 'data': "acc", 'title': '用户名', 'className': 'row-acc' },
             { 'data': "org", 'title': '归属组织', 'className': 'row-org' },
+            { 'data': "mobile", 'title': '联系电话', 'className': 'row-mobile' },
             { 'data': "state", 'title': '状态', 'className': 'row-state' }
             // { 
             //   'data': "userRoleName",
