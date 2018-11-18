@@ -34,29 +34,14 @@
     <![endif]-->
 
     <style>
-        .fright
-        {
-            margin-right: 2%;
-        }
         .row{
             margin-left: 0px;
             margin-right: 0px;
         }
         .col-md-6 {
-            width: 45%;
+            width: 40%;
         }
-        .row-account{
-            text-align: center;
-        }
-        .row-name{
-            text-align: center;
-        }
-        .row-org{
-            text-align: center;
-        }
-        td,th{
-            text-align: center;
-        }
+
     </style>
 </head>
 
@@ -68,28 +53,26 @@
 
     <div class="child-title" style="height:50px;">
         <span style="color:rgb(156, 156, 156);margin-left: 1.5%;">中国电信浙江公司&nbsp>&nbsp杭州分公司</span>
-    </div>-->
+    </div> -->
 
     <div class="board-title">
-        <span class="name ft18" id="main-title"></span> <!-- 主账号 -->
-    </div> 
+        <span class="name ft18" id="sub-title"></span>  <!-- 从账号 -->
+    </div>
 
-    <div class="tab-content" style="margin-left:5%;margin-top: 2%">
+    <div class="tab-content" style="margin-left:15%;margin-top: 2%">
         <div class="tab-pane active" id="tab_content1">
             <form action="/submit" method="post" style="padding: 10px;">
 
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员姓名</label>
-                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" style="color:rgb(149,157,169);">
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
-                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" style="color:rgb(149,157,169);">
+                            <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号类型</label>
+                            <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" > -->
+                            <select  class="col-md-8 col-sm-8 col-xs-12">
+                                <option></option>
+                                <option>资源</option>
+                                <option>应用</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -97,7 +80,23 @@
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">手机号码</label>
+                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员姓名</label>
+                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" >
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
+                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">联系电话</label>
                             <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
                         </div>
                     </div>
@@ -114,40 +113,14 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
                             <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
-                            <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市公司直属"> -->
-                            <select  class="col-md-8 col-sm-8 col-xs-12">
-                            <option></option>
-                            <option>身份证</option>
-                            <option>护照</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
                             <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
                         </div>
                     </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
-                            <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> -->
-                            <select  class="col-md-8 col-sm-8 col-xs-12">
-                                <option></option>
-                                <option>生效</option>
-                                <option>失效</option>
-                            </select>
+                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
                         </div>
                     </div>
                 </div>
@@ -162,8 +135,13 @@
 
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
-                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                            <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
+                            <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">  -->
+                            <select  class="col-md-8 col-sm-8 col-xs-12">
+                                <option></option>
+                                <option>生效</option>
+                                <option>失效</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -171,15 +149,31 @@
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                          <label for="effectDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
-                          <input type="code" id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="2018-11-16">
+                            <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
+                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
                         </div>
-                      </div>
+                    </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="invalidDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
-                            <input type="code" id="invalidDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="2018-12-31">
+                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
+                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
+                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
+                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
                         </div>
                     </div>
                 </div>
@@ -188,22 +182,10 @@
                     <div class="board-title" style="margin-left:-6.7%;">
                         <span class="name ft18">归属组织</span>
                     </div>
-    
-                    <div class="fright" style="margin-right:85%;margin-top:-4.5%;"> 
-                        <a class="button-add" id="addBtn" href="mainList.html"><span class="fa fa-plus-circle icon-add"></span>添加</a>
-                    </div>
                 </div>
                 
                 <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
                     <table id="orgTable" class="stripe" width="100%"></table>
-                </div>
-
-                <div class="board-title" style="margin-left:-6.7%;margin-top:5%">
-                    <span class="name ft18">关联从账号信息</span>
-                </div>
-
-                <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
-                    <table id="subInfoTable" class="stripe" width="100%"></table>
                 </div>
 
             </form>
@@ -219,10 +201,9 @@
         </div>
     </div>
         
+
     <!-- jQuery -->
     <script src="/js/core/jquery.js"></script>
-    <!-- Bootstrap -->
-    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- sea js -->
     <script src="/vendors/lulu/js/plugin/sea.js"></script>
     <!-- jquery datatable -->
@@ -236,26 +217,11 @@
     <!-- custom -->
     <script type="text/javascript" src="/js/account/addMainAccount.js"></script>
 
-
-    <!-- NProgress -->
-    <!-- <script type="text/javascript" src="../../../static/vendors/nprogress/nprogress.js"></script> -->
-    <!-- ztree -->
-    <!-- <script type="text/javascript" src="../../../static/vendors/zTree/jquery.ztree.core.js"></script>
-    <script type="text/javascript" src="../../../static/vendors/zTree/jquery.ztree.excheck.js"></script> -->
-    <!-- layer -->
-    <!-- <script type="text/javascript" src="../../../static/vendors/layer/layer.js"></script> -->
-    <!-- loading -->
-    <!-- <script type="text/javascript" src="../../../static/js/core/spin.min.js"></script>
-    <script type="text/javascript" src="../../../static/js/core/loading.js"></script> -->
-    <!-- init -->
-    <!-- <script type="text/javascript" src="../../../static/js/init.js"></script> -->
-    <!-- <script type="text/javascript" src="../../../static/js/user/index.js"></script> -->
     <script type="text/javascript">
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
           $('select').selectMatch();
         })
         
-  
     </script>
   </body>
 </html>

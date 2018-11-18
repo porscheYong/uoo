@@ -44,7 +44,11 @@ function initMainTable(){
         'columns': [
             { 'data': "name", 'title': '人员姓名', 'className': 'row-name' ,
             'render': function (data, type, row, meta) {
-                return '<a href="list.html?account='+ row.acc +'" onclick="">'+ row.name +'</a>'
+                if(row.type == '主账号'){
+                    return '<a href="addMainAccount.html?account='+ row.acc +'&title=查看主账号&opBtn=0">'+ row.name +'</a>'
+                }else{
+                    return '<a href="addSubAccount.html?account='+ row.acc +'&title=查看从账号&opBtn=0">'+ row.name +'</a>'
+                } 
               }
             },
             { 'data': "type", 'title': '用户类型', 'className': 'row-type' },
@@ -87,7 +91,7 @@ $('#orgName').html(orgName);
 getOrgExtInfo();
 initMainTable();
 
-$('#addBtn').on('click', function () {
-    var url = 'addMainAccount.html?fullorgname=' + fullOrgName + '&name=' + orgName;
-    $(this).attr('href', url);
-})
+// $('#addBtn').on('click', function () {
+//     var url = 'addMainAccount.html?fullorgname=' + fullOrgName + '&name=' + orgName;
+//     $(this).attr('href', url);
+// })

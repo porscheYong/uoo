@@ -134,8 +134,11 @@
             <div class="ProfileCard-stat">有效</div>
           </div>
         </div>
-      </script>
-        
+    </script>
+
+    <script id="empty-template" type="text/x-handlebars-template">
+        <div class="EmptyMessage">Your search turned up 0 results. This most likely means the backend is down, yikes!</div>
+    </script>    
 
     <!-- jQuery -->
     <script src="/js/core/jquery.js"></script>
@@ -156,11 +159,12 @@
     <script type="text/javascript" src="/js/account/mainTable.js"></script>
     <!-- laydate -->
     <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
+    <script type="text/javascript" src="/js/organization/search.js"></script>
     <!-- custom -->
     <script type="text/javascript" src="/js/account/add.js"></script>
     
     <script type="text/javascript">
-        seajs.use('../../../static/vendors/lulu/js/common/ui/Select', function () {
+        seajs.use('/vendors/lulu/js/common/ui/Select', function () {
           $('select').selectMatch();
         })
         
