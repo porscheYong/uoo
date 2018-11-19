@@ -246,4 +246,71 @@
         )
     </select>
 
+
+
+    <select id="selectUserOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
+        select *
+        from (select t.acct_id accId,
+           t.acct acct,
+           t.status_cd statusCd,
+           '1' type,
+           '主账号' typeName,
+           t.personnel_id personnelId,
+           t3.psn_name psnName,
+           t4.cert_no certNo,
+           t5.content mobile,
+           t6.org_name orgName
+        from (select t1.*, t2.org_id
+              from tb_acct t1, tb_account_org_rel t2
+             where t1.status_cd = 1000
+               and t2.status_cd = 1000
+               and t1.acct_id = t2.acct_id
+               and t2.org_id = #{psonOrgVo.orgId}
+            ) t
+        left join tb_personnel t3 on t.personnel_id = t3.personnel_id
+                               and t.status_cd = t3.status_cd
+        left join tb_cert t4 on t.personnel_id = t4.personnel_id
+                          and t.status_cd = t4.status_cd
+        left join tb_contact t5 on t.personnel_id = t5.personnel_id
+                             and t.status_cd = t5.status_cd
+                             and t5.contact_type = '1'
+                             and t5.first_flag = '1'
+        left join tb_org t6 on t.org_id = t6.org_id
+                         and t.status_cd = t6.status_cd
+        union all
+        select t.slave_acct_id accId,
+           t.slave_acct acct,
+           t.status_cd statusCd,
+           '2' type,
+           '从账号' typeName,
+           t.personnel_id personnelId,
+           t3.psn_name psnName,
+           t4.cert_no certNo,
+           t5.content mobile,
+           t6.org_name orgName
+        from (select tt.*, t1.personnel_id, t2.org_id
+              from tb_slave_acct tt, tb_acct t1, tb_account_org_rel t2
+             where t1.status_cd = 1000
+               and tt.status_cd = 1000
+               and t2.status_cd = 1000
+               and tt.acct_host_id = t2.acct_host_id
+               and tt.acct_id = t2.acct_id
+               and t1.acct_id = t2.acct_id
+               and t2.org_id = #{psonOrgVo.orgId}
+            ) t
+        left join tb_personnel t3 on t.personnel_id = t3.personnel_id
+                               and t.status_cd = t3.status_cd
+        left join tb_cert t4 on t.personnel_id = t4.personnel_id
+                          and t.status_cd = t4.status_cd
+        left join tb_contact t5 on t.personnel_id = t5.personnel_id
+                             and t.status_cd = t5.status_cd
+                             and t5.contact_type = '1'
+                             and t5.first_flag = '1'
+        left join tb_org t6 on t.org_id = t6.org_id
+                         and t.status_cd = t6.status_cd) a where 1=1
+        <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
+            AND (PsnName like '%'||#{psonOrgVo.search}||'%' or certNo like '%'||#{psonOrgVo.search}||'%' or mobile like '%'||#{psonOrgVo.search}||'%' or acct like '%'||#{psonOrgVo.search}||'%')
+        </if>
+    </select>
+
 </mapper>

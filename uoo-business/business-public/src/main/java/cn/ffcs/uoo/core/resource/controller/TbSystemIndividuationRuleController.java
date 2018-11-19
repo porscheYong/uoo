@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author ffcs-gzb
- * @since 2018-11-14
+ * @since 2018-11-16
  */
+
 @RestController
 @RequestMapping("/tbSystemIndividuationRule")
 public class TbSystemIndividuationRuleController extends BaseController {
+
 
 }
 

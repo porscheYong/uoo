@@ -40,4 +40,9 @@ public interface OrgPersonRelService{
 
     @RequestMapping(value="/orgPersonRel/getPerOrgRelPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
     public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(@RequestBody PsonOrgVo psonOrgVo);
+
+    @RequestMapping(value="/orgPersonRel/getUserOrgRelPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
+    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(@RequestBody PsonOrgVo psonOrgVo);
+
+
 }

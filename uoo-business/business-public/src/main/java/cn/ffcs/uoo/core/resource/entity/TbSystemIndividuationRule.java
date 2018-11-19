@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author ffcs-gzb
- * @since 2018-11-14
+ * @since 2018-11-16
  */
 @TableName("TB_SYSTEM_INDIVIDUATION_RULE")
 public class TbSystemIndividuationRule extends Model<TbSystemIndividuationRule> {
@@ -31,17 +31,23 @@ public class TbSystemIndividuationRule extends Model<TbSystemIndividuationRule> 
     @TableField("SYSTEM_ORG_TREE_ID")
     private Long systemOrgTreeId;
     /**
-     * 业务对象标识（组织、人员）
+     * 业务对象标识（组织、人员、组织关系）
      */
     @TableField("BUSI_OBJ_ID")
     private Long busiObjId;
     /**
-     * 业务对象属性标识（组织：区号标识AREA_CODE_ID，农村/城镇标志CITY_TOWN，成立时间FOUNDING_TIME，组织规模ORG_SCALE，组织层级ORG_LEVEL，组织岗位级别ORG_POSITION_LEVEL）（人员：职位标识OST_ID，组织人员关系类型REF_TYPE，用工性质PROPERTY）
+     * 业务对象属性标识（组织：组织标识org_id，区号标识、AREA_CODE_ID，农村/城镇标志CITY_TOWN，成立时间FOUNDING_TIME，组织规模ORG_SCALE，组织层级ORG_LEVEL，组织岗位级别ORG_POSITION_LEVEL）
+（人员：人员标识、职位标识OST_ID，组织人员关系类型REF_TYPE，用工性质PROPERTY）
+
+组织本部 过滤
+人力数据中的组织本部~分公司  = 0/1
+
+
      */
     @TableField("BUSI_OBJ_ATTR_ID")
     private Long busiObjAttrId;
     /**
-     * 规则操作符,包含、等于、大于、大于等于、小于、小于等于
+     * 规则操作符,包含、不包含、等于、大于、大于等于、小于、小于等于
      */
     @TableField("RULE_OPERATOR")
     private String ruleOperator;

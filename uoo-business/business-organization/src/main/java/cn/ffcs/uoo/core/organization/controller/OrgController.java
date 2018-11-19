@@ -215,6 +215,7 @@ public class OrgController extends BaseController {
             orgOrgtreeRef.setOrgOrgtreeId(orgOrgtreeRefId);
             orgOrgtreeRef.setOrgId(org.getOrgId());
             orgOrgtreeRef.setOrgTreeId(orgOrgRel.getOrgTreeId());
+            orgOrgtreeRef.setOrgBizName(org.getOrgName());
             orgOrgtreeRef.setStatusCd("1000");
             orgOrgtreeRef.insert();
 
@@ -632,9 +633,9 @@ public class OrgController extends BaseController {
             return ret;
         }
         HashMap<String,String> listMap = new HashMap<String,String>();
-        String fullName = orgService.getSysFullName(orgRootId,orgId);
+       // String fullName = orgService.getSysFullName(orgRootId,orgId);
         String followOrg = orgTreeService.getOrgTreeNameByOrgId(orgId);
-        listMap.put("FULL_NAME",fullName);
+       // listMap.put("FULL_NAME",fullName);
         listMap.put("FOLLOW_ORG",followOrg);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("查询成功");
