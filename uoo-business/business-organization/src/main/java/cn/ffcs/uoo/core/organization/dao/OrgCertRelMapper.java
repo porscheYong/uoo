@@ -22,5 +22,5 @@ public interface OrgCertRelMapper extends BaseMapper<OrgCertRel> {
 
     public void delete(OrgCertRel orgCertRel);
 
-    public List<OrgCertVo> getOrgCerRelByOrgId(@Param("orgId") String orgId);
+    public List<OrgCertVo> getOrgCerRelByOrgId(@Param("orgId")Long orgId);
 }

@@ -34,7 +34,7 @@
           ORG_CERT_ID = #{orgCertId}
     </update>
 
-    <select id="getOrgCerRelByOrgId" parameterType="cn.ffcs.uoo.core.organization.vo.OrgCertVo">
+    <select id="getOrgCerRelByOrgId" resultType="cn.ffcs.uoo.core.organization.vo.OrgCertVo">
         SELECT A.ORG_CERT_ID orgCertId,
        A.CERT_ID certId,
        A.ORG_ID orgId,
@@ -46,6 +46,6 @@
  WHERE A.STATUS_CD = '1000'
    AND B.STATUS_CD = '1000'
    AND A.CERT_ID=B.CERT_ID
-   AND A.ORG_ID=#{orgCertId}
+   AND A.ORG_ID=#{orgId}
     </select>
 </mapper>
