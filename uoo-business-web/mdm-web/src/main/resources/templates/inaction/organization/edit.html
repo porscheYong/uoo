@@ -64,9 +64,13 @@
   <body style="background: #fff;">
     <div>
         <div class="board-title">
-          <span class="name ft18">编辑-<span id="orgName"></span></span>
+            <span class="name ft18 orgName"></span
+            ><div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;"></div>
         </div>
-        <div class="nav-tabs-brief" style="padding-top: 35px; overflow-x: hidden;">
+        <div class="board-title">
+          <span class="name ft18">编辑-<span class="orgName"></span></span>
+        </div>
+        <div class="nav-tabs-brief" style="overflow-x: hidden;">
           <ul class="nav nav-tabs tab-title" role="tablist" id="myTabs">
             <li role="presentation" class="active col-md-2 col-sm-2 col-xs-6"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">基础信息</a>
             </li>
@@ -76,19 +80,18 @@
 
           <div class="tab-content">
             <div class="tab-pane active" id="tab_content1">
-              <form action="/submit" method="post" style="padding: 10px;" id="immediateForm">
+              <form action="/submit" method="post" style="padding: 10px;" id="blurForm">
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="orgName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织名称</label>
-                      <input id="orgName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required>
+                      <input id="orgName" type="tel" class="ui-input error col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required>
                     </div>
                   </div>
 
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="orgScale" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">规模</label>
-                      <!-- <input type="code" id="idCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="100~200"> -->
                       <select id="orgScale" class="col-md-8 col-sm-8 col-xs-12">
                         <option></option>
                         <option>100~200</option>
@@ -101,14 +104,14 @@
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="shortName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织简称</label>
-                      <input id="shortName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市场部">
+                      <input id="shortName" type="tel" class="ui-input error col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市场部">
                     </div>
                   </div>
 
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="orgNameEn" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">英文简称</label>
-                      <input type="code" id="orgNameEn" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" value="market">
+                      <input id="orgNameEn" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" value="market">
                     </div>
                   </div>
                 </div>
@@ -116,8 +119,7 @@
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="cityTown" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">城乡属性</label>
-                      <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="城市"> -->
-                      <select id="cityTown" class="col-md-8 col-sm-8 col-xs-12">
+                      <select id="cityTown" class="col-md-8 col-sm-8 col-xs-12" required>
                         <option></option>
                        <!--  <option>城市</option>
                         <option>农村</option> -->
@@ -135,9 +137,8 @@
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="locId " class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">行政管理区域</label>
-                      <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市公司直属"> -->
-                      <select id="locId" class="col-md-8 col-sm-8 col-xs-12">
+                      <label for="locId" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">行政管理区域</label>
+                      <select id="locId" class="col-md-8 col-sm-8 col-xs-12 error" required>
                         <option></option>
                         <option>市公司直属</option>
                         <option>省公司直属</option>
@@ -156,7 +157,6 @@
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="orgPositionLevel" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织最高岗位级别</label>
-                      <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" value="总经理"> -->
                       <select id="orgPositionLevel"  class="col-md-8 col-sm-8 col-xs-12">
                         <option></option>
                         <option>总经理</option>
@@ -168,7 +168,7 @@
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="officePhone" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织办公电话</label>
-                      <input type="code" id="officePhone" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="0571-92345678">
+                      <input id="officePhone" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="0571-92345678">
                     </div>
                   </div>
                 </div>
@@ -186,7 +186,7 @@
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="orgTypeList" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织类别</label>
-                      <input type="tel" id="orgTypeList" class="ui-input col-md-10 col-sm-10 col-xs-12" style="width: 84%" size="40" name="tel" required data-toggle="modal" data-target="#myModal">
+                      <input id="orgTypeList" class="ui-input col-md-10 col-sm-10 col-xs-12 error" style="width: 84%" required data-toggle="modal" data-target="#myModal">
                     </div>
                   </div>
                 </div>

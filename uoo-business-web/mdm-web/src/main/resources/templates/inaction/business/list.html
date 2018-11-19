@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>人员列表</title>
+    <title>标准组织树</title>
 
     <!-- Bootstrap -->
     <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -48,14 +48,33 @@
     <div>
       <div class="board-title">
         <span class="name ft18" id="orgName"></span
-        ><a class="icon icon-edit" href="edit.html" id="editBtn" style="vertical-align: top;"></a>
+        ><a class="icon icon-edit" id="editBtn" style="vertical-align: top;"></a>
+        <div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;">
+          <!--<span class="breadcrumb-item">-->
+            <!--<a href="javascript:viod(0);">杭州</a-->
+            <!--&gt;<span class="breadcrumb-separator" style="margin: 0 9px;">/</span>-->
+          <!--</span>-->
+          <!--<span class="breadcrumb-item">-->
+            <!--<a href="javascript:viod(0);">浙江分公司</a-->
+            <!--&gt;<span class="breadcrumb-separator" style="margin: 0 9px;">/</span>-->
+          <!--</span>-->
+          <!--<span class="breadcrumb-item">-->
+            <!--<a href="javascript:viod(0);">杭州分公司</a>-->
+          <!--</span>-->
+        </div>
+      </div>
+      <div class="board-title">
+        <span class="name ft18">下级组织</span>
+        <div class="fright">
+          <a class="button-add" id="searchBtn" href=""><span class="fa fa-plus-circle icon-add"></span>添加</a>
+        </div>
+      </div>
+      <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px; height: 450px;">
+          <table id="orgTable" class="stripe" width="100%"></table>
       </div>
 
       <div class="board-title">
           <span class="name ft18">组织人员</span>
-          <div class="fright">
-            <a class="button-add" id="searchBtn" href="add.html"><span class="fa fa-plus-circle icon-add"></span>添加</a>
-          </div>
       </div>
       <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
           <table id="personnelTable" class="stripe" width="100%"></table>
@@ -69,14 +88,6 @@
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
     <!-- init -->
     <script src="/js/init.js"></script>
-	  <script type="text/javascript" src="/js/user/list.js"></script>
-    <script>
-      // var loading = parent.loading;
-      // loading.screenMaskEnable('container');
-      // var NProgress = parent.NProgress;
-      // NProgress.done();
-      // var toastr = parent.parent.toastr;
-      // toastr.success('提交成功！')
-    </script>
+	  <script type="text/javascript" src="/js/organization/list.js"></script>
   </body>
 </html>
