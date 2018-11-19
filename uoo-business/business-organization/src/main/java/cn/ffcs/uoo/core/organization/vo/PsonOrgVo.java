@@ -123,9 +123,19 @@ public class PsonOrgVo extends BaseVo {
     private String userId;
 
     /**
-     * 账号
+     * 账号或者从账号
      */
     private String acct;
+    /********************人员相关********************/
+    private String accId;
+    /**
+     * 账号类型 1 主账号 2 从账号
+     */
+    private String type;
+    /**
+     * 账号类型 主账号 从账号
+     */
+    private String typeName;
 
     /******************* 搜索相关********************/
 
@@ -134,6 +144,29 @@ public class PsonOrgVo extends BaseVo {
      */
     private String search;
 
+    public String getAccId() {
+        return accId;
+    }
+
+    public void setAccId(String accId) {
+        this.accId = accId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
     public String getUserId() {
         return userId;
