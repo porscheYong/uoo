@@ -26,7 +26,7 @@ import java.util.List;
 public class OrgPersonRelServiceHystrix implements OrgPersonRelService {
 
     @Override
-    public ResponseResult<String> addOrgPsn(PsonOrgVo psonOrgVo){
+    public ResponseResult<String> addOrgPsn(List<PsonOrgVo> psonOrgVo){
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
