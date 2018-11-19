@@ -6,16 +6,12 @@ import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.user.constant.BaseUnitConstants;
 import cn.ffcs.uoo.core.user.constant.EumUserResponeCode;
-import cn.ffcs.uoo.core.user.entity.TbAcct;
-import cn.ffcs.uoo.core.user.entity.TbAcctExt;
-import cn.ffcs.uoo.core.user.entity.TbAcctOrg;
-import cn.ffcs.uoo.core.user.entity.TbUser;
-import cn.ffcs.uoo.core.user.service.TbAcctExtService;
-import cn.ffcs.uoo.core.user.service.TbAcctOrgService;
-import cn.ffcs.uoo.core.user.service.TbAcctService;
-import cn.ffcs.uoo.core.user.service.TbUserService;
+import cn.ffcs.uoo.core.user.entity.*;
+import cn.ffcs.uoo.core.user.service.*;
 import cn.ffcs.uoo.core.user.util.*;
+import cn.ffcs.uoo.core.user.vo.EditFormAcctVo;
 import cn.ffcs.uoo.core.user.vo.FormAcctVo;
+import cn.ffcs.uoo.core.user.vo.ListSlaveAcctOrgVo;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -34,7 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -52,41 +50,32 @@ public class TbAcctController extends BaseController {
     @Autowired
     private TbAcctService tbAcctService;
     @Autowired
-    private TbUserService tbUserService;
+    private TbUserRoleService tbUserRoleService;
     @Autowired
-    private TbAcctExtService tbAcctExtService;
+    private TbAccountOrgRelService tbAccountOrgRelService;
+
 
 
 
     @ApiOperation(value = "新增主账号信息", notes = "主账号信息新增")
-    @ApiImplicitParam(name = "formAcctVo", value = "主账号信息", required = true, dataType = "FormAcctVo")
+    @ApiImplicitParam(name = "editFormAcctVo", value = "主账号信息", required = true, dataType = "EditFormAcctVo")
     @UooLog(value = "新增主账号信息", key = "addTbAcct")
     @RequestMapping(value = "/addTbAcct", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
-    public Object saveAcct(@RequestBody FormAcctVo formAcctVo) {
-
-        //创建用户
-        Wrapper tbUserWrapper = Condition.create().eq(true,"PERSONNEL_ID", formAcctVo.getPersonnelId());
-        Page<TbUser> tbUserPage = tbUserService.selectPage(new Page<TbUser>(0, 12), tbUserWrapper);
-        if(tbUserPage.getRecords().size() == 0){
-            TbUser tbUser = new TbUser();
-            tbUser.setPersonnelId(formAcctVo.getPersonnelId());
-            Long userId = tbUserService.getId();
-            formAcctVo.setUserId(userId);
-            tbUser.setUserId(String.valueOf(userId));
-            BeanUtils.copyProperties(EntityFillUtil.addEntity(), tbUser);
-            tbUserService.insert(tbUser);
-        }
-        // 角色  todo
+    public Object saveAcct(@RequestBody EditFormAcctVo editFormAcctVo) {
 
         // 校验
-        TbAcct tbAcct = formAcctVo.getTbAcct();
-        Wrapper tbAcctWrapper = Condition.create().eq(true,"ACCT", tbAcct.getAcct());
-        Page<TbAcct> tbAcctPage = tbAcctService.selectPage(new Page<TbAcct>(0, 12), tbAcctWrapper);
-        if (tbAcctPage.getRecords().size() > 0) {
+
+        Map<String, Object> tbAcctMap = new HashMap<String, Object>();
+        tbAcctMap.put("STATUS_CD", "1000");
+        tbAcctMap.put("ACCT", editFormAcctVo.getAcct());
+        List<TbAcct> tbAcctList = tbAcctService.selectByMap(tbAcctMap);
+        if (tbAcctList.size() > 0) {
             return ResultUtils.error(EumUserResponeCode.ACCT_IS_EXIST);
         }
 
+        TbAcct tbAcct = new TbAcct();
+        tbAcct.setPersonnelId(editFormAcctVo.getPersonnelId());
         // 获取盐
         String salt = MD5Tool.getSalt();
         // 非对称密码
@@ -95,123 +84,76 @@ public class TbAcctController extends BaseController {
         String symmetryPassword = AESTool.AESEncode(tbAcct.getPassword());
         // 来源 todo
         Long acctId = tbAcctService.getId();
-        tbAcct.setUserId(String.valueOf(formAcctVo.getUserId()));
+
         tbAcct.setAcctId(acctId);
         tbAcct.setSalt(salt);
         tbAcct.setPassword(password);
         tbAcct.setSymmetryPassword(symmetryPassword);
-        BeanUtils.copyProperties(EntityFillUtil.addEntity(), tbAcct);
         tbAcctService.insert(tbAcct);
+
+        //角色
+        tbUserRoleService.saveUserRole(editFormAcctVo.getTbRolesList(), acctId, 1L);
+
+        //组织
+        tbAccountOrgRelService.saveAcctOrg(editFormAcctVo.getAcctOrgVoList());
 
         return ResultUtils.success(null);
     }
 
     @ApiOperation(value = "删除主账号信息", notes = "主账号相关信息删除")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "acct", value = "主账号", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "String", paramType = "path")
-    })
+    @ApiImplicitParam(name = "acctID", value = "主账号标识", required = true, dataType = "Long", paramType = "path")
     @UooLog(value = "删除主账号信息", key = "deleteTbAcct")
-    @RequestMapping(value = "/remove", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteTbAcct", method = RequestMethod.DELETE)
     @Transactional(rollbackFor = Exception.class)
-    public Object removeAcct(String acct, String updateUser) {
+    public Object removeAcct(Long acctId) {
 
-        Wrapper tbAcctWrapper = Condition.create().eq(true,"ACCT", acct);
-        Page<TbAcct> tbAcctPage = tbAcctService.selectPage(new Page<TbAcct>(0, 12), tbAcctWrapper);
-        if (tbAcctPage.getRecords().size() == 0) {
-            return ResultUtils.error(EumUserResponeCode.ACCT_NO_EXIST);
-        }
         // 1.删除主账号
-        TbAcct tbAcct = tbAcctPage.getRecords().get(0);
-        BeanUtils.copyProperties(EntityFillUtil.delEntity(), tbAcct);
-        tbAcctService.updateById(tbAcct);
+        tbAcctService.removeTbAcct(acctId);
 
-        //3、删除角色 todo
+        //2、删除角色
+        tbUserRoleService.removeUserRole(acctId, 1L);
 
+        //3、删除组织
+        tbAccountOrgRelService.removeAcctOrg(acctId, null);
         return ResultUtils.successfulTip(EumUserResponeCode.ACCT_IS_DELETE);
     }
 
-    @ApiOperation(value = "修改主账号密码",notes = "主账号密码修改")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "acct", value = "主账号", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "pwd", value = "主账号新密码", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "String", paramType = "path")
-    })
-    @UooLog(value = "修改主账号密码",key = "updateAcctPassword")
-    @RequestMapping(value = "/modifyAcctPassword", method = RequestMethod.PUT)
-    public Object modifyAcctPassword(String acct, String pwd, String updateUser) {
+    @ApiOperation(value = "修改主账号",notes = "主账号修改")
+    @ApiImplicitParam(name = "editFormAcctVo", value = "主账号信息", required = true, dataType = "EditFormAcctVo")
+    @UooLog(value = "修改主账号",key = "updateAcct")
+    @RequestMapping(value = "/updateAcct", method = RequestMethod.PUT)
+    public Object updateAcct(@RequestBody EditFormAcctVo editFormAcctVo) {
 
-        Wrapper tbAcctWrapper = Condition.create().eq(true,"ACCT", acct);
-        Page<TbAcct> tbEduPage = tbAcctService.selectPage(new Page<TbAcct>(0, 12), tbAcctWrapper);
-        if (tbEduPage.getRecords().size() == 0) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TABLE_ACCT, editFormAcctVo.getAcct());
+        TbAcct tbAcct = tbAcctService.selectOne(new EntityWrapper<TbAcct>().allEq(map));
+         if (StrUtil.isNullOrEmpty(tbAcct)) {
             return ResultUtils.error(EumUserResponeCode.ACCT_NO_EXIST);
         }
 
-        TbAcct tbAcct = tbEduPage.getRecords().get(0);
-        boolean isRight = MD5Tool.verify(pwd, tbAcct.getSalt(), tbAcct.getPassword());
+        boolean isRight = MD5Tool.verify(editFormAcctVo.getPassword(), tbAcct.getSalt(), tbAcct.getPassword());
         if (isRight) {
             return ResultUtils.error(EumUserResponeCode.PWD_COMPARE_ERROR);
         }
         // 获取盐
         String salt = MD5Tool.getSalt();
         // 非对称密码
-        String password = MD5Tool.md5Encoding(pwd, salt);
+        String password = MD5Tool.md5Encoding(editFormAcctVo.getPassword(), salt);
         // 对称密码
-        String symmetryPassword = AESTool.AESEncode(pwd);
+        String symmetryPassword = AESTool.AESEncode(editFormAcctVo.getPassword());
         tbAcct.setSalt(salt);
         tbAcct.setPassword(password);
         tbAcct.setSymmetryPassword(symmetryPassword);
-        tbAcct.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
-        tbAcct.setUpdateUser(Long.valueOf(updateUser));
         tbAcct.updateById();
+
+        //角色
+        List<TbRoles> oldTbRolesList = tbAcctService.getTbRoles(1L,tbAcct.getAcctId());
+        tbUserRoleService.updateUserRole(editFormAcctVo.getTbRolesList(), oldTbRolesList, tbAcct.getAcctId(), 1L);
 
         return ResultUtils.successfulTip(EumUserResponeCode.ACCT_UPDATE_SUCCESS);
 
     }
-
-    @ApiOperation(value = "修改主账号扩展信息",notes = "主账号扩展修改")
-    @ApiImplicitParam(name = "formAcctVo", value = "主账号信息", required = true, dataType = "FormAcctVo")
-    @UooLog(value = "修改主账号扩展信息",key = "updateAcctInfo")
-    @RequestMapping(value = "/modifyAcctInfo", method = RequestMethod.PUT)
-    public Object modifyAcctExtInfo(@RequestBody FormAcctVo formAcctVo) {
-        TbAcct tbAcct = formAcctVo.getTbAcct();
-        Wrapper tbAcctWrapper = Condition.create().eq(true,"ACCT", tbAcct.getAcct()).eq(true, "STATUS_CD", "1000");
-        Page<TbAcct> tbAcctPage = tbAcctService.selectPage(new Page<TbAcct>(0, 12), tbAcctWrapper);
-        if (tbAcctPage.getRecords().size() == 0) {
-            return ResultUtils.error(EumUserResponeCode.ACCT_NO_EXIST);
-        }
-        tbAcctService.updateById(tbAcct);
-
-        //修改角色 todo
-
-        return ResultUtils.successfulTip(EumUserResponeCode.ACCT_EXT_UPDATE_SUCCESS);
-    }
-
-    @ApiOperation(value = "主账号查询",notes = "主账号查询")
-    @ApiImplicitParam(name = "personnelId", value = "主账号", required = true, dataType = "String", paramType = "path")
-    @UooLog(value = "主账号查询",key = "getFormAcctByPersonnelId")
-    @RequestMapping(value = "/getFormAcct", method = RequestMethod.GET)
-    public Object getAcct(String personnelId){
-        //用户
-        TbUser tbUser = tbUserService.selectOne(new EntityWrapper<TbUser>().eq("PERSONNEL_ID", personnelId));
-
-        Wrapper tbAcctWrapper = Condition.create().eq(true,"USER_ID", tbUser.getUserId()).eq(true, "STATUS_CD", BaseUnitConstants.ENTT_STATE_ACTIVE);
-        Page<TbAcct> tbAcctPage = tbAcctService.selectPage(new Page<TbAcct>(0, 12), tbAcctWrapper);
-        if (tbAcctPage.getRecords().size() == 0) {
-            return ResultUtils.error(EumUserResponeCode.ACCT_NO_EXIST);
-        }
-        FormAcctVo formAcctVo = new FormAcctVo();
-        TbAcct tbAcct = tbAcctPage.getRecords().get(0);
-        formAcctVo.setTbAcct(tbAcct);
-
-        formAcctVo.setUserId(Long.valueOf(tbUser.getUserId()));
-        formAcctVo.setPersonnelId(tbUser.getPersonnelId());
-
-
-        return ResultUtils.success(formAcctVo);
-    }
-
-
 
 }
 

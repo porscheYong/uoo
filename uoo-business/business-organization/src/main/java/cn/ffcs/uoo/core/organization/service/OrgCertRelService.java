@@ -1,7 +1,10 @@
 package cn.ffcs.uoo.core.organization.service;
 
 import cn.ffcs.uoo.core.organization.entity.OrgCertRel;
+import cn.ffcs.uoo.core.organization.vo.OrgCertVo;
 import com.baomidou.mybatisplus.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -35,8 +38,8 @@ public interface OrgCertRelService extends IService<OrgCertRel> {
     public void update(OrgCertRel orgCertRel);
 
 
-//    /**
-//     * 获取组织信息
-//     */
-//    public void selectOrgCerRelByOrgId();
+    /**
+     * 获取组织信息
+     */
+    public List<OrgCertVo> getOrgCerRelByOrgId(Long orgId);
 }

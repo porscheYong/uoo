@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * </p>
  *
  * @author ffcs-gzb
- * @since 2018-11-14
+ * @since 2018-11-16
  */
 public interface TbSystemIndividuationRuleMapper extends BaseMapper<TbSystemIndividuationRule> {
-
+    public Long getId();
 }

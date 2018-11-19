@@ -21,5 +21,12 @@ public interface TbCertService extends IService<TbCert> {
      * @param personnelId
      * @return
      */
-    public TbCert getTbCertByPersonnelId(Integer personnelId);
+    public TbCert getTbCertByPersonnelId(Long personnelId);
+
+    /**
+     * 根据personnelId 删除 证件信息
+     * @param personnelId
+     * @return
+     */
+    public Object delTbCertByPsnId(Long personnelId);
 }

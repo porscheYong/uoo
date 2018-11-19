@@ -2,11 +2,10 @@ package cn.ffcs.uoo.core.user.service;
 
 import cn.ffcs.uoo.core.user.entity.TbRoles;
 import cn.ffcs.uoo.core.user.entity.TbUser;
-import cn.ffcs.uoo.core.user.vo.ListSlaveAcctVo;
-import cn.ffcs.uoo.core.user.vo.ListUserOrgVo;
-import cn.ffcs.uoo.core.user.vo.PsonOrgVo;
+import cn.ffcs.uoo.core.user.vo.*;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -47,4 +46,37 @@ public interface TbUserService extends IService<TbUser> {
      */
     public Page<ListUserOrgVo> selectUserOrgPage(PsonOrgVo psonOrgVo);
 
-    }
+
+    /**
+     * -todo----新版本---------------------------------------------------------
+     */
+
+    /**
+     * 选择用户
+     * @param personnelId
+     * @return
+     */
+    public List<ListUserVo> getUserList( Long personnelId);
+
+    /**
+     * 人员信息
+     * @param personnelId
+     * @return
+     */
+    public PersonnelInfoVo getPersonnelInfo( Long personnelId);
+
+    /**
+     * 主账号 关联 组织
+     * @param acctOrgVo
+     * @return
+     */
+    public Page<ListAcctOrgVo> getAcctOrg(ListAcctOrgVo acctOrgVo);
+
+    /**
+     * 从账号 关联 主账号组织
+     * @param acctOrgVo
+     * @return
+     */
+    public List<ListAcctOrgVo> getSlaveAcctOrg(ListAcctOrgVo acctOrgVo);
+
+}

@@ -3,10 +3,12 @@ package cn.ffcs.uoo.core.organization.service.impl;
 import cn.ffcs.uoo.core.organization.entity.OrgCertRel;
 import cn.ffcs.uoo.core.organization.dao.OrgCertRelMapper;
 import cn.ffcs.uoo.core.organization.service.OrgCertRelService;
+import cn.ffcs.uoo.core.organization.vo.OrgCertVo;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -66,5 +68,12 @@ public class OrgCertRelServiceImpl extends ServiceImpl<OrgCertRelMapper, OrgCert
     }
 
 
+    /**
+     * 获取组织信息
+     */
+    @Override
+    public List<OrgCertVo> getOrgCerRelByOrgId(Long orgId){
+        return baseMapper.getOrgCerRelByOrgId(orgId);
+    }
 
 }

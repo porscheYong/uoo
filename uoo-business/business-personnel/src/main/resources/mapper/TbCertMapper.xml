@@ -46,7 +46,13 @@
                 TB_CERT
         SET
             STATUS_CD = 1100
-        WHERE
-                CERT_ID = #{certId}
+        WHERE STATUS_CD = 1000
+        <if test="personnelId != null and personnelId != '' ">
+            and personnel_id = #{personnelId}
+        </if>
+        <if test="certId != null and certId != ''">
+            CERT_ID = #{certId}
+        </if>
+
     </update>
 </mapper>

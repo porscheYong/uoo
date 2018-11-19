@@ -6,13 +6,8 @@ import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.user.constant.BaseUnitConstants;
 import cn.ffcs.uoo.core.user.constant.EumUserResponeCode;
-import cn.ffcs.uoo.core.user.entity.TbAcct;
-import cn.ffcs.uoo.core.user.entity.TbAcctOrg;
-import cn.ffcs.uoo.core.user.entity.TbRoles;
-import cn.ffcs.uoo.core.user.entity.TbUser;
-import cn.ffcs.uoo.core.user.service.TbAcctOrgService;
-import cn.ffcs.uoo.core.user.service.TbAcctService;
-import cn.ffcs.uoo.core.user.service.TbUserService;
+import cn.ffcs.uoo.core.user.entity.*;
+import cn.ffcs.uoo.core.user.service.*;
 import cn.ffcs.uoo.core.user.util.ResponseResult;
 import cn.ffcs.uoo.core.user.util.ResultUtils;
 import cn.ffcs.uoo.core.user.util.StrUtil;
@@ -54,10 +49,13 @@ public class TbUserController extends BaseController {
     private TbUserService tbUserService;
 
     @Autowired
+    private TbAcctExtService tbAcctExtService;
+
+    @Autowired
     private TbAcctService tbAcctService;
 
     @Autowired
-    private TbAcctOrgService tbAcctOrgService;
+    private TbSlaveAcctService tbSlaveAcctService;
 
     @ApiOperation(value = "用户组织条件查询", notes = "条件分页查询")
     @ApiImplicitParam(name = "psonOrgVo", value = "用户条件VO", required = true, dataType = "PsonOrgVo")
@@ -125,5 +123,99 @@ public class TbUserController extends BaseController {
 
         return ResultUtils.success(editFormUserVo);
     }
+
+    //-todo---新版本------------------------------------------------------------------------------------
+
+    @ApiOperation(value = "选择用户信息", notes = "选择用户信息")
+    @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long",paramType="path")
+    @UooLog(value = "人员查看用户查询", key = "getUserList")
+    @RequestMapping(value = "/getUserList", method = RequestMethod.GET)
+    public Object getUserList(Long personnelId){
+        return ResultUtils.success(tbUserService.getUserList(personnelId));
+    }
+
+    @ApiOperation(value = "主账号查询",notes = "主账号查询")
+    @ApiImplicitParam(name = "acctId", value = "主账号标识", required = true, dataType = "Long", paramType = "path")
+    @UooLog(value = "主账号查询",key = "getFormAcct")
+    @RequestMapping(value = "/getFormAcct", method = RequestMethod.GET)
+    public Object getFormAcct(Long acctId){
+        FormAcctVo formAcctVo = new FormAcctVo();
+        formAcctVo.setUserType("1");
+        //主账号
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TABLE_ACCT_ID, acctId);
+        TbAcct tbAcct = tbAcctService.selectOne(new EntityWrapper<TbAcct>().allEq(map));
+        formAcctVo.setTbAcct(tbAcct);
+
+        //人员信息
+        formAcctVo.setPersonnelId(Long.valueOf(tbAcct.getPersonnelId()));
+        PersonnelInfoVo tbPersonnel = tbUserService.getPersonnelInfo(tbAcct.getPersonnelId());
+        BeanUtils.copyProperties(tbPersonnel, formAcctVo);
+
+        //角色
+        List<TbRoles> tbRolesList = tbAcctService.getTbRoles(1L,tbAcct.getAcctId());
+        formAcctVo.setTbRolesList(tbRolesList);
+
+        //归属组织信息
+        ListAcctOrgVo acctOrgVo = new ListAcctOrgVo();
+        acctOrgVo.setAcctId(tbAcct.getAcctId());
+        Page<ListAcctOrgVo> acctOrgVoPage = tbUserService.getAcctOrg(acctOrgVo);
+        formAcctVo.setAcctOrgVoPage(acctOrgVoPage);
+
+        //从账号
+        ListSlaveAcctOrgVo slaveAcctOrgVo = new ListSlaveAcctOrgVo();
+        slaveAcctOrgVo.setAcctId(tbAcct.getAcctId());
+        Page<ListSlaveAcctOrgVo> slaveAcctOrgVoPage = tbSlaveAcctService.getSlaveAcctOrg(slaveAcctOrgVo);
+        formAcctVo.setSlaveAcctOrgVoPage(slaveAcctOrgVoPage);
+
+        return ResultUtils.success(formAcctVo);
+    }
+
+    @ApiOperation(value = "从账号查询",notes = "从账号查询")
+    @ApiImplicitParam(name = "acctId", value = "从账号标识", required = true, dataType = "Long", paramType = "path")
+    @UooLog(value = "主账号查询",key = "getFormAcct")
+    @RequestMapping(value = "/getFormSlaveAcct", method = RequestMethod.GET)
+    public Object getFormSlaveAcct(Long acctId){
+        FormSlaveAcctVo formSlaveAcctVo = new FormSlaveAcctVo();
+        formSlaveAcctVo.setUserType("2");//从账号
+        formSlaveAcctVo.setSlaveAcctType("1");//应用
+
+        //从账号
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TABLE_SLAVE_ACCT_ID, acctId);
+        TbSlaveAcct tbSlaveAcct = tbSlaveAcctService.selectOne(new EntityWrapper<TbSlaveAcct>().allEq(map));
+        formSlaveAcctVo.setTbSlaveAcct(tbSlaveAcct);
+
+        //人员
+        map.remove(BaseUnitConstants.TABLE_SLAVE_ACCT_ID);
+        map.put(BaseUnitConstants.TABLE_ACCT_ID, tbSlaveAcct.getAcctId());
+        TbAcct tbAcct = tbAcctService.selectOne(new EntityWrapper<TbAcct>().allEq(map));
+        PersonnelInfoVo tbPersonnel = tbUserService.getPersonnelInfo(tbAcct.getPersonnelId());
+        BeanUtils.copyProperties(tbPersonnel, formSlaveAcctVo);
+
+        //角色
+        List<TbRoles> tbRolesList = tbAcctService.getTbRoles(2L,tbSlaveAcct.getSlaveAcctId());
+        formSlaveAcctVo.setTbRolesList(tbRolesList);
+
+        //扩展信息
+        TbAcctExt tbAcctExt = tbAcctExtService.selectOne(new EntityWrapper<TbAcctExt>().eq("SLAVE_ACCT_ID", tbSlaveAcct.getSlaveAcctId()));
+        if(!StrUtil.isNullOrEmpty(tbAcctExt)){
+            formSlaveAcctVo.setTbAcctExt(tbAcctExt);
+        }
+        //归属组织信息
+        ListAcctOrgVo acctOrgVo = new ListAcctOrgVo();
+        acctOrgVo.setAcctId(tbSlaveAcct.getAcctHostId());
+        List<ListAcctOrgVo> acctOrgVoList = tbUserService.getSlaveAcctOrg(acctOrgVo);
+        formSlaveAcctVo.setAcctOrgVoList(acctOrgVoList);
+
+        return ResultUtils.success(formSlaveAcctVo);
+    }
+
+
+
+
+
 }
 

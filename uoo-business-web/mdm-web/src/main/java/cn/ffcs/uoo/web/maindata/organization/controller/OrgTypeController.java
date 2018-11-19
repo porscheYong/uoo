@@ -39,7 +39,7 @@ public class OrgTypeController {
     @ApiOperation(value = "获取组织类别", notes = "获取组织类别")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getOrgTypeList", method = RequestMethod.POST)
+    @RequestMapping(value = "/getOrgTypeList", method = RequestMethod.GET)
     public ResponseResult<List<OrgType>> getOrgTypeList(@RequestParam(value = "orgTypeCode",required = false)String orgTypeCode){
         return orgTypeService.getOrgTypeList(orgTypeCode);
     }

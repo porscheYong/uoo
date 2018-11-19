@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author ffcs-gzb
- * @since 2018-11-14
+ * @since 2018-11-16
  */
 @TableName("TB_BUSINESS_SYSTEM")
 public class TbBusinessSystem extends Model<TbBusinessSystem> {

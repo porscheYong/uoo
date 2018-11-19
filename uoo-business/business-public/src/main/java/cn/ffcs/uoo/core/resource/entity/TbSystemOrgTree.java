@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author ffcs-gzb
- * @since 2018-11-14
+ * @since 2018-11-16
  */
 @TableName("TB_SYSTEM_ORG_TREE")
 public class TbSystemOrgTree extends Model<TbSystemOrgTree> {
@@ -21,12 +21,12 @@ public class TbSystemOrgTree extends Model<TbSystemOrgTree> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 行业标识
+     * 接入系统组织树引用标识
      */
     @TableId("SYSTEM_ORG_TREE_ID")
     private Long systemOrgTreeId;
     /**
-     * 行业名称
+     * 行业标识
      */
     @TableField("BUSINESS_SYSTEM_ID")
     private Long businessSystemId;
@@ -35,6 +35,16 @@ public class TbSystemOrgTree extends Model<TbSystemOrgTree> {
      */
     @TableField("ORG_TREE_ID")
     private Long orgTreeId;
+    /**
+     * 是否包含专业树上人员
+     */
+    @TableField("INCLUDE_PSN")
+    private Integer includePsn;
+    /**
+     * 是否包含专业树上人员
+     */
+    @TableField("INCLUDE_SLAVE_ACCT")
+    private Integer includeSlaveAcct;
     @TableField("EFF_DATE")
     private Date effDate;
     @TableField("EXP_DATE")
@@ -75,6 +85,22 @@ public class TbSystemOrgTree extends Model<TbSystemOrgTree> {
 
     public void setOrgTreeId(Long orgTreeId) {
         this.orgTreeId = orgTreeId;
+    }
+
+    public Integer getIncludePsn() {
+        return includePsn;
+    }
+
+    public void setIncludePsn(Integer includePsn) {
+        this.includePsn = includePsn;
+    }
+
+    public Integer getIncludeSlaveAcct() {
+        return includeSlaveAcct;
+    }
+
+    public void setIncludeSlaveAcct(Integer includeSlaveAcct) {
+        this.includeSlaveAcct = includeSlaveAcct;
     }
 
     public Date getEffDate() {
@@ -152,6 +178,8 @@ public class TbSystemOrgTree extends Model<TbSystemOrgTree> {
         ", systemOrgTreeId=" + systemOrgTreeId +
         ", businessSystemId=" + businessSystemId +
         ", orgTreeId=" + orgTreeId +
+        ", includePsn=" + includePsn +
+        ", includeSlaveAcct=" + includeSlaveAcct +
         ", effDate=" + effDate +
         ", expDate=" + expDate +
         ", statusCd=" + statusCd +

@@ -26,6 +26,25 @@
         SELECT seq_tb_psnjob_id.nextval FROM dual
     </select>
 
+    <select id="getPsnjobPageBypsnId" resultType="cn.ffcs.uoo.core.personnel.vo.TbPsnjobVo">
+        select t1.psnjob_id,
+               t1.personnel_id,
+               t1.status_cd,
+               t1.org_id,
+               t2.org_name,
+               t1.begin_time,
+               t1.end_time
+        from tb_psnjob t1
+                 left join tb_org t2
+                     on t1.org_id = t2.org_id
+                            and t1.status_cd = t2.status_cd
+        where t1.status_cd = 1000
+        <if test="psnjobVo.personnelId != null and psnjobVo.personnelId != '' ">
+            and t1.personnel_id = #{psnjobVo.personnelId}
+        </if>
+
+    </select>
+
     <update id="delete" parameterType="cn.ffcs.uoo.core.personnel.entity.TbPsnjob">
         UPDATE
         TB_PSNJOB
