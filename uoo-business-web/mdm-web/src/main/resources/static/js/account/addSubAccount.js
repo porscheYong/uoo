@@ -2,7 +2,7 @@ var account = getQueryString('account');
 var title = getQueryString('title');
 var opBtn = getQueryString('opBtn');
 
-// console.log(account+'---'+title+'---'+opBtn);
+console.log(account+'---'+title+'---'+opBtn);
 
 $('#sub-title').html(title);
 
