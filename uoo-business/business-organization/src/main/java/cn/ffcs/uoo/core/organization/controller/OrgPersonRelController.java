@@ -310,5 +310,29 @@ public class OrgPersonRelController extends BaseController {
         return ret;
     }
 
+
+
+
+
+    @ApiOperation(value = "查询用户-web", notes = "查询用户")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "查询用户",key = "getUserOrgRelPage")
+    @RequestMapping(value = "/getUserOrgRelPage",method = RequestMethod.GET)
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(PsonOrgVo psonOrgVo){
+        ResponseResult<Page<PsonOrgVo>> ret = new ResponseResult<>();
+        Page<PsonOrgVo> page = orgPersonRelService.selectUserOrgRelPage(psonOrgVo);
+        if(StrUtil.isNullOrEmpty(psonOrgVo.getOrgId())){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织标识不能为空");
+            return ret;
+        }
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setMessage("成功");
+        ret.setData(page);
+        return ret;
+    }
+
 }
 

@@ -77,5 +77,14 @@ public class OrgPersonRelController {
         return orgPersonRelService.getPerOrgRelPage(psonOrgVo);
     }
 
+
+    @ApiOperation(value = "获取组织用户关系翻页", notes = "获取组织用户关系翻页")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/getUserOrgRelPage", method = RequestMethod.GET)
+    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(@RequestBody PsonOrgVo psonOrgVo){
+        return orgPersonRelService.getUserOrgRelPage(psonOrgVo);
+    }
+
 }
 
