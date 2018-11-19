@@ -51,4 +51,7 @@ public interface PersonnelService {
 
     @RequestMapping(value = "/personnel/updatePersonnel",method = RequestMethod.PUT, headers={"Content-Type=application/json"} )
     public Object upPersonnel(@RequestBody PersonnelVo personnelVo);
+
+    @RequestMapping(value="/personnel/getPsnBasicInfo", method = RequestMethod.GET, headers={"Content-Type=application/json"})
+    public Object getPsnBasicInfo(@RequestParam("keyWord") String keyWord, @RequestParam("pageNo") int pageNo, @RequestParam("pageSize") int pageSize);
 }
