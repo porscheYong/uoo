@@ -41,7 +41,7 @@ public class OrgPersonRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/addOrgPsn", method = RequestMethod.POST)
-    public ResponseResult addOrgPsn(@RequestBody PsonOrgVo psonOrgVo){
+    public ResponseResult addOrgPsn(@RequestBody List<PsonOrgVo> psonOrgVo){
         return orgPersonRelService.addOrgPsn(psonOrgVo);
     }
 

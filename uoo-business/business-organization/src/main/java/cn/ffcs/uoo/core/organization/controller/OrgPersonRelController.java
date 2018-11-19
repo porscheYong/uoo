@@ -65,54 +65,58 @@ public class OrgPersonRelController extends BaseController {
     @ApiImplicitParams({
     })
     @UooLog(value = "新增组织人员关系", key = "addOrgPsn")
-    @RequestMapping(value = "/addOrgPsn", method = RequestMethod.GET)
+    @RequestMapping(value = "/addOrgPsn", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<String> addOrgPsn(PsonOrgVo psonOrgVo){
+    public ResponseResult<String> addOrgPsn(List<PsonOrgVo> psonOrgList){
         System.out.println(new Date());
         ResponseResult<String> ret = new ResponseResult<String>();
-        String msg = orgPersonRelService.judgeOrgPsnParams(psonOrgVo);
-        if(!StrUtil.isNullOrEmpty(msg)){
-            ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage(msg);
-            return ret;
+        if(psonOrgList!=null){
+            for(PsonOrgVo psonOrgVo : psonOrgList){
+            String msg = orgPersonRelService.judgeOrgPsnParams(psonOrgVo);
+            if(!StrUtil.isNullOrEmpty(msg)){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage(msg);
+                return ret;
+            }
+
+            Wrapper orgTreeConfWrapper = Condition.create()
+                    .eq("ORG_ID",psonOrgVo.getOrgRootId())
+                    .eq("STATUS_CD","1000");
+            OrgTree orgtree = orgTreeService.selectOne(orgTreeConfWrapper);
+            if(orgtree==null){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("组织树不存在");
+                return ret;
+            }
+
+            OrgPersonRel orgPersonRel = orgPersonRelService.convertObj(psonOrgVo);
+            Long orgPsndocRefId = orgPersonRelService.getId();
+            orgPersonRel.setOrgPersonId(orgPsndocRefId);
+            orgPersonRel.insert();
+
+            Long orgTreePerId = orgtreeOrgpersonRelService.getId();
+            OrgtreeOrgpersonRel orgtreeOrgpersonRel = new OrgtreeOrgpersonRel();
+            orgtreeOrgpersonRel.setOrgTreeId(orgtree.getOrgTreeId());
+            orgtreeOrgpersonRel.setOrgPersonId(orgPsndocRefId);
+            orgtreeOrgpersonRel.setOrgtreeOrgpersonId(orgTreePerId);
+            orgtreeOrgpersonRel.setStatusCd("1000");
+            orgtreeOrgpersonRel.insert();
+
+
+
+            SolrInputDocument input = new SolrInputDocument();
+            input.addField("psnName", psonOrgVo.getPsnName());
+            input.addField("certNo", psonOrgVo.getCertNo());
+            input.addField("orgRootId", psonOrgVo.getOrgRootId());
+            input.addField("userId", psonOrgVo.getUserId());
+            input.addField("id", orgPsndocRefId);
+            String sysfullName = orgService.getSysFullName(orgtree.getOrgId(),orgPersonRel.getOrgId().toString());
+            input.addField("psnFullName", sysfullName);
+            input.addField("acct", psonOrgVo.getAcct());
+            input.addField("mobile", psonOrgVo.getMobile());
+            solrService.addDataIntoSolr("pson",input);
+            }
         }
-
-        Wrapper orgTreeConfWrapper = Condition.create()
-                .eq("ORG_ID",psonOrgVo.getOrgRootId())
-                .eq("STATUS_CD","1000");
-        OrgTree orgtree = orgTreeService.selectOne(orgTreeConfWrapper);
-        if(orgtree==null){
-            ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织树不存在");
-            return ret;
-        }
-
-        OrgPersonRel orgPersonRel = orgPersonRelService.convertObj(psonOrgVo);
-        Long orgPsndocRefId = orgPersonRelService.getId();
-        orgPersonRel.setOrgPersonId(orgPsndocRefId);
-        orgPersonRel.insert();
-
-        Long orgTreePerId = orgtreeOrgpersonRelService.getId();
-        OrgtreeOrgpersonRel orgtreeOrgpersonRel = new OrgtreeOrgpersonRel();
-        orgtreeOrgpersonRel.setOrgTreeId(orgtree.getOrgTreeId());
-        orgtreeOrgpersonRel.setOrgPersonId(orgPsndocRefId);
-        orgtreeOrgpersonRel.setOrgtreeOrgpersonId(orgTreePerId);
-        orgtreeOrgpersonRel.setStatusCd("1000");
-        orgtreeOrgpersonRel.insert();
-
-
-
-        SolrInputDocument input = new SolrInputDocument();
-        input.addField("psnName", psonOrgVo.getPsnName());
-        input.addField("certNo", psonOrgVo.getCertNo());
-        input.addField("orgRootId", psonOrgVo.getOrgRootId());
-        input.addField("userId", psonOrgVo.getUserId());
-        input.addField("id", orgPsndocRefId);
-        String sysfullName = orgService.getSysFullName(orgtree.getOrgId(),orgPersonRel.getOrgId().toString());
-        input.addField("psnFullName", sysfullName);
-        input.addField("acct", psonOrgVo.getAcct());
-        input.addField("mobile", psonOrgVo.getMobile());
-        solrService.addDataIntoSolr("pson",input);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
         return ret;
