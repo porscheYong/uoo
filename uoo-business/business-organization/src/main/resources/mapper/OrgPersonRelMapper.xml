@@ -250,7 +250,7 @@
 
     <select id="selectUserOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
         select *
-        from (select t.acct_id acctId,
+        from (select t.acct_id accId,
            t.acct acct,
            t.status_cd statusCd,
            '1' type,
@@ -278,7 +278,7 @@
         left join tb_org t6 on t.org_id = t6.org_id
                          and t.status_cd = t6.status_cd
         union all
-        select t.slave_acct_id acctId,
+        select t.slave_acct_id accId,
            t.slave_acct acct,
            t.status_cd statusCd,
            '2' type,

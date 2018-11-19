@@ -127,6 +127,9 @@ public class PsonOrgVo extends BaseVo {
      */
     private String acct;
     /********************人员相关********************/
+    /**
+     * 组织账号或者从账号标识
+     */
     private String accId;
     /**
      * 账号类型 1 主账号 2 从账号
