@@ -241,17 +241,17 @@ public class OrgController extends BaseController {
 
 
             //solr
-            SolrInputDocument input = new SolrInputDocument();
-            input.addField("id", orgRefId);
-            input.addField("orgId", org.getOrgId());
-            input.addField("orgCode", org.getOrgCode());
-            input.addField("orgRelTypeId", orgOrgRel.getOrgRelTypeId());
-            input.addField("orgName", org.getOrgName());
-            //获取系统路径
-            String sysfullName = orgService.getSysFullName(org.getOrgRootId().toString(),org.getSupOrgId().toString());
-            sysfullName = sysfullName+"/"+org.getOrgName();
-            input.addField("fullName",sysfullName);
-            solrService.addDataIntoSolr("org",input);
+//            SolrInputDocument input = new SolrInputDocument();
+//            input.addField("id", orgRefId);
+//            input.addField("orgId", org.getOrgId());
+//            input.addField("orgCode", org.getOrgCode());
+//            input.addField("orgRelTypeId", orgOrgRel.getOrgRelTypeId());
+//            input.addField("orgName", org.getOrgName());
+//            //获取系统路径
+//            String sysfullName = orgService.getSysFullName(org.getOrgRootId().toString(),org.getSupOrgId().toString());
+//            sysfullName = sysfullName+"/"+org.getOrgName();
+//            input.addField("fullName",sysfullName);
+//            solrService.addDataIntoSolr("org",input);
         }
 
         //新增组织证件
@@ -443,11 +443,12 @@ public class OrgController extends BaseController {
                 .eq("ORG_ID",org.getOrgId())
                 .eq("STATUS_CD","1000");
         List<OrgCertRel> orgCertRelcurList = orgCertRelService.selectList(orgCertWrapper);
-        List<String> cerList = org.getCertIdList();
-        for(String certId : cerList){
+        //List<String> cerList = org.getCertIdList();
+        List<OrgCertVo> cerList  = org.getOrgCertList();
+        for(OrgCertVo certVo : cerList){
             for(OrgCertRel ocr : orgCertRelcurList){
                 isExists = false;
-                if(ocr.getCertId().longValue() == Integer.valueOf(certId)){
+                if(ocr.getCertId().longValue() == certVo.getCertId()){
                     isExists = true;
                     break;
                 }
@@ -457,14 +458,14 @@ public class OrgController extends BaseController {
                 Long orgCertRelId = orgCertRel.getOrgCertId();
                 orgCertRel.setOrgCertId(orgCertRelId);
                 orgCertRel.setOrgId(org.getOrgId());
-                orgCertRel.setCertId(Integer.valueOf(certId));
+                orgCertRel.setCertId(certVo.getCertId().intValue());
                 orgCertRel.insert();
             }
         }
         for(OrgCertRel ocr : orgCertRelcurList){
-            for(String certId : cerList){
+            for(OrgCertVo orgCertVo : cerList){
                 isExists = false;
-                if(ocr.getCertId().longValue() == Integer.valueOf(certId)){
+                if(ocr.getCertId().longValue() == orgCertVo.getCertId()){
                     isExists = true;
                     break;
                 }
@@ -504,8 +505,24 @@ public class OrgController extends BaseController {
                     orgPositionRelService.delete(opr);
                 }
 
+                //删除证件组织关系
+                Wrapper orgCertListWrapper = Condition.create()
+                        .eq("STATUS_CD","1000")
+                        .eq("ORG_ID",org.getOrgId());
+                List<OrgCertRel> orgCertRelList = orgCertRelService.selectList(orgCertListWrapper);
+                for(OrgCertRel vo:orgCertRelList){
+                    orgCertRelService.delete(vo);
+                }
+                //删除组织联系人关系
+                Wrapper orgContactListWrapper = Condition.create()
+                        .eq("STATUS_CD","1000")
+                        .eq("ORG_ID",org.getOrgId());
+                List<OrgContactRel> orgContactRelList = orgContactRelService.selectList(orgContactListWrapper);
+                for(OrgContactRel vo:orgContactRelList){
+                    orgContactRelService.delete(vo);
+                }
                 orgRelService.delete(or);
-                solrService.deleteDataIntoSolr("org",or.getOrgRelId().toString());
+                //solrService.deleteDataIntoSolr("org",or.getOrgRelId().toString());
             }
 
         }
@@ -526,7 +543,7 @@ public class OrgController extends BaseController {
     })
     @UooLog(value = "查询组织信息", key = "getOrg")
     @RequestMapping(value = "/getOrg", method = RequestMethod.GET)
-    //@Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<Org> getOrg(String orgId){
         ResponseResult<Org> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(orgId)){
@@ -556,7 +573,7 @@ public class OrgController extends BaseController {
             org.setPsonOrgVoList(psonOrgVoList);
         }
         //组织证件类型
-        List<OrgCertVo> orgCertList = orgCertRelService.getOrgCerRelByOrgId(orgId);
+        List<OrgCertVo> orgCertList = orgCertRelService.getOrgCerRelByOrgId(new Long(orgId));
         org.setOrgCertList(orgCertList);
 
         ret.setState(ResponseResult.STATE_OK);

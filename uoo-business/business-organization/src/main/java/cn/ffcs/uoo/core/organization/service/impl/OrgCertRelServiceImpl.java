@@ -72,7 +72,7 @@ public class OrgCertRelServiceImpl extends ServiceImpl<OrgCertRelMapper, OrgCert
      * 获取组织信息
      */
     @Override
-    public List<OrgCertVo> getOrgCerRelByOrgId(String orgId){
+    public List<OrgCertVo> getOrgCerRelByOrgId(Long orgId){
         return baseMapper.getOrgCerRelByOrgId(orgId);
     }
 
