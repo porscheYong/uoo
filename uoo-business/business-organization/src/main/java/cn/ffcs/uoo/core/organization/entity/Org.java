@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.organization.entity;
 
 import java.util.Date;
 
+import cn.ffcs.uoo.core.organization.vo.OrgCertVo;
 import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -214,6 +215,20 @@ public class Org extends Model<Org> {
     @TableField(exist=false)
     private List<String> certIdList;
 
+    /**
+     * 组织岗位
+     */
+    @TableField(exist=false)
+    private List<OrgCertVo> orgCertList;
+
+
+    public List<OrgCertVo> getOrgCertList() {
+        return orgCertList;
+    }
+
+    public void setOrgCertList(List<OrgCertVo> orgCertList) {
+        this.orgCertList = orgCertList;
+    }
 
     public List<String> getCertIdList() {
         return certIdList;

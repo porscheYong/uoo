@@ -9,6 +9,7 @@ import cn.ffcs.uoo.core.organization.service.*;
 import cn.ffcs.uoo.core.organization.service.impl.OrgServiceImpl;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
+import cn.ffcs.uoo.core.organization.vo.OrgCertVo;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
 import cn.ffcs.uoo.core.organization.vo.PageVo;
 import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
@@ -555,12 +556,8 @@ public class OrgController extends BaseController {
             org.setPsonOrgVoList(psonOrgVoList);
         }
         //组织证件类型
-        Wrapper orgCertWrapper = Condition.create()
-                .eq("ORG_ID",org.getOrgId())
-                .eq("STATUS_CD","1000");
-//        List<Cert> orgCertRelcurList = orgCertRelService.selectOrgCerRelByOrgId(orgCertWrapper);
-//        orgCertRelService.getId();
-
+        List<OrgCertVo> orgCertList = orgCertRelService.getOrgCerRelByOrgId(orgId);
+        org.setOrgCertList(orgCertList);
 
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("查询成功");
