@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.core.organization.vo;/**
+package cn.ffcs.uoo.web.maindata.organization.dto;/**
  * @description:
  * @author: ffcs-gzb
  * @date: 2018-11-13
