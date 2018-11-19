@@ -41,6 +41,18 @@
         .col-md-6 {
             width: 45%;
         }
+        .row-id{
+            width: 15%;
+        }
+        .row-orgTree{
+            width: 20%;
+        }
+        .row-fullName{
+            width: 65%;
+        }
+        td,th{
+            text-align: center;
+        }
 
     </style>
 </head>
@@ -66,9 +78,9 @@
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号类型</label>
+                            <label for="accTypeTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号类型</label>
                             <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" > -->
-                            <select  class="col-md-8 col-sm-8 col-xs-12">
+                            <select  class="col-md-8 col-sm-8 col-xs-12" id='accTypeTel'>
                                 <option></option>
                                 <option>资源</option>
                                 <option>应用</option>
@@ -80,31 +92,15 @@
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员姓名</label>
-                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" >
+                            <label for="psnNameTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员姓名</label>
+                            <input type="tel" id="psnNameTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" >
                         </div>
                     </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
-                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">联系电话</label>
-                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
-                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                            <label for="psnNumTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
+                            <input type="tel" id="psnNumTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
                         </div>
                     </div>
                 </div>
@@ -112,15 +108,15 @@
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
-                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
+                            <label for="mobileTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">联系电话</label>
+                            <input type="tel" id="mobileTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
                         </div>
                     </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
+                            <label for="emailTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
+                            <input type="tel" id="emailTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
                         </div>
                     </div>
                 </div>
@@ -128,16 +124,36 @@
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户名</label>
-                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
+                            <label for="cerType" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
+                            <!-- <input type="tel" id="cerType" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">  -->
+                            <select  class="col-md-8 col-sm-8 col-xs-12" id="cerType">
+                                <option></option>
+                                <option>身份证</option>
+                            </select>
                         </div>
                     </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
+                            <label for="cerNoTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                            <input type="tel" id="cerNoTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="acctTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户名</label>
+                            <input type="tel" id="acctTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="statusCd" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
                             <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">  -->
-                            <select  class="col-md-8 col-sm-8 col-xs-12">
+                            <select  class="col-md-8 col-sm-8 col-xs-12" id="statusCd">
                                 <option></option>
                                 <option>生效</option>
                                 <option>失效</option>
@@ -148,16 +164,16 @@
 
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
-                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
+                        <div class="form-item" style="width: 100%" id='default_psw'>
+                            <label for="roleTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
+                            <input type="tel" id="roleTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
                         </div>
                     </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
-                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
+                            <label for="defaultPswTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
+                            <input type="tel" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
                         </div>
                     </div>
                 </div>
@@ -165,15 +181,15 @@
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
-                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
+                            <label for="effectDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
+                            <input type="tel" id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
                         </div>
                     </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
-                            <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
+                            <label for="invalidDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
+                            <input type="tel" id="invalidDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
                         </div>
                     </div>
                 </div>

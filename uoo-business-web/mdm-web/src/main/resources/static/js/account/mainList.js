@@ -18,9 +18,9 @@ function getOrgExtInfo() {
     $('.breadcrumb').html(pathStr);
 }
 
-function getUserList (orgId) {                    //获取主账号列表
+function getUserList (orgId) {                    //获取账号列表
     $http.get('http://134.96.253.221:11100/orgPersonRel/getUserOrgRelPage', {
-        orgId: orgId,
+        orgId: orgId
     }, function (data) {
         initMainTable(data.records) //data.records
     }, function (err) {
@@ -44,9 +44,9 @@ function initMainTable(results){
             { 'data': "psnName", 'title': '人员姓名', 'className': 'row-psnName' ,
             'render': function (data, type, row, meta) {
                 if(row.typeName == '主账号'){
-                    return '<a href="addMainAccount.html?account='+ row.acct +'&title=查看主账号&opBtn=0">'+ row.psnName +'</a>'
+                    return '<a href="addMainAccount.html?acctId='+ row.accId +'&userType='+row.type+'&statusCd='+row.statusCd+'&title=查看主账号&opBtn=0">'+ row.psnName +'</a>'
                 }else{
-                    return '<a href="addSubAccount.html?account='+ row.acct +'&title=查看从账号&opBtn=0">'+ row.psnName +'</a>'
+                    return '<a href="addSubAccount.html?acctId='+ row.accId +'&userType='+row.type+'&statusCd='+row.statusCd+'&title=查看从账号&opBtn=0">'+ row.psnName +'</a>'
                 } 
               }
             },
