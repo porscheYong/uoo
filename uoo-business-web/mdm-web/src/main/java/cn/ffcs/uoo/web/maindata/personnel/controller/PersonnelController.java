@@ -82,5 +82,15 @@ public class PersonnelController {
         return personnelService.upPersonnel(personnelVo);
     }
 
+    @ApiOperation(value="人员选择查询",notes="人员选择查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "keyWord", value = "关键字", required = true, dataType = "String",paramType="path"),
+            @ApiImplicitParam(name = "pageNo", value = "当前页数", required = true, dataType = "Integer",paramType="path"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path"),
+    })
+    @RequestMapping(value="/getPsnBasicInfo",method = RequestMethod.GET)
+    public Object getPsnBasicInfo(String keyWord, int pageNo, int pageSize){
+        return personnelService.getPsnBasicInfo(keyWord, pageNo, pageSize);
+    }
 
 }

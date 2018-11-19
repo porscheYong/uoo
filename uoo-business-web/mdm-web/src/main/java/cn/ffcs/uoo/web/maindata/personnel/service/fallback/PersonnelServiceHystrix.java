@@ -53,4 +53,9 @@ public class PersonnelServiceHystrix implements PersonnelService {
     public Object upPersonnel(PersonnelVo personnelVo) {
         return null;
     }
+
+    @Override
+    public Object getPsnBasicInfo(String keyWord, int pageNo, int pageSize) {
+        return null;
+    }
 }
