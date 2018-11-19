@@ -63,4 +63,12 @@ public class OrgPersonRelServiceHystrix implements OrgPersonRelService {
         responseResult.setMessage("系统暂时不可用");
         return responseResult;
     }
+
+    @Override
+    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(PsonOrgVo psonOrgVo){
+        ResponseResult<Page<PsonOrgVo>> responseResult = new ResponseResult<Page<PsonOrgVo>>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
 }
