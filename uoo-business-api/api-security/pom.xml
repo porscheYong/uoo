@@ -3,20 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>uoo</artifactId>
+        <artifactId>uoo-business-api</artifactId>
         <groupId>cn.ffcs</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>uoo-business-api</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>api-security</artifactId>
+    <name>api-security</name>
     <modules>
-        <module>api-user</module>
-        <module>api-org</module>
-        <module>api-auth</module>
-        <module>api-security</module>
+        <module>security-authorize</module>
+        <module>security-authentication</module>
     </modules>
+    <packaging>pom</packaging>
 
 
 </project>
