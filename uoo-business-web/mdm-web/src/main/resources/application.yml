@@ -1,5 +1,5 @@
 server:
-  port: 18000
+  port: 9092
 spring:
   application:
     name: mdm-web
@@ -14,7 +14,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://127.0.0.1:${eureka.server.port}/eureka/
+      defaultZone: http://134.96.253.221:${eureka.server.port}/eureka/
   instance:
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
     prefer-ip-address: true
