@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import cn.ffcs.uoo.web.maindata.region.dto.TbPoliticalLocation;
 import cn.ffcs.uoo.web.maindata.region.service.fallback.PoliticalLocationServiceHystrix;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
-import io.swagger.annotations.ApiOperation;
 
 @FeignClient(value = "business-region",/*configuration = {PersonnelServiceConfiguration.class},*/fallback = PoliticalLocationServiceHystrix.class)
 public interface PoliticalLocationService {
