@@ -1,6 +1,9 @@
 package cn.ffcs.uoo.web.maindata.region.controller;
 
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,12 +39,19 @@ public class TbPoliticalLocationController  {
     @GetMapping("getChildPoliticalLocationInfo/{id}")
     public ResponseResult getChildPoliticalLocationInfo(@PathVariable(value="id") Long id){
         return polLocSvc.getChildPoliticalLocationInfo(id);
-        
     }
     @ApiOperation(value = "行政区域树", notes = "行政区域树")
     //@UooLog(value = "行政区域树", key = "getTreePoliticalLocation")
-    @GetMapping("getTreePoliticalLocation/{id}")
-    public ResponseResult getTreePoliticalLocation(@PathVariable(value="id") Long id ){
+    @GetMapping("getTreePoliticalLocation")
+    public ResponseResult getTreePoliticalLocation(HttpServletRequest request){
+        String id_ = request.getParameter("id");
+        long id=0;
+        if(StringUtils.isNotBlank(id_)){
+            try {
+                id=Long.valueOf(id_);
+            } catch (Exception e) {
+            }
+        }
         return polLocSvc.getTreePoliticalLocation(id);
     }
     

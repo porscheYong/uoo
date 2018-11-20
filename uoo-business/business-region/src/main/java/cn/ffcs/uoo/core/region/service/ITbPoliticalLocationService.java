@@ -18,7 +18,7 @@ import com.baomidou.mybatisplus.service.IService;
 public interface ITbPoliticalLocationService extends IService<TbPoliticalLocation> {
     public Long getId();
 
-    public List<Map> getTreePoliticalLocation(Map<String, Object> params);
+    public List<TbPoliticalLocation> getTreePoliticalLocation(Map<String, Object> params);
 
     public List<Map> getChildPoliticalLocationInfo(Map<String, Object> params);
 }

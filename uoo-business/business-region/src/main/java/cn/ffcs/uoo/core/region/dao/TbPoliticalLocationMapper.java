@@ -21,7 +21,7 @@ public interface TbPoliticalLocationMapper extends BaseMapper<TbPoliticalLocatio
 
     public Long getId();
 
-    public List<Map> getTreePoliticalLocation(Map<String, Object> params);
+    public List<TbPoliticalLocation> getTreePoliticalLocation(Map<String, Object> params);
 
     public List<Map> getChildPoliticalLocationInfo(Map<String, Object> params);
 

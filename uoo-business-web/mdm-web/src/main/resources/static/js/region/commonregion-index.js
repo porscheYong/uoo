@@ -3,7 +3,7 @@ var curStatus = "init", curAsyncCount = 0, asyncForAll = false,
 var setting = {
  			async: {
 				enable: true,
-				url:  "/region/politicalLocation/getTreePoliticalLocation",
+				url:  "/region/commonRegion/getTreeCommonRegion",
 				autoParam:["id" ],
 				/*otherParam:{"otherParam":"zTreeAsyncTest"},*/
 				dataFilter: filter,
@@ -29,10 +29,7 @@ var setting = {
 		    },
 		};
 		function zTreeOnClick(event, treeId, treeNode) {
-			$('#editDiv').hide();
-			$('#listDiv').show();
-			
-		    var currentId=treeNode.id
+		    /*var currentId=treeNode.id
 			//alert(treeNode.getParentNode());
 			var currentName= treeNode.name;
 			var str=treeNode.name;
@@ -45,7 +42,9 @@ var setting = {
 			$('#pollocStrCurrent').attr("cid",currentId);
 			$('#pollocStrCurrent').text(currentName);
 			//alert(currentId+"=="+str);
-			getRegionList(currentId);
+			getRegionList(currentId);*/
+			changeIframe('/inaction/region/commonregion-list.html?id='+treeNode.id);
+			
 		};
 		function filter(treeId, parentNode, childNodes) {
 			if(childNodes.state!=1){
@@ -177,8 +176,7 @@ var setting = {
 		}
 
 		$(document).ready(function(){
-			$('#editDiv').hide();
-			$('#listDiv').hide();
+			
 			$.fn.zTree.init($("#standardTree"), setting);
 			$('#editBtn').bind('click',editPolLoc);
 			$('#saveBtn').bind('click',savePolLoc);
@@ -188,6 +186,11 @@ var setting = {
 			/*$("#asyncAllBtn").bind("click", asyncAll);
 			$("#resetBtn").bind("click", reset);*/
 		});
+		function getCurrentSelectedNode(){
+			var treeObj = $.fn.zTree.getZTreeObj("standardTree");
+			var nodes = treeObj.getSelectedNodes();
+			return nodes;
+		}
 		function reloadTable(treeId){
 			$('#editDiv').hide();
 			$('#listDiv').show();
@@ -386,4 +389,6 @@ var setting = {
 					}
 				});
 		 }
-		
+		function changeIframe(url){
+			$('#myFrame').attr("src",url);
+		}

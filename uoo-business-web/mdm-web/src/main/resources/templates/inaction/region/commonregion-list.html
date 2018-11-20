@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>标准组织树</title>
+    <title>电信公共管理区域</title>
 
     <!-- Bootstrap -->
     <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -47,24 +47,25 @@
   <body style="background: #fff;">
     <div>
       <div class="board-title">
-        <span class="name ft18">杭州分公司</span
-        ><a class="icon icon-edit" id="editBtn" style="vertical-align: top;"></a>
+        <span id="regionStrCurrent" class="name ft18" cid=""></span>
+        <a class="icon icon-edit" id="editBtn" href="javascript:void(0)" onclick="goEdit()" style="vertical-align: top;"></a>
+        <a class="glyphicon glyphicon-remove" id=" " href="javascript:void(0)" onclick="goEdit()" style="vertical-align: top;"></a>
       </div>
       <div class="board-title">
-        <span class="name ft18">下级组织</span>
+        <span id="regionStrFull" class="name ft18"> </span>
         <div class="fright">
-          <a class="button-add" id="searchBtn" href=""><span class="fa fa-plus-circle icon-add"></span>添加</a>
+          <a class="button-add" id="" href="JavaScript:void(0)" onclick="parent.changeIframe('/inaction/region/commonregion-add.html')"><span class="fa fa-plus-circle icon-add"></span>添加</a>
         </div>
       </div>
       <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 50px;">
           <table id="orgTable" class="stripe" width="100%"></table>
       </div>
 
-      <div class="board-title">
-          <span class="name ft18">组织人员</span>
-      </div>
+      <!-- <div class="board-title">
+          <span class="name ft18">电信公共管理区域</span>
+      </div> -->
       <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 50px;">
-          <table id="personnelTable" class="stripe" width="100%"></table>
+          <table id="regionTable" class="stripe" width="100%"></table>
       </div>
     </div>
     <!-- jQuery -->
@@ -75,6 +76,6 @@
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
     <!-- init -->
     <script src="/js/init.js"></script>
-	  <script type="text/javascript" src="/js/organization/list.js"></script>
+	  <script type="text/javascript" src="/js/region/commonregion-list.js"></script>
   </body>
 </html>
