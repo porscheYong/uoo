@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.region.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,8 +41,16 @@ public class TbCommonRegionController {
          
     }
     @ApiOperation(value = "公共管理区域树", notes = "公共管理区域树")
-    @GetMapping("getTreeCommonRegion/{id}")
-    public ResponseResult getTreeCommonRegion(@PathVariable(value="id") Long id ){
+    @GetMapping("getTreeCommonRegion")
+    public ResponseResult getTreeCommonRegion(HttpServletRequest request){
+        String id_ = request.getParameter("id");
+        long id=0;
+        if(id_!=null){
+            try {
+                id=Long.valueOf(id_);
+            } catch (Exception e) {
+            }
+        }
         return regionService.getTreeCommonRegion(id);
     }
     

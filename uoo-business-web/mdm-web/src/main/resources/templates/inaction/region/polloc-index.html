@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>标准组织树</title>
+    <title>行政区域管理</title>
 
     <!-- Bootstrap -->
     <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -15,19 +15,19 @@
     <!-- ztree -->
     <link href="/vendors/zTree/zTreeStyle.css" rel="stylesheet">
     <!-- lulu ui -->
-    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
-
+     <!-- <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">   -->
+ <link href="/vendors/datatable/datatables.css" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
-    <link href="/css/custom.css" rel="stylesheet">
-
+  <link href="/css/custom.css" rel="stylesheet">  
+ <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet"> 
     <!--[if lt IE 9]>
     <script src="/js/core/html5shiv.js"></script>
     <script src="/js/core/respond.js"></script>
     <script src="/js/core/excanvas.js"></script>
     <![endif]-->
     <style type="text/css">
-      table.dataTable {
+     table.dataTable {
         table-layout: fixed;
       }
       
@@ -100,31 +100,122 @@
           </div>
         </div>
         <div class="content-right">
-          <iframe id="orgFrame" name="standardOrg" class="layadmin-iframe" src="list.html" frameborder="0" width="100%" height="99%"></iframe>
+        <!-- list start -->
+        
+        <div id="listDiv">
+      <div class="board-title">
+        <span id="pollocStrCurrent" class="name ft18" cid=""></span
+        ><a class="icon icon-edit" id="editBtn" style="vertical-align: top;"></a>
+      </div>
+      <div class="board-title">
+        <span id="pollocStrFull" class="name ft18"> </span>
+        <div class="fright">
+          <a class="button-add" id="addBtn" href="javascript:void(0)"><span class="fa fa-plus-circle icon-add"></span>添加</a>
         </div>
       </div>
-      <!-- Modal -->
-        <div id="myModal" style="display: none;">
-          <div class="modal-body" style="padding: 20px;">
-            <div style="float: left; width: 50%;">
-              <div style="margin-bottom: 10px;">
-                <span class="ui-input ui-search-input">
-                  <input type="search" placeholder="搜索组织类别">
-                  <a href="javascript:" class="ui-icon-search">搜索</a>
-                </span>
-              </div>
-              <div style="width: 90%;height: 290px;display: inline-block;overflow: auto;">
-                  <ul id="orgTypeTree" class="ztree"></ul>
-              </div>
-            </div>
-            <div style="float: left; width: 50%;">
-              <h3 style="padding: 30px 0; color: #232c45; font-weight: 600;">选择</h3>
-              <div style="display: inline-block;" id="tags_2">
+      <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 50px;">
+          <table id="regionTable" class="stripe" width="100%"></table>
+      </div>
 
+      <!-- <div class="board-title">
+          <span class="name ft18">组织人员</span>
+      </div>
+      <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 50px;">
+          <table id="personnelTable" class="stripe" width="100%"></table>
+      </div> -->
+    </div>
+        
+        
+        <!-- list end -->
+        
+        <!--  edit start -->
+        
+        <div  id="editDiv">
+        <div class="board-title">
+          <span id="editTile" class="name ft18"><!-- 编辑-市场部 100000571001 --></span>
+        </div>
+        <div class="nav-tabs-brief" style="padding-top: 35px; overflow-x: hidden;">
+          <ul class="nav nav-tabs tab-title" role="tablist" id="myTabs">
+            <li role="presentation" class="active" style="width: 10%;"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">基础信息</a>
+            </li>
+             
+          </ul>
+
+          <div class=" ">
+            <div class="tab-pane active" id="tab_content1">
+            <form method="post" id="locForm" class="form-horizontal">
+                <input  id="locId" value="" name="locId" type="hidden"/>
+                <input  id="treeId" value="" name="treeId" type="hidden"/>
+                <div class="form-group" style="margin-bottom: 10px;">
+                      <label for="upLocId" class="col-sm-2 control-label" style=" ">上级行政区域</label>
+                      <div class="col-sm-5">
+                       <select  id="upLocId" name="upLocId" class="form-control  ">
+                      </select>
+                      </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 10px;">
+                      <label for="locCode" class="col-sm-2 control-label" style=" ">行政区域编码</label>
+                       <div class="col-sm-5">
+                      <input type="number" id="locCode" class="form-control " size="40" name="locCode" required value="">
+                         </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 10px;">
+                      <label for="locName" class="col-sm-2 control-label" style=" ">行政区域名称</label>
+                      <div class="col-sm-5">
+                      <input type="text" id="locName" class="form-control  " size="40" name="locName" required value="">
+                      </div>
+                    
+                </div>
+                <div class="form-group" style="margin-bottom: 10px;">
+                     <label for="locAbbr" class="col-sm-2 control-label"  >行政区域简称</label>
+                     <div class="col-sm-5">
+                      <input type="text" id="locAbbr" class="form-control "   name="locAbbr" required value="">
+                      </div>
+                     
+                </div>
+                <div class="form-group" style="margin-bottom: 10px;">
+                      <label for="locType" class="col-sm-2 control-label" style=" ">行政区域类型</label>
+                      <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="城市"> -->
+                      <div class="col-sm-5">
+                      <select id="locType" name="locType" class="form-control  ">
+                        <option value='1'>省</option>
+                        <option value='2'>市</option>
+                        <option value='3'>区</option>
+                        <option value='4'>县</option>
+                        <option value='5'>乡</option>
+                        <option value='6'>镇</option>
+                        <option value='7'>村</option>
+                         
+                      </select>
+                      </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 10px;">
+                       <label for="locDesc" class="col-sm-2 control-label" style=" ">行政区域描述</label>
+                      <div class="col-sm-8  " style=" ">
+                        <input id="locDesc" class="form-control  " style=" " size="40" name="locDesc" value="">
+                      </div>
+                </div>
+            </form>
+               <div class="row" style="margin-bottom: 10px;">
+                <div style="margin-left: 17%;">
+                    <!-- <input type="submit" id="formSubmit" class="clip">
+                    <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
+                    <button id="saveBtn" class="btn btn-primary">保存</button>
+                    <button id="cancelBtn" class="btn btn-default" style="margin-left: 10px;" onclick="cancel()">取消</button>
+                </div>
               </div>
             </div>
+             
           </div>
         </div>
+    </div>
+        <!--  edit end  -->
+        
+         <!--  <iframe id="orgFrame" name="standardOrg" class="layadmin-iframe" src="list.html" frameborder="0" width="100%" height="99%"></iframe>
+    -->     </div>
+      </div>
+       
+         
     </div>
 
     <!-- jQuery -->
@@ -135,10 +226,21 @@
     <script type="text/javascript" src="/vendors/zTree/jquery.ztree.core.js"></script>
     <script type="text/javascript" src="/vendors/zTree/jquery.ztree.excheck.js"></script>
     <!-- layer -->
-    <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+    <!-- sea js -->
+    <!-- <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script> -->
+    <!-- laydate -->
+    <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
     <!-- init -->
+    <script type="text/javascript" src="/vendors/layer/layer.js"></script>
     <script src="/js/init.js"></script>
-    <script type="text/javascript" src="/js/region/polloc-index.js"></script>
-  
+     <script type="text/javascript" src="/js/region/polloc-index.js"></script> 
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+      <script type="text/javascript" src="/js/region/polloc-list.js"></script>
+      <!-- <script type="text/javascript" src="/js/region/polloc-edit.js"></script> -->
+     <!--  <script type="text/javascript">
+      seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+    	  $('select').selectMatch();
+    	})
+      </script> -->
   </body>
 </html>

@@ -2,7 +2,9 @@ package cn.ffcs.uoo.core.position.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.position.constant.StatusEnum;
 import cn.ffcs.uoo.core.position.entity.TbOrgPositionRel;
 import cn.ffcs.uoo.core.position.service.TbOrgPositionRelService;
 import cn.ffcs.uoo.core.position.vo.ResponseResult;
@@ -34,7 +36,11 @@ public class TbOrgPositionRelController extends BaseController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseResult<TbOrgPositionRel> addTbOrgPositionRel(@RequestBody TbOrgPositionRel tbOrgPositionRel) {
         ResponseResult<TbOrgPositionRel> responseResult = new ResponseResult<TbOrgPositionRel>();
-
+        tbOrgPositionRel.setEffDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbOrgPositionRel.setStatusCd(StatusEnum.VALID.getStatus());
+        tbOrgPositionRel.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbOrgPositionRel.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbOrgPositionRel.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbOrgPositionRelService.save(tbOrgPositionRel);
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增岗位组织关系成功");

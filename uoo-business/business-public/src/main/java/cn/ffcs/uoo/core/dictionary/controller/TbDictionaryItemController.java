@@ -2,7 +2,9 @@ package cn.ffcs.uoo.core.dictionary.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.constant.StatusEnum;
 import cn.ffcs.uoo.core.dictionary.entity.TbDictionary;
 import cn.ffcs.uoo.core.dictionary.entity.TbDictionaryItem;
 import cn.ffcs.uoo.core.dictionary.service.TbDictionaryItemService;
@@ -42,6 +44,8 @@ public class TbDictionaryItemController extends BaseController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseResult<TbDictionaryItem> updateTbDictionaryItem(@RequestBody TbDictionaryItem tbDictionaryItem) {
         ResponseResult<TbDictionaryItem> responseResult = new ResponseResult<TbDictionaryItem>();
+        tbDictionaryItem.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbDictionaryItem.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbDictionaryItemService.updateById(tbDictionaryItem);
 
         responseResult.setState(ResponseResult.STATE_OK);
@@ -55,6 +59,10 @@ public class TbDictionaryItemController extends BaseController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseResult<TbDictionaryItem> addTbDictionaryItem(@RequestBody TbDictionaryItem tbDictionaryItem) {
         ResponseResult<TbDictionaryItem> responseResult = new ResponseResult<TbDictionaryItem>();
+        tbDictionaryItem.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbDictionaryItem.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbDictionaryItem.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbDictionaryItem.setStatusCd(StatusEnum.VALID.getValue());
         tbDictionaryItemService.save(tbDictionaryItem);
 
         responseResult.setState(ResponseResult.STATE_OK);
