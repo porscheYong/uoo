@@ -13,10 +13,7 @@ import io.swagger.annotations.ApiOperation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -31,7 +28,7 @@ import java.util.List;
  * @since 2018-10-21
  */
 @RestController
-@RequestMapping(value = "/orgPersonRel" , produces = {"application/json;charset=UTF-8"})
+@RequestMapping(value = "/orgPersonRel")
 public class OrgPersonRelController {
 
     @Resource
@@ -65,16 +62,21 @@ public class OrgPersonRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getPerOrgRelList", method = RequestMethod.GET)
-    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(@RequestBody PsonOrgVo psonOrgVo){
-        return orgPersonRelService.getPerOrgRelList(psonOrgVo);
+    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(@RequestParam(value = "perSonId",required = false)Integer perSonId){
+        return orgPersonRelService.getPerOrgRelList(perSonId);
     }
 
     @ApiOperation(value = "获取组织人员关系翻页", notes = "获取组织人员关系翻页")
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getPerOrgRelPage", method = RequestMethod.GET)
-    public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(@RequestBody PsonOrgVo psonOrgVo){
-        return orgPersonRelService.getPerOrgRelPage(psonOrgVo);
+    public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(@RequestParam(value = "orgId",required = false)Integer orgId,
+                                                            @RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                            @RequestParam(value = "personId",required = false)Integer personId,
+                                                            @RequestParam(value = "search",required = false)String search,
+                                                            @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                                            @RequestParam(value = "pageNo",required = false)Integer pageNo){
+        return orgPersonRelService.getPerOrgRelPage(orgId,orgRootId,personId,search,pageSize,pageNo);
     }
 
 
@@ -82,8 +84,11 @@ public class OrgPersonRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getUserOrgRelPage", method = RequestMethod.GET)
-    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(@RequestBody PsonOrgVo psonOrgVo){
-        return orgPersonRelService.getUserOrgRelPage(psonOrgVo);
+    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(@RequestParam(value = "orgId",required = false)Integer orgId,
+                                                             @RequestParam(value = "search",required = false)String search,
+                                                             @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                                             @RequestParam(value = "pageNo",required = false)Integer pageNo){
+        return orgPersonRelService.getUserOrgRelPage(orgId,search,pageSize,pageNo);
     }
 
 }

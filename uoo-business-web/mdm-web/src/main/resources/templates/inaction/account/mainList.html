@@ -45,21 +45,29 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .row-account
-        .row-name
+        .row-psnName,
+        .row-typeName,
+        .row-acct
+        {
+            width: 15%;
+        }
+        .row-orgName
+        {
+            width: 35%;
+        }
+        .row-certNo
         {
             width: 20%;
         }
-        .row-org
-        {
-            width: 50%;
-        }
-        .row-state
-        {
+        .row-statusCd{
             width: 10%;
         }
         .col-sm-12{
             margin-top: -5%;
+        }
+        #mainTable_filter{
+            margin-bottom: 25px;
+            margin-right: 10px;
         }
     </style>
   </head>
@@ -72,9 +80,9 @@
       </div>
 
         <div class="board-title">
-            <span class="name ft18">主账号</span>
+            <span class="name ft18">组织用户</span>
             <div class="fright">
-                <a class="button-add" id="addBtn" href=""><span class="fa fa-plus-circle icon-add"></span>添加</a>
+                <a class="button-add" id="addBtn" href="add.html"><span class="fa fa-plus-circle icon-add"></span>添加</a>
             </div>
         </div>
       <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;">
@@ -85,12 +93,12 @@
     <!-- jQuery -->
     <script src="/js/core/jquery.js"></script>
     <!-- Bootstrap -->
-    <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- init -->
     <script src="/js/init.js"></script>
     <!-- jquery datatable -->
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
-    <script type="text/javascript" src="/js/account/mainData.js"></script>
+    <!-- <script type="text/javascript" src="/js/account/mainData.js"></script> -->
     <script type="text/javascript" src="/js/account/mainList.js"></script>
  
 

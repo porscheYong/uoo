@@ -1,5 +1,6 @@
 
   var orgId = getQueryString('id');
+  var orgName = getQueryString('name');
   var engine, remoteHost, template, empty, selectNode;
 
   $.support.cors = true;
@@ -71,11 +72,50 @@
   });
 
   $('#addBtn').on('click', function () {
-     var url = 'add.html?id=' + orgId;
+     var url = 'add.html?id=' + orgId  + '&name=' + orgName;;
      $(this).attr('href', url);
   })
+  
+  function  addTreeNode () {
+      var loading = parent.loading;
+      loading.screenMaskEnable('container');
+      $http.get('http://134.96.253.221:11100/orgRel/addOrgRel', {
+          orgRootId: '1',
+          supOrgId: orgId,
+          orgId: selectNode.orgId
+      }, function (data) {
+        var newNode = {
+            name: selectNode.orgName,
+            id: selectNode.orgId
+        }
+        parent.addNodeById(orgId, newNode);
+        loading.screenMaskDisable('container');
+      }, function (err) {
+          console.log(err);
+          loading.screenMaskDisable('container');
+      })
+  }
 
   function cancel () {
     var url = "list.html?id=" + orgId;
     window.location.href = url;
   }
+
+  // 获取组织完整路径
+  function getOrgExtInfo () {
+      var pathArry = parent.nodeArr;
+      var pathStr = '';
+      for (var i = pathArry.length - 1; i >= 0; i--) {
+          if (i === 0) {
+              pathStr +=  '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a></span>';
+          } else {
+              pathStr += '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+          }
+      }
+      $('.breadcrumb').html(pathStr);
+  }
+
+  $('#orgName').html(orgName);
+  getOrgExtInfo();
+
+

@@ -13,7 +13,7 @@ package cn.ffcs.uoo.web.maindata.organization.dto;/**
  * @author ffcs-gzb
  * @since 2018/10/24
  */
-public class PsonOrgVo {
+public class PsonOrgVo extends BaseVo {
 
     /**
      * 主键id

@@ -2,8 +2,10 @@ package cn.ffcs.uoo.core.expando.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.constant.StatusEnum;
 import cn.ffcs.uoo.core.vo.ResponseResult;
 import cn.ffcs.uoo.core.expando.entity.TbExpandorow;
 import cn.ffcs.uoo.core.expando.entity.TbExpandovalue;
@@ -59,14 +61,20 @@ public class TbExpandovalueController extends BaseController {
         tbExpandorow.setTableId(tbExpandovalue.getTableId());
         tbExpandorow.setResourceId(tbExpandovalue.getResourceId());
         tbExpandorow.setRecordId(tbExpandovalue.getRecordId());
-        tbExpandorow.setStatusCd(tbExpandovalue.getStatusCd());
-        tbExpandorow.setCreateDate(tbExpandovalue.getCreateDate());
+        tbExpandorow.setStatusCd(StatusEnum.VALID.getValue());
+        tbExpandorow.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbExpandorow.setCreateUser(tbExpandovalue.getCreateUser());
-        tbExpandorow.setStatusDate(tbExpandovalue.getStatusDate());
+        tbExpandorow.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandorow.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandorow.setUpdateUser(tbExpandovalue.getUpdateUser());
         tbExpandorowService.save(tbExpandorow);
 
         // 新增扩展值
         tbExpandovalue.setRowId(tbExpandorow.getRowId());
+        tbExpandovalue.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandovalue.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandovalue.setStatusCd(StatusEnum.VALID.getValue());
+        tbExpandovalue.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbExpandovalueService.save(tbExpandovalue);
 
         responseResult.setState(ResponseResult.STATE_OK);
@@ -98,7 +106,7 @@ public class TbExpandovalueController extends BaseController {
 
         TbExpandovalue tbExpandovalue = new TbExpandovalue();
         tbExpandovalue.setValueId(valueId);
-        tbExpandovalue.setStatusCd("1000");
+        tbExpandovalue.setStatusCd(StatusEnum.VALID.getValue());
 
         List<TbExpandovalue>  tbExpandovalueList = tbExpandovalueService.selectValueList(tbExpandovalue);
         if(tbExpandovalueList == null || tbExpandovalueList.size() <= 0) {
@@ -135,6 +143,9 @@ public class TbExpandovalueController extends BaseController {
             return responseResult;
         }
 
+        tbExpandovalue.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandovalue.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandovalue.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbExpandovalueService.updateById(tbExpandovalue);
 
         responseResult.setState(ResponseResult.STATE_OK);

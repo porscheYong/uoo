@@ -12,7 +12,7 @@ import cn.ffcs.uoo.web.maindata.region.service.fallback.ExchServiceHystrix;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
 import common.config.PersonnelServiceConfiguration;
 
-@FeignClient(value = "uoo-region-provider",configuration = {PersonnelServiceConfiguration.class},fallback = ExchServiceHystrix.class)
+@FeignClient(value = "business-region",configuration = {PersonnelServiceConfiguration.class},fallback = ExchServiceHystrix.class)
 public interface ExchService {
     
     @GetMapping("/region/exch/getExch/id={id}")

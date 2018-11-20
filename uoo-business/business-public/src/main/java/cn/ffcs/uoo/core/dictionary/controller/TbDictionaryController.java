@@ -2,7 +2,9 @@ package cn.ffcs.uoo.core.dictionary.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.constant.StatusEnum;
 import cn.ffcs.uoo.core.dictionary.entity.TbDictionary;
 import cn.ffcs.uoo.core.dictionary.service.TbDictionaryItemService;
 import cn.ffcs.uoo.core.dictionary.service.TbDictionaryService;
@@ -14,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,6 +42,9 @@ public class TbDictionaryController extends BaseController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseResult<TbDictionary> updateTbDictionary(@RequestBody TbDictionary tbDictionary) {
         ResponseResult<TbDictionary> responseResult = new ResponseResult<TbDictionary>();
+
+        tbDictionary.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbDictionary.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbDictionaryService.updateById(tbDictionary);
 
         responseResult.setState(ResponseResult.STATE_OK);
@@ -60,6 +66,10 @@ public class TbDictionaryController extends BaseController {
             return responseResult;
         }
 
+        tbDictionary.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbDictionary.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbDictionary.setStatusCd(StatusEnum.VALID.getValue());
+        tbDictionary.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbDictionaryService.saveDictionary(tbDictionary);
 
         responseResult.setState(ResponseResult.STATE_OK);

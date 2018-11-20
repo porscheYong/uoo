@@ -30,7 +30,8 @@
   <body style="background: #fff;">
       <div style="height: 100%;">
         <div class="board-title">
-          <span class="name ft18">市场部</span>
+          <span class="name ft18" id="orgName"></span
+          ><div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;"></div>
         </div>
 
         <div class="board-title">
@@ -110,7 +111,7 @@
             </div>
           </div>
           <div class="btn-group col-md-offset-3">
-            <button class="ui-button ui-button-primary">保存</button>
+            <button class="ui-button ui-button-primary" onclick="addTreeNode()">保存</button>
             <button class="ui-button ui-button-cancel" data-dismiss="modal" style="margin-left: 10px;" onclick="cancel()">取消</button>
           </div>
         </div>
@@ -129,7 +130,7 @@
     </script>
 
     <script id="empty-template" type="text/x-handlebars-template">
-      <div class="EmptyMessage">Your search turned up 0 results. This most likely means the backend is down, yikes!</div>
+      <div class="EmptyMessage">请输入关键字</div>
     </script>
 
     <!-- jQuery -->

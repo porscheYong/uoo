@@ -2,7 +2,9 @@ package cn.ffcs.uoo.core.position.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.position.constant.StatusEnum;
 import cn.ffcs.uoo.core.position.entity.TbOrgPostRel;
 import cn.ffcs.uoo.core.position.service.TbOrgPostRelService;
 import cn.ffcs.uoo.core.position.vo.ResponseResult;
@@ -52,6 +54,11 @@ public class TbOrgPostRelController extends BaseController {
             return responseResult;
         }
 
+        tbOrgPostRel.setEffDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbOrgPostRel.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbOrgPostRel.setStatusCd(StatusEnum.VALID.getStatus());
+        tbOrgPostRel.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbOrgPostRel.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbOrgPostRelService.save(tbOrgPostRel);
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增组织职位关系成功");

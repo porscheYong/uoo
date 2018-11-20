@@ -18,10 +18,9 @@ function getOrgExtInfo() {
     $('.breadcrumb').html(pathStr);
 }
 
-function getMainAccountList (orgId) {                    //获取主账号列表
-    $http.get('', {
-        orgId: orgId,
-        orgRootId: '1'
+function getUserList (orgId) {                    //获取账号列表
+    $http.get('http://134.96.253.221:11100/orgPersonRel/getUserOrgRelPage', {
+        orgId: orgId
     }, function (data) {
         initMainTable(data.records) //data.records
     }, function (err) {
@@ -29,10 +28,10 @@ function getMainAccountList (orgId) {                    //获取主账号列表
     })
 }
 
-function initMainTable(){
+function initMainTable(results){
     var table = $("#mainTable").DataTable({
         'data': results,
-        'searching': false,
+        'searching': true,
         'autoWidth': false,
         'ordering': true,
         'info': false,
@@ -42,14 +41,28 @@ function initMainTable(){
         },
         "scrollY": "375px",
         'columns': [
-            { 'data': "account", 'title': '账号', 'className': 'row-account' ,
+            { 'data': "psnName", 'title': '人员姓名', 'className': 'row-psnName' ,
             'render': function (data, type, row, meta) {
-                return '<a href="list.html?account='+ row.account +'" onclick="">'+ row.account +'</a>'
+                if(row.typeName == '主账号'){
+                    return '<a href="addMainAccount.html?acctId='+ row.accId +'&userType='+row.type+'&statusCd='+row.statusCd+'&title=查看主账号&opBtn=0">'+ row.psnName +'</a>'
+                }else{
+                    return '<a href="addSubAccount.html?acctId='+ row.accId +'&userType='+row.type+'&statusCd='+row.statusCd+'&title=查看从账号&opBtn=0">'+ row.psnName +'</a>'
+                } 
               }
             },
-            { 'data': "name", 'title': '人员姓名', 'className': 'row-name' },
-            { 'data': "org", 'title': '归属组织', 'className': 'row-org' },
-            { 'data': "state", 'title': '状态', 'className': 'row-state' }
+            { 'data': "typeName", 'title': '用户类型', 'className': 'row-typeName' },
+            { 'data': "acct", 'title': '用户名', 'className': 'row-acc' },
+            { 'data': "orgName", 'title': '归属组织', 'className': 'row-org' },
+            { 'data': "certNo", 'title': '证件号码', 'className': 'row-certNo' },
+            { 'data': "statusCd", 'title': '状态', 'className': 'row-statusCd' ,
+            'render': function (data, type, row, meta) {
+                if(row.statusCd == 1000){
+                    return '生效';
+                }else{
+                    return '失效';
+                }
+            }
+            }
             // { 
             //   'data': "userRoleName",
             //   'title': '系统角色',
@@ -63,7 +76,7 @@ function initMainTable(){
             'emptyTable': '没有数据',  
             'loadingRecords': '加载中...',  
             'processing': '查询中...',  
-            'search': '检索:',  
+            'search': '搜索：',  
             'lengthMenu': ' _MENU_ ',  
             'zeroRecords': '没有数据', 
             'paginate': {  
@@ -83,9 +96,9 @@ function initMainTable(){
 
 $('#orgName').html(orgName);
 getOrgExtInfo();
-initMainTable();
+getUserList(orgId);
 
-$('#addBtn').on('click', function () {
-    var url = 'addMainAccount.html?fullorgname=' + fullOrgName + '&name=' + orgName;
-    $(this).attr('href', url);
-})
+// $('#addBtn').on('click', function () {
+//     var url = 'addMainAccount.html?fullorgname=' + fullOrgName + '&name=' + orgName;
+//     $(this).attr('href', url);
+// })
