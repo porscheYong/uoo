@@ -333,21 +333,29 @@ public class OrgRelController extends BaseController {
                                                           Integer pageSize,
                                                           Integer pageNo) throws IOException {
         ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
-        if(StrUtil.isNullOrEmpty(search)){
-            ret.setMessage("检索信息不能为空");
-            ret.setState(ResponseResult.PARAMETER_ERROR);
-            return ret;
-        }
+//        if(StrUtil.isNullOrEmpty(search)){
+//            ret.setMessage("检索信息不能为空");
+//            ret.setState(ResponseResult.PARAMETER_ERROR);
+//            return ret;
+//        }
         if(StrUtil.isNullOrEmpty(orgRootId)){
             ret.setMessage("根节点组织标识不能为空");
             ret.setState(ResponseResult.PARAMETER_ERROR);
             return ret;
         }
         OrgVo orgVo = new OrgVo();
-        orgVo.setSearch(search);
+        if(!StrUtil.isNullOrEmpty(search)){
+            orgVo.setSearch(search);
+        }
+
         orgVo.setOrgRootId(orgRootId);
-        orgVo.setPageSize(pageSize);
-        orgVo.setPageNo(pageNo);
+        if(!StrUtil.isNullOrEmpty(pageSize)){
+            orgVo.setPageSize(pageSize);
+        }
+        if(!StrUtil.isNullOrEmpty(pageNo)){
+            orgVo.setPageNo(pageNo);
+        }
+
         Page<OrgVo> page = orgRelService.selectFuzzyOrgRelPage(orgVo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setData(page);
@@ -402,8 +410,13 @@ public class OrgRelController extends BaseController {
         }
         OrgRefTypeVo orgRefTypeVo = new OrgRefTypeVo();
         orgRefTypeVo.setOrgId(orgId);
-        orgRefTypeVo.setPageNo(pageNo);
-        orgRefTypeVo.setPageSize(pageSize);
+        if(!StrUtil.isNullOrEmpty(pageNo)){
+            orgRefTypeVo.setPageNo(pageNo);
+        }
+        if(!StrUtil.isNullOrEmpty(pageSize)){
+            orgRefTypeVo.setPageSize(pageSize);
+        }
+
         Page<OrgRefTypeVo> page = orgRelService.selectOrgRelTypePage(orgRefTypeVo);
         ret.setMessage("成功");
         ret.setState(ResponseResult.STATE_OK);

@@ -143,6 +143,9 @@ mybatis-plus:
     field-strategy: 2
     id-type: 1
     refresh-mapper: true
+  configuration:
+        map-underscore-to-camel-case: true
+        cache-enabled: false
 ...
 ### DEV END ###
 
@@ -170,6 +173,11 @@ eureka:
       defaultZone: http://FAT-uoo-register-1:8761/eureka/, http://FAT-uoo-register-2:8762/eureka/
 mybatis-plus:
   mapper-locations: classpath:mapper/**Mapper.xml
+  global-config:
+      db-column-underline: true
+      field-strategy: 2
+      id-type: 1
+      refresh-mapper: true
 ...
 ---
 server:
@@ -194,6 +202,11 @@ eureka:
       defaultZone: http://FAT-uoo-register-1:8761/eureka/, http://FAT-uoo-register-2:8762/eureka/
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+  global-config:
+      db-column-underline: true
+      field-strategy: 2
+      id-type: 1
+      refresh-mapper: true
 ...
 ### FAT END ###
 

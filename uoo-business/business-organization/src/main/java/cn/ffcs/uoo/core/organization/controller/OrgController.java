@@ -608,8 +608,12 @@ public class OrgController extends BaseController {
         OrgVo orgVo = new OrgVo();
         orgVo.setOrgRootId(orgRootId.toString());
         orgVo.setOrgId(orgId.longValue());
-        orgVo.setPageNo(pageSize);
-        orgVo.setPageSize(pageNo);
+        if(!StrUtil.isNullOrEmpty(pageNo)){
+            orgVo.setPageNo(pageNo);
+        }
+        if(!StrUtil.isNullOrEmpty(pageSize)){
+            orgVo.setPageSize(pageSize);
+        }
         Page<OrgVo> page = orgService.selectOrgRelPage(orgVo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("查询成功");
@@ -630,9 +634,15 @@ public class OrgController extends BaseController {
         OrgVo orgVo = new OrgVo();
         ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
         orgVo.setStatusCd("1000");
-        orgVo.setSearch(search);
-        orgVo.setPageNo(pageNo);
-        orgVo.setPageSize(pageSize);
+        if(!StrUtil.isNullOrEmpty(search)){
+            orgVo.setSearch(search);
+        }
+        if(!StrUtil.isNullOrEmpty(pageSize)){
+            orgVo.setPageSize(pageSize);
+        }
+        if(!StrUtil.isNullOrEmpty(pageNo)){
+            orgVo.setPageNo(pageNo);
+        }
         Page<OrgVo> page = orgService.selectOrgPage(orgVo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("查询成功");

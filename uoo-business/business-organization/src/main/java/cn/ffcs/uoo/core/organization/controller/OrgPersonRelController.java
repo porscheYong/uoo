@@ -64,18 +64,18 @@ public class OrgPersonRelController extends BaseController {
     })
     @UooLog(value = "新增组织人员关系", key = "addOrgPsn")
     @RequestMapping(value = "/addOrgPsn", method = RequestMethod.POST)
-    @Transactional(rollbackFor = Exception.class)
+    //@Transactional(rollbackFor = Exception.class)
     public ResponseResult<String> addOrgPsn(@RequestBody List<PsonOrgVo> psonOrgList){
         System.out.println(new Date());
         ResponseResult<String> ret = new ResponseResult<String>();
         if(psonOrgList!=null){
             for(PsonOrgVo psonOrgVo : psonOrgList){
-            String msg = orgPersonRelService.judgeOrgPsnParams(psonOrgVo);
-            if(!StrUtil.isNullOrEmpty(msg)){
-                ret.setState(ResponseResult.PARAMETER_ERROR);
-                ret.setMessage(msg);
-                return ret;
-            }
+//            String msg = orgPersonRelService.judgeOrgPsnParams(psonOrgVo);
+//            if(!StrUtil.isNullOrEmpty(msg)){
+//                ret.setState(ResponseResult.PARAMETER_ERROR);
+//                ret.setMessage(msg);
+//                return ret;
+//            }
 
             Wrapper orgTreeConfWrapper = Condition.create()
                     .eq("ORG_ID",psonOrgVo.getOrgRootId())
@@ -301,9 +301,15 @@ public class OrgPersonRelController extends BaseController {
         psonOrgVo.setOrgId(orgId.longValue());
         psonOrgVo.setOrgRootId(new Long(orgRootId));
         //psonOrgVo.setPersonId(StrUtil.strnull(personId));
-        psonOrgVo.setSearch(search);
-        psonOrgVo.setPageSize(pageSize);
-        psonOrgVo.setPageNo(pageNo);
+        if(!StrUtil.isNullOrEmpty(search)){
+            psonOrgVo.setSearch(search);
+        }
+        if(!StrUtil.isNullOrEmpty(pageSize)){
+            psonOrgVo.setPageSize(pageSize);
+        }
+        if(!StrUtil.isNullOrEmpty(pageNo)){
+            psonOrgVo.setPageNo(pageNo);
+        }
         Page<PsonOrgVo> page = orgPersonRelService.selectPerOrgRelPage(psonOrgVo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
@@ -350,9 +356,15 @@ public class OrgPersonRelController extends BaseController {
         }
         PsonOrgVo psonOrgVo = new PsonOrgVo();
         psonOrgVo.setOrgId(orgId.longValue());
-        psonOrgVo.setSearch(search);
-        psonOrgVo.setPageSize(pageSize);
-        psonOrgVo.setPageNo(pageNo);
+        if(!StrUtil.isNullOrEmpty(search)){
+            psonOrgVo.setSearch(search);
+        }
+        if(!StrUtil.isNullOrEmpty(pageSize)){
+            psonOrgVo.setPageSize(pageSize);
+        }
+        if(!StrUtil.isNullOrEmpty(pageNo)){
+            psonOrgVo.setPageNo(pageNo);
+        }
         Page<PsonOrgVo> page = orgPersonRelService.selectUserOrgRelPage(psonOrgVo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
