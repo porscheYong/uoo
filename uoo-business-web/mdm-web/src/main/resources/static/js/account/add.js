@@ -1,10 +1,10 @@
+
+$('#userType').get(0).selectedIndex=1;
+
 function check(){
 
     var userType = $("#userType").val();
     var personnelId = $("#personnelIdTel").val();
-    console.log(personnelId);
-
-    $('#userType').get(0).selectedIndex=1;
 
     if(userType == '主账号'){
         window.location.href = 'addMainAccount.html?personnelId='+personnelId+'&userType=1&title=添加主账号&opBtn=1'; //?id=' + orgId + '&name=' + orgName
