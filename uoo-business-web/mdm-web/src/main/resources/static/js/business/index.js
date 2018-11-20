@@ -1,6 +1,3 @@
-// loadingMask
-var loading = new Loading();
-
 var setting = {
     async: {
         enable: true,
@@ -96,15 +93,6 @@ function openTreeById (sId, id) {
     zTree.expandNode(node, true);
   }
   zTree.selectNode(node, true);
-}
-
-// 添加子节点
-function addNodeById (sId, newNode) {
-    var zTree = $.fn.zTree.getZTreeObj("standardTree");
-    var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-    console.log(selectNode)
-    if (selectNode)
-        var newNode = zTree.addNodes(selectNode, newNode);
 }
 
 var orgTypeList;
