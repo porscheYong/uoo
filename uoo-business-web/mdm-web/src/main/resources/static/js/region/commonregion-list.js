@@ -105,6 +105,21 @@ $('#searchBtn').on('click', function () {
    var url = 'search.html?id=' + orgId;
    $(this).attr('href', url);
 })*/
+function goDel(){
+	if(confirm('确定删除这条数据？')){
+		$.ajax({
+			url:'/region/commonRegion/deleteCommonRegion',
+			data:{"commonRegionId":listId},
+			dataType:'json',
+			type:'post',
+			success:function(data){
+				alert(data.state==1?'删除成功':data.message);
+				//
+				getRegionList( parent.getCurrentSelectedNode()[0].id);
+			}
+		});
+	}
+}
 function deleteRegion(id){
 	if(confirm('确定删除这条数据？')){
 		$.ajax({
