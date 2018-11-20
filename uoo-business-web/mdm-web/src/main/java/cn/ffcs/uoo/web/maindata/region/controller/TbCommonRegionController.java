@@ -2,7 +2,6 @@ package cn.ffcs.uoo.web.maindata.region.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,7 +45,7 @@ public class TbCommonRegionController {
     public ResponseResult getTreeCommonRegion(HttpServletRequest request){
         String id_ = request.getParameter("id");
         long id=0;
-        if(StringUtils.isNotBlank(id_)){
+        if(id_!=null){
             try {
                 id=Long.valueOf(id_);
             } catch (Exception e) {

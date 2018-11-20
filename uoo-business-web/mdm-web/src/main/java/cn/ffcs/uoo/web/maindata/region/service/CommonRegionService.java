@@ -11,7 +11,6 @@ import cn.ffcs.uoo.web.maindata.region.dto.CommonRegionDTO;
 import cn.ffcs.uoo.web.maindata.region.dto.TbCommonRegion;
 import cn.ffcs.uoo.web.maindata.region.service.fallback.CommonRegionServiceHystrix;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
-import io.swagger.annotations.ApiOperation;
 
 @FeignClient(value = "business-region", /*
                                              * configuration =
