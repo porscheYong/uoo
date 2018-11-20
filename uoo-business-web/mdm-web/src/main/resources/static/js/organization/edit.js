@@ -1,5 +1,7 @@
 var orgId = getQueryString('id');
 var orgName = getQueryString('name');
+var orgTypeList;
+var checkNode;
 
 // 获取组织完整路径
 function getOrgExtInfo () {
@@ -43,24 +45,8 @@ if(typeof $.fn.tagsInput !== 'undefined'){
 }
 
 $('#orgTypeList_tagsinput').on('click', function() {
-    var dialog =$("#myModal",parent.document)
-    parent.layerOpen({
-      type: 1,
-      title: '选中组织类别',
-      shadeClose: true,
-      shade: 0.8,
-      area: ['70%', '85%'],
-      maxmin: true,
-      content: dialog,
-      success: function(layero, index){
-        initOrgTypeTree();
-      },
-      btn: ['确认', '取消'],
-      confirm: function(index, layero){
-        alert(1)
-      }
-    })
-    // layer.open({
+    // var dialog =$("#myModal",parent.document)
+    // parent.layerOpen({
     //   type: 1,
     //   title: '选中组织类别',
     //   shadeClose: true,
@@ -69,15 +55,30 @@ $('#orgTypeList_tagsinput').on('click', function() {
     //   maxmin: true,
     //   content: dialog,
     //   success: function(layero, index){
-    //     initOrgTree()
+    //     initOrgTypeTree();
     //   },
     //   btn: ['确认', '取消'],
-    //   yes: function(index, layero){
+    //   confirm: function(index, layero){
     //     alert(1)
-    //   },
-    //   btn2: function(index, layero){},
-    //   cancel: function(){}
-    // });
+    //   }
+    // })
+    parent.layer.open({
+        type: 2,
+        title: '选中组织类别',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['70%', '85%'],
+        maxmin: true,
+        content: 'typeDialog.html?id=' + orgId,
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            checkNode = iframeWin.checkNode;
+        },
+        btn2: function(index, layero){},
+        cancel: function(){}
+    });
 })
 
 // 组织类别初始化
@@ -283,7 +284,7 @@ function getOrg (orgId) {
           $('#cityTown').append(option);
         }
         $('#cityTown').selectMatch();
-        parent.postMessage(data.orgTypeList, '*');
+        orgTypeList = data.orgTypeList;
     }, function (err) {
         console.log(err)
     })
