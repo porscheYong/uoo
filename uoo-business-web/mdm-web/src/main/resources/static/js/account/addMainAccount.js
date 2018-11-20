@@ -2,8 +2,12 @@
 var acctId = getQueryString('acctId');
 var userType = getQueryString('userType');
 var statusCd = getQueryString('statusCd');
-var title = getQueryString('title');
+var personnelId = getQueryString('personnelId');
+var personnelId = getQueryString('title');
 var opBtn = getQueryString('opBtn');
+var isEdit;
+
+console.log(acctId+'--'+userType+'--'+statusCd+'--'+personnelId+'--'+personnelId+'--'+opBtn);
 
 $('#main-title').html(title);
 $('#cerType').get(0).selectedIndex=1;  //判断证件类型
@@ -14,16 +18,9 @@ if(statusCd == '1000'){                //判断状态
   $('#statusCd').get(0).selectedIndex=2;
 }
 
-if(opBtn==0){
-    $('#opBtn').css("display","none");
-    $('.fright').css("display","none");
-    $('#default_psw').css("display","none");
-    $('input').attr("disabled","false");
-    $('select').attr("disabled","false");
-    getUser(acctId,userType);
-}
 
-function getUser(acctId,userType) {                   
+
+function getUser(acctId,userType) {           //查看主账号时相关操作 
     $http.get('http://192.168.58.112:9092/user/getUser', {   //http://192.168.58.112:18000/user/getUser
         acctId: acctId,
         userType: userType
@@ -37,7 +34,26 @@ function getUser(acctId,userType) {
     })
 }
 
-function initOrgTable(results){
+function getAcctUser(personnelId,userType){     //获取主账号信息(编辑或者新增)
+  $http.get('http://192.168.58.112:9092/user/getPsnUser', {  
+    personnelId: personnelId,
+    userType: userType
+  }, function (data) {
+    if(data.tbAcct.accId == null){
+      isEdit = 0;
+      console.log('no user');
+    }else{
+      isEdit = 1;
+      initOrgTable(data.acctOrgVoPage.records);
+      initEditUserInfo(data);
+      initSubOrgTable(data.slaveAcctOrgVoPage.records);
+    }
+  }, function (err) {
+    console.log(err)
+  })
+}
+
+function initOrgTable(results){         //主账号组织数据
   var table = $("#orgTable").DataTable({
     'data': results,
     'searching': false,
@@ -75,7 +91,7 @@ function initOrgTable(results){
   });
 }
 
-function initSubOrgTable(results){
+function initSubOrgTable(results){    //从账号组织数据
   var table = $("#subInfoTable").DataTable({
     'data': results,
     'searching': false,
@@ -107,9 +123,7 @@ function initSubOrgTable(results){
   });
 }
 
-function initUserInfo(results){
-    // console.log(results.psnName+'---');
-    // console.log(results.acctOrgVoPage.current);
+function initUserInfo(results){         //初始化用户信息(查看)
 
     isNullVal('#psnTel',results.psnName);
     isNullVal('#psnNumTel',results.psnCode);
@@ -120,6 +134,19 @@ function initUserInfo(results){
     $('#roleTel').val('null');
     isNullVal('#effectDate',results.tbAcct.enableDate);
     isNullVal('#invalidDate',results.tbAcct.disableDate);  
+}
+
+function initEditUserInfo(results){
+  $('#psnTel').val(results.psnName);
+  $('#psnNumTel').val(results.psnCode);
+  $('#mobileTel').val(results.mobilePhone);
+  $('#emailTel').val(results.eamil);
+  $('#cerNoTel').val(results.certNo);
+  $('#acctTel').val(results.tbAcct.acct);
+  $('#roleTel').val(results.tbRolesList.roleId);
+  $('#defaultPswTel').val(results.tbAcct.password);
+  $('#effectDate').val(results.tbAcct.enableDate);
+  $('#invalidDate').val(results.tbAcct.disableDate);
 }
 
 function isNullVal(s,r){
@@ -137,4 +164,15 @@ laydate.render({
 laydate.render({
   elem: '#invalidDate' //指定元素
 }); 
+
+if(opBtn==0){
+  $('#opBtn').css("display","none");
+  $('.fright').css("display","none");
+  $('#default_psw').css("display","none");
+  $('input').attr("disabled","false");
+  $('select').attr("disabled","false");
+  getUser(acctId,userType);
+}else{
+  getAcctUser(personnelId,userType);
+}
 
