@@ -233,7 +233,6 @@
 
 .ProfileCard-details {
   min-height: 60px;
-  padding-left: 60px;
 }
 
 .ProfileCard-realName,
@@ -294,8 +293,12 @@
 .EmptyMessage {
   position: relative;
   padding: 10px;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 30px;
   text-align: center;
 
+}
+
+.tt-highlight {
+  color: #fe001a;
 }

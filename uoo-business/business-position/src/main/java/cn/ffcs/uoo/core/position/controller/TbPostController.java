@@ -5,6 +5,7 @@ import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.position.constant.StatusEnum;
 import cn.ffcs.uoo.core.position.entity.TbOrgPostRel;
 import cn.ffcs.uoo.core.position.entity.TbPost;
 import cn.ffcs.uoo.core.position.entity.TbPostLocation;
@@ -52,6 +53,11 @@ public class TbPostController extends BaseController {
     public ResponseResult<TbPost> addTbPost(@RequestBody TbPost tbPost) {
         ResponseResult<TbPost> responseResult = new ResponseResult<TbPost>();
 
+        tbPost.setStatusCd(StatusEnum.VALID.getStatus());
+        tbPost.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPost.setEffDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPost.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPost.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbPostService.insert(tbPost);
 
         responseResult.setState(ResponseResult.STATE_OK);
@@ -120,10 +126,11 @@ public class TbPostController extends BaseController {
         TbPost tbPost = new TbPost();
         tbPost.setPostId(postId);
         // 失效状态
-        tbPost.setStatusCd("1100");
+        tbPost.setStatusCd(StatusEnum.INVALID.getStatus());
         tbPost.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbPost.setUpdateUser(updateUser);
         tbPost.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPost.setExpDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbPostService.updateById(tbPost);
 
         responseResult.setState(ResponseResult.STATE_OK);
@@ -144,6 +151,9 @@ public class TbPostController extends BaseController {
             return responseResult;
         }
 
+        tbPost.setEffDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPost.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPost.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         boolean isSuccess = tbPostService.updateById(tbPost);
         if(isSuccess) {
             responseResult.setState(ResponseResult.STATE_OK);

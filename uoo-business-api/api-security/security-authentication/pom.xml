@@ -3,13 +3,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>uoo-business-api</artifactId>
+        <artifactId>api-security</artifactId>
         <groupId>cn.ffcs</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>api-auth</artifactId>
-    <name>api-auth</name>
+    <artifactId>security-authentication</artifactId>
+    <name>security-authentication</name>
     <packaging>jar</packaging>
+    <description>用户身份的认证</description>
 
 </project>

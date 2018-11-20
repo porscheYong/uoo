@@ -15,11 +15,40 @@ package cn.ffcs.uoo.core.organization.vo;/**
 public class OrgCertVo {
 
     private Long orgCertId;
+    /**
+     * 证件标识
+     */
     private Long certId;
+    /**
+     * 组织标识
+     */
+    private Long orgId;
+    /**
+     * 证件类型
+     */
     private String certType;
+    /**
+     * 证件名称
+     *
+     */
+    private String certTypeName;
+    /**
+     * 证件号
+     */
     private String certNo;
+    /**
+     * 颁发机关
+     */
     private String Issuing;
     private String effDate;
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
+    }
 
     public Long getOrgCertId() {
         return orgCertId;

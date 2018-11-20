@@ -41,7 +41,7 @@ public class OrgPersonRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/addOrgPsn", method = RequestMethod.POST)
-    public ResponseResult addOrgPsn(@RequestBody PsonOrgVo psonOrgVo){
+    public ResponseResult addOrgPsn(@RequestBody List<PsonOrgVo> psonOrgVo){
         return orgPersonRelService.addOrgPsn(psonOrgVo);
     }
 
@@ -75,6 +75,15 @@ public class OrgPersonRelController {
     @RequestMapping(value = "/getPerOrgRelPage", method = RequestMethod.GET)
     public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(@RequestBody PsonOrgVo psonOrgVo){
         return orgPersonRelService.getPerOrgRelPage(psonOrgVo);
+    }
+
+
+    @ApiOperation(value = "获取组织用户关系翻页", notes = "获取组织用户关系翻页")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/getUserOrgRelPage", method = RequestMethod.GET)
+    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(@RequestBody PsonOrgVo psonOrgVo){
+        return orgPersonRelService.getUserOrgRelPage(psonOrgVo);
     }
 
 }

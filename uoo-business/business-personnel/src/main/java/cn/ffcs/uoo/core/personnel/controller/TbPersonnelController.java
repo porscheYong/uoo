@@ -60,6 +60,8 @@ public class TbPersonnelController extends BaseController {
     private TbEduService tbEduService;
     @Autowired
     private TbFamilyService tbFamilyService;
+    @Autowired
+    private TbPersonnelImageService tbPersonnelImageService;
 
 
     @ApiOperation(value = "人员查询", notes = "分页查询")
@@ -117,23 +119,24 @@ public class TbPersonnelController extends BaseController {
 
     @UooLog(value = "查看人员信息", key = "getFormPersonnel")
     @RequestMapping(value = "/getFormPersonnel",method = RequestMethod.GET)
-    public Object getFormPersonnel(String personnelId,
-                                   String orgRootId,
-                                   String orgId){
+    public Object getFormPersonnel(Long personnelId,
+                                   Long orgRootId,
+                                   Long orgId){
         FormPersonnelVo formPersonnelVo = new FormPersonnelVo();
         /**  1、基本信息    */
         TbPersonnel tbPersonnel = tbPersonnelService.selectById(personnelId);
         BeanUtils.copyProperties(tbPersonnel, formPersonnelVo);
-        //
 
-        Wrapper tbCertwrapper= Condition.create().eq(true,"PERSONNEL_ID", personnelId);
-        Page<TbCert> tbCertPage = tbCertService.selectPage(new Page<TbCert>(0, 12), tbCertwrapper);
-        BeanUtils.copyProperties(tbCertPage.getRecords().get(0), formPersonnelVo);
+        //身份证
+        TbCert tbCert = tbCertService.getTbCertByPersonnelId(Long.valueOf(personnelId));
+        formPersonnelVo.setCertType(tbCert.getCertType());
+        formPersonnelVo.setCertNo(tbCert.getCertNo());
 
         /**  2、联系信息    */
-        Wrapper tbContactwrapper= Condition.create().eq(true,"PERSONNEL_ID", personnelId);
-        Page<TbContactVo> tbContactPage = tbContactService.selectPage(new Page<TbContact>(0, 12), tbContactwrapper);
-        formPersonnelVo.setTbContactVoList(tbContactPage);
+        List<TbContact> tbMobileList = tbContactService.getTbContactByPsnId(Long.valueOf(personnelId), "1");
+        List<TbContact> tbEamilList = tbContactService.getTbContactByPsnId(Long.valueOf(personnelId), "2");
+        formPersonnelVo.setTbMobileVoList(tbMobileList);
+        formPersonnelVo.setTbEamilVoList(tbEamilList);
 
         /**  3、归属组织信息 (需要调用uoo-organization)*/
         PsonOrgVo psonOrgVo = new PsonOrgVo();
@@ -198,10 +201,57 @@ public class TbPersonnelController extends BaseController {
 
     }
 
-    @ApiOperation(value = "修改人员信息",notes = "人员信息修改")
-    @ApiImplicitParam(name = "editFormPersonnelVo",value = "人员信息",required = true,dataType = "EditFormPersonnelVo")
+    @ApiOperation(value = "修改人员基本信息",notes = "人员基本信息修改")
+    @ApiImplicitParam(name = "personnelVo",value = "人员基本信息",required = true,dataType = "PersonnelVo")
     @UooLog(value = "修改人员信息",key = "updatePersonnel")
     @RequestMapping(value = "updatePersonnel",method = RequestMethod.PUT)
+    public Object upPersonnel(PersonnelVo personnelVo){
+        EditFormPersonnelVo editFormPersonnelVo = new EditFormPersonnelVo();
+        BeanUtils.copyProperties(personnelVo, editFormPersonnelVo);
+        /**  人员表单信息验证 */
+        Object reObj = checkFormPersonnel(editFormPersonnelVo);
+        if(!StrUtil.isNullOrEmpty(reObj)){
+            return reObj;
+        }
+
+        TbPersonnel tbPersonnel = new TbPersonnel();
+        BeanUtils.copyProperties(personnelVo, tbPersonnel);
+        tbPersonnel.setGender(IDCardUtil.getGender(editFormPersonnelVo.getCertNo()));
+        tbPersonnel.updateById();
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TBCERT_CERT_NO, personnelVo.getCertNo());
+        TbCert tbCert = tbCertService.selectOne(new EntityWrapper<TbCert>().allEq(map));
+        tbCert.setCertType(personnelVo.getCertType());
+        tbCert.setCertNo(personnelVo.getCertNo());
+        tbCert.setCertName(personnelVo.getPsnName());
+        tbCertService.updateById(tbCert);
+
+        /**  3、联系方式           */
+        List<TbContact> tbContactList = personnelVo.getTbMobileVoList();
+        tbContactList.addAll(personnelVo.getTbEamilVoList());
+        if(tbContactList != null && tbContactList.size() > 0){
+            for(TbContact tbContact : tbContactList){
+                if(!StrUtil.isNullOrEmpty(tbContact.getContactId())){
+                    tbContactService.updateById(tbContact);
+                }else{
+                    tbContact.setContactId(tbContactService.getId());
+                    tbContact.setPersonnelId(editFormPersonnelVo.getPersonnelId());
+                    tbContactService.insert(tbContact);
+                }
+            }
+        }
+
+        return ResultUtils.success(null);
+    }
+
+
+
+    @ApiOperation(value = "修改人员信息",notes = "人员信息修改")
+    @ApiImplicitParam(name = "editFormPersonnelVo",value = "人员信息",required = true,dataType = "EditFormPersonnelVo")
+    @UooLog(value = "修改人员信息",key = "updateAllPersonnel")
+    @RequestMapping(value = "updateAllPersonnel",method = RequestMethod.PUT)
     public Object updatePersonnel(@RequestBody EditFormPersonnelVo editFormPersonnelVo) {
 
         /**  人员表单信息验证 */
@@ -210,32 +260,27 @@ public class TbPersonnelController extends BaseController {
             return reObj;
         }
 
-        //身份证是否被占用
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
-        map.put(BaseUnitConstants.TBCERT_CERT_NO, editFormPersonnelVo.getCertNo());
-        TbCert tbCert = tbCertService.selectOne(new EntityWrapper<TbCert>().allEq(map));
-        if(tbCert.getPersonnelId() != editFormPersonnelVo.getPersonnelId()){
-            map.remove(BaseUnitConstants.TBCERT_CERT_NO);
-            map.put(BaseUnitConstants.TBPERSONNEL_PERSOONEL_ID, tbCert.getPersonnelId());
-            TbPersonnel tbPersonnel = tbPersonnelService.selectOne(new EntityWrapper<TbPersonnel>().allEq(map));
-            return ResultUtils.error(EumPersonnelResponseCode.CERT_IS_EXIST.getCode(), "身份证已被" + tbPersonnel.getPsnName() + "占用");
-        }
+
 
         TbPersonnel tbPersonnel = new TbPersonnel();
         BeanUtils.copyProperties(editFormPersonnelVo, tbPersonnel);
         tbPersonnel.setGender(IDCardUtil.getGender(editFormPersonnelVo.getCertNo()));
         tbPersonnel.updateById();
 
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TBCERT_CERT_NO, editFormPersonnelVo.getCertNo());
+        TbCert tbCert = tbCertService.selectOne(new EntityWrapper<TbCert>().allEq(map));
         tbCert.setCertType(editFormPersonnelVo.getCertType());
         tbCert.setCertNo(editFormPersonnelVo.getCertNo());
         tbCert.setCertName(editFormPersonnelVo.getPsnName());
-        tbCertService.updateById(tbCert);
+        tbCertService.updateAllColumnById(tbCert);
 
         /**  2、组织信息           */
 
         /**  3、联系方式           */
-        List<TbContact> tbContactList = editFormPersonnelVo.getTbContactList();
+        List<TbContact> tbContactList = editFormPersonnelVo.getTbMobileVoList();
+        tbContactList.addAll(editFormPersonnelVo.getTbEamilVoList());
         if(tbContactList != null && tbContactList.size() > 0){
             for(TbContact tbContact : tbContactList){
                 if(!StrUtil.isNullOrEmpty(tbContact.getContactId())){
@@ -293,47 +338,38 @@ public class TbPersonnelController extends BaseController {
     }
 
     @ApiOperation(value="删除人员信息",notes="人员信息删除")
-    @ApiImplicitParam(name = "tbPersonnel",value = "人员信息",required = true,dataType = "TbPersonnel")
+    @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long",paramType="path")
     @UooLog(value = "删除人员信息",key = "deletePersonnel")
     @RequestMapping(value="/deletePersonnel",method = RequestMethod.DELETE)
-    public Object deletePersonnel(@RequestBody TbPersonnel tbPersonnel) {
-        tbPersonnelService.delete(tbPersonnel);
+    public Object deletePersonnel(Long personnelId) {
+        tbPersonnelService.delTbPersonnelByPsnId(personnelId);
 
-        // 根据personnelId查询tbCert
-
-        TbCert tbCert = new TbCert();
-        tbCert.setPersonnelId(tbPersonnel.getPersonnelId());
-        tbCertService.delete(tbCert);
+        // 根据personnelId 删除tbCert
+        tbCertService.delTbCertByPsnId(personnelId);
 
         /**  3、联系方式           */
         // 根据id删除tbContact
-        TbContact tbContact = new TbContact();
-        tbContact.setPersonnelId(tbPersonnel.getPersonnelId());
-        tbContactService.delete(tbContact);
+        tbContactService.delTbContactByPsnId(personnelId);
 
         /**  4、工作履历信息       */
-        TbPsnjob tbPsnjob = new TbPsnjob();
-        tbPsnjob.setPersonnelId(tbPersonnel.getPersonnelId());
-        tbPsnjobService.delete(tbPsnjob);
+        tbPsnjobService.delTbPsnjobByPsnId(personnelId);
 
         /**  5、教育信息           */
-        TbEdu tbEdu = new TbEdu();
-        tbEdu.setPersonnelId(tbPersonnel.getPersonnelId());
-        tbEduService.delete(tbEdu);
+        tbEduService.delTbEduByPsnId(personnelId);
 
         /**  6、家庭成员信息      */
-        TbFamily tbFamily = new TbFamily();
-        tbFamily.setPersonnelId(tbPersonnel.getPersonnelId());
-        tbFamilyService.delete(tbFamily);
+        tbFamilyService.delTbFamilyByPsnId(personnelId);
 
+        /**  7、家庭成员信息      */
+        tbPersonnelImageService.delTbPersonnelImageByPsnId(personnelId);
         return ResultUtils.success(null);
     }
 
 
 
-    @ApiOperation(value="图片上传",notes="图片上传")
-    @UooLog(value = "图片上传",key = "uploadImg")
-    @RequestMapping(value="/uploadImg")
+    //@ApiOperation(value="图片上传",notes="图片上传")
+    //@UooLog(value = "图片上传",key = "uploadImg")
+    //@RequestMapping(value="/uploadImg")
     public Object uploadImg(@RequestParam("editormd-image-file") MultipartFile multipartFile) {
         if (multipartFile.isEmpty() || StringUtils.isBlank(multipartFile.getOriginalFilename())) {
             throw new PersonnelException(EumPersonnelResponseCode.IMG_NOT_EMPTY);
@@ -347,14 +383,18 @@ public class TbPersonnelController extends BaseController {
         String filePath = "";
         try {
             File path = new File(ResourceUtils.getURL("classpath:").getPath());
-            if(!path.exists()) path = new File("");
+            if(!path.exists()){
+                path = new File("");
             System.out.println("path:"+path.getAbsolutePath());
+            }
 
             //如果上传目录为/static/images/upload/，则可以如下获取：
             File upload = new File(path.getAbsolutePath(),"static/images/upload/");
-            if(!upload.exists()) upload.mkdirs();
-            filePath = upload.getAbsolutePath();
-            System.out.println("upload url:"+upload.getAbsolutePath());
+            if(!upload.exists()) {
+                upload.mkdirs();
+                filePath = upload.getAbsolutePath();
+                System.out.println("upload url:" + upload.getAbsolutePath());
+            }
             //在开发测试模式时，得到的地址为：{项目跟目录}/target/static/images/upload/
             //在打包成jar正式发布时，得到的地址为：{发布jar包目录}/static/images/upload/
         }catch (Exception e){
@@ -397,23 +437,57 @@ public class TbPersonnelController extends BaseController {
         if (StrUtil.isNullOrEmpty(IDCardUtil.IDCardValidate(editFormPersonnelVo.getCertNo()))) {
             return ResultUtils.certError();
         }
-        List<TbContact> tbContactList = editFormPersonnelVo.getTbContactList();
-        if(tbContactList != null && tbContactList.size() > 0) {
-            for (TbContact tbContact : tbContactList) {
-                if("1".equals(tbContact.getContactType()) && StrUtil.isNullOrEmpty(tbContact.getContent())){
+
+        List<TbContact> tbMobileVoList = editFormPersonnelVo.getTbMobileVoList();
+        if(tbMobileVoList != null && tbMobileVoList.size() > 0){
+            for (TbContact tbContact : tbMobileVoList) {
+                if( StrUtil.isNullOrEmpty(tbContact.getContent())){
                     return ResultUtils.error(EumPersonnelResponseCode.MOBILE_IS_NULL);
+                }else if( !StrUtil.checkTelephoneNumber(tbContact.getContent())){
+                    return ResultUtils.error(EumPersonnelResponseCode.MOBILE_ERROR);
+                }else{
+                    Map<String, Object> phoneMap = new HashMap<String, Object>();
+                    phoneMap.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+                    phoneMap.put("CONTENT", editFormPersonnelVo.getCertNo());
+                    phoneMap.put("CONTACT_TYPE", editFormPersonnelVo.getCertType());
+                    TbContact tbContact1 = tbContactService.selectOne(new EntityWrapper<TbContact>().allEq(phoneMap));
+                    if((StrUtil.isNullOrEmpty(editFormPersonnelVo.getPersonnelId()) && !StrUtil.isNullOrEmpty(tbContact1))
+                            || (!StrUtil.isNullOrEmpty(tbContact1) && tbContact1.getPersonnelId().equals(editFormPersonnelVo.getPersonnelId()))){
+                        Map<String, Object> psnMap = new HashMap<String, Object>();
+                        psnMap.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+                        psnMap.put(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, tbContact1.getPersonnelId());
+                        TbPersonnel tbPersonnel = tbPersonnelService.selectOne(new EntityWrapper<TbPersonnel>().allEq(psnMap));
+                        return ResultUtils.error(EumPersonnelResponseCode.CERT_IS_EXIST.getCode(), "身份证已被" + tbPersonnel.getPsnName() + "占用");
+                    }
                 }
-                if("2".equals(tbContact.getContactType()) && StrUtil.isNullOrEmpty(tbContact.getContent())){
+            }
+        }
+
+        List<TbContact> tbEamilVoList = editFormPersonnelVo.getTbEamilVoList();
+        if(tbEamilVoList != null && tbEamilVoList.size() > 0) {
+            for (TbContact tbContact : tbEamilVoList) {
+                if(StrUtil.isNullOrEmpty(tbContact.getContent())){
                     return ResultUtils.error(EumPersonnelResponseCode.EMAIL_IS_NULL);
                 }
-                if("1".equals(tbContact.getContactType()) && !StrUtil.checkTelephoneNumber(tbContact.getContent())){
-                    return ResultUtils.error(EumPersonnelResponseCode.MOBILE_ERROR);
-                }
-                if("2".equals(tbContact.getContactType()) && !StrUtil.checkEmail(tbContact.getContent())){
+                if(!StrUtil.checkEmail(tbContact.getContent())){
                     return ResultUtils.error(EumPersonnelResponseCode.EMAIL_ERROR);
                 }
             }
         }
+
+        //身份证是否被占用
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TBCERT_CERT_NO, editFormPersonnelVo.getCertNo());
+        TbCert tbCert = tbCertService.selectOne(new EntityWrapper<TbCert>().allEq(map));
+        if((StrUtil.isNullOrEmpty(editFormPersonnelVo.getPersonnelId()) && !StrUtil.isNullOrEmpty(tbCert))
+           || (!StrUtil.isNullOrEmpty(tbCert) && tbCert.getPersonnelId().equals(editFormPersonnelVo.getPersonnelId()))){
+            map.remove(BaseUnitConstants.TBCERT_CERT_NO);
+            map.put(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, tbCert.getPersonnelId());
+            TbPersonnel tbPersonnel = tbPersonnelService.selectOne(new EntityWrapper<TbPersonnel>().allEq(map));
+            return ResultUtils.error(EumPersonnelResponseCode.CERT_IS_EXIST.getCode(), "身份证已被" + tbPersonnel.getPsnName() + "占用");
+        }
+
         return null;
     }
 
@@ -450,7 +524,8 @@ public class TbPersonnelController extends BaseController {
         /**  2、组织信息           */
 
         /**  3、联系方式           */
-        List<TbContact> tbContactList = editFormPersonnelVo.getTbContactList();
+        List<TbContact> tbContactList = editFormPersonnelVo.getTbMobileVoList();
+        tbContactList.addAll(editFormPersonnelVo.getTbEamilVoList());
         if(tbContactList != null && tbContactList.size() > 0){
             for(TbContact tbContact : tbContactList){
                 tbContact.setContactId(tbContactService.getId());

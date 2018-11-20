@@ -2,8 +2,10 @@ package cn.ffcs.uoo.core.position.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.position.constant.StatusEnum;
 import cn.ffcs.uoo.core.position.entity.TbOrgPositionRel;
 import cn.ffcs.uoo.core.position.entity.TbPosition;
 import cn.ffcs.uoo.core.position.service.TbOrgPositionRelService;
@@ -44,7 +46,14 @@ public class TbPositionController extends BaseController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseResult<TbPosition> addTbPosition(@RequestBody TbPosition tbPosition) {
         ResponseResult<TbPosition> responseResult = new ResponseResult<TbPosition>();
+
+        tbPosition.setEffDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPosition.setStatusCd(StatusEnum.VALID.getStatus());
+        tbPosition.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPosition.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+
         tbPositionService.save(tbPosition);
+
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增岗位成功");
         return responseResult;
@@ -62,7 +71,11 @@ public class TbPositionController extends BaseController {
             return responseResult;
         }
 
+        tbPosition.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPosition.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPosition.setEffDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbPositionService.updateById(tbPosition);
+
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("更新岗位信息成功");
         return responseResult;

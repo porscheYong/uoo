@@ -1,5 +1,10 @@
+var orgId = getQueryString('id');
+var orgName = getQueryString('name');
+
+$('#orgName').html(orgName);
+
 function getOrgPersonnerList (orgId) {
-    $http.get('orgPersonRel/getPerOrgRelPage', {
+    $http.get('http://134.96.253.221:11100/orgPersonRel/getPerOrgRelPage', {
         orgId: orgId,
         orgRootId: '1'
     }, function (data) {
@@ -20,21 +25,13 @@ function initOrgPersonnelTable (results) {
         },
         "scrollY": "375px",
         'columns': [
-            { 'data': "staffName", 'title': '姓名', 'className': 'row-name' },
-            { 'data': "userGenderName", 'title': '性别', 'className': 'row-sex' },
-            { 'data': "partyAccount", 'title': '账号', 'className': 'user-account' },
-            { 'data': "userTypeName", 'title': '用工类型', 'className': 'user-type' },
-            { 'data': "userRalaName", 'title': '职位性质', 'className': 'role-type' },
-            { 'data': "orgName", 'title': '组织全称' },
-            { 'data': "postName", 'title': '职位', 'className': 'user-post' },
-            // { 
-            //   'data': "userRoleName",
-            //   'title': '系统角色',
-            //   'className': 'user-role'
-            //   // 'render': function (data, type, row, meta) {
-            //   //       console.log(data, type, row, meta)
-            //   //   }
-            //  }
+            { 'data': null, 'title': '序号', 'className': 'row-no' },
+            { 'data': "psnName", 'title': '姓名', 'className': 'row-name' },
+            { 'data': "mobile", 'title': '手机号码', 'className': 'row-mobile' },
+            { 'data': "certNo", 'title': '员工工号', 'className': 'cert-no' },
+            { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
+            { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
+            { 'data': "statusCd", 'title': '状态', 'className': 'status-code' }
         ],
         'language': {
             'emptyTable': '没有数据',  
@@ -54,7 +51,12 @@ function initOrgPersonnelTable (results) {
         },
         "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
         'pagingType': 'simple_numbers',
-        'dom': '<"top"f>t<"bottom"ipl>'
+        'dom': '<"top"f>t<"bottom"ipl>',
+        'drawCallback': function(){
+            this.api().column(0).nodes().each(function(cell, i) {
+                cell.innerHTML =  i + 1;
+            });
+        }
         // 'serverSide': true,  //启用服务器端分页
         // 'ajax': function (data, callback, settings) {
             

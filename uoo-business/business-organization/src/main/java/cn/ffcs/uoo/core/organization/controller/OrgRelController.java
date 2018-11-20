@@ -71,13 +71,6 @@ public class OrgRelController extends BaseController {
 
     @ApiOperation(value = "查询组织树信息-web", notes = "查询组织树信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "relCode", value = "组织关系类型", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "orgRootId", value = "根节点标识", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "isOpen", value = "是否展开", required = true, dataType = "boolean"),
-            @ApiImplicitParam(name = "isAsync", value = "是否异步", required = true, dataType = "boolean"),
-            @ApiImplicitParam(name = "isRoot", value = "是否是根节点", required = true, dataType = "boolean"),
-            @ApiImplicitParam(name = "id", value = "父节点", required = true, dataType = "String"),
-
     })
     @UooLog(value = "查询组织树", key = "getOrgRelTree")
     @RequestMapping(value = "/getOrgRelTree", method = RequestMethod.GET)
