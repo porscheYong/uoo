@@ -118,7 +118,7 @@
     <select id="selectValueList" parameterType="cn.ffcs.uoo.core.expando.entity.TbExpandovalue" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List" />
         FROM TB_EXPANDOVALUE
-        WHERE STATUS_CD = '1000'
+        WHERE 1=1
         <if test="resourceId != null and resourceId != ''">
           AND RESOURCE_ID = #{resourceId}
         </if>
