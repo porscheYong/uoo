@@ -46,7 +46,7 @@ import java.util.Map;
  * @since 2018-09-25
  */
 @RestController
-@RequestMapping(value = "/org" , produces = {"application/json;charset=UTF-8"})
+@RequestMapping(value = "/org")
 @Api(value = "/org", description = "组织相关操作")
 public class OrgController extends BaseController {
 
@@ -543,7 +543,6 @@ public class OrgController extends BaseController {
     })
     @UooLog(value = "查询组织信息", key = "getOrg")
     @RequestMapping(value = "/getOrg", method = RequestMethod.GET)
-    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<Org> getOrg(String orgId){
         ResponseResult<Org> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(orgId)){
@@ -591,18 +590,26 @@ public class OrgController extends BaseController {
     @UooLog(value = "查询组织关系列表分页", key = "getOrgRelPage")
     @RequestMapping(value = "/getOrgRelPage", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Page<OrgVo>> getOrgRelPage(OrgVo orgVo){
+    public ResponseResult<Page<OrgVo>> getOrgRelPage(Integer orgRootId,
+                                                     Integer orgId,
+                                                     Integer pageSize,
+                                                     Integer pageNo){
         ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
-        if(StrUtil.isNullOrEmpty(orgVo.getOrgRootId())){
+        if(StrUtil.isNullOrEmpty(orgRootId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织根节点不能为空");
             return ret;
         }
-        if(StrUtil.isNullOrEmpty(orgVo.getOrgId())){
+        if(StrUtil.isNullOrEmpty(orgId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织标识不能为空");
             return ret;
         }
+        OrgVo orgVo = new OrgVo();
+        orgVo.setOrgRootId(orgRootId.toString());
+        orgVo.setOrgId(orgId.longValue());
+        orgVo.setPageNo(pageSize);
+        orgVo.setPageSize(pageNo);
         Page<OrgVo> page = orgService.selectOrgRelPage(orgVo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("查询成功");
@@ -614,12 +621,18 @@ public class OrgController extends BaseController {
     @ApiOperation(value = "查询组织分页-web", notes = "查询组织分页")
     @ApiImplicitParams({
     })
-    @UooLog(value = "查询组织分页", key = "getOrgRelPage")
+    @UooLog(value = "查询组织分页", key = "getOrgPage")
     @RequestMapping(value = "/getOrgPage", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Page<OrgVo>> getOrgPage(OrgVo orgVo){
+    public ResponseResult<Page<OrgVo>> getOrgPage(String search,
+                                                  Integer pageSize,
+                                                  Integer pageNo){
+        OrgVo orgVo = new OrgVo();
         ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
         orgVo.setStatusCd("1000");
+        orgVo.setSearch(search);
+        orgVo.setPageNo(pageNo);
+        orgVo.setPageSize(pageSize);
         Page<OrgVo> page = orgService.selectOrgPage(orgVo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("查询成功");

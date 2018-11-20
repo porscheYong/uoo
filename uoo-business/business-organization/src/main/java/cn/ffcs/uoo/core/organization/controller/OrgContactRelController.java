@@ -42,8 +42,12 @@ public class OrgContactRelController extends BaseController {
     @UooLog(value = "获取组织联系人", key = "getOrgContactPage")
     @RequestMapping(value = "/getOrgContactPage", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Page<PsonOrgVo>> getOrgContactPage(PsonOrgVo psonOrgVo) throws IOException {
+    public ResponseResult<Page<PsonOrgVo>> getOrgContactPage(String orgId,
+                                                             Integer pageSize,
+                                                             Integer pageNo) throws IOException {
         ResponseResult<Page<PsonOrgVo>> ret = new ResponseResult<>();
+        PsonOrgVo psonOrgVo = new PsonOrgVo();
+        psonOrgVo.setOrgId(new Long(orgId));
         Page<PsonOrgVo> page = orgContactRelService.selectOrgContactPage(psonOrgVo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
