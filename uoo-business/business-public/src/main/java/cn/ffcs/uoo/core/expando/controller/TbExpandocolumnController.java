@@ -2,8 +2,10 @@ package cn.ffcs.uoo.core.expando.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.constant.StatusEnum;
 import cn.ffcs.uoo.core.vo.ResponseResult;
 import cn.ffcs.uoo.core.expando.entity.TbExpandocolumn;
 import cn.ffcs.uoo.core.expando.entity.TbExpandovalue;
@@ -52,6 +54,8 @@ public class TbExpandocolumnController extends BaseController {
             return responseResult;
         }
 
+        tbExpandocolumn.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandocolumn.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbExpandocolumnService.updateById(tbExpandocolumn);
 
         responseResult.setState(ResponseResult.STATE_OK);
@@ -83,6 +87,10 @@ public class TbExpandocolumnController extends BaseController {
             return responseResult;
         }
 
+        tbExpandocolumn.setUpdateDate(DateUtils.parseDate(DateUtils.getDate()));
+        tbExpandocolumn.setStatusDate(DateUtils.parseDate(DateUtils.getDate()));
+        tbExpandocolumn.setStatusCd(StatusEnum.VALID.getValue());
+        tbExpandocolumn.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         // 新增扩展列
         tbExpandocolumnService.save(tbExpandocolumn);
 
@@ -114,13 +122,9 @@ public class TbExpandocolumnController extends BaseController {
         }
 
         // 查询是否存在有效的扩展值
-        Wrapper<TbExpandovalue> wrapper = new EntityWrapper<TbExpandovalue>();
-        wrapper.eq("COLUMN_ID", columnId);
-        // 生效状态
-        wrapper.eq("STATUS_CD", "1000");
         TbExpandovalue tbExpandovalue = new TbExpandovalue();
         tbExpandovalue.setColumnId(columnId);
-        tbExpandovalue.setStatusCd("1000");
+        tbExpandovalue.setStatusCd(StatusEnum.VALID.getValue());
         List<TbExpandovalue> tbExpandovalueList = tbExpandovalueService.selectValueList(tbExpandovalue);
 
         // 该扩展列存在有效扩展值，不能删除

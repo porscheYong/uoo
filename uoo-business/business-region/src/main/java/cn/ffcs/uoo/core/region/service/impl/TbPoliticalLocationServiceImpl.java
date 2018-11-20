@@ -29,7 +29,7 @@ public class TbPoliticalLocationServiceImpl extends ServiceImpl<TbPoliticalLocat
         return mapper.getId();
     }
     @Override
-    public List<Map> getTreePoliticalLocation(Map<String, Object> params) {
+    public List<TbPoliticalLocation> getTreePoliticalLocation(Map<String, Object> params) {
         return mapper.getTreePoliticalLocation(params);
     }
     @Override

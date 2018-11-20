@@ -1,8 +1,8 @@
-// var base = 'http://134.96.253.221:11100/'; //开发地址
+//var base = 'http://127.0.0.1:18000/'; //开发地址
 
 // 全局异步封装
 var $http = {
-  // baseUri: base,
+  baseUri: base,
   get: function (path, data, successCallback, errorCallback) {
     this.ajax('get', path, data, successCallback, errorCallback)
   },
@@ -57,7 +57,7 @@ var $http = {
     }
     $.ajax({
        type: type,
-       url: path,
+       url: this.baseUri + path,
        data: data,
        success: httpSuccess,
        error: httpError,
@@ -68,7 +68,7 @@ var $http = {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i")
     var r = window.location.search.substr(1).match(reg)
     if (r != null) {
-      return decodeURI(r[2])
+      return unescape(r[2])
     }
     return null
   }
@@ -79,7 +79,7 @@ function getQueryString(name)
 {
   var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
   var r = window.location.search.substr(1).match(reg);
-  if(r!=null)return  decodeURI(r[2]); return null;
+  if(r!=null)return  unescape(r[2]); return null;
 }
 
 // 时间戳格式化

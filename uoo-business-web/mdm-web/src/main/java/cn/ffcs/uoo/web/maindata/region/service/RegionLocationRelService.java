@@ -14,7 +14,7 @@ import cn.ffcs.uoo.web.maindata.region.vo.LocRegRelByReg;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
 import common.config.PersonnelServiceConfiguration;
 
-@FeignClient(value = "uoo-region-provider",configuration = {PersonnelServiceConfiguration.class},fallback = RegionLocationRelServiceHystrix.class)
+@FeignClient(value = "business-region",configuration = {PersonnelServiceConfiguration.class},fallback = RegionLocationRelServiceHystrix.class)
 public interface RegionLocationRelService {
      
     @RequestMapping(value="/region/regionLocationRel/addLocRegRelByLoc",method = RequestMethod.POST,headers={"Content-Type=application/json"})

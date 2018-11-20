@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.region.consts.DeleteConsts;
+import cn.ffcs.uoo.core.region.entity.TbCommonRegion;
 import cn.ffcs.uoo.core.region.entity.TbPoliticalLocation;
 import cn.ffcs.uoo.core.region.entity.TbRegionLocationRel;
 import cn.ffcs.uoo.core.region.service.ITbPoliticalLocationService;
@@ -58,11 +59,25 @@ public class TbPoliticalLocationController extends BaseController {
     public ResponseResult getChildPoliticalLocationInfo(@PathVariable(value="id") Long id){
         Map<String, Object> params = new HashMap<>();
         params.put("statusCd", DeleteConsts.VALID);
-        params.put("upRegionId", id);
+        params.put("upLocId", id);
         params.put("statusCd", DeleteConsts.VALID);
         List<Map> list = polLocSvc.getChildPoliticalLocationInfo(params);
         if (list == null) {
             return ResponseResult.createErrorResult("暂无数据");
+        }
+        for (Map map : list) {
+            if(map.get("LOC_CODE")==null){
+                map.put("LOC_CODE", "");
+            }
+            if(map.get("LOC_NAME")==null){
+                map.put("LOC_NAME", "");
+            }
+            if(map.get("LOC_TYPE")==null){
+                map.put("LOC_TYPE", "");
+            }
+            if(map.get("LOC_ABBR")==null){
+                map.put("LOC_ABBR", "");
+            }
         }
         return ResponseResult.createSuccessResult(list,"success");
     }
@@ -71,32 +86,25 @@ public class TbPoliticalLocationController extends BaseController {
     @GetMapping("getTreePoliticalLocation/{id}")
     public ResponseResult getTreePoliticalLocation(@PathVariable(value="id") Long id ){
         Map<String, Object> params = new HashMap<>();
-        params.put("statusCd", DeleteConsts.VALID);
-        params.put("upLocId", id);
-        long a = System.currentTimeMillis();
-        List<Map> list = polLocSvc.getTreePoliticalLocation(params);
-        long b = System.currentTimeMillis();
-        if(list==null || list.isEmpty()){
-            return ResponseResult.createErrorResult("暂无数据");
-        }
-        List<ZTreeNode> ztlist=new ArrayList<>();
-        
-        for (Map map : list) {
+        List<TbPoliticalLocation> list = polLocSvc.getTreePoliticalLocation(params);
+        List<ZTreeNode> ztlist = new ArrayList<>();
+        for (TbPoliticalLocation polloc : list) {
             ZTreeNode n=new ZTreeNode();
-            n.setId(Long.valueOf(map.get("LOC_ID").toString()));
-            n.setName(map.get("LOC_NAME").toString());
-            Object upid = map.get("UP_LOC_ID");
-            n.setpId(upid==null?0:Long.valueOf(upid.toString()));
-            n.setOpen(n.getpId()==0);
             ztlist.add(n);
+            n.setId(polloc.getLocId());
+            n.setName(polloc.getLocName());
+            n.setpId(polloc.getUpLocId()==null||polloc.getUpLocId()<1?0:polloc.getUpLocId());
+            for (TbPoliticalLocation tmp : list) {
+                if(polloc.getLocId().equals(tmp.getUpLocId())){
+                    n.setParent(true);
+                    break;
+                }
+            }
         }
-        long c = System.currentTimeMillis();
-        System.err.println(b-a);
-        System.err.println(c-b);
-        System.err.println(c-a);
-        return ResponseResult.createSuccessResult(ztlist,"success");
+        ResponseResult r = ResponseResult.createSuccessResult(ztlist,"success");
+        r.setTotalRecords(list.size());
+        return r;
     }
-    
     @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),

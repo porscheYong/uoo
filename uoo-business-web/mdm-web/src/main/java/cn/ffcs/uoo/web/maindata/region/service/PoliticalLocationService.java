@@ -12,7 +12,7 @@ import cn.ffcs.uoo.web.maindata.region.service.fallback.PoliticalLocationService
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
 import io.swagger.annotations.ApiOperation;
 
-@FeignClient(value = "uoo-region-provider",/*configuration = {PersonnelServiceConfiguration.class},*/fallback = PoliticalLocationServiceHystrix.class)
+@FeignClient(value = "business-region",/*configuration = {PersonnelServiceConfiguration.class},*/fallback = PoliticalLocationServiceHystrix.class)
 public interface PoliticalLocationService {
 
     

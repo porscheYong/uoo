@@ -2,7 +2,9 @@ package cn.ffcs.uoo.core.expando.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.constant.StatusEnum;
 import cn.ffcs.uoo.core.vo.ResponseResult;
 import cn.ffcs.uoo.core.expando.entity.TbExpandocolumn;
 import cn.ffcs.uoo.core.expando.entity.TbExpandorow;
@@ -52,6 +54,10 @@ public class TbSystemtableController extends BaseController {
     public ResponseResult<TbSystemtable> addTbSystemtable(@RequestBody TbSystemtable tbSystemtable) {
         ResponseResult<TbSystemtable> responseResult = new ResponseResult<TbSystemtable>();
 
+        tbSystemtable.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbSystemtable.setStatusCd(StatusEnum.VALID.getValue());
+        tbSystemtable.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbSystemtable.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbSystemtableService.save(tbSystemtable);
 
         responseResult.setState(ResponseResult.STATE_OK);
@@ -73,6 +79,9 @@ public class TbSystemtableController extends BaseController {
             return responseResult;
         }
 
+        tbSystemtable.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbSystemtable.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbSystemtable.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         // 根据主键更新系统表登记
         tbSystemtableService.updateById(tbSystemtable);
 
@@ -106,7 +115,7 @@ public class TbSystemtableController extends BaseController {
         // 是否存在有效扩展列
         Wrapper<TbExpandocolumn> tbExpandocolumnWrapper = new EntityWrapper<TbExpandocolumn>();
         tbExpandocolumnWrapper.eq("TABLE_ID", tableId);
-        tbExpandocolumnWrapper.eq("STATUS_CD", "1000");
+        tbExpandocolumnWrapper.eq("STATUS_CD", StatusEnum.VALID.getValue());
         List<TbExpandocolumn> tbExpandocolumnList = tbExpandocolumnService.selectList(tbExpandocolumnWrapper);
 
         // 该系统表登记存在有效扩展列，不能删除
@@ -119,7 +128,7 @@ public class TbSystemtableController extends BaseController {
         // 是否存在有效扩展行
         TbExpandorow tbExpandorow = new TbExpandorow();
         tbExpandorow.setTableId(tableId);
-        tbExpandorow.setStatusCd("1000");
+        tbExpandorow.setStatusCd(StatusEnum.VALID.getValue());
         List<TbExpandorow> tbExpandorowList = tbExpandorowService.queryRowList(tbExpandorow);
 
         // 该系统表登记存在有效扩展行，不能删除
