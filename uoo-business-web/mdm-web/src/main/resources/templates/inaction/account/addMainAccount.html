@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>添加</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- jquery datatable -->
+    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="../../../static/js/core/html5shiv.js"></script>
+    <script src="../../../static/js/core/respond.js"></script>
+    <script src="../../../static/js/core/excanvas.js"></script>
+    <![endif]-->
+
+    <!--[if lt IE 9]>
+    <script src="../../../static/js/core/html5shiv.js"></script>
+    <script src="../../../static/js/core/respond.js"></script>
+    <script src="../../../static/js/core/excanvas.js"></script>
+    <![endif]-->
+
+    <style>
+        .fright
+        {
+            margin-right: 2%;
+        }
+        .row{
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+        .col-md-6 {
+            width: 45%;
+        }
+        .row-id{
+            width: 15%;
+        }
+        .row-orgTree{
+            width: 20%;
+        }
+        .row-fullName{
+            width: 65%;
+        }
+        td,th{
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body style="background: #fff;">
+    <!-- <div class="board-title">
+        <span class="name ft18">杭州分公司</span>
+        <a class="icon icon-edit" id="editBtn" style="vertical-align: top;"></a>
+    </div>
+
+    <div class="child-title" style="height:50px;">
+        <span style="color:rgb(156, 156, 156);margin-left: 1.5%;">中国电信浙江公司&nbsp>&nbsp杭州分公司</span>
+    </div>-->
+
+    <div class="board-title">
+        <span class="name ft18" id="main-title"></span> <!-- 主账号 -->
+    </div> 
+
+    <div class="tab-content" style="margin-left:5%;margin-top: 2%">
+        <div class="tab-pane active" id="tab_content1">
+            <form action="/submit" method="post" style="padding: 10px;">
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="psnTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员姓名</label>
+                            <input type="tel" id="psnTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="psnNumTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
+                            <input type="tel" id="psnNumTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="mobileTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">手机号码</label>
+                            <input type="tel" id="mobileTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="emailTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
+                            <input type="tel" id="emailTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="cerType" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
+                            <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市公司直属"> -->
+                            <select  class="col-md-8 col-sm-8 col-xs-12" id="cerType">
+                            <option></option>
+                            <option>身份证</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="cerNoTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                            <input type="tel" id="cerNoTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="acctTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户名</label>
+                            <input type="tel" id="acctTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="statusCd" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
+                            <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> -->
+                            <select  class="col-md-8 col-sm-8 col-xs-12" id="statusCd">
+                                <option></option>
+                                <option>生效</option>
+                                <option>失效</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="roleTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
+                            <input type="tel" id="roleTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> 
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%" id="default_psw">
+                            <label for="defaultPswTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
+                            <input type="tel" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                          <label for="effectDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
+                          <input type="code" id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="2018-11-16">
+                        </div>
+                      </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="invalidDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
+                            <input type="code" id="invalidDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="2018-12-31">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:7%">
+                    <div class="board-title" style="margin-left:-6.7%;">
+                        <span class="name ft18">归属组织</span>
+                    </div>
+    
+                    <div class="fright" style="margin-right:85%;margin-top:-4.5%;"> 
+                        <a class="button-add" id="addBtn" href="mainList.html"><span class="fa fa-plus-circle icon-add"></span>添加</a>
+                    </div>
+                </div>
+                
+                <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
+                    <table id="orgTable" class="stripe" width="100%"></table>
+                </div>
+
+                <div class="board-title" style="margin-left:-6.7%;">
+                    <span class="name ft18">关联从账号信息</span>
+                </div>
+
+                <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
+                    <table id="subInfoTable" class="stripe" width="100%"></table>
+                </div>
+
+            </form>
+
+            <div class="row">
+                <div style="margin-left: 29%;margin-top: 5%;">
+                    <!-- <input type="submit" id="formSubmit" class="clip">
+                    <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
+                    <button class="ui-button ui-button-primary" id="opBtn">提交</button>
+                    <button class="ui-button ui-button-cancel"  onclick="window.history.back()" style="margin-left: 40px;">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- jQuery -->
+    <script src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- sea js -->
+    <script src="/vendors/lulu/js/plugin/sea.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+    <script type="text/javascript" src="/js/account/orgData.js"></script>
+    <!-- <script type="text/javascript" src="/js/account/mainTable.js"></script> -->
+    <!-- laydate -->
+    <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
+    <!-- init -->
+    <script src="/js/init.js"></script>
+    <!-- custom -->
+    <script type="text/javascript" src="/js/account/addMainAccount.js"></script>
+
+
+    <!-- NProgress -->
+    <!-- <script type="text/javascript" src="../../../static/vendors/nprogress/nprogress.js"></script> -->
+    <!-- ztree -->
+    <!-- <script type="text/javascript" src="../../../static/vendors/zTree/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../../../static/vendors/zTree/jquery.ztree.excheck.js"></script> -->
+    <!-- layer -->
+    <!-- <script type="text/javascript" src="../../../static/vendors/layer/layer.js"></script> -->
+    <!-- loading -->
+    <!-- <script type="text/javascript" src="../../../static/js/core/spin.min.js"></script>
+    <script type="text/javascript" src="../../../static/js/core/loading.js"></script> -->
+    <!-- init -->
+    <!-- <script type="text/javascript" src="../../../static/js/init.js"></script> -->
+    <!-- <script type="text/javascript" src="../../../static/js/user/index.js"></script> -->
+    <script type="text/javascript">
+        seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+          $('select').selectMatch();
+        })
+        
+  
+    </script>
+  </body>
+</html>

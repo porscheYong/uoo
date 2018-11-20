@@ -1,6 +1,40 @@
+var orgId = getQueryString('id');
+var orgName = getQueryString('name');
+
+// 获取组织完整路径
+function getOrgExtInfo () {
+    var pathArry = parent.nodeArr;
+    console.log(pathArry)
+    var pathStr = '';
+    for (var i = pathArry.length - 1; i >= 0; i--) {
+        if (i === 0) {
+            pathStr +=  '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a></span>';
+        } else {
+            pathStr += '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+        }
+    }
+    $('.breadcrumb').html(pathStr);
+}
+$('.orgName').html(orgName);
+getOrgExtInfo();
+
 // lulu ui select插件
 seajs.use('/vendors/lulu/js/common/ui/Select', function () {
   $('select').selectMatch();
+})
+
+seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+    var blurForm = $('#blurForm');
+    var blurValidate = new Validate(blurForm);
+    blurValidate.immediate();
+    blurForm.find(':input').each(function () {
+        $(this).hover(function () {
+            // if (!blurForm.data('immediate')) {
+            //     $.validate.focusable = 0;
+                blurValidate.isPass($(this));
+            // }
+        });
+    })
 })
 
 // tags init
@@ -76,7 +110,7 @@ function initOrgTypeTree (orgId) {
         chkboxType: { "Y": "", "N": "" }
     }
   };
-  $http.get('orgType/getFullOrgTypeTree', null, function (data) {
+  $http.get('http://134.96.253.221:11100/orgType/getFullOrgTypeTree', null, function (data) {
       console.log(data)
       // $.fn.zTree.init($("#standardTree"), setting, data);
       // var zTree = $.fn.zTree.getZTreeObj("standardTree");
@@ -216,11 +250,21 @@ function initOrgRelTable (results) {
     });
 }
 
-var orgScale
+var orgScale;
+
+// 获取城乡字典数据
+function getCityVillage () {
+    $http.get('http://134.96.253.221:11500/tbDictionaryItem/getList/CITY_VILLAGE', {}, function (data) {
+        console.log(data)
+    }, function (err) {
+        console.log(err)
+    })
+}
+getCityVillage()
 
 // 获取组织基础信息
 function getOrg (orgId) {
-    $http.get('org/getOrg', {
+    $http.get('http://134.96.253.221:11100/org/getOrg', {
         orgId: orgId
     }, function (data) {
         $('#orgName').val(data.orgName).focus();
@@ -247,7 +291,7 @@ function getOrg (orgId) {
 
 // 获取组织关系信息
 function getOrgRel (orgId) {
-    $http.get('orgRel/getOrgRelTypePage', {
+    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTypePage', {
         orgId: orgId
     }, function (data) {
         initOrgRelTable(data.records);
@@ -256,7 +300,6 @@ function getOrgRel (orgId) {
     })
 }
 
-var orgId = getQueryString('id');
 getOrg(orgId);
 getOrgRel(orgId);
 
@@ -271,15 +314,6 @@ function cancel () {
   var url = "list.html?id=" + orgId;
   window.location.href = url;
 }
-
-function getCityVillage (orgId) {
-    $http.get('tbDictionaryItem/getList/CITY_VILLAGE', {}, function (data) {
-        console.log(data)
-    }, function (err) {
-        console.log(err)
-    })
-}
-getCityVillage()
 
 // 更新组织信息
 function updateOrg () {
@@ -300,7 +334,20 @@ function updateOrg () {
   var address = $('#address').val();
 }
 
-// $('#saveBtn').on('click', function () {
-//   var time = new Date($('#createDate').val()).getTime();
-//   console.log(time)
-// })
+$('#saveBtn').on('click', function () {
+    seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+        var blurForm = $('#blurForm');
+        var blurValidate = new Validate(blurForm);
+        blurForm.find(':input').each(function () {
+            $(this).blur(function () {
+                if (!blurForm.data('immediate')) {
+                    $.validate.focusable = 0;
+                    blurValidate.isPass($(this));
+                }
+            });
+        })
+    })
+
+  var time = new Date($('#createDate').val()).getTime();
+  console.log(time)
+})

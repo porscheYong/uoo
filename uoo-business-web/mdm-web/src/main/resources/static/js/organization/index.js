@@ -1,7 +1,10 @@
+// loadingMask
+var loading = new Loading();
+
 var setting = {
     async: {
         enable: true,
-        url: base + "orgRel/getOrgRelTree?orgRootId=1",
+        url: "http://134.96.253.221:11100/orgRel/getOrgRelTree?orgRootId=1",
         autoParam: ["id"],
         type: "get",
         dataFilter: filter
@@ -26,13 +29,34 @@ var setting = {
         onClick: onNodeClick
     }
 };
-var orgId;
+var orgId,
+    orgName,
+    nodeName,
+    nodeArr;
 
 function onNodeClick(e,treeId, treeNode) {
     // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
     // zTree.expandNode(treeNode);
     orgId = treeNode.id;
+    orgName = treeNode.name;
+    var currentNode = treeNode.name;//获取当前选中节点
+    var parentNode = treeNode.getParentNode();
+    nodeArr = [];
+    getParentNodes(parentNode, currentNode);
     refreshResult();
+}
+
+// 获取父节点路径
+function getParentNodes(parentNode, currentNode) {
+    if(parentNode!=null){
+        nodeName = parentNode.name;
+        var curNode = parentNode.getParentNode();
+        nodeArr.push(currentNode);
+        getParentNodes(curNode, nodeName);
+    }else{
+        //根节点
+        nodeArr.push(currentNode);
+    }
 }
 
 function filter (treeId, parentNode, childNodes) {
@@ -40,12 +64,12 @@ function filter (treeId, parentNode, childNodes) {
 }
 
 function refreshResult () {
-    var url = "list.html?id=" + orgId;
+    var url = "list.html?id=" + orgId + "&name=" + encodeURI(orgName);
     $('#orgFrame').attr("src",url);
 }
 
 function initOrgRelTree () {
-    $http.get('orgRel/getOrgRelTree', {
+    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTree', {
         orgRootId: '1'
     }, function (data) {
         console.log(data)
@@ -72,6 +96,15 @@ function openTreeById (sId, id) {
     zTree.expandNode(node, true);
   }
   zTree.selectNode(node, true);
+}
+
+// 添加子节点
+function addNodeById (sId, newNode) {
+    var zTree = $.fn.zTree.getZTreeObj("standardTree");
+    var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
+    console.log(selectNode)
+    if (selectNode)
+        var newNode = zTree.addNodes(selectNode, newNode);
 }
 
 var orgTypeList;
@@ -111,7 +144,7 @@ function initOrgTypeTree () {
           chkboxType: { "Y": "", "N": "" }
       }
     };
-    $http.get('orgType/getFullOrgTypeTree', {
+    $http.get('http://134.96.253.221:11100/orgType/getFullOrgTypeTree', {
       orgId: orgId
     }, function (data) {
         console.log(data)

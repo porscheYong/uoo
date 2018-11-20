@@ -2,7 +2,9 @@ package cn.ffcs.uoo.core.position.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.position.constant.StatusEnum;
 import cn.ffcs.uoo.core.position.entity.TbPostLocation;
 import cn.ffcs.uoo.core.position.service.TbPostLocationService;
 import cn.ffcs.uoo.core.position.vo.ResponseResult;
@@ -50,7 +52,13 @@ public class TbPostLocationController extends BaseController {
             return responseResult;
         }
 
+        tbPostLocation.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPostLocation.setStatusCd(StatusEnum.VALID.getStatus());
+        tbPostLocation.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPostLocation.setEffDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPostLocation.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbPostLocationService.save(tbPostLocation);
+
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增职位行政区域成功");
         return responseResult;

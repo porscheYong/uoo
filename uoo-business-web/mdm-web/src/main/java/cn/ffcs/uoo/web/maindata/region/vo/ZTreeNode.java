@@ -5,6 +5,13 @@ public class ZTreeNode {
     private long id;
     private long pId;
     private boolean open;
+    private boolean parent;
+    public boolean isParent() {
+        return parent;
+    }
+    public void setParent(boolean parent) {
+        this.parent = parent;
+    }
     public String getName() {
         return name;
     }

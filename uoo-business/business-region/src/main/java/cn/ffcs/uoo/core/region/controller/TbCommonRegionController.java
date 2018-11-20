@@ -178,10 +178,14 @@ public class TbCommonRegionController extends BaseController {
         for (Map map : list) {
             ZTreeNode n=new ZTreeNode();
             n.setId(Long.valueOf(map.get("COMMON_REGION_ID").toString()));
-            n.setName(map.get("REGION_NAME").toString());
+            Object rn = map.get("REGION_NAME");
+            n.setName(rn==null?"":map.get("REGION_NAME").toString());
             Object upid = map.get("UP_REGION_ID");
             n.setpId(upid==null?0:Long.valueOf(upid.toString()));
             n.setOpen(n.getpId()==0);
+            Wrapper<TbCommonRegion> w=Condition.create().eq("STATUS_CD", DeleteConsts.VALID).eq("UP_REGION_ID", n.getId());
+            List<TbCommonRegion> selectList = regionService.selectList(w);
+            n.setParent(selectList!=null&&!selectList.isEmpty());
             ztlist.add(n);
         }
         return ResponseResult.createSuccessResult(ztlist,"success");
@@ -289,7 +293,7 @@ public class TbCommonRegionController extends BaseController {
 
         for (Long locId : polLocIds) {
             TbRegionLocationRel rel = new TbRegionLocationRel();
-            rel.setCommonRegionId(commonRegion.getCommonRegionId());
+            rel.setCommonRegionId(reg.getCommonRegionId());
             rel.setLocId(locId);
             rel.setRegionLocRelId(regLocRelSvc.getId());
             regLocRelSvc.insert(rel);
@@ -346,7 +350,7 @@ public class TbCommonRegionController extends BaseController {
         regLocRelSvc.delete(wrapper);
         for (Long locId : polLocIds) {
             TbRegionLocationRel rel = new TbRegionLocationRel();
-            rel.setCommonRegionId(commonRegion.getCommonRegionId());
+            rel.setCommonRegionId(reg.getCommonRegionId());
             rel.setLocId(locId);
             rel.setRegionLocRelId(regLocRelSvc.getId());
             regLocRelSvc.insert(rel);
