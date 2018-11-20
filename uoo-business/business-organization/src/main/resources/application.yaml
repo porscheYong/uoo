@@ -112,8 +112,8 @@ spring:
       percentage: 1.0
   data:
     solr:
-      host: http://localhost:8888/uooSolr
-      #host: http://134.96.253.221:8762/uooSolr
+      #host: http://localhost:8888/uooSolr
+      host: http://134.96.253.221:8762/uooSolr
       repositories:
         enabled: true
   rabbitmq:
