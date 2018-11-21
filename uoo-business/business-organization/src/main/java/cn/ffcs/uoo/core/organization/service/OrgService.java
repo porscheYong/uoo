@@ -35,7 +35,16 @@ public interface OrgService extends IService<Org> {
 
     public void update(Org org);
 
-    public String JudgeOrgParams(Org org);
+//    /**
+//     * 保存组织
+//     */
+//    public void insertByObj(OrgVo org);
+    /**
+     * 组织新增参数判断
+     * @param org
+     * @return
+     */
+    public String JudgeOrgParams(OrgVo org);
 
     /**
      * 获取组织code
@@ -48,8 +57,6 @@ public interface OrgService extends IService<Org> {
      * @return
      */
     public List<Org> getOrgList(Org org);
-
-
     /**
      * 组织关系分页
      * @param org
@@ -63,8 +70,6 @@ public interface OrgService extends IService<Org> {
      * @return
      */
     public Page<OrgVo> selectOrgPage(OrgVo org);
-
-
     /**
      * 获取系统全路径
      * @param orgRootId
@@ -72,4 +77,12 @@ public interface OrgService extends IService<Org> {
      * @return
      */
     public String getSysFullName(String orgRootId,String id);
+
+    /**
+     * 根据组织标识查询组织信息
+     * @param orgId
+     * @return
+     */
+    public OrgVo selectOrgByOrgId(String orgId);
+
 }

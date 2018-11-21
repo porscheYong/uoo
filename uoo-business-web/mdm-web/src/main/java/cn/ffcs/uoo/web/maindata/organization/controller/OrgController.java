@@ -35,7 +35,7 @@ public class OrgController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
-    public ResponseResult addOrg(@RequestBody Org org) {
+    public ResponseResult addOrg(@RequestBody OrgVo org) {
         return orgService.addOrg(org);
     }
 
@@ -44,7 +44,7 @@ public class OrgController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
-    public ResponseResult updateOrg(@RequestBody Org org) {
+    public ResponseResult updateOrg(@RequestBody OrgVo org) {
         return orgService.updateOrg(org);
     }
 
