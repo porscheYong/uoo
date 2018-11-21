@@ -184,6 +184,7 @@ public class OrgController extends BaseController {
         }
         orgService.insert(org);
 
+
         //org_ref 组织推导
         for(OgtOrgReltypeConf orgOrgRel : ogtOrgReftypeConfList){
 
