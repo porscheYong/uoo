@@ -26,7 +26,7 @@ var setting = {
         onClick: onNodeClick
     }
 };
-var orgId,
+var orgIdSelect,
     orgName,
     nodeName,
     nodeArr,
@@ -36,9 +36,9 @@ var orgId,
 function onNodeClick(e,treeId, treeNode) {
     // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
     // zTree.expandNode(treeNode);
-    orgId = treeNode.id;
+    orgIdSelect = treeNode.id;
     orgName = treeNode.name;
-    // console.log(orgId+"--"+orgName);
+    // console.log(orgIdSelect+"--"+orgName);
     var currentNode = treeNode.name;//获取当前选中节点
     var parentNode = treeNode.getParentNode();
     nodeArr = [];
@@ -64,7 +64,7 @@ function filter (treeId, parentNode, childNodes) {
 }
 
 function refreshResult () {
-    var url = "mainList.html?id=" + orgId + "&name=" + encodeURI(orgName);
+    var url = "mainList.html?id=" + orgIdSelect + "&name=" + encodeURI(orgName);
     $('#userFrame').attr("src",url);
 }
 
@@ -136,7 +136,7 @@ function initOrgTypeTree () {
       }
     };
     $http.get('http://134.96.253.221:11100/orgType/getFullOrgTypeTree', {
-      orgId: orgId
+      orgId: orgIdSelect
     }, function (data) {
         console.log(data)
         $.fn.zTree.init($("#orgTypeTree"), treeSetting, data);
@@ -254,20 +254,20 @@ function getOrgExtInfo() {
   return pathStr;
 }
 
-function saveBtnClick(){
-    if(isEdit == 0){   //add
-        console.log(getOrgExtInfo());
-        addOrgList.push({'id':n,'orgId':orgId,'fullName':getOrgExtInfo()});
-        console.log(addOrgList);
-        orgTable.destroy();
-        initOrgTable(addOrgList);
-        n++;
-    }else if(isEdit == 1){
-        editOrgList.push({'id':num+1,'orgId':orgId,'fullName':getOrgExtInfo()});
-        num++;
-        orgTable.destroy();
-        initOrgTable(editOrgList);
-    }
-}
+// function saveBtnClick(){
+//     if(isEdit == 0){   //add
+//         console.log(getOrgExtInfo());
+//         addOrgList.push({'id':n,'orgId':orgIdSelect,'fullName':getOrgExtInfo()});
+//         console.log(addOrgList);
+//         orgTable.destroy();
+//         initOrgTable(addOrgList);
+//         n++;
+//     }else if(isEdit == 1){
+//         editOrgList.push({'id':num+1,'orgId':orgIdSelect,'fullName':getOrgExtInfo()});
+//         num++;
+//         orgTable.destroy();
+//         initOrgTable(editOrgList);
+//     }
+// }
 
 initOrgRelTree();

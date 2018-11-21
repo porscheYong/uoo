@@ -3,6 +3,7 @@ var userType = getQueryString('userType');
 var statusCd = getQueryString('statusCd');
 var title = getQueryString('title');
 var opBtn = getQueryString('opBtn');
+var personnelId = getQueryString('personnelId');
 
 
 $('#sub-title').html(title);
@@ -15,14 +16,7 @@ if(statusCd == '1000'){                //判断状态
     $('#statusCd').get(0).selectedIndex=2;
   }
 
-if(opBtn==0){
-    $('#opBtn').css("display","none");
-    //$('.fright').css("display","none");
-    $('#default_psw').css("display","none");
-    $('input').attr("disabled","false");
-    $('select').attr("disabled","false");
-    getSubUser(acctId,userType);
-}
+
 
 function getSubUser(acctId,userType) {                   
     $http.get('http://192.168.58.112:18000/user/getUser', {   //http://192.168.58.112:18000/user/getUser
@@ -57,8 +51,12 @@ function initOrgTable(results){
         },
           { 'data': "fullName", 'title': '组织名称', 'className': 'row-fullName' ,
           'render': function (data, type, row, meta) {
-            var s = row.fullName.replace(/->/g,'/');
-            return s.substring(0,s.length-1);
+            if(row.fullName.search('->') != -1){
+                var s = row.fullName.replace(/->/g,'/');
+                return s.substring(0,s.length-1);
+              }else{
+                return row.fullName;
+              }
         }
         }
       ],
@@ -75,17 +73,23 @@ function initOrgTable(results){
   }
 
 function initUserInfo(results){
+    var roldId ='';
+    $('#psnNameTel').val(results.psnName);
+    $('#psnNumTel').val(results.psnCode);
+    $('#mobileTel').val(results.mobilePhone);
+    $('#emailTel').val(results.eamil);
+    $('#cerNoTel').val(results.certNo);
+    $('#acctTel').val(results.tbSlaveAcct.slaveAcct);
 
-    isNullVal('#psnNameTel',results.psnName);
-    isNullVal('#psnNumTel',results.psnCode);
-    isNullVal('#mobileTel',results.mobilePhone);
-    isNullVal('#emailTel',results.eamil);
-    isNullVal('#cerNoTel',results.certNo);
-    isNullVal('#acctTel',results.tbSlaveAcct.slaveAcct);
-    $('#roleTel').val('null');
-    isNullVal('#effectDate',results.tbSlaveAcct.enableDate);
-    isNullVal('#invalidDate',results.tbSlaveAcct.disableDate);  
+    $('#effectDate').val(results.tbSlaveAcct.enableDate);
+    $('#invalidDate').val(results.tbSlaveAcct.disableDate);
+    for(var i = 0; i <results.tbRolesList.length; i++){
+        roldId = roldId + "、" + results.tbRolesList[i].roleId;
     }
+    if(roldId != ''){
+        $('#roleTel').val(roldId.substring(1,roldId.length));
+    } 
+}
 
 function isNullVal(s,r){
     if(r==null){
@@ -103,4 +107,13 @@ laydate.render({
     elem: '#invalidDate' //指定元素
   }); 
 
-  
+if(opBtn==0){
+    $('#opBtn').css("display","none");
+    //$('.fright').css("display","none");
+    $('#default_psw').css("display","none");
+    $('input').attr("disabled","false");
+    $('select').attr("disabled","false");
+    getSubUser(acctId,userType);
+}else{
+
+}

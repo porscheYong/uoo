@@ -20,7 +20,7 @@
     <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
     <!-- jquery tagsinput -->
     <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
-    <link rel="stylesheet" href="artModal.css">
+    <link rel="stylesheet" href="/css/account/artModal.css">
 
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
@@ -269,29 +269,37 @@
     <script src="/js/account/init.js"></script>
     <!-- jquery tagsinput -->
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
-    <script src="artModal.js"></script>
+    <script src="/js/account/artModal.js"></script>
     <!-- custom -->
     <script type="text/javascript" src="/js/account/addMainAccount.js"></script>
     <script type="text/javascript" src="/js/account/selectOrg.js"></script>
 
-    <!-- NProgress -->
-    <!-- <script type="text/javascript" src="../../../static/vendors/nprogress/nprogress.js"></script> -->
-    <!-- ztree -->
-    <!-- <script type="text/javascript" src="../../../static/vendors/zTree/jquery.ztree.core.js"></script>
-    <script type="text/javascript" src="../../../static/vendors/zTree/jquery.ztree.excheck.js"></script> -->
-    <!-- layer -->
-    <!-- <script type="text/javascript" src="../../../static/vendors/layer/layer.js"></script> -->
-    <!-- loading -->
-    <!-- <script type="text/javascript" src="../../../static/js/core/spin.min.js"></script>
-    <script type="text/javascript" src="../../../static/js/core/loading.js"></script> -->
-    <!-- init -->
-    <!-- <script type="text/javascript" src="../../../static/js/init.js"></script> -->
-    <!-- <script type="text/javascript" src="../../../static/js/user/index.js"></script> -->
     <script type="text/javascript">
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
           $('select').selectMatch();
         })
-        
+
+        var myModal_1_obj = artModal({  //构建artModal实例
+                element: document.getElementById('myModal_1'),
+            });
+
+        function saveBtnClick(){
+            // if(isEdit == 0){   //add
+            //     console.log(getOrgExtInfo());
+            //     addOrgList.push({'id':n,'orgId':orgIdSelect,'fullName':getOrgExtInfo()});
+            //     console.log(addOrgList);
+            //     orgTable.destroy();
+            //     initOrgTable(addOrgList);
+            //     n++;
+            // }else if(isEdit == 1){
+            //     editOrgList.push({'id':num+1,'orgId':orgIdSelect,'fullName':getOrgExtInfo()});
+            //     num++;
+            //     orgTable.destroy();
+            //     initOrgTable(editOrgList);
+            // }
+            // myModal_1_obj.close();
+            alert('该功能暂时无法使用');
+        }
     </script>
   </body>
 </html>

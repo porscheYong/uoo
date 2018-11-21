@@ -24,7 +24,7 @@ $('#effectDate').val(''),
 $('#cerType').get(0).selectedIndex=1;  //判断证件类型
 
 
-function getUser(acctId,userType) {           //查看主账号时相关操作 
+function getUser(acctId,userType) {           //查看主账号
     $http.get('http://192.168.58.112:18000/user/getUser', {   //http://192.168.58.112:18000/user/getUser
         acctId: acctId,
         userType: userType
@@ -83,9 +83,12 @@ function initOrgTable(results){         //主账号组织数据表格
       },
         { 'data': "fullName", 'title': '组织名称', 'className': 'row-fullName' ,
         'render': function (data, type, row, meta) {
-          console.log(row.fullName);
-          var s = row.fullName.replace(/->/g,'/');
-          return s.substring(0,s.length-1);
+          if(row.fullName.search('->') != -1){
+            var s = row.fullName.replace(/->/g,'/');
+            return s.substring(0,s.length-1);
+          }else{
+            return row.fullName;
+          }
       }
       },
       {'data': "orgId", 'title': '操作', 'className': 'row-delete' ,
@@ -140,16 +143,23 @@ function initSubOrgTable(results){    //从账号组织数据
 }
 
 function initUserInfo(results){         //初始化用户信息(查看)
+    var roldId = '';
+    $('#psnTel').val(results.psnName);
+    $('#psnNumTel').val(results.psnCode);
+    $('#mobileTel').val(results.mobilePhone);
+    $('#emailTel').val(results.eamil);
+    $('#cerNoTel').val(results.certNo);
+    $('#acctTel').val(results.tbAcct.acct);
 
-    isNullVal('#psnTel',results.psnName);
-    isNullVal('#psnNumTel',results.psnCode);
-    isNullVal('#mobileTel',results.mobilePhone);
-    isNullVal('#emailTel',results.eamil);
-    isNullVal('#cerNoTel',results.certNo);
-    isNullVal('#acctTel',results.tbAcct.acct);
-    $('#roleTel').val('null');
-    isNullVal('#effectDate',results.tbAcct.enableDate);
-    isNullVal('#invalidDate',results.tbAcct.disableDate);  
+    $('#defaultPswTel').val(results.tbAcct.password);
+    $('#effectDate').val(results.tbAcct.enableDate);
+    $('#invalidDate').val(results.tbAcct.disableDate);
+    for(var i = 0; i <results.tbRolesList.length; i++){
+      roldId = roldId + "、" + results.tbRolesList[i].roleId;
+    }
+    if(roldId != ''){
+      $('#roleTel').val(roldId.substring(1,roldId.length));
+    } 
 }
 
 function initEditUserInfo(results){     //初始化用户信息(编辑)
