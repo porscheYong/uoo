@@ -147,12 +147,12 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         if(org.getOrgTypeList() == null || org.getOrgTypeList().size() < 0){
             return "组织类别不能为空";
         }
-        if(org.getPositionList() == null || org.getPositionList().size() <0){
-            return "组织岗位不能为空";
-        }
-        if(org.getPostList() == null || org.getPostList().size() <0){
-            return "组织职位不能为空";
-        }
+//        if(org.getPositionList() == null || org.getPositionList().size() <0){
+//            return "组织岗位不能为空";
+//        }
+//        if(org.getPostList() == null || org.getPostList().size() <0){
+//            return "组织职位不能为空";
+//        }
 //        if(StrUtil.isNullOrEmpty(org.getOrgTreeId())){
 //            return "组织树标识不能为空";
 //        }
@@ -162,9 +162,9 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         if(StrUtil.isNullOrEmpty(org.getOrgName())){
             return "组织名称不能为空";
         }
-        if(StrUtil.isNullOrEmpty(org.getLocId())){
-            return "组织行政区域不能为空";
-        }
+//        if(StrUtil.isNullOrEmpty(org.getLocId())){
+//            return "组织行政区域不能为空";
+//        }
         if(StrUtil.isNullOrEmpty(org.getSupOrgId())){
             return "组织父节点不能为空";
         }

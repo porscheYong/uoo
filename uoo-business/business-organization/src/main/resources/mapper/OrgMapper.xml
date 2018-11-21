@@ -173,7 +173,9 @@
         FROM TB_ORG A
         WHERE 1=1
         <if test="orgVo.search != null and orgVo.search != ''">
-            AND A.ORG_NAME like '%'||#{orgVo.search}||'%'
+            AND (A.ORG_NAME like '%'||#{orgVo.search}||'%'
+                or A.FULL_NAME like '%'||#{orgVo.search}||'%'
+                or A.ORG_CODE like '%'||#{orgVo.search}||'%')
         </if>
         <if test="orgVo.statusCd != null and orgVo.statusCd != ''">
             AND A.STATUS_CD = #{orgVo.statusCd}
