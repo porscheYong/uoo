@@ -25,7 +25,7 @@ if(opBtn==0){
 }
 
 function getSubUser(acctId,userType) {                   
-    $http.get('http://192.168.58.112:9092/user/getUser', {   //http://192.168.58.112:18000/user/getUser
+    $http.get('http://192.168.58.112:18000/user/getUser', {   //http://192.168.58.112:18000/user/getUser
         acctId: acctId,
         userType: userType
     }, function (data) {
