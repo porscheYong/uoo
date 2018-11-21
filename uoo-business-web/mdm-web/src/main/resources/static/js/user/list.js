@@ -28,7 +28,7 @@ function initOrgPersonnelTable (results) {
             { 'data': null, 'title': '序号', 'className': 'row-no' },
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return "<a href='info.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personId + "'>" + row.psnName + "</a>";
+                    return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personId + "'>" + row.psnName + "</a>";
                 }
             },
             { 'data': "doubleName", 'title': '重名称谓', 'className': 'row-mobile' },

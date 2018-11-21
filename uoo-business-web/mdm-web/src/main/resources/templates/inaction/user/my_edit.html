@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link href="/css/style.css" rel="stylesheet">
 
 <title>个人信息-编辑</title>
 </head>
@@ -11,7 +11,7 @@
 
 <div class="WhitePanel">
     <div class="ContentFull">
-    	<form action="my.html">
+    	<form>
             <div class="BoardTitle"><span class="Name">基本信息</span></div>
             <div class="BoardContent ulhide">
                 <!--<div class="fleft Col2 tcenter">-->
@@ -103,7 +103,7 @@
                 </div>
                 <div class="Contents clear"><!--间隙--></div>
                 <div class="BotBtn bdTop">
-                    <input class="Btn BtnBlue" type="submit" value="保存" />
+                    <input class="Btn BtnBlue" type="button" value="保存" onclick="updatePersonnel()"/>
                     <input class="Btn" type="button" value="取消" onClick="javascript:history.go(-1)" />
                 </div>
             </div>
@@ -203,18 +203,38 @@
         <!--工作经历End-->
     </div>
 </div>
+<!-- jQuery -->
+<script type="text/javascript" src="/js/core/jquery.js"></script>
 <script>
     function updatePersonnel () {
         var userData = {
-            certNo:
+            certNo: "110101199003074151",
+            certType: "1",
+            gender: "1",
+            image: null,
+            marriage: null,
+            nation: null,
+            nationality: "中国",
+            ncCode: null,
+            personnelId: 127,
+            pliticalStatus: null,
+            psnCode: null,
+            psnName: "彭幼春EDIT",
+            psnNbr: null,
+            tbEamilVoList: [{contactId: 127, content: "15306815255@189.com"}],
+            tbMobileVoList: [{contactId: 127, content: "15306815255"}]
         }
         $.ajax({
             contentType: "application/json",
             type: "PUT",
             url: "/personnel/updatePersonnel",
             data: JSON.stringify(userData),
-            success: httpSuccess,
-            error: httpError,
+            success: function () {
+
+            },
+            error: function () {
+
+            },
             dataType: 'json'
         })
     }

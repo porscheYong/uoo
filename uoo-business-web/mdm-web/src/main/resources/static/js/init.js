@@ -20,29 +20,11 @@ var $http = {
       }
       else {
         switch (state) {
-          case 11000:
-            console.log(message)
-            break
-          case 11001:
-            console.log(message)
-            break
-          case 11002:
-            console.log(message)
-            break
-          case 11003:
-            console.log(message)
-            break
-          case 11004:
-            console.log(message)
-            break
-          case 11005:
-            console.log(message)
-            break
-          case 11006:
-            console.log(message)
-            break
-          case 11007:
-            console.log(message)
+          case 1100:
+            parent.layer.alert(message, {
+                skin: 'layui-layer-lan'
+                ,closeBtn: 0
+            });
             break
         }
         var httpStatus = response.status
