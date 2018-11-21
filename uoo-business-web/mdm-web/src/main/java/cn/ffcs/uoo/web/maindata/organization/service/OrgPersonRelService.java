@@ -12,6 +12,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -35,14 +36,22 @@ public interface OrgPersonRelService{
     @RequestMapping(value="/orgPersonRel/deleteOrgPsn",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<String> deleteOrgPsn(@RequestBody PsonOrgVo psonOrgVo);
 
-    @RequestMapping(value="/orgPersonRel/getPerOrgRelList",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(@RequestBody PsonOrgVo psonOrgVo);
+    @RequestMapping(value="/orgPersonRel/getPerOrgRelList",method = RequestMethod.GET)
+    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(@RequestParam(value = "perSonId",required = false)Integer perSonId);
 
-    @RequestMapping(value="/orgPersonRel/getPerOrgRelPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(@RequestBody PsonOrgVo psonOrgVo);
+    @RequestMapping(value="/orgPersonRel/getPerOrgRelPage",method = RequestMethod.GET)
+    public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(@RequestParam(value = "orgId",required = false)Integer orgId,
+                                                            @RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                            @RequestParam(value = "personId",required = false)Integer personId,
+                                                            @RequestParam(value = "search",required = false)String search,
+                                                            @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                                            @RequestParam(value = "pageNo",required = false)Integer pageNo);
 
-    @RequestMapping(value="/orgPersonRel/getUserOrgRelPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(@RequestBody PsonOrgVo psonOrgVo);
+    @RequestMapping(value="/orgPersonRel/getUserOrgRelPage",method = RequestMethod.GET)
+    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(@RequestParam(value = "orgId",required = false)Integer orgId,
+                                                             @RequestParam(value = "search",required = false)String search,
+                                                             @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                                             @RequestParam(value = "pageNo",required = false)Integer pageNo);
 
 
 }

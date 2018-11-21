@@ -107,7 +107,7 @@ public class EditFormPersonnelVo {
     private List<TbContact> tbEamilVoList;
 
     /**  3、归属组织信息 */
-
+    private List<PsonOrgVo> psonOrgVoList;
 
     /**  4、工作履历信息 */
 

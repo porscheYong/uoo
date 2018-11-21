@@ -84,18 +84,23 @@ public class OrgRelController {
     @ApiOperation(value = "检索组织树", notes = "检索组织树")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getFuzzyOrgRelPage", method = RequestMethod.POST)
-    public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(@RequestBody OrgVo orgVo){
-        return orgRelService.getFuzzyOrgRelPage(orgVo);
+    @RequestMapping(value = "/getFuzzyOrgRelPage", method = RequestMethod.GET)
+    public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(@RequestParam(value = "search",required = false)String search,
+                                                          @RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                          @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                                          @RequestParam(value = "pageNo",required = false)Integer pageNo){
+        return orgRelService.getFuzzyOrgRelPage(search,orgRootId,pageSize,pageNo);
     }
 
 
     @ApiOperation(value = "获取组织关系类型翻页", notes = "获取组织关系类型翻页")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getOrgRelTypePage", method = RequestMethod.POST)
-    public ResponseResult<Page<OrgRefTypeVo>> getOrgRelTypePage(@RequestBody OrgRefTypeVo orgRefTypeVo){
-        return orgRelService.getOrgRelTypePage(orgRefTypeVo);
+    @RequestMapping(value = "/getOrgRelTypePage", method = RequestMethod.GET)
+    public ResponseResult<Page<OrgRefTypeVo>> getOrgRelTypePage(@RequestParam(value = "orgId",required = false)String orgId,
+                                                                @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                                                @RequestParam(value = "pageNo",required = false)Integer pageNo){
+        return orgRelService.getOrgRelTypePage(orgId,pageSize,pageNo);
     }
 
 }

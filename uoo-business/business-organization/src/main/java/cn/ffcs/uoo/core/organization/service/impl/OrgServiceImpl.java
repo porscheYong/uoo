@@ -143,18 +143,15 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         return page;
     }
     @Override
-    public String JudgeOrgParams(Org org){
+    public String JudgeOrgParams(OrgVo org){
         if(org.getOrgTypeList() == null || org.getOrgTypeList().size() < 0){
             return "组织类别不能为空";
         }
-        if(org.getPositionList() == null || org.getPositionList().size() <0){
-            return "组织岗位不能为空";
-        }
-        if(org.getPostList() == null || org.getPostList().size() <0){
-            return "组织职位不能为空";
-        }
-//        if(StrUtil.isNullOrEmpty(org.getOrgTreeId())){
-//            return "组织树标识不能为空";
+//        if(org.getPositionList() == null || org.getPositionList().size() <0){
+//            return "组织岗位不能为空";
+//        }
+//        if(org.getPostList() == null || org.getPostList().size() <0){
+//            return "组织职位不能为空";
 //        }
         if(StrUtil.isNullOrEmpty(org.getOrgRootId())){
             return "组织树根节点不能为空";
@@ -162,18 +159,34 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         if(StrUtil.isNullOrEmpty(org.getOrgName())){
             return "组织名称不能为空";
         }
-        if(StrUtil.isNullOrEmpty(org.getLocId())){
-            return "组织行政区域不能为空";
+//        if(StrUtil.isNullOrEmpty(org.getLocId())){
+//            return "组织行政区域不能为空";
+//        }
+//        if(StrUtil.isNullOrEmpty(org.getSupOrgId())){
+//            return "组织父节点不能为空";
+//        }
+        if(StrUtil.isNullOrEmpty(org.getShortName())){
+            return "组织简称不能为空";
         }
-        if(StrUtil.isNullOrEmpty(org.getSupOrgId())){
-            return "组织父节点不能为空";
+        if(StrUtil.isNullOrEmpty(org.getCityTown())){
+            return "城乡属性不能为空";
         }
-
         return "";
     }
+
+//    @Override
+//    public void insertByObj(OrgVo org){
+//        baseMapper.insertByObj(org);
+//    }
+
 
     @Override
     public String getSysFullName(String orgRootId,String id){
         return baseMapper.getSysFullName(orgRootId,id);
+    }
+
+    @Override
+    public OrgVo selectOrgByOrgId(String orgId){
+        return baseMapper.selectOrgByOrgId(orgId);
     }
 }

@@ -1,9 +1,11 @@
-package cn.ffcs.uoo.web.maindata.organization.dto;/**
+package cn.ffcs.uoo.web.maindata.personnel.vo;/**
  * @description:
  * @author: ffcs-gzb
  * @date: 2018-10-24
  */
 
+
+import cn.ffcs.uoo.web.maindata.user.dto.BaseVo;
 
 /**
  * <p>
@@ -20,8 +22,6 @@ public class PsonOrgVo extends BaseVo {
      */
     private Long orgPersonId;
 
-    private Long orgContactRelId;
-
 /************************组织**************************/
     /**
      * 组织根节点
@@ -35,6 +35,10 @@ public class PsonOrgVo extends BaseVo {
      * 组织名称
      */
     private String orgName;
+    /**
+     * 组织树
+     */
+    private String orgTreeName;
     /**
      * 组织全程
      */
@@ -74,11 +78,6 @@ public class PsonOrgVo extends BaseVo {
      */
     private String statusCd;
 
-    /**
-     * 组织树名称
-     */
-    private String orgTreeName;
-
 /************************员工**************************/
     /**
      * 用户标识
@@ -106,36 +105,6 @@ public class PsonOrgVo extends BaseVo {
      */
     private String ncCode;
 
-    /**
-     * 联系方式
-     */
-    private String mobile;
-
-    /**
-     * 身份证
-     */
-    private String certNo;
-
-    /**
-     * 员工id
-     */
-    private String userId;
-
-    /**
-     * 账号
-     */
-    private String acct;
-
-    /********************人员相关********************/
-    private String accId;
-    /**
-     * 账号类型 1 主账号 2 从账号
-     */
-    private String type;
-    /**
-     * 账号类型 主账号 从账号
-     */
-    private String typeName;
     /******************* 搜索相关********************/
 
     /**
@@ -143,78 +112,6 @@ public class PsonOrgVo extends BaseVo {
      */
     private String search;
 
-
-    public String getAccId() {
-        return accId;
-    }
-
-    public void setAccId(String accId) {
-        this.accId = accId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getAcct() {
-        return acct;
-    }
-
-    public void setAcct(String acct) {
-        this.acct = acct;
-    }
-
-    public String getCertNo() {
-        return certNo;
-    }
-
-    public void setCertNo(String certNo) {
-        this.certNo = certNo;
-    }
-
-    public Long getOrgContactRelId() {
-        return orgContactRelId;
-    }
-
-    public void setOrgContactRelId(Long orgContactRelId) {
-        this.orgContactRelId = orgContactRelId;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getOrgTreeName() {
-        return orgTreeName;
-    }
-
-    public void setOrgTreeName(String orgTreeName) {
-        this.orgTreeName = orgTreeName;
-    }
 
     public Long getOrgPersonId() {
         return orgPersonId;
@@ -359,4 +256,8 @@ public class PsonOrgVo extends BaseVo {
     public void setRefType(String refType) {
         this.refType = refType;
     }
+
+    public String getOrgTreeName(){return orgTreeName;}
+
+    public void setOrgTreeName(String orgTreeName){ this.orgTreeName = orgTreeName;}
 }

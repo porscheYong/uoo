@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>添加</title>
+    <title>修改</title>
 
     <!-- Bootstrap -->
     <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -22,7 +22,7 @@
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
     <link href="/css/custom.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/tooltip.css" type="text/css" />
+
     <!--[if lt IE 9]>
     <script src="/js/core/html5shiv.js"></script>
     <script src="/js/core/respond.js"></script>
@@ -33,7 +33,7 @@
   <body style="background: #fff;">
     <div>
         <div class="board-title">
-          <span id="editTile" class="name ft18">添加数据</span>
+          <span id="editTile" class="name ft18"> 编辑 </span>
         </div>
         <div class="nav-tabs-brief" style="padding-top: 35px; overflow-x: hidden;">
           <ul class="nav nav-tabs tab-title" role="tablist" id="myTabs">
@@ -46,40 +46,40 @@
             <div class="tab-pane active" id="tab_content1">
             <form method="post" id="regionForm" class="form-horizontal">
                 
-                <input  id="polLocIds" value="" name="polLocIds" type="hidden"/>
+                <input  id="locId" value="" name="locId" type="hidden"/>
                 <div class="form-group" style="margin-bottom: 10px;">
-                      <label for="upRegionId" class="form-item-label-required col-sm-2 control-label" style=" ">上级电信区域</label>
+                      <label for="upLocId" class="form-item-label-required col-sm-2 control-label" style=" ">上级行政区域</label>
                       <div class="col-sm-5">
-                       <select  id="upRegionId" name="upRegionId" class="form-control  ">
+                       <select  id="upLocId" name="upLocId" class="form-control  ">
                        <option value="0">最上级</option>
                       </select>
                       </div>
                 </div>
                 <div class="form-group" style="margin-bottom: 10px;">
-                      <label for="regionNbr" class="form-item-label-required col-sm-2 control-label" style=" ">电信区域编码</label>
+                      <label for="locCode" class="form-item-label-required col-sm-2 control-label" style=" ">行政区域编码</label>
                        <div class="col-sm-5">
-                      <input data-toggle="tooltip" data-placement="right" type="number"  id="regionNbr" class="form-control " size="40" name="regionNbr" required value="">
-                       </div>
+                      <input type="number" id="locCode" class="form-control " size="40" name="locCode" data-toggle="tooltip" data-placement="right" required value="">
+                         </div>
                 </div>
                 <div class="form-group" style="margin-bottom: 10px;">
-                      <label for="regionName" class="form-item-label-required col-sm-2 control-label" style=" ">电信区域名称</label>
+                      <label for="locName" class="form-item-label-required col-sm-2 control-label" style=" ">行政区域名称</label>
                       <div class="col-sm-5">
-                      <input type="text" data-toggle="tooltip" data-placement="right" id="regionName" class="form-control  " size="40" name="regionName" required value="">
+                      <input type="text" id="locName" class="form-control  " size="40" name="locName" data-toggle="tooltip" data-placement="right" required value="">
                       </div>
                     
                 </div>
-                <!-- <div class="form-group" style="margin-bottom: 10px;">
-                     <label for="locAbbr" class="col-sm-2 control-label"  >行政区域简称</label>
+                <div class="form-group" style="margin-bottom: 10px;">
+                     <label for="locAbbr" class="form-item-label-required col-sm-2 control-label"  >行政区域简称</label>
                      <div class="col-sm-5">
-                      <input type="text" id="locAbbr" class="form-control "   name="locAbbr" required value="">
+                      <input type="text" id="locAbbr" class="form-control "   name="locAbbr" data-toggle="tooltip" data-placement="right" required value="">
                       </div>
                      
-                </div> -->
+                </div>
                 <div class="form-group" style="margin-bottom: 10px;">
-                      <label for="regionType"  class="form-item-label-required col-sm-2 control-label" style=" ">电信区域类型</label>
+                      <label for="locType" class="form-item-label-required col-sm-2 control-label" style=" ">行政区域类型</label>
                       <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="城市"> -->
                       <div class="col-sm-5">
-                      <select id="regionType" name="regionType" class="form-control  ">
+                      <select id="locType" name="locType" class="form-control  ">
                         <!-- <option value='1'>省</option>
                         <option value='2'>市</option>
                         <option value='3'>区</option>
@@ -92,33 +92,10 @@
                       </div>
                 </div>
                 <div class="form-group" style="margin-bottom: 10px;">
-                       <label for="regionDesc" class="col-sm-2 control-label" style=" ">电信区域描述</label>
+                       <label for="locDesc" class="col-sm-2 control-label" style=" ">行政区域描述</label>
                       <div class="col-sm-8  " style=" ">
-                        <input id="regionDesc" class="form-control  " style=" " size="40" name="regionDesc" value="">
+                        <input id="locDesc" class="form-control  " style=" " size="40" name="locDesc" value="">
                       </div>
-                </div>
-                <div class="form-group" style="margin-bottom: 10px;">
-                       <label for="locDesc" class="col-sm-2 control-label" style=" ">关联行政区域</label>
-                      <div class="col-sm-8  " style=" ">
-                        <input id="locDesc" placeholder="点击选择关联的行政区域" class="form-control" onclick="$('#treeDDiv').show() " style="" readonly="readonly" size="40" name="" value="">
-                      </div>
-                </div>
-                <div  class="form-group" id="treeDDiv" style="margin-bottom: 10px; display: none;">
-                       <label for="locDesc" class="col-sm-2 control-label" style=" "></label>
-                      <div class="col-sm-4  " style=" ">
-                      &nbsp;&nbsp;选择
-                      <div id="treeDiv">
-                        <ul id="locTree" class="ztree"></ul>
-                      </div>
-                      </div>
-                      <div class="col-sm-4  " style=" ">
-                      &nbsp;&nbsp;已选
-                      <div id="chosedTreeNode">
-                        <ul class="list-group">
-						</ul>
-                      </div>
-                      </div>
-                      
                 </div>
             </form>
                <div class="row" style="margin-bottom: 10px;">
@@ -134,7 +111,6 @@
           </div>
         </div>
     </div>
-    
     <!-- jQuery -->
     <script type="text/javascript" src="/js/core/jquery.js"></script>
     <!-- Bootstrap -->
@@ -154,8 +130,7 @@
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
-    <script type="text/javascript" src="/js/region/commonregion-add.js"></script>
-    <script type="text/javascript" src="/vendors/bootstrap/js/tooltip.js"></script>
+    <script type="text/javascript" src="/js/region/polloc-edit.js"></script>
 
     <script type="text/javascript">
      /*  seajs.use('/vendors/lulu/js/common/ui/Select', function () {
