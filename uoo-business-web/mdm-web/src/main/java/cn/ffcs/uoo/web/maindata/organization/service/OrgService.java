@@ -26,13 +26,13 @@ import java.util.List;
 public interface OrgService{
 
     @RequestMapping(value="/org/addOrg",method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult<Void> addOrg(@RequestBody Org org);
+    public ResponseResult<Void> addOrg(@RequestBody OrgVo org);
 
     @RequestMapping(value="/org/updateOrg",method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult<Void> updateOrg(@RequestBody Org org);
+    public ResponseResult<Void> updateOrg(@RequestBody OrgVo org);
 
     @RequestMapping(value="/org/getOrg",method = RequestMethod.GET)
-    public ResponseResult<Org> getOrg(@RequestParam(value = "orgId",required = false) String orgId);
+    public ResponseResult<OrgVo> getOrg(@RequestParam(value = "orgId",required = false) String orgId);
 
 
 

@@ -79,4 +79,16 @@ public interface OrgMapper extends BaseMapper<Org> {
      */
     public String getSysFullName(@Param("orgRootId")String orgRootId,@Param("orgId")String orgId);
 
+    /**
+     * 新增组织
+     */
+    //public void insertByObj(@Param("orgVo")OrgVo orgVo);
+
+    /**
+     * 查询组织
+     * @param orgId
+     * @return
+     */
+    public OrgVo selectOrgByOrgId(@Param("orgId")String orgId);
+
 }

@@ -64,7 +64,6 @@ public class OrgPersonRelController extends BaseController {
     })
     @UooLog(value = "新增组织人员关系", key = "addOrgPsn")
     @RequestMapping(value = "/addOrgPsn", method = RequestMethod.POST)
-    //@Transactional(rollbackFor = Exception.class)
     public ResponseResult<String> addOrgPsn(@RequestBody List<PsonOrgVo> psonOrgList){
         System.out.println(new Date());
         ResponseResult<String> ret = new ResponseResult<String>();
@@ -125,7 +124,6 @@ public class OrgPersonRelController extends BaseController {
              })
     @UooLog(value = "修改组织人员", key = "updateOrgPsn")
     @RequestMapping(value = "/updateOrgPsn", method = RequestMethod.GET)
-    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<String> updateOrgPsn(PsonOrgVo psonOrgVo){
         System.out.println(new Date());
         ResponseResult<String> ret = new ResponseResult<String>();
@@ -180,7 +178,6 @@ public class OrgPersonRelController extends BaseController {
               })
     @UooLog(value = "删除组织人员关系", key = "deleteOrgPsn")
     @RequestMapping(value = "/deleteOrgPsn", method = RequestMethod.GET)
-    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<String> deleteOrgPsn(PsonOrgVo psonOrgVo){
         System.out.println(new Date());
         ResponseResult<String> ret = new ResponseResult<String>();
