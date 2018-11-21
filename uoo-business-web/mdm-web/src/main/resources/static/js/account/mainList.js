@@ -20,7 +20,9 @@ function getOrgExtInfo() {
 
 function getUserList (orgId) {                    //获取账号列表
     $http.get('http://134.96.253.221:11100/orgPersonRel/getUserOrgRelPage', {
-        orgId: orgId
+        orgId: orgId,
+        pageSize:2000,
+        pageNo:1
     }, function (data) {
         initMainTable(data.records) //data.records
     }, function (err) {
@@ -34,7 +36,7 @@ function initMainTable(results){
         'searching': true,
         'autoWidth': false,
         'ordering': true,
-        'info': false,
+        'info': true,
         // 'lengthChange':false,
         'initComplete': function (settings, json) {
             console.log(settings, json)
@@ -63,14 +65,6 @@ function initMainTable(results){
                 }
             }
             }
-            // { 
-            //   'data': "userRoleName",
-            //   'title': '系统角色',
-            //   'className': 'user-role'
-            //   // 'render': function (data, type, row, meta) {
-            //   //       console.log(data, type, row, meta)
-            //   //   }
-            //  }
         ],
         'language': {
             'emptyTable': '没有数据',  

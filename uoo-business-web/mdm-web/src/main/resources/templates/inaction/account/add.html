@@ -52,9 +52,8 @@
             width: 64%;
             text-align: center;
         }
-        .typeahead{
-            width: 66%;
-            padding-left: 0px !important;
+        td,th{
+            text-align: center;
         }
     </style>
 </head>
@@ -80,7 +79,7 @@
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户类型</label>
+                            <label for="userType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户类型</label>
                             <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市公司直属"> -->
                             <select  class="col-md-8 col-sm-8 col-xs-12" id="userType">
                             <option></option>
@@ -92,6 +91,19 @@
                 </div>
 
                 <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="keyWordTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">选择人员</label>
+                            <input type="tel" id="keyWordTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
+                    <table id="psnInfoTable" class="stripe" width="100%"></table>
+                </div>
+
+                <!-- <div class="row" style="margin-bottom: 10px;">  //模糊查询personnelId
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
                             <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">选择人员</label>
@@ -109,7 +121,7 @@
                     <div class="fright" style="margin-right:45%;margin-top:-5%;"> 
                         <a class="button-add" id="addBtn" href="#"><span class="fa fa-plus-circle icon-add"></span>新增人员</a>
                     </div>
-                </div>
+                </div> -->
 
             </form>
 
@@ -117,14 +129,14 @@
                 <div style="margin-left: 12%;margin-top: 5%;">
                     <!-- <input type="submit" id="formSubmit" class="clip">
                     <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
-                    <button class="ui-button ui-button-primary" id="yesBtn" onclick="check()">确定</button>
+                    <button class="ui-button ui-button-primary" id="yesBtn" onclick="check()">搜索</button>
                     <button class="ui-button ui-button-cancel"  onclick="window.history.back()" style="margin-left: 40px;">取消</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script id="result-template" type="text/x-handlebars-template">
+    <!-- <script id="result-template" type="text/x-handlebars-template">
         <div class="ProfileCard u-cf">
           <div class="ProfileCard-details">
             <div class="ProfileCard-realName">{{orgName}}</div>
@@ -138,7 +150,7 @@
 
     <script id="empty-template" type="text/x-handlebars-template">
         <div class="EmptyMessage">搜索人员姓名、工号、联系方式</div>
-    </script>    
+    </script>     -->
 
     <!-- jQuery -->
     <script src="/js/core/jquery.js"></script>
@@ -147,8 +159,8 @@
     <!-- Bootstrap -->
     <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
-    <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
+    <!-- <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
+    <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script> -->
 
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
@@ -159,7 +171,7 @@
     <script type="text/javascript" src="/js/account/mainTable.js"></script>
     <!-- laydate -->
     <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
-    <script type="text/javascript" src="/js/organization/search.js"></script>
+    <!-- <script type="text/javascript" src="/js/organization/search.js"></script> -->
     <!-- custom -->
     <script type="text/javascript" src="/js/account/add.js"></script>
     
