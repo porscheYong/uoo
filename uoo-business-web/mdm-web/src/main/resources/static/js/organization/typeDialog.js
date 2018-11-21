@@ -2,7 +2,7 @@ var orgId = getQueryString('id');
 var orgFrame = parent.window['standardOrg'];
 var orgTypeList = orgFrame.orgTypeList;
 var checkNode = []; //选中类别显示label标签
-
+console.log(orgTypeList)
 // 组织类别树初始化
 function initOrgTypeTree () {
     var treeSetting = {
@@ -35,11 +35,6 @@ function initOrgTypeTree () {
         console.log(data)
         $.fn.zTree.init($("#orgTypeTree"), treeSetting, data);
         autoCheck();
-        // var zTree = $.fn.zTree.getZTreeObj("standardTree");
-        // var nodes = zTree.getNodes();
-        // zTree.expandNode(nodes[0], true);
-        // zTree.selectNode(nodes[0], true);
-        // onNodeClick(null, null, nodes[0]);
     }, function (err) {
         console.log(err)
     })
@@ -97,42 +92,12 @@ function removeNode (e) {
 function autoCheck () {
   var zTree = $.fn.zTree.getZTreeObj("orgTypeTree");
   for (var i = 0; i < orgTypeList.length; i++) {
-    var node = zTree.getNodeByTId("orgTypeTree_" + orgTypeList[i].orgTypeId);
+      var id = orgTypeList[i].orgTypeId || orgTypeList[i].id;
+    var node = zTree.getNodeByTId("orgTypeTree_" + id);
     zTree.checkNode(node, true);
     checkNode.push(node);
     renderTag();
   }
 }
-
-// function layerOpen(obj) {
-//   layer.open({
-//     type: obj.type || 1,
-//     title: obj.title,
-//     scrollbar: obj.scrollbar || false,
-//     shade: obj.shade || 0.3,
-//     shadeClose: obj.shadeClose || true,
-//     area: obj.area || ['600px', '400px'],
-//     content: obj.content,
-//     btn: obj.btn,
-//     success: function(layero, index){
-//       // if (obj.success) {
-//       //   obj.success()
-//       // }
-//       initOrgTypeTree();
-//       $('#tags_2').html('');
-//       checkNode = [];
-//     },
-//     yes: function (index, layero) {
-//       if (obj.confirm) {
-//         obj.confirm()
-//       }
-//     },
-//     btn2: function (index, layero) {
-//       if (obj.cancel) {
-//         obj.cancel()
-//       }
-//     }
-//   })
-// }
 
 initOrgTypeTree();

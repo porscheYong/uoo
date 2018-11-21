@@ -1,7 +1,15 @@
 var orgId = getQueryString('id');
+var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var orgTypeList;
+var positionList;
+var postList;
 var checkNode;
+var formValidate;
+var loading = parent.loading;
+
+// var toastr = parent.parent.toastr;
+// toastr.success('提交成功！')
 
 // 获取组织完整路径
 function getOrgExtInfo () {
@@ -22,18 +30,18 @@ getOrgExtInfo();
 
 // lulu ui select插件
 seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-  $('select').selectMatch();
+  $('#locId').selectMatch();
 })
 
 seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
-    var blurForm = $('#blurForm');
-    var blurValidate = new Validate(blurForm);
-    blurValidate.immediate();
-    blurForm.find(':input').each(function () {
+    var orgEditForm = $('#orgEditForm');
+    formValidate = new Validate(orgEditForm);
+    formValidate.immediate();
+    orgEditForm.find(':input').each(function () {
         $(this).hover(function () {
             // if (!blurForm.data('immediate')) {
             //     $.validate.focusable = 0;
-                blurValidate.isPass($(this));
+            formValidate.isPass($(this));
             // }
         });
     })
@@ -42,26 +50,11 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){  
   $('#orgTypeList').tagsInput();
+  $('#positionList').tagsInput();
+  $('#postList').tagsInput();
 }
 
 $('#orgTypeList_tagsinput').on('click', function() {
-    // var dialog =$("#myModal",parent.document)
-    // parent.layerOpen({
-    //   type: 1,
-    //   title: '选中组织类别',
-    //   shadeClose: true,
-    //   shade: 0.8,
-    //   area: ['70%', '85%'],
-    //   maxmin: true,
-    //   content: dialog,
-    //   success: function(layero, index){
-    //     initOrgTypeTree();
-    //   },
-    //   btn: ['确认', '取消'],
-    //   confirm: function(index, layero){
-    //     alert(1)
-    //   }
-    // })
     parent.layer.open({
         type: 2,
         title: '选中组织类别',
@@ -75,55 +68,14 @@ $('#orgTypeList_tagsinput').on('click', function() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
+            parent.layer.close(index);
+            $('#orgTypeList').importTags(checkNode);
+            orgTypeList = checkNode;
         },
         btn2: function(index, layero){},
         cancel: function(){}
     });
 })
-
-// 组织类别初始化
-function initOrgTypeTree (orgId) {
-  var setting = {
-    view: {
-        showLine: false,
-        showIcon: false,
-        dblClickExpand: false
-    },
-    data: {
-        // key: {
-        //     name: "label",
-        //     isParent: "leaf",
-        // },
-        simpleData: {
-            enable:true,
-            idKey: "id",
-            pIdKey: "pId",
-            rootPId: ""
-        }
-    },
-    // callback: {
-    //     onClick: onNodeClick,
-    //     onCheck: onNodeCheck
-    // },
-    check: {
-        enable: true,
-        chkStyle: 'checkbox',
-        chkboxType: { "Y": "", "N": "" }
-    }
-  };
-  $http.get('http://134.96.253.221:11100/orgType/getFullOrgTypeTree', null, function (data) {
-      console.log(data)
-      // $.fn.zTree.init($("#standardTree"), setting, data);
-      // var zTree = $.fn.zTree.getZTreeObj("standardTree");
-      // var nodes = zTree.getNodes();
-      // zTree.expandNode(nodes[0], true);
-      // zTree.selectNode(nodes[0], true);
-      // onNodeClick(null, null, nodes[0]);
-      parent.postMessage(data);
-  }, function (err) {
-      console.log(err)
-  })
-}
 
 // 组织关系信息初始化
 function initOrgRelTable (results) {
@@ -251,17 +203,60 @@ function initOrgRelTable (results) {
     });
 }
 
-var orgScale;
-
-// 获取城乡字典数据
-function getCityVillage () {
-    $http.get('http://134.96.253.221:11500/tbDictionaryItem/getList/CITY_VILLAGE', {}, function (data) {
-        console.log(data)
+// 获取规模字典数据
+function getScale (orgScale) {
+    $http.get('http://134.96.253.221:11500/tbDictionaryItem/getList/SCALE', {}, function (data) {
+        var option = '';
+        for (var i = 0; i < data.length; i++) {
+            var select = orgScale === data[i].itemValue? 'selected' : '';
+            option += "<option value='" + data[i].itemValue + "' " + select + ">" + data[i].itemCnname +"</option>";
+        }
+        $('#orgScale').append(option);
+        $('#orgScale').selectMatch();
     }, function (err) {
         console.log(err)
     })
 }
-getCityVillage()
+// 获取城乡字典数据
+function getCityVillage (cityTown) {
+    $http.get('http://134.96.253.221:11500/tbDictionaryItem/getList/CITY_VILLAGE', {}, function (data) {
+        var option = '';
+        for (var i = 0; i < data.length; i++) {
+          var select = cityTown === data[i].itemValue? 'selected' : '';
+          option += "<option value='" + data[i].itemValue + "' " + select + ">" + data[i].itemCnname +"</option>";
+        }
+        $('#cityTown').append(option);
+        $('#cityTown').selectMatch();
+    }, function (err) {
+        console.log(err)
+    })
+}
+// 获取组织最高岗位级别字典数据
+function getOrgPostLevel (orgPositionLevel) {
+    $http.get('http://134.96.253.221:11500/tbDictionaryItem/getList/ORG_POST_LEVEL', {}, function (data) {
+        var option = '';
+        for (var i = 0; i < data.length; i++) {
+            var select = orgPositionLevel === data[i].itemValue? 'selected' : '';
+            option += "<option value='" + data[i].itemValue + "' " + select + ">" + data[i].itemCnname +"</option>";
+        }
+        $('#orgPositionLevel').append(option);
+        $('#orgPositionLevel').selectMatch();
+    }, function (err) {
+        console.log(err)
+    })
+}
+// 获取状态数据
+function getStatusCd (statusCd) {
+    var statusArry = [{"itemValue":"1000","itemCnname":"有效"},
+                       {"itemValue":"1100","itemCnname":"无效"}];
+    var option = '';
+    for (var i = 0; i < statusArry.length; i++) {
+        var select = statusCd === statusArry[i].itemValue? 'selected' : '';
+        option += "<option value='" + statusArry[i].itemValue + "' " + select + ">" + statusArry[i].itemCnname +"</option>";
+    }
+    $('#statusCd').append(option);
+    $('#statusCd').selectMatch();
+}
 
 // 获取组织基础信息
 function getOrg (orgId) {
@@ -269,22 +264,28 @@ function getOrg (orgId) {
         orgId: orgId
     }, function (data) {
         $('#orgName').val(data.orgName).focus();
+        $('#shortName').val(data.shortName);
+        $('#orgNameEn').val(data.orgNameEn);
         laydate.render({
           elem: '#createDate',
           value: new Date(data.createDate)
         });
-        // $('#createDate').val(getDate(data.createDate));
-        var cityVillage = [{"itemId":1000,"dictionaryId":1000,"parItemId":null,"itemValue":"1","itemCnname":"城市","sort":0,"statusCd":"1000","createDate":1542006293000,"createUser":0,"updateDate":1542006293000,"updateUser":0,"statusDate":1542006293000},
-                   {"itemId":1001,"dictionaryId":1000,"parItemId":null,"itemValue":"2","itemCnname":"农村","sort":0,"statusCd":"1000","createDate":1542006293000,"createUser":0,"updateDate":1542006293000,"updateUser":0,"statusDate":1542006293000}];
-        var option;
-        var cityTown = '1';
-        for (var i = 0; i < cityVillage.length; i++) {
-          var select = cityTown === cityVillage[i].itemValue? 'selected' : '';
-          option = "<option value='" + cityVillage[i].itemValue + "' " + select + ">" + cityVillage[i].itemCnname +"</option>";
-          $('#cityTown').append(option);
-        }
-        $('#cityTown').selectMatch();
+        $('#officePhone').val(data.officePhone);
+        $('#sort').val(data.sort);
+        $('#address').val(data.address);
+        $('#orgContent').val(data.orgContent);
+        $('#orgDesc').val(data.orgDesc);
+
+        getScale(data.orgScale);
+        getCityVillage(data.cityTown);
+        getOrgPostLevel(data.orgPositionLevel);
+        getStatusCd(data.statusCd);
         orgTypeList = data.orgTypeList;
+        positionList = data.positionList;
+        postList = data.postList;
+        $('#orgTypeList').addTag(orgTypeList);
+        $('#positionList').addTag(positionList);
+        $('#postList').addTag(postList);
     }, function (err) {
         console.log(err)
     })
@@ -293,7 +294,9 @@ function getOrg (orgId) {
 // 获取组织关系信息
 function getOrgRel (orgId) {
     $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTypePage', {
-        orgId: orgId
+        orgId: orgId,
+        pageSize: 10,
+        pageNo: 1
     }, function (data) {
         initOrgRelTable(data.records);
     }, function (err) {
@@ -311,44 +314,86 @@ $('#myTabs a').click(function (e) {
   $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
 })
 
-function cancel () {
-  var url = "list.html?id=" + orgId;
-  window.location.href = url;
-}
-
 // 更新组织信息
 function updateOrg () {
-  var orgId = orgId;
+  if (!formValidate.isAllPass())
+      return;
+  loading.screenMaskEnable('container');
+  var orgType = [];
+  for (var i = 0; i < orgTypeList.length; i++) {
+      var orgTypeId = orgTypeList[i].orgTypeId || orgTypeList[i].id;
+      orgType.push({orgTypeId: orgTypeId});
+  }
   var orgName = $('#orgName').val();
+  var orgScale = $('#orgScale option:selected') .val();
   var shortName = $('#shortName').val();
   var orgNameEn = $('#orgNameEn').val();
-  var cityTown = $("#cityTown").val();
+  var cityTown = $('#cityTown option:selected') .val();
   var date = $('#createDate').val();
-  var time;
+  var createDate;
   if (date) {
-    time = new Date(createDate).getTime();
+      createDate = new Date(date).getTime();
   }
-  var createDate = time
-  var locId = $('#locId').val();
-  var orgPositionLevel = $('#orgPositionLevel').val();
+  var locId = $('#locId option:selected') .val();
+  var orgPositionLevel = $('#orgPositionLevel option:selected') .val();
   var officePhone = $('#officePhone').val();
+  var statusCd = $('#statusCd option:selected') .val();
+  var sort = $('#sort').val();
   var address = $('#address').val();
+  var orgContent = $('#orgContent').val();
+  var orgDesc = $('#orgDesc').val();
+  $http.post('http://134.96.253.221:11100/org/updateOrg', JSON.stringify({
+      orgRootId: '1',
+      orgId: orgId,
+      supOrgId: pid,
+      orgName: orgName,
+      orgScale: orgScale,
+      shortName: shortName,
+      orgNameEn: orgNameEn,
+      cityTown: cityTown,
+      // createDate: createDate,
+      locId: locId,
+      orgPositionLevel: orgPositionLevel,
+      officePhone: officePhone,
+      statusCd: statusCd,
+      sort: sort,
+      address: address,
+      orgTypeList: orgType,
+      orgContent: orgContent,
+      orgDesc: orgDesc
+  }), function (data) {
+      parent.changeNodeName(orgId, orgName);
+      window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
+      loading.screenMaskDisable('container');
+  }, function (err) {
+
+  })
 }
 
-$('#saveBtn').on('click', function () {
-    seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
-        var blurForm = $('#blurForm');
-        var blurValidate = new Validate(blurForm);
-        blurForm.find(':input').each(function () {
-            $(this).blur(function () {
-                if (!blurForm.data('immediate')) {
-                    $.validate.focusable = 0;
-                    blurValidate.isPass($(this));
-                }
-            });
-        })
-    })
+// 取消
+function cancel () {
+    var url = "list.html?id=" + orgId + "&name=" + row.orgName;
+    window.location.href = url;
+}
 
-  var time = new Date($('#createDate').val()).getTime();
-  console.log(time)
-})
+// $('#saveBtn').on('click', function () {
+//     // seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+//     //     var blurForm = $('#blurForm');
+//     //     var blurValidate = new Validate(blurForm);
+//     //     blurForm.find(':input').each(function () {
+//     //         $(this).blur(function () {
+//     //             if (!blurForm.data('immediate')) {
+//     //                 $.validate.focusable = 0;
+//     //                 blurValidate.isPass($(this));
+//     //             }
+//     //         });
+//     //     })
+//     // })
+//     // if (formValidate.isAllPass())
+//     //     alert(123)
+//     //TODO 修改组织类型validate
+//     console.log(formValidate.isAllPass())
+//   var time = new Date($('#createDate').val()).getTime();
+//     var statusCd = $('#statusCd option:selected') .val();
+//   console.log(time)
+// })

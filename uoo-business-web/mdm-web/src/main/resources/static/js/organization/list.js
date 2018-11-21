@@ -1,4 +1,5 @@
 var orgId = getQueryString('id');
+var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 
 // 获取组织完整路径
@@ -19,7 +20,9 @@ function getOrgExtInfo () {
 function getOrgList (orgId) {
     $http.get('http://134.96.253.221:11100/org/getOrgRelPage', {
         orgId: orgId,
-        orgRootId: '1'
+        orgRootId: '1',
+        pageSize: 10,
+        pageNo: 1
     }, function (data) {
         initOrgTable(data.records)
     }, function (err) {
@@ -30,7 +33,9 @@ function getOrgList (orgId) {
 function getOrgPersonnerList (orgId) {
     $http.get('http://134.96.253.221:11100/orgPersonRel/getPerOrgRelPage', {
         orgId: orgId,
-        orgRootId: '1'
+        orgRootId: '1',
+        pageSize: 10,
+        pageNo: 1
     }, function (data) {
         initOrgPersonnelTable(data.records)
     }, function (err) {
@@ -305,10 +310,10 @@ getOrgList(orgId);
 getOrgPersonnerList(orgId);
 
 $('#editBtn').on('click', function () {
-    var url = 'edit.html?id=' + orgId + '&name=' + orgName;
+    var url = 'edit.html?id=' + orgId + '&pid=' + pid + '&name=' + orgName;
     $(this).attr('href', url);
 })
 $('#searchBtn').on('click', function () {
-    var url = 'search.html?id=' + orgId  + '&name=' + orgName;
+    var url = 'search.html?id=' + orgId  + '&pid=' + pid + '&name=' + orgName;
    $(this).attr('href', url);
 })

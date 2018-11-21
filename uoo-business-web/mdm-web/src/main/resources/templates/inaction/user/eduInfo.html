@@ -63,11 +63,11 @@
   <body style="background: #fff;">
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs" style="width: 300px;margin: 0 auto;">
-        <li class="active"><a href="#tab_1" data-toggle="tab">人员信息</a></li>
-        <li><a href="#tab_2" data-toggle="tab">用户信息</a></li>
+        <li class="active"><a href="#personnel" data-toggle="tab">人员信息</a></li>
+        <li><a href="#user" data-toggle="tab">用户信息</a></li>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane active" id="tab_1">
+        <div class="tab-pane active" id="personnel">
           <div class="base-info">
             <div class="board-title">
               <span class="name">基本信息</span
@@ -78,15 +78,12 @@
                     <img class="avatar" src="/images/avatar.png" alt="头像" />
                 </div>
                 <div class="col-md-10 fleft Col8">
-                    <strong class="Font24 Black">张庆忠</strong>
+                    <strong class="Font24 Black" id="psnName">张庆忠</strong>
                     <span class="key-words">
                         <span>男</span
-                        ><span>26岁</span
-                        ><span>1992.03</span
-                        ><span>未婚</span
+                        ><span id="marriage">未婚</span
                         ><span>共产党员</span
-                        ><span>汉族</span
-                        ><span>15年工作经验</span
+                        ><span id="nation">汉族</span
                         ><span>浙江杭州</span>
                     </span>
                     <div style="padding-top: 10px">
@@ -94,29 +91,23 @@
                           <li><span class="Icon fleft"></span>189-0500-1234  &nbsp; 186-9572-3456</li>
                           <li><span class="Icon fleft"></span><a href="mailto:18905001234@189.cn">18905001234@189.cn</a></li>
                           <li><span class="Icon fleft"></span>浙江省杭州市余杭区育士路50号</li>
-                          <li>
-                              <span class="Tag">职员</span
-                              ><span class="Tag">设计师</span
-                              ><span class="Tag">项目经理</span
-                              ><span class="Tag">平台管理员</span
-                          </li>
                       </ul>
                       <ul class="col-md-6 line_30">
                           <li>
                               <span class="Label">员工工号：</span>
-                              057120181234
+                              <span id="certNo">057120181234</span>
                           </li>
                           <li>
                               <span class="Label">人员编码：</span>
                               057120182345
                           </li>
                           <li>
-                              <span class="Label">身份证号码：</span>
-                              350111198902345678
+                              <span class="Label">人力编码：</span>
+                              057120182345
                           </li>
                           <li>
-                              <span class="Label">出生日期：</span>
-                              1992-03
+                              <span class="Label">身份证号码：</span>
+                              350111198902345678
                           </li>
                           <li>
                               <span class="Label">首次工作时间：</span>
@@ -291,8 +282,239 @@
               </table>
           </div>
         </div>
-        <div class="tab-pane" id="tab_2">
-          this is 用户信息
+        <div class="tab-pane" id="user">
+            <div class="base-info">
+                <div class="board-title">
+              <span class="name">基本信息</span>
+                </div>
+                <div class="board-content">
+                    <div class="col-md-2 fleft tcenter">
+                        <img class="avatar" src="/images/avatar.png" alt="头像" />
+                    </div>
+                    <div class="col-md-10 fleft Col8">
+                        <strong class="Font24 Black">FFCS00032</strong>
+                        <span class="key-words">
+                            <span>有效</span>
+                        </span>
+                        <!--<span class="key-words">-->
+                        <!--<span>男</span-->
+                        <!--&gt;<span>26岁</span-->
+                        <!--&gt;<span>1992.03</span-->
+                        <!--&gt;<span>未婚</span-->
+                        <!--&gt;<span>共产党员</span-->
+                        <!--&gt;<span>汉族</span-->
+                        <!--&gt;<span>15年工作经验</span-->
+                        <!--&gt;<span>浙江杭州</span>-->
+                    <!--</span>-->
+                        <div style="padding-top: 10px">
+                            <ul class="col-md-6 line_30">
+                                <!--<li><span class="Icon fleft"></span>189-0500-1234  &nbsp; 186-9572-3456</li>-->
+                                <!--<li><span class="Icon fleft"></span><a href="mailto:18905001234@189.cn">18905001234@189.cn</a></li>-->
+                                <!--<li><span class="Icon fleft"></span>浙江省杭州市余杭区育士路50号</li>-->
+                                <li>
+                                    <span class="Label" style="width: auto">生效时间：</span>
+                                    2018-08-08
+                                </li>
+                                <li>
+                              <span class="Tag">职员</span
+                              ><span class="Tag">设计师</span
+                                ><span class="Tag">项目经理</span
+                                ><span class="Tag">平台管理员</span
+                                </li>
+                            </ul>
+                            <ul class="col-md-6 line_30">
+                                <li>
+                                    <span class="Label">失效时间：</span>
+                                    2018-08-08
+                                </li>
+                                <!--<li>-->
+                                    <!--<span class="Label">员工工号：</span>-->
+                                    <!--057120181234-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                    <!--<span class="Label">人员编码：</span>-->
+                                    <!--057120182345-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                    <!--<span class="Label">身份证号码：</span>-->
+                                    <!--350111198902345678-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                    <!--<span class="Label">出生日期：</span>-->
+                                    <!--1992-03-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                    <!--<span class="Label">首次工作时间：</span>-->
+                                    <!--2003-07-->
+                                <!--</li>-->
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div class="board-title">
+                <span class="name">归属组织</span>
+                <a class="fleft Icon icon-edit" href="my_edit.html"></a>
+            </div>
+
+            <div class="board-content TableStyle tcenter">
+                <table>
+                    <tr class="Title">
+                        <td>序号</td>
+                        <td>组织树名称</td>
+                        <td>组织名称</td>
+                        <td>重名称谓</td>
+                        <td>专兼职</td>
+                        <td>职位</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>行政管理业务树</td>
+                        <td>杭州分公司市场部</td>
+                        <td></td>
+                        <td>全</td>
+                        <td>经理</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>行政管理业务树</td>
+                        <td>杭州分公司市场部</td>
+                        <td></td>
+                        <td>兼职</td>
+                        <td>职员</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="board-title">
+                <span class="name">工作经历</span>
+                <a class="fleft Icon IconEdit" href="my_edit.html"></a>
+            </div>
+            <div class="board-content TableStyle tcenter">
+                <table>
+                    <tr class="Title">
+                        <td>序号</td>
+                        <td>时间</td>
+                        <td>公司</td>
+                        <td>职位</td>
+                        <td>岗位职责</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>2014/01-至今</td>
+                        <td>杭州分公司市场部</td>
+                        <td>市场策划</td>
+                        <td>全</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>2012/01-2014/01</td>
+                        <td>北京福富软件技术股份有限公司福州分公司</td>
+                        <td>设计师</td>
+                        <td>兼职</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>2012/01-2014/01</td>
+                        <td>天盟数码IGG</td>
+                        <td>UI 设计师</td>
+                        <td>兼职</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>2009/09-2012/01</td>
+                        <td>网讯中国</td>
+                        <td>UI 设计师</td>
+                        <td>全</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="board-title">
+                <span class="name">教育经历</span>
+                <a class="fleft Icon IconEdit" href="my_edit.html"></a>
+            </div>
+
+            <div class="board-content TableStyle tcenter">
+                <table>
+                    <tr class="Title">
+                        <td>序号</td>
+                        <td>学校</td>
+                        <td>专业</td>
+                        <td>时间</td>
+                        <td>学习方式</td>
+                        <td>学位</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>中国美术学院</td>
+                        <td>工业设计</td>
+                        <td>2007/09-2009/06</td>
+                        <td>全日制</td>
+                        <td>硕士</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>福建工艺美术学院</td>
+                        <td>工艺绘画</td>
+                        <td>2003/09-2007/06</td>
+                        <td>全日制</td>
+                        <td>学士</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>福州一中</td>
+                        <td></td>
+                        <td>2000/09-2003/06</td>
+                        <td>全日制</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="board-title">
+                <span class="name">家庭成员</span>
+                <a class="fleft Icon IconEdit" href="my_edit.html"></a>
+            </div>
+            <div class="board-content TableStyle tcenter">
+                <table>
+                    <tr class="Title">
+                        <td>序号</td>
+                        <td>学校</td>
+                        <td>专业</td>
+                        <td>时间</td>
+                        <td>学习方式</td>
+                        <td>学位</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>中国美术学院</td>
+                        <td>工业设计</td>
+                        <td>2007/09-2009/06</td>
+                        <td>全日制</td>
+                        <td>硕士</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>福建工艺美术学院</td>
+                        <td>工艺绘画</td>
+                        <td>2003/09-2007/06</td>
+                        <td>全日制</td>
+                        <td>学士</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>杭州一中</td>
+                        <td></td>
+                        <td>2000/09-2003/06</td>
+                        <td>全日制</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
         </div>
       </div>
     </div>

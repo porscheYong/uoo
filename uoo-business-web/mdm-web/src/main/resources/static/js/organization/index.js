@@ -30,6 +30,7 @@ var setting = {
     }
 };
 var orgId,
+    pid,
     orgName,
     nodeName,
     nodeArr;
@@ -38,6 +39,7 @@ function onNodeClick(e,treeId, treeNode) {
     // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
     // zTree.expandNode(treeNode);
     orgId = treeNode.id;
+    pid = treeNode.pid;
     orgName = treeNode.name;
     var currentNode = treeNode.name;//获取当前选中节点
     var parentNode = treeNode.getParentNode();
@@ -64,7 +66,7 @@ function filter (treeId, parentNode, childNodes) {
 }
 
 function refreshResult () {
-    var url = "list.html?id=" + orgId + "&name=" + encodeURI(orgName);
+    var url = "list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName);
     $('#orgFrame').attr("src",url);
 }
 
@@ -105,6 +107,15 @@ function addNodeById (sId, newNode) {
     console.log(selectNode)
     if (selectNode)
         var newNode = zTree.addNodes(selectNode, newNode);
+}
+
+// 修改节点名称
+function changeNodeName(orgId, name) {
+    var tId = 'standardTree_' + orgId;
+    var zTree = $.fn.zTree.getZTreeObj("standardTree");
+    var treeNode = zTree.getNodeByTId(tId);
+    treeNode.name = name;
+    $('#standardTree_' + orgId + '_span').html(name);
 }
 
 initOrgRelTree();
