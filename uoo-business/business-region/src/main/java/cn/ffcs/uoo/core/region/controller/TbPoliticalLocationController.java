@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -145,6 +146,15 @@ public class TbPoliticalLocationController extends BaseController {
                 return ResponseResult.createErrorResult("上一级区域不存在");
             }
         }
+        if(StringUtils.isBlank(polLoc.getLocName())){
+            return ResponseResult.createErrorResult("请输入区域名称");
+        }
+        if(StringUtils.isBlank(polLoc.getLocCode())){
+            return ResponseResult.createErrorResult("请输入区域编码");
+        }
+        if(StringUtils.isBlank(polLoc.getLocAbbr())){
+            return ResponseResult.createErrorResult("请输入区域简称");
+        }
         polLoc.setStatusCd(DeleteConsts.VALID);
         polLoc.setCreateDate(new Date());
         polLoc.setUpdateDate(new Date());
@@ -170,6 +180,15 @@ public class TbPoliticalLocationController extends BaseController {
             if(region==null){
                 return ResponseResult.createErrorResult("上一级区域不存在");
             }
+        }
+        if(StringUtils.isBlank(polLoc.getLocName())){
+            return ResponseResult.createErrorResult("请输入区域名称");
+        }
+        if(StringUtils.isBlank(polLoc.getLocCode())){
+            return ResponseResult.createErrorResult("请输入区域编码");
+        }
+        if(StringUtils.isBlank(polLoc.getLocAbbr())){
+            return ResponseResult.createErrorResult("请输入区域简称");
         }
         polLoc.setUpdateDate(new Date());
         //polLoc.setStatusDate(new Date());

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -278,6 +279,13 @@ public class TbCommonRegionController extends BaseController {
             }
         }
 
+        if(StringUtils.isBlank(commonRegion.getRegionName())){
+            return ResponseResult.createErrorResult("请输入区域名称");
+        }
+        if(StringUtils.isBlank(commonRegion.getRegionNbr())){
+            return ResponseResult.createErrorResult("请输入区域编码");
+        }
+        
         TbCommonRegion reg = commonRegion.convertEntity();
         reg.setCreateUser(commonRegion.getOperateUser());
         reg.setStatusCd(DeleteConsts.VALID);
@@ -334,7 +342,12 @@ public class TbCommonRegionController extends BaseController {
                 }
             }
         }
-
+        if(StringUtils.isBlank(commonRegion.getRegionName())){
+            return ResponseResult.createErrorResult("请输入区域名称");
+        }
+        if(StringUtils.isBlank(commonRegion.getRegionNbr())){
+            return ResponseResult.createErrorResult("请输入区域编码");
+        }
         TbCommonRegion reg = commonRegion.convertEntity();
         reg.setUpdateDate(new Date());
         reg.setUpdateUser(commonRegion.getOperateUser());

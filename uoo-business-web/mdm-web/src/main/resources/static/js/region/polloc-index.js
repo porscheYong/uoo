@@ -44,11 +44,10 @@ function loadTypeArr(){
 		dataType:"json",
 		type:'get',
 		success:function(data){
-			typeArray=data;
 			if(data.state==1000){
-				
+				typeArray=data.data;
 			}else{
-				//alert('加载区域类型失败，请刷新重试');
+				alert('加载区域类型失败，请刷新重试');
 			}
 			
 		}
