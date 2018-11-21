@@ -115,8 +115,8 @@ public class TbCert extends Model<TbCert> {
     /**
      * 生效时间
      */
-    @TableField("DENABLE_DATE")
-    private Date denableDate;
+    @TableField("ENABLE_DATE")
+    private Date enableDate;
     /**
      * 失效时间
      */
@@ -150,8 +150,8 @@ public class TbCert extends Model<TbCert> {
         ", updateDate=" + updateDate +
         ", updateUser=" + updateUser +
         ", statusDate=" + statusDate +
-                ", updateUser=" + denableDate +
-                ", statusDate=" + disableDate +
+                ", enableDate=" + enableDate +
+                ", disableDate=" + disableDate +
         "}";
     }
 

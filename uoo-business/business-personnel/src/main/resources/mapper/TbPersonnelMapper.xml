@@ -177,5 +177,79 @@
         </if>
     </select>
 
+    <select id="getPsnBasicInfo" resultType="cn.ffcs.uoo.core.personnel.vo.PsnBasicInfoVo">
+        select t1.personnel_id,
+               t1.psn_name,
+               t1.psn_nbr,
+               t1.gender,
+               t2.content,
+               t1.create_date
+        from tb_personnel t1, tb_contact t2
+        where t1.status_cd = 1000
+          and t2.status_cd = 1000
+          and t1.personnel_id = t2.personnel_id
+          and t2.contact_type = '1'
+          and t2.first_flag = 1
+        <if test ="psnBasicInfoVo.keyWord != null and psnBasicInfoVo.keyWord != ''" >
+            and (t1.psn_name like '%'||#{psnBasicInfoVo.keyWord}||'%' or t1.psn_code like '%'||#{psnBasicInfoVo.keyWord}||'%' or t2.content like '%'||#{psnBasicInfoVo.keyWord}||'%')
+        </if>
+
+    </select>
+
+    <insert id="insertOrgPsnRel" >
+        insert into tb_org_person_rel
+                (ORG_PERSON_ID,
+                 ORG_ID,
+                 PERSONNEL_ID,
+                 POST_ID,
+                 REF_TYPE,
+                 PROPERTY,
+                 DOUBLE_NAME,
+                 SORT,
+                 STATUS_CD,
+                 CREATE_DATE,
+                 CREATE_USER,
+                 UPDATE_DATE,
+                 UPDATE_USER,
+                 STATUS_DATE)
+        values
+               (seq_tb_org_person_rel_id.nextval,
+                #{orgId},
+                #{personnelId},
+                null,
+                '',
+                '',
+                '',
+                null,
+                '1000',
+                sysdate,
+                0,
+                sysdate,
+                0,
+                sysdate)
+    </insert>
+
+    <insert id="insertOrgTreeOrgPsnRel">
+        insert into tb_orgtree_orgperson_rel
+                (ORGTREE_ORGPERSON_ID,
+                 ORG_TREE_ID,
+                 ORG_PERSON_ID,
+                 STATUS_CD,
+                 CREATE_DATE,
+                 CREATE_USER,
+                 UPDATE_DATE,
+                 UPDATE_USER,
+                 STATUS_DATE)
+        values
+               (seq_tb_orgtree_orgper_rel_id.nextval,
+                #{orgRootId},
+                #{personnelId},
+                '1000',
+                sysdate,
+                0,
+                sysdate,
+                0,
+                sysdate)
+    </insert>
 
 </mapper>

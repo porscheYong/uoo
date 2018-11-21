@@ -84,4 +84,28 @@ public class TbPersonnelServiceImpl extends ServiceImpl<TbPersonnelMapper, TbPer
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
     }
+
+    @Override
+    public Page<PsnBasicInfoVo> getPsnBasicInfo(String keyWord, int pageNo, int pageSize){
+        PsnBasicInfoVo psnBasicInfoVo = new PsnBasicInfoVo();
+        psnBasicInfoVo.setKeyWord(keyWord);
+        psnBasicInfoVo.setPageNo(pageNo == 0 ? 1 : pageNo);
+        psnBasicInfoVo.setPageSize(pageSize == 0 ? 5 : pageSize);
+        Page<PsnBasicInfoVo> page = new Page<PsnBasicInfoVo>(psnBasicInfoVo.getPageNo(), psnBasicInfoVo.getPageSize());
+        List<PsnBasicInfoVo> list = baseMapper.getPsnBasicInfo(page, psnBasicInfoVo);
+        page.setRecords(list);
+        return page;
+    }
+
+    @Override
+    public Object addOrgPsn(List<PsonOrgVo> psonOrgVos){
+        if(psonOrgVos != null && psonOrgVos.size() > 0){
+            for(PsonOrgVo psonOrgVo : psonOrgVos){
+                baseMapper.insertOrgPsnRel(psonOrgVo.getOrgId(), psonOrgVo.getPersonId());
+                baseMapper.insertOrgTreeOrgPsnRel(psonOrgVo.getOrgRootId(), psonOrgVo.getPersonId());
+            }
+        }
+
+        return null;
+    }
 }
