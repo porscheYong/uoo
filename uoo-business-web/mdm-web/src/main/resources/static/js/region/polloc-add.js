@@ -1,14 +1,10 @@
 var nodes = parent.getCurrentSelectedNode();
 var node = nodes[0];
 var upid = node.id;
-function loadRegionType(){
-	for(var i=0;i<parent.typeArray.length;i++){
-		$('#regionType').append("<option value='"+parent.typeArray[i].itemValue+"'>"+parent.typeArray[i].itemCnname+"</option>");
-  	}
-}
+
 function loadUpRegionList() {
 	$.ajax({
-		url : '/region/commonRegion/getTreeCommonRegion',
+		url : '/region/politicalLocation/getTreePoliticalLocation',
 		dataType : 'json',
 		type : 'get',
 		success : function(tree) {
@@ -23,7 +19,7 @@ function loadUpRegionList() {
 					up = item.pId;
 					html += " >" + item.name + "</option>"
 					//某一层的 循环查找插入  那么久插入
-					$('#upRegionId').append(html);
+					$('#upLocId').append(html);
 					/*$('#upRegionId option').each(function() {
 						var id = $(this).val();
 						if (id == up) {
@@ -39,67 +35,41 @@ function loadUpRegionList() {
 	});
 }
 $(document).ready(function(){
-	loadRegionType();
 	loadUpRegionList();
-	initLocTree();
-	//$("[data-toggle='tooltip']").tooltip();
+	loadLocType();
+	
 	$('#saveBtn').bind('click',saveRegion);
 	
 });
-function showMenu(){$('#treeDiv').show();}
-function initLocTree(){
-	$.ajax({
-		url:'/region/politicalLocation/getTreePoliticalLocation',
-		dataType:'json',
-		type:'get',
-		success:function(data){
-			if(data.state==1){
-				
-				console.log(data.data);
-				$.fn.zTree.init($("#locTree"), setting,data.data);
-				
-			}else{
-				alert('加载行政区域失败，请刷新重试')
-			}
-		}
-		
-	});
-	
+function loadLocType(){
+	for(var i=0;i<parent.typeArray.length;i++){
+		$('#locType').append("<option value='"+parent.typeArray[i].itemValue+"'>"+parent.typeArray[i].itemCnname+"</option>");
+  	}
 }
+function showMenu(){$('#treeDiv').show();}
 function saveRegion(){
 	if(!validFormData()){
 		return;
 	}
-	
-	var treeObj = $.fn.zTree.getZTreeObj("locTree");
-	var checkeds=treeObj.getCheckedNodes();
-	var polLocIds="";
-	for(var i=0;i<checkeds.length;i++){
-		polLocIds+=checkeds[i].id;
-		if(i!=checkeds.length-1){
-			polLocIds+=",";
-		}
-	}
-	$('#polLocIds').val(polLocIds);
 	$.ajax({
 		type:'POST',
 		dataType:'json',
-		url:'/region/commonRegion/addCommonRegion',
+		url:'/region/politicalLocation/addPoliticalLocation',
 		data:$('#regionForm').serialize(),
 		success:function(data){
 			if(data.state==1){
 				//在父节点增加数据啊
 				var treeObj =parent.getTree();
-				var upId=$('#upRegionId').val();
+				var upId=$('#upLocId').val();
 				var myNodes=treeObj.getNodesByParam("id",upId,null);
-				var newNodes = [{name:$('#regionName').val(),id:data.data.commonRegionId,parent:false,open:false,pId:upId.id}];
+				var newNodes = [{name:$('#locName').val(),id:data.data.locId,parent:false,open:false,pId:upId.id}];
 				if(myNodes.length<=0){
 					//插入到根目录
 					newNodes = treeObj.addNodes(null,-1, newNodes);
-					parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
+					parent.changeIframe('/inaction/region/polloc-list.html?id='+upid);
 				}else{
 					newNodes = treeObj.addNodes(myNodes[0],-1, newNodes);
-					parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
+					parent.changeIframe('/inaction/region/polloc-list.html?id='+upid);
 				}
 			}else{
 				alert(data.message);
@@ -109,27 +79,35 @@ function saveRegion(){
 	});
 	 
 }
-function findNodeById(node){
-	return (node.Id);
-}
 function validFormData(){
-	var regionName=$('#regionName').val();
-	if(regionName.length<1){
-		$('#regionName').focus();
-		$('#regionName').parent().addClass("has-error");
-		return false;
-	}
 	var reg =/^\d{1,}$/;
-	var regionNbr=$('#regionNbr').val();
-	if (!reg.test(regionNbr)){
-		$('#regionNbr').focus();
-		$('#regionNbr').parent().addClass("has-error");
+	var locCode=$('#locCode').val();
+	if (!reg.test(locCode)){
+		$('#locCode').focus();
+		$('#locCode').parent().addClass("has-error");
 		return false;
 	}
+	var locName=$('#locName').val();
+	if(locName.length<1){
+		$('#locName').focus();
+		$('#locName').parent().addClass("has-error");
+		return false;
+	}
+	var locAbbr=$('#locAbbr').val();
+	if(locAbbr.length<1){
+		$('#locAbbr').focus();
+		$('#locAbbr').parent().addClass("has-error");
+		return false;
+	}
+	
 	return true;
 	
 	//$('#regionNbrTooltip').tooltip('toggle')
 }
+function findNodeById(node){
+	return (node.Id);
+}
+
 //tree
 function changeLocDesc(){
 	var zTree = $.fn.zTree.getZTreeObj("locTree");

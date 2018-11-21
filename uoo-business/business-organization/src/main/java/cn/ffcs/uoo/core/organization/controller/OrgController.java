@@ -25,11 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -108,8 +105,7 @@ public class OrgController extends BaseController {
     @ApiOperation(value = "新增组织信息-web", notes = "新增组织信息")
     @UooLog(value = "新增组织信息", key = "addOrg")
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
-    @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Void> addOrg(OrgVo org){
+    public ResponseResult<Void> addOrg(@RequestBody OrgVo org){
         ResponseResult<Void> ret = new ResponseResult<Void>();
         
         String msg = orgService.JudgeOrgParams(org);
@@ -130,7 +126,7 @@ public class OrgController extends BaseController {
         List<Post> postList = org.getPostList();
 
         Wrapper ogtOrgReftypeConfWrapper = Condition.create()
-                .eq("ORG_TREE_ID",org.getOrgTreeId())
+                .eq("ORG_TREE_ID",orgTree.getOrgTreeId())
                 .eq("STATUS_CD","1000");
         List<OgtOrgReltypeConf> ogtOrgReftypeConfList =  ogtOrgReftypeConfService.selectList(ogtOrgReftypeConfWrapper);
         if(ogtOrgReftypeConfList == null || ogtOrgReftypeConfList.size()==0){
@@ -177,7 +173,9 @@ public class OrgController extends BaseController {
         newOrg.setOrgScale(StrUtil.strnull(org.getOrgScale()));
         newOrg.setOrgLevel(StrUtil.strnull(org.getOrgLevel()));
         newOrg.setOrgPositionLevel(StrUtil.strnull(org.getOrgPositionLevel()));
-        newOrg.setSort(Double.valueOf(org.getSort()));
+        if(!StrUtil.isNullOrEmpty(org.getSort())){
+            newOrg.setSort(Double.valueOf(org.getSort()));
+        }
         newOrg.setOrgContent(StrUtil.strnull(org.getOrgContent()));
         newOrg.setOrgDesc(StrUtil.strnull(org.getOrgDesc()));
         newOrg.setAddress(StrUtil.strnull(org.getAddress()));
@@ -198,7 +196,7 @@ public class OrgController extends BaseController {
         //新增组织职位
         if(postList!=null){
             for(Post post : postList){
-                Long postId = postService.getId();
+                Long postId = orgPostRelService.getId();
                 OrgPostRel orgPostRel = new OrgPostRel();
                 orgPostRel.setOrgPostId(postId);
                 orgPostRel.setOrgId(org.getOrgId());
@@ -213,16 +211,19 @@ public class OrgController extends BaseController {
         for(OgtOrgReltypeConf orgOrgRel : ogtOrgReftypeConfList){
 
             //新增组织岗位
-            for(Position position : positionList){
-                Long orgPositionId = orgPositionRelService.getId();
-                OrgPositionRel orgPosition = new OrgPositionRel();
-                orgPosition.setOrgPositionId(orgPositionId);
-                orgPosition.setOrgId(org.getOrgId());
-                orgPosition.setOrgTreeId(orgOrgRel.getOrgTreeId());
-                orgPosition.setPositionId(position.getPositionId());
-                orgPosition.setStatusCd("1000");
-                orgPosition.insert();
+            if(positionList!=null){
+                for(Position position : positionList){
+                    Long orgPositionId = orgPositionRelService.getId();
+                    OrgPositionRel orgPosition = new OrgPositionRel();
+                    orgPosition.setOrgPositionId(orgPositionId);
+                    orgPosition.setOrgId(org.getOrgId());
+                    orgPosition.setOrgTreeId(orgOrgRel.getOrgTreeId());
+                    orgPosition.setPositionId(position.getPositionId());
+                    orgPosition.setStatusCd("1000");
+                    orgPosition.insert();
+                }
             }
+
 
 
             OrgRel orgRef = new OrgRel();
@@ -305,8 +306,7 @@ public class OrgController extends BaseController {
     })
     @UooLog(value = "更新组织信息", key = "updateOrg")
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
-    @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Void> updateOrg(OrgVo org){
+    public ResponseResult<Void> updateOrg(@RequestBody OrgVo org){
         ResponseResult<Void> ret = new ResponseResult<Void>();
         String msg = orgService.JudgeOrgParams(org);
         if(!StrUtil.isNullOrEmpty(msg)){
@@ -338,15 +338,15 @@ public class OrgController extends BaseController {
             ret.setMessage("组织不存在");
             return ret;
         }
-//        if(!"1000".equals(org.getStatusCd())){
-        Wrapper orgPer = Condition.create().eq("ORG_ID",org.getOrgId()).eq("STATUS_CD","1000");
-        int num = orgPersonRelService.selectCount(orgPer);
-        if(num>0){
-            ret.setState(ResponseResult.STATE_ERROR);
-            ret.setMessage("组织下存在员工无法删除");
-            return ret;
+        if(!"1000".equals(org.getStatusCd())){
+            Wrapper orgPer = Condition.create().eq("ORG_ID",org.getOrgId()).eq("STATUS_CD","1000");
+            int num = orgPersonRelService.selectCount(orgPer);
+            if(num>0){
+                ret.setState(ResponseResult.STATE_ERROR);
+                ret.setMessage("组织下存在员工无法删除");
+                return ret;
+            }
         }
-      //  }
         Org newOrg = new Org();
         newOrg.setOrgId(org.getOrgId());
         if(org.getLocId()!=null){
@@ -366,7 +366,9 @@ public class OrgController extends BaseController {
         newOrg.setOrgScale(StrUtil.strnull(org.getOrgScale()));
         newOrg.setOrgLevel(StrUtil.strnull(org.getOrgLevel()));
         newOrg.setOrgPositionLevel(StrUtil.strnull(org.getOrgPositionLevel()));
-        newOrg.setSort(Double.valueOf(org.getSort()));
+        if(!StrUtil.isNullOrEmpty(org.getSort())){
+            newOrg.setSort(Double.valueOf(org.getSort()));
+        }
         newOrg.setOrgContent(StrUtil.strnull(org.getOrgContent()));
         newOrg.setOrgDesc(StrUtil.strnull(org.getOrgDesc()));
         newOrg.setAddress(StrUtil.strnull(org.getAddress()));
@@ -381,111 +383,114 @@ public class OrgController extends BaseController {
         List<OrgPositionRel> orgPositionCurList = orgPositionRelService.selectList(positionWrapper);
 
         Wrapper postWrapper = Condition.create().eq("ORG_ID",org.getOrgId()).eq("STATUS_CD","1000");
-        List<OrgPostRel> orgPostCurList = postService.selectList(postWrapper);
+        List<OrgPostRel> orgPostCurList = orgPostRelService.selectList(postWrapper);
 
 
         boolean isExists = false;
         //类别
-        for(OrgType ot : orgTypeList){
-            for(OrgOrgtypeRel otf : orgTypeRefCurList){
-                if(ot.getOrgTypeId().longValue() == otf.getOrgTypeId().longValue()){
-                    isExists = true;
-                    break;
-                }else{
-                    isExists = false;
-                }
-            }
-            if(!isExists){
-                OrgOrgtypeRel orgTypeRef = new OrgOrgtypeRel();
-                orgTypeRef.setOrgId(org.getOrgId());
-                orgTypeRef.setOrgTypeId(ot.getOrgTypeId());
-                orgTypeRef.setStatusCd("1000");
-                orgTypeRef.insert();
-            }
-        }
-
-        for(OrgOrgtypeRel otf : orgTypeRefCurList){
+        if(orgTypeList!=null && orgTypeList.size()>0){
             for(OrgType ot : orgTypeList){
-                isExists = false;
-                if(ot.getOrgTypeId().longValue() == otf.getOrgTypeId().longValue()){
-                    isExists = true;
-                    break;
-                }else{
+                for(OrgOrgtypeRel otf : orgTypeRefCurList){
+                    if(ot.getOrgTypeId().longValue() == otf.getOrgTypeId().longValue()){
+                        isExists = true;
+                        break;
+                    }else{
+                        isExists = false;
+                    }
+                }
+                if(!isExists){
+                    OrgOrgtypeRel orgTypeRef = new OrgOrgtypeRel();
+                    orgTypeRef.setOrgId(org.getOrgId());
+                    orgTypeRef.setOrgTypeId(ot.getOrgTypeId());
+                    orgTypeRef.setStatusCd("1000");
+                    orgTypeRef.insert();
+                }
+            }
+
+            for(OrgOrgtypeRel otf : orgTypeRefCurList){
+                for(OrgType ot : orgTypeList){
                     isExists = false;
+                    if(ot.getOrgTypeId().longValue() == otf.getOrgTypeId().longValue()){
+                        isExists = true;
+                        break;
+                    }else{
+                        isExists = false;
+                    }
+                }
+                if(!isExists){
+                    orgTypeRefService.delete(otf);
                 }
             }
-            if(!isExists){
-                orgTypeRefService.delete(otf);
-            }
         }
-
         //岗位
-        for(Position p : positionList){
-            for(OrgPositionRel op : orgPositionCurList){
-                isExists = false;
-                if(p.getPositionId().longValue() == op.getPositionId().longValue()){
-                    isExists = true;
-                    break;
-                }
-            }
-            if(!isExists){
-                Long orgPositionId = orgPositionRelService.getId();
-                OrgPositionRel orgPosition = new OrgPositionRel();
-                orgPosition.setOrgPositionId(orgPositionId);
-                orgPosition.setOrgId(org.getOrgId());
-                orgPosition.setOrgTreeId(orgTree.getOrgTreeId());
-                orgPosition.setPositionId(p.getPositionId());
-                orgPosition.setStatusCd("1000");
-                orgPosition.insert();
-            }
-        }
-
-
-        for(OrgPositionRel op:orgPositionCurList){
+        if(positionList!=null && positionList.size()>0){
             for(Position p : positionList){
-                isExists = false;
-                if(p.getPositionId().longValue() == op.getOrgPositionId().longValue()){
-                    isExists = true;
-                    break;
+                for(OrgPositionRel op : orgPositionCurList){
+                    isExists = false;
+                    if(p.getPositionId().longValue() == op.getPositionId().longValue()){
+                        isExists = true;
+                        break;
+                    }
+                }
+                if(!isExists){
+                    Long orgPositionId = orgPositionRelService.getId();
+                    OrgPositionRel orgPosition = new OrgPositionRel();
+                    orgPosition.setOrgPositionId(orgPositionId);
+                    orgPosition.setOrgId(org.getOrgId());
+                    orgPosition.setOrgTreeId(orgTree.getOrgTreeId());
+                    orgPosition.setPositionId(p.getPositionId());
+                    orgPosition.setStatusCd("1000");
+                    orgPosition.insert();
                 }
             }
-            if(!isExists){
-                orgPositionRelService.delete(op);
+
+
+            for(OrgPositionRel op:orgPositionCurList){
+                for(Position p : positionList){
+                    isExists = false;
+                    if(p.getPositionId().longValue() == op.getOrgPositionId().longValue()){
+                        isExists = true;
+                        break;
+                    }
+                }
+                if(!isExists){
+                    orgPositionRelService.delete(op);
+                }
             }
         }
-
         //职位 post
-        for(Post p : postList){
-            for(OrgPostRel op : orgPostCurList){
-                isExists = false;
-                if(p.getPostId().longValue() == op.getPostId().longValue()){
-                    isExists = true;
-                    break;
-                }
-            }
-            if(!isExists){
-                Long orgPostId = orgPostRelService.getId();
-                OrgPostRel orgPost = new OrgPostRel();
-                orgPost.setOrgId(org.getOrgId());
-                orgPost.setPostId(p.getPostId());
-                orgPost.setOrgPostId(orgPostId);
-                orgPost.setStatusCd("1000");
-                orgPost.insert();
-            }
-        }
-        for(OrgPostRel op : orgPostCurList){
+        if(postList!=null && postList.size()>0){
             for(Post p : postList){
-                isExists = false;
-                if(p.getPostId().longValue() == op.getPostId().longValue()){
-                    isExists = true;
-                    break;
+                for(OrgPostRel op : orgPostCurList){
+                    isExists = false;
+                    if(p.getPostId().longValue() == op.getPostId().longValue()){
+                        isExists = true;
+                        break;
+                    }
+                }
+                if(!isExists){
+                    Long orgPostId = orgPostRelService.getId();
+                    OrgPostRel orgPost = new OrgPostRel();
+                    orgPost.setOrgId(org.getOrgId());
+                    orgPost.setPostId(p.getPostId());
+                    orgPost.setOrgPostId(orgPostId);
+                    orgPost.setStatusCd("1000");
+                    orgPost.insert();
                 }
             }
-            if(!isExists){
-                orgPostRelService.delete(op);
+            for(OrgPostRel op : orgPostCurList){
+                for(Post p : postList){
+                    isExists = false;
+                    if(p.getPostId().longValue() == op.getPostId().longValue()){
+                        isExists = true;
+                        break;
+                    }
+                }
+                if(!isExists){
+                    orgPostRelService.delete(op);
+                }
             }
         }
-
         //更新组织证件
         Wrapper orgCertWrapper = Condition.create()
                 .eq("ORG_ID",org.getOrgId())
@@ -493,36 +498,37 @@ public class OrgController extends BaseController {
         List<OrgCertRel> orgCertRelcurList = orgCertRelService.selectList(orgCertWrapper);
         //List<String> cerList = org.getCertIdList();
         List<OrgCertVo> cerList  = org.getOrgCertList();
-        for(OrgCertVo certVo : cerList){
+        if(cerList!=null && cerList.size()>0){
+            for(OrgCertVo certVo : cerList){
+                for(OrgCertRel ocr : orgCertRelcurList){
+                    isExists = false;
+                    if(ocr.getCertId().longValue() == certVo.getCertId()){
+                        isExists = true;
+                        break;
+                    }
+                }
+                if(!isExists){
+                    OrgCertRel orgCertRel = new OrgCertRel();
+                    Long orgCertRelId = orgCertRel.getOrgCertId();
+                    orgCertRel.setOrgCertId(orgCertRelId);
+                    orgCertRel.setOrgId(org.getOrgId());
+                    orgCertRel.setCertId(certVo.getCertId().intValue());
+                    orgCertRel.insert();
+                }
+            }
             for(OrgCertRel ocr : orgCertRelcurList){
-                isExists = false;
-                if(ocr.getCertId().longValue() == certVo.getCertId()){
-                    isExists = true;
-                    break;
+                for(OrgCertVo orgCertVo : cerList){
+                    isExists = false;
+                    if(ocr.getCertId().longValue() == orgCertVo.getCertId()){
+                        isExists = true;
+                        break;
+                    }
+                }
+                if(!isExists){
+                    orgCertRelService.delete(ocr);
                 }
             }
-            if(!isExists){
-                OrgCertRel orgCertRel = new OrgCertRel();
-                Long orgCertRelId = orgCertRel.getOrgCertId();
-                orgCertRel.setOrgCertId(orgCertRelId);
-                orgCertRel.setOrgId(org.getOrgId());
-                orgCertRel.setCertId(certVo.getCertId().intValue());
-                orgCertRel.insert();
-            }
         }
-        for(OrgCertRel ocr : orgCertRelcurList){
-            for(OrgCertVo orgCertVo : cerList){
-                isExists = false;
-                if(ocr.getCertId().longValue() == orgCertVo.getCertId()){
-                    isExists = true;
-                    break;
-                }
-            }
-            if(!isExists){
-                orgCertRelService.delete(ocr);
-            }
-        }
-
         if (!"1000".equals(org.getStatusCd())){
             //删除组织关系
             List<OrgRel> orList = orgRelService.getOrgRel(orgTree.getOrgTreeId().toString(),org.getOrgId().toString());

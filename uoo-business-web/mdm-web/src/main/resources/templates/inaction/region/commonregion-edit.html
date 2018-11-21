@@ -49,23 +49,23 @@
                 <input  id="polLocIds" value="" name="polLocIds" type="hidden"/>
                 <input  id="regionId" value="" name="commonRegionId" type="hidden"/>
                 <div class="form-group" style="margin-bottom: 10px;">
-                      <label for="upRegionId" class="col-sm-2 control-label" style=" ">上级电信区域</label>
+                      <label for="upRegionId" class="form-item-label-required col-sm-2 control-label" style=" ">上级电信区域</label>
                       <div class="col-sm-5">
-                       <select  id="upRegionId" name="upRegionId" class="form-control  ">
+                       <select   id="upRegionId" name="upRegionId" class="form-control  ">
                        <option value="0">最上级</option>
                       </select>
                       </div>
                 </div>
                 <div class="form-group" style="margin-bottom: 10px;">
-                      <label for="regionNbr" class="col-sm-2 control-label" style=" ">电信区域编码</label>
+                      <label for="regionNbr" class="form-item-label-required col-sm-2 control-label" style=" ">电信区域编码</label>
                        <div class="col-sm-5">
-                      <input type="number" id="regionNbr" class="form-control " size="40" name="regionNbr" required value="">
+                      <input type="number" id="regionNbr" class="form-control " data-toggle="tooltip" data-placement="right" size="40" name="regionNbr" required value="">
                          </div>
                 </div>
                 <div class="form-group" style="margin-bottom: 10px;">
-                      <label for="regionName" class="col-sm-2 control-label" style=" ">电信区域名称</label>
+                      <label for="regionName" class="form-item-label-required col-sm-2 control-label" style=" ">电信区域名称</label>
                       <div class="col-sm-5">
-                      <input type="text" id="regionName" class="form-control  " size="40" name="regionName" required value="">
+                      <input type="text" id="regionName" class="form-control  " data-toggle="tooltip" data-placement="right" size="40" name="regionName" required value="">
                       </div>
                     
                 </div>
@@ -77,17 +77,17 @@
                      
                 </div> -->
                 <div class="form-group" style="margin-bottom: 10px;">
-                      <label for="regionType" class="col-sm-2 control-label" style=" ">电信区域类型</label>
+                      <label for="regionType" class="form-item-label-required col-sm-2 control-label" style=" ">电信区域类型</label>
                       <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="城市"> -->
                       <div class="col-sm-5">
                       <select id="regionType" name="regionType" class="form-control  ">
-                        <option value='1'>省</option>
+                        <!-- <option value='1'>省</option>
                         <option value='2'>市</option>
                         <option value='3'>区</option>
                         <option value='4'>县</option>
                         <option value='5'>乡</option>
                         <option value='6'>镇</option>
-                        <option value='7'>村</option>
+                        <option value='7'>村</option> -->
                          
                       </select>
                       </div>
@@ -127,7 +127,7 @@
                     <!-- <input type="submit" id="formSubmit" class="clip">
                     <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
                     <button id="saveBtn" class="btn btn-primary">保存</button>
-                    <button id="cancelBtn" class="btn btn-default" style="margin-left: 10px;" onclick="cancel()">取消</button>
+                    <button id="cancelBtn" class="btn btn-default" style="margin-left: 10px;" onclick="history.go(-1)">取消</button>
                 </div>
               </div>
             </div>

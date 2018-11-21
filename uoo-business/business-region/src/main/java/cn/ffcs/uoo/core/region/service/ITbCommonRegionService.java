@@ -22,5 +22,5 @@ public interface ITbCommonRegionService extends IService<TbCommonRegion> {
     @SuppressWarnings("rawtypes")
     public List<Map> getChildCommonRegionInfo(Map<String,Object> params);
     @SuppressWarnings("rawtypes")
-    public List<Map> getTreeCommonRegion(Map<String,Object> params);
+    public List<TbCommonRegion> getTreeCommonRegion(Map<String,Object> params);
 }
