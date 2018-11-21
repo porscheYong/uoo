@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -167,28 +168,24 @@ public class TbCommonRegionController extends BaseController {
     @GetMapping("getTreeCommonRegion/{id}")
     public ResponseResult getTreeCommonRegion(@PathVariable(value="id") Long id ){
         Map<String, Object> params = new HashMap<>();
-        params.put("statusCd", DeleteConsts.VALID);
-        params.put("upRegionId", id);
-        List<Map> list = regionService.getTreeCommonRegion(params);
-        if(list==null || list.isEmpty()){
-            return ResponseResult.createErrorResult("暂无数据");
-        }
-        List<ZTreeNode> ztlist=new ArrayList<>();
-        
-        for (Map map : list) {
+        List<TbCommonRegion> list = regionService.getTreeCommonRegion(params);
+        List<ZTreeNode> ztlist = new ArrayList<>();
+        for (TbCommonRegion reg : list) {
             ZTreeNode n=new ZTreeNode();
-            n.setId(Long.valueOf(map.get("COMMON_REGION_ID").toString()));
-            Object rn = map.get("REGION_NAME");
-            n.setName(rn==null?"":map.get("REGION_NAME").toString());
-            Object upid = map.get("UP_REGION_ID");
-            n.setpId(upid==null?0:Long.valueOf(upid.toString()));
-            n.setOpen(n.getpId()==0);
-            Wrapper<TbCommonRegion> w=Condition.create().eq("STATUS_CD", DeleteConsts.VALID).eq("UP_REGION_ID", n.getId());
-            List<TbCommonRegion> selectList = regionService.selectList(w);
-            n.setParent(selectList!=null&&!selectList.isEmpty());
             ztlist.add(n);
+            n.setId(reg.getCommonRegionId());
+            n.setName(reg.getRegionName());
+            n.setpId(reg.getUpRegionId()==null||reg.getUpRegionId()<1?0:reg.getUpRegionId());
+            for (TbCommonRegion tmp : list) {
+                if(reg.getCommonRegionId().equals(tmp.getUpRegionId())){
+                    n.setParent(true);
+                    break;
+                }
+            }
         }
-        return ResponseResult.createSuccessResult(ztlist,"success");
+        ResponseResult r = ResponseResult.createSuccessResult(ztlist,"success");
+        r.setTotalRecords(list.size());
+        return r;
     }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -270,7 +267,7 @@ public class TbCommonRegionController extends BaseController {
         }
         // 检查行政区域
         List<Long> polLocIds = commonRegion.getPolLocIds();
-        if (polLocIds != null) {
+        if (polLocIds != null&&!polLocIds.isEmpty()) {
             List<TbPoliticalLocation> list = locSvc.selectBatchIds(polLocIds);
             if (list == null || list.size() != polLocIds.size()) {
                 return ResponseResult.createErrorResult("选择的行政区域有无效数据");
@@ -282,6 +279,13 @@ public class TbCommonRegionController extends BaseController {
             }
         }
 
+        if(StringUtils.isBlank(commonRegion.getRegionName())){
+            return ResponseResult.createErrorResult("请输入区域名称");
+        }
+        if(StringUtils.isBlank(commonRegion.getRegionNbr())){
+            return ResponseResult.createErrorResult("请输入区域编码");
+        }
+        
         TbCommonRegion reg = commonRegion.convertEntity();
         reg.setCreateUser(commonRegion.getOperateUser());
         reg.setStatusCd(DeleteConsts.VALID);
@@ -299,7 +303,7 @@ public class TbCommonRegionController extends BaseController {
             regLocRelSvc.insert(rel);
         }
 
-        return ResponseResult.createSuccessResult("success");
+        return ResponseResult.createSuccessResult(reg,"success");
     }
 
     @SuppressWarnings("unchecked")
@@ -327,7 +331,7 @@ public class TbCommonRegionController extends BaseController {
 
         // 检查行政区域
         List<Long> polLocIds = commonRegion.getPolLocIds();
-        if (polLocIds != null) {
+        if (polLocIds != null&&!polLocIds.isEmpty()) {
             List<TbPoliticalLocation> list = locSvc.selectBatchIds(polLocIds);
             if (list == null || list.size() != polLocIds.size()) {
                 return ResponseResult.createErrorResult("选择的行政区域有无效数据");
@@ -338,7 +342,12 @@ public class TbCommonRegionController extends BaseController {
                 }
             }
         }
-
+        if(StringUtils.isBlank(commonRegion.getRegionName())){
+            return ResponseResult.createErrorResult("请输入区域名称");
+        }
+        if(StringUtils.isBlank(commonRegion.getRegionNbr())){
+            return ResponseResult.createErrorResult("请输入区域编码");
+        }
         TbCommonRegion reg = commonRegion.convertEntity();
         reg.setUpdateDate(new Date());
         reg.setUpdateUser(commonRegion.getOperateUser());
@@ -356,7 +365,7 @@ public class TbCommonRegionController extends BaseController {
             regLocRelSvc.insert(rel);
         }
 
-        return ResponseResult.createSuccessResult("success");
+        return ResponseResult.createSuccessResult(reg,"success");
     }
 
     @ApiOperation(value = "删除公共管理区域", notes = "删除公共管理区域")
