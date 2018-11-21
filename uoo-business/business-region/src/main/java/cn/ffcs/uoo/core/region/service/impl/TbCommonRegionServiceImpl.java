@@ -38,7 +38,7 @@ public class TbCommonRegionServiceImpl extends ServiceImpl<TbCommonRegionMapper,
         return mapper.getChildCommonRegionInfo(params);
     }
     @Override
-    public List<Map> getTreeCommonRegion(Map<String, Object> params) {
+    public List<TbCommonRegion> getTreeCommonRegion(Map<String, Object> params) {
         return mapper.getTreeCommonRegion(params);
     }
 }

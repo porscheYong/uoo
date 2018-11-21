@@ -26,40 +26,43 @@
 		UPDATE_USER, STATUS_DATE
 	</sql>
 	<select id="getId" resultType="java.lang.Long">
-		SELECT SEQ_TB_POLITICAL_LOCATION.nextval FROM dual
+		SELECT
+		SEQ_TB_POLITICAL_LOCATION.nextval FROM dual
 	</select>
-	
-	<select id="getChildPoliticalLocationInfo" resultType="java.util.HashMap"
-        parameterType="java.util.HashMap">
-        SELECT
-        LOC_ID, LOC_CODE, LOC_NAME, LOC_DESC, LOC_TYPE, LOC_ABBR,
-        UP_LOC_ID,
-        STATUS_CD, CREATE_DATE,CREATE_USER, UPDATE_DATE,
-        UPDATE_USER, STATUS_DATE
-        FROM
-        TB_POLITICAL_LOCATION a
-        <where>
-            <if test="locId != null and locId != '' ">
-                and a.LOC_ID = #{locId}
-            </if>
-            <if test="statusCd != null and statusCd != '' ">
-                and a.STATUS_CD = #{statusCd}
-            </if>
-            <if test="upLocId !=null and upLocId lt 1">
-                and a.UP_LOC_ID &lt; 1
-            </if>
-            <if test="upLocId !=null and upLocId gte 1">
-                and a.UP_LOC_ID = #{upLocId}
-            </if>
-        </where>
 
-    </select>
-    <select id="getTreePoliticalLocation" resultType="cn.ffcs.uoo.core.region.entity.TbPoliticalLocation" >
-	SELECT
-	*
-	FROM
-	TB_POLITICAL_LOCATION
-	START WITH (( UP_LOC_ID IS NULL OR UP_LOC_ID &lt; 1 ) and STATUS_CD='1000' )
-	CONNECT BY PRIOR LOC_ID = UP_LOC_ID
-    </select>
+	<select id="getChildPoliticalLocationInfo" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
+		SELECT
+		LOC_ID, LOC_CODE, LOC_NAME, LOC_DESC, LOC_TYPE, LOC_ABBR,
+		UP_LOC_ID,
+		STATUS_CD, CREATE_DATE,CREATE_USER, UPDATE_DATE,
+		UPDATE_USER, STATUS_DATE
+		FROM
+		TB_POLITICAL_LOCATION a
+		<where>
+			<if test="locId != null and locId != '' ">
+				and a.LOC_ID = #{locId}
+			</if>
+			<if test="statusCd != null and statusCd != '' ">
+				and a.STATUS_CD = #{statusCd}
+			</if>
+			<if test="upLocId !=null and upLocId lt 1">
+				and a.UP_LOC_ID &lt; 1
+			</if>
+			<if test="upLocId !=null and upLocId gte 1">
+				and a.UP_LOC_ID = #{upLocId}
+			</if>
+		</where>
+
+	</select>
+	<select id="getTreePoliticalLocation" resultType="cn.ffcs.uoo.core.region.entity.TbPoliticalLocation">
+		SELECT
+		*
+		FROM
+		TB_POLITICAL_LOCATION
+		WHERE
+		STATUS_CD='1000'
+		START WITH ( UP_LOC_ID IS NULL OR UP_LOC_ID &lt; 1 )
+		CONNECT BY PRIOR LOC_ID = UP_LOC_ID
+	</select>
 </mapper>
