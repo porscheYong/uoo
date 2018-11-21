@@ -151,7 +151,7 @@ public class TbPoliticalLocationController extends BaseController {
         polLoc.setStatusDate(new Date());
         polLoc.setLocId(polLocSvc.getId());
         polLocSvc.insert(polLoc);
-        return ResponseResult.createSuccessResult("success");
+        return ResponseResult.createSuccessResult(polLoc,"success");
     }
     @ApiOperation(value = "修改行政区域", notes = "修改行政区域")
     @ApiImplicitParams({
@@ -174,7 +174,7 @@ public class TbPoliticalLocationController extends BaseController {
         polLoc.setUpdateDate(new Date());
         //polLoc.setStatusDate(new Date());
         polLocSvc.updateById(polLoc);
-        return ResponseResult.createSuccessResult("success");
+        return ResponseResult.createSuccessResult(polLoc,"success");
     }
     
     @SuppressWarnings("unchecked")
