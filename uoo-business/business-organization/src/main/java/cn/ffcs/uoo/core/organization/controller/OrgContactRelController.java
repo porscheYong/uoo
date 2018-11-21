@@ -5,6 +5,7 @@ import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.organization.service.OrgContactRelService;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
+import cn.ffcs.uoo.core.organization.util.StrUtil;
 import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
@@ -42,8 +43,18 @@ public class OrgContactRelController extends BaseController {
     @UooLog(value = "获取组织联系人", key = "getOrgContactPage")
     @RequestMapping(value = "/getOrgContactPage", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Page<PsonOrgVo>> getOrgContactPage(PsonOrgVo psonOrgVo) throws IOException {
+    public ResponseResult<Page<PsonOrgVo>> getOrgContactPage(String orgId,
+                                                             Integer pageSize,
+                                                             Integer pageNo) throws IOException {
         ResponseResult<Page<PsonOrgVo>> ret = new ResponseResult<>();
+        PsonOrgVo psonOrgVo = new PsonOrgVo();
+        psonOrgVo.setOrgId(new Long(orgId));
+        if(!StrUtil.isNullOrEmpty(pageNo)){
+            psonOrgVo.setPageNo(pageNo);
+        }
+        if(!StrUtil.isNullOrEmpty(pageSize)){
+            psonOrgVo.setPageSize(pageSize);
+        }
         Page<PsonOrgVo> page = orgContactRelService.selectOrgContactPage(psonOrgVo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");

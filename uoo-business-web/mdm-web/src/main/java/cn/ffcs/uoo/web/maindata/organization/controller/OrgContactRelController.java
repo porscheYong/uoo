@@ -10,10 +10,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -34,12 +31,23 @@ public class OrgContactRelController {
     @Resource
     private OrgContactRelService orgContactRelService;
 
+//    @ApiOperation(value = "获取组织联系人-web", notes = "获取组织联系人")
+//    @ApiImplicitParams({
+//    })
+//    @RequestMapping(value = "/getOrgContactPage", method = RequestMethod.GET)
+//    public ResponseResult getOrgContactPage(@RequestBody PsonOrgVo psonOrgVo) throws IOException {
+//        return orgContactRelService.getOrgContactPage(psonOrgVo);
+//    }
+
+
     @ApiOperation(value = "获取组织联系人-web", notes = "获取组织联系人")
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getOrgContactPage", method = RequestMethod.GET)
-    public ResponseResult getOrgContactPage(@RequestBody PsonOrgVo psonOrgVo) throws IOException {
-        return orgContactRelService.getOrgContactPage(psonOrgVo);
+    public ResponseResult getOrgContactPage(@RequestParam(value = "orgId",required = false)String orgId,
+                                            @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                            @RequestParam(value = "pageNo",required = false)Integer pageNo) throws IOException {
+        return orgContactRelService.getOrgContactPage(orgId,pageSize,pageNo);
     }
 }
 

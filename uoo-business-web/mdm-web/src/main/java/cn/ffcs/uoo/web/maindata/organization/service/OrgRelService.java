@@ -20,7 +20,7 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018-09-25
  */
-@FeignClient(value = "business-organization",fallback = OrgRelServiceHystrix.class)
+@FeignClient(value = "business-organization",configuration = {PersonnelServiceConfiguration.class},fallback = OrgRelServiceHystrix.class)
 public interface OrgRelService {
 
    @RequestMapping(value="/orgRel/getOrgRelTree",method = RequestMethod.GET)
@@ -47,9 +47,14 @@ public interface OrgRelService {
    public ResponseResult<String> addOrgRel(@RequestBody Org org);
 
    @RequestMapping(value="/orgRel/getFuzzyOrgRelPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-   public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(@RequestBody OrgVo orgVo);
+   public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(@RequestParam(value = "search",required = false)String search,
+                                                         @RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                         @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                                         @RequestParam(value = "pageNo",required = false)Integer pageNo);
 
 
    @RequestMapping(value="/orgRel/getOrgRelTypePage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-   public ResponseResult<Page<OrgRefTypeVo>> getOrgRelTypePage(@RequestBody OrgRefTypeVo orgRefTypeVo);
+   public ResponseResult<Page<OrgRefTypeVo>> getOrgRelTypePage(@RequestParam(value = "orgId",required = false)String orgId,
+                                                               @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                                               @RequestParam(value = "pageNo",required = false)Integer pageNo);
 }

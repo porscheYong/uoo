@@ -46,7 +46,7 @@ import java.util.Map;
  * @since 2018-09-25
  */
 @RestController
-@RequestMapping(value = "/org" , produces = {"application/json;charset=UTF-8"})
+@RequestMapping(value = "/org")
 @Api(value = "/org", description = "组织相关操作")
 public class OrgController extends BaseController {
 
@@ -106,10 +106,10 @@ public class OrgController extends BaseController {
 
 
     @ApiOperation(value = "新增组织信息-web", notes = "新增组织信息")
-    @UooLog(value = "新增组织信息", key = "addOrgRel")
+    @UooLog(value = "新增组织信息", key = "addOrg")
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Void> addOrg(Org org){
+    public ResponseResult<Void> addOrg(OrgVo org){
         ResponseResult<Void> ret = new ResponseResult<Void>();
         
         String msg = orgService.JudgeOrgParams(org);
@@ -140,12 +140,12 @@ public class OrgController extends BaseController {
         }
         //组织组织树分类
         Wrapper ogtOrgtypeConfWrapper = Condition.create()
-                .eq("ORG_TREE_ID",org.getOrgTreeId())
+                .eq("ORG_TREE_ID",orgTree.getOrgTreeId())
                 .eq("STATUS_CD","1000");
         List<OgtOrgtypeConf> ogtOrgTypeList = ogtOrgtypeConfService.selectList(ogtOrgtypeConfWrapper);
         if(ogtOrgTypeList==null || ogtOrgTypeList.size()==0){
             ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织树组织类型不存在");
+            ret.setMessage("组织树组织类别不存在");
             return ret;
         }
 
@@ -156,35 +156,60 @@ public class OrgController extends BaseController {
         }else{
             fullName = org.getOrgName();
         }
+        Org newOrg = new Org();
         String orgCode = orgService.getGenerateOrgCode();
         Long orgId = orgService.getId();
-        org.setOrgId(orgId);
-        org.setOrgCode(orgCode);
-        org.setFullName(fullName);
-        org.setUuid(StrUtil.getUUID());
+        newOrg.setOrgId(orgId);
+        if(org.getLocId()!=null){
+            newOrg.setLocId(org.getLocId());
+        }
+        if(org.getAreaCodeId()!=null){
+            newOrg.setAreaCodeId(new Long(org.getAreaCodeId()));
+        }
+        newOrg.setOrgName(StrUtil.strnull(org.getOrgName()));
+        newOrg.setOrgCode(orgCode);
+        newOrg.setShortName(StrUtil.strnull(org.getShortName()));
+        newOrg.setOrgNameEn(StrUtil.strnull(org.getOrgNameEn()));
+        newOrg.setFullName(fullName);
+        newOrg.setCityTown(StrUtil.strnull(org.getCityTown()));
+        newOrg.setOfficePhone(StrUtil.strnull(org.getOfficePhone()));
+        //newOrg.setFoundingTime();
+        newOrg.setOrgScale(StrUtil.strnull(org.getOrgScale()));
+        newOrg.setOrgLevel(StrUtil.strnull(org.getOrgLevel()));
+        newOrg.setOrgPositionLevel(StrUtil.strnull(org.getOrgPositionLevel()));
+        newOrg.setSort(Double.valueOf(org.getSort()));
+        newOrg.setOrgContent(StrUtil.strnull(org.getOrgContent()));
+        newOrg.setOrgDesc(StrUtil.strnull(org.getOrgDesc()));
+        newOrg.setAddress(StrUtil.strnull(org.getAddress()));
+        newOrg.setUuid(StrUtil.getUUID());
         //新增组织类别
-        for(OrgType orgType : orgTypeList) {
-            Long orgTypeRefId = orgTypeRefService.getId();
-            OrgOrgtypeRel orgTypeRef = new OrgOrgtypeRel();
-            orgTypeRef.setOrgTypeRelId(orgTypeRefId);
-            orgTypeRef.setOrgId(org.getOrgId());
-            orgTypeRef.setOrgTypeId(orgType.getOrgTypeId());
-            orgTypeRef.setStatusCd("1000");
-            orgTypeRef.insert();
+        if(orgTypeList!=null){
+            for(OrgType orgType : orgTypeList) {
+                Long orgTypeRefId = orgTypeRefService.getId();
+                OrgOrgtypeRel orgTypeRef = new OrgOrgtypeRel();
+                orgTypeRef.setOrgTypeRelId(orgTypeRefId);
+                orgTypeRef.setOrgId(org.getOrgId());
+                orgTypeRef.setOrgTypeId(orgType.getOrgTypeId());
+                orgTypeRef.setStatusCd("1000");
+                orgTypeRef.insert();
+            }
         }
-        //新增组织职位
-        for(Post post : postList){
-            Long postId = postService.getId();
-            OrgPostRel orgPostRel = new OrgPostRel();
-            orgPostRel.setOrgPostId(postId);
-            orgPostRel.setOrgId(org.getOrgId());
-            orgPostRel.setPostId(post.getPostId());
-            orgPostRel.setStatusCd("1000");
-            orgPostRel.insert();
-        }
-        orgService.insert(org);
 
-        //org_ref 组织推导
+        //新增组织职位
+        if(postList!=null){
+            for(Post post : postList){
+                Long postId = postService.getId();
+                OrgPostRel orgPostRel = new OrgPostRel();
+                orgPostRel.setOrgPostId(postId);
+                orgPostRel.setOrgId(org.getOrgId());
+                orgPostRel.setPostId(post.getPostId());
+                orgPostRel.setStatusCd("1000");
+                orgPostRel.insert();
+            }
+        }
+       orgService.insert(newOrg);
+
+        //org_ref 组织类别推导
         for(OgtOrgReltypeConf orgOrgRel : ogtOrgReftypeConfList){
 
             //新增组织岗位
@@ -281,7 +306,7 @@ public class OrgController extends BaseController {
     @UooLog(value = "更新组织信息", key = "updateOrg")
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Void> updateOrg(Org org){
+    public ResponseResult<Void> updateOrg(OrgVo org){
         ResponseResult<Void> ret = new ResponseResult<Void>();
         String msg = orgService.JudgeOrgParams(org);
         if(!StrUtil.isNullOrEmpty(msg)){
@@ -322,9 +347,32 @@ public class OrgController extends BaseController {
             return ret;
         }
       //  }
+        Org newOrg = new Org();
+        newOrg.setOrgId(org.getOrgId());
+        if(org.getLocId()!=null){
+            newOrg.setLocId(org.getLocId());
+        }
+        if(org.getAreaCodeId()!=null){
+            newOrg.setAreaCodeId(new Long(org.getAreaCodeId()));
+        }
+        newOrg.setOrgName(StrUtil.strnull(org.getOrgName()));
+        newOrg.setOrgCode(StrUtil.strnull(org.getOrgCode()));
+        newOrg.setShortName(StrUtil.strnull(org.getShortName()));
+        newOrg.setOrgNameEn(StrUtil.strnull(org.getOrgNameEn()));
+        newOrg.setFullName(StrUtil.strnull(org.getFullName()));
+        newOrg.setCityTown(StrUtil.strnull(org.getCityTown()));
+        newOrg.setOfficePhone(StrUtil.strnull(org.getOfficePhone()));
+        //newOrg.setFoundingTime();
+        newOrg.setOrgScale(StrUtil.strnull(org.getOrgScale()));
+        newOrg.setOrgLevel(StrUtil.strnull(org.getOrgLevel()));
+        newOrg.setOrgPositionLevel(StrUtil.strnull(org.getOrgPositionLevel()));
+        newOrg.setSort(Double.valueOf(org.getSort()));
+        newOrg.setOrgContent(StrUtil.strnull(org.getOrgContent()));
+        newOrg.setOrgDesc(StrUtil.strnull(org.getOrgDesc()));
+        newOrg.setAddress(StrUtil.strnull(org.getAddress()));
+        newOrg.setUuid(StrUtil.getUUID());
 
-        org.updateById();
-        //orgService.update(org,orgWrapper);
+        //newOrg.updateById();
 
         Wrapper orgTypeWrapper = Condition.create().eq("ORG_ID",org.getOrgId()).eq("STATUS_CD","1000");
         List<OrgOrgtypeRel> orgTypeRefCurList = orgTypeRefService.selectList(orgTypeWrapper);
@@ -526,8 +574,8 @@ public class OrgController extends BaseController {
             }
 
         }
-        org.setStatusCd("1000");
-        org.updateById();
+        newOrg.setStatusCd("1000");
+        newOrg.updateById();
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("更新成功");
         return ret;
@@ -543,16 +591,16 @@ public class OrgController extends BaseController {
     })
     @UooLog(value = "查询组织信息", key = "getOrg")
     @RequestMapping(value = "/getOrg", method = RequestMethod.GET)
-    @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Org> getOrg(String orgId){
-        ResponseResult<Org> ret = new ResponseResult<>();
+    public ResponseResult<OrgVo> getOrg(String orgId){
+        ResponseResult<OrgVo> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(orgId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织标识不能为空");
             return ret;
         }
         Wrapper orgWrapper = Condition.create().eq("ORG_ID",orgId).eq("STATUS_CD","1000");
-        Org org = orgService.selectById(orgId);
+        OrgVo org = orgService.selectOrgByOrgId(orgId);
+        //Org org = orgService.selectById(orgId);
         if(StrUtil.isNullOrEmpty(org)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织不存在");
@@ -591,17 +639,29 @@ public class OrgController extends BaseController {
     @UooLog(value = "查询组织关系列表分页", key = "getOrgRelPage")
     @RequestMapping(value = "/getOrgRelPage", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Page<OrgVo>> getOrgRelPage(OrgVo orgVo){
+    public ResponseResult<Page<OrgVo>> getOrgRelPage(Integer orgRootId,
+                                                     Integer orgId,
+                                                     Integer pageSize,
+                                                     Integer pageNo){
         ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
-        if(StrUtil.isNullOrEmpty(orgVo.getOrgRootId())){
+        if(StrUtil.isNullOrEmpty(orgRootId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织根节点不能为空");
             return ret;
         }
-        if(StrUtil.isNullOrEmpty(orgVo.getOrgId())){
+        if(StrUtil.isNullOrEmpty(orgId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织标识不能为空");
             return ret;
+        }
+        OrgVo orgVo = new OrgVo();
+        orgVo.setOrgRootId(orgRootId.toString());
+        orgVo.setOrgId(orgId.longValue());
+        if(!StrUtil.isNullOrEmpty(pageNo)){
+            orgVo.setPageNo(pageNo);
+        }
+        if(!StrUtil.isNullOrEmpty(pageSize)){
+            orgVo.setPageSize(pageSize);
         }
         Page<OrgVo> page = orgService.selectOrgRelPage(orgVo);
         ret.setState(ResponseResult.STATE_OK);
@@ -614,12 +674,24 @@ public class OrgController extends BaseController {
     @ApiOperation(value = "查询组织分页-web", notes = "查询组织分页")
     @ApiImplicitParams({
     })
-    @UooLog(value = "查询组织分页", key = "getOrgRelPage")
+    @UooLog(value = "查询组织分页", key = "getOrgPage")
     @RequestMapping(value = "/getOrgPage", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Page<OrgVo>> getOrgPage(OrgVo orgVo){
+    public ResponseResult<Page<OrgVo>> getOrgPage(String search,
+                                                  Integer pageSize,
+                                                  Integer pageNo){
+        OrgVo orgVo = new OrgVo();
         ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
         orgVo.setStatusCd("1000");
+        if(!StrUtil.isNullOrEmpty(search)){
+            orgVo.setSearch(search);
+        }
+        if(!StrUtil.isNullOrEmpty(pageSize)){
+            orgVo.setPageSize(pageSize);
+        }
+        if(!StrUtil.isNullOrEmpty(pageNo)){
+            orgVo.setPageNo(pageNo);
+        }
         Page<OrgVo> page = orgService.selectOrgPage(orgVo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("查询成功");

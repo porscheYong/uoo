@@ -74,7 +74,6 @@ public class OrgRelController extends BaseController {
     })
     @UooLog(value = "查询组织树", key = "getOrgRelTree")
     @RequestMapping(value = "/getOrgRelTree", method = RequestMethod.GET)
-    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<List<TreeNodeVo>> getOrgRelTree(@RequestParam(value = "id",required = false)String id,
                                                           @RequestParam(value = "orgRootId",required = false)String orgRootId,
                                                           @RequestParam(value = "relCode",required = false)String relCode,
@@ -329,18 +328,34 @@ public class OrgRelController extends BaseController {
     @UooLog(value = "检索组织信息", key = "getFuzzyOrgRel")
     @RequestMapping(value = "/getFuzzyOrgRelPage", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(OrgVo orgVo) throws IOException {
+    public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(String search,
+                                                          String orgRootId,
+                                                          Integer pageSize,
+                                                          Integer pageNo) throws IOException {
         ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
-        if(StrUtil.isNullOrEmpty(orgVo.getSearch())){
-            ret.setMessage("检索信息不能为空");
-            ret.setState(ResponseResult.PARAMETER_ERROR);
-            return ret;
-        }
-        if(StrUtil.isNullOrEmpty(orgVo.getOrgRootId())){
+//        if(StrUtil.isNullOrEmpty(search)){
+//            ret.setMessage("检索信息不能为空");
+//            ret.setState(ResponseResult.PARAMETER_ERROR);
+//            return ret;
+//        }
+        if(StrUtil.isNullOrEmpty(orgRootId)){
             ret.setMessage("根节点组织标识不能为空");
             ret.setState(ResponseResult.PARAMETER_ERROR);
             return ret;
         }
+        OrgVo orgVo = new OrgVo();
+        if(!StrUtil.isNullOrEmpty(search)){
+            orgVo.setSearch(search);
+        }
+
+        orgVo.setOrgRootId(orgRootId);
+        if(!StrUtil.isNullOrEmpty(pageSize)){
+            orgVo.setPageSize(pageSize);
+        }
+        if(!StrUtil.isNullOrEmpty(pageNo)){
+            orgVo.setPageNo(pageNo);
+        }
+
         Page<OrgVo> page = orgRelService.selectFuzzyOrgRelPage(orgVo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setData(page);
@@ -378,18 +393,30 @@ public class OrgRelController extends BaseController {
     @UooLog(value = "查询组织关系类型翻页", key = "getOrgRelTypePage")
     @RequestMapping(value = "/getOrgRelTypePage", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Page<OrgRefTypeVo>> getOrgRelTypePage(OrgRefTypeVo orgRefTypeVo) throws IOException {
+    public ResponseResult<Page<OrgRefTypeVo>> getOrgRelTypePage(String orgId,
+                                                                Integer pageSize,
+                                                                Integer pageNo
+                                                                ){
         ResponseResult<Page<OrgRefTypeVo>> ret = new ResponseResult<>();
-        if(StrUtil.isNullOrEmpty(orgRefTypeVo)){
-            ret.setMessage("参数不能为空");
-            ret.setState(ResponseResult.PARAMETER_ERROR);
-            return ret;
-        }
-        if(StrUtil.isNullOrEmpty(orgRefTypeVo.getOrgId())){
+//        if(StrUtil.isNullOrEmpty(orgRefTypeVo)){
+//            ret.setMessage("参数不能为空");
+//            ret.setState(ResponseResult.PARAMETER_ERROR);
+//            return ret;
+//        }
+        if(StrUtil.isNullOrEmpty(orgId)){
             ret.setMessage("组织标识不能为空");
             ret.setState(ResponseResult.PARAMETER_ERROR);
             return ret;
         }
+        OrgRefTypeVo orgRefTypeVo = new OrgRefTypeVo();
+        orgRefTypeVo.setOrgId(orgId);
+        if(!StrUtil.isNullOrEmpty(pageNo)){
+            orgRefTypeVo.setPageNo(pageNo);
+        }
+        if(!StrUtil.isNullOrEmpty(pageSize)){
+            orgRefTypeVo.setPageSize(pageSize);
+        }
+
         Page<OrgRefTypeVo> page = orgRelService.selectOrgRelTypePage(orgRefTypeVo);
         ret.setMessage("成功");
         ret.setState(ResponseResult.STATE_OK);
