@@ -6,7 +6,7 @@ import lombok.Setter;
 
 public enum  EumPersonnelResponseCode {
 
-    PERSONNEL_RESPONSE_SUCCESS(0, "操作成功"),
+    PERSONNEL_RESPONSE_SUCCESS(1000, "操作成功"),
     PERSONNEL_RESPONSE_ERROR(1, "操作失败"),
     PSN_NAME_IS_NULL(2, "人员姓名不能为空"),
     CERT_TYPE_IS_NULL(3, "证件类型不能为空"),
@@ -21,23 +21,24 @@ public enum  EumPersonnelResponseCode {
     SAVE_IMG_ERROE(12, "图片保存失败"),
     CONTACT_IS_NULL(13, "手机、邮箱、QQ号、微信号、固话不能为空"),
     CERT_IS_EXIST(14, "身份证已被占用"),
+    PSN_NOT_EXIST(15, "人员不存在"),
     ;
 
     @Getter
     @Setter
-    private int code;
+    private int state;
 
     @Getter
     @Setter
-    private String msg;
+    private String message;
 
-    private EumPersonnelResponseCode(int code, String msg) {
-        this.code = code;
-        this.msg = msg;
+    private EumPersonnelResponseCode(int state, String message) {
+        this.state = state;
+        this.message = message;
     }
 
     @Override
     public String toString() {
-        return "{\"code\":\"" + this.code + "\",\"msg\":\"" + this.msg + "\"}";
+        return "{\"state\":\"" + this.state + "\",\"message\":\"" + this.message + "\"}";
     }
 }

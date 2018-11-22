@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.organization.controller;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
+import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.service.*;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
@@ -36,8 +37,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/orgTree")
-@Api(value = "/org", description = "组织树相关操作")
-public class OrgTreeController {
+@Api(value = "/orgTree", description = "组织树相关操作")
+public class OrgTreeController extends BaseController {
 
 
     @Autowired

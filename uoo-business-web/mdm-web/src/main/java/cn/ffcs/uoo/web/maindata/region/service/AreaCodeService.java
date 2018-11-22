@@ -11,7 +11,7 @@ import cn.ffcs.uoo.web.maindata.region.dto.TbAreaCode;
 import cn.ffcs.uoo.web.maindata.region.service.fallback.AreaCodeServiceHystrix;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
 import common.config.PersonnelServiceConfiguration;
-@FeignClient(value = "uoo-region-provider",configuration = {PersonnelServiceConfiguration.class},fallback = AreaCodeServiceHystrix.class)
+@FeignClient(value = "business-region",configuration = {PersonnelServiceConfiguration.class},fallback = AreaCodeServiceHystrix.class)
 public interface AreaCodeService {
     
     @GetMapping("/region/areaCode/getAreaCode/id={id}")

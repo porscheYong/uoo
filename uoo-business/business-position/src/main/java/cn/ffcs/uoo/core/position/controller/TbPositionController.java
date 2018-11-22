@@ -2,13 +2,17 @@ package cn.ffcs.uoo.core.position.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.position.constant.StatusEnum;
 import cn.ffcs.uoo.core.position.entity.TbOrgPositionRel;
 import cn.ffcs.uoo.core.position.entity.TbPosition;
 import cn.ffcs.uoo.core.position.service.TbOrgPositionRelService;
 import cn.ffcs.uoo.core.position.service.TbPositionService;
+import cn.ffcs.uoo.core.position.util.TreeUtil;
 import cn.ffcs.uoo.core.position.vo.OrgPositionInfoVo;
+import cn.ffcs.uoo.core.position.vo.PositionNodeVo;
 import cn.ffcs.uoo.core.position.vo.ResponseResult;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -44,7 +48,14 @@ public class TbPositionController extends BaseController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseResult<TbPosition> addTbPosition(@RequestBody TbPosition tbPosition) {
         ResponseResult<TbPosition> responseResult = new ResponseResult<TbPosition>();
+
+        tbPosition.setEffDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPosition.setStatusCd(StatusEnum.VALID.getStatus());
+        tbPosition.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPosition.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+
         tbPositionService.save(tbPosition);
+
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增岗位成功");
         return responseResult;
@@ -62,7 +73,11 @@ public class TbPositionController extends BaseController {
             return responseResult;
         }
 
+        tbPosition.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPosition.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPosition.setEffDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbPositionService.updateById(tbPosition);
+
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("更新岗位信息成功");
         return responseResult;
@@ -174,6 +189,20 @@ public class TbPositionController extends BaseController {
         positionWrapper.eq("PARENT_POSITION_ID", parentPositionId);
         positionWrapper.eq("STATUS_CD", "1000");
         return tbPositionService.selectList(positionWrapper);
+    }
+
+    @ApiOperation(value = "查询岗位树", notes = "查询岗位树")
+    @UooLog(value = "查询岗位树", key = "getPositionTree")
+    @RequestMapping(value = "/getPositionTree", method = RequestMethod.GET)
+    public ResponseResult<List<PositionNodeVo>> getPositionTree() {
+        ResponseResult<List<PositionNodeVo>> responseResult = new ResponseResult<List<PositionNodeVo>>();
+        List<PositionNodeVo> positionNodeVoList = tbPositionService.getAllPositionNodeVo();
+        List<PositionNodeVo> positionTree = TreeUtil.createPositionTree(positionNodeVoList);
+
+        responseResult.setState(ResponseResult.STATE_OK);
+        responseResult.setMessage("成功");
+        responseResult.setData(positionTree);
+        return responseResult;
     }
 }
 

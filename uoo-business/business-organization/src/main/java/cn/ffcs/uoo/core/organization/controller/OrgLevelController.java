@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.core.organization.controller;
 
 
+import cn.ffcs.uoo.base.controller.BaseController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 @RequestMapping("/orgLevel")
-public class OrgLevelController {
+public class OrgLevelController extends BaseController {
 
 }
 

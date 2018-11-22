@@ -1,16 +1,15 @@
 package cn.ffcs.uoo.web.maindata.personnel.service;
 
 
+import cn.ffcs.uoo.web.maindata.personnel.service.fallback.PersonnelServiceHystrix;
+import cn.ffcs.uoo.web.maindata.personnel.vo.EditFormPersonnelVo;
+import cn.ffcs.uoo.web.maindata.personnel.vo.PersonnelVo;
+import common.config.PersonnelServiceConfiguration;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.baomidou.mybatisplus.plugins.Page;
-
-import cn.ffcs.uoo.web.maindata.personnel.dto.TbPersonnel;
-import common.config.PersonnelServiceConfiguration;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *  ┏┓　　　┏┓
@@ -36,19 +35,23 @@ import common.config.PersonnelServiceConfiguration;
  * @date 2018/9/8 21:49
  * @Version 1.0.0
 */
-@FeignClient(value = "personnel-service",configuration = {PersonnelServiceConfiguration.class},fallback = PersonnelServiceHystrix.class)
-//@FeignClient("personnel-service")
+@FeignClient(value = "business-personnel",configuration = {PersonnelServiceConfiguration.class},fallback = PersonnelServiceHystrix.class)
 public interface PersonnelService {
 
-    @RequestMapping(value = "/personnel/testPage",method = RequestMethod.GET)
-    Page<TbPersonnel> testPersonnel();
+    @RequestMapping(value="/personnel/getFormPersonnel", method = RequestMethod.GET, headers={"Content-Type=application/json"})
+    public Object getFormPersonnel(@RequestParam("personnelId") Long personnelId,
+                                    @RequestParam("orgRootId") Long orgRootId,
+                                    @RequestParam("orgId") Long orgId);
 
-    @RequestMapping(value = "/personnel/getPage/",method = RequestMethod.POST)
-    Page<TbPersonnel> getPersonnelCondition(@RequestBody TbPersonnel tbPersonnel);
+    @RequestMapping(value = "/personnel/savePersonnel", method = RequestMethod.POST , headers={"Content-Type=application/json"} )
+    public Object savePersonnel(@RequestBody EditFormPersonnelVo editFormPersonnelVo);
 
-    @RequestMapping(value = "/personnel/getPage/pageNo={pageNo}&pageSize={pageSize}",method = RequestMethod.GET)
-    Page<TbPersonnel> getPersonnel(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize);
+    @RequestMapping(value="/personnel/deletePersonnel",method = RequestMethod.DELETE, headers={"Content-Type=application/json"} )
+    public Object deletePersonnel(@RequestParam("personnelId") Long personnelId);
 
-    @RequestMapping(value = "/personnel/test",method = RequestMethod.GET)
-    String test();
+    @RequestMapping(value = "/personnel/updatePersonnel",method = RequestMethod.PUT, headers={"Content-Type=application/json"} )
+    public Object upPersonnel(@RequestBody PersonnelVo personnelVo);
+
+    @RequestMapping(value="/personnel/getPsnBasicInfo", method = RequestMethod.GET, headers={"Content-Type=application/json"})
+    public Object getPsnBasicInfo(@RequestParam("keyWord") String keyWord, @RequestParam("pageNo") int pageNo, @RequestParam("pageSize") int pageSize);
 }

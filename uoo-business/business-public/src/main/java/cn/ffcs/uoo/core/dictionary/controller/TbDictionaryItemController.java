@@ -2,7 +2,9 @@ package cn.ffcs.uoo.core.dictionary.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.constant.StatusEnum;
 import cn.ffcs.uoo.core.dictionary.entity.TbDictionary;
 import cn.ffcs.uoo.core.dictionary.entity.TbDictionaryItem;
 import cn.ffcs.uoo.core.dictionary.service.TbDictionaryItemService;
@@ -42,6 +44,8 @@ public class TbDictionaryItemController extends BaseController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseResult<TbDictionaryItem> updateTbDictionaryItem(@RequestBody TbDictionaryItem tbDictionaryItem) {
         ResponseResult<TbDictionaryItem> responseResult = new ResponseResult<TbDictionaryItem>();
+        tbDictionaryItem.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbDictionaryItem.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbDictionaryItemService.updateById(tbDictionaryItem);
 
         responseResult.setState(ResponseResult.STATE_OK);
@@ -55,6 +59,10 @@ public class TbDictionaryItemController extends BaseController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseResult<TbDictionaryItem> addTbDictionaryItem(@RequestBody TbDictionaryItem tbDictionaryItem) {
         ResponseResult<TbDictionaryItem> responseResult = new ResponseResult<TbDictionaryItem>();
+        tbDictionaryItem.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbDictionaryItem.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbDictionaryItem.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbDictionaryItem.setStatusCd(StatusEnum.VALID.getValue());
         tbDictionaryItemService.save(tbDictionaryItem);
 
         responseResult.setState(ResponseResult.STATE_OK);
@@ -94,10 +102,14 @@ public class TbDictionaryItemController extends BaseController {
     })
     @UooLog(value = "查询字典项目列表", key = "queryListByDictionaryName")
     @RequestMapping(value = "/getList/{dictionaryName}", method = RequestMethod.GET)
-    public List<TbDictionaryItem> queryListByDictionaryName(@PathVariable String dictionaryName) {
+    public ResponseResult<List<TbDictionaryItem>> queryListByDictionaryName(@PathVariable String dictionaryName) {
+        ResponseResult<List<TbDictionaryItem>> responseResult = new ResponseResult<List<TbDictionaryItem>>();
+
         // 校验必填项
         if (dictionaryName == null) {
-            return null;
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("必填项校验失败");
+            return responseResult;
         }
 
         // 根据dictionaryName查询出id
@@ -107,7 +119,9 @@ public class TbDictionaryItemController extends BaseController {
         List<TbDictionary> tbDictionaryList = tbDictionaryService.selectList(tbDictionaryWrapper);
 
         if (tbDictionaryList == null || tbDictionaryList.size() == 0) {
-            return null;
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("字典值不存在");
+            return responseResult;
         }
 
         // 根据dictionaryId查询出dictionaryItemList
@@ -115,6 +129,10 @@ public class TbDictionaryItemController extends BaseController {
         tbDictionaryItemWrapper.eq("DICTIONARY_ID", tbDictionaryList.get(0).getDictionaryId());
         tbDictionaryItemWrapper.eq("STATUS_CD", "1000");
         tbDictionaryItemWrapper.orderBy("SORT");
-        return tbDictionaryItemService.selectList(tbDictionaryItemWrapper);
+        List<TbDictionaryItem> list = tbDictionaryItemService.selectList(tbDictionaryItemWrapper);
+        responseResult.setState(ResponseResult.STATE_OK);
+        responseResult.setMessage("请求成功");
+        responseResult.setData(list);
+        return responseResult;
     }
 }

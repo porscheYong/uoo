@@ -1,17 +1,11 @@
-// NProgress
-if (typeof NProgress != 'undefined') {
-  $(document).ready(function () {
-      NProgress.start();
-  });
-}
-
 // loadingMask
 var loading = new Loading();
+loading.screenMaskEnable('container');
 
 var setting = {
     async: {
         enable: true,
-        url: base + "orgRel/getOrgRelTree?orgRootId=1",
+        url: "http://134.96.253.221:11100/orgRel/getOrgRelTree?orgRootId=1",
         autoParam: ["id"],
         type: "get",
         dataFilter: filter
@@ -37,24 +31,28 @@ var setting = {
     }
 };
 
+var orgId,
+    orgName;
+
 function onNodeClick(e,treeId, treeNode) {
     // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
     // zTree.expandNode(treeNode);
-    var orgId = treeNode.id;
-    refreshResult(orgId);
+    orgId = treeNode.id;
+    orgName = treeNode.name;
+    refreshResult();
 }
 
 function filter (treeId, parentNode, childNodes) {
     return childNodes.data
 }
 
-function refreshResult (orgId) {
-    var url = "list.html?id=" + orgId;
+function refreshResult () {
+    var url = "list.html?id=" + orgId + "&name=" + encodeURI(orgName);
     $('#userFrame').attr("src",url);
 }
 
 function initOrgRelTree (orgId) {
-    $http.get('orgRel/getOrgRelTree', {
+    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTree', {
         orgRootId: orgId
     }, function (data) {
         console.log(data)

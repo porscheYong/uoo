@@ -3,10 +3,13 @@ package cn.ffcs.uoo.core.personnel.controller;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.personnel.annotion.SendMqMsg;
 import cn.ffcs.uoo.core.personnel.entity.TbCert;
 import cn.ffcs.uoo.core.personnel.service.TbCertService;
+import cn.ffcs.uoo.core.personnel.util.ResultUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,10 +35,13 @@ public class TbCertController extends BaseController {
     @ApiOperation(value = "新增证件信息",notes = "证件信息新增")
     @ApiImplicitParam(name = "tbCert", value = "证件信息", required = true, dataType = "TbCert")
     @UooLog(value = "新增证件信息", key = "addCert")
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public void addCert(TbCert tbCert) {
+    @SendMqMsg(type = "person", handle ="update", column ="personnelId")
+    @RequestMapping(value = "/addCert", method = RequestMethod.POST)
+    public Object addCert(TbCert tbCert) {
+        Long certId = tbCertService.getId();
         tbCert.setCertId(tbCertService.getId());
         tbCertService.insert(tbCert);
+        return ResultUtils.success(127);
     }
 
     @ApiOperation(value = "修改证件信息",notes = "证件信息修改")
@@ -52,6 +58,18 @@ public class TbCertController extends BaseController {
     @RequestMapping(value="", method = RequestMethod.DELETE)
     public void delCert(TbCert tbCert) {
         tbCertService.delete(tbCert);
+    }
+
+    @ApiOperation(value="证件查询",notes="证件查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "keyWord", value = "关键字", required = true, dataType = "String",paramType="path"),
+            @ApiImplicitParam(name = "pageNo", value = "当前页数", required = true, dataType = "Integer",paramType="path"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path")
+    })
+    @UooLog(value = "证件查询",key = "getCertInfo")
+    @RequestMapping(value="/getCertInfo",method = RequestMethod.GET)
+    public Object getCertInfo(String keyWord, Integer pageNo, Integer pageSize){
+        return tbCertService.getCertInfo(keyWord, pageNo, pageSize);
     }
 }
 

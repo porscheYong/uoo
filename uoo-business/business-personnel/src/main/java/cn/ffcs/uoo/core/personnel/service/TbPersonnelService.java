@@ -2,8 +2,11 @@ package cn.ffcs.uoo.core.personnel.service;
 
 import cn.ffcs.uoo.core.personnel.entity.TbPersonnel;
 import cn.ffcs.uoo.core.personnel.vo.*;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.baomidou.mybatisplus.service.IService;
 import com.baomidou.mybatisplus.plugins.Page;
+
+import java.util.List;
 
 /**
  * <p>
@@ -46,4 +49,27 @@ public interface TbPersonnelService extends IService<TbPersonnel> {
      * @return
      */
     public PsnByUserVo getPsnByUser(PsnByUserVo psnByUserVo);
+
+    /**
+     * 根据personnelId 删除 人员基础信息
+     * @param personnelId
+     * @return
+     */
+    public Object delTbPersonnelByPsnId(Long personnelId);
+
+    /**
+     * 选择人员
+     * @param keyWord
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    public Page<PsnBasicInfoVo> getPsnBasicInfo(String keyWord, int pageNo, int pageSize);
+
+    /**
+     * 新增 组织与人员关系
+     * @param psonOrgVos
+     * @return
+     */
+    public Object addOrgPsn(List<PsonOrgVo> psonOrgVos);
 }

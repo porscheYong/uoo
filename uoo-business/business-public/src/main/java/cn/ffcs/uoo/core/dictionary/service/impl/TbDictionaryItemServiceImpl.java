@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.core.dictionary.service.impl;
 
 import cn.ffcs.uoo.base.common.tool.util.DateUtils;
+import cn.ffcs.uoo.core.constant.StatusEnum;
 import cn.ffcs.uoo.core.dictionary.dao.TbDictionaryItemMapper;
 import cn.ffcs.uoo.core.dictionary.entity.TbDictionaryItem;
 import cn.ffcs.uoo.core.dictionary.service.TbDictionaryItemService;
@@ -24,7 +25,7 @@ public class TbDictionaryItemServiceImpl extends ServiceImpl<TbDictionaryItemMap
         TbDictionaryItem tbDictionaryItem = new TbDictionaryItem();
         tbDictionaryItem.setDictionaryId(dictionaryId);
         // 失效状态
-        tbDictionaryItem.setStatusCd("1100");
+        tbDictionaryItem.setStatusCd(StatusEnum.INVALID.getValue());
         tbDictionaryItem.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbDictionaryItem.setUpdateUser(updateUser);
         tbDictionaryItem.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
@@ -41,7 +42,7 @@ public class TbDictionaryItemServiceImpl extends ServiceImpl<TbDictionaryItemMap
         TbDictionaryItem tbDictionaryItem = new TbDictionaryItem();
         tbDictionaryItem.setItemId(itemId);
         // 失效状态
-        tbDictionaryItem.setStatusCd("1100");
+        tbDictionaryItem.setStatusCd(StatusEnum.INVALID.getValue());
         tbDictionaryItem.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbDictionaryItem.setUpdateUser(updateUser);
         tbDictionaryItem.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));

@@ -1051,3 +1051,18 @@ ul.tab-title.right li {
     background: rgba(0, 0, 0, 0.8);
     z-index: 2000;
 }
+
+/*
+ * Component: breadcrumb
+ * --------------
+ */
+.breadcrumb {
+    padding: 10px 15px 0;
+    background: #fff;
+}
+.breadcrumb > .breadcrumb-item > a {
+    color: #959da9;
+}
+.breadcrumb > .breadcrumb-item > .breadcrumb-separator {
+    margin: 0 9px;
+}

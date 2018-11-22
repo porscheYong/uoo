@@ -1,17 +1,21 @@
 server:
-  port: 9090
+  port: 18000
 spring:
   application:
-    name: uoo-web
+    name: mdm-web
   mvc: 
     static-path-pattern: /**
   resources: 
-    static-locations: classpath:/templates/,classpath:/static/
+    static-locations: classpath:/templates/,classpath:/static/,classpath:/META-INF/resources/,classpath:/META-INF/resources/webjars/
+  devtools: 
+    livereload: 
+      enabled: true
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:${eureka.server.port}/eureka/
+      defaultZone: http://134.96.253.221:${eureka.server.port}/eureka/
+      #defaultZone: http://localhost:8762/eureka
   instance:
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
     prefer-ip-address: true
@@ -20,7 +24,21 @@ eureka:
 feign:
   hystrix:
     enabled: true
+    shareSecurityContext: true
+    command:
+      default:
+        circuitBreaker:
+          sleepWindowInMilliseconds: 100000
+          forceClosed: true
+        execution:
+          isolation:
+            thread:
+              timeoutInMilliseconds: 600000
+#请求处理的超时时间
+ribbon.ReadTimeout: 120000
+#请求连接的超时时间
+ribbon.ConnectTimeout: 30000
 
 logging:
   level:
-    cn.ffcs.uoo.web.maindata.personnel.service.PersonnelService: debug
+    cn.ffcs.uoo.web: debug

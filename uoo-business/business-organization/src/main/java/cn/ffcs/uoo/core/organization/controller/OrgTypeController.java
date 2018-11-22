@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.organization.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.organization.entity.OrgOrgtypeRel;
 import cn.ffcs.uoo.core.organization.entity.OrgType;
 import cn.ffcs.uoo.core.organization.service.OrgTypeService;
@@ -36,7 +37,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/orgType")
 @Api(value = "/orgType", description = "组织类别相关操作")
-public class OrgTypeController {
+public class OrgTypeController extends BaseController {
 
     @Autowired
     private OrgTypeService orgTypeService;

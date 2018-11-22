@@ -2,7 +2,7 @@ server:
   port: 11700
 spring:
   application:
-    name: uoo-region-provider
+    name: business-region
   zipkin:
     base-url: http://localhost:20010
   sleuth:

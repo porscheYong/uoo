@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.region.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +32,28 @@ public class TbCommonRegionController {
     @Autowired
     private CommonRegionService regionService;
 
+    @ApiOperation(value = "根据ID获取下一级信息", notes = "根据ID获取下一级信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long", paramType = "path"), })
+    @GetMapping("getChildCommonRegionInfo/{id}")
+    public ResponseResult getChildCommonRegionInfo(@PathVariable(value="id") Long id){
+        return regionService.getChildCommonRegionInfo(id);
+         
+    }
+    @ApiOperation(value = "公共管理区域树", notes = "公共管理区域树")
+    @GetMapping("getTreeCommonRegion")
+    public ResponseResult getTreeCommonRegion(HttpServletRequest request){
+        String id_ = request.getParameter("id");
+        long id=0;
+        if(id_!=null){
+            try {
+                id=Long.valueOf(id_);
+            } catch (Exception e) {
+            }
+        }
+        return regionService.getTreeCommonRegion(id);
+    }
+    
     @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),

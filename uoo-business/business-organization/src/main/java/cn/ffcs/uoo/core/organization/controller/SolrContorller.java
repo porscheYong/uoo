@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.core.organization.controller;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.organization.entity.OgtOrgReltypeConf;
 import cn.ffcs.uoo.core.organization.entity.OrgRelType;
 import cn.ffcs.uoo.core.organization.entity.OrgTree;
@@ -39,7 +40,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/solr")
 @Api(value = "/solr", description = "组织人员搜索引擎")
-public class SolrContorller {
+public class SolrContorller extends BaseController {
 
     @Autowired
     private SolrService solrService;

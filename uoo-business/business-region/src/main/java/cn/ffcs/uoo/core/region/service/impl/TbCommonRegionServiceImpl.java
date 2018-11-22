@@ -33,4 +33,12 @@ public class TbCommonRegionServiceImpl extends ServiceImpl<TbCommonRegionMapper,
     public List<Map> selectUnionPolLoc(Map<String,Object> params) {
         return mapper.selectUnionPolLoc(params);
     }
+    @Override
+    public List<Map> getChildCommonRegionInfo(Map<String, Object> params) {
+        return mapper.getChildCommonRegionInfo(params);
+    }
+    @Override
+    public List<TbCommonRegion> getTreeCommonRegion(Map<String, Object> params) {
+        return mapper.getTreeCommonRegion(params);
+    }
 }

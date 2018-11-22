@@ -1,7 +1,12 @@
 package cn.ffcs.uoo.core.organization.dao;
 
 import cn.ffcs.uoo.core.organization.entity.OrgCertRel;
+import cn.ffcs.uoo.core.organization.vo.OrgCertVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 /**
  * <p>
@@ -16,4 +21,6 @@ public interface OrgCertRelMapper extends BaseMapper<OrgCertRel> {
     public Long getId();
 
     public void delete(OrgCertRel orgCertRel);
+
+    public List<OrgCertVo> getOrgCerRelByOrgId(@Param("orgId")Long orgId);
 }

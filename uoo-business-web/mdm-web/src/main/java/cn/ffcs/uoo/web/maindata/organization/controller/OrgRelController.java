@@ -27,8 +27,7 @@ import java.util.List;
  * @since 2018-09-25
  */
 @RestController
-@RequestMapping(value = "/orgRel",produces = {"application/json;charset=UTF-8"})
-@Api(value = "/orgRel", description = "组织关系相关操作")
+@RequestMapping(value = "/orgRel")
 public class OrgRelController {
 
 
@@ -36,16 +35,13 @@ public class OrgRelController {
     private OrgRelService orgRelService;
 
 
-    @ApiOperation(value = "获取组织树", notes = "获取组织树")
-    @ApiImplicitParams({
-    })
-    @RequestMapping(value = "/getOrgRelTree/id={id}&orgRootId={orgRootId}&relCode={relCode}&isOpen={isOpen}&isAsync={isAsync}&isRoot={isRoot}", method = RequestMethod.POST)
-    public ResponseResult<List<TreeNodeVo>> getOrgRelTree(@PathVariable(value = "id")String id,
-                                                          @PathVariable(value = "orgRootId")String orgRootId,
-                                                          @PathVariable(value = "relCode")String relCode,
-                                                          @PathVariable(value = "isOpen")boolean isOpen,
-                                                          @PathVariable(value = "isAsync")boolean isAsync,
-                                                          @PathVariable(value = "isRoot")boolean isRoot){
+    @RequestMapping(value = "/getOrgRelTree", method = RequestMethod.GET)
+    public ResponseResult<List<TreeNodeVo>> getOrgRelTree(@RequestParam(value = "id",required = false)String id,
+                                                          @RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                          @RequestParam(value = "relCode",required = false)String relCode,
+                                                          @RequestParam(value = "isOpen",required = false)boolean isOpen,
+                                                          @RequestParam(value = "isAsync",required = false)boolean isAsync,
+                                                          @RequestParam(value = "isRoot",required = false)boolean isRoot){
         return orgRelService.getOrgRelTree(id,orgRootId,relCode,isOpen, isAsync,isRoot);
     }
 
@@ -54,8 +50,11 @@ public class OrgRelController {
     @ApiOperation(value = "获取重构组织树", notes = "获取重构组织树")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getRestructOrgRelTree/id={id}&orgRootId={orgRootId}&isFull={isFull}", method = RequestMethod.GET)
-    public ResponseResult<List<TreeNodeVo>> getRestructOrgRelTree(@PathVariable(value = "id")String id,@PathVariable(value = "orgRootId")String orgRootId,@PathVariable(value = "isFull")boolean isFull){
+    @RequestMapping(value = "/getRestructOrgRelTree", method = RequestMethod.GET)
+    public ResponseResult<List<TreeNodeVo>> getRestructOrgRelTree(
+            @PathVariable(value = "id",required = false)String id,
+            @PathVariable(value = "orgRootId",required = false)String orgRootId,
+            @PathVariable(value = "isFull",required = false)boolean isFull){
         return orgRelService.getRestructOrgRelTree(id,orgRootId,isFull);
        // return null;
     }
@@ -64,11 +63,11 @@ public class OrgRelController {
     @ApiOperation(value = "获取目标组织树指定层级", notes = "获取目标组织树指定层级")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getTarOrgRelTreeAndLv/orgRootId={orgRootId}&lv={lv}&curOrgid={curOrgid}&isFull={isFull}", method = RequestMethod.GET)
-    public ResponseResult<List<TreeNodeVo>> getTarOrgRelTreeAndLv(@PathVariable(value = "orgRootId")String orgRootId,
-                                                                  @PathVariable(value = "lv")String lv,
-                                                                  @PathVariable(value = "curOrgid")String curOrgid,
-                                                                  @PathVariable(value = "isFull")boolean isFull){
+    @RequestMapping(value = "/getTarOrgRelTreeAndLv", method = RequestMethod.GET)
+    public ResponseResult<List<TreeNodeVo>> getTarOrgRelTreeAndLv(@RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                                  @RequestParam(value = "lv",required = false)String lv,
+                                                                  @RequestParam(value = "curOrgid",required = false)String curOrgid,
+                                                                  @RequestParam(value = "isFull",required = false)boolean isFull){
         return orgRelService.getTarOrgRelTreeAndLv(orgRootId,lv,curOrgid,isFull);
     }
 
@@ -85,18 +84,23 @@ public class OrgRelController {
     @ApiOperation(value = "检索组织树", notes = "检索组织树")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getFuzzyOrgRelPage", method = RequestMethod.POST)
-    public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(@RequestBody OrgVo orgVo){
-        return orgRelService.getFuzzyOrgRelPage(orgVo);
+    @RequestMapping(value = "/getFuzzyOrgRelPage", method = RequestMethod.GET)
+    public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(@RequestParam(value = "search",required = false)String search,
+                                                          @RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                          @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                                          @RequestParam(value = "pageNo",required = false)Integer pageNo){
+        return orgRelService.getFuzzyOrgRelPage(search,orgRootId,pageSize,pageNo);
     }
 
 
     @ApiOperation(value = "获取组织关系类型翻页", notes = "获取组织关系类型翻页")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getOrgRelTypePage", method = RequestMethod.POST)
-    public ResponseResult<Page<OrgRefTypeVo>> getOrgRelTypePage(@RequestBody OrgRefTypeVo orgRefTypeVo){
-        return orgRelService.getOrgRelTypePage(orgRefTypeVo);
+    @RequestMapping(value = "/getOrgRelTypePage", method = RequestMethod.GET)
+    public ResponseResult<Page<OrgRefTypeVo>> getOrgRelTypePage(@RequestParam(value = "orgId",required = false)String orgId,
+                                                                @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                                                @RequestParam(value = "pageNo",required = false)Integer pageNo){
+        return orgRelService.getOrgRelTypePage(orgId,pageSize,pageNo);
     }
 
 }

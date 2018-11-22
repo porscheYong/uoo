@@ -68,6 +68,17 @@ public class OrgOrgtreeRel extends Model<OrgOrgtreeRel> {
     private Date statusDate;
 
 
+    @TableField("ORG_BIZ_NAME")
+    private String orgBizName;
+
+    public String getOrgBizName() {
+        return orgBizName;
+    }
+
+    public void setOrgBizName(String orgBizName) {
+        this.orgBizName = orgBizName;
+    }
+
     public Long getOrgOrgtreeId() {
         return orgOrgtreeId;
     }
@@ -151,6 +162,7 @@ public class OrgOrgtreeRel extends Model<OrgOrgtreeRel> {
         ", orgOrgtreeId=" + orgOrgtreeId +
         ", orgId=" + orgId +
         ", orgTreeId=" + orgTreeId +
+        ", orgBizName=" + orgBizName +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
         ", createUser=" + createUser +

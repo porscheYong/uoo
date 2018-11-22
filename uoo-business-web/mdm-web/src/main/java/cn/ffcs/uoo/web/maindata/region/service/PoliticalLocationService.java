@@ -11,7 +11,7 @@ import cn.ffcs.uoo.web.maindata.region.dto.TbPoliticalLocation;
 import cn.ffcs.uoo.web.maindata.region.service.fallback.PoliticalLocationServiceHystrix;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
 
-@FeignClient(value = "uoo-region-provider",/*configuration = {PersonnelServiceConfiguration.class},*/fallback = PoliticalLocationServiceHystrix.class)
+@FeignClient(value = "business-region",/*configuration = {PersonnelServiceConfiguration.class},*/fallback = PoliticalLocationServiceHystrix.class)
 public interface PoliticalLocationService {
 
     
@@ -32,5 +32,9 @@ public interface PoliticalLocationService {
      
     @RequestMapping(value="/region/politicalLocation/deletePoliticalLocation",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult deletePoliticalLocation(@RequestBody TbPoliticalLocation polLoc);
-
+    @GetMapping("/region/politicalLocation/getChildPoliticalLocationInfo/{id}")
+    public ResponseResult getChildPoliticalLocationInfo(@PathVariable(value="id") Long id);
+    @GetMapping("/region/politicalLocation/getTreePoliticalLocation/{id}")
+    public ResponseResult getTreePoliticalLocation(@PathVariable(value="id") Long id );
+    
 }

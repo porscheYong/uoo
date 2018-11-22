@@ -33,4 +33,19 @@
         WHERE
           ORG_CERT_ID = #{orgCertId}
     </update>
+
+    <select id="getOrgCerRelByOrgId" resultType="cn.ffcs.uoo.core.organization.vo.OrgCertVo">
+        SELECT A.ORG_CERT_ID orgCertId,
+       A.CERT_ID certId,
+       A.ORG_ID orgId,
+       B.CERT_TYPE certType,
+       '' certTypeName,
+       B.CERT_NO certNo,
+       B.ISSUING Issuing
+  FROM TB_ORG_CERT_REL A, TB_CERT B
+ WHERE A.STATUS_CD = '1000'
+   AND B.STATUS_CD = '1000'
+   AND A.CERT_ID=B.CERT_ID
+   AND A.ORG_ID=#{orgId}
+    </select>
 </mapper>
