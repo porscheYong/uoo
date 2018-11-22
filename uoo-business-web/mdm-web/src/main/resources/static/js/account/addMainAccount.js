@@ -1,4 +1,6 @@
-// var fullOrgName = getQueryString('fullorgname');
+
+// var baseUrl = '134.96.253.221:18000';
+// var baseUrl = '192.168.58.112:18000';
 var acctId = getQueryString('acctId');
 var userType = getQueryString('userType');
 var statusCd = getQueryString('statusCd');
@@ -12,7 +14,6 @@ var acctOrgVoPage;
 var tbRolesList;
 var orgTable;
 var editOrgList = [];
-var num = 0;
 var flag = 0;
 
 // console.log(acctId+'--'+userType+'--'+statusCd+'--'+personnelId+'--'+title+'--'+opBtn);
@@ -25,7 +26,7 @@ $('#cerType').get(0).selectedIndex=1;  //判断证件类型
 
 
 function getUser(acctId,userType) {           //查看主账号
-    $http.get('http://192.168.58.112:18000/user/getUser', {   //http://192.168.58.112:18000/user/getUser
+    $http.get('/user/getUser', {   //http://192.168.58.112:18000/user/getUser
         acctId: acctId,
         userType: userType
     }, function (data) {
@@ -38,7 +39,7 @@ function getUser(acctId,userType) {           //查看主账号
 }
 
 function getAcctUser(personnelId,userType){     //获取主账号信息(编辑或者新增)
-  $http.get('http://192.168.58.112:18000/user/getPsnUser', {  
+  $http.get('/user/getPsnUser', {    //'http://'+baseUrl+'/user/getPsnUser'
     personnelId: personnelId,
     userType: userType
   }, function (data) {
@@ -63,6 +64,7 @@ function getAcctUser(personnelId,userType){     //获取主账号信息(编辑�
 }
 
 function initOrgTable(results){         //主账号组织数据表格
+    var num =1;
     orgTable = $("#orgTable").DataTable({
     'data': results,
     'searching': false,
@@ -75,7 +77,11 @@ function initOrgTable(results){         //主账号组织数据表格
     },
     "scrollY": "120px",
     'columns': [
-        { 'data': "id", 'title': '序号', 'className': 'row-id' },
+        { 'data': "id", 'title': '序号', 'className': 'row-id' ,
+        'render': function (data, type, row, meta) {
+          return num++;
+      }
+      },
         { 'data': "orgId", 'title': '组织树', 'className': 'row-orgTree' ,
         'render': function (data, type, row, meta) {
           return '标准组织树';
@@ -93,7 +99,7 @@ function initOrgTable(results){         //主账号组织数据表格
       },
       {'data': "orgId", 'title': '操作', 'className': 'row-delete' ,
       'render': function (data, type, row, meta) {
-        return "<a href='javascript:void(0);'  onclick='deleteOrg("+ row.id + ")'  class='btn btn-default btn-xs'><i class='fa fa-arrow-down'></i> 删除</a>";
+        return "<a href='javascript:void(0);'  onclick='deleteOrg("+ num + ")'  class='btn btn-default btn-xs'><i class='fa fa-arrow-down'></i> 删除</a>";
     }
     },
     { 'data': "orgId", 'title': 'orgId', 'className': 'row-orgId' }
@@ -222,7 +228,7 @@ function addTbAcct(){     //新增
   console.log(editFormAcctVo);
 
   $.ajax({
-    url: 'http://192.168.58.112:18000/acct/addTbAcct',
+    url: '/acct/addTbAcct',
     type: 'POST',
     async:false,
     contentType: "application/json",
@@ -240,60 +246,66 @@ function addTbAcct(){     //新增
 }
 
 function updateAcct(){      //编辑主账号
-  var statusCd;
-  //isEnableStatus(isStatus);
-  if($('#statusCd option:selected').text() == '生效'){
-    statusCd = '1000';
-  }else{
-    statusCd = '1100';
-  }
-  // console.log($('#statusCd option:selected').val());
-  var editFormAcctVo = {
-    "acct": $('#acctTel').val(),
-    "acctId": isAcctId,
-    // "acctOrgVoList": [
-    //   {
-    //     "acctHostId": acctOrgVoPage.records[0].acctHostId,
-    //     "acctId": acctOrgVoPage.records[0].acctId,
-    //     "fullName": acctOrgVoPage.records[0].fullName,
-    //     "id": acctOrgVoPage.records[0].id,
-    //     "orgId": acctOrgVoPage.records[0].orgId,
-    //     "pageNo": acctOrgVoPage.records[0].pageNo,
-    //     "pageSize": acctOrgVoPage.records[0].pageSize
-    //   }
-    // ],
-    "disableDate": $('#invalidDate').val(),
-    "enableDate": $('#effectDate').val(),
-    "password": $('#defaultPswTel').val(),
-    "personnelId": personnelId,
-    "statusCd": statusCd, 
-    "tbRolesList": [
-      {
-        "roleId": parseInt($('#roleTel').val()),
-        "roleName": ""
-      }
-    ],
-    "userType": "1"
-  };
-  console.log(editFormAcctVo);
-
-  $.ajax({
-    url: 'http://192.168.58.112:18000/acct/updateAcct',
-    type: 'PUT',
-    async:false,
-    contentType: "application/json",
-    data: JSON.stringify(editFormAcctVo),
-    dataType:"JSON",
-    success: function (data) { //返回json结果
-      console.log(data);
-      alert('保存成功');
-    },
-    error:function(err){
-      console.log(err);
-      alert('保存失败');
+    var statusCd;
+    if($('#statusCd option:selected').text() == '生效'){
+      statusCd = '1000';
+    }else{
+      statusCd = '1100';
     }
-  });
+    var editFormAcctVo = {
+      "acct": $('#acctTel').val(),
+      "acctId": isAcctId,
+      "disableDate": $('#invalidDate').val(),
+      "enableDate": $('#effectDate').val(),
+      "password": $('#defaultPswTel').val(),
+      "personnelId": personnelId,
+      "statusCd": statusCd, 
+      "tbRolesList": [
+        {
+          "roleId": parseInt($('#roleTel').val()),
+          "roleName": ""
+        }
+      ],
+      "userType": "1"
+    };
+    console.log(editFormAcctVo);
+
+    $.ajax({
+      url: '/acct/updateAcct',
+      type: 'PUT',
+      async:false,
+      contentType: "application/json",
+      data: JSON.stringify(editFormAcctVo),
+      dataType:"JSON",
+      success: function (data) { //返回json结果
+        console.log(data);
+        alert('保存成功');
+      },
+      error:function(err){
+        console.log(err);
+        alert('保存失败');
+      }
+    });
 }
+
+// function removeAcctOrg(){   //编辑时删除组织
+//   $.ajax({
+//     url: '/acct/removeAcctOrg',
+//     type: 'DELETE',
+//     async:false,
+//     contentType: "application/json",
+//     data: {personnelId:personnelId,acctID:,orgId},
+//     dataType:"JSON",
+//     success: function (data) { //返回json结果
+//       console.log(data);
+//       alert('保存成功');
+//     },
+//     error:function(err){
+//       console.log(err);
+//       alert('保存失败');
+//     }
+//   });
+// }
 
 function acctSubmit(){   //提交事件
   if($('#acctTel').val()!='' && $('#statusCd').val()!='' && $('#roleTel').val()!='' && $('#defaultPswTel').val()!=''){
@@ -328,28 +340,22 @@ function isEnableStatus(statusCd){    //判断状态
   }
 }
 
+//删除组织
 function deleteOrg(id){
   if(isEdit == 0){    //add
-    var n = '1';
-    addOrgList.splice(id-1,1);
-    for(var i=0;i < addOrgList.length;i++){
-      addOrgList[i].id = n;
-      n++;
-    }
+    addOrgList.splice(id-2,1);
     orgTable.destroy();
     initOrgTable(addOrgList);
-  }else if(isEdit == 1){    //edit
-    var m = '1';
-    editOrgList.splice(id-1,1);
-    for(var i=0;i < editOrgList.length;i++){
-      editOrgList[i].id = m;
-      m++;
-    }
+  }else if(isEdit == 1){    //编辑
+
+    editOrgList.splice(id-2,1);
     orgTable.destroy();
     initOrgTable(editOrgList);
-  }
 
+  }
 }
+
+
     
 
   if(opBtn==0){     //查看主账号
@@ -368,19 +374,18 @@ function deleteOrg(id){
 
 
   function getTableContent(){
-
-    if(flag == 0){
-      var n = 2;
-      var tr = $('tr');
-      for(var i=0;i<tr.length-5;i++){
-        editOrgList.push({'id':i+1,'orgId':tr[n].cells[4].innerText,'fullName':tr[n].cells[2].innerText});
-        n++;
-        num = i+1;
+    if(isEdit == 1){
+      if(flag == 0){
+        var n = 2;
+        var tr = $('tr');
+        for(var i=0;i<tr.length-5;i++){
+          editOrgList.push({'orgId':tr[n].cells[4].innerText,'fullName':tr[n].cells[2].innerText});
+          n++;
+        }
       }
       console.log(editOrgList);
       flag = 1;
     }
-    
   }
 
 
