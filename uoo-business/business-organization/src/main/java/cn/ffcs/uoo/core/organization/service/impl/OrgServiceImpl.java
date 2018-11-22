@@ -127,18 +127,19 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         Page<OrgVo> page = new Page<OrgVo>(orgVo.getPageNo()==0?1:orgVo.getPageNo(),
                 orgVo.getPageSize()==0?10:orgVo.getPageSize());
         List<OrgVo> orgVolist = baseMapper.selectOrgPage(page,orgVo);
-        for(OrgVo o : orgVolist){
-            List<OrgType> orgTypeList = orgTypeService.getOrgTypeByOrgId(o.getOrgId());
-            String orgTypeSplit = "";
-            if(orgTypeList!=null && orgTypeList.size()>0){
-                for(OrgType ot:orgTypeList){
-                    orgTypeSplit +=ot.getOrgTypeName()+",";
-                }
-            }
-            orgTypeSplit = orgTypeSplit.substring(0,orgTypeSplit.length()-1);
-            o.setOrgTypeSplit(orgTypeSplit);
-            //o.setOrgTypeList(orgTypeList);
-        }
+//        for(OrgVo o : orgVolist){
+//            List<OrgType> orgTypeList = orgTypeService.getOrgTypeByOrgId(o.getOrgId());
+//            String orgTypeSplit = "";
+//            if(orgTypeList!=null && orgTypeList.size()>0){
+//                for(OrgType ot:orgTypeList){
+//                    orgTypeSplit +=ot.getOrgTypeName()+",";
+//                }
+//            }
+//            if(!StrUtil.isNullOrEmpty(orgTypeSplit)){
+//                orgTypeSplit = orgTypeSplit.substring(0,orgTypeSplit.length()-1);
+//            }
+//            o.setOrgTypeSplit(orgTypeSplit);
+//        }
         page.setRecords(orgVolist);
         return page;
     }
