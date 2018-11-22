@@ -45,6 +45,9 @@ $(document).ready(function() {
 function getFontCss(treeId, treeNode) {
 	return (!!treeNode.highlight) ? {color:"#A60000", "font-weight":"bold"} : {color:"#333", "font-weight":"normal"};
 }
+function getAllNodesFilter(node){
+	return true;
+}
 function searchNotWantFilter(node){
 	 return ( node.name.indexOf($('#searchInput').val())<0);
 }
@@ -54,27 +57,42 @@ function searchWantFilter(node){
 function searchLeftTree(){
 	var key=$('#searchInput').val();
 	var zTree = $.fn.zTree.getZTreeObj("standardTree");
+	var nodes = zTree.getNodesByFilter(getAllNodesFilter);
 	if(key.length<1){
-		var nodes = zTree.transformTozTreeNodes(simpleNodes);
 		for(var i=0;i<nodes.length;i++){
 			nodes[i].highlight=false;
-			zTree.show(nodes[i]);
+			//zTree.showNode(nodes[i]);
 			zTree.updateNode(nodes[i]);
 		}
 		return;
 	}
 	//先把所有隐藏，再挨个显示
-	var notWantNodes=zTree.getNodesByFilter(searchNotWantFilter);
+	for(var i=0;i<nodes.length;i++){
+		nodes[i].highlight=false;
+		//zTree.hideNode(nodes[i]);
+		zTree.updateNode(nodes[i]);
+	}
+	
+	
+	
+	//var notWantNodes=zTree.getNodesByFilter(searchNotWantFilter);
 	var wantNodes=zTree.getNodesByFilter(searchWantFilter);
 	for(var i=0;i<wantNodes.length;i++){
 		wantNodes[i].highlight=true;
 		zTree.updateNode(wantNodes[i]);
 	}
-	for(var i=0;i<notWantNodes.length;i++){
-		notWantNodes[i].highlight=false;
-		zTree.updateNode(notWantNodes[i]);
+	//收紧所有
+	zTree.expandAll(false);
+	//先把扩展打开  再显示
+	for(var i=0;i<wantNodes.length;i++){
+		var myPN=wantNodes[i].getParentNode();
+		while(myPN!=null){
+			//zTree.showNode(myPN);
+			zTree.expandNode(myPN,true);
+			myPN=myPN.getParentNode();
+		}
+		//zTree.showNode(wantNodes[i]);
 	}
-	console.log('notWantNodes:'+notWantNodes.length+",wantNodes:"+wantNodes.length);
 }
 
 function loadTypeArr(){
