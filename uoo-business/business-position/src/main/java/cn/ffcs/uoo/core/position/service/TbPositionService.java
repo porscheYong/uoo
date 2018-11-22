@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.position.service;
 
 import cn.ffcs.uoo.core.position.entity.TbPosition;
 import cn.ffcs.uoo.core.position.vo.OrgPositionInfoVo;
+import cn.ffcs.uoo.core.position.vo.PositionNodeVo;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.List;
@@ -35,4 +36,10 @@ public interface TbPositionService extends IService<TbPosition> {
      * @return
      */
     List<OrgPositionInfoVo> queryOrgPositionInfoList(Long orgId);
+
+    /**
+     * 获取岗位信息列表
+     * @return
+     */
+    List<PositionNodeVo> getAllPositionNodeVo();
 }

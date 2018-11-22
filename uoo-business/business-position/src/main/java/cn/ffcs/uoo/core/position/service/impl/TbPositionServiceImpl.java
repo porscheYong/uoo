@@ -6,6 +6,7 @@ import cn.ffcs.uoo.core.position.entity.TbPosition;
 import cn.ffcs.uoo.core.position.dao.TbPositionMapper;
 import cn.ffcs.uoo.core.position.service.TbPositionService;
 import cn.ffcs.uoo.core.position.vo.OrgPositionInfoVo;
+import cn.ffcs.uoo.core.position.vo.PositionNodeVo;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -42,5 +43,10 @@ public class TbPositionServiceImpl extends ServiceImpl<TbPositionMapper, TbPosit
     @Override
     public List<OrgPositionInfoVo> queryOrgPositionInfoList(Long orgId) {
         return baseMapper.queryOrgPositionInfoList(orgId);
+    }
+
+    @Override
+    public List<PositionNodeVo> getAllPositionNodeVo() {
+        return baseMapper.getAllPositionNodeVo();
     }
 }

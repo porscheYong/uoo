@@ -13,5 +13,5 @@ import cn.ffcs.uoo.core.permission.entity.Resource;
  * @since 2018-10-30
  */
 public interface ResourceMapper extends BaseMapper<Resource> {
-
+    Long getId();
 }

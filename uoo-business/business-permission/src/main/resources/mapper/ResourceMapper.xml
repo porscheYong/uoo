@@ -18,4 +18,7 @@
         PK_RESOURCE, ACCOUT, PASSWORD, CONNECT_TYPE, SYS_VERSION, HOST, PORT
     </sql>
 
+    <select id="getId" resultType="Long">
+        SELECT SEQ_TB_RESOURCE_ID.NEXTVAL FROM dual
+    </select>
 </mapper>

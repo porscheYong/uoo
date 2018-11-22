@@ -102,10 +102,14 @@ public class TbDictionaryItemController extends BaseController {
     })
     @UooLog(value = "查询字典项目列表", key = "queryListByDictionaryName")
     @RequestMapping(value = "/getList/{dictionaryName}", method = RequestMethod.GET)
-    public List<TbDictionaryItem> queryListByDictionaryName(@PathVariable String dictionaryName) {
+    public ResponseResult<List<TbDictionaryItem>> queryListByDictionaryName(@PathVariable String dictionaryName) {
+        ResponseResult<List<TbDictionaryItem>> responseResult = new ResponseResult<List<TbDictionaryItem>>();
+
         // 校验必填项
         if (dictionaryName == null) {
-            return null;
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("必填项校验失败");
+            return responseResult;
         }
 
         // 根据dictionaryName查询出id
@@ -115,7 +119,9 @@ public class TbDictionaryItemController extends BaseController {
         List<TbDictionary> tbDictionaryList = tbDictionaryService.selectList(tbDictionaryWrapper);
 
         if (tbDictionaryList == null || tbDictionaryList.size() == 0) {
-            return null;
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("字典值不存在");
+            return responseResult;
         }
 
         // 根据dictionaryId查询出dictionaryItemList
@@ -123,6 +129,10 @@ public class TbDictionaryItemController extends BaseController {
         tbDictionaryItemWrapper.eq("DICTIONARY_ID", tbDictionaryList.get(0).getDictionaryId());
         tbDictionaryItemWrapper.eq("STATUS_CD", "1000");
         tbDictionaryItemWrapper.orderBy("SORT");
-        return tbDictionaryItemService.selectList(tbDictionaryItemWrapper);
+        List<TbDictionaryItem> list = tbDictionaryItemService.selectList(tbDictionaryItemWrapper);
+        responseResult.setState(ResponseResult.STATE_OK);
+        responseResult.setMessage("请求成功");
+        responseResult.setData(list);
+        return responseResult;
     }
 }
