@@ -24,7 +24,7 @@ public class OrgOrgtreeRel extends Model<OrgOrgtreeRel> {
     /**
      * 组织标识
      */
-    @TableField("ORG_ORGTREE_ID")
+    @TableId(value = "ORG_ORGTREE_ID")
     private Long orgOrgtreeId;
     /**
      * 组织标识
@@ -36,6 +36,11 @@ public class OrgOrgtreeRel extends Model<OrgOrgtreeRel> {
      */
     @TableField("ORG_TREE_ID")
     private Long orgTreeId;
+
+
+
+    @TableField("ORG_BIZ_NAME")
+    private String orgBizName;
     /**
      * 状态
      */
@@ -67,9 +72,6 @@ public class OrgOrgtreeRel extends Model<OrgOrgtreeRel> {
     @TableField("STATUS_DATE")
     private Date statusDate;
 
-
-    @TableField("ORG_BIZ_NAME")
-    private String orgBizName;
 
     public String getOrgBizName() {
         return orgBizName;

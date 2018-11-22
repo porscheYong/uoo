@@ -4,6 +4,7 @@ package cn.ffcs.uoo.web.maindata.organization.service;
 import cn.ffcs.uoo.web.maindata.organization.dto.Org;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgVo;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
+import cn.ffcs.uoo.web.maindata.organization.dto.TreeNodeVo;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgServiceHystrix;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
@@ -26,7 +27,7 @@ import java.util.List;
 public interface OrgService{
 
     @RequestMapping(value="/org/addOrg",method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult<Void> addOrg(@RequestBody OrgVo org);
+    public ResponseResult<TreeNodeVo> addOrg(@RequestBody OrgVo org);
 
     @RequestMapping(value="/org/updateOrg",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<Void> updateOrg(@RequestBody OrgVo org);

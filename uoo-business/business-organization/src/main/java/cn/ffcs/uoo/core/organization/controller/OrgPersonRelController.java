@@ -89,7 +89,7 @@ public class OrgPersonRelController extends BaseController {
             OrgPersonRel orgPersonRel = orgPersonRelService.convertObj(psonOrgVo);
             Long orgPsndocRefId = orgPersonRelService.getId();
             orgPersonRel.setOrgPersonId(orgPsndocRefId);
-            orgPersonRel.insert();
+            orgPersonRelService.add(orgPersonRel);
 
             Long orgTreePerId = orgtreeOrgpersonRelService.getId();
             OrgtreeOrgpersonRel orgtreeOrgpersonRel = new OrgtreeOrgpersonRel();
@@ -97,9 +97,7 @@ public class OrgPersonRelController extends BaseController {
             orgtreeOrgpersonRel.setOrgPersonId(orgPsndocRefId);
             orgtreeOrgpersonRel.setOrgtreeOrgpersonId(orgTreePerId);
             orgtreeOrgpersonRel.setStatusCd("1000");
-            orgtreeOrgpersonRel.insert();
-
-
+            orgtreeOrgpersonRelService.add(orgtreeOrgpersonRel);
 
 //            SolrInputDocument input = new SolrInputDocument();
 //            input.addField("psnName", psonOrgVo.getPsnName());
@@ -149,7 +147,7 @@ public class OrgPersonRelController extends BaseController {
             return ret;
         }
         orgPersonRelService.delete(orgPersonRel);
-        solrService.deleteDataIntoSolr("pson",orgPersonRel.getOrgPersonId().toString());
+        //solrService.deleteDataIntoSolr("pson",orgPersonRel.getOrgPersonId().toString());
 
         Long orgPsndocRefIdnew = orgPersonRelService.getId();
         OrgPersonRel orgPersonRelT = orgPersonRelService.convertObj(psonOrgVo);

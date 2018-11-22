@@ -99,7 +99,7 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
     public Page<OrgVo> selectOrgRelPage(OrgVo orgVo){
 
         Page<OrgVo> page = new Page<OrgVo>(orgVo.getPageNo()==0?1:orgVo.getPageNo(),
-                orgVo.getPageSize()==0?10:orgVo.getPageNo());
+                orgVo.getPageSize()==0?10:orgVo.getPageSize());
         List<OrgVo> orgVolist = baseMapper.selectOrgRelPage(page,orgVo);
 //        for(OrgVo o : orgVolist){
 //            List<OrgType> orgTypeList = orgTypeService.getOrgTypeByOrgId(o.getOrgId());
@@ -125,7 +125,7 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
     @Override
     public Page<OrgVo> selectOrgPage(OrgVo orgVo){
         Page<OrgVo> page = new Page<OrgVo>(orgVo.getPageNo()==0?1:orgVo.getPageNo(),
-                orgVo.getPageSize()==0?10:orgVo.getPageNo());
+                orgVo.getPageSize()==0?10:orgVo.getPageSize());
         List<OrgVo> orgVolist = baseMapper.selectOrgPage(page,orgVo);
         for(OrgVo o : orgVolist){
             List<OrgType> orgTypeList = orgTypeService.getOrgTypeByOrgId(o.getOrgId());
