@@ -55,13 +55,15 @@ function searchLeftTree(){
 	var key=$('#searchInput').val();
 	var zTree = $.fn.zTree.getZTreeObj("standardTree");
 	if(key.length<1){
-		var nodes=zTree.getNodes();
-		if(nodes.length>0)
+		var nodes = zTree.transformTozTreeNodes(simpleNodes);
 		for(var i=0;i<nodes.length;i++){
-			
+			nodes[i].highlight=false;
+			zTree.show(nodes[i]);
+			zTree.updateNode(nodes[i]);
 		}
 		return;
 	}
+	//先把所有隐藏，再挨个显示
 	var notWantNodes=zTree.getNodesByFilter(searchNotWantFilter);
 	var wantNodes=zTree.getNodesByFilter(searchWantFilter);
 	for(var i=0;i<wantNodes.length;i++){
