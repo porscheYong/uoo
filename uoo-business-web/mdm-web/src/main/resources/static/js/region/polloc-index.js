@@ -9,7 +9,8 @@ var setting = {
 	view : {
 		showLine : false,
 		showIcon : false,
-		dblClickExpand : false
+		dblClickExpand : false,
+		fontCss: getFontCss
 	},
 	callback : {
 		onClick : zTreeOnClick
@@ -37,7 +38,43 @@ $(document).ready(function() {
 	/*$("#asyncAllBtn").bind("click", asyncAll);
 	$("#resetBtn").bind("click", reset);*/
 	loadTypeArr();
+	$("#searchInput").change( function() {
+		searchLeftTree();
+	});
 });
+function getFontCss(treeId, treeNode) {
+	return (!!treeNode.highlight) ? {color:"#A60000", "font-weight":"bold"} : {color:"#333", "font-weight":"normal"};
+}
+function searchNotWantFilter(node){
+	 return ( node.name.indexOf($('#searchInput').val())<0);
+}
+function searchWantFilter(node){
+	return ( node.name.indexOf($('#searchInput').val())>=0);
+}
+function searchLeftTree(){
+	var key=$('#searchInput').val();
+	var zTree = $.fn.zTree.getZTreeObj("standardTree");
+	if(key.length<1){
+		var nodes=zTree.getNodes();
+		if(nodes.length>0)
+		for(var i=0;i<nodes.length;i++){
+			
+		}
+		return;
+	}
+	var notWantNodes=zTree.getNodesByFilter(searchNotWantFilter);
+	var wantNodes=zTree.getNodesByFilter(searchWantFilter);
+	for(var i=0;i<wantNodes.length;i++){
+		wantNodes[i].highlight=true;
+		zTree.updateNode(wantNodes[i]);
+	}
+	for(var i=0;i<notWantNodes.length;i++){
+		notWantNodes[i].highlight=false;
+		zTree.updateNode(notWantNodes[i]);
+	}
+	console.log('notWantNodes:'+notWantNodes.length+",wantNodes:"+wantNodes.length);
+}
+
 function loadTypeArr(){
 	$.ajax({
 		url:'/tbDictionaryItem/getList/LOC_TYPE',
