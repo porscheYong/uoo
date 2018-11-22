@@ -26,5 +26,5 @@ public interface TbDictionaryItemClient {
     ResponseResult<TbDictionaryItem> removeTbDictionaryItem(@RequestParam("itemId") Long itemId, @RequestParam("updateUser") Long updateUser);
 
     @RequestMapping(value = "/tbDictionaryItem/getList/{dictionaryName}", method = RequestMethod.GET)
-    List<TbDictionaryItem> queryListByDictionaryName(@PathVariable("dictionaryName") String dictionaryName);
+    ResponseResult<List<TbDictionaryItem>> queryListByDictionaryName(@PathVariable("dictionaryName") String dictionaryName);
 }

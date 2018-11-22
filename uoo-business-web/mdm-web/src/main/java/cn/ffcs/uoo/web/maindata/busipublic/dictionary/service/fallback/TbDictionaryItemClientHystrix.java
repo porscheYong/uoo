@@ -39,7 +39,7 @@ public class TbDictionaryItemClientHystrix implements TbDictionaryItemClient {
     }
 
     @Override
-    public List<TbDictionaryItem> queryListByDictionaryName(String dictionaryName) {
+    public ResponseResult<List<TbDictionaryItem>> queryListByDictionaryName(String dictionaryName) {
         return null;
     }
 }
