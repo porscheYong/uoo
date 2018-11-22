@@ -65,8 +65,7 @@ public class AcctController {
     @ApiImplicitParam(name = "tbAccountOrgRel", value = "主账号与组织关系信息", required = true, dataType = "TbAccountOrgRel")
     @RequestMapping(value = "/addAcctOrg", method = RequestMethod.POST)
     public Object addAcctOrg(@RequestBody TbAccountOrgRel tbAccountOrgRel) {
-        Object obj = acctService.addAcctOrg(tbAccountOrgRel);
-        return obj;
+        return acctService.addAcctOrg(tbAccountOrgRel);
     }
 
 }
