@@ -7,8 +7,10 @@ import cn.ffcs.uoo.core.personnel.entity.TbCert;
 import cn.ffcs.uoo.core.personnel.service.TbCertService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import zipkin2.Call;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,5 +56,14 @@ public class TbCertServiceImpl extends ServiceImpl<TbCertMapper, TbCert> impleme
             return ResultUtils.success(null);
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
+    }
+
+    @Override
+    public Object getCertInfo(String keyWord, Integer pageNo, Integer pageSize){
+        pageNo = pageNo == 0 ? 1 : pageNo;
+        pageSize = pageSize == 0 ? 5 : pageSize;
+
+        Page<TbCert> page =  this.selectPage(new Page<TbCert>(pageNo, pageSize), new EntityWrapper<TbCert>().like(BaseUnitConstants.TBCERT_CERT_NO, keyWord).or().like(BaseUnitConstants.TBCERT_CERT_NAME, keyWord));
+        return ResultUtils.success(page);
     }
 }

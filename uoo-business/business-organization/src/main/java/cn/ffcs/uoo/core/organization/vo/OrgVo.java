@@ -72,12 +72,19 @@ public class OrgVo extends BaseVo{
     private List<PsonOrgVo> psonOrgVoList;
 
     //身份证信息
-    private List<String> certId;
-
+    private List<String> certIdList;
+    private List<OrgCertVo> OrgCertList;
     //检索
     private String search;
     private String orgRelCreatDate;
 
+    public List<OrgCertVo> getOrgCertList() {
+        return OrgCertList;
+    }
+
+    public void setOrgCertList(List<OrgCertVo> orgCertList) {
+        OrgCertList = orgCertList;
+    }
 
     public Long getOrgTreeId() {
         return orgTreeId;
@@ -111,12 +118,12 @@ public class OrgVo extends BaseVo{
         this.psonOrgVoList = psonOrgVoList;
     }
 
-    public List<String> getCertId() {
-        return certId;
+    public List<String> getCertIdList() {
+        return certIdList;
     }
 
-    public void setCertId(List<String> certId) {
-        this.certId = certId;
+    public void setCertIdList(List<String> certIdList) {
+        this.certIdList = certIdList;
     }
 
     public String getShortName() {

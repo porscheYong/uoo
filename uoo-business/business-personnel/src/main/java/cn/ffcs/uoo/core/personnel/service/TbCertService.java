@@ -29,4 +29,13 @@ public interface TbCertService extends IService<TbCert> {
      * @return
      */
     public Object delTbCertByPsnId(Long personnelId);
+
+    /**
+     * 证件查询
+     * @param keyWord
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    public Object getCertInfo(String keyWord, Integer pageNo, Integer pageSize);
 }

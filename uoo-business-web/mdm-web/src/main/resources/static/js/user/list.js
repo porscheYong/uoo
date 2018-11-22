@@ -3,7 +3,7 @@ var orgName = getQueryString('name');
 
 $('#orgName').html(orgName);
 
-function getOrgPersonnerList (orgId) {
+function getOrgPersonnerList () {
     $http.get('http://134.96.253.221:11100/orgPersonRel/getPerOrgRelPage', {
         orgId: orgId,
         orgRootId: '1'
@@ -26,8 +26,12 @@ function initOrgPersonnelTable (results) {
         "scrollY": "375px",
         'columns': [
             { 'data': null, 'title': '序号', 'className': 'row-no' },
-            { 'data': "psnName", 'title': '姓名', 'className': 'row-name' },
-            { 'data': "mobile", 'title': '手机号码', 'className': 'row-mobile' },
+            { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
+                'render': function (data, type, row, meta) {
+                    return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personId + "'>" + row.psnName + "</a>";
+                }
+            },
+            { 'data': "doubleName", 'title': '重名称谓', 'className': 'row-mobile' },
             { 'data': "certNo", 'title': '员工工号', 'className': 'cert-no' },
             { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
             { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
@@ -137,7 +141,6 @@ function initOrgPersonnelTable (results) {
     loading.screenMaskDisable('container');
 }
 
-var orgId = getQueryString('id');
 getOrgPersonnerList(orgId);
 
 // $('#editBtn').on('click', function () {

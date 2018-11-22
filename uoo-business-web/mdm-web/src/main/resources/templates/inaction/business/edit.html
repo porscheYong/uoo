@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>新增</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- jquery tagsinput -->
+    <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="/js/core/html5shiv.js"></script>
+    <script src="/js/core/respond.js"></script>
+    <script src="/js/core/excanvas.js"></script>
+    <![endif]-->
+  </head>
+
+  <body style="background: #fff;">
+    <div>
+        <div class="board-title">
+          <span class="name ft18">统一目录树</span>
+        </div>
+        <div class="nav-tabs-brief" style="padding-top: 35px;">
+
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab_content1">
+              <form action="/submit" method="post" style="padding: 10px;">
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="form-item" style="width: 100%">
+                      <label for="orgName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织树名称</label>
+                      <input type="tel" id="orgName" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="tel" required>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="form-item" style="width: 100%">
+                      <label for="idTel" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织树类型</label>
+                      <select  class="col-md-4 col-sm-4 col-xs-12">
+                        <option></option>
+                        <option>城市</option>
+                        <option>农村</option>
+                      </select>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px;">
+                  <div class="form-item" style="width: 100%">
+                    <label for="idTel" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织关系类型</label>
+                    <select  class="col-md-4 col-sm-4 col-xs-12">
+                      <option></option>
+                      <option>城市</option>
+                      <option>农村</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px;">
+                  <div class="form-item" style="width: 100%">
+                    <label for="sort" class="form-item-label col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">排序</label>
+                    <input id="sort" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="code">
+                  </div>
+                </div>
+              </form>
+              <div class="row" style="margin-bottom: 10px;">
+                <div class="col-md-offset-3 col-xs-offset-3">
+                    <button class="ui-button ui-button-primary">保存</button>
+                    <button class="ui-button ui-button-cancel" style="margin-left: 10px;">取消</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- sea js -->
+    <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
+    <!-- layer -->
+    <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+    <!-- jquery tagsinput -->
+    <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
+    <!-- init -->
+    <script type="text/javascript" src="/js/init.js"></script>
+    <!--<script type="text/javascript" src="../../../static/js/organization/add.js"></script>-->
+
+    <script type="text/javascript">
+      seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $('select').selectMatch();
+      })
+    </script>
+	
+  </body>
+</html>

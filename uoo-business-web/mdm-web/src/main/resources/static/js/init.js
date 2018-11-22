@@ -2,7 +2,7 @@
 
 // 全局异步封装
 var $http = {
-  baseUri: base,
+  // baseUri: base,
   get: function (path, data, successCallback, errorCallback) {
     this.ajax('get', path, data, successCallback, errorCallback)
   },
@@ -20,29 +20,11 @@ var $http = {
       }
       else {
         switch (state) {
-          case 11000:
-            console.log(message)
-            break
-          case 11001:
-            console.log(message)
-            break
-          case 11002:
-            console.log(message)
-            break
-          case 11003:
-            console.log(message)
-            break
-          case 11004:
-            console.log(message)
-            break
-          case 11005:
-            console.log(message)
-            break
-          case 11006:
-            console.log(message)
-            break
-          case 11007:
-            console.log(message)
+          case 1100:
+            parent.layer.alert(message, {
+                skin: 'layui-layer-lan'
+                ,closeBtn: 0
+            });
             break
         }
         var httpStatus = response.status
@@ -56,8 +38,9 @@ var $http = {
       errorCallback(httpStatus, state, message)
     }
     $.ajax({
+       contentType: "application/json",
        type: type,
-       url: this.baseUri + path,
+       url: path,
        data: data,
        success: httpSuccess,
        error: httpError,
@@ -68,7 +51,7 @@ var $http = {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i")
     var r = window.location.search.substr(1).match(reg)
     if (r != null) {
-      return unescape(r[2])
+      return decodeURI(r[2])
     }
     return null
   }
@@ -79,7 +62,7 @@ function getQueryString(name)
 {
   var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
   var r = window.location.search.substr(1).match(reg);
-  if(r!=null)return  unescape(r[2]); return null;
+  if(r!=null)return  decodeURI(r[2]); return null;
 }
 
 // 时间戳格式化

@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.web.maindata.user.service;
 
+import cn.ffcs.uoo.web.maindata.user.dto.TbAccountOrgRel;
 import cn.ffcs.uoo.web.maindata.user.service.fallback.AcctServiceHystrix;
 import cn.ffcs.uoo.web.maindata.user.vo.EditFormAcctVo;
 import common.config.PersonnelServiceConfiguration;
@@ -27,4 +28,10 @@ public interface AcctService {
 
     @RequestMapping(value = "/tbAcct/updateAcct", method = RequestMethod.PUT, headers={"Content-Type=application/json"})
     public Object updateAcct(@RequestBody EditFormAcctVo editFormAcctVo);
+
+    @RequestMapping(value = "/tbAccountOrgRel/removeAcctOrg", method = RequestMethod.DELETE, headers={"Content-Type=application/json"})
+    public Object removeAcctOrg(@RequestParam("personnelId") Long personnelId, @RequestParam("acctId") Long acctId, @RequestParam("orgId") Long orgId);
+
+    @RequestMapping(value = "/tbAccountOrgRel/addAcctOrg", method = RequestMethod.POST, headers={"Content-Type=application/json"})
+    public Object addAcctOrg(@RequestBody TbAccountOrgRel tbAccountOrgRel);
 }

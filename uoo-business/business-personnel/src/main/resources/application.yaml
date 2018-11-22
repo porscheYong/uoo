@@ -1,6 +1,6 @@
 spring:
   application:
-    name: personnel-service
+    name: business-personnel
   datasource:
     druid:
       #url: jdbc:oracle:thin:@134.129.68.156:1521:fjtpdb
@@ -96,7 +96,11 @@ spring:
         #允许清除记录
         reset-enable: false
 #      aop-patterns: cn.ffcs.uoo.**.service.*
-
+  rabbitmq:
+    host: 134.96.253.221
+    port: 5672
+    username: root
+    password: 123
 
 #mybatis
 mybatis-plus:
@@ -132,7 +136,7 @@ server:
 
 eureka:
   instance:
-    appname: personnel-service
+    appname: business-personnel
     hostname: localhost
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}

@@ -195,4 +195,27 @@
         START WITH ORG_ID = #{orgRootId}
         CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID ) AA where AA.ORG_ID = #{orgId}
     </select>
+
+
+    <!--<select id="insertByObj" parameterType="cn.ffcs.uoo.core.organization.vo.OrgVo">-->
+    <!--INSERT INTO tb_org (ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE-->
+	<!--, SHORT_NAME, ORG_NAME_EN, FULL_NAME, CITY_TOWN, OFFICE_PHONE-->
+	<!--, FOUNDING_TIME, ORG_SCALE, ORG_LEVEL, ORG_POSITION_LEVEL, SORT-->
+	<!--, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUS_CD-->
+	<!--, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE)-->
+      <!--VALUES (213524,#{OrgVo.locId}, #{OrgVo.areaCodeId}, #{OrgVo.orgName}, #{OrgVo.orgCode}-->
+	<!--, #{OrgVo.shortName}, #{OrgVo.orgNameEn},  #{OrgVo.fullName},  #{OrgVo.cityTown},#{OrgVo.officePhone}-->
+	<!--, #{OrgVo.foundingTime}, #{OrgVo.orgScale},  #{OrgVo.orgLevel},  #{OrgVo.orgPositionLevel}, #{OrgVo.sort}-->
+	<!--, #{OrgVo.orgContent}, #{OrgVo.orgDesc}, #{OrgVo.address}, #{OrgVo.uuid}, '1000'-->
+	<!--, to_date('16-11-2018 16:02:53', 'dd-mm-yyyy hh24:mi:ss'), 0, to_date('16-11-2018 16:02:53', 'dd-mm-yyyy hh24:mi:ss'), 0, to_date('16-11-2018 16:02:53', 'dd-mm-yyyy hh24:mi:ss'));-->
+    <!--</select>-->
+    <select id="selectOrgByOrgId" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
+        SELECT A.ORG_ID orgId,A.LOC_ID locId,A.AREA_CODE_ID areaCodeId,A.ORG_NAME orgName,A.ORG_CODE orgCode,A.SHORT_NAME shortName,
+        A.ORG_NAME_EN orgNameEn,A.FULL_NAME fullName,
+        A.CITY_TOWN cityTown,A.OFFICE_PHONE officePhone,TO_CHAR(A.FOUNDING_TIME, 'YYYY-MM-DD HH24:MI:SS') foundingTime,
+        A.ORG_SCALE orgScale,A.ORG_LEVEL orgLevel,A.ORG_POSITION_LEVEL orgPositionLevel,
+        A.SORT sort,A.ORG_CONTENT orgContent,A.ORG_DESC orgDesc,A.ADDRESS address,
+        TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') createDate  FROM TB_ORG  A where A.org_id=#{orgId}
+    </select>
+
 </mapper>

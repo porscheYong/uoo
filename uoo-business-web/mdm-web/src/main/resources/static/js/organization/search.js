@@ -79,11 +79,11 @@
   function  addTreeNode () {
       var loading = parent.loading;
       loading.screenMaskEnable('container');
-      $http.get('http://134.96.253.221:11100/orgRel/addOrgRel', {
+      $http.post('http://134.96.253.221:11100/orgRel/addOrgRel', JSON.stringify({
           orgRootId: '1',
           supOrgId: orgId,
           orgId: selectNode.orgId
-      }, function (data) {
+      }), function (data) {
         var newNode = {
             name: selectNode.orgName,
             id: selectNode.orgId

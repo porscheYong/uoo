@@ -4,6 +4,7 @@ package cn.ffcs.uoo.core.personnel.controller;
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.personnel.client.OrgPersonRelClient;
 import cn.ffcs.uoo.core.personnel.constant.BaseUnitConstants;
 import cn.ffcs.uoo.core.personnel.constant.EumPersonnelResponseCode;
 import cn.ffcs.uoo.core.personnel.entity.*;
@@ -22,16 +23,19 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.HttpMethod;
 import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +66,11 @@ public class TbPersonnelController extends BaseController {
     private TbFamilyService tbFamilyService;
     @Autowired
     private TbPersonnelImageService tbPersonnelImageService;
+    @Autowired
+    private OrgPersonRelClient orgPersonRelClient;
+    @Autowired
+    private RestTemplate restTemplate;
+
 
 
     @ApiOperation(value = "人员查询", notes = "分页查询")
@@ -125,6 +134,9 @@ public class TbPersonnelController extends BaseController {
         FormPersonnelVo formPersonnelVo = new FormPersonnelVo();
         /**  1、基本信息    */
         TbPersonnel tbPersonnel = tbPersonnelService.selectById(personnelId);
+        if(StrUtil.isNullOrEmpty(tbPersonnel)){
+            return ResultUtils.error(EumPersonnelResponseCode.PSN_NOT_EXIST);
+        }
         BeanUtils.copyProperties(tbPersonnel, formPersonnelVo);
 
         //身份证
@@ -205,7 +217,7 @@ public class TbPersonnelController extends BaseController {
     @ApiImplicitParam(name = "personnelVo",value = "人员基本信息",required = true,dataType = "PersonnelVo")
     @UooLog(value = "修改人员信息",key = "updatePersonnel")
     @RequestMapping(value = "updatePersonnel",method = RequestMethod.PUT)
-    public Object upPersonnel(PersonnelVo personnelVo){
+    public Object upPersonnel(@RequestBody PersonnelVo personnelVo){
         EditFormPersonnelVo editFormPersonnelVo = new EditFormPersonnelVo();
         BeanUtils.copyProperties(personnelVo, editFormPersonnelVo);
         /**  人员表单信息验证 */
@@ -457,7 +469,7 @@ public class TbPersonnelController extends BaseController {
                         psnMap.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
                         psnMap.put(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, tbContact1.getPersonnelId());
                         TbPersonnel tbPersonnel = tbPersonnelService.selectOne(new EntityWrapper<TbPersonnel>().allEq(psnMap));
-                        return ResultUtils.error(EumPersonnelResponseCode.CERT_IS_EXIST.getCode(), "身份证已被" + tbPersonnel.getPsnName() + "占用");
+                        return ResultUtils.error(EumPersonnelResponseCode.CERT_IS_EXIST.getState(), "身份证已被" + tbPersonnel.getPsnName() + "占用");
                     }
                 }
             }
@@ -485,7 +497,7 @@ public class TbPersonnelController extends BaseController {
             map.remove(BaseUnitConstants.TBCERT_CERT_NO);
             map.put(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, tbCert.getPersonnelId());
             TbPersonnel tbPersonnel = tbPersonnelService.selectOne(new EntityWrapper<TbPersonnel>().allEq(map));
-            return ResultUtils.error(EumPersonnelResponseCode.CERT_IS_EXIST.getCode(), "身份证已被" + tbPersonnel.getPsnName() + "占用");
+            return ResultUtils.error(EumPersonnelResponseCode.CERT_IS_EXIST.getState(), "身份证已被" + tbPersonnel.getPsnName() + "占用");
         }
 
         return null;
@@ -522,6 +534,18 @@ public class TbPersonnelController extends BaseController {
         tbCertService.insert(tbCert);
 
         /**  2、组织信息           */
+        List<PsonOrgVo> psonOrgVoList = editFormPersonnelVo.getPsonOrgVoList();
+        List<PsonOrgVo> psonOrgVos = new ArrayList<PsonOrgVo>();
+        for(PsonOrgVo psonOrgVo : psonOrgVoList){
+            psonOrgVo.setPersonId(personnelId);
+            psonOrgVos.add(psonOrgVo);
+        }
+//       restTemplate.postForEntity(
+//                "http://134.132.58.128:11100/orgPersonRel/addOrgPsn",
+//                psonOrgVos,
+//                Object.class
+//        );
+        orgPersonRelClient.addOrgPsn(psonOrgVos);
 
         /**  3、联系方式           */
         List<TbContact> tbContactList = editFormPersonnelVo.getTbMobileVoList();
@@ -564,7 +588,7 @@ public class TbPersonnelController extends BaseController {
             }
         }
 
-        return ResultUtils.success(null);
+        return ResultUtils.success(personnelId);
     }
 
     @ApiOperation(value = "用户对应人员基本信息", notes = "用户对应人员基本信息")
@@ -576,6 +600,18 @@ public class TbPersonnelController extends BaseController {
         psnByUserVo.setPersonnelId(Long.valueOf(personnelId));
         psnByUserVo = tbPersonnelService.getPsnByUser(psnByUserVo);
         return ResultUtils.success(psnByUserVo);
+    }
+
+    @ApiOperation(value="人员选择查询",notes="人员选择查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "keyWord", value = "关键字", required = true, dataType = "String",paramType="path"),
+            @ApiImplicitParam(name = "pageNo", value = "当前页数", required = true, dataType = "Integer",paramType="path"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path"),
+    })
+    @UooLog(value = "人员选择查询",key = "getPsnBasicInfo")
+    @RequestMapping(value="/getPsnBasicInfo",method = RequestMethod.GET)
+    public Object getPsnBasicInfo(String keyWord, int pageNo, int pageSize){
+        return ResultUtils.success(tbPersonnelService.getPsnBasicInfo(keyWord, pageNo, pageSize));
     }
 
 

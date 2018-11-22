@@ -1,9 +1,11 @@
 package cn.ffcs.uoo.web.maindata.user.controller;
 
+import cn.ffcs.uoo.web.maindata.user.dto.TbAccountOrgRel;
 import cn.ffcs.uoo.web.maindata.user.service.AcctService;
 import cn.ffcs.uoo.web.maindata.user.vo.EditFormAcctVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +48,25 @@ public class AcctController {
     @RequestMapping(value = "/updateAcct", method = RequestMethod.PUT)
     public Object updateAcct(@RequestBody EditFormAcctVo editFormAcctVo) {
         return acctService.updateAcct(editFormAcctVo);
+    }
+
+    @ApiOperation(value = "删除主账号与组织关系", notes = "删除主账号与组织关系")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long", paramType = "path"),
+            @ApiImplicitParam(name = "acctID", value = "主账号标识", required = true, dataType = "Long", paramType = "path"),
+            @ApiImplicitParam(name = "orgId", value = "组织标识", required = true, dataType = "Long", paramType = "path")
+    })
+    @RequestMapping(value = "/removeAcctOrg", method = RequestMethod.DELETE)
+    public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId) {
+        return acctService.removeAcctOrg(personnelId, acctId, orgId);
+    }
+
+    @ApiOperation(value = "新增主账号与组织关系", notes = "新增主账号与组织关系")
+    @ApiImplicitParam(name = "tbAccountOrgRel", value = "主账号与组织关系信息", required = true, dataType = "TbAccountOrgRel")
+    @RequestMapping(value = "/addAcctOrg", method = RequestMethod.POST)
+    public Object addAcctOrg(@RequestBody TbAccountOrgRel tbAccountOrgRel) {
+        Object obj = acctService.addAcctOrg(tbAccountOrgRel);
+        return obj;
     }
 
 }
