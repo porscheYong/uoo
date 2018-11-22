@@ -95,6 +95,8 @@ public class PostRoleController {
     @UooLog(value = "查询角色职位信息", key = "getPostRole")
     @RequestMapping(value = "/getPostRole", method = RequestMethod.GET)
     public List<PostRole> getPostRole() {
+
+
         return postRoleService.getPostRole();
     }
 
