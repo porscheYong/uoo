@@ -4,12 +4,15 @@ package cn.ffcs.uoo.core.organization.controller;
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.organization.Api.CertService;
+import cn.ffcs.uoo.core.organization.Api.service.TestService;
 import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.service.*;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
 import cn.ffcs.uoo.core.organization.vo.OrgRefTypeVo;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
+import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
 import cn.ffcs.uoo.core.organization.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,6 +68,11 @@ public class OrgTreeController extends BaseController {
 
     @Autowired
     private OrgOrgtreeRelService orgOrgtreeRelService;
+
+
+
+    @Autowired
+    private TestService testService;
 
 
     @ApiOperation(value = "新增组织树信息-web", notes = "新增组织树信息")
@@ -333,13 +342,12 @@ public class OrgTreeController extends BaseController {
     })
     @UooLog(value = "查询组织树列表",key = "getOrgTreeList")
     @RequestMapping(value = "/getOrgTreeList",method = RequestMethod.GET)
-    @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<List<OrgTree>>  getOrgTreeList(OrgTree orgTree){
+    public ResponseResult<List<OrgTree>>  getOrgTreeList(String orgId){
         ResponseResult<List<OrgTree>> ret = new ResponseResult<List<OrgTree>>();
         Wrapper orgTreeWrapper = Condition.create().eq("STATUS_CD","1000").orderBy("SORT");
-        if(orgTree != null){
-            if(!StrUtil.isNullOrEmpty(orgTree.getOrgId())){
-                orgTreeWrapper.eq("ORG_ID",orgTree.getOrgId());
+        if(orgId != null){
+            if(!StrUtil.isNullOrEmpty(orgId)){
+                orgTreeWrapper.eq("ORG_ID",orgId);
             }
         }
         List<OrgTree> orgTreeList = orgTreeService.selectList(orgTreeWrapper);

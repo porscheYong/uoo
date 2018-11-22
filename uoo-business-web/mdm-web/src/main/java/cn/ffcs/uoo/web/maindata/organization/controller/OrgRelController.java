@@ -76,7 +76,7 @@ public class OrgRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/addOrgRel", method = RequestMethod.POST)
-    public ResponseResult<String> addOrgRel(@RequestBody Org org){
+    public ResponseResult<TreeNodeVo> addOrgRel(@RequestBody Org org){
         return orgRelService.addOrgRel(org);
     }
 
