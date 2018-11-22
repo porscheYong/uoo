@@ -48,11 +48,11 @@ public class PrivilegeController {
     
     @ApiOperation(value = "获取权限", notes = "获取权限")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
-        @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
+        @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Integer" ,paramType="path"),
+        @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Integer" ,paramType="path"),
     })
     @UooLog(key="listPrivilege",value="获取权限")
-    @GetMapping("/listPrivilege")
+    @GetMapping("/listPrivilege/{pageNo}/{pageSize}")
     public ResponseResult listPrivilege(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
