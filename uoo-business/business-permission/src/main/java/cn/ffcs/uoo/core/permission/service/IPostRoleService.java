@@ -1,7 +1,11 @@
 package cn.ffcs.uoo.core.permission.service;
 
 import cn.ffcs.uoo.core.permission.entity.PostRole;
+import cn.ffcs.uoo.core.permission.vo.UserPersonnelVo;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,6 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface IPostRoleService extends IService<PostRole> {
     Long getId();
+
+    List<PostRole> getPostRole();
 }

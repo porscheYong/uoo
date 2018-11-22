@@ -30,6 +30,9 @@ public class PostRole extends Model<PostRole> {
      */
     @TableField("ROLE_ID")
     private Long roleId;
+    /**
+     * 职位标识
+     */
     @TableField("POST_ID")
     private Long postId;
     /**
