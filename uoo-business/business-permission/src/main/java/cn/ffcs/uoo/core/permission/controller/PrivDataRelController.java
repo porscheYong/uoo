@@ -37,7 +37,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @RequestMapping("/permission/privDataRel")
-public class PrivDataRelController {
+public class  PrivDataRelController {
     @Autowired
     private IPrivDataRelService relSvc;
     @Autowired
@@ -103,11 +103,11 @@ public class PrivDataRelController {
         Wrapper<DataPrivRule> wrapper = Condition.create().eq("PRIV_DATA_REL_ID", privDataRel.getPrivDataRelId());
         List<DataPrivRule> selectList = ruleSvc.selectList(wrapper);
         if(selectList!=null){
-            for (DataPrivRule dpr : selectList) {
+                for (DataPrivRule dpr : selectList) {
                 if(StatusCD.VALID.equals(dpr.getStatusCd())){
                     return ResponseResult.createErrorResult("请先删除相关数据权限规则");
                 }
-            }
+        }
             
         }
         PrivDataRel del=new PrivDataRel();
