@@ -103,6 +103,9 @@ eureka:
   client:
     service-url:
       defaultZone: http://134.96.253.221:8762/eureka
+  instance:
+      prefer-ip-address: true
+      instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
 
 mybatis-plus:
   mapper-locations: classpath:mapper/**Mapper.xml

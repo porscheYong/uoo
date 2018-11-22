@@ -10,7 +10,9 @@ import cn.ffcs.uoo.core.position.entity.TbOrgPositionRel;
 import cn.ffcs.uoo.core.position.entity.TbPosition;
 import cn.ffcs.uoo.core.position.service.TbOrgPositionRelService;
 import cn.ffcs.uoo.core.position.service.TbPositionService;
+import cn.ffcs.uoo.core.position.util.TreeUtil;
 import cn.ffcs.uoo.core.position.vo.OrgPositionInfoVo;
+import cn.ffcs.uoo.core.position.vo.PositionNodeVo;
 import cn.ffcs.uoo.core.position.vo.ResponseResult;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -187,6 +189,20 @@ public class TbPositionController extends BaseController {
         positionWrapper.eq("PARENT_POSITION_ID", parentPositionId);
         positionWrapper.eq("STATUS_CD", "1000");
         return tbPositionService.selectList(positionWrapper);
+    }
+
+    @ApiOperation(value = "查询岗位树", notes = "查询岗位树")
+    @UooLog(value = "查询岗位树", key = "getPositionTree")
+    @RequestMapping(value = "/getPositionTree", method = RequestMethod.GET)
+    public ResponseResult<List<PositionNodeVo>> getPositionTree() {
+        ResponseResult<List<PositionNodeVo>> responseResult = new ResponseResult<List<PositionNodeVo>>();
+        List<PositionNodeVo> positionNodeVoList = tbPositionService.getAllPositionNodeVo();
+        List<PositionNodeVo> positionTree = TreeUtil.createPositionTree(positionNodeVoList);
+
+        responseResult.setState(ResponseResult.STATE_OK);
+        responseResult.setMessage("成功");
+        responseResult.setData(positionTree);
+        return responseResult;
     }
 }
 
