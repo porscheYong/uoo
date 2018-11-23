@@ -1,8 +1,11 @@
 package cn.ffcs.uoo.message.server.pojo;
 
+import com.baomidou.mybatisplus.activerecord.Model;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class TbOrgTree {
+public class TbOrgTree extends Model<TbOrgTree> {
     private Long orgTreeId;
 
     private String orgTreeName;
@@ -111,5 +114,10 @@ public class TbOrgTree {
 
     public void setSort(String sort) {
         this.sort = sort;
+    }
+
+    @Override
+    protected Serializable pkVal() {
+        return this.orgTreeId;
     }
 }

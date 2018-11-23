@@ -1,7 +1,7 @@
 package cn.ffcs.uoo.message.server.constant;
 
 public enum ValidateConstant {
-    success("1000"),fail("1100");
+    success("1000"), fail("1100");
 
     private String value;
 
