@@ -5,6 +5,7 @@ import cn.ffcs.uoo.core.position.entity.TbPost;
 import cn.ffcs.uoo.core.position.dao.TbPostMapper;
 import cn.ffcs.uoo.core.position.service.TbPostService;
 import cn.ffcs.uoo.core.position.vo.OrgPostInfoVo;
+import cn.ffcs.uoo.core.position.vo.PostNodeVo;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +42,10 @@ public class TbPostServiceImpl extends ServiceImpl<TbPostMapper, TbPost> impleme
     @Override
     public List<OrgPostInfoVo> queryPostListByOrgId(Long orgId) {
         return baseMapper.queryPostListByOrgId(orgId);
+    }
+
+    @Override
+    public List<PostNodeVo> getAllPostNodeVo() {
+        return baseMapper.getAllPostNodeVo();
     }
 }

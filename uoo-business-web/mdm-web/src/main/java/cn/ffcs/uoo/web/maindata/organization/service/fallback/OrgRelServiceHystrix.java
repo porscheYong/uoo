@@ -47,8 +47,8 @@ public class OrgRelServiceHystrix implements OrgRelService {
     }
 
     @Override
-    public ResponseResult<TreeNodeVo> addOrgRel(Org org){
-        ResponseResult<TreeNodeVo> responseResult = new ResponseResult<TreeNodeVo>();
+    public ResponseResult<String> addOrgRel(Org org){
+        ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
         return responseResult;

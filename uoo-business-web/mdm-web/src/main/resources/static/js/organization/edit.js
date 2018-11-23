@@ -260,7 +260,7 @@ function getStatusCd (statusCd) {
 
 // 获取组织基础信息
 function getOrg (orgId) {
-    $http.get('/org/getOrg', {
+    $http.get('http://134.96.253.221:11100/org/getOrg', {
         orgId: orgId
     }, function (data) {
         $('#orgName').val(data.orgName).focus();
@@ -293,7 +293,7 @@ function getOrg (orgId) {
 
 // 获取组织关系信息
 function getOrgRel (orgId) {
-    $http.get('/orgRel/getOrgRelTypePage', {
+    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTypePage', {
         orgId: orgId,
         pageSize: 10,
         pageNo: 1
@@ -342,7 +342,7 @@ function updateOrg () {
   var address = $('#address').val();
   var orgContent = $('#orgContent').val();
   var orgDesc = $('#orgDesc').val();
-  $http.post('/org/updateOrg', JSON.stringify({
+  $http.post('http://134.96.253.221:11100/org/updateOrg', JSON.stringify({
       orgRootId: '1',
       orgId: orgId,
       supOrgId: pid,

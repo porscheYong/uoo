@@ -8,7 +8,7 @@ function loadUpRegionList() {
 		dataType : 'json',
 		type : 'get',
 		success : function(tree) {
-			if (tree.state == 1) {
+			if (tree.state == 1000) {
 				$.each(tree.data, function(i, item) {
 					var up = 0;
 					var html = "";
@@ -57,7 +57,7 @@ function saveRegion(){
 		url:'/region/politicalLocation/addPoliticalLocation',
 		data:$('#regionForm').serialize(),
 		success:function(data){
-			if(data.state==1){
+			if(data.state==1000){
 				//在父节点增加数据啊
 				var treeObj =parent.getTree();
 				var upId=$('#upLocId').val();

@@ -13,6 +13,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/*
+@SpringBootApplication
+@EnableDiscoveryClient
+@EnableFeignClients
+@EnableHystrixDashboard
+@EnableCircuitBreaker
+*/
 
 @SpringBootApplication
 @EnableDiscoveryClient

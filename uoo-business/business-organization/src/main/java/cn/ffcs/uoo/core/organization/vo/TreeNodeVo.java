@@ -19,16 +19,6 @@ public class TreeNodeVo {
     private String open;
     private boolean isParent;
     private String level;
-    private String checked;
-
-
-    public String getChecked() {
-        return checked;
-    }
-
-    public void setChecked(String checked) {
-        this.checked = checked;
-    }
 
     public String getLevel() {
         return level;

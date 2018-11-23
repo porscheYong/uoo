@@ -49,7 +49,7 @@ public class OrgPersonRelServiceHystrix implements OrgPersonRelService {
         return responseResult;
     }
     @Override
-    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(String perSonId){
+    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(Integer perSonId){
         ResponseResult<List<PsonOrgVo>> responseResult = new ResponseResult<List<PsonOrgVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
@@ -57,10 +57,14 @@ public class OrgPersonRelServiceHystrix implements OrgPersonRelService {
     }
 
     @Override
+<<<<<<< HEAD
     public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(String orgId,
                                                             String orgTreeId,
+=======
+    public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(Integer orgId,
+>>>>>>> 191bc73cdae51fe1bf46616ca6f3445957d2bcf6
                                                             String orgRootId,
-                                                            String personId,
+                                                            Integer personId,
                                                             String search,
                                                             Integer pageSize,
                                                             Integer pageNo){
@@ -71,7 +75,7 @@ public class OrgPersonRelServiceHystrix implements OrgPersonRelService {
     }
 
     @Override
-    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(String orgId,
+    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(Integer orgId,
                                                              String search,
                                                              Integer pageSize,
                                                              Integer pageNo){

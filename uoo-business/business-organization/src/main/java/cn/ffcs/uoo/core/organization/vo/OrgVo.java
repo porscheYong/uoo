@@ -42,12 +42,6 @@ public class OrgVo extends BaseVo{
     private String uuid;
     private String statusCd;
     private String createDate;
-
-    /**
-     * 化小组织编码
-     */
-    private String orgMartCode;
-
     //组织树
     private Long orgTreeId;
     /**
@@ -83,15 +77,6 @@ public class OrgVo extends BaseVo{
     //检索
     private String search;
     private String orgRelCreatDate;
-
-
-    public String getOrgMartCode() {
-        return orgMartCode;
-    }
-
-    public void setOrgMartCode(String orgMartCode) {
-        this.orgMartCode = orgMartCode;
-    }
 
     public List<OrgCertVo> getOrgCertList() {
         return OrgCertList;

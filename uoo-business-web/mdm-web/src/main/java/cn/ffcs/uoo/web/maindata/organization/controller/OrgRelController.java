@@ -28,7 +28,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/orgRel")
-@Api(value = "组织关系相关操作", description = "组织关系相关操作")
 public class OrgRelController {
 
 
@@ -79,7 +78,7 @@ public class OrgRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/addOrgRel", method = RequestMethod.POST)
-    public ResponseResult<TreeNodeVo> addOrgRel(@RequestBody Org org){
+    public ResponseResult<String> addOrgRel(@RequestBody Org org){
         return orgRelService.addOrgRel(org);
     }
 
