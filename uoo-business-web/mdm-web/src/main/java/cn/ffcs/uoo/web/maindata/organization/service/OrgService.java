@@ -47,14 +47,9 @@ public interface OrgService{
                                                   @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                   @RequestParam(value = "pageNo",required = false)Integer pageNo);
 
-<<<<<<< HEAD
     @RequestMapping(value = "/org/getOrgExtByOrgId", method = RequestMethod.GET,headers={"Content-Type=application/json"})
     public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                                    @RequestParam(value = "orgRootId",required = false)String orgRootId ,
-=======
-    @RequestMapping(value = "/getOrgExtByOrgId", method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@RequestParam(value = "orgRootId",required = false)String orgRootId ,
->>>>>>> 191bc73cdae51fe1bf46616ca6f3445957d2bcf6
                                                                    @RequestParam(value = "orgId",required = false) String orgId);
 
 }
