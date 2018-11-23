@@ -50,8 +50,8 @@ public class OrgServiceHystrix implements OrgService {
 
 
     @Override
-    public ResponseResult<Page<OrgVo>> getOrgRelPage(Integer orgRootId,
-                                                     Integer orgId,
+    public ResponseResult<Page<OrgVo>> getOrgRelPage(String orgRootId,
+                                                     String orgId,
                                                      Integer pageSize,
                                                      Integer pageNo){
         ResponseResult<Page<OrgVo>> responseResult = new ResponseResult<Page<OrgVo>>();

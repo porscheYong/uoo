@@ -27,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/orgTree")
-@Api(value = "/orgTree", description = "组织树相关操作")
+@Api(value = "组织树相关操作", description = "组织树相关操作")
 public class OrgTreeController {
 
 

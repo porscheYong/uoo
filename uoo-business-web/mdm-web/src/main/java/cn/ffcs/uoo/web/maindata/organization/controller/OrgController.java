@@ -25,6 +25,7 @@ import java.util.List;
  * @since 2018-09-25
  */
 @RestController
+@Api(value = "组织相关操作", description = "组织相关操作")
 @RequestMapping(value = "/org")
 public class OrgController {
 
@@ -62,8 +63,8 @@ public class OrgController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getOrgRelPage", method = RequestMethod.GET)
-    public ResponseResult getOrgRelPage(@RequestParam(value = "orgRootId",required = false)Integer orgRootId,
-                                        @RequestParam(value = "orgId",required = false)Integer orgId,
+    public ResponseResult getOrgRelPage(@RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                        @RequestParam(value = "orgId",required = false)String orgId,
                                         @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                         @RequestParam(value = "pageNo",required = false)Integer pageNo) {
         return orgService.getOrgRelPage(orgRootId,orgId,pageSize,pageNo);

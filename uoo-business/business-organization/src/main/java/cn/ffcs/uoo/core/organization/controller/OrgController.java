@@ -368,10 +368,10 @@ public class OrgController extends BaseController {
             newOrg.setAreaCodeId(new Long(org.getAreaCodeId()));
         }
         newOrg.setOrgName(StrUtil.strnull(org.getOrgName()));
-        newOrg.setOrgCode(StrUtil.strnull(org.getOrgCode()));
+        //newOrg.setOrgCode(StrUtil.strnull(org.getOrgCode()));
         newOrg.setShortName(StrUtil.strnull(org.getShortName()));
         newOrg.setOrgNameEn(StrUtil.strnull(org.getOrgNameEn()));
-        newOrg.setFullName(StrUtil.strnull(org.getFullName()));
+        //newOrg.setFullName(StrUtil.strnull(org.getFullName()));
         newOrg.setCityTown(StrUtil.strnull(org.getCityTown()));
         newOrg.setOfficePhone(StrUtil.strnull(org.getOfficePhone()));
         //newOrg.setFoundingTime();
@@ -665,8 +665,8 @@ public class OrgController extends BaseController {
     @UooLog(value = "查询组织关系列表分页", key = "getOrgRelPage")
     @RequestMapping(value = "/getOrgRelPage", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Page<OrgVo>> getOrgRelPage(Integer orgRootId,
-                                                     Integer orgId,
+    public ResponseResult<Page<OrgVo>> getOrgRelPage(String orgRootId,
+                                                     String orgId,
                                                      Integer pageSize,
                                                      Integer pageNo){
         ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
@@ -682,7 +682,7 @@ public class OrgController extends BaseController {
         }
         OrgVo orgVo = new OrgVo();
         orgVo.setOrgRootId(orgRootId.toString());
-        orgVo.setOrgId(orgId.longValue());
+        orgVo.setOrgId(new Long(orgId));
         if(!StrUtil.isNullOrEmpty(pageNo)){
             orgVo.setPageNo(pageNo);
         }
@@ -702,7 +702,7 @@ public class OrgController extends BaseController {
     })
     @UooLog(value = "查询组织分页", key = "getOrgPage")
     @RequestMapping(value = "/getOrgPage", method = RequestMethod.GET)
-    @Transactional(rollbackFor = Exception.class)
+    //@Transactional(rollbackFor = Exception.class)
     public ResponseResult<Page<OrgVo>> getOrgPage(String search,
                                                   Integer pageSize,
                                                   Integer pageNo){

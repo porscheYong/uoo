@@ -9,6 +9,7 @@
         <result column="AREA_CODE_ID" property="areaCodeId" />
         <result column="ORG_NAME" property="orgName" />
         <result column="ORG_CODE" property="orgCode" />
+        <result column="ORG_MART_CODE" property="orgMartCode" />
         <result column="SHORT_NAME" property="shortName" />
         <result column="ORG_NAME_EN" property="orgNameEn" />
         <result column="FULL_NAME" property="fullName" />
@@ -33,7 +34,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE, SHORT_NAME, ORG_NAME_EN, FULL_NAME, CITY_TOWN, OFFICE_PHONE, FOUNDING_TIME, ORG_SCALE, ORG_LEVEL, ORG_POSITION_LEVEL, SORT, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE, ORG_MART_CODE, SHORT_NAME, ORG_NAME_EN, FULL_NAME, CITY_TOWN, OFFICE_PHONE, FOUNDING_TIME, ORG_SCALE, ORG_LEVEL, ORG_POSITION_LEVEL, SORT, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
     <!-- 获取OrgIdSeq -->
     <select id="getId" resultType="java.lang.Long">
