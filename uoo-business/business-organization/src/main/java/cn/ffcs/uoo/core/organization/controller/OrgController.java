@@ -665,7 +665,8 @@ public class OrgController extends BaseController {
     @UooLog(value = "查询组织关系列表分页", key = "getOrgRelPage")
     @RequestMapping(value = "/getOrgRelPage", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Page<OrgVo>> getOrgRelPage(String orgRootId,
+    public ResponseResult<Page<OrgVo>> getOrgRelPage(String orgTreeId,
+                                                     String orgRootId,
                                                      String orgId,
                                                      Integer pageSize,
                                                      Integer pageNo){

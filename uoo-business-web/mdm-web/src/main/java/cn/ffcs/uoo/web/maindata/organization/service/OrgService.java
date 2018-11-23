@@ -38,7 +38,8 @@ public interface OrgService{
 
 
     @RequestMapping(value="/org/getOrgRelPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<Page<OrgVo>> getOrgRelPage(@RequestParam(value = "orgRootId",required = false)String orgRootId,
+    public ResponseResult<Page<OrgVo>> getOrgRelPage(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                                     @RequestParam(value = "orgRootId",required = false)String orgRootId,
                                                      @RequestParam(value = "orgId",required = false)String orgId,
                                                      @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                      @RequestParam(value = "pageNo",required = false)Integer pageNo);

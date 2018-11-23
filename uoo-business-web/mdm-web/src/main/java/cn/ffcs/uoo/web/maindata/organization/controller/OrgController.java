@@ -63,11 +63,12 @@ public class OrgController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getOrgRelPage", method = RequestMethod.GET)
-    public ResponseResult getOrgRelPage(@RequestParam(value = "orgRootId",required = false)String orgRootId,
+    public ResponseResult getOrgRelPage(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                        @RequestParam(value = "orgRootId",required = false)String orgRootId,
                                         @RequestParam(value = "orgId",required = false)String orgId,
                                         @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                         @RequestParam(value = "pageNo",required = false)Integer pageNo) {
-        return orgService.getOrgRelPage(orgRootId,orgId,pageSize,pageNo);
+        return orgService.getOrgRelPage(orgTreeId,orgRootId,orgId,pageSize,pageNo);
     }
 
 
