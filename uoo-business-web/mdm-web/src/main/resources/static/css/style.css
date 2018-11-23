@@ -4,6 +4,7 @@
 	}
 body {
 	margin: 0;
+	padding: 0;
 	font: 14px/150% microsoft yahei,helvetia,pingfang sc,Arial,Tahoma;
 	text-size-adjust: 100%;
 	background: #e2e5ef;
@@ -21,6 +22,7 @@ select,
 textarea {
 	border: none;
 	outline: none;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
 	}
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
@@ -32,9 +34,16 @@ textarea:-ms-input-placeholder {
 	font: 14px;
 	color: #c6cbd2;
 	}
+input[type="button"],
+input[type="submit"] {
+	-webkit-appearance: none;
+	}
 input[type="checkbox"],
 input[type="radio"] {
 	margin: 0 5px
+	}
+textarea {
+	overflow: auto;
 	}
 fieldset {
 	border: 1px solid #c6cbd2;
@@ -43,7 +52,7 @@ fieldset {
 	}
 legend {
 	font-weight: bold;
-	margin: 0 0 0 20px;
+	padding: 10px 0;
 	color: #5f6c7e
 	}
 .fleft {
@@ -61,7 +70,7 @@ legend {
 .tcenter {
 	text-align: center
 	}
-.tiright {
+.tright {
 	text-align: right
 	}
 .ulhide,
@@ -84,39 +93,50 @@ legend {
 .Center {
 	margin: 0 auto;
 	}
-.ColFull {
+.WpFull {
 	width: 100%;
 	}
-.Col1 {
+.Wp1 {
 	width: 10%;
 	}
-.Col2 {
+.Wp2 {
 	width: 20%;
 	}
-.Col3 {
+.Wp3 {
 	width: 30%
 	}
-.Col4 {
+.Wp4 {
 	width: 40%
 	}
-.Col4Li li {
+.Wp4Li li {
 	float: left;
 	width: 25%
 	}
-.Col5 {
+.Wp3Li li {
+	float: left;
+	width: 33.33%
+	}
+.Wp7Li li {
+	float: left;
+	width: 14.28%
+	}
+.Wp5 {
 	width: 50%
 	}
-.Col6 {
+.Wp6 {
 	width: 60%
 	}
-.Col7 {
+.Wp7 {
 	width: 70%
 	}
-.Col8 {
+.Wp8 {
 	width: 80%
 	}
+.W200 {
+	width: 200px
+	}
 .Font24 {
-	font-size: 24px;
+	font-size: 24px !important;
 	}
 .Font18 {
 	font-size: 18px;
@@ -163,6 +183,60 @@ legend {
 .lh28 {
 	line-height: 28px;
 	}
+.SpaceX {
+	height: 40px;
+	}
+.StepBar { /*进度条*/
+	text-align: center;
+	overflow: hidden;
+	counter-reset: step;
+	}
+.StepBar li {
+	list-style-type: none;
+	float: left;
+	position: relative;
+	}
+.StepBar li:before {
+	content: counter(step);
+	counter-increment: step;
+	width: 18px;
+	height: 18px;
+	float: left;
+	overflow: hidden;
+	font: bold 16px/18px Helvetica;
+	background: #ffc053;
+	color: #FFF;
+	border-radius: 20px;
+	margin: 0 auto 5px auto
+	}
+.StepBar li:after {
+	content: '';
+	width: calc(100% - 16px);
+	height: 6px;
+	background: #ffc053;
+	position: absolute;
+	left: calc(-100% + 17px);
+	top: 6px
+	}
+.StepBar li:first-child:after {
+	content: none
+	}
+.StepBar li.active:before,
+.StepBar li.active:after {
+	background: #FFF;
+	color: #ff8320;
+	}
+.StepBarBlue li:before {
+	background: #C6CBD2;
+	}
+.StepBarBlue li:after {
+	background: #C6CBD2;
+	}
+.StepBarBlue li.active:before,
+.StepBarBlue li.active:after {
+	background: #00A4FF;
+	color: #FFF;
+	}
 .KeyWords span {
 	border-right: 1px solid #dce1e6;
 	padding: 0 10px 0 5px;
@@ -182,9 +256,60 @@ legend {
 .FixedTop {
 	top: 0;
 	}
+.FixedRight {
+	right: 0;
+	}
+.FixedLeft {
+	left: 0 !important;
+	}
+.Page { /*翻页*/
+	text-align: center;
+	line-height: 30px;
+	}
+.Page a,
+.Page .Input {
+	width: 32px;
+	border: 1px solid #dce1e6;
+	display: inline-block;
+	background: #FFF;
+	color: #232c45;
+	margin: 0 -5px 0 0;
+	height: 32px;
+	}
+.Page a:hover {
+	background: #ccedff;
+	border: 1px solid #7ad0ff;
+	position: relative;
+	}
+.Page .Current {
+	background: #00a4ff !important;
+	border: 1px solid #00a4ff !important;
+	color: #FFF
+	}
+.Page .Input {
+	margin: 0 10px;
+	width: 50px;
+	border-radius: 3px;
+	}
+.Page .Select {
+	width: 80px;
+	}
+.Page .Num {
+	text-align: center;
+	width: 40px;
+	}
+.Page .prev,
+.Page .next {
+	border-radius: 3px;
+	width: 80px;
+	}
 .TopTabTree {
-	right: 15px;
+	right: 25px;
 	left: 225px;
+	top: 25px;
+	}
+.leftTree {
+	background: #F6F7F8;
 	}
 .bdTop {
 	border-top: 1px solid #dce1e6
@@ -216,7 +341,7 @@ legend {
 	line-height: 24px;
 	background: #c6cbd2;
 	border-radius: 4px;
-	margin: 5px 2px;
+	margin: 5px 1px;
 	color: #FFF;
 	padding: 0 10px;
 	display: inline-block
@@ -239,8 +364,17 @@ legend {
 .IconUser {
 	background: url(../images/ico_user.svg);
 	}
+.IconMobile {
+	background: url(../images/ico_mobile.svg);
+	}
+.IconLocation {
+	background: url(../images/ico_location.svg);
+	}
+.IconEmail {
+	background: url(../images/ico_email.svg);
+	}
 .IconInput {
-	margin: 0 2px -7px -34px;
+	margin: 0 6px -7px -34px;
 	display: inline-block;
 	opacity: 0.5;
 	}
@@ -272,7 +406,7 @@ legend {
 	line-height: 36px;
 	height: 32px;
 	display: inline-block;
-	padding: 0 20px;
+	padding: 0 15px;
 	text-align: center;
 	}
 .Tab .Current {
@@ -285,6 +419,7 @@ legend {
 	}
 .Tab2 {
 	text-align: center;
+	padding: 0;
 	clear: both
 	}
 .Tab2 li {
@@ -312,11 +447,18 @@ legend {
 .Tab2 li:last-child {
 	border-radius: 0 4px 4px 0
 	}
+.TabMin a {
+	width: 50px;
+	}
 .BigFace {
 	width: 120px;
 	height: 120px;
 	border-radius: 60px;
 	border: 1px solid #dce1e6
+	}
+.SamllFace {
+	width: 80px;
+	height: 80px;
 	}
 .WhitePanel { /*外内容面板*/
 	background: #FFF;
@@ -358,6 +500,9 @@ legend {
 	position: absolute;
 	overflow: auto;
 	}
+.BotBtnContentFull { /*内全内容带底部固定按钮配合上一个使用*/
+	left: 0;
+	}
 .TopTabFulContent { /*满屏内容带顶部固定按钮*/
 	left: 15px;
 	top: 70px;
@@ -381,6 +526,40 @@ legend {
 	background: #CCC;
 	border-radius: 4px;
 	}
+.Info .InfoPanel {
+	display: none
+	}
+.Info:hover .InfoPanel {
+	display: block
+	}
+.InfoPanel {
+	width: 370px;
+	background: #FFF;
+	border-radius: 8px;
+	text-align: left;
+	overflow: hidden;
+	box-shadow: 0 0 8px rgba(35,44,69,.4);
+	position: absolute;
+	display: block
+	}
+.InfoPanel .InfoPanelTitle {
+	font: bold 18px/36px microsoft yahei,pingfang sc;
+	background: #f6f7f8;
+	color: #232c45;
+	text-indent: 15px;
+	border-bottom: 1px solid #dce1e6
+	}
+.Bubble {
+	background: #c6cbd2;
+	border-radius: 8px;
+	line-height: 16px;
+	color: #FFF;
+	font-weight: bold;
+	display: inline-block;
+	padding: 0 5px;
+	margin: 0 5px;
+	vertical-align: middle;
+	}
 .BoardTitle { /*模块标题*/
 	padding: 10px 0;
 	float: left;
@@ -388,11 +567,17 @@ legend {
 	}
 .BoardTitle .Name {
 	border-left: 5px solid #008aff;
-	font: bold 16px/24px microsoft yahei,helvetia,pingfang sc,Arial,Tahoma;
-	padding: 0 30px 0 10px;
+	font: 22px/24px microsoft yahei,helvetia,pingfang sc,Arial,Tahoma;
+	padding: 0 10px;
 	height: 24px;
 	float: left;
 	color: #232c45
+	}
+.BoardTitle .Sec {
+	border-left: 3px dashed #7fc4ff;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 0 0 0 10px;
 	}
 .BoardContent {
 	padding: 10px 10px 30px 10px;
@@ -421,14 +606,43 @@ legend {
 	padding: 0 10px 0 0;
 	line-height: 24px;
 	height: 24px;
+	opacity: 0.8
 	}
-.FunctionBtn a .ico {
+.FunctionBtn a:hover {
+	opacity: 1
+	}
+.FunctionBtn a span {
 	width: 18px;
 	height: 18px;
-	background: #999;
+	background-color: #999;
+	background-repeat: no-repeat;
 	float: left;
 	margin: 3px 6px 3px 3px;
 	border-radius: 9px;
+	}
+.FunctionBtn a.BtnAdd {
+	background: #daf1c7;
+	}
+.FunctionBtn a.BtnAdd span {
+	background: url(../images/icos_add.svg) #86d045;
+	}
+.FunctionBtn a.BtnMove {
+	background: #dae0f8;
+	}
+.FunctionBtn a.BtnMove span {
+	background: url(../images/icos_move.svg) #8699e9;
+	}
+.FunctionBtn a.BtnOrder {
+	background: #c1ecff;
+	}
+.FunctionBtn a.BtnOrder span {
+	background: url(../images/icos_order.svg) #33bfff;
+	}
+.FunctionBtn a.BtnDel {
+	background: #fbd3d8;
+	}
+.FunctionBtn a.BtnDel span {
+	background: url(../images/icos_del.svg) #f26d7e;
 	}
 .TableStyle table { /*表格*/
 	background: #FFF;
@@ -437,12 +651,13 @@ legend {
 	border-collapse: collapse;
 	}
 .TableStyle .Title {
-	line-height: 28px;
 	color: #5f6c7e;
 	font-weight: bold;
 	text-align: center
 	}
 .TableStyle .Title td {
+	line-height: 22px;
+	height: 22px;
 	border-right: 1px solid #66cbff;
 	border-bottom: 1px solid #66cbff
 	}
@@ -451,6 +666,8 @@ legend {
 	}
 .TableStyle tr.Title:hover {
 	background: inherit !important;
+	}
+.TableStyle .Order {
 	}
 .TableStyle td {
 	padding: 2px 4px;
@@ -463,6 +680,22 @@ legend {
 .TableStyle tr:hover {
 	background: #d9f2ff !important;
 	}
+.TableStyle .Tag {
+	margin: 3px 2px;
+	}
+.Progress {
+	background: #ecedef;
+	width: 100%;
+	height: 12px;
+	border-radius: 6px;
+	overflow: hidden
+	}
+.Progress span {
+	background: #00a4ff;
+	height: 100%;
+	border-radius: inherit;
+	display: block
+	}
 .FormList {
 	line-height: 46px;
 	}
@@ -472,7 +705,8 @@ legend {
 	}
 .FormList input,
 .FormList select,
-.FormList textarea {
+.FormList textarea,
+.FormList .TagInput {
 	border: 1px solid #dce1e6;
 	border-radius: 4px;
 	padding: 5px;
@@ -484,7 +718,8 @@ legend {
 	}
 .FormList input:hover,
 .FormList select:hover,
-.FormList textarea:hover {
+.FormList textarea:hover,
+.FormList .TagInput:hover {
 	border: 1px solid #00a4ff;
 	box-shadow: 1px 2px 3px rgba(0,164,255,.2)
 	}
@@ -495,6 +730,19 @@ legend {
 .FormList select:disabled:hover {
 	border: 1px solid #CCC;
 	box-shadow: none
+	}
+.FormList .TagInput {
+	line-height: 12px;
+	}
+.FormList .TagInput .Tag {
+	background: #ccedff;
+	line-height: 20px;
+	border: 1px solid #33b6ff;
+	color: #232c45 !important
+	}
+.FormList .TagInput a {
+	display: inline-block;
+	height: 100%;
 	}
 .FormList label {
 	padding: 0 10px;
@@ -512,6 +760,10 @@ legend {
 	border: none;
 	box-shadow: none;
 	}
+.SysTips {
+	line-height: 24px;
+	padding: 0 0 10px 0 !important;
+	}
 .Btn {
 	background: #959da9;
 	height: 36px;
@@ -519,7 +771,7 @@ legend {
 	border: none !important;
 	width: 120px;
 	padding: 0 10px;
-	margin: 0 5px;
+	margin: 0 10px 0 0;
 	color: #FFF;
 	opacity: 0.8
 	}
@@ -532,6 +784,9 @@ legend {
 .Btn:hover {
 	opacity: 1
 	}
+.BtnMin {
+	width: 60px;
+	}
 .BtnBlue {
 	background: #00a4ff;
 	box-shadow: 1px 4px 8px rgba(0,164,255,.4);
@@ -543,9 +798,19 @@ legend {
 .BtnRed {
 	background: #ee4063;
 	}
+.BtnRed2 {
+	border: 1px solid #ee4063 !important;
+	color: #ee4063;
+	background: #FFF;
+	}
+.BtnWhite {
+	border: 1px solid #959da9 !important;
+	color: #5f6c7e;
+	background: #FFF;
+	}
 .Label {
 	width: 150px;
-	color: #959da9;
+	color: #5f6c7e;
 	text-align: right;
 	padding: 0 8px 0 0;
 	vertical-align: top;

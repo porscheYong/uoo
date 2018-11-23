@@ -5,6 +5,9 @@ import cn.ffcs.uoo.web.maindata.position.service.fallback.TbPostClientHystrix;
 import cn.ffcs.uoo.web.maindata.position.vo.OrgPostInfoVo;
 import cn.ffcs.uoo.web.maindata.position.vo.ResponseResult;
 import common.config.PersonnelServiceConfiguration;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,11 +28,14 @@ public interface TbPostClient {
     List<TbPost> queryPostList(@PathVariable("postName") String postName);
 
     @RequestMapping(value = "/tbPost/getChildren/{parentPostId}", method = RequestMethod.GET)
-    List<TbPost> queryChildPostList(@PathVariable("parentPostId") Long parentPostId);
+    ResponseResult<List<TbPost>> queryChildPostList(@PathVariable("parentPostId") Long parentPostId);
 
     @RequestMapping(value = "/tbPost/getParent", method = RequestMethod.GET)
     List<TbPost> queryParentPostList();
 
     @RequestMapping(value = "/tbPost/getPostList/{orgId}", method = RequestMethod.GET)
     List<OrgPostInfoVo> queryPostListByOrgId(@PathVariable("orgId") Long orgId);
+     
+    @RequestMapping(value = "/tbPost/postTree", method = RequestMethod.GET)
+    public ResponseResult<List<TbPost>> postTree();
 }

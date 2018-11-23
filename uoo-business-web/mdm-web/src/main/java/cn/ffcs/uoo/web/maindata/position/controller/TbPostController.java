@@ -1,5 +1,15 @@
 package cn.ffcs.uoo.web.maindata.position.controller;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import cn.ffcs.uoo.web.maindata.position.dto.TbPost;
 import cn.ffcs.uoo.web.maindata.position.service.TbPostClient;
 import cn.ffcs.uoo.web.maindata.position.vo.OrgPostInfoVo;
@@ -8,10 +18,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * <p>
@@ -62,7 +68,7 @@ public class TbPostController {
     @ApiOperation(value = "查询下级职位",notes = "查询下级职位")
     @ApiImplicitParam(name = "parentPostId", value = "上级职位关系标识", required = true, dataType = "Long")
     @RequestMapping(value = "/getChildren/{parentPostId}", method = RequestMethod.GET)
-    public List<TbPost> queryChildPostList(@PathVariable Long parentPostId) {
+    public ResponseResult<List<TbPost>> queryChildPostList(@PathVariable Long parentPostId) {
         return tbPostClient.queryChildPostList(parentPostId);
     }
 
@@ -77,6 +83,13 @@ public class TbPostController {
     @RequestMapping(value = "/getPostList/{orgId}", method = RequestMethod.GET)
     public List<OrgPostInfoVo> queryPostListByOrgId(@PathVariable Long orgId) {
         return tbPostClient.queryPostListByOrgId(orgId);
+    }
+    @ApiOperation(value = "查询职位树",notes = "查询职位树")
+    @ApiImplicitParam( )
+    @RequestMapping(value = "/postTree", method = RequestMethod.GET)
+    public ResponseResult<List<TbPost>> postTree() {
+        ResponseResult<List<TbPost>> postTree = tbPostClient.postTree();
+        return postTree;
     }
 }
 

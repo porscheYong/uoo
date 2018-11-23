@@ -35,4 +35,6 @@ public interface TbPostService extends IService<TbPost> {
      * @return
      */
     List<OrgPostInfoVo> queryPostListByOrgId(Long orgId);
+
+    List<TbPost> postTree();
 }

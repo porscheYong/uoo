@@ -35,4 +35,6 @@ public interface TbPostMapper extends BaseMapper<TbPost> {
      * @return
      */
     List<OrgPostInfoVo> queryPostListByOrgId(Long orgId);
+
+    List<TbPost> postTree();
 }

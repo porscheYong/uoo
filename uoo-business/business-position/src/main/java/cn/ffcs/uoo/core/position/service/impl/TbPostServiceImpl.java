@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Service
 public class TbPostServiceImpl extends ServiceImpl<TbPostMapper, TbPost> implements TbPostService {
-
+    
     @Override
     public int save(TbPost tbPost) {
         return baseMapper.save(tbPost);
@@ -41,5 +41,10 @@ public class TbPostServiceImpl extends ServiceImpl<TbPostMapper, TbPost> impleme
     @Override
     public List<OrgPostInfoVo> queryPostListByOrgId(Long orgId) {
         return baseMapper.queryPostListByOrgId(orgId);
+    }
+
+    @Override
+    public List<TbPost> postTree() {
+        return baseMapper.postTree();
     }
 }

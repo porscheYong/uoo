@@ -1,6 +1,18 @@
 package cn.ffcs.uoo.core.position.controller;
 
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
@@ -14,17 +26,10 @@ import cn.ffcs.uoo.core.position.service.TbPostLocationService;
 import cn.ffcs.uoo.core.position.service.TbPostService;
 import cn.ffcs.uoo.core.position.vo.OrgPostInfoVo;
 import cn.ffcs.uoo.core.position.vo.ResponseResult;
-import com.baomidou.mybatisplus.enums.SqlLike;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 /**
@@ -181,21 +186,39 @@ public class TbPostController extends BaseController {
         wrapper.eq("STATUS_CD", "1000");
         return tbPostService.selectList(wrapper);
     }
-
+    
+    @ApiOperation(value = "查询职位树",notes = "查询职位树")
+    @ApiImplicitParam( )
+    @UooLog(value = "查询职位树", key = "postTree")
+    @RequestMapping(value = "/postTree", method = RequestMethod.GET)
+    public ResponseResult<List<TbPost>> postTree() {
+        List<TbPost> postTree = tbPostService.postTree( );
+        ResponseResult<List<TbPost>> r=new ResponseResult<>();
+        r.setState(ResponseResult.STATE_OK);
+        r.setData(postTree);
+        return r;
+    }
+    
     @ApiOperation(value = "查询下级职位",notes = "查询下级职位")
     @ApiImplicitParam(name = "parentPostId", value = "上级职位关系标识", required = true, dataType = "Long")
     @UooLog(value = "查询下级职位", key = "queryChildrenPostList")
     @RequestMapping(value = "/getChildren/{parentPostId}", method = RequestMethod.GET)
-    public List<TbPost> queryChildPostList(@PathVariable Long parentPostId) {
+    public ResponseResult<List<TbPost>> queryChildPostList(@PathVariable Long parentPostId) {
         // 校验必填项
+        ResponseResult<List<TbPost>> rr=new ResponseResult<>();
         if(parentPostId == null) {
-            return null;
+            rr.setState(ResponseResult.STATE_ERROR);
+            rr.setMessage("请选择上级菜单");
+            return rr;
         }
 
         Wrapper<TbPost> wrapper = new EntityWrapper<TbPost>();
         wrapper.eq("PARENT_POST_ID", parentPostId);
         wrapper.eq("STATUS_CD", "1000");
-        return tbPostService.selectList(wrapper);
+        List<TbPost> selectList = tbPostService.selectList(wrapper);
+        rr.setState(ResponseResult.STATE_OK);
+        rr.setData(selectList);
+        return rr;
     }
 
     @ApiOperation(value = "查询父级职位",notes = "查询父级职位")

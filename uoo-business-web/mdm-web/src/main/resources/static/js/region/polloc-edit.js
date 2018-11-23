@@ -1,5 +1,45 @@
 var locIds=null,locNames=null,curUpId=0;
-function cancel(){
+function deleteData(){
+	var id=$('#locId').val();
+	var upRegionId=$('#upLocId').val();
+	if(confirm('确定删除这条数据？')){
+		$.ajax({
+			url:'/region/politicalLocation/deletePoliticalLocation',
+			data:{"locId":id},
+			dataType:'json',
+			type:'post',
+			success:function(data){
+				alert(data.state==1?'删除成功':data.message);
+				//getRegionList(listId);
+				if(data.state==1){
+					var zTree=parent.getTree();
+					var snodes= parent.getCurrentSelectedNode()[0];
+					var nodes=snodes.children;
+					if(nodes!=null&&nodes.length>0)
+					for(var i=0;i<nodes.length;i++){
+						if(nodes[i].id==id)zTree.removeNode(nodes[i], parent.getCurrentSelectedNode()[0], "prev");
+					}
+					//如果选中的id=当前id  那么调到上一级id 如果不等于就不管  如果上一级id=0 那么。。。
+					if(upRegionId==0||upRegionId=='0'){
+						zTree.removeNode(snodes);
+						parent.changeIframe('/inaction/region/none.html');
+						return;
+					}
+					if(snodes.id==id){
+						zTree.removeNode(snodes);
+						zTree.selectNode(zTree.getNodeByParam("id", upRegionId, null));
+						parent.changeIframe('/inaction/region/polloc-list.html?id=' + upRegionId);
+					}else{
+						zTree.removeNode(zTree.getNodeByParam("id", id, null));
+						//不等于。。。
+						parent.changeIframe('/inaction/region/polloc-list.html?id=' + snodes.id);
+					}
+					
+				}
+			}
+		});
+	}
+	
 }
 function get(id){
 	$.ajax({

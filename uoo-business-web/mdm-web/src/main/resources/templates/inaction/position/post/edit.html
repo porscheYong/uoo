@@ -22,8 +22,6 @@
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
     <link href="/css/custom.css" rel="stylesheet">
-    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
-    <link href="/css/style.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="/js/core/html5shiv.js"></script>
@@ -48,41 +46,40 @@
             <div class="tab-pane active" id="tab_content1">
             <form method="post" id="regionForm" class="form-horizontal">
                 
-                <input  id="polLocIds" value="" name="polLocIds" type="hidden"/>
-                <input  id="regionId" value="" name="commonRegionId" type="hidden"/>
+                <input  id="locId" value="" name="locId" type="hidden"/>
                 <div class="form-group" style="margin-bottom: 10px;">
-                      <label for="upRegionId" class="form-item-label-required col-sm-2 control-label" style=" ">上级电信区域</label>
+                      <label for="upLocId" class="form-item-label-required col-sm-2 control-label" style=" ">上级行政区域</label>
                       <div class="col-sm-5">
-                       <select   id="upRegionId" name="upRegionId" class="form-control  ">
+                       <select  id="upLocId" name="upLocId" class="form-control  ">
                        <option value="0">最上级</option>
                       </select>
                       </div>
                 </div>
                 <div class="form-group" style="margin-bottom: 10px;">
-                      <label for="regionNbr" class="form-item-label-required col-sm-2 control-label" style=" ">电信区域编码</label>
+                      <label for="locCode" class="form-item-label-required col-sm-2 control-label" style=" ">行政区域编码</label>
                        <div class="col-sm-5">
-                      <input type="number" id="regionNbr" class="form-control " data-toggle="tooltip" data-placement="right" size="40" name="regionNbr" required value="">
+                      <input type="number" id="locCode" class="form-control " size="40" name="locCode" data-toggle="tooltip" data-placement="right" required value="">
                          </div>
                 </div>
                 <div class="form-group" style="margin-bottom: 10px;">
-                      <label for="regionName" class="form-item-label-required col-sm-2 control-label" style=" ">电信区域名称</label>
+                      <label for="locName" class="form-item-label-required col-sm-2 control-label" style=" ">行政区域名称</label>
                       <div class="col-sm-5">
-                      <input type="text" id="regionName" class="form-control  " data-toggle="tooltip" data-placement="right" size="40" name="regionName" required value="">
+                      <input type="text" id="locName" class="form-control  " size="40" name="locName" data-toggle="tooltip" data-placement="right" required value="">
                       </div>
                     
                 </div>
-                <!-- <div class="form-group" style="margin-bottom: 10px;">
-                     <label for="locAbbr" class="col-sm-2 control-label"  >行政区域简称</label>
+                <div class="form-group" style="margin-bottom: 10px;">
+                     <label for="locAbbr" class="form-item-label-required col-sm-2 control-label"  >行政区域简称</label>
                      <div class="col-sm-5">
-                      <input type="text" id="locAbbr" class="form-control "   name="locAbbr" required value="">
+                      <input type="text" id="locAbbr" class="form-control "   name="locAbbr" data-toggle="tooltip" data-placement="right" required value="">
                       </div>
                      
-                </div> -->
+                </div>
                 <div class="form-group" style="margin-bottom: 10px;">
-                      <label for="regionType" class="form-item-label-required col-sm-2 control-label" style=" ">电信区域类型</label>
+                      <label for="locType" class="form-item-label-required col-sm-2 control-label" style=" ">行政区域类型</label>
                       <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="城市"> -->
                       <div class="col-sm-5">
-                      <select id="regionType" name="regionType" class="form-control  ">
+                      <select id="locType" name="locType" class="form-control  ">
                         <!-- <option value='1'>省</option>
                         <option value='2'>市</option>
                         <option value='3'>区</option>
@@ -95,59 +92,24 @@
                       </div>
                 </div>
                 <div class="form-group" style="margin-bottom: 10px;">
-                       <label for="regionDesc" class="col-sm-2 control-label" style=" ">电信区域描述</label>
+                       <label for="locDesc" class="col-sm-2 control-label" style=" ">行政区域描述</label>
                       <div class="col-sm-8  " style=" ">
-                        <input id="regionDesc" class="form-control  " style=" " size="40" name="regionDesc" value="">
+                        <input id="locDesc" class="form-control  " style=" " size="40" name="locDesc" value="">
                       </div>
-                </div>
-                <div class="form-group" style="margin-bottom: 10px;">
-                       <label for="locDesc" class="col-sm-2 control-label" style=" ">关联行政区域</label>
-                      <div class="col-sm-8  " style=" ">
-                        <input id="locDesc" placeholder="点击选择关联的行政区域" class="form-control" onclick="$('#treeDDiv').show();showMenu(); " style="" readonly="readonly" size="40" name="" value="">
-                      </div>
-                </div>
-                <div  class="form-group" id="treeDDiv" style="margin-bottom: 10px; display: none;">
-                       <label for="locDesc" class="col-sm-2 control-label" style=" "></label>
-                      <div class="col-sm-4  " style=" ">
-                      &nbsp;&nbsp;选择
-                      <div id="treeDiv">
-                        <ul id="locTree" class="ztree"></ul>
-                      </div>
-                      </div>
-                      <div class="col-sm-4  " style=" ">
-                      &nbsp;&nbsp;已选
-                      <div id="chosedTreeNode">
-                        <ul class="list-group">
-                        </ul>
-                      </div>
-                      </div>
-                      
                 </div>
             </form>
-             </div>
-            <p></p>
-                <div class="row BoardContent" style="margin-bottom: 10px;">
-                <div style="margin-left: 5%; " class="FunctionBtn">
-                <a class="BtnDel" onclick="deleteData()" href="javascript:void(0)"　><span></span>删除</a>
-                
-               <!--  <a class="BtnDel" id="" href="JavaScript:void(0)" onclick="parent.changeIframe('/inaction/region/polloc-add.html')"><span class="fa fa-plus-circle icon-warning"></span>删除</a>
-                    <input type="submit" id="formSubmit" class="clip">
-                    <label for="formSubmit" class="ui-button ui-button-primary">注册</label>
-                    <button id="delBtn" class="ui-button ui-button-warning">删除</button> -->
-                </div>
-              </div>
                <div class="row" style="margin-bottom: 10px;">
-                <div class="btn-group col-md-offset-3" style="margin-left: 30%;">
+                <div style="margin-left: 17%;">
                     <!-- <input type="submit" id="formSubmit" class="clip">
                     <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
-                    <button id="saveBtn" class="ui-button ui-button-primary">保存</button>
-                    <button id="cancelBtn" class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="history.go(-1)">取消</button>
+                    <button id="saveBtn" class="btn btn-primary">保存</button>
+                    <button id="cancelBtn" class="btn btn-default" style="margin-left: 10px;" onclick="history.go(-1)">取消</button>
                 </div>
-                </div>
+              </div>
             </div>
              
           </div>
-       
+        </div>
     </div>
     <!-- jQuery -->
     <script type="text/javascript" src="/js/core/jquery.js"></script>
@@ -168,7 +130,7 @@
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
-    <script type="text/javascript" src="/js/region/commonregion-edit.js"></script>
+    <script type="text/javascript" src="/js/region/polloc-edit.js"></script>
 
     <script type="text/javascript">
      /*  seajs.use('/vendors/lulu/js/common/ui/Select', function () {

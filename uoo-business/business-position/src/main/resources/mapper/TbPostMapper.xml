@@ -121,4 +121,15 @@
         AND P.POST_ID = R.POST_ID
         AND R.ORG_ID = #{orgId}
     </select>
+    <select id="postTree" resultType="cn.ffcs.uoo.core.position.entity.TbPost">
+        SELECT
+        *
+        FROM
+        TB_POST
+        WHERE
+        STATUS_CD='1000'
+        START WITH (PARENT_POST_ID IS NULL OR PARENT_POST_ID &lt; 1 )
+        CONNECT BY
+        PRIOR PARENT_POST_ID = POST_ID
+    </select>
 </mapper>
