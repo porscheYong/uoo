@@ -54,9 +54,10 @@ public class OrgRelController {
     @RequestMapping(value = "/getRestructOrgRelTree", method = RequestMethod.GET)
     public ResponseResult<List<TreeNodeVo>> getRestructOrgRelTree(
             @PathVariable(value = "id",required = false)String id,
+            @PathVariable(value = "orgTreeId",required = false)String orgTreeId,
             @PathVariable(value = "orgRootId",required = false)String orgRootId,
             @PathVariable(value = "isFull",required = false)boolean isFull){
-        return orgRelService.getRestructOrgRelTree(id,orgRootId,isFull);
+        return orgRelService.getRestructOrgRelTree(id,orgTreeId,orgRootId,isFull);
        // return null;
     }
 
@@ -66,10 +67,11 @@ public class OrgRelController {
     })
     @RequestMapping(value = "/getTarOrgRelTreeAndLv", method = RequestMethod.GET)
     public ResponseResult<List<TreeNodeVo>> getTarOrgRelTreeAndLv(@RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                                  @PathVariable(value = "orgTreeId",required = false)String orgTreeId,
                                                                   @RequestParam(value = "lv",required = false)String lv,
                                                                   @RequestParam(value = "curOrgid",required = false)String curOrgid,
                                                                   @RequestParam(value = "isFull",required = false)boolean isFull){
-        return orgRelService.getTarOrgRelTreeAndLv(orgRootId,lv,curOrgid,isFull);
+        return orgRelService.getTarOrgRelTreeAndLv(orgRootId,orgTreeId,lv,curOrgid,isFull);
     }
 
 
@@ -88,9 +90,10 @@ public class OrgRelController {
     @RequestMapping(value = "/getFuzzyOrgRelPage", method = RequestMethod.GET)
     public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(@RequestParam(value = "search",required = false)String search,
                                                           @RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                          @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                           @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                           @RequestParam(value = "pageNo",required = false)Integer pageNo){
-        return orgRelService.getFuzzyOrgRelPage(search,orgRootId,pageSize,pageNo);
+        return orgRelService.getFuzzyOrgRelPage(search,orgRootId,orgTreeId,pageSize,pageNo);
     }
 
 

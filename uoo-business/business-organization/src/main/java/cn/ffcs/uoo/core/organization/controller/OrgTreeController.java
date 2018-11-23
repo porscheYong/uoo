@@ -69,10 +69,8 @@ public class OrgTreeController extends BaseController {
     @Autowired
     private OrgOrgtreeRelService orgOrgtreeRelService;
 
-
-
     @Autowired
-    private TestService testService;
+    private OrgRelTypeService orgRelTypeService;
 
 
     @ApiOperation(value = "新增组织树信息-web", notes = "新增组织树信息")
@@ -95,7 +93,15 @@ public class OrgTreeController extends BaseController {
         //组织节点
         List<TreeNodeVo> treeNodeList = orgTree.getTreeNodeList();
 
-
+        Wrapper orgReltypeConfWrapper = Condition.create()
+                .eq("ORG_REL_TYPE_ID",orgRelTypeList.get(0).getOrgRelTypeId())
+                .eq("STATUS_CD","1000");
+        OrgRelType ort = orgRelTypeService.selectOne(orgReltypeConfWrapper);
+        if(ort==null){
+            ret.setMessage("组织关系类型不存在");
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            return ret;
+        }
 
         Long orgId = orgService.getId();
         Org org = new Org();
@@ -158,8 +164,8 @@ public class OrgTreeController extends BaseController {
                 Long orgRefId = orgRelService.getId();
                 orgRel.setOrgRelId(orgRefId);
                 orgRel.setOrgId(new Long(vo.getId()));
-                orgRel.setSupOrgId(new Long(vo.getPid()));
-                orgRel.setOrgRelTypeId(ogtOrgReftypeConfId);
+                orgRel.setParentOrgId(new Long(vo.getPid()));
+                orgRel.setRefCode(ort.getRefCode());
                 orgRel.setStatusCd("1000");
                 orgRelService.add(orgRel);
 

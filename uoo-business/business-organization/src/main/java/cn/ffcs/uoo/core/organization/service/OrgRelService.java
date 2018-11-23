@@ -88,13 +88,14 @@ public interface OrgRelService extends IService<OrgRel> {
 
         /**
          * 组织树查询
+         * @param orgTreeId
          * @param orgRootId
          * @param refCode
          * @param pid
          * @param isRoot
          * @return
          */
-        public List<TreeNodeVo> queryOrgTree(String orgRootId,String refCode,String pid,boolean isRoot);
+        public List<TreeNodeVo> queryOrgTree(String orgTreeId,String orgRootId,String refCode,String pid,boolean isRoot);
 
         /**
          * 获取组织关系类型

@@ -11,6 +11,7 @@ import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -29,6 +30,8 @@ public class ApiTestController {
 
     @Autowired
     private TestService testService;
+
+    private JdbcTemplate jdbcTemplate;
 
     @ApiOperation(value = "test-web", notes = "test")
     @ApiImplicitParams({

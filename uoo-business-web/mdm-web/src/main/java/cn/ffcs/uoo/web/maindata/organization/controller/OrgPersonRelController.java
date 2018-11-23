@@ -73,12 +73,13 @@ public class OrgPersonRelController {
     })
     @RequestMapping(value = "/getPerOrgRelPage", method = RequestMethod.GET)
     public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(@RequestParam(value = "orgId",required = false)String orgId,
+                                                            @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                             @RequestParam(value = "orgRootId",required = false)String orgRootId,
                                                             @RequestParam(value = "personId",required = false)String personId,
                                                             @RequestParam(value = "search",required = false)String search,
                                                             @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                             @RequestParam(value = "pageNo",required = false)Integer pageNo){
-        return orgPersonRelService.getPerOrgRelPage(orgId,orgRootId,personId,search,pageSize,pageNo);
+        return orgPersonRelService.getPerOrgRelPage(orgId,orgTreeId,orgRootId,personId,search,pageSize,pageNo);
     }
 
 

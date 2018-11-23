@@ -75,6 +75,7 @@ public class OrgRelController extends BaseController {
     @UooLog(value = "查询组织树", key = "getOrgRelTree")
     @RequestMapping(value = "/getOrgRelTree", method = RequestMethod.GET)
     public ResponseResult<List<TreeNodeVo>> getOrgRelTree(@RequestParam(value = "id",required = false)String id,
+                                                          @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                           @RequestParam(value = "orgRootId",required = false)String orgRootId,
                                                           @RequestParam(value = "relCode",required = false)String relCode,
                                                           @RequestParam(value = "isOpen",required = false)boolean isOpen,
@@ -87,8 +88,22 @@ public class OrgRelController extends BaseController {
             ret.setMessage("根节点标识不能为空");
             return ret;
         }
+        if(StrUtil.isNullOrEmpty(orgTreeId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树标识不能为空");
+            return ret;
+        }
+        //查询组织树
+        Wrapper orgTreeConfWrapper = Condition.create().eq("ORG_TREE_ID",orgTreeId).eq("STATUS_CD","1000");
+        OrgTree orgTree  = orgTreeService.selectOne(orgTreeConfWrapper);
+        if(orgTree == null){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树不存在");
+            return ret;
+        }
+
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
-        treeNodeVos = orgRelService.queryOrgTree(orgRootId,relCode,id,isRoot);
+        treeNodeVos = orgRelService.queryOrgTree(orgTreeId,orgTree.getOrgId(),relCode,id,isRoot);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("组织树查询成功");
         ret.setData(treeNodeVos);
@@ -101,7 +116,7 @@ public class OrgRelController extends BaseController {
     @UooLog(value = "重构组织树获取", key = "getOrgRelTree")
     @RequestMapping(value = "/getRestructOrgRelTree", method = RequestMethod.GET)
     //@Transactional(rollbackFor = Exception.class)
-    public ResponseResult<List<TreeNodeVo>> getRestructOrgRelTree(String id,String orgRootId,boolean isFull) throws IOException {
+    public ResponseResult<List<TreeNodeVo>> getRestructOrgRelTree(String id,String orgTreeId,String orgRootId,boolean isFull) throws IOException {
         ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(id)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -128,7 +143,7 @@ public class OrgRelController extends BaseController {
     @UooLog(value = "组织树以及层级获取", key = "getTarOrgRelTreeAndLv")
     @RequestMapping(value = "/getTarOrgRelTreeAndLv", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<List<TreeNodeVo>> getTarOrgRelTreeAndLv(String orgRootId,String lv,String curOrgid,boolean isFull) throws IOException {
+    public ResponseResult<List<TreeNodeVo>> getTarOrgRelTreeAndLv(String orgRootId,String orgTreeId,String lv,String curOrgid,boolean isFull) throws IOException {
         ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(orgRootId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -238,17 +253,26 @@ public class OrgRelController extends BaseController {
         List<OgtOrgReltypeConf> ogtOrgReftypeConfList =  ogtOrgReftypeConfService.selectList(ogtOrgReftypeConfWrapper);
         if(ogtOrgReftypeConfList == null || ogtOrgReftypeConfList.size() < 0){
             ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织关系类型不存在");
+            ret.setMessage("组织关系类型关联不存在");
             return ret;
         }
         OgtOrgReltypeConf ogtOrgReftypeConf = ogtOrgReftypeConfList.get(0);
+        Wrapper orgReltypeConfWrapper = Condition.create()
+                .eq("ORG_REL_TYPE_ID",ogtOrgReftypeConf.getOrgRelTypeId())
+                .eq("STATUS_CD","1000");
+        OrgRelType ort = orgRelTypeService.selectOne(orgReltypeConfWrapper);
+        if(ort==null){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织关系类型不存在");
+            return ret;
+        }
         //新增组织关系
         OrgRel orgRel = new OrgRel();
         Long orgRefId = orgRelService.getId();
         orgRel.setOrgRelId(orgRefId);
         orgRel.setOrgId(org.getOrgId());
-        orgRel.setSupOrgId(org.getSupOrgId());
-        orgRel.setOrgRelTypeId(ogtOrgReftypeConf.getOrgRelTypeId());
+        orgRel.setParentOrgId(org.getSupOrgId());
+        orgRel.setRefCode(ort.getRefCode());
         orgRel.setStatusCd("1000");
         orgRelService.add(orgRel);
         //orgRel.insert();
@@ -358,6 +382,7 @@ public class OrgRelController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(String search,
                                                           String orgRootId,
+                                                          String orgTreeId,
                                                           Integer pageSize,
                                                           Integer pageNo) throws IOException {
         ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();

@@ -73,7 +73,7 @@ public class OrgServiceHystrix implements OrgService {
 
 
     @Override
-    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(String orgRootId,String orgId){
+    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(String orgTreeId, String orgRootId,String orgId){
         ResponseResult<HashMap<String,String>> responseResult = new ResponseResult<HashMap<String,String>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

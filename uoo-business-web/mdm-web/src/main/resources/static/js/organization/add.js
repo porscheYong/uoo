@@ -114,7 +114,7 @@ function getOrgPostLevel () {
         }
         $('#orgPositionLevel').append(option);
         // $('#orgPositionLevel').selectMatch();
-    }, function (err) {
+    }, function (err)  {
         console.log(err)
     })
 }

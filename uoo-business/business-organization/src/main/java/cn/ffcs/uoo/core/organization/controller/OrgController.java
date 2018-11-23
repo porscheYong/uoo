@@ -20,10 +20,12 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
+import sun.swing.StringUIClientPropertyKey;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -97,6 +99,9 @@ public class OrgController extends BaseController {
 
     @Autowired
     private OrgCertRelService orgCertRelService;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
 
     @ApiOperation(value = "新增组织信息-web", notes = "新增组织信息")
@@ -226,13 +231,19 @@ public class OrgController extends BaseController {
             }
 
 
+            Wrapper orgReltypeConfWrapper = Condition.create()
+                    .eq("ORG_REL_TYPE_ID",orgOrgRel.getOrgRelTypeId())
+                    .eq("STATUS_CD","1000");
+            OrgRelType ort = orgRelTypeService.selectOne(orgReltypeConfWrapper);
+
+
 
             OrgRel orgRef = new OrgRel();
             Long orgRefId = orgRelService.getId();
             orgRef.setOrgRelId(orgRefId);
             orgRef.setOrgId(newOrg.getOrgId());
-            orgRef.setSupOrgId(org.getSupOrgId());
-            orgRef.setOrgRelTypeId(orgOrgRel.getOrgRelTypeId());
+            orgRef.setParentOrgId(org.getSupOrgId());
+            orgRef.setRefCode(ort.getRefCode());
             orgRef.setStatusCd("1000");
             orgRelService.add(orgRef);
             //orgRef.insert();
@@ -633,13 +644,13 @@ public class OrgController extends BaseController {
             return ret;
         }
 
-        List<OrgType> orgTypeList = orgTypeService.getOrgTypeByOrgId(Integer.valueOf(orgId).longValue());
+        List<OrgType> orgTypeList = orgTypeService.getOrgTypeByOrgId(new Long(orgId));
         org.setOrgTypeList(orgTypeList);
         //组织岗位
-        List<Position> positionList = positionService.getOrgPositionByOrgId(Integer.valueOf(orgId).longValue());
+        List<Position> positionList = positionService.getOrgPositionByOrgId(new Long(orgId));
         org.setPositionList(positionList);
         //组织职位
-        List<Post> postList = postService.getOrgPostByOrgId(Integer.valueOf(orgId).longValue());
+        List<Post> postList = postService.getOrgPostByOrgId(new Long(orgId));
         org.setPostList(postList);
         //组织联系人
         List<PsonOrgVo> psonOrgVoList = orgContactRelService.getOrgContact(orgId);
@@ -671,19 +682,35 @@ public class OrgController extends BaseController {
                                                      Integer pageSize,
                                                      Integer pageNo){
         ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
-        if(StrUtil.isNullOrEmpty(orgRootId)){
+
+        if(StrUtil.isNullOrEmpty(orgTreeId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织根节点不能为空");
+            ret.setMessage("组织树标识不能为空");
             return ret;
         }
+
+//        if(StrUtil.isNullOrEmpty(orgRootId)){
+//            ret.setState(ResponseResult.PARAMETER_ERROR);
+//            ret.setMessage("组织根节点不能为空");
+//            return ret;
+//        }
         if(StrUtil.isNullOrEmpty(orgId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织标识不能为空");
             return ret;
         }
+        Wrapper orgTreeConfWrapper = Condition.create().eq("ORG_TREE_ID",orgTreeId).eq("STATUS_CD","1000");
+        OrgTree orgTree  = orgTreeService.selectOne(orgTreeConfWrapper);
+        if(orgTree == null){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树不存在");
+            return ret;
+        }
+
         OrgVo orgVo = new OrgVo();
-        orgVo.setOrgRootId(orgRootId.toString());
+        orgVo.setOrgRootId(orgTree.getOrgId());
         orgVo.setOrgId(new Long(orgId));
+        orgVo.setOrgTreeId(orgTree.getOrgTreeId());
         if(!StrUtil.isNullOrEmpty(pageNo)){
             orgVo.setPageNo(pageNo);
         }
@@ -733,7 +760,7 @@ public class OrgController extends BaseController {
     @UooLog(value = "查询组织额外信息", key = "getOrgExtByOrgId")
     @RequestMapping(value = "/getOrgExtByOrgId", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(String orgRootId, String orgId){
+    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(String orgTreeId,String orgRootId, String orgId){
         ResponseResult<HashMap<String,String>> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(orgId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);

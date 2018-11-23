@@ -50,7 +50,8 @@ public interface OrgService{
                                                   @RequestParam(value = "pageNo",required = false)Integer pageNo);
 
     @RequestMapping(value = "/org/getOrgExtByOrgId", method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@RequestParam(value = "orgRootId",required = false)String orgRootId ,
+    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                                                   @RequestParam(value = "orgRootId",required = false)String orgRootId ,
                                                                    @RequestParam(value = "orgId",required = false) String orgId);
 
 }

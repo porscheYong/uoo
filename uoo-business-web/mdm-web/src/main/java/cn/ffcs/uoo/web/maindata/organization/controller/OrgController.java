@@ -87,9 +87,10 @@ public class OrgController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getOrgExtByOrgId", method = RequestMethod.GET)
-    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@RequestParam(value = "orgRootId",required = false)String orgRootId ,
+    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@RequestParam(value = "orgTreeId",required = false)String orgTreeId ,
+                                                                   @RequestParam(value = "orgRootId",required = false)String orgRootId ,
                                                                    @RequestParam(value = "orgId",required = false) String orgId){
-        return orgService.getOrgExtByOrgId(orgRootId,orgId);
+        return orgService.getOrgExtByOrgId(orgTreeId,orgRootId,orgId);
     }
 
 }
