@@ -44,7 +44,7 @@ public interface OrgRelService {
                                                                  @RequestParam(value = "isFull",required = false)boolean isFull);
 
    @RequestMapping(value="/orgRel/addOrgRel",method = RequestMethod.POST,headers={"Content-Type=application/json"})
-   public ResponseResult<String> addOrgRel(@RequestBody Org org);
+   public ResponseResult<TreeNodeVo> addOrgRel(@RequestBody Org org);
 
    @RequestMapping(value="/orgRel/getFuzzyOrgRelPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
    public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(@RequestParam(value = "search",required = false)String search,

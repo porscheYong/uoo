@@ -60,5 +60,10 @@ public class UserController {
         return userService.addUser(userType, personnelId);
     }
 
-
+    @ApiOperation(value = "主账号组织关系",notes = "主账号组织关系")
+    @ApiImplicitParam(name = "personnelId", value = "人员号标识", required = true, dataType = "Long", paramType = "path")
+    @RequestMapping(value = "/getAcctOrgByPsnId", method = RequestMethod.GET)
+    public Object getAcctOrgByPsnId(Long personnelId){
+        return userService.getAcctOrgByPsnId(personnelId);
+    }
 }

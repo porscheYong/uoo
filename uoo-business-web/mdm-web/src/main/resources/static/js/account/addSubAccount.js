@@ -1,3 +1,5 @@
+// var baseUrl = '134.96.253.221:18000';
+// var baseUrl = '192.168.58.112:18000';
 var acctId = getQueryString('acctId');
 var userType = getQueryString('userType');
 var statusCd = getQueryString('statusCd');
@@ -19,7 +21,7 @@ if(statusCd == '1000'){                //判断状态
 
 
 function getSubUser(acctId,userType) {                   
-    $http.get('http://192.168.58.112:18000/user/getUser', {   //http://192.168.58.112:18000/user/getUser
+    $http.get('/user/getUser', {   //http://192.168.58.112:18000/user/getUser
         acctId: acctId,
         userType: userType
     }, function (data) {

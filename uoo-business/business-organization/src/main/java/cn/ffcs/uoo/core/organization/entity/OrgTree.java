@@ -107,7 +107,19 @@ public class OrgTree extends Model<OrgTree> {
      */
     @TableField(exist=false)
     private List<TreeNodeVo> treeNodeList;
+    /**
+     * 现有组织树根节点
+     */
+    @TableField(exist=false)
+    private String copyOrgRootId;
 
+    public String getCopyOrgRootId() {
+        return copyOrgRootId;
+    }
+
+    public void setCopyOrgRootId(String copyOrgRootId) {
+        this.copyOrgRootId = copyOrgRootId;
+    }
 
     public List<TreeNodeVo> getTreeNodeList() {
         return treeNodeList;

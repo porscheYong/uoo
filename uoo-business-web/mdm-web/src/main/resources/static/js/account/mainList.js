@@ -1,6 +1,7 @@
 var orgId = getQueryString('id');
 var orgName = getQueryString('name');
 var fullOrgName;
+var n =0;
 
 // 获取组织完整路径
 function getOrgExtInfo() {
@@ -54,7 +55,7 @@ function initMainTable(results){
             },
             { 'data': "typeName", 'title': '用户类型', 'className': 'row-typeName' },
             { 'data': "acct", 'title': '用户名', 'className': 'row-acc' },
-            { 'data': "orgName", 'title': '归属组织', 'className': 'row-org' },
+            { 'data': "orgName", 'title': '归属组织', 'className': 'row-org'},
             { 'data': "certNo", 'title': '证件号码', 'className': 'row-certNo' },
             { 'data': "statusCd", 'title': '状态', 'className': 'row-statusCd' ,
             'render': function (data, type, row, meta) {

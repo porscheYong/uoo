@@ -30,8 +30,7 @@ var orgIdSelect,
     orgName,
     nodeName,
     nodeArr,
-    addOrgList = [],
-    n = '1';
+    addOrgList = [];
 
 function onNodeClick(e,treeId, treeNode) {
     // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
@@ -254,20 +253,33 @@ function getOrgExtInfo() {
   return pathStr;
 }
 
-// function saveBtnClick(){
-//     if(isEdit == 0){   //add
-//         console.log(getOrgExtInfo());
-//         addOrgList.push({'id':n,'orgId':orgIdSelect,'fullName':getOrgExtInfo()});
-//         console.log(addOrgList);
-//         orgTable.destroy();
-//         initOrgTable(addOrgList);
-//         n++;
-//     }else if(isEdit == 1){
-//         editOrgList.push({'id':num+1,'orgId':orgIdSelect,'fullName':getOrgExtInfo()});
-//         num++;
-//         orgTable.destroy();
-//         initOrgTable(editOrgList);
-//     }
-// }
+function saveBtnClick(){
+    if(isEdit == 0){   //add
+        var orgNa = [];
+        for(var i = 0;i < addOrgList.length; i++){
+            orgNa.push(addOrgList[i].orgId);
+        }
+        if(orgNa.indexOf(orgIdSelect) != -1){
+            alert("已选择该组织");
+        }else{
+            addOrgList.push({'orgId':orgIdSelect,'fullName':getOrgExtInfo()});
+            orgTable.destroy();
+            initOrgTable(addOrgList);
+        }
+    }else if(isEdit == 1){
+        var orgNa = [];
+        for(var i = 0;i < editOrgList.length; i++){
+            orgNa.push(editOrgList[i].orgId);
+        }
+        if(orgNa.indexOf(orgIdSelect) != -1){
+            alert("已选择该组织");
+        }else{
+            editOrgList.push({'orgId':orgIdSelect,'fullName':getOrgExtInfo()});
+            orgTable.destroy();
+            initOrgTable(editOrgList);
+        }
+    }
+    $('#myModal').modal('hide');
+}
 
 initOrgRelTree();

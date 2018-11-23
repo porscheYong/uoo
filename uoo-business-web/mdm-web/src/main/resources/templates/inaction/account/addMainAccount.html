@@ -20,11 +20,11 @@
     <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
     <!-- jquery tagsinput -->
     <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/account/artModal.css">
 
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
     <link href="/css/custom.css" rel="stylesheet">
+    <link href="/css/account/artModal.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="../../../static/js/core/html5shiv.js"></script>
@@ -68,7 +68,6 @@
         td,th{
             text-align: center;
         }
-
     </style>
 </head>
 
@@ -200,29 +199,25 @@
                     </div>
     
                     <div class="fright" style="margin-right:85%;margin-top:-4.5%;"> 
-                        <a class="button-add" id="addBtn" data-toggle="artModal" data-target="myModal_1" onclick="getTableContent()"><span class="fa fa-plus-circle icon-add"></span>添加</a>
+                        <a class="button-add" id="addBtn" data-toggle="modal" data-target="#myModal" onclick="getTableContent()"><span class="fa fa-plus-circle icon-add"></span>添加</a>
                     </div>
-                    <div class="artModal fade" id="myModal_1">
-                        <div class="artModal-dialog">
-                            <div class="artModal-content">
-                                
-                                <div class="custom_style">
-                                    <span>选择组织</span>
-                                    <div style="height: 350px;overflow: auto;">
-                                        <div style="display: inline-block;width: 100%;padding-top: 10px;">
-                                            <ul id="standardTree" class="ztree"></ul>
-                                        </div>
-                                    </div>
-                                    <div style="display:inline-block;">
-                                        <button id="saveBtn" onclick="saveBtnClick()">确定</button>
-                                        <button data-dismiss="artModal" id="cancelBtn">取消</button>
-                                    </div>
+                </div>
+
+                <!-- 模态框（Modal） -->
+                <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <span id="selectTile">选择组织</span>
+                            <div style="height: 350px;overflow: auto;">
+                                <div style="display: inline-block;width: 100%;padding-top: 10px;">
+                                    <ul id="standardTree" class="ztree"></ul>
                                 </div>
-        
                             </div>
-                        </div>
-                    </div>
-                    
+                            <button id="saveBtn" onclick="saveBtnClick()">确定</button>
+                            <button data-dismiss="modal" id="cancelBtn">取消</button>
+
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal -->
                 </div>
                 
                 <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
@@ -269,7 +264,6 @@
     <script src="/js/account/init.js"></script>
     <!-- jquery tagsinput -->
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
-    <script src="/js/account/artModal.js"></script>
     <!-- custom -->
     <script type="text/javascript" src="/js/account/addMainAccount.js"></script>
     <script type="text/javascript" src="/js/account/selectOrg.js"></script>
@@ -279,27 +273,6 @@
           $('select').selectMatch();
         })
 
-        var myModal_1_obj = artModal({  //构建artModal实例
-                element: document.getElementById('myModal_1'),
-            });
-
-        function saveBtnClick(){
-            // if(isEdit == 0){   //add
-            //     console.log(getOrgExtInfo());
-            //     addOrgList.push({'id':n,'orgId':orgIdSelect,'fullName':getOrgExtInfo()});
-            //     console.log(addOrgList);
-            //     orgTable.destroy();
-            //     initOrgTable(addOrgList);
-            //     n++;
-            // }else if(isEdit == 1){
-            //     editOrgList.push({'id':num+1,'orgId':orgIdSelect,'fullName':getOrgExtInfo()});
-            //     num++;
-            //     orgTable.destroy();
-            //     initOrgTable(editOrgList);
-            // }
-            // myModal_1_obj.close();
-            alert('该功能暂时无法使用');
-        }
     </script>
   </body>
 </html>
