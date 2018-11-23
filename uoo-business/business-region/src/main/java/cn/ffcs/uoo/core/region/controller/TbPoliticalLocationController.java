@@ -1,9 +1,13 @@
 package cn.ffcs.uoo.core.region.controller;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +23,13 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.region.consts.DeleteConsts;
+import cn.ffcs.uoo.core.region.entity.TbCommonRegion;
 import cn.ffcs.uoo.core.region.entity.TbPoliticalLocation;
 import cn.ffcs.uoo.core.region.entity.TbRegionLocationRel;
 import cn.ffcs.uoo.core.region.service.ITbPoliticalLocationService;
 import cn.ffcs.uoo.core.region.service.ITbRegionLocationRelService;
 import cn.ffcs.uoo.core.region.vo.ResponseResult;
+import cn.ffcs.uoo.core.region.vo.ZTreeNode;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -44,6 +50,62 @@ public class TbPoliticalLocationController extends BaseController {
     @Autowired
     private ITbRegionLocationRelService regLocRelSvc;
     
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @ApiOperation(value = "根据ID获取下一级信息", notes = "根据ID获取下一级信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long", paramType = "path"), })
+    @UooLog(value = "根据ID获取下一级信息", key = "getChildPoliticalLocationInfo")
+    @GetMapping("getChildPoliticalLocationInfo/{id}")
+    public ResponseResult getChildPoliticalLocationInfo(@PathVariable(value="id") Long id){
+        Map<String, Object> params = new HashMap<>();
+        params.put("statusCd", DeleteConsts.VALID);
+        params.put("upLocId", id);
+        params.put("statusCd", DeleteConsts.VALID);
+        List<Map> list = polLocSvc.getChildPoliticalLocationInfo(params);
+        if (list == null) {
+            return ResponseResult.createErrorResult("暂无数据");
+        }
+        for (Map map : list) {
+            if(map.get("LOC_CODE")==null){
+                map.put("LOC_CODE", "");
+            }
+            if(map.get("LOC_NAME")==null){
+                map.put("LOC_NAME", "");
+            }
+            if(map.get("LOC_TYPE")==null){
+                map.put("LOC_TYPE", "");
+            }
+            if(map.get("LOC_ABBR")==null){
+                map.put("LOC_ABBR", "");
+            }
+        }
+        return ResponseResult.createSuccessResult(list,"success");
+    }
+    @ApiOperation(value = "行政区域树", notes = "行政区域树")
+    @UooLog(value = "行政区域树", key = "getTreePoliticalLocation")
+    @GetMapping("getTreePoliticalLocation/{id}")
+    public ResponseResult getTreePoliticalLocation(@PathVariable(value="id") Long id ){
+        Map<String, Object> params = new HashMap<>();
+        List<TbPoliticalLocation> list = polLocSvc.getTreePoliticalLocation(params);
+        List<ZTreeNode> ztlist = new ArrayList<>();
+        for (TbPoliticalLocation polloc : list) {
+            ZTreeNode n=new ZTreeNode();
+            ztlist.add(n);
+            n.setId(polloc.getLocId());
+            n.setName(polloc.getLocName());
+            n.setpId(polloc.getUpLocId()==null||polloc.getUpLocId()<1?0:polloc.getUpLocId());
+            for (TbPoliticalLocation tmp : list) {
+                if(polloc.getLocId().equals(tmp.getUpLocId())){
+                    n.setParent(true);
+                    break;
+                }
+            }
+        }
+        ResponseResult r = ResponseResult.createSuccessResult(ztlist,"success");
+        r.setTotalRecords(list.size());
+        return r;
+    }
     @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),
@@ -84,13 +146,22 @@ public class TbPoliticalLocationController extends BaseController {
                 return ResponseResult.createErrorResult("上一级区域不存在");
             }
         }
+        if(StringUtils.isBlank(polLoc.getLocName())){
+            return ResponseResult.createErrorResult("请输入区域名称");
+        }
+        if(StringUtils.isBlank(polLoc.getLocCode())){
+            return ResponseResult.createErrorResult("请输入区域编码");
+        }
+        if(StringUtils.isBlank(polLoc.getLocAbbr())){
+            return ResponseResult.createErrorResult("请输入区域简称");
+        }
         polLoc.setStatusCd(DeleteConsts.VALID);
         polLoc.setCreateDate(new Date());
         polLoc.setUpdateDate(new Date());
         polLoc.setStatusDate(new Date());
         polLoc.setLocId(polLocSvc.getId());
         polLocSvc.insert(polLoc);
-        return ResponseResult.createSuccessResult("success");
+        return ResponseResult.createSuccessResult(polLoc,"success");
     }
     @ApiOperation(value = "修改行政区域", notes = "修改行政区域")
     @ApiImplicitParams({
@@ -110,10 +181,19 @@ public class TbPoliticalLocationController extends BaseController {
                 return ResponseResult.createErrorResult("上一级区域不存在");
             }
         }
+        if(StringUtils.isBlank(polLoc.getLocName())){
+            return ResponseResult.createErrorResult("请输入区域名称");
+        }
+        if(StringUtils.isBlank(polLoc.getLocCode())){
+            return ResponseResult.createErrorResult("请输入区域编码");
+        }
+        if(StringUtils.isBlank(polLoc.getLocAbbr())){
+            return ResponseResult.createErrorResult("请输入区域简称");
+        }
         polLoc.setUpdateDate(new Date());
         //polLoc.setStatusDate(new Date());
         polLocSvc.updateById(polLoc);
-        return ResponseResult.createSuccessResult("success");
+        return ResponseResult.createSuccessResult(polLoc,"success");
     }
     
     @SuppressWarnings("unchecked")

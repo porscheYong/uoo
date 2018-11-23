@@ -16,6 +16,7 @@ public enum EumUserResponeCode {
     SLAVE_ACCT_ADD_SUCCESS(9, "从账号新增成功"),
     SLAVE_ACCT_NO_EXITST(10, "从账号不存在"),
     USER_NOT_EXIST(11, "用户不存在"),
+    ACCT_NO_EXIST_RE(12, "主账号不存在,请新建主账号"),
     ;
     ;
     @Getter

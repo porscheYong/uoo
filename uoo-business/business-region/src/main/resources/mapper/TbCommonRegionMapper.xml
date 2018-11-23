@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ffcs.uoo.core.region.dao.TbCommonRegionMapper">
+	<cache />
 	<resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.region.entity.TbCommonRegion">
 		<id column="COMMON_REGION_ID" property="commonRegionId" />
 		<result column="UP_REGION_ID" property="upRegionId" />
@@ -33,27 +34,77 @@
 		SEQ_TB_COMMON_REGION.nextval FROM dual
 	</select>
 
-	<select id="selectUnionPolLoc" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+	<select id="selectUnionPolLoc" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
 		SELECT
 		a.COMMON_REGION_ID, a.UP_REGION_ID, a.REGION_NAME,
-        a.REGION_PY_NAME,a.REGION_NBR,a.REGION_TYPE,
-        a.REGION_DESC,a.REGION_LEVEL,a.REGION_SORT,a.PROVINCE_NBR,a.CITY_FLAG,
-        a.STATUS_CD,
-		b.LOC_ID ,b.LOC_CODE,b.LOC_NAME 
+		a.REGION_PY_NAME,a.REGION_NBR,a.REGION_TYPE,
+		a.REGION_DESC,a.REGION_LEVEL,a.REGION_SORT,a.PROVINCE_NBR,a.CITY_FLAG,
+		a.STATUS_CD,
+		b.LOC_ID ,b.LOC_CODE,b.LOC_NAME
 		FROM
 		TB_COMMON_REGION a
-		LEFT JOIN TB_REGION_LOCATION_REL c ON c.COMMON_REGION_ID =
+		LEFT
+		JOIN TB_REGION_LOCATION_REL c ON
+		c.COMMON_REGION_ID =
 		a.COMMON_REGION_ID
-		LEFT JOIN TB_POLITICAL_LOCATION b ON c.LOC_ID = b.LOC_ID
+		LEFT JOIN TB_POLITICAL_LOCATION
+		b ON c.LOC_ID =
+		b.LOC_ID
 		<where>
-		  <if test="commonRegionId != null and commonRegionId != '' ">
-              and a.COMMON_REGION_ID = #{commonRegionId}
-          </if>
-		  <if test="statusCd != null and statusCd != '' ">
-		      and a.STATUS_CD = #{statusCd}
-		  </if>
+			<if test="commonRegionId != null and commonRegionId != '' ">
+				and a.COMMON_REGION_ID = #{commonRegionId}
+			</if>
+			<if test="statusCd != null and statusCd != '' ">
+				and a.STATUS_CD = #{statusCd}
+			</if>
 		</where>
-		
-	</select>
 
+	</select>
+	<select id="getChildCommonRegionInfo" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
+		SELECT
+		a.COMMON_REGION_ID, a.UP_REGION_ID, a.REGION_NAME,
+		a.REGION_PY_NAME,a.REGION_NBR,a.REGION_TYPE,
+		a.REGION_DESC,a.REGION_LEVEL,a.REGION_SORT,a.PROVINCE_NBR,a.CITY_FLAG,
+		a.STATUS_CD,
+		b.LOC_ID ,b.LOC_CODE,b.LOC_NAME
+		FROM
+		TB_COMMON_REGION a
+		LEFT
+		JOIN TB_REGION_LOCATION_REL c ON
+		c.COMMON_REGION_ID =
+		a.COMMON_REGION_ID
+		LEFT JOIN TB_POLITICAL_LOCATION
+		b ON c.LOC_ID =
+		b.LOC_ID
+		<where>
+			<if test="commonRegionId != null and commonRegionId != '' ">
+				and a.COMMON_REGION_ID = #{commonRegionId}
+			</if>
+			<if test="statusCd != null and statusCd != '' ">
+				and a.STATUS_CD = #{statusCd}
+			</if>
+			<if test="upRegionId !=null and upRegionId lt 1">
+				and a.UP_REGION_ID &lt; 1
+			</if>
+			<if test="upRegionId !=null and upRegionId gte 1">
+				and a.UP_REGION_ID = #{upRegionId}
+			</if>
+		</where>
+
+	</select>
+	<select id="getTreeCommonRegion" resultType="cn.ffcs.uoo.core.region.entity.TbCommonRegion"
+		parameterType="java.util.HashMap">
+		SELECT
+		*
+		FROM
+		TB_COMMON_REGION
+		WHERE
+		STATUS_CD='1000'
+		START WITH (UP_REGION_ID IS NULL OR UP_REGION_ID &lt; 1 )
+		CONNECT BY
+		PRIOR COMMON_REGION_ID = UP_REGION_ID
+
+	</select>
 </mapper>

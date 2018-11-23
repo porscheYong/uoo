@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>公共区域管理</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- ztree -->
+    <link href="/vendors/zTree/zTreeStyle.css" rel="stylesheet">
+    <!-- lulu ui -->
+     <!-- <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">   -->
+ <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+  <link href="/css/custom.css" rel="stylesheet">  
+ <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet"> 
+    <!--[if lt IE 9]>
+    <script src="/js/core/html5shiv.js"></script>
+    <script src="/js/core/respond.js"></script>
+    <script src="/js/core/excanvas.js"></script>
+    <![endif]-->
+    <style type="text/css">
+     table.dataTable {
+        table-layout: fixed;
+      }
+      
+      th {
+          text-align: center;
+          white-space: nowrap;
+      }
+      table.dataTable tbody td {
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+      div.tag {
+          border-radius: 2px;
+          display: inline-block;
+          /*display: block;
+          float: left;*/
+          padding: 5px 9px;
+          background: #00a4ff;
+          text-decoration: none;
+          line-height: 1;
+          color: #fff;
+          margin-bottom: 5px;
+      }
+      div.tag a {
+          text-decoration: none;
+          color: #fff;    
+      }
+    </style>
+    <script type="text/javascript">
+      function layerOpen(obj) {
+        layer.open({
+          type: obj.type || 1,
+          title: obj.title,
+          scrollbar: obj.scrollbar || false,
+          closeBtn: obj.closeBtn, //关闭按钮是否显示
+          shade: obj.shade || 0.3,
+          shadeClose: obj.shadeClose || true,
+          area: obj.area || ['600px', '400px'],
+          content: obj.content,
+          btn: obj.btn,
+          success: function(layero, index){
+            if (obj.success) {
+              obj.success()
+            }
+          },
+          yes: function (index, layero) {
+            if (obj.confirm) {
+              obj.confirm()
+            }
+          },
+          btn2: function (index, layero) {
+            if (obj.cancel) {
+              obj.cancel()
+            }
+          }
+        })
+      }
+    </script>
+  </head>
+
+  <body class="nav-md">
+    <div class="container">
+      <div class="main-container">
+        <div class="content-left" style="overflow: auto;">
+          <div class="col-lg-12" style="display: inline-block;width: 100%;padding-top: 10px;">
+                <input type="text" id="searchInput" class="form-control" placeholder="搜索" onkeyup="searchLeftTree()">
+              <ul id="standardTree" class="ztree"></ul>
+          </div>
+        </div>
+        <div class="content-right">
+          <iframe id="myFrame" name="" class="layadmin-iframe" src="" frameborder="0" width="100%" height="99%"></iframe>
+         </div>
+      </div>
+       
+         
+    </div>
+
+    <!-- jQuery -->
+    <script src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- ztree -->
+    <script type="text/javascript" src="/vendors/zTree/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="/vendors/zTree/jquery.ztree.excheck.js"></script>
+    <!-- layer -->
+    <!-- sea js -->
+    <!-- <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script> -->
+    <!-- laydate -->
+    <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
+    <!-- init -->
+    <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+    <script src="/js/init.js"></script>
+     <script type="text/javascript" src="/js/region/commonregion-index.js"></script> 
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+     <!--  <script type="text/javascript" src="/js/region/commonregion-list.js"></script> -->
+      <!-- <script type="text/javascript" src="/js/region/polloc-edit.js"></script> -->
+     <!--  <script type="text/javascript">
+      seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+    	  $('select').selectMatch();
+    	})
+      </script> -->
+  </body>
+</html>

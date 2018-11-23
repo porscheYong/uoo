@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.core.permission.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -19,4 +20,11 @@ import cn.ffcs.uoo.core.permission.service.ResourceService;
 @Service
 public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> implements ResourceService {
 
+    @Autowired
+    private ResourceMapper resourceMapper;
+
+    @Override
+    public Long getId() {
+        return resourceMapper.getId();
+    }
 }

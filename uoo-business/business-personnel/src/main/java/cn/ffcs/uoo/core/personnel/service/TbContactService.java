@@ -3,6 +3,8 @@ package cn.ffcs.uoo.core.personnel.service;
 import cn.ffcs.uoo.core.personnel.entity.TbContact;
 import com.baomidou.mybatisplus.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 联系方式 服务类
@@ -15,5 +17,19 @@ public interface TbContactService extends IService<TbContact> {
     public Long getId();
 
     public void delete(TbContact tbContact);
+
+    /**
+     * 根据personnelId获取 联系信息
+     * @param personnelId
+     * @return
+     */
+    public List<TbContact> getTbContactByPsnId(Long personnelId, String contactType);
+
+    /**
+     * 根据personnelId 删除 联系信息
+     * @param personnelId
+     * @return
+     */
+    public Object delTbContactByPsnId(Long personnelId);
 
 }

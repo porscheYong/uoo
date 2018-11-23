@@ -33,7 +33,27 @@ public class BaseUnitConstants {
 
 	public static final String TABLE_PERSONNEL_ID = "PERSONNEL_ID";
 
+	public static final String TABLE_ACCT_ID = "ACCT_ID";
+
+	public static final String TABLE_ACCT = "ACCT";
+
+	public static final String TABLE_SLAVE_ACCT = "SLAVE_ACCT";
+
+	public static final String TB_ACCT_HOST_ID = "ACCT_HOST_ID";
+
+	public static final String TB_RESOURCE_OBJ_ID = "RESOURCE_OBJ_ID";
+
+	public static final String TABLE_ORG_ID = "ORG_ID";
+
+	public static final String TABLE_SLAVE_ACCT_ID = "SLAVE_ACCT_ID";
+
 	public static  final String TBALE_USER_ID = "USER_ID";
+
+	public static  final String TBALE_ACCT_TYPE = "ACCT_TYPE";
+
+	public static  final String TBALE_ROLE_ID = "ROLE_ID";
+
+
 
 	/**
 	 * 是推导

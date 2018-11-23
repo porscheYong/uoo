@@ -39,7 +39,7 @@ public class OrgTypeController {
     @ApiOperation(value = "获取组织类别", notes = "获取组织类别")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getOrgTypeList", method = RequestMethod.POST)
+    @RequestMapping(value = "/getOrgTypeList", method = RequestMethod.GET)
     public ResponseResult<List<OrgType>> getOrgTypeList(@RequestParam(value = "orgTypeCode",required = false)String orgTypeCode){
         return orgTypeService.getOrgTypeList(orgTypeCode);
     }
@@ -56,10 +56,10 @@ public class OrgTypeController {
     @ApiOperation(value = "获取完整组织类别树", notes = "获取完整组织类别树")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getFullOrgTypeTree", method = RequestMethod.POST)
-    public ResponseResult<List<TreeNodeVo>> getFullOrgTypeTree(@RequestParam(value = "id")String id,
-                                                               @RequestParam(value = "orgTypeCode")String orgTypeCode,
-                                                               @RequestParam(value = "orgId")String orgId){
+    @RequestMapping(value = "/getFullOrgTypeTree", method = RequestMethod.GET)
+    public ResponseResult<List<TreeNodeVo>> getFullOrgTypeTree(@RequestParam(value = "id",required = false)String id,
+                                                               @RequestParam(value = "orgTypeCode",required = false)String orgTypeCode,
+                                                               @RequestParam(value = "orgId",required = false)String orgId){
         return orgTypeService.getFullOrgTypeTree(id,orgTypeCode,orgId);
     }
 

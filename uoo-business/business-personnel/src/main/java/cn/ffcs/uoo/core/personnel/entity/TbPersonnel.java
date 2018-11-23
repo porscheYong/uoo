@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.FieldFill;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -18,6 +21,7 @@ import java.util.Date;
  * @since 2018-09-06
  */
 @TableName("tb_personnel")
+@Data
 public class TbPersonnel extends Model<TbPersonnel> {
 
     private static final long serialVersionUID = 1L;
@@ -101,32 +105,38 @@ public class TbPersonnel extends Model<TbPersonnel> {
     /**
      * 状态
      */
-    @TableField("STATUS_CD")
+    @JsonIgnore
+    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT_UPDATE)
     private String statusCd;
     /**
      * 创建时间
      */
-    @TableField("CREATE_DATE")
+    @JsonIgnore
+    @TableField(value = "CREATE_DATE", fill = FieldFill.INSERT)
     private Date createDate;
     /**
      * 创建人
      */
-    @TableField("CREATE_USER")
-    private BigDecimal createUser;
+    @JsonIgnore
+    @TableField(value = "CREATE_USER", fill = FieldFill.INSERT)
+    private Long createUser;
     /**
      * 修改时间
      */
-    @TableField("UPDATE_DATE")
+    @JsonIgnore
+    @TableField(value = "UPDATE_DATE", fill = FieldFill.INSERT_UPDATE)
     private Date updateDate;
     /**
      * 修改人
      */
-    @TableField("UPDATE_USER")
-    private BigDecimal updateUser;
+    @JsonIgnore
+    @TableField(value = "UPDATE_USER", fill = FieldFill.INSERT_UPDATE)
+    private Long updateUser;
     /**
      * 状态变更的时间
      */
-    @TableField("STATUS_DATE")
+    @JsonIgnore
+    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT_UPDATE)
     private Date statusDate;
     /**
      * UUID
@@ -140,190 +150,190 @@ public class TbPersonnel extends Model<TbPersonnel> {
     private String notes;
 
 
-    public Long getPersonnelId() {
-        return personnelId;
-    }
-
-    public void setPersonnelId(Long personnelId) {
-        this.personnelId = personnelId;
-    }
-
-
-    public String getPsnName() {
-        return psnName;
-    }
-
-    public void setPsnName(String psnName) {
-        this.psnName = psnName;
-    }
-
-    public String getPsnCode() {
-        return psnCode;
-    }
-
-    public void setPsnCode(String psnCode) {
-        this.psnCode = psnCode;
-    }
-
-    public String getNcCode() {
-        return ncCode;
-    }
-
-    public void setNcCode(String ncCode) {
-        this.ncCode = ncCode;
-    }
-
-    public String getPsnNbr() {
-        return psnNbr;
-    }
-
-    public void setPsnNbr(String psnNbr) {
-        this.psnNbr = psnNbr;
-    }
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getNation() {
-        return nation;
-    }
-
-    public void setNation(String nation) {
-        this.nation = nation;
-    }
-
-    public String getMarriage() {
-        return marriage;
-    }
-
-    public void setMarriage(String marriage) {
-        this.marriage = marriage;
-    }
-
-    public String getPliticalStatus() {
-        return pliticalStatus;
-    }
-
-    public void setPliticalStatus(String pliticalStatus) {
-        this.pliticalStatus = pliticalStatus;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    public Date getToWorkTime() {
-        return toWorkTime;
-    }
-
-    public void setToWorkTime(Date toWorkTime) {
-        this.toWorkTime = toWorkTime;
-    }
-
-    public BigDecimal getServingAge() {
-        return servingAge;
-    }
-
-    public void setServingAge(BigDecimal servingAge) {
-        this.servingAge = servingAge;
-    }
-
-    public BigDecimal getLengthService() {
-        return lengthService;
-    }
-
-    public void setLengthService(BigDecimal lengthService) {
-        this.lengthService = lengthService;
-    }
-
-    public String getStatusCd() {
-        return statusCd;
-    }
-
-    public void setStatusCd(String statusCd) {
-        this.statusCd = statusCd;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public BigDecimal getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(BigDecimal createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public BigDecimal getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(BigDecimal updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    public Date getStatusDate() {
-        return statusDate;
-    }
-
-    public void setStatusDate(Date statusDate) {
-        this.statusDate = statusDate;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
+//    public Long getPersonnelId() {
+//        return personnelId;
+//    }
+//
+//    public void setPersonnelId(Long personnelId) {
+//        this.personnelId = personnelId;
+//    }
+//
+//
+//    public String getPsnName() {
+//        return psnName;
+//    }
+//
+//    public void setPsnName(String psnName) {
+//        this.psnName = psnName;
+//    }
+//
+//    public String getPsnCode() {
+//        return psnCode;
+//    }
+//
+//    public void setPsnCode(String psnCode) {
+//        this.psnCode = psnCode;
+//    }
+//
+//    public String getNcCode() {
+//        return ncCode;
+//    }
+//
+//    public void setNcCode(String ncCode) {
+//        this.ncCode = ncCode;
+//    }
+//
+//    public String getPsnNbr() {
+//        return psnNbr;
+//    }
+//
+//    public void setPsnNbr(String psnNbr) {
+//        this.psnNbr = psnNbr;
+//    }
+//
+//    public String getNationality() {
+//        return nationality;
+//    }
+//
+//    public void setNationality(String nationality) {
+//        this.nationality = nationality;
+//    }
+//
+//    public String getGender() {
+//        return gender;
+//    }
+//
+//    public void setGender(String gender) {
+//        this.gender = gender;
+//    }
+//
+//    public String getNation() {
+//        return nation;
+//    }
+//
+//    public void setNation(String nation) {
+//        this.nation = nation;
+//    }
+//
+//    public String getMarriage() {
+//        return marriage;
+//    }
+//
+//    public void setMarriage(String marriage) {
+//        this.marriage = marriage;
+//    }
+//
+//    public String getPliticalStatus() {
+//        return pliticalStatus;
+//    }
+//
+//    public void setPliticalStatus(String pliticalStatus) {
+//        this.pliticalStatus = pliticalStatus;
+//    }
+//
+//    public String getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(String image) {
+//        this.image = image;
+//    }
+//
+//    public String getReason() {
+//        return reason;
+//    }
+//
+//    public void setReason(String reason) {
+//        this.reason = reason;
+//    }
+//
+//    public Date getToWorkTime() {
+//        return toWorkTime;
+//    }
+//
+//    public void setToWorkTime(Date toWorkTime) {
+//        this.toWorkTime = toWorkTime;
+//    }
+//
+//    public BigDecimal getServingAge() {
+//        return servingAge;
+//    }
+//
+//    public void setServingAge(BigDecimal servingAge) {
+//        this.servingAge = servingAge;
+//    }
+//
+//    public BigDecimal getLengthService() {
+//        return lengthService;
+//    }
+//
+//    public void setLengthService(BigDecimal lengthService) {
+//        this.lengthService = lengthService;
+//    }
+//
+//    public String getStatusCd() {
+//        return statusCd;
+//    }
+//
+//    public void setStatusCd(String statusCd) {
+//        this.statusCd = statusCd;
+//    }
+//
+//    public Date getCreateDate() {
+//        return createDate;
+//    }
+//
+//    public void setCreateDate(Date createDate) {
+//        this.createDate = createDate;
+//    }
+//
+//    public Long getCreateUser() {
+//        return createUser;
+//    }
+//
+//    public void setCreateUser(Long createUser) {
+//        this.createUser = createUser;
+//    }
+//
+//    public Date getUpdateDate() {
+//        return updateDate;
+//    }
+//
+//    public void setUpdateDate(Date updateDate) {
+//        this.updateDate = updateDate;
+//    }
+//
+//    public Long getUpdateUser() {
+//        return updateUser;
+//    }
+//
+//    public void setUpdateUser(Long updateUser) {
+//        this.updateUser = updateUser;
+//    }
+//
+//    public Date getStatusDate() {
+//        return statusDate;
+//    }
+//
+//    public void setStatusDate(Date statusDate) {
+//        this.statusDate = statusDate;
+//    }
+//
+//    public String getUuid() {
+//        return uuid;
+//    }
+//
+//    public void setUuid(String uuid) {
+//        this.uuid = uuid;
+//    }
+//
+//    public String getNotes() {
+//        return notes;
+//    }
+//
+//    public void setNotes(String notes) {
+//        this.notes = notes;
+//    }
 
     @Override
     protected Serializable pkVal() {

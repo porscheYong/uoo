@@ -123,6 +123,20 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
     }
 
     /**
+     * 用户组织查询翻页
+     * @param psonOrgVo
+     * @return
+     */
+    @Override
+    public Page<PsonOrgVo> selectUserOrgRelPage(PsonOrgVo psonOrgVo){
+        Page<PsonOrgVo> page = new Page<PsonOrgVo>(psonOrgVo.getPageNo()==0?1:psonOrgVo.getPageNo()
+                ,psonOrgVo.getPageSize()==0?10:psonOrgVo.getPageSize());
+        List<PsonOrgVo> list = baseMapper.selectUserOrgRelPage(page,psonOrgVo);
+        page.setRecords(list);
+        return page;
+    }
+
+    /**
      * 人员查询
      * @param psonOrgVo
      * @return

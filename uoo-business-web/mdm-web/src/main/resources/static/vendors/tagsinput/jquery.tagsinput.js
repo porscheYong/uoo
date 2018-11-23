@@ -92,16 +92,10 @@
 
         if (value !='' && skipTag != true) {
           for (var i = 0; i < value.length; i++) {
-            var name = value[i].name;
+            var name = value[i].name || value[i].orgTypeName;
             var tagId = value[i].id;
             $('<span>').addClass('tag').attr('tagId', tagId).append(
-                $('<span>').text(name).append('&nbsp;&nbsp;'),
-                $('<a>', {
-                    href  : '#',
-                    text  : 'x'
-                }).click(function (e) {
-                    return $('#' + id).removeTag(e);
-                })
+                $('<span>').text(name).append('&nbsp;&nbsp;')
             ).insertBefore('#' + id + '_addTag');
           }
         }
@@ -221,7 +215,7 @@
 
 
 
-  $.fn.tagsInput.importTags = function(obj) {
+  $.fn.tagsInput.importTags = function(obj, tagslist) {
     $(obj).addTag(tagslist,{focus:false,callback:false});
   };
 

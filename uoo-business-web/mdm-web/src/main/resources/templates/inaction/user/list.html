@@ -9,22 +9,22 @@
     <title>人员列表</title>
 
     <!-- Bootstrap -->
-    <link href="../../../static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="../../../static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- jquery datatable -->
-    <link href="../../../static/vendors/datatable/datatables.css" rel="stylesheet">
+    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
     <!-- lulu ui -->
-    <link href="../../../static/vendors/lulu/css/common/ui.css" rel="stylesheet">
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="../../../static/css/reset.css" rel="stylesheet">
-    <link href="../../../static/css/custom.css" rel="stylesheet">
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
-    <script src="../../../static/js/core/html5shiv.js"></script>
-    <script src="../../../static/js/core/respond.js"></script>
-    <script src="../../../static/js/core/excanvas.js"></script>
+    <script src="/js/core/html5shiv.js"></script>
+    <script src="/js/core/respond.js"></script>
+    <script src="/js/core/excanvas.js"></script>
     <![endif]-->
     <style type="text/css">
       table.dataTable {
@@ -47,36 +47,36 @@
   <body style="background: #fff;">
     <div>
       <div class="board-title">
-        <span class="name ft18">杭州分公司</span
-        ><a class="icon icon-edit" id="editBtn" style="vertical-align: top;"></a>
+        <span class="name ft18" id="orgName"></span
+        ><a class="icon icon-edit" href="edit.html" id="editBtn" style="vertical-align: top;"></a>
       </div>
 
       <div class="board-title">
           <span class="name ft18">组织人员</span>
           <div class="fright">
-            <a class="button-add" id="searchBtn" href="edit.html"><span class="fa fa-plus-circle icon-add"></span>添加</a>
+            <a class="button-add" id="searchBtn" href="add.html"><span class="fa fa-plus-circle icon-add"></span>添加</a>
           </div>
       </div>
-      <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 50px;">
+      <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
           <table id="personnelTable" class="stripe" width="100%"></table>
       </div>
     </div>
     <!-- jQuery -->
-    <script src="../../../static/js/core/jquery.js"></script>
+    <script src="/js/core/jquery.js"></script>
     <!-- Bootstrap -->
-    <script src="../../../static/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- jquery datatable -->
-    <script type="text/javascript" src="../../../static/vendors/datatable/datatables.js"></script>
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
     <!-- init -->
-    <script src="../../../static/js/init.js"></script>
-	  <script type="text/javascript" src="../../../static/js/user/list.js"></script>
+    <script src="/js/init.js"></script>
+	  <script type="text/javascript" src="/js/user/list.js"></script>
     <script>
-      var loading = parent.loading;
-      loading.screenMaskEnable('container');
-      var NProgress = parent.NProgress;
-      NProgress.done();
-      var toastr = parent.parent.toastr;
-      toastr.success('提交成功！')
+      // var loading = parent.loading;
+      // loading.screenMaskEnable('container');
+      // var NProgress = parent.NProgress;
+      // NProgress.done();
+      // var toastr = parent.parent.toastr;
+      // toastr.success('提交成功！')
     </script>
   </body>
 </html>

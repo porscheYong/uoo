@@ -53,7 +53,7 @@ public class OracleGeneratorPublic {
     /**table名字
      *
      */
-    private static String table="TB_BUSINESS_SYSTEM";
+    private static String table="TB_SYSTEM_INDIVIDUATION_RULE";
     /**table前缀
      *
      */

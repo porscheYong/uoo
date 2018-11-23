@@ -1,7 +1,28 @@
+var orgId = getQueryString('id');
+var pid = getQueryString('pid');
+var orgName = getQueryString('name');
+
+// 获取组织完整路径
+function getOrgExtInfo () {
+    var pathArry = parent.nodeArr;
+    console.log(pathArry)
+    var pathStr = '';
+    for (var i = pathArry.length - 1; i >= 0; i--) {
+        if (i === 0) {
+            pathStr +=  '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a></span>';
+        } else {
+            pathStr += '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+        }
+    }
+    $('.breadcrumb').html(pathStr);
+}
+
 function getOrgList (orgId) {
-    $http.get('org/getOrgRelPage', {
+    $http.get('http://134.96.253.221:11100/org/getOrgRelPage', {
         orgId: orgId,
-        orgRootId: '1'
+        orgRootId: '1',
+        pageSize: 10,
+        pageNo: 1
     }, function (data) {
         initOrgTable(data.records)
     }, function (err) {
@@ -10,9 +31,11 @@ function getOrgList (orgId) {
 }
 
 function getOrgPersonnerList (orgId) {
-    $http.get('orgPersonRel/getPerOrgRelPage', {
+    $http.get('http://134.96.253.221:11100/orgPersonRel/getPerOrgRelPage', {
         orgId: orgId,
-        orgRootId: '1'
+        orgRootId: '1',
+        pageSize: 10,
+        pageNo: 1
     }, function (data) {
         initOrgPersonnelTable(data.records)
     }, function (err) {
@@ -33,7 +56,7 @@ function initOrgTable (results) {
         'columns': [
             { 'data': "orgName", 'title': '部门', 'className': 'row-name',
               'render': function (data, type, row, meta) {
-                return '<a href="list.html?id='+ row.orgId +'" onclick="parent.openTreeById('+orgId+','+row.orgId+')">'+ row.orgName +'</a>'
+                return '<a href="list.html?id='+ row.orgId +'&name=' + row.orgName + '" onclick="parent.openTreeById('+orgId+','+row.orgId+')">'+ row.orgName +'</a>'
               }
             },
             { 'data': "orgTypeSplit",
@@ -68,7 +91,7 @@ function initOrgTable (results) {
                 'next':       '下一页',  
                 'previous':   '上一页'  
             },  
-            'info': '总_TOTAL_人',  
+            'info': '总_TOTAL_条',
             'infoEmpty': '没有数据'
         },
         "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
@@ -163,13 +186,13 @@ function initOrgPersonnelTable (results) {
         },
         "scrollY": "375px",
         'columns': [
-            { 'data': "staffName", 'title': '姓名', 'className': 'row-name' },
-            { 'data': "userGenderName", 'title': '性别', 'className': 'row-sex' },
-            { 'data': "partyAccount", 'title': '账号', 'className': 'user-account' },
-            { 'data': "userTypeName", 'title': '用工类型', 'className': 'user-type' },
-            { 'data': "userRalaName", 'title': '职位性质', 'className': 'role-type' },
-            { 'data': "orgName", 'title': '组织全称' },
-            { 'data': "postName", 'title': '职位', 'className': 'user-post' },
+            { 'data': null, 'title': '序号', 'className': 'row-no' },
+            { 'data': "psnName", 'title': '姓名', 'className': 'row-name' },
+            { 'data': "mobile", 'title': '手机号码', 'className': 'row-mobile' },
+            { 'data': "certNo", 'title': '员工工号', 'className': 'cert-no' },
+            { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
+            { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
+            { 'data': "statusCd", 'title': '状态', 'className': 'status-code' },
             // { 
             //   'data': "userRoleName",
             //   'title': '系统角色',
@@ -197,7 +220,12 @@ function initOrgPersonnelTable (results) {
         },
         "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
         'pagingType': 'simple_numbers',
-        'dom': '<"top"f>t<"bottom"ipl>'
+        'dom': '<"top"f>t<"bottom"ipl>',
+        'drawCallback': function(){
+            this.api().column(0).nodes().each(function(cell, i) {
+                cell.innerHTML =  i + 1;
+            });
+        }
         // 'serverSide': true,  //启用服务器端分页
         // 'ajax': function (data, callback, settings) {
             
@@ -276,15 +304,16 @@ function initOrgPersonnelTable (results) {
     });
 }
 
-var orgId = getQueryString('id');
+$('#orgName').html(orgName);
+getOrgExtInfo();
 getOrgList(orgId);
 getOrgPersonnerList(orgId);
 
 $('#editBtn').on('click', function () {
-    var url = 'edit.html?id=' + orgId;
+    var url = 'edit.html?id=' + orgId + '&pid=' + pid + '&name=' + orgName;
     $(this).attr('href', url);
 })
 $('#searchBtn').on('click', function () {
-   var url = 'search.html?id=' + orgId;
+    var url = 'search.html?id=' + orgId  + '&pid=' + pid + '&name=' + orgName;
    $(this).attr('href', url);
 })

@@ -29,14 +29,14 @@ public class OrgServiceHystrix implements OrgService {
 
 
     @Override
-    public ResponseResult<Void> addOrg(Org org){
+    public ResponseResult<Void> addOrg(OrgVo org){
         ResponseResult<Void> responseResult = new ResponseResult<Void>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
         return responseResult;
     }
     @Override
-    public ResponseResult<Void> updateOrg(Org org){
+    public ResponseResult<Void> updateOrg(OrgVo org){
         ResponseResult<Void> responseResult = new ResponseResult<Void>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
@@ -44,8 +44,8 @@ public class OrgServiceHystrix implements OrgService {
     }
 
     @Override
-    public ResponseResult<Org> getOrg(String orgId){
-        ResponseResult<Org> responseResult = new ResponseResult<Org>();
+    public ResponseResult<OrgVo> getOrg(String orgId){
+        ResponseResult<OrgVo> responseResult = new ResponseResult<OrgVo>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
         return responseResult;
@@ -53,7 +53,10 @@ public class OrgServiceHystrix implements OrgService {
 
 
     @Override
-    public ResponseResult<Page<OrgVo>> getOrgRelPage(OrgVo orgVo){
+    public ResponseResult<Page<OrgVo>> getOrgRelPage(Integer orgRootId,
+                                                     Integer orgId,
+                                                     Integer pageSize,
+                                                     Integer pageNo){
         ResponseResult<Page<OrgVo>> responseResult = new ResponseResult<Page<OrgVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
@@ -61,7 +64,9 @@ public class OrgServiceHystrix implements OrgService {
     }
 
     @Override
-    public ResponseResult<Page<OrgVo>> getOrgPage(OrgVo orgVo){
+    public ResponseResult<Page<OrgVo>> getOrgPage(String search,
+                                                  Integer pageSize,
+                                                  Integer pageNo){
         ResponseResult<Page<OrgVo>> responseResult = new ResponseResult<Page<OrgVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

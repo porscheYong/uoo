@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>用户信息</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- jquery datatable -->
+    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/css/user/style.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="/js/core/html5shiv.js"></script>
+    <script src="/js/core/respond.js"></script>
+    <script src="/js/core/excanvas.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      table.dataTable {
+        table-layout: fixed;
+      }
+      
+      th {
+          text-align: center;
+          white-space: nowrap;
+      }
+      table.dataTable tbody td {
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+    </style>
+  </head>
+
+  <body style="background: #fff;">
+
+      <div class="tab-content">
+          <div class="board-content">
+                <div class="col-md-2 fleft tcenter">
+                    <img class="avatar" src="/images/avatar.png" alt="头像" />
+                </div>
+                <div class="col-md-10 fleft Col8">
+                    <strong class="Font24 Black" id="psnName">张庆忠</strong>
+                    <span class="key-words">
+                        <span>男</span
+                        ><span id="marriage">未婚</span
+                        ><span>共产党员</span
+                        ><span id="nation">汉族</span
+                        ><span>浙江杭州</span>
+                    </span>
+                    <div style="padding-top: 10px">
+                      <ul class="col-md-6 line_30">
+                          <li><span class="Icon fleft"></span>189-0500-1234  &nbsp; 186-9572-3456</li>
+                          <li><span class="Icon fleft"></span><a href="mailto:18905001234@189.cn">18905001234@189.cn</a></li>
+                          <li><span class="Icon fleft"></span>浙江省杭州市余杭区育士路50号</li>
+                      </ul>
+                      <ul class="col-md-6 line_30">
+                          <li>
+                              <span class="Label">员工工号：</span>
+                              <span id="certNo">057120181234</span>
+                          </li>
+                          <li>
+                              <span class="Label">人员编码：</span>
+                              057120182345
+                          </li>
+                          <li>
+                              <span class="Label">人力编码：</span>
+                              057120182345
+                          </li>
+                          <li>
+                              <span class="Label">身份证号码：</span>
+                              350111198902345678
+                          </li>
+                          <li>
+                              <span class="Label">首次工作时间：</span>
+                              2003-07
+                          </li>
+                      </ul>
+                      <div class="clearfix"></div>
+                    </div>
+                </div>
+          </div>
+      </div>
+
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+    <!-- sea js -->
+    <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
+    <!-- laydate -->
+    <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
+    <!-- jquery cascader -->
+    <script type="text/javascript" src="/vendors/cascader/cascader.js"></script>
+    <!-- init -->
+    <script type="text/javascript" src="/js/init.js"></script>
+    <script type="text/javascript" src="/js/user/edit.js"></script>
+    <script>
+
+      seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $('select').selectMatch();
+      })
+
+    </script>
+  </body>
+</html>

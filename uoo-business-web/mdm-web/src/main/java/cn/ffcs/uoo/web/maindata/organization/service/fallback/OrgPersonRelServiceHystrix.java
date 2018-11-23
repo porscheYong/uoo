@@ -26,7 +26,7 @@ import java.util.List;
 public class OrgPersonRelServiceHystrix implements OrgPersonRelService {
 
     @Override
-    public ResponseResult<String> addOrgPsn(PsonOrgVo psonOrgVo){
+    public ResponseResult<String> addOrgPsn(List<PsonOrgVo> psonOrgVo){
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
@@ -49,7 +49,7 @@ public class OrgPersonRelServiceHystrix implements OrgPersonRelService {
         return responseResult;
     }
     @Override
-    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(PsonOrgVo psonOrgVo){
+    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(Integer perSonId){
         ResponseResult<List<PsonOrgVo>> responseResult = new ResponseResult<List<PsonOrgVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
@@ -57,7 +57,23 @@ public class OrgPersonRelServiceHystrix implements OrgPersonRelService {
     }
 
     @Override
-    public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(PsonOrgVo psonOrgVo){
+    public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(Integer orgId,
+                                                            String orgRootId,
+                                                            Integer personId,
+                                                            String search,
+                                                            Integer pageSize,
+                                                            Integer pageNo){
+        ResponseResult<Page<PsonOrgVo>> responseResult = new ResponseResult<Page<PsonOrgVo>>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
+
+    @Override
+    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(Integer orgId,
+                                                             String search,
+                                                             Integer pageSize,
+                                                             Integer pageNo){
         ResponseResult<Page<PsonOrgVo>> responseResult = new ResponseResult<Page<PsonOrgVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

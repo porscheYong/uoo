@@ -55,7 +55,7 @@ public class OrgRelServiceHystrix implements OrgRelService {
     }
 
     @Override
-    public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(OrgVo orgVo){
+    public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(String search,String orgRootId,Integer pageSize,Integer pageNo){
         ResponseResult<Page<OrgVo>> responseResult = new ResponseResult<Page<OrgVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
@@ -63,7 +63,7 @@ public class OrgRelServiceHystrix implements OrgRelService {
     }
 
     @Override
-    public ResponseResult<Page<OrgRefTypeVo>> getOrgRelTypePage(OrgRefTypeVo orgRefTypeVo){
+    public ResponseResult<Page<OrgRefTypeVo>> getOrgRelTypePage(String orgId,Integer pageSize,Integer pageNo){
         ResponseResult<Page<OrgRefTypeVo>> responseResult = new ResponseResult<Page<OrgRefTypeVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

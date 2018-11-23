@@ -58,7 +58,7 @@ public class TbDictionaryItemController {
             @ApiImplicitParam(name = "dictionaryName", value = "列名",required = true, dataType = "String", paramType = "path")
     })
     @RequestMapping(value = "/getList/{dictionaryName}", method = RequestMethod.GET)
-    public List<TbDictionaryItem> queryListByDictionaryName(@PathVariable String dictionaryName) {
+    public ResponseResult<List<TbDictionaryItem>> queryListByDictionaryName(@PathVariable String dictionaryName) {
         return tbDictionaryItemClient.queryListByDictionaryName(dictionaryName);
     }
 }

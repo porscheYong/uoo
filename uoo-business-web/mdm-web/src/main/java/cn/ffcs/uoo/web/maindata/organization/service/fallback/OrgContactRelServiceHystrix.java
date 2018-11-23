@@ -25,7 +25,9 @@ public class OrgContactRelServiceHystrix implements OrgContactRelService {
 
 
     @Override
-    public ResponseResult<Page<PsonOrgVo>> getOrgContactPage(PsonOrgVo psonOrgVo){
+    public ResponseResult<Page<PsonOrgVo>> getOrgContactPage(String orgId,
+                                                             Integer pageSize,
+                                                             Integer pageNo){
         ResponseResult<Page<PsonOrgVo>> responseResult = new ResponseResult<Page<PsonOrgVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

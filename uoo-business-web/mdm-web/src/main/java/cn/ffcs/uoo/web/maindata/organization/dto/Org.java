@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author ffcs-gzb
@@ -205,6 +205,34 @@ public class Org extends Model<Org> {
      */
     @TableField(exist=false)
     private List<PsonOrgVo> psonOrgVoList;
+    /**
+     * 身份证标识
+     */
+    @TableField(exist=false)
+    private List<String> certIdList;
+
+    /**
+     * 组织岗位
+     */
+    @TableField(exist=false)
+    private List<OrgCertVo> orgCertList;
+
+
+    public List<OrgCertVo> getOrgCertList() {
+        return orgCertList;
+    }
+
+    public void setOrgCertList(List<OrgCertVo> orgCertList) {
+        this.orgCertList = orgCertList;
+    }
+
+    public List<String> getCertIdList() {
+        return certIdList;
+    }
+
+    public void setCertIdList(List<String> certIdList) {
+        this.certIdList = certIdList;
+    }
 
     public List<PsonOrgVo> getPsonOrgVoList() {
         return psonOrgVoList;
@@ -510,31 +538,31 @@ public class Org extends Model<Org> {
     @Override
     public String toString() {
         return "Org{" +
-        ", orgId=" + orgId +
-        ", locId=" + locId +
-        ", areaCodeId=" + areaCodeId +
-        ", orgName=" + orgName +
-        ", orgCode=" + orgCode +
-        ", shortName=" + shortName +
-        ", orgNameEn=" + orgNameEn +
-        ", fullName=" + fullName +
-        ", cityTown=" + cityTown +
-        ", officePhone=" + officePhone +
-        ", foundingTime=" + foundingTime +
-        ", orgScale=" + orgScale +
-        ", orgLevel=" + orgLevel +
-        ", orgPositionLevel=" + orgPositionLevel +
-        ", sort=" + sort +
-        ", orgContent=" + orgContent +
-        ", orgDesc=" + orgDesc +
-        ", address=" + address +
-        ", uuid=" + uuid +
-        ", statusCd=" + statusCd +
-        ", createDate=" + createDate +
-        ", createUser=" + createUser +
-        ", updateDate=" + updateDate +
-        ", updateUser=" + updateUser +
-        ", statusDate=" + statusDate +
-        "}";
+                ", orgId=" + orgId +
+                ", locId=" + locId +
+                ", areaCodeId=" + areaCodeId +
+                ", orgName=" + orgName +
+                ", orgCode=" + orgCode +
+                ", shortName=" + shortName +
+                ", orgNameEn=" + orgNameEn +
+                ", fullName=" + fullName +
+                ", cityTown=" + cityTown +
+                ", officePhone=" + officePhone +
+                ", foundingTime=" + foundingTime +
+                ", orgScale=" + orgScale +
+                ", orgLevel=" + orgLevel +
+                ", orgPositionLevel=" + orgPositionLevel +
+                ", sort=" + sort +
+                ", orgContent=" + orgContent +
+                ", orgDesc=" + orgDesc +
+                ", address=" + address +
+                ", uuid=" + uuid +
+                ", statusCd=" + statusCd +
+                ", createDate=" + createDate +
+                ", createUser=" + createUser +
+                ", updateDate=" + updateDate +
+                ", updateUser=" + updateUser +
+                ", statusDate=" + statusDate +
+                "}";
     }
 }

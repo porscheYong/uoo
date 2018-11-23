@@ -25,8 +25,7 @@ import java.util.List;
  * @since 2018-09-25
  */
 @RestController
-@RequestMapping(value = "/org" , produces = {"application/json;charset=UTF-8"})
-@Api(value = "/org", description = "组织相关操作")
+@RequestMapping(value = "/org")
 public class OrgController {
 
     @Resource
@@ -36,7 +35,7 @@ public class OrgController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
-    public ResponseResult addOrg(@RequestBody Org org) {
+    public ResponseResult addOrg(@RequestBody OrgVo org) {
         return orgService.addOrg(org);
     }
 
@@ -45,7 +44,7 @@ public class OrgController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
-    public ResponseResult updateOrg(@RequestBody Org org) {
+    public ResponseResult updateOrg(@RequestBody OrgVo org) {
         return orgService.updateOrg(org);
     }
 
@@ -58,12 +57,16 @@ public class OrgController {
         return orgService.getOrg(orgId);
     }
 
+
     @ApiOperation(value = "获取组织关系分页", notes = "获取组织关系分页")
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getOrgRelPage", method = RequestMethod.GET)
-    public ResponseResult getOrgRelPage(@RequestBody OrgVo orgVo) {
-        return orgService.getOrgRelPage(orgVo);
+    public ResponseResult getOrgRelPage(@RequestParam(value = "orgRootId",required = false)Integer orgRootId,
+                                        @RequestParam(value = "orgId",required = false)Integer orgId,
+                                        @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                        @RequestParam(value = "pageNo",required = false)Integer pageNo) {
+        return orgService.getOrgRelPage(orgRootId,orgId,pageSize,pageNo);
     }
 
 
@@ -71,8 +74,10 @@ public class OrgController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getOrgPage", method = RequestMethod.GET)
-    public ResponseResult getOrgPage(@RequestBody OrgVo orgVo) {
-        return orgService.getOrgPage(orgVo);
+    public ResponseResult getOrgPage(@RequestParam(value = "search",required = false)String search,
+                                     @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                     @RequestParam(value = "pageNo",required = false)Integer pageNo) {
+        return orgService.getOrgPage(search,pageSize,pageNo);
     }
 
 

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.resource.dao.TbSystemOrgTreeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.resource.entity.TbSystemOrgTree">
+        <id column="SYSTEM_ORG_TREE_ID" property="systemOrgTreeId" />
+        <result column="BUSINESS_SYSTEM_ID" property="businessSystemId" />
+        <result column="ORG_TREE_ID" property="orgTreeId" />
+        <result column="INCLUDE_PSN" property="includePsn" />
+        <result column="INCLUDE_SLAVE_ACCT" property="includeSlaveAcct" />
+        <result column="EFF_DATE" property="effDate" />
+        <result column="EXP_DATE" property="expDate" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="STATUS_DATE" property="statusDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        SYSTEM_ORG_TREE_ID, BUSINESS_SYSTEM_ID, ORG_TREE_ID, INCLUDE_PSN, INCLUDE_SLAVE_ACCT, EFF_DATE, EXP_DATE, STATUS_CD, STATUS_DATE, CREATE_USER, CREATE_DATE, UPDATE_USER, UPDATE_DATE
+    </sql>
+
+
+    <select id="getId" resultType="java.lang.Long">
+        SELECT SEQ_TB_SYSTEM_ORG_TREE_ID.nextval FROM dual
+    </select>
+    
+    <select id="selectSystemOrgTreeRulePage" resultType="cn.ffcs.uoo.core.resource.vo.SystemOrgTreeRuleVo">
+        SELECT A.System_Org_Tree_Id systemOrgTreeId,
+        A.ORG_TREE_ID orgTreeId,
+        A.BUSINESS_SYSTEM_ID businessSystemId,
+        A.INCLUDE_PSN includePsn,
+        A.INCLUDE_SLAVE_ACCT includeSlaveAcct,
+        B.ORG_TREE_NAME orgTreeName,
+        C.SYSTEM_NAME systemName,
+        To_Char(A.Create_Date, 'yyyy-mm-dd hh24:mi:ss') createDate
+        FROM TB_SYSTEM_ORG_TREE A, TB_ORG_TREE B,TB_BUSINESS_SYSTEM C
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND C.STATUS_CD='1000'
+        AND A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND A.BUSINESS_SYSTEM_ID=C.BUSINESS_SYSTEM_ID
+        <if test="systemOrgTreeRuleVo.search != null and systemOrgTreeRuleVo.search != ''">
+            AND (B.ORG_TREE_NAME LIKE '%'||#{systemOrgTreeRuleVo.search}||'%' OR C.SYSTEM_NAME LIKE '%'||#{systemOrgTreeRuleVo.search}||'%')
+        </if>
+    </select>
+
+    <select id="getIndividuationRule" resultType="cn.ffcs.uoo.core.resource.vo.SystemIndividuaRuleVo">
+        SELECT A.INDIVIDUATION_RULE_ID individuationRuleId,
+        A.SYSTEM_ORG_TREE_ID systemOrgTreeId,
+        A.BUSI_OBJ_ID busiObjId,
+        A.BUSI_OBJ_ATTR_ID busiObjAttrId,
+        A.RULE_OPERATOR ruleOperator,
+        A.ATTR_VALUE attrValue
+        FROM TB_SYSTEM_INDIVIDUATION_RULE A
+        WHERE A.STATUS_CD = '1000'
+        <if test="systemOrgTreeRuleVo.systemOrgTreeId != null and systemOrgTreeRuleVo.systemOrgTreeId != ''">
+           AND A.SYSTEM_ORG_TREE_ID = #{systemOrgTreeRuleVo.systemOrgTreeId}
+        </if>
+    </select>
+
+</mapper>

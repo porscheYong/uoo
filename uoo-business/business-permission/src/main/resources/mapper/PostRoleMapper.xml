@@ -24,4 +24,8 @@
     <select id="getId" resultType="Long">
         SELECT SEQ_TB_POST_ROLE_ID.NEXTVAL FROM dual
     </select>
+
+    <select id="getPostRole" resultType="cn.ffcs.uoo.core.permission.entity.PostRole">
+        SELECT ROLE_ID,POST_ID FROM TB_POST_ROLE
+    </select>
 </mapper>

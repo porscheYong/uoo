@@ -34,4 +34,14 @@ public class PoliticalLocationServiceHystrix implements PoliticalLocationService
         return ResponseResult.createErrorResult("系统数据异常");
     }
 
+    @Override
+    public ResponseResult getChildPoliticalLocationInfo(Long id) {
+        return ResponseResult.createErrorResult("系统数据异常");
+    }
+
+    @Override
+    public ResponseResult getTreePoliticalLocation(Long id) {
+        return ResponseResult.createErrorResult("系统数据异常");
+    }
+
 }
