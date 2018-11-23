@@ -53,7 +53,7 @@ public class AcctController {
     @ApiOperation(value = "删除主账号与组织关系", notes = "删除主账号与组织关系")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long", paramType = "path"),
-            @ApiImplicitParam(name = "acctID", value = "主账号标识", required = true, dataType = "Long", paramType = "path"),
+            @ApiImplicitParam(name = "acctId", value = "主账号标识", required = true, dataType = "Long", paramType = "path"),
             @ApiImplicitParam(name = "orgId", value = "组织标识", required = true, dataType = "Long", paramType = "path")
     })
     @RequestMapping(value = "/removeAcctOrg", method = RequestMethod.DELETE)
