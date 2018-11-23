@@ -21,7 +21,7 @@ function getRegionList (id) {
 		url:'/region/politicalLocation/getChildPoliticalLocationInfo/'+id,
 		success:function(data){
 			console.log(data);
-			if(data.state==1){
+			if(data.state==1000){
 				initTable(data.data)
 			}else{
 				
@@ -136,7 +136,7 @@ function goDel(){
 			dataType:'json',
 			type:'post',
 			success:function(data){
-				if(data.state==1){
+				if(data.state==1000){
 					//
 					var selectNode=parent.getCurrentSelectedNode()[0];
 					console.log(parent.getCurrentSelectedNode()[0])
@@ -162,7 +162,7 @@ function goDel(){
 						url:'/region/politicalLocation/getChildPoliticalLocationInfo/'+nodes.id,
 						success:function(data){
 							console.log(data);
-							if(data.state==1){
+							if(data.state==1000){
 								initTable(data.data)
 							}else{
 								
@@ -172,7 +172,7 @@ function goDel(){
 						type:'get'
 					});
 				}else{
-					alert(data.state==1?'删除成功':data.message);
+					alert(data.state==1000?'删除成功':data.message);
 				}
 				
 			}
@@ -187,9 +187,9 @@ function deleteRegion(id){
 			dataType:'json',
 			type:'post',
 			success:function(data){
-				alert(data.state==1?'删除成功':data.message);
+				alert(data.state==1000?'删除成功':data.message);
 				getRegionList(listId);
-				if(data.state==1){
+				if(data.state==1000){
 					var zTree=parent.getTree();
 					var nodes= parent.getCurrentSelectedNode()[0];
 					nodes=nodes.children;
