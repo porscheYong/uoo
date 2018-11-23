@@ -22,7 +22,7 @@ $(document).ready(function() {
 		dataType : 'json',
 		type : 'get',
 		success : function(data) {
-			if (data.state == 1) {
+			if (data.state == 1000) {
 				$.fn.zTree.init($("#standardTree"), setting, data.data);
 			} else {
 				alert('加载公共区域树失败，请重试');
