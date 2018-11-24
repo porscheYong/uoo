@@ -94,11 +94,11 @@ spring:
             reset-enable: false
     #      aop-patterns: cn.ffcs.uoo.**.service.*
 
-  zipkin:
-    base-url: http://localhost:20010
-  sleuth:
-    sampler:
-      percentage: 1.0
+  #zipkin:
+  # base-url: http://localhost:20010
+  #sleuth:
+  # sampler:
+  #   percentage: 1.0
 eureka:
   client:
     service-url:

@@ -6,6 +6,7 @@ package cn.ffcs.uoo.web.maindata.organization.service.fallback;/**
 
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgRelType;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
+import cn.ffcs.uoo.web.maindata.organization.dto.TreeNodeVo;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgRelTypeService;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgService;
 import org.springframework.stereotype.Component;
@@ -31,4 +32,11 @@ public class OrgRelTypeServiceHystrix implements OrgRelTypeService {
         return responseResult;
     }
 
+    @Override
+    public ResponseResult<List<TreeNodeVo>> getOrgRelTypeTree(String refCode){
+        ResponseResult<List<TreeNodeVo>> responseResult = new ResponseResult<List<TreeNodeVo>>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
 }

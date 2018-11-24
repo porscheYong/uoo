@@ -3,6 +3,7 @@ package cn.ffcs.uoo.web.maindata.position.service.fallback;
 import cn.ffcs.uoo.web.maindata.position.dto.TbPosition;
 import cn.ffcs.uoo.web.maindata.position.service.TbPositionClient;
 import cn.ffcs.uoo.web.maindata.position.vo.OrgPositionInfoVo;
+import cn.ffcs.uoo.web.maindata.position.vo.PositionNodeVo;
 import cn.ffcs.uoo.web.maindata.position.vo.ResponseResult;
 import org.springframework.stereotype.Component;
 
@@ -52,5 +53,13 @@ public class TbPositionClientHystrix implements TbPositionClient {
     @Override
     public List<TbPosition> queryChildPositionList(Long parentPositionId) {
         return null;
+    }
+
+    @Override
+    public ResponseResult<List<PositionNodeVo>> getPositionTree() {
+        ResponseResult<List<PositionNodeVo>> responseResult = new ResponseResult<List<PositionNodeVo>>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 }

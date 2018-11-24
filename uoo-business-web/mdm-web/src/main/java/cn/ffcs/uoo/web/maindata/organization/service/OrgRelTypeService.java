@@ -3,6 +3,7 @@ package cn.ffcs.uoo.web.maindata.organization.service;
 
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgRelType;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
+import cn.ffcs.uoo.web.maindata.organization.dto.TreeNodeVo;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgRelServiceHystrix;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgRelTypeServiceHystrix;
 import com.baomidou.mybatisplus.service.IService;
@@ -29,5 +30,6 @@ public interface OrgRelTypeService{
     @RequestMapping(value="/orgRelType/getOrgRelTypeList",method = RequestMethod.GET,headers={"Content-Type=application/json"})
     public ResponseResult<List<OrgRelType>> getOrgRelTypeList(@RequestParam(value = "orgRelCode",required = false)String orgRelCode);
 
-
+    @RequestMapping(value="/orgRelType/getOrgRelTypeTree",method = RequestMethod.GET,headers={"Content-Type=application/json"})
+    public ResponseResult<List<TreeNodeVo>> getOrgRelTypeTree(@RequestParam(value = "refCode",required = false)String refCode);
 }
