@@ -13,8 +13,6 @@ function check(){
     }
 }
 
-
-
 // if(userType == '主账号'){
 //     window.location.href = 'addMainAccount.html?personnelId='+personnelId+'&userType=1&title=添加主账号&opBtn=1';
 // }else if(userType == '从账号'){
@@ -52,10 +50,9 @@ function initPsnInfoTable(results){         //主账号组织数据
             { 'data': "psnName", 'title': '姓名', 'className': 'row-psnName' ,
             'render': function (data, type, row, meta) {
             if(userType == '主账号'){
-                return '<a href="addMainAccount.html?personnelId='+ row.personnelId +'&userType=1&title=添加主账号&opBtn=1">'+ row.psnName +'</a>'
+                return '<a href="addMainAccount.html?personnelId='+ row.personnelId +'&title=添加主账号&opBtn=1">'+ row.psnName +'</a>'
             }else if(userType == '从账号'){
-                //return '<a href="addSubAccount.html?personnelId='+ row.personnelId +'&userType=2&title=添加从账号&opBtn=1">'+ row.psnName +'</a>'
-                return '暂不支持从账号';
+                return '<a href="addSubAccount.html?personnelId='+ row.personnelId +'&userType=2&title=添加从账号&opBtn=1">'+ row.psnName +'</a>'
             } 
             }
         },
