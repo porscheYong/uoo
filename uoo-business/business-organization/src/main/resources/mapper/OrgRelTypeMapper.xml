@@ -43,4 +43,16 @@
           AND A.ORG_ID = #{orgRootId}
         </if>
     </select>
+
+    <select id="selectOrgRelTypeTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+        SELECT A.REF_CODE id,A.PARENT_REF_CODE pid,A.REF_NAME name FROM TB_ORG_REL_TYPE A WHERE A.STATUS_CD = '1000'
+    </select>
+
+    <select id="selectTarOrgRelTypeTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+        SELECT AA.Ref_Code id, AA.PARENT_REF_CODE pid, AA.REF_NAME name
+        FROM (SELECT * FROM TB_ORG_REL_TYPE A WHERE A.STATUS_CD = '1000') AA
+        START WITH AA.REF_CODE = #{refCode}
+        CONNECT BY PRIOR AA.REF_CODE = AA.PARENT_REF_CODE
+    </select>
+
 </mapper>

@@ -107,6 +107,11 @@ public class OrgTree extends Model<OrgTree> {
      */
     @TableField(exist=false)
     private List<TreeNodeVo> treeNodeList;
+    /**
+     * 目标组织树标识
+     */
+    @TableField(exist=false)
+    private String tarOrgTreeId;
 
 
     public List<TreeNodeVo> getTreeNodeList() {

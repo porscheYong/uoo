@@ -191,8 +191,7 @@ public class OrgRelController extends BaseController {
             @ApiImplicitParam(name = "org", value = "组织", required = true, dataType = "Org"),
     })
     @UooLog(value = "新增组织关系", key = "addOrgRel")
-    @RequestMapping(value = "/addOrgRel", method = RequestMethod.GET)
-    @Transactional(rollbackFor = Exception.class)
+    @RequestMapping(value = "/addOrgRel", method = RequestMethod.POST)
     public ResponseResult<TreeNodeVo> addOrgRel(Org org) throws IOException {
         ResponseResult<TreeNodeVo> ret = new ResponseResult<TreeNodeVo>();
         if(StrUtil.isNullOrEmpty(org.getOrgId())){
