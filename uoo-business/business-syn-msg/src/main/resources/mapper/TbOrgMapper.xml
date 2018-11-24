@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.message.server.dao.TbOrgMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.uoo.message.server.pojo.TbOrg">
+    <id column="ORG_ID" jdbcType="DECIMAL" property="orgId" />
+    <result column="LOC_ID" jdbcType="DECIMAL" property="locId" />
+    <result column="AREA_CODE_ID" jdbcType="DECIMAL" property="areaCodeId" />
+    <result column="ORG_NAME" jdbcType="VARCHAR" property="orgName" />
+    <result column="ORG_CODE" jdbcType="VARCHAR" property="orgCode" />
+    <result column="SHORT_NAME" jdbcType="VARCHAR" property="shortName" />
+    <result column="ORG_NAME_EN" jdbcType="VARCHAR" property="orgNameEn" />
+    <result column="FULL_NAME" jdbcType="VARCHAR" property="fullName" />
+    <result column="CITY_TOWN" jdbcType="CHAR" property="cityTown" />
+    <result column="OFFICE_PHONE" jdbcType="VARCHAR" property="officePhone" />
+    <result column="FOUNDING_TIME" jdbcType="TIMESTAMP" property="foundingTime" />
+    <result column="ORG_SCALE" jdbcType="VARCHAR" property="orgScale" />
+    <result column="ORG_LEVEL" jdbcType="VARCHAR" property="orgLevel" />
+    <result column="ORG_POSITION_LEVEL" jdbcType="VARCHAR" property="orgPositionLevel" />
+    <result column="SORT" jdbcType="DECIMAL" property="sort" />
+    <result column="ORG_CONTENT" jdbcType="VARCHAR" property="orgContent" />
+    <result column="ORG_DESC" jdbcType="VARCHAR" property="orgDesc" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="UUID" jdbcType="VARCHAR" property="uuid" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE, SHORT_NAME, ORG_NAME_EN, FULL_NAME, 
+    CITY_TOWN, OFFICE_PHONE, FOUNDING_TIME, ORG_SCALE, ORG_LEVEL, ORG_POSITION_LEVEL, 
+    SORT, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUS_CD, CREATE_DATE, CREATE_USER, 
+    UPDATE_DATE, UPDATE_USER, STATUS_DATE
+  </sql>
+
+  <resultMap id="OrgVoMapper" type="cn.ffcs.uoo.message.server.vo.TbOrgVo" extends="BaseResultMap">
+
+    <result column="ORG_TREE_ID" jdbcType="DECIMAL" property="orgTreeId"></result>
+    <result column="BUSINESS_SYSTEM_ID" jdbcType="DECIMAL" property="businessSystemId"></result>
+    <result column="org_biz_name" jdbcType="VARCHAR" property="orgBizName"></result>
+
+    <association property="orgLevels" javaType="cn.ffcs.uoo.message.server.vo.OrgLevelVo"
+                 column="{orgId=ORG_ID,orgTreeId=ORG_TREE_ID}" select="getOrgLevel"></association>
+
+    <association property="orgRelations" javaType="cn.ffcs.uoo.message.server.vo.TbOrgRelVo"
+                 column="{orgId=ORG_ID,orgTreeId=ORG_TREE_ID}" select="getOrgRel"></association>
+
+    <association property="politicalLocationInfo" javaType="cn.ffcs.uoo.message.server.pojo.TbPoliticalLocation"
+                 select="getPoliticalLocation" column="ORG_ID"></association>
+
+    <association property="areaCodeInfo" javaType="cn.ffcs.uoo.message.server.pojo.TbAreaCode"
+                 select="getAreaCode" column="ORG_ID"></association>
+
+    <collection property="orgTypes" ofType="cn.ffcs.uoo.message.server.vo.TbOrgTypeVo"
+                column="ORG_ID" select="getOrgType"></collection>
+
+    <collection property="orgCrossRelations" select="getOrgCrossRel" column="ORG_ID"
+                ofType="cn.ffcs.uoo.message.server.pojo.TbOrgCrossRel"></collection>
+
+    <collection property="orgCerts" select="getCert" column="ORG_ID"
+                ofType="cn.ffcs.uoo.message.server.pojo.TbCert"></collection>
+    
+    <collection property="contactRelations" ofType="cn.ffcs.uoo.message.server.vo.TbOrgContactRelVo"
+                select="getOrgContactRel" column="ORG_ID"></collection>
+    
+  </resultMap>
+
+  <resultMap id="OrgLevelMap" type="cn.ffcs.uoo.message.server.vo.OrgLevelVo">
+    <id column="ORG_LEVEL_ID" jdbcType="DECIMAL" property="orgLevelId" />
+    <result column="ORG_ID" jdbcType="DECIMAL" property="orgId" />
+    <result column="ORG_TREE_ID" jdbcType="DECIMAL" property="orgTreeId" />
+    <result column="ORG_LEVEL" jdbcType="DECIMAL" property="orgLevel" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+
+    <association property="orgTreeInfo" javaType="cn.ffcs.uoo.message.server.pojo.TbOrgTree"
+    select="getOrgTree" column="ORG_TREE_ID"></association>
+
+  </resultMap>
+
+  <resultMap id="OrgTreeMap" type="cn.ffcs.uoo.message.server.pojo.TbOrgTree">
+    <result column="ORG_TREE_ID" jdbcType="DECIMAL" property="orgTreeId" />
+    <result column="ORG_TREE_NAME" jdbcType="VARCHAR" property="orgTreeName" />
+    <result column="ORG_TREE_TYPE" jdbcType="DECIMAL" property="orgTreeType" />
+    <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+    <result column="SORT" jdbcType="VARCHAR" property="sort" />
+  </resultMap>
+
+  <resultMap id="OrgRelVoMap" type="cn.ffcs.uoo.message.server.vo.TbOrgRelVo">
+    <result column="ORG_REL_ID" jdbcType="DECIMAL" property="orgRelId" />
+    <result column="ORG_ID" jdbcType="DECIMAL" property="orgId" />
+    <result column="SUP_ORG_ID" jdbcType="DECIMAL" property="supOrgId" />
+    <result column="ORG_REL_TYPE_ID" jdbcType="DECIMAL" property="orgRelTypeId" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+    <result column="org_name" jdbcType="VARCHAR" property="supOrgName" />
+    <association property="orgRefTypeInfo" javaType="cn.ffcs.uoo.message.server.vo.TbOrgRelTypeVo"
+                 select="getOrgRelType" column="ORG_REL_TYPE_ID"></association>
+  </resultMap>
+
+  <resultMap id="OrgRelTypeMap" type="cn.ffcs.uoo.message.server.vo.TbOrgRelTypeVo">
+    <id column="ORG_REL_TYPE_ID" jdbcType="DECIMAL" property="orgRelTypeId" />
+    <result column="REF_DESC" jdbcType="VARCHAR" property="refDesc" />
+    <result column="REF_NAME" jdbcType="VARCHAR" property="refName" />
+    <result column="REF_CODE" jdbcType="VARCHAR" property="refCode" />
+    <result column="PARENT_ORG_REL_TYPE_ID" jdbcType="DECIMAL" property="supOrgRefTypeId" />
+    <result column="SUP_NAME" jdbcType="DECIMAL" property="supOrgRefTypeName" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+  </resultMap>
+
+  <resultMap id="OrgTypeMap" type="cn.ffcs.uoo.message.server.vo.TbOrgTypeVo">
+    <id column="ORG_TYPE_ID" jdbcType="DECIMAL" property="orgTypeId" />
+    <result column="ORG_TYPE_CODE" jdbcType="VARCHAR" property="orgTypeCode" />
+    <result column="ORG_TYPE_NAME" jdbcType="VARCHAR" property="orgTypeName" />
+    <result column="ORG_TYPE_DESC" jdbcType="VARCHAR" property="orgTypeDesc" />
+    <result column="SUP_PK_ORG_TYPE" jdbcType="DECIMAL" property="supPkOrgType" />
+    <result column="SUP_NAME" jdbcType="DECIMAL" property="supPkOrgTypeName" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+  </resultMap>
+
+  <resultMap id="OrgCrossRelMap" type="cn.ffcs.uoo.message.server.pojo.TbOrgCrossRel">
+    <id column="ORG_CROSS_REL_ID" jdbcType="DECIMAL" property="orgCrossRelId" />
+    <result column="ORG_ID" jdbcType="DECIMAL" property="orgId" />
+    <result column="CROSS_TRAN" jdbcType="VARCHAR" property="crossTran" />
+    <result column="RELA_TYPE" jdbcType="VARCHAR" property="relaType" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+  </resultMap>
+
+  <resultMap id="CertMap" type="cn.ffcs.uoo.message.server.pojo.TbCert">
+    <result column="CERT_ID" jdbcType="DECIMAL" property="certId" />
+    <result column="PERSONNEL_ID" jdbcType="DECIMAL" property="personnelId" />
+    <result column="CERT_NAME" jdbcType="VARCHAR" property="certName" />
+    <result column="CERT_TYPE" jdbcType="VARCHAR" property="certType" />
+    <result column="CERT_NO" jdbcType="VARCHAR" property="certNo" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="ISSUING" jdbcType="VARCHAR" property="issuing" />
+    <result column="UUID" jdbcType="VARCHAR" property="uuid" />
+    <result column="IS_REAL" jdbcType="VARCHAR" property="isReal" />
+    <result column="SOURCE" jdbcType="VARCHAR" property="source" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+  </resultMap>
+
+  <resultMap id="OrgContactRelVoMap" type="cn.ffcs.uoo.message.server.vo.TbOrgContactRelVo">
+    <id column="ORG_CONTACT_REL_ID" jdbcType="DECIMAL" property="orgContactRelId" />
+    <result column="ORG_ID" jdbcType="DECIMAL" property="orgId" />
+    <result column="PERSONNEL_ID" jdbcType="DECIMAL" property="personnelId" />
+    <result column="SORT" jdbcType="DECIMAL" property="sort" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+    <association property="personalInfo" javaType="cn.ffcs.uoo.message.server.pojo.TbPersonnel"
+                 column="PERSONNEL_ID" select="getPersonnel"></association>
+  </resultMap>
+
+  <resultMap id="PersonnelMap" type="cn.ffcs.uoo.message.server.pojo.TbPersonnel">
+    <id column="PERSONNEL_ID" jdbcType="DECIMAL" property="personnelId" />
+    <result column="PSN_NAME" jdbcType="VARCHAR" property="psnName" />
+    <result column="PSN_CODE" jdbcType="VARCHAR" property="psnCode" />
+    <result column="NC_CODE" jdbcType="VARCHAR" property="ncCode" />
+    <result column="PSN_NBR" jdbcType="VARCHAR" property="psnNbr" />
+    <result column="NATIONALITY" jdbcType="VARCHAR" property="nationality" />
+    <result column="GENDER" jdbcType="CHAR" property="gender" />
+    <result column="NATION" jdbcType="VARCHAR" property="nation" />
+    <result column="MARRIAGE" jdbcType="CHAR" property="marriage" />
+    <result column="PLITICAL_STATUS" jdbcType="VARCHAR" property="pliticalStatus" />
+    <result column="IMAGE" jdbcType="VARCHAR" property="image" />
+    <result column="REASON" jdbcType="VARCHAR" property="reason" />
+    <result column="TO_WORK_TIME" jdbcType="DATE" property="toWorkTime" />
+    <result column="SERVING_AGE" jdbcType="DECIMAL" property="servingAge" />
+    <result column="LENGTH_SERVICE" jdbcType="DECIMAL" property="lengthService" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+    <result column="UUID" jdbcType="VARCHAR" property="uuid" />
+    <result column="NOTES" jdbcType="VARCHAR" property="notes" />
+  </resultMap>
+
+  <resultMap id="PoliticalLocationMap" type="cn.ffcs.uoo.message.server.pojo.TbPoliticalLocation">
+    <id column="LOC_ID" jdbcType="DECIMAL" property="locId" />
+    <result column="LOC_CODE" jdbcType="VARCHAR" property="locCode" />
+    <result column="LOC_NAME" jdbcType="VARCHAR" property="locName" />
+    <result column="LOC_DESC" jdbcType="VARCHAR" property="locDesc" />
+    <result column="LOC_TYPE" jdbcType="VARCHAR" property="locType" />
+    <result column="LOC_ABBR" jdbcType="VARCHAR" property="locAbbr" />
+    <result column="UP_LOC_ID" jdbcType="DECIMAL" property="upLocId" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+  </resultMap>
+
+  <resultMap id="AreaCodeMap" type="cn.ffcs.uoo.message.server.pojo.TbAreaCode">
+    <id column="AREA_CODE_ID" jdbcType="DECIMAL" property="areaCodeId" />
+    <result column="COMMON_REGION_ID" jdbcType="DECIMAL" property="commonRegionId" />
+    <result column="AREA_NBR" jdbcType="VARCHAR" property="areaNbr" />
+    <result column="AREA_CODE" jdbcType="VARCHAR" property="areaCode" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+  </resultMap><!--组织信息-->
+  <select id="getOrgVo" resultMap="OrgVoMapper">
+    select a.*,#{orgTreeId} ORG_TREE_ID ,#{businessSystemId} BUSINESS_SYSTEM_ID,b.org_biz_name from tb_org a,tb_org_orgtree_rel b  where a.org_id = #{orgId} and a.status_cd = 1000
+    and b.org_id = a.org_id and b.status_cd = 1000
+  </select>
+
+  <!--组织层级-->
+  <select id="getOrgLevel" resultMap="OrgLevelMap">
+    SELECT * FROM TB_ORG_LEVEL WHERE org_Id = #{orgId} AND ORG_TREE_ID = #{orgTreeId} and status_cd = 1000
+  </select>
+
+  <!--组织树-->
+  <select id="getOrgTree" resultMap="OrgTreeMap" >
+    select * from tb_org_tree where ORG_TREE_ID = #{ORG_TREE_ID} and status_cd = 1000
+  </select>
+
+  <!--组织上下级关系-->
+  <select id="getOrgRel" resultMap="OrgRelVoMap">
+     select a.*,b.org_name from tb_org_Rel a,tb_org b where a.sup_org_id = b.org_id and b.status_cd = 1000 and a.org_id = #{orgId} and a.status_cd = 1000 and ORG_REL_TYPE_ID = (SELECT org_rel_type_id
+    FROM TB_OGT_ORG_RELTYPE_CONF where org_tree_id = #{orgTreeId} and status_cd = 1000)
+  </select>
+
+  <!--组织关系类型-->
+  <select id="getOrgRelType" resultMap="OrgRelTypeMap">
+    select a.*,b.ref_name SUP_NAME from tb_ORG_REL_TYPE a left join tb_ORG_REL_TYPE b on a.parent_org_rel_type_id = b.org_rel_type_id and b.status_cd = 1000
+    where a.org_rel_type_id = #{ORG_REL_TYPE_ID} and a.status_cd = 1000
+  </select>
+
+  <!--组织类别-->
+  <select id="getOrgType" resultMap="OrgTypeMap">
+    select a.*,b.org_type_name sub_name from (SELECT * FROM TB_ORG_TYPE where
+    org_type_id in(select org_type_id from TB_ORG_ORGTYPE_REL where org_id = #{ORG_ID}  and status_cd = 1000) and status_cd = 1000) a left join TB_ORG_TYPE b
+    on a.sup_pk_org_type = b.org_type_id and b.status_cd = 1000
+  </select>
+
+  <!--跨域组织-->
+  <select id="getOrgCrossRel" resultMap="OrgCrossRelMap">
+    select * from tb_org_Cross_Rel where org_id =#{ORG_ID} and status_cd = 1000
+  </select>
+
+  <!--证件-->
+  <select id="getCert" resultMap="CertMap">
+    SELECT * FROM TB_CERT WHERE CERT_ID IN (SELECT cert_id  FROM TB_ORG_CERT_REL WHERE org_id = #{ORG_ID} and status_cd = 1000) and status_cd = 1000
+  </select>
+
+  <!--组织联系人-->
+  <select id="getOrgContactRel" resultMap="OrgContactRelVoMap">
+    SELECT * FROM TB_ORG_CONTACT_REL WHERE org_id = #{ORG_ID} and status_cd = 1000
+  </select>
+
+  <!--联系人信息-->
+  <select id="getPersonnel" resultMap="PersonnelMap">
+    SELECT * FROM TB_PERSONNEL WHERE PERSONNEL_ID = #{PERSONNEL_ID} and status_cd = 1000
+  </select>
+
+  <!--行政区域表-->
+  <select id="getPoliticalLocation" resultMap="PoliticalLocationMap">
+    SELECT * FROM TB_POLITICAL_LOCATION WHERE loc_id IN (SELECT loc_id FROM tb_org WHERE org_id = #{ORG_ID} and status_cd = 1000)
+  </select>
+
+  <!--区号-->
+  <select id="getAreaCode" resultMap="AreaCodeMap">
+    SELECT * FROM tb_area_code WHERE area_code_id IN (SELECT area_code_id FROM tb_org WHERE org_id = #{ORG_ID} and status_cd = 1000)
+  </select>
+
+</mapper>

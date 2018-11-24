@@ -60,7 +60,7 @@ public class TbPoliticalLocationController extends BaseController {
     public ResponseResult getChildPoliticalLocationInfo(@PathVariable(value="id") Long id){
         Map<String, Object> params = new HashMap<>();
         params.put("statusCd", DeleteConsts.VALID);
-        params.put("upLocId", id);
+        params.put("parentLocId", id);
         params.put("statusCd", DeleteConsts.VALID);
         List<Map> list = polLocSvc.getChildPoliticalLocationInfo(params);
         if (list == null) {
@@ -94,9 +94,9 @@ public class TbPoliticalLocationController extends BaseController {
             ztlist.add(n);
             n.setId(polloc.getLocId());
             n.setName(polloc.getLocName());
-            n.setpId(polloc.getUpLocId()==null||polloc.getUpLocId()<1?0:polloc.getUpLocId());
+            n.setpId(polloc.getParentLocId()==null||polloc.getParentLocId()<1?0:polloc.getParentLocId());
             for (TbPoliticalLocation tmp : list) {
-                if(polloc.getLocId().equals(tmp.getUpLocId())){
+                if(polloc.getLocId().equals(tmp.getParentLocId())){
                     n.setParent(true);
                     break;
                 }
@@ -140,8 +140,8 @@ public class TbPoliticalLocationController extends BaseController {
     public ResponseResult addPoliticalLocation(@RequestBody TbPoliticalLocation polLoc) {
         // 数据校验  获取操作者
         //查询上级是否存在  
-        if(polLoc.getUpLocId()!=null&&polLoc.getUpLocId().longValue()!=0){
-            TbPoliticalLocation region = polLocSvc.selectById(polLoc.getUpLocId());
+        if(polLoc.getParentLocId()!=null&&polLoc.getParentLocId().longValue()!=0){
+            TbPoliticalLocation region = polLocSvc.selectById(polLoc.getParentLocId());
             if(region==null){
                 return ResponseResult.createErrorResult("上一级区域不存在");
             }
@@ -175,8 +175,8 @@ public class TbPoliticalLocationController extends BaseController {
             return ResponseResult.createErrorResult("修改数据异常");
         }
         // 数据校验 获取操作者
-        if(polLoc.getUpLocId()!=null&&polLoc.getUpLocId().longValue()!=0){
-            TbPoliticalLocation region = polLocSvc.selectById(polLoc.getUpLocId());
+        if(polLoc.getParentLocId()!=null&&polLoc.getParentLocId().longValue()!=0){
+            TbPoliticalLocation region = polLocSvc.selectById(polLoc.getParentLocId());
             if(region==null){
                 return ResponseResult.createErrorResult("上一级区域不存在");
             }
@@ -209,7 +209,7 @@ public class TbPoliticalLocationController extends BaseController {
             return ResponseResult.createErrorResult("不能删除空数据");
         }
         //有下级也不能删除
-        List<TbPoliticalLocation> datas=polLocSvc.selectList(Condition.create().eq("UP_LOC_ID", polLoc.getLocId()).eq("STATUS_CD",DeleteConsts.VALID));
+        List<TbPoliticalLocation> datas=polLocSvc.selectList(Condition.create().eq("PARENT_LOC_ID", polLoc.getLocId()).eq("STATUS_CD",DeleteConsts.VALID));
         if(datas!=null&&!datas.isEmpty()){
             return ResponseResult.createErrorResult("当前区域有下级区域不能删除");
         }

@@ -1,15 +1,18 @@
 package cn.ffcs.uoo.message.server.pojo;
 
+import com.baomidou.mybatisplus.activerecord.Model;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class TbSystemIndividuationRule {
+public class TbSystemIndividuationRule extends Model<TbSystemIndividuationRule> {
     private Long individuationRuleId;
 
     private Long systemOrgTreeId;
 
-    private Long busiObjId;
+    private String busiObjId;
 
-    private Long busiObjAttrId;
+    private String busiObjAttrId;
 
     private String ruleOperator;
 
@@ -43,19 +46,19 @@ public class TbSystemIndividuationRule {
         this.systemOrgTreeId = systemOrgTreeId;
     }
 
-    public Long getBusiObjId() {
+    public String getBusiObjId() {
         return busiObjId;
     }
 
-    public void setBusiObjId(Long busiObjId) {
+    public void setBusiObjId(String busiObjId) {
         this.busiObjId = busiObjId;
     }
 
-    public Long getBusiObjAttrId() {
+    public String getBusiObjAttrId() {
         return busiObjAttrId;
     }
 
-    public void setBusiObjAttrId(Long busiObjAttrId) {
+    public void setBusiObjAttrId(String busiObjAttrId) {
         this.busiObjAttrId = busiObjAttrId;
     }
 
@@ -121,5 +124,9 @@ public class TbSystemIndividuationRule {
 
     public void setUpdateUser(Long updateUser) {
         this.updateUser = updateUser;
+    }
+    @Override
+    protected Serializable pkVal() {
+        return this.individuationRuleId;
     }
 }

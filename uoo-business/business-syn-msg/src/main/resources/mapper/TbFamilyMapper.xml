@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.message.server.dao.TbFamilyMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.uoo.message.server.pojo.TbFamily">
+    <id column="FAMILY_ID" jdbcType="DECIMAL" property="familyId" />
+    <result column="PERSONNEL_ID" jdbcType="DECIMAL" property="personnelId" />
+    <result column="MEM_RELATION" jdbcType="VARCHAR" property="memRelation" />
+    <result column="MEM_NAME" jdbcType="VARCHAR" property="memName" />
+    <result column="RELA_EMAIL" jdbcType="VARCHAR" property="relaEmail" />
+    <result column="RELA_PHONE" jdbcType="VARCHAR" property="relaPhone" />
+    <result column="RELA_ADDR" jdbcType="VARCHAR" property="relaAddr" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    FAMILY_ID, PERSONNEL_ID, MEM_RELATION, MEM_NAME, RELA_EMAIL, RELA_PHONE, RELA_ADDR, 
+    STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+  </sql>
+</mapper>

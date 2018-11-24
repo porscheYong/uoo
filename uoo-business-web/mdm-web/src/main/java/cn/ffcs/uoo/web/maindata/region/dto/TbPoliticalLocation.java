@@ -46,7 +46,7 @@ public class TbPoliticalLocation  {
     /**
      * 上级行政区域标识
      */
-    private Long upLocId;
+    private Long parentLocId;
 
     /**
      * 状态
@@ -126,12 +126,12 @@ public class TbPoliticalLocation  {
         this.locAbbr = locAbbr;
     }
 
-    public Long getUpLocId() {
-        return upLocId;
+    public Long getParentLocId() {
+        return parentLocId;
     }
 
-    public void setUpLocId(Long upLocId) {
-        this.upLocId = upLocId;
+    public void setParentLocId(Long parentLocId) {
+        this.parentLocId = parentLocId;
     }
 
     public String getStatusCd() {
@@ -186,7 +186,7 @@ public class TbPoliticalLocation  {
     @Override
     public String toString() {
         return "TbPoliticalLocation [locId=" + locId + ", locCode=" + locCode + ", locName=" + locName + ", locDesc="
-                + locDesc + ", locType=" + locType + ", locAbbr=" + locAbbr + ", upLocId=" + upLocId + ", statusCd="
+                + locDesc + ", locType=" + locType + ", locAbbr=" + locAbbr + ", parentLocId=" + parentLocId + ", statusCd="
                 + statusCd + ", createDate=" + createDate + ", createUser=" + createUser + ", updateDate=" + updateDate
                 + ", updateUser=" + updateUser + ", statusDate=" + statusDate + "]";
     }

@@ -1,13 +1,20 @@
 package cn.ffcs.uoo.message.server.pojo;
 
+import com.baomidou.mybatisplus.activerecord.Model;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class TbSystemOrgTree {
+public class TbSystemOrgTree extends Model<TbSystemOrgTree> {
     private Long systemOrgTreeId;
 
     private Long businessSystemId;
 
     private Long orgTreeId;
+
+    private Short includePsn;
+
+    private Short includeSlaveAcct;
 
     private Date effDate;
 
@@ -41,12 +48,20 @@ public class TbSystemOrgTree {
         this.businessSystemId = businessSystemId;
     }
 
-    public Long getOrgTreeId() {
-        return orgTreeId;
+    public Short getIncludePsn() {
+        return includePsn;
     }
 
-    public void setOrgTreeId(Long orgTreeId) {
-        this.orgTreeId = orgTreeId;
+    public void setIncludePsn(Short includePsn) {
+        this.includePsn = includePsn;
+    }
+
+    public Short getIncludeSlaveAcct() {
+        return includeSlaveAcct;
+    }
+
+    public void setIncludeSlaveAcct(Short includeSlaveAcct) {
+        this.includeSlaveAcct = includeSlaveAcct;
     }
 
     public Date getEffDate() {
@@ -111,5 +126,18 @@ public class TbSystemOrgTree {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public Long getOrgTreeId() {
+        return orgTreeId;
+    }
+
+    public void setOrgTreeId(Long orgTreeId) {
+        this.orgTreeId = orgTreeId;
+    }
+
+    @Override
+    protected Serializable pkVal() {
+        return this.systemOrgTreeId;
     }
 }

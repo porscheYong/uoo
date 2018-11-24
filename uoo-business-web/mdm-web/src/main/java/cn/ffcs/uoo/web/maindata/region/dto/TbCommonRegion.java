@@ -24,7 +24,7 @@ public class TbCommonRegion {
     /**
      * 上级区域标识
      */
-    private Long upRegionId;
+    private Long parentRegionId;
 
     /**
      * 区域名称
@@ -109,12 +109,12 @@ public class TbCommonRegion {
         this.commonRegionId = commonRegionId;
     }
 
-    public Long getUpRegionId() {
-        return upRegionId;
+    public Long getParentRegionId() {
+        return parentRegionId;
     }
 
-    public void setUpRegionId(Long upRegionId) {
-        this.upRegionId = upRegionId;
+    public void setParentRegionId(Long parentRegionId) {
+        this.parentRegionId = parentRegionId;
     }
 
     public String getRegionName() {
@@ -239,7 +239,7 @@ public class TbCommonRegion {
 
     @Override
     public String toString() {
-        return "TbCommonRegion [commonRegionId=" + commonRegionId + ", upRegionId=" + upRegionId + ", regionName="
+        return "TbCommonRegion [commonRegionId=" + commonRegionId + ", parentRegionId=" + parentRegionId + ", regionName="
                 + regionName + ", regionPyName=" + regionPyName + ", regionNbr=" + regionNbr + ", regionType="
                 + regionType + ", regionDesc=" + regionDesc + ", regionLevel=" + regionLevel + ", regionSort="
                 + regionSort + ", provinceNbr=" + provinceNbr + ", cityFlag=" + cityFlag + ", statusCd=" + statusCd

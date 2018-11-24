@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.message.server.dao.TbEduMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.uoo.message.server.pojo.TbEdu">
+    <id column="EDU_ID" jdbcType="DECIMAL" property="eduId" />
+    <result column="PERSONNEL_ID" jdbcType="DECIMAL" property="personnelId" />
+    <result column="SCHOOL" jdbcType="VARCHAR" property="school" />
+    <result column="SCHOOL_TYPE" jdbcType="VARCHAR" property="schoolType" />
+    <result column="MAJOR" jdbcType="VARCHAR" property="major" />
+    <result column="MAJORTYPE" jdbcType="VARCHAR" property="majortype" />
+    <result column="EDUCATION" jdbcType="VARCHAR" property="education" />
+    <result column="EDUSYSTEM" jdbcType="DECIMAL" property="edusystem" />
+    <result column="DEGREE" jdbcType="CHAR" property="degree" />
+    <result column="FIRST_EDUCATION" jdbcType="VARCHAR" property="firstEducation" />
+    <result column="LAST_EDUCATION" jdbcType="CHAR" property="lastEducation" />
+    <result column="LAST_DEGREE" jdbcType="CHAR" property="lastDegree" />
+    <result column="BEGINDATE" jdbcType="DATE" property="begindate" />
+    <result column="ENDDATE" jdbcType="DATE" property="enddate" />
+    <result column="CERTIFCODE" jdbcType="VARCHAR" property="certifcode" />
+    <result column="IS_FULL_TIME_HIGH_EDU" jdbcType="CHAR" property="isFullTimeHighEdu" />
+    <result column="IS_IN_SERVICE_HIGH_EDU" jdbcType="CHAR" property="isInServiceHighEdu" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    EDU_ID, PERSONNEL_ID, SCHOOL, SCHOOL_TYPE, MAJOR, MAJORTYPE, EDUCATION, EDUSYSTEM, 
+    DEGREE, FIRST_EDUCATION, LAST_EDUCATION, LAST_DEGREE, BEGINDATE, ENDDATE, CERTIFCODE, 
+    IS_FULL_TIME_HIGH_EDU, IS_IN_SERVICE_HIGH_EDU, STATUS_CD, CREATE_DATE, CREATE_USER, 
+    UPDATE_DATE, UPDATE_USER, STATUS_DATE
+  </sql>
+</mapper>
