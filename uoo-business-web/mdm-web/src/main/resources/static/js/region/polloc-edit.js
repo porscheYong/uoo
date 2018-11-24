@@ -1,7 +1,7 @@
 var locIds=null,locNames=null,curUpId=0;
 function deleteData(){
 	var id=$('#locId').val();
-	var upRegionId=$('#upLocId').val();
+	var upRegionId=$('#parentLocId').val();
 	if(confirm('确定删除这条数据？')){
 		$.ajax({
 			url:'/region/politicalLocation/deletePoliticalLocation',
@@ -49,7 +49,7 @@ function get(id){
 		success:function(data){
 			console.log(data);
 			if(data.state==1000){
-				curUpId=data.data.upLocId
+				curUpId=data.data.parentLocId
 				loadLocType();
 				initData(data.data);
 				loadUpRegionList(curUpId);
@@ -124,7 +124,7 @@ function saveRegion(){
 	if(!validFormData()){
 		return;
 	}
-	$('#upLocId').removeAttr('disabled');
+	$('#parentLocId').removeAttr('disabled');
 	$.ajax({
 		type:'POST',
 		dataType:'json',
@@ -186,7 +186,7 @@ function loadUpRegionList(curUpId) {
 					html += " >" + item.name + "</option>"
 					console.log(html);
 					//某一层的 循环查找插入  那么久插入
-					$('#upLocId').append(html);
+					$('#parentLocId').append(html);
 					/*$('#upRegionId option').each(function() {
 						var id = $(this).val();
 						if (id == up) {
@@ -194,7 +194,7 @@ function loadUpRegionList(curUpId) {
 						}
 					});*/
 				});
-				$("#upLocId").attr("disabled","disabled");
+				$("#parentLocId").attr("disabled","disabled");
 				
 
 			}

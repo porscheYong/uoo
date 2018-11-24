@@ -91,7 +91,7 @@
               <span class="name">用户信息</span>
                 </div>
                 <div class="board-content" id="userInfo" style="overflow-x: hidden">
-                    <div class="col-md-2 fleft tcenter">
+                    <!-- <div class="col-md-2 fleft tcenter">
                         <img class="avatar" src="/images/avatar.png" alt="头像"/>
                     </div>
                     <div class="col-md-10 fleft Col8">
@@ -136,7 +136,7 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
-                    <a class="icon icon-edit" style="vertical-align: top;" onclick="editUser()"></a>
+                    <a class="icon icon-edit" style="vertical-align: top;" ></a> -->
                 </div>
             </div>
 
@@ -339,7 +339,7 @@
                               <span class="Tag">职员</span
                               ><span class="Tag">设计师</span
                                 ><span class="Tag">项目经理</span
-                                ><span class="Tag">平台管理员</span
+                                ><span class="Tag">平台管理员</span>
                                 </li>
                             </ul>
                             <ul class="col-md-6 line_30">
@@ -541,88 +541,91 @@
 
 <!--用户信息-->
 <script id="userTemplate" type="text/x-handlebars-template">
-    <div class="board-content" id="baseInfo">
         <div class="col-md-2 fleft tcenter">
-            <img class="avatar" src="/images/avatar.png" alt="头像"/>
+            <img class="avatar" src="{{image}}" alt="头像"/>
         </div>
         <div class="col-md-10 fleft Col8">
-            <strong class="Font24 Black">张庆忠</strong>
+            <strong class="Font24 Black">{{psnName}}</strong>
             <span class="key-words">
-                        <span>男</span
-                        ><span id="marriage">未婚</span
-            ><span>共产党员</span
-            ><span id="nation">汉族</span
-            ><span>浙江杭州</span>
+                        <span>{{gender}}</span
+                        ><span id="marriage">{{marriage}}</span
+            ><span>{{pliticalStatus}}</span
+            ><span id="nation">{{nation}}</span
+            ><span>{{nationality}}</span>
                     </span>
             <div style="padding-top: 10px">
                 <ul class="col-md-6 line_30">
-                    <li><span class="Icon fleft"></span>189-0500-1234 &nbsp; 186-9572-3456</li>
-                    <li><span class="Icon fleft"></span><a href="mailto:18905001234@189.cn">18905001234@189.cn</a>
+                    <li><span class="Icon fleft"></span>
+                    {{#each tbMobileVoList}}{{content}} &nbsp;{{/each}}
+                     </li>
+                    <li><span class="Icon fleft"></span>
+                    {{#each tbEamilVoList}}{{content}}  
+                    <a href="mailto:{{content}}">{{content}}</a>
+                    {{/each}}
                     </li>
                     <li><span class="Icon fleft"></span>浙江省杭州市余杭区育士路50号</li>
                 </ul>
                 <ul class="col-md-6 line_30">
                     <li>
                         <span class="Label">员工工号：</span>
-                        <span id="certNo">057120181234</span>
+                        <span id="certNo">{{psnNbr}}</span>
                     </li>
                     <li>
                         <span class="Label">人员编码：</span>
-                        057120182345
+                        {{psnCode}}
                     </li>
                     <li>
                         <span class="Label">人力编码：</span>
-                        057120182345
+                        {{ncCode}}
                     </li>
                     <li>
                         <span class="Label">身份证号码：</span>
-                        350111198902345678
+                        {{certNo}}
                     </li>
                     <li>
                         <span class="Label">首次工作时间：</span>
-                        2003-07
+                       {{toWorkTime}}
                     </li>
                 </ul>
                 <div class="clearfix"></div>
             </div>
         </div>
         <div class="clearfix"></div>
-        <a class="icon icon-edit" style="vertical-align: top;"></a>
-    </div>
+        <a class="icon icon-edit" style="vertical-align: top; " onclick="editUser()"></a>
 </script>
-
 <script id="userEditTemplate" type="text/x-handlebars-template">
     <div style="width: 100%">
         <div class="fleft Col8 FormList" style="width: 100%;">
             <ul class="fleft Col5">
                 <li>
                     <span class="Label"><span class="Red">* </span>姓名</span>
-                    <input class="Col6" type="text" value="张庆忠"/>
+                    <input class="Col6" type="text" value="{{psnName}}"/>
                 </li>
                 <li>
                     <span class="Label"><span class="Red">* </span>性别</span>
-                    <label class="Col2" for="man"><input id="man" name="sex" type="radio" checked/>男</label>
-                    <label class="Col2" for="female"><input id="female" name="sex" type="radio"/>女</label>
+                    <select class="Col6">
+                        <option {{#eq gender 1}} selected="selected" {{#eq}} >男</option>
+                        <option {{#eq gender 2}} selected="selected" {{#eq}}>女</option>
+                    </select>
                 </li>
                 <li>
                     <span class="Label"><span class="Red">* </span>证件类型</span>
                     <select class="Col6">
-                        <option>请选择</option>
-                        <option selected>身份证</option>
-                        <option>护照</option>
+                        <option {{#eq certType 1}} selected="selected" {{#eq}}>身份证</option>
+                        <option {{#eq certType 2}} selected="selected" {{#eq}}>护照</option>
                     </select>
                 </li>
                 <li>
                     <span class="Label"><span class="Red">* </span>证件号码</span>
-                    <input class="Col6" type="text" value="350111198902345678"/>
+                    <input class="Col6" type="text" value="{{certNo}}"/>
                 </li>
                 <li>
                     <span class="Label"><span class="Red">* </span>籍贯</span>
-                    <input class="Col6" type="text" value="福建龙岩"/>
+                    <input class="Col6" type="text" value="{{nationality}}"/>
                 </li>
                 <li>
                     <span class="Label">民族</span>
-                    <input class="Col6" type="text" value="汉"/>
+                    <input class="Col6" type="text" value="{{nation}}"/>
                 </li>
                 <li>
                     <span class="Label"><span class="Red">* </span>联系电话</span>
@@ -632,19 +635,19 @@
             <ul class="fleft Col5">
                 <li>
                     <span class="Label">员工工号</span>
-                    <input class="Col6" type="text" value="100005713012" disabled/>
+                    <input class="Col6" type="text" value="{{psnNbr}}" disabled/>
                 </li>
                 <li>
                     <span class="Label">人员编码</span>
-                    <input class="Col6" type="text" value="5713012" disabled/>
+                    <input class="Col6" type="text" value="{{psnCode}}" disabled/>
                 </li>
                 <li>
                     <span class="Label">人力编码</span>
-                    <input class="Col6" type="text" value="5713012" disabled/>
+                    <input class="Col6" type="text" value="{{ncCode}}" disabled/>
                 </li>
                 <li>
                     <span class="Label">首次工作时间</span>
-                    <input class="Col6" type="text" value="2003-06"/>
+                    <input class="Col6" type="text" value="{{toWorkTime}}"/>
                     <a href="#" class="Icon IconInput IconCal"></a>
                 </li>
                 <li>
@@ -680,55 +683,27 @@
         </div>
     </div>
 </script>
-<script id="userInfoTemplate" type="text/x-handlebars-template">
-    <div>
-        <div class="col-md-2 fleft tcenter">
-            <img class="avatar" src="/images/avatar.png" alt="头像"/>
-        </div>
-        <div class="col-md-10 fleft Col8">
-            <strong class="Font24 Black" id="psnName">张庆忠</strong>
-            <span class="key-words">
-                        <span>男</span
-                        ><span id="marriage">未婚</span
-            ><span>共产党员</span
-            ><span id="nation">汉族</span
-            ><span>浙江杭州</span>
-                    </span>
-            <div style="padding-top: 10px">
-                <ul class="col-md-6 line_30">
-                    <li><span class="Icon fleft"></span>189-0500-1234 &nbsp; 186-9572-3456</li>
-                    <li><span class="Icon fleft"></span><a href="mailto:18905001234@189.cn">18905001234@189.cn</a>
-                    </li>
-                    <li><span class="Icon fleft"></span>浙江省杭州市余杭区育士路50号</li>
-                </ul>
-                <ul class="col-md-6 line_30">
-                    <li>
-                        <span class="Label">员工工号：</span>
-                        <span id="certNo">057120181234</span>
-                    </li>
-                    <li>
-                        <span class="Label">人员编码：</span>
-                        057120182345
-                    </li>
-                    <li>
-                        <span class="Label">人力编码：</span>
-                        057120182345
-                    </li>
-                    <li>
-                        <span class="Label">身份证号码：</span>
-                        350111198902345678
-                    </li>
-                    <li>
-                        <span class="Label">首次工作时间：</span>
-                        2003-07
-                    </li>
-                </ul>
-                <div class="clearfix"></div>
-            </div>
-        </div>
-        <div class="clearfix"></div>
-        <a class="icon icon-edit" style="vertical-align: top;" onclick="editUser()"></a>
-    </div>
+<script id="personOrgTableTemplate" type="text/x-handlebars-template">
+        <table id="personalOrgTable">
+                    <tr class="Title">
+                        <td>序号</td>
+                        <td>组织树名称</td>
+                        <td>组织名称</td>
+                        <td>重名称谓</td>
+                        <td>专兼职</td>
+                        <td>职位</td>
+                    </tr>
+                    {{#each psonOrgVoList.records}}
+                    <tr>
+                        <td>{{orgPersonId}}</td>
+                        <td>{{orgTreeName}}</td>
+                        <td>{{orgName}}</td>
+                        <td>{{doubleName}}</td>
+                        <td>{{property}}</td>
+                        <td>{{postName}}</td>
+                    </tr>
+                    {{/each}}
+                </table>
 </script>
 <!-- jQuery -->
 <script type="text/javascript" src="/js/core/jquery.js"></script>
