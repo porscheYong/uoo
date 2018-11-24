@@ -29,7 +29,7 @@ function initOrgTypeTree () {
           chkboxType: { "Y": "", "N": "" }
       }
     };
-    $http.get('http://134.96.253.221:11100/orgType/getFullOrgTypeTree', {
+    $http.get('/orgType/getFullOrgTypeTree', {
       orgId: orgId
     }, function (data) {
         console.log(data)

@@ -4,7 +4,6 @@ var orgName = getQueryString('name');
 // 获取组织完整路径
 function getOrgExtInfo () {
     var pathArry = parent.nodeArr;
-    console.log(pathArry)
     var pathStr = '';
     for (var i = pathArry.length - 1; i >= 0; i--) {
         if (i === 0) {
@@ -17,7 +16,7 @@ function getOrgExtInfo () {
 }
 
 function getOrgList (orgId) {
-    $http.get('http://134.96.253.221:11100/org/getOrgRelPage', {
+    $http.get('/org/getOrgRelPage', {
         orgId: orgId,
         orgRootId: '1'
     }, function (data) {
@@ -28,7 +27,7 @@ function getOrgList (orgId) {
 }
 
 function getOrgPersonnerList (orgId) {
-    $http.get('http://134.96.253.221:11100/orgPersonRel/getPerOrgRelPage', {
+    $http.get('/orgPersonRel/getPerOrgRelPage', {
         orgId: orgId,
         orgRootId: '1'
     }, function (data) {
