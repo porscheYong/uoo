@@ -24,7 +24,7 @@ import java.util.List;
 public class OrgRelServiceHystrix implements OrgRelService {
 
     @Override
-    public ResponseResult<List<TreeNodeVo>> getOrgRelTree(String id, String orgRootId, String relCode, boolean isOpen,
+    public ResponseResult<List<TreeNodeVo>> getOrgRelTree(String id, String orgRootId,String orgTreeId, String relCode, boolean isOpen,
                                                           boolean isAsync, boolean isRoot){
         ResponseResult<List<TreeNodeVo>> responseResult = new ResponseResult<List<TreeNodeVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
