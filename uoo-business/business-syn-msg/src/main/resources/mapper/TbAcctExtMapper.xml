@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.message.server.dao.TbAcctExtMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.uoo.message.server.pojo.TbAcctExt">
+    <id column="ACCT_EXT_ID" jdbcType="DECIMAL" property="acctExtId" />
+    <result column="SLAVE_ACCT_ID" jdbcType="DECIMAL" property="slaveAcctId" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="CONTACT_WAY" jdbcType="VARCHAR" property="contactWay" />
+    <result column="WORK_EMAIL" jdbcType="VARCHAR" property="workEmail" />
+    <result column="CERT_TYPE" jdbcType="VARCHAR" property="certType" />
+    <result column="CERT_NO" jdbcType="VARCHAR" property="certNo" />
+    <result column="GENDER" jdbcType="VARCHAR" property="gender" />
+    <result column="NATION" jdbcType="VARCHAR" property="nation" />
+    <result column="NATIVE_PLACE" jdbcType="VARCHAR" property="nativePlace" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ACCT_EXT_ID, SLAVE_ACCT_ID, NAME, CONTACT_WAY, WORK_EMAIL, CERT_TYPE, CERT_NO, GENDER, 
+    NATION, NATIVE_PLACE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, 
+    STATUS_DATE
+  </sql>
+  
+</mapper>

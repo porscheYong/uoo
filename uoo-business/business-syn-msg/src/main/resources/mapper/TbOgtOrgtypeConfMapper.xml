@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.message.server.dao.TbOgtOrgtypeConfMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.uoo.message.server.pojo.TbOgtOrgtypeConf">
+    <result column="OGT_ORGTYPE_CONF_ID" jdbcType="DECIMAL" property="ogtOrgtypeConfId" />
+    <result column="ORG_TYPE_ID" jdbcType="DECIMAL" property="orgTypeId" />
+    <result column="ORG_TREE_ID" jdbcType="DECIMAL" property="orgTreeId" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+  </resultMap>
+</mapper>

@@ -1,17 +1,18 @@
 package cn.ffcs.uoo.message.server.dao;
 
 import cn.ffcs.uoo.message.server.pojo.TbSystemOrgTree;
+import cn.ffcs.uoo.message.server.vo.OrgTreeRuleVo;
+import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
-public interface TbSystemOrgTreeMapper {
-    int deleteByPrimaryKey(Long systemOrgTreeId);
+import java.util.List;
 
-    int insert(TbSystemOrgTree record);
+public interface TbSystemOrgTreeMapper extends BaseMapper<TbSystemOrgTree> {
+    //获取配置和规则
+    OrgTreeRuleVo getTbSystemOrgTreeAndTbSystemIndividuationRule(@Param("systemId") Long systemId);
 
-    int insertSelective(TbSystemOrgTree record);
+    //批量获取配置和规则
+    List<OrgTreeRuleVo> getTbSystemOrgTreeAndTbSystemIndividuationRules(@Param("ids") List<Long> ids);
 
-    TbSystemOrgTree selectByPrimaryKey(Long systemOrgTreeId);
-
-    int updateByPrimaryKeySelective(TbSystemOrgTree record);
-
-    int updateByPrimaryKey(TbSystemOrgTree record);
+    int test();
 }

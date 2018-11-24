@@ -10,7 +10,7 @@
 		<result column="LOC_DESC" property="locDesc" />
 		<result column="LOC_TYPE" property="locType" />
 		<result column="LOC_ABBR" property="locAbbr" />
-		<result column="UP_LOC_ID" property="upLocId" />
+		<result column="PARENT_LOC_ID" property="parentLocId" />
 
 		<result column="STATUS_CD" property="statusCd" />
 		<result column="CREATE_DATE" property="createDate" />
@@ -21,7 +21,7 @@
 	</resultMap>
 	<sql id="Base_Column_List">
 		LOC_ID, LOC_CODE, LOC_NAME, LOC_DESC, LOC_TYPE, LOC_ABBR,
-		UP_LOC_ID,
+		PARENT_LOC_ID,
 		STATUS_CD, CREATE_DATE,CREATE_USER, UPDATE_DATE,
 		UPDATE_USER, STATUS_DATE
 	</sql>
@@ -34,7 +34,7 @@
 		parameterType="java.util.HashMap">
 		SELECT
 		LOC_ID, LOC_CODE, LOC_NAME, LOC_DESC, LOC_TYPE, LOC_ABBR,
-		UP_LOC_ID,
+		PARENT_LOC_ID,
 		STATUS_CD, CREATE_DATE,CREATE_USER, UPDATE_DATE,
 		UPDATE_USER, STATUS_DATE
 		FROM
@@ -46,11 +46,11 @@
 			<if test="statusCd != null and statusCd != '' ">
 				and a.STATUS_CD = #{statusCd}
 			</if>
-			<if test="upLocId !=null and upLocId lt 1">
-				and a.UP_LOC_ID &lt; 1
+			<if test="parentLocId !=null and parentLocId lt 1">
+				and a.PARENT_LOC_ID &lt; 1
 			</if>
-			<if test="upLocId !=null and upLocId gte 1">
-				and a.UP_LOC_ID = #{upLocId}
+			<if test="parentLocId !=null and parentLocId gte 1">
+				and a.PARENT_LOC_ID = #{parentLocId}
 			</if>
 		</where>
 
@@ -62,7 +62,7 @@
 		TB_POLITICAL_LOCATION
 		WHERE
 		STATUS_CD='1000'
-		START WITH ( UP_LOC_ID IS NULL OR UP_LOC_ID &lt; 1 )
-		CONNECT BY PRIOR LOC_ID = UP_LOC_ID
+		START WITH ( PARENT_LOC_ID IS NULL OR PARENT_LOC_ID &lt; 1 )
+		CONNECT BY PRIOR LOC_ID = PARENT_LOC_ID
 	</select>
 </mapper>
