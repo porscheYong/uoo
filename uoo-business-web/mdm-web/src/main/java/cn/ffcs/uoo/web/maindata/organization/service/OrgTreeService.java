@@ -32,9 +32,9 @@ public interface OrgTreeService {
     @RequestMapping(value="/orgTree/updateOrgTree",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<String> updateOrgTree(@RequestBody OrgTree orgTree);
 
-
     @RequestMapping(value="/orgTree/getOrgTreeList",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<List<OrgTree>> getOrgTreeList(@RequestParam(value = "orgId",required = false)String orgId);
+    public ResponseResult<List<OrgTree>> getOrgTreeList(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                                        @RequestParam(value = "orgRootId",required = false)String orgRootId);
 
 
 }

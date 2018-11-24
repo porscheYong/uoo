@@ -8,7 +8,7 @@ function loadUpRegionList() {
 		dataType : 'json',
 		type : 'get',
 		success : function(tree) {
-			if (tree.state == 1) {
+			if (tree.state == 1000) {
 				$.each(tree.data, function(i, item) {
 					var up = 0;
 					var html = "";
@@ -19,7 +19,7 @@ function loadUpRegionList() {
 					up = item.pId;
 					html += " >" + item.name + "</option>"
 					//某一层的 循环查找插入  那么久插入
-					$('#upLocId').append(html);
+					$('#parentLocId').append(html);
 					/*$('#upRegionId option').each(function() {
 						var id = $(this).val();
 						if (id == up) {
@@ -57,10 +57,10 @@ function saveRegion(){
 		url:'/region/politicalLocation/addPoliticalLocation',
 		data:$('#regionForm').serialize(),
 		success:function(data){
-			if(data.state==1){
+			if(data.state==1000){
 				//在父节点增加数据啊
 				var treeObj =parent.getTree();
-				var upId=$('#upLocId').val();
+				var upId=$('#parentLocId').val();
 				var myNodes=treeObj.getNodesByParam("id",upId,null);
 				var newNodes = [{name:$('#locName').val(),id:data.data.locId,parent:false,open:false,pId:upId.id}];
 				if(myNodes.length<=0){

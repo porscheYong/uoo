@@ -42,13 +42,13 @@ public interface OrgRelMapper extends BaseMapper<OrgRel> {
 
     public List<TreeNodeVo> selectFuzzyFullOrgRelTree(@Param("orgleafId")String orgleafId,@Param("orgRootId")String orgRootId);
 
-    public List<TreeNodeVo> queryOrgTreeRoot(@Param("orgRootId")String orgRootId);
+    public List<TreeNodeVo> queryOrgTreeRoot(@Param("orgTreeId")String orgTreeId,@Param("orgRootId")String orgRootId);
 
-    public List<TreeNodeVo> queryOrgTreeChilden(@Param("orgRootId")String orgRootId,@Param("pid")String pid);
+    public List<TreeNodeVo> queryOrgTreeChilden(@Param("orgTreeId")String orgTreeId,@Param("pid")String pid);
 
-    public List<TreeNodeVo> isLeaf(@Param("orgRootId")String orgRootId,@Param("pid")String pid);
+    public List<TreeNodeVo> isLeaf(@Param("orgTreeId")String orgTreeId,@Param("pid")String pid);
 
-    public int leafCount(@Param("orgRootId")String orgRootId,@Param("pid")String pid);
+    public int leafCount(@Param("orgTreeId")String orgTreeId,@Param("pid")String pid);
 
     public List<OrgRefTypeVo> getOrgRelType(@Param("org")Org org);
 

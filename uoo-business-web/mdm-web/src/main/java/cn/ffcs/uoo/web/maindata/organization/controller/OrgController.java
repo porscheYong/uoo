@@ -25,7 +25,6 @@ import java.util.List;
  * @since 2018-09-25
  */
 @RestController
-@Api(value = "组织相关操作", description = "组织相关操作")
 @RequestMapping(value = "/org")
 public class OrgController {
 
@@ -54,8 +53,9 @@ public class OrgController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getOrg", method = RequestMethod.GET)
-    public ResponseResult getOrg(@RequestParam(value = "orgId",required = false) String orgId) {
-        return orgService.getOrg(orgId);
+    public ResponseResult getOrg(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                 @RequestParam(value = "orgId",required = false) String orgId) {
+        return orgService.getOrg(orgTreeId,orgId);
     }
 
 
@@ -64,10 +64,11 @@ public class OrgController {
     })
     @RequestMapping(value = "/getOrgRelPage", method = RequestMethod.GET)
     public ResponseResult getOrgRelPage(@RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                        @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                         @RequestParam(value = "orgId",required = false)String orgId,
                                         @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                         @RequestParam(value = "pageNo",required = false)Integer pageNo) {
-        return orgService.getOrgRelPage(orgRootId,orgId,pageSize,pageNo);
+        return orgService.getOrgRelPage(orgRootId,orgTreeId,orgId,pageSize,pageNo);
     }
 
 
@@ -86,9 +87,10 @@ public class OrgController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getOrgExtByOrgId", method = RequestMethod.GET)
-    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@RequestParam(value = "orgRootId",required = false)String orgRootId ,
+    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@RequestParam(value = "orgTreeId",required = false)String orgTreeId ,
+                                                                   @RequestParam(value = "orgRootId",required = false)String orgRootId ,
                                                                    @RequestParam(value = "orgId",required = false) String orgId){
-        return orgService.getOrgExtByOrgId(orgRootId,orgId);
+        return orgService.getOrgExtByOrgId(orgTreeId,orgRootId,orgId);
     }
 
 }

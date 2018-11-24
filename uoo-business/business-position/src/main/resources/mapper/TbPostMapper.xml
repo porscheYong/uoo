@@ -121,4 +121,10 @@
         AND P.POST_ID = R.POST_ID
         AND R.ORG_ID = #{orgId}
     </select>
+
+    <select id="getAllPostNodeVo" resultType="PostNodeVo">
+        SELECT P.POST_ID, P.PARENT_POST_ID, P.POST_NAME, P.POST_TYPE
+          FROM TB_POST P
+        WHERE P.STATUS_CD = '1000'
+    </select>
 </mapper>

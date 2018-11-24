@@ -26,6 +26,7 @@ public interface OrgRelService {
    @RequestMapping(value="/orgRel/getOrgRelTree",method = RequestMethod.GET)
    public ResponseResult<List<TreeNodeVo>> getOrgRelTree(@RequestParam(value = "id",required = false)String id,
                                                          @RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                         @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                          @RequestParam(value = "relCode",required = false)String relCode,
                                                          @RequestParam(value = "isOpen",required = false)boolean isOpen,
                                                          @RequestParam(value = "isAsync",required = false)boolean isAsync,
@@ -33,12 +34,14 @@ public interface OrgRelService {
 
    @RequestMapping(value="/orgRel/getRestructOrgRelTree",method = RequestMethod.GET)
    public ResponseResult<List<TreeNodeVo>> getRestructOrgRelTree(@RequestParam(value = "id",required = false)String id,
+                                                                 @PathVariable(value = "orgTreeId",required = false)String orgTreeId,
                                                                  @RequestParam(value = "orgRootId",required = false)String orgRootId,
                                                                  @RequestParam(value = "isFull",required = false)boolean isFull);
 
 
    @RequestMapping(value="/orgRel/getTarOrgRelTreeAndLv",method = RequestMethod.GET,headers={"Content-Type=application/json"})
    public ResponseResult<List<TreeNodeVo>> getTarOrgRelTreeAndLv(@RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                                 @PathVariable(value = "orgTreeId",required = false)String orgTreeId,
                                                                  @RequestParam(value = "lv",required = false)String lv,
                                                                  @RequestParam(value = "curOrgid",required = false)String curOrgid,
                                                                  @RequestParam(value = "isFull",required = false)boolean isFull);
@@ -49,6 +52,7 @@ public interface OrgRelService {
    @RequestMapping(value="/orgRel/getFuzzyOrgRelPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
    public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(@RequestParam(value = "search",required = false)String search,
                                                          @RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                         @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                          @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                          @RequestParam(value = "pageNo",required = false)Integer pageNo);
 

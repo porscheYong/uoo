@@ -28,7 +28,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/orgRelType" ,produces = {"application/json;charset=UTF-8"})
-@Api(value = "组织关系类型相关操作", description = "组织关系类型相关操作")
+@Api(value = "/orgRel", description = "组织关系相关操作")
 public class OrgRelTypeController {
 
     @Resource

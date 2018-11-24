@@ -21,7 +21,6 @@ public class TreeNodeVo {
     private String level;
     private String checked;
 
-
     public String getChecked() {
         return checked;
     }

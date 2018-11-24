@@ -68,15 +68,15 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
 
 
     @Override
-    public List<TreeNodeVo> queryOrgTree(String orgRootId, String refCode, String pid, boolean isRoot){
+    public List<TreeNodeVo> queryOrgTree(String orgTreeId, String orgRootId, String refCode, String pid, boolean isRoot){
         List<TreeNodeVo> volist = new ArrayList<>();
         if(StrUtil.isNullOrEmpty(pid)){
-            volist = orgRelMapper.queryOrgTreeRoot(orgRootId);
+            volist = orgRelMapper.queryOrgTreeRoot(orgTreeId,orgRootId);
         }else{
-            volist = orgRelMapper.queryOrgTreeChilden(orgRootId,pid);
+            volist = orgRelMapper.queryOrgTreeChilden(orgTreeId,pid);
         }
         for(TreeNodeVo vo : volist){
-            isLeaf(vo,orgRootId);
+            isLeaf(vo,orgTreeId);
         }
         return volist;
     }
@@ -86,16 +86,8 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
      * @param treeNodeVo
      * @return
      */
-    public boolean isLeaf(TreeNodeVo treeNodeVo,String orgRootId){
-//        List<TreeNodeVo> li = orgRelMapper.isLeaf(orgRootId,treeNodeVo.getId());
-//        if(li==null || li.size()<1){
-//            treeNodeVo.setParent(false);
-//            return false;
-//        }
-//        treeNodeVo.setParent(true);
-//        return true;
-
-        int count = orgRelMapper.leafCount(orgRootId,treeNodeVo.getId());
+    public boolean isLeaf(TreeNodeVo treeNodeVo,String orgTreeId){
+        int count = orgRelMapper.leafCount(orgTreeId,treeNodeVo.getId());
         if(count>0){
             treeNodeVo.setParent(true);
             return true;

@@ -25,7 +25,7 @@ public class CommonRegionDTO   {
     /**
      * 上级区域标识
      */
-    private Long upRegionId;
+    private Long parentRegionId;
 
     /**
      * 区域名称
@@ -82,12 +82,12 @@ public class CommonRegionDTO   {
         this.commonRegionId = commonRegionId;
     }
 
-    public Long getUpRegionId() {
-        return upRegionId;
+    public Long getParentRegionId() {
+        return parentRegionId;
     }
 
-    public void setUpRegionId(Long upRegionId) {
-        this.upRegionId = upRegionId;
+    public void setParentRegionId(Long parentRegionId) {
+        this.parentRegionId = parentRegionId;
     }
 
     public String getRegionName() {
@@ -172,7 +172,7 @@ public class CommonRegionDTO   {
 
     @Override
     public String toString() {
-        return "CommonRegionVO [commonRegionId=" + commonRegionId + ", upRegionId=" + upRegionId + ", regionName="
+        return "CommonRegionVO [commonRegionId=" + commonRegionId + ", parentRegionId=" + parentRegionId + ", regionName="
                 + regionName + ", regionPyName=" + regionPyName + ", regionNbr=" + regionNbr + ", regionType="
                 + regionType + ", regionDesc=" + regionDesc + ", regionLevel=" + regionLevel + ", regionSort="
                 + regionSort + ", provinceNbr=" + provinceNbr + ", cityFlag=" + cityFlag + ", polLocIds=" + polLocIds
@@ -182,7 +182,7 @@ public class CommonRegionDTO   {
     public TbCommonRegion convertEntity(){
         TbCommonRegion reg=new TbCommonRegion();
         reg.setCommonRegionId(this.getCommonRegionId());
-        reg.setUpRegionId(this.getUpRegionId());
+        reg.setParentRegionId(this.getParentRegionId());
         reg.setRegionName(this.getRegionName());
         reg.setRegionPyName(this.getRegionPyName());
         reg.setRegionNbr(this.getRegionNbr());

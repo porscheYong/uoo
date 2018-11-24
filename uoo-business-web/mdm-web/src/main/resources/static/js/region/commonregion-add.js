@@ -12,7 +12,7 @@ function loadUpRegionList() {
 		dataType : 'json',
 		type : 'get',
 		success : function(tree) {
-			if (tree.state == 1) {
+			if (tree.state == 1000) {
 				$.each(tree.data, function(i, item) {
 					var up = 0;
 					var html = "";
@@ -23,8 +23,8 @@ function loadUpRegionList() {
 					up = item.pId;
 					html += " >" + item.name + "</option>"
 					//某一层的 循环查找插入  那么久插入
-					$('#upRegionId').append(html);
-					/*$('#upRegionId option').each(function() {
+					$('#parentRegionId').append(html);
+					/*$('#parentRegionId option').each(function() {
 						var id = $(this).val();
 						if (id == up) {
 							$(this).after(html);
@@ -53,7 +53,7 @@ function initLocTree(){
 		dataType:'json',
 		type:'get',
 		success:function(data){
-			if(data.state==1){
+			if(data.state==1000){
 				
 				console.log(data.data);
 				$.fn.zTree.init($("#locTree"), setting,data.data);
@@ -87,10 +87,10 @@ function saveRegion(){
 		url:'/region/commonRegion/addCommonRegion',
 		data:$('#regionForm').serialize(),
 		success:function(data){
-			if(data.state==1){
+			if(data.state==1000){
 				//在父节点增加数据啊
 				var treeObj =parent.getTree();
-				var upId=$('#upRegionId').val();
+				var upId=$('#parentRegionId').val();
 				var myNodes=treeObj.getNodesByParam("id",upId,null);
 				var newNodes = [{name:$('#regionName').val(),id:data.data.commonRegionId,parent:false,open:false,pId:upId.id}];
 				if(myNodes.length<=0){

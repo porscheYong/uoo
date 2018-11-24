@@ -33,12 +33,14 @@ public interface OrgService{
     public ResponseResult<Void> updateOrg(@RequestBody OrgVo org);
 
     @RequestMapping(value="/org/getOrg",method = RequestMethod.GET)
-    public ResponseResult<OrgVo> getOrg(@RequestParam(value = "orgId",required = false) String orgId);
+    public ResponseResult<OrgVo> getOrg(@RequestParam(value = "orgId",required = false) String orgId,
+                                        @RequestParam(value = "orgTreeId",required = false) String orgTreeId);
 
 
 
     @RequestMapping(value="/org/getOrgRelPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
     public ResponseResult<Page<OrgVo>> getOrgRelPage(@RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                     @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                      @RequestParam(value = "orgId",required = false)String orgId,
                                                      @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                      @RequestParam(value = "pageNo",required = false)Integer pageNo);
@@ -49,7 +51,8 @@ public interface OrgService{
                                                   @RequestParam(value = "pageNo",required = false)Integer pageNo);
 
     @RequestMapping(value = "/org/getOrgExtByOrgId", method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@RequestParam(value = "orgRootId",required = false)String orgRootId ,
+    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                                                   @RequestParam(value = "orgRootId",required = false)String orgRootId ,
                                                                    @RequestParam(value = "orgId",required = false) String orgId);
 
 }

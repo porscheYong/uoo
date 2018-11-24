@@ -1,16 +1,17 @@
 package cn.ffcs.uoo.web.maindata.organization.dto;
 
-import com.baomidou.mybatisplus.activerecord.Model;
+import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
-
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author ffcs-gzb
@@ -44,8 +45,8 @@ public class OrgRelType extends Model<OrgRelType> {
     /**
      * 上级关系类型标识
      */
-    @TableField("PARENT_ORG_REL_TYPE_ID")
-    private Long parentOrgRelTypeId;
+    @TableField("PARENT_REF_CODE")
+    private String parentRefCode;
     /**
      * 状态
      */
@@ -110,13 +111,6 @@ public class OrgRelType extends Model<OrgRelType> {
         this.refCode = refCode;
     }
 
-    public Long getParentOrgRelTypeId() {
-        return parentOrgRelTypeId;
-    }
-
-    public void setParentOrgRelTypeId(Long parentOrgRelTypeId) {
-        this.parentOrgRelTypeId = parentOrgRelTypeId;
-    }
 
     public String getStatusCd() {
         return statusCd;
@@ -174,17 +168,17 @@ public class OrgRelType extends Model<OrgRelType> {
     @Override
     public String toString() {
         return "OrgRelType{" +
-        ", orgRelTypeId=" + orgRelTypeId +
-        ", refDesc=" + refDesc +
-        ", refName=" + refName +
-        ", refCode=" + refCode +
-        ", parentOrgRelTypeId=" + parentOrgRelTypeId +
-        ", statusCd=" + statusCd +
-        ", createDate=" + createDate +
-        ", createUser=" + createUser +
-        ", updateDate=" + updateDate +
-        ", updateUser=" + updateUser +
-        ", statusDate=" + statusDate +
-        "}";
+                ", orgRelTypeId=" + orgRelTypeId +
+                ", refDesc=" + refDesc +
+                ", refName=" + refName +
+                ", refCode=" + refCode +
+                ", parentRefCode=" + parentRefCode +
+                ", statusCd=" + statusCd +
+                ", createDate=" + createDate +
+                ", createUser=" + createUser +
+                ", updateDate=" + updateDate +
+                ", updateUser=" + updateUser +
+                ", statusDate=" + statusDate +
+                "}";
     }
 }

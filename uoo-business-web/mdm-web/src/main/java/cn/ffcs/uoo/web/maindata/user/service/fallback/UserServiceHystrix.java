@@ -24,9 +24,4 @@ public class UserServiceHystrix implements UserService {
     public Object addUser(String userType, Long personnelId) {
         return null;
     }
-
-    @Override
-    public Object getAcctOrgByPsnId(Long personnelId) {
-        return null;
-    }
 }

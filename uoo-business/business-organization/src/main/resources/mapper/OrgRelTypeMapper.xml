@@ -8,7 +8,7 @@
         <result column="REF_DESC" property="refDesc" />
         <result column="REF_NAME" property="refName" />
         <result column="REF_CODE" property="refCode" />
-        <result column="PARENT_ORG_REL_TYPE_ID" property="parentOrgRelTypeId" />
+        <result column="PARENT_REF_CODE" property="parentRefCode" />
         <result column="STATUS_CD" property="statusCd" />
         <result column="CREATE_DATE" property="createDate" />
         <result column="CREATE_USER" property="createUser" />
@@ -19,7 +19,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ORG_REL_TYPE_ID, REF_DESC, REF_NAME, REF_CODE, PARENT_ORG_REL_TYPE_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        ORG_REL_TYPE_ID, REF_DESC, REF_NAME, REF_CODE, PARENT_REF_CODE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
     <select id="getId" resultType="java.lang.Long">

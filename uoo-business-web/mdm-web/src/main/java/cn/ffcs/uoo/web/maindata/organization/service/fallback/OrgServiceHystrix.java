@@ -41,7 +41,7 @@ public class OrgServiceHystrix implements OrgService {
     }
 
     @Override
-    public ResponseResult<OrgVo> getOrg(String orgId){
+    public ResponseResult<OrgVo> getOrg(String orgTreeId,String orgId){
         ResponseResult<OrgVo> responseResult = new ResponseResult<OrgVo>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
@@ -51,6 +51,7 @@ public class OrgServiceHystrix implements OrgService {
 
     @Override
     public ResponseResult<Page<OrgVo>> getOrgRelPage(String orgRootId,
+                                                     String orgTreeId,
                                                      String orgId,
                                                      Integer pageSize,
                                                      Integer pageNo){
@@ -72,7 +73,7 @@ public class OrgServiceHystrix implements OrgService {
 
 
     @Override
-    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(String orgRootId,String orgId){
+    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(String orgTreeId, String orgRootId,String orgId){
         ResponseResult<HashMap<String,String>> responseResult = new ResponseResult<HashMap<String,String>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

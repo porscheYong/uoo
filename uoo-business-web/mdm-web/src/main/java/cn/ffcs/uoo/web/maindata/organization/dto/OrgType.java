@@ -1,16 +1,17 @@
 package cn.ffcs.uoo.web.maindata.organization.dto;
 
-import com.baomidou.mybatisplus.activerecord.Model;
+import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
-
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author ffcs-gzb
@@ -44,8 +45,8 @@ public class OrgType extends Model<OrgType> {
     /**
      * 上级组织类别标识
      */
-    @TableField("SUP_PK_ORG_TYPE")
-    private Long supPkOrgType;
+    @TableField("PARENT_ORG_TYPE_ID")
+    private Long parentOrgTypeId;
     /**
      * 状态
      */
@@ -110,12 +111,13 @@ public class OrgType extends Model<OrgType> {
         this.orgTypeDesc = orgTypeDesc;
     }
 
-    public Long getSupPkOrgType() {
-        return supPkOrgType;
+
+    public Long getParentOrgTypeId() {
+        return parentOrgTypeId;
     }
 
-    public void setSupPkOrgType(Long supPkOrgType) {
-        this.supPkOrgType = supPkOrgType;
+    public void setParentOrgTypeId(Long parentOrgTypeId) {
+        this.parentOrgTypeId = parentOrgTypeId;
     }
 
     public String getStatusCd() {
@@ -174,17 +176,17 @@ public class OrgType extends Model<OrgType> {
     @Override
     public String toString() {
         return "OrgType{" +
-        ", orgTypeId=" + orgTypeId +
-        ", orgTypeCode=" + orgTypeCode +
-        ", orgTypeName=" + orgTypeName +
-        ", orgTypeDesc=" + orgTypeDesc +
-        ", supPkOrgType=" + supPkOrgType +
-        ", statusCd=" + statusCd +
-        ", createDate=" + createDate +
-        ", createUser=" + createUser +
-        ", updateDate=" + updateDate +
-        ", updateUser=" + updateUser +
-        ", statusDate=" + statusDate +
-        "}";
+                ", orgTypeId=" + orgTypeId +
+                ", orgTypeCode=" + orgTypeCode +
+                ", orgTypeName=" + orgTypeName +
+                ", orgTypeDesc=" + orgTypeDesc +
+                ", parentOrgTypeId=" + parentOrgTypeId +
+                ", statusCd=" + statusCd +
+                ", createDate=" + createDate +
+                ", createUser=" + createUser +
+                ", updateDate=" + updateDate +
+                ", updateUser=" + updateUser +
+                ", statusDate=" + statusDate +
+                "}";
     }
 }

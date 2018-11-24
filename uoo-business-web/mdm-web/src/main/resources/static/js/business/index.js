@@ -46,22 +46,6 @@ function refreshResult () {
     $('#businessFrame').attr("src",url);
 }
 
-function initOrgRelTree () {
-    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTree', {
-        orgRootId: '1'
-    }, function (data) {
-        console.log(data)
-        $.fn.zTree.init($("#standardTree"), setting, data);
-        var zTree = $.fn.zTree.getZTreeObj("standardTree");
-        var nodes = zTree.getNodes();
-        zTree.expandNode(nodes[0], true);
-        zTree.selectNode(nodes[0], true);
-        onNodeClick(null, null, nodes[0]);
-    }, function (err) {
-        console.log(err)
-    })
-}
-
 // 根据组织ID展开并选中组织
 function openTreeById (sId, id) {
   var tId = 'standardTree_' + id;
@@ -78,7 +62,7 @@ function openTreeById (sId, id) {
 
 // 初始化业务组织列表
 function initBusinessList () {
-    $http.get('http://134.96.253.221:11100/orgTree/getOrgTreeList', {}, function (data) {
+    $http.get('/orgTree/getOrgTreeList', {}, function (data) {
         var option = '';
         for (var i = 0; i < data.length; i++) {
             var select = i === 0? 'selected' : '';
@@ -104,7 +88,7 @@ function initTree (businessId) {
     var setting = {
         async: {
             enable: true,
-            url: "http://134.96.253.221:11100/orgRel/getOrgRelTree?orgRootId=" + businessId,
+            url: "/orgRel/getOrgRelTree?orgRootId=" + businessId + "&orgTreeId" + businessId,
             autoParam: ["id"],
             type: "get",
             dataFilter: filter
@@ -129,8 +113,9 @@ function initTree (businessId) {
             onClick: onNodeClick
         }
     };
-    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTree', {
-        orgRootId: businessId
+    $http.get('/orgRel/getOrgRelTree', {
+        orgRootId: businessId,
+        orgTreeId: businessId
     }, function (data) {
         $.fn.zTree.init($("#businessTree"), setting, data);
         var zTree = $.fn.zTree.getZTreeObj("businessTree");

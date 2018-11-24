@@ -27,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/orgTree")
-@Api(value = "组织树相关操作", description = "组织树相关操作")
+@Api(value = "/org", description = "组织树相关操作")
 public class OrgTreeController {
 
 
@@ -51,12 +51,16 @@ public class OrgTreeController {
         return orgTreeService.updateOrgTree(orgTree);
     }
 
-    @ApiOperation(value = "查询组织树列表-web", notes = "查询组织树列表")
+
+    @ApiOperation(value = "获取组织树", notes = "获取组织树")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getOrgTreeList",method = RequestMethod.GET)
-    public ResponseResult<List<OrgTree>> getOrgTreeList(@RequestParam(value = "orgId",required = false)String orgId){
-        return orgTreeService.getOrgTreeList(orgId);
+    @RequestMapping(value = "/getOrgTreeList", method = RequestMethod.GET)
+    public ResponseResult<List<OrgTree>> getOrgTreeList(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                                        @RequestParam(value = "orgRootId",required = false)String orgRootId){
+        return orgTreeService.getOrgTreeList(orgTreeId,orgRootId);
     }
+
+
 }
 

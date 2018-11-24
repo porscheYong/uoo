@@ -808,6 +808,13 @@ ul.tab-title.right li {
 .board-content {
     padding: 10px 10px 30px 10px;
     }
+
+.second-title .name {
+    font: bold 15px/22px microsoft yahei,helvetia,pingfang sc,Arial,Tahoma;
+    padding: 0 15px 0 20px;
+    /*float: left;*/
+    color: #232c45
+}
 .icon {
     width: 24px;
     height: 24px;

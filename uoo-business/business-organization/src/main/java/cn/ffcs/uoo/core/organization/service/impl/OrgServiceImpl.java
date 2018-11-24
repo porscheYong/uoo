@@ -135,16 +135,21 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
 //                    orgTypeSplit +=ot.getOrgTypeName()+",";
 //                }
 //            }
-//            if(!StrUtil.isNullOrEmpty(orgTypeSplit)){
-//                orgTypeSplit = orgTypeSplit.substring(0,orgTypeSplit.length()-1);
-//            }
+//            orgTypeSplit = orgTypeSplit.substring(0,orgTypeSplit.length()-1);
 //            o.setOrgTypeSplit(orgTypeSplit);
+//            //o.setOrgTypeList(orgTypeList);
 //        }
         page.setRecords(orgVolist);
         return page;
     }
     @Override
     public String JudgeOrgParams(OrgVo org){
+        if(StrUtil.isNullOrEmpty(org.getStatusCd())){
+            return "组织状态不能为空";
+        }
+        if(StrUtil.isNullOrEmpty(org.getOrgTreeId())){
+            return "组织树标识不能为空";
+        }
         if(org.getOrgTypeList() == null || org.getOrgTypeList().size() < 0){
             return "组织类别不能为空";
         }

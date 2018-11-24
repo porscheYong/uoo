@@ -45,8 +45,8 @@ public class OrgRelType extends Model<OrgRelType> {
     /**
      * 上级关系类型标识
      */
-    @TableField("PARENT_ORG_REL_TYPE_ID")
-    private Long parentOrgRelTypeId;
+    @TableField("PARENT_REF_CODE")
+    private String parentRefCode;
     /**
      * 状态
      */
@@ -111,13 +111,6 @@ public class OrgRelType extends Model<OrgRelType> {
         this.refCode = refCode;
     }
 
-    public Long getParentOrgRelTypeId() {
-        return parentOrgRelTypeId;
-    }
-
-    public void setParentOrgRelTypeId(Long parentOrgRelTypeId) {
-        this.parentOrgRelTypeId = parentOrgRelTypeId;
-    }
 
     public String getStatusCd() {
         return statusCd;
@@ -179,7 +172,7 @@ public class OrgRelType extends Model<OrgRelType> {
         ", refDesc=" + refDesc +
         ", refName=" + refName +
         ", refCode=" + refCode +
-        ", parentOrgRelTypeId=" + parentOrgRelTypeId +
+        ", parentRefCode=" + parentRefCode +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
         ", createUser=" + createUser +
