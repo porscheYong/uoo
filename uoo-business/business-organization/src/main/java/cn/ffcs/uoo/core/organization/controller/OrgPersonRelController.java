@@ -246,7 +246,7 @@ public class OrgPersonRelController extends BaseController {
     @UooLog(value = "查询人员组织信息列表",key = "getPerOrgRelList")
     @RequestMapping(value = "/getPerOrgRelList",method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(Integer perSonId){
+    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(String perSonId){
         ResponseResult<List<PsonOrgVo>> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(perSonId)){
             ret.setMessage("人员标识不能为空");
@@ -277,7 +277,7 @@ public class OrgPersonRelController extends BaseController {
     public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(String orgId,
                                                             String orgTreeId,
                                                             String orgRootId,
-                                                            Integer personId,
+                                                            String personId,
                                                             String search,
                                                             Integer pageSize,
                                                             Integer pageNo
@@ -357,7 +357,7 @@ public class OrgPersonRelController extends BaseController {
     @UooLog(value = "查询用户",key = "getUserOrgRelPage")
     @RequestMapping(value = "/getUserOrgRelPage",method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(Integer orgId,
+    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(String orgId,
                                                              String search,
                                                              Integer pageSize,
                                                              Integer pageNo
@@ -369,7 +369,7 @@ public class OrgPersonRelController extends BaseController {
             return ret;
         }
         PsonOrgVo psonOrgVo = new PsonOrgVo();
-        psonOrgVo.setOrgId(orgId.longValue());
+        psonOrgVo.setOrgId(new Long(orgId));
         if(!StrUtil.isNullOrEmpty(search)){
             psonOrgVo.setSearch(search);
         }
