@@ -5,6 +5,7 @@ package cn.ffcs.uoo.web.maindata.organization.dto;/**
  */
 
 
+
 /**
  * <p>
  *
@@ -23,6 +24,10 @@ public class PsonOrgVo extends BaseVo {
     private Long orgContactRelId;
 
 /************************组织**************************/
+    /**
+     * 组织树根节点
+     */
+    private Long orgTreeId;
     /**
      * 组织根节点
      */
@@ -83,7 +88,7 @@ public class PsonOrgVo extends BaseVo {
     /**
      * 用户标识
      */
-    private Long personId;
+    private Long personnelId;
 
     /**
      * 人员姓名
@@ -122,11 +127,13 @@ public class PsonOrgVo extends BaseVo {
     private String userId;
 
     /**
-     * 账号
+     * 账号或者从账号
      */
     private String acct;
-
     /********************人员相关********************/
+    /**
+     * 组织账号或者从账号标识
+     */
     private String accId;
     /**
      * 账号类型 1 主账号 2 从账号
@@ -136,6 +143,7 @@ public class PsonOrgVo extends BaseVo {
      * 账号类型 主账号 从账号
      */
     private String typeName;
+
     /******************* 搜索相关********************/
 
     /**
@@ -143,6 +151,13 @@ public class PsonOrgVo extends BaseVo {
      */
     private String search;
 
+    public Long getOrgTreeId() {
+        return orgTreeId;
+    }
+
+    public void setOrgTreeId(Long orgTreeId) {
+        this.orgTreeId = orgTreeId;
+    }
 
     public String getAccId() {
         return accId;
@@ -288,12 +303,12 @@ public class PsonOrgVo extends BaseVo {
         this.postName = postName;
     }
 
-    public Long getPersonId() {
-        return personId;
+    public Long getPersonnelId() {
+        return personnelId;
     }
 
-    public void setPersonId(Long personId) {
-        this.personId = personId;
+    public void setPersonnelId(Long personnelId) {
+        this.personnelId = personnelId;
     }
 
     public String getDoubleName() {
