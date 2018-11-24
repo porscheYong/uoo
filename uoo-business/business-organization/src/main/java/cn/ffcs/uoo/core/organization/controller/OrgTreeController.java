@@ -65,12 +65,11 @@ public class OrgTreeController extends BaseController {
     @Autowired
     private OrgOrgtreeRelService orgOrgtreeRelService;
 
-<<<<<<< HEAD
+
     @Autowired
     private OrgRelTypeService orgRelTypeService;
 
-=======
->>>>>>> 191bc73cdae51fe1bf46616ca6f3445957d2bcf6
+
 
     @ApiOperation(value = "新增组织树信息-web", notes = "新增组织树信息")
 //    @ApiImplicitParams({
@@ -78,7 +77,6 @@ public class OrgTreeController extends BaseController {
 //    })
     @UooLog(value = "新增组织树信息",key = "addOrgTree")
     @RequestMapping(value = "/addOrgTree",method = RequestMethod.POST)
-    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<String> addOrgTree(OrgTree orgTree){
         ResponseResult<String> ret = new ResponseResult<>();
         String msg = orgTreeService.judgeOrgTreeParams(orgTree);
@@ -93,7 +91,6 @@ public class OrgTreeController extends BaseController {
 
         //组织节点
         List<TreeNodeVo> treeNodeList = orgTree.getTreeNodeList();
-<<<<<<< HEAD
 
         Wrapper orgReltypeConfWrapper = Condition.create()
                 .eq("ORG_REL_TYPE_ID",orgRelTypeList.get(0).getOrgRelTypeId())
@@ -104,9 +101,6 @@ public class OrgTreeController extends BaseController {
             ret.setState(ResponseResult.PARAMETER_ERROR);
             return ret;
         }
-
-=======
->>>>>>> 191bc73cdae51fe1bf46616ca6f3445957d2bcf6
         Long orgId = orgService.getId();
         Org org = new Org();
         org.setOrgId(orgId);

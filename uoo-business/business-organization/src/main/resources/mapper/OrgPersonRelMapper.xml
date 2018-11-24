@@ -180,7 +180,7 @@
         AND CTA.FIRST_FLAG=1 AND CTA.CONTACT_TYPE=1
         ) AB where 1=1
         <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
-        AND PsnName like '%'||#{psonOrgVo.search}||'%'
+            AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR PSNCODE LIKE '%'||#{psonOrgVo.search}||'%' OR MOBILE LIKE '%'||#{psonOrgVo.search}||'%' OR ORGNAME LIKE '%'||#{psonOrgVo.search}||'%')
         </if>
         )
 
