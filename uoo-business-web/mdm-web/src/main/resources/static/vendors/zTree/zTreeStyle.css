@@ -261,13 +261,13 @@ ul.ztree.zTreeDragUL {margin:0; padding:0; position:absolute; width:auto; height
 .ztree li span.button.chk.radio_true_full:before,
 .ztree li span.button.chk.radio_true_disable:before,
 .ztree li span.button.chk.radio_true_full_focus:before {
-    content: "\f05d";
+    content: "\f046";
 }
 
 .ztree li span.button.chk.radio_false_full:before,
 .ztree li span.button.chk.radio_false_disable:before,
 .ztree li span.button.chk.radio_false_full_focus:before {
-    content: "\f10c";
+    content: "\f096";
 }
 
 .ztree li span.button.chk.radio_true_part:before,
