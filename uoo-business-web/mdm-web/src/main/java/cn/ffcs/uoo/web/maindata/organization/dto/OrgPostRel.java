@@ -1,12 +1,12 @@
 package cn.ffcs.uoo.web.maindata.organization.dto;
-
-import com.baomidou.mybatisplus.activerecord.Model;
+import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
-
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * <p>
@@ -147,17 +147,17 @@ public class OrgPostRel extends Model<OrgPostRel> {
     @Override
     public String toString() {
         return "OrgPostRel{" +
-        ", orgPostId=" + orgPostId +
-        ", postId=" + postId +
-        ", orgId=" + orgId +
-        ", effDate=" + effDate +
-        ", expDate=" + expDate +
-        ", statusCd=" + statusCd +
-        ", createDate=" + createDate +
-        ", createUser=" + createUser +
-        ", updateDate=" + updateDate +
-        ", updateUser=" + updateUser +
-        ", statusDate=" + statusDate +
-        "}";
+                ", orgPostId=" + orgPostId +
+                ", postId=" + postId +
+                ", orgId=" + orgId +
+                ", effDate=" + effDate +
+                ", expDate=" + expDate +
+                ", statusCd=" + statusCd +
+                ", createDate=" + createDate +
+                ", createUser=" + createUser +
+                ", updateDate=" + updateDate +
+                ", updateUser=" + updateUser +
+                ", statusDate=" + statusDate +
+                "}";
     }
 }
