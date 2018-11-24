@@ -1,17 +1,20 @@
 package cn.ffcs.uoo.web.maindata.organization.dto;
 
-import com.baomidou.mybatisplus.activerecord.Model;
+import java.util.Date;
+
+
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
-
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author ffcs-gzb
@@ -99,6 +102,20 @@ public class OrgTree extends Model<OrgTree> {
     @TableField(exist=false)
     private List<String> userTypeList;
 
+    /**
+     * 现有组织树
+     */
+    @TableField(exist=false)
+    private List<TreeNodeVo> treeNodeList;
+
+
+    public List<TreeNodeVo> getTreeNodeList() {
+        return treeNodeList;
+    }
+
+    public void setTreeNodeList(List<TreeNodeVo> treeNodeList) {
+        this.treeNodeList = treeNodeList;
+    }
 
     public List<String> getUserTypeList() {
         return userTypeList;
@@ -220,17 +237,17 @@ public class OrgTree extends Model<OrgTree> {
     @Override
     public String toString() {
         return "OrgTree{" +
-        ", orgTreeId=" + orgTreeId +
-        ", orgTreeName=" + orgTreeName +
-        ", orgTreeType=" + orgTreeType +
-        ", orgId=" + orgId +
-        ", sort=" + sort +
-        ", statusCd=" + statusCd +
-        ", createDate=" + createDate +
-        ", createUser=" + createUser +
-        ", updateDate=" + updateDate +
-        ", updateUser=" + updateUser +
-        ", statusDate=" + statusDate +
-        "}";
+                ", orgTreeId=" + orgTreeId +
+                ", orgTreeName=" + orgTreeName +
+                ", orgTreeType=" + orgTreeType +
+                ", orgId=" + orgId +
+                ", sort=" + sort +
+                ", statusCd=" + statusCd +
+                ", createDate=" + createDate +
+                ", createUser=" + createUser +
+                ", updateDate=" + updateDate +
+                ", updateUser=" + updateUser +
+                ", statusDate=" + statusDate +
+                "}";
     }
 }
