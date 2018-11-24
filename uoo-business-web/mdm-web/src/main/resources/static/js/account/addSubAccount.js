@@ -1,5 +1,3 @@
-// var baseUrl = '134.96.253.221:18000';
-// var baseUrl = '192.168.58.112:18000';
 var acctId = getQueryString('acctId');
 var userType = getQueryString('userType');
 var statusCd = getQueryString('statusCd');
@@ -13,13 +11,22 @@ var acctHostId = 0;
 var slaveOrgList = [];
 var slaveAcctId;
 var acctExtId = null;
+var isChecked = 0;
 
 $('#sub-title').html(title);
 $('#cerType').get(0).selectedIndex=0;  //判断证件类型
 $('#accTypeTel').get(0).selectedIndex=0;  //判断账号类型
 initAcctOrgTable("");
 
-if(statusCd == '1000'){                //判断状态
+laydate.render({
+    elem: '#effectDate' //指定元素
+  }); 
+
+laydate.render({
+    elem: '#invalidDate' //指定元素
+  }); 
+
+if(statusCd == "1000"){                //判断状态
     $('#statusCd').get(0).selectedIndex=0;
   }else{
     $('#statusCd').get(0).selectedIndex=1;
@@ -44,7 +51,7 @@ function getSubUser(acctId,userType) {       //查看并编辑从账号
     })
 }
 
-function getUserInfo(){         //新增时初始化人员信息
+function getUserInfo(){         //新增从账号
     $http.get('/user/getPsnUser', {    
         personnelId: personnelId,
         userType: userType
@@ -180,8 +187,13 @@ function initSubInfo(results){  //编辑时初始化信息
 
      //扩展信息
     if(results.tbAcctExt != null){
+        $("#extCheckBox").attr("checked",true);
+        $("#extInfo").css("border-color","#00A4FF"); 
+        $("#extCheckBox").attr("value","1");
+        isChecked = 1;
+
         $('#extCerNoTel').val(results.tbAcctExt.certNo);
-        //$('#extCerTel').val(results.tbAcctExt.certType);
+        $('#extCerTel').get(0).selectedIndex = parseInt(results.tbAcctExt.certType) - 1;
         $('#extMobileTel').val(results.tbAcctExt.contactWay);
         $('#extNameTel').val(results.tbAcctExt.name);
         $('#extEmailTel').val(results.tbAcctExt.workEmail);
@@ -197,13 +209,19 @@ function initUserInfo(results){   //新增时初始化信息
 }
 
 function addTbSlaveAcct(){      //从账号新增
+    var slaveAcctType = $('#accTypeTel').get(0).selectedIndex + 1;
+    var resourceObjId = $('#systemTel').get(0).selectedIndex + 1;
+    var subStatusCd = $('#statusCd').get(0).selectedIndex*100 + 1000;
+    var certType = $('#extCerTel').get(0).selectedIndex + 1;
+    var tbAcctExt = hasExtInfo(certType);
+
     var editFormSlaveAcctVo = {
         "acctHostId": acctHostId,
         "disableDate": $('#invalidDate').val(),
         "enableDate": $('#effectDate').val(),
         "password": $('#defaultPswTel').val(),
         "personnelId": parseInt(personnelId),
-        "resourceObjId": 1,
+        "resourceObjId": resourceObjId,
         "rolesList": [
           {
             "roleId": parseInt($('#roleTel').val()),
@@ -211,15 +229,9 @@ function addTbSlaveAcct(){      //从账号新增
           }
         ],
         "slaveAcct": $('#acctTel').val(),
-        "slaveAcctType": "1",
-        "statusCd": "1000",
-        "tbAcctExt": {
-          "certNo": $('#extCerNoTel').val(),
-          "certType": "1",
-          "contactWay": $('#extMobileTel').val(),
-          "name": $('#extNameTel').val(),
-          "workEmail": $('#extEmailTel').val()
-        },
+        "slaveAcctType": slaveAcctType.toString(),
+        "statusCd": subStatusCd.toString(),
+        "tbAcctExt": tbAcctExt,
         "userType": "2"
     };
 
@@ -243,13 +255,19 @@ function addTbSlaveAcct(){      //从账号新增
 }
 
 function updateTbSlaveAcct(){       //更新从账号信息
+    var slaveAcctType = $('#accTypeTel').get(0).selectedIndex + 1;
+    var resourceObjId = $('#systemTel').get(0).selectedIndex + 1;
+    var subStatusCd = $('#statusCd').get(0).selectedIndex*100 + 1000;
+    var certType = $('#extCerTel').get(0).selectedIndex + 1;
+    var tbAcctExt = hasExtInfo(certType);
+
     var editFormSlaveAcctVo = {
         "acctHostId": acctHostId,
         "disableDate": $('#invalidDate').val(),
         "enableDate": $('#effectDate').val(),
         "password": $('#defaultPswTel').val(),
         "personnelId": parseInt(personnelId),
-        "resourceObjId": 1,
+        "resourceObjId": resourceObjId,
         "rolesList": [
           {
             "roleId": parseInt($('#roleTel').val()),
@@ -258,16 +276,9 @@ function updateTbSlaveAcct(){       //更新从账号信息
         ],
         "slaveAcct": $('#acctTel').val(),
         "slaveAcctId": slaveAcctId,
-        "slaveAcctType": "1",
-        "statusCd": "1000",
-        "tbAcctExt": {
-          "acctExtId": acctExtId,
-          "certNo": $('#extCerNoTel').val(),
-          "certType": "1",
-          "contactWay": $('#extMobileTel').val(),
-          "name": $('#extNameTel').val(),
-          "workEmail": $('#extEmailTel').val()
-        },
+        "slaveAcctType": slaveAcctType.toString(),
+        "statusCd": subStatusCd.toString(),
+        "tbAcctExt": tbAcctExt,
         "userType": "2"
     };
     
@@ -309,6 +320,23 @@ function deleteTbSubAcct(){     //删除从账号
       });
 }
 
+function  hasExtInfo(certType){  //判断是否需要扩展信息
+    var tbAcctExt;
+    if(isChecked == 0){
+        tbAcctExt = null;
+    }else{
+        tbAcctExt = {
+            "acctExtId":acctExtId,
+            "certNo": $('#extCerNoTel').val(),
+            "certType": certType.toString(),
+            "contactWay": $('#extMobileTel').val(),
+            "name": $('#extNameTel').val(),
+            "workEmail": $('#extEmailTel').val()
+          };
+    }
+    return tbAcctExt;
+}
+
 function saveSlaveOrg(id,hostId){  //获取acctHostId
     acctHostId = hostId;
     $('#slaveOrgModal').modal('hide');
@@ -326,11 +354,17 @@ function deleteOrg(){
 
 
 function btnSubmit(){       //提交
-    if($('#acctTel').val()!='' && $('#statusCd').val()!='' && $('#roleTel').val()!='' && $('#defaultPswTel').val()!='' && $('#effectDate').val()!='' && $('#invalidDate').val()!='' && acctHostId != 0){
-        if(opBtn == 0){
-            updateTbSlaveAcct();
+    if($('#acctTel').val()!='' && $('#statusCd').val()!='' && $('#roleTel').val()!='' 
+                               && $('#defaultPswTel').val()!='' && $('#effectDate').val()!='' 
+                               && $('#invalidDate').val()!='' && acctHostId != 0){
+        if(isChecked == 0 || $('#extNameTel').val()!= '' || $('#extEmailTel').val()!= '' || $('#extMobileTel').val()!= '' || $('#extCerNoTel').val()!= '' ){
+            if(opBtn == 0){
+                updateTbSlaveAcct();
+            }else{
+                addTbSlaveAcct();
+            }
         }else{
-            addTbSlaveAcct();
+            alert('扩展信息不能全为空');
         }
     }else if(acctHostId == 0){
         alert('组织不能为空');
@@ -339,19 +373,27 @@ function btnSubmit(){       //提交
     }
 }
 
-
-laydate.render({
-    elem: '#effectDate' //指定元素
-  }); 
-
-laydate.render({
-    elem: '#invalidDate' //指定元素
-  }); 
+function extInfoFade(){     //点击复选框
+    var extCheckBox = $("#extCheckBox");
+    if(extCheckBox.attr("value") == "0"){  
+        extCheckBox.attr("value","1")
+        $("#extInfo").css("border-color","#00A4FF"); 
+        isChecked = 1;
+    }else{
+        extCheckBox.attr("value","0")
+        $("#extInfo").css("border-color","#b6b6b6"); 
+        isChecked = 0;
+    }
+    console.log(isChecked);
+}
 
 if(opBtn==0){
     $('#addText').text('更换');
     getSubUser(acctId,userType);
 }else{      //新增
     $('.BtnDel').css("display","none");
+    $('#statusCd').get(0).selectedIndex=0;
     getUserInfo();
 }
+
+

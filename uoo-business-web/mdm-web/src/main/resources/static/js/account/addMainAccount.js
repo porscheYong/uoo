@@ -127,7 +127,11 @@ function initSubOrgTable(results){    //从账号组织数据
     "scrollY": "105px",
     'columns': [
         { 'data': "id", 'title': '序号', 'className': 'row-number' },
-        { 'data': "slaveAcct", 'title': '账号名', 'className': 'row-acc' },
+        { 'data': "slaveAcct", 'title': '账号名', 'className': 'row-acc' ,
+        'render': function (data, type, row, meta) {
+            return '<a href="addSubAccount.html?acctId='+ row.slaveAcctId + '&statusCd=1000&userType=2&title=编辑从账号&opBtn=0">'+ row.slaveAcct +'</a>'
+        }
+      },
         { 'data': "slaveAcctType", 'title': '账号类型', 'className': 'row-acctype' },
         { 'data': "orgTreeName", 'title': '组织树', 'className': 'row-orgtree' },
         { 'data': "fullName", 'title': '归属组织', 'className': 'row-org' ,
@@ -388,21 +392,10 @@ function deleteOrg(id){
     getAcctUser(personnelId);
   }
 
-
-  // function getTableContent(){
-  //   if(opBtn == 0){
-  //     if(flag == 0){
-  //       var n = 2;
-  //       var tr = $('tr');
-  //       for(var i=0;i<tr.length-5;i++){
-  //         editOrgList.push({'orgId':tr[n].cells[4].innerText,'fullName':tr[n].cells[2].innerText});
-  //         n++;
-  //       }
-  //     }
-  //     console.log(editOrgList);
-  //     flag = 1;
-  //   }
-  // }
+$("#addSubAcctBtn").on('click', function () {
+  var url = 'addSubAccount.html?personnelId=' + personnelId + '&userType=2&title=新增从账号&opBtn=1';
+  $(this).attr('href', url);
+})
 
 
 
