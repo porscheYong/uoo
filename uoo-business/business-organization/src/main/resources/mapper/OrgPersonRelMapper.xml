@@ -46,18 +46,18 @@
         SELECT * FROM (
         WITH ORGTREE AS(
         SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,
-        ORG_NAME,ORG_ID,SUP_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD
-        FROM (SELECT A.* ,B.SUP_ORG_ID
+        ORG_NAME,ORG_ID,PARENT_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD
+        FROM (SELECT A.* ,B.PARENT_ORG_ID
         FROM TB_ORG A, TB_ORG_REL B
         WHERE A.ORG_ID = B.ORG_ID
         AND A.STATUS_CD = 1000
         AND B.STATUS_CD = 1000) AA
         START WITH ORG_ID = #{psonOrgVo.orgRootId}
-        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID
+        CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID
         )
         SELECT * FROM (
         SELECT AA.ORG_ID orgId,
-        AA.PERSONNEL_ID personId,
+        AA.PERSONNEL_ID personnelId,
         AA.POST_ID postId,
         AA.REF_TYPE refType,
         AA.PROPERTY property,
@@ -74,7 +74,7 @@
         AND A.ORG_PERSON_ID=B.ORG_PERSON_ID AND B.ORG_TREE_ID=C.ORG_TREE_ID
         AND C.ORG_ID = #{psonOrgVo.orgRootId}
         <if test="psonOrgVo.personId != null and psonOrgVo.personId != ''">
-            AND A.PERSONNEL_ID = #{psonOrgVo.personId}
+            AND A.PERSONNEL_ID = #{psonOrgVo.personnelId}
         </if>
         <if test="psonOrgVo.orgId != null and psonOrgVo.orgId != ''">
             AND A.ORG_ID = #{psonOrgVo.orgId}
@@ -148,7 +148,7 @@
         SELECT * FROM (
         SELECT * FROM (
         SELECT AA.ORG_ID orgId,
-        AA.PERSONNEL_ID personId,
+        AA.PERSONNEL_ID personnelId,
         AA.POST_ID postId,
         AA.REF_TYPE refType,
         AA.PROPERTY property,
@@ -165,9 +165,9 @@
         FROM (SELECT A.*,C.ORG_TREE_NAME FROM TB_ORG_PERSON_REL A, TB_ORGTREE_ORGPERSON_REL B ,TB_ORG_TREE C
         WHERE A.STATUS_CD = '1000' AND B.STATUS_CD='1000' AND C.STATUS_CD='1000'
         AND A.ORG_PERSON_ID=B.ORG_PERSON_ID AND B.ORG_TREE_ID=C.ORG_TREE_ID
-        AND C.ORG_ID = #{psonOrgVo.orgRootId}
-       <if test="psonOrgVo.personId != null and psonOrgVo.personId != ''">
-        AND A.PERSONNEL_ID = #{psonOrgVo.personId}
+        AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
+       <if test="psonOrgVo.personnelId != null and psonOrgVo.personnelId != ''">
+        AND A.PERSONNEL_ID = #{psonOrgVo.personnelId}
         </if>
         <if test="psonOrgVo.orgId != null and psonOrgVo.orgId != ''">
             AND A.ORG_ID = #{psonOrgVo.orgId}
@@ -180,7 +180,7 @@
         AND CTA.FIRST_FLAG=1 AND CTA.CONTACT_TYPE=1
         ) AB where 1=1
         <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
-        AND PsnName like '%'||#{psonOrgVo.search}||'%'
+            AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR PSNCODE LIKE '%'||#{psonOrgVo.search}||'%' OR MOBILE LIKE '%'||#{psonOrgVo.search}||'%' OR ORGNAME LIKE '%'||#{psonOrgVo.search}||'%')
         </if>
         )
 
@@ -193,18 +193,18 @@
     <select id="selectPerOrOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
         WITH ORGTREE AS(
         SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,
-        ORG_NAME,ORG_ID,SUP_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD
-        FROM (SELECT A.* ,B.SUP_ORG_ID
+        ORG_NAME,ORG_ID,PARENT_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD
+        FROM (SELECT A.* ,B.PARENT_ORG_ID
         FROM TB_ORG A, TB_ORG_REL B
         WHERE A.ORG_ID = B.ORG_ID
         AND A.STATUS_CD = 1000
         AND B.STATUS_CD = 1000) AA
         START WITH ORG_ID = #{psonOrgVo.orgRootId}
-        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID
+        CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID
         )
         SELECT * FROM (
         SELECT AA.ORG_ID orgId,
-        AA.PERSONNEL_ID personId,
+        AA.PERSONNEL_ID personnelId,
         AA.POST_ID postId,
         AA.REF_TYPE refType,
         AA.PROPERTY property,
@@ -222,8 +222,8 @@
         WHERE A.STATUS_CD = '1000' AND B.STATUS_CD='1000' AND C.STATUS_CD='1000'
         AND A.ORG_PERSON_ID=B.ORG_PERSON_ID AND B.ORG_TREE_ID=C.ORG_TREE_ID
         AND C.ORG_ID = #{psonOrgVo.orgRootId}
-        <if test="psonOrgVo.personId != null and psonOrgVo.personId != ''">
-            AND A.PERSONNEL_ID = #{psonOrgVo.personId}
+        <if test="psonOrgVo.personnelId != null and psonOrgVo.personnelId != ''">
+            AND A.PERSONNEL_ID = #{psonOrgVo.personnelId}
         </if>
         <if test="psonOrgVo.orgId != null and psonOrgVo.orgId != ''">
             AND A.ORG_ID = #{psonOrgVo.orgId}
@@ -246,8 +246,8 @@
         SELECT * from (
         WITH ORGTREE AS(
         SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,
-        ORG_NAME,ORG_ID,SUP_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD
-        FROM (SELECT A.* ,B.SUP_ORG_ID
+        ORG_NAME,ORG_ID,PARENT_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD
+        FROM (SELECT A.* ,B.PARENT_ORG_ID
         FROM TB_ORG A, TB_ORG_REL B
         WHERE A.ORG_ID = B.ORG_ID
         AND A.STATUS_CD = 1000
@@ -257,7 +257,7 @@
         )
         SELECT * FROM (
         SELECT AA.ORG_ID orgId,
-        AA.PERSONNEL_ID personId,
+        AA.PERSONNEL_ID personnelId,
         AA.POST_ID postId,
         AA.REF_TYPE refType,
         AA.PROPERTY property,

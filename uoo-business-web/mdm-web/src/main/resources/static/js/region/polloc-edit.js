@@ -1,5 +1,45 @@
 var locIds=null,locNames=null,curUpId=0;
-function cancel(){
+function deleteData(){
+	var id=$('#locId').val();
+	var upRegionId=$('#upLocId').val();
+	if(confirm('确定删除这条数据？')){
+		$.ajax({
+			url:'/region/politicalLocation/deletePoliticalLocation',
+			data:{"locId":id},
+			dataType:'json',
+			type:'post',
+			success:function(data){
+				alert(data.state==1000?'删除成功':data.message);
+				//getRegionList(listId);
+				if(data.state==1000){
+					var zTree=parent.getTree();
+					var snodes= parent.getCurrentSelectedNode()[0];
+					var nodes=snodes.children;
+					if(nodes!=null&&nodes.length>0)
+					for(var i=0;i<nodes.length;i++){
+						if(nodes[i].id==id)zTree.removeNode(nodes[i], parent.getCurrentSelectedNode()[0], "prev");
+					}
+					//如果选中的id=当前id  那么调到上一级id 如果不等于就不管  如果上一级id=0 那么。。。
+					if(upRegionId==0||upRegionId=='0'){
+						zTree.removeNode(snodes);
+						parent.changeIframe('/inaction/region/none.html');
+						return;
+					}
+					if(snodes.id==id){
+						zTree.removeNode(snodes);
+						zTree.selectNode(zTree.getNodeByParam("id", upRegionId, null));
+						parent.changeIframe('/inaction/region/polloc-list.html?id=' + upRegionId);
+					}else{
+						zTree.removeNode(zTree.getNodeByParam("id", id, null));
+						//不等于。。。
+						parent.changeIframe('/inaction/region/polloc-list.html?id=' + snodes.id);
+					}
+					
+				}
+			}
+		});
+	}
+	
 }
 function get(id){
 	$.ajax({
@@ -8,7 +48,7 @@ function get(id){
 		type:'get',
 		success:function(data){
 			console.log(data);
-			if(data.state==1){
+			if(data.state==1000){
 				curUpId=data.data.upLocId
 				loadLocType();
 				initData(data.data);
@@ -91,7 +131,7 @@ function saveRegion(){
 		url:'/region/politicalLocation/updatePoliticalLocation',
 		data:$('#regionForm').serialize(),
 		success:function(data){
-			if(data.state==1){
+			if(data.state==1000){
 				//1 从列表进去的  2 从顶部进去的 如果移到别的up去了 那么就要两部操作 1 删除当前父节点的数据 2增加新节点的数据
 				//列表进去的开var treeObj =parent.getTree();始！
 				var treeObj =parent.getTree();
@@ -133,7 +173,7 @@ function loadUpRegionList(curUpId) {
 		dataType : 'json',
 		type : 'get',
 		success : function(tree) {
-			if (tree.state == 1) {
+			if (tree.state == 1000) {
 				console.log(curUpId);
 				$.each(tree.data, function(i, item) {
 					var up = 0;
