@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.message.server.dao.TbPsnjobMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.uoo.message.server.pojo.TbPsnjob">
+    <id column="PSNJOB_ID" jdbcType="DECIMAL" property="psnjobId" />
+    <result column="PERSONNEL_ID" jdbcType="DECIMAL" property="personnelId" />
+    <result column="ORG_ID" jdbcType="DECIMAL" property="orgId" />
+    <result column="BEGIN_TIME" jdbcType="DATE" property="beginTime" />
+    <result column="END_TIME" jdbcType="DATE" property="endTime" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PSNJOB_ID, PERSONNEL_ID, ORG_ID, BEGIN_TIME, END_TIME, STATUS_CD, CREATE_DATE, CREATE_USER, 
+    UPDATE_DATE, UPDATE_USER, STATUS_DATE
+  </sql>
+</mapper>
