@@ -29,7 +29,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/orgType")
-@Api(value = "组织类别相关操作", description = "组织类别相关操作")
+@Api(value = "/orgType", description = "组织类别相关操作")
 public class OrgTypeController {
 
     @Resource

@@ -8,7 +8,7 @@
         <result column="ORG_TYPE_CODE" property="orgTypeCode" />
         <result column="ORG_TYPE_NAME" property="orgTypeName" />
         <result column="ORG_TYPE_DESC" property="orgTypeDesc" />
-        <result column="SUP_PK_ORG_TYPE" property="supPkOrgType" />
+        <result column="PARENT_ORG_TYPE_ID" property="parentOrgTypeId" />
         <result column="STATUS_CD" property="statusCd" />
         <result column="CREATE_DATE" property="createDate" />
         <result column="CREATE_USER" property="createUser" />
@@ -19,7 +19,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ORG_TYPE_ID, ORG_TYPE_CODE, ORG_TYPE_NAME, ORG_TYPE_DESC, SUP_PK_ORG_TYPE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        ORG_TYPE_ID, ORG_TYPE_CODE, ORG_TYPE_NAME, ORG_TYPE_DESC, PARENT_ORG_TYPE_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
     <select id="getOrgTypeByOrgId" resultType="cn.ffcs.uoo.core.organization.entity.OrgType">
@@ -27,7 +27,7 @@
         B.ORG_TYPE_CODE orgTypeCode,
         B.ORG_TYPE_NAME orgTypeName,
         B.ORG_TYPE_DESC orgTypeDesc,
-        B.SUP_PK_ORG_TYPE supPkOrgType,
+        B.PARENT_ORG_TYPE_ID parentOrgTypeId,
         A.STATUS_CD statusCd,
         A.CREATE_DATE createDate,
         A.CREATE_USER createUser,
@@ -45,11 +45,11 @@
 
     <!--查询组织类别树-->
     <select id="selectOrgTypeTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-        select T.ORG_TYPE_ID id, T.SUP_PK_ORG_TYPE pid, T.ORG_TYPE_NAME name
+        select T.ORG_TYPE_ID id, T.PARENT_ORG_TYPE_ID pid, T.ORG_TYPE_NAME name
         from tb_org_type T
         where T.STATUS_CD = 1000
         <if test="supOrgTypeId != null">
-            AND T.SUP_PK_ORG_TYPE = #{supOrgTypeId}
+            AND T.PARENT_ORG_TYPE_ID = #{supOrgTypeId}
         </if>
   <!--      <if test="orgTypeCode != null and orgTypeCode != ''">
             AND T.ORG_TYPE_CODE = #{orgTypeCode}
@@ -58,12 +58,12 @@
     </select>
     <!--查询组织类别树是否存在子节点-->
     <select id="isLeaf" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-        select T.ORG_TYPE_ID id, T.SUP_PK_ORG_TYPE pid, T.ORG_TYPE_NAME name
+        select T.ORG_TYPE_ID id, T.PARENT_ORG_TYPE_ID pid, T.ORG_TYPE_NAME name
         from tb_org_type T
         where T.STATUS_CD = 1000
         <if test="supOrgTypeId != null || supOrgTypeId != ''">
-            AND T.SUP_PK_ORG_TYPE = #{supOrgTypeId}
-    </if>
+            AND T.PARENT_ORG_TYPE_ID = #{supOrgTypeId}
+        </if>
         ORDER BY T.ORG_TYPE_ID ASC
     </select>
 
@@ -72,8 +72,8 @@
         WITH ORGTYPENODE AS(
         SELECT * FROM (
         SELECT * FROM TB_ORG_TYPE A WHERE A.STATUS_CD='1000') AA
-        START WITH ORG_TYPE_ID IN (SELECT ORG_TYPE_ID FROM (SELECT * FROM TB_ORG_TYPE A WHERE A.SUP_PK_ORG_TYPE=#{orgTypeId} AND A.STATUS_CD='1000'))
-        CONNECT BY PRIOR AA.ORG_TYPE_ID = AA.SUP_PK_ORG_TYPE
+        START WITH ORG_TYPE_ID IN (SELECT ORG_TYPE_ID FROM (SELECT * FROM TB_ORG_TYPE A WHERE A.PARENT_ORG_TYPE_ID=#{orgTypeId} AND A.STATUS_CD='1000'))
+        CONNECT BY PRIOR AA.ORG_TYPE_ID = AA.PARENT_ORG_TYPE_ID
         ),
         SEARCHORGTYPE AS(
             SELECT * FROM TB_ORG_ORGTYPE_REL A WHERE A.STATUS_CD='1000' AND A.ORG_ID=#{orgId}
@@ -82,12 +82,12 @@
         SELECT DISTINCT AA.ORG_TYPE_ID
         FROM (SELECT * FROM TB_ORG_TYPE A WHERE A.STATUS_CD = '1000') AA
         START WITH ORG_TYPE_ID IN (SELECT ORG_TYPE_ID FROM SEARCHORGTYPE)
-        CONNECT BY AA.ORG_TYPE_ID = PRIOR AA.SUP_PK_ORG_TYPE
+        CONNECT BY AA.ORG_TYPE_ID = PRIOR AA.PARENT_ORG_TYPE_ID
         )
         SELECT AA.ORG_TYPE_ID id,
                AA.ORG_TYPE_NAME name,
                 DECODE(BB.ORG_TYPE_ID, NULL,'false','true') "open",
-               AA.SUP_PK_ORG_TYPE pid
+               AA.PARENT_ORG_TYPE_ID pid
           FROM ORGTYPENODE AA
           LEFT JOIN SEARCHNODE BB ON AA.ORG_TYPE_ID =BB.ORG_TYPE_ID
 

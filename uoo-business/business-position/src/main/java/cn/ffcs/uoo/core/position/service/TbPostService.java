@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.position.service;
 
 import cn.ffcs.uoo.core.position.entity.TbPost;
 import cn.ffcs.uoo.core.position.vo.OrgPostInfoVo;
+import cn.ffcs.uoo.core.position.vo.PostNodeVo;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.List;
@@ -36,5 +37,9 @@ public interface TbPostService extends IService<TbPost> {
      */
     List<OrgPostInfoVo> queryPostListByOrgId(Long orgId);
 
-    List<TbPost> postTree();
+    /**
+     * 获取职位信息列表
+     * @return
+     */
+    List<PostNodeVo> getAllPostNodeVo();
 }

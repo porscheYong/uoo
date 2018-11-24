@@ -32,14 +32,14 @@ public class OrgRelServiceHystrix implements OrgRelService {
         return responseResult;
     }
     @Override
-    public ResponseResult<List<TreeNodeVo>> getRestructOrgRelTree(String id,String orgRootId,boolean isFull){
+    public ResponseResult<List<TreeNodeVo>> getRestructOrgRelTree(String id,String orgTreeId,String orgRootId,boolean isFull){
         ResponseResult<List<TreeNodeVo>> responseResult = new ResponseResult<List<TreeNodeVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
         return responseResult;
     }
     @Override
-    public ResponseResult<List<TreeNodeVo>> getTarOrgRelTreeAndLv(String orgRootId,String lv,String curOrgid,boolean isFull){
+    public ResponseResult<List<TreeNodeVo>> getTarOrgRelTreeAndLv(String orgRootId,String orgTreeId,String lv,String curOrgid,boolean isFull){
         ResponseResult<List<TreeNodeVo>> responseResult = new ResponseResult<List<TreeNodeVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
@@ -47,15 +47,15 @@ public class OrgRelServiceHystrix implements OrgRelService {
     }
 
     @Override
-    public ResponseResult<TreeNodeVo> addOrgRel(Org org){
-        ResponseResult<TreeNodeVo> responseResult = new ResponseResult<TreeNodeVo>();
+    public ResponseResult<String> addOrgRel(Org org){
+        ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
         return responseResult;
     }
 
     @Override
-    public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(String search,String orgRootId,Integer pageSize,Integer pageNo){
+    public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(String search,String orgRootId,String orgTreeId,Integer pageSize,Integer pageNo){
         ResponseResult<Page<OrgVo>> responseResult = new ResponseResult<Page<OrgVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

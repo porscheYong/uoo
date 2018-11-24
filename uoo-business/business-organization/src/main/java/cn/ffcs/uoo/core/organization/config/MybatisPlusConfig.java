@@ -23,7 +23,7 @@ import java.util.Properties;
  */
 @EnableTransactionManagement
 @Configuration
-public class MybatisPlusConfig1 {
+public class MybatisPlusConfig {
     /**
      * mybatis-plus SQL执行效率插件【生产环境可以关闭】
      */

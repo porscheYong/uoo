@@ -5,6 +5,7 @@ import cn.ffcs.uoo.core.position.entity.TbPost;
 import cn.ffcs.uoo.core.position.dao.TbPostMapper;
 import cn.ffcs.uoo.core.position.service.TbPostService;
 import cn.ffcs.uoo.core.position.vo.OrgPostInfoVo;
+import cn.ffcs.uoo.core.position.vo.PostNodeVo;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ import java.util.List;
  */
 @Service
 public class TbPostServiceImpl extends ServiceImpl<TbPostMapper, TbPost> implements TbPostService {
-    
+
     @Override
     public int save(TbPost tbPost) {
         return baseMapper.save(tbPost);
@@ -44,7 +45,7 @@ public class TbPostServiceImpl extends ServiceImpl<TbPostMapper, TbPost> impleme
     }
 
     @Override
-    public List<TbPost> postTree() {
-        return baseMapper.postTree();
+    public List<PostNodeVo> getAllPostNodeVo() {
+        return baseMapper.getAllPostNodeVo();
     }
 }

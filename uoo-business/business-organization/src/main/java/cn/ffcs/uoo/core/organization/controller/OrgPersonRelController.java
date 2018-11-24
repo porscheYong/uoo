@@ -89,7 +89,7 @@ public class OrgPersonRelController extends BaseController {
             OrgPersonRel orgPersonRel = orgPersonRelService.convertObj(psonOrgVo);
             Long orgPsndocRefId = orgPersonRelService.getId();
             orgPersonRel.setOrgPersonId(orgPsndocRefId);
-            orgPersonRelService.add(orgPersonRel);
+            orgPersonRel.insert();
 
             Long orgTreePerId = orgtreeOrgpersonRelService.getId();
             OrgtreeOrgpersonRel orgtreeOrgpersonRel = new OrgtreeOrgpersonRel();
@@ -97,7 +97,9 @@ public class OrgPersonRelController extends BaseController {
             orgtreeOrgpersonRel.setOrgPersonId(orgPsndocRefId);
             orgtreeOrgpersonRel.setOrgtreeOrgpersonId(orgTreePerId);
             orgtreeOrgpersonRel.setStatusCd("1000");
-            orgtreeOrgpersonRelService.add(orgtreeOrgpersonRel);
+            orgtreeOrgpersonRel.insert();
+
+
 
 //            SolrInputDocument input = new SolrInputDocument();
 //            input.addField("psnName", psonOrgVo.getPsnName());
@@ -147,7 +149,7 @@ public class OrgPersonRelController extends BaseController {
             return ret;
         }
         orgPersonRelService.delete(orgPersonRel);
-        //solrService.deleteDataIntoSolr("pson",orgPersonRel.getOrgPersonId().toString());
+        solrService.deleteDataIntoSolr("pson",orgPersonRel.getOrgPersonId().toString());
 
         Long orgPsndocRefIdnew = orgPersonRelService.getId();
         OrgPersonRel orgPersonRelT = orgPersonRelService.convertObj(psonOrgVo);
@@ -246,7 +248,7 @@ public class OrgPersonRelController extends BaseController {
     @UooLog(value = "查询人员组织信息列表",key = "getPerOrgRelList")
     @RequestMapping(value = "/getPerOrgRelList",method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(String perSonId){
+    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(Integer perSonId){
         ResponseResult<List<PsonOrgVo>> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(perSonId)){
             ret.setMessage("人员标识不能为空");
@@ -254,7 +256,11 @@ public class OrgPersonRelController extends BaseController {
             return ret;
         }
         PsonOrgVo psonOrgVo = new PsonOrgVo();
-        psonOrgVo.setPersonId(new Long(perSonId));
+<<<<<<< HEAD
+        psonOrgVo.setPersonnelId(new Long(perSonId));
+=======
+        psonOrgVo.setPersonId(perSonId.longValue());
+>>>>>>> 191bc73cdae51fe1bf46616ca6f3445957d2bcf6
         List<PsonOrgVo> psonList = orgPersonRelService.getPerOrgRelList(psonOrgVo);
         if(psonList==null || psonList.size()<0){
             ret.setMessage("人员组织关系不存在");
@@ -274,9 +280,14 @@ public class OrgPersonRelController extends BaseController {
     @UooLog(value = "查询人员组织信息翻页",key = "getPerOrgRelPage")
     @RequestMapping(value = "/getPerOrgRelPage",method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
+<<<<<<< HEAD
     public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(String orgId,
+                                                            String orgTreeId,
+=======
+    public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(Integer orgId,
+>>>>>>> 191bc73cdae51fe1bf46616ca6f3445957d2bcf6
                                                             String orgRootId,
-                                                            String personId,
+                                                            Integer personId,
                                                             String search,
                                                             Integer pageSize,
                                                             Integer pageNo
@@ -292,9 +303,22 @@ public class OrgPersonRelController extends BaseController {
             ret.setState(ResponseResult.PARAMETER_ERROR);
             return ret;
         }
+        //获取组织树
+        Wrapper orgTreeConfWrapper = Condition.create()
+                .eq("ORG_TREE_ID",orgTreeId)
+                .eq("STATUS_CD","1000");
+        OrgTree orgtree = orgTreeService.selectOne(orgTreeConfWrapper);
+        if(orgtree==null){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树不存在");
+            return ret;
+        }
+
+
         PsonOrgVo psonOrgVo = new PsonOrgVo();
-        psonOrgVo.setOrgId(new Long(orgId));
+        psonOrgVo.setOrgId(orgId.longValue());
         psonOrgVo.setOrgRootId(new Long(orgRootId));
+        psonOrgVo.setOrgTreeId(orgtree.getOrgTreeId());
         //psonOrgVo.setPersonId(StrUtil.strnull(personId));
         if(!StrUtil.isNullOrEmpty(search)){
             psonOrgVo.setSearch(search);
@@ -338,7 +362,7 @@ public class OrgPersonRelController extends BaseController {
     @UooLog(value = "查询用户",key = "getUserOrgRelPage")
     @RequestMapping(value = "/getUserOrgRelPage",method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(String orgId,
+    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(Integer orgId,
                                                              String search,
                                                              Integer pageSize,
                                                              Integer pageNo
@@ -350,7 +374,7 @@ public class OrgPersonRelController extends BaseController {
             return ret;
         }
         PsonOrgVo psonOrgVo = new PsonOrgVo();
-        psonOrgVo.setOrgId(new Long(orgId));
+        psonOrgVo.setOrgId(orgId.longValue());
         if(!StrUtil.isNullOrEmpty(search)){
             psonOrgVo.setSearch(search);
         }

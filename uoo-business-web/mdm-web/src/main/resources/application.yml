@@ -21,29 +21,23 @@ eureka:
     prefer-ip-address: true
   server:
     port: 8762
-
 feign:
   hystrix:
     enabled: true
-
-hystrix:
-  enabled: true
-  shareSecurityContext: true
-  command:
-    default:
-      circuitBreaker:
-        sleepWindowInMilliseconds: 100000
-        forceClosed: true
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 10000
+    shareSecurityContext: true
+    command:
+      default:
+        circuitBreaker:
+          sleepWindowInMilliseconds: 100000
+          forceClosed: true
+        execution:
+          isolation:
+            thread:
+              timeoutInMilliseconds: 600000
 #请求处理的超时时间
-ribbon:
-  ReadTimeout: 120000
-  #请求连接的超时时间
-  ConnectTimeout: 60000
-
+ribbon.ReadTimeout: 120000
+#请求连接的超时时间
+ribbon.ConnectTimeout: 30000
 
 logging:
   level:

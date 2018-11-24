@@ -40,11 +40,8 @@ public class TbPostClientHystrix implements TbPostClient {
     }
 
     @Override
-    public ResponseResult<List<TbPost>> queryChildPostList(Long parentPostId) {
-        ResponseResult<List<TbPost>> er=new ResponseResult<>();
-        er.setState(ResponseResult.STATE_ERROR);
-        er.setMessage("服务器数据异常");
-        return er;
+    public List<TbPost> queryChildPostList(Long parentPostId) {
+        return null;
     }
 
     @Override
@@ -55,13 +52,5 @@ public class TbPostClientHystrix implements TbPostClient {
     @Override
     public List<OrgPostInfoVo> queryPostListByOrgId(Long orgId) {
         return null;
-    }
-
-    @Override
-    public ResponseResult<List<TbPost>> postTree() {
-        ResponseResult<List<TbPost>> er=new ResponseResult<>();
-        er.setState(ResponseResult.STATE_ERROR);
-        er.setMessage("服务器数据异常");
-        return er;
     }
 }

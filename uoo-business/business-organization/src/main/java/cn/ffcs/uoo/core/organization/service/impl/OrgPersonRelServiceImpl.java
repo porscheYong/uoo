@@ -58,7 +58,7 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
 
     @Override
     public String judgeOrgPsnParams(PsonOrgVo psonOrgVo){
-        if(StrUtil.isNullOrEmpty(psonOrgVo.getPersonId())){
+        if(StrUtil.isNullOrEmpty(psonOrgVo.getPersonnelId())){
             return "人员标识不能为空";
         }
         if(StrUtil.isNullOrEmpty(psonOrgVo.getRefType())){
@@ -84,11 +84,11 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
     @Override
     public OrgPersonRel convertObj(PsonOrgVo psonOrgVo){
         OrgPersonRel orgPersonRel = new OrgPersonRel();
-        if(!StrUtil.isNullOrEmpty(psonOrgVo.getPersonId())){
+        if(!StrUtil.isNullOrEmpty(psonOrgVo.getPersonnelId())){
             orgPersonRel.setOrgPersonId(psonOrgVo.getOrgPersonId());
         }
         orgPersonRel.setOrgId(psonOrgVo.getOrgId());
-        orgPersonRel.setPersonnelId(psonOrgVo.getPersonId());
+        orgPersonRel.setPersonnelId(psonOrgVo.getPersonnelId());
         orgPersonRel.setPostId(Long.valueOf(psonOrgVo.getPostId()));
         orgPersonRel.setRefType(psonOrgVo.getRefType());
         orgPersonRel.setProperty(psonOrgVo.getProperty());

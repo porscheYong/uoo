@@ -14,9 +14,9 @@ function deleteData(){
 			dataType:'json',
 			type:'post',
 			success:function(data){
-				alert(data.state==1?'删除成功':data.message);
+				alert(data.state==1000?'删除成功':data.message);
 				//getRegionList(listId);
-				if(data.state==1){
+				if(data.state==1000){
 					var zTree=parent.getTree();
 					var snodes= parent.getCurrentSelectedNode()[0];
 					var nodes=snodes.children;
@@ -53,7 +53,7 @@ function get(id){
 		type:'get',
 		success:function(data){
 			console.log(data);
-			if(data.state==1){
+			if(data.state==1000){
 				curUpId=data.data.UP_REGION_ID
 				initData(data.data);
 				loadUpRegionList(curUpId);
@@ -103,7 +103,7 @@ function initLocTree(){
 		dataType:'json',
 		type:'get',
 		success:function(data){
-			if(data.state==1){
+			if(data.state==1000){
 				console.log(locIds);
 				for(var i=0;i<data.data.length;i++){
 					if(inArr(locIds, data.data[i].id)){
@@ -147,7 +147,7 @@ function saveRegion(){
 		url:'/region/commonRegion/updateCommonRegion',
 		data:$('#regionForm').serialize(),
 		success:function(data){
-			if(data.state==1){
+			if(data.state==1000){
 				//1 从列表进去的  2 从顶部进去的 如果移到别的up去了 那么就要两部操作 1 删除当前父节点的数据 2增加新节点的数据
 				//列表进去的开var treeObj =parent.getTree();始！
 				var treeObj =parent.getTree();
@@ -218,7 +218,7 @@ function loadUpRegionList(curUpId) {
 		dataType : 'json',
 		type : 'get',
 		success : function(tree) {
-			if (tree.state == 1) {
+			if (tree.state == 1000) {
 				console.log(curUpId);
 				$.each(tree.data, function(i, item) {
 					var up = 0;

@@ -4,15 +4,12 @@ package cn.ffcs.uoo.core.organization.controller;
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
-import cn.ffcs.uoo.core.organization.Api.CertService;
-import cn.ffcs.uoo.core.organization.Api.service.TestService;
 import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.service.*;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
 import cn.ffcs.uoo.core.organization.vo.OrgRefTypeVo;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
-import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
 import cn.ffcs.uoo.core.organization.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -28,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +37,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/orgTree")
-@Api(value = "组织树相关操作", description = "组织树相关操作")
+@Api(value = "/orgTree", description = "组织树相关操作")
 public class OrgTreeController extends BaseController {
 
 
@@ -69,18 +65,20 @@ public class OrgTreeController extends BaseController {
     @Autowired
     private OrgOrgtreeRelService orgOrgtreeRelService;
 
-
-
+<<<<<<< HEAD
     @Autowired
-    private TestService testService;
+    private OrgRelTypeService orgRelTypeService;
 
+=======
+>>>>>>> 191bc73cdae51fe1bf46616ca6f3445957d2bcf6
 
     @ApiOperation(value = "新增组织树信息-web", notes = "新增组织树信息")
-    @ApiImplicitParams({
-    })
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "orgTree", value = "组织树信息", required = true, dataType = "OrgTree")
+//    })
     @UooLog(value = "新增组织树信息",key = "addOrgTree")
     @RequestMapping(value = "/addOrgTree",method = RequestMethod.POST)
-    //@Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<String> addOrgTree(OrgTree orgTree){
         ResponseResult<String> ret = new ResponseResult<>();
         String msg = orgTreeService.judgeOrgTreeParams(orgTree);
@@ -92,11 +90,23 @@ public class OrgTreeController extends BaseController {
         List<OrgRelType> orgRelTypeList = orgTree.getOrgRelTypeList();
         List<OrgType> orgTypeList = orgTree.getOrgTypeList();
         List<String> userTtypeList = orgTree.getUserTypeList();
+
         //组织节点
         List<TreeNodeVo> treeNodeList = orgTree.getTreeNodeList();
+<<<<<<< HEAD
 
+        Wrapper orgReltypeConfWrapper = Condition.create()
+                .eq("ORG_REL_TYPE_ID",orgRelTypeList.get(0).getOrgRelTypeId())
+                .eq("STATUS_CD","1000");
+        OrgRelType ort = orgRelTypeService.selectOne(orgReltypeConfWrapper);
+        if(ort==null){
+            ret.setMessage("组织关系类型不存在");
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            return ret;
+        }
 
-
+=======
+>>>>>>> 191bc73cdae51fe1bf46616ca6f3445957d2bcf6
         Long orgId = orgService.getId();
         Org org = new Org();
         org.setOrgId(orgId);
@@ -158,10 +168,10 @@ public class OrgTreeController extends BaseController {
                 Long orgRefId = orgRelService.getId();
                 orgRel.setOrgRelId(orgRefId);
                 orgRel.setOrgId(new Long(vo.getId()));
-                orgRel.setSupOrgId(new Long(vo.getPid()));
-                orgRel.setOrgRelTypeId(ogtOrgReftypeConfId);
+                orgRel.setParentOrgId(new Long(vo.getPid()));
+                orgRel.setRefCode(ort.getRefCode());
                 orgRel.setStatusCd("1000");
-                orgRelService.add(orgRel);
+                orgRel.insert();
 
                 //新增组织层级
                 Long  orgLevelId = orgLevelService.getId();
@@ -171,7 +181,7 @@ public class OrgTreeController extends BaseController {
                 orgLevel.setOrgLevel(Integer.valueOf(vo.getLevel()));
                 orgLevel.setOrgTreeId(orgTreeId);
                 orgLevel.setStatusCd("1000");
-                orgLevelService.add(orgLevel);
+                orgLevel.insert();
 
                 //组织组织树关系
                 Long orgOrgtreeRefId = orgOrgtreeRelService.getId();
@@ -180,7 +190,7 @@ public class OrgTreeController extends BaseController {
                 orgOrgtreeRef.setOrgId(new Long(vo.getId()));
                 orgOrgtreeRef.setOrgTreeId(orgTreeId);
                 orgOrgtreeRef.setStatusCd("1000");
-                orgOrgtreeRelService.add(orgOrgtreeRef);
+                orgOrgtreeRef.insert();
             }
         }
 
@@ -197,7 +207,7 @@ public class OrgTreeController extends BaseController {
     })
     @UooLog(value = "修改组织树组织树信息",key = "updateOrgTree")
     @RequestMapping(value = "/updateOrgTree",method = RequestMethod.POST)
-    //@Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<String> updateOrgTree(OrgTree orgTree){
         ResponseResult<String> ret = new ResponseResult<>();
         String msg = orgTreeService.judgeOrgTreeParams(orgTree);
@@ -343,12 +353,13 @@ public class OrgTreeController extends BaseController {
     })
     @UooLog(value = "查询组织树列表",key = "getOrgTreeList")
     @RequestMapping(value = "/getOrgTreeList",method = RequestMethod.GET)
-    public ResponseResult<List<OrgTree>>  getOrgTreeList(String orgId){
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<List<OrgTree>>  getOrgTreeList(OrgTree orgTree){
         ResponseResult<List<OrgTree>> ret = new ResponseResult<List<OrgTree>>();
         Wrapper orgTreeWrapper = Condition.create().eq("STATUS_CD","1000").orderBy("SORT");
-        if(orgId != null){
-            if(!StrUtil.isNullOrEmpty(orgId)){
-                orgTreeWrapper.eq("ORG_ID",orgId);
+        if(orgTree != null){
+            if(!StrUtil.isNullOrEmpty(orgTree.getOrgId())){
+                orgTreeWrapper.eq("ORG_ID",orgTree.getOrgId());
             }
         }
         List<OrgTree> orgTreeList = orgTreeService.selectList(orgTreeWrapper);

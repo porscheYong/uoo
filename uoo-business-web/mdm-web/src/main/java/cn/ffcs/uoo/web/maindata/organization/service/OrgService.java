@@ -4,7 +4,6 @@ package cn.ffcs.uoo.web.maindata.organization.service;
 import cn.ffcs.uoo.web.maindata.organization.dto.Org;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgVo;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
-import cn.ffcs.uoo.web.maindata.organization.dto.TreeNodeVo;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgServiceHystrix;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
@@ -27,7 +26,7 @@ import java.util.List;
 public interface OrgService{
 
     @RequestMapping(value="/org/addOrg",method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult<TreeNodeVo> addOrg(@RequestBody OrgVo org);
+    public ResponseResult<Void> addOrg(@RequestBody OrgVo org);
 
     @RequestMapping(value="/org/updateOrg",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<Void> updateOrg(@RequestBody OrgVo org);
@@ -38,9 +37,8 @@ public interface OrgService{
 
 
     @RequestMapping(value="/org/getOrgRelPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<Page<OrgVo>> getOrgRelPage(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
-                                                     @RequestParam(value = "orgRootId",required = false)String orgRootId,
-                                                     @RequestParam(value = "orgId",required = false)String orgId,
+    public ResponseResult<Page<OrgVo>> getOrgRelPage(@RequestParam(value = "orgRootId",required = false)Integer orgRootId,
+                                                     @RequestParam(value = "orgId",required = false)Integer orgId,
                                                      @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                      @RequestParam(value = "pageNo",required = false)Integer pageNo);
 
@@ -50,7 +48,8 @@ public interface OrgService{
                                                   @RequestParam(value = "pageNo",required = false)Integer pageNo);
 
     @RequestMapping(value = "/org/getOrgExtByOrgId", method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@RequestParam(value = "orgRootId",required = false)String orgRootId ,
+    public ResponseResult<HashMap<String,String>> getOrgExtByOrgId(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                                                   @RequestParam(value = "orgRootId",required = false)String orgRootId ,
                                                                    @RequestParam(value = "orgId",required = false) String orgId);
 
 }

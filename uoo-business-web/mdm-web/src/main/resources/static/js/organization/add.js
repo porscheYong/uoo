@@ -114,7 +114,7 @@ function getOrgPostLevel () {
         }
         $('#orgPositionLevel').append(option);
         // $('#orgPositionLevel').selectMatch();
-    }, function (err) {
+    }, function (err)  {
         console.log(err)
     })
 }
@@ -158,7 +158,7 @@ function addOrg () {
     var address = $('#address').val();
     var orgContent = $('#orgContent').val();
     var orgDesc = $('#orgDesc').val();
-    $http.post('/org/addOrg', JSON.stringify({
+    $http.post('http://134.96.253.221:11100/org/addOrg', JSON.stringify({
         orgRootId: '1',
         supOrgId: orgId,
         orgName: orgName,
