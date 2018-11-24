@@ -1,7 +1,8 @@
 package cn.ffcs.uoo.core.organization.Api.service.impl;
 
-import cn.ffcs.uoo.core.organization.Api.CertService;
 import org.springframework.stereotype.Component;
+
+import cn.ffcs.uoo.core.organization.Api.service.CertService;
 
 /**
  *

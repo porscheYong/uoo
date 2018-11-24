@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.core.organization.Api;
+package cn.ffcs.uoo.core.organization.Api.service;
 
 
 import org.springframework.cloud.netflix.feign.FeignClient;
