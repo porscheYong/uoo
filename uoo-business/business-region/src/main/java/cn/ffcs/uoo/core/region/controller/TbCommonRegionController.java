@@ -113,7 +113,7 @@ public class TbCommonRegionController extends BaseController {
     public ResponseResult getChildCommonRegionInfo(@PathVariable(value="id") Long id){
         Map<String, Object> params = new HashMap<>();
         params.put("statusCd", DeleteConsts.VALID);
-        params.put("upRegionId", id);
+        params.put("parentRegionId", id);
         params.put("statusCd", DeleteConsts.VALID);
         List<Map> list = regionService.getChildCommonRegionInfo(params);
         List<Map> result = new ArrayList<>();
@@ -175,9 +175,9 @@ public class TbCommonRegionController extends BaseController {
             ztlist.add(n);
             n.setId(reg.getCommonRegionId());
             n.setName(reg.getRegionName());
-            n.setpId(reg.getUpRegionId()==null||reg.getUpRegionId()<1?0:reg.getUpRegionId());
+            n.setpId(reg.getParentRegionId()==null||reg.getParentRegionId()<1?0:reg.getParentRegionId());
             for (TbCommonRegion tmp : list) {
-                if(reg.getCommonRegionId().equals(tmp.getUpRegionId())){
+                if(reg.getCommonRegionId().equals(tmp.getParentRegionId())){
                     n.setParent(true);
                     break;
                 }
@@ -259,8 +259,8 @@ public class TbCommonRegionController extends BaseController {
                                                                                     */) {
         // 数据校验 获取操作者
         // 查询上级是否存在
-        if (commonRegion.getUpRegionId() != null && commonRegion.getUpRegionId() != 0) {
-            TbCommonRegion region = regionService.selectById(commonRegion.getUpRegionId());
+        if (commonRegion.getParentRegionId() != null && commonRegion.getParentRegionId() != 0) {
+            TbCommonRegion region = regionService.selectById(commonRegion.getParentRegionId());
             if (region == null) {
                 return ResponseResult.createErrorResult("选择的上一级区域不存在");
             }
@@ -322,8 +322,8 @@ public class TbCommonRegionController extends BaseController {
             return ResponseResult.createErrorResult("修改数据异常");
         }
         // 数据校验 获取操作者
-        if (commonRegion.getUpRegionId() != null && commonRegion.getUpRegionId() != 0) {
-            TbCommonRegion region = regionService.selectById(commonRegion.getUpRegionId());
+        if (commonRegion.getParentRegionId() != null && commonRegion.getParentRegionId() != 0) {
+            TbCommonRegion region = regionService.selectById(commonRegion.getParentRegionId());
             if (region == null) {
                 return ResponseResult.createErrorResult("上一级区域不存在");
             }
@@ -382,7 +382,7 @@ public class TbCommonRegionController extends BaseController {
         }
         // 有没有下级
         List<TbCommonRegion> regionDatas = regionService.selectList(Condition.create()
-                .eq("UP_REGION_ID", commonRegion.getCommonRegionId()).eq("STATUS_CD", DeleteConsts.VALID));
+                .eq("PARENT_REGION_ID", commonRegion.getCommonRegionId()).eq("STATUS_CD", DeleteConsts.VALID));
         if (regionDatas != null && !regionDatas.isEmpty()) {
             return ResponseResult.createErrorResult("当前区域有下级区域不能删除");
         }

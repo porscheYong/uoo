@@ -6,7 +6,7 @@ function loadRegionType(){
 }
 function deleteData(){
 	var id=$('#regionId').val();
-	var upRegionId=$('#upRegionId').val();
+	var parentRegionId=$('#parentRegionId').val();
 	if(confirm('确定删除这条数据？')){
 		$.ajax({
 			url:'/region/commonRegion/deleteCommonRegion',
@@ -25,15 +25,15 @@ function deleteData(){
 						if(nodes[i].id==id)zTree.removeNode(nodes[i], parent.getCurrentSelectedNode()[0], "prev");
 					}
 					//如果选中的id=当前id  那么调到上一级id 如果不等于就不管  如果上一级id=0 那么。。。
-					if(upRegionId==0||upRegionId=='0'){
+					if(parentRegionId==0||parentRegionId=='0'){
 						zTree.removeNode(snodes);
 						parent.changeIframe('/inaction/region/none.html');
 						return;
 					}
 					if(snodes.id==id){
 						zTree.removeNode(snodes);
-						zTree.selectNode(zTree.getNodeByParam("id", upRegionId, null));
-						parent.changeIframe('/inaction/region/commonregion-list.html?id=' + upRegionId);
+						zTree.selectNode(zTree.getNodeByParam("id", parentRegionId, null));
+						parent.changeIframe('/inaction/region/commonregion-list.html?id=' + parentRegionId);
 					}else{
 						zTree.removeNode(zTree.getNodeByParam("id", id, null));
 						//不等于。。。
@@ -54,7 +54,7 @@ function get(id){
 		success:function(data){
 			console.log(data);
 			if(data.state==1000){
-				curUpId=data.data.UP_REGION_ID
+				curUpId=data.data.PARENT_REGION_ID
 				initData(data.data);
 				loadUpRegionList(curUpId);
 			}else{
@@ -133,7 +133,7 @@ function saveRegion(){
 	var treeObj = $.fn.zTree.getZTreeObj("locTree");
 	var checkeds=treeObj.getCheckedNodes();
 	var polLocIds="";
-	$('#upRegionId').removeAttr('disabled');
+	$('#parentRegionId').removeAttr('disabled');
 	for(var i=0;i<checkeds.length;i++){
 		polLocIds+=checkeds[i].id;
 		if(i!=checkeds.length-1){
@@ -151,7 +151,7 @@ function saveRegion(){
 				//1 从列表进去的  2 从顶部进去的 如果移到别的up去了 那么就要两部操作 1 删除当前父节点的数据 2增加新节点的数据
 				//列表进去的开var treeObj =parent.getTree();始！
 				var treeObj =parent.getTree();
-				/*var selectedUpId=$('#upRegionId').val();
+				/*var selectedUpId=$('#parentRegionId').val();
 				var selected=treeObj.getSelectedNodes()[0];
 				var newUpNodes=treeObj.getNodesByParam("id",selectedUpId,null);
 				var oldUpNodes=treeObj.getNodesByParam("id",parseInt(curUpId),null);
@@ -231,15 +231,15 @@ function loadUpRegionList(curUpId) {
 					html += " >" + item.name + "</option>"
 					console.log(html);
 					//某一层的 循环查找插入  那么久插入
-					$('#upRegionId').append(html);
-					/*$('#upRegionId option').each(function() {
+					$('#parentRegionId').append(html);
+					/*$('#parentRegionId option').each(function() {
 						var id = $(this).val();
 						if (id == up) {
 							$(this).after(html);
 						}
 					});*/
 				});
-				$("#upRegionId").attr("disabled","disabled");
+				$("#parentRegionId").attr("disabled","disabled");
 				
 
 			}
