@@ -34,7 +34,9 @@ public class OrgRelController {
     @Resource
     private OrgRelService orgRelService;
 
-
+    @ApiOperation(value = "获取组织树", notes = "获取组织树")
+    @ApiImplicitParams({
+    })
     @RequestMapping(value = "/getOrgRelTree", method = RequestMethod.GET)
     public ResponseResult<List<TreeNodeVo>> getOrgRelTree(@RequestParam(value = "id",required = false)String id,
                                                           @RequestParam(value = "orgRootId",required = false)String orgRootId,
