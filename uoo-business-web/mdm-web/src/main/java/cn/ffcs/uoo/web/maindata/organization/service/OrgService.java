@@ -4,6 +4,7 @@ package cn.ffcs.uoo.web.maindata.organization.service;
 import cn.ffcs.uoo.web.maindata.organization.dto.Org;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgVo;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
+import cn.ffcs.uoo.web.maindata.organization.dto.TreeNodeVo;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgServiceHystrix;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
@@ -26,19 +27,21 @@ import java.util.List;
 public interface OrgService{
 
     @RequestMapping(value="/org/addOrg",method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult<Void> addOrg(@RequestBody OrgVo org);
+    public ResponseResult<TreeNodeVo> addOrg(@RequestBody OrgVo org);
 
     @RequestMapping(value="/org/updateOrg",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<Void> updateOrg(@RequestBody OrgVo org);
 
     @RequestMapping(value="/org/getOrg",method = RequestMethod.GET)
-    public ResponseResult<OrgVo> getOrg(@RequestParam(value = "orgId",required = false) String orgId);
+    public ResponseResult<OrgVo> getOrg(@RequestParam(value = "orgId",required = false) String orgId,
+                                        @RequestParam(value = "orgTreeId",required = false) String orgTreeId);
 
 
 
     @RequestMapping(value="/org/getOrgRelPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<Page<OrgVo>> getOrgRelPage(@RequestParam(value = "orgRootId",required = false)Integer orgRootId,
-                                                     @RequestParam(value = "orgId",required = false)Integer orgId,
+    public ResponseResult<Page<OrgVo>> getOrgRelPage(@RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                     @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                                     @RequestParam(value = "orgId",required = false)String orgId,
                                                      @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                      @RequestParam(value = "pageNo",required = false)Integer pageNo);
 

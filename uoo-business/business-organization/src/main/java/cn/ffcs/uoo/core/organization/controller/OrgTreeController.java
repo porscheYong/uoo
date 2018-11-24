@@ -65,12 +65,11 @@ public class OrgTreeController extends BaseController {
     @Autowired
     private OrgOrgtreeRelService orgOrgtreeRelService;
 
-<<<<<<< HEAD
+
     @Autowired
     private OrgRelTypeService orgRelTypeService;
 
-=======
->>>>>>> 191bc73cdae51fe1bf46616ca6f3445957d2bcf6
+
 
     @ApiOperation(value = "新增组织树信息-web", notes = "新增组织树信息")
 //    @ApiImplicitParams({
@@ -78,7 +77,6 @@ public class OrgTreeController extends BaseController {
 //    })
     @UooLog(value = "新增组织树信息",key = "addOrgTree")
     @RequestMapping(value = "/addOrgTree",method = RequestMethod.POST)
-    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<String> addOrgTree(OrgTree orgTree){
         ResponseResult<String> ret = new ResponseResult<>();
         String msg = orgTreeService.judgeOrgTreeParams(orgTree);
@@ -93,7 +91,6 @@ public class OrgTreeController extends BaseController {
 
         //组织节点
         List<TreeNodeVo> treeNodeList = orgTree.getTreeNodeList();
-<<<<<<< HEAD
 
         Wrapper orgReltypeConfWrapper = Condition.create()
                 .eq("ORG_REL_TYPE_ID",orgRelTypeList.get(0).getOrgRelTypeId())
@@ -104,9 +101,6 @@ public class OrgTreeController extends BaseController {
             ret.setState(ResponseResult.PARAMETER_ERROR);
             return ret;
         }
-
-=======
->>>>>>> 191bc73cdae51fe1bf46616ca6f3445957d2bcf6
         Long orgId = orgService.getId();
         Org org = new Org();
         org.setOrgId(orgId);
@@ -354,13 +348,11 @@ public class OrgTreeController extends BaseController {
     @UooLog(value = "查询组织树列表",key = "getOrgTreeList")
     @RequestMapping(value = "/getOrgTreeList",method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<List<OrgTree>>  getOrgTreeList(OrgTree orgTree){
+    public ResponseResult<List<OrgTree>>  getOrgTreeList(String orgTreeId,String orgRootId){
         ResponseResult<List<OrgTree>> ret = new ResponseResult<List<OrgTree>>();
         Wrapper orgTreeWrapper = Condition.create().eq("STATUS_CD","1000").orderBy("SORT");
-        if(orgTree != null){
-            if(!StrUtil.isNullOrEmpty(orgTree.getOrgId())){
-                orgTreeWrapper.eq("ORG_ID",orgTree.getOrgId());
-            }
+        if(!StrUtil.isNullOrEmpty(orgTreeId)){
+            orgTreeWrapper.eq("ORG_TREE_ID",orgTreeId);
         }
         List<OrgTree> orgTreeList = orgTreeService.selectList(orgTreeWrapper);
         ret.setData(orgTreeList);

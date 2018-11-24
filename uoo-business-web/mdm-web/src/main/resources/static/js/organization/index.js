@@ -4,11 +4,7 @@ var loading = new Loading();
 var setting = {
     async: {
         enable: true,
-<<<<<<< HEAD
-        url: "http://134.96.253.221:11100/orgRel/getOrgRelTree?orgRootId=1&orgTreeId=1",
-=======
-        url: "http://134.96.253.221:11100/orgRel/getOrgRelTree?orgRootId=1",
->>>>>>> 191bc73cdae51fe1bf46616ca6f3445957d2bcf6
+        url: "/orgRel/getOrgRelTree?orgRootId=1&orgTreeId=1",
         autoParam: ["id"],
         type: "get",
         dataFilter: filter
@@ -75,12 +71,9 @@ function refreshResult () {
 }
 
 function initOrgRelTree () {
-    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTree', {
-<<<<<<< HEAD
-        orgTreeId: '1',
-=======
->>>>>>> 191bc73cdae51fe1bf46616ca6f3445957d2bcf6
-        orgRootId: '1'
+    $http.get('/orgRel/getOrgRelTree', {
+        orgRootId: '1',
+        orgTreeId: '1'
     }, function (data) {
         console.log(data)
         $.fn.zTree.init($("#standardTree"), setting, data);
@@ -96,16 +89,16 @@ function initOrgRelTree () {
 
 // 根据组织ID展开并选中组织
 function openTreeById (sId, id) {
-  var tId = 'standardTree_' + id;
-  var sId = 'standardTree_' + sId;
-  var zTree = $.fn.zTree.getZTreeObj("standardTree");
-  var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-  zTree.cancelSelectedNode(selectNode);
-  var node = zTree.getNodeByTId(tId);
-  if (node.parent) {
-    zTree.expandNode(node, true);
-  }
-  zTree.selectNode(node, true);
+    var tId = 'standardTree_' + id;
+    var sId = 'standardTree_' + sId;
+    var zTree = $.fn.zTree.getZTreeObj("standardTree");
+    var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
+    zTree.cancelSelectedNode(selectNode);
+    var node = zTree.getNodeByTId(tId);
+    if (node.parent) {
+        zTree.expandNode(node, true);
+    }
+    zTree.selectNode(node, true);
 }
 
 // 添加子节点

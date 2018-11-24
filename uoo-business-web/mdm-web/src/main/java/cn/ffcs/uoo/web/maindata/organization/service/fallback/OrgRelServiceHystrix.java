@@ -24,7 +24,7 @@ import java.util.List;
 public class OrgRelServiceHystrix implements OrgRelService {
 
     @Override
-    public ResponseResult<List<TreeNodeVo>> getOrgRelTree(String id, String orgRootId, String relCode, boolean isOpen,
+    public ResponseResult<List<TreeNodeVo>> getOrgRelTree(String id, String orgRootId,String orgTreeId, String relCode, boolean isOpen,
                                                           boolean isAsync, boolean isRoot){
         ResponseResult<List<TreeNodeVo>> responseResult = new ResponseResult<List<TreeNodeVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
@@ -47,8 +47,8 @@ public class OrgRelServiceHystrix implements OrgRelService {
     }
 
     @Override
-    public ResponseResult<String> addOrgRel(Org org){
-        ResponseResult<String> responseResult = new ResponseResult<String>();
+    public ResponseResult<TreeNodeVo> addOrgRel(Org org){
+        ResponseResult<TreeNodeVo> responseResult = new ResponseResult<TreeNodeVo>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
         return responseResult;

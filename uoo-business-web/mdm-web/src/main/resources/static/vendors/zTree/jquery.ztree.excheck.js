@@ -438,7 +438,7 @@
         } else if (node.halfCheck) {
           fullStyle = c.PART;
         } else if (setting.check.chkStyle == r.STYLE) {
-          fullStyle = (node.check_Child_State < 1) ? c.FULL : c.PART;
+          fullStyle = (node.check_Child_State < 1) ? c.FULL : c.FULL;
         } else {
           fullStyle = nodeChecked ? ((node.check_Child_State === 2 || node.check_Child_State === -1) ? c.FULL : c.FULL) : ((node.check_Child_State < 1) ? c.FULL : c.FULL);
         }

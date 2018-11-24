@@ -81,7 +81,7 @@ $('#orgTypeList_tagsinput').on('click', function() {
 
 // 获取规模字典数据
 function getScale () {
-    $http.get('http://134.96.253.221:11500/tbDictionaryItem/getList/SCALE', {}, function (data) {
+    $http.get('/tbDictionaryItem/getList/SCALE', {}, function (data) {
         var option = '<option></option>';
         for (var i = 0; i < data.length; i++) {
             option += "<option value='" + data[i].itemValue + "'>" + data[i].itemCnname +"</option>";
@@ -114,7 +114,7 @@ function getOrgPostLevel () {
         }
         $('#orgPositionLevel').append(option);
         // $('#orgPositionLevel').selectMatch();
-    }, function (err)  {
+    }, function (err) {
         console.log(err)
     })
 }
