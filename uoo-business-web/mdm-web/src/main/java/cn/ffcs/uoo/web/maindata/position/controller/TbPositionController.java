@@ -4,6 +4,7 @@ import cn.ffcs.uoo.web.maindata.position.dto.TbOrgPositionRel;
 import cn.ffcs.uoo.web.maindata.position.dto.TbPosition;
 import cn.ffcs.uoo.web.maindata.position.service.TbPositionClient;
 import cn.ffcs.uoo.web.maindata.position.vo.OrgPositionInfoVo;
+import cn.ffcs.uoo.web.maindata.position.vo.PositionNodeVo;
 import cn.ffcs.uoo.web.maindata.position.vo.ResponseResult;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -80,6 +81,12 @@ public class TbPositionController {
     @RequestMapping(value = "/getChildren/{parentPositionId}", method = RequestMethod.GET)
     public List<TbPosition> queryChildPositionList(@PathVariable Long parentPositionId) {
         return tbPositionClient.queryChildPositionList(parentPositionId);
+    }
+
+    @ApiOperation(value = "查询岗位树", notes = "查询岗位树")
+    @RequestMapping(value = "/getPositionTree", method = RequestMethod.GET)
+    public ResponseResult<List<PositionNodeVo>> getPositionTree() {
+        return tbPositionClient.getPositionTree();
     }
 }
 
