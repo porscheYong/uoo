@@ -91,7 +91,7 @@ function initTable (results) {
             'render': function (data, type, row, meta) {
             	var html="<a href=\"javascript:void(0)\" onClick=\"parent.changeIframe('/inaction/region/commonregion-edit.html?id="+row.COMMON_REGION_ID+"')\">查看 </a>";
             	html+="&nbsp;&nbsp;&nbsp;&nbsp;";
-            	html+="<a class=\"glyphicon glyphicon-remove\"   href=\"javascript:void(0)\" onclick=\"deleteRegion('"+row.COMMON_REGION_ID+"')\" style=\"vertical-align: top;\"></a>";
+            	//html+="<a class=\"glyphicon glyphicon-remove\"   href=\"javascript:void(0)\" onclick=\"deleteRegion('"+row.COMMON_REGION_ID+"')\" style=\"vertical-align: top;\"></a>";
             	return html;
             		 //return '<a href="list.html?id='+ row.orgId +'" onclick="parent.openTreeById('+orgId+','+row.orgId+')">'+ row.orgName +'</a>'
                 }  , 'className': 'user-account'

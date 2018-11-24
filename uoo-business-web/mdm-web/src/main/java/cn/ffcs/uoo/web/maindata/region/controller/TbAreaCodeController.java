@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.web.maindata.region.controller;
 
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.ffcs.uoo.web.maindata.region.dto.TbAreaCode;
 import cn.ffcs.uoo.web.maindata.region.service.AreaCodeService;
+import cn.ffcs.uoo.web.maindata.region.vo.JquerDataTableResult;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -46,11 +49,24 @@ public class TbAreaCodeController  {
         @ApiImplicitParam(name = "pageSize", value = "每页的大小", dataType = "Integer",paramType="path",defaultValue = "12")
     })
     //@UooLog(value = "区号列表", key = "listAreaCode")
-    @GetMapping("listAreaCode/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listAreaCode(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize) {
+    @GetMapping("listAreaCode")
+    public Object listAreaCode(HttpServletRequest request) {
+        String pageNoStr,pageSizeStr;
+        pageNoStr = request.getParameter("pageNo");
+        pageSizeStr = request.getParameter("pageSize");
+        Integer pageNo=null,pageSize=null;
+        try {
+            pageNo=Integer.parseInt(pageNoStr);
+        } catch (Exception e) {
+        }
+        try {
+            pageSize=Integer.parseInt(pageSizeStr);
+        } catch (Exception e) {
+        }
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
-        return areaCodeService.listAreaCode(pageNo, pageSize);
+        ResponseResult listAreaCode = areaCodeService.listAreaCode(pageNo, pageSize);
+        return new JquerDataTableResult(listAreaCode);
     }
     
     @ApiOperation(value = "新增区号", notes = "新增区号")
