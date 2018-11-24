@@ -81,7 +81,7 @@ public class OrgRelController extends BaseController {
                                                           @RequestParam(value = "isOpen",required = false)boolean isOpen,
                                                           @RequestParam(value = "isAsync",required = false)boolean isAsync,
                                                           @RequestParam(value = "isRoot",required = false)boolean isRoot) throws IOException {
-        //System.out.println(new Date());
+        System.out.println(new Date());
         ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(orgRootId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -107,6 +107,7 @@ public class OrgRelController extends BaseController {
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("组织树查询成功");
         ret.setData(treeNodeVos);
+        System.out.println(new Date());
         return ret;
     }
 

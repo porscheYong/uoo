@@ -1,4 +1,4 @@
-
+package cn.ffcs.uoo.web.maindata.organization.dto;
 import java.util.Date;
 
 
