@@ -1,5 +1,4 @@
-// var baseUrl = '134.96.253.221:18000';
-// var baseUrl = '192.168.58.112:18000';
+
 $('#userType').get(0).selectedIndex=1;
 var table;
 
@@ -24,7 +23,7 @@ function check(){
 // }
 
 function getPsn(keyWord) {           //搜索人员
-    $http.get('/personnel/getPsnBasicInfo', {   //http://192.168.58.112:18000/user/getUser
+    $http.get('http://192.168.58.112:18000/personnel/getPsnBasicInfo', {   //http://192.168.58.112:18000/user/getUser
         keyWord: keyWord,
         pageNo: 1,
         pageSize: 200

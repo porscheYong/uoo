@@ -1,17 +1,8 @@
 package cn.ffcs.uoo.message.server.dao;
 
 import cn.ffcs.uoo.message.server.pojo.TbSystemIndividuationRule;
+import com.baomidou.mybatisplus.mapper.BaseMapper;
 
-public interface TbSystemIndividuationRuleMapper {
-    int deleteByPrimaryKey(Long individuationRuleId);
+public interface TbSystemIndividuationRuleMapper extends BaseMapper<TbSystemIndividuationRule> {
 
-    int insert(TbSystemIndividuationRule record);
-
-    int insertSelective(TbSystemIndividuationRule record);
-
-    TbSystemIndividuationRule selectByPrimaryKey(Long individuationRuleId);
-
-    int updateByPrimaryKeySelective(TbSystemIndividuationRule record);
-
-    int updateByPrimaryKey(TbSystemIndividuationRule record);
 }

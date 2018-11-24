@@ -1,8 +1,11 @@
 package cn.ffcs.uoo.message.server.pojo;
 
+import com.baomidou.mybatisplus.activerecord.Model;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class TbBusinessSystem {
+public class TbBusinessSystem extends Model<TbBusinessSystem> {
     private Long businessSystemId;
 
     private String systemCode;
@@ -151,5 +154,10 @@ public class TbBusinessSystem {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    @Override
+    protected Serializable pkVal() {
+        return this.businessSystemId;
     }
 }

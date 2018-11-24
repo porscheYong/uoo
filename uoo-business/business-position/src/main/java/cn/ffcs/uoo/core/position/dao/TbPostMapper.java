@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.position.dao;
 import cn.ffcs.uoo.core.position.entity.TbPost;
 import cn.ffcs.uoo.core.position.vo.OrgPositionInfoVo;
 import cn.ffcs.uoo.core.position.vo.OrgPostInfoVo;
+import cn.ffcs.uoo.core.position.vo.PostNodeVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 import java.util.List;
@@ -36,5 +37,9 @@ public interface TbPostMapper extends BaseMapper<TbPost> {
      */
     List<OrgPostInfoVo> queryPostListByOrgId(Long orgId);
 
-    List<TbPost> postTree();
+    /**
+     * 获取职位信息列表
+     * @return
+     */
+    List<PostNodeVo> getAllPostNodeVo();
 }

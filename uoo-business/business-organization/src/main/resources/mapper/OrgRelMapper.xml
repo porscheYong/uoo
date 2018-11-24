@@ -330,7 +330,7 @@
 
     <!-- 获取指定组织树的层级 -->
     <select id="selectTarOrgRelTreeAndLv" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-        SELECT lv "level",ORG_NAME name,ORG_ID id,SUP_ORG_ID pid,'true' checked FROM (
+        SELECT lv level,ORG_NAME name,ORG_ID id,SUP_ORG_ID pid FROM (
         SELECT
         REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,
         ORG_NAME,ORG_ID,SUP_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD,LEVEL lv
@@ -340,7 +340,7 @@
         AND A.STATUS_CD = 1000
         AND B.STATUS_CD = 1000) AA
         START WITH ORG_ID = #{orgRootId}
-        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID) WHERE lv &lt; #{lv}
+        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID) WHERE level &lt; #{lv}
         <if test="curOrgId != null and curOrgId != ''">
             AND SUP_ORG_ID =  #{curOrgId}
         </if>

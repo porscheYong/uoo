@@ -1,10 +1,20 @@
+### DEV ###
+---
+server:
+  port: 11100
+  #port: 30024
 spring:
   application:
     name: business-organization
+  # 目前使用的是我的阿里云上的mysql数据库
+#  datasource:
+#    url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
+#    username: octopus
+#    password: octopus
   datasource:
     druid:
       #url: jdbc:oracle:thin:@134.129.68.156:1521:fjtpdb
-      #driver-class-name: oracle.jdbc.OracleDriver
+      #driver-class-name:  oracle.jdbc.OracleDriver
       #username: uoo137
       #password: uoo137
       #      url: jdbc:mysql://127.0.0.1:3306/springboot?characterEncoding=utf8&useSSL=false
@@ -16,7 +26,8 @@ spring:
       #      driver-class-name:  oracle.jdbc.OracleDriver
       #      username: uom
       #      password: uom
-      driver-class-name: oracle.jdbc.OracleDriver
+
+      driver-class-name:  oracle.jdbc.OracleDriver
       url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
       username: octopus
       password: octopus
@@ -24,11 +35,11 @@ spring:
       initial-size: 10
       min-idle: 4
       max-active: 30
-      max-wait: 60000
-      time-between-eviction-runs-millis: 60000
+      max-wait: -1
+      time-between-eviction-runs-millis: 600000
       min-evictable-idle-time-millis: 300000
       validation-query: SELECT 1 FROM DUAL
-      validationQueryTimeout: 5
+      validationQueryTimeout: 50
       test-while-idle: true
       test-on-borrow: false
       test-on-return: false
@@ -38,7 +49,7 @@ spring:
         stat:
           enabled: true
           log-slow-sql: true
-          slow-sql-millis: 1000
+          slow-sql-millis: 10000
           merge-sql: true
         slf4j:
           enabled: true
@@ -71,7 +82,7 @@ spring:
           log-violation: true
           #对被认为是攻击的SQL抛出SQLExcepton
           throw-exception: true
-          #db-type: mysql
+          db-type: oracle
       web-stat-filter:
         enabled: true
         url-pattern: /*
@@ -94,7 +105,11 @@ spring:
         url-pattern: /druid/*
         #允许清除记录
         reset-enable: false
-#      aop-patterns: cn.ffcs.uoo.**.service.*
+  zipkin:
+    base-url: http://localhost:20010
+  sleuth:
+    sampler:
+      percentage: 1.0
   data:
     solr:
       #host: http://localhost:8888/uooSolr
@@ -106,39 +121,101 @@ spring:
     port: 5672
     username: root
     password: 123
-
+#eureka:
+#  client:
+#    service-url:
+#      #defaultZone: http://134.96.253.221:8762/eureka
+#      defaultZone: http://localhost:8762/eureka
+eureka:
+  client:
+    service-url:
+      #defaultZone: http://localhost:8762/eureka
+      defaultZone: http://134.96.253.221:8762/eureka
+    instance:
+#      prefer-ip-address: true
+#      instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
+      appname: business-organization
+      hostname: localhost
+      prefer-ip-address: true
+      instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
+      lease-expiration-duration-in-seconds: 30
+      lease-renewal-interval-in-seconds: 10
 
 mybatis-plus:
-  mapper-locations: classpath:mapper/**Mapper.xml
-  typeAliasesPackage: cn.ffcs.uoo
+  mapper-locations: classpath:mapper/*.xml
   global-config:
-    #    id-type: 1
-    #    key-generator: com.baomidou.mybatisplus.incrementer.OracleKeyGenerator
-    id-type: 1
-    field-strategy: 2
     db-column-underline: true
+    field-strategy: 2
+    id-type: 1
     refresh-mapper: true
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
+...
+### DEV END ###
 
+### FAT ###
+---
 server:
-  port: 11100
-
+  port: 30020
+spring:
+  application:
+    name: FAT-uoo-organization-1
+  profiles: FAT-uoo-organization-1
+  # 目前使用的是我的阿里云上的mysql数据库
+  datasource:
+    url: jdbc:mysql://localhost:3306/springboot?useSSL=true&useUnicode=true&characterEncoding=utf-8&verifyServerCertificate=false
+    username: root
+    password: 123456
+  zipkin:
+    base-url: http://localhost:20010
+  sleuth:
+    sampler:
+      percentage: 1.0
 eureka:
-  instance:
-    appname: business-organization
-    hostname: localhost
-    prefer-ip-address: true
-    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
-    lease-expiration-duration-in-seconds: 30
-    lease-renewal-interval-in-seconds: 10
-  server:
-    port: 8762
   client:
     service-url:
-      #defaultZone:  http://134.96.253.221:${eureka.server.port}/eureka/
-      defaultZone:  http://localhost:${eureka.server.port}/eureka/
-logging:
-  level:
-    cn.ffcs.uoo: info
+      defaultZone: http://FAT-uoo-register-1:8761/eureka/, http://FAT-uoo-register-2:8762/eureka/
+mybatis-plus:
+  mapper-locations: classpath:mapper/**Mapper.xml
+  global-config:
+      db-column-underline: true
+      field-strategy: 2
+      id-type: 1
+      refresh-mapper: true
+...
+---
+server:
+  port: 30021
+spring:
+  application:
+    name: FAT-uoo-organization-2
+  profiles: FAT-uoo-organization-2
+  # 目前使用的是我的阿里云上的mysql数据库
+  datasource:
+    url: jdbc:mysql://localhost:3306/springboot?useSSL=true&useUnicode=true&characterEncoding=utf-8&verifyServerCertificate=false
+    username: root
+    password: 123456
+  zipkin:
+    base-url: http://localhost:20010
+  sleuth:
+    sampler:
+      percentage: 1.0
+eureka:
+  client:
+    service-url:
+      defaultZone: http://FAT-uoo-register-1:8761/eureka/, http://FAT-uoo-register-2:8762/eureka/
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  global-config:
+      db-column-underline: true
+      field-strategy: 2
+      id-type: 1
+      refresh-mapper: true
+...
+### FAT END ###
+
+### PROD ###
+# 生产环境配置
+# 暂无
+### PROD END ###

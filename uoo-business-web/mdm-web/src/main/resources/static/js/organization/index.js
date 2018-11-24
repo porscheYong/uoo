@@ -4,7 +4,7 @@ var loading = new Loading();
 var setting = {
     async: {
         enable: true,
-        url: "/orgRel/getOrgRelTree?orgRootId=1",
+        url: "http://134.96.253.221:11100/orgRel/getOrgRelTree?orgRootId=1",
         autoParam: ["id"],
         type: "get",
         dataFilter: filter
@@ -71,7 +71,7 @@ function refreshResult () {
 }
 
 function initOrgRelTree () {
-    $http.get('/orgRel/getOrgRelTree', {
+    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTree', {
         orgRootId: '1'
     }, function (data) {
         console.log(data)

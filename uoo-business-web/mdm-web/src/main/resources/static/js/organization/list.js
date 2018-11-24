@@ -18,8 +18,7 @@ function getOrgExtInfo () {
 }
 
 function getOrgList (orgId) {
-    $http.get('/org/getOrgRelPage', {
-        orgTreeId: '1',
+    $http.get('http://134.96.253.221:11100/org/getOrgRelPage', {
         orgId: orgId,
         orgRootId: '1',
         pageSize: 10,
@@ -32,7 +31,7 @@ function getOrgList (orgId) {
 }
 
 function getOrgPersonnerList (orgId) {
-    $http.get('/orgPersonRel/getPerOrgRelPage', {
+    $http.get('http://134.96.253.221:11100/orgPersonRel/getPerOrgRelPage', {
         orgId: orgId,
         orgRootId: '1',
         pageSize: 10,
