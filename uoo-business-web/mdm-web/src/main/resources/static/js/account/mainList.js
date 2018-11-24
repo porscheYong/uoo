@@ -1,4 +1,5 @@
 var orgId = getQueryString('id');
+// var orgId = 1;
 var orgName = getQueryString('name');
 var fullOrgName;
 
@@ -20,6 +21,7 @@ function getOrgExtInfo() {
 
 function getUserList (orgId) {                    //获取账号列表
     $http.get('http://134.96.253.221:11100/orgPersonRel/getUserOrgRelPage', {
+        orgTreeId: '1',
         orgId: orgId,
         pageSize:2000,
         pageNo:1

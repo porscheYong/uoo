@@ -12,7 +12,7 @@ var isEdit;
 var acctHostId = 0;
 var slaveOrgList = [];
 var slaveAcctId;
-var acctExtId = "";
+var acctExtId = null;
 
 $('#sub-title').html(title);
 $('#cerType').get(0).selectedIndex=0;  //判断证件类型
@@ -51,14 +51,17 @@ function getUserInfo(){         //新增时初始化人员信息
     }, function (data) {
         initUserInfo(data);
         initOrgTable("");
-    }, function (err) {
+    }, function (message) {
+        alert(message);
+        window.history.back();
         console.log(err)
     })
 }
 
 function getAcctOrg(){          //获取从账号可选组织列表(添加组织)
     $http.get('/user/getAcctOrgByPsnId', {    
-        personnelId: personnelId
+        personnelId: personnelId,
+        orgTreeId: "1"
       }, function (data) {
         for(var i=0;i<data.length;i++){
             slaveOrgList.push(data[i].fullName);
@@ -287,6 +290,25 @@ function updateTbSlaveAcct(){       //更新从账号信息
       });
 }
 
+function deleteTbSubAcct(){     //删除从账号
+    $.ajax({
+        url: '/slaveAcct/delTbSlaveAcct?&slaveAcctId='+parseInt(acctId),
+        type: 'DELETE',
+        contentType: "application/json",
+        async:false,
+        dataType:"json",
+        success: function (data) { //返回json结果
+          console.log(data);
+          alert('删除成功');
+          window.history.back();
+        },
+        error:function(err){
+          console.log(err);
+          alert('删除失败');
+        }
+      });
+}
+
 function saveSlaveOrg(id,hostId){  //获取acctHostId
     acctHostId = hostId;
     $('#slaveOrgModal').modal('hide');
@@ -329,6 +351,7 @@ laydate.render({
 if(opBtn==0){
     $('#addText').text('更换');
     getSubUser(acctId,userType);
-}else{
+}else{      //新增
+    $('.BtnDel').css("display","none");
     getUserInfo();
 }

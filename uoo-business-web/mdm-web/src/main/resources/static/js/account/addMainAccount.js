@@ -41,6 +41,7 @@ function getAcctUser(personnelId){     //获取主账号信息(编辑或者新�
       initAddUserInfo(data);
       initOrgTable(data.acctOrgVoPage);
       initSubOrgTable(data.slaveAcctOrgVoPage);
+      $('.BtnDel').css("display","none");
       console.log('no user');
     }else{                      //编辑
       $('#main-title').html('编辑主账号');
@@ -186,7 +187,7 @@ function initAddUserInfo(results){    //初始化用户信息(新增)
   $('#cerNoTel').val(results.certNo);
 }
 
-function addTbAcct(){     //新增
+function addTbAcct(){         //新增
   if(addOrgList.length == 0){
     alert("组织不能为空");
   }else{
@@ -270,6 +271,25 @@ function updateAcct(){      //编辑主账号
         alert('编辑失败');
       }
     });
+}
+
+function deleteTbAcct(){    //删除主账号
+  $.ajax({
+    url: '/acct/deleteTbAcct?&acctId='+parseInt(acctId),
+    type: 'DELETE',
+    contentType: "application/json",
+    async:false,
+    dataType:"json",
+    success: function (data) { //返回json结果
+      console.log(data);
+      alert('删除成功');
+      window.history.back();
+    },
+    error:function(err){
+      console.log(err);
+      alert('删除失败');
+    }
+  });
 }
 
 function removeAcctOrg(orgId){   //编辑时删除组织
@@ -359,6 +379,8 @@ function deleteOrg(id){
     }
   }
 }
+
+
 
   if(opBtn==0){     //查看并编辑主账号
     getUser(acctId);
