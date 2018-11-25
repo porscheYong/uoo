@@ -6,7 +6,8 @@ $('#orgName').html(orgName);
 function getOrgPersonnerList () {
     $http.get('http://134.96.253.221:11100/orgPersonRel/getPerOrgRelPage', {
         orgId: orgId,
-        orgRootId: '1'
+        orgRootId: '1',
+        orgTreeId: '1'
     }, function (data) {
         initOrgPersonnelTable(data.records)
     }, function (err) {
@@ -28,7 +29,7 @@ function initOrgPersonnelTable (results) {
             { 'data': null, 'title': '序号', 'className': 'row-no' },
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personId + "'>" + row.psnName + "</a>";
+                    return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "'>" + row.psnName + "</a>";
                 }
             },
             { 'data': "doubleName", 'title': '重名称谓', 'className': 'row-mobile' },

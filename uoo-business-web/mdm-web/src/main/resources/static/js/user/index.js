@@ -5,7 +5,7 @@ loading.screenMaskEnable('container');
 var setting = {
     async: {
         enable: true,
-        url: "http://134.96.253.221:11100/orgRel/getOrgRelTree?orgRootId=1",
+        url: "/orgRel/getOrgRelTree?orgRootId=1&orgTreeId=1",
         autoParam: ["id"],
         type: "get",
         dataFilter: filter
@@ -52,7 +52,8 @@ function refreshResult () {
 }
 
 function initOrgRelTree (orgId) {
-    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTree', {
+    $http.get('/orgRel/getOrgRelTree', {
+        orgTreeId: orgId,
         orgRootId: orgId
     }, function (data) {
         console.log(data)
