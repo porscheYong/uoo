@@ -31,7 +31,7 @@
         C.REF_DESC refCode,
         C.REF_NAME refName,
         C.REF_CODE refCode,
-        C.PARENT_ORG_REL_TYPE_ID parentOrgRelTypeId,
+        C.PARENT_REF_CODE parentRefCode,
         C.STATUS_CD statusCd
         FROM TB_ORG_TREE A, TB_OGT_ORG_RELTYPE_CONF B, TB_ORG_REL_TYPE C
         WHERE A.STATUS_CD = '1000'
@@ -39,8 +39,8 @@
         AND C.STATUS_CD = '1000'
         AND A.ORG_TREE_ID = B.ORG_TREE_ID
         AND B.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
-        <if test="orgRootId != null and orgRootId != ''">
-          AND A.ORG_ID = #{orgRootId}
+        <if test="orgTreeId != null and orgTreeId != ''">
+          AND A.ORG_TREE_ID = #{orgTreeId}
         </if>
     </select>
 

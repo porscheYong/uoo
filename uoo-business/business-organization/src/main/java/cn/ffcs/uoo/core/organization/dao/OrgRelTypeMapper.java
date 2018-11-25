@@ -19,7 +19,7 @@ public interface OrgRelTypeMapper extends BaseMapper<OrgRelType> {
 
     public Long getId();
 
-    public OrgRelType getOrgRelType(@Param("orgRootId")String orgRootId);
+    public List<OrgRelType> getOrgRelType(@Param("orgTreeId")String orgTreeId);
 
     public List<TreeNodeVo> selectOrgRelTypeTree();
 

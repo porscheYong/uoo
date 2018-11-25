@@ -1,11 +1,7 @@
+var orgId = getQueryString('id');
+var orgName = getQueryString('name');
+var engine, template, empty, selectNode;
 
-  var orgId = getQueryString('id');
-  var orgName = getQueryString('name');
-  var engine, remoteHost, template, empty, selectNode;
-
-  $.support.cors = true;
-
-  remoteHost = 'http://134.96.253.221:11100';
   template = Handlebars.compile($("#result-template").html());
   empty = Handlebars.compile($("#empty-template").html());
 
@@ -16,7 +12,7 @@
     dupDetector: function(a, b) { return a.id_str === b.id_str; },
     // prefetch: remoteHost + '/demo/prefetch',
     remote: {
-      url: remoteHost + '/org/getOrgPage?orgRootId=1&search=%QUERY',
+      url: '/org/getOrgPage?orgRootId=1&search=%QUERY',
       wildcard: '%QUERY',
       filter: function (response) {
         // console.log('response', response)
@@ -79,8 +75,9 @@
   function  addTreeNode () {
       var loading = parent.loading;
       loading.screenMaskEnable('container');
-      $http.post('http://134.96.253.221:11100/orgRel/addOrgRel', JSON.stringify({
+      $http.post('/orgRel/addOrgRel', JSON.stringify({
           orgRootId: '1',
+          orgTreeId: '1',
           supOrgId: orgId,
           orgId: selectNode.orgId
       }), function (data) {

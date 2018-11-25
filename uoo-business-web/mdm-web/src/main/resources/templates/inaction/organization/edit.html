@@ -141,8 +141,8 @@
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="idCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">联系人</label>
-                      <input id="idCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" readonly>
+                      <label for="psonOrgVoList" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">联系人</label>
+                      <input id="psonOrgVoList" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" readonly onclick="openContactDialog()">
                     </div>
                   </div>
 
@@ -170,7 +170,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
@@ -266,6 +265,7 @@
               <div class="row" style="margin-bottom: 10px;">
                 <div style="margin-left: 17%;">
                     <button id="saveBtn" class="ui-button ui-button-primary" onclick="updateOrg()">保存</button>
+                    <button id="deleteBtn" class="ui-button ui-button-warning" style="margin-left: 10px;" onclick="deleteOrg()">删除</button>
                     <button id="cancelBtn" class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
                 </div>
               </div>
