@@ -47,7 +47,7 @@ if(typeof $.fn.tagsInput !== 'undefined'){
 
 // 获取组织树基础信息
 function getOrgTree () {
-    $http.get('http://134.96.253.221:11100/org/getOrgTree', {
+    $http.get('/org/getOrgTree', {
         orgTreeId: '1'
     }, function (data) {
         $('#orgTreeName').val(data.orgTreeName).focus();
@@ -129,7 +129,7 @@ function getOrgTreeType () {
 
 // 获取用工性质
 function getProperty () {
-    $http.get('http://134.96.253.221:11500/tbDictionaryItem/getList/PROPERTY', {}, function (data) {
+    $http.get('/tbDictionaryItem/getList/PROPERTY', {}, function (data) {
         var option = '<option></option>';
         for (var i = 0; i < data.length; i++) {
           option += "<option value='" + data[i].itemValue + "'>" + data[i].itemCnname +"</option>";

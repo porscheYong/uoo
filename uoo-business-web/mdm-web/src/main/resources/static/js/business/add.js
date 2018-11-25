@@ -142,7 +142,7 @@ function getOrgTreeType () {
 
 // 获取用工性质
 function getProperty () {
-    $http.get('http://134.96.253.221:11500/tbDictionaryItem/getList/PROPERTY', {}, function (data) {
+    $http.get('/tbDictionaryItem/getList/PROPERTY', {}, function (data) {
         var option = '<option></option>';
         for (var i = 0; i < data.length; i++) {
           option += "<option value='" + data[i].itemValue + "'>" + data[i].itemCnname +"</option>";

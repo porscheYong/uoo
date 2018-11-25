@@ -6,7 +6,7 @@ var orgTypeList;
 var positionList;
 var orgPostList;
 var checkNode;
-var selectUser;
+var selectUser = [];
 var formValidate;
 var loading = parent.loading;
 

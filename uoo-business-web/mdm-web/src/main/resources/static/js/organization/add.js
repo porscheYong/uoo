@@ -6,7 +6,7 @@ var orgTypeList;
 var positionList;
 var orgPostList;
 var checkNode;
-var selectUser;
+var selectUser = [];
 var formValidate;
 var loading = parent.loading;
 
@@ -291,7 +291,7 @@ function addOrg () {
         orgRootId: '1',
         orgTreeId: '1',
         orgId: orgId,
-        supOrgId: pid,
+        supOrgId: orgId,
         orgName: orgName,
         shortName: shortName,
         cityTown: cityTown,
@@ -310,7 +310,7 @@ function addOrg () {
         postList: post,
         orgContent: orgContent,
         orgDesc: orgDesc
-    }), function () {
+    }), function (data) {
         parent.addNodeById(orgId, data);
         parent.openTreeById(orgId, data.id);
         window.location.replace("list.html?id=" + data.id + '&pid=' + data.pid + "&name=" + encodeURI(data.name));
