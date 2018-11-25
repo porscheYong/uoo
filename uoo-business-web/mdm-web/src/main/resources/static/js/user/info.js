@@ -1,6 +1,7 @@
 var orgId = getQueryString('id');
 // var orgRootId = getQueryString('orgRootId');
 var orgRootId = 1;
+var orgTreeId = 1;
 // var personnelId = getQueryString('personnelId');
 var personnelId = 127;
 var orgName = getQueryString('name');
@@ -14,6 +15,7 @@ function getOrgPersonnerList () {
     $http.get('/personnel/getFormPersonnel', {
         orgId: orgId,
         orgRootId: orgRootId,
+        orgTreeId: orgTreeId,
         personnelId: personnelId
     }, function (data) {
         console.log(data)
