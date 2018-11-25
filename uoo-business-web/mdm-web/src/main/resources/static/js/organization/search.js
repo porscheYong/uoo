@@ -73,6 +73,13 @@ var engine, template, empty, selectNode;
   })
   
   function  addTreeNode () {
+      if (!selectNode) {
+          parent.layer.alert("请选择一个组织", {
+              skin: 'layui-layer-lan'
+              ,closeBtn: 0
+          });
+          return;
+      }
       var loading = parent.loading;
       loading.screenMaskEnable('container');
       $http.post('/orgRel/addOrgRel', JSON.stringify({

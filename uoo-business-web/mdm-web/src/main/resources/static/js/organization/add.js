@@ -321,7 +321,7 @@ function addOrg () {
 
 // 取消
 function cancel () {
-    var url = "list.html?id=" + orgId + "&name=" + row.orgName;
+    var url = "list.html?id=" + orgId + "&name=" + orgName;
     window.location.href = url;
 }
 

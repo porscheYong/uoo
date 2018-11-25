@@ -314,8 +314,8 @@ getOrgPersonnerList(orgId);
 $('#editBtn').on('click', function () {
     var url = 'edit.html?id=' + orgId + '&pid=' + pid + '&name=' + orgName;
     $(this).attr('href', url);
-})
+});
 $('#searchBtn').on('click', function () {
     var url = 'search.html?id=' + orgId  + '&pid=' + pid + '&name=' + orgName;
    $(this).attr('href', url);
-})
+});
