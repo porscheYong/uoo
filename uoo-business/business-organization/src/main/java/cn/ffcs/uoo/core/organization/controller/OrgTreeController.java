@@ -112,6 +112,14 @@ public class OrgTreeController extends BaseController {
         org.setOrgCode(orgService.getGenerateOrgCode());
         orgService.add(org);
 
+        OrgRel orgRelRoot = new OrgRel();
+        Long orgRelIdRoot = orgRelService.getId();
+        orgRelRoot.setOrgRelId(orgRelIdRoot);
+        orgRelRoot.setOrgId(orgId);
+        orgRelRoot.setRefCode(ort.getRefCode());
+        orgRelRoot.setStatusCd("1000");
+        orgRelService.add(orgRelRoot);
+
         Long orgTreeId = orgTreeService.getId();
         orgTree.setOrgTreeName(orgTree.getOrgTreeName());
         orgTree.setOrgTreeId(orgTreeId);
@@ -166,6 +174,9 @@ public class OrgTreeController extends BaseController {
 
         //新增编辑组织树组织关系
         if(treeNodeList!=null && treeNodeList.size()>0){
+//            String tarOrgTreeId = orgTree.getTarOrgTreeId();
+//            OrgTree tarOrgTree = orgTreeService.selectById(tarOrgTreeId);
+//
             for(TreeNodeVo vo : treeNodeList){
                 OrgRel orgRel = new OrgRel();
                 Long orgRefId = orgRelService.getId();
@@ -173,6 +184,8 @@ public class OrgTreeController extends BaseController {
                 orgRel.setOrgId(new Long(vo.getId()));
                 if(!StrUtil.isNullOrEmpty(vo.getPid())){
                     orgRel.setParentOrgId(new Long(vo.getPid()));
+                }else{
+                    orgRel.setParentOrgId(orgId);
                 }
                 orgRel.setRefCode(ort.getRefCode());
                 orgRel.setStatusCd("1000");
