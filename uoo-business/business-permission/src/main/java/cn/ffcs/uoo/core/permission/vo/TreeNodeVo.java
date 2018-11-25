@@ -7,7 +7,7 @@ package cn.ffcs.uoo.core.permission.vo;
  * @author ffcs-gzb
  * @since 2018/10/11
  */
-public class TreeNodeVo {
+public class  {
 
     private String id;
     private Integer state;

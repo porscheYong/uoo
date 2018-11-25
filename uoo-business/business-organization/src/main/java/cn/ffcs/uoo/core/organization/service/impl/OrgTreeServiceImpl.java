@@ -75,7 +75,7 @@ public class OrgTreeServiceImpl extends ServiceImpl<OrgTreeMapper, OrgTree> impl
 //        if(StrUtil.isNullOrEmpty(orgTree.getSort())){
 //            return "组织树排序号不能为空";
 //        }
-        if(orgTree.getUserTypeList() == null || orgTree.getUserTypeList().size()==0){
+        if(StrUtil.isNullOrEmpty(orgTree.getUserTypeId())){
             return "用工性质不能为空";
         }
         return null;
