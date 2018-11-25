@@ -85,6 +85,7 @@ public class OrgTreeController extends BaseController {
             ret.setState(ResponseResult.PARAMETER_ERROR);
             return ret;
         }
+
         List<OrgRelType> orgRelTypeList = orgTree.getOrgRelTypeList();
         List<OrgType> orgTypeList = orgTree.getOrgTypeList();
         List<String> userTtypeList = orgTree.getUserTypeList();
@@ -111,6 +112,7 @@ public class OrgTreeController extends BaseController {
         orgService.add(org);
 
         Long orgTreeId = orgTreeService.getId();
+        orgTree.setOrgTreeName(orgTree.getOrgTreeName());
         orgTree.setOrgTreeId(orgTreeId);
         orgTree.setOrgId(String.valueOf(orgId));
         orgTree.setOrgTreeType(orgTree.getOrgTreeType());
@@ -165,7 +167,7 @@ public class OrgTreeController extends BaseController {
                 orgRel.setParentOrgId(new Long(vo.getPid()));
                 orgRel.setRefCode(ort.getRefCode());
                 orgRel.setStatusCd("1000");
-                orgRel.insert();
+                orgRelService.add(orgRel);
 
                 //新增组织层级
                 Long  orgLevelId = orgLevelService.getId();
@@ -175,7 +177,7 @@ public class OrgTreeController extends BaseController {
                 orgLevel.setOrgLevel(Integer.valueOf(vo.getLevel()));
                 orgLevel.setOrgTreeId(orgTreeId);
                 orgLevel.setStatusCd("1000");
-                orgLevel.insert();
+                orgLevelService.add(orgLevel);
 
                 //组织组织树关系
                 Long orgOrgtreeRefId = orgOrgtreeRelService.getId();
@@ -184,7 +186,7 @@ public class OrgTreeController extends BaseController {
                 orgOrgtreeRef.setOrgId(new Long(vo.getId()));
                 orgOrgtreeRef.setOrgTreeId(orgTreeId);
                 orgOrgtreeRef.setStatusCd("1000");
-                orgOrgtreeRef.insert();
+                orgOrgtreeRelService.add(orgOrgtreeRef);
             }
         }
 
