@@ -1,3 +1,7 @@
+var orgId = getQueryString('orgId');
+var orgName = getQueryString('orgName');
+var hType = getQueryString('hType');
+
 var acctId = getQueryString('acctId');
 var statusCd = getQueryString('statusCd');
 var personnelId = getQueryString('personnelId');
@@ -6,8 +10,9 @@ var opBtn = getQueryString('opBtn');  // 0是编辑  1是新增
 var orgTable;
 var editOrgList = [];
 var flag = 0;
+var psw;
 
-$('#main-title').html(title);
+
 $('#invalidDate').val(''),
 $('#effectDate').val(''),
 $('#statusCd').get(0).selectedIndex=0; //判断状态，默认生效
@@ -23,7 +28,7 @@ function getUser(acctId) {           //查看并编辑主账号
         for(var i=0;i<data.acctOrgVoPage.records.length;i++){
           editOrgList.push({"orgId":data.acctOrgVoPage.records[i].orgId,"fullName":data.acctOrgVoPage.records[i].fullName});
         }
-
+        $('#main-title').html("编辑主账号");
         initOrgTable(data.acctOrgVoPage.records);
         initEditUserInfo(data);
         initSubOrgTable(data.slaveAcctOrgVoPage.records);
@@ -41,7 +46,9 @@ function getAcctUser(personnelId){     //获取主账号信息(编辑或者新�
       initAddUserInfo(data);
       initOrgTable(data.acctOrgVoPage);
       initSubOrgTable(data.slaveAcctOrgVoPage);
+      $('#main-title').html("新增主账号");
       $('.BtnDel').css("display","none");
+      $('#addSubFright').css("display","none");
       console.log('no user');
     }else{                      //编辑
       $('#main-title').html('编辑主账号');
@@ -129,7 +136,8 @@ function initSubOrgTable(results){    //从账号组织数据
         { 'data': "id", 'title': '序号', 'className': 'row-number' },
         { 'data': "slaveAcct", 'title': '账号名', 'className': 'row-acc' ,
         'render': function (data, type, row, meta) {
-            return '<a href="addSubAccount.html?acctId='+ row.slaveAcctId + '&statusCd=1000&userType=2&title=编辑从账号&opBtn=0">'+ row.slaveAcct +'</a>'
+            return '<a href="addSubAccount.html?toMainType=' + hType +'&orgName=' + orgName + '&orgId=' + orgId +'&hType=th&mainAcctId='+ acctId +
+                                  '&acctId='+ row.slaveAcctId + '&statusCd='+ row.statusCd +'&opBtn=0">'+ row.slaveAcct +'</a>'
         }
       },
         { 'data': "slaveAcctType", 'title': '账号类型', 'className': 'row-acctype' },
@@ -174,6 +182,8 @@ function initEditUserInfo(results){     //初始化用户信息(编辑)
   $('#defaultPswTel').val(results.tbAcct.password);
   $('#effectDate').val(results.tbAcct.enableDate);
   $('#invalidDate').val(results.tbAcct.disableDate);
+
+  psw = results.tbAcct.password;
 
   isEnableStatus(results.tbAcct.statusCd);  //判断状态
 
@@ -223,7 +233,7 @@ function addTbAcct(){         //新增
       success: function (data) { //返回json结果
         console.log(data);
         alert('添加成功');
-        window.history.back();
+        submitSuccess();
       },
       error:function(err){
         console.log(err);
@@ -268,7 +278,7 @@ function updateAcct(){      //编辑主账号
       success: function (data) { //返回json结果
         console.log(data);
         alert('编辑成功');
-        window.history.back();
+        submitSuccess();
       },
       error:function(err){
         console.log(err);
@@ -287,13 +297,20 @@ function deleteTbAcct(){    //删除主账号
     success: function (data) { //返回json结果
       console.log(data);
       alert('删除成功');
-      window.history.back();
+      submitSuccess();
     },
     error:function(err){
       console.log(err);
       alert('删除失败');
     }
   });
+}
+
+function isDelete(){    //询问是否删除账号
+  var r=confirm("是否删除主账号");
+  if(r == true){
+    deleteTbAcct();   //确定，删除
+  }
 }
 
 function removeAcctOrg(orgId){   //编辑时删除组织
@@ -384,6 +401,20 @@ function deleteOrg(id){
   }
 }
 
+function cancel() {   //取消按钮
+  var url = '';
+  if(hType == "mh"){  //返回mainList.html
+    url = "mainList.html?orgName=" + orgName + "&orgId=" + orgId;
+  }else if(hType == "ah"){  //返回add.html
+    url = "add.html?orgName=" + orgName + "&orgId=" + orgId;
+  }
+  window.location.href = url;
+}   
+
+function submitSuccess(){     //提交成功
+    var url = "mainList.html?orgName=" + orgName + "&orgId=" + orgId;
+    window.location.href = url;
+}
 
 
   if(opBtn==0){     //查看并编辑主账号
@@ -392,12 +423,26 @@ function deleteOrg(id){
     getAcctUser(personnelId);
   }
 
+
+
 $("#addSubAcctBtn").on('click', function () {
-  var url = 'addSubAccount.html?personnelId=' + personnelId + '&userType=2&title=新增从账号&opBtn=1';
+  var url = 'addSubAccount.html?hType=th&personnelId=' + personnelId + 
+                    '&opBtn=1&mainAcctId='+ acctId +'&orgName=' + orgName + '&orgId=' + orgId +'&toMainType=' + hType;
   $(this).attr('href', url);
 })
 
+$("#defaultPswTel").focus(function (){    //默认密码输入框获得焦点
+  if($("#defaultPswTel").attr("type") == "password"){
+    $("#defaultPswTel").val('');
+    $("#defaultPswTel").attr("type","tel");
+  }
+})
 
-
+$("#defaultPswTel").blur(function (){     //默认密码输入框失去焦点
+  if($("#defaultPswTel").val() == ''){
+    $("#defaultPswTel").val(psw);
+    $("#defaultPswTel").attr("type","password");
+  }
+})
 
 

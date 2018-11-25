@@ -110,7 +110,7 @@ function getOrgExtInfo() {
   for (var i = pathArry.length - 1; i >= 0; i--) {
       pathStr += pathArry[i] + '/'; 
   }
-  return pathStr;
+  return pathStr.toString().substring(0,pathStr.toString().length-1);;
 }
 
 function saveBtnClick(){
@@ -132,7 +132,7 @@ function saveBtnClick(){
         for(var i = 0;i < editOrgList.length; i++){
             orgNa.push(editOrgList[i].orgId);
         }
-        if(orgNa.indexOf(orgIdSelect) != -1){
+        if(orgNa.indexOf(parseInt(orgIdSelect)) != -1){
             alert("已选择该组织");
         }else{
             addAcctOrg(orgIdSelect);

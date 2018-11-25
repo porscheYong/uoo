@@ -58,6 +58,9 @@
         td,th{
             text-align: center;
         }
+        th.row-tl{
+            display: none;
+        }
         #mobileLable{
             line-height: 21px !important;
         }
@@ -66,7 +69,20 @@
         }
         .tcenter{
             text-align: left !important;
+            margin-left: -55px !important;
         }
+        table.dataTable {
+            table-layout: fixed;
+        }
+        table.dataTable tbody td {
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+      .modal-header{
+          background: #fff;
+      }
     </style>
 </head>
 
@@ -182,7 +198,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%" id='default_psw'>
                             <label for="defaultPswTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
-                            <input type="tel" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off"> 
+                            <input type="password" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off"> 
                         </div>
                     </div>
                 </div>
@@ -209,9 +225,6 @@
                         <input type="checkbox" id="extCheckBox" name="checkbox" onclick="extInfoFade()" value= "0">
                         <label for="extCheckBox" class="ui-checkbox"></label>
                     </div>
-                    <!-- <input type="checkbox" id="extCheckBox" name="checkbox" onclick="extInfoFade()">
-                    <label for="extCheckBox" class="ui-checkbox"></label><span for="male" id="extInfoTitle"
-                                            style="padding-left: 10px;font-size: 17px;font-weight: bold;">是否需要扩展信息</span> -->
                 </div>
                 
 
@@ -277,14 +290,16 @@
                 <div class="modal" id="slaveOrgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <span id="selectTile">选择组织</span>
+                            <div class="modal-header" style="border-radius:6px;">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <span id="selectTile">选择组织</span>
+                            </div>
+
                             <div id="table-container" style="width: 100%;font-size: 14px; overflow: hidden;">
                                 <table id="acctOrgTable" class="stripe" width="100%"></table>
                             </div>
-                            <!-- <div style="margin-left:20%;margin-top:10px;">
-                                <button id="saveBtn" onclick="">确定</button>
-                                <button data-dismiss="modal" id="cancelBtn">取消</button>
-                            </div> -->
 
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal -->
@@ -296,7 +311,7 @@
 
                 <div class="BoardContent tcenter">
                     <div class="FunctionBtn">
-                        <a class="BtnDel" href="#" onclick="deleteTbSubAcct()"><span></span>删除</a>
+                        <a class="BtnDel" href="#" onclick="isDelete()"><span></span>删除从账号</a>
                     </div>
                 </div>
 
@@ -307,7 +322,7 @@
                     <!-- <input type="submit" id="formSubmit" class="clip">
                     <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
                     <button class="ui-button ui-button-primary" id="opBtn" onclick="btnSubmit()">提交</button>
-                    <button class="ui-button ui-button-cancel"  onclick="window.history.back()" style="margin-left: 40px;">取消</button>
+                    <button class="ui-button ui-button-cancel"  onclick="submitToOther()" style="margin-left: 40px;">取消</button>
                 </div>
             </div>
         </div>

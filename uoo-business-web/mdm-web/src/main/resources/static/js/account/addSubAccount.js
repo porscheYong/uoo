@@ -1,7 +1,11 @@
+var orgId = getQueryString('orgId');
+var orgName = getQueryString('orgName');
+var mainAcctId = getQueryString('mainAcctId');
+var hType = getQueryString('hType');
+var toMainType = getQueryString('toMainType');
+
 var acctId = getQueryString('acctId');
-var userType = getQueryString('userType');
 var statusCd = getQueryString('statusCd');
-var title = getQueryString('title');
 var opBtn = getQueryString('opBtn');
 var personnelId = getQueryString('personnelId');
 var table;
@@ -12,8 +16,8 @@ var slaveOrgList = [];
 var slaveAcctId;
 var acctExtId = null;
 var isChecked = 0;
+var psw;
 
-$('#sub-title').html(title);
 $('#cerType').get(0).selectedIndex=0;  //判断证件类型
 $('#accTypeTel').get(0).selectedIndex=0;  //判断账号类型
 initAcctOrgTable("");
@@ -33,14 +37,15 @@ if(statusCd == "1000"){                //判断状态
   }
 
 
-function getSubUser(acctId,userType) {       //查看并编辑从账号            
+function getSubUser(acctId) {       //查看并编辑从账号            
     $http.get('/user/getUser', {   //http://192.168.58.112:18000/user/getUser
         acctId: acctId,
-        userType: userType
+        userType: "2"
     }, function (data) {
         if(data.tbAcctExt != null){
             acctExtId = data.tbAcctExt.acctExtId;
         }
+        $('#sub-title').html("编辑从账号");
         personnelId = data.personnelId;
         acctHostId = data.tbSlaveAcct.acctHostId;
         slaveAcctId = data.tbSlaveAcct.slaveAcctId;
@@ -54,14 +59,14 @@ function getSubUser(acctId,userType) {       //查看并编辑从账号
 function getUserInfo(){         //新增从账号
     $http.get('/user/getPsnUser', {    
         personnelId: personnelId,
-        userType: userType
+        userType: "2"
     }, function (data) {
+        $('#sub-title').html("新增从账号");
         initUserInfo(data);
         initOrgTable("");
-    }, function (message) {
-        alert(message);
+    }, function (data) {
         window.history.back();
-        console.log(err)
+        console.log(data)
     })
 }
 
@@ -147,10 +152,15 @@ function initOrgTable(results){
       },
       "scrollY": "240px",
       'columns': [
-          { 'data': "fullName", 'title': '可选组织', 'className': 'row-id',
+          { 'data': "fullName", 'title': '可选组织', 'className': 'row-tl',
           'render': function (data, type, row, meta) {
               num++;
-              return "<a href='javascript:void(0);' onclick='saveSlaveOrg("+ num + ","+ row.acctHostId + ")'>"+ row.fullName +'</a>' //"+ row.fullName.toString() + ",
+              if(row.fullName.search('->') != -1){
+                var s = row.fullName.replace(/->/g,'/');
+                return "<a href='javascript:void(0);' onclick='saveSlaveOrg("+ num + ","+ row.acctHostId + ")'>"+ s.substring(0,s.length-1) +'</a>'
+              }else{
+                return "<a href='javascript:void(0);' onclick='saveSlaveOrg("+ num + ","+ row.acctHostId + ")'>"+ row.fullName +'</a>'
+              }
           }
         }
       ],
@@ -184,6 +194,8 @@ function initSubInfo(results){  //编辑时初始化信息
     if(roldId != ''){
         $('#roleTel').val(roldId.substring(1,roldId.length));
     } 
+
+    psw = results.tbSlaveAcct.password;
 
      //扩展信息
     if(results.tbAcctExt != null){
@@ -245,7 +257,7 @@ function addTbSlaveAcct(){      //从账号新增
         success: function (data) { //返回json结果
           console.log(data);
           alert('新增成功');
-          window.history.back();
+          submitToOther();
         },
         error:function(err){
           console.log(err);
@@ -292,7 +304,7 @@ function updateTbSlaveAcct(){       //更新从账号信息
         success: function (data) { //返回json结果
           console.log(data);
           alert('保存成功');
-          window.history.back();
+          submitToOther();
         },
         error:function(err){
           console.log(err);
@@ -311,7 +323,7 @@ function deleteTbSubAcct(){     //删除从账号
         success: function (data) { //返回json结果
           console.log(data);
           alert('删除成功');
-          window.history.back();
+          submitToOther();
         },
         error:function(err){
           console.log(err);
@@ -319,6 +331,13 @@ function deleteTbSubAcct(){     //删除从账号
         }
       });
 }
+
+function isDelete(){    //询问是否删除账号
+    var r=confirm("是否删除从账号");
+    if(r == true){
+        deleteTbSubAcct();   //确定，删除
+    }
+  }
 
 function  hasExtInfo(certType){  //判断是否需要扩展信息
     var tbAcctExt;
@@ -387,9 +406,33 @@ function extInfoFade(){     //点击复选框
     console.log(isChecked);
 }
 
+function submitToOther(){   //提交或者取消跳转
+    var url = "";
+    if(hType == "th"){
+        url = "addMainAccount.html?hType="+ toMainType +"&opBtn=0&orgName=" + orgName + "&orgId=" + orgId + "&acctId=" + mainAcctId;   //跳转主账号编辑界面
+    }else{
+        url = "mainList.html?orgName=" + orgName + "&orgId=" + orgId;       //跳转主界面
+    }
+    window.location.href = url;
+}
+
+$("#defaultPswTel").focus(function (){    //默认密码输入框获得焦点
+    if($("#defaultPswTel").attr("type") == "password"){
+      $("#defaultPswTel").val('');
+      $("#defaultPswTel").attr("type","tel");
+    }
+  })
+  
+$("#defaultPswTel").blur(function (){     //默认密码输入框失去焦点
+    if($("#defaultPswTel").val() == ''){
+      $("#defaultPswTel").val(psw);
+      $("#defaultPswTel").attr("type","password");
+    }
+  })
+
 if(opBtn==0){
     $('#addText').text('更换');
-    getSubUser(acctId,userType);
+    getSubUser(acctId);
 }else{      //新增
     $('.BtnDel').css("display","none");
     $('#statusCd').get(0).selectedIndex=0;

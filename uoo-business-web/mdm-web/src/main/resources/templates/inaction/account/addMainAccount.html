@@ -71,19 +71,35 @@
         }
         .tcenter{
             text-align: left !important;
+            margin-left: -55px !important;
         }
+        .row-org{
+            width: 32%;
+        }
+        .row-acc{
+            width: 15%;
+        }
+        .row-number,
+        .row-state{
+            width: 11%;
+        }
+        table.dataTable {
+            table-layout: fixed;
+        }
+        table.dataTable tbody td {
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+      .modal-header{
+          background: #fff;
+      }
+        
     </style>
 </head>
 
 <body style="background: #fff;">
-    <!-- <div class="board-title">
-        <span class="name ft18">杭州分公司</span>
-        <a class="icon icon-edit" id="editBtn" style="vertical-align: top;"></a>
-    </div>
-
-    <div class="child-title" style="height:50px;">
-        <span style="color:rgb(156, 156, 156);margin-left: 1.5%;">中国电信浙江公司&nbsp>&nbsp杭州分公司</span>
-    </div>-->
 
     <div class="board-title">
         <span class="name ft18" id="main-title"></span> <!-- 主账号 -->
@@ -175,7 +191,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%" id="default_psw">
                             <label for="defaultPswTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
-                            <input type="tel" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
+                            <input type="password" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
                         </div>
                     </div>
                 </div>
@@ -210,8 +226,14 @@
                 <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <span id="selectTile">选择组织</span>
-                            <div style="height: 350px;overflow: auto;">
+                            <div class="modal-header" style="border-radius:6px;">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <span id="selectTile">选择组织</span>
+                            </div>
+
+                            <div style="height: 350px;overflow: auto;margin-top: -15px;">
                                 <div style="display: inline-block;width: 100%;padding-top: 10px;">
                                     <ul id="standardTree" class="ztree"></ul>
                                 </div>
@@ -232,7 +254,7 @@
                         <span class="name ft18">关联从账号信息</span>
                     </div>
     
-                    <div class="fright" style="margin-right:85%;margin-top:-4.5%;"> 
+                    <div class="fright" id="addSubFright" style="margin-right:85%;margin-top:-4.5%;"> 
                         <a class="button-add" id="addSubAcctBtn"><span class="fa fa-plus-circle icon-add"></span>添加从账号</a>
                     </div>
                 </div>
@@ -243,7 +265,7 @@
                 </div>
                 <div class="BoardContent tcenter">
                     <div class="FunctionBtn">
-                        <a class="BtnDel" href="#" onclick="deleteTbAcct()"><span></span>删除</a>
+                        <a class="BtnDel" href="#" onclick="isDelete()"><span></span>删除主账号</a>
                     </div>
                 </div>
             </form>
@@ -253,7 +275,7 @@
                     <!-- <input type="submit" id="formSubmit" class="clip">
                     <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
                     <button class="ui-button ui-button-primary" id="opBtn" onclick="acctSubmit()">提交</button>
-                    <button class="ui-button ui-button-cancel"  onclick="window.history.back()" style="margin-left: 40px;">取消</button>
+                    <button class="ui-button ui-button-cancel"  onclick="cancel()" style="margin-left: 40px;">取消</button>
                 </div>
             </div>
         </div>
