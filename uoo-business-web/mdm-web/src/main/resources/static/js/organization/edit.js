@@ -588,7 +588,7 @@ function updateOrg () {
   var orgDesc = $('#orgDesc').val();
   $http.post('/org/updateOrg', JSON.stringify({
       orgRootId: '1',
-      orgRootTreeId: '1',
+      orgTreeId: '1',
       orgId: orgId,
       supOrgId: pid,
       orgName: orgName,
@@ -616,6 +616,24 @@ function updateOrg () {
   }, function (err) {
 
   })
+}
+
+// 删除组织
+function deleteOrg () {
+    loading.screenMaskEnable('container');
+    $http.post('/org/updateOrg', JSON.stringify({
+        orgRootId: '1',
+        orgTreeId: '1',
+        orgId: orgId,
+        supOrgId: pid,
+        statusCd: '1100'
+    }), function () {
+        parent.deleteNode(orgId);
+        parent.selectRootNode();
+        loading.screenMaskDisable('container');
+    }, function (err) {
+
+    })
 }
 
 // 取消

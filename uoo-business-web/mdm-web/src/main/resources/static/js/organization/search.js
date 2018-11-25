@@ -77,6 +77,7 @@ var engine, template, empty, selectNode;
       loading.screenMaskEnable('container');
       $http.post('/orgRel/addOrgRel', JSON.stringify({
           orgRootId: '1',
+          orgTreeId: '1',
           supOrgId: orgId,
           orgId: selectNode.orgId
       }), function (data) {
