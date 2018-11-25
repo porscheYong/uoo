@@ -2,6 +2,7 @@ var orgId = getQueryString('id');
 var businessFrame = parent.window['business'];
 var orgCopyList = businessFrame.orgCopyList;
 var checkNode = []; //选中类别显示label标签
+var targetId = '';
 
 // 组织列表初始化
 function initBusinessList () {
@@ -14,15 +15,15 @@ function initBusinessList () {
         $('#treeList').html(option);
 
         initTree(data[0].orgTreeId);
-
+        targetId = data[0].orgTreeId;
         $('#treeList a').unbind('click').bind('click', function (event) {
             if ($(this).parent().hasClass('active') ) {
                 return;
             } else {
                 $('#treeList label.active').removeClass('active');
                 $(this).parent().addClass('active');
-                var businessId = event.target.value;
-                initTree(businessId);
+                targetId = event.target.value;
+                initTree(targetId);
             }
         })
     }, function (err) {
