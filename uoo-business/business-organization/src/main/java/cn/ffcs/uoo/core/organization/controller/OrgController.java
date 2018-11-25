@@ -148,12 +148,19 @@ public class OrgController extends BaseController {
             return ret;
         }
 
+        if(StrUtil.isNullOrEmpty(org.getSupOrgId())){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("父节点不存在");
+            return ret;
+        }
         Org supOrg = orgService.selectById(org.getSupOrgId());
         if(supOrg==null){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("父节点为空");
             return ret;
         }
+
+
 
         String fullName = "";
         if(!StrUtil.isNullOrEmpty(supOrg.getFullName())){
