@@ -10,12 +10,12 @@ function initBusinessList () {
         var option = '';
         for (var i = 0; i < data.length; i++) {
             var active = i === 0? 'active' : '';
-            option += "<label class='" + active + "'><a href='javascript:;' value='" + data[i].orgTreeId + "'>" + data[i].orgTreeName + "</label>"
+            option += "<label class='" + active + "'><a href='javascript:;' value='" + data[i].orgTreeId + "'>" + data[i].orgTreeName + "</a></label>"
         }
         $('#treeList').html(option);
 
         initTree(data[0].orgTreeId);
-        targetId = data[0].orgTreeId;
+        targetId = 1;
         $('#treeList a').unbind('click').bind('click', function (event) {
             if ($(this).parent().hasClass('active') ) {
                 return;
@@ -96,7 +96,7 @@ function onOrgRelTreeCheck (e, treeId, treeNode) {
     } else {
         var idx = checkNode.findIndex((v) => {
             return v.tId == node.tId;
-    });
+        })
         checkNode.splice(idx, 1);
     }
 }

@@ -73,3 +73,7 @@ function cancel() {
     var url = "mainList.html?orgName=" + orgName + "&orgId=" + orgId;
     window.location.href = url;
 }
+
+function addPsn(){
+    window.location.href = "/inaction/user/add.html";
+}
