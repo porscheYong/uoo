@@ -3,8 +3,6 @@ var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var orgRelTypeList = [];
 var orgTypeList = [];
-var orgCopyList = [];
-var tarOrgTreeId = '';
 var formValidate;
 var loading = parent.loading;
 
@@ -31,10 +29,10 @@ seajs.use('/vendors/lulu/js/common/ui/Select', function () {
 })
 
 seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
-    var businessAddForm = $('#businessAdd');
-    formValidate = new Validate(businessAddForm);
+    var businessEditForm = $('#businessEdit');
+    formValidate = new Validate(businessEditForm);
     formValidate.immediate();
-    businessAddForm.find(':input').each(function () {
+    businessEditForm.find(':input').each(function () {
         $(this).hover(function () {
             formValidate.isPass($(this));
         });
@@ -45,7 +43,23 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 if(typeof $.fn.tagsInput !== 'undefined'){
   $('#orgRelType').tagsInput();
   $('#orgType').tagsInput();
-  $('#copyTree').tagsInput();
+}
+
+// 获取组织树基础信息
+function getOrgTree () {
+    $http.get('http://134.96.253.221:11100/org/getOrgTree', {
+        orgTreeId: '1'
+    }, function (data) {
+        $('#orgTreeName').val(data.orgTreeName).focus();
+        getProperty(data.userTypeList);
+        $('#sort').val(data.sort);
+        orgRelTypeList = data.orgRelTypeList;
+        orgTypeList = data.orgTypeList;
+        $('#orgRelType').addTag(orgRelTypeList);
+        $('#orgType').addTag(orgTypeList);
+    }, function (err) {
+        console.log(err)
+    })
 }
 
 //组织关系类型选择
@@ -98,33 +112,6 @@ function openTypeDialog() {
     });
 }
 
-//拷贝组织节点
-function openCopyDialog() {
-    parent.layer.open({
-        type: 2,
-        title: '拷贝组织节点',
-        shadeClose: true,
-        shade: 0.8,
-        area: ['70%', '85%'],
-        maxmin: true,
-        content: 'copyDialog.html?id=' + orgId,
-        btn: ['确认', '取消'],
-        yes: function(index, layero){
-            //获取layer iframe对象
-            var iframeWin = parent.window[layero.find('iframe')[0].name];
-            checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
-            $('#copyTree').importTags(checkNode);
-            $('.ui-tips-error').css('display', 'none');
-            tarOrgTreeId = iframeWin.targetId;
-            orgCopyList = checkNode;
-        },
-        btn2: function(index, layero){},
-        cancel: function(){}
-    });
-}
-
-
 // 获取组织树类型数据
 function getOrgTreeType () {
     $http.get('/tbDictionaryItem/getList/ORG_TREE_TYPE', {}, function (data) {
@@ -175,17 +162,7 @@ function addOrgTree () {
     //拷贝组织节点
     for (var i = 0; i < orgCopyList.length; i++) {
         var id = orgCopyList[i].id;
-        var pid = orgCopyList[i].pid;
-        var name = orgCopyList[i].name;
-        var level = orgCopyList[i].level;
-        var checked = orgCopyList[i].checked;
-        copyList.push({
-            id: id,
-            pid: pid,
-            name: name,
-            level: level,
-            checked: checked
-        });
+        copyList.push({id: id});
     }
     var orgTreeName = $('#orgTreeName').val();
     var orgTreeType = $('#orgTreeType option:selected') .val();
@@ -199,8 +176,7 @@ function addOrgTree () {
         sort: sort,
         userTypeId: userType,
         orgTypeList: orgType,
-        treeNodeList: copyList,
-        tarOrgTreeId: tarOrgTreeId
+        tarOrgTreeId: copyList
     }), function () {
         // parent.changeNodeName(orgId, orgName);
         // window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
@@ -216,5 +192,6 @@ function cancel () {
     window.location.href = url;
 }
 
+getOrgTree(1);
 getOrgTreeType();
 getProperty();
