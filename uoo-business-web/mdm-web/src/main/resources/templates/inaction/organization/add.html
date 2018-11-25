@@ -28,6 +28,27 @@
     <script src="/js/core/respond.js"></script>
     <script src="/js/core/excanvas.js"></script>
     <![endif]-->
+    <style type="text/css">
+      table.dataTable {
+        table-layout: fixed;
+      }
+
+      th {
+        text-align: center;
+        white-space: nowrap;
+      }
+      table.dataTable tbody td {
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      #locId, #orgTypeList, #positionList, #postList {
+        opacity: 0;
+        filter: alpha(opacity=0);
+        position: absolute;
+      }
+    </style>
   </head>
 
   <body style="background: #fff;">
@@ -48,16 +69,14 @@
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="orgName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织名称</label>
-                      <input id="orgName" class="ui-input col-md-8 col-sm-8 col-xs-12 error" required>
+                      <input id="orgName" class="ui-input col-md-8 col-sm-8 col-xs-12" required>
                     </div>
                   </div>
 
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="orgScale" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">规模</label>
-                      <select id="orgScale"  class="col-md-8 col-sm-8 col-xs-12">
-
-                      </select>
+                      <label for="orgCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织编码</label>
+                      <input id="orgCode" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
                     </div>
                   </div>
                 </div>
@@ -65,14 +84,14 @@
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="shortName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织简称</label>
-                      <input id="shortName" class="ui-input col-md-8 col-sm-8 col-xs-12 error" required>
+                      <input id="shortName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" required>
                     </div>
                   </div>
 
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="orgNameEn" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">英文简称</label>
-                      <input id="orgNameEn" class="ui-input col-md-8 col-sm-8 col-xs-12">
+                      <label for="fullName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织全称</label>
+                      <input id="fullName" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
                     </div>
                   </div>
                 </div>
@@ -80,8 +99,24 @@
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="cityTown" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">城乡属性</label>
-                      <select id="cityTown" class="col-md-8 col-sm-8 col-xs-12 error" required>
+                      <select id="cityTown" class="col-md-8 col-sm-8 col-xs-12" required>
 
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-item" style="width: 100%">
+                      <label for="" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">划小组织编码</label>
+                      <input id="" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px;">
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-item" style="width: 100%">
+                      <label for="orgScale" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">规模</label>
+                      <select id="orgScale" class="col-md-8 col-sm-8 col-xs-12">
                       </select>
                     </div>
                   </div>
@@ -89,24 +124,22 @@
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="createDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">成立时间</label>
-                      <input id="createDate" class="ui-input col-md-8 col-sm-8 col-xs-12">
+                      <input id="createDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40">
                     </div>
                   </div>
                 </div>
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="locId" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">行政管理区域</label>
-                      <select id="locId"  class="col-md-8 col-sm-8 col-xs-12">
-
-                      </select>
+                      <label for="psonOrgVoList" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">联系人</label>
+                      <input id="psonOrgVoList" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" readonly onclick="openContactDialog()">
                     </div>
                   </div>
 
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="psonOrgVoList" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">联系人</label>
-                      <input id="psonOrgVoList" class="ui-input col-md-8 col-sm-8 col-xs-12" readonly onclick="personChoose()">
+                      <label for="orgNameEn" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">英文简称</label>
+                      <input id="orgNameEn" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" >
                     </div>
                   </div>
                 </div>
@@ -114,8 +147,8 @@
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="orgPositionLevel" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织最高岗位级别</label>
-                      <select id="orgPositionLevel" class="col-md-8 col-sm-8 col-xs-12">
-
+                      <select id="orgPositionLevel"  class="col-md-8 col-sm-8 col-xs-12">
+                        <option></option>
                       </select>
                     </div>
                   </div>
@@ -123,35 +156,31 @@
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="officePhone" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织办公电话</label>
-                      <input id="officePhone" class="ui-input col-md-8 col-sm-8 col-xs-12">
+                      <input id="officePhone" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40">
                     </div>
                   </div>
                 </div>
-
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="statusCd" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
-                      <select id="statusCd"  class="col-md-8 col-sm-8 col-xs-12">
-
-                      </select>
+                      <label for="statusCd" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
+                      <select id="statusCd"  class="col-md-8 col-sm-8 col-xs-12" required></select>
                     </div>
                   </div>
 
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="sort" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">排序</label>
-                      <input id="sort" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code">
+                      <input id="sort" class="ui-input col-md-8 col-sm-8 col-xs-12" type="number" size="40" name="code">
                     </div>
                   </div>
                 </div>
-
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="address" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">地址</label>
                       <div class="col-md-10 col-sm-10 col-xs-12" style="width: 84%;position: relative;padding: 0;">
-                        <input id="address" class="ui-input" style="width: 100%;position: relative;">
+                        <input id="address" class="ui-input" style="width: 100%;position: relative;" size="40">
                       </div>
                     </div>
                   </div>
@@ -159,27 +188,37 @@
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="orgTypeList" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织类别</label>
-                      <input id="orgTypeList" class="ui-input col-md-10 col-sm-10 col-xs-12 error" style="width: 84%">
+                      <label for="locId" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">行政管理区域</label>
+                      <input id="locId" class="ui-input col-md-10 col-sm-10 col-xs-12" style="width: 84%" onclick="openLocationDialog()" required readonly>
                     </div>
                   </div>
                 </div>
-                <!--<div class="row" style="margin-bottom: 10px;">-->
-                  <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
-                    <!--<div class="form-item" style="width: 100%">-->
-                      <!--<label for="positionList" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织岗位</label>-->
-                      <!--<input id="positionList" class="ui-input col-md-10 col-sm-10 col-xs-12 error" style="width: 84%" required data-toggle="modal" data-target="#myModal">-->
-                    <!--</div>-->
-                  <!--</div>-->
-                <!--</div>-->
-                <!--<div class="row" style="margin-bottom: 10px;">-->
-                  <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
-                    <!--<div class="form-item" style="width: 100%">-->
-                      <!--<label for="postList" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织职位</label>-->
-                      <!--<input id="postList" class="ui-input col-md-10 col-sm-10 col-xs-12 error" style="width: 84%" required data-toggle="modal" data-target="#myModal">-->
-                    <!--</div>-->
-                  <!--</div>-->
-                <!--</div>-->
+                <div class="row" style="margin-bottom: 10px;">
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-item" style="width: 100%">
+                      <label for="orgTypeList" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织类别</label>
+                      <!--<div id="orgTypeList" class="ui-input col-md-10 col-sm-10 col-xs-12 tagsinput" style="width: 84%; height: auto; min-height: 40px; border: 1px solid #ababaf; border-radius: 4px;" onclick="openTypeDialog()" required></div>-->
+                      <input id="orgTypeList" class="ui-input col-md-10 col-sm-10 col-xs-12" style="width: 84%" onclick="openTypeDialog()" required readonly></input>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px;">
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-item" style="width: 100%">
+                      <label for="positionList" class="form-item-label-required form-item-label col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织岗位</label>
+                      <input id="positionList" class="ui-input col-md-10 col-sm-10 col-xs-12 " style="width: 84%;" onclick="openPositionDialog()" required readonly></input>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px;">
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-item" style="width: 100%">
+                      <label for="postList" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织职位</label>
+                      <!--<div id="postList" class="ui-input col-md-10 col-sm-10 col-xs-12 tagsinput" style="width: 84%; height: auto; min-height: 40px; border: 1px solid #ababaf; border-radius: 4px;" onclick="openPostDialog()" required></div>-->
+                      <input id="postList" class="ui-input col-md-10 col-sm-10 col-xs-12 tagsinput" style="width: 84%;" onclick="openPostDialog()" required readonly></input>
+                    </div>
+                  </div>
+                </div>
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-item" style="width: 100%">
@@ -191,13 +230,12 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="orgContent" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织描述</label>
+                      <label for="orgDesc" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织描述</label>
                       <div class="ui-textarea-x" class="col-md-10 col-sm-10 col-xs-12" style="width: 84%">
-                        <textarea id="orgContent" maxlength="140" rows="5"></textarea>
+                        <textarea id="orgDesc" maxlength="140" rows="5"></textarea>
                         <div class="ui-textarea"></div>
                       </div>
                     </div>

@@ -1,6 +1,7 @@
 // loadingMask
 var loading = new Loading();
 var orgRootId; //业务组织ID
+var orgTreeId; //业务组织ID
 var businessName; //业务名
 var orgId, //组织ID
     orgName, //组织名
@@ -75,20 +76,20 @@ function initBusinessList () {
         initTree(data[0].orgTreeId);
         businessName = data[0].orgTreeName;
         $('#businessOrg').unbind('change').bind('change', function (event) {
-            businessName = event.target.options[event.target.options.selectedIndex].value;
-            initTree(value);
+            orgTreeId = event.target.options[event.target.options.selectedIndex].value;
+            initTree(orgTreeId);
         })
     }, function (err) {
         console.log(err)
     })
 }
 
-function initTree (businessId) {
+function initTree (orgTreeId) {
     //树参数设定
     var setting = {
         async: {
             enable: true,
-            url: "/orgRel/getOrgRelTree?orgRootId=" + businessId + "&orgTreeId" + businessId,
+            url: "/orgRel/getOrgRelTree?orgRootId=" + orgTreeId + "&orgTreeId=" + orgTreeId,
             autoParam: ["id"],
             type: "get",
             dataFilter: filter
@@ -114,8 +115,8 @@ function initTree (businessId) {
         }
     };
     $http.get('/orgRel/getOrgRelTree', {
-        orgRootId: businessId,
-        orgTreeId: businessId
+        orgRootId: orgTreeId,
+        orgTreeId: orgTreeId
     }, function (data) {
         $.fn.zTree.init($("#businessTree"), setting, data);
         var zTree = $.fn.zTree.getZTreeObj("businessTree");
@@ -130,7 +131,7 @@ function initTree (businessId) {
 
 //跳转页面至新增业务树
 function addBusiness () {
-    var url = "add.html?id=" + orgId + "&name=" + encodeURI(businessName);
+    var url = "add.html?id=" + orgId +"&orgTreeId=" + orgTreeId + "&name=" + encodeURI(businessName);
     $('#businessFrame').attr("src",url);
 }
 initBusinessList();

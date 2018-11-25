@@ -2,6 +2,7 @@ var orgId = getQueryString('id');
 var businessFrame = parent.window['business'];
 var orgCopyList = businessFrame.orgCopyList;
 var checkNode = []; //选中类别显示label标签
+var targetId = '';
 
 // 组织列表初始化
 function initBusinessList () {
@@ -9,20 +10,20 @@ function initBusinessList () {
         var option = '';
         for (var i = 0; i < data.length; i++) {
             var active = i === 0? 'active' : '';
-            option += "<label class='" + active + "'><a href='javascript:;' value='" + data[i].orgTreeId + "'>" + data[i].orgTreeName + "</label>"
+            option += "<label class='" + active + "'><a href='javascript:;' value='" + data[i].orgTreeId + "'>" + data[i].orgTreeName + "</a></label>"
         }
         $('#treeList').html(option);
 
         initTree(data[0].orgTreeId);
-
+        targetId = 1;
         $('#treeList a').unbind('click').bind('click', function (event) {
             if ($(this).parent().hasClass('active') ) {
                 return;
             } else {
                 $('#treeList label.active').removeClass('active');
                 $(this).parent().addClass('active');
-                var businessId = event.target.value;
-                initTree(businessId);
+                targetId = event.target.value;
+                initTree(targetId);
             }
         })
     }, function (err) {
@@ -95,7 +96,7 @@ function onOrgRelTreeCheck (e, treeId, treeNode) {
     } else {
         var idx = checkNode.findIndex((v) => {
             return v.tId == node.tId;
-    });
+        })
         checkNode.splice(idx, 1);
     }
 }

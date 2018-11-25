@@ -75,8 +75,9 @@ function openContactDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            selectUser = iframeWin.getSelectUser();
-            if (selectUser.length > 0) {
+            var selectObj = iframeWin.getSelectUser();
+            if (selectObj.length > 0) {
+                selectUser = selectObj;
                 $('#psonOrgVoList').val(selectUser[0].psnName);
             }
             parent.layer.close(index);
@@ -486,15 +487,26 @@ function getOrgPostLevel (orgPositionLevel) {
 
 // 获取状态数据
 function getStatusCd (statusCd) {
-    var statusArry = [{"itemValue":"1000","itemCnname":"有效"},
-                       {"itemValue":"1100","itemCnname":"无效"}];
-    var option = '';
-    for (var i = 0; i < statusArry.length; i++) {
-        var select = statusCd === statusArry[i].itemValue? 'selected' : '';
-        option += "<option value='" + statusArry[i].itemValue + "' " + select + ">" + statusArry[i].itemCnname +"</option>";
-    }
-    $('#statusCd').append(option);
-    $('#statusCd').selectMatch();
+    // var statusArry = [{"itemValue":"1000","itemCnname":"有效"},
+    //                    {"itemValue":"1100","itemCnname":"无效"}];
+    // var option = '';
+    // for (var i = 0; i < statusArry.length; i++) {
+    //     var select = statusCd === statusArry[i].itemValue? 'selected' : '';
+    //     option += "<option value='" + statusArry[i].itemValue + "' " + select + ">" + statusArry[i].itemCnname +"</option>";
+    // }
+    // $('#statusCd').append(option);
+    // $('#statusCd').selectMatch();
+    $http.get('/tbDictionaryItem/getList/STATUS_CD', {}, function (data) {
+        var option = '';
+        for (var i = 0; i < data.length; i++) {
+            var select = statusCd === data[i].itemValue? 'selected' : '';
+            option += "<option value='" + data[i].itemValue + "' " + select + ">" + data[i].itemCnname +"</option>";
+        }
+        $('#statusCd').append(option);
+        $('#statusCd').selectMatch();
+    }, function (err) {
+        console.log(err)
+    })
 }
 
 // 获取组织基础信息
@@ -563,7 +575,27 @@ function updateOrg () {
   if (!formValidate.isAllPass())
       return;
   loading.screenMaskEnable('container');
+  var userList = [];
+  var position = [];
+  var post = [];
   var orgType = [];
+  //联系人
+  for (var i = 0; i < selectUser.length; i++) {
+      userList.push({personnelId: selectUser[i].personnelId});
+  }
+    //组织岗位
+    for (var i = 0; i < positionList.length; i++) {
+        position.push({positionId: positionList[i].positionId});
+    }
+    //组织职位
+    for (var i = 0; i < orgPostList.length; i++) {
+        post.push({postId: orgPostList[i].postId});
+    }
+    //行政管理区域
+    for (var i = 0; i < selectUser.length; i++) {
+        orgType.push({orgTypeId: selectUser[i].personnelId});
+    }
+  //组织类别
   for (var i = 0; i < orgTypeList.length; i++) {
       var orgTypeId = orgTypeList[i].orgTypeId || orgTypeList[i].id;
       orgType.push({orgTypeId: orgTypeId});
@@ -578,7 +610,6 @@ function updateOrg () {
   if (date) {
       createDate = new Date(date).getTime();
   }
-  var locId = $('#locId option:selected') .val();
   var orgPositionLevel = $('#orgPositionLevel option:selected') .val();
   var officePhone = $('#officePhone').val();
   var statusCd = $('#statusCd option:selected') .val();
@@ -596,7 +627,7 @@ function updateOrg () {
       cityTown: cityTown,
       orgScale: orgScale,
       createDate: createDate,
-      psonOrgVoList: selectUser,
+      psonOrgVoList: userList,
       orgNameEn: orgNameEn,
       orgPositionLevel: orgPositionLevel,
       officePhone: officePhone,
@@ -605,8 +636,8 @@ function updateOrg () {
       address: address,
       locId: locationList[0].id,
       orgTypeList: orgType,
-      positionList: positionList,
-      postList: orgPostList,
+      positionList: position,
+      postList: post,
       orgContent: orgContent,
       orgDesc: orgDesc
   }), function () {

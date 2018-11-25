@@ -2,7 +2,6 @@ package cn.ffcs.uoo.web.maindata.organization.dto;
 
 
 
-
 import java.io.Serializable;
 import java.util.List;
 

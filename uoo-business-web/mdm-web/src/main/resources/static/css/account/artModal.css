@@ -1,8 +1,8 @@
 #myModal > .modal-dialog > .modal-content{
-    margin-top: 45px !important;
+    margin-top: 40px !important;
     margin-left:32% !important;
     width:300px;
-    height:450px;
+    height:440px;
 }
 
 #myModal > .modal-dialog > .modal-content #saveBtn{
@@ -17,7 +17,7 @@
     border-radius:4px;
     cursor:pointer;
     vertical-align:middle;
-    margin-left: 50px;
+    margin-left: 58px;
 }
 
 #myModal > .modal-dialog > .modal-content #cancelBtn{

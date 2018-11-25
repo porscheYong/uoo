@@ -64,7 +64,7 @@ public class OrgRelTypeController extends BaseController {
                 .eq("STATUS_CD","1000")
                 .eq("PARENT_ORG_REL_TYPE_ID",orgRefType.getOrgRelTypeId());
         List<OrgRelType> orgRefTypeList = orgRefTypeService.selectList(orgRefTypeListWrapper);
-
+        
         ret.setState(ResponseResult.STATE_OK);
         ret.setData(orgRefTypeList);
         ret.setMessage("查询成功");

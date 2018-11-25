@@ -26,8 +26,8 @@ public class OrgRelTypeServiceImpl extends ServiceImpl<OrgRelTypeMapper, OrgRelT
     }
 
     @Override
-    public OrgRelType getOrgRelType(String orgRootId){
-        return baseMapper.getOrgRelType(orgRootId);
+    public List<OrgRelType> getOrgRelType(String orgTreeId){
+        return baseMapper.getOrgRelType(orgTreeId);
     }
 
     @Override

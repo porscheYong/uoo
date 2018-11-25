@@ -43,6 +43,28 @@
         </if>
     </select>
 
+
+    <select id="getOrgTypeByOrgTreeId" resultType="cn.ffcs.uoo.core.organization.entity.OrgType">
+        SELECT  B.ORG_TYPE_ID orgTypeId,
+        B.ORG_TYPE_CODE orgTypeCode,
+        B.ORG_TYPE_NAME orgTypeName,
+        B.ORG_TYPE_DESC orgTypeDesc,
+        B.PARENT_ORG_TYPE_ID parentOrgTypeId,
+        A.STATUS_CD statusCd,
+        A.CREATE_DATE createDate,
+        A.CREATE_USER createUser,
+        A.UPDATE_DATE updateDate,
+        A.UPDATE_USER updateUser,
+        A.STATUS_DATE statusDate
+        FROM TB_OGT_ORGTYPE_CONF A, TB_ORG_TYPE B
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND A.ORG_TYPE_ID = B.ORG_TYPE_ID
+        <if test="orgTreeId != null || orgTreeId != ''">
+            AND A.ORG_TREE_ID = #{orgTreeId}
+        </if>
+    </select>
+
     <!--查询组织类别树-->
     <select id="selectOrgTypeTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
         select T.ORG_TYPE_ID id, T.PARENT_ORG_TYPE_ID pid, T.ORG_TYPE_NAME name

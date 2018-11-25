@@ -19,7 +19,8 @@ public interface OrgRelTypeService extends IService<OrgRelType> {
 
     public Long getId();
 
-    public OrgRelType getOrgRelType(String orgRootId);
+    public List<OrgRelType> getOrgRelType(String orgTreeId);
 
     public List<TreeNodeVo> selectOrgRelTypeTree(String refCode);
+
 }
