@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>添加子节点</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/vendors/typeahead/typeahead.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="/js/core/html5shiv.js"></script>
+    <script src="/js/core/respond.js"></script>
+    <script src="/js/core/excanvas.js"></script>
+    <![endif]-->
+  </head>
+
+  <body style="background: #fff;">
+      <div style="height: 100%;">
+        <div class="board-title">
+          <span class="name ft18" id="orgName"></span
+          ><div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;"></div>
+        </div>
+
+        <div class="board-title">
+          <span class="name ft18">添加子节点</span>
+        </div>
+        <div style="width: 100%; height: 100%; font-size: 14px; overflow: hidden; margin-top: 50px;">
+          <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="form-item" style="width: 100%">
+                <label for="idTel" class="col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">选择组织</label>
+                <!-- <input type="tel" id="idTel" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="tel"> -->
+                <div class="typeahead col-md-4 col-sm-4 col-xs-12">
+                  <div class="pos-relative">
+                    <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
+                    <input class="ui-input typeahead-input tt-input" id="demo-input" type="text" name="q" placeholder="输入组织名称" autocomplete="off" spellcheck="false" dir="auto">
+                    <img class="typeahead-spinner" src="img/spinner.gif" style="display: none;">
+                  </div>
+                  <div class="typeahead-menu">
+                    <!-- <div class="tt-dataset tt-dataset-0">
+                      <div class="ProfileCard u-cf typeahead-suggestion typeahead-selectable">
+                        <div class="ProfileCard-details">
+                          <div class="ProfileCard-realName">电子渠道部</div>
+                          <div class="ProfileCard-screenName">057116112</div>
+                          <div class="ProfileCard-description">杭州分公司-市场部</div>
+                          <div class="ProfileCard-stat"><span class="ProfileCard-stat-label">2018-09-28 15:20</span> 创建</div>
+                          <div class="ProfileCard-stat">有效</div>
+                        </div>
+                      </div>
+                      <div class="ProfileCard u-cf typeahead-suggestion typeahead-selectable">
+                        <div class="ProfileCard-details">
+                          <div class="ProfileCard-realName">Jake</div>
+                          <div class="ProfileCard-screenName">@JakeHarding</div>
+                          <div class="ProfileCard-description">heir to the hormel chili empire</div>
+                        </div>
+
+                        <div class="ProfileCard-stats">
+                          <div class="ProfileCard-stat"><span class="ProfileCard-stat-label">Tweets:</span> 1326</div>
+                          <div class="ProfileCard-stat"><span class="ProfileCard-stat-label">Following:</span> 770</div>
+                          <div class="ProfileCard-stat"><span class="ProfileCard-stat-label">Followers:</span> 502</div>
+                        </div>
+                      </div>
+                      <div class="ProfileCard u-cf typeahead-suggestion typeahead-selectable">
+                        <div class="ProfileCard-details">
+                          <div class="ProfileCard-realName">Tim Trueman</div>
+                          <div class="ProfileCard-screenName">@timtrueman</div>
+                          <div class="ProfileCard-description">Lost in bytecode translation</div>
+                        </div>
+
+                        <div class="ProfileCard-stats">
+                          <div class="ProfileCard-stat"><span class="ProfileCard-stat-label">Tweets:</span> 10531</div>
+                          <div class="ProfileCard-stat"><span class="ProfileCard-stat-label">Following:</span> 697</div>
+                          <div class="ProfileCard-stat"><span class="ProfileCard-stat-label">Followers:</span> 5568</div>
+                        </div>
+                      </div>
+                      <div class="ProfileCard u-cf typeahead-suggestion typeahead-selectable">
+                        <div class="ProfileCard-details">
+                          <div class="ProfileCard-realName">Veljko Skarich</div>
+                          <div class="ProfileCard-screenName">@vskarich</div>
+                          <div class="ProfileCard-description">ex @twitter, ex @digg, ex @yc fellowship. Most recently founder of Swarm, a bot detection startup acquired by @integralads.</div>
+                        </div>
+
+                        <div class="ProfileCard-stats">
+                          <div class="ProfileCard-stat"><span class="ProfileCard-stat-label">Tweets:</span> 726</div>
+                          <div class="ProfileCard-stat"><span class="ProfileCard-stat-label">Following:</span> 612</div>
+                          <div class="ProfileCard-stat"><span class="ProfileCard-stat-label">Followers:</span> 671</div>
+                        </div>
+                      </div>
+                    </div> -->
+                  </div>
+                </div>
+                <div class="form-item-label col-md-5 col-sm-5 col-xs-12" style="padding-right: 20px;line-height: 40px;">
+                  <div>
+                    <a class="button-add" id="addBtn" href=""><span class="fa fa-plus-circle icon-add"></span>新增组织</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="btn-group col-md-offset-3">
+            <button class="ui-button ui-button-primary" onclick="addTreeNode()">保存</button>
+            <button class="ui-button ui-button-cancel" data-dismiss="modal" style="margin-left: 10px;" onclick="cancel()">取消</button>
+          </div>
+        </div>
+      </div>
+
+    <script id="result-template" type="text/x-handlebars-template">
+      <div class="ProfileCard u-cf">
+        <div class="ProfileCard-details">
+          <div class="ProfileCard-realName">{{orgName}}</div>
+          <div class="ProfileCard-screenName">{{orgCode}}</div>
+          <div class="ProfileCard-description">{{fullName}}</div>
+          <div class="ProfileCard-stat"><span class="ProfileCard-stat-label">createDate</span> 创建</div>
+          <div class="ProfileCard-stat">有效</div>
+        </div>
+      </div>
+    </script>
+
+    <script id="empty-template" type="text/x-handlebars-template">
+      <div class="EmptyMessage">请输入关键字</div>
+    </script>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- handlebars -->
+    <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
+    <!-- typeahead -->
+    <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
+    <!-- init -->
+    <script type="text/javascript" src="/js/init.js"></script>
+    <script type="text/javascript" src="/js/business/search.js"></script>
+	
+  </body>
+</html>

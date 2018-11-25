@@ -123,8 +123,7 @@ function changeNodeName(orgId, name) {
 function deleteNode(orgId) {
     var zTree = $.fn.zTree.getZTreeObj("standardTree");
     var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-    zTree.cancelSelectedNode(selectNode);
-    var node = zTree.getNodeByTId(tId);
+    zTree.removeNode(selectNode);
 }
 
 // 选择根节点

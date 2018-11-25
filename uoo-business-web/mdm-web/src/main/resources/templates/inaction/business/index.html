@@ -29,14 +29,17 @@
   </head>
 
   <body class="nav-md">
-    <div class="container">
+    <div class="container" id="container">
       <div class="main-container">
         <div class="content-left" style="overflow: auto;">
           <div style="display: inline-block;width: 100%;padding-top: 10px;">
             <div style="padding-left: 15px;">
-              <select id="businessOrg" class="col-md-11 col-sm-11 col-xs-11" style="margin-left: 10px;">
+              <select id="businessOrg" class="col-md-9 col-sm-9 col-xs-11" style="margin-left: 10px;">
 
               </select>
+              <div style="text-align: center;padding-top: 8px;">
+                <a class="icon icon-edit" style="vertical-align: top;" href="javascript:void(0)" onclick="orgTreeEdit()"></a>
+              </div>
               <div class="clearfix"></div>
             </div>
             <ul id="businessTree" class="ztree"></ul>

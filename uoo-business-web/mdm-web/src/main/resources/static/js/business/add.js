@@ -1,6 +1,8 @@
 var orgId = getQueryString('id');
+var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
+var orgTypeTreeName = getQueryString('treeName');
 var orgRelTypeList = [];
 var orgTypeList = [];
 var orgCopyList = [];
@@ -22,7 +24,7 @@ function getOrgExtInfo () {
     }
     $('.breadcrumb').html(pathStr);
 }
-$('.orgName').html(orgName);
+$('#orgTypeTreeName').html(orgTypeTreeName);
 getOrgExtInfo();
 
 // lulu ui select插件
@@ -202,17 +204,17 @@ function addOrgTree () {
         treeNodeList: copyList,
         tarOrgTreeId: tarOrgTreeId
     }), function () {
-        // parent.changeNodeName(orgId, orgName);
-        // window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
+        parent.initBusinessList();
         loading.screenMaskDisable('container');
     }, function (err) {
-
+        console.log(err);
+        loading.screenMaskDisable('container');
     })
 }
 
 // 取消
 function cancel () {
-    var url = "list.html?id=" + orgId + "&name=" + row.orgName;
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&name=" + orgName;
     window.location.href = url;
 }
 

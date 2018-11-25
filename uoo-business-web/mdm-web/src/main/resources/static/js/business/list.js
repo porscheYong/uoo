@@ -1,4 +1,5 @@
 var orgId = getQueryString('id');
+var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 
@@ -17,34 +18,6 @@ function getOrgExtInfo () {
     $('.breadcrumb').html(pathStr);
 }
 
-function getOrgList (orgId) {
-    $http.get('/org/getOrgRelPage', {
-        orgId: orgId,
-        orgRootId: '1',
-        orgTreeId: '1',
-        pageSize: 10,
-        pageNo: 1
-    }, function (data) {
-        initOrgTable(data.records)
-    }, function (err) {
-        console.log(err)
-    })
-}
-
-function getOrgPersonnerList (orgId) {
-    $http.get('/orgPersonRel/getPerOrgRelPage', {
-        orgId: orgId,
-        orgRootId: '1',
-        orgTreeId: '1',
-        pageSize: 10,
-        pageNo: 1
-    }, function (data) {
-        initOrgPersonnelTable(data.records)
-    }, function (err) {
-        console.log(err)
-    })
-}
-
 function initOrgTable (results) {
     var table = $("#orgTable").DataTable({
         'data': results,
@@ -58,27 +31,26 @@ function initOrgTable (results) {
         'columns': [
             { 'data': "orgName", 'title': '部门', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return '<a href="list.html?id='+ row.orgId +'&name=' + row.orgName + '" onclick="parent.openTreeById('+orgId+','+row.orgId+')">'+ row.orgName +'</a>'
+                    return '<a href="list.html?id='+ row.orgId + '&orgTreeId=' + orgTreeId + '&name=' + row.orgName + '" onclick="parent.openTreeById('+orgId+','+row.orgId+')">'+ row.orgName +'</a>'
                 }
             },
             { 'data': "orgTypeSplit",
                 'title': '组织类别',
-                'className': 'row-sex',
-                // 'render': function (data) {
-                //   return data[0].orgTypeName
-                // }
+                'className': 'row-sex'
             },
             { 'data': "orgCode", 'title': '编码', 'className': 'user-account' },
             { 'data': "locName", 'title': '行政管理区域', 'className': 'user-type' },
-            { 'data': "statusCd", 'title': '状态', 'className': 'role-type' },
-            // {
-            //   'data': "userRoleName",
-            //   'title': '系统角色',
-            //   'className': 'user-role'
-            //   // 'render': function (data, type, row, meta) {
-            //   //       console.log(data, type, row, meta)
-            //   //   }
-            //  }
+            { 'data': "statusCd", 'title': '状态', 'className': 'role-type',
+                'render': function (data, type, row, meta) {
+                    var statusStr = '';
+                    if (row.statusCd == '1000') {
+                        statusStr = '<span>有效</span>';
+                    } else {
+                        statusStr = '<span>无效</span>';
+                    }
+                    return statusStr
+                }
+            }
         ],
         'language': {
             'emptyTable': '没有数据',
@@ -98,82 +70,27 @@ function initOrgTable (results) {
         },
         "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
         'pagingType': 'simple_numbers',
-        'dom': '<"top"f>t<"bottom"ipl>'
-        // 'serverSide': true,  //启用服务器端分页
-        // 'ajax': function (data, callback, settings) {
-
-        //     //手动控制遮罩
-        //     $('#table-container').spinModal();
-        //     var param = {};
-        //     param.pageSiz = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
-        //     param.startPage = (data.start / data.length)+1;//当前页码
-        //     param.p_p_resource_id = 'getUomDepartments';
-        //     param.treeId = '<%=treeId%>';
-        //     param.orgId = '<%=orgId%>';
-        //     param.queryCondition = data.search.value;
-
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "<%=ajaxUrl%>",
-        //         data: param,  //传入组装的参数
-        //         success: function (result) {
-        //             var result = JSON.parse(result);
-        //             //封装返回数据
-        //             var returnData = {};
-        //             returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
-        //             returnData.recordsTotal = result.count;//返回数据全部记录
-        //             returnData.recordsFiltered = result.count;//后台不实现过滤功能，每次查询均视作全部结果
-        //             returnData.data = result.userList;//返回的数据列表
-        //             //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
-        //             //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
-        //             callback(returnData);
-        //         },
-        //         error: function () {
-        //             $('#table-container').spinModal(false);
-        //         }
-        //     })
-        // }
-        // 'serverSide': true,  // 服务端分页
-        // 'ajax': {
-        //     data : function(d) {
-        //         // console.log('custom request', d);
-        //         //删除多余请求参数
-        //         for(var key in d){
-        //             if(key.indexOf("columns")==0||key.indexOf("order")==0||key.indexOf("search")==0){
-        //               //以columns开头的参数删除
-        //               delete d[key];
-        //             }
-        //         }
-        //         var searchParams= {
-        //             "retryType":$("#retryType").val(),
-        //             "departmentCode":$("#departmentCode").val()!=""?$("#departmentCode").val():null,
-        //             "projectCode":$("#projectCode").val()!=""?$("#projectCode").val():null,
-        //             "serviceName":$("#serviceName").val()!=""?$("#serviceName").val():null,
-        //             "csrfmiddlewaretoken":csrftoken
-        //         };
-        //         //附加查询参数
-        //         if(searchParams){
-        //             $.extend(d,searchParams); //给d扩展参数
-        //         }
-        //     },
-        //     dataSrc: function (json) {
-        //         // console.log('process response data from server side before display.');
-        //         return json.data;
-        //     },
-        //     dataType: "json",
-        //     dataFilter: function (json) {//json是服务器端返回的数据
-        //        // json = JSON.parse(json);
-        //        // var returnData = {};
-        //        // returnData.draw = json.data.draw;
-        //        // returnData.recordsTotal = json.data.total;//返回数据全部记录
-        //        // returnData.recordsFiltered = json.data.total;//后台不实现过滤功能，每次查询均视作全部结果
-        //        // returnData.data = json.data.retryProjectList;//返回的数据列表
-        //        // return JSON.stringify(returnData);//这几个参数都是datatable需要的，必须要
-        //     },
-        //     url : "/queryWarningInfo.do",
-        //     type : "POST",
-        //     crossDomain: true
-        // }
+        'dom': '<"top"f>t<"bottom"ipl>',
+        'serverSide': true,  // 服务端分页
+        'ajax': function (data, callback, settings) {
+            var param = {};
+            param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
+            param.pageNo = (data.start / data.length) + 1;//当前页码
+            param.orgTreeId = orgTreeId;
+            param.orgId = orgId;
+            $http.get('/org/getOrgRelPage', param, function (result) {
+                var returnData = {};
+                // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
+                returnData.recordsTotal = result.total;//返回数据全部记录
+                returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
+                returnData.data = result.records;//返回的数据列表
+                //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                callback(returnData);
+            }, function (err) {
+                console.log(err)
+            })
+        }
     });
 }
 
@@ -194,15 +111,17 @@ function initOrgPersonnelTable (results) {
             { 'data': "certNo", 'title': '员工工号', 'className': 'cert-no' },
             { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
             { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
-            { 'data': "statusCd", 'title': '状态', 'className': 'status-code' },
-            // {
-            //   'data': "userRoleName",
-            //   'title': '系统角色',
-            //   'className': 'user-role'
-            //   // 'render': function (data, type, row, meta) {
-            //   //       console.log(data, type, row, meta)
-            //   //   }
-            //  }
+            { 'data': "statusCd", 'title': '状态', 'className': 'status-code',
+                'render': function (data, type, row, meta) {
+                    var statusStr = '';
+                    if (row.statusCd == '1000') {
+                        statusStr = '<span>有效</span>';
+                    } else {
+                        statusStr = '<span>无效</span>';
+                    }
+                    return statusStr
+                }
+            }
         ],
         'language': {
             'emptyTable': '没有数据',
@@ -227,101 +146,41 @@ function initOrgPersonnelTable (results) {
             this.api().column(0).nodes().each(function(cell, i) {
                 cell.innerHTML =  i + 1;
             });
+        },
+        'serverSide': true,  // 服务端分页
+        'ajax': function (data, callback, settings) {
+            var param = {};
+            param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
+            param.pageNo = (data.start / data.length) + 1;//当前页码
+            param.orgTreeId = orgTreeId;
+            param.orgId = orgId;
+            $http.get('/orgPersonRel/getPerOrgRelPage', param, function (result) {
+                var returnData = {};
+                // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
+                returnData.recordsTotal = result.total;//返回数据全部记录
+                returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
+                returnData.data = result.records;//返回的数据列表
+                //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                callback(returnData);
+            }, function (err) {
+                console.log(err)
+            })
         }
-        // 'serverSide': true,  //启用服务器端分页
-        // 'ajax': function (data, callback, settings) {
-
-        //     //手动控制遮罩
-        //     $('#table-container').spinModal();
-        //     var param = {};
-        //     param.pageSiz = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
-        //     param.startPage = (data.start / data.length)+1;//当前页码
-        //     param.p_p_resource_id = 'getUomDepartments';
-        //     param.treeId = '<%=treeId%>';
-        //     param.orgId = '<%=orgId%>';
-        //     param.queryCondition = data.search.value;
-
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "<%=ajaxUrl%>",
-        //         data: param,  //传入组装的参数
-        //         success: function (result) {
-        //             var result = JSON.parse(result);
-        //             //封装返回数据
-        //             var returnData = {};
-        //             returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
-        //             returnData.recordsTotal = result.count;//返回数据全部记录
-        //             returnData.recordsFiltered = result.count;//后台不实现过滤功能，每次查询均视作全部结果
-        //             returnData.data = result.userList;//返回的数据列表
-        //             //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
-        //             //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
-        //             callback(returnData);
-        //         },
-        //         error: function () {
-        //             $('#table-container').spinModal(false);
-        //         }
-        //     })
-        // }
-        // 'serverSide': true,  // 服务端分页
-        // 'ajax': {
-        //     data : function(d) {
-        //         // console.log('custom request', d);
-        //         //删除多余请求参数
-        //         for(var key in d){
-        //             if(key.indexOf("columns")==0||key.indexOf("order")==0||key.indexOf("search")==0){
-        //               //以columns开头的参数删除
-        //               delete d[key];
-        //             }
-        //         }
-        //         var searchParams= {
-        //             "retryType":$("#retryType").val(),
-        //             "departmentCode":$("#departmentCode").val()!=""?$("#departmentCode").val():null,
-        //             "projectCode":$("#projectCode").val()!=""?$("#projectCode").val():null,
-        //             "serviceName":$("#serviceName").val()!=""?$("#serviceName").val():null,
-        //             "csrfmiddlewaretoken":csrftoken
-        //         };
-        //         //附加查询参数
-        //         if(searchParams){
-        //             $.extend(d,searchParams); //给d扩展参数
-        //         }
-        //     },
-        //     dataSrc: function (json) {
-        //         // console.log('process response data from server side before display.');
-        //         return json.data;
-        //     },
-        //     dataType: "json",
-        //     dataFilter: function (json) {//json是服务器端返回的数据
-        //        // json = JSON.parse(json);
-        //        // var returnData = {};
-        //        // returnData.draw = json.data.draw;
-        //        // returnData.recordsTotal = json.data.total;//返回数据全部记录
-        //        // returnData.recordsFiltered = json.data.total;//后台不实现过滤功能，每次查询均视作全部结果
-        //        // returnData.data = json.data.retryProjectList;//返回的数据列表
-        //        // return JSON.stringify(returnData);//这几个参数都是datatable需要的，必须要
-        //     },
-        //     url : "/queryWarningInfo.do",
-        //     type : "POST",
-        //     crossDomain: true
-        // }
     });
 }
 
 $('#orgName').html(orgName);
 getOrgExtInfo();
-getOrgList(orgId);
-getOrgPersonnerList(orgId);
+initOrgTable();
+initOrgPersonnelTable();
 
-$('#editBtn').on('click', function () {
-    var url = 'edit.html?id=' + orgId + '&pid=' + pid + '&name=' + orgName;
-    $(this).attr('href', url);
-});
-// $('#searchBtn').on('click', function () {
-//     var url = 'search.html?id=' + orgId  + '&pid=' + pid + '&name=' + orgName;
-//     $(this).attr('href', url);
-// });
+function orgEdit () {
+    var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + orgName;
+    $('#editBtn').attr('href', url);
+}
 
-// 跳转至组织添加页面
-function addOrgPage () {
-    var url = '/inaction/organization/edit.html?id=' + orgId  + '&pid=' + pid + '&name=' + orgName;
-    $("#searchBtn").attr('href', url);
+function orgSearch () {
+    var url = 'search.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + orgName;
+    $('#searchBtn').attr('href', url);
 }

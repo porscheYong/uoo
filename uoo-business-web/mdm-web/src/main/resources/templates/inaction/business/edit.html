@@ -36,9 +36,9 @@
   </head>
 
   <body style="background: #fff;">
-    <div>
+    <div style="overflow-x: hidden;">
         <div class="board-title">
-          <span class="name ft18">统一目录树</span>
+          <span class="name ft18" id="orgTypeTreeName"></span>
         </div>
         <div class="nav-tabs-brief" style="padding-top: 35px;">
 
@@ -84,8 +84,8 @@
               </form>
               <div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-offset-3 col-xs-offset-3">
-                    <button class="ui-button ui-button-primary">保存</button>
-                    <button class="ui-button ui-button-cancel" style="margin-left: 10px;">取消</button>
+                    <button class="ui-button ui-button-primary" onclick="updateOrgTree()">保存</button>
+                    <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
                 </div>
               </div>
             </div>
