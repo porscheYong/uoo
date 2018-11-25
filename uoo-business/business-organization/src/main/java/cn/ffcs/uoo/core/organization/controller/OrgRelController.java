@@ -192,7 +192,7 @@ public class OrgRelController extends BaseController {
     })
     @UooLog(value = "新增组织关系", key = "addOrgRel")
     @RequestMapping(value = "/addOrgRel", method = RequestMethod.POST)
-    public ResponseResult<TreeNodeVo> addOrgRel(Org org) throws IOException {
+    public ResponseResult<TreeNodeVo> addOrgRel(@RequestBody Org org) throws IOException {
         ResponseResult<TreeNodeVo> ret = new ResponseResult<TreeNodeVo>();
         if(StrUtil.isNullOrEmpty(org.getOrgId())){
             ret.setState(ResponseResult.PARAMETER_ERROR);

@@ -159,9 +159,9 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
 //        if(org.getPostList() == null || org.getPostList().size() <0){
 //            return "组织职位不能为空";
 //        }
-        if(StrUtil.isNullOrEmpty(org.getOrgRootId())){
-            return "组织树根节点不能为空";
-        }
+//        if(StrUtil.isNullOrEmpty(org.getOrgRootId())){
+//            return "组织树根节点不能为空";
+//        }
         if(StrUtil.isNullOrEmpty(org.getOrgName())){
             return "组织名称不能为空";
         }

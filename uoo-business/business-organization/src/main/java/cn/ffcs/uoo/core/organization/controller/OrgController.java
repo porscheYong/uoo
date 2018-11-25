@@ -343,6 +343,7 @@ public class OrgController extends BaseController {
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
     public ResponseResult<Void> updateOrg(@RequestBody OrgVo org){
         ResponseResult<Void> ret = new ResponseResult<Void>();
+
         String msg = orgService.JudgeOrgParams(org);
         if(!StrUtil.isNullOrEmpty(msg)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
