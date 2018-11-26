@@ -32,7 +32,7 @@ var setting = {
 };
 
 var orgId,
-    orgName;
+    orgName,orgTreeId;
 
 function onNodeClick(e,treeId, treeNode) {
     // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
@@ -50,8 +50,11 @@ function refreshResult () {
     var url = "list.html?id=" + orgId + "&name=" + encodeURI(orgName);
     $('#userFrame').attr("src",url);
 }
-
+function getOrgTreeId(){
+	return orgTreeId;
+}
 function initOrgRelTree (orgId) {
+	orgTreeId=orgId
     $http.get('/orgRel/getOrgRelTree', {
         orgTreeId: orgId,
         orgRootId: orgId
