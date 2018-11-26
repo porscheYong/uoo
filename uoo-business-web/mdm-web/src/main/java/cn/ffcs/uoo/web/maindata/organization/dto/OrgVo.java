@@ -66,6 +66,8 @@ public class OrgVo extends BaseVo{
     private List<Position> positionList;
     private List<Post> postList;
     private List<PsonOrgVo> psonOrgVoList;
+    private List<PoliticalLocation> politicalLocationList;
+
 
     //身份证信息
     private List<String> certIdList;
@@ -74,7 +76,13 @@ public class OrgVo extends BaseVo{
     private String search;
     private String orgRelCreatDate;
 
+    public List<PoliticalLocation> getPoliticalLocationList() {
+        return politicalLocationList;
+    }
 
+    public void setPoliticalLocationList(List<PoliticalLocation> politicalLocationList) {
+        this.politicalLocationList = politicalLocationList;
+    }
 
     public List<OrgCertVo> getOrgCertList() {
         return OrgCertList;

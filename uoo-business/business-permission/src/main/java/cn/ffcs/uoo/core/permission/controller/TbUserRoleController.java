@@ -37,9 +37,9 @@ import io.swagger.annotations.ApiOperation;
  *
  * @author zhanglu
  * @since 2018-10-24
- */
 @RestController
 @RequestMapping("/permission/tbUserRole")
+ */
 public class TbUserRoleController extends BaseController {
     @Autowired
     IUserRoleService userRoleService;

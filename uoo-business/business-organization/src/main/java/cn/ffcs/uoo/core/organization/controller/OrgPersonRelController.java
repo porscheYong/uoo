@@ -246,15 +246,15 @@ public class OrgPersonRelController extends BaseController {
     @UooLog(value = "查询人员组织信息列表",key = "getPerOrgRelList")
     @RequestMapping(value = "/getPerOrgRelList",method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(String perSonId){
+    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(String personnelId){
         ResponseResult<List<PsonOrgVo>> ret = new ResponseResult<>();
-        if(StrUtil.isNullOrEmpty(perSonId)){
+        if(StrUtil.isNullOrEmpty(personnelId)){
             ret.setMessage("人员标识不能为空");
             ret.setState(ResponseResult.PARAMETER_ERROR);
             return ret;
         }
         PsonOrgVo psonOrgVo = new PsonOrgVo();
-        psonOrgVo.setPersonnelId(new Long(perSonId));
+        psonOrgVo.setPersonnelId(new Long(personnelId));
         List<PsonOrgVo> psonList = orgPersonRelService.getPerOrgRelList(psonOrgVo);
         if(psonList==null || psonList.size()<0){
             ret.setMessage("人员组织关系不存在");
@@ -263,7 +263,7 @@ public class OrgPersonRelController extends BaseController {
         }
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
-        //  ret.setData(psonList);
+        ret.setData(psonList);
         return ret;
     }
 

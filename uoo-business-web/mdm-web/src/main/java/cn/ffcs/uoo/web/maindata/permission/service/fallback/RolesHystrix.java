@@ -14,7 +14,12 @@ public class RolesHystrix implements RolesService {
     }
 
     @Override
-    public ResponseResult listRoles(Integer pageNo, Integer pageSize) {
+    public ResponseResult listPageRoles(Integer pageNo, Integer pageSize) {
+        return ResponseResult.createErrorResult("系统数据异常");
+    }
+
+    @Override
+    public ResponseResult listRoles() {
         return ResponseResult.createErrorResult("系统数据异常");
     }
 
