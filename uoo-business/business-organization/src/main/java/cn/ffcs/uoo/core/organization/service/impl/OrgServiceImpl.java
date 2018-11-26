@@ -4,6 +4,7 @@ import cn.ffcs.uoo.core.organization.entity.Org;
 import cn.ffcs.uoo.core.organization.dao.OrgMapper;
 import cn.ffcs.uoo.core.organization.entity.OrgRelType;
 import cn.ffcs.uoo.core.organization.entity.OrgType;
+import cn.ffcs.uoo.core.organization.entity.PoliticalLocation;
 import cn.ffcs.uoo.core.organization.service.OrgService;
 import cn.ffcs.uoo.core.organization.service.OrgOrgtypeRelService;
 import cn.ffcs.uoo.core.organization.service.OrgTypeService;
@@ -194,5 +195,9 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
     @Override
     public OrgVo selectOrgByOrgId(String orgId){
         return baseMapper.selectOrgByOrgId(orgId);
+    }
+    @Override
+    public List<PoliticalLocation> getOrgLoc(String orgId){
+        return baseMapper.getOrgLoc(orgId);
     }
 }
