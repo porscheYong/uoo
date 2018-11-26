@@ -21,6 +21,7 @@
     <link href="/css/reset.css" rel="stylesheet">
     <link href="/css/custom.css" rel="stylesheet">
     <link href="/css/user/style.css" rel="stylesheet">
+    <link href="/css/account/style.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="/js/core/html5shiv.js"></script>
@@ -170,6 +171,8 @@
         </div>
         </div>
         </div>
+
+        <input class="Btn BtnRed2" id="delPsn" type="button" onclick="delClick()" value="删除人员" style="margin-top:20px;" />
 <!--用户信息-->
 <script id="userTemplate" type="text/x-handlebars-template">
 
@@ -979,6 +982,7 @@
 <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
 <!-- init -->
 <script type="text/javascript" src="/js/init.js"></script>
+<script type="text/javascript" src="/js/user/delPsn.js"></script>
 <script type="text/javascript" src="/js/user/edit.js"></script>
 <script>
     seajs.use('/vendors/lulu/js/common/ui/Select', function () {
