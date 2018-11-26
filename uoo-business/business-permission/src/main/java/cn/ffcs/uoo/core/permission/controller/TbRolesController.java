@@ -67,14 +67,14 @@ public class TbRolesController extends BaseController {
         return ResponseResult.createSuccessResult(role, "success");
     }
     
-    @ApiOperation(value = "获取角色列表", notes = "获取角色列表")
+    @ApiOperation(value = "获取分页角色列表", notes = "获取分页角色列表")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
         @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
     @UooLog(key="listRoles",value="获取角色列表")
-    @GetMapping("/listRoles/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    @GetMapping("/listPageRoles/pageNo={pageNo}&pageSize={pageSize}")
+    public ResponseResult listPageRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         
@@ -82,6 +82,16 @@ public class TbRolesController extends BaseController {
         Page<Roles> page = tbRolesService.selectPage(new Page<Roles>(pageNo, pageSize), wrapper);
         
         return ResponseResult.createSuccessResult(page.getRecords(), "", page);
+    }
+
+    @ApiOperation(value = "获取角色列表", notes = "获取角色列表")
+    @UooLog(key="listRoles",value="获取角色列表")
+    @GetMapping("/listRoles")
+    public ResponseResult listRoles(){
+        Wrapper<Roles> wrapper = Condition.create().eq("STATUS_CD",StatusCD.VALID).orderBy("UPDATE_DATE", false);
+        List<Roles> list = tbRolesService.selectList(wrapper);
+
+        return ResponseResult.createSuccessResult(list, "");
     }
 
     @ApiOperation(value = "删除角色",notes = "删除角色(只需要roleId)")
