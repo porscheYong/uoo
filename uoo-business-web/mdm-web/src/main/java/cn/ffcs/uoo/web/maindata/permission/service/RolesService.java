@@ -29,9 +29,12 @@ public interface RolesService {
     
      
     @GetMapping("/permission/tbRoles/listRoles/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize);
+    public ResponseResult listPageRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize);
 
-     
+    @GetMapping("/permission/tbRoles/listRoles/pageNo={pageNo}&pageSize={pageSize}")
+    public ResponseResult listRoles();
+
+
     @RequestMapping(value = "/permission/tbRoles/del", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult removeTbRoles(@RequestBody Roles role ) ;
 
