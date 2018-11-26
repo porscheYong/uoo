@@ -410,8 +410,10 @@ function submitToOther(){   //提交或者取消跳转
     var url = "";
     if(hType == "th"){
         url = "addMainAccount.html?hType="+ toMainType +"&opBtn=0&orgName=" + orgName + "&orgId=" + orgId + "&acctId=" + mainAcctId;   //跳转主账号编辑界面
-    }else{
+    }else if(hType == "mh"){
         url = "mainList.html?orgName=" + orgName + "&orgId=" + orgId;       //跳转主界面
+    }else{
+        url = "add.html?orgName=" + orgName + "&orgId=" + orgId;       //跳转添加界面
     }
     window.location.href = url;
 }

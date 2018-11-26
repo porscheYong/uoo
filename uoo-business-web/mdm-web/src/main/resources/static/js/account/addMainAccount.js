@@ -48,7 +48,7 @@ function getAcctUser(personnelId){     //获取主账号信息(编辑或者新�
       initOrgTable(data.acctOrgVoPage);
       initSubOrgTable(data.slaveAcctOrgVoPage);
       $('#main-title').html("新增主账号");
-      $('.BtnDel').css("display","none");
+      $('#delAcct').css("display","none");
       $('#addSubFright').css("display","none");
       console.log('no user');
     }else{                      //编辑
@@ -412,18 +412,56 @@ function cancel() {   //取消按钮
   window.location.href = url;
 }   
 
-function selectRole(){    //选择角色
-  var firstRole =document.getElementById("firstRole");
-  var secondRole =document.getElementById("secondRole");
-  if(firstRole.checked){
-      roleList.push(21);
-  }
-  if(secondRole.checked){
-    roleList.push(22);
-  }
-  console.log(roleList);
-  $('#roleModal').modal('hide');
-}
+// function selectRole(){    //选择角色
+//   // var firstRole =document.getElementById("firstRole");
+//   // var secondRole =document.getElementById("secondRole");
+//   // if(firstRole.checked){
+//   //     roleList.push(21);
+//   // }
+//   // if(secondRole.checked){
+//   //   roleList.push(22);
+//   // }
+//   // console.log(roleList);
+//   $http.get('/permission/tbRoles/listRoles', {    //'http://'+baseUrl+'/user/getPsnUser'
+//     personnelId: personnelId,
+//     userType: "1"
+//   }, function (data) {
+
+//   }, function (err) {
+//     console.log(err)
+//   })
+//   $('#roleModal').modal('hide');
+// }
+
+// tags init
+// if(typeof $.fn.tagsInput !== 'undefined'){
+//   $('#orgTypeList').tagsInput();
+// }
+
+// //角色选择
+// function openTypeDialog() {
+//   parent.layer.open({
+//       type: 2,
+//       title: '选中组织类别',
+//       shadeClose: true,
+//       shade: 0.8,
+//       area: ['70%', '85%'],
+//       maxmin: true,
+//       content: 'roleDialog.html?id=' + orgId,
+//       btn: ['确认', '取消'],
+//       yes: function(index, layero){
+//           //获取layer iframe对象
+//           var iframeWin = parent.window[layero.find('iframe')[0].name];
+//           checkNode = iframeWin.checkNode;
+//           parent.layer.close(index);
+//           $('#orgTypeList').importTags(checkNode);
+//           $('.ui-tips-error').css('display', 'none');
+//           orgTypeList = checkNode;
+//       },
+//       btn2: function(index, layero){},
+//       cancel: function(){}
+//   });
+// }
 
 
 function submitSuccess(){     //提交成功
