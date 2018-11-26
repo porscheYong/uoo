@@ -1,4 +1,5 @@
 var orgId = getQueryString('id');
+var orgTreeId = getQueryString('orgTreeId');
 var orgName = getQueryString('name');
 var engine, template, empty, selectNode;
 
@@ -68,7 +69,7 @@ var engine, template, empty, selectNode;
   });
 
   $('#addBtn').on('click', function () {
-     var url = 'add.html?id=' + orgId  + '&name=' + orgName;;
+     var url = 'orgAdd.html?id=' + orgId  + '&orgTreeId=' + orgTreeId + '&name=' + orgName;
      $(this).attr('href', url);
   })
   
@@ -101,7 +102,7 @@ var engine, template, empty, selectNode;
   }
 
   function cancel () {
-      var url = 'list.html?id=' + orgId + '&name=' + orgName;
+    var url = 'list.html?id=' + orgId  + '&orgTreeId=' + orgTreeId + '&name=' + orgName;
     window.location.href = url;
   }
 

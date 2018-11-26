@@ -29,9 +29,7 @@ function initOrgTypeTree () {
           chkboxType: { "Y": "", "N": "" }
       }
     };
-    $http.get('/orgType/getFullOrgTypeTree', {
-      orgId: orgId
-    }, function (data) {
+    $http.post('/orgType/getOrgTypeTree', {}, function (data) {
         console.log(data)
         $.fn.zTree.init($("#orgTypeTree"), treeSetting, data);
         autoCheck();

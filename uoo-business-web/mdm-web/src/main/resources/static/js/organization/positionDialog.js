@@ -1,4 +1,4 @@
-var orgFrame = parent.window['standardOrg'];
+var orgFrame = parent.window['standardOrg'] || parent.window['business'];
 var positionList = orgFrame.positionList;
 var checkNode = []; //选中类别显示label标签
 

@@ -43,45 +43,8 @@ function filter (treeId, parentNode, childNodes) {
 }
 
 function refreshResult () {
-    var url = "list.html?id=" + orgId + "&name=" + encodeURI(businessName);
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName);
     $('#businessFrame').attr("src",url);
-}
-
-// 根据组织ID展开并选中组织
-function openTreeById (sId, id) {
-  var tId = 'standardTree_' + id;
-  var sId = 'standardTree_' + sId;
-  var zTree = $.fn.zTree.getZTreeObj("standardTree");
-  var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-  zTree.cancelSelectedNode(selectNode);
-  var node = zTree.getNodeByTId(tId);
-  if (node.parent) {
-    zTree.expandNode(node, true);
-  }
-  zTree.selectNode(node, true);
-}
-
-// 初始化业务组织列表
-function initBusinessList () {
-    $http.get('/orgTree/getOrgTreeList', {}, function (data) {
-        var option = '';
-        for (var i = 0; i < data.length; i++) {
-            var select = i === 0? 'selected' : '';
-            option += "<option value='" + data[i].orgTreeId + "' " + select + ">" + data[i].orgTreeName +"</option>";
-        }
-        $('#businessOrg').append(option);
-        seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-            $('#businessOrg').selectMatch();
-        });
-        initTree(data[0].orgTreeId);
-        businessName = data[0].orgTreeName;
-        $('#businessOrg').unbind('change').bind('change', function (event) {
-            orgTreeId = event.target.options[event.target.options.selectedIndex].value;
-            initTree(orgTreeId);
-        })
-    }, function (err) {
-        console.log(err)
-    })
 }
 
 function initTree (orgTreeId) {
@@ -129,9 +92,85 @@ function initTree (orgTreeId) {
     })
 }
 
+// 根据组织ID展开并选中组织
+function openTreeById (sId, id) {
+    var tId = 'businessTree_' + id;
+    var sId = 'businessTree_' + sId;
+    var zTree = $.fn.zTree.getZTreeObj("businessTree");
+    var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
+    zTree.cancelSelectedNode(selectNode);
+    var node = zTree.getNodeByTId(tId);
+    if (node.parent) {
+        zTree.expandNode(node, true);
+    }
+    zTree.selectNode(node, true);
+}
+
+// 修改节点名称
+function changeNodeName(orgId, name) {
+    var tId = 'businessTree_' + orgId;
+    var zTree = $.fn.zTree.getZTreeObj("businessTree");
+    var treeNode = zTree.getNodeByTId(tId);
+    treeNode.name = name;
+    $('#businessTree_' + orgId + '_span').html(name);
+}
+
+// 添加子节点
+function addNodeById (sId, newNode) {
+    var zTree = $.fn.zTree.getZTreeObj("businessTree");
+    var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
+    console.log(selectNode)
+    if (selectNode)
+        var newNode = zTree.addNodes(selectNode, newNode);
+}
+
+// 删除节点
+function deleteNode(orgId) {
+    var zTree = $.fn.zTree.getZTreeObj("businessTree");
+    var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
+    zTree.cancelSelectedNode(selectNode);
+    var node = zTree.getNodeByTId(tId);
+}
+
+// 选择根节点
+function selectRootNode () {
+    var rootId = 1;
+    var rootNode = zTree.getNodeByTId(rootId);
+    zTree.selectNode(rootNode);
+}
+
+// 初始化业务组织列表
+function initBusinessList () {
+    $http.get('/orgTree/getOrgTreeList', {}, function (data) {
+        var option = '';
+        for (var i = 0; i < data.length; i++) {
+            var select = i === 0? 'selected' : '';
+            option += "<option value='" + data[i].orgTreeId + "' " + select + ">" + data[i].orgTreeName +"</option>";
+        }
+        $('#businessOrg').append(option);
+        seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+            $('#businessOrg').selectMatch();
+        });
+        initTree(data[0].orgTreeId);
+        orgTreeId = data[0].orgTreeId;
+        businessName = data[0].orgTreeName;
+        $('#businessOrg').unbind('change').bind('change', function (event) {
+            orgTreeId = event.target.options[event.target.options.selectedIndex].value;
+            initTree(orgTreeId);
+        })
+    }, function (err) {
+        console.log(err)
+    })
+}
+
+//跳转页面至新增业务树
+function orgTreeEdit () {
+    var url = "edit.html?id=" + orgId +"&orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName)  + "&treeName=" + encodeURI(businessName);
+    $('#businessFrame').attr("src",url);
+}
 //跳转页面至新增业务树
 function addBusiness () {
-    var url = "add.html?id=" + orgId +"&orgTreeId=" + orgTreeId + "&name=" + encodeURI(businessName);
+    var url = "add.html?id=" + orgId +"&orgTreeId=" + orgTreeId + "&name=" + encodeURI(businessName) + "&treeName=" + encodeURI(businessName);
     $('#businessFrame').attr("src",url);
 }
 initBusinessList();

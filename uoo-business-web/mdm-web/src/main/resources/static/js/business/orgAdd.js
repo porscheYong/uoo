@@ -1,4 +1,5 @@
 var orgId = getQueryString('id');
+var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var locationList;
@@ -64,7 +65,7 @@ function openContactDialog() {
         shade: 0.8,
         area: ['70%', '85%'],
         maxmin: true,
-        content: 'contactDialog.html?id=' + orgId,
+        content: '/inaction/organization/contactDialog.html?id=' + orgId,
         btn: ['确认', '取消'],
         yes: function(index, layero){
             //获取layer iframe对象
@@ -91,7 +92,7 @@ function openTypeDialog() {
         shade: 0.8,
         area: ['70%', '85%'],
         maxmin: true,
-        content: 'typeDialog.html?id=' + orgId,
+        content: '/inaction/organization/typeDialog.html?id=' + orgId,
         btn: ['确认', '取消'],
         yes: function(index, layero){
             //获取layer iframe对象
@@ -116,7 +117,7 @@ function openPositionDialog() {
         shade: 0.8,
         area: ['50%', '80%'],
         maxmin: true,
-        content: 'positionDialog.html?id=' + orgId,
+        content: '/inaction/organization/positionDialog.html?id=' + orgId,
         btn: ['确认', '取消'],
         yes: function(index, layero){
             //获取layer iframe对象
@@ -141,7 +142,7 @@ function openPostDialog() {
         shade: 0.8,
         area: ['50%', '80%'],
         maxmin: true,
-        content: 'postDialog.html',
+        content: '/inaction/organization/postDialog.html',
         btn: ['确认', '取消'],
         yes: function(index, layero){
             //获取layer iframe对象
@@ -167,7 +168,7 @@ function openLocationDialog() {
         shade: 0.8,
         area: ['50%', '80%'],
         maxmin: true,
-        content: 'locationDialog.html',
+        content: '/inaction/organization/locationDialog.html',
         btn: ['确认', '取消'],
         yes: function(index, layero){
             //获取layer iframe对象
@@ -289,7 +290,7 @@ function addOrg () {
     var orgDesc = $('#orgDesc').val();
     $http.post('/org/addOrg', JSON.stringify({
         orgRootId: '1',
-        orgTreeId: '1',
+        orgTreeId: orgTreeId,
         orgId: orgId,
         supOrgId: orgId,
         orgName: orgName,
@@ -313,7 +314,7 @@ function addOrg () {
     }), function (data) {
         parent.addNodeById(orgId, data);
         parent.openTreeById(orgId, data.id);
-        window.location.replace("list.html?id=" + data.id + '&pid=' + data.pid + "&name=" + encodeURI(data.name));
+        window.location.replace("list.html?id=" + data.id + '&orgTreeId=' + orgTreeId + '&pid=' + data.pid + "&name=" + encodeURI(data.name));
         loading.screenMaskDisable('container');
     }, function (err) {
         console.log(err);
@@ -322,7 +323,7 @@ function addOrg () {
 
 // 取消
 function cancel () {
-    var url = "list.html?id=" + orgId + "&name=" + orgName;
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&name=" + orgName;
     window.location.href = url;
 }
 

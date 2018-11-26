@@ -32,16 +32,16 @@
       table.dataTable {
         table-layout: fixed;
       }
-      
+
       th {
-          text-align: center;
-          white-space: nowrap;
+        text-align: center;
+        white-space: nowrap;
       }
       table.dataTable tbody td {
-          text-align: center;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       #locId, #orgTypeList, #positionList, #postList {
         opacity: 0;
@@ -58,23 +58,13 @@
             ><div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;"></div>
         </div>
         <div class="board-title">
-          <span class="name ft18">编辑-<span class="orgName"></span></span>
+          <span class="name ft18">添加子节点</span>
         </div>
-        <div class="nav-tabs-brief" style="overflow-x: hidden;">
-          <ul class="nav nav-tabs tab-title" role="tablist" id="myTabs">
-            <li role="presentation" class="active col-md-2 col-sm-2 col-xs-6"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">基础信息</a>
-            </li>
-            <li role="presentation" class="col-md-2 col-sm-2 col-xs-6"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">关系信息</a>
-            </li>
-          </ul>
+        <div class="nav-tabs-brief" style="padding-top: 35px;">
 
-          <div class="tab-content">
+          <div class="tab-content" style="overflow-x: hidden;">
             <div class="tab-pane active" id="tab_content1">
-              <!--基础信息表单-->
-              <!--<div class="second-title">-->
-                <!--<span class="name ft18">基础信息</span>-->
-              <!--</div>-->
-              <form action="/submit" method="post" style="padding: 10px;" id="orgEditForm">
+              <form style="padding: 10px;" id="orgAddForm">
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
@@ -117,8 +107,8 @@
 
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="orgMartCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">划小组织编码</label>
-                      <input id="orgMartCode" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
+                      <label for="" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">划小组织编码</label>
+                      <input id="" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
                     </div>
                   </div>
                 </div>
@@ -173,10 +163,8 @@
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="statusCd" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
-                      <select id="statusCd"  class="col-md-8 col-sm-8 col-xs-12">
-
-                      </select>
+                      <label for="statusCd" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
+                      <select id="statusCd"  class="col-md-8 col-sm-8 col-xs-12" required></select>
                     </div>
                   </div>
 
@@ -254,25 +242,11 @@
                   </div>
                 </div>
               </form>
-              <!--&lt;!&ndash;证件信息表格&ndash;&gt;-->
-              <!--<div class="second-title">-->
-                <!--<span class="name ft18">证件信息</span>-->
-              <!--</div>-->
-              <!--<div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden;">-->
-                <!--<table id="credentialTable" class="stripe" width="100%"></table>-->
-              <!--</div>-->
-              <!--提交-->
               <div class="row" style="margin-bottom: 10px;">
                 <div style="margin-left: 17%;">
-                    <button id="saveBtn" class="ui-button ui-button-primary" onclick="updateOrg()">保存</button>
-                    <button id="deleteBtn" class="ui-button ui-button-warning" style="margin-left: 10px;" onclick="deleteOrg()">删除</button>
-                    <button id="cancelBtn" class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
+                    <button class="ui-button ui-button-primary" onclick="addOrg()">保存</button>
+                    <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
                 </div>
-              </div>
-            </div>
-            <div class="tab-pane" id="tab_content2">
-              <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden;">
-                <table id="orgRelTable" class="stripe" width="100%"></table>
               </div>
             </div>
           </div>
@@ -295,6 +269,7 @@
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
-    <script type="text/javascript" src="/js/organization/edit.js"></script>
+    <script type="text/javascript" src="/js/business/orgAdd.js"></script>
+	
   </body>
 </html>
