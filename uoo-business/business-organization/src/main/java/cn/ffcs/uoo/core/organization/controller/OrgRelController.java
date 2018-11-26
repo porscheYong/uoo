@@ -17,6 +17,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
 import org.apache.solr.common.SolrInputDocument;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -68,6 +69,10 @@ public class OrgRelController extends BaseController {
 
     @Autowired
     private SolrService solrService;
+
+
+    @Autowired
+    private AmqpTemplate template;
 
     @ApiOperation(value = "查询组织树信息-web", notes = "查询组织树信息")
     @ApiImplicitParams({
@@ -314,6 +319,8 @@ public class OrgRelController extends BaseController {
         vo.setId(org.getOrgId().toString());
         vo.setPid(orgRefId.toString());
         vo.setName(o.getOrgName());
+        String mqmsg = "{\"type\":\"org\",\"handle\":\"insert\",\"context\":{\"column\":\"orgId\",\"value\":"+org.getOrgId()+"}}" ;
+        template.convertAndSend("message_sharing_center_queue",mqmsg);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("新增成功");
         ret.setData(vo);

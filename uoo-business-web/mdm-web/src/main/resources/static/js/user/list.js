@@ -14,8 +14,11 @@ function getOrgPersonnerList () {
         console.log(err)
     })
 }
-
+function getOrgTreeId(){
+	return parent.getOrgTreeId() ;
+}
 function initOrgPersonnelTable (results) {
+	
     var table = $("#personnelTable").DataTable({
         'data': results,
         'searching': false,
@@ -29,7 +32,7 @@ function initOrgPersonnelTable (results) {
             { 'data': null, 'title': '序号', 'className': 'row-no' },
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "'>" + row.psnName + "</a>";
+                    return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "&orgTreeId="+getOrgTreeId()+"'>" + row.psnName + "</a>";
                 }
             },
             { 'data': "doubleName", 'title': '重名称谓', 'className': 'row-mobile' },
