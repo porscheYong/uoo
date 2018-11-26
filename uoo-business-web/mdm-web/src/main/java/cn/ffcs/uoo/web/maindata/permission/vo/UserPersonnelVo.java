@@ -1,12 +1,11 @@
 package cn.ffcs.uoo.web.maindata.permission.vo;
 
-
 /**
  *  用户人员信息
  *  @author zhanglu
  *  @date 20181025
  */
-public class UserPersonnelVo{
+public class UserPersonnelVo  {
     /**
      * 序号
      */
@@ -51,7 +50,31 @@ public class UserPersonnelVo{
      * 用户状态
      */
     private String statusCd;
+    /**
+     * 分页的序号
+     */
+    private int pageNo;
 
+    /**
+     * 每页的大小
+     */
+    private int pageSize;
+
+    public int getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(int pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
     public Long getNum() {
         return num;
     }
