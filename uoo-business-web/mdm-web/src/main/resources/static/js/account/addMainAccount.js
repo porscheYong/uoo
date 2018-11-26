@@ -11,6 +11,7 @@ var orgTable;
 var editOrgList = [];
 var flag = 0;
 var psw;
+var roleList = [];
 
 
 $('#invalidDate').val(''),
@@ -411,19 +412,24 @@ function cancel() {   //取消按钮
   window.location.href = url;
 }   
 
+function selectRole(){    //选择角色
+  var firstRole =document.getElementById("firstRole");
+  var secondRole =document.getElementById("secondRole");
+  if(firstRole.checked){
+      roleList.push(21);
+  }
+  if(secondRole.checked){
+    roleList.push(22);
+  }
+  console.log(roleList);
+  $('#roleModal').modal('hide');
+}
+
+
 function submitSuccess(){     //提交成功
     var url = "mainList.html?orgName=" + orgName + "&orgId=" + orgId;
     window.location.href = url;
 }
-
-
-  if(opBtn==0){     //查看并编辑主账号
-    getUser(acctId);
-  }else{            //编辑或新增主账号
-    getAcctUser(personnelId);
-  }
-
-
 
 $("#addSubAcctBtn").on('click', function () {
   var url = 'addSubAccount.html?hType=th&personnelId=' + personnelId + 
@@ -444,5 +450,15 @@ $("#defaultPswTel").blur(function (){     //默认密码输入框失去焦点
     $("#defaultPswTel").attr("type","password");
   }
 })
+
+
+if(opBtn==0){     //查看并编辑主账号
+  getUser(acctId);
+}else{            //编辑或新增主账号
+  getAcctUser(personnelId);
+}
+
+
+
 
 
