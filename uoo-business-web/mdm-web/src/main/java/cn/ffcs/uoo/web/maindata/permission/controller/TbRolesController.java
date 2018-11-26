@@ -1,7 +1,6 @@
 package cn.ffcs.uoo.web.maindata.permission.controller;
 
 
-import cn.ffcs.uoo.base.common.annotion.UooLog;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -54,14 +53,12 @@ public class TbRolesController   {
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
-    @UooLog(key="listPageRoles",value="获取分页角色列表")
     @GetMapping("/listPageRoles/pageNo={pageNo}&pageSize={pageSize}")
     public ResponseResult listPageRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         return tbRolesService.listPageRoles(pageNo,pageSize);
     }
 
     @ApiOperation(value = "获取角色列表", notes = "获取角色列表")
-    @UooLog(key="listRoles",value="获取角色列表")
     @GetMapping("/listRoles")
     public ResponseResult listRoles(){
         return tbRolesService.listRoles();
