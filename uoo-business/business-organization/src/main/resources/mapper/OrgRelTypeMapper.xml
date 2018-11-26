@@ -28,7 +28,7 @@
 
     <select id="getOrgRelType" resultType="cn.ffcs.uoo.core.organization.entity.OrgRelType">
         select C.ORG_REL_TYPE_ID orgRelTypeId,
-        C.REF_DESC refCode,
+        C.REF_DESC refDesc,
         C.REF_NAME refName,
         C.REF_CODE refCode,
         C.PARENT_REF_CODE parentRefCode,
