@@ -1,48 +1,90 @@
-.artModal-open{overflow:hidden;}
-.artModal{display:none;position:fixed;top:0;right:0;bottom:0;left:0;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;-webkit-tap-highlight-color:rgba(0,0,0,0);tap-highlight-color:rgba(0,0,0,0);
-    _position:absolute;_top:expression(documentElement.scrollTop);_width:expression(documentElement.clientWidth);_height:expression(documentElement.clientHeight);
+#myModal > .modal-dialog > .modal-content{
+    margin-top: 45px !important;
+    margin-left:32% !important;
+    width:300px;
+    height:450px;
 }
-.artModal .artModal-dialog{position:relative;margin:0 auto;}
-.artModal .artModal-dialog .artModal-content{position:relative;width:300px;margin:0 auto;}
-.fade{opacity:0;
-    -webkit-transition:opacity 0.15s linear;
-    -o-transition:opacity 0.15s linear;
-    transition:opacity 0.15s linear;
+
+#myModal > .modal-dialog > .modal-content #saveBtn{
+    display:inline-block;
+    margin:0 4px;
+    width:82px;
+    height:40px;
+    background:#00A4FF;
+    color:#fff;
+    border:0;
+    padding:0 8px;
+    border-radius:4px;
+    cursor:pointer;
+    vertical-align:middle;
+    margin-left: 50px;
 }
-.fade.in{opacity:1;}
-.artModal.fade .artModal-dialog {
-    -webkit-transform:translate(0, -25%);
-    -ms-transform:translate(0, -25%);
-    -o-transform:translate(0, -25%);
-    transform:translate(0, -25%);
-    -webkit-transition:-webkit-transform 0.3s ease-out;
-    -o-transition:-o-transform 0.3s ease-out;
-    transition:transform 0.3s ease-out;
+
+#myModal > .modal-dialog > .modal-content #cancelBtn{
+    display:inline-block;
+    margin:0 4px;
+    width:82px;
+    height:40px;
+    background:#959da9;
+    color:#fff;
+    border:0;
+    padding:0 8px;
+    border-radius:4px;
+    cursor:pointer;
+    vertical-align:middle;
+    margin-left: 10px;
 }
-.artModal.in .artModal-dialog {
-    -webkit-transform:translate(0, 0);
-    -ms-transform:translate(0, 0);
-    -o-transform:translate(0, 0);
-    transform:translate(0, 0);
+
+#myModal > .modal-dialog > .modal-content #selectTile{
+    font-size: 18px;
+    font-weight: bold; 
 }
-.artModal-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;background-color:#000000;opacity:0.5;filter:alpha(opacity=50);-webkit-tap-highlight-color:rgba(0,0,0,0);tap-highlight-color:rgba(0,0,0,0);
-    _position:absolute;_top:expression(documentElement.scrollTop);_width:expression(documentElement.clientWidth);_height:expression(documentElement.clientHeight);
-}
-.artModal-backdrop.fade{opacity:0;filter:alpha(opacity=0);}
-.artModal-backdrop.in{opacity:0.5 !important;filter:alpha(opacity=50);}
 
 
-.custom_style{width:300px;height:450px; padding:10px;border-radius:8px;margin:0 auto;background:#fff;color:#000;border:1px solid #d1d6db;
-    -webkit-box-shadow:0 5px 15px rgba(0, 0, 0, 0.2);
-    box-shadow:0 5px 15px rgba(0, 0, 0, 0.2);
-}
-.custom_style #saveBtn{display:inline-block;margin:0 4px;width:82px;height:40px;background:#00A4FF;color:#fff;border:0;padding:0 8px;
-    border-radius:4px;cursor:pointer;vertical-align:middle;margin-left: 50px;}
-.custom_style #cancelBtn{display:inline-block;margin:0 4px;width:82px;height:40px;background:#959da9;color:#fff;border:0;padding:0 8px;
-    border-radius:4px;cursor:pointer;vertical-align:middle;margin-left: 10px;}
-.custom_style .content{height:300px;line-height:300px;text-align:center;background:#ccc;margin:10px 0;}
 
-@media (max-width: 500px) {
-    .page{width:300px;}
+
+
+#slaveOrgModal > .modal-dialog > .modal-content{
+    margin-top: 100px !important;
+    margin-left:22% !important;
+    width:450px;
+    height:250px;
+}
+
+#slaveOrgModal > .modal-dialog > .modal-content #saveBtn{
+    display:inline-block;
+    margin:0 4px;
+    width:82px;
+    height:40px;
+    background:#00A4FF;
+    color:#fff;
+    border:0;
+    padding:0 8px;
+    border-radius:4px;
+    cursor:pointer;
+    vertical-align:middle;
+    margin-left: 50px;
+}
+
+#slaveOrgModal > .modal-dialog > .modal-content #cancelBtn{
+    display:inline-block;
+    margin:0 4px;
+    width:82px;
+    height:40px;
+    background:#959da9;
+    color:#fff;
+    border:0;
+    padding:0 8px;
+    border-radius:4px;
+    cursor:pointer;
+    vertical-align:middle;
+    margin-left: 10px;
+}
+
+#slaveOrgModal > .modal-dialog > .modal-content #selectTile{
+    font-size: 18px;
+    font-weight: bold; 
+	margin-left:20px;
+	margin-top:20px;
 }
 

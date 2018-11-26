@@ -25,6 +25,10 @@ public class PsonOrgVo extends BaseVo {
 
 /************************组织**************************/
     /**
+     * 组织树根节点
+     */
+    private Long orgTreeId;
+    /**
      * 组织根节点
      */
     private Long orgRootId;
@@ -84,7 +88,7 @@ public class PsonOrgVo extends BaseVo {
     /**
      * 用户标识
      */
-    private Long personId;
+    private Long personnelId;
 
     /**
      * 人员姓名
@@ -146,6 +150,14 @@ public class PsonOrgVo extends BaseVo {
      * 关键字检索
      */
     private String search;
+
+    public Long getOrgTreeId() {
+        return orgTreeId;
+    }
+
+    public void setOrgTreeId(Long orgTreeId) {
+        this.orgTreeId = orgTreeId;
+    }
 
     public String getAccId() {
         return accId;
@@ -291,12 +303,12 @@ public class PsonOrgVo extends BaseVo {
         this.postName = postName;
     }
 
-    public Long getPersonId() {
-        return personId;
+    public Long getPersonnelId() {
+        return personnelId;
     }
 
-    public void setPersonId(Long personId) {
-        this.personId = personId;
+    public void setPersonnelId(Long personnelId) {
+        this.personnelId = personnelId;
     }
 
     public String getDoubleName() {

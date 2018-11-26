@@ -24,16 +24,19 @@ eureka:
 feign:
   hystrix:
     enabled: true
-    shareSecurityContext: true
-    command:
-      default:
-        circuitBreaker:
-          sleepWindowInMilliseconds: 100000
-          forceClosed: true
-        execution:
-          isolation:
-            thread:
-              timeoutInMilliseconds: 600000
+
+hystrix:
+  enabled: true
+  shareSecurityContext: true
+  command:
+    default:
+      circuitBreaker:
+        sleepWindowInMilliseconds: 100000
+        forceClosed: true
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 600000
 #请求处理的超时时间
 ribbon.ReadTimeout: 120000
 #请求连接的超时时间

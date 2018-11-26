@@ -22,7 +22,7 @@
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
     <link href="/css/custom.css" rel="stylesheet">
-
+ <link href="/css/style.css" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="/js/core/html5shiv.js"></script>
     <script src="/js/core/respond.js"></script>
@@ -48,9 +48,9 @@
                 
                 <input  id="locId" value="" name="locId" type="hidden"/>
                 <div class="form-group" style="margin-bottom: 10px;">
-                      <label for="upLocId" class="form-item-label-required col-sm-2 control-label" style=" ">上级行政区域</label>
+                      <label for="parentLocId" class="form-item-label-required col-sm-2 control-label" style=" ">上级行政区域</label>
                       <div class="col-sm-5">
-                       <select  id="upLocId" name="upLocId" class="form-control  ">
+                       <select  id="parentLocId" name="parentLocId" class="form-control  ">
                        <option value="0">最上级</option>
                       </select>
                       </div>
@@ -98,18 +98,30 @@
                       </div>
                 </div>
             </form>
-               <div class="row" style="margin-bottom: 10px;">
-                <div style="margin-left: 17%;">
-                    <!-- <input type="submit" id="formSubmit" class="clip">
-                    <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
-                    <button id="saveBtn" class="btn btn-primary">保存</button>
-                    <button id="cancelBtn" class="btn btn-default" style="margin-left: 10px;" onclick="history.go(-1)">取消</button>
+              </div>
+            <p></p>
+                <div class="row BoardContent" style="margin-bottom: 10px;">
+                <div style="margin-left: 5%; " class="FunctionBtn">
+                <a class="BtnDel" onclick="deleteData()" href="javascript:void(0)"><span></span>删除</a>
+                
+               <!--  <a class="BtnDel" id="" href="JavaScript:void(0)" onclick="parent.changeIframe('/inaction/region/polloc-add.html')"><span class="fa fa-plus-circle icon-warning"></span>删除</a>
+                    <input type="submit" id="formSubmit" class="clip">
+                    <label for="formSubmit" class="ui-button ui-button-primary">注册</label>
+                    <button id="delBtn" class="ui-button ui-button-warning">删除</button> -->
                 </div>
               </div>
+               <div class="row" style="margin-bottom: 10px;">
+                <div class="btn-group col-md-offset-3" style="margin-left: 30%;">
+                    <!-- <input type="submit" id="formSubmit" class="clip">
+                    <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
+                    <button id="saveBtn" class="ui-button ui-button-primary">保存</button>
+                    <button id="cancelBtn" class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="history.go(-1)">取消</button>
+                </div>
+                </div>
             </div>
              
           </div>
-        </div>
+       
     </div>
     <!-- jQuery -->
     <script type="text/javascript" src="/js/core/jquery.js"></script>
@@ -147,6 +159,6 @@
       $('#orgType').addTag('foo')
 
     </script>
-	
+    
   </body>
 </html>

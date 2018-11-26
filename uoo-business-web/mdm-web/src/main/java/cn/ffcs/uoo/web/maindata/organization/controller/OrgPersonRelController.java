@@ -62,7 +62,7 @@ public class OrgPersonRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getPerOrgRelList", method = RequestMethod.GET)
-    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(@RequestParam(value = "perSonId",required = false)Integer perSonId){
+    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(@RequestParam(value = "perSonId",required = false)String perSonId){
         return orgPersonRelService.getPerOrgRelList(perSonId);
     }
 
@@ -70,13 +70,14 @@ public class OrgPersonRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getPerOrgRelPage", method = RequestMethod.GET)
-    public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(@RequestParam(value = "orgId",required = false)Integer orgId,
+    public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(@RequestParam(value = "orgId",required = false)String orgId,
+                                                            @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                             @RequestParam(value = "orgRootId",required = false)String orgRootId,
-                                                            @RequestParam(value = "personId",required = false)Integer personId,
+                                                            @RequestParam(value = "personId",required = false)String personId,
                                                             @RequestParam(value = "search",required = false)String search,
                                                             @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                             @RequestParam(value = "pageNo",required = false)Integer pageNo){
-        return orgPersonRelService.getPerOrgRelPage(orgId,orgRootId,personId,search,pageSize,pageNo);
+        return orgPersonRelService.getPerOrgRelPage(orgId,orgTreeId,orgRootId,personId,search,pageSize,pageNo);
     }
 
 
@@ -84,7 +85,7 @@ public class OrgPersonRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getUserOrgRelPage", method = RequestMethod.GET)
-    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(@RequestParam(value = "orgId",required = false)Integer orgId,
+    public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(@RequestParam(value = "orgId",required = false)String orgId,
                                                              @RequestParam(value = "search",required = false)String search,
                                                              @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                              @RequestParam(value = "pageNo",required = false)Integer pageNo){

@@ -35,7 +35,7 @@ public class PersonnelServiceHystrix implements PersonnelService {
 
 
     @Override
-    public Object getFormPersonnel(Long personnelId, Long orgRootId, Long orgId) {
+    public Object getFormPersonnel(Long personnelId, Long orgTreeId, Long orgRootId, Long orgId) {
         return null;
     }
 

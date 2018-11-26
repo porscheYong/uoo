@@ -3,6 +3,7 @@ package cn.ffcs.uoo.web.maindata.position.controller;
 import cn.ffcs.uoo.web.maindata.position.dto.TbPost;
 import cn.ffcs.uoo.web.maindata.position.service.TbPostClient;
 import cn.ffcs.uoo.web.maindata.position.vo.OrgPostInfoVo;
+import cn.ffcs.uoo.web.maindata.position.vo.PostNodeVo;
 import cn.ffcs.uoo.web.maindata.position.vo.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -77,6 +78,12 @@ public class TbPostController {
     @RequestMapping(value = "/getPostList/{orgId}", method = RequestMethod.GET)
     public List<OrgPostInfoVo> queryPostListByOrgId(@PathVariable Long orgId) {
         return tbPostClient.queryPostListByOrgId(orgId);
+    }
+
+    @ApiOperation(value = "查询职位树", notes = "查询职位树")
+    @RequestMapping(value = "/getPostTree", method = RequestMethod.GET)
+    public ResponseResult<List<PostNodeVo>> getPostTree() {
+        return tbPostClient.getPostTree();
     }
 }
 

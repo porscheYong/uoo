@@ -34,13 +34,13 @@ public class OrgRel extends Model<OrgRel> {
     /**
      * 上级组织标识
      */
-    @TableField("SUP_ORG_ID")
-    private Long supOrgId;
+    @TableField("PARENT_ORG_ID")
+    private Long parentOrgId;
     /**
      * 关系类型标识
      */
-    @TableField("ORG_REL_TYPE_ID")
-    private Long orgRelTypeId;
+    @TableField("REF_CODE")
+    private String refCode;
     /**
      * 状态
      */
@@ -102,20 +102,20 @@ public class OrgRel extends Model<OrgRel> {
         this.orgId = orgId;
     }
 
-    public Long getSupOrgId() {
-        return supOrgId;
+    public Long getParentOrgId() {
+        return parentOrgId;
     }
 
-    public void setSupOrgId(Long supOrgId) {
-        this.supOrgId = supOrgId;
+    public void setParentOrgId(Long parentOrgId) {
+        this.parentOrgId = parentOrgId;
     }
 
-    public Long getOrgRelTypeId() {
-        return orgRelTypeId;
+    public String getRefCode() {
+        return refCode;
     }
 
-    public void setOrgRelTypeId(Long orgRelTypeId) {
-        this.orgRelTypeId = orgRelTypeId;
+    public void setRefCode(String refCode) {
+        this.refCode = refCode;
     }
 
     public String getStatusCd() {
@@ -176,8 +176,8 @@ public class OrgRel extends Model<OrgRel> {
         return "OrgRel{" +
         ", orgRelId=" + orgRelId +
         ", orgId=" + orgId +
-        ", supOrgId=" + supOrgId +
-        ", orgRelTypeId=" + orgRelTypeId +
+        ", parentOrgId=" + parentOrgId +
+        ", refCode=" + refCode +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
         ", createUser=" + createUser +

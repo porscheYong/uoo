@@ -10,6 +10,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -32,7 +33,8 @@ public interface OrgTreeService {
     public ResponseResult<String> updateOrgTree(@RequestBody OrgTree orgTree);
 
     @RequestMapping(value="/orgTree/getOrgTreeList",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<List<OrgTree>> getOrgTreeList(@RequestBody OrgTree orgTree);
+    public ResponseResult<List<OrgTree>> getOrgTreeList(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                                        @RequestParam(value = "orgRootId",required = false)String orgRootId);
 
 
 }

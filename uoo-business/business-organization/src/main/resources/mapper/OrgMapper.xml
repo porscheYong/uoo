@@ -60,7 +60,7 @@
         AND C.STATUS_CD = 1000
         AND A.ORG_ID = B.ORG_ID
         <if test="org.orgId != null">
-            AND B.SUP_ORG_ID = #{org.orgId}
+            AND B.PARENT_ORG_ID = #{org.orgId}
         </if>
         <if test="org.refCode != null">
             AND C.REF_CODE = #{org.refCode}
@@ -156,10 +156,10 @@
         AND E.STATUS_CD = '1000'
         AND E.ORG_TREE_ID = D.ORG_TREE_ID
         AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
-        AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND A.REF_CODE = C.REF_CODE
         AND A.ORG_ID=B.ORG_ID
-        AND E.ORG_ID=#{orgVo.orgRootId}
-        AND A.SUP_ORG_ID=#{orgVo.orgId}) D
+        AND E.ORG_TREE_ID=#{orgVo.orgTreeId}
+        AND A.PARENT_ORG_ID=#{orgVo.orgId}) D
         LEFT JOIN TB_POLITICAL_LOCATION PL ON PL.LOC_ID=D.LOC_ID
     </select>
 
@@ -186,14 +186,14 @@
     <select id="getSysFullName" resultType="java.lang.String">
         SELECT FULL_NAME fullName FROM (
         SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,
-        ORG_NAME,ORG_ID,SUP_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD
-        FROM (SELECT A.* ,B.SUP_ORG_ID
+        ORG_NAME,ORG_ID,PARENT_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD
+        FROM (SELECT A.* ,B.PARENT_ORG_ID
         FROM TB_ORG A, TB_ORG_REL B
         WHERE A.ORG_ID = B.ORG_ID
         AND A.STATUS_CD = 1000
         AND B.STATUS_CD = 1000) AA
         START WITH ORG_ID = #{orgRootId}
-        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID ) AA where AA.ORG_ID = #{orgId}
+        CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID ) AA where AA.ORG_ID = #{orgId}
     </select>
 
 

@@ -3,6 +3,7 @@ package cn.ffcs.uoo.web.maindata.position.service.fallback;
 import cn.ffcs.uoo.web.maindata.position.dto.TbPost;
 import cn.ffcs.uoo.web.maindata.position.service.TbPostClient;
 import cn.ffcs.uoo.web.maindata.position.vo.OrgPostInfoVo;
+import cn.ffcs.uoo.web.maindata.position.vo.PostNodeVo;
 import cn.ffcs.uoo.web.maindata.position.vo.ResponseResult;
 import org.springframework.stereotype.Component;
 
@@ -52,5 +53,13 @@ public class TbPostClientHystrix implements TbPostClient {
     @Override
     public List<OrgPostInfoVo> queryPostListByOrgId(Long orgId) {
         return null;
+    }
+
+    @Override
+    public ResponseResult<List<PostNodeVo>> getPostTree() {
+        ResponseResult<List<PostNodeVo>> responseResult = new ResponseResult<List<PostNodeVo>>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 }

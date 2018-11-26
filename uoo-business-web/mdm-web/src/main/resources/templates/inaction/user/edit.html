@@ -91,52 +91,52 @@
               <span class="name">用户信息</span>
                 </div>
                 <div class="board-content" id="userInfo" style="overflow-x: hidden">
-                    <div class="col-md-2 fleft tcenter">
-                        <img class="avatar" src="/images/avatar.png" alt="头像"/>
-                    </div>
-                    <div class="col-md-10 fleft Col8">
-                        <strong class="Font24 Black" id="psnName">张庆忠</strong>
-                        <span class="key-words">
-                        <span>男</span
-                        ><span id="marriage">未婚</span
-                        ><span>共产党员</span
-                        ><span id="nation">汉族</span
-                        ><span>浙江杭州</span>
-                    </span>
-                        <div style="padding-top: 10px">
-                            <ul class="col-md-6 line_30">
-                                <li><span class="Icon fleft"></span>189-0500-1234 &nbsp; 186-9572-3456</li>
-                                <li><span class="Icon fleft"></span><a href="mailto:18905001234@189.cn">18905001234@189.cn</a>
-                                </li>
-                                <li><span class="Icon fleft"></span>浙江省杭州市余杭区育士路50号</li>
-                            </ul>
-                            <ul class="col-md-6 line_30">
-                                <li>
-                                    <span class="Label">员工工号：</span>
-                                    <span id="certNo">057120181234</span>
-                                </li>
-                                <li>
-                                    <span class="Label">人员编码：</span>
-                                    057120182345
-                                </li>
-                                <li>
-                                    <span class="Label">人力编码：</span>
-                                    057120182345
-                                </li>
-                                <li>
-                                    <span class="Label">身份证号码：</span>
-                                    350111198902345678
-                                </li>
-                                <li>
-                                    <span class="Label">首次工作时间：</span>
-                                    2003-07
-                                </li>
-                            </ul>
-                            <div class="clearfix"></div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <a class="icon icon-edit" style="vertical-align: top;" onclick="editUser()"></a>
+                    <!--<div class="col-md-2 fleft tcenter">-->
+                        <!--<img class="avatar" src="/images/avatar.png" alt="头像"/>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-10 fleft Col8">-->
+                        <!--<strong class="Font24 Black" id="psnName">张庆忠</strong>-->
+                        <!--<span class="key-words">-->
+                        <!--<span>男</span-->
+                        <!--&gt;<span id="marriage">未婚</span-->
+                        <!--&gt;<span>共产党员</span-->
+                        <!--&gt;<span id="nation">汉族</span-->
+                        <!--&gt;<span>浙江杭州</span>-->
+                    <!--</span>-->
+                        <!--<div style="padding-top: 10px">-->
+                            <!--<ul class="col-md-6 line_30">-->
+                                <!--<li><span class="Icon fleft"></span>189-0500-1234 &nbsp; 186-9572-3456</li>-->
+                                <!--<li><span class="Icon fleft"></span><a href="mailto:18905001234@189.cn">18905001234@189.cn</a>-->
+                                <!--</li>-->
+                                <!--<li><span class="Icon fleft"></span>浙江省杭州市余杭区育士路50号</li>-->
+                            <!--</ul>-->
+                            <!--<ul class="col-md-6 line_30">-->
+                                <!--<li>-->
+                                    <!--<span class="Label">员工工号：</span>-->
+                                    <!--<span id="certNo">057120181234</span>-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                    <!--<span class="Label">人员编码：</span>-->
+                                    <!--057120182345-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                    <!--<span class="Label">人力编码：</span>-->
+                                    <!--057120182345-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                    <!--<span class="Label">身份证号码：</span>-->
+                                    <!--350111198902345678-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                    <!--<span class="Label">首次工作时间：</span>-->
+                                    <!--2003-07-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                            <!--<div class="clearfix"></div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="clearfix"></div>-->
+                    <!--<a class="icon icon-edit" style="vertical-align: top;" onclick="editUser()"></a>-->
                 </div>
             </div>
 
@@ -541,18 +541,18 @@
 
 <!--用户信息-->
 <script id="userTemplate" type="text/x-handlebars-template">
-    <div class="board-content" id="baseInfo">
+
         <div class="col-md-2 fleft tcenter">
             <img class="avatar" src="/images/avatar.png" alt="头像"/>
         </div>
         <div class="col-md-10 fleft Col8">
-            <strong class="Font24 Black">张庆忠</strong>
+            <strong class="Font24 Black">{{psnName}}</strong>
             <span class="key-words">
-                        <span>男</span
-                        ><span id="marriage">未婚</span
-            ><span>共产党员</span
-            ><span id="nation">汉族</span
-            ><span>浙江杭州</span>
+                        <span>{{gender}}</span
+                        ><span id="marriage">{{marriage}}</span
+            ><span>{{pliticalStatus}}</span
+            ><span id="nation">{{nation}}</span
+            ><span>{{nationality}}</span>
                     </span>
             <div style="padding-top: 10px">
                 <ul class="col-md-6 line_30">
@@ -564,31 +564,30 @@
                 <ul class="col-md-6 line_30">
                     <li>
                         <span class="Label">员工工号：</span>
-                        <span id="certNo">057120181234</span>
+                        <span id="psnNbr">{{psnNbr}}</span>
                     </li>
                     <li>
                         <span class="Label">人员编码：</span>
-                        057120182345
+                        {{psnCode}}
                     </li>
                     <li>
                         <span class="Label">人力编码：</span>
-                        057120182345
+                        {{ncCode}}
                     </li>
                     <li>
-                        <span class="Label">身份证号码：</span>
-                        350111198902345678
+                        <span class="Label">{{certType}}：</span>
+                        {{certNo}}
                     </li>
                     <li>
                         <span class="Label">首次工作时间：</span>
-                        2003-07
+                        {{toWorkTime}}
                     </li>
                 </ul>
                 <div class="clearfix"></div>
             </div>
         </div>
         <div class="clearfix"></div>
-        <a class="icon icon-edit" style="vertical-align: top;"></a>
-    </div>
+        <a class="icon icon-edit" style="vertical-align: top;" onclick="editUser()"></a>
 </script>
 
 <script id="userEditTemplate" type="text/x-handlebars-template">
