@@ -1,15 +1,16 @@
-// var orgId = getQueryString('id');
+var orgId = getQueryString('id');
+var orgTreeId = getQueryString('orgTreeId');
+var orgRootId = getQueryString('orgRootId');
 var userFrame = parent.window['userFrame'];
 var orgFullName = userFrame.orgFullName;
 var checkNode; //选中类别显示label标签
-var orgTreeId = getQueryString('orgTreeId');
-var orgRootId = getQueryString('orgRootId');
+
 // 组织树初始化
 function initOrgFullNameTree () {
     var treeSetting = {
         async: {
             enable: true,
-            url: "/orgRel/getOrgRelTree?orgRootId="+orgRootId+"&orgTreeId="+orgTreeId,
+            url: "/orgRel/getOrgRelTree?orgId="+orgId+"&orgRootId="+orgRootId+"&orgTreeId="+orgTreeId,
             autoParam: ["id"],
             type: "get",
             dataFilter: filter

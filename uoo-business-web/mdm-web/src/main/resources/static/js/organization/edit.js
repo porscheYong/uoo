@@ -458,7 +458,7 @@ function getScale (orgScale) {
 
 // 获取城乡字典数据
 function getCityVillage (cityTown) {
-    $http.get('http://134.96.253.221:11500/tbDictionaryItem/getList/CITY_VILLAGE', {}, function (data) {
+    $http.get('/tbDictionaryItem/getList/CITY_VILLAGE', {}, function (data) {
         var option = '';
         for (var i = 0; i < data.length; i++) {
           var select = cityTown === data[i].itemValue? 'selected' : '';
@@ -473,7 +473,7 @@ function getCityVillage (cityTown) {
 
 // 获取组织最高岗位级别字典数据
 function getOrgPostLevel (orgPositionLevel) {
-    $http.get('http://134.96.253.221:11500/tbDictionaryItem/getList/ORG_POST_LEVEL', {}, function (data) {
+    $http.get('/getList/ORG_POST_LEVEL', {}, function (data) {
         var option = '';
         for (var i = 0; i < data.length; i++) {
             var select = orgPositionLevel === data[i].itemValue? 'selected' : '';
