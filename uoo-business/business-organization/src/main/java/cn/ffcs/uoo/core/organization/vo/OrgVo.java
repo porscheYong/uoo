@@ -3,10 +3,7 @@ package cn.ffcs.uoo.core.organization.vo;
 
 
 import cn.ffcs.uoo.base.common.vo.BaseVo;
-import cn.ffcs.uoo.core.organization.entity.OrgCertRel;
-import cn.ffcs.uoo.core.organization.entity.OrgType;
-import cn.ffcs.uoo.core.organization.entity.Position;
-import cn.ffcs.uoo.core.organization.entity.Post;
+import cn.ffcs.uoo.core.organization.entity.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -72,6 +69,8 @@ public class OrgVo extends BaseVo{
     private List<Position> positionList;
     private List<Post> postList;
     private List<PsonOrgVo> psonOrgVoList;
+    private List<PoliticalLocation> politicalLocationList;
+
 
     //身份证信息
     private List<String> certIdList;
@@ -80,7 +79,13 @@ public class OrgVo extends BaseVo{
     private String search;
     private String orgRelCreatDate;
 
+    public List<PoliticalLocation> getPoliticalLocationList() {
+        return politicalLocationList;
+    }
 
+    public void setPoliticalLocationList(List<PoliticalLocation> politicalLocationList) {
+        this.politicalLocationList = politicalLocationList;
+    }
 
     public List<OrgCertVo> getOrgCertList() {
         return OrgCertList;

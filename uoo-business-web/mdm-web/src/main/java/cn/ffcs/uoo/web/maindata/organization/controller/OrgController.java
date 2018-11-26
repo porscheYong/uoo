@@ -93,4 +93,16 @@ public class OrgController {
         return orgService.getOrgExtByOrgId(orgTreeId,orgRootId,orgId);
     }
 
+
+    @ApiOperation(value = "组织删除", notes = "组织删除")
+    @ApiImplicitParams({
+
+    })
+    @RequestMapping(value = "/deleteOrg", method = RequestMethod.GET)
+    public ResponseResult<String> deleteOrg(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                            @RequestParam(value = "orgId",required = false)String orgId,
+                                            @RequestParam(value = "supOrgId",required = false)String supOrgId){
+        return orgService.deleteOrg(orgTreeId,orgId,supOrgId);
+    }
+
 }
