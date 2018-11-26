@@ -641,6 +641,41 @@ public class OrgController extends BaseController {
 
 
 
+    @ApiOperation(value = "组织删除", notes = "组织删除")
+    @ApiImplicitParams({
+
+    })
+    @UooLog(value = "组织删除", key = "deleteOrg")
+    @RequestMapping(value = "/deleteOrg", method = RequestMethod.POST)
+    public ResponseResult<String> deleteOrg(String orgTreeId,String orgId){
+        ResponseResult<String> ret = new ResponseResult<String>();
+        if (StrUtil.isNullOrEmpty(orgTreeId)) {
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树标识不能为空");
+            return ret;
+        }
+        if (StrUtil.isNullOrEmpty(orgId)) {
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织标识不能为空");
+            return ret;
+        }
+
+        Wrapper orgTreeConfWrapper = Condition.create().eq("ORG_TREE_ID",orgTreeId).eq("STATUS_CD","1000");
+        OrgTree orgTree  = orgTreeService.selectOne(orgTreeConfWrapper);
+        if(orgTree == null){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树不存在");
+            return ret;
+        }
+        Wrapper leafOrgConfWrapper = Condition.create().eq("PARENT_ORG_ID",orgId).eq("STATUS_CD","1000");
+//        orgRelService.
+//        if(){
+//
+//        }
+        return ret;
+    }
+
+
 
 
     @ApiOperation(value = "查询组织信息-web", notes = "查询组织信息")

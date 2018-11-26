@@ -96,6 +96,21 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
         return false;
     }
 
+    /**
+     * 是否存在子页节点
+     * @param orgId
+     * @param orgTreeId
+     * @return
+     */
+    @Override
+    public boolean isLeaf(String orgId,String orgTreeId){
+        int count = orgRelMapper.leafCount(orgTreeId,orgId);
+        if(count>0){
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * 获取组织关系类型

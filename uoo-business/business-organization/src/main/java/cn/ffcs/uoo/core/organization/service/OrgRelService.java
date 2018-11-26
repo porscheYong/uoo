@@ -125,4 +125,11 @@ public interface OrgRelService extends IService<OrgRel> {
          */
         public List<TreeNodeVo> selectTarOrgRelTreeAndLv(String orgRootId, String lv, String curOrgId, boolean isFull);
 
+        /**
+         * 获取指定组织树和层级
+         * @param orgId
+         * @param orgTreeId
+         * @return
+         */
+        public boolean isLeaf(String orgId,String orgTreeId);
 }
