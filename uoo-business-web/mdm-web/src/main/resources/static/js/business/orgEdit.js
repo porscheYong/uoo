@@ -1,4 +1,5 @@
 var orgId = getQueryString('id');
+var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var locationList = [];
@@ -70,7 +71,7 @@ function openContactDialog() {
         shade: 0.8,
         area: ['70%', '85%'],
         maxmin: true,
-        content: 'contactDialog.html?id=' + orgId,
+        content: '/inaction/organization/contactDialog.html?id=' + orgId,
         btn: ['确认', '取消'],
         yes: function(index, layero){
             //获取layer iframe对象
@@ -97,7 +98,7 @@ function openTypeDialog() {
         shade: 0.8,
         area: ['70%', '85%'],
         maxmin: true,
-        content: 'typeDialog.html?id=' + orgId,
+        content: '/inaction/organization/typeDialog.html?id=' + orgId,
         btn: ['确认', '取消'],
         yes: function(index, layero){
             //获取layer iframe对象
@@ -122,7 +123,7 @@ function openPositionDialog() {
         shade: 0.8,
         area: ['50%', '80%'],
         maxmin: true,
-        content: 'positionDialog.html?id=' + orgId,
+        content: '/inaction/organization/positionDialog.html?id=' + orgId,
         btn: ['确认', '取消'],
         yes: function(index, layero){
             //获取layer iframe对象
@@ -147,7 +148,7 @@ function openPostDialog() {
         shade: 0.8,
         area: ['50%', '80%'],
         maxmin: true,
-        content: 'postDialog.html',
+        content: '/inaction/organization/postDialog.html',
         btn: ['确认', '取消'],
         yes: function(index, layero){
             //获取layer iframe对象
@@ -173,7 +174,7 @@ function openLocationDialog() {
         shade: 0.8,
         area: ['50%', '80%'],
         maxmin: true,
-        content: 'locationDialog.html',
+        content: '/inaction/organization/locationDialog.html',
         btn: ['确认', '取消'],
         yes: function(index, layero){
             //获取layer iframe对象
@@ -236,7 +237,7 @@ function initCredentialTable (results) {
             this.api().column(0).nodes().each(function(cell, i) {
                 cell.innerHTML =  i + 1;
             });
-        },
+        }
         // 'serverSide': true,  //启用服务器端分页
         // 'ajax': function (data, callback, settings) {
 
@@ -458,7 +459,7 @@ function getScale (orgScale) {
 
 // 获取城乡字典数据
 function getCityVillage (cityTown) {
-    $http.get('http://134.96.253.221:11500/tbDictionaryItem/getList/CITY_VILLAGE', {}, function (data) {
+    $http.get('/tbDictionaryItem/getList/CITY_VILLAGE', {}, function (data) {
         var option = '';
         for (var i = 0; i < data.length; i++) {
           var select = cityTown === data[i].itemValue? 'selected' : '';
@@ -473,7 +474,7 @@ function getCityVillage (cityTown) {
 
 // 获取组织最高岗位级别字典数据
 function getOrgPostLevel (orgPositionLevel) {
-    $http.get('http://134.96.253.221:11500/tbDictionaryItem/getList/ORG_POST_LEVEL', {}, function (data) {
+    $http.get('/getList/ORG_POST_LEVEL', {}, function (data) {
         var option = '';
         for (var i = 0; i < data.length; i++) {
             var select = orgPositionLevel === data[i].itemValue? 'selected' : '';
@@ -512,8 +513,8 @@ function getStatusCd (statusCd) {
 
 // 获取组织基础信息
 function getOrg (orgId) {
-    $http.get('http://134.96.253.221:11100/org/getOrg', {
-        orgTreeId: '1',
+    $http.get('/org/getOrg', {
+        orgTreeId: orgTreeId,
         orgId: orgId
     }, function (data) {
         deleteData = data;
@@ -553,8 +554,8 @@ function getOrg (orgId) {
 
 // 获取组织关系信息
 function getOrgRel (orgId) {
-    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTypePage', {
-        orgTreeId: '1',
+    $http.get('/orgRel/getOrgRelTypePage', {
+        orgTreeId: orgTreeId,
         orgId: orgId,
         pageSize: 10,
         pageNo: 1
@@ -624,7 +625,7 @@ function updateOrg () {
   var orgDesc = $('#orgDesc').val();
   $http.post('/org/updateOrg', JSON.stringify({
       orgRootId: '1',
-      orgTreeId: '1',
+      orgTreeId: orgTreeId,
       orgId: orgId,
       supOrgId: pid,
       orgName: orgName,
@@ -647,17 +648,17 @@ function updateOrg () {
       orgDesc: orgDesc
   }), function () {
       parent.changeNodeName(orgId, orgName);
-      window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
+      window.location.replace("list.html?id=" + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + "&name=" + encodeURI(orgName));
       loading.screenMaskDisable('container');
   }, function (err) {
-
+      loading.screenMaskDisable('container');
   })
 }
 
 // 删除组织
 function deleteOrg () {
     loading.screenMaskEnable('container');
-    deleteData.orgTreeId = '1';
+    deleteData.orgTreeId = orgTreeId;
     deleteData.orgId = orgId;
     deleteData.supOrgId = orgId;
     deleteData.statusCd = '1100';
@@ -666,13 +667,13 @@ function deleteOrg () {
         parent.selectRootNode();
         loading.screenMaskDisable('container');
     }, function (err) {
-
+        loading.screenMaskDisable('container');
     })
 }
 
 // 取消
 function cancel () {
-    var url = "list.html?id=" + orgId + "&name=" + row.orgName;
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&name=" + orgName;
     window.location.href = url;
 }
 

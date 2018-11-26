@@ -1,6 +1,8 @@
 var orgId = getQueryString('id');
+var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
+var orgTypeTreeName = getQueryString('treeName');
 var orgRelTypeList = [];
 var orgTypeList = [];
 var formValidate;
@@ -20,7 +22,7 @@ function getOrgExtInfo () {
     }
     $('.breadcrumb').html(pathStr);
 }
-$('.orgName').html(orgName);
+$('#orgTypeTreeName').html(orgTypeTreeName);
 getOrgExtInfo();
 
 // lulu ui select插件
@@ -47,8 +49,8 @@ if(typeof $.fn.tagsInput !== 'undefined'){
 
 // 获取组织树基础信息
 function getOrgTree () {
-    $http.get('http://134.96.253.221:11100/org/getOrgTree', {
-        orgTreeId: '1'
+    $http.get('/orgTree/getOrgTree', {
+        orgTreeId: orgTreeId
     }, function (data) {
         $('#orgTreeName').val(data.orgTreeName).focus();
         getProperty(data.userTypeList);
@@ -129,7 +131,7 @@ function getOrgTreeType () {
 
 // 获取用工性质
 function getProperty () {
-    $http.get('http://134.96.253.221:11500/tbDictionaryItem/getList/PROPERTY', {}, function (data) {
+    $http.get('/tbDictionaryItem/getList/PROPERTY', {}, function (data) {
         var option = '<option></option>';
         for (var i = 0; i < data.length; i++) {
           option += "<option value='" + data[i].itemValue + "'>" + data[i].itemCnname +"</option>";
@@ -141,14 +143,13 @@ function getProperty () {
     })
 }
 
-// 新增业务组织树
-function addOrgTree () {
+// 更新业务组织树
+function updateOrgTree () {
     if (!formValidate.isAllPass())
         return;
     loading.screenMaskEnable('container');
     var orgType = [];
     var orgRelType = [];
-    var copyList = [];
     // 组织关系类型类别
     for (var i = 0; i < orgRelTypeList.length; i++) {
         var id = orgRelTypeList[i].id;
@@ -159,36 +160,31 @@ function addOrgTree () {
         var orgTypeId = orgTypeList[i].orgTypeId || orgTypeList[i].id;
         orgType.push({orgTypeId: orgTypeId});
     }
-    //拷贝组织节点
-    for (var i = 0; i < orgCopyList.length; i++) {
-        var id = orgCopyList[i].id;
-        copyList.push({id: id});
-    }
     var orgTreeName = $('#orgTreeName').val();
     var orgTreeType = $('#orgTreeType option:selected') .val();
     var sort = $('#sort').val();
     var userType = $('#userType option:selected') .val();
 
-    $http.post('/orgTree/addOrgTree', JSON.stringify({
+    $http.post('/orgTree/updateOrgTree', JSON.stringify({
+        orgTreeId: orgTreeId,
         orgTreeName: orgTreeName,
         orgTreeType: orgTreeType,
         orgRelTypeList: orgRelType,
         sort: sort,
         userTypeId: userType,
-        orgTypeList: orgType,
-        tarOrgTreeId: copyList
+        orgTypeList: orgType
     }), function () {
-        // parent.changeNodeName(orgId, orgName);
-        // window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
+        parent.initBusinessList();
         loading.screenMaskDisable('container');
     }, function (err) {
-
+        console.log(err);
+        loading.screenMaskDisable('container');
     })
 }
 
 // 取消
 function cancel () {
-    var url = "list.html?id=" + orgId + "&name=" + row.orgName;
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&name=" + orgName;
     window.location.href = url;
 }
 

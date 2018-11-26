@@ -26,17 +26,22 @@ engine = new Bloodhound({
                     console.log(settings, json)
                 },
                 'columns': [
-                    { 'data': null, 'title': '序号', 'className': 'row-no' },
-                    { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
+                    { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name',
                         // 'render': function (data, type, row, meta) {
                         //     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "'>" + row.psnName + "</a>";
                         // }
                     },
                     { 'data': "psnName", 'title': '重名称谓', 'className': 'row-mobile' },
-                    { 'data': "psnName", 'title': '员工工号', 'className': 'cert-no' },
+                    { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
+                    { 'data': "content", 'title': '联系方式', 'className': 'row-mobile' },
+                    { 'data': "psnName", 'title': '所属组织全称', 'className': 'org-name' },
                     { 'data': "psnName", 'title': '职位名称', 'className': 'post-name' },
-                    { 'data': "psnName", 'title': '所属组织', 'className': 'org-name' },
-                    { 'data': "psnName", 'title': '状态', 'className': 'status-code' }
+                    { 'data': "createDate", 'title': '创建时间', 'className': 'status-code',
+                        'render': function (data, type, row, meta) {
+                            var time = formatDateTime(row.createDate);
+                            return time;
+                        }
+                    }
                 ],
                 'language': {
                     'emptyTable': '没有数据',
@@ -277,13 +282,13 @@ getOrgExtInfo();
 // }
 
 function initContactTable () {
-    $http.get('/personnel/getPsnBasicInfo', {
-        keyWord: '',
-        pageSize: 10,
-        pageNo: 1
-    }, function (data) {
+    // $http.get('/personnel/getPsnBasicInfo', {
+    //     keyWord: '',
+    //     pageSize: 10,
+    //     pageNo: 1
+    // }, function (data) {
         table = $("#contactTable").DataTable({
-            'data': data.records,
+            // 'data': data.records,
             'destroy': true,
             'searching': false,
             'autoWidth': false,
@@ -292,17 +297,22 @@ function initContactTable () {
                 console.log(settings, json)
             },
             'columns': [
-                { 'data': null, 'title': '序号', 'className': 'row-no' },
-                { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
+                { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name',
                     // 'render': function (data, type, row, meta) {
                     //     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "'>" + row.psnName + "</a>";
                     // }
                 },
                 { 'data': "psnName", 'title': '重名称谓', 'className': 'row-mobile' },
-                { 'data': "psnName", 'title': '员工工号', 'className': 'cert-no' },
+                { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
+                { 'data': "content", 'title': '联系方式', 'className': 'row-mobile' },
+                { 'data': "psnName", 'title': '所属组织全称', 'className': 'org-name' },
                 { 'data': "psnName", 'title': '职位名称', 'className': 'post-name' },
-                { 'data': "psnName", 'title': '所属组织', 'className': 'org-name' },
-                { 'data': "psnName", 'title': '状态', 'className': 'status-code' }
+                { 'data': "createDate", 'title': '创建时间', 'className': 'status-code',
+                    'render': function (data, type, row, meta) {
+                        var time = formatDateTime(row.createDate);
+                        return time;
+                    }
+                }
             ],
             'language': {
                 'emptyTable': '没有数据',
@@ -323,37 +333,22 @@ function initContactTable () {
             "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
             'pagingType': 'simple_numbers',
             'dom': '<"top"f>t<"bottom"ipl>',
-            'drawCallback': function(){
-                this.api().column(0).nodes().each(function(cell, i) {
-                    cell.innerHTML =  i + 1;
-                });
-            },
-            // 'serverSide': true,  //启用服务器端分页
-            // 'ajax': function (data, callback, settings) {
-            //     var param = {};
-            //     param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
-            //     param.pageNo = (data.start / data.length)+1;//当前页码
-            //     param.keyWord = '';
-            //     $.ajax({
-            //         type: "GET",
-            //         url: "/personnel/getPsnBasicInfo",
-            //         data: param,  //传入组装的参数
-            //         success: function (data) {
-            //             //封装返回数据
-            //             var returnData = {};
-            //             // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
-            //             returnData.recordsTotal = data.count;//返回数据全部记录
-            //             returnData.recordsFiltered = data.count;//后台不实现过滤功能，每次查询均视作全部结果
-            //             returnData.data = data;//返回的数据列表
-            //             //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
-            //             //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
-            //             return returnData;
-            //         },
-            //         error: function () {
-            //
-            //         }
-            //     })
-            // }
+            'serverSide': true,  //启用服务器端分页
+            'ajax': function (data, callback, settings) {
+                var param = {};
+                param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
+                param.pageNo = (data.start / data.length) + 1;//当前页码
+                param.keyWord = '';
+                $http.get('/personnel/getPsnBasicInfo', param, function (result) {
+                    var returnData = {};
+                    returnData.recordsTotal = result.total;
+                    returnData.recordsFiltered = result.total;
+                    returnData.data = result.records;
+                    callback(returnData);
+                }, function (err) {
+                    console.log(err)
+                })
+            }
         });
 
         $('#contactTable tbody tr').click(function () {
@@ -364,9 +359,9 @@ function initContactTable () {
                 $(this).addClass('selected');
             }
         });
-    }, function (err) {
-        console.log(err)
-    })
+    // }, function (err) {
+    //     console.log(err)
+    // })
 }
 
 //获取选中行数据
@@ -384,18 +379,74 @@ function getSelectUser () {
         'ordering': true,
         'columns': [
             { 'data': null, 'title': '序号', 'className': 'row-no' },
-            { 'data': "psnName", 'title': '姓名', 'className': 'row-name'},
-            { 'data': "psnName", 'title': '重名称谓', 'className': 'row-mobile' },
-            { 'data': "psnName", 'title': '员工工号', 'className': 'cert-no' },
-            { 'data': "psnName", 'title': '职位名称', 'className': 'post-name' },
-            { 'data': "psnName", 'title': '所属组织', 'className': 'org-name' },
-            { 'data': "psnName", 'title': '状态', 'className': 'status-code' }
+            { 'data': "", 'title': '姓名', 'className': 'row-name'},
+            { 'data': "", 'title': '重名称谓', 'className': 'row-mobile' },
+            { 'data': "", 'title': '员工工号', 'className': 'cert-no' },
+            { 'data': "", 'title': '职位名称', 'className': 'post-name' },
+            { 'data': "", 'title': '所属组织', 'className': 'org-name' },
+            { 'data': "", 'title': '状态', 'className': 'status-code' }
         ],
         'language': {
             'emptyTable': '没有数据'
         },
         'dom': '<"top"f>t<"bottom"pl>',
     });
+
+//将时间戳改为yyyy-MM-dd HH-mm-ss
+function formatDateTime(unix) {
+    var now = new Date(parseInt(unix) * 1);
+    now =  now.toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+    if(now.indexOf("下午") > 0) {
+        if (now.length == 18) {
+            var temp1 = now.substring(0, now.indexOf("下午"));   //2014/7/6
+            var temp2 = now.substring(now.indexOf("下午") + 2, now.length);  // 5:17:43
+            var temp3 = temp2.substring(0, 1);    //  5
+            var temp4 = parseInt(temp3); // 5
+            temp4 = 12 + temp4;  // 17
+            var temp5 = temp4 + temp2.substring(1, temp2.length); // 17:17:43
+            now = temp1 + temp5; // 2014/7/6 17:17:43
+            now = now.replace("/", "-"); //  2014-7/6 17:17:43
+            now = now.replace("/", "-"); //  2014-7-6 17:17:43
+        }else {
+            var temp1 = now.substring(0, now.indexOf("下午"));   //2014/7/6
+            var temp2 = now.substring(now.indexOf("下午") + 2, now.length);  // 5:17:43
+            var temp3 = temp2.substring(0, 2);    //  5
+            if (temp3 == 12){
+                temp3 -= 12;
+            }
+            var temp4 = parseInt(temp3); // 5
+            temp4 = 12 + temp4;  // 17
+            var temp5 = temp4 + temp2.substring(2, temp2.length); // 17:17:43
+            now = temp1 + temp5; // 2014/7/6 17:17:43
+            now = now.replace("/", "-"); //  2014-7/6 17:17:43
+            now = now.replace("/", "-"); //  2014-7-6 17:17:43
+        }
+    }else {
+        var temp1 = now.substring(0,now.indexOf("上午"));   //2014/7/6
+        var temp2 = now.substring(now.indexOf("上午")+2,now.length);  // 5:17:43
+        var temp3 = temp2.substring(0,1);    //  5
+        var index = 1;
+        var temp4 = parseInt(temp3); // 5
+        if(temp4 == 0 ) {   //  00
+            temp4 = "0"+temp4;
+        }else if(temp4 == 1) {  // 10  11  12
+            index = 2;
+            var tempIndex = temp2.substring(1,2);
+            if(tempIndex != ":") {
+                temp4 = temp4 + "" + tempIndex;
+            }else { // 01
+                temp4 = "0"+temp4;
+            }
+        }else {  // 02 03 ... 09
+            temp4 = "0"+temp4;
+        }
+        var temp5 = temp4 + temp2.substring(index,temp2.length); // 07:17:43
+        now = temp1 + temp5; // 2014/7/6 07:17:43
+        now = now.replace("/","-"); //  2014-7/6 07:17:43
+        now = now.replace("/","-"); //  2014-7-6 07:17:43
+    }
+    return now;
+}
 initContactTable();
 
 

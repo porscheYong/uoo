@@ -25,6 +25,13 @@ var $http = {
                 skin: 'layui-layer-lan'
                 ,closeBtn: 0
             });
+            break;
+          case 1200:
+            parent.loading.screenMaskDisable('container');
+            parent.layer.alert(message, {
+                skin: 'layui-layer-lan',
+                closeBtn: 0
+             });
             break
         }
         var httpStatus = response.status
@@ -32,6 +39,7 @@ var $http = {
       }
     }
     var httpError = function (response) {
+      parent.loading.screenMaskDisable('container');
       var httpStatus = response.status
       var state = 0
       var message = 'HTTP请求错误'
