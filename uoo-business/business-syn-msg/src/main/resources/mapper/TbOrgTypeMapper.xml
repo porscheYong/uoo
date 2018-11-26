@@ -6,7 +6,7 @@
     <result column="ORG_TYPE_CODE" jdbcType="VARCHAR" property="orgTypeCode" />
     <result column="ORG_TYPE_NAME" jdbcType="VARCHAR" property="orgTypeName" />
     <result column="ORG_TYPE_DESC" jdbcType="VARCHAR" property="orgTypeDesc" />
-    <result column="SUP_PK_ORG_TYPE" jdbcType="DECIMAL" property="supPkOrgType" />
+    <result column="PARENT_ORG_TYPE_ID" jdbcType="DECIMAL" property="supPkOrgType" />
     <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
     <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
     <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
