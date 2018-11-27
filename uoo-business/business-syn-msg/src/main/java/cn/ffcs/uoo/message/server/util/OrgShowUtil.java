@@ -1,4 +1,5 @@
 package cn.ffcs.uoo.message.server.util;
+import java.util.Date;
 
 import cn.ffcs.uoo.message.server.pojo.TbBusinessSystem;
 import cn.ffcs.uoo.message.server.pojo.TbOrgCrossRel;
@@ -48,13 +49,15 @@ public class OrgShowUtil {
             vo.getOrgRelations().setUpdateUser(null);
             vo.getOrgRelations().setStatusDate(null);
             if(vo.getOrgRelations().getOrgRefTypeInfo() != null ){
-                vo.getOrgRelations().setOrgRelTypeId(null);
-                vo.getOrgRelations().setStatusCd(null);
-                vo.getOrgRelations().setCreateDate(null);
-                vo.getOrgRelations().setCreateUser(null);
-                vo.getOrgRelations().setUpdateDate(null);
-                vo.getOrgRelations().setUpdateUser(null);
-                vo.getOrgRelations().setStatusDate(null);
+                vo.getOrgRelations().getOrgRefTypeInfo().setOrgRelTypeId(null);
+                vo.getOrgRelations().getOrgRefTypeInfo().setStatusCd(null);
+                vo.getOrgRelations().getOrgRefTypeInfo().setCreateDate(null);
+                vo.getOrgRelations().getOrgRefTypeInfo().setCreateUser(null);
+                vo.getOrgRelations().getOrgRefTypeInfo().setUpdateDate(null);
+                vo.getOrgRelations().getOrgRefTypeInfo().setUpdateUser(null);
+                vo.getOrgRelations().getOrgRefTypeInfo().setStatusDate(null);
+                vo.getOrgRelations().getOrgRefTypeInfo().setSupOrgRefTypeName(null);
+                vo.getOrgRelations().getOrgRefTypeInfo().setSupOrgRefTypeId(null);
             }
         }
 
@@ -71,15 +74,14 @@ public class OrgShowUtil {
         }
 
       if(vo.getOrgCrossRelations() != null){
-          Iterator<TbOrgCrossRel> it = vo.getOrgCrossRelations().iterator();
+          /*Iterator<TbOrgCrossRel> it = vo.getOrgCrossRelations().iterator();
 
           while(it.hasNext()){
               TbOrgCrossRel rel = it.next();
               if(rel.getRelaType().indexOf(system.getSystemCode()+"_") != 0){
                   it.remove();
               }
-          }
-
+          }*/
           vo.getOrgCrossRelations().forEach((temp)->{
               temp.setOrgCrossRelId(null);
               temp.setOrgId(null);
