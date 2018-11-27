@@ -336,65 +336,152 @@
 
 
     <select id="selectUserOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
+        <!--select *-->
+        <!--from (select t.acct_id accId,-->
+           <!--t.acct acct,-->
+           <!--t.status_cd statusCd,-->
+           <!--'1' type,-->
+           <!--'主账号' typeName,-->
+           <!--t.personnel_id personnelId,-->
+           <!--t3.psn_name psnName,-->
+           <!--t4.cert_no certNo,-->
+           <!--t5.content mobile,-->
+           <!--t6.org_name orgName-->
+        <!--from (select t1.*, t2.org_id-->
+              <!--from tb_acct t1, tb_account_org_rel t2-->
+             <!--where t1.status_cd = 1000-->
+               <!--and t2.status_cd = 1000-->
+               <!--and t1.acct_id = t2.acct_id-->
+               <!--and t2.org_id = #{psonOrgVo.orgId}-->
+            <!--) t-->
+        <!--left join tb_personnel t3 on t.personnel_id = t3.personnel_id-->
+                               <!--and t.status_cd = t3.status_cd-->
+        <!--left join tb_cert t4 on t.personnel_id = t4.personnel_id-->
+                          <!--and t.status_cd = t4.status_cd-->
+        <!--left join tb_contact t5 on t.personnel_id = t5.personnel_id-->
+                             <!--and t.status_cd = t5.status_cd-->
+                             <!--and t5.contact_type = '1'-->
+                             <!--and t5.first_flag = '1'-->
+        <!--left join tb_org t6 on t.org_id = t6.org_id-->
+                         <!--and t.status_cd = t6.status_cd-->
+        <!--union all-->
+        <!--select t.slave_acct_id accId,-->
+           <!--t.slave_acct acct,-->
+           <!--t.status_cd statusCd,-->
+           <!--'2' type,-->
+           <!--'从账号' typeName,-->
+           <!--t.personnel_id personnelId,-->
+           <!--t3.psn_name psnName,-->
+           <!--t4.cert_no certNo,-->
+           <!--t5.content mobile,-->
+           <!--t6.org_name orgName-->
+        <!--from (select tt.*, t1.personnel_id, t2.org_id-->
+              <!--from tb_slave_acct tt, tb_acct t1, tb_account_org_rel t2-->
+             <!--where t1.status_cd = 1000-->
+               <!--and tt.status_cd = 1000-->
+               <!--and t2.status_cd = 1000-->
+               <!--and tt.acct_host_id = t2.acct_host_id-->
+               <!--and tt.acct_id = t2.acct_id-->
+               <!--and t1.acct_id = t2.acct_id-->
+               <!--and t2.org_id = #{psonOrgVo.orgId}-->
+            <!--) t-->
+        <!--left join tb_personnel t3 on t.personnel_id = t3.personnel_id-->
+                               <!--and t.status_cd = t3.status_cd-->
+        <!--left join tb_cert t4 on t.personnel_id = t4.personnel_id-->
+                          <!--and t.status_cd = t4.status_cd-->
+        <!--left join tb_contact t5 on t.personnel_id = t5.personnel_id-->
+                             <!--and t.status_cd = t5.status_cd-->
+                             <!--and t5.contact_type = '1'-->
+                             <!--and t5.first_flag = '1'-->
+        <!--left join tb_org t6 on t.org_id = t6.org_id-->
+                         <!--and t.status_cd = t6.status_cd) a where 1=1-->
+        <!--<if test="psonOrgVo.search != null and psonOrgVo.search != ''">-->
+            <!--AND (PsnName like '%'||#{psonOrgVo.search}||'%' or certNo like '%'||#{psonOrgVo.search}||'%' or mobile like '%'||#{psonOrgVo.search}||'%' or acct like '%'||#{psonOrgVo.search}||'%')-->
+        <!--</if>-->
+
+        WITH ORGFULL AS (
+        SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'),
+        '->',
+        '//'),
+        '//',
+        '/') FULL_NAME,
+        ORG_NAME,
+        ORG_ID,
+        PARENT_ORG_ID,
+        SORT,
+        LOC_ID,
+        AREA_CODE_ID,
+        ORG_CODE,
+        STATUS_CD
+        FROM (SELECT A.* ,B.PARENT_ORG_ID
+        FROM TB_ORG A, TB_ORG_REL B,TB_ORG_TREE C,TB_OGT_ORG_RELTYPE_CONF D,TB_ORG_REL_TYPE E
+        WHERE A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000
+        AND C.STATUS_CD= 1000 AND D.Status_Cd=1000 and E.STATUS_CD=1000
+        AND A.ORG_ID = B.ORG_ID
+        AND C.ORG_TREE_ID=D.ORG_TREE_ID and D.ORG_REL_TYPE_ID=E.ORG_REL_TYPE_ID
+        AND B.REF_CODE=E.REF_CODE) AA
+        START WITH ORG_ID = #{psonOrgVo.orgId}
+        CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID )
+
         select *
         from (select t.acct_id accId,
-           t.acct acct,
-           t.status_cd statusCd,
-           '1' type,
-           '主账号' typeName,
-           t.personnel_id personnelId,
-           t3.psn_name psnName,
-           t4.cert_no certNo,
-           t5.content mobile,
-           t6.org_name orgName
-        from (select t1.*, t2.org_id
-              from tb_acct t1, tb_account_org_rel t2
-             where t1.status_cd = 1000
-               and t2.status_cd = 1000
-               and t1.acct_id = t2.acct_id
-               and t2.org_id = #{psonOrgVo.orgId}
-            ) t
+        t.acct acct,
+        t.status_cd statusCd,
+        '1' type,
+        '主账号' typeName,
+        t.personnel_id personnelId,
+        t3.psn_name psnName,
+        t4.cert_no certNo,
+        t5.content mobile,
+        t.org_name orgName
+        from (select t1.*, t2.org_id,tt.org_name
+        from tb_acct t1, tb_account_org_rel t2,ORGFULL tt
+        where t1.status_cd = 1000
+        and t2.status_cd = 1000
+        and t1.acct_id = t2.acct_id
+        and t2.org_id = tt.org_id
+        and t2.org_id = #{psonOrgVo.orgId}
+        ) t
         left join tb_personnel t3 on t.personnel_id = t3.personnel_id
-                               and t.status_cd = t3.status_cd
+        and t.status_cd = t3.status_cd
         left join tb_cert t4 on t.personnel_id = t4.personnel_id
-                          and t.status_cd = t4.status_cd
+        and t.status_cd = t4.status_cd
         left join tb_contact t5 on t.personnel_id = t5.personnel_id
-                             and t.status_cd = t5.status_cd
-                             and t5.contact_type = '1'
-                             and t5.first_flag = '1'
-        left join tb_org t6 on t.org_id = t6.org_id
-                         and t.status_cd = t6.status_cd
+        and t.status_cd = t5.status_cd
+        and t5.contact_type = '1'
+        and t5.first_flag = '1'
         union all
         select t.slave_acct_id accId,
-           t.slave_acct acct,
-           t.status_cd statusCd,
-           '2' type,
-           '从账号' typeName,
-           t.personnel_id personnelId,
-           t3.psn_name psnName,
-           t4.cert_no certNo,
-           t5.content mobile,
-           t6.org_name orgName
-        from (select tt.*, t1.personnel_id, t2.org_id
-              from tb_slave_acct tt, tb_acct t1, tb_account_org_rel t2
-             where t1.status_cd = 1000
-               and tt.status_cd = 1000
-               and t2.status_cd = 1000
-               and tt.acct_host_id = t2.acct_host_id
-               and tt.acct_id = t2.acct_id
-               and t1.acct_id = t2.acct_id
-               and t2.org_id = #{psonOrgVo.orgId}
-            ) t
+        t.slave_acct acct,
+        t.status_cd statusCd,
+        '2' type,
+        '从账号' typeName,
+        t.personnel_id personnelId,
+        t3.psn_name psnName,
+        t4.cert_no certNo,
+        t5.content mobile,
+        t.org_name orgName
+        from (select tt.*, t1.personnel_id, t2.org_id,t3.org_name
+        from tb_slave_acct tt, tb_acct t1, tb_account_org_rel t2,ORGFULL t3
+        where t1.status_cd = 1000
+        and tt.status_cd = 1000
+        and t2.status_cd = 1000
+        and tt.acct_host_id = t2.acct_host_id
+        and tt.acct_id = t2.acct_id
+        and t1.acct_id = t2.acct_id
+        and t2.org_id = t3.org_id
+        and t2.org_id = #{psonOrgVo.orgId}
+        ) t
         left join tb_personnel t3 on t.personnel_id = t3.personnel_id
-                               and t.status_cd = t3.status_cd
+        and t.status_cd = t3.status_cd
         left join tb_cert t4 on t.personnel_id = t4.personnel_id
-                          and t.status_cd = t4.status_cd
+        and t.status_cd = t4.status_cd
         left join tb_contact t5 on t.personnel_id = t5.personnel_id
-                             and t.status_cd = t5.status_cd
-                             and t5.contact_type = '1'
-                             and t5.first_flag = '1'
-        left join tb_org t6 on t.org_id = t6.org_id
-                         and t.status_cd = t6.status_cd) a where 1=1
+        and t.status_cd = t5.status_cd
+        and t5.contact_type = '1'
+        and t5.first_flag = '1'
+        )a where 1=1
         <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
             AND (PsnName like '%'||#{psonOrgVo.search}||'%' or certNo like '%'||#{psonOrgVo.search}||'%' or mobile like '%'||#{psonOrgVo.search}||'%' or acct like '%'||#{psonOrgVo.search}||'%')
         </if>

@@ -5,7 +5,7 @@ var orgTreeId = "1";
 var setting = {
     async: {
         enable: true,
-        url: "http://134.96.253.221:11100/orgRel/getOrgRelTree?orgTreeId="+orgTreeId + "&orgRootId=" + orgTreeId,
+        url: "/orgRel/getOrgRelTree?orgTreeId="+orgTreeId + "&orgRootId=" + orgTreeId,
         autoParam: ["id"],
         type: "get",
         dataFilter: filter
@@ -71,7 +71,7 @@ function refreshResult () {
 
 //初始化组织
 function initOrgRelTree (orgTreeId) {
-    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTree', {
+    $http.get('/orgRel/getOrgRelTree', {
         orgTreeId: orgTreeId,
         orgRootId: orgTreeId
     }, function (data) {
