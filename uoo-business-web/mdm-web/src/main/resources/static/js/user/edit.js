@@ -16,6 +16,13 @@ function getOrgTreeList () {
         console.log(err)
     })
 }
+function getRefType () {
+	$http.get('/tbDictionaryItem/getList/REF_TYPE', {}, function (data) {
+		personalData.refType=data;
+	}, function (err) {
+		console.log(err)
+	})
+}
 function getEduInfo(){
 	$.ajax({
 		url:'/edu/getTbEduPage',
@@ -43,7 +50,6 @@ function getJobInfo(){
 function getOrgInfo(){
 	$http.get('/orgPersonRel/getPerOrgRelPage', {orgId:orgId,orgTreeId:orgTreeId,personnelId:personnelId,pageSize:11111111,pageNo:1},
 	function (data) {
-        console.log(data)
         orgInfo=data;
         personalData.orgInfo=orgInfo;
         initOrgInfo();
@@ -321,6 +327,7 @@ function openOrgEdit () {
 }
 function openOrgEditByEdit (i) {
 	personalData.currentEditOrgInfo=personalData.orgInfo.records[i];
+	console.log(personalData);
 	openOrgEdit();
 }
 function openJobEdit () {
@@ -380,7 +387,7 @@ function getOrgFullName() {
         shade: 0.8,
         area: ['50%', '80%'],
         maxmin: true,
-        content: 'orgNameDialog.html?orgTreeId='+orgTreeId+'&orgRootId='+orgRootId,
+        content: 'orgNameDialog.html?orgTreeId='+$('#orgTreeId').val()+'&orgRootId='+orgTreeId,
         btn: ['确认', '取消'],
         yes: function(index, layero){
             //获取layer iframe对象
@@ -470,14 +477,13 @@ function addPsonOrg(){
 			postId:$('#postId').val(),
 			property:$('#property').val(),
 			personId:personnelId,
-			
+			orgId:$('#orgFullName').attr('keyId'),
 	};
 	psonOrgArr[0]=psonOrg;
 	$.ajax({
 		url:'/orgPersonRel/addOrgPsn',
 		type:'post',
 		data:JSON.stringify(psonOrgArr), 
-		
 		contentType:'application/json',
 		dataType:'json',
 		success:function(data){
@@ -765,7 +771,8 @@ $(document).ready(function(){
 	Handlebars.registerHelper('seq', function (index,options) {
 		 
 		return index+1;
-	});                
+	});        
+	getRefType();
 	getSchoolType();
 	getMemRelation();
 	getGender();
