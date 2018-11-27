@@ -9,7 +9,8 @@ var eduList = [],
     familyList = [],
     mobileList = [],
     psnjobList = [],
-    orgFullName = [];
+    orgFullName,
+    orgPostList = [];
 var loading = parent.loading;
 
 $('#orgName').html(orgName);
@@ -84,11 +85,41 @@ function getMarriage () {
     })
 }
 
-function getOrgTreeList () {
-    $http.get('/orgTree/getOrgTreeList', {}, function (data) {
+// 获取用工性质字典数据
+function getProperty () {
+    $http.get('/tbDictionaryItem/getList/PROPERTY', {}, function (data) {
         var option = '<option></option>';
         for (var i = 0; i < data.length; i++) {
-            option += "<option value='" + data[i].orgTreeId + "'>" + data[i].orgTreeName +"</option>";
+            option += "<option value='" + data[i].itemValue + "'>" + data[i].itemCnname +"</option>";
+        }
+        $('#property').append(option);
+        $('#property').selectMatch();
+    }, function (err) {
+        console.log(err)
+    })
+}
+
+// 获取专兼职字典数据
+function getRefType () {
+    $http.get('/tbDictionaryItem/getList/REF_TYPE', {}, function (data) {
+        var option = '<option></option>';
+        for (var i = 0; i < data.length; i++) {
+            option += "<option value='" + data[i].itemValue + "'>" + data[i].itemCnname +"</option>";
+        }
+        $('#refType').append(option);
+        $('#refType').selectMatch();
+    }, function (err) {
+        console.log(err)
+    })
+}
+
+// 获取组织树列表
+function getOrgTreeList () {
+    $http.get('/orgTree/getOrgTreeList', {}, function (data) {
+        var option = '';
+        for (var i = 0; i < data.length; i++) {
+            var select = orgTreeId === data[i].orgId? 'selected' : '';
+            option += "<option value='" + data[i].orgId + "' " + select + ">" + data[i].orgTreeName +"</option>";
         }
         $('#orgTreeName').append(option);
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
@@ -103,7 +134,7 @@ function getOrgTreeList () {
 function getOrgFullName() {
     parent.layer.open({
         type: 2,
-        title: '选中组织类别',
+        title: '组织全称',
         shadeClose: true,
         shade: 0.8,
         area: ['50%', '80%'],
@@ -117,6 +148,30 @@ function getOrgFullName() {
             parent.layer.close(index);
             $('#orgFullName').val(checkNode.name);
             orgFullName = checkNode;
+        },
+        btn2: function(index, layero){},
+        cancel: function(){}
+    });
+}
+
+// 职位选择
+function getPostName () {
+    parent.layer.open({
+        type: 2,
+        title: '组织职位',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['50%', '80%'],
+        maxmin: true,
+        content: '/inaction/organization/postDialog.html?orgTreeId='+orgTreeId+'&orgRootId='+orgTreeId,
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            checkNode = iframeWin.checkNode;
+            parent.layer.close(index);
+            $('#postName').val(checkNode[0].postName);
+            orgPostList = checkNode;
         },
         btn2: function(index, layero){},
         cancel: function(){}
@@ -252,6 +307,8 @@ function openOrgEdit () {
     $('#orgPerson').html(orgEditHtml);
     $('.wizard .actions').hide();
     getOrgTreeList();
+    getRefType();
+    getProperty();
 }
 // 取消归属组织信息编辑
 function cancelOrgEdit () {
@@ -263,12 +320,29 @@ function cancelOrgEdit () {
 
 // 保存归属组织信息
 function saveOrgTree () {
-    // var orgListTemplate = Handlebars.compile($("#orgListTemplate").html());
-    // var orgListHtml = orgListTemplate();
-    // $('#orgPerson').html(orgListHtml);
-    // $('.wizard .actions').show();
+    var orgTreeName = $('#orgTreeName option:selected') .val();
+    var fullName = orgFullName.name || orgName;
+    var doubleName = $('#doubleName').val();
+    var property = $('#property option:selected') .val();
+    var refType = $('#refType option:selected') .val();
+    var postName = orgPostList[0].postName;
+    var postId = orgPostList[0].postId;
+    psonOrgVoList.push({
+        orgTreeName: orgTreeName,
+        orgTreeId: orgTreeId,
+        fullName: fullName,
+        orgId: orgFullName.id || orgId,
+        doubleName: doubleName,
+        property: property,
+        refType: refType,
+        postName: postName,
+        postId: postId
+    });
+    var orgListTemplate = Handlebars.compile($("#orgListTemplate").html());
+    var orgListHtml = orgListTemplate({psonOrgVoList: psonOrgVoList});
+    $('#orgPerson').html(orgListHtml);
+    $('.wizard .actions').show();
 }
-
 // 工作经历信息编辑
 function editWrokExperience () {
     //预编译模板
@@ -524,7 +598,7 @@ function savePersonnel () {
         psonOrgVoList: psonOrgVoList,
         tbFamilyList: familyList,
         tbPsnjobList: psnjobList
-    }), function (data) {
+    }), function () {
         parent.initBusinessList();
         loading.screenMaskDisable('container');
     }, function (err) {
@@ -538,4 +612,5 @@ getCertType();
 getNation();
 getPliticalStatus();
 getMarriage();
+
 

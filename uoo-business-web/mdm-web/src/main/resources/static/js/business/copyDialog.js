@@ -22,7 +22,7 @@ function initBusinessList () {
             } else {
                 $('#treeList label.active').removeClass('active');
                 $(this).parent().addClass('active');
-                targetId = event.target.value;
+                targetId = $(event.target).attr('value');
                 initTree(targetId);
             }
         })

@@ -1,5 +1,5 @@
 var orgId = getQueryString('id');
-var orgFrame = parent.window['standardOrg'] || parent.window['business'];
+var orgFrame = parent.window['standardOrg'] || parent.window['business'] || parent.window['userManage'];
 var orgPostList = orgFrame.orgPostList;
 var checkNode = [];
 
