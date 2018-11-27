@@ -368,6 +368,7 @@ public class OrgPersonRelController extends BaseController {
     @RequestMapping(value = "/getUserOrgRelPage",method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(String orgId,
+                                                             String orgTreeId,
                                                              String search,
                                                              Integer pageSize,
                                                              Integer pageNo
@@ -376,6 +377,11 @@ public class OrgPersonRelController extends BaseController {
         if(StrUtil.isNullOrEmpty(orgId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织标识不能为空");
+            return ret;
+        }
+        if(StrUtil.isNullOrEmpty(orgTreeId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树标识不能为空");
             return ret;
         }
         PsonOrgVo psonOrgVo = new PsonOrgVo();

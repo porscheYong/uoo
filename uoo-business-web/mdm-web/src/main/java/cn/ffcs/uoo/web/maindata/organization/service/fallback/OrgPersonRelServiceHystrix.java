@@ -72,6 +72,7 @@ public class OrgPersonRelServiceHystrix implements OrgPersonRelService {
 
     @Override
     public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(String orgId,
+                                                             String orgTreeId,
                                                              String search,
                                                              Integer pageSize,
                                                              Integer pageNo){
