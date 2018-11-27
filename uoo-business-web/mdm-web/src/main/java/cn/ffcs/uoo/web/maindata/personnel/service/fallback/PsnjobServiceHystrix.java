@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.web.maindata.personnel.service.fallback;
 
+import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.personnel.dto.TbPsnjob;
 import cn.ffcs.uoo.web.maindata.personnel.service.PsnjobService;
 import org.springframework.stereotype.Component;
@@ -14,26 +15,41 @@ import org.springframework.stereotype.Component;
 public class PsnjobServiceHystrix implements PsnjobService {
     @Override
     public Object saveTbPsnjob(TbPsnjob tbPsnjob) {
-        return null;
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 
     @Override
     public Object updateTbPsnjob(TbPsnjob tbPsnjob) {
-        return null;
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 
     @Override
     public Object delTbPsnjob(Long psnjobId) {
-        return null;
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 
     @Override
     public Object getTbPsnjob(Long psnjobId) {
-        return null;
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 
     @Override
     public Object getTbPsnjobPage(Long personnelId, Integer pageNo, Integer pageSize) {
-        return null;
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 }

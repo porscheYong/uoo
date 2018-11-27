@@ -703,7 +703,7 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="orgTreeName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织树名称</label>
-                            <select id="orgTreeName" class="col-md-4 col-sm-4 col-xs-12"></select>
+                            <select id="orgTreeName" class="col-md-4 col-sm-4 col-xs-12" disabled></select>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
@@ -715,27 +715,30 @@
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
-                            <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                            <label for="doubleName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">重名称谓</label>
-                            <input id="sort" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="code">
+                            <input id="doubleName" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="code">
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                            <label for="property" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">用工性质</label>
+                            <input id="property" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="code">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="form-item" style="width: 100%">
+                            <label for="refType" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">专兼职</label>
-                            <select class="col-md-4 col-sm-4 col-xs-12">
-                                <option></option>
-                                <option>全职</option>
-                                <option>兼职</option>
-                            </select>
+                            <select id="refType" class="col-md-4 col-sm-4 col-xs-12"></select>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
-                            <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                            <label for="postName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">职位</label>
-                            <input id="sort" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="code" readonly>
+                            <input id="postName" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="code" readonly onclick="getPostName()">
                         </div>
                     </div>
                 </form>
@@ -754,14 +757,22 @@
         <tr class="Title">
             <td>序号</td>
             <td>组织树名称</td>
-            <td>组织名称</td>
+            <td>组织全称</td>
             <td>重名称谓</td>
+            <td>用工性质</td>
             <td>专兼职</td>
             <td>职位</td>
         </tr>
+        {{#each psonOrgVoList}}
         <tr>
-            <td colspan="6">请添加数据</td>
+            <td>{{addOne @index}}</td>
+            <td>{{orgTreeName}}</td>
+            <td>{{fullName}}</td>
+            <td>{{doubleName}}</td>
+            <td>{{property}}</td>
+            <td>{{refType}}</td>
         </tr>
+        {{/each}}
     </table>
 </script>
 <!-- jQuery -->

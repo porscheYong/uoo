@@ -150,7 +150,7 @@ function initMainTable(){
             param.pageNo = (data.start / data.length) + 1;//当前页码
             param.orgTreeId = orgTreeId;
             param.orgId = orgId;
-            $http.get('http://134.96.253.221:11100/orgPersonRel/getUserOrgRelPage', param, function (result) {
+            $http.get('/orgPersonRel/getUserOrgRelPage', param, function (result) {
                 var returnData = {};
                 // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
                 returnData.recordsTotal = result.total;//返回数据全部记录

@@ -188,6 +188,6 @@ function cancel () {
     window.location.href = url;
 }
 
-getOrgTree(1);
+getOrgTree();
 getOrgTreeType();
 getProperty();

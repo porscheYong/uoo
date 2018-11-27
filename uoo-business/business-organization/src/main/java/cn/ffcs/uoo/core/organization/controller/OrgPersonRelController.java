@@ -284,7 +284,7 @@ public class OrgPersonRelController extends BaseController {
     public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(String orgId,
                                                             String orgTreeId,
                                                             String orgRootId,
-                                                            String personId,
+                                                            String personnelId,
                                                             String search,
                                                             Integer pageSize,
                                                             Integer pageNo
@@ -321,7 +321,10 @@ public class OrgPersonRelController extends BaseController {
         psonOrgVo.setOrgId(new Long(orgId));
         //psonOrgVo.setOrgRootId(new Long(orgRootId));
         psonOrgVo.setOrgTreeId(orgtree.getOrgTreeId());
-        //psonOrgVo.setPersonId(StrUtil.strnull(personId));
+        if(!StrUtil.isNullOrEmpty(personnelId)){
+            psonOrgVo.setPersonnelId(new Long(personnelId));
+        }
+
         if(!StrUtil.isNullOrEmpty(search)){
             psonOrgVo.setSearch(search);
         }
