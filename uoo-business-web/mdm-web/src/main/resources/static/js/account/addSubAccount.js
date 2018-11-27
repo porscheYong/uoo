@@ -3,6 +3,7 @@ var orgName = getQueryString('orgName');
 var mainAcctId = getQueryString('mainAcctId');
 var hType = getQueryString('hType');
 var toMainType = getQueryString('toMainType');
+var orgTreeId = getQueryString('orgTreeId');
 
 var acctId = getQueryString('acctId');
 var statusCd = getQueryString('statusCd');
@@ -409,11 +410,11 @@ function extInfoFade(){     //点击复选框
 function submitToOther(){   //提交或者取消跳转
     var url = "";
     if(hType == "th"){
-        url = "addMainAccount.html?hType="+ toMainType +"&opBtn=0&orgName=" + orgName + "&orgId=" + orgId + "&acctId=" + mainAcctId;   //跳转主账号编辑界面
+        url = "addMainAccount.html?orgTreeId=" + orgTreeId + "&hType="+ toMainType +"&opBtn=0&orgName=" + orgName + "&orgId=" + orgId + "&acctId=" + mainAcctId;   //跳转主账号编辑界面
     }else if(hType == "mh"){
-        url = "mainList.html?orgName=" + orgName + "&orgId=" + orgId;       //跳转主界面
+        url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;       //跳转主界面
     }else{
-        url = "add.html?orgName=" + orgName + "&orgId=" + orgId;       //跳转添加界面
+        url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;       //跳转添加界面
     }
     window.location.href = url;
 }
