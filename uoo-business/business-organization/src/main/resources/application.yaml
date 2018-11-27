@@ -137,8 +137,8 @@ eureka:
     port: 8762
   client:
     service-url:
-       defaultZone:  http://134.96.253.221:${eureka.server.port}/eureka/
-      #defaultZone:  http://localhost:${eureka.server.port}/eureka/
+      #defaultZone:  http://134.96.253.221:${eureka.server.port}/eureka/
+      defaultZone:  http://localhost:${eureka.server.port}/eureka/
 logging:
   level:
     cn.ffcs.uoo: info
