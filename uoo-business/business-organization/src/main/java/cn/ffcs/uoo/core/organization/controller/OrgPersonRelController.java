@@ -217,7 +217,7 @@ public class OrgPersonRelController extends BaseController {
                     .eq("ORG_PERSON_ID",orgPersonRel.getOrgPersonId())
                     .eq("STATUS_CD","1000")
                     .eq("ORG_TREE_ID",orgtree.getOrgTreeId());
-            OrgtreeOrgpersonRel orgtreeOrgpersonRel = orgtreeOrgpersonRelService.selectOne(orgPerConfWrapper);
+            OrgtreeOrgpersonRel orgtreeOrgpersonRel = orgtreeOrgpersonRelService.selectOne(orgTreePerConfWrapper);
             if(orgtreeOrgpersonRel!=null){
                 orgtreeOrgpersonRelService.delete(orgtreeOrgpersonRel);
             }
