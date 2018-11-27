@@ -112,7 +112,7 @@
 
             <div class="board-title">
                 <span class="name">教育经历</span>
-                <a class="fleft Icon IconEdit" href="my_edit.html"></a>
+               
             </div>
 
             <div id="eduInfoTable1" class="board-content TableStyle tcenter">
@@ -226,7 +226,7 @@
                     </li>
                     <li>
                         <span class="Label">首次工作时间：</span>
-                        {{personalData.toWorkTime}}
+                        {{#format personalData.toWorkTime}}{{/format}} 
                     </li>
                 </ul>
                 <div class="clearfix"></div>
@@ -239,7 +239,7 @@
 <script id="userEditTemplate" type="text/x-handlebars-template">
     <div style="width: 100%">
         <div class="fleft Col8 FormList" style="width: 100%;">
-            <ul class="fleft Col5">
+            <ul id="userEditUL0" class="fleft Col5">
                 <li>
                     <span class="Label"><span class="Red">* </span>姓名</span>
                     <input class="Col6" type="text" id="psnName" value="{{personalData.psnName}}"/>
@@ -277,12 +277,9 @@
                         {{/each}}
                     </select>
                 </li>
-                <li>
-                    <span class="Label"><span class="Red">* </span>联系电话</span>
-                    <input name="mobile" class="Col6" type="text" value="18905712345"/>
-                </li>
+                
             </ul>
-            <ul class="fleft Col5">
+            <ul id="userEditUL1" class="fleft Col5">
                 <li>
                     <span class="Label">员工工号</span>
                     <input class="Col6" type="text" value="{{personalData.psnNbr}}" disabled/>
@@ -297,7 +294,7 @@
                 </li>
                 <li>
                     <span class="Label">首次工作时间</span>
-                    <input class="Col6" type="text" id="toWorkTime" value="{{personalData.toWorkTime}}"/>
+                    <input onclick="openDate()" readonly="readonly" isTime="yes" class="Col6" type="text" id="toWorkTime" value="{{#format personalData.toWorkTime}}{{/format}}"/>
                     <a href="#" class="Icon IconInput IconCal"></a>
                 </li>
                 <li>
@@ -316,10 +313,7 @@
                         {{/each}}
                     </select>
                 </li>
-                <li>
-                    <span class="Label"><span class="Red">* </span>邮箱</span>
-                    <input class="Col6" name="emails" type="text" value="18905712345@189.cn"/>
-                </li>
+
             </ul>
             <ul class="clear ColFull">
                 <li>
@@ -413,9 +407,9 @@
                     </tr>
                    {{#each orgInfo.records}}
                     <tr>
-                        <td>{{orgPersonId}}</td>
+                        <td>{{#seq @index}}{{/seq}}</td>
                         <td>{{orgTreeName}}</td>
-                        <td>{{orgName}}</td>
+                        <td>{{fullName}}</td>
                         <td>{{doubleName}}</td>
                         <td>{{property}}</td>
                         <td>{{postName}}</td>
@@ -436,9 +430,9 @@
                     </tr>
                    {{#each orgInfo.records}}
                     <tr>
-                        <td>{{orgPersonId}}</td>
+                        <td>{{#seq @index}}{{/seq}}</td>
                         <td>{{orgTreeName}}</td>
-                        <td>{{orgName}}</td>
+                        <td>{{fullName}}</td>
                         <td>{{doubleName}}</td>
                         <td>{{property}}</td>
                         <td>{{postName}}</td>
@@ -459,9 +453,9 @@
                     </tr>
                    {{#each orgInfo.records}}
                     <tr>
-                        <td>{{orgPersonId}}</td>
-                        <td>{{orgTreeName}}</td>
-                        <td>{{orgName}}</td>
+                        <td>{{#seq @index}}{{/seq}}</td>
+                        <td><a href="javascript:void(0)" onclick="openOrgEditByEdit('{{@index}}')"> {{orgTreeName}}</a></td>
+                        <td><a href="javascript:void(0)" onclick="openOrgEditByEdit('{{@index}}')"> {{fullName}}</a></td>
                         <td>{{doubleName}}</td>
                         <td>{{property}}</td>
                         <td>{{postName}}</td>
@@ -472,45 +466,45 @@
 </script>
 <script id="jobInfoTemplate1" type="text/x-handlebars-template">
 <table>
-                    <tr class="Title">
+                   <tr class="Title">
                         <td>序号</td>
-                        <td>时间</td>
-                        <td>公司</td>
-                        <td>职位</td>
-                        <td>岗位职责</td>
+                        <td>组织名称</td>
+                        <td>任职状态</td>
+                        <td>任职开始时间</td>
+                        <td>任职结束时间</td>
                     </tr>
                     {{#each jobInfo.records}}
-                    {{#eq statusCd 1000}}
+                     
                     <tr>
-                        <td>{{psnjobId}}</td>
-                        <td>{{beginTime}}-{{endTime}}</td>
-                        <td>{{orgName}}</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                     {{/eq}}
+                        <td>{{#seq @index}}{{/seq}}</td>
+                        <td> {{orgName}} </td>
+                        <td>{{#eq statusCd '1000'}}在职{{/eq}}{{#eq statusCd '1100'}}离职{{/eq}}</td>
+                        <td>{{#format beginTime}}{{/format}}</td>
+                        <td>{{#format endTime}}{{/format}}</td>
+                        
+                    </tr> 
                      {{/each}}
-                </table>
                 <a onclick="editJobInfo()"  class="icon icon-edit" style="vertical-align: top;"></a>
 </script>
 <script id="jobInfoTemplate2" type="text/x-handlebars-template">
 <table>
-                    <tr class="Title">
+                   <tr class="Title">
                         <td>序号</td>
-                        <td>时间</td>
-                        <td>公司</td>
-                        <td>职位</td>
-                        <td>岗位职责</td>
+                        <td>组织名称</td>
+                        <td>任职状态</td>
+                        <td>任职开始时间</td>
+                        <td>任职结束时间</td>
                     </tr>
                     {{#each jobInfo.records}}
-                    {{#eq statusCd 1000}}
+                     
                     <tr>
-                        <td>{{psnjobId}}</td>
-                        <td>{{beginTime}}-{{endTime}}</td>
-                        <td>{{orgName}}</td>
-                        <td></td>
-                        <td></td>
-                    </tr>{{/eq}}
+                        <td>{{#seq @index}}{{/seq}}</td>
+                        <td> {{orgName}} </td>
+                        <td>{{#eq statusCd '1000'}}在职{{/eq}}{{#eq statusCd '1100'}}离职{{/eq}}</td>
+                        <td>{{#format beginTime}}{{/format}}</td>
+                        <td>{{#format endTime}}{{/format}}</td>
+                        
+                    </tr> 
                      {{/each}}
                 </table>
 </script>
@@ -520,19 +514,20 @@
 <table>
                     <tr class="Title">
                         <td>序号</td>
-                        <td>时间</td>
-                        <td>公司</td>
-                        <td>职位</td>
-                        <td>岗位职责</td>
+                        <td>组织名称</td>
+                        <td>任职状态</td>
+                        <td>任职开始时间</td>
+                        <td>任职结束时间</td>
                     </tr>
                     {{#each jobInfo.records}}
                      
                     <tr>
-                        <td>{{psnjobId}}</td>
-                        <td>{{beginTime}}-{{endTime}}</td>
-                        <td>{{orgName}}</td>
-                        <td></td>
-                        <td></td>
+                        <td>{{#seq @index}}{{/seq}}</td>
+                        <td><a href="javascript:void(0)">{{orgName}}</a></td>
+                        <td>{{#eq statusCd '1000'}}在职{{/eq}}{{#eq statusCd '1100'}}离职{{/eq}}</td>
+                        <td>{{#format beginTime}}{{/format}}</td>
+                        <td>{{#format endTime}}{{/format}}</td>
+                        
                     </tr> 
                      {{/each}}
                 </table>
@@ -549,10 +544,10 @@
                     </tr>
                      {{#each eduInfo.records}}
                     <tr>
-                        <td>{{eduId}}</td>
+                        <td>{{#seq @index}}{{/seq}}</td>
                         <td>{{school}}</td>
                         <td>{{major}}</td>
-                        <td>{{begindate}}-{{enddate}}</td>
+                        <td>{{#format begindate}}{{/format}} -{{#format enddate}}{{/format}}</td>
                         <td>全日制</td>
                         <td>{{degree}}</td>
                     </tr>
@@ -573,10 +568,10 @@
                      {{#each eduInfo.records}}
                     {{#eq statusCd 1000}}
                     <tr>
-                        <td>{{eduId}}</td>
+                        <td>{{#seq @index}}{{/seq}}</td>
                         <td>{{school}}</td>
                         <td>{{major}}</td>
-                        <td>{{begindate}}-{{enddate}}</td>
+                        <td>{{#format begindate}}{{/format}} -{{#format enddate}}{{/format}}</td>
                         <td>全日制</td>
                         <td>{{degree}}</td>
                     </tr>
@@ -599,10 +594,10 @@
                      {{#each eduInfo.records}}
                      
                     <tr>
-                        <td>{{eduId}}</td>
+                        <td>{{#seq @index}}{{/seq}}</td>
                         <td>{{school}}</td>
                         <td>{{major}}</td>
-                        <td>{{begindate}}-{{enddate}}</td>
+                        <td>{{#format begindate}}{{/format}} -{{#format enddate}}{{/format}}</td>
                         <td>全日制</td>
                         <td>{{degree}}</td>
                     </tr>
@@ -622,7 +617,7 @@
                     </tr>
                     {{#each familyInfo.records}}
                     <tr>
-                        <td>{{familyId}}</td>
+                        <td>{{#seq @index}}{{/seq}}</td>
                         <td>{{memName}}</td>
                         <td>{{#each memRelation}} {{#eq itemValue ../memRelation}}{{itemCnname}}{{/eq}} {{/each}} </td>
                         <td></td>
@@ -646,7 +641,7 @@
                     </tr>
                    {{#each familyInfo.records}}
                     <tr>
-                        <td>{{familyId}}</td>
+                        <td>{{#seq @index}}{{/seq}}</td>
                         <td>{{memName}}</td>
                         <td>{{#each memRelation}} {{#eq itemValue ../memRelation}}{{itemCnname}}{{/eq}} {{/each}} </td>
                         <td></td>
@@ -671,7 +666,7 @@
                    {{#each familyInfo.records}}
                     {{#eq statusCd 1000}}
                     <tr>
-                        <td>{{familyId}}</td>
+                        <td>{{#seq @index}}{{/seq}}</td>
                         <td>{{memName}}</td>
                         <td>{{#each memRelation}} {{#eq itemValue ../memRelation}}{{itemCnname}}{{/eq}} {{/each}} </td>
                         <td></td>
@@ -694,7 +689,11 @@
                             <label for="idTel" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">组织树名称</label>
                             <select id="orgTreeId" class="col-md-4 col-sm-4 col-xs-12">
-                                <option value='1'>统一目录树</option>
+                                {{#each orgTreeList}}
+                                <option value='{{orgTreeId}}'   
+                                  {{#eq currentEditOrgInfo.orgTreeId orgTreeId}}  selected='selected'{{/eq}}
+                                    >{{orgTreeName}}</option>
+                                {{/each}}
                             </select>
                         </div>
                     </div>
@@ -702,14 +701,14 @@
                         <div class="form-item" style="width: 100%">
                             <label for="orgFullName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">组织全称</label>
-                            <input id="orgFullName" class="ui-input col-md-4 col-sm-4 col-xs-12"  required readonly onclick="getOrgFullName()">
+                            <input id="orgFullName" value="{{currentEditOrgInfo.fullName}}" class="ui-input col-md-4 col-sm-4 col-xs-12"  required readonly onclick="getOrgFullName()">
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">重名称谓</label>
-                            <input id="doubleName" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="code">
+                            <input id="doubleName" value="{{currentEditOrgInfo.doubleName}}" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="code">
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
@@ -739,6 +738,7 @@
             </div>
         </div>
     </div>
+
 </script>
 <script id="jobTemplate" type="text/x-handlebars-template">
     <div class="nav-tabs-brief" style="padding-top: 35px;">
@@ -746,37 +746,35 @@
         <div class="tab-content">
             <div class="tab-pane active" id="tab_content1">
                 <form action="/submit" method="post" style="padding: 10px;">
-                    <!--<div class="row" style="margin-bottom: 10px;">
-                        <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">组织树名称</label>
-                            <select id="orgTreeId" class="col-md-4 col-sm-4 col-xs-12">
-                                <option value='1'>统一目录树</option>
-                            </select>
-                        </div>
-                    </div>-->
+                     
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="orgFullName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">组织标识 </label>
-                            <input id="orgId" class="ui-input col-md-4 col-sm-4 col-xs-12"  required readonly onclick="getOrgId()">
+                            <input id="orgId" keyId="" class="ui-input col-md-4 col-sm-4 col-xs-12"  required readonly onclick="getJobOrgId()">
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">任职开始时间</label>
-                            <input id="beginTime" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            <input isTime="yes" onclick="openDate()" readonly  id="beginTime" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">任职结束时间</label>
-                            <input id="endTime" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            <input id="endTime" isTime="yes" onclick="openDate(this)" readonly  class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
                         </div>
                     </div>
-                     
+                     <div class="row" style="margin-bottom: 10px;">
+                        <div class="form-item" style="width: 100%">
+                        <label for="sort" class=" col-md-1 col-sm-1 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;"> </label>
+                        <input onclick="deleteJob('')" class="Btn BtnRed2  form-item-label-required col-md-3 col-sm-3 col-xs-12" type="button" onclick=" " value="删除" style=padding-right: 20px;line-height: 40px;text-align: right; " />
+                        </div>
+                    </div>
                 </form>
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-offset-3 col-xs-offset-3">
