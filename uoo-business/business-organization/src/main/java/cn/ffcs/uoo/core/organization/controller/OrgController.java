@@ -19,6 +19,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.solr.common.SolrInputDocument;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -104,6 +105,9 @@ public class OrgController extends BaseController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private AmqpTemplate template;
+
 
     @ApiOperation(value = "新增组织信息-web", notes = "新增组织信息")
     @UooLog(value = "新增组织信息", key = "addOrg")
@@ -148,12 +152,19 @@ public class OrgController extends BaseController {
             return ret;
         }
 
+        if(StrUtil.isNullOrEmpty(org.getSupOrgId())){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("父节点不存在");
+            return ret;
+        }
         Org supOrg = orgService.selectById(org.getSupOrgId());
         if(supOrg==null){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("父节点为空");
             return ret;
         }
+
+
 
         String fullName = "";
         if(!StrUtil.isNullOrEmpty(supOrg.getFullName())){
@@ -323,6 +334,9 @@ public class OrgController extends BaseController {
         vo.setId(newOrg.getOrgId().toString());
         vo.setPid(org.getSupOrgId().toString());
         vo.setName(newOrg.getOrgName());
+        //mq
+        String mqmsg = "{\"type\":\"org\",\"handle\":\"insert\",\"context\":{\"column\":\"orgId\",\"value\":"+orgId+"}}" ;
+        template.convertAndSend("message_sharing_center_queue",mqmsg);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("新增成功");
         ret.setData(vo);
@@ -336,6 +350,7 @@ public class OrgController extends BaseController {
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
     public ResponseResult<Void> updateOrg(@RequestBody OrgVo org){
         ResponseResult<Void> ret = new ResponseResult<Void>();
+
         String msg = orgService.JudgeOrgParams(org);
         if(!StrUtil.isNullOrEmpty(msg)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -626,11 +641,131 @@ public class OrgController extends BaseController {
         }
         newOrg.setStatusCd("1000");
         orgService.update(newOrg);
+        String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+newOrg.getOrgId()+"}}" ;
+        template.convertAndSend("message_sharing_center_queue",mqmsg);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("更新成功");
         return ret;
     }
 
+
+
+    @ApiOperation(value = "组织删除", notes = "组织删除")
+    @ApiImplicitParams({
+
+    })
+    @UooLog(value = "组织删除", key = "deleteOrg")
+    @RequestMapping(value = "/deleteOrg", method = RequestMethod.GET)
+    public ResponseResult<String> deleteOrg(String orgTreeId,
+                                            String orgId,
+                                            String supOrgId){
+        ResponseResult<String> ret = new ResponseResult<String>();
+        if (StrUtil.isNullOrEmpty(orgTreeId)) {
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树标识不能为空");
+            return ret;
+        }
+        if (StrUtil.isNullOrEmpty(orgId)) {
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织标识不能为空");
+            return ret;
+        }
+        if (StrUtil.isNullOrEmpty(supOrgId)) {
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织父节点不能为空");
+            return ret;
+        }
+
+        Wrapper orgTreeConfWrapper = Condition.create().eq("ORG_TREE_ID",orgTreeId).eq("STATUS_CD","1000");
+        OrgTree orgTree  = orgTreeService.selectOne(orgTreeConfWrapper);
+        if(orgTree == null){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树不存在");
+            return ret;
+        }
+        //Wrapper leafOrgConfWrapper = Condition.create().eq("PARENT_ORG_ID",orgId).eq("STATUS_CD","1000");
+        if(orgRelService.isLeaf(orgId,orgTreeId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织下存在组织无法删除");
+            return ret;
+        }
+        Wrapper orgPer = Condition.create()
+                .eq("ORG_ID",orgId)
+                .eq("STATUS_CD","1000");
+        int num = orgPersonRelService.selectCount(orgPer);
+        if(num>0){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("组织下存在员工无法删除");
+            return ret;
+        }
+        List<OrgRel> orgRelList = orgRelService.getOrgRel(orgTreeId,orgId);
+        if(orgRelList!=null && orgRelList.size()>1){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("组织被其他组织树引用无法删除");
+            return ret;
+        }
+        Org org = orgService.selectById(orgId);
+        orgService.delete(org);
+        //List<OrgRel> orgRelList = orgRelService.getOrgRel(orgTreeId,orgId);
+        for(OrgRel orgRel : orgRelList){
+            orgRelService.delete(orgRel);
+        }
+        //删除组织类别
+        Wrapper orgTypeWrapper = Condition.create()
+                .eq("ORG_ID",org.getOrgId())
+                .eq("STATUS_CD","1000");
+        List<OrgOrgtypeRel> orgTypeRefCurList = orgTypeRefService.selectList(orgTypeWrapper);
+        if(orgTypeRefCurList!=null){
+            for(OrgOrgtypeRel ootr : orgTypeRefCurList){
+                orgTypeRefService.delete(ootr);
+            }
+        }
+        //删除岗位
+        Wrapper positionWrapper = Condition.create()
+                .eq("ORG_ID",org.getOrgId())
+                .eq("STATUS_CD","1000");
+        List<OrgPositionRel> orgPositionCurList = orgPositionRelService.selectList(positionWrapper);
+        if(orgTypeRefCurList!=null){
+            for(OrgPositionRel opr  : orgPositionCurList){
+                orgPositionRelService.delete(opr);
+            }
+        }
+
+        //删除职位
+        Wrapper postWrapper = Condition.create()
+                .eq("ORG_ID",org.getOrgId())
+                .eq("STATUS_CD","1000");
+        List<OrgPostRel> orgPostCurList = orgPostRelService.selectList(postWrapper);
+        if(orgPostCurList!=null){
+            for(OrgPostRel opr : orgPostCurList){
+                orgPostRelService.delete(opr);
+            }
+        }
+
+
+        //删除证件组织关系
+        Wrapper orgCertListWrapper = Condition.create()
+                .eq("STATUS_CD","1000")
+                .eq("ORG_ID",org.getOrgId());
+        List<OrgCertRel> orgCertRelList = orgCertRelService.selectList(orgCertListWrapper);
+        for(OrgCertRel vo:orgCertRelList){
+            orgCertRelService.delete(vo);
+        }
+        //删除组织联系人关系
+        Wrapper orgContactListWrapper = Condition.create()
+                .eq("STATUS_CD","1000")
+                .eq("ORG_ID",org.getOrgId());
+        List<OrgContactRel> orgContactRelList = orgContactRelService.selectList(orgContactListWrapper);
+        for(OrgContactRel vo:orgContactRelList){
+            orgContactRelService.delete(vo);
+        }
+
+        String mqmsg = "{\"type\":\"org\",\"handle\":\"delete\",\"context\":{\"column\":\"orgId\",\"value\":"+orgId+"}}" ;
+        template.convertAndSend("message_sharing_center_queue",mqmsg);
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setMessage("删除成功");
+        return ret;
+    }
 
 
 
@@ -692,6 +827,9 @@ public class OrgController extends BaseController {
         List<OrgCertVo> orgCertList = orgCertRelService.getOrgCerRelByOrgId(new Long(orgId));
         org.setOrgCertList(orgCertList);
 
+        //行政管理区域 2
+        List<PoliticalLocation> pl = orgService.getOrgLoc(orgId);
+        org.setPoliticalLocationList(pl);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("查询成功");
         ret.setData(org);

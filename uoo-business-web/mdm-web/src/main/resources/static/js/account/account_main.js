@@ -1,7 +1,11 @@
+// loadingMask
+// var loading = new Loading();
+var orgTreeId = "1";
+
 var setting = {
     async: {
         enable: true,
-        url: "http://134.96.253.221:11100/orgRel/getOrgRelTree?orgRootId=1",
+        url: "http://134.96.253.221:11100/orgRel/getOrgRelTree?orgTreeId="+orgTreeId + "&orgRootId=" + orgTreeId,
         autoParam: ["id"],
         type: "get",
         dataFilter: filter
@@ -36,7 +40,6 @@ function onNodeClick(e,treeId, treeNode) {
     // zTree.expandNode(treeNode);
     orgId = treeNode.id;
     orgName = treeNode.name;
-    // console.log(orgId+"--"+orgName);
     var currentNode = treeNode.name;//获取当前选中节点
     var parentNode = treeNode.getParentNode();
     nodeArr = [];
@@ -62,13 +65,15 @@ function filter (treeId, parentNode, childNodes) {
 }
 
 function refreshResult () {
-    var url = "mainList.html?id=" + orgId + "&name=" + encodeURI(orgName);
+    var url = "mainList.html?orgId=" + orgId + "&orgName=" + encodeURI(orgName);
     $('#userFrame').attr("src",url);
 }
 
-function initOrgRelTree () {
+//初始化组织
+function initOrgRelTree (orgTreeId) {
     $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTree', {
-        orgRootId: '1'
+        orgTreeId: orgTreeId,
+        orgRootId: orgTreeId
     }, function (data) {
         console.log(data)
         $.fn.zTree.init($("#standardTree"), setting, data);
@@ -82,164 +87,29 @@ function initOrgRelTree () {
     })
 }
 
-// 根据组织ID展开并选中组织
-function openTreeById (sId, id) {
-  var tId = 'standardTree_' + id;
-  var sId = 'standardTree_' + sId;
-  var zTree = $.fn.zTree.getZTreeObj("standardTree");
-  var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-  zTree.cancelSelectedNode(selectNode);
-  var node = zTree.getNodeByTId(tId);
-  if (node.parent) {
-    zTree.expandNode(node, true);
-  }
-  zTree.selectNode(node, true);
-}
-
-var orgTypeList;
-
-//获取组织信息
-window.addEventListener("message", function(event) {
-  orgTypeList = event.data;
-},false);
-
-// 组织类别树初始化
-function initOrgTypeTree () {
-    var treeSetting = {
-      view: {
-          showLine: false,
-          showIcon: false,
-          dblClickExpand: false
-      },
-      data: {
-          // key: {
-          //     name: "label",
-          //     isParent: "leaf",
-          // },
-          simpleData: {
-              enable:true,
-              idKey: "id",
-              pIdKey: "pid",
-              rootPId: ""
-          }
-      },
-      callback: {
-          beforeClick: orgTypeBeforeClick,
-          onCheck: onOrgTypeCheck
-      },
-      check: {
-          enable: true,
-          chkStyle: 'checkbox',
-          chkboxType: { "Y": "", "N": "" }
-      }
-    };
-    $http.get('http://134.96.253.221:11100/orgType/getFullOrgTypeTree', {
-      orgId: orgId
-    }, function (data) {
-        console.log(data)
-        $.fn.zTree.init($("#orgTypeTree"), treeSetting, data);
-        autoCheck();
-        // var zTree = $.fn.zTree.getZTreeObj("standardTree");
-        // var nodes = zTree.getNodes();
-        // zTree.expandNode(nodes[0], true);
-        // zTree.selectNode(nodes[0], true);
-        // onNodeClick(null, null, nodes[0]);
+// 初始化业务组织列表
+function initBusinessList () {
+    $http.get('/orgTree/getOrgTreeList', {}, function (data) {
+        var option = '';
+        for (var i = 0; i < data.length; i++) {
+            var select = i === 0? 'selected' : '';
+            option += "<option value='" + data[i].orgTreeId + "' " + select + ">" + data[i].orgTreeName +"</option>";
+        }
+        $('#businessOrg').append(option);
+        seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+            $('#businessOrg').selectMatch();
+        });
+        initOrgRelTree(data[0].orgTreeId);
+        orgTreeId = data[0].orgTreeId;
+        businessName = data[0].orgTreeName;
+        $('#businessOrg').unbind('change').bind('change', function (event) {
+            orgTreeId = event.target.options[event.target.options.selectedIndex].value;
+            initOrgRelTree(orgTreeId);
+        })
     }, function (err) {
         console.log(err)
     })
 }
 
-function orgTypeBeforeClick (treeId, treeNode, clickFlag) {
-  return false;
-}
+initBusinessList();
 
-// 选中类别显示label标签
-var checkNode = [];
-
-function onOrgTypeCheck (e, treeId, treeNode) {
-    var zTree = $.fn.zTree.getZTreeObj("orgTypeTree");
-    var node = zTree.getNodeByTId(treeNode.tId);
-    if (checkNode.indexOf(node) === -1) {
-        checkNode.push(node);
-        renderTag()
-    } else {
-        var idx = checkNode.findIndex((v) => {
-            return v.tId == node.tId;
-        });
-        checkNode.splice(idx, 1);
-        renderTag();
-    }
-}
-
-function renderTag () {
-    var tag = "";
-    $('#tags_2').html('')
-    for (var i = 0; i < checkNode.length; i++) {
-        $('#tags_2').append($('<div>').append($('<div>').addClass('tag').attr('treeId', checkNode[i].tId).append(
-            $('<span>').text(checkNode[i].name).append('&nbsp;'),
-            $('<a>', {
-                href  : '#',
-                text  : 'x'
-            }).click(function (e) {
-                removeNode(e);
-                renderTag();
-                return 
-            }))
-        ))
-    }
-}
-
-function removeNode (e) {
-    var zTree = $.fn.zTree.getZTreeObj("orgTypeTree");
-    var node = zTree.getNodeByTId($(e.target).parent().attr('treeId'));
-    zTree.checkNode(node, false);
-    
-    var tId = $(e.target).parent().attr('treeId');
-    var idx = checkNode.findIndex((v) => {
-        return v.tId == tId;
-    });
-    checkNode.splice(idx, 1);
-}
-
-function autoCheck () {
-  var zTree = $.fn.zTree.getZTreeObj("orgTypeTree");
-  for (var i = 0; i < orgTypeList.length; i++) {
-    var node = zTree.getNodeByTId("orgTypeTree_" + orgTypeList[i].orgTypeId);
-    zTree.checkNode(node, true);
-    checkNode.push(node);
-    renderTag();
-  }
-}
-
-function layerOpen(obj) {
-  layer.open({
-    type: obj.type || 1,
-    title: obj.title,
-    scrollbar: obj.scrollbar || false,
-    shade: obj.shade || 0.3,
-    shadeClose: obj.shadeClose || true,
-    area: obj.area || ['600px', '400px'],
-    content: obj.content,
-    btn: obj.btn,
-    success: function(layero, index){
-      // if (obj.success) {
-      //   obj.success()
-      // }
-      initOrgTypeTree();
-      $('#tags_2').html('');
-      checkNode = [];
-    },
-    yes: function (index, layero) {
-      if (obj.confirm) {
-        obj.confirm()
-      }
-    },
-    btn2: function (index, layero) {
-      if (obj.cancel) {
-        obj.cancel()
-      }
-    }
-  })
-}
-
-initOrgRelTree();

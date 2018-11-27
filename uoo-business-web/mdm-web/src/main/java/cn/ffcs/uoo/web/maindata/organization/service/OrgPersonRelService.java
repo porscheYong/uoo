@@ -37,7 +37,7 @@ public interface OrgPersonRelService{
     public ResponseResult<String> deleteOrgPsn(@RequestBody PsonOrgVo psonOrgVo);
 
     @RequestMapping(value="/orgPersonRel/getPerOrgRelList",method = RequestMethod.GET)
-    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(@RequestParam(value = "perSonId",required = false)String perSonId);
+    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(@RequestParam(value = "personnelId",required = false)String personnelId);
 
     @RequestMapping(value="/orgPersonRel/getPerOrgRelPage",method = RequestMethod.GET)
     public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(@RequestParam(value = "orgId",required = false)String orgId,

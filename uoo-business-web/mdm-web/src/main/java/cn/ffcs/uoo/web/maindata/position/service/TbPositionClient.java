@@ -3,6 +3,7 @@ package cn.ffcs.uoo.web.maindata.position.service;
 import cn.ffcs.uoo.web.maindata.position.dto.TbPosition;
 import cn.ffcs.uoo.web.maindata.position.service.fallback.TbPositionClientHystrix;
 import cn.ffcs.uoo.web.maindata.position.vo.OrgPositionInfoVo;
+import cn.ffcs.uoo.web.maindata.position.vo.PositionNodeVo;
 import cn.ffcs.uoo.web.maindata.position.vo.ResponseResult;
 import common.config.PersonnelServiceConfiguration;
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -32,4 +33,7 @@ public interface TbPositionClient {
 
     @RequestMapping(value = "/tbPosition/getChildren/{parentPositionId}", method = RequestMethod.GET)
     List<TbPosition> queryChildPositionList(@PathVariable("parentPositionId") Long parentPositionId);
+
+    @RequestMapping(value = "/tbPosition/getPositionTree", method = RequestMethod.GET)
+    ResponseResult<List<PositionNodeVo>> getPositionTree();
 }

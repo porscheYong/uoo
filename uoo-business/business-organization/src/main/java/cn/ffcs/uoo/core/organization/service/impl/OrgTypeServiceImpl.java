@@ -31,6 +31,16 @@ public class OrgTypeServiceImpl extends ServiceImpl<OrgTypeMapper, OrgType> impl
         return baseMapper.getOrgTypeByOrgId(orgId);
     }
 
+    /**
+     * 查询组织类别列表
+     * @param orgTreeId
+     * @return
+     */
+    @Override
+    public List<OrgType> getOrgTypeByOrgTreeId(Long orgTreeId){
+        return baseMapper.getOrgTypeByOrgTreeId(orgTreeId);
+    }
+
     @Override
     public List<TreeNodeVo> selectOrgTypeTree(String orgTypeId,String orgTypeCode){
         List<TreeNodeVo> volist = new ArrayList<>();

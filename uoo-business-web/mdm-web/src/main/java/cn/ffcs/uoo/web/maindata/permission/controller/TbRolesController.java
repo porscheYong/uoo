@@ -1,6 +1,9 @@
 package cn.ffcs.uoo.web.maindata.permission.controller;
 
 
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +19,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+
+import java.util.List;
 
 /**
  * <p>
@@ -42,16 +47,21 @@ public class TbRolesController   {
          
         return tbRolesService.get(id);
     }
-    
-    @ApiOperation(value = "获取角色列表", notes = "获取角色列表")
+
+    @ApiOperation(value = "获取分页角色列表", notes = "获取分页角色列表")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
-        @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
-    @GetMapping("/listRoles/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
-         
-        return tbRolesService.listRoles(pageNo, pageSize);
+    @GetMapping("/listPageRoles/pageNo={pageNo}&pageSize={pageSize}")
+    public ResponseResult listPageRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+        return tbRolesService.listPageRoles(pageNo,pageSize);
+    }
+
+    @ApiOperation(value = "获取角色列表", notes = "获取角色列表")
+    @GetMapping("/listRoles")
+    public ResponseResult listRoles(){
+        return tbRolesService.listRoles();
     }
 
     @ApiOperation(value = "删除角色",notes = "删除角色(只需要roleId)")

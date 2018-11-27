@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>区号列表</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- jquery datatable -->
+    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="/js/core/html5shiv.js"></script>
+    <script src="/js/core/respond.js"></script>
+    <script src="/js/core/excanvas.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      table.dataTable {
+        table-layout: fixed;
+      }
+      
+      th {
+          text-align: center;
+          white-space: nowrap;
+      }
+      table.dataTable tbody td {
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+    </style>
+  </head>
+
+  <body style="background: #fff;">
+    <div>
+      <div class="board-title">
+        <span id="regionStrCurrent" class="name ft18" cid="">区号列表</span>
+       <!--  <a class="icon icon-edit" id="editBtn" href="javascript:void(0)" onclick="goEdit()" style="vertical-align: top;"></a> -->
+       <!--  <a class="glyphicon glyphicon-remove" id=" " href="javascript:void(0)" onclick="goDel()" style="vertical-align: top;"></a>
+     -->  </div>
+      <!-- <div class="board-title">
+        <span id="regionStrFull" class="name ft18"> </span>
+        <div class="fright">
+          <a class="button-add" id="" href="JavaScript:void(0)" onclick="parent.changeIframe('/inaction/region/polloc-add.html')"><span class="fa fa-plus-circle icon-add"></span>添加</a>
+        </div>
+      </div> -->
+      <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 50px;">
+          <table id="orgTable" class="stripe" width="100%"></table>
+      </div>
+
+      <!-- <div class="board-title">
+          <span class="name ft18">电信公共管理区域</span>
+      </div> -->
+      <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 50px;">
+          <table id="areaCodeTable" class="stripe" width="100%"></table>
+      </div>
+    </div>
+    <!-- jQuery -->
+    <script src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+    <!-- init -->
+    <script src="/js/init.js"></script>
+	  <script type="text/javascript" src="/js/region/areacode-list.js"></script>
+  </body>
+</html>

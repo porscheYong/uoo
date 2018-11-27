@@ -2,7 +2,6 @@ package cn.ffcs.uoo.web.maindata.organization.dto;
 
 
 
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -37,6 +36,8 @@ public class OrgVo extends BaseVo{
     private String uuid;
     private String statusCd;
     private String createDate;
+
+    private String orgMartCode;
     //组织树
     private Long orgTreeId;
     /**
@@ -65,6 +66,8 @@ public class OrgVo extends BaseVo{
     private List<Position> positionList;
     private List<Post> postList;
     private List<PsonOrgVo> psonOrgVoList;
+    private List<PoliticalLocation> politicalLocationList;
+
 
     //身份证信息
     private List<String> certIdList;
@@ -73,8 +76,24 @@ public class OrgVo extends BaseVo{
     private String search;
     private String orgRelCreatDate;
 
+    public List<PoliticalLocation> getPoliticalLocationList() {
+        return politicalLocationList;
+    }
+
+    public void setPoliticalLocationList(List<PoliticalLocation> politicalLocationList) {
+        this.politicalLocationList = politicalLocationList;
+    }
+
     public List<OrgCertVo> getOrgCertList() {
         return OrgCertList;
+    }
+
+    public String getOrgMartCode() {
+        return orgMartCode;
+    }
+
+    public void setOrgMartCode(String orgMartCode) {
+        this.orgMartCode = orgMartCode;
     }
 
     public void setOrgCertList(List<OrgCertVo> orgCertList) {

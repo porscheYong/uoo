@@ -3,6 +3,7 @@ package cn.ffcs.uoo.web.maindata.position.service;
 import cn.ffcs.uoo.web.maindata.position.dto.TbPost;
 import cn.ffcs.uoo.web.maindata.position.service.fallback.TbPostClientHystrix;
 import cn.ffcs.uoo.web.maindata.position.vo.OrgPostInfoVo;
+import cn.ffcs.uoo.web.maindata.position.vo.PostNodeVo;
 import cn.ffcs.uoo.web.maindata.position.vo.ResponseResult;
 import common.config.PersonnelServiceConfiguration;
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -32,4 +33,7 @@ public interface TbPostClient {
 
     @RequestMapping(value = "/tbPost/getPostList/{orgId}", method = RequestMethod.GET)
     List<OrgPostInfoVo> queryPostListByOrgId(@PathVariable("orgId") Long orgId);
+
+    @RequestMapping(value = "/tbPost/getPostTree", method = RequestMethod.GET)
+    public ResponseResult<List<PostNodeVo>> getPostTree();
 }
