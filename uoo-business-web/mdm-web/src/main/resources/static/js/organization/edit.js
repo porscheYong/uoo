@@ -512,7 +512,7 @@ function getStatusCd (statusCd) {
 
 // 获取组织基础信息
 function getOrg (orgId) {
-    $http.get('http://134.96.253.221:11100/org/getOrg', {
+    $http.get('/org/getOrg', {
         orgTreeId: '1',
         orgId: orgId
     }, function (data) {
@@ -553,7 +553,7 @@ function getOrg (orgId) {
 
 // 获取组织关系信息
 function getOrgRel (orgId) {
-    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTypePage', {
+    $http.get('/orgRel/getOrgRelTypePage', {
         orgTreeId: '1',
         orgId: orgId,
         pageSize: 10,

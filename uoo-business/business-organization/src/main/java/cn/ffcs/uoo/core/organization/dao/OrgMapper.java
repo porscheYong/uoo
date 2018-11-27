@@ -97,6 +97,6 @@ public interface OrgMapper extends BaseMapper<Org> {
      * @param orgId
      * @return
      */
-    public List<PoliticalLocation> getOrgLoc(String orgId);
+    public List<PoliticalLocation> getOrgLoc(@Param("orgId")String orgId);
 
 }

@@ -226,6 +226,7 @@
         WHERE A.LOC_ID = B.LOC_ID
         AND A.STATUS_CD = '1000'
         AND B.STATUS_CD = '1000'
+        AND B.ORG_ID = #{orgId}
     </select>
 
 </mapper>

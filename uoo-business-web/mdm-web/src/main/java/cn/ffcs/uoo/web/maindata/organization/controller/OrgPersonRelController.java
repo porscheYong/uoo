@@ -86,10 +86,11 @@ public class OrgPersonRelController {
     })
     @RequestMapping(value = "/getUserOrgRelPage", method = RequestMethod.GET)
     public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(@RequestParam(value = "orgId",required = false)String orgId,
+                                                             @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                              @RequestParam(value = "search",required = false)String search,
                                                              @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                              @RequestParam(value = "pageNo",required = false)Integer pageNo){
-        return orgPersonRelService.getUserOrgRelPage(orgId,search,pageSize,pageNo);
+        return orgPersonRelService.getUserOrgRelPage(orgId,orgTreeId,search,pageSize,pageNo);
     }
 
 }

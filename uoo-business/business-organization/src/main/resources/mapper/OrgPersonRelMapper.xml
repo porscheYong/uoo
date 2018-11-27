@@ -398,7 +398,7 @@
         <!--<if test="psonOrgVo.search != null and psonOrgVo.search != ''">-->
             <!--AND (PsnName like '%'||#{psonOrgVo.search}||'%' or certNo like '%'||#{psonOrgVo.search}||'%' or mobile like '%'||#{psonOrgVo.search}||'%' or acct like '%'||#{psonOrgVo.search}||'%')-->
         <!--</if>-->
-
+SELECT * FROM (
         WITH ORGFULL AS (
         SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'),
         '->',
@@ -420,7 +420,7 @@
         AND C.STATUS_CD= 1000 AND D.Status_Cd=1000 and E.STATUS_CD=1000
         AND A.ORG_ID = B.ORG_ID
         AND C.ORG_TREE_ID=D.ORG_TREE_ID and D.ORG_REL_TYPE_ID=E.ORG_REL_TYPE_ID
-        AND B.REF_CODE=E.REF_CODE) AA
+        AND B.REF_CODE=E.REF_CODE AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}) AA
         START WITH ORG_ID = #{psonOrgVo.orgId}
         CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID )
 
@@ -483,8 +483,10 @@
         and t5.first_flag = '1'
         )a where 1=1
         <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
-            AND (PsnName like '%'||#{psonOrgVo.search}||'%' or certNo like '%'||#{psonOrgVo.search}||'%' or mobile like '%'||#{psonOrgVo.search}||'%' or acct like '%'||#{psonOrgVo.search}||'%')
+            AND (PsnName like '%'||#{psonOrgVo.search}||'%' or certNo like '%'||#{psonOrgVo.search}||'%' or mobile like
+            '%'||#{psonOrgVo.search}||'%' or acct like '%'||#{psonOrgVo.search}||'%')
         </if>
+        )
     </select>
 
 </mapper>
