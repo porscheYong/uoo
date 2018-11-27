@@ -477,7 +477,7 @@
                      
                     <tr>
                         <td>{{#seq @index}}{{/seq}}</td>
-                        <td> {{orgName}} </td>
+                        <td>{{orgName}} </td>
                         <td>{{#eq statusCd '1000'}}在职{{/eq}}{{#eq statusCd '1100'}}离职{{/eq}}</td>
                         <td>{{#format beginTime}}{{/format}}</td>
                         <td>{{#format endTime}}{{/format}}</td>
@@ -523,7 +523,7 @@
                      
                     <tr>
                         <td>{{#seq @index}}{{/seq}}</td>
-                        <td><a href="javascript:void(0)">{{orgName}}</a></td>
+                        <td><a href="javascript:void(0)" onclick="openJobEditByEdit('{{@index}}')">{{orgName}}</a></td>
                         <td>{{#eq statusCd '1000'}}在职{{/eq}}{{#eq statusCd '1100'}}离职{{/eq}}</td>
                         <td>{{#format beginTime}}{{/format}}</td>
                         <td>{{#format endTime}}{{/format}}</td>
@@ -538,18 +538,24 @@
                         <td>序号</td>
                         <td>学校</td>
                         <td>专业</td>
-                        <td>时间</td>
+                        <td>入学时间</td>
+                        <td>毕业时间</td>
                         <td>学习方式</td>
+                        <td>学历</td>
                         <td>学位</td>
+                        <td>是否第一学历</td>
                     </tr>
                      {{#each eduInfo.records}}
                     <tr>
                         <td>{{#seq @index}}{{/seq}}</td>
                         <td>{{school}}</td>
                         <td>{{major}}</td>
-                        <td>{{#format begindate}}{{/format}} -{{#format enddate}}{{/format}}</td>
+                        <td>{{#format begindate}}{{/format}} </td>
+                        <td>{{#format enddate}}{{/format}}</td>
                         <td>全日制</td>
+                        <td>{{education}}</td>
                         <td>{{degree}}</td>
+                        <td>{{#eq firstEducation 1}}是{{/eq}}{{#eq firstEducation 0}}否{{/eq}}</td>
                     </tr>
                      {{/each}}
                 </table>
@@ -561,21 +567,25 @@
                         <td>序号</td>
                         <td>学校</td>
                         <td>专业</td>
-                        <td>时间</td>
+                        <td>入学时间</td>
+                        <td>毕业时间</td>
                         <td>学习方式</td>
+                        <td>学历</td>
                         <td>学位</td>
+                        <td>是否第一学历</td>
                     </tr>
                      {{#each eduInfo.records}}
-                    {{#eq statusCd 1000}}
                     <tr>
                         <td>{{#seq @index}}{{/seq}}</td>
                         <td>{{school}}</td>
                         <td>{{major}}</td>
-                        <td>{{#format begindate}}{{/format}} -{{#format enddate}}{{/format}}</td>
+                        <td>{{#format begindate}}{{/format}} </td>
+                        <td>{{#format enddate}}{{/format}}</td>
                         <td>全日制</td>
+                        <td>{{education}}</td>
                         <td>{{degree}}</td>
+                        <td>{{#eq firstEducation 1}}是{{/eq}}{{#eq firstEducation 0}}否{{/eq}}</td>
                     </tr>
-                    {{/eq}}
                      {{/each}}
                 </table>
 </script>
@@ -583,25 +593,29 @@
 <a class="button-add" href="javascript:void(0)" style="float:right" onclick="openEduEdit()"><span class="fa fa-plus-circle icon-add"></span>添加</a>
 
 <table>
-                    <tr class="Title">
+                   <tr class="Title">
                         <td>序号</td>
                         <td>学校</td>
                         <td>专业</td>
-                        <td>时间</td>
+                        <td>入学时间</td>
+                        <td>毕业时间</td>
                         <td>学习方式</td>
+                        <td>学历</td>
                         <td>学位</td>
+                        <td>是否第一学历</td>
                     </tr>
                      {{#each eduInfo.records}}
-                     
                     <tr>
                         <td>{{#seq @index}}{{/seq}}</td>
-                        <td>{{school}}</td>
+                        <td><a href="javascript:void(0)" onclick="openEduEditByEdit('{{@index}}')"> {{school}}</a></td>
                         <td>{{major}}</td>
-                        <td>{{#format begindate}}{{/format}} -{{#format enddate}}{{/format}}</td>
+                        <td>{{#format begindate}}{{/format}} </td>
+                        <td>{{#format enddate}}{{/format}}</td>
                         <td>全日制</td>
+                        <td>{{education}}</td>
                         <td>{{degree}}</td>
+                        <td>{{#eq firstEducation 1}}是{{/eq}}{{#eq firstEducation 0}}否{{/eq}}</td>
                     </tr>
-                     
                      {{/each}}
                 </table>
 </script>
@@ -611,7 +625,6 @@
                         <td>序号</td>
                         <td>姓名</td>
                         <td>称谓</td>
-                        <td>性别</td>
                         <td>联系电话</td>
                         <td>联系地址</td>
                     </tr>
@@ -619,8 +632,7 @@
                     <tr>
                         <td>{{#seq @index}}{{/seq}}</td>
                         <td>{{memName}}</td>
-                        <td>{{#each memRelation}} {{#eq itemValue ../memRelation}}{{itemCnname}}{{/eq}} {{/each}} </td>
-                        <td></td>
+                        <td>{{#each ../memRelation}} {{#eq itemValue ../memRelation}}{{itemCnname}}{{/eq}} {{/each}} </td>
                         <td>{{relaPhone}}</td>
                         <td>{{relaAddr}}</td>
                     </tr>
@@ -635,7 +647,6 @@
                         <td>序号</td>
                         <td>姓名</td>
                         <td>称谓</td>
-                        <td>性别</td>
                         <td>联系电话</td>
                         <td>联系地址</td>
                     </tr>
@@ -644,7 +655,6 @@
                         <td>{{#seq @index}}{{/seq}}</td>
                         <td>{{memName}}</td>
                         <td>{{#each memRelation}} {{#eq itemValue ../memRelation}}{{itemCnname}}{{/eq}} {{/each}} </td>
-                        <td></td>
                         <td>{{relaPhone}}</td>
                         <td>{{relaAddr}}</td>
                     </tr>
@@ -659,21 +669,17 @@
                         <td>序号</td>
                         <td>姓名</td>
                         <td>称谓</td>
-                        <td>性别</td>
                         <td>联系电话</td>
                         <td>联系地址</td>
                     </tr>
                    {{#each familyInfo.records}}
-                    {{#eq statusCd 1000}}
                     <tr>
                         <td>{{#seq @index}}{{/seq}}</td>
-                        <td>{{memName}}</td>
+                        <td><a href="javascript:void(0)" onclick="openFamilyEditByEdit('{{@index}}')"> {{memName}}</a> </td>
                         <td>{{#each memRelation}} {{#eq itemValue ../memRelation}}{{itemCnname}}{{/eq}} {{/each}} </td>
-                        <td></td>
                         <td>{{relaPhone}}</td>
                         <td>{{relaAddr}}</td>
                     </tr>
-                    {{/eq}}
                      {{/each}}
                 </table>
 </script>
@@ -746,35 +752,37 @@
         <div class="tab-content">
             <div class="tab-pane active" id="tab_content1">
                 <form action="/submit" method="post" style="padding: 10px;">
-                     
+                    <input id="psnjobId" type="hidden" value="{{currentEditJobInfo.psnjobId}}"/>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="orgFullName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">组织标识 </label>
-                            <input id="orgId" keyId="" class="ui-input col-md-4 col-sm-4 col-xs-12"  required readonly onclick="getJobOrgId()">
+                            <input id="orgId" value="{{currentEditJobInfo.orgName}}" keyId="{{currentEditJobInfo.orgId}}" class="ui-input col-md-4 col-sm-4 col-xs-12"  required readonly onclick="getJobOrgId()">
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">任职开始时间</label>
-                            <input isTime="yes" onclick="openDate()" readonly  id="beginTime" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            <input  value="{{#format currentEditJobInfo.beginTime}}{{/format}}"  readonly  id="beginTime" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">任职结束时间</label>
-                            <input id="endTime" isTime="yes" onclick="openDate(this)" readonly  class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            <input id="endTime"  value="{{#format currentEditJobInfo.endTime}}{{/format}}"  readonly  class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
                         </div>
                     </div>
+                    {{#if currentEditJobInfo.psnjobId}}
                      <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                         <label for="sort" class=" col-md-1 col-sm-1 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;"> </label>
-                        <input onclick="deleteJob('')" class="Btn BtnRed2  form-item-label-required col-md-3 col-sm-3 col-xs-12" type="button" onclick=" " value="删除" style=padding-right: 20px;line-height: 40px;text-align: right; " />
+                        <input onclick="deleteJob('{{currentEditJobInfo.psnjobId}}')" class="Btn BtnRed2  form-item-label-required col-md-3 col-sm-3 col-xs-12" type="button" onclick=" " value="删除" style=padding-right: 20px;line-height: 40px;text-align: right; " />
                         </div>
                     </div>
+                    {{/if}}
                 </form>
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-offset-3 col-xs-offset-3">
@@ -792,12 +800,12 @@
         <div class="tab-content">
             <div class="tab-pane active" id="tab_content1">
                 <form action="/submit" method="post" style="padding: 10px;">
-                     
+                     <input id="eduId" type="hidden" value="{{currentEditEduInfo.eduId}}"/>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="orgFullName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">学校名称 </label>
-                            <input id="school" class="ui-input col-md-4 col-sm-4 col-xs-12"  required    >
+                            <input id="school" class="ui-input col-md-4 col-sm-4 col-xs-12"  required value="{{currentEditEduInfo.school}}"   >
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
@@ -806,7 +814,7 @@
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">学校类型</label>
                             <select id="schoolType" class="col-md-4 col-sm-4 col-xs-12">
                                 {{#each schoolType}}
-                                <option value="{{itemValue}}">{{itemCnname}}</option>
+                                <option value="{{itemValue}}"  {{#eq ../currentEditEduInfo.schoolType itemValue}}selected='selected'{{/eq}}  >{{itemCnname}}</option>
                                 {{/each}}
                             </select>
                         </div>
@@ -815,42 +823,42 @@
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">专业</label>
-                            <input id="major" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            <input id="major" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" value='{{currentEditEduInfo.major}}'>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">专业类型</label>
-                            <input id="majortype" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            <input id="majortype" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" value='{{currentEditEduInfo.majortype}}' >
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">学历</label>
-                            <input id="education" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            <input id="education" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40"    value='{{currentEditEduInfo.education}}'  >
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">学制</label>
-                            <input id="edusystem" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            <input id="edusystem" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" value='{{currentEditEduInfo.edusystem}}'>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">学位</label>
-                            <input id="degree" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            <input id="degree" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40"  value='{{currentEditEduInfo.degree}}'>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">证书编号</label>
-                            <input id="certifcode" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            <input id="certifcode" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40"  value='{{currentEditEduInfo.certifcode}}'>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
@@ -858,8 +866,8 @@
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">是否第一学历</label>
                              <select id="firstEducation" class="col-md-4 col-sm-4 col-xs-12">
-                                <option value="1">是</option>
-                                <option value="0">否</option>
+                                <option value="1" {{#eq '1' currentEditEduInfo.firstEducation}} selected='selected' {{/eq}}>是</option>
+                                <option value="0" {{#eq '0' currentEditEduInfo.firstEducation}} selected='selected' {{/eq}}>否</option>
                             </select>
                         </div>
                     </div>
@@ -868,8 +876,8 @@
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">是否最高学历</label>
                              <select id="lastEducation" class="col-md-4 col-sm-4 col-xs-12">
-                                <option value="1">是</option>
-                                <option value="0">否</option>
+                                <option value="1" {{#eq '1' currentEditEduInfo.lastEducation}} selected='selected' {{/eq}}>是</option>
+                                <option value="0" {{#eq '0' currentEditEduInfo.lastEducation}} selected='selected' {{/eq}}>否</option>
                             </select>
                         </div>
                     </div>
@@ -878,8 +886,8 @@
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">是否最高学位</label>
                              <select id="lastDegree" class="col-md-4 col-sm-4 col-xs-12">
-                                <option value="1">是</option>
-                                <option value="0">否</option>
+                                <option value="1" {{#eq '1' currentEditEduInfo.lastDegree}} selected='selected' {{/eq}}>是</option>
+                                <option value="0" {{#eq '0' currentEditEduInfo.lastDegree}} selected='selected' {{/eq}}>否</option>
                             </select>
                         </div>
                     </div>
@@ -887,17 +895,25 @@
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">入学时间</label>
-                              <input id="begindate" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                              <input id="begindate" class="ui-input col-md-4 col-sm-4 col-xs-12" readonly size="40" value="{{#format currentEditEduInfo.begindate}}{{/format}}">
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">毕业时间</label>
-                             <input id="enddate" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                             <input id="enddate" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" readonly value="{{#format currentEditEduInfo.enddate}}{{/format}}">
                         </div>
                     </div>
-                     
+                      {{#if currentEditEduInfo.eduId}}
+                     <div class="row" style="margin-bottom: 10px;">
+                        <div class="form-item" style="width: 100%">
+                        <label for="sort" class=" col-md-1 col-sm-1 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;"> </label>
+                        <input onclick="deleteEdu('{{currentEditEduInfo.eduId}}')" class="Btn BtnRed2  form-item-label-required col-md-3 col-sm-3 col-xs-12" type="button" onclick=" " value="删除" style=padding-right: 20px;line-height: 40px;text-align: right; " />
+                        </div>
+                    </div>
+                    {{/if}}
                 </form>
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-offset-3 col-xs-offset-3">
@@ -915,13 +931,14 @@
         <div class="tab-content">
             <div class="tab-pane active" id="tab_content1">
                 <form action="/submit" method="post" style="padding: 10px;">
+                         <input id="familyId" type="hidden" value="{{currentEditFamilyInfo.familyId}}"/>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">与本人关系</label>
                             <select id="memRelation" class="col-md-4 col-sm-4 col-xs-12">
                                 {{#each memRelation}}
-                                <option value="{{itemValue}}">{{itemCnname}}</option>
+                                <option value="{{itemValue}}" {{#eq currentEditFamilyInfo.memRelation itemValue}} selected='selected' {{/eq}} >{{itemCnname}}</option>
                                 {{/each}}
                             </select>
                         </div>
@@ -930,36 +947,44 @@
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">姓名</label>
-                            <input id="memName" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            <input id="memName" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" value="{{currentEditFamilyInfo.memName}}">
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
-                            <input id="relaEmail" type="email" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            <input id="relaEmail" type="email" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" value="{{currentEditFamilyInfo.relaEmail}}">
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">联系电话</label>
-                            <input id="relaPhone" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            <input id="relaPhone" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" value="{{currentEditFamilyInfo.relaPhone}}">
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">联系地址</label>
-                            <input id="relaAddr" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            <input id="relaAddr" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" value="{{currentEditFamilyInfo.relaAddr}}">
                         </div>
                     </div>
-                     
+                       {{#if currentEditFamilyInfo.familyId}}
+                     <div class="row" style="margin-bottom: 10px;">
+                        <div class="form-item" style="width: 100%">
+                        <label for="sort" class=" col-md-1 col-sm-1 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;"> </label>
+                        <input onclick="deleteFamily('{{currentEditFamilyInfo.familyId}}')" class="Btn BtnRed2  form-item-label-required col-md-3 col-sm-3 col-xs-12" type="button" onclick=" " value="删除" style=padding-right: 20px;line-height: 40px;text-align: right; " />
+                        </div>
+                    </div>
+                    {{/if}}
                 </form>
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-offset-3 col-xs-offset-3">
                         <button onclick="addFamily()" class="ui-button ui-button-primary">保存</button>
-                        <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancelEduEdit()">取消</button>
+                        <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancelFamilyEdit()">取消</button>
                     </div>
                 </div>
             </div>

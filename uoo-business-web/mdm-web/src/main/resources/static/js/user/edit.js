@@ -1,6 +1,6 @@
 var orgId = getQueryString('id');
-// var orgRootId = getQueryString('orgRootId');
-var orgRootId = 1;
+var orgRootId = getQueryString('orgRootId');
+//var orgRootId = 1;
 var personnelId = getQueryString('personnelId');
 var orgTreeId = getQueryString('orgTreeId');
 var orgName = getQueryString('name');
@@ -144,7 +144,7 @@ function getFamilyInfo(){
 function getOrgPersonnerList () {
     $http.get('/personnel/getFormPersonnel', {
         orgId: orgId,
-        orgRootId: orgRootId,
+        orgTreeId: orgTreeId,
         personnelId: personnelId
     }, function (data) {
     	personalData.personalData=data;
@@ -270,6 +270,9 @@ function  editUser() {
     	emailHtml+="</li>";
     }
     $('#userEditUL1').append(emailHtml);
+    laydate.render({
+	    elem:  'input[isTime="yes"]'
+	});
 }
 function editOrgInfo(){
 	
@@ -318,17 +321,25 @@ function openOrgEdit () {
 }
 function openOrgEditByEdit (i) {
 	personalData.currentEditOrgInfo=personalData.orgInfo.records[i];
-	console.log("编辑的组织信息：");
-	console.log(personalData.currentEditOrgInfo);
 	openOrgEdit();
 }
 function openJobEdit () {
 	//预编译模板
 	var orgTemplate = Handlebars.compile($("#jobTemplate").html());
 	//匹配json内容
-	var orgEditHtml = orgTemplate();
+	var orgEditHtml = orgTemplate(personalData);
 	//输入模板
 	$('#jobInfoTable1').html(orgEditHtml);
+	laydate.render({
+	    elem:  '#endTime'
+	});
+	laydate.render({
+		elem:  '#beginTime'
+	});
+}
+function openJobEditByEdit (i) {
+	personalData.currentEditJobInfo=personalData.jobInfo.records[i];
+	openJobEdit();
 }
 function openEduEdit () {
 	//预编译模板
@@ -337,6 +348,16 @@ function openEduEdit () {
 	var orgEditHtml = orgTemplate(personalData);
 	//输入模板
 	$('#eduInfoTable1').html(orgEditHtml);
+	laydate.render({
+	    elem:  '#enddate'
+	});
+	laydate.render({
+		elem:  '#begindate'
+	});
+}
+function openEduEditByEdit (i) {
+	personalData.currentEditEduInfo=personalData.eduInfo.records[i];
+	openEduEdit();
 }
 function openFamilyEdit () {
 	//预编译模板
@@ -345,6 +366,10 @@ function openFamilyEdit () {
 	var orgEditHtml = orgTemplate(personalData);
 	//输入模板
 	$('#familyInfoTable1').html(orgEditHtml);
+}
+function openFamilyEditByEdit (i) {
+	personalData.currentEditFamilyInfo=personalData.familyInfo.records[i];
+	openFamilyEdit();
 }
 //获取组织全称
 function getOrgFullName() {
@@ -415,15 +440,19 @@ function getJobOrgId() {
 	});
 }
 function cancelOrgEdit(){
+	  personalData=currentEditOrgInfo={};
 	initOrgInfo();
 }
 function cancelJobEdit(){
+	 personalData=currentEditJobInfo={};
 	initJobInfo();
 }
 function cancelEduEdit(){
+	 personalData=currentEditEduInfo={};
 	initEduInfo();
 }
 function cancelFamilyEdit(){
+	personalData.currentEditFamilyInfo={};
 	initFamilyInfo();
 }
 function cancelUserEdit () {
@@ -454,6 +483,7 @@ function addPsonOrg(){
 		success:function(data){
 			if(data.state==1000){
 				alert('新修改成功');
+				  personalData.currentEditOrgInfo={};
 				getOrgInfo();
 			}else{
 				alert('修改失败，'+data.message);
@@ -462,21 +492,25 @@ function addPsonOrg(){
 	});
 }
 function addPsonJob(){
+	var psnjobId=$('#psnjobId').val();
 	var psonJob={
-			orgId:$('#orgId').val(),
+			orgId:$('#orgId').attr('keyId'),
 			beginTime:$('#beginTime').val(),
 			endTime:$('#endTime').val(),
 			personnelId:personnelId,
+			psnjobId:psnjobId
 	};
 	$.ajax({
-		url:'/psnjob/saveTbPsnjob',
-		type:'post',
+		url:psnjobId.length>0?'/psnjob/updateTbPsnjob':'/psnjob/saveTbPsnjob',
+		type:psnjobId.length>0?'put':'post',
 		data:JSON.stringify(psonJob), 
 		contentType:'application/json',
 		dataType:'json',
 		success:function(data){
 			if(data.state==1000){
 				alert('新修改成功');
+				 personalData.currentEditJobInfo={};
+				 
 				getJobInfo();
 			}else{
 				alert('修改失败，'+data.message);
@@ -485,6 +519,7 @@ function addPsonJob(){
 	});
 }
 function addPsonEdu(){
+	var eduId=$('#eduId').val();
 	var obj={
 			school:$('#school').val(),
 			schoolType:$('#schoolType').val(),
@@ -502,16 +537,18 @@ function addPsonEdu(){
 			begindate:$('#begindate').val(),
 			enddate:$('#enddate').val(),
 			personnelId:personnelId,
+			eduId:eduId
 	};
 	$.ajax({
-		url:'/edu/saveTbEdu',
-		type:'post',
+		url:eduId.length>0?'/edu/updateTbEdu':'/edu/saveTbEdu',
+		type:eduId.length>0?'put':'post',
 		data:JSON.stringify(obj), 
 		contentType:'application/json',
 		dataType:'json',
 		success:function(data){
 			if(data.state==1000){
 				alert('新修改成功');
+				 personalData.currentEditEduInfo={};
 				getEduInfo();
 			}else{
 				alert('修改失败，'+data.message);
@@ -520,6 +557,8 @@ function addPsonEdu(){
 	});
 }
 function addFamily(){
+	var familyId=$('#familyId').val();
+	
 	var obj={
 			memRelation:$('#memRelation').val(),
 			memName:$('#memName').val(),
@@ -527,16 +566,18 @@ function addFamily(){
 			relaPhone:$('#relaPhone').val(),
 			relaAddr:$('#relaAddr').val(),
 			personnelId:personnelId,
+			familyId:familyId
 	};
 	$.ajax({
-		url:'/family/saveTbFamily',
-		type:'post',
+		url:familyId.length>0?'/family/updateTbFamily':'/family/saveTbFamily',
+		type:familyId.length>0?'post':'post',
 		data:JSON.stringify(obj), 
 		contentType:'application/json',
 		dataType:'json',
 		success:function(data){
 			if(data.state==1000){
 				alert('新修改成功');
+				 personalData.currentEditFamilyInfo={};
 				getFamilyInfo();
 			}else{
 				alert('修改失败，'+data.message);
@@ -635,10 +676,59 @@ function addMobileInput(){
 	 mh+="</li>";
 	 $('#userEditUL0').append(mh);
 }
-function openDate( ){
-	laydate.render({
-	    elem:  'input[isTime="yes"]'
-	});
+function deleteJob(id){
+	if(confirm('确定删除？')){
+		$.ajax({
+			url:'/psnjob/delTbPsnjob?psnjobId='+id,
+			type:'DELETE',
+			dataType:'json',
+			success:function(data){
+				if(data.state==1000){
+					alert('操作成功');
+					getJobInfo();
+				}else{
+					alert('操作失败,'+data.message);
+				}
+			}
+		});
+	}
+	
+}
+function deleteEdu(id){
+	if(confirm('确定删除？')){
+		$.ajax({
+			url:'/edu/delTbEdu?eduId='+id,
+			type:'DELETE',
+			dataType:'json',
+			success:function(data){
+				if(data.state==1000){
+					alert('操作成功');
+					getEduInfo();
+				}else{
+					alert('操作失败,'+data.message);
+				}
+			}
+		});
+	}
+	
+}
+function deleteFamily(id){
+	if(confirm('确定删除？')){
+		$.ajax({ 
+			url:'/family/delTbFamily?familyId='+id,
+			type:'DELETE',
+			dataType:'json',
+			success:function(data){
+				if(data.state==1000){
+					alert('操作成功');
+					getFamilyInfo();
+				}else{
+					alert('操作失败,'+data.message);
+				}
+			}
+		});
+	}
+	
 }
 $(document).ready(function(){
 	Handlebars.registerHelper('eq', function(v1, v2, opts) {
