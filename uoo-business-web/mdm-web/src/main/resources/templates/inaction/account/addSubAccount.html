@@ -83,12 +83,17 @@
       .modal-header{
           background: #fff;
       }
+      #delSubAcct{
+          margin-top: 40px !important;
+          margin-left: -15px;
+      }
     </style>
 </head>
 
 <body style="background: #fff;">
     <div class="board-title">
         <span class="name ft18" id="sub-title"></span>  <!-- 从账号 -->
+        <a id="back" href="#" onclick="submitToOther()">返回</a>
     </div>
 
     <div class="tab-content" style="margin-left:5%;margin-top: 2%">
@@ -309,11 +314,7 @@
                     <table id="orgTable" class="stripe" width="100%"></table>
                 </div>
 
-                <div class="BoardContent tcenter">
-                    <div class="FunctionBtn">
-                        <a class="BtnDel" href="#" onclick="isDelete()"><span></span>删除从账号</a>
-                    </div>
-                </div>
+                <input class="Btn BtnRed2" id="delSubAcct" type="button" onclick="isDelete()" value="删除从账号" style="margin-top:20px;" />
 
             </form>
 

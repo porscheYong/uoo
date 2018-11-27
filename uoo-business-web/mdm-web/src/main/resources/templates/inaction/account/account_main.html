@@ -28,12 +28,22 @@
     <script src="../../../static/js/core/respond.js"></script>
     <script src="../../../static/js/core/excanvas.js"></script>
     <![endif]-->
+    <style>
+      .col-md-9{
+        width: 98% !important;
+        margin-left: 1% !important;
+        margin-top: 2% !important;
+      }
+    </style>
   </head>
 
   <body class="nav-md">
     <div class="container" id="container">
       <div class="main-container">
         <div class="content-left" style="overflow: auto;">
+          <select id="businessOrg" class="col-md-9 col-sm-9 col-xs-11" style="margin-left: 10px;">
+
+          </select>
           <div style="display: inline-block;width: 100%;padding-top: 10px;">
               <ul id="standardTree" class="ztree"></ul>
           </div>
@@ -48,6 +58,8 @@
     <script type="text/javascript" src="/js/core/jquery.js"></script>
     <!-- Bootstrap -->
     <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- sea js -->
+    <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
     <!-- NProgress -->
     <!-- <script type="text/javascript" src="../../../static/vendors/nprogress/nprogress.js"></script> -->
     <!-- ztree -->

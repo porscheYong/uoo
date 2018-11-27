@@ -24,7 +24,7 @@
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
     <link href="/css/custom.css" rel="stylesheet">
-
+    <link href="/vendors/typeahead/typeahead.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="/js/core/html5shiv.js"></script>
@@ -102,315 +102,608 @@
         .TableStyle tr:hover {
             background: #d9f2ff !important;
         }
+        .wizard > .content > .body {
+            position: initial;
+        }
+        .wizard > .content {
+            height: auto;
+        }
+        .typeahead-input {
+            padding: 9px 8px !important;
+            background: none;
+        }
+        .typeahead-menu {
+            border-radius: 0;
+            width: 81%;
+            padding: 10px;
+            top: 95%;
+            left: 16%;
+            margin-bottom: 0;
+        }
+        .is-empty {
+            padding: 0;
+        }
+        table.dataTable.no-footer {
+            border-bottom: 0;
+        }
+        .wizard > .content > .body ul > li {
+            display: inline-block;
+        }
+        .dataTable a {
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body style="background-color: #fff;">
-<div id="wizard">
-    <h2></h2>
-    <form>
-        <div class="board-title">
-            <span class="name ft18">基本信息</span>
-        </div>
-        <div style="padding: 10px;">
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="psnName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">姓名</label>
-                        <input id="psnName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" required>
+    <div id="userAdd">
+        <h2></h2>
+        <form>
+            <div class="board-title">
+                <span class="name ft18">基本信息</span>
+            </div>
+            <div style="padding: 10px;">
+                <div class="row pos-relative" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="psnName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">姓名</label>
+                            <!--<input id="psnName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" required>-->
+                            <div class="typeahead col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
+                                <div>
+                                    <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
+                                    <input class="ui-input typeahead-input tt-input" id="psnName" type="text" name="q" placeholder="输入人员关键字" autocomplete="off" spellcheck="false" dir="auto">
+                                    <img class="typeahead-spinner" src="img/spinner.gif" style="display: none;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="psnNbr" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">员工工号</label>
+                            <input id="psnNbr" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
+                        </div>
+                    </div>
+                    <div class="user-table typeahead-menu">
+                        <table id="userTable" class="stripe" width="100%"></table>
                     </div>
                 </div>
 
-                <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
-                <!--<div class="form-item" style="width: 100%">-->
-                <!--<label for="idCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">头像</label>-->
-                <!--&lt;!&ndash; <input type="code" id="idCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="100~200"> &ndash;&gt;-->
-                <!--<select  class="col-md-8 col-sm-8 col-xs-12">-->
-                <!--<option></option>-->
-                <!--<option>100~200</option>-->
-                <!--<option>300~400</option>-->
-                <!--</select>-->
-                <!--</div>-->
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="gender" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">性别</label>
+                            <div style="line-height: 40px;" id="gender">
+                                <input type="radio" id="male" name="radio" value="1"
+                                ><label for="male" class="ui-radio"></label
+                                ><label for="male" class="gender">男</label>
+
+                                <input type="radio" id="female" name="radio" value="2"
+                                ><label for="female" class="ui-radio" style="margin-left: 30px;"></label
+                                ><label for="female" class="gender">女</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="psnCode" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
+                            <input id="psnCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="certType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">
+                                证件类型
+                            </label>
+                            <select id="certType" class="col-md-8 col-sm-8 col-xs-12"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="ncCode" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">人力编码</label>
+                            <input id="ncCode" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="certNo" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                            <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="nationality" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">籍贯</label>
+                            <input id="nationality" class="ui-input col-md-8 col-sm-8 col-xs-12">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="nation" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">民族</label>
+                            <select id="nation" class="col-md-8 col-sm-8 col-xs-12"></select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="toWorkTime" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                   style="padding-right: 10px;line-height: 40px;text-align: right;">首次参加工作时间</label>
+                            <input id="toWorkTime" class="ui-input col-md-8 col-sm-8 col-xs-12">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="pliticalStatus" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">政治面貌</label>
+                            <select id="pliticalStatus" class="col-md-8 col-sm-8 col-xs-12"></select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="marriage" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">婚姻状况</label>
+                            <select id="marriage" class="col-md-8 col-sm-8 col-xs-12"></select>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="user-table">-->
+                    <!--<table id="userTable" class="stripe" width="100%"></table>-->
                 <!--</div>-->
             </div>
 
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="gender" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">性别</label>
-                        <div style="line-height: 40px;" id="gender">
-                            <input type="radio" id="male" name="radio">
-                            <label for="male" class="ui-radio"></label><label for="male"
-                                                                              style="padding-left: 10px;">男</label>
+            <div class="board-title">
+                <span class="name ft18">联系信息</span>
+            </div>
+            <div style="padding: 10px;">
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%; position: relative;">
+                            <label for="mobile" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">电话</label>
+                            <div id="tbMobileVoList" class="ui-input col-md-8 col-sm-8 col-xs-12">
+                                <input id="mobile">
+                            </div>
+                            <div class="fright" style="position: absolute; right: 0; line-height: 40px;" onclick="addMobile()">
+                                <a id="mobileAdd" href="javascript:void(0)"><span class="fa fa-plus-circle icon-add" style="padding-right: 0; font-size: 23px;"></span></a>
+                            </div>
+                        </div>
+                    </div>
 
-                            <input type="radio" id="female" name="radio">
-                            <label for="female" class="ui-radio" style="margin-left: 30px;"></label><label for="female"
-                                                                                                           style="padding-left: 10px;">女</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%; position: relative;">
+                            <label for="tbEamilVoList" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
+                            <div id="tbEamilVoList" class="ui-input col-md-8 col-sm-8 col-xs-12">
+                                <input id="email">
+                            </div>
+                            <div class="fright" style="position: absolute; right: 0; line-height: 40px;" onclick="addEmail()">
+                                <a id="emailAdd" href="javascript:void(0)"><span class="fa fa-plus-circle icon-add" style="padding-right: 0; font-size: 23px;"></span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="tbFamilyList" class="form-item-label col-md-2 col-sm-2 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">家庭地址</label>
+                            <div class="col-md-10 col-sm-10 col-xs-12" style="width: 84%;position: relative;padding: 0;">
+                                <input id="tbFamilyList" class="ui-input" style="width: 100%;position: relative;">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="certType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
-                        <select id="certType" class="col-md-8 col-sm-8 col-xs-12">
-                            <option></option>
-                            <option value="1">身份证</option>
-                            <option value="2">护照</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="psnNbr" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">员工工号</label>
-                        <input id="psnNbr" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
-                    </div>
+            <div class="board-title">
+                <span class="name ft18">工作经历</span>
+                <div class="fright" style="margin-right: 20px">
+                    <a class="button-add" id="searchBtn" href="javascript:void(0)" onclick="editWrokExperience()"><span class="fa fa-plus-circle icon-add"></span>添加</a>
                 </div>
             </div>
-
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="certNo" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                        <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12">
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="psnCode" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
-                        <input id="psnCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" disabled>
-                    </div>
-                </div>
+            <div class="TableStyle" style="padding: 10px;" id="workExperience">
+                <table>
+                    <tr class="Title">
+                        <td>序号</td>
+                        <td>公司名称</td>
+                        <td>任职状态</td>
+                        <td>任职开始时间</td>
+                        <td>任职结束时间</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">请添加数据</td>
+                    </tr>
+                </table>
             </div>
 
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="nationality" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">籍贯</label>
-                        <input id="nationality" class="ui-input col-md-8 col-sm-8 col-xs-12">
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="ncCode" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">人力编码</label>
-                        <input id="ncCode" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
-                    </div>
+            <div class="board-title">
+                <span class="name ft18">教育经历</span>
+                <div class="fright" style="margin-right: 20px">
+                    <a class="button-add" id="searchBtn" href="javascript:void(0)" onclick="editEduExperience()"><span class="fa fa-plus-circle icon-add"></span>添加</a>
                 </div>
             </div>
-
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="nation" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">民族</label>
-                        <select id="nation" class="col-md-8 col-sm-8 col-xs-12">
-                            <option></option>
-                            <option value="1">汉族</option>
-                            <option value="2">回族</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="toWorkTime" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 10px;line-height: 40px;text-align: right;">首次参加工作时间</label>
-                        <input id="toWorkTime" class="ui-input col-md-8 col-sm-8 col-xs-12">
-                    </div>
-                </div>
+            <div class="TableStyle" style="padding: 10px;" id="eduExperience">
+                <table>
+                    <tr class="Title">
+                        <td>序号</td>
+                        <td>学校</td>
+                        <td>专业</td>
+                        <td>时间</td>
+                        <td>学习方式</td>
+                        <td>学位</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">请添加数据</td>
+                    </tr>
+                </table>
             </div>
 
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="pliticalStatus" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">政治面貌</label>
-                        <select id="pliticalStatus" class="col-md-8 col-sm-8 col-xs-12">
-                            <option></option>
-                            <option>无</option>
-                            <option value="1">团员</option>
-                            <option value="2">党员</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="marriage" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">婚姻状况</label>
-                        <select id="marriage" class="col-md-8 col-sm-8 col-xs-12">
-                            <option></option>
-                            <option value="1">未婚</option>
-                            <option value="2">已婚</option>
-                        </select>
-                    </div>
+            <div class="board-title">
+                <span class="name ft18">家庭成员</span>
+                <div class="fright" style="margin-right: 20px">
+                    <a class="button-add" id="searchBtn" href="javascript:void(0)" onclick="editFamily()"><span class="fa fa-plus-circle icon-add"></span>添加</a>
                 </div>
             </div>
-        </div>
+            <div class="TableStyle" style="padding: 10px;" id="familyMember">
+                <table>
+                    <tr class="Title">
+                        <td>序号</td>
+                        <td>姓名</td>
+                        <td>称谓</td>
+                        <td>性别</td>
+                        <td>联系电话</td>
+                        <td>联系地址</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">请添加数据</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="clearfix"></div>
+        </form>
 
-        <div class="board-title">
-            <span class="name ft18">联系信息</span>
-        </div>
-        <div style="padding: 10px;">
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="tbMobileVoList" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">电话</label>
-                        <input id="tbMobileVoList" class="ui-input col-md-8 col-sm-8 col-xs-12">
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="tbEamilVoList" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
-                        <input id="tbEamilVoList" class="ui-input col-md-8 col-sm-8 col-xs-12"">
-                    </div>
+        <h2></h2>
+        <form>
+            <div class="board-title">
+                <span class="name ft18">归属组织</span>
+                <div class="fright" style="margin-right: 20px">
+                    <a class="button-add" href="javascript:void(0)" onclick="openOrgEdit()"><span class="fa fa-plus-circle icon-add"></span>添加</a>
                 </div>
             </div>
-
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="tbFamilyList" class="form-item-label-required col-md-2 col-sm-2 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">家庭地址</label>
-                        <div class="col-md-10 col-sm-10 col-xs-12" style="width: 84%;position: relative;padding: 0;">
-                            <input id="tbFamilyList" class="ui-input" style="width: 100%;position: relative;">
+            <div class="TableStyle" style="padding: 10px;" id="orgPerson">
+                <table>
+                    <tr class="Title">
+                        <td>序号</td>
+                        <td>组织树名称</td>
+                        <td>组织名称</td>
+                        <td>重名称谓</td>
+                        <td>专兼职</td>
+                        <td>职位</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">请添加数据</td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+<script id="jobTemplate" type="text/x-handlebars-template">
+        <div class="nav-tabs-brief" style="padding-top: 35px;">
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_content1">
+                    <form action="/submit" method="post" style="padding: 10px;">
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="companyName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">公司名称</label>
+                                <input id="companyName" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="status" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">任职状态</label>
+                                <input id="status" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="beginTime" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">任职开始时间</label>
+                                <input id="beginTime" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="endTime" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">任职结束时间</label>
+                                <input id="endTime" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-offset-3 col-xs-offset-3">
+                            <button class="ui-button ui-button-primary" onclick="addWrokExperience()">保存</button>
+                            <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancelWrokExperienceEdit()">取消</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </script>
+<script id="jobListTemplate" type="text/x-handlebars-template">
+        <table>
+            <tr class="Title">
+                <td>序号</td>
+                <td>公司名称</td>
+                <td>任职状态</td>
+                <td>任职开始时间</td>
+                <td>任职结束时间</td>
+            </tr>
+            {{#each psnjobList}}
 
-    <h2></h2>
-    <form>
-        <div class="board-title">
-            <span class="name ft18">归属组织</span>
-            <div class="fright" style="margin-right: 20px">
-                <a class="button-add" href="javascript:void(0)" onclick="openOrgEdit()"><span class="fa fa-plus-circle icon-add"></span>添加</a>
+            <tr>
+                <td>{{addOne @index}}</td>
+                <td>{{name}}</td>
+                <td>{{status}}</td>
+                <td>{{beginTime}}</td>
+                <td>{{endTime}}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </script>
+<script id="eduTemplate" type="text/x-handlebars-template">
+        <div class="nav-tabs-brief" style="padding-top: 35px;">
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_content1">
+                    <form action="/submit" method="post" style="padding: 10px;">
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="school" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">学校名称 </label>
+                                <input id="school" class="ui-input col-md-4 col-sm-4 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="major" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">专业</label>
+                                <input id="major" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="begindate" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">入学时间</label>
+                                <input id="begindate" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="enddate" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">毕业时间</label>
+                                <input id="enddate" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="learning" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">学习方式</label>
+                                <input id="learning" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="education" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">学历</label>
+                                <input id="education" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="degree" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">学位</label>
+                                <input id="degree" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="firstEducation" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">是否第一学历</label>
+                                <select id="firstEducation" class="col-md-4 col-sm-4 col-xs-12">
+                                    <option></option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="lastEducation" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">是否最高学历</label>
+                                <select id="lastEducation" class="col-md-4 col-sm-4 col-xs-12">
+                                    <option></option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="lastDegree" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">是否最高学位</label>
+                                <select id="lastDegree" class="col-md-4 col-sm-4 col-xs-12">
+                                    <option></option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </form>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-offset-3 col-xs-offset-3">
+                            <button class="ui-button ui-button-primary" onclick="addEduExperience()">保存</button>
+                            <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancelEduExperienceEdit()">取消</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="TableStyle" style="padding: 10px;" id="orgBelong">
-            <table>
-                <tr class="Title">
-                    <td>序号</td>
-                    <td>组织树名称</td>
-                    <td>组织名称</td>
-                    <td>重名称谓</td>
-                    <td>专兼职</td>
-                    <td>职位</td>
-                </tr>
-                <tr>
-                    <td colspan="6">请添加数据</td>
-                </tr>
-            </table>
-        </div>
-    </form>
-
-    <h2></h2>
-    <form>
-        <div class="board-title">
-            <span class="name ft18">工作经历</span>
-            <div class="fright" style="margin-right: 20px">
-                <a class="button-add" id="searchBtn" href="javascript:void(0)"><span class="fa fa-plus-circle icon-add"></span>添加</a>
+    </script>
+<script id="eduListTemplate" type="text/x-handlebars-template">
+        <table>
+            <tr class="Title">
+                <td>序号</td>
+                <td>学校名称</td>
+                <td>专业</td>
+                <td>入学时间</td>
+                <td>毕业时间</td>
+                <td>学习方式</td>
+                <td>学历</td>
+                <td>学位</td>
+                <td>是否第一学历</td>
+                <td>是否第一学位</td>
+            </tr>
+            {{#each eduList}}
+            <tr>
+                <td>{{addOne @index}}</td>
+                <td>{{school}}</td>
+                <td>{{major}}</td>
+                <td>{{begindate}}</td>
+                <td>{{enddate}}</td>
+                <td>{{learning}}</td>
+                <td>{{education}}</td>
+                <td>{{degree}}</td>
+                {{#eq firstEducation 1}}
+                    <td>是</td>
+                {{else}}
+                    <td>否</td>
+                {{/eq}}
+                {{#eq lastEducation 1}}
+                    <td>是</td>
+                {{else}}
+                    td>否</td>
+                {{/eq}}
+                {{#eq lastDegree 1}}
+                    <td>是</td>
+                {{else}}
+                    <td>否</td>
+                {{/eq}}
+            </tr>
+            {{/each}}
+        </table>
+    </script>
+<script id="familyTemplate" type="text/x-handlebars-template">
+        <div class="nav-tabs-brief" style="padding-top: 35px;">
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_content1">
+                    <form action="/submit" method="post" style="padding: 10px;">
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="memName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">家庭成员姓名 </label>
+                                <input id="memName" class="ui-input col-md-4 col-sm-4 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="appellation" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">称谓</label>
+                                <input id="appellation" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="gender" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">性别</label>
+                                <select id="gender" class="col-md-4 col-sm-4 col-xs-12">
+                                    <option></option>
+                                    <option value="1">男</option>
+                                    <option value="2">女</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="relaPhone" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">联系电话</label>
+                                <input id="relaPhone" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-item" style="width: 100%">
+                                <label for="relaAddr" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">联系地址</label>
+                                <input id="relaAddr" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-offset-3 col-xs-offset-3">
+                            <button class="ui-button ui-button-primary" onclick="addFamily()">保存</button>
+                            <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancelFamilyEdit()">取消</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="TableStyle" style="padding: 10px;">
-            <table>
-                <tr class="Title">
-                    <td>序号</td>
-                    <td>时间</td>
-                    <td>公司</td>
-                    <td>职位</td>
-                    <td>岗位职责</td>
-                </tr>
-                <tr>
-                    <td colspan="6">请添加数据</td>
-                </tr>
-            </table>
-        </div>
-    </form>
-
-    <h2></h2>
-    <form>
-        <div class="board-title">
-            <span class="name ft18">教育经历</span>
-            <div class="fright" style="margin-right: 20px">
-                <a class="button-add" id="searchBtn" href="javascript:void(0)"><span class="fa fa-plus-circle icon-add"></span>添加</a>
-            </div>
-        </div>
-        <div class="TableStyle" style="padding: 10px;">
-            <table>
-                <tr class="Title">
-                    <td>序号</td>
-                    <td>学校</td>
-                    <td>专业</td>
-                    <td>时间</td>
-                    <td>学习方式</td>
-                    <td>学位</td>
-                </tr>
-                <tr>
-                    <td colspan="6">请添加数据</td>
-                </tr>
-            </table>
-        </div>
-    </form>
-
-    <h2></h2>
-    <form>
-        <div class="board-title">
-            <span class="name ft18">家庭成员</span>
-            <div class="fright" style="margin-right: 20px">
-                <a class="button-add" id="searchBtn" href="javascript:void(0)"><span class="fa fa-plus-circle icon-add"></span>添加</a>
-            </div>
-        </div>
-        <div class="TableStyle" style="padding: 10px;">
-            <table>
-                <tr class="Title">
-                    <td>序号</td>
-                    <td>姓名</td>
-                    <td>称谓</td>
-                    <td>性别</td>
-                    <td>联系电话</td>
-                    <td>联系地址</td>
-                </tr>
-                <tr>
-                    <td colspan="6">请添加数据</td>
-                </tr>
-            </table>
-        </div>
-    </form>
-</div>
-
+    </script>
+<script id="familyListTemplate" type="text/x-handlebars-template">
+        <table>
+            <tr class="Title">
+                <td>序号</td>
+                <td>家庭成员姓名</td>
+                <td>称谓</td>
+                <td>性别</td>
+                <td>联系电话</td>
+                <td>联系地址</td>
+            </tr>
+            {{#each familyList}}
+            <tr>
+                <td>{{addOne @index}}</td>
+                <td>{{memName}}</td>
+                <td>{{appellation}}</td>
+                {{#eq gender 1}}
+                <td>男</td>
+                {{else}}
+                <td>女</td>
+                {{/eq}}
+                <td>{{relaPhone}}</td>
+                <td>{{relaAddr}}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </script>
 <script id="orgTemplate" type="text/x-handlebars-template">
     <div class="nav-tabs-brief" style="padding-top: 35px;">
-
         <div class="tab-content">
             <div class="tab-pane active" id="tab_content1">
                 <form action="/submit" method="post" style="padding: 10px;">
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
-                            <label for="idTel" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">组织树名称</label>
-                            <select class="col-md-4 col-sm-4 col-xs-12">
-                                <option></option>
-                                <option>统一目录树</option>
-                            </select>
+                            <label for="orgTreeName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织树名称</label>
+                            <select id="orgTreeName" class="col-md-4 col-sm-4 col-xs-12"></select>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
@@ -448,7 +741,7 @@
                 </form>
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-offset-3 col-xs-offset-3">
-                        <button class="ui-button ui-button-primary">保存</button>
+                        <button class="ui-button ui-button-primary" onclick="saveOrgTree()">保存</button>
                         <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancelOrgEdit()">取消</button>
                     </div>
                 </div>
@@ -477,6 +770,8 @@
 <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- handlebars -->
 <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
+<!-- typeahead -->
+<script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
 <!-- jquery datatable -->
 <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
 <!-- sea js -->

@@ -95,6 +95,20 @@
       .modal-header{
           background: #fff;
       }
+      #delAcct{
+          margin-top: 40px !important;
+          margin-left: -15px;
+      }
+      /* #orgTypeList{
+        opacity: 0;
+        filter: alpha(opacity=0);
+        position: absolute;
+      }
+      #firstRole,
+      #secondRole{
+          position: inherit;
+          opacity:1;
+      } */
         
     </style>
 </head>
@@ -103,6 +117,7 @@
 
     <div class="board-title">
         <span class="name ft18" id="main-title"></span> <!-- 主账号 -->
+        <a id="back" href="#" onclick="cancel()">返回</a>
     </div> 
 
     <div class="tab-content" style="margin-left:5%;margin-top: 2%">
@@ -184,9 +199,16 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
                             <label for="roleTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
-                            <input type="tel" id="roleTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off"> 
+                            <input type="tel" id="roleTel" class="ui-input col-md-8 col-sm-8 col-xs-12" data-toggle="modal" data-target="#roleModal" size="40" name="tel" required value="" autocomplete="off"> 
                         </div>
                     </div>
+
+                    <!-- <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                          <label for="orgTypeList" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
+                          <input id="orgTypeList" class="ui-input col-md-8 col-sm-8 col-xs-12"  onclick="openTypeDialog()" required readonly></input>
+                        </div>
+                    </div> -->
 
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%" id="default_psw">
@@ -222,7 +244,7 @@
                     </div>
                 </div>
 
-                <!-- 模态框（Modal） -->
+                <!-- 组织模态框（Modal） -->
                 <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -244,6 +266,28 @@
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal -->
                 </div>
+
+                <!-- 角色模态框（Modal） -->
+                <!-- <div class="modal" id="roleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header" style="border-radius:6px;">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <span id="selectTile">选择角色</span>
+                            </div>
+                            <div style="display:block;margin-left: 10%;margin-top: 7%;">
+                                <input type="checkbox" id="firstRole" value="21"><label style="margin-top:-10px;margin-bottom:20px;">平台管理员</label><br>
+                                <input type="checkbox" id="secondRole" value="22"><label style="margin-top:-10px;">行政</label>
+                            </div>
+                            
+                            <button id="roleBtn" onclick="selectRole()">确定</button>
+                            <button data-dismiss="modal" id="cancelBtn">取消</button>
+
+                        </div>
+                    </div>
+                </div>  -->
                 
                 <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
                     <table id="orgTable" class="stripe" width="100%"></table>
@@ -263,11 +307,7 @@
                 <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
                     <table id="subInfoTable" class="stripe" width="100%"></table>
                 </div>
-                <div class="BoardContent tcenter">
-                    <div class="FunctionBtn">
-                        <a class="BtnDel" href="#" onclick="isDelete()"><span></span>删除主账号</a>
-                    </div>
-                </div>
+                <input class="Btn BtnRed2" id="delAcct" type="button" onclick="isDelete()" value="删除用户" style="margin-top:20px;" />
             </form>
 
             <div class="row">
@@ -293,9 +333,10 @@
     <!-- jquery datatable -->
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
     <script type="text/javascript" src="/js/account/orgData.js"></script>
-    <!-- <script type="text/javascript" src="/js/account/mainTable.js"></script> -->
     <!-- laydate -->
     <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
+        <!-- layer -->
+        <script type="text/javascript" src="/vendors/layer/layer.js"></script>
     <!-- init -->
     <script src="/js/account/init.js"></script>
     <!-- jquery tagsinput -->

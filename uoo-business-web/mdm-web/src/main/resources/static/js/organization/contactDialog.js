@@ -370,7 +370,7 @@ function getSelectUser () {
     return table.rows('.selected').data();
 }
 
-    table = $("#contactTable").DataTable({
+table = $("#contactTable").DataTable({
         'data': [],
         'destroy': true,
         'paging': false,
