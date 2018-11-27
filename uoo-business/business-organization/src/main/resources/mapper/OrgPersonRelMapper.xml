@@ -204,13 +204,15 @@
         POST.POST_NAME postName,
         ORG_TREE_NAME orgTreeName,
         CTA.CONTENT mobile,
-        AA.STATUS_CD statusCd
-        FROM (SELECT A.*,C.ORG_TREE_NAME FROM TB_ORG_PERSON_REL A, TB_ORGTREE_ORGPERSON_REL B ,TB_ORG_TREE C
+        AA.STATUS_CD statusCd,
+        AA.ORG_TREE_ID orgTreeId,
+        AA.ORG_PERSON_ID orgPersonId
+        FROM (SELECT A.*,C.ORG_TREE_NAME,C.ORG_TREE_ID FROM TB_ORG_PERSON_REL A, TB_ORGTREE_ORGPERSON_REL B ,TB_ORG_TREE C
         WHERE A.STATUS_CD = '1000' AND B.STATUS_CD='1000' AND C.STATUS_CD='1000'
         AND A.ORG_PERSON_ID=B.ORG_PERSON_ID AND B.ORG_TREE_ID=C.ORG_TREE_ID
         AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
        <if test="psonOrgVo.personnelId != null and psonOrgVo.personnelId != ''">
-        AND A.PERSONNEL_ID = #{psonOrgVo.personnelId}
+            AND A.PERSONNEL_ID = #{psonOrgVo.personnelId}
         </if>
         <if test="psonOrgVo.orgId != null and psonOrgVo.orgId != ''">
             AND A.ORG_ID = #{psonOrgVo.orgId}
