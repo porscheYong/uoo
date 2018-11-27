@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.web.maindata.user.service.fallback;
 
+import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.user.dto.TbAccountOrgRel;
 import cn.ffcs.uoo.web.maindata.user.service.AcctService;
 import cn.ffcs.uoo.web.maindata.user.vo.EditFormAcctVo;
@@ -9,26 +10,41 @@ import org.springframework.stereotype.Component;
 public class AcctServiceHystrix implements AcctService {
     @Override
     public Object saveAcct(EditFormAcctVo editFormAcctVo) {
-        return null;
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 
     @Override
     public Object removeAcct(Long acctId) {
-        return null;
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 
     @Override
     public Object updateAcct(EditFormAcctVo editFormAcctVo) {
-        return null;
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 
     @Override
     public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId) {
-        return null;
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 
     @Override
     public Object addAcctOrg(TbAccountOrgRel tbAccountOrgRel) {
-        return null;
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 }
