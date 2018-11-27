@@ -33,11 +33,11 @@ import javax.sql.DataSource;
  * @author WCNGS@QQ.COM
  * @date 2018/8/29 20:22
  * @Version 1.0.0
-*/
+ */
 @Component
 public class MybatisPlusConfig {
 
-    
+
     /**
      * @author WCNGS@QQ.COM
      * @See plus 的性能优化
@@ -80,11 +80,11 @@ public class MybatisPlusConfig {
      * @author WCNGS@QQ.COM
      * @See
      * @date 2018/8/29 20:19
-     * @param 
-     * @return 
-     * @throws 
-     * @since 
-    */
+     * @param
+     * @return
+     * @throws
+     * @since
+     */
     @Bean
     @ConfigurationProperties("spring.datasource.druid." )
     public DataSource dataSource() {
