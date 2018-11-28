@@ -1,10 +1,10 @@
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
-var locationList;
-var orgTypeList;
-var positionList;
-var orgPostList;
+var locationList = [];
+var orgTypeList = [];
+var positionList = [];
+var orgPostList = [];
 var checkNode;
 var selectUser = [];
 var formValidate;
