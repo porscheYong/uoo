@@ -117,6 +117,7 @@ function initBusinessList () {
         })
     }, function (err) {
         console.log(err)
+        loading.screenMaskDisable('container');
     })
 }
 
