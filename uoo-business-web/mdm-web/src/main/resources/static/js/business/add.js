@@ -192,14 +192,14 @@ function addOrgTree () {
     var orgTreeName = $('#orgTreeName').val();
     var orgTreeType = $('#orgTreeType option:selected') .val();
     var sort = $('#sort').val();
-    var userType = $('#userType option:selected') .val();
+    // var userType = $('#userType option:selected') .val();
 
     $http.post('/orgTree/addOrgTree', JSON.stringify({
         orgTreeName: orgTreeName,
         orgTreeType: orgTreeType,
         orgRelTypeList: orgRelType,
         sort: sort,
-        userTypeId: userType,
+        // userTypeId: userType,
         orgTypeList: orgType,
         treeNodeList: copyList,
         tarOrgTreeId: tarOrgTreeId
@@ -219,4 +219,4 @@ function cancel () {
 }
 
 getOrgTreeType();
-getProperty();
+// getProperty();

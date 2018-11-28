@@ -1,7 +1,7 @@
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
-var locationList = [];
+var locationList;
 var orgTypeList;
 var positionList;
 var orgPostList;
@@ -55,7 +55,7 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
-  $('#locId').tagsInput();
+  $('#locationList').tagsInput();
   $('#orgTypeList').tagsInput();
   $('#positionList').tagsInput();
   $('#postList').tagsInput();
@@ -180,7 +180,7 @@ function openLocationDialog() {
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
             parent.layer.close(index);
-            $('#locId').importTags(checkNode);
+            $('#locationList').importTags(checkNode);
             $('.ui-tips-error').css('display', 'none');
             locationList = checkNode;
         },
@@ -538,11 +538,12 @@ function getOrg (orgId) {
         getCityVillage(data.cityTown);
         getOrgPostLevel(data.orgPositionLevel);
         getStatusCd(data.statusCd);
+        locationList = data.politicalLocationList;
         orgTypeList = data.orgTypeList;
         positionList = data.positionList;
         orgPostList = data.postList;
         //TODO id?
-        $('#locId').addTag(positionList);
+        $('#locationList').addTag(locationList);
         $('#orgTypeList').addTag(orgTypeList);
         $('#positionList').addTag(positionList);
         $('#postList').addTag(orgPostList);
@@ -581,6 +582,7 @@ function updateOrg () {
       return;
   loading.screenMaskEnable('container');
   var userList = [];
+  var location = [];
   var position = [];
   var post = [];
   var orgType = [];
@@ -588,6 +590,11 @@ function updateOrg () {
   for (var i = 0; i < selectUser.length; i++) {
       userList.push({personnelId: selectUser[i].personnelId});
   }
+    //行政管理区域
+    for (var i = 0; i < locationList.length; i++) {
+        var locId = locationList[i].locId || locationList[i].id;
+        location.push({locId: locId});
+    }
     //组织岗位
     for (var i = 0; i < positionList.length; i++) {
         position.push({positionId: positionList[i].positionId});
@@ -595,10 +602,6 @@ function updateOrg () {
     //组织职位
     for (var i = 0; i < orgPostList.length; i++) {
         post.push({postId: orgPostList[i].postId});
-    }
-    //行政管理区域
-    for (var i = 0; i < selectUser.length; i++) {
-        orgType.push({orgTypeId: selectUser[i].personnelId});
     }
   //组织类别
   for (var i = 0; i < orgTypeList.length; i++) {
@@ -639,7 +642,7 @@ function updateOrg () {
       statusCd: statusCd,
       sort: sort,
       address: address,
-      locId: locationList[0].id,
+      politicalLocationList: location,
       orgTypeList: orgType,
       positionList: position,
       postList: post,

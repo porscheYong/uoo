@@ -246,12 +246,17 @@ function addOrg () {
         return;
     loading.screenMaskEnable('container');
     var userList = [];
+    var location = [];
     var position = [];
     var post = [];
     var orgType = [];
     //联系人
     for (var i = 0; i < selectUser.length; i++) {
         userList.push({personnelId: selectUser[i].personnelId});
+    }
+    //行政管理区域
+    for (var i = 0; i < locationList.length; i++) {
+        location.push({locId: locationList[i].id});
     }
     //组织岗位
     for (var i = 0; i < positionList.length; i++) {
@@ -260,10 +265,6 @@ function addOrg () {
     //组织职位
     for (var i = 0; i < orgPostList.length; i++) {
         post.push({postId: orgPostList[i].postId});
-    }
-    //行政管理区域
-    for (var i = 0; i < selectUser.length; i++) {
-        orgType.push({orgTypeId: selectUser[i].personnelId});
     }
     //组织类别
     for (var i = 0; i < orgTypeList.length; i++) {
@@ -304,7 +305,7 @@ function addOrg () {
         statusCd: statusCd,
         sort: sort,
         address: address,
-        locId: locationList[0].id,
+        politicalLocationList: location,
         orgTypeList: orgType,
         positionList: position,
         postList: post,

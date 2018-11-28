@@ -98,7 +98,7 @@
             var val = '';
             if (value !='' && skipTag != true) {
                 for (var i = 0; i < value.length; i++) {
-                    var name = value[i].name || value[i].orgTypeName || value[i].refName || value[i].positionName || value[i].postName;
+                    var name = value[i].name || value[i].locName || value[i].orgTypeName || value[i].refName || value[i].positionName || value[i].postName;
                     var tagId = value[i].id;
                     val += value[i].name || value[i].orgTypeName;
                     $('<span>').addClass('tag').attr('tagId', tagId).append(
