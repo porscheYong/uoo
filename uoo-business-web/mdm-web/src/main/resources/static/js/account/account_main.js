@@ -1,10 +1,11 @@
 // loadingMask
 // var loading = new Loading();
+var orgTreeId = "1";
 
 var setting = {
     async: {
         enable: true,
-        url: "http://134.96.253.221:11100/orgRel/getOrgRelTree?orgRootId=1&orgTreeId=1",
+        url: "/orgRel/getOrgRelTree?orgTreeId="+orgTreeId + "&orgRootId=" + orgTreeId,
         autoParam: ["id"],
         type: "get",
         dataFilter: filter
@@ -68,10 +69,11 @@ function refreshResult () {
     $('#userFrame').attr("src",url);
 }
 
-function initOrgRelTree () {
-    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTree', {
-        orgTreeId: '1',
-        orgRootId: '1'
+//初始化组织
+function initOrgRelTree (orgTreeId) {
+    $http.get('/orgRel/getOrgRelTree', {
+        orgTreeId: orgTreeId,
+        orgRootId: orgTreeId
     }, function (data) {
         console.log(data)
         $.fn.zTree.init($("#standardTree"), setting, data);
@@ -85,36 +87,29 @@ function initOrgRelTree () {
     })
 }
 
-// 根据组织ID展开并选中组织
-function openTreeById (sId, id) {
-  var tId = 'standardTree_' + id;
-  var sId = 'standardTree_' + sId;
-  var zTree = $.fn.zTree.getZTreeObj("standardTree");
-  var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-  zTree.cancelSelectedNode(selectNode);
-  var node = zTree.getNodeByTId(tId);
-  if (node.parent) {
-    zTree.expandNode(node, true);
-  }
-  zTree.selectNode(node, true);
+// 初始化业务组织列表
+function initBusinessList () {
+    $http.get('/orgTree/getOrgTreeList', {}, function (data) {
+        var option = '';
+        for (var i = 0; i < data.length; i++) {
+            var select = i === 0? 'selected' : '';
+            option += "<option value='" + data[i].orgTreeId + "' " + select + ">" + data[i].orgTreeName +"</option>";
+        }
+        $('#businessOrg').append(option);
+        seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+            $('#businessOrg').selectMatch();
+        });
+        initOrgRelTree(data[0].orgTreeId);
+        orgTreeId = data[0].orgTreeId;
+        businessName = data[0].orgTreeName;
+        $('#businessOrg').unbind('change').bind('change', function (event) {
+            orgTreeId = event.target.options[event.target.options.selectedIndex].value;
+            initOrgRelTree(orgTreeId);
+        })
+    }, function (err) {
+        console.log(err)
+    })
 }
 
-// 添加子节点
-function addNodeById (sId, newNode) {
-    var zTree = $.fn.zTree.getZTreeObj("standardTree");
-    var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-    console.log(selectNode)
-    if (selectNode)
-        var newNode = zTree.addNodes(selectNode, newNode);
-}
+initBusinessList();
 
-// 修改节点名称
-function changeNodeName(orgId, name) {
-    var tId = 'standardTree_' + orgId;
-    var zTree = $.fn.zTree.getZTreeObj("standardTree");
-    var treeNode = zTree.getNodeByTId(tId);
-    treeNode.name = name;
-    $('#standardTree_' + orgId + '_span').html(name);
-}
-
-initOrgRelTree();

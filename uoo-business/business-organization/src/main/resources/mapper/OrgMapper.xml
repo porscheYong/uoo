@@ -219,4 +219,14 @@
         TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') createDate,ORG_MART_CODE orgMartCode FROM TB_ORG  A where A.org_id=#{orgId}
     </select>
 
+
+    <select id="getOrgLoc"  resultType="cn.ffcs.uoo.core.organization.entity.PoliticalLocation">
+        SELECT A.LOC_ID locId,A.LOC_CODE locCode,A.LOC_NAME locName,A.PARENT_LOC_ID parentLocId
+        FROM TB_POLITICAL_LOCATION A, TB_ORG B
+        WHERE A.LOC_ID = B.LOC_ID
+        AND A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND B.ORG_ID = #{orgId}
+    </select>
+
 </mapper>

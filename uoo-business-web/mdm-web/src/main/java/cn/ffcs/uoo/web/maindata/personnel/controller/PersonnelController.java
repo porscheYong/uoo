@@ -51,16 +51,14 @@ public class PersonnelController {
     @ApiOperation(value = "人员信息", notes = "查看人员信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long",paramType="path"),
-            @ApiImplicitParam(name = "orgRootId", value = "业务树标识", required = true, dataType = "Long",paramType="path"),
             @ApiImplicitParam(name = "orgTreeId", value = "业务树标识", required = true, dataType = "Long",paramType="path"),
-            @ApiImplicitParam(name = "orgId", value = "组织标识", required = true, dataType = "Long",paramType="path"),
+            @ApiImplicitParam(name = "orgId", value = "组织标识", required = true, dataType = "Long",paramType="path")
     })
     @RequestMapping(value = "/getFormPersonnel",method = RequestMethod.GET)
     public Object getFormPersonnel( Long personnelId,
-                                    Long orgRootId,
                                     Long orgTreeId,
                                     Long orgId){
-        return  personnelService.getFormPersonnel(personnelId, orgRootId, orgTreeId, orgId);
+        return  personnelService.getFormPersonnel(personnelId, orgTreeId, orgId);
     }
 
     @ApiOperation(value = "新增人员信息",notes = "人员信息新增")

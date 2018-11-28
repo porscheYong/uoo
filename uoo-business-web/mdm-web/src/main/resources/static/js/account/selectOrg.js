@@ -1,7 +1,7 @@
 var setting = {
     async: {
         enable: true,
-        url: "http://134.96.253.221:11100/orgRel/getOrgRelTree?orgRootId=1&orgTreeId=1",
+        url: "/orgRel/getOrgRelTree?orgRootId=1&orgTreeId=1",
         autoParam: ["id"],
         type: "get",
         dataFilter: filter
@@ -62,7 +62,7 @@ function filter (treeId, parentNode, childNodes) {
 }
 
 function initOrgRelTree () {
-    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTree', {
+    $http.get('/orgRel/getOrgRelTree', {
         orgTreeId: '1',
         orgRootId: '1'
     }, function (data) {

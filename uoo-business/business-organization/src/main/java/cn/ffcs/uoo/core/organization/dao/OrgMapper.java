@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.core.organization.dao;
 
 import cn.ffcs.uoo.core.organization.entity.Org;
+import cn.ffcs.uoo.core.organization.entity.PoliticalLocation;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -90,5 +91,12 @@ public interface OrgMapper extends BaseMapper<Org> {
      * @return
      */
     public OrgVo selectOrgByOrgId(@Param("orgId")String orgId);
+
+    /**
+     * 查询组织行政管理区域
+     * @param orgId
+     * @return
+     */
+    public List<PoliticalLocation> getOrgLoc(@Param("orgId")String orgId);
 
 }

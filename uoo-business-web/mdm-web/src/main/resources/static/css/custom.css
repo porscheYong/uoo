@@ -1073,3 +1073,11 @@ ul.tab-title.right li {
 .breadcrumb > .breadcrumb-item > .breadcrumb-separator {
     margin: 0 9px;
 }
+
+/*
+ * Component: user add gender radio
+ * --------------
+ */
+label.gender {
+    padding-left: 10px;
+}
