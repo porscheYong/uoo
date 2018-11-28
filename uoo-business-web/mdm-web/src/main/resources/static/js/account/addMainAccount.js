@@ -1,6 +1,7 @@
 var orgId = getQueryString('orgId');
 var orgName = getQueryString('orgName');
 var hType = getQueryString('hType');
+var orgTreeId = getQueryString('orgTreeId');
 
 var acctId = getQueryString('acctId');
 var statusCd = getQueryString('statusCd');
@@ -30,6 +31,7 @@ function getUser(acctId) {           //查看并编辑主账号
           editOrgList.push({"orgId":data.acctOrgVoPage.records[i].orgId,"fullName":data.acctOrgVoPage.records[i].fullName});
         }
         $('#main-title').html("编辑主账号");
+        noSelectUserInfo();
         initOrgTable(data.acctOrgVoPage.records);
         initEditUserInfo(data);
         initSubOrgTable(data.slaveAcctOrgVoPage.records);
@@ -49,10 +51,11 @@ function getAcctUser(personnelId){     //获取主账号信息(编辑或者新�
       initSubOrgTable(data.slaveAcctOrgVoPage);
       $('#main-title').html("新增主账号");
       $('#delAcct').css("display","none");
-      $('#addSubFright').css("display","none");
+      noSelectUserInfo();
       console.log('no user');
     }else{                      //编辑
       $('#main-title').html('编辑主账号');
+      noSelectUserInfo();
       opBtn = 0;
       acctId = data.tbAcct.acctId;
       for(var i=0;i<data.acctOrgVoPage.records.length;i++){
@@ -66,6 +69,15 @@ function getAcctUser(personnelId){     //获取主账号信息(编辑或者新�
   }, function (err) {
     console.log(err)
   })
+}
+
+function noSelectUserInfo(){     //控制人员信息不可选
+   $("#psnTel").attr("disabled",false);
+   $("#psnNumTel").attr("disabled",false);
+   $("#mobileTel").attr("disabled",false);
+   $("#emailTel").attr("disabled",false);
+   $("#cerType").attr("disabled",false);
+   $("#cerNoTel").attr("disabled",false);
 }
 
 function initOrgTable(results){         //主账号组织数据表格
@@ -137,7 +149,7 @@ function initSubOrgTable(results){    //从账号组织数据
         { 'data': "id", 'title': '序号', 'className': 'row-number' },
         { 'data': "slaveAcct", 'title': '账号名', 'className': 'row-acc' ,
         'render': function (data, type, row, meta) {
-            return '<a href="addSubAccount.html?toMainType=' + hType +'&orgName=' + orgName + '&orgId=' + orgId +'&hType=th&mainAcctId='+ acctId +
+            return '<a href="addSubAccount.html?orgTreeId=' + orgTreeId + '&toMainType=' + hType +'&orgName=' + orgName + '&orgId=' + orgId +'&hType=th&mainAcctId='+ acctId +
                                   '&acctId='+ row.slaveAcctId + '&statusCd='+ row.statusCd +'&opBtn=0">'+ row.slaveAcct +'</a>'
         }
       },
@@ -192,6 +204,8 @@ function initEditUserInfo(results){     //初始化用户信息(编辑)
     roldId = roldId + "、" + results.tbRolesList[i].roleId;
   }
   $('#roleTel').val(roldId.substring(1,roldId.length));
+  // $('#orgTypeList').addTag(results.tbRolesList);
+  // console.log(results.tbRolesList);
 }
 
 function initAddUserInfo(results){    //初始化用户信息(新增)
@@ -405,40 +419,19 @@ function deleteOrg(id){
 function cancel() {   //取消按钮
   var url = '';
   if(hType == "mh"){  //返回mainList.html
-    url = "mainList.html?orgName=" + orgName + "&orgId=" + orgId;
+    url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;
   }else if(hType == "ah"){  //返回add.html
-    url = "add.html?orgName=" + orgName + "&orgId=" + orgId;
+    url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;
   }
   window.location.href = url;
 }   
 
-// function selectRole(){    //选择角色
-//   // var firstRole =document.getElementById("firstRole");
-//   // var secondRole =document.getElementById("secondRole");
-//   // if(firstRole.checked){
-//   //     roleList.push(21);
-//   // }
-//   // if(secondRole.checked){
-//   //   roleList.push(22);
-//   // }
-//   // console.log(roleList);
-//   $http.get('/permission/tbRoles/listRoles', {    //'http://'+baseUrl+'/user/getPsnUser'
-//     personnelId: personnelId,
-//     userType: "1"
-//   }, function (data) {
-
-//   }, function (err) {
-//     console.log(err)
-//   })
-//   $('#roleModal').modal('hide');
-// }
-
-// tags init
+// // tags init
 // if(typeof $.fn.tagsInput !== 'undefined'){
 //   $('#orgTypeList').tagsInput();
 // }
 
-// //角色选择
+// // //角色选择
 // function openTypeDialog() {
 //   parent.layer.open({
 //       type: 2,
@@ -452,11 +445,12 @@ function cancel() {   //取消按钮
 //       yes: function(index, layero){
 //           //获取layer iframe对象
 //           var iframeWin = parent.window[layero.find('iframe')[0].name];
-//           checkNode = iframeWin.checkNode;
+//           var checkNode = iframeWin.checkNode;
 //           parent.layer.close(index);
 //           $('#orgTypeList').importTags(checkNode);
 //           $('.ui-tips-error').css('display', 'none');
 //           orgTypeList = checkNode;
+//           console.log(checkNode);
 //       },
 //       btn2: function(index, layero){},
 //       cancel: function(){}
@@ -465,15 +459,15 @@ function cancel() {   //取消按钮
 
 
 function submitSuccess(){     //提交成功
-    var url = "mainList.html?orgName=" + orgName + "&orgId=" + orgId;
+    var url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;
     window.location.href = url;
 }
 
-$("#addSubAcctBtn").on('click', function () {
-  var url = 'addSubAccount.html?hType=th&personnelId=' + personnelId + 
-                    '&opBtn=1&mainAcctId='+ acctId +'&orgName=' + orgName + '&orgId=' + orgId +'&toMainType=' + hType;
-  $(this).attr('href', url);
-})
+// $("#addSubAcctBtn").on('click', function () {    //添加从账号
+//   var url = 'addSubAccount.html?orgTreeId=' + orgTreeId + '&hType=th&personnelId=' + personnelId + 
+//                     '&opBtn=1&mainAcctId='+ acctId +'&orgName=' + orgName + '&orgId=' + orgId +'&toMainType=' + hType;
+//   $(this).attr('href', url);
+// })
 
 $("#defaultPswTel").focus(function (){    //默认密码输入框获得焦点
   if($("#defaultPswTel").attr("type") == "password"){

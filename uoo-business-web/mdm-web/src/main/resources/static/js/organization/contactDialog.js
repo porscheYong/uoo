@@ -15,58 +15,58 @@ engine = new Bloodhound({
         url: '/personnel/getPsnBasicInfo?keyWord=%QUERY&pageNo=1&pageSize=10',
         wildcard: '%QUERY',
         filter: function (response) {
-            table.destroy();
-            table = $("#contactTable").DataTable({
-                'data': response.data.records,
-                'destroy': true,
-                'searching': false,
-                'autoWidth': false,
-                'ordering': true,
-                'initComplete': function (settings, json) {
-                    console.log(settings, json)
-                },
-                'columns': [
-                    { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name',
-                        // 'render': function (data, type, row, meta) {
-                        //     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "'>" + row.psnName + "</a>";
-                        // }
-                    },
-                    { 'data': "psnName", 'title': '重名称谓', 'className': 'row-mobile' },
-                    { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
-                    { 'data': "content", 'title': '联系方式', 'className': 'row-mobile' },
-                    { 'data': "psnName", 'title': '所属组织全称', 'className': 'org-name' },
-                    { 'data': "psnName", 'title': '职位名称', 'className': 'post-name' },
-                    { 'data': "createDate", 'title': '创建时间', 'className': 'status-code',
-                        'render': function (data, type, row, meta) {
-                            var time = formatDateTime(row.createDate);
-                            return time;
-                        }
-                    }
-                ],
-                'language': {
-                    'emptyTable': '没有数据',
-                    'loadingRecords': '加载中...',
-                    'processing': '查询中...',
-                    'search': '检索:',
-                    'lengthMenu': ' _MENU_ ',
-                    'zeroRecords': '没有数据',
-                    'paginate': {
-                        'first':      '首页',
-                        'last':       '尾页',
-                        'next':       '下一页',
-                        'previous':   '上一页'
-                    },
-                    'info': '总_TOTAL_人',
-                    'infoEmpty': '没有数据'
-                },
-                "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
-                'pagingType': 'simple_numbers',
-                'dom': '<"top"f>t<"bottom"ipl>',
-                'drawCallback': function(){
-                    this.api().column(0).nodes().each(function(cell, i) {
-                        cell.innerHTML =  i + 1;
-                    });
-                }
+            // table.destroy();
+            // table = $("#contactTable").DataTable({
+            //     'data': response.data.records,
+            //     'destroy': true,
+            //     'searching': false,
+            //     'autoWidth': false,
+            //     'ordering': true,
+            //     'initComplete': function (settings, json) {
+            //         console.log(settings, json)
+            //     },
+            //     'columns': [
+            //         { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name',
+            //             // 'render': function (data, type, row, meta) {
+            //             //     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "'>" + row.psnName + "</a>";
+            //             // }
+            //         },
+            //         { 'data': "psnName", 'title': '重名称谓', 'className': 'row-mobile' },
+            //         { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
+            //         { 'data': "content", 'title': '联系方式', 'className': 'row-mobile' },
+            //         { 'data': "psnName", 'title': '所属组织全称', 'className': 'org-name' },
+            //         { 'data': "psnName", 'title': '职位名称', 'className': 'post-name' },
+            //         { 'data': "createDate", 'title': '创建时间', 'className': 'status-code',
+            //             'render': function (data, type, row, meta) {
+            //                 var time = formatDateTime(row.createDate);
+            //                 return time;
+            //             }
+            //         }
+            //     ],
+            //     'language': {
+            //         'emptyTable': '没有数据',
+            //         'loadingRecords': '加载中...',
+            //         'processing': '查询中...',
+            //         'search': '检索:',
+            //         'lengthMenu': ' _MENU_ ',
+            //         'zeroRecords': '没有数据',
+            //         'paginate': {
+            //             'first':      '首页',
+            //             'last':       '尾页',
+            //             'next':       '下一页',
+            //             'previous':   '上一页'
+            //         },
+            //         'info': '总_TOTAL_人',
+            //         'infoEmpty': '没有数据'
+            //     },
+            //     "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
+            //     'pagingType': 'simple_numbers',
+            //     'dom': '<"top"f>t<"bottom"ipl>',
+            //     'drawCallback': function(){
+            //         this.api().column(0).nodes().each(function(cell, i) {
+            //             cell.innerHTML =  i + 1;
+            //         });
+            //     }
                 // 'serverSide': true,  //启用服务器端分页
                 // 'ajax': function (data, callback, settings) {
 
@@ -142,23 +142,87 @@ engine = new Bloodhound({
                 //     type : "POST",
                 //     crossDomain: true
                 // }
-            });
+            //});
 
-            $('#contactTable tbody tr').click(function () {
-                if ($(this).hasClass('selected') ) {
-                    $(this).removeClass('selected');
-                } else {
-                    table.$('tr.selected').removeClass('selected');
-                    $(this).addClass('selected');
-                }
-            });
-            return response.data.records;
+            
+            return;
         }
     }
 });
 
 // ensure default users are read on initialization
 // engine.get('1090217586', '58502284', '10273252', '24477185')
+
+function initTable(keyWord){
+    table.destroy();
+    table = $("#contactTable").DataTable({
+        //'data': response.data.records,
+        //'destroy': true,
+        'searching': false,
+        'autoWidth': false,
+        'ordering': true,
+        'initComplete': function (settings, json) {
+            console.log(settings, json)
+        },
+        'columns': [
+            { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name',
+                // 'render': function (data, type, row, meta) {
+                //     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "'>" + row.psnName + "</a>";
+                // }
+            },
+            { 'data': "psnName", 'title': '重名称谓', 'className': 'row-mobile' },
+            { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
+            { 'data': "content", 'title': '联系方式', 'className': 'row-mobile' },
+            { 'data': "psnName", 'title': '所属组织全称', 'className': 'org-name' },
+            { 'data': "psnName", 'title': '职位名称', 'className': 'post-name' },
+            { 'data': "createDate", 'title': '创建时间', 'className': 'status-code',
+                'render': function (data, type, row, meta) {
+                    var time = formatDateTime(row.createDate);
+                    return time;
+                }
+            }
+        ],
+        'language': {
+            'emptyTable': '没有数据',
+            'loadingRecords': '加载中...',
+            'processing': '查询中...',
+            'search': '检索:',
+            'lengthMenu': ' _MENU_ ',
+            'zeroRecords': '没有数据',
+            'paginate': {
+                'first':      '首页',
+                'last':       '尾页',
+                'next':       '下一页',
+                'previous':   '上一页'
+            },
+            'info': '总_TOTAL_人',
+            'infoEmpty': '没有数据'
+        },
+        "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
+        'pagingType': 'simple_numbers',
+        'dom': '<"top"f>t<"bottom"ipl>',
+        'serverSide': true,  //启用服务器端分页
+        'ajax': function (data, callback, settings) {
+            var param = {};
+            param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
+            param.pageNo = (data.start / data.length) + 1;//当前页码
+            param.keyWord = keyWord;
+            $http.get('/personnel/getPsnBasicInfo', param, function (result) {
+                var returnData = {};
+                // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
+                returnData.recordsTotal = result.total;//返回数据全部记录
+                returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
+                returnData.data = result.records;//返回的数据列表
+                //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                callback(returnData);
+            }, function (err) {
+                console.log(err)
+            })
+        }
+    });
+}
+
 
 function engineWithDefaults(q, sync, async) {
     if (q === '') {
@@ -194,6 +258,7 @@ $('#user-input').typeahead({
 })
     .on('typeahead:asyncrequest', function() {
         $('.Typeahead-spinner').show();
+        initTable($("#user-input").val());
     })
     .on('typeahead:asynccancel typeahead:asyncreceive', function() {
         $('.Typeahead-spinner').hide();
@@ -203,6 +268,15 @@ $('#user-input').typeahead({
 // $('#demo-input').bind('typeahead:select', function(ev, suggestion) {
 //     selectNode = suggestion;
 // });
+
+$('#contactTable tbody tr').click(function () {
+    if ($(this).hasClass('selected') ) {
+        $(this).removeClass('selected');
+    } else {
+        table.$('tr.selected').removeClass('selected');
+        $(this).addClass('selected');
+    }
+});
 
 $('#addBtn').on('click', function () {
     var url = 'add.html?id=' + orgId  + '&name=' + orgName;;

@@ -3,6 +3,7 @@ var orgName = getQueryString('orgName');
 var mainAcctId = getQueryString('mainAcctId');
 var hType = getQueryString('hType');
 var toMainType = getQueryString('toMainType');
+var orgTreeId = getQueryString('orgTreeId');
 
 var acctId = getQueryString('acctId');
 var statusCd = getQueryString('statusCd');
@@ -46,6 +47,7 @@ function getSubUser(acctId) {       //查看并编辑从账号
             acctExtId = data.tbAcctExt.acctExtId;
         }
         $('#sub-title').html("编辑从账号");
+        noSelectUserInfo();
         personnelId = data.personnelId;
         acctHostId = data.tbSlaveAcct.acctHostId;
         slaveAcctId = data.tbSlaveAcct.slaveAcctId;
@@ -62,6 +64,7 @@ function getUserInfo(){         //新增从账号
         userType: "2"
     }, function (data) {
         $('#sub-title').html("新增从账号");
+        noSelectUserInfo();
         initUserInfo(data);
         initOrgTable("");
     }, function (data) {
@@ -86,6 +89,15 @@ function getAcctOrg(){          //获取从账号可选组织列表(添加组织
         console.log(err)
       })
 }
+
+function noSelectUserInfo(){     //控制人员信息不可选
+    $("#psnNameTel").attr("disabled",false);
+    $("#psnNumTel").attr("disabled",false);
+    $("#mobileTel").attr("disabled",false);
+    $("#emailTel").attr("disabled",false);
+    $("#cerType").attr("disabled",false);
+    $("#cerNoTel").attr("disabled",false);
+ }
 
 function initOrgTable(results){
     table = $("#orgTable").DataTable({
@@ -409,11 +421,11 @@ function extInfoFade(){     //点击复选框
 function submitToOther(){   //提交或者取消跳转
     var url = "";
     if(hType == "th"){
-        url = "addMainAccount.html?hType="+ toMainType +"&opBtn=0&orgName=" + orgName + "&orgId=" + orgId + "&acctId=" + mainAcctId;   //跳转主账号编辑界面
+        url = "addMainAccount.html?orgTreeId=" + orgTreeId + "&hType="+ toMainType +"&opBtn=0&orgName=" + orgName + "&orgId=" + orgId + "&acctId=" + mainAcctId;   //跳转主账号编辑界面
     }else if(hType == "mh"){
-        url = "mainList.html?orgName=" + orgName + "&orgId=" + orgId;       //跳转主界面
+        url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;       //跳转主界面
     }else{
-        url = "add.html?orgName=" + orgName + "&orgId=" + orgId;       //跳转添加界面
+        url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;       //跳转添加界面
     }
     window.location.href = url;
 }

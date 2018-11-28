@@ -1,5 +1,6 @@
 var orgId = getQueryString('orgId');
 var orgName = getQueryString('orgName');
+var orgTreeId = getQueryString('orgTreeId');
 
 // 获取组织完整路径
 function getOrgExtInfo() {
@@ -103,9 +104,9 @@ function initMainTable(){
             { 'data': "psnName", 'title': '人员姓名', 'className': 'row-psnName' ,
             'render': function (data, type, row, meta) {
                 if(row.typeName == '主账号'){
-                    return '<a href="addMainAccount.html?orgName=' + orgName +'&orgId=' + orgId + '&acctId='+ row.accId + '&statusCd='+row.statusCd+'&opBtn=0&hType=mh">'+ row.psnName +'</a>'
+                    return '<a href="addMainAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + orgName +'&orgId=' + orgId + '&acctId='+ row.accId + '&statusCd='+row.statusCd+'&opBtn=0&hType=mh">'+ row.psnName +'</a>'
                 }else{
-                    return '<a href="addSubAccount.html?orgName=' + orgName +'&orgId=' + orgId + '&acctId='+ row.accId +'&statusCd='+row.statusCd+'&opBtn=0&hType=mh">'+ row.psnName +'</a>'
+                    return '<a href="addSubAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + orgName +'&orgId=' + orgId + '&acctId='+ row.accId +'&statusCd='+row.statusCd+'&opBtn=0&hType=mh">'+ row.psnName +'</a>'
                 } 
               }
             },
@@ -147,7 +148,7 @@ function initMainTable(){
             var param = {};
             param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
             param.pageNo = (data.start / data.length) + 1;//当前页码
-            param.orgTreeId = '1';
+            param.orgTreeId = orgTreeId;
             param.orgId = orgId;
             $http.get('/orgPersonRel/getUserOrgRelPage', param, function (result) {
                 var returnData = {};
@@ -171,6 +172,6 @@ getOrgExtInfo();
 initMainTable();
 
 $('#addBtn').on('click', function () {
-    var url = 'add.html?&orgName=' + orgName +'&orgId=' + orgId;
+    var url = 'add.html?&orgName=' + orgName +'&orgId=' + orgId + '&orgTreeId=' + orgTreeId;
     $(this).attr('href', url);
 })

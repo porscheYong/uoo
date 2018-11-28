@@ -40,6 +40,11 @@
     <![endif]-->
 
     <style>
+        /* #orgTypeList{
+        opacity: 0;
+        filter: alpha(opacity=0);
+        position: absolute;
+        } */
         #conSubInfo .fright 
         {
             margin-right: 73% !important;
@@ -99,6 +104,13 @@
           margin-top: 40px !important;
           margin-left: -15px;
       }
+      .BoardTitle .Back {
+          background: url(/images/ico_back.svg) no-repeat left center;
+          display: inline-block;
+          line-height: 24px;
+          font-size: 16px;
+          padding: 0 30px;
+        }
       /* #orgTypeList{
         opacity: 0;
         filter: alpha(opacity=0);
@@ -115,9 +127,12 @@
 
 <body style="background: #fff;">
 
+    <div class="BoardTitle" style="margin-bottom:20px;" onclick="cancel()">
+        <a class="Back" href="#" style="color:#008aff;" onclick="cancel()">返回</a>
+    </div>
+
     <div class="board-title">
         <span class="name ft18" id="main-title"></span> <!-- 主账号 -->
-        <a id="back" href="#" onclick="cancel()">返回</a>
     </div> 
 
     <div class="tab-content" style="margin-left:5%;margin-top: 2%">
@@ -266,28 +281,6 @@
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal -->
                 </div>
-
-                <!-- 角色模态框（Modal） -->
-                <!-- <div class="modal" id="roleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header" style="border-radius:6px;">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                    &times;
-                                </button>
-                                <span id="selectTile">选择角色</span>
-                            </div>
-                            <div style="display:block;margin-left: 10%;margin-top: 7%;">
-                                <input type="checkbox" id="firstRole" value="21"><label style="margin-top:-10px;margin-bottom:20px;">平台管理员</label><br>
-                                <input type="checkbox" id="secondRole" value="22"><label style="margin-top:-10px;">行政</label>
-                            </div>
-                            
-                            <button id="roleBtn" onclick="selectRole()">确定</button>
-                            <button data-dismiss="modal" id="cancelBtn">取消</button>
-
-                        </div>
-                    </div>
-                </div>  -->
                 
                 <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
                     <table id="orgTable" class="stripe" width="100%"></table>
@@ -298,9 +291,9 @@
                         <span class="name ft18">关联从账号信息</span>
                     </div>
     
-                    <div class="fright" id="addSubFright" style="margin-right:85%;margin-top:-4.5%;"> 
+                    <!-- <div class="fright" id="addSubFright" style="margin-right:85%;margin-top:-4.5%;"> 
                         <a class="button-add" id="addSubAcctBtn"><span class="fa fa-plus-circle icon-add"></span>添加从账号</a>
-                    </div>
+                    </div> -->
                 </div>
 
             
@@ -335,8 +328,8 @@
     <script type="text/javascript" src="/js/account/orgData.js"></script>
     <!-- laydate -->
     <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
-        <!-- layer -->
-        <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+    <!-- layer -->
+    <script type="text/javascript" src="/vendors/layer/layer.js"></script>
     <!-- init -->
     <script src="/js/account/init.js"></script>
     <!-- jquery tagsinput -->
