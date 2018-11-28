@@ -120,8 +120,8 @@ public class OrgPersonRelController extends BaseController {
     public ResponseResult<String> updateOrgPsn(@RequestBody PsonOrgVo psonOrgVo){
         System.out.println(new Date());
         ResponseResult<String> ret = new ResponseResult<String>();
-        Long orgPsndocRefId = psonOrgVo.getOrgPersonId();
-        if(StrUtil.isNullOrEmpty(orgPsndocRefId)){
+        Long personnelId = psonOrgVo.getPersonnelId();
+        if(StrUtil.isNullOrEmpty(personnelId)){
             ret.setState(ResponseResult.STATE_ERROR);
             ret.setMessage("组织人员标识不能为空");
             return ret;
@@ -135,13 +135,28 @@ public class OrgPersonRelController extends BaseController {
             ret.setMessage("组织树不存在");
             return ret;
         }
-        OrgPersonRel orgPersonRel = orgPersonRelService.selectById(orgPsndocRefId);
-        if(orgPersonRel == null){
-            ret.setState(ResponseResult.STATE_ERROR);
-            ret.setMessage("人员组织关系不存在");
-            return ret;
+        List<OrgPersonRel> orgPersonRelList = orgPersonRelService.getOrgPsnByOrgAndPsnId(
+                                                    psonOrgVo.getOrgTreeId().toString(),
+                                                    personnelId.toString(),
+                                                    psonOrgVo.getOrgId().toString());
+        if(orgPersonRelList!=null){
+            OrgPersonRel orgPersonRel = orgPersonRelList.get(0);
+            orgPersonRel.setDoubleName(StrUtil.strnull(psonOrgVo.getDoubleName()));
+            orgPersonRel.setProperty(StrUtil.strnull(psonOrgVo.getProperty()));
+            if(!StrUtil.isNullOrEmpty(psonOrgVo.getPostId())){
+                orgPersonRel.setPostId(new Long(psonOrgVo.getPostId()));
+            }
+            if(!StrUtil.isNullOrEmpty(psonOrgVo.getSort())){
+                orgPersonRel.setSort(new Double(psonOrgVo.getSort()));
+            }
+            orgPersonRelService.update(orgPersonRel);
         }
-        orgPersonRelService.delete(orgPersonRel);
+//        if(orgPersonRel == null){
+//            ret.setState(ResponseResult.STATE_ERROR);
+//            ret.setMessage("人员组织关系不存在");
+//            return ret;
+//        }
+//        orgPersonRelService.delete(orgPersonRel);
         //solrService.deleteDataIntoSolr("pson",orgPersonRel.getOrgPersonId().toString());
 
 //        Long orgPsndocRefIdnew = orgPersonRelService.getId();
@@ -162,7 +177,7 @@ public class OrgPersonRelController extends BaseController {
 //        input.addField("mobile", psonOrgVo.getMobile());
 //        solrService.addDataIntoSolr("pson",input);
         ret.setState(ResponseResult.STATE_OK);
-        ret.setMessage("成功");
+        ret.setMessage("更新成功");
         return ret;
     }
 
@@ -253,7 +268,7 @@ public class OrgPersonRelController extends BaseController {
     @UooLog(value = "查询人员组织信息列表",key = "getPerOrgRelList")
     @RequestMapping(value = "/getPerOrgRelList",method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(String personnelId){
+    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(String orgTreeId,String personnelId){
         ResponseResult<List<PsonOrgVo>> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(personnelId)){
             ret.setMessage("人员标识不能为空");
@@ -262,6 +277,9 @@ public class OrgPersonRelController extends BaseController {
         }
         PsonOrgVo psonOrgVo = new PsonOrgVo();
         psonOrgVo.setPersonnelId(new Long(personnelId));
+        if(!StrUtil.isNullOrEmpty(orgTreeId)){
+            psonOrgVo.setOrgTreeId(new Long(orgTreeId));
+        }
         List<PsonOrgVo> psonList = orgPersonRelService.getPerOrgRelList(psonOrgVo);
         if(psonList==null || psonList.size()<0){
             ret.setMessage("人员组织关系不存在");
