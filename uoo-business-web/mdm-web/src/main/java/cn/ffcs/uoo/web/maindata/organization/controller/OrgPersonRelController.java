@@ -62,8 +62,10 @@ public class OrgPersonRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getPerOrgRelList", method = RequestMethod.GET)
-    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(@RequestParam(value = "personnelId",required = false)String personnelId){
-        return orgPersonRelService.getPerOrgRelList(personnelId);
+    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(
+            @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+            @RequestParam(value = "personnelId",required = false)String personnelId){
+        return orgPersonRelService.getPerOrgRelList(orgTreeId,personnelId);
     }
 
     @ApiOperation(value = "获取组织人员关系翻页", notes = "获取组织人员关系翻页")
