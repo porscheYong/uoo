@@ -47,6 +47,7 @@ function getSubUser(acctId) {       //查看并编辑从账号
             acctExtId = data.tbAcctExt.acctExtId;
         }
         $('#sub-title').html("编辑从账号");
+        noSelectUserInfo();
         personnelId = data.personnelId;
         acctHostId = data.tbSlaveAcct.acctHostId;
         slaveAcctId = data.tbSlaveAcct.slaveAcctId;
@@ -63,6 +64,7 @@ function getUserInfo(){         //新增从账号
         userType: "2"
     }, function (data) {
         $('#sub-title').html("新增从账号");
+        noSelectUserInfo();
         initUserInfo(data);
         initOrgTable("");
     }, function (data) {
@@ -87,6 +89,15 @@ function getAcctOrg(){          //获取从账号可选组织列表(添加组织
         console.log(err)
       })
 }
+
+function noSelectUserInfo(){     //控制人员信息不可选
+    $("#psnNameTel").attr("disabled",false);
+    $("#psnNumTel").attr("disabled",false);
+    $("#mobileTel").attr("disabled",false);
+    $("#emailTel").attr("disabled",false);
+    $("#cerType").attr("disabled",false);
+    $("#cerNoTel").attr("disabled",false);
+ }
 
 function initOrgTable(results){
     table = $("#orgTable").DataTable({

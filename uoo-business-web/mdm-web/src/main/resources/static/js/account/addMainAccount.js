@@ -31,6 +31,7 @@ function getUser(acctId) {           //查看并编辑主账号
           editOrgList.push({"orgId":data.acctOrgVoPage.records[i].orgId,"fullName":data.acctOrgVoPage.records[i].fullName});
         }
         $('#main-title').html("编辑主账号");
+        noSelectUserInfo();
         initOrgTable(data.acctOrgVoPage.records);
         initEditUserInfo(data);
         initSubOrgTable(data.slaveAcctOrgVoPage.records);
@@ -50,10 +51,11 @@ function getAcctUser(personnelId){     //获取主账号信息(编辑或者新�
       initSubOrgTable(data.slaveAcctOrgVoPage);
       $('#main-title').html("新增主账号");
       $('#delAcct').css("display","none");
-      $('#addSubFright').css("display","none");
+      noSelectUserInfo();
       console.log('no user');
     }else{                      //编辑
       $('#main-title').html('编辑主账号');
+      noSelectUserInfo();
       opBtn = 0;
       acctId = data.tbAcct.acctId;
       for(var i=0;i<data.acctOrgVoPage.records.length;i++){
@@ -67,6 +69,15 @@ function getAcctUser(personnelId){     //获取主账号信息(编辑或者新�
   }, function (err) {
     console.log(err)
   })
+}
+
+function noSelectUserInfo(){     //控制人员信息不可选
+   $("#psnTel").attr("disabled",false);
+   $("#psnNumTel").attr("disabled",false);
+   $("#mobileTel").attr("disabled",false);
+   $("#emailTel").attr("disabled",false);
+   $("#cerType").attr("disabled",false);
+   $("#cerNoTel").attr("disabled",false);
 }
 
 function initOrgTable(results){         //主账号组织数据表格
@@ -452,11 +463,11 @@ function submitSuccess(){     //提交成功
     window.location.href = url;
 }
 
-$("#addSubAcctBtn").on('click', function () {
-  var url = 'addSubAccount.html?orgTreeId=' + orgTreeId + '&hType=th&personnelId=' + personnelId + 
-                    '&opBtn=1&mainAcctId='+ acctId +'&orgName=' + orgName + '&orgId=' + orgId +'&toMainType=' + hType;
-  $(this).attr('href', url);
-})
+// $("#addSubAcctBtn").on('click', function () {    //添加从账号
+//   var url = 'addSubAccount.html?orgTreeId=' + orgTreeId + '&hType=th&personnelId=' + personnelId + 
+//                     '&opBtn=1&mainAcctId='+ acctId +'&orgName=' + orgName + '&orgId=' + orgId +'&toMainType=' + hType;
+//   $(this).attr('href', url);
+// })
 
 $("#defaultPswTel").focus(function (){    //默认密码输入框获得焦点
   if($("#defaultPswTel").attr("type") == "password"){

@@ -87,13 +87,24 @@
           margin-top: 40px !important;
           margin-left: -15px;
       }
+      .BoardTitle .Back {
+          background: url(/images/ico_back.svg) no-repeat left center;
+          display: inline-block;
+          line-height: 24px;
+          font-size: 16px;
+          padding: 0 30px;
+        }
     </style>
 </head>
 
 <body style="background: #fff;">
+
+    <div class="BoardTitle" style="margin-bottom:20px;" onclick="submitToOther()">
+        <a class="Back" href="#" style="color:#008aff;" onclick="submitToOther()">返回</a>
+    </div>
+
     <div class="board-title">
         <span class="name ft18" id="sub-title"></span>  <!-- 从账号 -->
-        <a id="back" href="#" onclick="submitToOther()">返回</a>
     </div>
 
     <div class="tab-content" style="margin-left:5%;margin-top: 2%">

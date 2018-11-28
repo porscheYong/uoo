@@ -104,6 +104,13 @@
           margin-top: 40px !important;
           margin-left: -15px;
       }
+      .BoardTitle .Back {
+          background: url(/images/ico_back.svg) no-repeat left center;
+          display: inline-block;
+          line-height: 24px;
+          font-size: 16px;
+          padding: 0 30px;
+        }
       /* #orgTypeList{
         opacity: 0;
         filter: alpha(opacity=0);
@@ -120,9 +127,12 @@
 
 <body style="background: #fff;">
 
+    <div class="BoardTitle" style="margin-bottom:20px;" onclick="cancel()">
+        <a class="Back" href="#" style="color:#008aff;" onclick="cancel()">返回</a>
+    </div>
+
     <div class="board-title">
         <span class="name ft18" id="main-title"></span> <!-- 主账号 -->
-        <a id="back" href="#" onclick="cancel()">返回</a>
     </div> 
 
     <div class="tab-content" style="margin-left:5%;margin-top: 2%">
@@ -281,9 +291,9 @@
                         <span class="name ft18">关联从账号信息</span>
                     </div>
     
-                    <div class="fright" id="addSubFright" style="margin-right:85%;margin-top:-4.5%;"> 
+                    <!-- <div class="fright" id="addSubFright" style="margin-right:85%;margin-top:-4.5%;"> 
                         <a class="button-add" id="addSubAcctBtn"><span class="fa fa-plus-circle icon-add"></span>添加从账号</a>
-                    </div>
+                    </div> -->
                 </div>
 
             
