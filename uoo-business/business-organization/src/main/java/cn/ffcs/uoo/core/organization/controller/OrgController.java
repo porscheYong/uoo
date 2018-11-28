@@ -132,6 +132,13 @@ public class OrgController extends BaseController {
         List<Position> positionList = org.getPositionList();
         List<Post> postList = org.getPostList();
 
+        List<PoliticalLocation> politicalLocationList = org.getPoliticalLocationList();
+        if(politicalLocationList==null || politicalLocationList.size()==0){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("行政管理区域不存在");
+            return ret;
+        }
+        PoliticalLocation pl = politicalLocationList.get(0);
         Wrapper ogtOrgReftypeConfWrapper = Condition.create()
                 .eq("ORG_TREE_ID",orgTree.getOrgTreeId())
                 .eq("STATUS_CD","1000");
@@ -176,8 +183,8 @@ public class OrgController extends BaseController {
         String orgCode = orgService.getGenerateOrgCode();
         Long orgId = orgService.getId();
         newOrg.setOrgId(orgId);
-        if(org.getLocId()!=null){
-            newOrg.setLocId(org.getLocId());
+        if(pl.getLocId()!=null){
+            newOrg.setLocId(pl.getLocId());
         }
         if(org.getAreaCodeId()!=null){
             newOrg.setAreaCodeId(new Long(org.getAreaCodeId()));
@@ -328,7 +335,12 @@ public class OrgController extends BaseController {
                 //orgCertRel.insert();
             }
         }
+
 //        }
+        //新增区域
+
+
+
         orgService.add(newOrg);
         TreeNodeVo vo = new TreeNodeVo();
         vo.setId(newOrg.getOrgId().toString());
@@ -372,7 +384,13 @@ public class OrgController extends BaseController {
         List<OrgType> orgTypeList = org.getOrgTypeList();
         List<Position> positionList = org.getPositionList();
         List<Post> postList = org.getPostList();
-
+        List<PoliticalLocation> politicalLocationList = org.getPoliticalLocationList();
+        if(politicalLocationList==null || politicalLocationList.size()==0){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("行政管理区域不存在");
+            return ret;
+        }
+        PoliticalLocation pl = politicalLocationList.get(0);
         Wrapper orgWrapper = Condition.create()
                 .eq("ORG_ID",org.getOrgId())
                 .eq("STATUS_CD","1000");
@@ -395,8 +413,8 @@ public class OrgController extends BaseController {
         }
         Org newOrg = new Org();
         newOrg.setOrgId(org.getOrgId());
-        if(org.getLocId()!=null){
-            newOrg.setLocId(org.getLocId());
+        if(pl.getLocId()!=null){
+            newOrg.setLocId(pl.getLocId());
         }
         if(org.getAreaCodeId()!=null){
             newOrg.setAreaCodeId(new Long(org.getAreaCodeId()));
@@ -698,51 +716,45 @@ public class OrgController extends BaseController {
             ret.setMessage("组织下存在员工无法删除");
             return ret;
         }
-        List<OrgRel> orgRelList = orgRelService.getOrgRel(orgTreeId,orgId);
-        if(orgRelList!=null && orgRelList.size()>1){
-            ret.setState(ResponseResult.STATE_ERROR);
-            ret.setMessage("组织被其他组织树引用无法删除");
-            return ret;
-        }
+//        List<OrgRel> orgRelList = orgRelService.getOrgRel(orgTreeId,orgId);
+//        if(orgRelList!=null && orgRelList.size()>1){
+//            ret.setState(ResponseResult.STATE_ERROR);
+//            ret.setMessage("组织被其他组织树引用无法删除");
+//            return ret;
+//        }
         Org org = orgService.selectById(orgId);
-        orgService.delete(org);
-        //List<OrgRel> orgRelList = orgRelService.getOrgRel(orgTreeId,orgId);
+        //orgService.delete(org);
+        List<OrgRel> orgRelList = orgRelService.getOrgRel(orgTreeId,orgId);
         for(OrgRel orgRel : orgRelList){
             orgRelService.delete(orgRel);
-        }
-        //删除组织类别
-        Wrapper orgTypeWrapper = Condition.create()
-                .eq("ORG_ID",org.getOrgId())
-                .eq("STATUS_CD","1000");
-        List<OrgOrgtypeRel> orgTypeRefCurList = orgTypeRefService.selectList(orgTypeWrapper);
-        if(orgTypeRefCurList!=null){
-            for(OrgOrgtypeRel ootr : orgTypeRefCurList){
-                orgTypeRefService.delete(ootr);
+            Wrapper orgTreeRelWrapper = Condition.create()
+                    .eq("ORG_ID",org.getOrgId())
+                    .eq("STATUS_CD","1000")
+                    .eq("ORG_TREE_ID",orgTree.getOrgTreeId());
+            List<OrgOrgtreeRel> orgOrgtreeRelList = orgOrgtreeRelService.selectList(orgTreeRelWrapper);
+            for(OrgOrgtreeRel ootr : orgOrgtreeRelList){
+                orgOrgtreeRelService.delete(ootr);
             }
-        }
-        //删除岗位
-        Wrapper positionWrapper = Condition.create()
-                .eq("ORG_ID",org.getOrgId())
-                .eq("STATUS_CD","1000");
-        List<OrgPositionRel> orgPositionCurList = orgPositionRelService.selectList(positionWrapper);
-        if(orgTypeRefCurList!=null){
-            for(OrgPositionRel opr  : orgPositionCurList){
+
+            Wrapper orgLevelWrapper = Condition.create()
+                    .eq("ORG_TREE_ID",orgTree.getOrgTreeId())
+                    .eq("STATUS_CD","1000")
+                    .eq("ORG_ID",org.getOrgId());
+            List<OrgLevel> orgLevelList = orgLevelService.selectList(orgLevelWrapper);
+            for(OrgLevel ol : orgLevelList){
+                orgLevelService.delete(ol);
+            }
+
+            Wrapper orgPositionWrapper = Condition.create()
+                    .eq("ORG_TREE_ID",orgTree.getOrgTreeId())
+                    .eq("STATUS_CD","1000")
+                    .eq("ORG_ID",org.getOrgId());
+
+            List<OrgPositionRel> orgPositionRelList = orgPositionRelService.selectList(orgPositionWrapper);
+            for(OrgPositionRel opr : orgPositionRelList){
                 orgPositionRelService.delete(opr);
             }
         }
-
-        //删除职位
-        Wrapper postWrapper = Condition.create()
-                .eq("ORG_ID",org.getOrgId())
-                .eq("STATUS_CD","1000");
-        List<OrgPostRel> orgPostCurList = orgPostRelService.selectList(postWrapper);
-        if(orgPostCurList!=null){
-            for(OrgPostRel opr : orgPostCurList){
-                orgPostRelService.delete(opr);
-            }
-        }
-
-
         //删除证件组织关系
         Wrapper orgCertListWrapper = Condition.create()
                 .eq("STATUS_CD","1000")
@@ -759,6 +771,7 @@ public class OrgController extends BaseController {
         for(OrgContactRel vo:orgContactRelList){
             orgContactRelService.delete(vo);
         }
+
 
         String mqmsg = "{\"type\":\"org\",\"handle\":\"delete\",\"context\":{\"column\":\"orgId\",\"value\":"+orgId+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);
