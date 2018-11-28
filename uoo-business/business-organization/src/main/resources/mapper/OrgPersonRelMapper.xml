@@ -106,7 +106,8 @@
         POST.POST_NAME postName,
         ORG_TREE_NAME orgTreeName,
         CTA.CONTENT mobile,
-        AA.STATUS_CD statusCd
+        AA.STATUS_CD statusCd,
+        AA.ORG_PERSON_ID orgPersonId
         FROM (SELECT A.*,C.ORG_TREE_NAME FROM TB_ORG_PERSON_REL A, TB_ORGTREE_ORGPERSON_REL B ,TB_ORG_TREE C
         WHERE A.STATUS_CD = '1000' AND B.STATUS_CD='1000' AND C.STATUS_CD='1000'
         AND A.ORG_PERSON_ID=B.ORG_PERSON_ID AND B.ORG_TREE_ID=C.ORG_TREE_ID
@@ -441,7 +442,6 @@ SELECT * FROM (
         and t2.status_cd = 1000
         and t1.acct_id = t2.acct_id
         and t2.org_id = tt.org_id
-        and t2.org_id = #{psonOrgVo.orgId}
         ) t
         left join tb_personnel t3 on t.personnel_id = t3.personnel_id
         and t.status_cd = t3.status_cd
@@ -471,7 +471,6 @@ SELECT * FROM (
         and tt.acct_id = t2.acct_id
         and t1.acct_id = t2.acct_id
         and t2.org_id = t3.org_id
-        and t2.org_id = #{psonOrgVo.orgId}
         ) t
         left join tb_personnel t3 on t.personnel_id = t3.personnel_id
         and t.status_cd = t3.status_cd

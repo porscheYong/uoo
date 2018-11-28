@@ -89,7 +89,9 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
         }
         orgPersonRel.setOrgId(psonOrgVo.getOrgId());
         orgPersonRel.setPersonnelId(psonOrgVo.getPersonnelId());
-        orgPersonRel.setPostId(Long.valueOf(psonOrgVo.getPostId()));
+        if(!StrUtil.isNullOrEmpty(psonOrgVo.getPostId())){
+            orgPersonRel.setPostId(Long.valueOf(psonOrgVo.getPostId()));
+        }
         orgPersonRel.setRefType(psonOrgVo.getRefType());
         orgPersonRel.setProperty(psonOrgVo.getProperty());
         orgPersonRel.setDoubleName(psonOrgVo.getDoubleName());

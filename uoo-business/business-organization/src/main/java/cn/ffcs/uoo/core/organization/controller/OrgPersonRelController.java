@@ -386,6 +386,7 @@ public class OrgPersonRelController extends BaseController {
         }
         PsonOrgVo psonOrgVo = new PsonOrgVo();
         psonOrgVo.setOrgId(new Long(orgId));
+        psonOrgVo.setOrgTreeId(new Long(orgTreeId));
         if(!StrUtil.isNullOrEmpty(search)){
             psonOrgVo.setSearch(search);
         }
