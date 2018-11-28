@@ -1,26 +1,29 @@
 var orgId = getQueryString('id');
 var orgTreeId = getQueryString('orgTreeId');
-var pid = getQueryString('pid');
-var orgName = getQueryString('name');
-var table;
+var engine;
+var empty;
 
-$('#orgName').html(orgName);
+empty = Handlebars.compile($(".typeahead-menu").html());
 
-// function getOrgPersonnerList () {
-//     $http.get('/orgPersonRel/getPerOrgRelPage', {
-//         orgId: orgId,
-//         orgTreeId: orgTreeId
-//     }, function (data) {
-//         initOrgPersonnelTable(data.records)
-//     }, function (err) {
-//         console.log(err)
-//     })
-// }
+engine = new Bloodhound({
+    identify: function(o) { return o.id_str; },
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name', 'orgName'),
+    dupDetector: function(a, b) { return a.id_str === b.id_str; },
+    remote: {
+        url: '/orgPersonRel/getPerOrgRelPage?search=%QUERY&pageNo=1&pageSize=10&orgId='+orgId+'&orgTreeId='+orgTreeId,
+        wildcard: '%QUERY',
+        filter: function (response) {
+            if (response.data && response.data.records.length == 0)
+                return;
+            
+        }
+    }
+});
 
-function initOrgPersonnelTable (results) {
-    var num = 1;
+function initPerTable(search) {
+    table.destroy();
     table = $("#personnelTable").DataTable({
-        'data': results,
         'searching': false,
         'autoWidth': false,
         'ordering': true,
@@ -29,11 +32,7 @@ function initOrgPersonnelTable (results) {
         },
         "scrollY": "375px",
         'columns': [
-            { 'data': "psnName", 'title': '序号', 'className': 'row-no' ,
-            'render': function (data, type, row, meta) {
-                return num++;
-            }
-            },
+            { 'data': null, 'title': '序号', 'className': 'row-no' },
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
                     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
@@ -64,18 +63,19 @@ function initOrgPersonnelTable (results) {
         "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
         'pagingType': 'simple_numbers',
         'dom': '<"top"f>t<"bottom"ipl>',
-        // 'drawCallback': function(){
-        //     this.api().column(0).nodes().each(function(cell, i) {
-        //         cell.innerHTML =  i + 1;
-        //     });
-        // },
+        'drawCallback': function(){
+            this.api().column(0).nodes().each(function(cell, i) {
+                cell.innerHTML =  i + 1;
+            });
+        },
         'serverSide': true,  //启用服务器端分页
         'ajax': function (data, callback, settings) {
             var param = {};
             param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
             param.pageNo = (data.start / data.length) + 1;//当前页码
-            param.orgTreeId = '1';
+            param.orgTreeId = orgTreeId;
             param.orgId = orgId;
+            param.search = search;
             $http.get('/orgPersonRel/getPerOrgRelPage', param, function (result) {
                 var returnData = {};
                 // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
@@ -94,13 +94,55 @@ function initOrgPersonnelTable (results) {
     loading.screenMaskDisable('container');
 }
 
-initOrgPersonnelTable();
 
-// $('#editBtn').on('click', function () {
-//     var url = 'edit.html?id=' + orgId;
-//     $(this).attr('href', url);
-// })
-$('#addBtn').on('click', function () {
-   var url = "add.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName);
-   $(this).attr('href', url);
+
+function engineWithDefaults(q, sync, async) {
+    if (q === '') {
+        $('#personnelTable').html('');
+        table.destroy();
+        initOrgPersonnelTable();
+    }
+    else {
+        engine.search(q, sync, async);
+    }
+}
+
+$('#psnName').typeahead({
+    hint: $('.typeahead-hint'),
+    menu: $('.user-table'),
+    minLength: 0,
+    highlight:true,
+    classNames: {
+        open: 'is-open',
+        empty: 'is-empty',
+        cursor: 'is-active',
+        suggestion: 'Typeahead-suggestion',
+        selectable: 'Typeahead-selectable'
+    }
+}, {
+    source: engineWithDefaults,
+    displayKey: 'orgName',
+    templates: {
+        suggestion: empty
+    }
 })
+  .on('typeahead:asyncrequest', function() {
+        $('.Typeahead-spinner').show();
+        initPerTable($("#psnName").val());
+    })
+  .on('typeahead:asynccancel', function() {
+        $('.Typeahead-spinner').hide();
+    });
+
+Handlebars.registerHelper('eq', function(v1, v2, opts) {
+    if(v1 == v2){
+        return opts.fn(this);
+    }
+    else
+        return opts.inverse(this);
+});
+
+Handlebars.registerHelper("addOne", function (index) {
+    return index + 1;
+});
+
