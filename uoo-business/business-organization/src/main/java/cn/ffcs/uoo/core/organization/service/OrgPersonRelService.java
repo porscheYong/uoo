@@ -77,4 +77,10 @@ public interface OrgPersonRelService extends IService<OrgPersonRel> {
      */
     public Page<PsonOrgVo> selectUserOrgRelPage(PsonOrgVo psonOrgVo);
 
+
+    /**
+     * 查询组织树组织信息
+     */
+    //public List<OrgPersonRel> getOrgPsnByOrgTreeAndPsnId(String orgTreeId,String personnelId);
+
 }

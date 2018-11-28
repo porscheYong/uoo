@@ -120,14 +120,14 @@ public class OrgPersonRelController extends BaseController {
     public ResponseResult<String> updateOrgPsn(@RequestBody PsonOrgVo psonOrgVo){
         System.out.println(new Date());
         ResponseResult<String> ret = new ResponseResult<String>();
-        Long orgPsndocRefId = psonOrgVo.getPersonnelId();
+        Long orgPsndocRefId = psonOrgVo.getOrgPersonId();
         if(StrUtil.isNullOrEmpty(orgPsndocRefId)){
             ret.setState(ResponseResult.STATE_ERROR);
             ret.setMessage("组织人员标识不能为空");
             return ret;
         }
         Wrapper orgTreeConfWrapper = Condition.create()
-                .eq("ORG_ID",psonOrgVo.getOrgRootId())
+                .eq("ORG_TREE_ID",psonOrgVo.getOrgTreeId())
                 .eq("STATUS_CD","1000");
         OrgTree orgtree = orgTreeService.selectOne(orgTreeConfWrapper);
         if(orgtree==null){
@@ -142,12 +142,12 @@ public class OrgPersonRelController extends BaseController {
             return ret;
         }
         orgPersonRelService.delete(orgPersonRel);
-        solrService.deleteDataIntoSolr("pson",orgPersonRel.getOrgPersonId().toString());
+        //solrService.deleteDataIntoSolr("pson",orgPersonRel.getOrgPersonId().toString());
 
-        Long orgPsndocRefIdnew = orgPersonRelService.getId();
-        OrgPersonRel orgPersonRelT = orgPersonRelService.convertObj(psonOrgVo);
-        orgPersonRelT.setOrgPersonId(orgPsndocRefIdnew);
-        orgPersonRelService.add(orgPersonRelT);
+//        Long orgPsndocRefIdnew = orgPersonRelService.getId();
+//        OrgPersonRel orgPersonRelT = orgPersonRelService.convertObj(psonOrgVo);
+//        orgPersonRelT.setOrgPersonId(orgPsndocRefIdnew);
+//        orgPersonRelService.add(orgPersonRelT);
 
 
 //        SolrInputDocument input = new SolrInputDocument();
