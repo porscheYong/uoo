@@ -7,7 +7,6 @@ var positionList;
 var orgPostList;
 var checkNode;
 var selectUser = [];
-var deleteData; //删除组织
 var formValidate;
 var loading = parent.loading;
 
@@ -516,7 +515,6 @@ function getOrg (orgId) {
         orgTreeId: '1',
         orgId: orgId
     }, function (data) {
-        deleteData = data;
         $('#orgName').val(data.orgName).focus();
         $('#orgCode').val(data.orgCode);
         $('#shortName').val(data.shortName);
@@ -660,22 +658,23 @@ function updateOrg () {
 // 删除组织
 function deleteOrg () {
     loading.screenMaskEnable('container');
-    deleteData.orgTreeId = '1';
-    deleteData.orgId = orgId;
-    deleteData.supOrgId = orgId;
-    deleteData.statusCd = '1100';
-    $http.post('/org/updateOrg', JSON.stringify(deleteData), function () {
+    $http.get('/org/deleteOrg', {
+        orgTreeId: '1',
+        orgId: orgId,
+        supOrgId: pid
+    }, function () {
         parent.deleteNode(orgId);
         parent.selectRootNode();
         loading.screenMaskDisable('container');
     }, function (err) {
-
+        console.log(err);
+        loading.screenMaskDisable('container');
     })
 }
 
 // 取消
 function cancel () {
-    var url = "list.html?id=" + orgId + "&name=" + row.orgName;
+    var url = "list.html?id=" + orgId + "&name=" + orgName;
     window.location.href = url;
 }
 
