@@ -66,6 +66,30 @@ function initData(data){
 	$('#locAbbr').val(data.locAbbr);
 	$('#locType').val(data.locType);
 	$('#locDesc').val(data.locDesc);
+	$('#parentLoc').val(getQueryString('parentLocName'));
+	$('#parentLocId').val(getQueryString('parentLocId'));
+}
+function selectParentLoc() {
+	parent.layer.open({
+        type: 2,
+        title: '选中上级区域',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['50%', '80%'],
+        maxmin: true,
+        content: 'pollocTreeModal-radio.html',
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            checkNode = iframeWin.checkNode;
+            parent.layer.close(index);
+            $('#parentLoc').val(checkNode[0].name);
+            $('#parentLocId').val(checkNode[0].id);
+        },
+        btn2: function(index, layero){},
+        cancel: function(){}
+    });
 }
 function inArr(arr,target){
 	for(var j=0;j<arr.length;j++){

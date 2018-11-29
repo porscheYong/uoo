@@ -1,5 +1,8 @@
+var i=0,showCheck=getQueryString('showCheck');
+var  dataTable,checkAreaCode;
 function retrieveData(data, callback, settings) {
  var pageSize=0,pageNo=0;
+
 /* for(var i=0;i<aoData.length;i++){
 	 if(aoData[i].name=='length'){
 	 }
@@ -10,6 +13,7 @@ function retrieveData(data, callback, settings) {
 	 }
  }*/
  pageNo= data.start/pageSize+1;
+ i=(pageNo-1)*pageSize;
  $.ajax({
      url : '/region/areaCode/listAreaCode',//这个就是请求地址对应sAjaxSource
      data : {'pageNo':pageNo,'pageSize':pageSize},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
@@ -34,9 +38,16 @@ function retrieveData(data, callback, settings) {
      }
  });
 }
- 
+function checkTableRow(obj){
+	if(showCheck=='1'){
+		$('#areaCodeTable tbody tr').each(function(){$(this).removeClass('selected')});
+		obj.toggleClass('selected');
+		var data=dataTable.rows('.selected').data();
+		checkAreaCode=(data[0]);
+	}
+}
 function loadAreaCode(){
-	var  dataTable = $("#areaCodeTable").DataTable({
+	 dataTable = $("#areaCodeTable").DataTable({
         'ajax': retrieveData, //执行函数
         'serverSide':true,
         "processing": true,
@@ -47,26 +58,22 @@ function loadAreaCode(){
             console.log(settings, json)
         },*/
         //'destroy':true,
-        "scrollY": "375px",
         'columns': [
             { 'data': "areaCodeId","title":"序号" , 'className': 'user-account','defaultContent':'',
-             
+            	'render':function(data, type, row, meta){
+            		i++;
+            		return i;
+            	}
             },
             { 'data': "areaCode","title":"区号" , 'className': 'user-account','defaultContent':'',
-            	'render':function(data, type, row, meta){
-            		return "<a href='javascript:void(0)' onclick=\"quickList('"+data+"')\">"+data+"</a>";
-            	}
-            
             },
             { 'data': "areaNbr",
               'title': '区号编码', 'className': 'user-account'
             	  ,'defaultContent':'',
-            	  
-              /*'className': 'row-sex',
-              // 'render': function (data) {
-              //   return data[0].orgTypeName
-              // } 
-*/            },
+            },
+			{
+            	'data':'regionNames','title':'关联电信区域','className': 'user-account','visible':showCheck!='1'
+			},
             /*{ 'data': "LOC_NAME", 'title': '区域名称', 'className': 'user-account' ,'defaultContent':'',
             	'render':function(data, type, row, meta){
             		return "<a href='javascript:void(0)' onclick=\"quickList('"+row.LOC_ID+"')\">"+data+"</a>";
@@ -76,14 +83,13 @@ function loadAreaCode(){
                  
             },
             { 'data': "LOC_ABBR", 'title': '区域简称', 'className': 'user-account'  ,'defaultContent':''},*/
-            { 'data': "COMMON_REGION_ID", 'title': '操作', 
+            { 'data': "areaCodeId", 'title': '操作', 
             'render': function (data, type, row, meta) {
-            	var html="<a href=\"javascript:void(0)\" onClick=\"parent.changeIframe('/inaction/region/polloc-edit.html?id="+row.LOC_ID+"')\">查看 </a>";
-            	html+="&nbsp;&nbsp;&nbsp;&nbsp;";
+            	var html="<a href=\"javascript:void(0)\" onClick=\"location.href=('/inaction/region/areacode-edit.html?id="+row.areaCodeId+"')\">> </a>";
             	//html+="<a class=\"glyphicon glyphicon-remove\"   href=\"javascript:void(0)\" onclick=\"deleteRegion('"+row.LOC_ID+"')\" style=\"vertical-align: top;\"></a>";
             	return html;
             		 //return '<a href="list.html?id='+ row.orgId +'" onclick="parent.openTreeById('+orgId+','+row.orgId+')">'+ row.orgName +'</a>'
-                }  , 'className': 'user-account'
+                }  , 'className': 'user-account','visible':showCheck!='1'
             },
              
         ],
@@ -110,6 +116,13 @@ function loadAreaCode(){
     });
 }
 loadAreaCode();
+$(document).ready(function(){
+	 $('#areaCodeTable tbody').on( 'click', 'tr', function () {
+		 
+		 checkTableRow($(this));
+	    });
+});
+
 function goEdit(){
 	var cid=$('#regionStrCurrent').attr('cid');
 	console.log('goto :'+cid);

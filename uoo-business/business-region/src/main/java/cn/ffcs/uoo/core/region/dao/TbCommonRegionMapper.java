@@ -19,7 +19,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 @MyBatisDao
 public interface TbCommonRegionMapper extends BaseMapper<TbCommonRegion> {
     @SuppressWarnings("rawtypes")
-    public List<Map> selectUnionPolLoc(Map<String,Object> params);
+    public List<Map> getCommonRegion(Map<String,Object> params);
     public Long getId();
     public List<TbCommonRegion> getTreeCommonRegion(Map<String, Object> params);
     public List<Map> getChildCommonRegionInfo(Map<String, Object> params);

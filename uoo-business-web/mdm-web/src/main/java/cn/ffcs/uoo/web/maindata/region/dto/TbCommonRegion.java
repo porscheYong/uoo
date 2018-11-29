@@ -100,7 +100,14 @@ public class TbCommonRegion {
      * 状态变更的时间
      */
     private Date statusDate;
+    private Long areaCodeId;
+    public Long getAreaCodeId() {
+        return areaCodeId;
+    }
 
+    public void setAreaCodeId(Long areaCodeId) {
+        this.areaCodeId = areaCodeId;
+    }
     public Long getCommonRegionId() {
         return commonRegionId;
     }
