@@ -139,7 +139,7 @@ public class OrgPersonRelController extends BaseController {
                                                     psonOrgVo.getOrgTreeId().toString(),
                                                     personnelId.toString(),
                                                     psonOrgVo.getOrgId().toString());
-        if(orgPersonRelList!=null){
+        if(orgPersonRelList!=null && orgPersonRelList.size()>0){
             OrgPersonRel orgPersonRel = orgPersonRelList.get(0);
             orgPersonRel.setDoubleName(StrUtil.strnull(psonOrgVo.getDoubleName()));
             orgPersonRel.setProperty(StrUtil.strnull(psonOrgVo.getProperty()));

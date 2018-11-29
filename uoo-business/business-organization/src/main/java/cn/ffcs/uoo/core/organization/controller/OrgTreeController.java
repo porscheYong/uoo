@@ -108,8 +108,12 @@ public class OrgTreeController extends BaseController {
             ret.setState(ResponseResult.PARAMETER_ERROR);
             return ret;
         }
-        //判断组织关系是否已经存在
-
+        //判断组织树组织关系是否存在
+        if(orgTreeService.isExistsOrgTreeRel(orgRelTypeList.get(0).getRefCode())){
+            ret.setMessage("组织关系类型已创建组织树，不能重复创建");
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            return ret;
+        }
 
         Long orgId = orgService.getId();
         Org org = new Org();

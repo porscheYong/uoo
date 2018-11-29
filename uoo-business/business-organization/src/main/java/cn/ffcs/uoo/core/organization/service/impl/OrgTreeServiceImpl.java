@@ -85,4 +85,13 @@ public class OrgTreeServiceImpl extends ServiceImpl<OrgTreeMapper, OrgTree> impl
     public String getOrgTreeNameByOrgId(String orgId){
         return baseMapper.getOrgTreeNameByOrgId(orgId);
     }
+
+    @Override
+    public boolean isExistsOrgTreeRel(String refCode){
+        int count = baseMapper.isExistsOrgTreeRel(refCode);
+        if(count>0){
+            return true;
+        }
+        return false;
+    }
 }

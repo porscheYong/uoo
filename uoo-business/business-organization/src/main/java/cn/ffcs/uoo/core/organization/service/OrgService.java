@@ -71,13 +71,14 @@ public interface OrgService extends IService<Org> {
      * @return
      */
     public Page<OrgVo> selectOrgPage(OrgVo org);
+
     /**
      * 获取系统全路径
-     * @param orgRootId
-     * @param id
+     * @param orgTreeId
+     * @param orgId
      * @return
      */
-    public String getSysFullName(String orgRootId,String id);
+    public String getSysFullName(String orgTreeId,String orgId);
 
     /**
      * 根据组织标识查询组织信息
