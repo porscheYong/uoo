@@ -47,7 +47,6 @@ function getSubUser(acctId) {       //查看并编辑从账号
             acctExtId = data.tbAcctExt.acctExtId;
         }
         $('#sub-title').html("编辑从账号");
-        noSelectUserInfo();
         personnelId = data.personnelId;
         acctHostId = data.tbSlaveAcct.acctHostId;
         slaveAcctId = data.tbSlaveAcct.slaveAcctId;
@@ -64,7 +63,6 @@ function getUserInfo(){         //新增从账号
         userType: "2"
     }, function (data) {
         $('#sub-title').html("新增从账号");
-        noSelectUserInfo();
         initUserInfo(data);
         initOrgTable("");
     }, function (data) {
@@ -91,12 +89,12 @@ function getAcctOrg(){          //获取从账号可选组织列表(添加组织
 }
 
 function noSelectUserInfo(){     //控制人员信息不可选
-    $("#psnNameTel").attr("disabled",false);
-    $("#psnNumTel").attr("disabled",false);
-    $("#mobileTel").attr("disabled",false);
-    $("#emailTel").attr("disabled",false);
-    $("#cerType").attr("disabled",false);
-    $("#cerNoTel").attr("disabled",false);
+    $("#psnNameTel").attr("disabled","disabled");
+    $("#psnNumTel").attr("disabled","disabled");
+    $("#mobileTel").attr("disabled","disabled");
+    $("#emailTel").attr("disabled","disabled");
+    $("#cerType").attr("disabled","disabled");
+    $("#cerNoTel").attr("disabled","disabled");
  }
 
 function initOrgTable(results){
@@ -446,10 +444,12 @@ $("#defaultPswTel").blur(function (){     //默认密码输入框失去焦点
 
 if(opBtn==0){
     $('#addText').text('更换');
-    getSubUser(acctId);
+    noSelectUserInfo();
+    getSubUser(acctId); 
 }else{      //新增
     $('.BtnDel').css("display","none");
     $('#statusCd').get(0).selectedIndex=0;
+    noSelectUserInfo();
     getUserInfo();
 }
 
