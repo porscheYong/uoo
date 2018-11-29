@@ -6,81 +6,10 @@ function loadRegionType(){
 		$('#regionType').append("<option value='"+parent.typeArray[i].itemValue+"'>"+parent.typeArray[i].itemCnname+"</option>");
   	}
 }
-function loadUpRegionList() {
-	$.ajax({
-		url : '/region/commonRegion/getTreeCommonRegion',
-		dataType : 'json',
-		type : 'get',
-		success : function(tree) {
-			if (tree.state == 1000) {
-				$.each(tree.data, function(i, item) {
-					var up = 0;
-					var html = "";
-					html += "<option value='" + item.id + "'";
-					if (parent.getTree().getSelectedNodes().length>0&&parent.getTree().getSelectedNodes()[0].id == item.id) {
-						html += " selected='selected'";
-					}
-					up = item.pId;
-					html += " >" + item.name + "</option>"
-					//某一层的 循环查找插入  那么久插入
-					$('#parentRegionId').append(html);
-					/*$('#parentRegionId option').each(function() {
-						var id = $(this).val();
-						if (id == up) {
-							$(this).after(html);
-						}
-					});*/
-				});
-				
-				
-
-			}
-		}
-	});
-}
-$(document).ready(function(){
-	loadRegionType();
-	loadUpRegionList();
-	initLocTree();
-	//$("[data-toggle='tooltip']").tooltip();
-	$('#saveBtn').bind('click',saveRegion);
-	
-});
-function showMenu(){$('#treeDiv').show();}
-function initLocTree(){
-	$.ajax({
-		url:'/region/politicalLocation/getTreePoliticalLocation',
-		dataType:'json',
-		type:'get',
-		success:function(data){
-			if(data.state==1000){
-				
-				console.log(data.data);
-				$.fn.zTree.init($("#locTree"), setting,data.data);
-				
-			}else{
-				alert('加载行政区域失败，请刷新重试')
-			}
-		}
-		
-	});
-	
-}
 function saveRegion(){
 	if(!validFormData()){
 		return;
 	}
-	
-	var treeObj = $.fn.zTree.getZTreeObj("locTree");
-	var checkeds=treeObj.getCheckedNodes();
-	var polLocIds="";
-	for(var i=0;i<checkeds.length;i++){
-		polLocIds+=checkeds[i].id;
-		if(i!=checkeds.length-1){
-			polLocIds+=",";
-		}
-	}
-	$('#polLocIds').val(polLocIds);
 	$.ajax({
 		type:'POST',
 		dataType:'json',
@@ -109,9 +38,6 @@ function saveRegion(){
 	});
 	 
 }
-function findNodeById(node){
-	return (node.Id);
-}
 function validFormData(){
 	var regionName=$('#regionName').val();
 	if(regionName.length<1){
@@ -130,70 +56,92 @@ function validFormData(){
 	
 	//$('#regionNbrTooltip').tooltip('toggle')
 }
-//tree
-function changeLocDesc(){
-	var zTree = $.fn.zTree.getZTreeObj("locTree");
-	var nodes = zTree.getCheckedNodes(true);
-	var str="";
-	if(nodes.length>0){
-		for(var i=0;i<nodes.length;i++){
-			str+=nodes[i].name;
-			if(i!=nodes.length-1){
-				str+=",";
-			}
-		}
-	}
-	$('#locDesc').val(str);
+function selectAreaCode(){
+	parent.layer.open({
+        type: 2,
+        title: '选中关联区号信息',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['50%', '80%'],
+        maxmin: true,
+        content: 'areacode-list.html?showCheck=1',
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            var checkAreaCode = iframeWin.checkAreaCode;
+            parent.layer.close(index);
+            $('#areaCode').val(checkAreaCode.areaCode);
+            $('#areaCodeId').val(checkAreaCode.areaCodeId);
+        },
+        btn2: function(index, layero){},
+        cancel: function(){}
+    });
 }
-function onCheck(event, treeId, treeNode) {
-    if(treeNode.checked){
-    	var html="<li hid='"+treeNode.id+"' class=\"list-group-item\"><span onclick=\"removeChosed('"+treeNode.id+"')\" class=\"badge\">  X </span>"+treeNode.name+"</li>";
-    	$('#chosedTreeNode ul').append(html);
-    }else{
-    	removeChosed(treeNode.id);
-    }
-    changeLocDesc();
-};
-function removeChosed(id){
-	$('#chosedTreeNode ul li').each(function (){
-		if($(this).attr('hid')==id){
-			$(this).remove();
-		}
+function selectParentRegion(){
+	parent.layer.open({
+        type: 2,
+        title: '选中上级区域',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['50%', '80%'],
+        maxmin: true,
+        content: 'commonRegionTreeModal.html',
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            checkNode = iframeWin.checkNode;
+            parent.layer.close(index);
+            $('#parentRegion').val(checkNode.name);
+            $('#parentRegionId').val(checkNode.id);
+        },
+        btn2: function(index, layero){},
+        cancel: function(){}
+    });
+}
+function selectLocs(){
+	parent.layer.open({
+		type: 2,
+		title: '选中上级区域',
+		shadeClose: true,
+		shade: 0.8,
+		area: ['50%', '80%'],
+		maxmin: true,
+		content: 'pollocTreeModal.html',
+		btn: ['确认', '取消'],
+		yes: function(index, layero){
+			//获取layer iframe对象
+			var iframeWin = parent.window[layero.find('iframe')[0].name];
+			checkNode = iframeWin.checkNode;
+			parent.layer.close(index);
+			if(checkNode.length>0){
+				var polLocIds="",polLocNames="";
+				for(var i=0;i<checkNode.length;i++){
+					polLocIds+=checkNode[i].id;
+					polLocNames+=checkNode[i].name;
+					if(i!=checkNode.length-1){
+						polLocIds+=",";
+						polLocNames+=",";
+					}
+				}
+				$('#polLocIds').val(polLocIds);
+				$('#locDesc').val(polLocNames);
+				
+			}
+		},
+		btn2: function(index, layero){},
+		cancel: function(){}
 	});
-	var zTree = $.fn.zTree.getZTreeObj("locTree");
-	var nodes = zTree.getCheckedNodes(true);
-	if(nodes.length>0){
-		for(var i=0;i<nodes.length;i++){
-			if(nodes[i].id==id){
-				zTree.checkNode(nodes[i], false, true,true);
-			}
-		}
-	}
-	changeLocDesc();
 }
-var setting = {
 
-	data : {
-		simpleData : {
-			enable : true
-		}
-	},
-	view : {
-		showLine : false,
-		showIcon : false,
-		dblClickExpand: false
-	},
-	check : {
-		enable : true,
-		chkStyle : "checkbox",
-		chkboxType : {
-			"Y" : "",
-			"N" : ""
-		}
-	},
-	callback: {
-		onCheck: onCheck
+$(document).ready(function(){
+	loadRegionType();
+	if(getQueryString('upRegionId')!='0'){
+		
+		$('#parentRegion').val(getQueryString('upRegionName'));
+		$('#parentRegionId').val(getQueryString('upRegionId'));
 	}
-};
- 
-// tree end
+	$('#saveBtn').bind('click',saveRegion);
+	
+});

@@ -14,6 +14,7 @@
 		<result column="REGION_SORT" property="regionSort" />
 		<result column="PROVINCE_NBR" property="provinceNbr" />
 		<result column="CITY_FLAG" property="cityFlag" />
+		<result column="AREA_CODE_ID" property="areaCodeId" />
 
 		<result column="STATUS_CD" property="statusCd" />
 		<result column="CREATE_DATE" property="createDate" />
@@ -24,7 +25,7 @@
 	</resultMap>
 	<sql id="Base_Column_List">
 		COMMON_REGION_ID, PARENT_REGION_ID, REGION_NAME,
-		REGION_PY_NAME,REGION_NBR,REGION_TYPE,
+		REGION_PY_NAME,REGION_NBR,REGION_TYPE,AREA_CODE_ID,
 		REGION_DESC,REGION_LEVEL,REGION_SORT,PROVINCE_NBR,CITY_FLAG,
 		STATUS_CD, CREATE_DATE,CREATE_USER, UPDATE_DATE, UPDATE_USER,
 		STATUS_DATE
@@ -34,23 +35,32 @@
 		SEQ_TB_COMMON_REGION.nextval FROM dual
 	</select>
 
-	<select id="selectUnionPolLoc" resultType="java.util.HashMap"
+	<select id="getCommonRegion" resultType="java.util.HashMap"
 		parameterType="java.util.HashMap">
 		SELECT
-		a.COMMON_REGION_ID, a.PARENT_REGION_ID, a.REGION_NAME,
-		a.REGION_PY_NAME,a.REGION_NBR,a.REGION_TYPE,
-		a.REGION_DESC,a.REGION_LEVEL,a.REGION_SORT,a.PROVINCE_NBR,a.CITY_FLAG,
-		a.STATUS_CD,
-		b.LOC_ID ,b.LOC_CODE,b.LOC_NAME
+		    a.COMMON_REGION_ID,
+		    a.PARENT_REGION_ID,
+		    a.REGION_NAME,
+		    a.REGION_PY_NAME,
+		    a.REGION_NBR,
+		    a.REGION_TYPE,
+		    a.REGION_DESC,
+		    a.REGION_LEVEL,
+		    a.REGION_SORT,
+		    a.PROVINCE_NBR,
+		    a.CITY_FLAG,
+		    a.STATUS_CD,
+		    b.LOC_ID,
+		    b.LOC_CODE,
+		    b.LOC_NAME,
+		    d.AREA_CODE_ID,
+		    d.AREA_NBR,
+		    d.AREA_CODE 
 		FROM
-		TB_COMMON_REGION a
-		LEFT
-		JOIN TB_REGION_LOCATION_REL c ON
-		c.COMMON_REGION_ID =
-		a.COMMON_REGION_ID
-		LEFT JOIN TB_POLITICAL_LOCATION
-		b ON c.LOC_ID =
-		b.LOC_ID
+		    TB_COMMON_REGION a
+		    LEFT JOIN TB_REGION_LOCATION_REL c ON c.COMMON_REGION_ID = a.COMMON_REGION_ID
+		    LEFT JOIN TB_POLITICAL_LOCATION b ON c.LOC_ID = b.LOC_ID
+		    LEFT JOIN TB_AREA_CODE d ON a.AREA_CODE_ID = d.AREA_CODE_ID
 		<where>
 			<if test="commonRegionId != null and commonRegionId != '' ">
 				and a.COMMON_REGION_ID = #{commonRegionId}
@@ -58,6 +68,12 @@
 			<if test="statusCd != null and statusCd != '' ">
 				and a.STATUS_CD = #{statusCd}
 			</if>
+			<if test="parentRegionId !=null and parentRegionId lt 1">
+                and a.PARENT_REGION_ID &lt; 1
+            </if>
+            <if test="parentRegionId !=null and parentRegionId gte 1">
+                and a.PARENT_REGION_ID = #{parentRegionId}
+            </if>
 		</where>
 
 	</select>
@@ -97,7 +113,7 @@
 	<select id="getTreeCommonRegion" resultType="cn.ffcs.uoo.core.region.entity.TbCommonRegion"
 		parameterType="java.util.HashMap">
 		SELECT
-		*
+		COMMON_REGION_ID, PARENT_REGION_ID, REGION_NAME
 		FROM
 		TB_COMMON_REGION
 		WHERE

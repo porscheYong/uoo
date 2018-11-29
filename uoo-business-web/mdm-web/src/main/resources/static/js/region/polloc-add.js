@@ -2,40 +2,33 @@ var nodes = parent.getCurrentSelectedNode();
 var node = nodes[0];
 var upid = node.id;
 
-function loadUpRegionList() {
-	$.ajax({
-		url : '/region/politicalLocation/getTreePoliticalLocation',
-		dataType : 'json',
-		type : 'get',
-		success : function(tree) {
-			if (tree.state == 1000) {
-				$.each(tree.data, function(i, item) {
-					var up = 0;
-					var html = "";
-					html += "<option value='" + item.id + "'";
-					if (parent.getTree().getSelectedNodes().length>0&&parent.getTree().getSelectedNodes()[0].id == item.id) {
-						html += " selected='selected'";
-					}
-					up = item.pId;
-					html += " >" + item.name + "</option>"
-					//某一层的 循环查找插入  那么久插入
-					$('#parentLocId').append(html);
-					/*$('#upRegionId option').each(function() {
-						var id = $(this).val();
-						if (id == up) {
-							$(this).after(html);
-						}
-					});*/
-				});
-				
-				
-
-			}
-		}
-	});
+function selectParentLoc() {
+	parent.layer.open({
+        type: 2,
+        title: '选中上级区域',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['50%', '80%'],
+        maxmin: true,
+        content: 'pollocTreeModal-radio.html',
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            checkNode = iframeWin.checkNode;
+            parent.layer.close(index);
+            $('#parentLoc').val(checkNode[0].name);
+            $('#parentLocId').val(checkNode[0].id);
+        },
+        btn2: function(index, layero){},
+        cancel: function(){}
+    });
 }
 $(document).ready(function(){
-	loadUpRegionList();
+	if(getQueryString('upLocId')!='0'){
+		$('#parentLoc').val(getQueryString('upLocName'));
+		$('#parentLocId').val(getQueryString('upLocId'));
+	}
 	loadLocType();
 	
 	$('#saveBtn').bind('click',saveRegion);
@@ -46,7 +39,7 @@ function loadLocType(){
 		$('#locType').append("<option value='"+parent.typeArray[i].itemValue+"'>"+parent.typeArray[i].itemCnname+"</option>");
   	}
 }
-function showMenu(){$('#treeDiv').show();}
+
 function saveRegion(){
 	if(!validFormData()){
 		return;
@@ -104,74 +97,3 @@ function validFormData(){
 	
 	//$('#regionNbrTooltip').tooltip('toggle')
 }
-function findNodeById(node){
-	return (node.Id);
-}
-
-//tree
-function changeLocDesc(){
-	var zTree = $.fn.zTree.getZTreeObj("locTree");
-	var nodes = zTree.getCheckedNodes(true);
-	var str="";
-	if(nodes.length>0){
-		for(var i=0;i<nodes.length;i++){
-			str+=nodes[i].name;
-			if(i!=nodes.length-1){
-				str+=",";
-			}
-		}
-	}
-	$('#locDesc').val(str);
-}
-function onCheck(event, treeId, treeNode) {
-    if(treeNode.checked){
-    	var html="<li hid='"+treeNode.id+"' class=\"list-group-item\"><span onclick=\"removeChosed('"+treeNode.id+"')\" class=\"badge\">  X </span>"+treeNode.name+"</li>";
-    	$('#chosedTreeNode ul').append(html);
-    }else{
-    	removeChosed(treeNode.id);
-    }
-    changeLocDesc();
-};
-function removeChosed(id){
-	$('#chosedTreeNode ul li').each(function (){
-		if($(this).attr('hid')==id){
-			$(this).remove();
-		}
-	});
-	var zTree = $.fn.zTree.getZTreeObj("locTree");
-	var nodes = zTree.getCheckedNodes(true);
-	if(nodes.length>0){
-		for(var i=0;i<nodes.length;i++){
-			if(nodes[i].id==id){
-				zTree.checkNode(nodes[i], false, true,true);
-			}
-		}
-	}
-	changeLocDesc();
-}
-var setting = {
-
-	data : {
-		simpleData : {
-			enable : true
-		}
-	},
-	view : {
-		showLine : false,
-		showIcon : false,
-		dblClickExpand: false
-	},
-	check : {
-		enable : true,
-		chkStyle : "checkbox",
-		chkboxType : {
-			"Y" : "",
-			"N" : ""
-		}
-	},
-	callback: {
-		onCheck: onCheck
-	}
-};
- 
-// tree end
