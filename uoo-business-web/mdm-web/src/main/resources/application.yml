@@ -3,12 +3,12 @@ server:
 spring:
   application:
     name: mdm-web
-  mvc: 
+  mvc:
     static-path-pattern: /**
-  resources: 
+  resources:
     static-locations: classpath:/templates/,classpath:/static/,classpath:/META-INF/resources/,classpath:/META-INF/resources/webjars/
-  devtools: 
-    livereload: 
+  devtools:
+    livereload:
       enabled: true
 
 eureka:
