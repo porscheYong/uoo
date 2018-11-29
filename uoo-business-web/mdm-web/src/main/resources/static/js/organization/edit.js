@@ -472,7 +472,7 @@ function getCityVillage (cityTown) {
 
 // 获取组织最高岗位级别字典数据
 function getOrgPostLevel (orgPositionLevel) {
-    $http.get('/getList/ORG_POST_LEVEL', {}, function (data) {
+    $http.get('/tbDictionaryItem/getList/ORG_POST_LEVEL', {}, function (data) {
         var option = '';
         for (var i = 0; i < data.length; i++) {
             var select = orgPositionLevel === data[i].itemValue? 'selected' : '';
