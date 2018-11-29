@@ -2,6 +2,7 @@ var orgId = getQueryString('id');
 var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
+var orgTreeName = getQueryString('orgTreeName');
 var table;
 
 $('#orgName').html(orgName);
@@ -102,6 +103,6 @@ initOrgPersonnelTable();
 //     $(this).attr('href', url);
 // })
 $('#addBtn').on('click', function () {
-   var url = "add.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName);
+   var url = "add.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&orgTreeName=" + encodeURI(orgTreeName) + "&name=" + encodeURI(orgName);
    $(this).attr('href', url);
 })

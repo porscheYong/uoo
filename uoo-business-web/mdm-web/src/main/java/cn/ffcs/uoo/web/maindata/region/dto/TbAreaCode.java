@@ -17,11 +17,7 @@ public class TbAreaCode  {
      * 区号标识
      */
     private Long areaCodeId;
-
-    /**
-     * 公共管理区域标识
-     */
-    private Long commonRegionId;
+ 
 
     /**
      * 区号编码
@@ -72,13 +68,7 @@ public class TbAreaCode  {
         this.areaCodeId = areaCodeId;
     }
 
-    public Long getCommonRegionId() {
-        return commonRegionId;
-    }
-
-    public void setCommonRegionId(Long commonRegionId) {
-        this.commonRegionId = commonRegionId;
-    }
+    
 
     public String getAreaNbr() {
         return areaNbr;
@@ -146,7 +136,7 @@ public class TbAreaCode  {
 
     @Override
     public String toString() {
-        return "TbAreaCode [areaCodeId=" + areaCodeId + ", commonRegionId=" + commonRegionId + ", areaNbr=" + areaNbr
+        return "TbAreaCode [areaCodeId=" + areaCodeId +   ", areaNbr=" + areaNbr
                 + ", areaCode=" + areaCode + ", statusCd=" + statusCd + ", createDate=" + createDate + ", createUser="
                 + createUser + ", updateDate=" + updateDate + ", updateUser=" + updateUser + ", statusDate="
                 + statusDate + "]";

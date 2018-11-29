@@ -8,7 +8,7 @@ import java.util.List;
  * 指对于各种专业电信管理区域的共性管理区域信息的抽象表达，包括省公司、本地网、营业区。因为使用目的不同，可以定义不同使用类型的管理区域，如：CRM使用、计费使用、营销使用等。
  * </p>
  *
- * @author zxs 
+ * @author zxs
  * @since 2018-10-30
  */
 // @Data
@@ -73,7 +73,21 @@ public class CommonRegionDTO   {
     private String cityFlag;
     
     private List<Long> polLocIds;
+    private long operateUser;
+    private Long areaCodeId;
+    public Long getAreaCodeId() {
+        return areaCodeId;
+    }
 
+    public void setAreaCodeId(Long areaCodeId) {
+        this.areaCodeId = areaCodeId;
+    }
+    public long getOperateUser() {
+        return operateUser;
+    }
+    public void setOperateUser(long operateUser) {
+        this.operateUser = operateUser;
+    }
     public Long getCommonRegionId() {
         return commonRegionId;
     }
@@ -192,6 +206,7 @@ public class CommonRegionDTO   {
         reg.setRegionSort(this.regionSort);
         reg.setProvinceNbr(this.provinceNbr);
         reg.setCityFlag(this.cityFlag);
+        reg.setAreaCodeId(this.areaCodeId);
         return reg;
     }
       

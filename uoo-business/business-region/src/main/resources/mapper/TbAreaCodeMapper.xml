@@ -3,7 +3,6 @@
 <mapper namespace="cn.ffcs.uoo.core.region.dao.TbAreaCodeMapper">
 	<resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.region.entity.TbAreaCode">
 		<id column="AREA_CODE_ID" property="areaCodeId" />
-		<result column="COMMON_REGION_ID" property="commonRegionId" />
 		<result column="AREA_NBR" property="areaNbr" />
 		<result column="AREA_CODE" property="areaCode" />
 
@@ -15,12 +14,39 @@
 		<result column="STATUS_DATE" property="statusDate" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		AREA_CODE_ID, COMMON_REGION_ID, AREA_NBR, AREA_CODE,
-		STATUS_CD, CREATE_DATE,CREATE_USER, UPDATE_DATE, UPDATE_USER,
+		AREA_CODE_ID, AREA_NBR, AREA_CODE,
+		STATUS_CD,
+		CREATE_DATE,CREATE_USER, UPDATE_DATE, UPDATE_USER,
 		STATUS_DATE
 	</sql>
 	<select id="getId" resultType="java.lang.Long">
-		SELECT SEQ_TB_AREA_CODE_ID.nextval FROM dual
+		SELECT SEQ_TB_AREA_CODE_ID.nextval
+		FROM dual
 	</select>
-	
+
+	<select id="selectListAreaCode" parameterType="java.util.HashMap" resultType="cn.ffcs.uoo.core.region.vo.AreaCodeVO">
+		SELECT * FROM
+		(
+		SELECT TB.*,ROWNUM RN
+		FROM (
+		SELECT
+		A.AREA_CODE_ID areaCodeId, A.AREA_NBR areaNbr, A.AREA_CODE areaCode,
+		A.STATUS_CD statusCd, A.CREATE_DATE createDate,A.CREATE_USER createUser,
+		A.UPDATE_DATE updateDate, A.UPDATE_USER updateUser,A.STATUS_DATE
+		statusDate,
+		X.regionNames
+		FROM
+		TB_AREA_CODE A
+		LEFT JOIN ( SELECT B.AREA_CODE_ID, WM_CONCAT ( B.REGION_NAME ) AS
+		regionNames FROM TB_COMMON_REGION B WHERE B.STATUS_CD = '1000' GROUP
+		BY B.AREA_CODE_ID) X ON
+		A.AREA_CODE_ID = X.AREA_CODE_ID
+		WHERE A.STATUS_CD = '1000') TB
+		WHERE ROWNUM &lt;= #{end}
+		)
+		WHERE RN &gt;= #{from}
+	</select>
+    <select id="countListAreaCode" resultType="java.lang.Long">
+        select count(*) from TB_AREA_CODE where STATUS_CD = '1000'
+    </select>
 </mapper>

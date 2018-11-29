@@ -40,7 +40,7 @@ function filter (treeId, parentNode, childNodes) {
     return childNodes.data
 }
 function refreshResult () {
-    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName);
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&orgTreeName=" + encodeURI(businessName) + "&name=" + encodeURI(orgName);
     $('#userFrame').attr("src",url);
 }
 
