@@ -45,15 +45,15 @@
           text-overflow: ellipsis;
       }
       .typeahead-menu {
-          border-radius: 0;
-          width: 81%;
-          padding: 10px;
-          top: 95%;
-          left: 16%;
-          margin-bottom: 0;
+        border-radius: 0;
+        width: 81%;
+        padding: 10px;
+        top: 95%;
+        left: 16%;
+        margin-bottom: 0;
       }
       .is-empty {
-          padding: 0;
+        padding: 0;
       }
       .col-sm-8{
         width: 80% !important;
@@ -64,8 +64,7 @@
   <body style="background: #fff;">
     <div>
       <div class="board-title">
-        <span class="name ft18" id="orgName"></span
-        ><a class="icon icon-edit" href="edit.html" id="editBtn" style="vertical-align: top;"></a>
+        <span class="name ft18" id="orgName"></span>
       </div>
 
       <div class="board-title">
@@ -74,25 +73,23 @@
             <a class="button-add" id="addBtn" href="add.html"><span class="fa fa-plus-circle icon-add"></span>添加</a>
           </div>
       </div>
-
       <!-- 新增的搜索部分 -->
       <div class="row pos-relative" style="margin-top: 7px;margin-left:5px;">
-          <div class="col-md-6 col-sm-6 col-xs-12">
-              <div class="form-item" style="width: 100%">
-                  <div class="typeahead col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
-                      <div>
-                          <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
-                          <input class="ui-input typeahead-input tt-input" id="psnName" type="text" name="q" placeholder="请输入关键词进行搜索" autocomplete="off" spellcheck="false" dir="auto">
-                          <img class="typeahead-spinner" src="img/spinner.gif" style="display: none;">
-                      </div>
-                  </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="form-item" style="width: 100%">
+            <div class="typeahead col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
+              <div>
+                <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
+                <input class="ui-input typeahead-input tt-input" id="psnName" type="text" name="q" placeholder="请输入关键词进行搜索" autocomplete="off" spellcheck="false" dir="auto">
+                <img class="typeahead-spinner" src="img/spinner.gif" style="display: none;">
               </div>
+            </div>
           </div>
-          <div class="user-table typeahead-menu">
-              <table id="userTable" class="stripe" width="100%"></table>
-          </div>
+        </div>
+        <div class="user-table typeahead-menu">
+          <table id="userTable" class="stripe" width="100%"></table>
+        </div>
       </div>
-
       <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
           <table id="personnelTable" class="stripe" width="100%"></table>
       </div>
@@ -111,7 +108,7 @@
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
     <!-- init -->
     <script src="/js/init.js"></script>
-    <script type="text/javascript" src="/js/user/list.js"></script>
+	<script type="text/javascript" src="/js/user/list.js"></script>
     <script type="text/javascript" src="/js/user/psnSearch.js"></script>
     <script>
       // var loading = parent.loading;

@@ -107,7 +107,11 @@ function initOrgPersonnelTable (results) {
         "scrollY": "375px",
         'columns': [
             { 'data': null, 'title': '序号', 'className': 'row-no' },
-            { 'data': "psnName", 'title': '姓名', 'className': 'row-name' },
+            { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
+                'render': function (data, type, row, meta) {
+                    return '<a href="/inaction/user/edit.html?id='+ row.orgId +'&orgTreeId=1' + '&name=' + row.orgName + '&personnelId=' + row.personnelId + '">'+ row.psnName +'</a>'
+                }
+            },
             { 'data': "mobile", 'title': '手机号码', 'className': 'row-mobile' },
             { 'data': "certNo", 'title': '员工工号', 'className': 'cert-no' },
             { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
