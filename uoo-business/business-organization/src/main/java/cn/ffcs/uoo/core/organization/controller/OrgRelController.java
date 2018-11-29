@@ -122,20 +122,20 @@ public class OrgRelController extends BaseController {
     @UooLog(value = "重构组织树获取", key = "getOrgRelTree")
     @RequestMapping(value = "/getRestructOrgRelTree", method = RequestMethod.GET)
     //@Transactional(rollbackFor = Exception.class)
-    public ResponseResult<List<TreeNodeVo>> getRestructOrgRelTree(String id,String orgTreeId,String orgRootId,boolean isFull) throws IOException {
+    public ResponseResult<List<TreeNodeVo>> getRestructOrgRelTree(String orgId,String orgTreeId,String orgRootId,boolean isFull) throws IOException {
         ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
-        if(StrUtil.isNullOrEmpty(id)){
+        if(StrUtil.isNullOrEmpty(orgId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织标识不能为空");
             return ret;
         }
-        if(StrUtil.isNullOrEmpty(orgRootId)){
+        if(StrUtil.isNullOrEmpty(orgTreeId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织树根节点不能为空");
+            ret.setMessage("组织树标识不能为空");
             return ret;
         }
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
-        treeNodeVos = orgRelService.selectFuzzyOrgRelTree(id,orgRootId,isFull);
+        treeNodeVos = orgRelService.selectFuzzyOrgRelTree(orgId,orgTreeId,isFull);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("组织树查询成功");
         ret.setData(treeNodeVos);
@@ -377,7 +377,7 @@ public class OrgRelController extends BaseController {
     @ApiOperation(value = "检索组织信息-web", notes = "检索组织信息")
     @ApiImplicitParams({
     })
-    @UooLog(value = "检索组织信息", key = "getFuzzyOrgRel")
+    @UooLog(value = "检索组织信息", key = "getFuzzyOrgRelPage")
     @RequestMapping(value = "/getFuzzyOrgRelPage", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<Page<OrgVo>> getFuzzyOrgRelPage(String search,
@@ -391,17 +391,27 @@ public class OrgRelController extends BaseController {
 //            ret.setState(ResponseResult.PARAMETER_ERROR);
 //            return ret;
 //        }
-        if(StrUtil.isNullOrEmpty(orgRootId)){
-            ret.setMessage("根节点组织标识不能为空");
+        if(StrUtil.isNullOrEmpty(orgTreeId)){
+            ret.setMessage("组织树标识不能为空");
             ret.setState(ResponseResult.PARAMETER_ERROR);
             return ret;
         }
+        Wrapper orgtreeWrapper = Condition.create().eq("ORG_TREE_ID",orgTreeId)
+                .eq("STATUS_CD","1000");
+        OrgTree orgTree = orgTreeService.selectOne(orgtreeWrapper);
+        if(orgTree==null){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树不能为空");
+            return ret;
+        }
         OrgVo orgVo = new OrgVo();
+        orgVo.setOrgTreeId(new Long(orgTreeId));
+      //  orgVo.setOrgId(new Long(orgTree.getOrgId()));
         if(!StrUtil.isNullOrEmpty(search)){
             orgVo.setSearch(search);
         }
 
-        orgVo.setOrgRootId(orgRootId);
+        //orgVo.setOrgRootId(orgRootId);
         if(!StrUtil.isNullOrEmpty(pageSize)){
             orgVo.setPageSize(pageSize);
         }

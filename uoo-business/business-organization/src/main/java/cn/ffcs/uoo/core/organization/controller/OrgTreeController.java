@@ -108,6 +108,13 @@ public class OrgTreeController extends BaseController {
             ret.setState(ResponseResult.PARAMETER_ERROR);
             return ret;
         }
+        //判断组织树组织关系是否存在
+        if(orgTreeService.isExistsOrgTreeRel(orgRelTypeList.get(0).getRefCode())){
+            ret.setMessage("组织关系类型已创建组织树，不能重复创建");
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            return ret;
+        }
+
         Long orgId = orgService.getId();
         Org org = new Org();
         org.setOrgId(orgId);
@@ -169,12 +176,12 @@ public class OrgTreeController extends BaseController {
 
         //增加用工性质
 
-        Long treeStaffTypeRelId = treeStaffTypeRelService.getId();
-        TreeStaffTypeRel treeStaffTypeRel = new TreeStaffTypeRel();
-        treeStaffTypeRel.setTreeStaffTypeId(treeStaffTypeRelId);
-        treeStaffTypeRel.setOrgTreeId(orgTreeId);
-        treeStaffTypeRel.setUserTypeId(Long.valueOf(orgTree.getUserTypeId()));
-        treeStaffTypeRelService.add(treeStaffTypeRel);
+//        Long treeStaffTypeRelId = treeStaffTypeRelService.getId();
+//        TreeStaffTypeRel treeStaffTypeRel = new TreeStaffTypeRel();
+//        treeStaffTypeRel.setTreeStaffTypeId(treeStaffTypeRelId);
+//        treeStaffTypeRel.setOrgTreeId(orgTreeId);
+//        treeStaffTypeRel.setUserTypeId(Long.valueOf(orgTree.getUserTypeId()));
+//        treeStaffTypeRelService.add(treeStaffTypeRel);
 
 
         //新增编辑组织树组织关系

@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -84,15 +85,17 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
     @Override
     public OrgPersonRel convertObj(PsonOrgVo psonOrgVo){
         OrgPersonRel orgPersonRel = new OrgPersonRel();
-        if(!StrUtil.isNullOrEmpty(psonOrgVo.getPersonnelId())){
-            orgPersonRel.setOrgPersonId(psonOrgVo.getOrgPersonId());
-        }
+//        if(!StrUtil.isNullOrEmpty(psonOrgVo.getPersonnelId())){
+//            orgPersonRel.setOrgPersonId(psonOrgVo.getOrgPersonId());
+//        }
         orgPersonRel.setOrgId(psonOrgVo.getOrgId());
         orgPersonRel.setPersonnelId(psonOrgVo.getPersonnelId());
-        orgPersonRel.setPostId(Long.valueOf(psonOrgVo.getPostId()));
-        orgPersonRel.setRefType(psonOrgVo.getRefType());
-        orgPersonRel.setProperty(psonOrgVo.getProperty());
-        orgPersonRel.setDoubleName(psonOrgVo.getDoubleName());
+        if(!StrUtil.isNullOrEmpty(psonOrgVo.getPostId())){
+            orgPersonRel.setPostId(Long.valueOf(psonOrgVo.getPostId()));
+        }
+        orgPersonRel.setRefType(StrUtil.strnull(psonOrgVo.getRefType()));
+        orgPersonRel.setProperty(StrUtil.strnull(psonOrgVo.getProperty()));
+        orgPersonRel.setDoubleName(StrUtil.strnull(psonOrgVo.getDoubleName()));
         orgPersonRel.setSort(StrUtil.isNullOrEmpty(psonOrgVo.getSort())?1:Double.valueOf(psonOrgVo.getSort()));
         orgPersonRel.setStatusCd(StrUtil.isNullOrEmpty(psonOrgVo.getStatusCd())?"1000":psonOrgVo.getStatusCd());
         return orgPersonRel;
@@ -162,5 +165,18 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
         List<PsonOrgVo> list = baseMapper.selectFuzzyOrgPsnPage(page,psonOrgVo);
         page.setRecords(list);
         return page;
+    }
+
+    /**
+     * 查询组织树组织人员
+     * @param orgTreeId
+     * @param personnelId
+     * @return
+     */
+    @Override
+    public List<OrgPersonRel> getOrgPsnByOrgAndPsnId(String orgTreeId,String personnelId,String orgId){
+        List<OrgPersonRel> list = new ArrayList<OrgPersonRel>();
+        list = baseMapper.getOrgPsnByOrgTreeAndPsnId(orgTreeId,personnelId,orgId);
+        return list;
     }
 }

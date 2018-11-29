@@ -34,5 +34,9 @@ public interface OrgTreeService extends IService<OrgTree> {
      */
     public String getOrgTreeNameByOrgId(String orgId);
 
-
+    /**
+     * 是否存在组织树组织关系
+     * @return
+     */
+    public boolean isExistsOrgTreeRel(String refCode);
 }

@@ -18,7 +18,7 @@ import cn.ffcs.uoo.core.region.entity.TbCommonRegion;
 public interface ITbCommonRegionService extends IService<TbCommonRegion> {
     public Long getId();
     @SuppressWarnings("rawtypes")
-    public List<Map> selectUnionPolLoc(Map<String,Object> params);
+    public List<Map> getCommonRegion(Map<String,Object> params);
     @SuppressWarnings("rawtypes")
     public List<Map> getChildCommonRegionInfo(Map<String,Object> params);
     @SuppressWarnings("rawtypes")

@@ -23,7 +23,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 public class TbCommonRegion extends Model<TbCommonRegion> {
 
     private static final long serialVersionUID = 1L;
-
+    
     /**
      * 公共管理区域标识
      */
@@ -35,6 +35,11 @@ public class TbCommonRegion extends Model<TbCommonRegion> {
      */
     @TableField("PARENT_REGION_ID")
     private Long parentRegionId;
+    /**
+     * 区号
+     */
+    @TableField("AREA_CODE_ID")
+    private Long areaCodeId;
 
     /**
      * 区域名称
@@ -261,6 +266,14 @@ public class TbCommonRegion extends Model<TbCommonRegion> {
 
     public void setStatusDate(Date statusDate) {
         this.statusDate = statusDate;
+    }
+
+    public Long getAreaCodeId() {
+        return areaCodeId;
+    }
+
+    public void setAreaCodeId(Long areaCodeId) {
+        this.areaCodeId = areaCodeId;
     }
 
     @Override

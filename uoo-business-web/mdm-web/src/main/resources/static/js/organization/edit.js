@@ -1,13 +1,12 @@
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
-var locationList = [];
+var locationList;
 var orgTypeList;
 var positionList;
 var orgPostList;
 var checkNode;
 var selectUser = [];
-var deleteData; //删除组织
 var formValidate;
 var loading = parent.loading;
 
@@ -55,7 +54,7 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
-  $('#locId').tagsInput();
+  $('#locationList').tagsInput();
   $('#orgTypeList').tagsInput();
   $('#positionList').tagsInput();
   $('#postList').tagsInput();
@@ -180,7 +179,7 @@ function openLocationDialog() {
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
             parent.layer.close(index);
-            $('#locId').importTags(checkNode);
+            $('#locationList').importTags(checkNode);
             $('.ui-tips-error').css('display', 'none');
             locationList = checkNode;
         },
@@ -473,7 +472,7 @@ function getCityVillage (cityTown) {
 
 // 获取组织最高岗位级别字典数据
 function getOrgPostLevel (orgPositionLevel) {
-    $http.get('/getList/ORG_POST_LEVEL', {}, function (data) {
+    $http.get('/tbDictionaryItem/getList/ORG_POST_LEVEL', {}, function (data) {
         var option = '';
         for (var i = 0; i < data.length; i++) {
             var select = orgPositionLevel === data[i].itemValue? 'selected' : '';
@@ -516,7 +515,6 @@ function getOrg (orgId) {
         orgTreeId: '1',
         orgId: orgId
     }, function (data) {
-        deleteData = data;
         $('#orgName').val(data.orgName).focus();
         $('#orgCode').val(data.orgCode);
         $('#shortName').val(data.shortName);
@@ -538,11 +536,12 @@ function getOrg (orgId) {
         getCityVillage(data.cityTown);
         getOrgPostLevel(data.orgPositionLevel);
         getStatusCd(data.statusCd);
+        locationList = data.politicalLocationList;
         orgTypeList = data.orgTypeList;
         positionList = data.positionList;
         orgPostList = data.postList;
         //TODO id?
-        $('#locId').addTag(positionList);
+        $('#locationList').addTag(locationList);
         $('#orgTypeList').addTag(orgTypeList);
         $('#positionList').addTag(positionList);
         $('#postList').addTag(orgPostList);
@@ -581,6 +580,7 @@ function updateOrg () {
       return;
   loading.screenMaskEnable('container');
   var userList = [];
+  var location = [];
   var position = [];
   var post = [];
   var orgType = [];
@@ -588,6 +588,11 @@ function updateOrg () {
   for (var i = 0; i < selectUser.length; i++) {
       userList.push({personnelId: selectUser[i].personnelId});
   }
+    //行政管理区域
+    for (var i = 0; i < locationList.length; i++) {
+        var locId = locationList[i].locId || locationList[i].id;
+        location.push({locId: locId});
+    }
     //组织岗位
     for (var i = 0; i < positionList.length; i++) {
         position.push({positionId: positionList[i].positionId});
@@ -595,10 +600,6 @@ function updateOrg () {
     //组织职位
     for (var i = 0; i < orgPostList.length; i++) {
         post.push({postId: orgPostList[i].postId});
-    }
-    //行政管理区域
-    for (var i = 0; i < selectUser.length; i++) {
-        orgType.push({orgTypeId: selectUser[i].personnelId});
     }
   //组织类别
   for (var i = 0; i < orgTypeList.length; i++) {
@@ -639,7 +640,7 @@ function updateOrg () {
       statusCd: statusCd,
       sort: sort,
       address: address,
-      locId: locationList[0].id,
+      politicalLocationList: location,
       orgTypeList: orgType,
       positionList: position,
       postList: post,
@@ -657,22 +658,23 @@ function updateOrg () {
 // 删除组织
 function deleteOrg () {
     loading.screenMaskEnable('container');
-    deleteData.orgTreeId = '1';
-    deleteData.orgId = orgId;
-    deleteData.supOrgId = orgId;
-    deleteData.statusCd = '1100';
-    $http.post('/org/updateOrg', JSON.stringify(deleteData), function () {
+    $http.get('/org/deleteOrg', {
+        orgTreeId: '1',
+        orgId: orgId,
+        supOrgId: pid
+    }, function () {
         parent.deleteNode(orgId);
         parent.selectRootNode();
         loading.screenMaskDisable('container');
     }, function (err) {
-
+        console.log(err);
+        loading.screenMaskDisable('container');
     })
 }
 
 // 取消
 function cancel () {
-    var url = "list.html?id=" + orgId + "&name=" + row.orgName;
+    var url = "list.html?id=" + orgId + "&name=" + orgName;
     window.location.href = url;
 }
 
