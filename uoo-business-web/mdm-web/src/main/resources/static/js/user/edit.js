@@ -376,12 +376,11 @@ function openOrgEdit () {
     
     if(addOrg=='1'){
     	//从人员新增那里过来的老铁直接赋值一些数据
-    	if((currentEditOrgInfo.orgPersonId).length>0){
-    		return;
+    	if(personalData.currentEditOrgInfo==null ||personalData.currentEditOrgInfo.orgPersonId==null){
+    		$('#orgTreeId').val(orgTreeId);
+    		$('#orgFullName').val(orgName);
+    		$('#orgFullName').attr('keyId',orgId);
     	}
-    	$('#orgTreeId').val(orgTreeId);
-    	$('#orgFullName').val(orgName);
-    	$('#orgFullName').attr('keyId',orgId);
     }
 }
 function openOrgEditByEdit (i) {
