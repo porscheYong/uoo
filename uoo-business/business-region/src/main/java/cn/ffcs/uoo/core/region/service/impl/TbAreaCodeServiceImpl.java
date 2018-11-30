@@ -36,8 +36,8 @@ public class TbAreaCodeServiceImpl extends ServiceImpl<TbAreaCodeMapper, TbAreaC
         return mapper.selectListAreaCode(map);
     }
     @Override
-    public Long countListAreaCode() {
-        return mapper.countListAreaCode();
+    public Long countListAreaCode(HashMap<String,Object> map) {
+        return mapper.countListAreaCode(map);
     }
     
 

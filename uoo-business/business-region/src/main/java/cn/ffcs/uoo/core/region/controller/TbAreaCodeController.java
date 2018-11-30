@@ -67,12 +67,15 @@ public class TbAreaCodeController extends BaseController {
         @ApiImplicitParam(name = "pageSize", value = "每页的大小", dataType = "Integer",paramType="path",defaultValue = "12")
     })
     @UooLog(value = "区号列表", key = "listAreaCode")
-    @GetMapping("listAreaCode/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listAreaCode(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize) {
+    @GetMapping("listAreaCode")
+    public ResponseResult listAreaCode(String keyWord, Integer pageNo, Integer pageSize) {
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
-        Long countListAreaCode = areaCodeService.countListAreaCode();
         HashMap<String,Object> map=new HashMap<>();
+        if(keyWord!=null&&keyWord.trim().length()>0){
+            map.put("keyWord", "%"+keyWord+"%");
+        }
+        Long countListAreaCode = areaCodeService.countListAreaCode(map);
         map.put("from", (pageNo-1)*pageSize);
         map.put("end", pageNo * pageSize);
         areaCodeService.selectListAreaCode(map);
