@@ -29,6 +29,6 @@ public interface TbExpandovalueClient {
     ResponseResult<List<ExpandovalueVo>> queryExpandovalueVoList(@PathVariable("tableName") String tableName,
                                                                         @PathVariable("recordId") String recordId);
 
-    @RequestMapping(value = "/addByVo", method = RequestMethod.POST)
+    @RequestMapping(value = "/tbExpandovalue/addByVo", method = RequestMethod.POST)
     ResponseResult<ExpandovalueVo> addExpandoInfo(@RequestBody ExpandovalueVo expandovalueVo);
 }
