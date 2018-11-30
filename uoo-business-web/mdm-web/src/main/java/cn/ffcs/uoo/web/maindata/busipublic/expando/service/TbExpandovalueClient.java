@@ -31,6 +31,6 @@ public interface TbExpandovalueClient {
                                                @PathVariable("columnId") Long columnId, @PathVariable("recordId") String recordId);
 
     @RequestMapping(value = "/getValueVoList/{tableName}/{recordId}", method = RequestMethod.GET)
-    ResponseResult<List<ExpandovalueVo>> queryExpandovalueVoList(@PathVariable String tableName,
-                                                                        @PathVariable String recordId);
+    ResponseResult<List<ExpandovalueVo>> queryExpandovalueVoList(@PathVariable("tableName") String tableName,
+                                                                        @PathVariable("recordId") String recordId);
 }
