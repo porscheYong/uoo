@@ -37,7 +37,15 @@ var $http = {
                     closeBtn: 0
                 });
             }
-            break
+            break;
+            default:
+                if (parent.layer) {
+                    parent.layer.alert(message, {
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0
+                    });
+                }
+            break;
         }
         var httpStatus = response.status
         errorCallback(httpStatus, state, message)

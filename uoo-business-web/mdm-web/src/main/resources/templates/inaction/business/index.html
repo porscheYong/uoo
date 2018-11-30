@@ -16,10 +16,42 @@
     <link href="/vendors/zTree/zTreeStyle.css" rel="stylesheet">
     <!-- lulu ui -->
     <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+    <!-- jquery datatable -->
+    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+    <!-- jquery tagsinput -->
+    <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
     <link href="/css/custom.css" rel="stylesheet">
+    <link href="/css/account/style.css" rel="stylesheet">
+    <link href="/vendors/typeahead/typeahead.css" rel="stylesheet">
+
+    <style>
+      .col-sm-8{
+        width: 94% !important;
+        margin-right: 10px !important;
+      }
+      .typeahead-menu {
+        border-radius: 0;
+        width: 90%;
+        padding: 10px;
+        margin-top: 40px;
+        margin-right: 10px;
+      }
+      th{
+        display: none;
+      }
+      /* .paginate_button {
+        display: none !important;
+      } */
+      #busTable_length{
+        display: none !important;
+      }
+      .bottom{
+        margin-right: 20px;
+      }
+    </style>
 
     <!--[if lt IE 9]>
     <script src="/js/core/html5shiv.js"></script>
@@ -42,6 +74,24 @@
               </div>
               <div class="clearfix"></div>
             </div>
+            <!-- 新增的搜索部分 -->
+            <div class="row pos-relative" style="margin-top: 7px;margin-left:5px;margin-bottom: 10px">
+                <div class="typeahead col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
+                    <div>
+                        <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
+                        <input class="ui-input typeahead-input tt-input" id="busOrgName" type="text" name="q" placeholder="请输入关键词进行搜索" autocomplete="off" spellcheck="false" dir="auto">
+                        <img class="typeahead-spinner" src="img/spinner.gif" style="display: none;">
+                    </div>
+                </div>
+                <div class="bus-table typeahead-menu">
+                    <table id="busTable" class="stripe" width="100%"></table>
+                    <!-- <div class="Page">
+                      <a class="prev" href="#" id="perBtn" style="margin-left: -1%;">上一页</a>
+                      <a class="prev" href="#" id="nextBtn">下一页</a>
+                    </div> -->
+                </div>
+              </div>
+
             <ul id="businessTree" class="ztree"></ul>
             <div style="text-align: center">
               <a class="button-add" href="javascript:void(0);" onclick="addBusiness()"><span class="fa fa-plus-circle icon-add"></span>添加业务组织树</a>
@@ -60,6 +110,14 @@
     <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- sea js -->
     <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
+    <!-- handlebars -->
+    <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
+    <!-- typeahead -->
+    <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
+    <!-- jquery tagsinput -->
+    <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
     <!-- ztree -->
     <script type="text/javascript" src="/vendors/zTree/jquery.ztree.core.js"></script>
     <script type="text/javascript" src="/vendors/zTree/jquery.ztree.excheck.js"></script>
@@ -71,6 +129,7 @@
     <!-- init -->
     <script src="/js/init.js"></script>
     <script type="text/javascript" src="/js/business/index.js"></script>
+    <script type="text/javascript" src="/js/business/busOrgSearch.js"></script>
   
   </body>
 </html>
