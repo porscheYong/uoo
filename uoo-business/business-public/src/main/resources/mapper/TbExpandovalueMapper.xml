@@ -140,7 +140,7 @@
     </select>
 
     <select id="selectExpandovalueVoList" resultType="ExpandovalueVo">
-        SELECT V.RECORD_ID, C.COLUMN_NAME, C.COLUMN_CNNAME, V.DATA_
+        SELECT S.TABLE_NAME,C.COLUMN_NAME, C.COLUMN_CNNAME,V.VALUE_ID,V.RECORD_ID, V.DATA_
           FROM TB_SYSTEMTABLE S, TB_EXPANDOCOLUMN C, TB_EXPANDOVALUE V
          WHERE S.TABLE_ID = C.TABLE_ID
            AND V.TABLE_ID = S.TABLE_ID
