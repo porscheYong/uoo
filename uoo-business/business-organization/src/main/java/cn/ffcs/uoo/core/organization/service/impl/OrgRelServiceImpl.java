@@ -1,12 +1,14 @@
 package cn.ffcs.uoo.core.organization.service.impl;
 
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
+import cn.ffcs.uoo.core.organization.dao.OrgMapper;
 import cn.ffcs.uoo.core.organization.entity.Org;
 import cn.ffcs.uoo.core.organization.entity.OrgRel;
 import cn.ffcs.uoo.core.organization.dao.OrgRelMapper;
 import cn.ffcs.uoo.core.organization.entity.OrgTree;
 import cn.ffcs.uoo.core.organization.entity.OrgType;
 import cn.ffcs.uoo.core.organization.service.OrgRelService;
+import cn.ffcs.uoo.core.organization.service.OrgService;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
 import cn.ffcs.uoo.core.organization.vo.OrgRefTypeVo;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
@@ -33,6 +35,9 @@ import java.util.List;
 public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> implements OrgRelService {
     @Autowired
     private OrgRelMapper orgRelMapper;
+
+    @Autowired
+    private OrgMapper orgMapper;
 
     @Override
     public Long getId(){
@@ -96,6 +101,21 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
         return false;
     }
 
+    /**
+     * 是否存在子页节点
+     * @param orgId
+     * @param orgTreeId
+     * @return
+     */
+    @Override
+    public boolean isLeaf(String orgId,String orgTreeId){
+        int count = orgRelMapper.leafCount(orgTreeId,orgId);
+        if(count>0){
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * 获取组织关系类型
@@ -156,20 +176,20 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
 
     /**
      * 查询检索的组织树信息
-     * @param orgleafId
-     * @param orgRootId
+     * @param orgId
+     * @param orgTreeId
      * @return
      */
     @Override
-    public List<TreeNodeVo> selectFuzzyOrgRelTree(String orgleafId,String orgRootId,boolean isFull){
-        List<TreeNodeVo> list = baseMapper.selectFuzzyOrgRelTree(orgleafId,orgRootId);
-        if(list!=null && list.size()>0){
-            if(isFull){
-                return baseMapper.selectFuzzyFullOrgRelTree(orgleafId,orgRootId);
-            }else{
-                return baseMapper.selectFuzzyOrgRelTree(orgleafId,orgRootId);
-            }
-        }
+    public List<TreeNodeVo> selectFuzzyOrgRelTree(String orgId,String orgTreeId,boolean isFull){
+        List<TreeNodeVo> list = baseMapper.selectFuzzyOrgRelTree(orgId,orgTreeId);
+//        if(list!=null && list.size()>0){
+//            if(isFull){
+//                return baseMapper.selectFuzzyFullOrgRelTree(orgleafId,orgTreeId);
+//            }else{
+//                return baseMapper.selectFuzzyOrgRelTree(orgleafId,orgTreeId);
+//            }
+//        }
         return list;
     }
 
@@ -183,6 +203,16 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
         Page<OrgVo> page = new Page<OrgVo>(orgVo.getPageNo()==0?1:orgVo.getPageNo(),
                 orgVo.getPageSize()==0?10:orgVo.getPageSize());
         List<OrgVo> orgVolist = baseMapper.selectFuzzyOrgRelPage(page,orgVo);
+        if(orgVolist!=null && orgVolist.size()>0){
+            for(OrgVo vo : orgVolist){
+                List<OrgVo> orgListVo = orgMapper.getFullOrgList(orgVo.getOrgTreeId().toString(),vo.getOrgId().toString());
+                String fullName = "";
+                for(OrgVo vo1 : orgListVo){
+                    fullName += vo1.getOrgName()+"->";
+                }
+                vo.setFullName(fullName.substring(0,fullName.length()-2));
+            }
+        }
         page.setRecords(orgVolist);
         return page;
     }

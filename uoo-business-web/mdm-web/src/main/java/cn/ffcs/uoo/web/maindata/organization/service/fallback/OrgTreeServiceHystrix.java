@@ -48,5 +48,11 @@ public class OrgTreeServiceHystrix implements OrgTreeService {
         return responseResult;
     }
 
-
+    @Override
+    public ResponseResult<OrgTree> getOrgTree(String orgTreeId){
+        ResponseResult<OrgTree> responseResult = new ResponseResult<OrgTree>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
 }

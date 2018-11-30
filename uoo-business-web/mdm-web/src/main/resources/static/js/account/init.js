@@ -1,4 +1,4 @@
-// var base = 'http://134.96.253.221:11100/'; //开发地址
+//var base = 'http://127.0.0.1:18000/'; //开发地址
 
 // 全局异步封装
 var $http = {
@@ -20,29 +20,14 @@ var $http = {
       }
       else {
         switch (state) {
-          case 11000:
-            console.log(message)
+          case 1100:
+            parent.layer.alert(message, {
+                skin: 'layui-layer-lan'
+                ,closeBtn: 0
+            });
             break
-          case 11001:
-            console.log(message)
-            break
-          case 11002:
-            console.log(message)
-            break
-          case 11003:
-            console.log(message)
-            break
-          case 11004:
-            console.log(message)
-            break
-          case 11005:
-            console.log(message)
-            break
-          case 11006:
-            console.log(message)
-            break
-          case 11007:
-            console.log(message)
+          case 12:
+            alert(message);
             break
         }
         var httpStatus = response.status
@@ -56,6 +41,7 @@ var $http = {
       errorCallback(httpStatus, state, message)
     }
     $.ajax({
+       contentType: "application/json",
        type: type,
        url: path,
        data: data,

@@ -40,7 +40,6 @@ public interface PersonnelService {
 
     @RequestMapping(value="/personnel/getFormPersonnel", method = RequestMethod.GET, headers={"Content-Type=application/json"})
     public Object getFormPersonnel(@RequestParam("personnelId") Long personnelId,
-                                    @RequestParam("orgRootId") Long orgRootId,
                                     @RequestParam("orgTreeId") Long orgTreeId,
                                     @RequestParam("orgId") Long orgId);
 

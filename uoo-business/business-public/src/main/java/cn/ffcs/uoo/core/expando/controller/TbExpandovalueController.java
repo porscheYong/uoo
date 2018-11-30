@@ -6,6 +6,7 @@ import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.constant.StatusEnum;
+import cn.ffcs.uoo.core.expando.vo.ExpandovalueVo;
 import cn.ffcs.uoo.core.vo.ResponseResult;
 import cn.ffcs.uoo.core.expando.entity.TbExpandorow;
 import cn.ffcs.uoo.core.expando.entity.TbExpandovalue;
@@ -108,8 +109,8 @@ public class TbExpandovalueController extends BaseController {
         tbExpandovalue.setValueId(valueId);
         tbExpandovalue.setStatusCd(StatusEnum.VALID.getValue());
 
-        List<TbExpandovalue>  tbExpandovalueList = tbExpandovalueService.selectValueList(tbExpandovalue);
-        if(tbExpandovalueList == null || tbExpandovalueList.size() <= 0) {
+        List<TbExpandovalue> tbExpandovalueList = tbExpandovalueService.selectValueList(tbExpandovalue);
+        if (tbExpandovalueList == null || tbExpandovalueList.size() <= 0) {
             responseResult.setState(ResponseResult.STATE_ERROR);
             responseResult.setMessage("该扩展值id对应的扩展值不存在");
             return responseResult;
@@ -185,6 +186,39 @@ public class TbExpandovalueController extends BaseController {
         tbExpandovalue.setRecordId(recordId);
 
         return tbExpandovalueService.selectValueList(tbExpandovalue);
+    }
+
+    @ApiOperation(value = "查询扩展值值对象列表", notes = "查询扩展值值对象列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tableName", value = "表名", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "recordId", value = "记录id", required = true, dataType = "String", paramType = "path")
+    })
+    @UooLog(value = "查询扩展值值对象列表", key = "queryExpandovalueVoList")
+    @RequestMapping(value = "/getValueVoList/{tableName}/{recordId}", method = RequestMethod.GET)
+    public ResponseResult<List<ExpandovalueVo>> queryExpandovalueVoList(@PathVariable String tableName,
+                                                                        @PathVariable String recordId) {
+        ResponseResult<List<ExpandovalueVo>> responseResult = new ResponseResult<List<ExpandovalueVo>>();
+
+        // 校验必填项
+        if(StringUtils.isEmpty(tableName)) {
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("请输入表名");
+            return responseResult;
+        }
+        if(StringUtils.isEmpty(recordId)) {
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("请输入记录id");
+            return responseResult;
+        }
+
+        // 查询扩展值值对象列表
+        List<ExpandovalueVo> valueList = tbExpandovalueService.selectExpandovalueVoList(tableName, recordId);
+
+        // 返回结果
+        responseResult.setState(ResponseResult.STATE_OK);
+        responseResult.setMessage("查询成功");
+        responseResult.setData(valueList);
+        return responseResult;
     }
 }
 

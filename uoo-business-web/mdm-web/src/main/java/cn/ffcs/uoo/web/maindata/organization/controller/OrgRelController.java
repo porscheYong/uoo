@@ -55,11 +55,11 @@ public class OrgRelController {
     })
     @RequestMapping(value = "/getRestructOrgRelTree", method = RequestMethod.GET)
     public ResponseResult<List<TreeNodeVo>> getRestructOrgRelTree(
-            @PathVariable(value = "id",required = false)String id,
-            @PathVariable(value = "orgTreeId",required = false)String orgTreeId,
-            @PathVariable(value = "orgRootId",required = false)String orgRootId,
-            @PathVariable(value = "isFull",required = false)boolean isFull){
-        return orgRelService.getRestructOrgRelTree(id,orgTreeId,orgRootId,isFull);
+            @RequestParam(value = "orgId",required = false)String orgId,
+            @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+            @RequestParam(value = "orgRootId",required = false)String orgRootId,
+            @RequestParam(value = "isFull",required = false)boolean isFull){
+        return orgRelService.getRestructOrgRelTree(orgId,orgTreeId,orgRootId,isFull);
        // return null;
     }
 
@@ -69,7 +69,7 @@ public class OrgRelController {
     })
     @RequestMapping(value = "/getTarOrgRelTreeAndLv", method = RequestMethod.GET)
     public ResponseResult<List<TreeNodeVo>> getTarOrgRelTreeAndLv(@RequestParam(value = "orgRootId",required = false)String orgRootId,
-                                                                  @PathVariable(value = "orgTreeId",required = false)String orgTreeId,
+                                                                  @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                                   @RequestParam(value = "lv",required = false)String lv,
                                                                   @RequestParam(value = "curOrgid",required = false)String curOrgid,
                                                                   @RequestParam(value = "isFull",required = false)boolean isFull){

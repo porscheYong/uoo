@@ -906,7 +906,7 @@ function refreshStepNavigation(wizard, options, state, oldIndex)
 function lineAnimate(wizard){
     var lineWidth = wizard.find(".steps > ul > li").eq(0).width() - wizard.find(".steps > ul > li > a").eq(0).width() * 2;
     //wizard.find(".linego-done").animate({width:"25%"},500);   //animate({width:lineWidth+"px"},500);
-    wizard.find(".linego-done").css("width","20%");
+    wizard.find(".linego-done").css("width","50%");
 }
 
 /**
@@ -1171,7 +1171,7 @@ function renderTitle(wizard, options, state, header, index)
             index: index + 1,
             title: header.html()
         }),
-        explainData = new Array("基本信息","归属组织","工作履历","教育信息","家庭成员"),
+        explainData = new Array("基本信息","归属组织"),
         lindex= index + 1,
         explain = "<span class=\"explain\">" + explainData[index] +  "</span>",
         line = "<span class=\"line\"></span>",

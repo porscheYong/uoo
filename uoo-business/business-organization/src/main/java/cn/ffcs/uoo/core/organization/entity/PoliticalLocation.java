@@ -55,8 +55,8 @@ public class PoliticalLocation extends Model<PoliticalLocation> {
     /**
      * 上级行政区域标识
      */
-    @TableField("UP_LOC_ID")
-    private Long upLocId;
+    @TableField("PARENT_LOC_ID")
+    private Long parentLocId;
     /**
      * 状态
      */
@@ -137,12 +137,12 @@ public class PoliticalLocation extends Model<PoliticalLocation> {
         this.locAbbr = locAbbr;
     }
 
-    public Long getUpLocId() {
-        return upLocId;
+    public Long getParentLocId() {
+        return parentLocId;
     }
 
-    public void setUpLocId(Long upLocId) {
-        this.upLocId = upLocId;
+    public void setParentLocId(Long parentLocId) {
+        this.parentLocId = parentLocId;
     }
 
     public String getStatusCd() {
@@ -207,7 +207,7 @@ public class PoliticalLocation extends Model<PoliticalLocation> {
         ", locDesc=" + locDesc +
         ", locType=" + locType +
         ", locAbbr=" + locAbbr +
-        ", upLocId=" + upLocId +
+        ", parentLocId=" + parentLocId +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
         ", createUser=" + createUser +

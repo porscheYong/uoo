@@ -1,3 +1,6 @@
+var orgId = getQueryString('orgId');
+var orgName = getQueryString('orgName');
+var orgTreeId = getQueryString('orgTreeId');
 
 $('#userType').get(0).selectedIndex=1;
 var table;
@@ -12,16 +15,8 @@ function check(){
     }
 }
 
-// if(userType == '主账号'){
-//     window.location.href = 'addMainAccount.html?personnelId='+personnelId+'&userType=1&title=添加主账号&opBtn=1';
-// }else if(userType == '从账号'){
-//     window.location.href = 'addSubAccount.html?account=123&title=添加从账号&opBtn=1';
-// }else{
-//     alert('请选择用户类型');
-// }
-
 function getPsn(keyWord) {           //搜索人员
-    $http.get('http://192.168.58.112:18000/personnel/getPsnBasicInfo', {   //http://192.168.58.112:18000/user/getUser
+    $http.get('/personnel/getPsnBasicInfo', {   //http://192.168.58.112:18000/user/getUser
         keyWord: keyWord,
         pageNo: 1,
         pageSize: 200
@@ -49,9 +44,9 @@ function initPsnInfoTable(results){         //主账号组织数据
             { 'data': "psnName", 'title': '姓名', 'className': 'row-psnName' ,
             'render': function (data, type, row, meta) {
             if(userType == '主账号'){
-                return '<a href="addMainAccount.html?personnelId='+ row.personnelId +'&title=添加主账号&opBtn=1">'+ row.psnName +'</a>'
+                return '<a href="addMainAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + orgName +'&orgId=' + orgId + '&personnelId='+ row.personnelId +'&opBtn=1&hType=ah">'+ row.psnName +'</a>'
             }else if(userType == '从账号'){
-                return '<a href="addSubAccount.html?personnelId='+ row.personnelId +'&userType=2&title=添加从账号&opBtn=1">'+ row.psnName +'</a>'
+                return '<a href="addSubAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + orgName +'&orgId=' + orgId + '&personnelId='+ row.personnelId +'&opBtn=1&hType=ah">'+ row.psnName +'</a>'
             } 
             }
         },
@@ -70,3 +65,16 @@ function initPsnInfoTable(results){         //主账号组织数据
     });
 }
 
+// $('#cancelBtn').on('click', function () {
+//     var url = 'mainList.html?&name=' + orgName +'&id=' + orgId;
+//     $(this).attr('href', url);
+// })
+
+function cancel() {
+    var url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;
+    window.location.href = url;
+}
+
+function addPsn(){
+    window.location.href = "/inaction/user/add.html";
+}

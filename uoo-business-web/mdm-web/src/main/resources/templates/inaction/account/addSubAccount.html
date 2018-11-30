@@ -58,6 +58,9 @@
         td,th{
             text-align: center;
         }
+        th.row-tl{
+            display: none;
+        }
         #mobileLable{
             line-height: 21px !important;
         }
@@ -66,11 +69,40 @@
         }
         .tcenter{
             text-align: left !important;
+            margin-left: -55px !important;
+        }
+        table.dataTable {
+            table-layout: fixed;
+        }
+        table.dataTable tbody td {
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+      .modal-header{
+          background: #fff;
+      }
+      #delSubAcct{
+          margin-top: 40px !important;
+          margin-left: -15px;
+      }
+      .BoardTitle .Back {
+          background: url(/images/ico_back.svg) no-repeat left center;
+          display: inline-block;
+          line-height: 24px;
+          font-size: 16px;
+          padding: 0 30px;
         }
     </style>
 </head>
 
 <body style="background: #fff;">
+
+    <div class="BoardTitle" style="margin-bottom:20px;" onclick="submitToOther()">
+        <a class="Back" href="#" style="color:#008aff;" onclick="submitToOther()">返回</a>
+    </div>
+
     <div class="board-title">
         <span class="name ft18" id="sub-title"></span>  <!-- 从账号 -->
     </div>
@@ -182,7 +214,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%" id='default_psw'>
                             <label for="defaultPswTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
-                            <input type="tel" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off"> 
+                            <input type="password" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off"> 
                         </div>
                     </div>
                 </div>
@@ -202,8 +234,17 @@
                         </div>
                     </div>
                 </div>
-                <span style="display: block;margin-bottom: 30px;margin-top: 60px;font-size: 18px;font-weight: bold;">扩展信息</span>
-                <div id="extInfo" style="display:block;border-style: solid;border-radius: 8px;border-width: 1px;border-color: #00A4FF;margin-right: 59px;">
+
+                <div style="display: block;margin-bottom: 30px;margin-top: 60px;">
+                    <div class="board-title" style="margin-left:-6.7%;">
+                        <span class="name ft18">扩展信息</span>
+                        <input type="checkbox" id="extCheckBox" name="checkbox" onclick="extInfoFade()" value= "0">
+                        <label for="extCheckBox" class="ui-checkbox"></label>
+                    </div>
+                </div>
+                
+
+                <div id="extInfo" style="display:block;border-style: solid;border-radius: 8px;border-width: 1px;border-color: #b6b6b6;margin-right: 59px;">
                     <div class="row" style="margin-bottom: 10px;margin-left:25px;margin-top:25px;">
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-item" style="width: 100%">
@@ -265,14 +306,16 @@
                 <div class="modal" id="slaveOrgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <span id="selectTile">选择组织</span>
+                            <div class="modal-header" style="border-radius:6px;">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <span id="selectTile">选择组织</span>
+                            </div>
+
                             <div id="table-container" style="width: 100%;font-size: 14px; overflow: hidden;">
                                 <table id="acctOrgTable" class="stripe" width="100%"></table>
                             </div>
-                            <!-- <div style="margin-left:20%;margin-top:10px;">
-                                <button id="saveBtn" onclick="">确定</button>
-                                <button data-dismiss="modal" id="cancelBtn">取消</button>
-                            </div> -->
 
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal -->
@@ -282,11 +325,7 @@
                     <table id="orgTable" class="stripe" width="100%"></table>
                 </div>
 
-                <div class="BoardContent tcenter">
-                    <div class="FunctionBtn">
-                        <a class="BtnDel" href="#" onclick="deleteTbSubAcct()"><span></span>删除</a>
-                    </div>
-                </div>
+                <input class="Btn BtnRed2" id="delSubAcct" type="button" onclick="isDelete()" value="删除从账号" style="margin-top:20px;" />
 
             </form>
 
@@ -295,7 +334,7 @@
                     <!-- <input type="submit" id="formSubmit" class="clip">
                     <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
                     <button class="ui-button ui-button-primary" id="opBtn" onclick="btnSubmit()">提交</button>
-                    <button class="ui-button ui-button-cancel"  onclick="window.history.back()" style="margin-left: 40px;">取消</button>
+                    <button class="ui-button ui-button-cancel"  onclick="submitToOther()" style="margin-left: 40px;">取消</button>
                 </div>
             </div>
         </div>

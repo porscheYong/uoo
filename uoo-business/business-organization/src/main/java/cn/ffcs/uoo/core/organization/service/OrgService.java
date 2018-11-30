@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.core.organization.service;
 
 import cn.ffcs.uoo.core.organization.entity.Org;
+import cn.ffcs.uoo.core.organization.entity.PoliticalLocation;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
 import cn.ffcs.uoo.core.organization.vo.PageVo;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -70,13 +71,14 @@ public interface OrgService extends IService<Org> {
      * @return
      */
     public Page<OrgVo> selectOrgPage(OrgVo org);
+
     /**
      * 获取系统全路径
-     * @param orgRootId
-     * @param id
+     * @param orgTreeId
+     * @param orgId
      * @return
      */
-    public String getSysFullName(String orgRootId,String id);
+    public String getSysFullName(String orgTreeId,String orgId);
 
     /**
      * 根据组织标识查询组织信息
@@ -84,5 +86,14 @@ public interface OrgService extends IService<Org> {
      * @return
      */
     public OrgVo selectOrgByOrgId(String orgId);
+
+
+    /**
+     * 获取组织行政管理区域编码
+     * @param orgId
+     * @return
+     */
+    public List<PoliticalLocation> getOrgLoc(String orgId);
+
 
 }

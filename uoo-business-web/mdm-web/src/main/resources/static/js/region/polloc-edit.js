@@ -52,7 +52,6 @@ function get(id){
 				curUpId=data.data.parentLocId
 				loadLocType();
 				initData(data.data);
-				loadUpRegionList(curUpId);
 			}else{
 				alert(data.message);
 			}
@@ -66,6 +65,30 @@ function initData(data){
 	$('#locAbbr').val(data.locAbbr);
 	$('#locType').val(data.locType);
 	$('#locDesc').val(data.locDesc);
+	$('#parentLoc').val(getQueryString('parentLocName'));
+	$('#parentLocId').val(getQueryString('parentLocId'));
+}
+function selectParentLoc() {
+	parent.layer.open({
+        type: 2,
+        title: '选中上级区域',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['50%', '80%'],
+        maxmin: true,
+        content: 'pollocTreeModal-radio.html',
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            checkNode = iframeWin.checkNode;
+            parent.layer.close(index);
+            $('#parentLoc').val(checkNode[0].name);
+            $('#parentLocId').val(checkNode[0].id);
+        },
+        btn2: function(index, layero){},
+        cancel: function(){}
+    });
 }
 function inArr(arr,target){
 	for(var j=0;j<arr.length;j++){
@@ -167,40 +190,7 @@ function saveRegion(){
 	 
 }
 
-function loadUpRegionList(curUpId) {
-	$.ajax({
-		url : '/region/politicalLocation/getTreePoliticalLocation',
-		dataType : 'json',
-		type : 'get',
-		success : function(tree) {
-			if (tree.state == 1000) {
-				console.log(curUpId);
-				$.each(tree.data, function(i, item) {
-					var up = 0;
-					var html = "";
-					html += "<option value='" + item.id + "'";
-					if (curUpId == item.id) {
-						html += " selected='selected'";
-					}
-					up = item.pId;
-					html += " >" + item.name + "</option>"
-					console.log(html);
-					//某一层的 循环查找插入  那么久插入
-					$('#parentLocId').append(html);
-					/*$('#upRegionId option').each(function() {
-						var id = $(this).val();
-						if (id == up) {
-							$(this).after(html);
-						}
-					});*/
-				});
-				$("#parentLocId").attr("disabled","disabled");
-				
-
-			}
-		}
-	});
-}
+ 
 //tree
 function changeLocDesc(){
 	var zTree = $.fn.zTree.getZTreeObj("locTree");

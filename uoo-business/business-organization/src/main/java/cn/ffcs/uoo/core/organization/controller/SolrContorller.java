@@ -74,12 +74,12 @@ public class SolrContorller extends BaseController {
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织树为空");
         }
-        OrgRelType orgRelType = orgRelTypeService.getOrgRelType(orgTree.getOrgTreeId().toString());
+        List<OrgRelType> orgRelType = orgRelTypeService.getOrgRelType(orgTree.getOrgTreeId().toString());
         if(orgRelType==null){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织关系类型为空");
         }
-        solrReqVo.setOrgRelTypeId(orgRelType.getOrgRelTypeId().toString());
+        //solrReqVo.setOrgRelTypeId(orgRelType.getOrgRelTypeId().toString());
         List<SolrDocument> list = solrService.getOrgSolrIndex(solrReqVo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setData(list);
@@ -107,12 +107,12 @@ public class SolrContorller extends BaseController {
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织树为空");
         }
-        OrgRelType orgRelType = orgRelTypeService.getOrgRelType(orgTree.getOrgTreeId().toString());
-        if(orgRelType==null){
-            ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织关系类型为空");
-        }
-        solrReqVo.setOrgRelTypeId(orgRelType.getOrgRelTypeId().toString());
+//        OrgRelType orgRelType = orgRelTypeService.getOrgRelType(orgTree.getOrgTreeId().toString());
+//        if(orgRelType==null){
+//            ret.setState(ResponseResult.PARAMETER_ERROR);
+//            ret.setMessage("组织关系类型为空");
+//        }
+//        solrReqVo.setOrgRelTypeId(orgRelType.getOrgRelTypeId().toString());
         List<SolrDocument> list = solrService.getPsonOrgSolrIndex(solrReqVo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setData(list);

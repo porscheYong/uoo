@@ -1,5 +1,5 @@
 var orgId = getQueryString('id');
-var orgFrame = parent.window['standardOrg'];
+var orgFrame = parent.window['standardOrg'] || parent.window['business'];
 var orgTypeList = orgFrame.orgTypeList;
 var checkNode = []; //选中类别显示label标签
 console.log(orgTypeList)

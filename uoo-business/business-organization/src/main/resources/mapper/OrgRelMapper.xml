@@ -176,7 +176,7 @@
             AND B.ORG_ID = #{org.orgId}
         </if>
         ) BB LEFT JOIN (SELECT * FROM TB_ORG_REL_TYPE WHERE STATUS_CD = '1000') ORT
-        ON ORT.ORG_REL_TYPE_ID = BB.ORG_REL_TYPE_ID
+        ON ORT.REF_CODE = BB.REF_CODE
     </select>
 
 
@@ -256,24 +256,48 @@
     </select>
     <!--组织检索翻页-->
     <select id="selectFuzzyOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
-        SELECT *
-        FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') fullName,
-        ORG_NAME ORGNAME,ORG_ID ORGID,CREATE_DATE ORGRELCREATDATE,ORG_CODE ORGCODE
-        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.PARENT_ORG_ID,to_char(B.CREATE_DATE,'YYYY-MM-DD') CREATE_DATE,A.ORG_CODE
-        FROM TB_ORG A, TB_ORG_REL B
-        WHERE A.ORG_ID = B.ORG_ID
-        AND A.STATUS_CD = 1000
-        AND B.STATUS_CD = 1000) AA
-        START WITH ORG_ID = ${orgVo.orgRootId}
-        CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID)
-        WHERE 1=1
+        <!--SELECT *-->
+        <!--FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') fullName,-->
+        <!--ORG_NAME ORGNAME,ORG_ID ORGID,CREATE_DATE ORGRELCREATDATE,ORG_CODE ORGCODE-->
+        <!--FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.PARENT_ORG_ID,to_char(B.CREATE_DATE,'YYYY-MM-DD') CREATE_DATE,A.ORG_CODE-->
+        <!--FROM TB_ORG A, TB_ORG_REL B-->
+        <!--WHERE A.ORG_ID = B.ORG_ID-->
+        <!--AND A.STATUS_CD = 1000-->
+        <!--AND B.STATUS_CD = 1000) AA-->
+        <!--START WITH ORG_ID = ${orgVo.orgRootId}-->
+        <!--CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID)-->
+        <!--WHERE 1=1-->
+        <!--<if test="orgVo.search != null and orgVo.search != ''">-->
+            <!--AND FULLNAME like '%'||#{orgVo.search}||'%'-->
+        <!--</if>-->
+
+
+        <!--SELECT E.FULL_NAME fullName,E.ORG_NAME ORGNAME,E.Org_Id orgId,D.CREATE_DATE ORGRELCREATDATE,E.ORG_CODE ORGCODE-->
+        <!--FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E-->
+        <!--WHERE A.ORG_TREE_ID = #{orgVo.orgTreeId}-->
+        <!--AND A.ORG_TREE_ID = B.ORG_TREE_ID-->
+        <!--AND A.ORG_REL_TYPE_ID = c.org_rel_type_id-->
+        <!--AND D.ORG_ID=E.ORG_ID-->
+        <!--AND C.REF_CODE=D.REF_CODE-->
+        <!--<if test="orgVo.search != null and orgVo.search != ''">-->
+           <!--AND E.FULL_NAME like '%'||#{orgVo.search}||'%'-->
+        <!--</if>-->
+
+        SELECT E.ORG_NAME orgName ,E.ORG_ID orgId,D.PARENT_ORG_ID parentOrgId,E.ORG_CODE orgCode
+        FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E
+        WHERE  A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND D.ORG_ID=E.ORG_ID
+        AND C.REF_CODE=D.REF_CODE
+        AND A.ORG_TREE_ID = #{orgVo.orgTreeId}
         <if test="orgVo.search != null and orgVo.search != ''">
-            AND FULLNAME like '%'||#{orgVo.search}||'%'
+            AND E.ORG_NAME like '%'||#{orgVo.search}||'%'
         </if>
+
     </select>
     <!--检索出的组织树-->
     <select id="selectFuzzyOrgRelTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-       SELECT *
+    <!--    SELECT *
         FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULLNAME,
         ORG_NAME ORGNAME,LEVEL LV,ORG_ID ORGID
         FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.PARENT_ORG_ID
@@ -291,7 +315,18 @@
            AND C.ORG_TREE_ID = B.ORG_TREE_ID
            AND C.ORG_ID =  #{orgRootId})) AA
         START WITH ORG_ID =  #{orgleafId}
-        CONNECT BY PRIOR  AA.SUP_ORG_ID = AA.ORG_ID )
+        CONNECT BY PRIOR  AA.SUP_ORG_ID = AA.ORG_ID )-->
+        SELECT * FROM (
+        SELECT ORG_ID id,PARENT_ORG_ID pid,ORG_NAME name FROM (
+        SELECT E.ORG_NAME,E.ORG_ID ,D.PARENT_ORG_ID,D.CREATE_DATE,E.ORG_CODE
+        FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E
+        WHERE  A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND D.ORG_ID=E.ORG_ID
+        AND C.REF_CODE=D.REF_CODE
+        AND A.ORG_TREE_ID =#{orgTreeId} )AA
+        START WITH ORG_ID = #{orgId}
+        CONNECT BY AA.ORG_ID = PRIOR AA.PARENT_ORG_ID )
     </select>
     <!--检索出完检索出完整的组织树-->
     <select id="selectFuzzyFullOrgRelTree">
@@ -333,7 +368,7 @@
 
 
     <select id="getOrgRel" resultType="cn.ffcs.uoo.core.organization.entity.OrgRel">
-        SELECT D.ORG_REL_ID orgRelId,D.ORG_ID orgId,D.PARENT_ORG_ID supOrgId,D.ORG_REL_TYPE_ID orgRelTypeId,
+        SELECT D.ORG_REL_ID orgRelId,D.ORG_ID orgId,D.PARENT_ORG_ID supOrgId,D.REF_CODE refCode,
         D.STATUS_CD statusCd ,D.CREATE_DATE createDate,D.CREATE_USER createUser,
         D.UPDATE_DATE updateDate,D.UPDATE_USER updateUser,D.STATUS_DATE statusDate
         FROM TB_ORG_TREE  A,

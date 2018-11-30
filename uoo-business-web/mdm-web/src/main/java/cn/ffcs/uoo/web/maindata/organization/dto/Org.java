@@ -148,8 +148,11 @@ public class Org extends Model<Org> {
     @TableField("STATUS_DATE")
     private Date statusDate;
 
-
-
+    /**
+     * 化小编码
+     */
+    @TableField("ORG_MART_CODE")
+    private String orgMartCode;
 
 
     /**
@@ -326,12 +329,13 @@ public class Org extends Model<Org> {
     }
 
 
+    public String getOrgMartCode() {
+        return orgMartCode;
+    }
 
-
-
-
-
-
+    public void setOrgMartCode(String orgMartCode) {
+        this.orgMartCode = orgMartCode;
+    }
 
     public Long getOrgId() {
         return orgId;
@@ -566,6 +570,7 @@ public class Org extends Model<Org> {
                 ", updateDate=" + updateDate +
                 ", updateUser=" + updateUser +
                 ", statusDate=" + statusDate +
+                ", orgMartCode=" + orgMartCode +
                 "}";
     }
 }

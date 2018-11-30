@@ -26,55 +26,72 @@
     <script src="/js/core/respond.js"></script>
     <script src="/js/core/excanvas.js"></script>
     <![endif]-->
+    <style type="text/css">
+     #orgRelType, #orgType, #copyTree {
+        opacity: 0;
+        filter: alpha(opacity=0);
+        position: absolute;
+      }
+    </style>
   </head>
 
   <body style="background: #fff;">
-    <div>
+    <div style="overflow-x: hidden;">
         <div class="board-title">
-          <span class="name ft18">统一目录树</span>
+          <span class="name ft18" id="orgTypeTreeName"></span>
         </div>
         <div class="nav-tabs-brief" style="padding-top: 35px;">
 
           <div class="tab-content">
             <div class="tab-pane active" id="tab_content1">
-              <form action="/submit" method="post" style="padding: 10px;">
+              <form id="businessAdd" method="post" style="padding: 10px;">
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="form-item" style="width: 100%">
-                      <label for="orgName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织树名称</label>
-                      <input type="tel" id="orgName" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="tel" required>
+                      <label for="orgTreeName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织树名称</label>
+                      <input id="orgTreeName" class="ui-input col-md-4 col-sm-4 col-xs-12 error" required>
                     </div>
                 </div>
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="form-item" style="width: 100%">
-                      <label for="idTel" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织树类型</label>
-                      <select  class="col-md-4 col-sm-4 col-xs-12">
-                        <option></option>
-                        <option>城市</option>
-                        <option>农村</option>
-                      </select>
+                      <label for="orgTreeType" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织树类型</label>
+                      <select id="orgTreeType"  class="col-md-4 col-sm-4 col-xs-12" disabled required></select>
                     </div>
                 </div>
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="form-item" style="width: 100%">
-                    <label for="idTel" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织关系类型</label>
-                    <select  class="col-md-4 col-sm-4 col-xs-12">
-                      <option></option>
-                      <option>城市</option>
-                      <option>农村</option>
-                    </select>
+                    <label for="orgRelType" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织关系类型</label>
+                    <input id="orgRelType" class="ui-input col-md-4 col-sm-4 col-xs-12 error" onclick="openRelTypeDialog()" required readonly></input>
                   </div>
                 </div>
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="form-item" style="width: 100%">
-                    <label for="sort" class="form-item-label col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">排序</label>
-                    <input id="sort" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="code">
+                    <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">排序</label>
+                    <input id="sort" class="ui-input col-md-4 col-sm-4 col-xs-12 error" type="number" required>
+                  </div>
+                </div>
+                <!--<div class="row" style="margin-bottom: 10px;">-->
+                  <!--<div class="form-item" style="width: 100%">-->
+                    <!--<label for="userType" class="form-item-label col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用工性质</label>-->
+                    <!--<select id="userType"  class="col-md-4 col-sm-4 col-xs-12"></select>-->
+                  <!--</div>-->
+                <!--</div>-->
+                <div class="row" style="margin-bottom: 10px;">
+                  <div class="form-item" style="width: 100%">
+                    <label for="orgType" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织类别</label>
+                    <input id="orgType" class="ui-input col-md-9 col-sm-9 col-xs-12 error" onclick="openTypeDialog()" required readonly></input>
+                  </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px;">
+                  <div class="form-item" style="width: 100%">
+                    <label for="copyTree" class="form-item-label col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">拷贝组织节点</label>
+                    <input id="copyTree" class="ui-input col-md-9 col-sm-9 col-xs-12 error" onclick="openCopyDialog()" required readonly></input>
                   </div>
                 </div>
               </form>
               <div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-offset-3 col-xs-offset-3">
-                    <button class="ui-button ui-button-primary">保存</button>
-                    <button class="ui-button ui-button-cancel" style="margin-left: 10px;">取消</button>
+                    <button class="ui-button ui-button-primary" onclick="addOrgTree()">保存</button>
+                    <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
                 </div>
               </div>
             </div>
@@ -94,7 +111,7 @@
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
-    <!--<script type="text/javascript" src="../../../static/js/organization/add.js"></script>-->
+    <script type="text/javascript" src="/js/business/add.js"></script>
 
     <script type="text/javascript">
       seajs.use('/vendors/lulu/js/common/ui/Select', function () {

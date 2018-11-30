@@ -32,7 +32,7 @@ public class OrgRelServiceHystrix implements OrgRelService {
         return responseResult;
     }
     @Override
-    public ResponseResult<List<TreeNodeVo>> getRestructOrgRelTree(String id,String orgTreeId,String orgRootId,boolean isFull){
+    public ResponseResult<List<TreeNodeVo>> getRestructOrgRelTree(String orgId,String orgTreeId,String orgRootId,boolean isFull){
         ResponseResult<List<TreeNodeVo>> responseResult = new ResponseResult<List<TreeNodeVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

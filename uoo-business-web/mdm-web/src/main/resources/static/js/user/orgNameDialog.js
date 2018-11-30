@@ -1,4 +1,6 @@
-// var orgId = getQueryString('id');
+var orgId = getQueryString('id');
+var orgTreeId = getQueryString('orgTreeId');
+var orgRootId = getQueryString('orgRootId');
 var userFrame = parent.window['userFrame'];
 var orgFullName = userFrame.orgFullName;
 var checkNode; //选中类别显示label标签
@@ -8,7 +10,7 @@ function initOrgFullNameTree () {
     var treeSetting = {
         async: {
             enable: true,
-            url: "http://134.96.253.221:11100/orgRel/getOrgRelTree?orgRootId=1",
+            url: "/orgRel/getOrgRelTree?orgId="+orgId+"&orgRootId="+orgRootId+"&orgTreeId="+orgTreeId,
             autoParam: ["id"],
             type: "get",
             dataFilter: filter
@@ -39,7 +41,7 @@ function initOrgFullNameTree () {
       }
     };
     $http.get('/orgRel/getOrgRelTree', {
-        orgRootId: '1'
+        orgRootId: orgRootId,orgTreeId:orgTreeId
     }, function (data) {
         $.fn.zTree.init($("#orgFullNameTree"), treeSetting, data);
         var zTree = $.fn.zTree.getZTreeObj("orgFullNameTree");
