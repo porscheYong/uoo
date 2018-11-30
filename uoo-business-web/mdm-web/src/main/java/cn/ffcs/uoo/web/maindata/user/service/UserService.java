@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface UserService {
 
     @RequestMapping(value = "/tbUser/getUserList", method = RequestMethod.GET, headers={"Content-Type=application/json"})
-    public Object getUserList(@RequestParam("personnelId") Long personnelId);
+    public Object getUserList(@RequestParam("personnelId") Long personnelId, @RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
 
     @RequestMapping(value = "/tbUser/getFormAcct", method = RequestMethod.GET, headers={"Content-Type=application/json"})
     public Object getFormAcct(@RequestParam("acctId") Long acctId);

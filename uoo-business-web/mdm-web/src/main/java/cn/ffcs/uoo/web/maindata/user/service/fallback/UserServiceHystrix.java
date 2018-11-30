@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserServiceHystrix implements UserService {
     @Override
-    public Object getUserList(Long personnelId) {
+    public Object getUserList(Long personnelId, Integer pageNo, Integer pageSize) {
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

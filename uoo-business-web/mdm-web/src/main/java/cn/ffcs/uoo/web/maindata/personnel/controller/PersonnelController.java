@@ -86,11 +86,29 @@ public class PersonnelController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "keyWord", value = "关键字", required = true, dataType = "String",paramType="path"),
             @ApiImplicitParam(name = "pageNo", value = "当前页数", required = true, dataType = "Integer",paramType="path"),
-            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path")
     })
     @RequestMapping(value="/getPsnBasicInfo",method = RequestMethod.GET)
-    public Object getPsnBasicInfo(String keyWord, int pageNo, int pageSize){
+    public Object getPsnBasicInfo(String keyWord, Integer pageNo, Integer pageSize){
         return personnelService.getPsnBasicInfo(keyWord, pageNo, pageSize);
+    }
+
+    @ApiOperation(value = "身份证对应信息", notes = "身份证对应信息")
+    @ApiImplicitParam(name = "certNo", value = "身份证号", required = true, dataType = "String",paramType="path")
+    @RequestMapping(value = "/getIdCardInfo",method = RequestMethod.GET)
+    public Object getIdCardInfo(String certNo){
+        return personnelService.getIdCardInfo(certNo);
+    }
+
+    @ApiOperation(value="游离人员选择查询",notes="游离人员选择查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "keyWord", value = "关键字", required = true, dataType = "String",paramType="path"),
+            @ApiImplicitParam(name = "pageNo", value = "当前页数", required = true, dataType = "Integer",paramType="path"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path")
+    })
+    @RequestMapping(value="/getFreePsnInfo",method = RequestMethod.GET)
+    public Object getFreePsnInfo(String keyWord, Integer pageNo, Integer pageSize){
+        return personnelService.getFreePsnInfo(keyWord, pageNo, pageSize);
     }
 
 }
