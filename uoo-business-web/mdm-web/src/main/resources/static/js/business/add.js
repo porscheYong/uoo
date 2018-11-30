@@ -114,8 +114,9 @@ function openCopyDialog() {
         yes: function(index, layero){
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
-            checkNode = iframeWin.checkNode;
+            // checkNode = iframeWin.checkNode;
             parent.layer.close(index);
+            checkNode = iframeWin.getCheckdNodes();
             $('#copyTree').importTags(checkNode);
             $('.ui-tips-error').css('display', 'none');
             tarOrgTreeId = iframeWin.targetId;
@@ -192,14 +193,14 @@ function addOrgTree () {
     var orgTreeName = $('#orgTreeName').val();
     var orgTreeType = $('#orgTreeType option:selected') .val();
     var sort = $('#sort').val();
-    var userType = $('#userType option:selected') .val();
+    // var userType = $('#userType option:selected') .val();
 
     $http.post('/orgTree/addOrgTree', JSON.stringify({
         orgTreeName: orgTreeName,
         orgTreeType: orgTreeType,
         orgRelTypeList: orgRelType,
         sort: sort,
-        userTypeId: userType,
+        // userTypeId: userType,
         orgTypeList: orgType,
         treeNodeList: copyList,
         tarOrgTreeId: tarOrgTreeId
@@ -219,4 +220,4 @@ function cancel () {
 }
 
 getOrgTreeType();
-getProperty();
+// getProperty();

@@ -33,6 +33,7 @@ import cn.ffcs.uoo.core.region.service.ITbExchService;
 import cn.ffcs.uoo.core.region.service.ITbPoliticalLocationService;
 import cn.ffcs.uoo.core.region.service.ITbRegionLocationRelService;
 import cn.ffcs.uoo.core.region.vo.CommonRegionDTO;
+import cn.ffcs.uoo.core.region.vo.CommonRegionVO;
 import cn.ffcs.uoo.core.region.vo.ResponseResult;
 import cn.ffcs.uoo.core.region.vo.ZTreeNode;
 import io.swagger.annotations.ApiImplicitParam;
@@ -72,37 +73,53 @@ public class TbCommonRegionController extends BaseController {
         HashMap<String, Object> params = new HashMap<>();
         params.put("statusCd", DeleteConsts.VALID);
         params.put("commonRegionId", id);
-        List<Map> list = regionService.selectUnionPolLoc(params);
+        List<Map> list = regionService.getCommonRegion(params);
         if (list == null || list.isEmpty()) {
             return ResponseResult.createErrorResult("无效数据");
         }
         Map m = list.get(0);
-        List<Long> locIds = new ArrayList<>();
-        List<String> locCodes = new ArrayList<>();
-        List<String> locNames = new ArrayList<>();
-        if (m.get("LOC_ID") != null)
-            locIds.add(Long.valueOf(m.get("LOC_ID").toString()));
-        if (m.get("LOC_CODE") != null)
-            locCodes.add(m.get("LOC_CODE").toString());
-        if (m.get("LOC_NAME") != null)
-            locNames.add(m.get("LOC_NAME").toString());
-
-        if (list.size() > 1) {
-            for (int i = 1; i < list.size(); i++) {
-                Map map = list.get(i);
-                if (map.get("LOC_ID") != null)
-                    locIds.add(Long.valueOf(map.get("LOC_ID").toString()));
-                if (map.get("LOC_CODE") != null)
-                    locCodes.add(map.get("LOC_CODE").toString());
-                if (map.get("LOC_NAME") != null)
-                    locNames.add(map.get("LOC_NAME").toString());
+        CommonRegionVO vo=new CommonRegionVO();
+        Object areaCodeId = m.get("AREA_CODE_ID");
+        Object areaNbr = m.get("AREA_NBR");
+        Object areaCode = m.get("AREA_CODE");
+        TbAreaCode tac=new TbAreaCode();
+        tac.setAreaCode(areaCode==null?null:areaCode.toString());
+        tac.setAreaCodeId(areaCodeId==null?null:Long.valueOf(areaCodeId.toString()));
+        tac.setAreaNbr(areaNbr==null?null:areaNbr.toString());
+        vo.setAreaCode(tac);
+        Object obj=m.get("CITY_FLAG");
+        vo.setCityFlag(obj==null?null:obj.toString());
+        obj=m.get("COMMON_REGION_ID");
+        vo.setCommonRegionId(obj==null?null:Long.valueOf(obj.toString()));
+        obj=m.get("PARENT_REGION_ID");
+        vo.setParentRegionId(obj==null?0:Long.valueOf(obj.toString()));
+        obj=m.get("PROVINCE_NBR");
+        vo.setProvinceNbr(obj==null?null:obj.toString());
+        obj=m.get("REGION_DESC");
+        vo.setRegionDesc(obj==null?null:obj.toString());
+        obj=m.get("REGION_LEVEL");
+        vo.setRegionLevel(obj==null?null:Integer.valueOf(obj.toString()));
+        obj=m.get("REGION_NAME");
+        vo.setRegionName(obj==null?null:obj.toString());
+        obj=m.get("REGION_NBR");
+        vo.setRegionNbr(obj==null?null:obj.toString());
+        obj=m.get("REGION_PY_NAME");
+        vo.setRegionPyName(obj==null?null:obj.toString());
+        obj=m.get("REGION_SORT");
+        vo.setRegionSort(obj==null?null:Integer.valueOf(obj.toString()));
+        obj=m.get("REGION_TYPE");
+        vo.setRegionType(obj==null?null:obj.toString());
+        for (Map map : list) {
+            Object locIdObj=map.get("LOC_ID");
+            if(locIdObj!=null){
+                vo.getLocationIds().add(Long.valueOf(locIdObj.toString()));
+            }
+            Object locNameObj=map.get("LOC_NAME");
+            if(locIdObj!=null){
+                vo.getLocationNames().add(locNameObj.toString());
             }
         }
-        m.put("LOC_ID", locIds);
-        m.put("LOC_CODE", locCodes);
-        m.put("LOC_NAME", locNames);
-
-        return ResponseResult.createSuccessResult(m, "");
+        return ResponseResult.createSuccessResult(vo, "");
     }
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @ApiOperation(value = "根据ID获取下一级信息", notes = "根据ID获取下一级信息")
@@ -115,53 +132,67 @@ public class TbCommonRegionController extends BaseController {
         params.put("statusCd", DeleteConsts.VALID);
         params.put("parentRegionId", id);
         params.put("statusCd", DeleteConsts.VALID);
-        List<Map> list = regionService.getChildCommonRegionInfo(params);
-        List<Map> result = new ArrayList<>();
-        Map<Long, Integer> keys = new HashMap<>();
+        List<Map> list = regionService.getCommonRegion(params);
+        Map<Long,CommonRegionVO> result = new HashMap<>();
         if (list != null) {
             for (Map m : list) {
                 Object key = m.get("COMMON_REGION_ID");
                 Long lk = Long.valueOf(key.toString());
-                if (keys.containsKey(lk)) {
-                    Map map = result.get(keys.get(lk));
-                    List<Long> locIds = (List<Long>) map.get("LOC_ID");
+                if (result.containsKey(lk)) {
+                    CommonRegionVO vo = result.get(lk);
                     if (m.get("LOC_ID") != null)
-                        locIds.add(Long.valueOf(m.get("LOC_ID").toString()));
-                    map.put("LOC_ID", locIds);
-
-                    List<String> locCodes = (List<String>) map.get("LOC_CODE");
-                    if (m.get("LOC_CODE") != null)
-                        locCodes.add(m.get("LOC_CODE").toString());
-                    map.put("LOC_CODE", locCodes);
-
-                    List<String> locNames = (List<String>) map.get("LOC_NAME");
+                        vo.getLocationIds().add(Long.valueOf(m.get("LOC_ID").toString()));
                     if (m.get("LOC_NAME") != null)
-                        locNames.add(m.get("LOC_NAME").toString());
-                    map.put("LOC_NAME", locNames);
-
-                    result.set(keys.get(lk), map);
-                } else {
-                    List<Long> locIds = new ArrayList<>();
-                    if (m.get("LOC_ID") != null)
-                        locIds.add(Long.valueOf(m.get("LOC_ID").toString()));
-                    m.put("LOC_ID", locIds);
-                    List<String> locCodes = new ArrayList<>();
-                    if (m.get("LOC_CODE") != null)
-                        locCodes.add(m.get("LOC_CODE").toString());
-                    m.put("LOC_CODE", locCodes);
-                    List<String> locNames = new ArrayList<>();
-                    if (m.get("LOC_NAME") != null)
-                        locNames.add(m.get("LOC_NAME").toString());
-                    m.put("LOC_NAME", locNames);
-                    result.add(m);
-                    keys.put(lk, result.size() - 1);
+                        vo.getLocationNames().add(m.get("LOC_NAME").toString());
+                    result.put(lk, vo);
+                } else { 
+                    CommonRegionVO vo=new CommonRegionVO();
+                    Object areaCodeId = m.get("AREA_CODE_ID");
+                    Object areaNbr = m.get("AREA_NBR");
+                    Object areaCode = m.get("AREA_CODE");
+                    TbAreaCode tac=new TbAreaCode();
+                    tac.setAreaCode(areaCode==null?null:areaCode.toString());
+                    tac.setAreaCodeId(areaCodeId==null?null:Long.valueOf(areaCodeId.toString()));
+                    tac.setAreaNbr(areaNbr==null?null:areaNbr.toString());
+                    vo.setAreaCode(tac);
+                    Object obj=m.get("CITY_FLAG");
+                    vo.setCityFlag(obj==null?null:obj.toString());
+                    obj=m.get("COMMON_REGION_ID");
+                    vo.setCommonRegionId(obj==null?null:Long.valueOf(obj.toString()));
+                    obj=m.get("PARENT_REGION_ID");
+                    vo.setParentRegionId(obj==null?0:Long.valueOf(obj.toString()));
+                    obj=m.get("PROVINCE_NBR");
+                    vo.setProvinceNbr(obj==null?null:obj.toString());
+                    obj=m.get("REGION_DESC");
+                    vo.setRegionDesc(obj==null?null:obj.toString());
+                    obj=m.get("REGION_LEVEL");
+                    vo.setRegionLevel(obj==null?null:Integer.valueOf(obj.toString()));
+                    obj=m.get("REGION_NAME");
+                    vo.setRegionName(obj==null?null:obj.toString());
+                    obj=m.get("REGION_NBR");
+                    vo.setRegionNbr(obj==null?null:obj.toString());
+                    obj=m.get("REGION_PY_NAME");
+                    vo.setRegionPyName(obj==null?null:obj.toString());
+                    obj=m.get("REGION_SORT");
+                    vo.setRegionSort(obj==null?null:Integer.valueOf(obj.toString()));
+                    obj=m.get("REGION_TYPE");
+                    vo.setRegionType(obj==null?null:obj.toString());
+                    Object locIdObj=m.get("LOC_ID");
+                    if(locIdObj!=null){
+                        vo.getLocationIds().add(Long.valueOf(locIdObj.toString()));
+                    }
+                    Object locNameObj=m.get("LOC_NAME");
+                    if(locIdObj!=null){
+                        vo.getLocationNames().add(locNameObj.toString());
+                    }
+                    result.put(lk, vo);
                 }
 
             }
         }else{
             return ResponseResult.createErrorResult("暂无数据");
         }
-        return ResponseResult.createSuccessResult(result,"success");
+        return ResponseResult.createSuccessResult(result.values(),"success");
     }
     @ApiOperation(value = "公共管理区域树", notes = "公共管理区域树")
     @UooLog(value = "公共管理区域树", key = "getTreeCommonRegion")
@@ -194,7 +225,7 @@ public class TbCommonRegionController extends BaseController {
     @GetMapping("listAllCommonRegion")
     public ResponseResult listAllCommonRegion() {
         // 只查询有效的
-        HashMap<String, Object> params = new HashMap<>();
+       /* HashMap<String, Object> params = new HashMap<>();
         params.put("statusCd", DeleteConsts.VALID);
         List<Map> list = regionService.selectUnionPolLoc(params);
         List<Map> result = new ArrayList<>();
@@ -242,8 +273,8 @@ public class TbCommonRegionController extends BaseController {
         }else{
             return ResponseResult.createErrorResult("暂无数据");
         }
-
-        ResponseResult rr = ResponseResult.createSuccessResult(result, "");
+*/
+        ResponseResult rr = ResponseResult.createErrorResult("接口不可用");
         return rr;
     }
 

@@ -121,16 +121,19 @@ function changeNodeName(orgId, name) {
 
 // 删除节点
 function deleteNode(orgId) {
+    var tId = 'standardTree_' + orgId;
     var zTree = $.fn.zTree.getZTreeObj("standardTree");
-    var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
+    var selectNode = zTree.getNodeByTId(tId); //获取当前选中的节点并取消选择状态
     zTree.removeNode(selectNode);
 }
 
 // 选择根节点
 function selectRootNode () {
-    var rootId = 1;
+    var rootId = 'standardTree_1';
+    var zTree = $.fn.zTree.getZTreeObj("standardTree");
     var rootNode = zTree.getNodeByTId(rootId);
     zTree.selectNode(rootNode);
+    $('.curSelectedNode').trigger('click');
 }
 
 initOrgRelTree();

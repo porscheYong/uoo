@@ -185,6 +185,7 @@
     </select>
 
     <select id="getSysFullName" resultType="java.lang.String">
+<!--
         SELECT FULL_NAME fullName FROM (
         SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,
         ORG_NAME,ORG_ID,PARENT_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD
@@ -194,9 +195,40 @@
         AND A.STATUS_CD = 1000
         AND B.STATUS_CD = 1000) AA
         START WITH ORG_ID = #{orgRootId}
-        CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID ) AA where AA.ORG_ID = #{orgId}
+        CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID ) AA where AA.ORG_ID = #{orgId}-->
+
+
+        SELECT * FROM (
+        SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'),
+        '->',
+        '//'),
+        '//',
+        '/') fullName,ORG_ID orgId FROM (
+        SELECT E.ORG_NAME,E.ORG_ID ,D.PARENT_ORG_ID,D.CREATE_DATE,E.ORG_CODE
+        FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E
+        WHERE  A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND D.ORG_ID=E.ORG_ID
+        AND C.REF_CODE=D.REF_CODE
+        AND A.ORG_TREE_ID = #{orgTreeId} )AA
+        START WITH ORG_ID = #{orgId}
+        CONNECT BY AA.ORG_ID = PRIOR AA.PARENT_ORG_ID ) WHERE  orgId= #{orgId}
+
     </select>
 
+    <select id="getFullOrgList" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
+            SELECT * FROM (
+        SELECT ORG_ID ORGID,ORG_NAME,level lv  FROM (
+        SELECT E.ORG_NAME,E.ORG_ID ,D.PARENT_ORG_ID,D.CREATE_DATE,E.ORG_CODE
+        FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E
+        WHERE  A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND D.ORG_ID=E.ORG_ID
+        AND C.REF_CODE=D.REF_CODE
+        AND A.ORG_TREE_ID = #{orgTreeId} )AA
+        START WITH ORG_ID = #{orgId}
+        CONNECT BY PRIOR AA.PARENT_ORG_ID =  AA.ORG_ID ) ORDER BY lv DESC
+    </select>
 
     <!--<select id="insertByObj" parameterType="cn.ffcs.uoo.core.organization.vo.OrgVo">-->
     <!--INSERT INTO tb_org (ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE-->
@@ -226,6 +258,7 @@
         WHERE A.LOC_ID = B.LOC_ID
         AND A.STATUS_CD = '1000'
         AND B.STATUS_CD = '1000'
+        AND B.ORG_ID = #{orgId}
     </select>
 
 </mapper>

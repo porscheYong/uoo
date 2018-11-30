@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import cn.ffcs.uoo.web.maindata.region.dto.TbAreaCode;
 import cn.ffcs.uoo.web.maindata.region.service.fallback.AreaCodeServiceHystrix;
@@ -17,8 +18,8 @@ public interface AreaCodeService {
     @GetMapping("/region/areaCode/getAreaCode/id={id}")
     public ResponseResult getAreaCode(@PathVariable(value = "id") Long id);
     
-    @GetMapping("/region/areaCode/listAreaCode/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listAreaCode(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize);
+    @GetMapping("/region/areaCode/listAreaCode")
+    public ResponseResult listAreaCode(@RequestParam("keyWord") String keyWord, @RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
    
     @RequestMapping(value="/region/areaCode/addAreaCode",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult addAreaCode(@RequestBody TbAreaCode areaCode);

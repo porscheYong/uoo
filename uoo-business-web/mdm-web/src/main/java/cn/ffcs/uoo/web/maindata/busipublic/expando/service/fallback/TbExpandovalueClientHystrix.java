@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.web.maindata.busipublic.expando.service.fallback;
 
+import cn.ffcs.uoo.web.maindata.busipublic.expando.dto.ExpandovalueVo;
 import cn.ffcs.uoo.web.maindata.busipublic.expando.dto.TbExpandovalue;
 import cn.ffcs.uoo.web.maindata.busipublic.expando.service.TbExpandovalueClient;
 import cn.ffcs.uoo.web.maindata.busipublic.vo.ResponseResult;
@@ -36,5 +37,21 @@ public class TbExpandovalueClientHystrix implements TbExpandovalueClient {
     @Override
     public List<TbExpandovalue> queryValueList(String resourceId, Long tableId, Long columnId, String recordId) {
         return null;
+    }
+
+    @Override
+    public ResponseResult<List<ExpandovalueVo>> queryExpandovalueVoList(String tableName, String recordId) {
+        ResponseResult<List<ExpandovalueVo>> responseResult = new ResponseResult<>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
+
+    @Override
+    public ResponseResult<ExpandovalueVo> addExpandoInfo(ExpandovalueVo expandovalueVo) {
+        ResponseResult<ExpandovalueVo> responseResult = new ResponseResult<ExpandovalueVo>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 }

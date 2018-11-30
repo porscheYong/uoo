@@ -21,18 +21,31 @@ var $http = {
       else {
         switch (state) {
           case 1100:
-            parent.layer.alert(message, {
-                skin: 'layui-layer-lan'
-                ,closeBtn: 0
-            });
+            if (parent.layer) {
+                parent.layer.alert(message, {
+                    skin: 'layui-layer-lan'
+                    ,closeBtn: 0
+                });
+            }
             break;
           case 1200:
-            parent.loading.screenMaskDisable('container');
-            parent.layer.alert(message, {
-                skin: 'layui-layer-lan',
-                closeBtn: 0
-             });
-            break
+            if (parent.loading)
+              parent.loading.screenMaskDisable('container');
+            if (parent.layer) {
+                parent.layer.alert(message, {
+                    skin: 'layui-layer-lan',
+                    closeBtn: 0
+                });
+            }
+            break;
+            default:
+                if (parent.layer) {
+                    parent.layer.alert(message, {
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0
+                    });
+                }
+            break;
         }
         var httpStatus = response.status
         errorCallback(httpStatus, state, message)

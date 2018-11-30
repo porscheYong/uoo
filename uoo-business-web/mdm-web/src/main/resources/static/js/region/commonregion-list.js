@@ -1,7 +1,14 @@
+function gotoAdd(){
+	parent.changeIframe('/inaction/region/commonregion-add.html?upRegionId='+parent.getCurrentSelectedNode()[0].id+'&upRegionName='+parent.getCurrentSelectedNode()[0].name)
+}
 function goEdit(){
 	var cid=$('#regionStrCurrent').attr('cid');
-	console.log('goto :'+cid);
-	parent.changeIframe('/inaction/region/commonregion-edit.html?id='+cid);
+	var upnode=parent.getCurrentSelectedNode()[0].getParentNode();
+	var pid=0,pname="最上级";
+	if(upnode!=null){
+		pid=upnode.id;pname=upnode.name;
+	}
+	parent.changeIframe('/inaction/region/commonregion-edit.html?id='+cid+'&upRegionId='+pid+'&upRegionName='+pname);
 }
 function getRegionList (id) {
 	//初始化页面显示
@@ -42,10 +49,11 @@ function quickList(id){
 	parent.changeIframe('/inaction/region/commonregion-list.html?id=' + qnode.id);
 }
 function initTable (results) {
+	var i=0;
     var table = $("#regionTable").DataTable({
         'data': results,
         'searching': false,
-        'autoWidth': false,
+        'autoWidth': true,
         'ordering': true,
         'initComplete': function (settings, json) {
             console.log(settings, json)
@@ -53,12 +61,12 @@ function initTable (results) {
         'destroy':true,
         "scrollY": "375px",
         'columns': [
-            { 'data': "COMMON_REGION_ID","title":"序号" , 'className': 'user-account','defaultContent':'',
-            	'render':function(data, type, row, meta){
-            		return "<a href='javascript:void(0)' onclick=\"quickList('"+data+"')\">"+data+"</a>";
-            	}
+            { 'data': "commonRegionId","title":"序号" , 'className': 'user-account','defaultContent':'',
+            	'render':function(data, type, row, meta){i++;
+            		return i;
+            	},'width':'50px'
             },
-            { 'data': "REGION_NBR",
+            { 'data': "regionNbr",
               'title': '区域编码', 'className': 'user-account'
             	  ,'defaultContent':''
               /*'className': 'row-sex',
@@ -66,12 +74,12 @@ function initTable (results) {
               //   return data[0].orgTypeName
               // } 
 */            },
-            { 'data': "REGION_NAME", 'title': '区域名称', 'className': 'user-account' ,'defaultContent':'',
+            { 'data': "regionName", 'title': '区域名称', 'className': 'user-account' ,'defaultContent':'',
 				'render':function(data, type, row, meta){
-					return "<a href='javascript:void(0)' onclick=\"quickList('"+row.COMMON_REGION_ID+"')\">"+data+"</a>";
+					return "<a href='javascript:void(0)' onclick=\"quickList('"+row.commonRegionId+"')\">"+data+"</a>";
 				}
             },
-            { 'data': "REGION_TYPE", 'title': '区域类型' , 'className': 'user-account' ,'defaultContent':'',
+            { 'data': "regionType", 'title': '区域类型' , 'className': 'user-account' ,'defaultContent':'',
             	'render': function (data, type, row, meta) {
               		var types='未知类型：'+data;
             	  	for(var i=0;i<parent.typeArray.length;i++){
@@ -86,15 +94,15 @@ function initTable (results) {
                     }  , 'className': 'user-account'
                  
             },
-            { 'data': "LOC_NAME", 'title': '关联行政区域名称', 'className': 'user-account'  ,'defaultContent':''},
-            { 'data': "COMMON_REGION_ID", 'title': '操作', 
+            { 'data': "locationNames", 'title': '关联行政区域名称', 'className': 'user-account'  ,'defaultContent':''},
+            { 'data': "areaCode.areaCode", 'title': '关联区号', 'className': 'user-account'  ,'defaultContent':''},
+            { 'data': "commonRegionId", 'title': '编辑', 
             'render': function (data, type, row, meta) {
-            	var html="<a href=\"javascript:void(0)\" onClick=\"parent.changeIframe('/inaction/region/commonregion-edit.html?id="+row.COMMON_REGION_ID+"')\">查看 </a>";
-            	html+="&nbsp;&nbsp;&nbsp;&nbsp;";
+            	var html="<a href=\"javascript:void(0)\" onClick=\"parent.changeIframe('/inaction/region/commonregion-edit.html?id="+row.commonRegionId+"&upRegionId="+parent.getCurrentSelectedNode()[0].id+"&upRegionName="+parent.getCurrentSelectedNode()[0].name+"')\">> </a>";
             	//html+="<a class=\"glyphicon glyphicon-remove\"   href=\"javascript:void(0)\" onclick=\"deleteRegion('"+row.COMMON_REGION_ID+"')\" style=\"vertical-align: top;\"></a>";
             	return html;
             		 //return '<a href="list.html?id='+ row.orgId +'" onclick="parent.openTreeById('+orgId+','+row.orgId+')">'+ row.orgName +'</a>'
-                }  , 'className': 'user-account'
+                }  , 'className': 'user-account', 'width':'50px'
             },
              
         ],

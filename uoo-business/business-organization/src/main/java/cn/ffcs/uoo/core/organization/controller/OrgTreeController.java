@@ -108,6 +108,13 @@ public class OrgTreeController extends BaseController {
             ret.setState(ResponseResult.PARAMETER_ERROR);
             return ret;
         }
+        //判断组织树组织关系是否存在
+        if(orgTreeService.isExistsOrgTreeRel(orgRelTypeList.get(0).getRefCode())){
+            ret.setMessage("组织关系类型已创建组织树，不能重复创建");
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            return ret;
+        }
+
         Long orgId = orgService.getId();
         Org org = new Org();
         org.setOrgId(orgId);
@@ -143,16 +150,20 @@ public class OrgTreeController extends BaseController {
 //            ogtOrgReltypeConfService.add(ogtOrgReftypeConf);
 //
 //        }
-        Wrapper orgRelTypeWrapper = Condition.create().eq("STATUS_CD","1000")
-                .eq("REF_CODE",orgRelTypeList.get(0).getRefCode());
-        OrgRelType orgtype = orgRelTypeService.selectOne(orgRelTypeWrapper);
-
+        //        Wrapper orgRelTypeWrapper = Condition.create().eq("STATUS_CD","1000")
+//                .eq("REF_CODE",orgRelTypeList.get(0).getRefCode());
+//        OrgRelType orgtype = orgRelTypeService.selectOne(orgRelTypeWrapper);
+//        if(orgtype==null){
+//            ret.setMessage("组织关系类型不存在");
+//            ret.setState(ResponseResult.PARAMETER_ERROR);
+//            return ret;
+//        }
 
 
         OgtOrgReltypeConf ogtOrgReftypeConf = new OgtOrgReltypeConf();
         Long ogtOrgReftypeConfId = ogtOrgReltypeConfService.getId();
         ogtOrgReftypeConf.setOrgTreeId(orgTreeId);
-        ogtOrgReftypeConf.setOrgRelTypeId(orgtype.getOrgRelTypeId());
+        ogtOrgReftypeConf.setOrgRelTypeId(ort.getOrgRelTypeId());
         ogtOrgReftypeConf.setOgtOrgReltypeConfId(ogtOrgReftypeConfId);
         ogtOrgReltypeConfService.add(ogtOrgReftypeConf);
 
@@ -169,12 +180,12 @@ public class OrgTreeController extends BaseController {
 
         //增加用工性质
 
-        Long treeStaffTypeRelId = treeStaffTypeRelService.getId();
-        TreeStaffTypeRel treeStaffTypeRel = new TreeStaffTypeRel();
-        treeStaffTypeRel.setTreeStaffTypeId(treeStaffTypeRelId);
-        treeStaffTypeRel.setOrgTreeId(orgTreeId);
-        treeStaffTypeRel.setUserTypeId(Long.valueOf(orgTree.getUserTypeId()));
-        treeStaffTypeRelService.add(treeStaffTypeRel);
+//        Long treeStaffTypeRelId = treeStaffTypeRelService.getId();
+//        TreeStaffTypeRel treeStaffTypeRel = new TreeStaffTypeRel();
+//        treeStaffTypeRel.setTreeStaffTypeId(treeStaffTypeRelId);
+//        treeStaffTypeRel.setOrgTreeId(orgTreeId);
+//        treeStaffTypeRel.setUserTypeId(Long.valueOf(orgTree.getUserTypeId()));
+//        treeStaffTypeRelService.add(treeStaffTypeRel);
 
 
         //新增编辑组织树组织关系

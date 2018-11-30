@@ -5,7 +5,7 @@ var orgTreeId = "1";
 var setting = {
     async: {
         enable: true,
-        url: "http://134.96.253.221:11100/orgRel/getOrgRelTree?orgTreeId="+orgTreeId + "&orgRootId=" + orgTreeId,
+        url: "/orgRel/getOrgRelTree?orgTreeId="+orgTreeId + "&orgRootId=" + orgTreeId,
         autoParam: ["id"],
         type: "get",
         dataFilter: filter
@@ -65,13 +65,13 @@ function filter (treeId, parentNode, childNodes) {
 }
 
 function refreshResult () {
-    var url = "mainList.html?orgId=" + orgId + "&orgName=" + encodeURI(orgName);
+    var url = "mainList.html?orgId=" + orgId + "&orgName=" + encodeURI(orgName) + "&orgTreeId=" + orgTreeId;
     $('#userFrame').attr("src",url);
 }
 
 //初始化组织
 function initOrgRelTree (orgTreeId) {
-    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTree', {
+    $http.get('/orgRel/getOrgRelTree', {
         orgTreeId: orgTreeId,
         orgRootId: orgTreeId
     }, function (data) {

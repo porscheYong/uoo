@@ -53,7 +53,7 @@ function getOrgTree () {
         orgTreeId: orgTreeId
     }, function (data) {
         $('#orgTreeName').val(data.orgTreeName).focus();
-        getProperty(data.userTypeList);
+        // getProperty(data.userTypeList);
         $('#sort').val(data.sort);
         orgRelTypeList = data.orgRelTypeList;
         orgTypeList = data.orgTypeList;
@@ -163,7 +163,7 @@ function updateOrgTree () {
     var orgTreeName = $('#orgTreeName').val();
     var orgTreeType = $('#orgTreeType option:selected') .val();
     var sort = $('#sort').val();
-    var userType = $('#userType option:selected') .val();
+    // var userType = $('#userType option:selected') .val();
 
     $http.post('/orgTree/updateOrgTree', JSON.stringify({
         orgTreeId: orgTreeId,
@@ -171,7 +171,7 @@ function updateOrgTree () {
         orgTreeType: orgTreeType,
         orgRelTypeList: orgRelType,
         sort: sort,
-        userTypeId: userType,
+        // userTypeId: userType,
         orgTypeList: orgType
     }), function () {
         parent.initBusinessList();
@@ -188,6 +188,6 @@ function cancel () {
     window.location.href = url;
 }
 
-getOrgTree(1);
+getOrgTree();
 getOrgTreeType();
-getProperty();
+// getProperty();

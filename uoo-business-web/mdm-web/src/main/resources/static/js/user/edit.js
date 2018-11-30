@@ -1,14 +1,40 @@
 var orgId = getQueryString('id');
-// var orgRootId = getQueryString('orgRootId');
-var orgRootId = 1;
+var orgRootId = getQueryString('orgRootId');
+var tabPage = getQueryString('tabPage');
+//var orgRootId = 1;
 var personnelId = getQueryString('personnelId');
 var orgTreeId = getQueryString('orgTreeId');
 var orgName = getQueryString('name');
-var personalData={},genderData,certTypeData,nationData,pliticalStatusData,marriageData,orgInfo={};
+var addOrg = getQueryString('addOrg');
+var personalData={},genderData,certTypeData,nationData,pliticalStatusData,marriageData,orgInfo={},
+userFormValidate,jobFormValidate,eduFormValidate,familyFormValidate,orgFormValidate;
 // lulu ui select插件
 // seajs.use('../../../static/vendors/lulu/js/common/ui/Select', function () {
 //   $('select').selectMatch();
 // })
+function getUserAccount(){
+	$http.get('/user/getUserList', {personnelId:personnelId}, function (data) {
+		personalData.userList=data;
+		initUserList();
+	}, function (err) {
+		console.log(err)
+	})
+	
+}
+function getOrgTreeList () {
+    $http.get('/orgTree/getOrgTreeList', {}, function (data) {
+        personalData.orgTreeList=data;
+    }, function (err) {
+        console.log(err)
+    })
+}
+function getRefType () {
+	$http.get('/tbDictionaryItem/getList/REF_TYPE', {}, function (data) {
+		personalData.refType=data;
+	}, function (err) {
+		console.log(err)
+	})
+}
 function getEduInfo(){
 	$.ajax({
 		url:'/edu/getTbEduPage',
@@ -33,17 +59,7 @@ function getJobInfo(){
 		}
 	});
 }
-function getOrgInfo(){
-	$http.get('/orgPersonRel/getPerOrgRelPage', {orgId:orgId,orgTreeId:orgTreeId,personId:personnelId,pageSize:11111111,pageNo:1},
-	function (data) {
-        console.log(data)
-        orgInfo=data;
-        personalData.orgInfo=orgInfo;
-        initOrgInfo();
-    }, function (err) {
-        console.log(err)
-    })
-}
+ 
 function getFamilyInfo(){
 	$.ajax({
 		url:'/family/getTbFamilyPage',
@@ -137,26 +153,41 @@ function getFamilyInfo(){
 function getOrgPersonnerList () {
     $http.get('/personnel/getFormPersonnel', {
         orgId: orgId,
-        orgRootId: orgRootId,
+        orgTreeId: orgTreeId,
         personnelId: personnelId
     }, function (data) {
     	personalData.personalData=data;
+    	personalData.orgInfo=data.psonOrgVoList.records;
     	console.log(personalData);
     	initUser();
+    	initOrgInfo();
     }, function (err) {
         console.log(err)
     })
 }
 function initUser(){
+	$('#userEditButton').show();
     //预编译模板
     var userTemplate = Handlebars.compile($("#userTemplate").html());
-    var baseInfoTemplate = Handlebars.compile($("#baseInfoTemplate").html());
+    //var baseInfoTemplate = Handlebars.compile($("#baseInfoTemplate").html());
     //匹配json内容
     var userHtml = userTemplate(personalData);
-    var baseHtml = baseInfoTemplate(personalData);
+   // var baseHtml = baseInfoTemplate(personalData);
     //输入模板
     $('#userInfo').html(userHtml);
-    $('#baseInfo').html(baseHtml);
+   // $('#baseInfo').html(baseHtml);
+}
+function initUserList(){
+	$('#userEditButton').show();
+	//预编译模板
+	//var userTemplate = Handlebars.compile($("#userTemplate").html());
+	var baseInfoTemplate = Handlebars.compile($("#baseInfoTemplate").html());
+	//匹配json内容
+	//var userHtml = userTemplate(personalData);
+	var baseHtml = baseInfoTemplate(personalData);
+	//输入模板
+	//$('#userInfo').html(userHtml);
+	$('#baseInfo').html(baseHtml);
 }
 function initOrgInfo(){
 	//预编译模板
@@ -205,12 +236,89 @@ function initFamilyInfo(){
 	$('#familyInfoTable2').html(h2);
 }
 function  editUser() {
+	$('#userEditButton').hide();
     //预编译模板
     var userTemplate = Handlebars.compile($("#userEditTemplate").html());
     //匹配json内容
         var userHtml = userTemplate(personalData);
     //输入模板
     $('#userInfo').html(userHtml);
+    
+    //手动插入吧
+    var mobileHtml="";
+    if(personalData.personalData.tbMobileVoList.length>0){
+    	for(var i=0;i<personalData.personalData.tbMobileVoList.length;i++){
+    		var d=personalData.personalData.tbMobileVoList[i];
+    		mobileHtml+="<li>";
+    		if(i==0){
+    			mobileHtml+="<span class='Label'><span class='Red'>* </span>联系电话</span>";
+    			mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' class='Col6 ui-input' required type='text' value='"+d.content+"'/>";
+    		}else{
+    			mobileHtml+="<span class='Label'><span class='Red'> </span> </span>";
+    			mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' class='Col6' type='text' value='"+d.content+"'/>";
+    			mobileHtml+="&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a>";
+    			
+    		}
+    		if(i==0){
+    			mobileHtml+="&nbsp;<a id='' href='javascript:void(0)' onclick='addMobileInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
+    		}else{
+    			//mobileHtml+="&nbsp;<a id='' href='javascript:void(0)' onclick='addMobileInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
+    			
+    		}
+    		mobileHtml+="</li>";
+    	}
+    }else{
+		mobileHtml+="<li>";
+		mobileHtml+="<span class='Label'><span class='Red'>* </span>联系电话</span>";
+		mobileHtml+="<input name='mobiles' contactid='' class='Col6 ui-input' required type='text' value=''/>";
+		mobileHtml+="&nbsp;<a id='' href='javascript:void(0)' onclick='addMobileInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
+		mobileHtml+="</li>";
+    }
+    $('#userEditUL0').append(mobileHtml);
+    var emailHtml="";
+    if(personalData.personalData.tbEamilVoList.length>0){
+    	for(var i=0;i<personalData.personalData.tbEamilVoList.length;i++){
+    		var d=personalData.personalData.tbEamilVoList[i];
+    		emailHtml+="<li>";
+    		if(i==0){
+    			emailHtml+="<span class='Label'><span class='Red'>* </span>邮箱</span>";
+    			emailHtml+="<input name='emails' contactid='"+d.contactId+"' class='Col6 ui-input' required type='text' value='"+d.content+"'/>";
+    		}else{
+    			emailHtml+="<span class='Label'><span class='Red'> </span> </span>";
+    			emailHtml+="<input name='emails' contactid='"+d.contactId+"' class='Col6' type='text' value='"+d.content+"'/>";
+    			emailHtml+="&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a>";
+    		}
+    		if(i==0){
+    			emailHtml+="&nbsp;<a id='' href='javascript:void(0)' onclick='addEmailInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
+    		}
+    		emailHtml+="</li>";
+    	}
+    }else{
+    	emailHtml+="<li>";
+    	emailHtml+="<span class='Label'><span class='Red'>* </span>邮箱</span>";
+    	emailHtml+="<input name='emails' contactid='' class='Col6 ui-input' required type='text' value=''/>";
+    	emailHtml+="&nbsp;<a id='' href='javascript:void(0)' onclick='addEmailInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
+    	emailHtml+="</li>";
+    }
+    $('#userEditUL1').append(emailHtml);
+    laydate.render({
+	    elem:  'input[isTime="yes"]'
+	});
+    
+    $('.icon-del').on('click', function () {
+		 $(this).parent().remove();
+	 });
+
+	seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+	    userFormValidate = new Validate($('#userEditForm'));
+	    userFormValidate.immediate();
+	   /* $('#userEditForm').find(':input').each(function () {
+	        $(this).hover(function () {
+	        	userFormValidate.isPass($(this));
+	        });
+	    });*/
+	});
+    
 }
 function editOrgInfo(){
 	
@@ -253,17 +361,60 @@ function openOrgEdit () {
     //预编译模板
     var orgTemplate = Handlebars.compile($("#orgTemplate").html());
     //匹配json内容
-    var orgEditHtml = orgTemplate();
+    var orgEditHtml = orgTemplate(personalData);
     //输入模板
     $('#orgInfoTable1').html(orgEditHtml);
+    seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+    	orgFormValidate = new Validate($('#orgEditForm'));
+    	orgFormValidate.immediate();
+	    /*$('#jobEditForm').find(':input').each(function () {
+	        $(this).hover(function () {
+	        	jobFormValidate.isPass($(this));
+	        });
+	    });*/
+	});
+    
+    if(addOrg=='1'){
+    	//从人员新增那里过来的老铁直接赋值一些数据
+    	if(personalData.currentEditOrgInfo==null ||personalData.currentEditOrgInfo.orgPersonId==null){
+    		$('#orgTreeId').val(orgTreeId);
+    		$('#orgFullName').val(orgName);
+    		$('#orgFullName').attr('keyId',orgId);
+    	}
+    }
+}
+function openOrgEditByEdit (i) {
+	personalData.currentEditOrgInfo=personalData.orgInfo[i];
+	console.log(personalData);
+	openOrgEdit();
 }
 function openJobEdit () {
 	//预编译模板
 	var orgTemplate = Handlebars.compile($("#jobTemplate").html());
 	//匹配json内容
-	var orgEditHtml = orgTemplate();
+	var orgEditHtml = orgTemplate(personalData);
 	//输入模板
 	$('#jobInfoTable1').html(orgEditHtml);
+	laydate.render({
+	    elem:  '#endTime'
+	});
+	laydate.render({
+		elem:  '#beginTime'
+	});
+	
+	seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+	    jobFormValidate = new Validate($('#jobEditForm'));
+	    jobFormValidate.immediate();
+	    /*$('#jobEditForm').find(':input').each(function () {
+	        $(this).hover(function () {
+	        	jobFormValidate.isPass($(this));
+	        });
+	    });*/
+	});
+}
+function openJobEditByEdit (i) {
+	personalData.currentEditJobInfo=personalData.jobInfo.records[i];
+	openJobEdit();
 }
 function openEduEdit () {
 	//预编译模板
@@ -272,6 +423,25 @@ function openEduEdit () {
 	var orgEditHtml = orgTemplate(personalData);
 	//输入模板
 	$('#eduInfoTable1').html(orgEditHtml);
+	laydate.render({
+	    elem:  '#enddate'
+	});
+	laydate.render({
+		elem:  '#begindate'
+	});
+	seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+		eduFormValidate = new Validate($('#eduEditForm'));
+		eduFormValidate.immediate();
+	    /*$('#jobEditForm').find(':input').each(function () {
+	        $(this).hover(function () {
+	        	jobFormValidate.isPass($(this));
+	        });
+	    });*/
+	});
+}
+function openEduEditByEdit (i) {
+	personalData.currentEditEduInfo=personalData.eduInfo.records[i];
+	openEduEdit();
 }
 function openFamilyEdit () {
 	//预编译模板
@@ -280,6 +450,19 @@ function openFamilyEdit () {
 	var orgEditHtml = orgTemplate(personalData);
 	//输入模板
 	$('#familyInfoTable1').html(orgEditHtml);
+	seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+		familyFormValidate = new Validate($('#familyEditForm'));
+		familyFormValidate.immediate();
+	    /*$('#jobEditForm').find(':input').each(function () {
+	        $(this).hover(function () {
+	        	jobFormValidate.isPass($(this));
+	        });
+	    });*/
+	});
+}
+function openFamilyEditByEdit (i) {
+	personalData.currentEditFamilyInfo=personalData.familyInfo.records[i];
+	openFamilyEdit();
 }
 //获取组织全称
 function getOrgFullName() {
@@ -290,7 +473,7 @@ function getOrgFullName() {
         shade: 0.8,
         area: ['50%', '80%'],
         maxmin: true,
-        content: 'orgNameDialog.html?orgTreeId='+orgTreeId+'&orgRootId='+orgRootId,
+        content: 'orgNameDialog.html?orgTreeId='+$('#orgTreeId').val()+'&orgRootId='+orgTreeId,
         btn: ['确认', '取消'],
         yes: function(index, layero){
             //获取layer iframe对象
@@ -298,6 +481,7 @@ function getOrgFullName() {
             checkNode = iframeWin.checkNode;
             parent.layer.close(index);
             $('#orgFullName').val(checkNode.name);
+            $('#orgFullName').attr("keyId",checkNode.id);
             orgFullName = checkNode;
         },
         btn2: function(index, layero){},
@@ -326,47 +510,101 @@ function getOrgId() {
 		cancel: function(){}
 	});
 }
+function getJobOrgId() {
+	parent.layer.open({
+		type: 2,
+		title: '选中组织类别',
+		shadeClose: true,
+		shade: 0.8,
+		area: ['50%', '80%'],
+		maxmin: true,
+		content: 'jobsTreeNameDialog.html?orgTreeId='+orgTreeId+'&orgRootId='+orgRootId,
+		btn: ['确认', '取消'],
+		yes: function(index, layero){
+			//获取layer iframe对象
+			var iframeWin = parent.window[layero.find('iframe')[0].name];
+			checkNode = iframeWin.checkNode;
+			parent.layer.close(index);
+			$('#orgId').attr('keyId',checkNode.id);
+			$('#orgId').val(checkNode.name);
+			//orgFullName = checkNode;
+		},
+		btn2: function(index, layero){},
+		cancel: function(){}
+	});
+}
+function getPostName () {
+    parent.layer.open({
+        type: 2,
+        title: '组织职位',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['50%', '80%'],
+        maxmin: true,
+        content: '/inaction/organization/postDialog.html?orgTreeId='+orgTreeId+'&orgRootId='+orgTreeId,
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            checkNode = iframeWin.checkNode;
+            parent.layer.close(index);
+            console.log(checkNode);
+            $('#postId').val(checkNode[0].postName);
+            $('#postId').attr('keyId',checkNode[0].postId);
+        },
+        btn2: function(index, layero){},
+        cancel: function(){}
+    });
+}
+
 function cancelOrgEdit(){
+	  personalData.currentEditOrgInfo={};
 	initOrgInfo();
 }
 function cancelJobEdit(){
+	 personalData.currentEditJobInfo={};
 	initJobInfo();
 }
 function cancelEduEdit(){
+	 personalData.currentEditEduInfo={};
 	initEduInfo();
 }
 function cancelFamilyEdit(){
+	personalData.currentEditFamilyInfo={};
 	initFamilyInfo();
 }
 function cancelUserEdit () {
-    var userInfoTemplate = Handlebars.compile($("#userTemplate").html());
-    var userInfoHtml = userInfoTemplate(personalData);
-    $('#userInfo').html(userInfoHtml);
+	initUser();
 }
 function addPsonOrg(){
+	if(!orgFormValidate.isAllPass()){
+		return;
+	}
+	var isUpdate=$('#orgPersonId').val().length>0;
 	var psonOrgArr=new Array();
 	var psonOrg={
 			orgTreeId:$('#orgTreeId').val(),
-			orgFullName:$('#orgFullName').val(),
+			orgName:$('#orgFullName').val(),
 			doubleName:$('#doubleName').val(),
 			property:$('#property').val(),
-			postId:$('#postId').val(),
+			postId:$('#postId').attr('keyId'),
 			property:$('#property').val(),
-			personId:personnelId,
-			
+			personnelId:personnelId,
+			orgId:$('#orgFullName').attr('keyId'),
+			orgPersonId:$('#orgPersonId').val(),
 	};
 	psonOrgArr[0]=psonOrg;
 	$.ajax({
-		url:'/orgPersonRel/addOrgPsn',
+		url:isUpdate?'/orgPersonRel/updateOrgPsn':'/orgPersonRel/addOrgPsn',
 		type:'post',
-		data:JSON.stringify(psonOrgArr), 
-		
+		data:isUpdate?JSON.stringify(psonOrg):JSON.stringify(psonOrgArr), 
 		contentType:'application/json',
 		dataType:'json',
 		success:function(data){
 			if(data.state==1000){
 				alert('新修改成功');
-				getOrgInfo();
+				personalData.currentEditOrgInfo={};
+				getOrgPersonnerList();
 			}else{
 				alert('修改失败，'+data.message);
 			}
@@ -374,21 +612,28 @@ function addPsonOrg(){
 	});
 }
 function addPsonJob(){
+	if(!jobFormValidate.isAllPass()){
+		return;
+	}
+	var psnjobId=$('#psnjobId').val();
 	var psonJob={
-			orgId:$('#orgId').val(),
+			orgId:$('#orgId').attr('keyId'),
 			beginTime:$('#beginTime').val(),
 			endTime:$('#endTime').val(),
 			personnelId:personnelId,
+			psnjobId:psnjobId
 	};
 	$.ajax({
-		url:'/psnjob/saveTbPsnjob',
-		type:'post',
+		url:psnjobId.length>0?'/psnjob/updateTbPsnjob':'/psnjob/saveTbPsnjob',
+		type:psnjobId.length>0?'put':'post',
 		data:JSON.stringify(psonJob), 
 		contentType:'application/json',
 		dataType:'json',
 		success:function(data){
 			if(data.state==1000){
 				alert('新修改成功');
+				 personalData.currentEditJobInfo={};
+				 
 				getJobInfo();
 			}else{
 				alert('修改失败，'+data.message);
@@ -397,6 +642,10 @@ function addPsonJob(){
 	});
 }
 function addPsonEdu(){
+	if(!eduFormValidate.isAllPass()){
+		return;
+	}
+	var eduId=$('#eduId').val();
 	var obj={
 			school:$('#school').val(),
 			schoolType:$('#schoolType').val(),
@@ -414,16 +663,18 @@ function addPsonEdu(){
 			begindate:$('#begindate').val(),
 			enddate:$('#enddate').val(),
 			personnelId:personnelId,
+			eduId:eduId
 	};
 	$.ajax({
-		url:'/edu/saveTbEdu',
-		type:'post',
+		url:eduId.length>0?'/edu/updateTbEdu':'/edu/saveTbEdu',
+		type:eduId.length>0?'put':'post',
 		data:JSON.stringify(obj), 
 		contentType:'application/json',
 		dataType:'json',
 		success:function(data){
 			if(data.state==1000){
 				alert('新修改成功');
+				 personalData.currentEditEduInfo={};
 				getEduInfo();
 			}else{
 				alert('修改失败，'+data.message);
@@ -432,6 +683,10 @@ function addPsonEdu(){
 	});
 }
 function addFamily(){
+	if (!familyFormValidate.isAllPass())
+        return;
+	var familyId=$('#familyId').val();
+	
 	var obj={
 			memRelation:$('#memRelation').val(),
 			memName:$('#memName').val(),
@@ -439,16 +694,18 @@ function addFamily(){
 			relaPhone:$('#relaPhone').val(),
 			relaAddr:$('#relaAddr').val(),
 			personnelId:personnelId,
+			familyId:familyId
 	};
 	$.ajax({
-		url:'/family/saveTbFamily',
-		type:'post',
+		url:familyId.length>0?'/family/updateTbFamily':'/family/saveTbFamily',
+		type:familyId.length>0?'post':'post',
 		data:JSON.stringify(obj), 
 		contentType:'application/json',
 		dataType:'json',
 		success:function(data){
 			if(data.state==1000){
 				alert('新修改成功');
+				 personalData.currentEditFamilyInfo={};
 				getFamilyInfo();
 			}else{
 				alert('修改失败，'+data.message);
@@ -457,6 +714,8 @@ function addFamily(){
 	});
 }
 function updatePersonnel(){
+	if (!userFormValidate.isAllPass())
+        return;
 	var psnName=$('#psnName').val();
 	var gender=$('#gender').val();
 	var certType=$('#certType').val();
@@ -477,8 +736,41 @@ function updatePersonnel(){
 	updates.toWorkTime=toWorkTime;
 	updates.marriage=marriage;
 	updates.pliticalStatus=pliticalStatus;
-	updates.tbMobileVoList=personalData.personalData.tbMobileVoList;
-	updates.tbEamilVoList=personalData.personalData.tbEamilVoList;
+	
+	var tbMobileVoList =new Array();
+	var mobiles=$("input[name='mobiles']").each(function(){
+		var obj={};
+		if($(this).attr('contactid')!=null&&typeof($(this).attr('contactid')) != "undefined"&&$(this).attr('contactid').length>0){
+			obj.contactId=$(this).attr('contactid');
+		}
+		if($(this).val()==null || typeof($(this).val()) == "undefined"||$(this).val().length<=0){
+		}else{
+			obj.content=$(this).val();
+			obj.personnelId=personalData.personalData.personnelId;
+			obj.contactType=1;
+			tbMobileVoList.push(obj);
+		}
+		
+	}) ;
+	var tbEamilVoList =new Array();
+	var emails=$("input[name='emails']").each(function(){
+		var obj={};
+		if($(this).attr('contactid')!=null&&typeof($(this).attr('contactid')) != "undefined"&&$(this).attr('contactid').length>0){
+			obj.contactId=$(this).attr('contactid');
+		}
+		if($(this).val()==null || typeof($(this).val()) == "undefined"||$(this).val().length<=0){
+		}else{
+			obj.content=$(this).val();
+			obj.personnelId=personalData.personalData.personnelId;
+			obj.contactType=2;
+			tbEamilVoList.push(obj);
+		}
+		
+	}) ;
+	
+	updates.tbMobileVoList=tbMobileVoList;
+	updates.tbEamilVoList=tbEamilVoList;
+	
 	$.ajax({
 		url:'/personnel/updatePersonnel',
 		type:'put',
@@ -489,22 +781,88 @@ function updatePersonnel(){
 		success:function(data){
 			console.log(JSON.stringify(updates));
 			if(data.state==1000){
-				alert('新修改成功');
-				personalData.personalData.gender=gender;
-				personalData.personalData.psnName=psnName;
-				personalData.personalData.certType=certType;
-				personalData.personalData.certNo=certNo;
-				personalData.personalData.nationality=nationality;
-				personalData.personalData.nation=nation;
-				personalData.personalData.toWorkTime=toWorkTime;
-				personalData.personalData.marriage=marriage;
-				personalData.personalData.pliticalStatus=pliticalStatus;
-				initUser();
+				alert('新修改成功');getOrgPersonnerList();
 			}else{
-				alert('修改失败');
+				alert('修改失败,'+data.message);
 			}
 		}
 	});
+}
+function addEmailInput(){
+	var mh="<li>";
+	mh+="<span class='Label'></span>"
+	 mh+="<input class='Col6' contactid='' name='emails' type='text'  />&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a>";
+	 mh+="</li>";
+	 $('#userEditUL1').append(mh);
+	 $('.icon-del').on('click', function () {
+		 $(this).parent().remove();
+	 });
+}
+function addMobileInput(){
+	var mh="<li class=''>";
+	mh+="<span class='Label'></span>"
+	//mh+=" <input required class='Col6'> <a class='icon-del'><span class='fa fa-minus-circle'></span></a>  ";
+	 
+	 mh+="<input class='Col6' type='text'  contactid='' name='mobiles' type='text' />&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a> ";
+	 mh+="</li>";
+	 $('#userEditUL0').append(mh);
+	 $('.icon-del').on('click', function () {
+		 $(this).parent().remove();
+	 });
+}
+function deleteJob(id){
+	if(confirm('确定删除？')){
+		$.ajax({
+			url:'/psnjob/delTbPsnjob?psnjobId='+id,
+			type:'DELETE',
+			dataType:'json',
+			success:function(data){
+				if(data.state==1000){
+					alert('操作成功');
+					getJobInfo();
+				}else{
+					alert('操作失败,'+data.message);
+				}
+			}
+		});
+	}
+	
+}
+function deleteEdu(id){
+	if(confirm('确定删除？')){
+		$.ajax({
+			url:'/edu/delTbEdu?eduId='+id,
+			type:'DELETE',
+			dataType:'json',
+			success:function(data){
+				if(data.state==1000){
+					alert('操作成功');
+					getEduInfo();
+				}else{
+					alert('操作失败,'+data.message);
+				}
+			}
+		});
+	}
+	
+}
+function deleteFamily(id){
+	if(confirm('确定删除？')){
+		$.ajax({ 
+			url:'/family/delTbFamily?familyId='+id,
+			type:'DELETE',
+			dataType:'json',
+			success:function(data){
+				if(data.state==1000){
+					alert('操作成功');
+					getFamilyInfo();
+				}else{
+					alert('操作失败,'+data.message);
+				}
+			}
+		});
+	}
+	
 }
 $(document).ready(function(){
 	Handlebars.registerHelper('eq', function(v1, v2, opts) {
@@ -514,6 +872,40 @@ $(document).ready(function(){
 	    else
 	        return opts.inverse(this);
 	});
+	Handlebars.registerHelper('format', function (date__,options) {
+		Date.prototype.Format = function(fmt) {
+        	var o = {
+        	"M+" : this.getMonth()+1, //月份
+        	"d+" : this.getDate(), //日
+        	"h+" : this.getHours(), //小时
+        	"m+" : this.getMinutes(), //分
+        	"s+" : this.getSeconds(), //秒
+        	"q+" : Math.floor((this.getMonth()+3)/3), //季度
+        	"S" : this.getMilliseconds() //毫秒
+        	};
+        	if(/(y+)/.test(fmt))
+        	fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        	for(var k in o)
+        	if(new RegExp("("+ k +")").test(fmt))
+        	fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+        	return fmt;
+        	}
+		if(date__==''||date__==null){
+			return "";
+		}
+        var str = new Date(date__).Format("yyyy-MM-dd");
+        return str;
+    });                
+	Handlebars.registerHelper('seq', function (index,options) {
+		 
+		return index+1;
+	});        
+	if(tabPage=='acct'){
+		$('#personnel').removeClass('active');
+		$('#user').addClass('active');
+	}
+	getRefType();
+	getOrgTreeList();
 	getSchoolType();
 	getMemRelation();
 	getGender();
@@ -521,10 +913,38 @@ $(document).ready(function(){
 	getNation();
 	getPliticalStatus();
 	getMarriage();
-	getOrgInfo();
 	getJobInfo();
 	getEduInfo();
 	getFamilyInfo();
 	getOrgPersonnerList();
-	
+	getUserAccount();
+	 
 });
+function gotoAccout(i){
+	var userAcc=personalData.userList[i];
+	var url="";
+	if(userAcc.type==1){
+		url+="/inaction/account/addMainAccount.html"
+	}else{
+		url+="/inaction/account/addSubAccount.html"
+	}
+	url+="?";
+	url+="orgId="+orgId+"&";
+	url+="orgRootId="+orgRootId+"&";
+	url+="personnelId="+personnelId +"&";
+	url+="orgTreeId="+orgTreeId+"&";
+	url+="orgName="+orgName+"&";
+	url+="opBtn="+0+"&";
+	url+="hType="+"uh"+"&";
+	url+="acctId="+userAcc.acctId+"&";
+	url+="statusCd="+userAcc.statusCd+"&";
+	url+="tabPage="+"acct"+"&";
+	window.location.href=url;
+}
+function autoWriteForm(){
+	var certNo=$('#certNo').val();
+	if(validCardByCard(certNo)){
+		$('#nationality').val(getNationalityByCard(certNo));
+		$('#gender').val(getGenderByCard(certNo)?1:2);
+	}
+}

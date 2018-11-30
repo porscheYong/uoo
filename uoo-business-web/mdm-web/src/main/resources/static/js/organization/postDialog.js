@@ -1,5 +1,5 @@
 var orgId = getQueryString('id');
-var orgFrame = parent.window['standardOrg'] || parent.window['business'];
+var orgFrame = parent.window['standardOrg'] || parent.window['business'] || parent.window['userManage'];
 var orgPostList = orgFrame.orgPostList;
 var checkNode = [];
 
@@ -11,10 +11,12 @@ function onOrgPostCheck (e, treeId, treeNode) {
     var zTree = $.fn.zTree.getZTreeObj("orgPostTree");
     var node = zTree.getNodeByTId(treeNode.tId);
     if (checkNode.indexOf(node) === -1) {
-        checkNode = [];
         checkNode.push(node);
     } else {
-        checkNode = [];
+        var idx = checkNode.findIndex((v) => {
+            return v.tId == node.tId;
+        });
+        checkNode.splice(idx, 1);
     }
 }
 
@@ -48,8 +50,8 @@ function getOrgPostTree () {
         },
         check: {
             enable: true,
-            chkStyle: 'radio',
-            radioType: 'all'
+            chkStyle: 'checkbox',
+            chkboxType: { "Y": "", "N": "" }
         }
     };
     $http.get('/tbPost/getPostTree', {}, function (data) {

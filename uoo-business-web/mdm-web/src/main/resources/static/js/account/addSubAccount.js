@@ -3,6 +3,9 @@ var orgName = getQueryString('orgName');
 var mainAcctId = getQueryString('mainAcctId');
 var hType = getQueryString('hType');
 var toMainType = getQueryString('toMainType');
+var orgTreeId = getQueryString('orgTreeId');
+var orgRootId = getQueryString('orgRootId');
+var tabPage = getQueryString('tabPage');
 
 var acctId = getQueryString('acctId');
 var statusCd = getQueryString('statusCd');
@@ -86,6 +89,15 @@ function getAcctOrg(){          //获取从账号可选组织列表(添加组织
         console.log(err)
       })
 }
+
+function noSelectUserInfo(){     //控制人员信息不可选
+    $("#psnNameTel").attr("disabled","disabled");
+    $("#psnNumTel").attr("disabled","disabled");
+    $("#mobileTel").attr("disabled","disabled");
+    $("#emailTel").attr("disabled","disabled");
+    $("#cerType").attr("disabled","disabled");
+    $("#cerNoTel").attr("disabled","disabled");
+ }
 
 function initOrgTable(results){
     table = $("#orgTable").DataTable({
@@ -409,11 +421,14 @@ function extInfoFade(){     //点击复选框
 function submitToOther(){   //提交或者取消跳转
     var url = "";
     if(hType == "th"){
-        url = "addMainAccount.html?hType="+ toMainType +"&opBtn=0&orgName=" + orgName + "&orgId=" + orgId + "&acctId=" + mainAcctId;   //跳转主账号编辑界面
+        url = "addMainAccount.html?orgTreeId=" + orgTreeId + "&hType="+ toMainType +"&opBtn=0&orgName=" + orgName + "&orgId=" + orgId + "&acctId=" + mainAcctId;   //跳转主账号编辑界面
     }else if(hType == "mh"){
-        url = "mainList.html?orgName=" + orgName + "&orgId=" + orgId;       //跳转主界面
+        url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;       //跳转主界面
+    }else if(hType == "ah"){
+        url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;       //跳转添加界面
     }else{
-        url = "add.html?orgName=" + orgName + "&orgId=" + orgId;       //跳转添加界面
+        url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + orgName + "&id=" + orgId + 
+                                      "&personnelId =" + personnelId + "&orgRootId =" + orgRootId + "&tabPage=" + tabPage;
     }
     window.location.href = url;
 }
@@ -434,10 +449,12 @@ $("#defaultPswTel").blur(function (){     //默认密码输入框失去焦点
 
 if(opBtn==0){
     $('#addText').text('更换');
-    getSubUser(acctId);
+    noSelectUserInfo();
+    getSubUser(acctId); 
 }else{      //新增
     $('.BtnDel').css("display","none");
     $('#statusCd').get(0).selectedIndex=0;
+    noSelectUserInfo();
     getUserInfo();
 }
 
