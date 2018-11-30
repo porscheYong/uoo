@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.web.maindata.busipublic.expando.controller;
 
+import cn.ffcs.uoo.web.maindata.busipublic.expando.dto.ExpandovalueVo;
 import cn.ffcs.uoo.web.maindata.busipublic.expando.dto.TbExpandorow;
 import cn.ffcs.uoo.web.maindata.busipublic.expando.dto.TbExpandovalue;
 import cn.ffcs.uoo.web.maindata.busipublic.expando.service.TbExpandovalueClient;
@@ -63,6 +64,17 @@ public class TbExpandovalueController {
     public List<TbExpandovalue> queryValueList(@PathVariable String resourceId, @PathVariable Long tableId,
                                                @PathVariable Long columnId, @PathVariable String recordId) {
         return tbExpandovalueClient.queryValueList(resourceId, tableId, columnId, recordId);
+    }
+
+    @ApiOperation(value = "查询扩展值值对象列表", notes = "查询扩展值值对象列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tableName", value = "表名", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "recordId", value = "记录id", required = true, dataType = "String", paramType = "path")
+    })
+    @RequestMapping(value = "/getValueVoList/{tableName}/{recordId}", method = RequestMethod.GET)
+    public ResponseResult<List<ExpandovalueVo>> queryExpandovalueVoList(@PathVariable String tableName,
+                                                                        @PathVariable String recordId) {
+        return tbExpandovalueClient.queryExpandovalueVoList(tableName, recordId);
     }
 }
 

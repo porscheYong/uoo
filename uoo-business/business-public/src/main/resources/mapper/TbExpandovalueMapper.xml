@@ -138,4 +138,14 @@
             AND VALUE_ID = #{valueId}
         </if>
     </select>
+
+    <select id="selectExpandovalueVoList" resultType="ExpandovalueVo">
+        SELECT V.RECORD_ID, C.COLUMN_NAME, C.COLUMN_CNNAME, V.DATA_
+          FROM TB_SYSTEMTABLE S, TB_EXPANDOCOLUMN C, TB_EXPANDOVALUE V
+         WHERE S.TABLE_ID = C.TABLE_ID
+           AND V.TABLE_ID = S.TABLE_ID
+           AND V.COLUMN_ID = C.COLUMN_ID
+           AND S.TABLE_NAME = #{tableName}
+           AND V.RECORD_ID = #{recordId}
+    </select>
 </mapper>
