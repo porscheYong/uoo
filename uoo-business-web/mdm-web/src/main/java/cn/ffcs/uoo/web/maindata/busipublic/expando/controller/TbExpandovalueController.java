@@ -76,5 +76,12 @@ public class TbExpandovalueController {
                                                                         @PathVariable String recordId) {
         return tbExpandovalueClient.queryExpandovalueVoList(tableName, recordId);
     }
+
+    @ApiOperation(value = "通过值对象新增扩展值", notes = "通过值对象新增扩展值")
+    @ApiImplicitParam(name = "tbExpandovalue", value = "扩展值", required = true, dataType = "TbExpandovalue")
+    @RequestMapping(value = "/addByVo", method = RequestMethod.POST)
+    public ResponseResult<ExpandovalueVo> addExpandoInfo(@RequestBody ExpandovalueVo expandovalueVo) {
+        return tbExpandovalueClient.addExpandoInfo(expandovalueVo);
+    }
 }
 

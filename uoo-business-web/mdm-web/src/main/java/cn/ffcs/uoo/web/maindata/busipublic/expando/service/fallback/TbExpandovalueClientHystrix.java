@@ -46,4 +46,12 @@ public class TbExpandovalueClientHystrix implements TbExpandovalueClient {
         responseResult.setMessage("系统暂时不可用");
         return responseResult;
     }
+
+    @Override
+    public ResponseResult<ExpandovalueVo> addExpandoInfo(ExpandovalueVo expandovalueVo) {
+        ResponseResult<ExpandovalueVo> responseResult = new ResponseResult<ExpandovalueVo>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
 }
