@@ -2,6 +2,8 @@ var orgId = getQueryString('orgId');
 var orgName = getQueryString('orgName');
 var hType = getQueryString('hType');
 var orgTreeId = getQueryString('orgTreeId');
+var orgRootId = getQueryString('orgRootId');
+var tabPage = getQueryString('tabPage');
 
 var acctId = getQueryString('acctId');
 var statusCd = getQueryString('statusCd');
@@ -418,6 +420,9 @@ function cancel() {   //取消按钮
     url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;
   }else if(hType == "ah"){  //返回add.html
     url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;
+  }else if(hType == "uh"){
+    url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + orgName + "&id=" + orgId + 
+    "&personnelId =" + personnelId + "&orgRootId=" + orgRootId + "&tabPage=" + tabPage;
   }
   window.location.href = url;
 }   
@@ -455,7 +460,13 @@ function cancel() {   //取消按钮
 
 
 function submitSuccess(){     //提交成功
-    var url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;
+    var url = '';
+    if(hType != "uh"){
+      url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;
+    }else{
+      url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + orgName + "&id=" + orgId + 
+                                      "&personnelId =" + personnelId + "&orgRootId =" + orgRootId + "&tabPage=" + tabPage;
+    }
     window.location.href = url;
 }
 
