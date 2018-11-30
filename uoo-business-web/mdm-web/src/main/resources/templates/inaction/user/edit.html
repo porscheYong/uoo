@@ -311,7 +311,7 @@
                 </li>
                 <li>
                     <span class="Label"><span class="Red">* </span>证件号码</span>
-                    <input class="Col6 ui-input" required type="text" id="certNo" value="{{personalData.certNo}}"/>
+                    <input class="Col6 ui-input" onkeyup="autoWriteForm()" required type="text" id="certNo" value="{{personalData.certNo}}"/>
                 </li>
                 <li>
                     <span class="Label"><span class="Red">* </span>籍贯</span>
@@ -1043,6 +1043,7 @@
 <script type="text/javascript" src="/js/init.js"></script>
 <script type="text/javascript" src="/js/user/delPsn.js"></script>
 <script type="text/javascript" src="/js/user/edit.js"></script>
+<script type="text/javascript" src="/js/IDCardUtils.js"></script>
 <script>
     seajs.use('/vendors/lulu/js/common/ui/Select', function () {
         $('select').selectMatch();

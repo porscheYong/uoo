@@ -604,7 +604,7 @@ function addPsonOrg(){
 			if(data.state==1000){
 				alert('新修改成功');
 				personalData.currentEditOrgInfo={};
-				getOrgInfo();
+				getOrgPersonnerList();
 			}else{
 				alert('修改失败，'+data.message);
 			}
@@ -940,4 +940,11 @@ function gotoAccout(i){
 	url+="statusCd="+userAcc.statusCd+"&";
 	url+="tabPage="+"acct"+"&";
 	window.location.href=url;
+}
+function autoWriteForm(){
+	var certNo=$('#certNo').val();
+	if(validCardByCard(certNo)){
+		$('#nationality').val(getNationalityByCard(certNo));
+		$('#gender').val(getGenderByCard(certNo)?1:2);
+	}
 }
