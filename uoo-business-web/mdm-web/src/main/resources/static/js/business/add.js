@@ -114,8 +114,9 @@ function openCopyDialog() {
         yes: function(index, layero){
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
-            checkNode = iframeWin.checkNode;
+            // checkNode = iframeWin.checkNode;
             parent.layer.close(index);
+            checkNode = iframeWin.getCheckdNodes();
             $('#copyTree').importTags(checkNode);
             $('.ui-tips-error').css('display', 'none');
             tarOrgTreeId = iframeWin.targetId;

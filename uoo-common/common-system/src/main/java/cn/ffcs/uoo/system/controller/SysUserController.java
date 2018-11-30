@@ -4,8 +4,6 @@ import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.system.entity.SysUser;
 import cn.ffcs.uoo.system.service.SysUserService;
-import cn.ffcs.uoo.system.util.AESUtil;
-import cn.ffcs.uoo.system.util.MD5Util;
 import cn.ffcs.uoo.system.util.ResponseResult;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;

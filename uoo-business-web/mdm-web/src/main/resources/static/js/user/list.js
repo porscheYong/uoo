@@ -45,7 +45,17 @@ function initOrgPersonnelTable (results) {
             { 'data': "certNo", 'title': '员工工号', 'className': 'cert-no' },
             { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
             { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
-            { 'data': "statusCd", 'title': '状态', 'className': 'status-code' }
+            { 'data': "statusCd", 'title': '状态', 'className': 'status-code',
+                'render': function (data, type, row, meta) {
+                    var statusStr = '';
+                    if (row.statusCd == '1000') {
+                        statusStr = '<span>有效</span>';
+                    } else {
+                        statusStr = '<span>无效</span>';
+                    }
+                    return statusStr
+                }
+            }
         ],
         'language': {
             'emptyTable': '没有数据',  
@@ -76,7 +86,7 @@ function initOrgPersonnelTable (results) {
             var param = {};
             param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
             param.pageNo = (data.start / data.length) + 1;//当前页码
-            param.orgTreeId = '1';
+            param.orgTreeId = orgTreeId;
             param.orgId = orgId;
             $http.get('/orgPersonRel/getPerOrgRelPage', param, function (result) {
                 var returnData = {};
