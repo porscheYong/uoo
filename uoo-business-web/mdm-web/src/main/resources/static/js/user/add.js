@@ -324,7 +324,7 @@ function initTable(keyWord){
             },
             { 'data': "", 'title': '操作', 'className': 'status-code',
                 'render': function (data, type, row, meta) {
-                    return "<a href='edit.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&personnelId=" + row.personnelId +"'>查看</a>";
+                    return "<a href='edit.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&personnelId=" + row.personnelId + "&name=" + orgName + "&addOrg=1'>查看</a>";
                 }
             }
         ],
