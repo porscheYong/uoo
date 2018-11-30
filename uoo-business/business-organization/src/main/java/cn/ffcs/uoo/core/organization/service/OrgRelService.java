@@ -78,12 +78,12 @@ public interface OrgRelService extends IService<OrgRel> {
 
         /**
          * 查询检索的组织树信息
-         * @param orgleafId
-         * @param orgRootId
+         * @param orgId
+         * @param orgTreeId
          * @param isFull
          * @return
          */
-        public List<TreeNodeVo> selectFuzzyOrgRelTree(String orgleafId,String orgRootId,boolean isFull);
+        public List<TreeNodeVo> selectFuzzyOrgRelTree(String orgId,String orgTreeId,boolean isFull);
 
 
         /**

@@ -31,7 +31,6 @@ function getUser(acctId) {           //查看并编辑主账号
           editOrgList.push({"orgId":data.acctOrgVoPage.records[i].orgId,"fullName":data.acctOrgVoPage.records[i].fullName});
         }
         $('#main-title').html("编辑主账号");
-        noSelectUserInfo();
         initOrgTable(data.acctOrgVoPage.records);
         initEditUserInfo(data);
         initSubOrgTable(data.slaveAcctOrgVoPage.records);
@@ -51,17 +50,14 @@ function getAcctUser(personnelId){     //获取主账号信息(编辑或者新�
       initSubOrgTable(data.slaveAcctOrgVoPage);
       $('#main-title').html("新增主账号");
       $('#delAcct').css("display","none");
-      noSelectUserInfo();
       console.log('no user');
     }else{                      //编辑
       $('#main-title').html('编辑主账号');
-      noSelectUserInfo();
       opBtn = 0;
       acctId = data.tbAcct.acctId;
       for(var i=0;i<data.acctOrgVoPage.records.length;i++){
         editOrgList.push({"orgId":data.acctOrgVoPage.records[i].orgId,"fullName":data.acctOrgVoPage.records[i].fullName});
       }
-
       initOrgTable(data.acctOrgVoPage.records);
       initEditUserInfo(data);
       initSubOrgTable(data.slaveAcctOrgVoPage.records);
@@ -72,12 +68,12 @@ function getAcctUser(personnelId){     //获取主账号信息(编辑或者新�
 }
 
 function noSelectUserInfo(){     //控制人员信息不可选
-   $("#psnTel").attr("disabled",false);
-   $("#psnNumTel").attr("disabled",false);
-   $("#mobileTel").attr("disabled",false);
-   $("#emailTel").attr("disabled",false);
-   $("#cerType").attr("disabled",false);
-   $("#cerNoTel").attr("disabled",false);
+   $("#psnTel").attr("disabled","disabled");
+   $("#psnNumTel").attr("disabled","disabled");
+   $("#mobileTel").attr("disabled","disabled");
+   $("#emailTel").attr("disabled","disabled");
+   $("#cerType").attr("disabled","disabled");
+   $("#cerNoTel").attr("disabled","disabled");
 }
 
 function initOrgTable(results){         //主账号组织数据表格
@@ -486,8 +482,10 @@ $("#defaultPswTel").blur(function (){     //默认密码输入框失去焦点
 
 if(opBtn==0){     //查看并编辑主账号
   getUser(acctId);
+  noSelectUserInfo();
 }else{            //编辑或新增主账号
   getAcctUser(personnelId);
+  noSelectUserInfo();
 }
 
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.message.server.dao.SystemQueueRelaMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.uoo.message.server.pojo.SystemQueueRela">
+    <id column="QUEUE_NAME" jdbcType="VARCHAR" property="queueName" />
+    <result column="SYSTEM_NAME" jdbcType="VARCHAR" property="systemName" />
+    <result column="DOUBLE_NAME" jdbcType="VARCHAR" property="doubleName" />
+    <result column="CHARGE_PERSON" jdbcType="VARCHAR" property="chargePerson" />
+    <result column="CHARGE_CONTACT" jdbcType="VARCHAR" property="chargeContact" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="IP" jdbcType="VARCHAR" property="ip" />
+    <result column="PORT" jdbcType="VARCHAR" property="port" />
+    <result column="USERNAME" jdbcType="VARCHAR" property="username" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    QUEUE_NAME, SYSTEM_NAME, DOUBLE_NAME, CHARGE_PERSON, CHARGE_CONTACT, STATUS, IP, 
+    PORT, USERNAME, PASSWORD
+  </sql>
+</mapper>

@@ -480,7 +480,7 @@ public class OrgController extends BaseController {
                     orgTypeRefService.add(orgTypeRef);
                 }
             }
-
+            isExists = false;
             for(OrgOrgtypeRel otf : orgTypeRefCurList){
                 for(OrgType ot : orgTypeList){
                     isExists = false;
@@ -497,10 +497,11 @@ public class OrgController extends BaseController {
             }
         }
         //岗位
+        isExists = false;
         if(positionList!=null && positionList.size()>0){
             for(Position p : positionList){
+                isExists = false;
                 for(OrgPositionRel op : orgPositionCurList){
-                    isExists = false;
                     if(p.getPositionId().longValue() == op.getPositionId().longValue()){
                         isExists = true;
                         break;
@@ -518,7 +519,7 @@ public class OrgController extends BaseController {
                 }
             }
 
-
+            isExists = false;
             for(OrgPositionRel op:orgPositionCurList){
                 for(Position p : positionList){
                     isExists = false;
@@ -533,6 +534,7 @@ public class OrgController extends BaseController {
             }
         }
         //职位 post
+        isExists = false;
         if(postList!=null && postList.size()>0){
             for(Post p : postList){
                 for(OrgPostRel op : orgPostCurList){
@@ -552,6 +554,7 @@ public class OrgController extends BaseController {
                     orgPostRelService.add(orgPost);
                 }
             }
+            isExists = false;
             for(OrgPostRel op : orgPostCurList){
                 for(Post p : postList){
                     isExists = false;

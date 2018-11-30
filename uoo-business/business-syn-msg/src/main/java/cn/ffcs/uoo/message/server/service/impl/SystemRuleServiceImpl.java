@@ -53,7 +53,7 @@ public class SystemRuleServiceImpl implements SystemRuleService {
 
     private List<Map<String, Object>> getList(List<TbBusinessSystem> systems){
         List<Map<String, Object>> list = null;
-        if(systems != null){
+        if(systems != null && systems.size() != 0){
             list = new ArrayList<>();
             List<Long> temp = new ArrayList<>();
             systems.forEach((system)->{
@@ -64,13 +64,14 @@ public class SystemRuleServiceImpl implements SystemRuleService {
                 Map<String, Object> map =new HashMap<>();
                 map.put("system",system);
                 OrgTreeRuleVo vo = null;
-                if(orgTreeRuleVos == null)
+                if(orgTreeRuleVos != null){
                     for (OrgTreeRuleVo ruleVo :orgTreeRuleVos){
                         if(ruleVo.getBusinessSystemId().equals(system.getBusinessSystemId())){
                             vo = ruleVo;
                             break;
                         }
                     }
+                }
                 map.put("OrgTreeRuleVo",vo);
                 list.add(map);
             }

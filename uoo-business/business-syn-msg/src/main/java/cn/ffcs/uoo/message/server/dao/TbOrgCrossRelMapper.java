@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface TbOrgCrossRelMapper extends BaseMapper<TbOrgCrossRel> {
 
-    @Select("select cross_tran crossTran,rela_type relaType from tb_org_cross_rel where rela_type like #{systemCode} and status_cd = 1000 and org_id = #{orgId}")
-    List<TbOrgCrossRel> getListByOrgIdAndSystemCode(@Param("orgId") Long orgId,@Param("systemCode") String systemCode);
+    @Select("select cross_tran crossTran,rela_type relaType from tb_org_cross_rel where status_cd = 1000 and org_id = #{orgId}")
+    List<TbOrgCrossRel> getListByOrgIdAndSystemCode(@Param("orgId") Long orgId);
 
 }
