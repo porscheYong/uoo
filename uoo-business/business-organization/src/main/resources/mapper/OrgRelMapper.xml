@@ -368,7 +368,7 @@
 
 
     <select id="getOrgRel" resultType="cn.ffcs.uoo.core.organization.entity.OrgRel">
-        SELECT D.ORG_REL_ID orgRelId,D.ORG_ID orgId,D.PARENT_ORG_ID supOrgId,D.REF_CODE refCode,
+        SELECT D.ORG_REL_ID orgRelId,D.ORG_ID orgId,D.PARENT_ORG_ID parentOrgId,D.REF_CODE refCode,
         D.STATUS_CD statusCd ,D.CREATE_DATE createDate,D.CREATE_USER createUser,
         D.UPDATE_DATE updateDate,D.UPDATE_USER updateUser,D.STATUS_DATE statusDate
         FROM TB_ORG_TREE  A,

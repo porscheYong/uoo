@@ -88,11 +88,11 @@ public class OrgRelController extends BaseController {
                                                           @RequestParam(value = "isRoot",required = false)boolean isRoot) throws IOException {
         System.out.println(new Date());
         ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
-        if(StrUtil.isNullOrEmpty(orgRootId)){
-            ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("根节点标识不能为空");
-            return ret;
-        }
+//        if(StrUtil.isNullOrEmpty(orgRootId)){
+//            ret.setState(ResponseResult.PARAMETER_ERROR);
+//            ret.setMessage("根节点标识不能为空");
+//            return ret;
+//        }
         if(StrUtil.isNullOrEmpty(orgTreeId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织树标识不能为空");
@@ -151,12 +151,12 @@ public class OrgRelController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<List<TreeNodeVo>> getTarOrgRelTreeAndLv(String orgRootId,String orgTreeId,String lv,String curOrgid,boolean isFull) throws IOException {
         ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
-        if(StrUtil.isNullOrEmpty(orgRootId)){
+        if(StrUtil.isNullOrEmpty(orgTreeId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织树标识不能为空");
             return ret;
         }
-        if(StrUtil.isNullOrEmpty(orgRootId)){
+        if(StrUtil.isNullOrEmpty(lv)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("层级不能为空");
             return ret;
@@ -173,7 +173,7 @@ public class OrgRelController extends BaseController {
                 return ret;
             }
         }
-        Wrapper orgTreeConfWrapper = Condition.create().eq("ORG_ID",orgRootId).eq("STATUS_CD","1000");
+        Wrapper orgTreeConfWrapper = Condition.create().eq("ORG_TREE_ID",orgTreeId).eq("STATUS_CD","1000");
         OrgTree orgTree  = orgTreeService.selectOne(orgTreeConfWrapper);
         if(orgTree == null){
             ret.setState(ResponseResult.PARAMETER_ERROR);

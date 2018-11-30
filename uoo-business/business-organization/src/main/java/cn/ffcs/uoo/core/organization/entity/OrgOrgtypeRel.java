@@ -25,7 +25,7 @@ public class OrgOrgtypeRel extends Model<OrgOrgtypeRel> {
     /**
      * 组织类别关系标识
      */
-    @TableId(value = "ORG_TYPE_REL_ID",type = IdType.NONE)
+    @TableId(value = "ORG_TYPE_REL_ID")
     private Long orgTypeRelId;
     /**
      * 组织标识

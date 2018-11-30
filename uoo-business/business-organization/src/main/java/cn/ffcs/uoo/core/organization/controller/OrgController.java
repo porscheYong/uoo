@@ -139,6 +139,10 @@ public class OrgController extends BaseController {
             return ret;
         }
         PoliticalLocation pl = politicalLocationList.get(0);
+
+
+
+
         Wrapper ogtOrgReftypeConfWrapper = Condition.create()
                 .eq("ORG_TREE_ID",orgTree.getOrgTreeId())
                 .eq("STATUS_CD","1000");
@@ -400,6 +404,13 @@ public class OrgController extends BaseController {
             ret.setMessage("组织不存在");
             return ret;
         }
+        List<OrgRel> orList = orgRelService.getOrgRel(orgTree.getOrgTreeId().toString(),
+                org.getOrgId().toString());
+        if(orList==null || orList.size()<1){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("组织关系不存在");
+            return ret;
+        }
         if(!"1000".equals(org.getStatusCd())){
             Wrapper orgPer = Condition.create()
                     .eq("ORG_ID",org.getOrgId())
@@ -456,6 +467,7 @@ public class OrgController extends BaseController {
                 .eq("ORG_ID",org.getOrgId())
                 .eq("STATUS_CD","1000");
         List<OrgPostRel> orgPostCurList = orgPostRelService.selectList(postWrapper);
+
 
 
         boolean isExists = false;
@@ -608,7 +620,6 @@ public class OrgController extends BaseController {
         }
         if (!"1000".equals(org.getStatusCd())){
             //删除组织关系
-            List<OrgRel> orList = orgRelService.getOrgRel(orgTree.getOrgTreeId().toString(),org.getOrgId().toString());
             for(OrgRel or : orList){
 
                 Wrapper orgTreeRelWrapper = Condition.create()
@@ -710,11 +721,12 @@ public class OrgController extends BaseController {
             ret.setMessage("组织下存在组织无法删除");
             return ret;
         }
-        Wrapper orgPer = Condition.create()
-                .eq("ORG_ID",orgId)
-                .eq("STATUS_CD","1000");
-        int num = orgPersonRelService.selectCount(orgPer);
-        if(num>0){
+//        Wrapper orgPer = Condition.create()
+//                .eq("ORG_ID",orgId)
+//                .eq("STATUS_CD","1000");
+//        int num = orgPersonRelService.selectCount(orgPer);
+        List<OrgPersonRel> oplist = orgPersonRelService.getOrgPsnRel(orgTree.getOrgTreeId().toString(),orgId);
+        if(oplist!=null && oplist.size()>0){
             ret.setState(ResponseResult.STATE_ERROR);
             ret.setMessage("组织下存在员工无法删除");
             return ret;
@@ -725,8 +737,10 @@ public class OrgController extends BaseController {
 //            ret.setMessage("组织被其他组织树引用无法删除");
 //            return ret;
 //        }
-        Org org = orgService.selectById(orgId);
-        //orgService.delete(org);
+        Wrapper orgWrapper = Condition.create()
+                .eq("ORG_ID",orgId)
+                .eq("STATUS_CD","1000");
+        Org org = orgService.selectOne(orgWrapper);
         List<OrgRel> orgRelList = orgRelService.getOrgRel(orgTreeId,orgId);
         for(OrgRel orgRel : orgRelList){
             orgRelService.delete(orgRel);
