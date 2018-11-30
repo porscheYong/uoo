@@ -75,6 +75,7 @@ function initTree () {
         var zTree = $.fn.zTree.getZTreeObj("standardTree");
         var nodes = zTree.getNodes();
         zTree.expandNode(nodes[0], true);
+        autoCheck();
     }, function (err) {
         console.log(err)
     })
@@ -84,7 +85,20 @@ function filter (treeId, parentNode, childNodes) {
     return childNodes.data
 }
 
+// 自动选中
+function autoCheck () {
+    var tree = $.fn.zTree.getZTreeObj("standardTree");
+    for (var i = 0; i < orgCopyList.length; i++) {
+        var id = orgCopyList[i].orgTypeId || orgCopyList[i].id;
+        var node = tree.getNodeByTId("standardTree_" + id);
+        tree.checkNode(node, true);
+        checkNode.push(node);
+    }
+}
+
 function orgRelTreeBeforeClick (treeId, treeNode, clickFlag) {
+    var tree = $.fn.zTree.getZTreeObj("standardTree");
+    tree.checkNode(treeNode, !treeNode.checked, true);
     return false;
 }
 
@@ -99,6 +113,16 @@ function onOrgRelTreeCheck (e, treeId, treeNode) {
         })
         checkNode.splice(idx, 1);
     }
+}
+
+// 获取所有勾选的节点
+function getCheckdNodes () {
+    var treeObj = $.fn.zTree.getZTreeObj("standardTree");
+    var nodes = treeObj.getCheckedNodes(true);
+    if (nodes.length == 0) {
+        nodes = checkNode;
+    }
+    return nodes;
 }
 
 initBusinessList();

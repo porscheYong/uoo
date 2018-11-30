@@ -324,7 +324,7 @@ function initTable(keyWord){
             },
             { 'data': "", 'title': '操作', 'className': 'status-code',
                 'render': function (data, type, row, meta) {
-                    return "<a href='edit.html?orgId=" + orgId + "&orgTreeId=" + orgTreeId + "&personnelId=" + row.personnelId +"'>查看</a>";
+                    return "<a href='edit.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&personnelId=" + row.personnelId +"'>查看</a>";
                 }
             }
         ],
@@ -401,7 +401,8 @@ $('#psnName').typeahead({
   .on('typeahead:asyncrequest', function(a, b) {
       console.log(a, b)
         $('.Typeahead-spinner').show();
-        initTable($("#psnName").val());
+        if ($("#psnName").val())
+            initTable($("#psnName").val());
     })
   .on('typeahead:asynccancel typeahead:asyncreceive', function() {
         $('.Typeahead-spinner').hide();
