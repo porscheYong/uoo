@@ -1,6 +1,27 @@
 var engine;
 var empty;
 var table;
+var Regx = /^[A-Za-z0-9]*$/;
+
+var settingA = {
+		data: {
+        key: {
+            isParent: "parent",
+        },
+        simpleData: {
+            enable:true,
+            idKey: "id",
+            pIdKey: "pid",
+            rootPId: ""
+        }
+    },
+		view: {
+            selectedMulti: false,
+            showLine: false,
+            showIcon: false,
+            dblClickExpand: false
+		}
+	};
 
 empty = Handlebars.compile($(".typeahead-menu").html());
 
@@ -85,6 +106,7 @@ function engineWithDefaults(q, sync, async) {
     if (q === '') {
         $('#orgTable').html('');
         $(".org-table").removeClass("is-open");
+        initOrgRelTree();
     }
     else {
         engine.search(q, sync, async);
@@ -112,7 +134,7 @@ $('#orgName').typeahead({
 })
   .on('typeahead:asyncrequest', function() {
         $('.Typeahead-spinner').show();
-        if($("#orgName").val() != ''){
+        if($("#orgName").val() != '' && !Regx.test($("#orgName").val())){
             initOrgSearchTable($("#orgName").val());
         }
     })
@@ -132,12 +154,34 @@ Handlebars.registerHelper("addOne", function (index) {
     return index + 1;
 });
 
-// $("#orgTable tbody").on( 'click', 'tr', function () {
-//     var data = table.row(this).data();//$(this).parents('tr')
-//     console.log(data.fullName);
-// })
+
+function initRestructOrgRelTree (orgId) {        //初始化树
+    $http.get('/orgRel/getRestructOrgRelTree', {
+        orgId: orgId,
+        orgTreeId: '1'
+    }, function (data) {
+        var zTreeNodes = [];
+        nodeArr = [];
+
+        for(var i=0;i<data.length;i++){     //获取要显示的节点id pid name
+            zTreeNodes.push({"id":data[i].id,"pid":data[i].pid,"name":data[i].name});
+            nodeArr.push(data[i].name);
+        }
+
+        var zTree = $.fn.zTree.init($("#standardTree"), settingA, zTreeNodes);
+        var node = zTree.getNodeByTId("standardTree_"+orgId);
+        //console.log(node);
+        var url = "list.html?id=" + orgId + '&pid=' + data[0].pid + "&name=" + encodeURI(data[0].name);
+        zTree.expandAll(true);
+        zTree.selectNode(node);
+        $('#orgFrame').attr("src",url);
+    }, function (err) {
+        console.log(err)
+    })
+}       
 
 function orgClick(orgId){
     console.log(orgId);
     $(".org-table").removeClass("is-open");
+    initRestructOrgRelTree(orgId);
 }
