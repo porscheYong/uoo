@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="cn.ffcs.uoo.message.server.pojo.TbOrgRel">
     <result column="ORG_REL_ID" jdbcType="DECIMAL" property="orgRelId" />
     <result column="ORG_ID" jdbcType="DECIMAL" property="orgId" />
-    <result column="SUP_ORG_ID" jdbcType="DECIMAL" property="supOrgId" />
-    <result column="ORG_REL_TYPE_ID" jdbcType="DECIMAL" property="orgRelTypeId" />
+    <result column="PARENT_ORG_ID" jdbcType="DECIMAL" property="supOrgId" />
+    <result column="REF_CODE" jdbcType="DECIMAL" property="orgRelTypeId" />
     <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
     <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
     <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />

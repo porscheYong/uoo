@@ -4,6 +4,8 @@ var mainAcctId = getQueryString('mainAcctId');
 var hType = getQueryString('hType');
 var toMainType = getQueryString('toMainType');
 var orgTreeId = getQueryString('orgTreeId');
+var orgRootId = getQueryString('orgRootId');
+var tabPage = getQueryString('tabPage');
 
 var acctId = getQueryString('acctId');
 var statusCd = getQueryString('statusCd');
@@ -422,8 +424,11 @@ function submitToOther(){   //提交或者取消跳转
         url = "addMainAccount.html?orgTreeId=" + orgTreeId + "&hType="+ toMainType +"&opBtn=0&orgName=" + orgName + "&orgId=" + orgId + "&acctId=" + mainAcctId;   //跳转主账号编辑界面
     }else if(hType == "mh"){
         url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;       //跳转主界面
-    }else{
+    }else if(hType == "ah"){
         url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;       //跳转添加界面
+    }else{
+        url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + orgName + "&id=" + orgId + 
+                                      "&personnelId =" + personnelId + "&orgRootId =" + orgRootId + "&tabPage=" + tabPage;
     }
     window.location.href = url;
 }

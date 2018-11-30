@@ -324,7 +324,7 @@ function initTable(keyWord){
             },
             { 'data': "", 'title': '操作', 'className': 'status-code',
                 'render': function (data, type, row, meta) {
-                    return "<a href='edit.html?orgId=" + orgId + "&orgTreeId=" + orgTreeId + "&personnelId=" + row.personnelId +"'>查看</a>";
+                    return "<a href='edit.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&personnelId=" + row.personnelId + "&name=" + orgName + "&addOrg=1'>查看</a>";
                 }
             }
         ],
@@ -401,7 +401,8 @@ $('#psnName').typeahead({
   .on('typeahead:asyncrequest', function(a, b) {
       console.log(a, b)
         $('.Typeahead-spinner').show();
-        initTable($("#psnName").val());
+        if ($("#psnName").val())
+            initTable($("#psnName").val());
     })
   .on('typeahead:asynccancel typeahead:asyncreceive', function() {
         $('.Typeahead-spinner').hide();
@@ -536,7 +537,7 @@ function  initEduTable (results) {
             { 'data': "major", 'title': '专业', 'className': 'row-mobile' },
             { 'data': "begindate", 'title': '入学时间', 'className': 'cert-no' },
             { 'data': "enddate", 'title': '毕业时间', 'className': 'cert-no' },
-            { 'data': "schoolType", 'title': '学习方式', 'className': 'cert-no' },
+            // { 'data': "schoolType", 'title': '学习方式', 'className': 'cert-no' },
             { 'data': "education", 'title': '学历', 'className': 'cert-no' },
             { 'data': "degree", 'title': '学位', 'className': 'cert-no' },
             { 'data': "lastEducation", 'title': '最高学历', 'className': 'cert-no',
@@ -1023,8 +1024,9 @@ function savePersonnel () {
     var marriage = $('#marriage option:selected') .val();
     mobileList = [];
     emailList = [];
-    $('#tbMobileVoList').find(':input').each(function () {
-        mobileList.push({contactType: 1, content: $(this).val()});
+    $('#tbMobileVoList').find(':input').each(function (index) {
+        var firstFlag = index == 0? 1: 0;
+        mobileList.push({contactType: 1, content: $(this).val(), firstFlag: firstFlag});
     });
     $('#tbEamilVoList').find(':input').each(function () {
         emailList.push({contactType: 2, content: $(this).val()});

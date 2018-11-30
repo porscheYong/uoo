@@ -24,7 +24,7 @@ public class OrgOrgtreeRel extends Model<OrgOrgtreeRel> {
     /**
      * 组织标识
      */
-    @TableField("ORG_ORGTREE_ID")
+    @TableId("ORG_ORGTREE_ID")
     private Long orgOrgtreeId;
     /**
      * 组织标识

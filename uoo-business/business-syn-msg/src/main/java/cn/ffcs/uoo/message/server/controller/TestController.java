@@ -36,17 +36,6 @@ public class TestController {
 
     @GetMapping("test")
     public void test(){
-       String json1 = "{\"type\":\"org\",\"handle\":\"insert\",\"context\":{\"column\":\"orgId\",\"value\":800000000037}}";
-       String json2 = "{\"type\":\"org\",\"handle\":\"delete\",\"context\":{\"column\":\"orgId\",\"value\":800000000037}}";
-
-       String json3 = "{\"type\":\"person\",\"handle\":\"update\",\"context\":{\"column\":\"personnelId\",\"value\":56006}}";
-       String json4 = "{\"type\":\"person\",\"handle\":\"delete\",\"context\":{\"column\":\"personnelId\",\"value\":56006}}";
-
-
-       String json5 = "{\"type\":\"person\",\"handle\":\"insert\",\"context\":{\"column\":\"slaveAcctId\",\"value\":52838}}";
-       String json6 = "{\"type\":\"person\",\"handle\":\"delete\",\"context\":{\"column\":\"slaveAcctId\",\"value\":52838}}";
-
-
-        listener.process(json1);
+        tbOrgMapper.getOrgVo(80000000009L,1L,1L);
     }
 }

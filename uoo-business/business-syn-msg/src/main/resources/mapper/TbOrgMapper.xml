@@ -101,8 +101,8 @@
   <resultMap id="OrgRelVoMap" type="cn.ffcs.uoo.message.server.vo.TbOrgRelVo">
     <result column="ORG_REL_ID" jdbcType="DECIMAL" property="orgRelId" />
     <result column="ORG_ID" jdbcType="DECIMAL" property="orgId" />
-    <result column="SUP_ORG_ID" jdbcType="DECIMAL" property="supOrgId" />
-    <result column="ORG_REL_TYPE_ID" jdbcType="DECIMAL" property="orgRelTypeId" />
+    <result column="PARENT_ORG_ID" jdbcType="DECIMAL" property="supOrgId" />
+    <result column="REF_CODE" jdbcType="DECIMAL" property="orgRelTypeId" />
     <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
     <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
     <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
@@ -111,7 +111,7 @@
     <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
     <result column="org_name" jdbcType="VARCHAR" property="supOrgName" />
     <association property="orgRefTypeInfo" javaType="cn.ffcs.uoo.message.server.vo.TbOrgRelTypeVo"
-                 select="getOrgRelType" column="ORG_REL_TYPE_ID"></association>
+                 select="getOrgRelType" column="REF_CODE"></association>
   </resultMap>
 
   <resultMap id="OrgRelTypeMap" type="cn.ffcs.uoo.message.server.vo.TbOrgRelTypeVo">
@@ -134,7 +134,7 @@
     <result column="ORG_TYPE_CODE" jdbcType="VARCHAR" property="orgTypeCode" />
     <result column="ORG_TYPE_NAME" jdbcType="VARCHAR" property="orgTypeName" />
     <result column="ORG_TYPE_DESC" jdbcType="VARCHAR" property="orgTypeDesc" />
-    <result column="SUP_PK_ORG_TYPE" jdbcType="DECIMAL" property="supPkOrgType" />
+    <result column="PARENT_ORG_TYPE_ID" jdbcType="DECIMAL" property="supPkOrgType" />
     <result column="SUP_NAME" jdbcType="DECIMAL" property="supPkOrgTypeName" />
     <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
     <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
@@ -244,10 +244,12 @@
     <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
     <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
-  </resultMap><!--组织信息-->
+  </resultMap>
+
+  <!--组织信息-->
   <select id="getOrgVo" resultMap="OrgVoMapper">
     select a.*,#{orgTreeId} ORG_TREE_ID ,#{businessSystemId} BUSINESS_SYSTEM_ID,b.org_biz_name from tb_org a,tb_org_orgtree_rel b  where a.org_id = #{orgId} and a.status_cd = 1000
-    and b.org_id = a.org_id and b.status_cd = 1000
+    and b.org_id = a.org_id and b.status_cd = 1000 and b.org_tree_id = #{orgTreeId}
   </select>
 
   <!--组织层级-->
@@ -262,21 +264,22 @@
 
   <!--组织上下级关系-->
   <select id="getOrgRel" resultMap="OrgRelVoMap">
-     select a.*,b.org_name from tb_org_Rel a,tb_org b where a.sup_org_id = b.org_id and b.status_cd = 1000 and a.org_id = #{orgId} and a.status_cd = 1000 and ORG_REL_TYPE_ID = (SELECT org_rel_type_id
-    FROM TB_OGT_ORG_RELTYPE_CONF where org_tree_id = #{orgTreeId} and status_cd = 1000)
+     select a.*,b.org_name from tb_org_Rel a,tb_org b where a.PARENT_ORG_ID = b.org_id and b.status_cd = 1000 and a.org_id = #{orgId}
+     and a.status_cd = 1000 and a.ref_code = (SELECT d.ref_code FROM TB_OGT_ORG_RELTYPE_CONF c,tb_ORG_REL_TYPE d where c.org_tree_id = #{orgTreeId}
+     and c.status_cd = 1000 and d.status_cd = 1000 and d.org_rel_type_id = c.org_rel_type_id)
   </select>
 
   <!--组织关系类型-->
   <select id="getOrgRelType" resultMap="OrgRelTypeMap">
-    select a.*,b.ref_name SUP_NAME from tb_ORG_REL_TYPE a left join tb_ORG_REL_TYPE b on a.parent_org_rel_type_id = b.org_rel_type_id and b.status_cd = 1000
-    where a.org_rel_type_id = #{ORG_REL_TYPE_ID} and a.status_cd = 1000
+    select a.*,b.ref_name SUP_NAME from tb_ORG_REL_TYPE a left join tb_ORG_REL_TYPE b on a.parent_ref_code = b.ref_code and b.status_cd = 1000
+    where a.REF_CODE = #{REF_CODE} and a.status_cd = 1000
   </select>
 
   <!--组织类别-->
   <select id="getOrgType" resultMap="OrgTypeMap">
     select a.*,b.org_type_name sub_name from (SELECT * FROM TB_ORG_TYPE where
     org_type_id in(select org_type_id from TB_ORG_ORGTYPE_REL where org_id = #{ORG_ID}  and status_cd = 1000) and status_cd = 1000) a left join TB_ORG_TYPE b
-    on a.sup_pk_org_type = b.org_type_id and b.status_cd = 1000
+    on a.PARENT_ORG_TYPE_ID = b.org_type_id and b.status_cd = 1000
   </select>
 
   <!--跨域组织-->

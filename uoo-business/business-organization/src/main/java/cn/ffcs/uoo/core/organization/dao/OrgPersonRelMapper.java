@@ -35,4 +35,6 @@ public interface OrgPersonRelMapper extends BaseMapper<OrgPersonRel> {
     public List<OrgPersonRel> getOrgPsnByOrgTreeAndPsnId(@Param("orgTreeId")String orgTreeId,
                                                          @Param("personnelId")String personnelId,
                                                          @Param("orgId")String orgId);
+
+    public List<OrgPersonRel> getOrgPsnRel(@Param("orgTreeId")String orgTreeId,@Param("orgId")String orgId);
 }

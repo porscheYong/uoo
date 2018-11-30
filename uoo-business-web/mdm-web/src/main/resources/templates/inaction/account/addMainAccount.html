@@ -105,12 +105,19 @@
           margin-left: -15px;
       }
       .BoardTitle .Back {
-          background: url(/images/ico_back.svg) no-repeat left center;
-          display: inline-block;
-          line-height: 24px;
-          font-size: 16px;
-          padding: 0 30px;
+        background: url(/images/ico_back.svg) no-repeat 10px center;
+        background-size: 24px 24px;
+        border-bottom: 1px solid #ecedef;
+        font-size: 16px;
+        opacity: 0.7;
+        padding: 6px 40px;
         }
+        .BoardTitle .Back:hover {
+            background-position: 5px center;
+            transition: 0.2s;
+            padding: 6px 55px 6px 35px;
+            opacity: 1;
+	    }
       /* #orgTypeList{
         opacity: 0;
         filter: alpha(opacity=0);
@@ -127,7 +134,7 @@
 
 <body style="background: #fff;">
 
-    <div class="BoardTitle" style="margin-bottom:20px;" onclick="cancel()">
+    <div class="BoardTitle" style="margin-bottom:10px;" onclick="cancel()">
         <a class="Back" href="#" style="color:#008aff;" onclick="cancel()">返回</a>
     </div>
 

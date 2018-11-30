@@ -493,24 +493,13 @@
                 </div>
             </div>
             <div class="row" style="margin-bottom: 10px;">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="schoolType" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">学习方式</label>
-                        <input id="schoolType" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{eduData.schoolType}}">
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="education" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">学历</label>
-                        <input id="education" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{eduData.education}}">
-                    </div>
-                </div>
-            </div>
-
-            <div class="row" style="margin-bottom: 10px;">
+                <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
+                    <!--<div class="form-item" style="width: 100%">-->
+                        <!--<label for="schoolType" class="form-item-label col-md-4 col-sm-4 col-xs-12"-->
+                               <!--style="padding-right: 20px;line-height: 40px;text-align: right;">学习方式</label>-->
+                        <!--<input id="schoolType" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{eduData.schoolType}}">-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                         <label for="degree" class="form-item-label col-md-4 col-sm-4 col-xs-12"
@@ -521,13 +510,9 @@
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                        <label for="lastEducation" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">是否最高学历</label>
-                        <select id="lastEducation" class="col-md-8 col-sm-8 col-xs-12">
-                            <option></option>
-                            <option value="0" {{#eq eduData.lastEducation 0}}selected="selected"{{/eq}}>否</option>
-                            <option value="1" {{#eq eduData.lastEducation 1}}selected="selected"{{/eq}}>是</option>
-                        </select>
+                        <label for="education" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                               style="padding-right: 20px;line-height: 40px;text-align: right;">学历</label>
+                        <input id="education" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{eduData.education}}">
                     </div>
                 </div>
             </div>
@@ -544,7 +529,33 @@
                         </select>
                     </div>
                 </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-item" style="width: 100%">
+                        <label for="lastEducation" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                               style="padding-right: 20px;line-height: 40px;text-align: right;">是否最高学历</label>
+                        <select id="lastEducation" class="col-md-8 col-sm-8 col-xs-12">
+                            <option></option>
+                            <option value="0" {{#eq eduData.lastEducation 0}}selected="selected"{{/eq}}>否</option>
+                            <option value="1" {{#eq eduData.lastEducation 1}}selected="selected"{{/eq}}>是</option>
+                        </select>
+                    </div>
+                </div>
             </div>
+
+            <!--<div class="row" style="margin-bottom: 10px;">-->
+                <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
+                    <!--<div class="form-item" style="width: 100%">-->
+                        <!--<label for="lastDegree" class="form-item-label col-md-4 col-sm-4 col-xs-12"-->
+                               <!--style="padding-right: 20px;line-height: 40px;text-align: right;">是否最高学位</label>-->
+                        <!--<select id="lastDegree" class="col-md-8 col-sm-8 col-xs-12">-->
+                            <!--<option></option>-->
+                            <!--<option value="0" {{#eq eduData.lastDegree 0}}selected="selected"{{/eq}}>否</option>-->
+                            <!--<option value="1" {{#eq eduData.lastDegree 1}}selected="selected"{{/eq}}>是</option>-->
+                        <!--</select>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
         </form>
         <div class="row" style="margin-bottom: 10px;">
             <div class="col-md-offset-4 col-xs-offset-4">
