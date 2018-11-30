@@ -1,15 +1,26 @@
 var orgId = getQueryString('id');
 var orgRootId = getQueryString('orgRootId');
+var tabPage = getQueryString('tabPage');
 //var orgRootId = 1;
 var personnelId = getQueryString('personnelId');
 var orgTreeId = getQueryString('orgTreeId');
 var orgName = getQueryString('name');
+var addOrg = getQueryString('addOrg');
 var personalData={},genderData,certTypeData,nationData,pliticalStatusData,marriageData,orgInfo={},
 userFormValidate,jobFormValidate,eduFormValidate,familyFormValidate,orgFormValidate;
 // lulu ui select插件
 // seajs.use('../../../static/vendors/lulu/js/common/ui/Select', function () {
 //   $('select').selectMatch();
 // })
+function getUserAccount(){
+	$http.get('/user/getUserList', {personnelId:personnelId}, function (data) {
+		personalData.userList=data;
+		initUserList();
+	}, function (err) {
+		console.log(err)
+	})
+	
+}
 function getOrgTreeList () {
     $http.get('/orgTree/getOrgTreeList', {}, function (data) {
         personalData.orgTreeList=data;
@@ -48,16 +59,7 @@ function getJobInfo(){
 		}
 	});
 }
-function getOrgInfo(){
-	$http.get('/orgPersonRel/getPerOrgRelList', {personnelId:personnelId},
-	function (data) {
-        orgInfo=data;
-        personalData.orgInfo=orgInfo;
-        initOrgInfo();
-    }, function (err) {
-        console.log(err)
-    })
-}
+ 
 function getFamilyInfo(){
 	$.ajax({
 		url:'/family/getTbFamilyPage',
@@ -155,8 +157,10 @@ function getOrgPersonnerList () {
         personnelId: personnelId
     }, function (data) {
     	personalData.personalData=data;
+    	personalData.orgInfo=data.psonOrgVoList.records;
     	console.log(personalData);
     	initUser();
+    	initOrgInfo();
     }, function (err) {
         console.log(err)
     })
@@ -165,13 +169,25 @@ function initUser(){
 	$('#userEditButton').show();
     //预编译模板
     var userTemplate = Handlebars.compile($("#userTemplate").html());
-    var baseInfoTemplate = Handlebars.compile($("#baseInfoTemplate").html());
+    //var baseInfoTemplate = Handlebars.compile($("#baseInfoTemplate").html());
     //匹配json内容
     var userHtml = userTemplate(personalData);
-    var baseHtml = baseInfoTemplate(personalData);
+   // var baseHtml = baseInfoTemplate(personalData);
     //输入模板
     $('#userInfo').html(userHtml);
-    $('#baseInfo').html(baseHtml);
+   // $('#baseInfo').html(baseHtml);
+}
+function initUserList(){
+	$('#userEditButton').show();
+	//预编译模板
+	//var userTemplate = Handlebars.compile($("#userTemplate").html());
+	var baseInfoTemplate = Handlebars.compile($("#baseInfoTemplate").html());
+	//匹配json内容
+	//var userHtml = userTemplate(personalData);
+	var baseHtml = baseInfoTemplate(personalData);
+	//输入模板
+	//$('#userInfo').html(userHtml);
+	$('#baseInfo').html(baseHtml);
 }
 function initOrgInfo(){
 	//预编译模板
@@ -238,8 +254,9 @@ function  editUser() {
     			mobileHtml+="<span class='Label'><span class='Red'>* </span>联系电话</span>";
     			mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' class='Col6 ui-input' required type='text' value='"+d.content+"'/>";
     		}else{
-    			mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' class='Col6' type='text' value='"+d.content+"'/>";
     			mobileHtml+="<span class='Label'><span class='Red'> </span> </span>";
+    			mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' class='Col6' type='text' value='"+d.content+"'/>";
+    			mobileHtml+="&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a>";
     			
     		}
     		if(i==0){
@@ -267,8 +284,9 @@ function  editUser() {
     			emailHtml+="<span class='Label'><span class='Red'>* </span>邮箱</span>";
     			emailHtml+="<input name='emails' contactid='"+d.contactId+"' class='Col6 ui-input' required type='text' value='"+d.content+"'/>";
     		}else{
-    			emailHtml+="<input name='emails' contactid='"+d.contactId+"' class='Col6' type='text' value='"+d.content+"'/>";
     			emailHtml+="<span class='Label'><span class='Red'> </span> </span>";
+    			emailHtml+="<input name='emails' contactid='"+d.contactId+"' class='Col6' type='text' value='"+d.content+"'/>";
+    			emailHtml+="&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a>";
     		}
     		if(i==0){
     			emailHtml+="&nbsp;<a id='' href='javascript:void(0)' onclick='addEmailInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
@@ -287,7 +305,9 @@ function  editUser() {
 	    elem:  'input[isTime="yes"]'
 	});
     
- 
+    $('.icon-del').on('click', function () {
+		 $(this).parent().remove();
+	 });
 
 	seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 	    userFormValidate = new Validate($('#userEditForm'));
@@ -353,6 +373,16 @@ function openOrgEdit () {
 	        });
 	    });*/
 	});
+    
+    if(addOrg=='1'){
+    	//从人员新增那里过来的老铁直接赋值一些数据
+    	if((currentEditOrgInfo.orgPersonId).length>0){
+    		return;
+    	}
+    	$('#orgTreeId').val(orgTreeId);
+    	$('#orgFullName').val(orgName);
+    	$('#orgFullName').attr('keyId',orgId);
+    }
 }
 function openOrgEditByEdit (i) {
 	personalData.currentEditOrgInfo=personalData.orgInfo[i];
@@ -555,7 +585,7 @@ function addPsonOrg(){
 	var psonOrgArr=new Array();
 	var psonOrg={
 			orgTreeId:$('#orgTreeId').val(),
-			orgFullName:$('#orgFullName').val(),
+			orgName:$('#orgFullName').val(),
 			doubleName:$('#doubleName').val(),
 			property:$('#property').val(),
 			postId:$('#postId').attr('keyId'),
@@ -752,19 +782,7 @@ function updatePersonnel(){
 		success:function(data){
 			console.log(JSON.stringify(updates));
 			if(data.state==1000){
-				alert('新修改成功');
-				personalData.personalData.gender=gender;
-				personalData.personalData.psnName=psnName;
-				personalData.personalData.certType=certType;
-				personalData.personalData.certNo=certNo;
-				personalData.personalData.nationality=nationality;
-				personalData.personalData.nation=nation;
-				personalData.personalData.toWorkTime=toWorkTime;
-				personalData.personalData.marriage=marriage;
-				personalData.personalData.pliticalStatus=pliticalStatus;
-				personalData.personalData.tbMobileVoList=tbMobileVoList;
-				personalData.personalData.tbEamilVoList=tbEamilVoList;
-				initUser();
+				alert('新修改成功');getOrgPersonnerList();
 			}else{
 				alert('修改失败,'+data.message);
 			}
@@ -774,16 +792,24 @@ function updatePersonnel(){
 function addEmailInput(){
 	var mh="<li>";
 	mh+="<span class='Label'></span>"
-	 mh+="<input class='Col6' contactid='' name='emails' type='text'  />";
+	 mh+="<input class='Col6' contactid='' name='emails' type='text'  />&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a>";
 	 mh+="</li>";
 	 $('#userEditUL1').append(mh);
+	 $('.icon-del').on('click', function () {
+		 $(this).parent().remove();
+	 });
 }
 function addMobileInput(){
-	var mh="<li>";
+	var mh="<li class=''>";
 	mh+="<span class='Label'></span>"
-	 mh+="<input class='Col6' contactid='' name='mobiles' type='text'  />";
+	//mh+=" <input required class='Col6'> <a class='icon-del'><span class='fa fa-minus-circle'></span></a>  ";
+	 
+	 mh+="<input class='Col6' type='text'  contactid='' name='mobiles' type='text' />&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a> ";
 	 mh+="</li>";
 	 $('#userEditUL0').append(mh);
+	 $('.icon-del').on('click', function () {
+		 $(this).parent().remove();
+	 });
 }
 function deleteJob(id){
 	if(confirm('确定删除？')){
@@ -875,7 +901,10 @@ $(document).ready(function(){
 		 
 		return index+1;
 	});        
-	
+	if(tabPage=='acct'){
+		$('#personnel').removeClass('active');
+		$('#user').addClass('active');
+	}
 	getRefType();
 	getOrgTreeList();
 	getSchoolType();
@@ -885,11 +914,31 @@ $(document).ready(function(){
 	getNation();
 	getPliticalStatus();
 	getMarriage();
-	getOrgInfo();
 	getJobInfo();
 	getEduInfo();
 	getFamilyInfo();
 	getOrgPersonnerList();
-	
+	getUserAccount();
 	 
 });
+function gotoAccout(i){
+	var userAcc=personalData.userList[i];
+	var url="";
+	if(userAcc.type==1){
+		url+="/inaction/account/addMainAccount.html"
+	}else{
+		url+="/inaction/account/addSubAccount.html"
+	}
+	url+="?";
+	url+="orgId="+orgId+"&";
+	url+="orgRootId="+orgRootId+"&";
+	url+="personnelId="+personnelId +"&";
+	url+="orgTreeId="+orgTreeId+"&";
+	url+="orgName="+orgName+"&";
+	url+="opBtn="+0+"&";
+	url+="hType="+"uh"+"&";
+	url+="acctId="+userAcc.acctId+"&";
+	url+="statusCd="+userAcc.statusCd+"&";
+	url+="tabPage="+"acct"+"&";
+	window.location.href=url;
+}
