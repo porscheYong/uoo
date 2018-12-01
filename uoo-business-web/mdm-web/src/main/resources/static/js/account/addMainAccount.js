@@ -16,7 +16,8 @@ var editOrgList = [];
 var addOrgList = [];
 var flag = 0;
 var psw;
-var roleList = [];
+var roleList = [];      //需要上传的角色列表
+var userRoleList = [];      //用户已有角色列表
 
 
 $('#invalidDate').val(''),
@@ -196,7 +197,7 @@ function initSubOrgTable(results){    //从账号组织数据
 }
 
 function initEditUserInfo(results){     //初始化用户信息(编辑)
-  var roldId = '';
+  // var roldId = '';
   $('#psnTel').val(results.psnName);
   $('#psnNumTel').val(results.psnNbr);
   $('#mobileTel').val(results.mobilePhone);
@@ -212,12 +213,13 @@ function initEditUserInfo(results){     //初始化用户信息(编辑)
 
   isEnableStatus(results.tbAcct.statusCd);  //判断状态
 
-  for(var i = 0; i <results.tbRolesList.length; i++){
-    roldId = roldId + "、" + results.tbRolesList[i].roleId;
-  }
-  $('#roleTel').val(roldId.substring(1,roldId.length));
-  // $('#orgTypeList').addTag(results.tbRolesList);
-  // console.log(results.tbRolesList);
+  // for(var i = 0; i <results.tbRolesList.length; i++){
+  //   roldId = roldId + "、" + results.tbRolesList[i].roleId;
+  // }
+  userRoleList = results.tbRolesList;
+  $('#roleTel').addTag(results.tbRolesList);
+
+  window.localStorage.setItem('userRoleList',JSON.stringify(userRoleList));
 }
 
 function initAcctInfoCheck(results){     //初始化用户信息(编辑时查看面板)
@@ -251,12 +253,13 @@ function addTbAcct(){         //新增
       "password": $('#defaultPswTel').val(),
       "personnelId": personnelId,
       "statusCd": "1000", 
-      "tbRolesList": [
-        {
-          "roleId": parseInt($('#roleTel').val()),
-          "roleName": ""
-        }
-      ],
+      // "tbRolesList": [
+      //   {
+      //     "roleId": parseInt($('#roleTel').val()),
+      //     "roleName": ""
+      //   }
+      // ],
+      "tbRolesList":roleList,
       "userType": "1"
     };
     console.log(editFormAcctVo);
@@ -296,12 +299,13 @@ function updateAcct(){      //编辑主账号
       "password": $('#defaultPswTel').val(),
       "personnelId": personnelId,
       "statusCd": statusCd, 
-      "tbRolesList": [
-        {
-          "roleId": parseInt($('#roleTel').val()),
-          "roleName": ""
-        }
-      ],
+      // "tbRolesList": [
+      //   {
+      //     "roleId": parseInt($('#roleTel').val()),
+      //     "roleName": ""
+      //   }
+      // ],
+      "tbRolesList":roleList,
       "userType": "1"
     };
     console.log(editFormAcctVo);
@@ -482,36 +486,37 @@ function cancel() {   //取消按钮
   window.location.href = url;
 }   
 
-// // tags init
-// if(typeof $.fn.tagsInput !== 'undefined'){
-//   $('#orgTypeList').tagsInput();
-// }
+// tags init
+if(typeof $.fn.tagsInput !== 'undefined'){
+  $('#roleTel').tagsInput();
+}
 
-// // //角色选择
-// function openTypeDialog() {
-//   parent.layer.open({
-//       type: 2,
-//       title: '选中组织类别',
-//       shadeClose: true,
-//       shade: 0.8,
-//       area: ['70%', '85%'],
-//       maxmin: true,
-//       content: 'roleDialog.html?id=' + orgId,
-//       btn: ['确认', '取消'],
-//       yes: function(index, layero){
-//           //获取layer iframe对象
-//           var iframeWin = parent.window[layero.find('iframe')[0].name];
-//           var checkNode = iframeWin.checkNode;
-//           parent.layer.close(index);
-//           $('#orgTypeList').importTags(checkNode);
-//           $('.ui-tips-error').css('display', 'none');
-//           orgTypeList = checkNode;
-//           console.log(checkNode);
-//       },
-//       btn2: function(index, layero){},
-//       cancel: function(){}
-//   });
-// }
+// //角色选择
+function openTypeDialog() {
+  parent.layer.open({
+      type: 2,
+      title: '选中组织类别',
+      shadeClose: true,
+      shade: 0.8,
+      area: ['70%', '85%'],
+      maxmin: true,
+      content: 'roleDialog.html',
+      btn: ['确认', '取消'],
+      yes: function(index, layero){
+          //获取layer iframe对象
+          var iframeWin = parent.window[layero.find('iframe')[0].name];
+          var checkRole = iframeWin.checkRole;
+          var checkNode = iframeWin.checkNode;
+          parent.layer.close(index);
+          $('#roleTel').importTags(checkNode);
+          $('.ui-tips-error').css('display', 'none');
+          roleList = checkRole;
+          console.log(roleList);
+      },
+      btn2: function(index, layero){},
+      cancel: function(){}
+  });
+}
 
 
 function submitSuccess(){     //提交成功

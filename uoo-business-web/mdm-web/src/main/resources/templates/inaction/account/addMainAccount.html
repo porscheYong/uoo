@@ -43,11 +43,11 @@
     <![endif]-->
 
     <style>
-        /* #orgTypeList{
+        #roleTel{
         opacity: 0;
         filter: alpha(opacity=0);
         position: absolute;
-        } */
+        }
         #conSubInfo .fright 
         {
             margin-right: 73% !important;
@@ -60,10 +60,10 @@
             text-align: left !important;
             margin-left: -55px !important;
         }
-      #delAcct{
-          margin-top: 40px !important;
-          margin-left: -15px;
-      }
+        #delAcct{
+            margin-top: 40px !important;
+            margin-left: -15px;
+        }
         .fleft{
             float: none !important;
         }
@@ -80,6 +80,10 @@
             border: 1px solid #ee4063 !important;
             color: #ee4063 !important;
             background: #FFF !important;
+        }
+        #roleTel_tagsinput .tag{
+            padding: 2px !important;
+            margin-bottom: 0px !important;
         }
         
     </style>
@@ -211,19 +215,19 @@
                     </div>
 
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <!-- <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-item" style="width: 100%">
                                 <label for="roleTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
                                 <input type="tel" id="roleTel" class="ui-input col-md-8 col-sm-8 col-xs-12" data-toggle="modal" data-target="#roleModal" size="40" name="tel" required value="" autocomplete="off"> 
                             </div>
-                        </div>
-
-                        <!-- <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="form-item" style="width: 100%">
-                            <label for="orgTypeList" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
-                            <input id="orgTypeList" class="ui-input col-md-8 col-sm-8 col-xs-12"  onclick="openTypeDialog()" required readonly></input>
-                            </div>
                         </div> -->
+
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                                <label for="roleTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
+                                <input id="roleTel" class="ui-input col-md-8 col-sm-8 col-xs-12"  onclick="openTypeDialog()" required readonly></input>
+                            </div>
+                        </div>
 
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-item" style="width: 100%" id="default_psw">

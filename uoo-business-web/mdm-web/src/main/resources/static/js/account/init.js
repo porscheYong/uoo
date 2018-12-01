@@ -15,7 +15,7 @@ var $http = {
       var responseData = response.data
       var state = response.state
       var message = response.message
-      if (state === 1000) {
+      if (state === 1000 || state === 1) {
         successCallback(responseData, state, message)
       }
       else {
