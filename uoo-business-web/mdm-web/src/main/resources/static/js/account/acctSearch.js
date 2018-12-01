@@ -1,34 +1,33 @@
 var orgId = getQueryString('orgId');
-var orgName = getQueryString('orgName');
 var orgTreeId = getQueryString('orgTreeId');
-var orgFullName = '';
-var table;
+var orgName = getQueryString('orgName');
+var engine;
+var empty;
 
+empty = Handlebars.compile($(".typeahead-menu").html());
 
-// 获取组织完整路径
-function getOrgExtInfo() {
-    var pathArry = parent.nodeArr;
-    //console.log(pathArry)
-    var pathStr = '';
-    for (var i = pathArry.length - 1; i >= 0; i--) {
-        if (i === 0) {
-            pathStr +=  '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a></span>';
-        } else {
-            pathStr += '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>'; 
+engine = new Bloodhound({
+    identify: function(o) { return o.id_str; },
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name', 'acctName'),
+    dupDetector: function(a, b) { return a.id_str === b.id_str; },
+    remote: {
+        url: '/orgPersonRel/getUserOrgRelPage?search=%QUERY&pageNo=1&pageSize=10&orgId='+orgId+'&orgTreeId='+orgTreeId,
+        wildcard: '%QUERY',
+        filter: function (response) {
+            if (response.data && response.data.records.length == 0)
+                return;
+            
         }
-        orgFullName += pathArry[i] + '/'; 
     }
-    orgFullName = orgFullName.toString().substring(0,orgFullName.toString().length-1);
-    $('.breadcrumb').html(pathStr);
-}
+});
 
-function initMainTable(){
+function initAcctTable(search) {
+    table.destroy();
     table = $("#mainTable").DataTable({
         'searching': false,
         'autoWidth': false,
         'ordering': true,
-        'info': true,
-        // 'lengthChange':false,
         'initComplete': function (settings, json) {
             console.log(settings, json)
         },
@@ -61,9 +60,9 @@ function initMainTable(){
             'emptyTable': '没有数据',  
             'loadingRecords': '加载中...',  
             'processing': '查询中...',  
-            'search': '搜索：',  
+            'search': '检索:',  
             'lengthMenu': ' _MENU_ ',  
-            'zeroRecords': '没有数据', 
+            'zeroRecords': '没有数据',  
             'paginate': {  
                 'first':      '首页',  
                 'last':       '尾页',  
@@ -83,6 +82,7 @@ function initMainTable(){
             param.pageNo = (data.start / data.length) + 1;//当前页码
             param.orgTreeId = orgTreeId;
             param.orgId = orgId;
+            param.search = search;
             $http.get('/orgPersonRel/getUserOrgRelPage', param, function (result) {
                 var returnData = {};
                 // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
@@ -97,15 +97,59 @@ function initMainTable(){
             })
         }
     });
+    // var loading = parent.loading;
+    // loading.screenMaskDisable('container');
 }
 
-$('#orgName').html(orgName);
-getOrgExtInfo();
-// getUserList(orgId);
-initMainTable();
-console.log(orgFullName);
 
-$('#addBtn').on('click', function () {
-    var url = 'add.html?&orgName=' + orgName +'&orgId=' + orgId + '&orgTreeId=' + orgTreeId + "&orgFullName=" + orgFullName;
-    $(this).attr('href', url);
+
+function engineWithDefaults(q, sync, async) {
+    if (q === '') {
+        $('#mainTable').html('');
+        table.destroy();
+        initMainTable();
+    }
+    else {
+        engine.search(q, sync, async);
+    }
+}
+
+$('#acctName').typeahead({
+    hint: $('.typeahead-hint'),
+    menu: $('.user-table'),
+    minLength: 0,
+    highlight:true,
+    classNames: {
+        open: 'is-open',
+        empty: 'is-empty',
+        cursor: 'is-active',
+        suggestion: 'Typeahead-suggestion',
+        selectable: 'Typeahead-selectable'
+    }
+}, {
+    source: engineWithDefaults,
+    displayKey: 'orgName',
+    templates: {
+        suggestion: empty
+    }
 })
+  .on('typeahead:asyncrequest', function() {
+        $('.Typeahead-spinner').show();
+        initAcctTable($("#acctName").val());
+    })
+  .on('typeahead:asynccancel', function() {
+        $('.Typeahead-spinner').hide();
+    });
+
+Handlebars.registerHelper('eq', function(v1, v2, opts) {
+    if(v1 == v2){
+        return opts.fn(this);
+    }
+    else
+        return opts.inverse(this);
+});
+
+Handlebars.registerHelper("addOne", function (index) {
+    return index + 1;
+});
+

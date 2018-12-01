@@ -1,6 +1,9 @@
 var orgId = getQueryString('orgId');
 var orgName = getQueryString('orgName');
+var orgFullName = getQueryString('orgFullName');
 var orgTreeId = getQueryString('orgTreeId');
+
+console.log(orgFullName);
 
 $('#userType').get(0).selectedIndex=1;
 var table;
@@ -44,7 +47,7 @@ function initPsnInfoTable(results){         //主账号组织数据
             { 'data': "psnName", 'title': '姓名', 'className': 'row-psnName' ,
             'render': function (data, type, row, meta) {
             if(userType == '主账号'){
-                return '<a href="addMainAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + orgName +'&orgId=' + orgId + '&personnelId='+ row.personnelId +'&opBtn=1&hType=ah">'+ row.psnName +'</a>'
+                return '<a href="addMainAccount.html?orgFullName=' + orgFullName + '&orgTreeId=' + orgTreeId + '&orgName=' + orgName +'&orgId=' + orgId + '&personnelId='+ row.personnelId +'&opBtn=1&hType=ah">'+ row.psnName +'</a>'
             }else if(userType == '从账号'){
                 return '<a href="addSubAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + orgName +'&orgId=' + orgId + '&personnelId='+ row.personnelId +'&opBtn=1&hType=ah">'+ row.psnName +'</a>'
             } 
