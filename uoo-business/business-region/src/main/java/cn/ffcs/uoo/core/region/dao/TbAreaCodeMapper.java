@@ -22,5 +22,5 @@ public interface TbAreaCodeMapper extends BaseMapper<TbAreaCode> {
 
     public Long getId();
     public List<AreaCodeVO> selectListAreaCode(HashMap<String,Object> map);
-    public Long countListAreaCode();
+    public Long countListAreaCode(HashMap<String,Object> map);
 }

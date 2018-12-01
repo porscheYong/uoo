@@ -68,7 +68,23 @@ public class PersonnelServiceHystrix implements PersonnelService {
     }
 
     @Override
-    public Object getPsnBasicInfo(String keyWord, int pageNo, int pageSize) {
+    public Object getPsnBasicInfo(String keyWord, Integer pageNo, Integer pageSize) {
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
+
+    @Override
+    public Object getIdCardInfo(String certNo) {
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
+
+    @Override
+    public Object getFreePsnInfo(String keyWord, Integer pageNo, Integer pageSize) {
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

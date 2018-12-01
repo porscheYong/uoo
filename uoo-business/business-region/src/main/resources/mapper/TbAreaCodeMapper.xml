@@ -41,12 +41,27 @@
 		regionNames FROM TB_COMMON_REGION B WHERE B.STATUS_CD = '1000' GROUP
 		BY B.AREA_CODE_ID) X ON
 		A.AREA_CODE_ID = X.AREA_CODE_ID
-		WHERE A.STATUS_CD = '1000') TB
+		WHERE A.STATUS_CD = '1000'
+		<if test="keyWord != null and keyWord != ''">
+		AND (A.AREA_CODE like #{keyWord} OR X.regionNames like #{keyWord} OR A.AREA_NBR like #{keyWord})
+		</if>
+		) TB
 		WHERE ROWNUM &lt;= #{end}
 		)
 		WHERE RN &gt;= #{from}
 	</select>
-    <select id="countListAreaCode" resultType="java.lang.Long">
-        select count(*) from TB_AREA_CODE where STATUS_CD = '1000'
+    <select id="countListAreaCode" resultType="java.lang.Long" parameterType="java.util.HashMap">
+        SELECT
+        count(*)
+        FROM
+        TB_AREA_CODE A
+        LEFT JOIN ( SELECT B.AREA_CODE_ID, WM_CONCAT ( B.REGION_NAME ) AS
+        regionNames FROM TB_COMMON_REGION B WHERE B.STATUS_CD = '1000' GROUP
+        BY B.AREA_CODE_ID) X ON
+        A.AREA_CODE_ID = X.AREA_CODE_ID
+        WHERE A.STATUS_CD = '1000'
+        <if test="keyWord != null and keyWord != ''">
+        AND (A.AREA_CODE like #{keyWord} OR X.regionNames like #{keyWord} OR A.AREA_NBR like #{keyWord})
+        </if>
     </select>
 </mapper>

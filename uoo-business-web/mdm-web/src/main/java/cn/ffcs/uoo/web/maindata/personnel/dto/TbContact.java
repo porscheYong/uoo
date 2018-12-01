@@ -115,6 +115,14 @@ public class TbContact extends Model<TbContact> {
         this.contactType = contactType;
     }
 
+    public String getFirstFlag() {
+        return firstFlag;
+    }
+
+    public void setFirstFlag(String firstFlag) {
+        this.firstFlag = firstFlag;
+    }
+
     public String getContent() {
         return content;
     }

@@ -5,9 +5,11 @@ package cn.ffcs.uoo.web.maindata.busipublic.expando.dto;
  * @author zhanglu
  */
 public class ExpandovalueVo {
+    private String tableName;
     private String recordId;
     private String columnName;
     private String columnCnname;
+    private Long valueId;
     private String data;
 
     public String getRecordId() {
@@ -40,5 +42,21 @@ public class ExpandovalueVo {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public Long getValueId() {
+        return valueId;
+    }
+
+    public void setValueId(Long valueId) {
+        this.valueId = valueId;
     }
 }

@@ -2,7 +2,7 @@ var i=0,showCheck=getQueryString('showCheck');
 var  dataTable,checkAreaCode;
 function retrieveData(data, callback, settings) {
  var pageSize=0,pageNo=0;
-
+ 
 /* for(var i=0;i<aoData.length;i++){
 	 if(aoData[i].name=='length'){
 	 }
@@ -16,7 +16,7 @@ function retrieveData(data, callback, settings) {
  i=(pageNo-1)*pageSize;
  $.ajax({
      url : '/region/areaCode/listAreaCode',//这个就是请求地址对应sAjaxSource
-     data : {'pageNo':pageNo,'pageSize':pageSize},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+     data : {'pageNo':pageNo,'pageSize':pageSize,keyWord:$('#keyword').val()},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
      type : 'get',
      dataType : 'json',
      async : false,
@@ -45,6 +45,11 @@ function checkTableRow(obj){
 		var data=dataTable.rows('.selected').data();
 		checkAreaCode=(data[0]);
 	}
+}
+function searchAreaCode(){
+	dataTable.ajax.reload( function( json ) {
+	} , true);
+	
 }
 function loadAreaCode(){
 	 dataTable = $("#areaCodeTable").DataTable({

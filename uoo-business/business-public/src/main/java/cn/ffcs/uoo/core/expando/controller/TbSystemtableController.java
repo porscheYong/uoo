@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.expando.controller;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.common.tool.util.DateUtils;
+import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.constant.StatusEnum;
 import cn.ffcs.uoo.core.vo.ResponseResult;
@@ -53,6 +54,25 @@ public class TbSystemtableController extends BaseController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseResult<TbSystemtable> addTbSystemtable(@RequestBody TbSystemtable tbSystemtable) {
         ResponseResult<TbSystemtable> responseResult = new ResponseResult<TbSystemtable>();
+
+        // 校验必填项
+        if(StringUtils.isEmpty(tbSystemtable.getTableName())) {
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("请填写系统表名");
+            return responseResult;
+        }
+
+        // 判断系统表名是否已存在
+        Wrapper<TbSystemtable> systemtableWrapper = new EntityWrapper<TbSystemtable>();
+        systemtableWrapper.eq("TABLE_NAME",tbSystemtable.getTableName());
+        systemtableWrapper.eq("STATUS_CD", StatusEnum.VALID.getValue());
+        List<TbSystemtable> tbSystemtables = tbSystemtableService.selectList(systemtableWrapper);
+
+        if(tbSystemtables != null && tbSystemtables.size() > 0) {
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("该系统表名已存在");
+            return responseResult;
+        }
 
         tbSystemtable.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbSystemtable.setStatusCd(StatusEnum.VALID.getValue());

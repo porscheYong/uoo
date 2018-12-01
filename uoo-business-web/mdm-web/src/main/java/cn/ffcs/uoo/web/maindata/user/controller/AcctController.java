@@ -65,8 +65,18 @@ public class AcctController {
     @ApiImplicitParam(name = "tbAccountOrgRel", value = "主账号与组织关系信息", required = true, dataType = "TbAccountOrgRel")
     @RequestMapping(value = "/addAcctOrg", method = RequestMethod.POST)
     public Object addAcctOrg(@RequestBody TbAccountOrgRel tbAccountOrgRel) {
-        Object obj = acctService.addAcctOrg(tbAccountOrgRel);
-        return obj;
+        return acctService.addAcctOrg(tbAccountOrgRel);
+    }
+
+    @ApiOperation(value="主账号归属组织查询",notes="主账号归属组织查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "acctId", value = "主账号标识", required = true, dataType = "Long",paramType="path"),
+            @ApiImplicitParam(name = "pageNo", value = "当前页数", required = true, dataType = "Integer",paramType="path"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path")
+    })
+    @RequestMapping(value="/getAcctOrgRelPage",method = RequestMethod.GET )
+    public Object getAcctOrgRelPage(Long acctId, Integer pageNo, Integer pageSize){
+        return acctService.getAcctOrgRelPage(acctId, pageNo, pageSize);
     }
 
 }

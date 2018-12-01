@@ -1,15 +1,10 @@
 package cn.ffcs.uoo.web.maindata.busipublic.expando.service;
 
-import cn.ffcs.uoo.web.maindata.busipublic.dictionary.service.fallback.TbDictionaryItemClientHystrix;
 import cn.ffcs.uoo.web.maindata.busipublic.expando.dto.ExpandovalueVo;
-import cn.ffcs.uoo.web.maindata.busipublic.expando.dto.TbExpandorow;
 import cn.ffcs.uoo.web.maindata.busipublic.expando.dto.TbExpandovalue;
 import cn.ffcs.uoo.web.maindata.busipublic.expando.service.fallback.TbExpandovalueClientHystrix;
 import cn.ffcs.uoo.web.maindata.busipublic.vo.ResponseResult;
 import common.config.PersonnelServiceConfiguration;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +25,10 @@ public interface TbExpandovalueClient {
     List<TbExpandovalue> queryValueList(@PathVariable("resourceId") String resourceId, @PathVariable("tableId") Long tableId,
                                                @PathVariable("columnId") Long columnId, @PathVariable("recordId") String recordId);
 
-    @RequestMapping(value = "/getValueVoList/{tableName}/{recordId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/tbExpandovalue/getValueVoList/{tableName}/{recordId}", method = RequestMethod.GET)
     ResponseResult<List<ExpandovalueVo>> queryExpandovalueVoList(@PathVariable("tableName") String tableName,
                                                                         @PathVariable("recordId") String recordId);
+
+    @RequestMapping(value = "/tbExpandovalue/addByVo", method = RequestMethod.POST)
+    ResponseResult<ExpandovalueVo> addExpandoInfo(@RequestBody ExpandovalueVo expandovalueVo);
 }
