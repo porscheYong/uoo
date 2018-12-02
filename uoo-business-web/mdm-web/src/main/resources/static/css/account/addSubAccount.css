@@ -14,21 +14,14 @@
 .row-fullName{
     width: 60%;
 }
-.row-orgId{
-    display: none;
-}
 td,th{
     text-align: center;
 }
-.row-org{
-    width: 32%;
+th.row-tl{
+    display: none;
 }
-.row-acc{
-    width: 15%;
-}
-.row-number,
-.row-state{
-    width: 11%;
+.row-acctHostId{
+    display: none;
 }
 table.dataTable {
     table-layout: fixed;
@@ -43,18 +36,18 @@ table.dataTable tbody td {
   background: #fff;
 }
 .BoardTitle .Back {
-	background: url(/images/ico_back.svg) no-repeat 10px center;
-	background-size: 24px 24px;
-	border-bottom: 1px solid #ecedef;
-	font-size: 16px;
-	opacity: 0.7;
-	padding: 6px 40px;
+    background: url(/images/ico_back.svg) no-repeat 10px center;
+    background-size: 24px 24px;
+    border-bottom: 1px solid #ecedef;
+    font-size: 16px;
+    opacity: 0.7;
+    padding: 6px 40px;
 }
 .BoardTitle .Back:hover {
-	background-position: 5px center;
-	transition: 0.2s;
-	padding: 6px 55px 6px 35px;
-	opacity: 1;
+    background-position: 5px center;
+    transition: 0.2s;
+    padding: 6px 55px 6px 35px;
+    opacity: 1;
 }
 .roleTag{
 	background:#c6cbd2;
@@ -69,5 +62,3 @@ table.dataTable tbody td {
     filter: alpha(opacity=0);
     position: absolute;
     }
-
-

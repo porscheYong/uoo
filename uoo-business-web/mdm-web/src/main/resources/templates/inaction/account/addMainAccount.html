@@ -43,11 +43,7 @@
     <![endif]-->
 
     <style>
-        #roleTel{
-        opacity: 0;
-        filter: alpha(opacity=0);
-        position: absolute;
-        }
+        
         #conSubInfo .fright 
         {
             margin-right: 73% !important;
@@ -108,7 +104,10 @@
                         <img class="avatar" src="/images/avatar.png" alt="头像" />
                     </div>
                     <div style="width: auto;margin-left: 120px;margin-top: -20%;">
-                        <strong class="Font24 Black" id="psnNameLable"></strong>
+                        <div id="nameAndRole">
+                            <strong class="Font24 Black" id="psnNameLable"></strong>
+                            <!-- <span class="roleTag">平台管理员</span> -->
+                        </div>   
                         <div style="padding-top: 10px;">
                             <div style="margin-bottom:15px;">
                                 <span>
@@ -342,7 +341,6 @@
     <script type="text/javascript" src="/vendors/zTree/jquery.ztree.excheck.js"></script>
     <!-- jquery datatable -->
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
-    <script type="text/javascript" src="/js/account/orgData.js"></script>
     <!-- laydate -->
     <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
     <!-- layer -->

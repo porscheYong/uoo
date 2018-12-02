@@ -20,6 +20,8 @@ var slaveAcctId;
 var acctExtId = null;
 var isChecked = 0;
 var psw;
+var roleList = [];      //需要上传的角色列表
+var userRoleList = [];      //用户已有角色列表
 
 $('#cerType').get(0).selectedIndex=0;  //判断证件类型
 $('#accTypeTel').get(0).selectedIndex=0;  //判断账号类型
@@ -48,11 +50,13 @@ function getSubUser(acctId) {       //查看并编辑从账号
         if(data.tbAcctExt != null){
             acctExtId = data.tbAcctExt.acctExtId;
         }
-        $('#sub-title').html("编辑从账号");
+        $('#sub-title').html("从账号信息");
+        $('#acctInfo').css("display","block");
         personnelId = data.personnelId;
         acctHostId = data.tbSlaveAcct.acctHostId;
         slaveAcctId = data.tbSlaveAcct.slaveAcctId;
         initOrgTable(data.acctOrgVoList);
+        initSubAcctInfoCheck(data);
         initSubInfo(data);
     }, function (err) {
         console.log(err)
@@ -65,6 +69,11 @@ function getUserInfo(){         //新增从账号
         userType: "2"
     }, function (data) {
         $('#sub-title').html("新增从账号");
+        $('#editAcctPanel').css("display","block");
+        $('#editBtnDiv').css("display","none");
+        $("#acctInfo").css("display","none");
+        $('#acctEditButton').css("display","none");
+        $("#delSubAcct").css("display","none");
         initUserInfo(data);
         initOrgTable("");
     }, function (data) {
@@ -200,12 +209,8 @@ function initSubInfo(results){  //编辑时初始化信息
     $('#effectDate').val(results.tbSlaveAcct.enableDate);
     $('#invalidDate').val(results.tbSlaveAcct.disableDate);
     $('#statusCd').val("生效");
-    for(var i = 0; i <results.tbRolesList.length; i++){
-        roldId = roldId + "、" + results.tbRolesList[i].roleId;
-    }
-    if(roldId != ''){
-        $('#roleTel').val(roldId.substring(1,roldId.length));
-    } 
+
+    $('#roleTel').addTag(results.tbRolesList);
 
     psw = results.tbSlaveAcct.password;
 
@@ -222,6 +227,23 @@ function initSubInfo(results){  //编辑时初始化信息
         $('#extNameTel').val(results.tbAcctExt.name);
         $('#extEmailTel').val(results.tbAcctExt.workEmail);
     }
+}
+
+function initSubAcctInfoCheck(results){       //初始化从账号信息(编辑时查看面板)
+    $("#psnNameLable").text(results.psnName);
+    $("#mobileLable").text(results.mobilePhone);
+    $("#emailLable").text(results.eamil);
+    $("#acctLable").text(results.tbSlaveAcct.slaveAcct);
+    $("#psnNumLable").text(results.psnNbr);
+    $("#cerNoLable").text(results.certNo);
+    $("#effectDateLable").text(results.tbSlaveAcct.enableDate);
+    $("#invalidDateLable").text(results.tbSlaveAcct.disableDate);
+
+    for(var i = 0; i <results.tbRolesList.length; i++){
+        $("#nameAndRole").append($("<span class='roleTag'>"+results.tbRolesList[i].roleName+"</span>"));
+    }
+    userRoleList = results.tbRolesList;
+    window.localStorage.setItem('userRoleList',JSON.stringify(userRoleList));
 }
 
 function initUserInfo(results){   //新增时初始化信息
@@ -382,6 +404,48 @@ function deleteOrg(){
     acctHostId = 0;
     $('#addText').text('添加');
 }
+
+// tags init
+if(typeof $.fn.tagsInput !== 'undefined'){
+    $('#roleTel').tagsInput();
+  }
+  
+// //角色选择
+function openTypeDialog() {
+parent.layer.open({
+    type: 2,
+    title: '选择角色',
+    shadeClose: true,
+    shade: 0.8,
+    area: ['50%', '65%'],
+    maxmin: true,
+    content: 'roleDialog.html',
+    btn: ['确认', '取消'],
+    yes: function(index, layero){
+        //获取layer iframe对象
+        var iframeWin = parent.window[layero.find('iframe')[0].name];
+        var checkRole = iframeWin.checkRole;
+        var checkNode = iframeWin.checkNode;
+        parent.layer.close(index);
+        $('#roleTel').importTags(checkNode);
+        $('.ui-tips-error').css('display', 'none');
+        roleList = checkRole;
+        console.log(roleList);
+    },
+    btn2: function(index, layero){},
+    cancel: function(){}
+    });
+}
+
+function editAcctInfo(){    //切换到用户信息编辑面板
+    $("#acctInfo").css("display","none");
+    $("#editAcctPanel").css("display","block");
+}
+
+function backToAcctInfo(){  //返回用户信息查看面板
+    $("#acctInfo").css("display","block");
+    $("#editAcctPanel").css("display","none");
+  }
 
 
 function btnSubmit(){       //提交

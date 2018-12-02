@@ -9,7 +9,6 @@ var tabPage = getQueryString('tabPage');
 var acctId = getQueryString('acctId');
 var statusCd = getQueryString('statusCd');
 var personnelId = getQueryString('personnelId');
-var title = getQueryString('title');
 var opBtn = getQueryString('opBtn');  // 0是编辑  1是新增
 var orgTable;
 var editOrgList = [];
@@ -213,13 +212,7 @@ function initEditUserInfo(results){     //初始化用户信息(编辑)
 
   isEnableStatus(results.tbAcct.statusCd);  //判断状态
 
-  // for(var i = 0; i <results.tbRolesList.length; i++){
-  //   roldId = roldId + "、" + results.tbRolesList[i].roleId;
-  // }
-  userRoleList = results.tbRolesList;
   $('#roleTel').addTag(results.tbRolesList);
-
-  window.localStorage.setItem('userRoleList',JSON.stringify(userRoleList));
 }
 
 function initAcctInfoCheck(results){     //初始化用户信息(编辑时查看面板)
@@ -231,6 +224,13 @@ function initAcctInfoCheck(results){     //初始化用户信息(编辑时查看
   $("#cerNoLable").text(results.certNo);
   $("#effectDateLable").text(results.tbAcct.enableDate);
   $("#invalidDateLable").text(results.tbAcct.disableDate);
+
+  for(var i = 0; i <results.tbRolesList.length; i++){
+    $("#nameAndRole").append($("<span class='roleTag'>"+results.tbRolesList[i].roleName+"</span>"));
+  }
+  userRoleList = results.tbRolesList;
+  
+  window.localStorage.setItem('userRoleList',JSON.stringify(userRoleList));
 }
 
 function initAddUserInfo(results){    //初始化用户信息(新增)
@@ -253,12 +253,6 @@ function addTbAcct(){         //新增
       "password": $('#defaultPswTel').val(),
       "personnelId": personnelId,
       "statusCd": "1000", 
-      // "tbRolesList": [
-      //   {
-      //     "roleId": parseInt($('#roleTel').val()),
-      //     "roleName": ""
-      //   }
-      // ],
       "tbRolesList":roleList,
       "userType": "1"
     };
@@ -274,7 +268,8 @@ function addTbAcct(){         //新增
       success: function (data) { //返回json结果
         console.log(data);
         alert('添加成功');
-        submitSuccess();
+        // submitSuccess();
+        saveSuccess();
       },
       error:function(err){
         console.log(err);
@@ -299,12 +294,6 @@ function updateAcct(){      //编辑主账号
       "password": $('#defaultPswTel').val(),
       "personnelId": personnelId,
       "statusCd": statusCd, 
-      // "tbRolesList": [
-      //   {
-      //     "roleId": parseInt($('#roleTel').val()),
-      //     "roleName": ""
-      //   }
-      // ],
       "tbRolesList":roleList,
       "userType": "1"
     };
@@ -320,7 +309,8 @@ function updateAcct(){      //编辑主账号
       success: function (data) { //返回json结果
         console.log(data);
         alert('编辑成功');
-        submitSuccess();
+        // submitSuccess();
+        saveSuccess();
       },
       error:function(err){
         console.log(err);
@@ -495,10 +485,10 @@ if(typeof $.fn.tagsInput !== 'undefined'){
 function openTypeDialog() {
   parent.layer.open({
       type: 2,
-      title: '选中组织类别',
+      title: '选择角色',
       shadeClose: true,
       shade: 0.8,
-      area: ['70%', '85%'],
+      area: ['50%', '65%'],
       maxmin: true,
       content: 'roleDialog.html',
       btn: ['确认', '取消'],
@@ -529,6 +519,14 @@ function submitSuccess(){     //提交成功
     }
     window.location.href = url;
 }
+
+function saveSuccess(){   //保存成功
+    var url = 'addMainAccount.html?opBtn=0&acctId='+acctId+'&orgId='+orgId+'&orgName='+orgName+'&orgFullName='+orgFullName+
+              '&hType='+hType+'&orgTreeId='+orgTreeId+'&orgRootId='+orgRootId+'&tabPage='+tabPage+'&statusCd='+statusCd+
+              '&personnelId='+personnelId;
+    window.location.href = url;
+}
+
 
 // $("#addSubAcctBtn").on('click', function () {    //添加从账号
 //   var url = 'addSubAccount.html?orgTreeId=' + orgTreeId + '&hType=th&personnelId=' + personnelId + 
