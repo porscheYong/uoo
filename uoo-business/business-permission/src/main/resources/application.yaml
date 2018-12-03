@@ -111,7 +111,7 @@ mybatis-plus:
     cache-enabled: false
 
 server:
-  port: 11300
+  port: 11400
 
 eureka:
   instance:

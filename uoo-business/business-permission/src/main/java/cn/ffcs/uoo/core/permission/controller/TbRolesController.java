@@ -206,11 +206,14 @@ public class TbRolesController extends BaseController {
     }
 
     @ApiOperation(value = "根据归属系统和账号查询角色权限",notes = "根据归属系统和账号查询角色权限")
-    @ApiImplicitParam(name = "tbRoles", value = "角色", required = true, dataType = "Roles")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "acctId", value = "acctId", required = true, dataType = "Long" ,paramType="path"),
+            @ApiImplicitParam(name = "systemInfoId", value = "systemInfoId", required = false, dataType = "Long" ,paramType="path"),
+    })
     @UooLog(value = "修改角色", key = "updateTbRoles")
     @Transactional
     @RequestMapping(value = "/getRolesPermission/{acctId}/{systemInfoId}", method = RequestMethod.POST)
-    public ResponseResult getRolesPermission(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId,Integer acctType){
+    public ResponseResult getRolesPermission(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId){
         ResponseResult responseResult = new ResponseResult();
         //获取根据条件查询的所有角色信息列表acctType,
         List<RoleSystemPermissionVO> rolesVOList = tbRolesService.getRoles(acctId,systemInfoId);
@@ -224,11 +227,14 @@ public class TbRolesController extends BaseController {
     }
 
     @ApiOperation(value = "根据权限获取菜单",notes = "根据权限获取菜单")
-    @ApiImplicitParam(name = "tbRoles", value = "角色", required = true, dataType = "Roles")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "acctId", value = "acctId", required = true, dataType = "Long" ,paramType="path"),
+            @ApiImplicitParam(name = "systemInfoId", value = "systemInfoId", required = false, dataType = "Long" ,paramType="path"),
+    })
     @UooLog(value = "修改角色", key = "updateTbRoles")
     @Transactional
     @RequestMapping(value = "/getPermissionMenu/{acctId}/{systemInfoId}", method = RequestMethod.POST)
-    public ResponseResult getPermissionMenu(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId,Integer acctType){
+    public ResponseResult getPermissionMenu(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId){
         ResponseResult responseResult = new ResponseResult();
         //获取根据条件查询的所有菜单信息列表acctType,
         List<FuncMenu> permissionMenuList = tbRolesService.getPermissionMenu(acctId,systemInfoId);
