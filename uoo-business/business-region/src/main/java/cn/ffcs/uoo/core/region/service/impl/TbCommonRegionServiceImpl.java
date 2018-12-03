@@ -30,8 +30,8 @@ public class TbCommonRegionServiceImpl extends ServiceImpl<TbCommonRegionMapper,
     }
     @SuppressWarnings("rawtypes")
     @Override
-    public List<Map> selectUnionPolLoc(Map<String,Object> params) {
-        return mapper.selectUnionPolLoc(params);
+    public List<Map> getCommonRegion(Map<String,Object> params) {
+        return mapper.getCommonRegion(params);
     }
     @Override
     public List<Map> getChildCommonRegionInfo(Map<String, Object> params) {

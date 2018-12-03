@@ -3,8 +3,9 @@ var orgName = getQueryString('name');
 var engine, template, empty, selectNode;
 var table;
 
-empty = Handlebars.compile($("#empty-template").html());
+$('#orgName').html(orgName);
 
+empty = Handlebars.compile($("#empty-template").html());
 engine = new Bloodhound({
     identify: function(o) { return o.id_str; },
     queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -15,150 +16,221 @@ engine = new Bloodhound({
         url: '/personnel/getPsnBasicInfo?keyWord=%QUERY&pageNo=1&pageSize=10',
         wildcard: '%QUERY',
         filter: function (response) {
-            table.destroy();
-            table = $("#contactTable").DataTable({
-                'data': response.data.records,
-                'destroy': true,
-                'searching': false,
-                'autoWidth': false,
-                'ordering': true,
-                'initComplete': function (settings, json) {
-                    console.log(settings, json)
-                },
-                'columns': [
-                    { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name',
-                        // 'render': function (data, type, row, meta) {
-                        //     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "'>" + row.psnName + "</a>";
-                        // }
-                    },
-                    { 'data': "psnName", 'title': '重名称谓', 'className': 'row-mobile' },
-                    { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
-                    { 'data': "content", 'title': '联系方式', 'className': 'row-mobile' },
-                    { 'data': "psnName", 'title': '所属组织全称', 'className': 'org-name' },
-                    { 'data': "psnName", 'title': '职位名称', 'className': 'post-name' },
-                    { 'data': "createDate", 'title': '创建时间', 'className': 'status-code',
-                        'render': function (data, type, row, meta) {
-                            var time = formatDateTime(row.createDate);
-                            return time;
-                        }
-                    }
-                ],
-                'language': {
-                    'emptyTable': '没有数据',
-                    'loadingRecords': '加载中...',
-                    'processing': '查询中...',
-                    'search': '检索:',
-                    'lengthMenu': ' _MENU_ ',
-                    'zeroRecords': '没有数据',
-                    'paginate': {
-                        'first':      '首页',
-                        'last':       '尾页',
-                        'next':       '下一页',
-                        'previous':   '上一页'
-                    },
-                    'info': '总_TOTAL_人',
-                    'infoEmpty': '没有数据'
-                },
-                "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
-                'pagingType': 'simple_numbers',
-                'dom': '<"top"f>t<"bottom"ipl>',
-                'drawCallback': function(){
-                    this.api().column(0).nodes().each(function(cell, i) {
-                        cell.innerHTML =  i + 1;
-                    });
-                }
-                // 'serverSide': true,  //启用服务器端分页
-                // 'ajax': function (data, callback, settings) {
+            // table.destroy();
+            // table = $("#contactTable").DataTable({
+            //     'data': response.data.records,
+            //     'destroy': true,
+            //     'searching': false,
+            //     'autoWidth': false,
+            //     'ordering': true,
+            //     'initComplete': function (settings, json) {
+            //         console.log(settings, json)
+            //     },
+            //     'columns': [
+            //         { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name',
+            //             // 'render': function (data, type, row, meta) {
+            //             //     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "'>" + row.psnName + "</a>";
+            //             // }
+            //         },
+            //         { 'data': "psnName", 'title': '重名称谓', 'className': 'row-mobile' },
+            //         { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
+            //         { 'data': "content", 'title': '联系方式', 'className': 'row-mobile' },
+            //         { 'data': "psnName", 'title': '所属组织全称', 'className': 'org-name' },
+            //         { 'data': "psnName", 'title': '职位名称', 'className': 'post-name' },
+            //         { 'data': "createDate", 'title': '创建时间', 'className': 'status-code',
+            //             'render': function (data, type, row, meta) {
+            //                 var time = formatDateTime(row.createDate);
+            //                 return time;
+            //             }
+            //         }
+            //     ],
+            //     'language': {
+            //         'emptyTable': '没有数据',
+            //         'loadingRecords': '加载中...',
+            //         'processing': '查询中...',
+            //         'search': '检索:',
+            //         'lengthMenu': ' _MENU_ ',
+            //         'zeroRecords': '没有数据',
+            //         'paginate': {
+            //             'first':      '首页',
+            //             'last':       '尾页',
+            //             'next':       '下一页',
+            //             'previous':   '上一页'
+            //         },
+            //         'info': '总_TOTAL_人',
+            //         'infoEmpty': '没有数据'
+            //     },
+            //     "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
+            //     'pagingType': 'simple_numbers',
+            //     'dom': '<"top"f>t<"bottom"ipl>',
+            //     'drawCallback': function(){
+            //         this.api().column(0).nodes().each(function(cell, i) {
+            //             cell.innerHTML =  i + 1;
+            //         });
+            //     }
+            // 'serverSide': true,  //启用服务器端分页
+            // 'ajax': function (data, callback, settings) {
 
-                //     //手动控制遮罩
-                //     $('#table-container').spinModal();
-                //     var param = {};
-                //     param.pageSiz = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
-                //     param.startPage = (data.start / data.length)+1;//当前页码
-                //     param.p_p_resource_id = 'getUomDepartments';
-                //     param.treeId = '<%=treeId%>';
-                //     param.orgId = '<%=orgId%>';
-                //     param.queryCondition = data.search.value;
+            //     //手动控制遮罩
+            //     $('#table-container').spinModal();
+            //     var param = {};
+            //     param.pageSiz = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
+            //     param.startPage = (data.start / data.length)+1;//当前页码
+            //     param.p_p_resource_id = 'getUomDepartments';
+            //     param.treeId = '<%=treeId%>';
+            //     param.orgId = '<%=orgId%>';
+            //     param.queryCondition = data.search.value;
 
-                //     $.ajax({
-                //         type: "POST",
-                //         url: "<%=ajaxUrl%>",
-                //         data: param,  //传入组装的参数
-                //         success: function (result) {
-                //             var result = JSON.parse(result);
-                //             //封装返回数据
-                //             var returnData = {};
-                //             returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
-                //             returnData.recordsTotal = result.count;//返回数据全部记录
-                //             returnData.recordsFiltered = result.count;//后台不实现过滤功能，每次查询均视作全部结果
-                //             returnData.data = result.userList;//返回的数据列表
-                //             //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
-                //             //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
-                //             callback(returnData);
-                //         },
-                //         error: function () {
-                //             $('#table-container').spinModal(false);
-                //         }
-                //     })
-                // }
-                // 'serverSide': true,  // 服务端分页
-                // 'ajax': {
-                //     data : function(d) {
-                //         // console.log('custom request', d);
-                //         //删除多余请求参数
-                //         for(var key in d){
-                //             if(key.indexOf("columns")==0||key.indexOf("order")==0||key.indexOf("search")==0){
-                //               //以columns开头的参数删除
-                //               delete d[key];
-                //             }
-                //         }
-                //         var searchParams= {
-                //             "retryType":$("#retryType").val(),
-                //             "departmentCode":$("#departmentCode").val()!=""?$("#departmentCode").val():null,
-                //             "projectCode":$("#projectCode").val()!=""?$("#projectCode").val():null,
-                //             "serviceName":$("#serviceName").val()!=""?$("#serviceName").val():null,
-                //             "csrfmiddlewaretoken":csrftoken
-                //         };
-                //         //附加查询参数
-                //         if(searchParams){
-                //             $.extend(d,searchParams); //给d扩展参数
-                //         }
-                //     },
-                //     dataSrc: function (json) {
-                //         // console.log('process response data from server side before display.');
-                //         return json.data;
-                //     },
-                //     dataType: "json",
-                //     dataFilter: function (json) {//json是服务器端返回的数据
-                //        // json = JSON.parse(json);
-                //        // var returnData = {};
-                //        // returnData.draw = json.data.draw;
-                //        // returnData.recordsTotal = json.data.total;//返回数据全部记录
-                //        // returnData.recordsFiltered = json.data.total;//后台不实现过滤功能，每次查询均视作全部结果
-                //        // returnData.data = json.data.retryProjectList;//返回的数据列表
-                //        // return JSON.stringify(returnData);//这几个参数都是datatable需要的，必须要
-                //     },
-                //     url : "/queryWarningInfo.do",
-                //     type : "POST",
-                //     crossDomain: true
-                // }
-            });
+            //     $.ajax({
+            //         type: "POST",
+            //         url: "<%=ajaxUrl%>",
+            //         data: param,  //传入组装的参数
+            //         success: function (result) {
+            //             var result = JSON.parse(result);
+            //             //封装返回数据
+            //             var returnData = {};
+            //             returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
+            //             returnData.recordsTotal = result.count;//返回数据全部记录
+            //             returnData.recordsFiltered = result.count;//后台不实现过滤功能，每次查询均视作全部结果
+            //             returnData.data = result.userList;//返回的数据列表
+            //             //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+            //             //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+            //             callback(returnData);
+            //         },
+            //         error: function () {
+            //             $('#table-container').spinModal(false);
+            //         }
+            //     })
+            // }
+            // 'serverSide': true,  // 服务端分页
+            // 'ajax': {
+            //     data : function(d) {
+            //         // console.log('custom request', d);
+            //         //删除多余请求参数
+            //         for(var key in d){
+            //             if(key.indexOf("columns")==0||key.indexOf("order")==0||key.indexOf("search")==0){
+            //               //以columns开头的参数删除
+            //               delete d[key];
+            //             }
+            //         }
+            //         var searchParams= {
+            //             "retryType":$("#retryType").val(),
+            //             "departmentCode":$("#departmentCode").val()!=""?$("#departmentCode").val():null,
+            //             "projectCode":$("#projectCode").val()!=""?$("#projectCode").val():null,
+            //             "serviceName":$("#serviceName").val()!=""?$("#serviceName").val():null,
+            //             "csrfmiddlewaretoken":csrftoken
+            //         };
+            //         //附加查询参数
+            //         if(searchParams){
+            //             $.extend(d,searchParams); //给d扩展参数
+            //         }
+            //     },
+            //     dataSrc: function (json) {
+            //         // console.log('process response data from server side before display.');
+            //         return json.data;
+            //     },
+            //     dataType: "json",
+            //     dataFilter: function (json) {//json是服务器端返回的数据
+            //        // json = JSON.parse(json);
+            //        // var returnData = {};
+            //        // returnData.draw = json.data.draw;
+            //        // returnData.recordsTotal = json.data.total;//返回数据全部记录
+            //        // returnData.recordsFiltered = json.data.total;//后台不实现过滤功能，每次查询均视作全部结果
+            //        // returnData.data = json.data.retryProjectList;//返回的数据列表
+            //        // return JSON.stringify(returnData);//这几个参数都是datatable需要的，必须要
+            //     },
+            //     url : "/queryWarningInfo.do",
+            //     type : "POST",
+            //     crossDomain: true
+            // }
+            //});
 
-            $('#contactTable tbody tr').click(function () {
-                if ($(this).hasClass('selected') ) {
-                    $(this).removeClass('selected');
-                } else {
-                    table.$('tr.selected').removeClass('selected');
-                    $(this).addClass('selected');
-                }
-            });
-            return response.data.records;
+
+            return;
         }
     }
 });
 
-// ensure default users are read on initialization
-// engine.get('1090217586', '58502284', '10273252', '24477185')
+function initTable(keyWord){
+    table.destroy();
+    table = $("#contactTable").DataTable({
+        //'data': response.data.records,
+        //'destroy': true,
+        'searching': false,
+        'autoWidth': false,
+        'ordering': true,
+        'initComplete': function (settings, json) {
+            console.log(settings, json)
+        },
+        'columns': [
+            { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name',
+                // 'render': function (data, type, row, meta) {
+                //     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "'>" + row.psnName + "</a>";
+                // }
+            },
+            { 'data': "psnName", 'title': '重名称谓', 'className': 'row-mobile' },
+            { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
+            { 'data': "content", 'title': '联系方式', 'className': 'row-mobile' },
+            { 'data': "psnName", 'title': '所属组织全称', 'className': 'org-name' },
+            { 'data': "psnName", 'title': '职位名称', 'className': 'post-name' },
+            { 'data': "createDate", 'title': '创建时间', 'className': 'status-code',
+                'render': function (data, type, row, meta) {
+                    var time = formatDateTime(row.createDate);
+                    return time;
+                }
+            }
+        ],
+        'language': {
+            'emptyTable': '没有数据',
+            'loadingRecords': '加载中...',
+            'processing': '查询中...',
+            'search': '检索:',
+            'lengthMenu': ' _MENU_ ',
+            'zeroRecords': '没有数据',
+            'paginate': {
+                'first':      '首页',
+                'last':       '尾页',
+                'next':       '下一页',
+                'previous':   '上一页'
+            },
+            'info': '总_TOTAL_人',
+            'infoEmpty': '没有数据'
+        },
+        "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
+        'pagingType': 'simple_numbers',
+        'dom': '<"top"f>t<"bottom"ipl>',
+        'serverSide': true,  //启用服务器端分页
+        'ajax': function (data, callback, settings) {
+            var param = {};
+            param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
+            param.pageNo = (data.start / data.length) + 1;//当前页码
+            param.keyWord = keyWord;
+            $http.get('/personnel/getPsnBasicInfo', param, function (result) {
+                var returnData = {};
+                // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
+                returnData.recordsTotal = result.total;//返回数据全部记录
+                returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
+                returnData.data = result.records;//返回的数据列表
+                //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                callback(returnData);
+
+                //选中行
+                $('#contactTable tbody tr').click(function () {
+                    if ($(this).hasClass('selected') ) {
+                        $(this).removeClass('selected');
+                    } else {
+                        table.$('tr.selected').removeClass('selected');
+                        $(this).addClass('selected');
+                    }
+                });
+            }, function (err) {
+                console.log(err)
+            })
+        }
+    });
+}
+
 
 function engineWithDefaults(q, sync, async) {
     if (q === '') {
@@ -194,6 +266,7 @@ $('#user-input').typeahead({
 })
     .on('typeahead:asyncrequest', function() {
         $('.Typeahead-spinner').show();
+        initTable($("#user-input").val());
     })
     .on('typeahead:asynccancel typeahead:asyncreceive', function() {
         $('.Typeahead-spinner').hide();
@@ -248,120 +321,79 @@ function getOrgExtInfo () {
     $('.breadcrumb').html(pathStr);
 }
 
-$('#orgName').html(orgName);
-getOrgExtInfo();
-
-// function initContactTable () {
-//     table = $("#contactTable").DataTable({
-//         'data': [],
-//         'destroy': true,
-//         'paging': false,
-//         'searching': false,
-//         'autoWidth': false,
-//         'ordering': true,
-//         'columns': [
-//             { 'data': null, 'title': '序号', 'className': 'row-no' },
-//             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
-//                 // 'render': function (data, type, row, meta) {
-//                 //     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "'>" + row.psnName + "</a>";
-//                 // }
-//             },
-//             { 'data': "psnName", 'title': '重名称谓', 'className': 'row-mobile' },
-//             { 'data': "psnName", 'title': '员工工号', 'className': 'cert-no' },
-//             { 'data': "psnName", 'title': '职位名称', 'className': 'post-name' },
-//             { 'data': "psnName", 'title': '所属组织', 'className': 'org-name' },
-//             { 'data': "psnName", 'title': '状态', 'className': 'status-code' }
-//         ],
-//         'language': {
-//             'emptyTable': '没有数据'
-//         },
-//         'dom': '<"top"f>t<"bottom"pl>',
-//     });
-//     var loading = parent.loading;
-//     loading.screenMaskDisable('container');
-// }
-
 function initContactTable () {
-    // $http.get('/personnel/getPsnBasicInfo', {
-    //     keyWord: '',
-    //     pageSize: 10,
-    //     pageNo: 1
-    // }, function (data) {
-        table = $("#contactTable").DataTable({
-            // 'data': data.records,
-            'destroy': true,
-            'searching': false,
-            'autoWidth': false,
-            'ordering': true,
-            'initComplete': function (settings, json) {
-                console.log(settings, json)
+    table = $("#contactTable").DataTable({
+        // 'data': data.records,
+        'destroy': true,
+        'searching': false,
+        'autoWidth': false,
+        'ordering': true,
+        'initComplete': function (settings, json) {
+            console.log(settings, json)
+        },
+        'columns': [
+            { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name',
+                // 'render': function (data, type, row, meta) {
+                //     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "'>" + row.psnName + "</a>";
+                // }
             },
-            'columns': [
-                { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name',
-                    // 'render': function (data, type, row, meta) {
-                    //     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "'>" + row.psnName + "</a>";
-                    // }
-                },
-                { 'data': "psnName", 'title': '重名称谓', 'className': 'row-mobile' },
-                { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
-                { 'data': "content", 'title': '联系方式', 'className': 'row-mobile' },
-                { 'data': "psnName", 'title': '所属组织全称', 'className': 'org-name' },
-                { 'data': "psnName", 'title': '职位名称', 'className': 'post-name' },
-                { 'data': "createDate", 'title': '创建时间', 'className': 'status-code',
-                    'render': function (data, type, row, meta) {
-                        var time = formatDateTime(row.createDate);
-                        return time;
-                    }
+            { 'data': "psnName", 'title': '重名称谓', 'className': 'row-mobile' },
+            { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
+            { 'data': "content", 'title': '联系方式', 'className': 'row-mobile' },
+            { 'data': "psnName", 'title': '所属组织全称', 'className': 'org-name' },
+            { 'data': "psnName", 'title': '职位名称', 'className': 'post-name' },
+            { 'data': "createDate", 'title': '创建时间', 'className': 'status-code',
+                'render': function (data, type, row, meta) {
+                    var time = formatDateTime(row.createDate);
+                    return time;
                 }
-            ],
-            'language': {
-                'emptyTable': '没有数据',
-                'loadingRecords': '加载中...',
-                'processing': '查询中...',
-                'search': '检索:',
-                'lengthMenu': ' _MENU_ ',
-                'zeroRecords': '没有数据',
-                'paginate': {
-                    'first':      '首页',
-                    'last':       '尾页',
-                    'next':       '下一页',
-                    'previous':   '上一页'
-                },
-                'info': '总_TOTAL_人',
-                'infoEmpty': '没有数据'
+            }
+        ],
+        'language': {
+            'emptyTable': '没有数据',
+            'loadingRecords': '加载中...',
+            'processing': '查询中...',
+            'search': '检索:',
+            'lengthMenu': ' _MENU_ ',
+            'zeroRecords': '没有数据',
+            'paginate': {
+                'first':      '首页',
+                'last':       '尾页',
+                'next':       '下一页',
+                'previous':   '上一页'
             },
-            "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
-            'pagingType': 'simple_numbers',
-            'dom': '<"top"f>t<"bottom"ipl>',
-            'serverSide': true,  //启用服务器端分页
-            'ajax': function (data, callback, settings) {
-                var param = {};
-                param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
-                param.pageNo = (data.start / data.length) + 1;//当前页码
-                param.keyWord = '';
-                $http.get('/personnel/getPsnBasicInfo', param, function (result) {
-                    var returnData = {};
-                    returnData.recordsTotal = result.total;
-                    returnData.recordsFiltered = result.total;
-                    returnData.data = result.records;
-                    callback(returnData);
-                }, function (err) {
-                    console.log(err)
-                })
-            }
-        });
+            'info': '总_TOTAL_人',
+            'infoEmpty': '没有数据'
+        },
+        "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
+        'pagingType': 'simple_numbers',
+        'dom': '<"top"f>t<"bottom"ipl>',
+        'serverSide': true,  //启用服务器端分页
+        'ajax': function (data, callback, settings) {
+            var param = {};
+            param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
+            param.pageNo = (data.start / data.length) + 1;//当前页码
+            param.keyWord = '';
+            $http.get('/personnel/getPsnBasicInfo', param, function (result) {
+                var returnData = {};
+                returnData.recordsTotal = result.total;
+                returnData.recordsFiltered = result.total;
+                returnData.data = result.records;
+                callback(returnData);
 
-        $('#contactTable tbody tr').click(function () {
-            if ($(this).hasClass('selected') ) {
-                $(this).removeClass('selected');
-            } else {
-                table.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
-            }
-        });
-    // }, function (err) {
-    //     console.log(err)
-    // })
+                $('#contactTable tbody tr').click(function () {
+                    if ($(this).hasClass('selected') ) {
+                        $(this).removeClass('selected');
+                    } else {
+                        table.$('tr.selected').removeClass('selected');
+                        $(this).addClass('selected');
+                    }
+                });
+            }, function (err) {
+                console.log(err)
+            })
+        }
+    });
 }
 
 //获取选中行数据
@@ -370,27 +402,27 @@ function getSelectUser () {
     return table.rows('.selected').data();
 }
 
-table = $("#contactTable").DataTable({
-        'data': [],
-        'destroy': true,
-        'paging': false,
-        'searching': false,
-        'autoWidth': false,
-        'ordering': true,
-        'columns': [
-            { 'data': null, 'title': '序号', 'className': 'row-no' },
-            { 'data': "", 'title': '姓名', 'className': 'row-name'},
-            { 'data': "", 'title': '重名称谓', 'className': 'row-mobile' },
-            { 'data': "", 'title': '员工工号', 'className': 'cert-no' },
-            { 'data': "", 'title': '职位名称', 'className': 'post-name' },
-            { 'data': "", 'title': '所属组织', 'className': 'org-name' },
-            { 'data': "", 'title': '状态', 'className': 'status-code' }
-        ],
-        'language': {
-            'emptyTable': '没有数据'
-        },
-        'dom': '<"top"f>t<"bottom"pl>',
-    });
+// table = $("#contactTable").DataTable({
+//     'data': [],
+//     'destroy': true,
+//     'paging': false,
+//     'searching': false,
+//     'autoWidth': false,
+//     'ordering': true,
+//     'columns': [
+//         { 'data': null, 'title': '序号', 'className': 'row-no' },
+//         { 'data': "", 'title': '姓名', 'className': 'row-name'},
+//         { 'data': "", 'title': '重名称谓', 'className': 'row-mobile' },
+//         { 'data': "", 'title': '员工工号', 'className': 'cert-no' },
+//         { 'data': "", 'title': '职位名称', 'className': 'post-name' },
+//         { 'data': "", 'title': '所属组织', 'className': 'org-name' },
+//         { 'data': "", 'title': '状态', 'className': 'status-code' }
+//     ],
+//     'language': {
+//         'emptyTable': '没有数据'
+//     },
+//     'dom': '<"top"f>t<"bottom"pl>',
+// });
 
 //将时间戳改为yyyy-MM-dd HH-mm-ss
 function formatDateTime(unix) {
@@ -447,7 +479,6 @@ function formatDateTime(unix) {
     }
     return now;
 }
+
+getOrgExtInfo();
 initContactTable();
-
-
-

@@ -86,6 +86,12 @@ spring:
     username: root
     password: 123
     host: 134.96.253.221
+    port: 5672
+    listener:
+      direct:
+        acknowledge-mode: manual
+      simple:
+        acknowledge-mode: manual
 
 mybatis-plus:
   mapper-locations: classpath:mapper/**Mapper.xml

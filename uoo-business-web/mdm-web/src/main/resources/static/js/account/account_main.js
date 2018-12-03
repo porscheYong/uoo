@@ -65,7 +65,7 @@ function filter (treeId, parentNode, childNodes) {
 }
 
 function refreshResult () {
-    var url = "mainList.html?orgId=" + orgId + "&orgName=" + encodeURI(orgName);
+    var url = "mainList.html?orgId=" + orgId + "&orgName=" + encodeURI(orgName) + "&orgTreeId=" + orgTreeId;
     $('#userFrame').attr("src",url);
 }
 

@@ -1,7 +1,12 @@
 package cn.ffcs.uoo.core.region.service;
 
-import cn.ffcs.uoo.core.region.entity.TbAreaCode;
+import java.util.HashMap;
+import java.util.List;
+
 import com.baomidou.mybatisplus.service.IService;
+
+import cn.ffcs.uoo.core.region.entity.TbAreaCode;
+import cn.ffcs.uoo.core.region.vo.AreaCodeVO;
 
 /**
  * <p>
@@ -13,4 +18,6 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ITbAreaCodeService extends IService<TbAreaCode> {
     public Long getId();
+    public List<AreaCodeVO> selectListAreaCode(HashMap<String,Object> map);
+    public Long countListAreaCode(HashMap<String,Object> map);
 }

@@ -43,7 +43,7 @@
           overflow: hidden;
           text-overflow: ellipsis;
       }
-      #locId, #orgTypeList, #positionList, #postList {
+      #locationList, #orgTypeList, #positionList, #postList {
         opacity: 0;
         filter: alpha(opacity=0);
         position: absolute;
@@ -53,6 +53,9 @@
 
   <body style="background: #fff;">
     <div>
+      <div>
+        <a class="BoardTitle Back" href="javascript:history.go(-1);"  >返回</a>
+      </div>
         <div class="board-title">
             <span class="name ft18 orgName"></span
             ><div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;"></div>
@@ -200,8 +203,8 @@
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="locId" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">行政管理区域</label>
-                      <input id="locId" class="ui-input col-md-10 col-sm-10 col-xs-12" style="width: 84%" onclick="openLocationDialog()" required readonly>
+                      <label for="locationList" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">行政管理区域</label>
+                      <input id="locationList" class="ui-input col-md-10 col-sm-10 col-xs-12" style="width: 84%" onclick="openLocationDialog()" required readonly>
                     </div>
                   </div>
                 </div>

@@ -33,9 +33,9 @@ public class TbAreaCode extends Model<TbAreaCode> {
     /**
      * 公共管理区域标识
      */
-    @TableField("COMMON_REGION_ID")
+    /*@TableField("COMMON_REGION_ID")
     private Long commonRegionId;
-
+*/
     /**
      * 区号编码
      */
@@ -97,13 +97,13 @@ public class TbAreaCode extends Model<TbAreaCode> {
         this.areaCodeId = areaCodeId;
     }
 
-    public Long getCommonRegionId() {
+   /* public Long getCommonRegionId() {
         return commonRegionId;
     }
 
     public void setCommonRegionId(Long commonRegionId) {
         this.commonRegionId = commonRegionId;
-    }
+    }*/
 
     public String getAreaNbr() {
         return areaNbr;
@@ -171,7 +171,7 @@ public class TbAreaCode extends Model<TbAreaCode> {
 
     @Override
     public String toString() {
-        return "TbAreaCode [areaCodeId=" + areaCodeId + ", commonRegionId=" + commonRegionId + ", areaNbr=" + areaNbr
+        return "TbAreaCode [areaCodeId=" + areaCodeId + /*", commonRegionId=" + commonRegionId +*/ ", areaNbr=" + areaNbr
                 + ", areaCode=" + areaCode + ", statusCd=" + statusCd + ", createDate=" + createDate + ", createUser="
                 + createUser + ", updateDate=" + updateDate + ", updateUser=" + updateUser + ", statusDate="
                 + statusDate + "]";

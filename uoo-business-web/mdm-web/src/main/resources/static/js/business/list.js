@@ -3,21 +3,6 @@ var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 
-// 获取组织完整路径
-function getOrgExtInfo () {
-    var pathArry = parent.nodeArr;
-    console.log(pathArry)
-    var pathStr = '';
-    for (var i = pathArry.length - 1; i >= 0; i--) {
-        if (i === 0) {
-            pathStr +=  '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a></span>';
-        } else {
-            pathStr += '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
-        }
-    }
-    $('.breadcrumb').html(pathStr);
-}
-
 function initOrgTable (results) {
     var table = $("#orgTable").DataTable({
         'data': results,
@@ -106,7 +91,11 @@ function initOrgPersonnelTable (results) {
         "scrollY": "375px",
         'columns': [
             { 'data': null, 'title': '序号', 'className': 'row-no' },
-            { 'data': "psnName", 'title': '姓名', 'className': 'row-name' },
+            { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
+                'render': function (data, type, row, meta) {
+                    return '<a href="/inaction/user/edit.html?id='+ row.orgId +'&orgTreeId=' + orgTreeId + '&name=' + row.orgName + '&personnelId=' + row.personnelId + '">'+ row.psnName +'</a>';
+                }
+            },
             { 'data': "mobile", 'title': '手机号码', 'className': 'row-mobile' },
             { 'data': "certNo", 'title': '员工工号', 'className': 'cert-no' },
             { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
@@ -171,16 +160,17 @@ function initOrgPersonnelTable (results) {
 }
 
 $('#orgName').html(orgName);
-getOrgExtInfo();
+parent.getOrgExtInfo();
 initOrgTable();
 initOrgPersonnelTable();
 
 function orgEdit () {
-    var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + orgName;
+    var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
     $('#editBtn').attr('href', url);
 }
 
 function orgSearch () {
-    var url = 'search.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + orgName;
-    $('#searchBtn').attr('href', url);
+    var url = 'search.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    // $('#searchBtn').attr('href', url);
+    window.location.href = url;
 }

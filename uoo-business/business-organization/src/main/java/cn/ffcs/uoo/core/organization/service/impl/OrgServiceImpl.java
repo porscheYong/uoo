@@ -188,8 +188,8 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
 
 
     @Override
-    public String getSysFullName(String orgRootId,String id){
-        return baseMapper.getSysFullName(orgRootId,id);
+    public String getSysFullName(String orgTreeId,String orgId){
+        return baseMapper.getSysFullName(orgTreeId,orgId);
     }
 
     @Override

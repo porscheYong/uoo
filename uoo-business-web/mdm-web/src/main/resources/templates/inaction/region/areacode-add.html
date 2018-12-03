@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>添加</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- jquery datatable -->
+    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+    <!-- jquery tagsinput -->
+    <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet"> 
+    <link href="/vendors/zTree/zTreeStyle.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/css/user/style.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="/js/core/html5shiv.js"></script>
+    <script src="/js/core/respond.js"></script>
+    <script src="/js/core/excanvas.js"></script>
+    <![endif]-->
+  </head>
+
+  <body style="background: #fff;">
+    <div>
+        <div class="board-title">
+          <span id="editTile" class="name ft18">添加数据</span>
+        </div>
+        <div class="nav-tabs-brief" style="padding-top: 35px; overflow-x: hidden;">
+          <ul class="nav nav-tabs tab-title" role="tablist" id="myTabs">
+            <li role="presentation" class="active" style="width: 10%;"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">基础信息</a>
+            </li>
+             
+          </ul>
+
+          <div class=" ">
+            <div class="tab-pane active" id="tab_content1">
+            <form method="post" id="regionForm" class=" ">
+                 
+                <div class="row" style="margin-bottom: 10px;">
+                        <div class="form-item" style="width: 100%">
+                            <label for="areaNbr" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">区号编码 </label>
+                            <input  id="areaNbr" name="areaNbr" class="ui-input col-md-4 col-sm-4 col-xs-12"  required >
+                        </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px;">
+                        <div class="form-item" style="width: 100%">
+                            <label for="areaCode" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">区号 </label>
+                            <input  id="areaCode" name="areaCode" class="ui-input col-md-4 col-sm-4 col-xs-12"  required >
+                        </div>
+                </div>
+            </form>
+               <div class="row" style="margin-bottom: 10px;">
+                <div style="margin-left: 17%;">
+                    <!-- <input type="submit" id="formSubmit" class="clip">
+                    <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
+                    <button id="saveBtn" class="Btn BtnBlue">保存</button>
+                    <button id="cancelBtn" class="Btn" style="margin-left: 10px;" onclick="history.go(-1)">取消</button>
+                </div>
+                
+              </div>
+              
+            </div>
+             
+          </div>
+        </div>
+    </div>
+    
+    <!-- jQuery -->
+    <script type="text/javascript" src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- ztree -->
+    <script type="text/javascript" src="/vendors/zTree/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="/vendors/zTree/jquery.ztree.excheck.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+    <!-- sea js -->
+    <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script> 
+    <!-- laydate -->
+    <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
+    <!-- layer -->
+    <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+    <!-- jquery tagsinput -->
+    <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
+    <!-- init -->
+    <script type="text/javascript" src="/js/init.js"></script>
+    <script type="text/javascript" src="/js/region/areacode-add.js"></script>
+    <script type="text/javascript" src="/vendors/bootstrap/js/tooltip.js"></script>
+
+    <script type="text/javascript">
+     /*  seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $('select').selectMatch();
+      }) */
+
+      if(typeof $.fn.tagsInput !== 'undefined'){  
+         
+          $('#orgType').tagsInput({
+            width: 'auto'
+          });
+      
+      }
+      $('#orgType').addTag('foo')
+
+    </script>
+	
+  </body>
+</html>

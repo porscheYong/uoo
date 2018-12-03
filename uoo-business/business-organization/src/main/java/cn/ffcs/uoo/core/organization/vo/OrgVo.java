@@ -5,7 +5,6 @@ package cn.ffcs.uoo.core.organization.vo;
 import cn.ffcs.uoo.base.common.vo.BaseVo;
 import cn.ffcs.uoo.core.organization.entity.*;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -63,18 +62,25 @@ public class OrgVo extends BaseVo{
     private String locName;
     private String locCode;
 
-
+    //组织类别
     private List<OrgType> orgTypeList;
+
     private String orgTypeSplit;
     private List<Position> positionList;
+    //组织职位
     private List<Post> postList;
+    //组织联系人
     private List<PsonOrgVo> psonOrgVoList;
+    //组织行政编码
     private List<PoliticalLocation> politicalLocationList;
+    //组织扩展属性
+    List<ExpandovalueVo> expandovalueVoList;
 
 
     //身份证信息
     private List<String> certIdList;
-    private List<OrgCertVo> OrgCertList;
+    //证件类型
+    private List<OrgCertVo> orgCertVoList;
     //检索
     private String search;
     private String orgRelCreatDate;
@@ -87,8 +93,21 @@ public class OrgVo extends BaseVo{
         this.politicalLocationList = politicalLocationList;
     }
 
-    public List<OrgCertVo> getOrgCertList() {
-        return OrgCertList;
+
+    public List<OrgCertVo> getOrgCertVoList() {
+        return orgCertVoList;
+    }
+
+    public void setOrgCertVoList(List<OrgCertVo> orgCertVoList) {
+        this.orgCertVoList = orgCertVoList;
+    }
+
+    public List<ExpandovalueVo> getExpandovalueVoList() {
+        return expandovalueVoList;
+    }
+
+    public void setExpandovalueVoList(List<ExpandovalueVo> expandovalueVoList) {
+        this.expandovalueVoList = expandovalueVoList;
     }
 
     public String getOrgMartCode() {
@@ -97,10 +116,6 @@ public class OrgVo extends BaseVo{
 
     public void setOrgMartCode(String orgMartCode) {
         this.orgMartCode = orgMartCode;
-    }
-
-    public void setOrgCertList(List<OrgCertVo> orgCertList) {
-        OrgCertList = orgCertList;
     }
 
     public Long getOrgTreeId() {

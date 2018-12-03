@@ -74,11 +74,11 @@ public interface OrgMapper extends BaseMapper<Org> {
 
     /**
      * 获取系统路径
-     * @param orgRootId
+     * @param orgTreeId
      * @param orgId
      * @return
      */
-    public String getSysFullName(@Param("orgRootId")String orgRootId,@Param("orgId")String orgId);
+    public String getSysFullName(@Param("orgTreeId")String orgTreeId,@Param("orgId")String orgId);
 
     /**
      * 新增组织
@@ -98,5 +98,12 @@ public interface OrgMapper extends BaseMapper<Org> {
      * @return
      */
     public List<PoliticalLocation> getOrgLoc(@Param("orgId")String orgId);
+
+    /**
+     *
+     * @param orgId
+     * @return
+     */
+    public List<OrgVo> getFullOrgList(@Param("orgTreeId")String orgTreeId,@Param("orgId")String orgId);
 
 }

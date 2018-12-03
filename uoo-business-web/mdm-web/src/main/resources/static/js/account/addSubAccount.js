@@ -3,6 +3,9 @@ var orgName = getQueryString('orgName');
 var mainAcctId = getQueryString('mainAcctId');
 var hType = getQueryString('hType');
 var toMainType = getQueryString('toMainType');
+var orgTreeId = getQueryString('orgTreeId');
+var orgRootId = getQueryString('orgRootId');
+var tabPage = getQueryString('tabPage');
 
 var acctId = getQueryString('acctId');
 var statusCd = getQueryString('statusCd');
@@ -17,6 +20,8 @@ var slaveAcctId;
 var acctExtId = null;
 var isChecked = 0;
 var psw;
+var roleList = [];      //需要上传的角色列表
+var userRoleList = [];      //用户已有角色列表
 
 $('#cerType').get(0).selectedIndex=0;  //判断证件类型
 $('#accTypeTel').get(0).selectedIndex=0;  //判断账号类型
@@ -45,11 +50,13 @@ function getSubUser(acctId) {       //查看并编辑从账号
         if(data.tbAcctExt != null){
             acctExtId = data.tbAcctExt.acctExtId;
         }
-        $('#sub-title').html("编辑从账号");
+        $('#sub-title').html("从账号信息");
+        $('#acctInfo').css("display","block");
         personnelId = data.personnelId;
         acctHostId = data.tbSlaveAcct.acctHostId;
         slaveAcctId = data.tbSlaveAcct.slaveAcctId;
         initOrgTable(data.acctOrgVoList);
+        initSubAcctInfoCheck(data);
         initSubInfo(data);
     }, function (err) {
         console.log(err)
@@ -62,6 +69,11 @@ function getUserInfo(){         //新增从账号
         userType: "2"
     }, function (data) {
         $('#sub-title').html("新增从账号");
+        $('#editAcctPanel').css("display","block");
+        $('#editBtnDiv').css("display","none");
+        $("#acctInfo").css("display","none");
+        $('#acctEditButton').css("display","none");
+        $("#delSubAcct").css("display","none");
         initUserInfo(data);
         initOrgTable("");
     }, function (data) {
@@ -86,6 +98,15 @@ function getAcctOrg(){          //获取从账号可选组织列表(添加组织
         console.log(err)
       })
 }
+
+function noSelectUserInfo(){     //控制人员信息不可选
+    $("#psnNameTel").attr("disabled","disabled");
+    $("#psnNumTel").attr("disabled","disabled");
+    $("#mobileTel").attr("disabled","disabled");
+    $("#emailTel").attr("disabled","disabled");
+    $("#cerType").attr("disabled","disabled");
+    $("#cerNoTel").attr("disabled","disabled");
+ }
 
 function initOrgTable(results){
     table = $("#orgTable").DataTable({
@@ -188,12 +209,8 @@ function initSubInfo(results){  //编辑时初始化信息
     $('#effectDate').val(results.tbSlaveAcct.enableDate);
     $('#invalidDate').val(results.tbSlaveAcct.disableDate);
     $('#statusCd').val("生效");
-    for(var i = 0; i <results.tbRolesList.length; i++){
-        roldId = roldId + "、" + results.tbRolesList[i].roleId;
-    }
-    if(roldId != ''){
-        $('#roleTel').val(roldId.substring(1,roldId.length));
-    } 
+
+    $('#roleTel').addTag(results.tbRolesList);
 
     psw = results.tbSlaveAcct.password;
 
@@ -212,6 +229,23 @@ function initSubInfo(results){  //编辑时初始化信息
     }
 }
 
+function initSubAcctInfoCheck(results){       //初始化从账号信息(编辑时查看面板)
+    $("#psnNameLable").text(results.psnName);
+    $("#mobileLable").text(results.mobilePhone);
+    $("#emailLable").text(results.eamil);
+    $("#acctLable").text(results.tbSlaveAcct.slaveAcct);
+    $("#psnNumLable").text(results.psnNbr);
+    $("#cerNoLable").text(results.certNo);
+    $("#effectDateLable").text(results.tbSlaveAcct.enableDate);
+    $("#invalidDateLable").text(results.tbSlaveAcct.disableDate);
+
+    for(var i = 0; i <results.tbRolesList.length; i++){
+        $("#nameAndRole").append($("<span class='roleTag'>"+results.tbRolesList[i].roleName+"</span>"));
+    }
+    userRoleList = results.tbRolesList;
+    window.localStorage.setItem('userRoleList',JSON.stringify(userRoleList));
+}
+
 function initUserInfo(results){   //新增时初始化信息
     $('#psnNameTel').val(results.psnName);
     $('#psnNumTel').val(results.psnCode);
@@ -227,6 +261,10 @@ function addTbSlaveAcct(){      //从账号新增
     var certType = $('#extCerTel').get(0).selectedIndex + 1;
     var tbAcctExt = hasExtInfo(certType);
 
+    if(roleList.length == 0){
+        roleList = userRoleList;
+    }
+
     var editFormSlaveAcctVo = {
         "acctHostId": acctHostId,
         "disableDate": $('#invalidDate').val(),
@@ -234,12 +272,7 @@ function addTbSlaveAcct(){      //从账号新增
         "password": $('#defaultPswTel').val(),
         "personnelId": parseInt(personnelId),
         "resourceObjId": resourceObjId,
-        "rolesList": [
-          {
-            "roleId": parseInt($('#roleTel').val()),
-            "roleName": ""
-          }
-        ],
+        "rolesList": roleList,
         "slaveAcct": $('#acctTel').val(),
         "slaveAcctType": slaveAcctType.toString(),
         "statusCd": subStatusCd.toString(),
@@ -254,10 +287,13 @@ function addTbSlaveAcct(){      //从账号新增
         contentType: "application/json",
         data: JSON.stringify(editFormSlaveAcctVo),
         dataType:"JSON",
-        success: function (data) { //返回json结果
-          console.log(data);
-          alert('新增成功');
-          submitToOther();
+        success: function (state) { //返回json结果
+          if(state.state === 1000){
+            alert(state.message);
+            submitToOther();
+          }else{
+            alert(state.message);
+          }
         },
         error:function(err){
           console.log(err);
@@ -273,6 +309,10 @@ function updateTbSlaveAcct(){       //更新从账号信息
     var certType = $('#extCerTel').get(0).selectedIndex + 1;
     var tbAcctExt = hasExtInfo(certType);
 
+    if(roleList.length == 0){
+        roleList = userRoleList;
+    }
+
     var editFormSlaveAcctVo = {
         "acctHostId": acctHostId,
         "disableDate": $('#invalidDate').val(),
@@ -280,12 +320,7 @@ function updateTbSlaveAcct(){       //更新从账号信息
         "password": $('#defaultPswTel').val(),
         "personnelId": parseInt(personnelId),
         "resourceObjId": resourceObjId,
-        "rolesList": [
-          {
-            "roleId": parseInt($('#roleTel').val()),
-            "roleName": ""
-          }
-        ],
+        "rolesList": roleList,
         "slaveAcct": $('#acctTel').val(),
         "slaveAcctId": slaveAcctId,
         "slaveAcctType": slaveAcctType.toString(),
@@ -301,10 +336,13 @@ function updateTbSlaveAcct(){       //更新从账号信息
         contentType: "application/json",
         data: JSON.stringify(editFormSlaveAcctVo),
         dataType:"JSON",
-        success: function (data) { //返回json结果
-          console.log(data);
-          alert('保存成功');
-          submitToOther();
+        success: function (state) { //返回json结果
+            if(state.state === 1000){
+                alert(state.message);
+                submitToOther();
+            }else{
+                alert(state.message);
+            }
         },
         error:function(err){
           console.log(err);
@@ -320,10 +358,13 @@ function deleteTbSubAcct(){     //删除从账号
         contentType: "application/json",
         async:false,
         dataType:"json",
-        success: function (data) { //返回json结果
-          console.log(data);
-          alert('删除成功');
-          submitToOther();
+        success: function (state) { //返回json结果
+            if(state.state === 1000){
+                alert(state.message);
+                submitToOther();
+            }else{
+                alert(state.message);
+            }
         },
         error:function(err){
           console.log(err);
@@ -371,6 +412,48 @@ function deleteOrg(){
     $('#addText').text('添加');
 }
 
+// tags init
+if(typeof $.fn.tagsInput !== 'undefined'){
+    $('#roleTel').tagsInput();
+  }
+  
+// //角色选择
+function openTypeDialog() {
+parent.layer.open({
+    type: 2,
+    title: '选择角色',
+    shadeClose: true,
+    shade: 0.8,
+    area: ['50%', '65%'],
+    maxmin: true,
+    content: 'roleDialog.html',
+    btn: ['确认', '取消'],
+    yes: function(index, layero){
+        //获取layer iframe对象
+        var iframeWin = parent.window[layero.find('iframe')[0].name];
+        var checkRole = iframeWin.checkRole;
+        var checkNode = iframeWin.checkNode;
+        parent.layer.close(index);
+        $('#roleTel').importTags(checkNode);
+        $('.ui-tips-error').css('display', 'none');
+        roleList = checkRole;
+        console.log(roleList);
+    },
+    btn2: function(index, layero){},
+    cancel: function(){}
+    });
+}
+
+function editAcctInfo(){    //切换到用户信息编辑面板
+    $("#acctInfo").css("display","none");
+    $("#editAcctPanel").css("display","block");
+}
+
+function backToAcctInfo(){  //返回用户信息查看面板
+    $("#acctInfo").css("display","block");
+    $("#editAcctPanel").css("display","none");
+  }
+
 
 function btnSubmit(){       //提交
     if($('#acctTel').val()!='' && $('#statusCd').val()!='' && $('#roleTel').val()!='' 
@@ -409,11 +492,14 @@ function extInfoFade(){     //点击复选框
 function submitToOther(){   //提交或者取消跳转
     var url = "";
     if(hType == "th"){
-        url = "addMainAccount.html?hType="+ toMainType +"&opBtn=0&orgName=" + orgName + "&orgId=" + orgId + "&acctId=" + mainAcctId;   //跳转主账号编辑界面
+        url = "addMainAccount.html?orgTreeId=" + orgTreeId + "&hType="+ toMainType +"&opBtn=0&orgName=" + orgName + "&orgId=" + orgId + "&acctId=" + mainAcctId;   //跳转主账号编辑界面
     }else if(hType == "mh"){
-        url = "mainList.html?orgName=" + orgName + "&orgId=" + orgId;       //跳转主界面
+        url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;       //跳转主界面
+    }else if(hType == "ah"){
+        url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;       //跳转添加界面
     }else{
-        url = "add.html?orgName=" + orgName + "&orgId=" + orgId;       //跳转添加界面
+        url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + orgName + "&id=" + orgId + 
+                                      "&personnelId =" + personnelId + "&orgRootId =" + orgRootId + "&tabPage=" + tabPage;
     }
     window.location.href = url;
 }
@@ -434,10 +520,12 @@ $("#defaultPswTel").blur(function (){     //默认密码输入框失去焦点
 
 if(opBtn==0){
     $('#addText').text('更换');
-    getSubUser(acctId);
+    noSelectUserInfo();
+    getSubUser(acctId); 
 }else{      //新增
     $('.BtnDel').css("display","none");
     $('#statusCd').get(0).selectedIndex=0;
+    noSelectUserInfo();
     getUserInfo();
 }
 

@@ -19,4 +19,6 @@ public interface OrgTreeMapper extends BaseMapper<OrgTree> {
 
     public String getOrgTreeNameByOrgId(String orgId);
 
+    public int isExistsOrgTreeRel(String refCode);
+
 }
