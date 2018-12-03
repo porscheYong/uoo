@@ -1,10 +1,12 @@
 package cn.ffcs.uoo.web.maindata.permission.controller;
 
 
+import cn.ffcs.uoo.web.maindata.permission.dto.FuncMenu;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -86,8 +88,27 @@ public class TbRolesController   {
     @ApiImplicitParam(name = "role", value = "角色", required = true, dataType = "Roles")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseResult addTbRoles(@RequestBody Roles role) {
-         
         return tbRolesService.addTbRoles(role);
+    }
+
+    @ApiOperation(value = "根据归属系统和账号查询角色权限",notes = "根据归属系统和账号查询角色权限")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "acctId", value = "acctId", required = true, dataType = "Long" ,paramType="path"),
+            @ApiImplicitParam(name = "systemInfoId", value = "systemInfoId", required = false, dataType = "Long" ,paramType="path"),
+    })
+    @RequestMapping(value = "/getRolesPermission/{acctId}/{systemInfoId}", method = RequestMethod.POST)
+    public ResponseResult getRolesPermission(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId){
+        return tbRolesService.getRolesPermission(systemInfoId,acctId);
+    }
+
+    @ApiOperation(value = "根据权限获取菜单",notes = "根据权限获取菜单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "acctId", value = "acctId", required = true, dataType = "Long" ,paramType="path"),
+            @ApiImplicitParam(name = "systemInfoId", value = "systemInfoId", required = false, dataType = "Long" ,paramType="path"),
+    })
+    @RequestMapping(value = "/getPermissionMenu/{acctId}/{systemInfoId}", method = RequestMethod.POST)
+    public ResponseResult getPermissionMenu(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId){
+        return tbRolesService.getPermissionMenu(systemInfoId,acctId);
     }
 }
 

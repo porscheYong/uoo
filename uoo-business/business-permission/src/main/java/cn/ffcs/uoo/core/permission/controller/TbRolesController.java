@@ -4,6 +4,8 @@ package cn.ffcs.uoo.core.permission.controller;
 import java.util.Date;
 import java.util.List;
 
+import cn.ffcs.uoo.core.permission.entity.*;
+import cn.ffcs.uoo.core.permission.vo.RoleSystemPermissionVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +23,6 @@ import com.baomidou.mybatisplus.plugins.Page;
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.permission.consts.StatusCD;
-import cn.ffcs.uoo.core.permission.entity.PostRole;
-import cn.ffcs.uoo.core.permission.entity.Roles;
-import cn.ffcs.uoo.core.permission.entity.UserRole;
 import cn.ffcs.uoo.core.permission.service.IPostRoleService;
 import cn.ffcs.uoo.core.permission.service.IRolesService;
 import cn.ffcs.uoo.core.permission.service.IUserRoleService;
@@ -42,7 +41,7 @@ import io.swagger.annotations.ApiOperation;
  * @author zxs
  * @since 2018-10-24
  */
-@Api(description = "角色",value = "Roles")
+//@Api(description = "Roles",value = "Roles")
 @RestController
 @RequestMapping("/permission/tbRoles")
 public class TbRolesController extends BaseController {
@@ -72,7 +71,7 @@ public class TbRolesController extends BaseController {
         @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
         @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
-    @UooLog(key="listRoles",value="获取角色列表")
+    @UooLog(key="listPageRoles",value="获取分页角色列表")
     @GetMapping("/listPageRoles/pageNo={pageNo}&pageSize={pageSize}")
     public ResponseResult listPageRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
@@ -203,6 +202,43 @@ public class TbRolesController extends BaseController {
         tbRolesService.insert(role);
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增角色成功");
+        return responseResult;
+    }
+
+    @ApiOperation(value = "根据归属系统和账号查询角色权限",notes = "根据归属系统和账号查询角色权限")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "acctId", value = "acctId", required = true, dataType = "Long" ,paramType="path"),
+            @ApiImplicitParam(name = "systemInfoId", value = "systemInfoId", required = false, dataType = "Long" ,paramType="path"),
+    })
+    @UooLog(value = "修改角色", key = "updateTbRoles")
+    @Transactional
+    @RequestMapping(value = "/getRolesPermission/{acctId}/{systemInfoId}", method = RequestMethod.POST)
+    public ResponseResult getRolesPermission(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId){
+        ResponseResult responseResult = new ResponseResult();
+        //获取根据条件查询的所有角色信息列表acctType,
+        List<RoleSystemPermissionVO> rolesVOList = tbRolesService.getRoles(acctId,systemInfoId);
+        //遍历角色列表，获取对应的权限信息列表
+        for(RoleSystemPermissionVO roleVo : rolesVOList){
+            List<Privilege> privilegeList = tbRolesService.getPermission(roleVo.getRoleId());
+            roleVo.setPrivileges(privilegeList);
+        }
+        responseResult.setData(rolesVOList);
+        return responseResult;
+    }
+
+    @ApiOperation(value = "根据权限获取菜单",notes = "根据权限获取菜单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "acctId", value = "acctId", required = true, dataType = "Long" ,paramType="path"),
+            @ApiImplicitParam(name = "systemInfoId", value = "systemInfoId", required = false, dataType = "Long" ,paramType="path"),
+    })
+    @UooLog(value = "修改角色", key = "updateTbRoles")
+    @Transactional
+    @RequestMapping(value = "/getPermissionMenu/{acctId}/{systemInfoId}", method = RequestMethod.POST)
+    public ResponseResult getPermissionMenu(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId){
+        ResponseResult responseResult = new ResponseResult();
+        //获取根据条件查询的所有菜单信息列表acctType,
+        List<FuncMenu> permissionMenuList = tbRolesService.getPermissionMenu(acctId,systemInfoId);
+        responseResult.setData(permissionMenuList);
         return responseResult;
     }
 }

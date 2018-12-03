@@ -38,4 +38,14 @@ public class RolesHystrix implements RolesService {
         return ResponseResult.createErrorResult("系统数据异常");
     }
 
+    @Override
+    public ResponseResult getRolesPermission(Long systemInfoId,Long acctId) {
+        return ResponseResult.createErrorResult("系统数据异常");
+    }
+
+    @Override
+    public ResponseResult getPermissionMenu(Long systemInfoId,Long acctId) {
+        return ResponseResult.createErrorResult("系统数据异常");
+    }
+
 }

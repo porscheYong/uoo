@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.core.permission.realm;
+package cn.ffcs.uoo.web.maindata.realm;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import org.apache.shiro.mgt.DefaultSecurityManager;
@@ -8,7 +8,6 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.LinkedHashMap;
 
@@ -33,15 +32,15 @@ public class ShiroConfiguration {
     }
 
     @Bean
-    public DefaultSecurityManager securityManager(UcServerRealm ucServerRealm) {
+    public DefaultSecurityManager securityManager(UooRealm ucServerRealm) {
         DefaultSecurityManager defaultSecurityManager = new DefaultWebSecurityManager();
         defaultSecurityManager.setRealm(ucServerRealm);
         return defaultSecurityManager;
     }
 
     @Bean
-    public UcServerRealm ucServerRealm() {
-        return new UcServerRealm();
+    public UooRealm ucServerRealm() {
+        return new UooRealm();
     }
 
     @Bean
