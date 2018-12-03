@@ -138,7 +138,7 @@
     <select id="selectPerOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
 
         <choose>
-        <when test="isSearchlower=1">
+        <when test="psonOrgVo.isSearchlower='0'">
             SELECT * FROM (
             WITH ORGFULL AS (SELECT distinct FULL_NAME,
             ORG_NAME,
@@ -248,11 +248,9 @@
             and D.ORG_REL_TYPE_ID = E.ORG_REL_TYPE_ID
             AND C.ORG_TREE_ID = D.ORG_TREE_ID
             AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
-
             ) AA
             START WITH ORG_ID = #{psonOrgVo.orgId}
-            or PARENT_ORG_ID = #{psonOrgVo.orgId}
-            CONNECT BY  AA.ORG_ID = PRIOR AA.PARENT_ORG_ID)
+            CONNECT BY  PRIOR AA.ORG_ID =  AA.PARENT_ORG_ID)
             SELECT * FROM (
             SELECT AA.ORG_ID orgId,
             AA.PERSONNEL_ID personnelId,
@@ -400,7 +398,7 @@
     <select id="selectUserOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
 
         <choose>
-            <when test="isSearchlower=1">
+            <when test="psonOrgVo.isSearchlower=='0'">
                 SELECT *
                 FROM (WITH ORGFULL AS (SELECT distinct FULL_NAME,
                 ORG_NAME,

@@ -337,7 +337,7 @@ public class OrgPersonRelController extends BaseController {
 
 
         PsonOrgVo psonOrgVo = new PsonOrgVo();
-        psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"1":isSearchlower);
+        psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
         psonOrgVo.setOrgId(new Long(orgId));
         //psonOrgVo.setOrgRootId(new Long(orgRootId));
         psonOrgVo.setOrgTreeId(orgtree.getOrgTreeId());
@@ -406,7 +406,7 @@ public class OrgPersonRelController extends BaseController {
             return ret;
         }
         PsonOrgVo psonOrgVo = new PsonOrgVo();
-        psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"1":isSearchlower);
+        psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
         psonOrgVo.setOrgId(new Long(orgId));
         psonOrgVo.setOrgTreeId(new Long(orgTreeId));
         if(!StrUtil.isNullOrEmpty(search)){

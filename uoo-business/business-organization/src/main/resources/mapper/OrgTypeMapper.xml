@@ -109,7 +109,8 @@
         SELECT AA.ORG_TYPE_ID id,
                AA.ORG_TYPE_NAME name,
                 DECODE(BB.ORG_TYPE_ID, NULL,'false','true') "open",
-               AA.PARENT_ORG_TYPE_ID pid
+               AA.PARENT_ORG_TYPE_ID pid,
+               AA.ORG_TYPE_CODE extField1
           FROM ORGTYPENODE AA
           LEFT JOIN SEARCHNODE BB ON AA.ORG_TYPE_ID =BB.ORG_TYPE_ID
 

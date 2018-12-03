@@ -21,6 +21,16 @@ public class TreeNodeVo {
     private String level;
     private String checked;
 
+    private String extField1;
+
+    public String getExtField1() {
+        return extField1;
+    }
+
+    public void setExtField1(String extField1) {
+        this.extField1 = extField1;
+    }
+
     public String getChecked() {
         return checked;
     }
