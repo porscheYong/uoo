@@ -6,13 +6,14 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
+
 public class LoginInterceptor extends HandlerInterceptorAdapter {
-    private static final String LOGIN_KEY="loginKey";
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         HttpSession session = request.getSession();
-        Object login = session.getAttribute(LOGIN_KEY);
+        Object login = session.getAttribute(LoginConsts.LOGIN_KEY);
         if(login==null){
             response.sendRedirect("/login.html");
             return false;
