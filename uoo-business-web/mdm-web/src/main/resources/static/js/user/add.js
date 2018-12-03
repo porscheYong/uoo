@@ -13,7 +13,8 @@ var eduFlag = 0;
 var familyFlag = 0;
 var orgFlag = 0;
 var doubleNameFlag = 0;
-var eduList = [],
+var certType,
+    eduList = [],
     emailList = [],
     psonOrgVoList = [],
     orgList = [],
@@ -27,6 +28,8 @@ var loading = parent.loading;
 var formValidate;
 
 $('#orgName').html(orgName);
+parent.getOrgExtInfo();
+
 // 步骤条
 $("#userAdd").steps({
     headerTag: "h2",
@@ -225,6 +228,33 @@ function getPostName () {
     });
 }
 
+//选择证件类型
+function getSelectedCert () {
+    return certType = $('#certType option:selected') .val();
+}
+
+//正则身份证信息
+function getIdCardInfo () {
+    var certNo = $('#certNo').val();
+    if(certType == '1' && validCardByCard(certNo)){
+        var sex;
+        sex = getGenderByCard(certNo);
+        $('#nationality').val(getNationalityByCard(certNo));
+        sex? $("#male").attr("checked","checked"): $("#female").attr("checked","checked");
+        if (sex) {
+            $('#male').trigger('click');
+            $('#male').trigger('hover');
+        }
+        else  {
+            $('#female').trigger('click');
+            $('#female').trigger('hover');
+        }
+    }
+    else  {
+        $('#nationality').val('');
+    }
+}
+
 // 点击电话新增btn
 function addMobile () {
     $('#tbMobileVoList').append("<div class='ui-input ui-input-del'> <input required> <a class='icon-del'><span class='fa fa-minus-circle'></span></a> </div>");
@@ -324,7 +354,7 @@ function initTable(keyWord){
             },
             { 'data': "", 'title': '操作', 'className': 'status-code',
                 'render': function (data, type, row, meta) {
-                    return "<a href='edit.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&personnelId=" + row.personnelId +"'>查看</a>";
+                    return "<a href='edit.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&personnelId=" + row.personnelId + "&name=" + orgName + "&addOrg=1'>查看</a>";
                 }
             }
         ],
@@ -1008,7 +1038,6 @@ function savePersonnel () {
     loading.screenMaskEnable('container');
     var psnName = $('#psnName').val();
     var gender = $('#gender input[type=radio]:checked').val();
-    var certType = $('#certType option:selected') .val();
     var psnNbr = $('#psnNbr').val();
     var certNo = $('#certNo').val();
     var psnCode = $('#psnCode').val();

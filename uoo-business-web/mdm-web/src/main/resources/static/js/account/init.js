@@ -15,7 +15,7 @@ var $http = {
       var responseData = response.data
       var state = response.state
       var message = response.message
-      if (state === 1000) {
+      if (state === 1000 || state === 1) {
         successCallback(responseData, state, message)
       }
       else {
@@ -25,10 +25,10 @@ var $http = {
                 skin: 'layui-layer-lan'
                 ,closeBtn: 0
             });
-            break
-          case 12:
+            break;
+          default:
             alert(message);
-            break
+            break;
         }
         var httpStatus = response.status
         errorCallback(httpStatus, state, message)

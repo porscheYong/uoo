@@ -7,23 +7,9 @@ var orgRelTypeList = [];
 var orgTypeList = [];
 var formValidate;
 var loading = parent.loading;
+var toastr = parent.parent.toastr;
 
-// 获取组织完整路径
-function getOrgExtInfo () {
-    var pathArry = parent.nodeArr;
-    console.log(pathArry)
-    var pathStr = '';
-    for (var i = pathArry.length - 1; i >= 0; i--) {
-        if (i === 0) {
-            pathStr +=  '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a></span>';
-        } else {
-            pathStr += '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
-        }
-    }
-    $('.breadcrumb').html(pathStr);
-}
 $('#orgTypeTreeName').html(orgTypeTreeName);
-getOrgExtInfo();
 
 // lulu ui select插件
 seajs.use('/vendors/lulu/js/common/ui/Select', function () {
@@ -176,8 +162,8 @@ function updateOrgTree () {
     }), function () {
         parent.initBusinessList();
         loading.screenMaskDisable('container');
+        toastr.success('更新成功！');
     }, function (err) {
-        console.log(err);
         loading.screenMaskDisable('container');
     })
 }

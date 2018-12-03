@@ -1,3 +1,4 @@
+var formValid;
 function deleteData(){
 	var id=$('#areaCodeId').val();
 	if(confirm('确定删除这条数据？')){
@@ -37,6 +38,8 @@ function saveRegion(){
 	 
 }
 function validFormData(){
+	if (!formValid.isAllPass())
+        return false;
 	return true;
 	
 	//$('#regionNbrTooltip').tooltip('toggle')
@@ -62,4 +65,8 @@ function initData(){
 $(document).ready(function(){
 	$('#saveBtn').bind('click',saveRegion);
 	initData();
+	seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+		formValid = new Validate($('#regionForm'));
+		formValid.immediate();
+	});
 });

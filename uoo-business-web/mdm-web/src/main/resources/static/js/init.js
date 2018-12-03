@@ -22,9 +22,14 @@ var $http = {
         switch (state) {
           case 1100:
             if (parent.layer) {
-                parent.layer.alert(message, {
-                    skin: 'layui-layer-lan'
-                    ,closeBtn: 0
+                parent.layer.confirm(message, {
+                    icon: 0,
+                    title: '提示',
+                    btn: ['确定']
+                }, function(index, layero){
+                    parent.layer.close(index);
+                }, function(){
+
                 });
             }
             break;
@@ -32,17 +37,27 @@ var $http = {
             if (parent.loading)
               parent.loading.screenMaskDisable('container');
             if (parent.layer) {
-                parent.layer.alert(message, {
-                    skin: 'layui-layer-lan',
-                    closeBtn: 0
+                parent.layer.confirm(message, {
+                    icon: 0,
+                    title: '提示',
+                    btn: ['确定']
+                }, function(index, layero){
+                    parent.layer.close(index);
+                }, function(){
+
                 });
             }
             break;
             default:
                 if (parent.layer) {
-                    parent.layer.alert(message, {
-                        skin: 'layui-layer-lan',
-                        closeBtn: 0
+                    parent.layer.confirm(message, {
+                        icon: 0,
+                        title: '提示',
+                        btn: ['确定']
+                    }, function(index, layero){
+                        parent.layer.close(index);
+                    }, function(){
+
                     });
                 }
             break;

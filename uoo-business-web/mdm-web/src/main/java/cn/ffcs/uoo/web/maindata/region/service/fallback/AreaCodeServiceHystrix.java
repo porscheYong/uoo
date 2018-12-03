@@ -15,7 +15,7 @@ public class AreaCodeServiceHystrix implements AreaCodeService{
     }
 
     @Override
-    public ResponseResult listAreaCode(Integer pageNo, Integer pageSize) {
+    public ResponseResult listAreaCode(String keyWord,Integer pageNo, Integer pageSize) {
         return ResponseResult.createErrorResult("系统数据异常");
     }
 

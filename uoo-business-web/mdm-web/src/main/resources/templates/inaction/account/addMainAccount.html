@@ -20,12 +20,17 @@
     <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
     <!-- jquery tagsinput -->
     <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
+    <!-- toastr -->
+    <link href="/vendors/toastr/toastr.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
     <link href="/css/custom.css" rel="stylesheet">
-    <link href="/css/account/style.css" rel="stylesheet">
+    <link href="/css/account/style2.css" rel="stylesheet">
+    <link href="/css/account/style1.css" rel="stylesheet">
     <link href="/css/account/artModal.css" rel="stylesheet">
+    <link href="/css/account/addMainAccount.css" rel="stylesheet">
+    <link href="/css/user/style.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="../../../static/js/core/html5shiv.js"></script>
@@ -40,220 +45,224 @@
     <![endif]-->
 
     <style>
-        /* #orgTypeList{
-        opacity: 0;
-        filter: alpha(opacity=0);
-        position: absolute;
-        } */
+        
         #conSubInfo .fright 
         {
             margin-right: 73% !important;
         }
-        .row{
-            margin-left: 0px;
-            margin-right: 0px;
-        }
-        .col-md-6 {
-            width: 45%;
-        }
-        .row-id{
-            width: 15%;
-        }
-        .row-orgTree{
-            width: 15%;
-        }
-        .row-fullName{
-            width: 60%;
-        }
         .row-delete{
             width: 28px !important;
         }
-        .row-orgId{
-            display: none;
-        }
-        td,th{
-            text-align: center;
-        }
+        
         .tcenter{
             text-align: left !important;
             margin-left: -55px !important;
         }
-        .row-org{
-            width: 32%;
+        #delAcct{
+            margin-top: 40px !important;
+            margin-left: -15px;
         }
-        .row-acc{
-            width: 15%;
+        .fleft{
+            float: none !important;
         }
-        .row-number,
-        .row-state{
-            width: 11%;
+        .Icon{
+            margin: 3px 3px !important;
+            margin-bottom: -6px !important;
+            margin-left: -5px !important;
         }
-        table.dataTable {
-            table-layout: fixed;
+        .Tag{
+            background: rgb(193, 237, 255) !important;
+            color:#959da9 !important;
         }
-        table.dataTable tbody td {
-          text-align: center;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-      }
-      .modal-header{
-          background: #fff;
-      }
-      #delAcct{
-          margin-top: 40px !important;
-          margin-left: -15px;
-      }
-      .BoardTitle .Back {
-        background: url(/images/ico_back.svg) no-repeat 10px center;
-        background-size: 24px 24px;
-        border-bottom: 1px solid #ecedef;
-        font-size: 16px;
-        opacity: 0.7;
-        padding: 6px 40px;
+        .BtnRed2 {
+            border: 1px solid #ee4063 !important;
+            color: #ee4063 !important;
+            background: #FFF !important;
         }
-        .BoardTitle .Back:hover {
-            background-position: 5px center;
-            transition: 0.2s;
-            padding: 6px 55px 6px 35px;
-            opacity: 1;
-	    }
-      /* #orgTypeList{
-        opacity: 0;
-        filter: alpha(opacity=0);
-        position: absolute;
-      }
-      #firstRole,
-      #secondRole{
-          position: inherit;
-          opacity:1;
-      } */
+        #roleTel_tagsinput .tag{
+            padding: 2px !important;
+            margin-bottom: 0px !important;
+        }
+        #toast-container{
+           margin-top: 20% !important;
+        }    
         
     </style>
 </head>
 
 <body style="background: #fff;">
 
-    <div class="BoardTitle" style="margin-bottom:10px;" onclick="cancel()">
+    <div class="BoardTitle" style="margin-bottom:10px;">
         <a class="Back" href="#" style="color:#008aff;" onclick="cancel()">返回</a>
     </div>
 
     <div class="board-title">
-        <span class="name ft18" id="main-title"></span> <!-- 主账号 -->
+        <span class="name ft18" id="main-title"></span><a id="acctEditButton" onclick="editAcctInfo()" class=" Icon IconEdit" href="javascript:void(0)"></a>
     </div> 
 
     <div class="tab-content" style="margin-left:5%;margin-top: 2%">
         <div class="tab-pane active" id="tab_content1">
             <form action="/submit" method="post" style="padding: 10px;">
 
-                <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="psnTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员姓名</label>
-                            <input type="tel" id="psnTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
-                        </div>
+                <div id="acctInfo" style="margin-left:17%;display: none;">
+                    <div class="col-md-2 fleft tcenter">
+                        <img class="avatar" src="/images/avatar.png" alt="头像" />
                     </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="psnNumTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
-                            <input type="tel" id="psnNumTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="mobileTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">手机号码</label>
-                            <input type="tel" id="mobileTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="emailTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
-                            <input type="tel" id="emailTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="cerType" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
-                            <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市公司直属"> -->
-                            <select  class="col-md-8 col-sm-8 col-xs-12" id="cerType">
-                            <option>身份证</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="cerNoTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                            <input type="tel" id="cerNoTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
+                    <div style="width: auto;margin-left: 120px;margin-top: -20%;">
+                        <div id="nameAndRole">
+                            <strong class="Font24 Black" id="psnNameLable"></strong>
+                            <!-- <span class="roleTag">平台管理员</span> -->
+                        </div>   
+                        <div style="padding-top: 10px;">
+                            <div style="margin-bottom:15px;">
+                                <span>
+                                    <label class="Icon fleft IconMobile"></label><label id="mobileLable"></label>
+                                </span>
+                                <span style="margin-left:20px;">
+                                    <label class="Icon fleft IconEmail"></label><label id="emailLable"></label>
+                                </span>
+                            </div>
+                            
+                            <div>
+                                <div style="margin-bottom:10px">
+                                    <span style="color:#959da9;">用户名：</span>
+                                    <span class="Font24 Black" id="acctLable"></span>
+                                    <span class="Tag BgBlue">主账号</span>
+                                </div>
+                                <div style="margin-bottom:10px;color:#959da9;">
+                                    <span>人员编码：</span><span id="psnNumLable"></span>
+                                </div>
+                                <div style="margin-bottom:10px;color:#959da9;">
+                                    <span>身份证号码：</span><span id="cerNoLable"></span>
+                                </div>
+                                <div style="margin-bottom:10px;color:#959da9;">
+                                    <span>生效日期：</span><span id="effectDateLable"></span>
+                                </div>
+                                <div style="margin-bottom:10px;color:#959da9;">
+                                    <span>失效日期：</span><span id="invalidDateLable"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="acctTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户名</label>
-                            <input type="tel" id="acctTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off"> 
+                <div id="editAcctPanel" style="display:none">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                                <label for="psnTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员姓名</label>
+                                <input type="tel" id="psnTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                                <label for="psnNumTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
+                                <input type="tel" id="psnNumTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="statusCd" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
-                            <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> -->
-                            <select  class="col-md-8 col-sm-8 col-xs-12" id="statusCd">
-                                <option>生效</option>
-                                <option>失效</option>
-                            </select>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                                <label for="mobileTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">手机号码</label>
+                                <input type="tel" id="mobileTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="roleTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
-                            <input type="tel" id="roleTel" class="ui-input col-md-8 col-sm-8 col-xs-12" data-toggle="modal" data-target="#roleModal" size="40" name="tel" required value="" autocomplete="off"> 
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                                <label for="emailTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
+                                <input type="tel" id="emailTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
+                            </div>
                         </div>
                     </div>
 
-                    <!-- <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                          <label for="orgTypeList" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
-                          <input id="orgTypeList" class="ui-input col-md-8 col-sm-8 col-xs-12"  onclick="openTypeDialog()" required readonly></input>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                                <label for="cerType" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
+                                <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市公司直属"> -->
+                                <select  class="col-md-8 col-sm-8 col-xs-12" id="cerType">
+                                <option>身份证</option>
+                                </select>
+                            </div>
                         </div>
-                    </div> -->
 
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%" id="default_psw">
-                            <label for="defaultPswTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
-                            <input type="password" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                                <label for="cerNoTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                                <input type="tel" id="cerNoTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                          <label for="effectDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
-                          <input type="code" id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="2018-11-16" autocomplete="off">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                                <label for="acctTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户名</label>
+                                <input type="tel" id="acctTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off"> 
+                            </div>
                         </div>
-                      </div>
 
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="invalidDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
-                            <input type="code" id="invalidDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="2018-12-31" autocomplete="off">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                                <label for="statusCd" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
+                                <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> -->
+                                <select  class="col-md-8 col-sm-8 col-xs-12" id="statusCd">
+                                    <option>生效</option>
+                                    <option>失效</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="row" style="margin-bottom: 10px;">
+                        <!-- <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                                <label for="roleTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
+                                <input type="tel" id="roleTel" class="ui-input col-md-8 col-sm-8 col-xs-12" data-toggle="modal" data-target="#roleModal" size="40" name="tel" required value="" autocomplete="off"> 
+                            </div>
+                        </div> -->
+
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                                <label for="roleTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
+                                <input id="roleTel" class="ui-input col-md-8 col-sm-8 col-xs-12"  onclick="openTypeDialog()" required readonly></input>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%" id="default_psw">
+                                <label for="defaultPswTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
+                                <input type="password" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                            <label for="effectDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
+                            <input type="code" id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="2018-11-16" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                                <label for="invalidDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
+                                <input type="code" id="invalidDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="2018-12-31" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="margin-left: 29%;margin-top: 5%;" id="editBtnDiv">
+                            <button class="ui-button ui-button-primary" id="editBtn" onclick="acctSubmit()">提交</button>
+                            <button class="ui-button ui-button-cancel"  onclick="backToAcctInfo()" style="margin-left: 40px;">取消</button>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div style="margin-top:7%">
@@ -263,6 +272,11 @@
     
                     <div class="fright" style="margin-right:85%;margin-top:-4.5%;"> 
                         <a class="button-add" id="addBtn" data-toggle="modal" data-target="#myModal"><span class="fa fa-plus-circle icon-add"></span>添加</a>
+                    </div>
+
+                    <!--添加主账号时若已有主账号则点击此按钮添加左边组织树选中的组织-->
+                    <div class="fright" id="addBtnWFright" style="margin-right:85%;margin-top:-4.5%;display: none;"> 
+                        <a class="button-add" id="addBtnW" onclick="addBtnWClick()"><span class="fa fa-plus-circle icon-add"></span>添加</a>
                     </div>
                 </div>
 
@@ -311,7 +325,7 @@
             </form>
 
             <div class="row">
-                <div style="margin-left: 29%;margin-top: 5%;">
+                <div id="addBtnDiv" style="margin-left: 29%;margin-top: 5%;">
                     <!-- <input type="submit" id="formSubmit" class="clip">
                     <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
                     <button class="ui-button ui-button-primary" id="opBtn" onclick="acctSubmit()">提交</button>
@@ -332,11 +346,12 @@
     <script type="text/javascript" src="/vendors/zTree/jquery.ztree.excheck.js"></script>
     <!-- jquery datatable -->
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
-    <script type="text/javascript" src="/js/account/orgData.js"></script>
     <!-- laydate -->
     <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
     <!-- layer -->
     <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+    <!-- toastr -->
+    <script type="text/javascript" src="/vendors/toastr/toastr.js"></script>
     <!-- init -->
     <script src="/js/account/init.js"></script>
     <!-- jquery tagsinput -->
