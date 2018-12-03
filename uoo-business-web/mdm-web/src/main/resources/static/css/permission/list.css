@@ -1,0 +1,27 @@
+.clearfix{
+    clear: both;
+}
+.leftBox{
+    float: left;
+    width: 15%;
+}
+.midBox{
+    float: left;
+    width: 70%;
+}
+.midBox .mainBox li{
+    float: left;
+    width: 33%;
+}
+.rightBox{
+    float: left;
+    width: 10%;
+}
+.search-input{
+    width:300px;
+    height:30px;
+    border:1px solid black;
+}
+.mainBox li{
+    margin-top: 15px;
+}

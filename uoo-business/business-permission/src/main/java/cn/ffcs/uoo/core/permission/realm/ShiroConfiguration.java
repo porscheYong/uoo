@@ -25,19 +25,6 @@ public class ShiroConfiguration {
         // 配置访问权限
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/", "anon"); //表示可以匿名访问
-        filterChainDefinitionMap.put("/css/**", "anon");
-        filterChainDefinitionMap.put("/js/**", "anon");
-        filterChainDefinitionMap.put("/img/**", "anon");
-        filterChainDefinitionMap.put("/layui/**", "anon");
-        filterChainDefinitionMap.put("/authImage", "anon");
-        filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/pcDeviceService/**", "anon");
-        filterChainDefinitionMap.put("/softwareService/**", "anon");
-        filterChainDefinitionMap.put("/clientInfoService/**", "anon");
-        filterChainDefinitionMap.put("/eam-apps/**", "anon");
-        filterChainDefinitionMap.put("/pcApplicationService/**", "anon");
-        filterChainDefinitionMap.put("/postUnCliInfo/**", "anon");
-        filterChainDefinitionMap.put("/clientLogInfo/download/**", "anon");
         filterChainDefinitionMap.put("/**", "authc");//表示需要认证才可以访问
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         shiroFilterFactoryBean

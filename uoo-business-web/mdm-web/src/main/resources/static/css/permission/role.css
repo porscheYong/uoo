@@ -1,0 +1,31 @@
+
+.child dd {
+    margin-top: 15px;
+
+}
+dd a{
+    color: #666666;
+}
+dd a:visited{color:#4FC1B0}
+dd a:hover{color:#4FC1B0}
+dd a:active{color:#4FC1B0}
+
+.check {
+    background-color: #f3f3f3;
+}
+
+.role{
+    margin-left: 20px;
+}
+
+.role-input{
+    border:1px solid black;
+    width: 240px;
+    height: 50px;
+    display: none;
+}
+
+.role-bnt{
+    width:50px;
+    display: none;
+}
