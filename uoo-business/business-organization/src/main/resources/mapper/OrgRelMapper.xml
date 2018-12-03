@@ -181,7 +181,7 @@
 
 
     <select id="selectOrgRelTypePage" resultType="cn.ffcs.uoo.core.organization.vo.OrgRefTypeVo">
-        SELECT ORGNAME,SUPORGNAME,ORT.REF_NAME REFNAME,to_char(ORT.CREATE_DATE,'YYYY-MM-DD hh24:mi:ss') createDate
+        SELECT ORGNAME,SUPORGNAME,ORT.REF_NAME REFNAME,ORT.ORG_BIZ_NAME orgBizName,to_char(BB.CREATE_DATE,'YYYY-MM-DD hh24:mi:ss') createDate
         FROM (SELECT (SELECT O.ORG_NAME
         FROM TB_ORG O
         WHERE O.STATUS_CD = '1000'
@@ -190,14 +190,18 @@
         FROM TB_ORG O
         WHERE O.STATUS_CD = '1000'
         AND O.ORG_ID = B.PARENT_ORG_ID) SUPORGNAME,
-        B.REF_CODE
+        B.REF_CODE,
+        B.CREATE_DATE
         FROM TB_ORG_REL B
         WHERE B.STATUS_CD = '1000'
-        <if test="orgRefTypeVo.orgId != null">
-            AND B.ORG_ID = #{orgRefTypeVo.orgId}
-        </if>
-        ) BB LEFT JOIN (SELECT * FROM TB_ORG_REL_TYPE WHERE STATUS_CD = '1000') ORT
-        ON ORT.REF_CODE = BB.REF_CODE
+           <if test="orgRefTypeVo.orgId != null">
+              AND B.ORG_ID = #{orgRefTypeVo.orgId}
+           </if>
+        ) BB  LEFT JOIN (SELECT C.REF_CODE, F.ORG_BIZ_NAME,C.REF_NAME
+        FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C ,TB_ORG_ORGTREE_REL F
+        where A.Status_Cd=1000 AND B.STATUS_CD=1000 AND C.STATUS_CD=1000 AND F.STATUS_CD=1000
+        AND A.Org_Tree_Id = B.ORG_TREE_ID AND A.ORG_REL_TYPE_ID=C.ORG_REL_TYPE_ID AND B.ORG_TREE_ID=F.ORG_TREE_ID)ORT on ORT.REF_CODE=BB.REF_CODE
+
     </select>
 
 
