@@ -151,6 +151,16 @@ public class PsonOrgVo extends BaseVo {
      */
     private String search;
 
+    private String isSearchlower;
+
+    public String getIsSearchlower() {
+        return isSearchlower;
+    }
+
+    public void setIsSearchlower(String isSearchlower) {
+        this.isSearchlower = isSearchlower;
+    }
+
     public Long getOrgTreeId() {
         return orgTreeId;
     }

@@ -123,7 +123,7 @@ mybatis-plus:
     cache-enabled: false
 
 server:
-  port: 11100
+  port: 11122
 
 eureka:
   instance:
@@ -134,10 +134,10 @@ eureka:
     lease-expiration-duration-in-seconds: 30
     lease-renewal-interval-in-seconds: 10
   server:
-    #port: 8762
+    port: 8751
   client:
     service-url:
-      defaultZone:  http://134.96.253.221:8751/eureka/,http://134.96.253.222:8751/eureka/,http://134.96.253.223:8751/eureka/
+      defaultZone:  http://134.96.253.221:${eureka.server.port}/eureka/,http://134.96.253.222:${eureka.server.port}/eureka/,http://134.96.253.223:${eureka.server.port}/eureka/
       #defaultZone:  http://134.96.253.221:${eureka.server.port}/eureka/
       #defaultZone:  http://localhost:${eureka.server.port}/eureka/
 logging:
