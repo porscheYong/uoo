@@ -45,6 +45,7 @@ public interface OrgPersonRelService{
                                                             @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                             @RequestParam(value = "orgRootId",required = false)String orgRootId,
                                                             @RequestParam(value = "personnelId",required = false)String personnelId,
+                                                            @RequestParam(value = "isSearchlower",required = false)String isSearchlower,
                                                             @RequestParam(value = "search",required = false)String search,
                                                             @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                             @RequestParam(value = "pageNo",required = false)Integer pageNo);
@@ -52,6 +53,7 @@ public interface OrgPersonRelService{
     @RequestMapping(value="/orgPersonRel/getUserOrgRelPage",method = RequestMethod.GET)
     public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(@RequestParam(value = "orgId",required = false)String orgId,
                                                              @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                                             @RequestParam(value = "isSearchlower",required = false)String isSearchlower,
                                                              @RequestParam(value = "search",required = false)String search,
                                                              @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                              @RequestParam(value = "pageNo",required = false)Integer pageNo);

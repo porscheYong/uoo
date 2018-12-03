@@ -252,6 +252,7 @@ function initUserInfo(results){   //新增时初始化信息
     $('#mobileTel').val(results.mobilePhone);
     $('#emailTel').val(results.eamil);
     $('#cerNoTel').val(results.certNo);
+    window.localStorage.setItem('userRoleList',JSON.stringify(''));
 }
 
 function addTbSlaveAcct(){      //从账号新增

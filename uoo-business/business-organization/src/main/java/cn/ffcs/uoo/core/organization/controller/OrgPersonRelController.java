@@ -303,6 +303,7 @@ public class OrgPersonRelController extends BaseController {
                                                             String orgTreeId,
                                                             String orgRootId,
                                                             String personnelId,
+                                                            String isSearchlower,
                                                             String search,
                                                             Integer pageSize,
                                                             Integer pageNo
@@ -336,6 +337,7 @@ public class OrgPersonRelController extends BaseController {
 
 
         PsonOrgVo psonOrgVo = new PsonOrgVo();
+        psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
         psonOrgVo.setOrgId(new Long(orgId));
         //psonOrgVo.setOrgRootId(new Long(orgRootId));
         psonOrgVo.setOrgTreeId(orgtree.getOrgTreeId());
@@ -387,6 +389,7 @@ public class OrgPersonRelController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(String orgId,
                                                              String orgTreeId,
+                                                             String isSearchlower,
                                                              String search,
                                                              Integer pageSize,
                                                              Integer pageNo
@@ -403,6 +406,7 @@ public class OrgPersonRelController extends BaseController {
             return ret;
         }
         PsonOrgVo psonOrgVo = new PsonOrgVo();
+        psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
         psonOrgVo.setOrgId(new Long(orgId));
         psonOrgVo.setOrgTreeId(new Long(orgTreeId));
         if(!StrUtil.isNullOrEmpty(search)){

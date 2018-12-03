@@ -74,7 +74,8 @@ function initOrgSearchTable(search) {
             'infoEmpty': '没有数据'
         },
         // "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
-        //"pagingType": "four_button",
+        "pagingType": "simple",
+        "iDisplayLength": 3,
         'dom': '<"top"f>t<"bottom"ipl>',
         'serverSide': true,  //启用服务器端分页
         'ajax': function (data, callback, settings) {
