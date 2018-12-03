@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>标准组织树</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- ztree -->
+    <link href="/vendors/zTree/zTreeStyle.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/css/permission/style.css" rel="stylesheet">
+    <link href="/css/permission/role.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="/js/core/html5shiv.js"></script>
+    <script src="/js/core/respond.js"></script>
+    <script src="/js/core/excanvas.js"></script>
+    <![endif]-->
+  </head>
+
+  <body class="nav-md">
+    <div class="container" id="container">
+      <div class="main-container">
+        <div class="content-left" style="overflow: auto;">
+          <li class="parent">
+            <dl>
+              <dd class="role">角色</dd>
+            </dl>
+            <dl class="child">
+              <dd data-id="cpu"><a href="javascript:;">部门管理员</a></dd>
+              <dd data-id="memory"><a href="javascript:;">专业管理员</a></dd>
+              <dd data-id="memory"><a href="javascript:;">部门管理员</a></dd>
+            </dl>
+            <div class="BoardContent tcenter">
+              <div class="FunctionBtn">
+                <input class="role-input" placeholder="请输入角色名称"/>
+                <a class="BtnAdd" onclick="addRole()">+添加角色</a>
+                <div class="BoardContent tcenter">
+                  <input class="role-bnt Btn BtnBlue save" type="submit" value="保存" />
+                  <input class="role-bnt Btn cel" type="button" value="取消" />
+                </div>
+                </div>
+            </div>
+          </li>
+        </div>
+        <div class="content-right">
+          <iframe id="roleFrame" name="standardOrg" class="layadmin-iframe" src="list.html" frameborder="0" width="100%" height="99%"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- ztree -->
+    <script type="text/javascript" src="/vendors/zTree/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="/vendors/zTree/jquery.ztree.excheck.js"></script>
+    <!-- layer -->
+    <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+    <!-- loading -->
+    <script type="text/javascript" src="/js/core/spin.min.js"></script>
+    <script type="text/javascript" src="/js/core/loading.js"></script>
+    <!-- init -->
+    <script src="/js/init.js"></script>
+    <script type="text/javascript" src="/js/permission/role.js"></script>
+  
+  </body>
+</html>

@@ -74,7 +74,7 @@ public class ResourceController {
 
     @ApiOperation(value = "删除资源",notes = "删除资源(只需要resourceId)")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "role", value = "资源 ", required = true, dataType = "Roles"),
+            @ApiImplicitParam(name = "Resource", value = "资源 ", required = true, dataType = "Resource"),
     })
     @UooLog(value = "删除资源", key = "removeTbResource")
     @Transactional
@@ -96,7 +96,7 @@ public class ResourceController {
     }
 
     @ApiOperation(value = "修改资源",notes = "修改资源")
-    @ApiImplicitParam(name = "tbRoles", value = "资源", required = true, dataType = "Roles")
+    @ApiImplicitParam(name = "Resource", value = "资源", required = true, dataType = "Resource")
     @UooLog(value = "修改资源", key = "updateTbRoles")
     @Transactional
     @RequestMapping(value = "/update", method = RequestMethod.POST)

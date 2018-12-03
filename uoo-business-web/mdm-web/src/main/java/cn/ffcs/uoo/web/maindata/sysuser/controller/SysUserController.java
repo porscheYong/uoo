@@ -32,10 +32,6 @@ public class SysUserController {
         ResponseResult<Void> login = sysuserClient.login(sysUser);
         if(ResponseResult.STATE_OK==login.getState()){
             request.getSession().setAttribute(LoginConsts.LOGIN_KEY,login);
-            try {
-                response.sendRedirect("/index");
-            } catch (IOException e) {
-            }
         }
         return login;
     }

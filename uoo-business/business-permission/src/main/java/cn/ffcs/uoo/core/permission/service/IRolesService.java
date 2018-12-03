@@ -1,7 +1,13 @@
 package cn.ffcs.uoo.core.permission.service;
 
+import cn.ffcs.uoo.core.permission.entity.FuncMenu;
+import cn.ffcs.uoo.core.permission.entity.Privilege;
 import cn.ffcs.uoo.core.permission.entity.Roles;
+import cn.ffcs.uoo.core.permission.vo.RoleSystemPermissionVO;
 import com.baomidou.mybatisplus.service.IService;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +19,10 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface IRolesService extends IService<Roles> {
     Long getId();
+    //Integer acctType,
+    List<RoleSystemPermissionVO> getRoles(Long acctId,  Long systemInfoId);
+
+    List<Privilege> getPermission(Long roleId);
+
+    List<FuncMenu> getPermissionMenu(Long acctId, Long systemInfoId);
 }
