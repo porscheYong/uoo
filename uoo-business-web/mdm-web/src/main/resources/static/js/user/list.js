@@ -6,17 +6,7 @@ var orgTreeName = getQueryString('orgTreeName');
 var table;
 
 $('#orgName').html(orgName);
-
-// function getOrgPersonnerList () {
-//     $http.get('/orgPersonRel/getPerOrgRelPage', {
-//         orgId: orgId,
-//         orgTreeId: orgTreeId
-//     }, function (data) {
-//         initOrgPersonnelTable(data.records)
-//     }, function (err) {
-//         console.log(err)
-//     })
-// }
+parent.getOrgExtInfo();
 
 function initOrgPersonnelTable (results) {
     var num = 1;
@@ -25,9 +15,6 @@ function initOrgPersonnelTable (results) {
         'searching': false,
         'autoWidth': false,
         'ordering': true,
-        'initComplete': function (settings, json) {
-            console.log(settings, json)
-        },
         "scrollY": "375px",
         'columns': [
             { 'data': "psnName", 'title': '序号', 'className': 'row-no' ,
@@ -98,7 +85,7 @@ function initOrgPersonnelTable (results) {
                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                 callback(returnData);
             }, function (err) {
-                console.log(err)
+
             })
         }
     });

@@ -69,7 +69,7 @@ var engine, template, empty, selectNode;
   });
 
   $('#addBtn').on('click', function () {
-     var url = 'orgAdd.html?id=' + orgId  + '&orgTreeId=' + orgTreeId + '&name=' + orgName;
+     var url = 'orgAdd.html?id=' + orgId  + '&orgTreeId=' + orgTreeId + '&name=' + encodeURI(orgName);
      $(this).attr('href', url);
   })
   
@@ -102,25 +102,11 @@ var engine, template, empty, selectNode;
   }
 
   function cancel () {
-    var url = 'list.html?id=' + orgId  + '&orgTreeId=' + orgTreeId + '&name=' + orgName;
+    var url = 'list.html?id=' + orgId  + '&orgTreeId=' + orgTreeId + '&name=' + encodeURI(orgName);
     window.location.href = url;
   }
 
-  // 获取组织完整路径
-  function getOrgExtInfo () {
-      var pathArry = parent.nodeArr;
-      var pathStr = '';
-      for (var i = pathArry.length - 1; i >= 0; i--) {
-          if (i === 0) {
-              pathStr +=  '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a></span>';
-          } else {
-              pathStr += '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
-          }
-      }
-      $('.breadcrumb').html(pathStr);
-  }
-
   $('#orgName').html(orgName);
-  getOrgExtInfo();
+parent.getOrgExtInfo();
 
 

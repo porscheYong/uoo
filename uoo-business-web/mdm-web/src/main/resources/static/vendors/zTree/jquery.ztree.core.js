@@ -1483,7 +1483,7 @@
               elem = this.parentNode,
               origin;
 
-            while (elem instanceof HTMLElement) {
+            while (elem instanceof (window.HTMLElement || Element)) {
               // Apply desired scroll amount.
               origin = absolute(elem, makePoint(elem.clientLeft, elem.clientTop));
               elem.scrollLeft = coverRange(

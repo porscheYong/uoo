@@ -1081,3 +1081,26 @@ ul.tab-title.right li {
 label.gender {
     padding-left: 10px;
 }
+
+/*
+ * Component: back
+ * --------------
+ */
+.BoardTitle.Back {
+    display: inline-block;
+    width: 100%;
+    background: url(/images/ico_back.svg) no-repeat 10px center;
+    background-size: 24px 24px;
+    border-bottom: 1px solid #ecedef;
+    font-size: 16px;
+    opacity: 0.7;
+    padding: 6px 40px;
+}
+a.BoardTitle.Back:hover {
+    opacity: 1
+}
+a.BoardTitle.Back:hover {
+    background-position: 5px center;
+    padding: 6px 55px 6px 35px;
+    opacity: 1
+}
