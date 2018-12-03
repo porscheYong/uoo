@@ -99,7 +99,6 @@ $(document).ready(function(){
 	var rid = getQueryString('id');
 	get(rid);
 	$('#saveBtn').bind('click',saveRegion);
-	initLocTree();
 	seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 		formValid = new Validate($('#regionForm'));
 		formValid.immediate();
