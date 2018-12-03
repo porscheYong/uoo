@@ -2,6 +2,9 @@ package cn.ffcs.uoo.system.controller;
 
 import javax.annotation.Resource;
 
+import cn.ffcs.uoo.system.service.impl.SysUserServiceImpl;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +16,9 @@ import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.system.entity.SysUser;
 import cn.ffcs.uoo.system.service.SysUserService;
 import cn.ffcs.uoo.system.util.ResponseResult;
+
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * 系统域用户前端控制器
@@ -30,18 +36,30 @@ public class SysUserController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/sysUserLogin", method = RequestMethod.POST)
-    public ResponseResult<Void> login(@RequestBody SysUser sysUser) {
-        ResponseResult<Void> result = new ResponseResult<>();
+    public ResponseResult<SysUser> login(@RequestBody SysUser sysUser) {
+        ResponseResult<SysUser> result = new ResponseResult<>();
 
         String message = sysUserService.sysUserLogin(sysUser);
+
         if (!StringUtils.isEmpty(message)) {
             result.setState(ResponseResult.PARAMETER_ERROR);
             result.setMessage(message);
             return result;
         }
 
+        Wrapper<SysUser> wrapper = new EntityWrapper<>();
+        if (Pattern.matches(SysUserServiceImpl.REGEX_MOBILE, sysUser.getAccout())) {
+            wrapper.eq("mobile", sysUser.getAccout());
+        } else if (Pattern.matches(SysUserServiceImpl.REGEX_EMAIL, sysUser.getAccout())) {
+            wrapper.eq("email", sysUser.getAccout());
+        } else {
+            wrapper.eq("accout", sysUser.getAccout());
+        }
+        List<SysUser> userList = sysUserService.selectList(wrapper);
         result.setState(ResponseResult.STATE_OK);
         result.setMessage("登录成功");
+        result.setData(userList.get(0));
+
         return result;
 
     }
