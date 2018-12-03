@@ -197,11 +197,11 @@
            <if test="orgRefTypeVo.orgId != null">
               AND B.ORG_ID = #{orgRefTypeVo.orgId}
            </if>
-        ) BB  LEFT JOIN (SELECT C.REF_CODE, F.ORG_BIZ_NAME,C.REF_NAME
+        ) BB  LEFT JOIN (SELECT C.REF_CODE, F.ORG_BIZ_NAME,C.REF_NAME,F.ORG_ID
         FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C ,TB_ORG_ORGTREE_REL F
         where A.Status_Cd=1000 AND B.STATUS_CD=1000 AND C.STATUS_CD=1000 AND F.STATUS_CD=1000
         AND A.Org_Tree_Id = B.ORG_TREE_ID AND A.ORG_REL_TYPE_ID=C.ORG_REL_TYPE_ID AND B.ORG_TREE_ID=F.ORG_TREE_ID)ORT on ORT.REF_CODE=BB.REF_CODE
-
+        and ORT.Org_Id=#{orgRefTypeVo.orgId}
     </select>
 
 
