@@ -5,6 +5,17 @@ var accData;
 var show_num = [];
 var isError = 0;
 var show_num = [];
+
+$(function (){
+    toastr.options = {
+                        "closeButton": true,
+                        "timeOut": "3000",
+                        "preventDuplicates": true,
+                        "preventManyTimes": true,
+                        "hideDuration": "1"
+                    };  
+})
+
 draw(show_num);
 
 $("#canvas").on('click',function(){
@@ -18,8 +29,9 @@ function check(){
     
     if(user=="" || pwd==""){
 
-        $("#errorAcc").text("账号或密码未填写！");
-        $("#errorAcc").show();
+        // $("#errorAcc").text("账号或密码未填写！");
+        // $("#errorAcc").show();
+        toastr.error("账号或密码未填写！");
         return false;
 
     }else if(!(isMobile.test(user) || isAccount.test(user) || isEmail.test(user))){  
@@ -76,14 +88,14 @@ function check(){
 
         $.ajax({			//提交表单
             type : "POST",
-			url : "http://134.96.253.221:9100/system/sysUserLogin",  //接口
+			url : "/system/sysUserLogin",  //接口
 			data : accData,
             dataType: "json",
 			success:function(result){
-                if(result.state==1000){
-                    window.location.href = "/index.html";
+                if(result.state == 1000){
+                    window.location.href = "index.html";
                 }else{
-                    alert("用户名不存在或密码不正确！");
+                    alert(result.message);
                     $(".psw").val('');
                     isError = 1;
                     $(".code").show();
