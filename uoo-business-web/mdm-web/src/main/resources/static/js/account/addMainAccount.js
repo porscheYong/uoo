@@ -17,7 +17,7 @@ var flag = 0;
 var psw;
 var roleList = [];      //需要上传的角色列表
 var userRoleList = [];      //用户已有角色列表
-
+// var toastr = parent.parent.toastr;
 
 $('#invalidDate').val(''),
 $('#effectDate').val(''),
@@ -242,8 +242,11 @@ function initAddUserInfo(results){    //初始化用户信息(新增)
 }
 
 function addTbAcct(){         //新增
+  if(roleList.length == 0){
+    roleList = userRoleList;
+  }
   if(addOrgList.length == 0){
-    alert("组织不能为空");
+    alert('组织不能为空!');
   }else{
     var editFormAcctVo = {
       "acct": $('#acctTel').val(),
@@ -265,15 +268,17 @@ function addTbAcct(){         //新增
       contentType: "application/json",
       data: JSON.stringify(editFormAcctVo),
       dataType:"JSON",
-      success: function (data) { //返回json结果
-        console.log(data);
-        alert('添加成功');
-        // submitSuccess();
-        saveSuccess();
+      success: function (state) { //返回json结果
+        if(state.state === 1000){
+          alert(state.message);
+          submitSuccess();
+        }else{
+          alert(state.message);
+        }
       },
       error:function(err){
         console.log(err);
-        alert('添加失败');
+        alert('新增失败');
       }
     });
   }
@@ -281,6 +286,9 @@ function addTbAcct(){         //新增
 
 function updateAcct(){      //编辑主账号
     var statusCd;
+    if(roleList.length == 0){
+      roleList = userRoleList;
+    }
     if($('#statusCd').get(0).selectedIndex == 0){
       statusCd = "1000";
     }else{
@@ -306,11 +314,13 @@ function updateAcct(){      //编辑主账号
       contentType: "application/json",
       data: JSON.stringify(editFormAcctVo),
       dataType:"JSON",
-      success: function (data) { //返回json结果
-        console.log(data);
-        alert('编辑成功');
-        // submitSuccess();
-        saveSuccess();
+      success: function (state) { //返回json结果
+        if(state.state === 1000){
+          alert(state.message);
+          submitSuccess();
+        }else{
+          alert(state.message);
+        }
       },
       error:function(err){
         console.log(err);
@@ -520,12 +530,12 @@ function submitSuccess(){     //提交成功
     window.location.href = url;
 }
 
-function saveSuccess(){   //保存成功
-    var url = 'addMainAccount.html?opBtn=0&acctId='+acctId+'&orgId='+orgId+'&orgName='+orgName+'&orgFullName='+orgFullName+
-              '&hType='+hType+'&orgTreeId='+orgTreeId+'&orgRootId='+orgRootId+'&tabPage='+tabPage+'&statusCd='+statusCd+
-              '&personnelId='+personnelId;
-    window.location.href = url;
-}
+// function saveSuccess(){   //保存成功
+//     var url = 'addMainAccount.html?opBtn=0&acctId='+acctId+'&orgId='+orgId+'&orgName='+orgName+'&orgFullName='+orgFullName+
+//               '&hType='+hType+'&orgTreeId='+orgTreeId+'&orgRootId='+orgRootId+'&tabPage='+tabPage+'&statusCd='+statusCd+
+//               '&personnelId='+personnelId;
+//     window.location.href = url;
+// }
 
 
 // $("#addSubAcctBtn").on('click', function () {    //添加从账号
