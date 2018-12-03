@@ -1,4 +1,4 @@
-
+var formValid;
 function saveRegion(){
 	if(!validFormData()){
 		return;
@@ -21,6 +21,8 @@ function saveRegion(){
 	 
 }
 function validFormData(){
+	if (!formValid.isAllPass())
+        return false;
 	return true;
 	
 	//$('#regionNbrTooltip').tooltip('toggle')
@@ -28,5 +30,8 @@ function validFormData(){
  
 $(document).ready(function(){
 	$('#saveBtn').bind('click',saveRegion);
-	
+	seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+		formValid = new Validate($('#regionForm'));
+		formValid.immediate();
+	});
 });

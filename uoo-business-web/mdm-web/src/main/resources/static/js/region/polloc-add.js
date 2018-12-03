@@ -1,7 +1,7 @@
 var nodes = parent.getCurrentSelectedNode();
 var node = nodes[0];
 var upid = node.id;
-
+var formValid;
 function selectParentLoc() {
 	parent.layer.open({
         type: 2,
@@ -32,6 +32,10 @@ $(document).ready(function(){
 	loadLocType();
 	
 	$('#saveBtn').bind('click',saveRegion);
+	seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+		formValid = new Validate($('#regionForm'));
+		formValid.immediate();
+	});
 	
 });
 function loadLocType(){
@@ -73,6 +77,8 @@ function saveRegion(){
 	 
 }
 function validFormData(){
+	if (!formValid.isAllPass())
+        return false;
 	var reg =/^\d{1,}$/;
 	var locCode=$('#locCode').val();
 	if (!reg.test(locCode)){

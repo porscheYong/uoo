@@ -1,6 +1,7 @@
 var nodes = parent.getCurrentSelectedNode();
 var node = nodes[0];
 var upid = node.id;
+var formValid;
 function loadRegionType(){
 	for(var i=0;i<parent.typeArray.length;i++){
 		$('#regionType').append("<option value='"+parent.typeArray[i].itemValue+"'>"+parent.typeArray[i].itemCnname+"</option>");
@@ -39,6 +40,9 @@ function saveRegion(){
 	 
 }
 function validFormData(){
+	if (!formValid.isAllPass())
+        return false;
+	
 	var regionName=$('#regionName').val();
 	if(regionName.length<1){
 		$('#regionName').focus();
@@ -143,5 +147,8 @@ $(document).ready(function(){
 		$('#parentRegionId').val(getQueryString('upRegionId'));
 	}
 	$('#saveBtn').bind('click',saveRegion);
-	
+	seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+		formValid = new Validate($('#regionForm'));
+		formValid.immediate();
+	});
 });

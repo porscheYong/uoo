@@ -1,4 +1,5 @@
 var locIds=null,locNames=null,curUpId=0;
+var formValid;
 function deleteData(){
 	var id=$('#locId').val();
 	var upRegionId=$('#parentLocId').val();
@@ -111,6 +112,10 @@ $(document).ready(function(){
 	get(rid);
 	$('#saveBtn').bind('click',saveRegion);
 	initLocTree();
+	seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+		formValid = new Validate($('#regionForm'));
+		formValid.immediate();
+	});
 	 
 });
 function loadLocType(){
@@ -119,6 +124,8 @@ function loadLocType(){
   	}
 }
 function validFormData(){
+	if (!formValid.isAllPass())
+        return false;
 	var reg =/^\d{1,}$/;
 	var locCode=$('#locCode').val();
 	if (!reg.test(locCode)){

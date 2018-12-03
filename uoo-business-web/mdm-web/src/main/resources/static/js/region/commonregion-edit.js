@@ -1,4 +1,5 @@
 var locIds=null,locNames=null,curUpId=0;
+var formValid;
 function loadRegionType(){
 	for(var i=0;i<parent.typeArray.length;i++){
 		$('#regionType').append("<option value='"+parent.typeArray[i].itemValue+"'>"+parent.typeArray[i].itemCnname+"</option>");
@@ -99,7 +100,10 @@ $(document).ready(function(){
 	get(rid);
 	$('#saveBtn').bind('click',saveRegion);
 	initLocTree();
-	 
+	seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+		formValid = new Validate($('#regionForm'));
+		formValid.immediate();
+	});
 });
  
 function saveRegion(){
@@ -149,6 +153,8 @@ function saveRegion(){
 	 
 }
 function validFormData(){
+	if (!formValid.isAllPass())
+        return false;
 	var regionName=$('#regionName').val();
 	if(regionName.length<1){
 		$('#regionName').focus();
