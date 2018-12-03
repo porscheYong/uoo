@@ -1,4 +1,5 @@
 var locIds=null,locNames=null,curUpId=0;
+var formValid;
 function loadRegionType(){
 	for(var i=0;i<parent.typeArray.length;i++){
 		$('#regionType').append("<option value='"+parent.typeArray[i].itemValue+"'>"+parent.typeArray[i].itemCnname+"</option>");
@@ -64,14 +65,18 @@ function get(id){
 	});
 }
 function initData(data){
-	$('#regionId').val(data.COMMON_REGION_ID);
-	$('#regionNbr').val(data.REGION_NBR);
-	$('#regionName').val(data.REGION_NAME);
-	$('#regionType').val(data.REGION_TYPE);
-	$('#regionDesc').val(data.REGION_DESC);
-	var locIdsArr=data.LOC_ID;
-	locNames=data.LOC_NAME;
-	locIds=data.LOC_ID;
+	$('#regionId').val(data.commonRegionId);
+	$('#parentRegion').val(getQueryString('upRegionName'));
+	$('#parentRegionId').val(getQueryString('upRegionId'));
+	$('#regionNbr').val(data.regionNbr);
+	$('#regionName').val(data.regionName);
+	$('#regionType').val(data.regionType);
+	$('#regionDesc').val(data.regionDesc);
+	$('#areaCodeId').val(data.areaCode.areaCodeId);
+	$('#areaCode').val(data.areaCode.areaCode);
+	$('#polLocIds').val(data.locationIds);
+	$('#locDesc').val(data.locationNames);
+	
 }
 function inArr(arr,target){
 	for(var j=0;j<arr.length;j++){
@@ -94,53 +99,17 @@ $(document).ready(function(){
 	var rid = getQueryString('id');
 	get(rid);
 	$('#saveBtn').bind('click',saveRegion);
-	initLocTree();
-	 
-});
-function initLocTree(){
-	$.ajax({
-		url:'/region/politicalLocation/getTreePoliticalLocation',
-		dataType:'json',
-		type:'get',
-		success:function(data){
-			if(data.state==1000){
-				console.log(locIds);
-				for(var i=0;i<data.data.length;i++){
-					if(inArr(locIds, data.data[i].id)){
-						data.data[i].checked=true;
-						console.log("checked:"+data.data[i]);
-					}
-				}
-				$('#locDesc').val(locNames);
-				var htmlstr="";
-				for(var i=0;i<locNames.length;i++){
-					htmlstr+="<li hid='"+locIds[i]+"' class=\"list-group-item\"><span onclick=\"removeChosed('"+locIds[i]+"')\" class=\"badge\">  X </span>"+locNames[i]+"</li>";
-				}
-				$('#chosedTreeNode ul').append(htmlstr);
-				$.fn.zTree.init($("#locTree"), setting,data.data);
-			}else{
-				alert('加载行政区域失败，请刷新重试')
-			}
-		}
-		
+	seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+		formValid = new Validate($('#regionForm'));
+		formValid.immediate();
 	});
-	
-}
+});
+ 
 function saveRegion(){
 	if(!validFormData()){
 		return;
 	}
-	var treeObj = $.fn.zTree.getZTreeObj("locTree");
-	var checkeds=treeObj.getCheckedNodes();
-	var polLocIds="";
-	$('#parentRegionId').removeAttr('disabled');
-	for(var i=0;i<checkeds.length;i++){
-		polLocIds+=checkeds[i].id;
-		if(i!=checkeds.length-1){
-			polLocIds+=",";
-		}
-	}
-	$('#polLocIds').val(polLocIds);
+	 
 	$.ajax({
 		type:'POST',
 		dataType:'json',
@@ -183,6 +152,8 @@ function saveRegion(){
 	 
 }
 function validFormData(){
+	if (!formValid.isAllPass())
+        return false;
 	var regionName=$('#regionName').val();
 	if(regionName.length<1){
 		$('#regionName').focus();
@@ -200,116 +171,82 @@ function validFormData(){
 	
 	//$('#regionNbrTooltip').tooltip('toggle')
 }
-function showMenu(){
-	var treeObj = $.fn.zTree.getZTreeObj("locTree");
-	var nodes=treeObj.getCheckedNodes(true);
-	for(var i=0;i<nodes.length;i++){
-		var node = nodes[i].getParentNode();
-		treeObj.expandNode(node, true, false, true);
-		console.log(node);
-		while(node.pId!=null){
-			node=node.getParentNode();
-		}
-	}
-}
-function loadUpRegionList(curUpId) {
-	$.ajax({
-		url : '/region/commonRegion/getTreeCommonRegion',
-		dataType : 'json',
-		type : 'get',
-		success : function(tree) {
-			if (tree.state == 1000) {
-				console.log(curUpId);
-				$.each(tree.data, function(i, item) {
-					var up = 0;
-					var html = "";
-					html += "<option value='" + item.id + "'";
-					if (curUpId == item.id) {
-						html += " selected='selected'";
-					}
-					up = item.pId;
-					html += " >" + item.name + "</option>"
-					console.log(html);
-					//某一层的 循环查找插入  那么久插入
-					$('#parentRegionId').append(html);
-					/*$('#parentRegionId option').each(function() {
-						var id = $(this).val();
-						if (id == up) {
-							$(this).after(html);
-						}
-					});*/
-				});
-				$("#parentRegionId").attr("disabled","disabled");
-				
-
-			}
-		}
-	});
-}
-//tree
-function changeLocDesc(){
-	var zTree = $.fn.zTree.getZTreeObj("locTree");
-	var nodes = zTree.getCheckedNodes(true);
-	var str="";
-	if(nodes.length>0){
-		for(var i=0;i<nodes.length;i++){
-			str+=nodes[i].name;
-			if(i!=nodes.length-1){
-				str+=",";
-			}
-		}
-	}
-	$('#locDesc').val(str);
-}
-function onCheck(event, treeId, treeNode) {
-    if(treeNode.checked){
-    	var html="<li hid='"+treeNode.id+"' class=\"list-group-item\"><span onclick=\"removeChosed('"+treeNode.id+"')\" class=\"badge\">  X </span>"+treeNode.name+"</li>";
-    	$('#chosedTreeNode ul').append(html);
-    }else{
-    	removeChosed(treeNode.id);
-    }
-    changeLocDesc();
-};
-function removeChosed(id){
-	$('#chosedTreeNode ul li').each(function (){
-		if($(this).attr('hid')==id){
-			$(this).remove();
-		}
-	});
-	var zTree = $.fn.zTree.getZTreeObj("locTree");
-	var nodes = zTree.getCheckedNodes(true);
-	if(nodes.length>0){
-		for(var i=0;i<nodes.length;i++){
-			if(nodes[i].id==id){
-				zTree.checkNode(nodes[i], false, true,true);
-			}
-		}
-	}
-	changeLocDesc();
-}
-var setting = {
-
-	data : {
-		simpleData : {
-			enable : true
-		}
-	},
-	view : {
-		showLine : false,
-		showIcon : false,
-		dblClickExpand: false
-	},
-	check : {
-		enable : true,
-		chkStyle : "checkbox",
-		chkboxType : {
-			"Y" : "",
-			"N" : ""
-		}
-	},
-	callback: {
-		onCheck: onCheck
-	}
-};
  
-// tree end
+function selectAreaCode(){
+	parent.layer.open({
+        type: 2,
+        title: '选中关联区号信息',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['50%', '80%'],
+        maxmin: true,
+        content: 'areacode-list.html?showCheck=1',
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            var checkAreaCode = iframeWin.checkAreaCode;
+            parent.layer.close(index);
+            $('#areaCode').val(checkAreaCode.areaCode);
+            $('#areaCodeId').val(checkAreaCode.areaCodeId);
+        },
+        btn2: function(index, layero){},
+        cancel: function(){}
+    });
+}
+function selectParentRegion(){
+	parent.layer.open({
+        type: 2,
+        title: '选中上级区域',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['50%', '80%'],
+        maxmin: true,
+        content: 'commonRegionTreeModal.html',
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            checkNode = iframeWin.checkNode;
+            parent.layer.close(index);
+            $('#parentRegion').val(checkNode.name);
+            $('#parentRegionId').val(checkNode.id);
+        },
+        btn2: function(index, layero){},
+        cancel: function(){}
+    });
+}
+function selectLocs(){
+	parent.layer.open({
+		type: 2,
+		title: '选中上级区域',
+		shadeClose: true,
+		shade: 0.8,
+		area: ['50%', '80%'],
+		maxmin: true,
+		content: 'pollocTreeModal.html',
+		btn: ['确认', '取消'],
+		yes: function(index, layero){
+			//获取layer iframe对象
+			var iframeWin = parent.window[layero.find('iframe')[0].name];
+			checkNode = iframeWin.checkNode;
+			parent.layer.close(index);
+			if(checkNode.length>0){
+				var polLocIds="",polLocNames="";
+				for(var i=0;i<checkNode.length;i++){
+					polLocIds+=checkNode[i].id;
+					polLocNames+=checkNode[i].name;
+					if(i!=checkNode.length-1){
+						polLocIds+=",";
+						polLocNames+=",";
+					}
+				}
+				$('#polLocIds').val(polLocIds);
+				$('#locDesc').val(polLocNames);
+				
+			}
+		},
+		btn2: function(index, layero){},
+		cancel: function(){}
+	});
+}

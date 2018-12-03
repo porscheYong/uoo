@@ -32,7 +32,7 @@ var setting = {
 var orgId,
     pid,
     orgName,
-    nodeName,
+    parent,
     nodeArr;
 
 function onNodeClick(e,treeId, treeNode) {
@@ -41,7 +41,7 @@ function onNodeClick(e,treeId, treeNode) {
     orgId = treeNode.id;
     pid = treeNode.pid;
     orgName = treeNode.name;
-    var currentNode = treeNode.name;//获取当前选中节点
+    var currentNode = {node: treeNode, current: true};//获取当前选中节点
     var parentNode = treeNode.getParentNode();
     nodeArr = [];
     getParentNodes(parentNode, currentNode);
@@ -51,15 +51,33 @@ function onNodeClick(e,treeId, treeNode) {
 // 获取父节点路径
 function getParentNodes(parentNode, currentNode) {
     if(parentNode!=null){
-        nodeName = parentNode.name;
+        parent = {node: parentNode, current: false};
         var curNode = parentNode.getParentNode();
         nodeArr.push(currentNode);
-        getParentNodes(curNode, nodeName);
+        getParentNodes(curNode, parent);
     }else{
         //根节点
         nodeArr.push(currentNode);
     }
 }
+
+// 获取组织完整路径
+function getOrgExtInfo () {
+    var pathArry = nodeArr;
+    var pathStr = '';
+    if (pathArry && pathArry.length > 0) {
+        for (var i = pathArry.length - 1; i >= 0; i--) {
+            var node = pathArry[i].node;
+            if (pathArry[i].current) {
+                pathStr +=  '<span class="breadcrumb-item"><a href="javascript:void(0);">' + node.name + '</a></span>';
+            } else {
+                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+orgId+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+            }
+        }
+        $('#orgFrame').contents().find('.breadcrumb').html(pathStr);
+    }
+}
+
 
 function filter (treeId, parentNode, childNodes) {
     return childNodes.data
@@ -75,7 +93,6 @@ function initOrgRelTree () {
         orgRootId: '1',
         orgTreeId: '1'
     }, function (data) {
-        console.log(data)
         $.fn.zTree.init($("#standardTree"), setting, data);
         var zTree = $.fn.zTree.getZTreeObj("standardTree");
         var nodes = zTree.getNodes();
@@ -83,7 +100,7 @@ function initOrgRelTree () {
         zTree.selectNode(nodes[0], true);
         onNodeClick(null, null, nodes[0]);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -93,19 +110,18 @@ function openTreeById (sId, id) {
     var sId = 'standardTree_' + sId;
     var zTree = $.fn.zTree.getZTreeObj("standardTree");
     var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-    zTree.cancelSelectedNode(selectNode);
-    var node = zTree.getNodeByTId(tId);
-    if (node.parent) {
-        zTree.expandNode(node, true);
+    if (!selectNode.open) {
+        zTree.expandNode(selectNode, true);
     }
-    zTree.selectNode(node, true);
+    var node = zTree.getNodeByTId(tId);
+    zTree.selectNode(node);
+    $('.curSelectedNode').trigger('click');
 }
 
 // 添加子节点
 function addNodeById (sId, newNode) {
     var zTree = $.fn.zTree.getZTreeObj("standardTree");
     var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-    console.log(selectNode)
     if (selectNode)
         var newNode = zTree.addNodes(selectNode, newNode);
 }
@@ -117,6 +133,23 @@ function changeNodeName(orgId, name) {
     var treeNode = zTree.getNodeByTId(tId);
     treeNode.name = name;
     $('#standardTree_' + orgId + '_span').html(name);
+}
+
+// 删除节点
+function deleteNode(orgId) {
+    var tId = 'standardTree_' + orgId;
+    var zTree = $.fn.zTree.getZTreeObj("standardTree");
+    var selectNode = zTree.getNodeByTId(tId); //获取当前选中的节点并取消选择状态
+    zTree.removeNode(selectNode);
+}
+
+// 选择根节点
+function selectRootNode () {
+    var rootId = 'standardTree_1';
+    var zTree = $.fn.zTree.getZTreeObj("standardTree");
+    var rootNode = zTree.getNodeByTId(rootId);
+    zTree.selectNode(rootNode);
+    $('.curSelectedNode').trigger('click');
 }
 
 initOrgRelTree();

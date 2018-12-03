@@ -2,6 +2,8 @@ package cn.ffcs.uoo.core.region.controller;
 
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,14 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.region.consts.DeleteConsts;
 import cn.ffcs.uoo.core.region.entity.TbAreaCode;
+import cn.ffcs.uoo.core.region.entity.TbCommonRegion;
 import cn.ffcs.uoo.core.region.service.ITbAreaCodeService;
 import cn.ffcs.uoo.core.region.service.ITbCommonRegionService;
+import cn.ffcs.uoo.core.region.vo.AreaCodeVO;
 import cn.ffcs.uoo.core.region.vo.ResponseResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -64,15 +67,23 @@ public class TbAreaCodeController extends BaseController {
         @ApiImplicitParam(name = "pageSize", value = "每页的大小", dataType = "Integer",paramType="path",defaultValue = "12")
     })
     @UooLog(value = "区号列表", key = "listAreaCode")
-    @GetMapping("listAreaCode/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listAreaCode(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize) {
+    @GetMapping("listAreaCode")
+    public ResponseResult listAreaCode(String keyWord, Integer pageNo, Integer pageSize) {
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
-        @SuppressWarnings("unchecked")
-        Wrapper<TbAreaCode> wrapper = Condition.create().eq("STATUS_CD",DeleteConsts.VALID).orderBy("UPDATE_DATE", false);
-        Page<TbAreaCode> page = areaCodeService.selectPage(new Page<TbAreaCode>(pageNo, pageSize), wrapper);
-       //  = areaCodeService.selectPage();
-        ResponseResult result = ResponseResult.createSuccessResult(page.getRecords(), "", page);
+        HashMap<String,Object> map=new HashMap<>();
+        if(keyWord!=null&&keyWord.trim().length()>0){
+            map.put("keyWord", "%"+keyWord+"%");
+        }
+        Long countListAreaCode = areaCodeService.countListAreaCode(map);
+        map.put("from", (pageNo-1)*pageSize);
+        map.put("end", pageNo * pageSize);
+        areaCodeService.selectListAreaCode(map);
+        List<AreaCodeVO> page = areaCodeService.selectListAreaCode(map);
+        ResponseResult result = ResponseResult.createSuccessResult(page, "");
+        result.setTotalRecords(countListAreaCode);
+        result.setPageNo(pageNo);
+        result.setPageSize(pageSize);
         return result;
     }
     
@@ -83,17 +94,6 @@ public class TbAreaCodeController extends BaseController {
     @PostMapping("addAreaCode")
     @Transactional
     public ResponseResult addAreaCode(@RequestBody TbAreaCode areaCode) {
-        //  数据校验  获取操作者
-        //查询公共管理区域是否存在
-        if(areaCode.getCommonRegionId()==null){
-            return ResponseResult.createErrorResult("请选择公共管理区域");
-        }
-        
-        Long regionId = areaCode.getCommonRegionId();
-        if(regionService.selectById(regionId)==null){
-            return ResponseResult.createErrorResult("公共管理区域不存在");
-        }
-        
         areaCode.setCreateDate(new Date());
         areaCode.setUpdateDate(new Date());
         areaCode.setStatusDate(new Date());
@@ -114,7 +114,7 @@ public class TbAreaCodeController extends BaseController {
             return ResponseResult.createErrorResult("修改数据异常");
         }
         
-        //查询公共管理区域是否存在
+        /*//查询公共管理区域是否存在
         if(areaCode.getCommonRegionId()==null){
             return ResponseResult.createErrorResult("请选择公共管理区域");
         }
@@ -122,7 +122,7 @@ public class TbAreaCodeController extends BaseController {
         Long regionId = areaCode.getCommonRegionId();
         if(regionService.selectById(regionId)==null){
             return ResponseResult.createErrorResult("公共管理区域不存在");
-        }
+        }*/
         areaCode.setUpdateDate(new Date());
         //areaCode.setStatusDate(new Date());
         areaCodeService.updateById(areaCode);
@@ -138,6 +138,12 @@ public class TbAreaCodeController extends BaseController {
     public ResponseResult deleteAreaCode(@RequestBody TbAreaCode areaCode) {
         if(areaCode==null||areaCode.getAreaCodeId()==null){
             return ResponseResult.createErrorResult("不能删除空数据");
+        }
+        Wrapper<TbCommonRegion> wrapper = Condition.create().eq("STATUS_CD", DeleteConsts.VALID).eq("AREA_CODE_ID", areaCode.getAreaCodeId());
+        //查看是否被commonregion依赖
+        List<TbCommonRegion> selectList = regionService.selectList(wrapper );
+        if(selectList!=null&&!selectList.isEmpty()){
+            return ResponseResult.createErrorResult("区号信息被电信管理区域依赖，不能删除");
         }
         TbAreaCode ac=new TbAreaCode();
         ac.setAreaCodeId(areaCode.getAreaCodeId());

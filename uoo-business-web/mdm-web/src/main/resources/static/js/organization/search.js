@@ -1,11 +1,7 @@
+var orgId = getQueryString('id');
+var orgName = getQueryString('name');
+var engine, template, empty, selectNode;
 
-  var orgId = getQueryString('id');
-  var orgName = getQueryString('name');
-  var engine, remoteHost, template, empty, selectNode;
-
-  $.support.cors = true;
-
-  remoteHost = 'http://134.96.253.221:11100';
   template = Handlebars.compile($("#result-template").html());
   empty = Handlebars.compile($("#empty-template").html());
 
@@ -16,7 +12,7 @@
     dupDetector: function(a, b) { return a.id_str === b.id_str; },
     // prefetch: remoteHost + '/demo/prefetch',
     remote: {
-      url: remoteHost + '/org/getOrgPage?orgRootId=1&search=%QUERY',
+      url: '/org/getOrgPage?orgRootId=1&search=%QUERY',
       wildcard: '%QUERY',
       filter: function (response) {
         // console.log('response', response)
@@ -72,15 +68,23 @@
   });
 
   $('#addBtn').on('click', function () {
-     var url = 'add.html?id=' + orgId  + '&name=' + orgName;;
+     var url = 'add.html?id=' + orgId  + '&name=' + encodeURI(orgName);
      $(this).attr('href', url);
   })
   
   function  addTreeNode () {
+      if (!selectNode) {
+          parent.layer.alert("请选择一个组织", {
+              skin: 'layui-layer-lan'
+              ,closeBtn: 0
+          });
+          return;
+      }
       var loading = parent.loading;
       loading.screenMaskEnable('container');
-      $http.post('http://134.96.253.221:11100/orgRel/addOrgRel', JSON.stringify({
+      $http.post('/orgRel/addOrgRel', JSON.stringify({
           orgRootId: '1',
+          orgTreeId: '1',
           supOrgId: orgId,
           orgId: selectNode.orgId
       }), function (data) {
@@ -97,25 +101,12 @@
   }
 
   function cancel () {
-    var url = "list.html?id=" + orgId;
+      var url = 'list.html?id=' + orgId + '&name=' + encodeURI(orgName);
     window.location.href = url;
   }
 
-  // 获取组织完整路径
-  function getOrgExtInfo () {
-      var pathArry = parent.nodeArr;
-      var pathStr = '';
-      for (var i = pathArry.length - 1; i >= 0; i--) {
-          if (i === 0) {
-              pathStr +=  '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a></span>';
-          } else {
-              pathStr += '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
-          }
-      }
-      $('.breadcrumb').html(pathStr);
-  }
-
   $('#orgName').html(orgName);
-  getOrgExtInfo();
+  // 显示组织路径
+  parent.getOrgExtInfo();
 
 

@@ -3,6 +3,7 @@ package cn.ffcs.uoo.web.maindata.organization.controller;
 
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgRelType;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
+import cn.ffcs.uoo.web.maindata.organization.dto.TreeNodeVo;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgRelTypeService;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -28,7 +29,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/orgRelType" ,produces = {"application/json;charset=UTF-8"})
-@Api(value = "/orgRel", description = "组织关系相关操作")
+@Api(value = "/orgRelType", description = "组织关系类型相关操作")
 public class OrgRelTypeController {
 
     @Resource
@@ -40,6 +41,14 @@ public class OrgRelTypeController {
     @RequestMapping(value = "/getOrgRelTypeList", method = RequestMethod.POST)
     public ResponseResult<List<OrgRelType>> getOrgRelTypeList(@RequestParam(value = "orgRelCode",required = false)String orgRelCode){
         return orgRefTypeService.getOrgRelTypeList(orgRelCode);
+    }
+
+    @ApiOperation(value = "查询组织关系类型树", notes = "查询组织关系类型树")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/getOrgRelTypeTree", method = RequestMethod.GET)
+    public ResponseResult<List<TreeNodeVo>> getOrgRelTypeTree(@RequestParam(value = "refCode",required = false)String refCode){
+        return orgRefTypeService.getOrgRelTypeTree(refCode);
     }
 
 }

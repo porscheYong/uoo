@@ -1,7 +1,7 @@
 var setting = {
     async: {
         enable: true,
-        url: "http://134.96.253.221:11100/orgRel/getOrgRelTree?orgRootId=1&orgTreeId=1",
+        url: "/orgRel/getOrgRelTree?orgRootId=1&orgTreeId=1",
         autoParam: ["id"],
         type: "get",
         dataFilter: filter
@@ -30,8 +30,8 @@ var setting = {
 var orgIdSelect,
     orgName,
     nodeName,
-    nodeArr,
-    addOrgList = [];
+    nodeArr;
+    //addOrgList = [];
 
 function onNodeClick(e,treeId, treeNode) {
     // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
@@ -62,7 +62,7 @@ function filter (treeId, parentNode, childNodes) {
 }
 
 function initOrgRelTree () {
-    $http.get('http://134.96.253.221:11100/orgRel/getOrgRelTree', {
+    $http.get('/orgRel/getOrgRelTree', {
         orgTreeId: '1',
         orgRootId: '1'
     }, function (data) {
@@ -110,29 +110,29 @@ function getOrgExtInfo() {
   for (var i = pathArry.length - 1; i >= 0; i--) {
       pathStr += pathArry[i] + '/'; 
   }
-  return pathStr;
+  return pathStr.toString().substring(0,pathStr.toString().length-1);;
 }
 
 function saveBtnClick(){
-    if(opBtn == 1){   //新增
-        var orgNa = [];     //存储已选组织ID
-        for(var i = 0;i < addOrgList.length; i++){
-            orgNa.push(addOrgList[i].orgId);
-        }
-        if(orgNa.indexOf(orgIdSelect) != -1){
-            alert("已选择该组织");
-        }else{
-            addOrgList.push({'orgId':orgIdSelect,'fullName':getOrgExtInfo()});
-            console.log(addOrgList);
-            orgTable.destroy();
-            initOrgTable(addOrgList);
-        }
-    }else if(opBtn == 0){  //编辑
+    // if(opBtn == 1){   //新增
+    //     var orgNa = [];     //存储已选组织ID
+    //     for(var i = 0;i < addOrgList.length; i++){
+    //         orgNa.push(addOrgList[i].orgId);
+    //     }
+    //     if(orgNa.indexOf(orgIdSelect) != -1){
+    //         alert("已选择该组织");
+    //     }else{
+    //         addOrgList.push({'orgId':orgIdSelect,'fullName':getOrgExtInfo()});
+    //         console.log(addOrgList);
+    //         orgTable.destroy();
+    //         initOrgTable(addOrgList);
+    //     }
+    // }else if(opBtn == 0){  //编辑
         var orgNa = [];
         for(var i = 0;i < editOrgList.length; i++){
             orgNa.push(editOrgList[i].orgId);
         }
-        if(orgNa.indexOf(orgIdSelect) != -1){
+        if(orgNa.indexOf(parseInt(orgIdSelect)) != -1){
             alert("已选择该组织");
         }else{
             addAcctOrg(orgIdSelect);
@@ -140,7 +140,7 @@ function saveBtnClick(){
             orgTable.destroy();
             initOrgTable(editOrgList); 
         }
-    }
+    //}
     $('#myModal').modal('hide');
 }
 

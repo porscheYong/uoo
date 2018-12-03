@@ -55,7 +55,7 @@ public class OrgController {
     @RequestMapping(value = "/getOrg", method = RequestMethod.GET)
     public ResponseResult getOrg(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                  @RequestParam(value = "orgId",required = false) String orgId) {
-        return orgService.getOrg(orgTreeId,orgId);
+        return orgService.getOrg(orgId,orgTreeId);
     }
 
 
@@ -91,6 +91,18 @@ public class OrgController {
                                                                    @RequestParam(value = "orgRootId",required = false)String orgRootId ,
                                                                    @RequestParam(value = "orgId",required = false) String orgId){
         return orgService.getOrgExtByOrgId(orgTreeId,orgRootId,orgId);
+    }
+
+
+    @ApiOperation(value = "组织删除", notes = "组织删除")
+    @ApiImplicitParams({
+
+    })
+    @RequestMapping(value = "/deleteOrg", method = RequestMethod.GET)
+    public ResponseResult<String> deleteOrg(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                            @RequestParam(value = "orgId",required = false)String orgId,
+                                            @RequestParam(value = "supOrgId",required = false)String supOrgId){
+        return orgService.deleteOrg(orgTreeId,orgId,supOrgId);
     }
 
 }

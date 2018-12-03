@@ -41,6 +41,9 @@
           overflow: hidden;
           text-overflow: ellipsis;
       }
+      #orgName {
+        cursor: pointer;
+      }
     </style>
   </head>
 
@@ -66,7 +69,7 @@
       <div class="board-title">
         <span class="name ft18">下级组织</span>
         <div class="fright">
-          <a class="button-add" id="searchBtn" href=""><span class="fa fa-plus-circle icon-add"></span>添加</a>
+          <a class="button-add" id="searchBtn" href="javascript:void(0);"><span class="fa fa-plus-circle icon-add"></span>添加</a>
         </div>
       </div>
       <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px; height: 450px;">

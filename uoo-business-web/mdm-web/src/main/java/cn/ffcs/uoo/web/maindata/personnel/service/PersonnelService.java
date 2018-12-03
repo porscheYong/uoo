@@ -40,7 +40,6 @@ public interface PersonnelService {
 
     @RequestMapping(value="/personnel/getFormPersonnel", method = RequestMethod.GET, headers={"Content-Type=application/json"})
     public Object getFormPersonnel(@RequestParam("personnelId") Long personnelId,
-                                    @RequestParam("orgRootId") Long orgRootId,
                                     @RequestParam("orgTreeId") Long orgTreeId,
                                     @RequestParam("orgId") Long orgId);
 
@@ -54,5 +53,11 @@ public interface PersonnelService {
     public Object upPersonnel(@RequestBody PersonnelVo personnelVo);
 
     @RequestMapping(value="/personnel/getPsnBasicInfo", method = RequestMethod.GET, headers={"Content-Type=application/json"})
-    public Object getPsnBasicInfo(@RequestParam("keyWord") String keyWord, @RequestParam("pageNo") int pageNo, @RequestParam("pageSize") int pageSize);
+    public Object getPsnBasicInfo(@RequestParam("keyWord") String keyWord, @RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
+
+    @RequestMapping(value = "/personnel/getIdCardInfo",method = RequestMethod.GET, headers={"Content-Type=application/json"})
+    public Object getIdCardInfo(@RequestParam("certNo") String certNo);
+
+    @RequestMapping(value="/personnel/getFreePsnInfo",method = RequestMethod.GET, headers={"Content-Type=application/json"})
+    public Object getFreePsnInfo(@RequestParam("keyWord") String keyWord, @RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
 }

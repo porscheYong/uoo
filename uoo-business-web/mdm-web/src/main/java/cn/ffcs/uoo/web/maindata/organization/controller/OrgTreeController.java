@@ -62,5 +62,13 @@ public class OrgTreeController {
     }
 
 
+    @ApiOperation(value = "查询组织树信息", notes = "查询组织树信息")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/getOrgTree",method = RequestMethod.GET)
+    public ResponseResult<OrgTree> getOrgTree(@RequestParam(value = "orgTreeId",required = false)String orgTreeId){
+        return orgTreeService.getOrgTree(orgTreeId);
+    }
+
 }
 

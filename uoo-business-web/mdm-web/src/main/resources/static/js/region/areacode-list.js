@@ -1,74 +1,83 @@
-function retrieveData(sSource,aoData,fnCallback) {
-/* var startDate = {
-   "name":"startDate",
-   "value":$("#from").val()
- }
- var endDate = {
-   "name":"endDate",
-   "value":$("#to").val()
- }
- //我这里按照请求数据的格式增加了自己的查询条件 请求数据格式固定为 name-value的格式 可以使用
- //alert打印查看 包含了基本的页码、页面数据元素、等信息以及新增的查询条件
- aoData.push(startDate);
- aoData.push(endDate);*/
+var i=0,showCheck=getQueryString('showCheck');
+var  dataTable,checkAreaCode;
+function retrieveData(data, callback, settings) {
  var pageSize=0,pageNo=0;
  
- //start=(currentPage-1)*pageSize
- for(var i=0;i<aoData.length;i++){
+/* for(var i=0;i<aoData.length;i++){
 	 if(aoData[i].name=='length'){
-		 pageSize= aoData[i].value;
 	 }
- }
- for(var i=0;i<aoData.length;i++){
+ }*/
+ pageSize= data.length;
+/* for(var i=0;i<aoData.length;i++){
 	 if(aoData[i].name=='start'){
-		 pageNo= aoData[i].value/pageSize+1;
 	 }
- }
+ }*/
+ pageNo= data.start/pageSize+1;
+ i=(pageNo-1)*pageSize;
  $.ajax({
      url : '/region/areaCode/listAreaCode',//这个就是请求地址对应sAjaxSource
-     data : {'pageNo':pageNo,'pageSize':pageSize},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+     data : {'pageNo':pageNo,'pageSize':pageSize,keyWord:$('#keyword').val()},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
      type : 'get',
      dataType : 'json',
-     async : false,
      success : function(result) {
-         fnCallback(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
+		var returnData = {};
+		if(result.state==1000){
+			returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
+	       	returnData.recordsTotal = result.totalRecords;//总记录数
+	       	returnData.recordsFiltered = result.totalRecords;//后台不实现过滤功能，每次查询均视作全部结果
+	       	returnData.data = result.data;
+	       	//调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+	       	//此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+	      	callback(returnData);
+		}else{
+			alert('查无数据');
+		}
      },
      error : function(msg) {
      }
  });
 }
- 
+function checkTableRow(obj){
+	if(showCheck=='1'){
+		$('#areaCodeTable tbody tr').each(function(){$(this).removeClass('selected')});
+		obj.toggleClass('selected');
+		var data=dataTable.rows('.selected').data();
+		checkAreaCode=(data[0]);
+	}
+}
+function searchAreaCode(){
+	dataTable.ajax.reload( function( json ) {
+	} , true);
+	
+}
 function loadAreaCode(){
-	var table = $("#areaCodeTable").DataTable({
-        'fnServerData': retrieveData, //执行函数
+	 dataTable = $("#areaCodeTable").DataTable({
+        'ajax': retrieveData, //执行函数
         'serverSide':true,
+        "processing": true,
         'searching': false,
-        'autoWidth': false,
+        'autoWidth': true,
         'ordering': true,
-        'initComplete': function (settings, json) {
+       /* 'initComplete': function (settings, json) {
             console.log(settings, json)
-        },
-        'destroy':true,
-        "scrollY": "375px",
+        },*/
+        //'destroy':true,
         'columns': [
             { 'data': "areaCodeId","title":"序号" , 'className': 'user-account','defaultContent':'',
-             
+            	'render':function(data, type, row, meta){
+            		i++;
+            		return i;
+            	}
             },
             { 'data': "areaCode","title":"区号" , 'className': 'user-account','defaultContent':'',
-            	'render':function(data, type, row, meta){
-            		return "<a href='javascript:void(0)' onclick=\"quickList('"+data+"')\">"+data+"</a>";
-            	}
-            
             },
             { 'data': "areaNbr",
               'title': '区号编码', 'className': 'user-account'
             	  ,'defaultContent':'',
-            	  
-              /*'className': 'row-sex',
-              // 'render': function (data) {
-              //   return data[0].orgTypeName
-              // } 
-*/            },
+            },
+			{
+            	'data':'regionNames','title':'关联电信区域','className': 'user-account','visible':showCheck!='1'
+			},
             /*{ 'data': "LOC_NAME", 'title': '区域名称', 'className': 'user-account' ,'defaultContent':'',
             	'render':function(data, type, row, meta){
             		return "<a href='javascript:void(0)' onclick=\"quickList('"+row.LOC_ID+"')\">"+data+"</a>";
@@ -78,14 +87,13 @@ function loadAreaCode(){
                  
             },
             { 'data': "LOC_ABBR", 'title': '区域简称', 'className': 'user-account'  ,'defaultContent':''},*/
-            { 'data': "COMMON_REGION_ID", 'title': '操作', 
+            { 'data': "areaCodeId", 'title': '操作', 
             'render': function (data, type, row, meta) {
-            	var html="<a href=\"javascript:void(0)\" onClick=\"parent.changeIframe('/inaction/region/polloc-edit.html?id="+row.LOC_ID+"')\">查看 </a>";
-            	html+="&nbsp;&nbsp;&nbsp;&nbsp;";
+            	var html="<a href=\"javascript:void(0)\" onClick=\"location.href=('/inaction/region/areacode-edit.html?id="+row.areaCodeId+"')\">> </a>";
             	//html+="<a class=\"glyphicon glyphicon-remove\"   href=\"javascript:void(0)\" onclick=\"deleteRegion('"+row.LOC_ID+"')\" style=\"vertical-align: top;\"></a>";
             	return html;
             		 //return '<a href="list.html?id='+ row.orgId +'" onclick="parent.openTreeById('+orgId+','+row.orgId+')">'+ row.orgName +'</a>'
-                }  , 'className': 'user-account'
+                }  , 'className': 'user-account','visible':showCheck!='1'
             },
              
         ],
@@ -112,6 +120,13 @@ function loadAreaCode(){
     });
 }
 loadAreaCode();
+$(document).ready(function(){
+	 $('#areaCodeTable tbody').on( 'click', 'tr', function () {
+		 
+		 checkTableRow($(this));
+	    });
+});
+
 function goEdit(){
 	var cid=$('#regionStrCurrent').attr('cid');
 	console.log('goto :'+cid);

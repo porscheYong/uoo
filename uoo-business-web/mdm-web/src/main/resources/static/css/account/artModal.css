@@ -1,8 +1,8 @@
 #myModal > .modal-dialog > .modal-content{
-    margin-top: 45px !important;
+    margin-top: 40px !important;
     margin-left:32% !important;
     width:300px;
-    height:450px;
+    height:440px;
 }
 
 #myModal > .modal-dialog > .modal-content #saveBtn{
@@ -17,7 +17,7 @@
     border-radius:4px;
     cursor:pointer;
     vertical-align:middle;
-    margin-left: 50px;
+    margin-left: 58px;
 }
 
 #myModal > .modal-dialog > .modal-content #cancelBtn{
@@ -82,6 +82,56 @@
 }
 
 #slaveOrgModal > .modal-dialog > .modal-content #selectTile{
+    font-size: 18px;
+    font-weight: bold; 
+	margin-left:20px;
+	margin-top:20px;
+}
+
+
+
+
+
+#roleModal > .modal-dialog > .modal-content{
+    margin-top: 100px !important;
+    margin-left:22% !important;
+    width:450px;
+    height:250px;
+}
+
+#roleModal > .modal-dialog > .modal-content #roleBtn{
+    display:inline-block;
+    margin:0 4px;
+    width:82px;
+    height:40px;
+    background:#00A4FF;
+    color:#fff;
+    border:0;
+    padding:0 8px;
+    border-radius:4px;
+    cursor:pointer;
+    vertical-align:middle;
+    margin-left: 134px;
+	margin-top:48px;
+}
+
+#roleModal > .modal-dialog > .modal-content #cancelBtn{
+    display:inline-block;
+    margin:0 4px;
+    width:82px;
+    height:40px;
+    background:#959da9;
+    color:#fff;
+    border:0;
+    padding:0 8px;
+    border-radius:4px;
+    cursor:pointer;
+    vertical-align:middle;
+    margin-left: 10px;
+	margin-top:48px;
+}
+
+#roleModal > .modal-dialog > .modal-content #selectTile{
     font-size: 18px;
     font-weight: bold; 
 	margin-left:20px;

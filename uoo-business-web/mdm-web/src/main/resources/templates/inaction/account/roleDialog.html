@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>组织类别</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- ztree -->
+    <link href="/vendors/zTree/zTreeStyle.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="/js/core/html5shiv.js"></script>
+    <script src="/js/core/respond.js"></script>
+    <script src="/js/core/excanvas.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      div.tag {
+          border-radius: 2px;
+          display: inline-block;
+          /*display: block;
+          float: left;*/
+          padding: 5px 9px;
+          background: #00a4ff;
+          text-decoration: none;
+          line-height: 1;
+          color: #fff;
+          margin-bottom: 5px;
+      }
+      div.tag a {
+          text-decoration: none;
+          color: #fff;    
+      }
+    </style>
+  </head>
+
+  <body style="background: #fff;">
+    <div class="container">
+      <!-- Modal -->
+          <div>  <!-- style="padding: 20px;" -->
+            <div style="float: left; width: 50%;">
+              <!-- <div style="margin-bottom: 10px;">
+                <span class="ui-input ui-search-input">
+                  <input type="search" placeholder="搜索组织类别">
+                  <a href="javascript:" class="ui-icon-search">搜索</a>
+                </span>
+              </div> -->
+              <div style="width: 90%;height: 290px;display: inline-block;overflow: auto;border-right: 3px solid #ecedef;">
+                  <ul id="roleTree" class="ztree" style="width:50%;margin-left:20px;margin-top:20px;"></ul>
+              </div>
+            </div>
+            <div style="float: left; width: 50%;">
+              <h3 style="padding: 30px 0; color: #232c45; font-weight: 600;">选择</h3>
+              <div style="display: inline-block;" id="tags_2">
+
+              </div>
+            </div>
+          </div>
+
+    </div>
+
+    <!-- jQuery -->
+    <script src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- loading -->
+    <script type="text/javascript" src="/js/core/spin.min.js"></script>
+    <script type="text/javascript" src="/js/core/loading.js"></script>
+    <!-- ztree -->
+    <script type="text/javascript" src="/vendors/zTree/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="/vendors/zTree/jquery.ztree.excheck.js"></script>
+    <!-- init -->
+    <script type="text/javascript" src="/js/account/init.js"></script>
+    <script type="text/javascript" src="/js/account/roleDialog.js"></script>
+  
+  </body>
+</html>

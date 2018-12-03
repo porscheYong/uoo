@@ -24,6 +24,14 @@ public interface OrgTypeService extends IService<OrgType> {
     public List<OrgType> getOrgTypeByOrgId(Long orgId);
 
     /**
+     * 查询组织类别列表
+     * @param orgTreeId
+     * @return
+     */
+    public List<OrgType> getOrgTypeByOrgTreeId(Long orgTreeId);
+
+
+    /**
      * 查询组织类别树
      * @param orgTypeId
      * @param orgTypeCode

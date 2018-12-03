@@ -14,12 +14,15 @@
     <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- jquery datatable -->
     <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+    <!-- jquery tagsinput -->
+    <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
     <!-- lulu ui -->
     <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
     <link href="/css/custom.css" rel="stylesheet">
+    <link href="/vendors/typeahead/typeahead.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="../../../static/js/core/html5shiv.js"></script>
@@ -69,6 +72,9 @@
             margin-bottom: 25px;
             margin-right: 10px;
         }
+        .col-sm-8{
+        width: 80% !important;
+        }
     </style>
   </head>
 
@@ -82,10 +88,29 @@
         <div class="board-title">
             <span class="name ft18">组织用户</span>
             <div class="fright">
-                <a class="button-add" id="addBtn" href="add.html"><span class="fa fa-plus-circle icon-add"></span>添加</a>
+                <a class="button-add" id="addBtn"><span class="fa fa-plus-circle icon-add"></span>添加</a>
             </div>
         </div>
-      <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;">
+
+         <!-- 新增的搜索部分 -->
+      <div class="row pos-relative" style="margin-top: 7px;margin-left:5px;">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="form-item" style="width: 100%">
+            <div class="typeahead col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
+              <div>
+                <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
+                <input class="ui-input typeahead-input tt-input" id="acctName" type="text" name="q" placeholder="请输入关键词进行搜索" autocomplete="off" spellcheck="false" dir="auto">
+                <img class="typeahead-spinner" src="img/spinner.gif" style="display: none;">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="user-table typeahead-menu">
+            <table id="userTable" class="stripe" width="100%"></table>
+        </div>
+      </div>
+
+      <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
           <table id="mainTable" class="stripe" width="100%"></table>
       </div>
     </div>
@@ -94,12 +119,19 @@
     <script src="/js/core/jquery.js"></script>
     <!-- Bootstrap -->
     <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- handlebars -->
+    <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
+    <!-- typeahead -->
+    <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
+    <!-- jquery tagsinput -->
+    <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- init -->
     <script src="/js/account/init.js"></script>
     <!-- jquery datatable -->
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
-    <!-- <script type="text/javascript" src="/js/account/mainData.js"></script> -->
+    <!-- account -->
     <script type="text/javascript" src="/js/account/mainList.js"></script>
+    <script type="text/javascript" src="/js/account/acctSearch.js"></script>
  
 
     <script>

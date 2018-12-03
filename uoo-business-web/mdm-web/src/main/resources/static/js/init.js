@@ -21,17 +21,53 @@ var $http = {
       else {
         switch (state) {
           case 1100:
-            parent.layer.alert(message, {
-                skin: 'layui-layer-lan'
-                ,closeBtn: 0
-            });
-            break
+            if (parent.layer) {
+                parent.layer.confirm(message, {
+                    icon: 0,
+                    title: '提示',
+                    btn: ['确定']
+                }, function(index, layero){
+                    parent.layer.close(index);
+                }, function(){
+
+                });
+            }
+            break;
+          case 1200:
+            if (parent.loading)
+              parent.loading.screenMaskDisable('container');
+            if (parent.layer) {
+                parent.layer.confirm(message, {
+                    icon: 0,
+                    title: '提示',
+                    btn: ['确定']
+                }, function(index, layero){
+                    parent.layer.close(index);
+                }, function(){
+
+                });
+            }
+            break;
+            default:
+                if (parent.layer) {
+                    parent.layer.confirm(message, {
+                        icon: 0,
+                        title: '提示',
+                        btn: ['确定']
+                    }, function(index, layero){
+                        parent.layer.close(index);
+                    }, function(){
+
+                    });
+                }
+            break;
         }
         var httpStatus = response.status
         errorCallback(httpStatus, state, message)
       }
     }
     var httpError = function (response) {
+      parent.loading.screenMaskDisable('container');
       var httpStatus = response.status
       var state = 0
       var message = 'HTTP请求错误'

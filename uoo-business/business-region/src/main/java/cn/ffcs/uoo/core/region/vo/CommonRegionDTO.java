@@ -75,6 +75,14 @@ public class CommonRegionDTO   {
     
     private List<Long> polLocIds;
     private long operateUser;
+    private Long areaCodeId;
+    public Long getAreaCodeId() {
+        return areaCodeId;
+    }
+
+    public void setAreaCodeId(Long areaCodeId) {
+        this.areaCodeId = areaCodeId;
+    }
     public long getOperateUser() {
         return operateUser;
     }
@@ -199,6 +207,7 @@ public class CommonRegionDTO   {
         reg.setRegionSort(this.regionSort);
         reg.setProvinceNbr(this.provinceNbr);
         reg.setCityFlag(this.cityFlag);
+        reg.setAreaCodeId(this.areaCodeId);
         return reg;
     }
       

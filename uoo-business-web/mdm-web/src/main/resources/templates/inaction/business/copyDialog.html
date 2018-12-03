@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>拷贝组织节点</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- ztree -->
+    <link href="/vendors/zTree/zTreeStyle.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="/js/core/html5shiv.js"></script>
+    <script src="/js/core/respond.js"></script>
+    <script src="/js/core/excanvas.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      div.tree-list label {
+        line-height: 14px;
+        margin: 10px 20px 0px 0px;
+        vertical-align: middle;
+      }
+      div.tree-list label a {
+        padding: 5px 10px;
+        display: inline-block;
+        color: #5f6c7e;
+      }
+      div.tree-list label a:hover {
+        color: #00a4ff;
+        background: rgba(0,168,255,0.15);
+      }
+      div.tree-list label.active {
+        color: #00a4ff;
+        background: rgba(0,168,255,0.15);
+      }
+      div.tree-list label.active a {
+        color: #00a4ff;
+      }
+    </style>
+  </head>
+
+  <body style="background: #fff;">
+    <div class="container">
+      <!-- Modal -->
+          <div style="padding: 0 20px;">
+            <div style="float: left; width: 50%;">
+              <h3 style="padding: 30px 0 10px; color: #232c45; font-weight: 600;">选择组织树</h3>
+              <div class="tree-list" style="display: inline-block;" id="treeList" style="padding: 5px;">
+
+              </div>
+            </div>
+            <div style="float: left; width: 50%;">
+              <!--<div style="width: 90%;height: 290px;display: inline-block;overflow: auto;">-->
+              <h3 style="padding: 30px 0 10px; color: #232c45; font-weight: 600;">选择拷贝节点</h3>
+                  <ul id="standardTree" class="ztree"></ul>
+              <!--</div>-->
+            </div>
+          </div>
+
+    </div>
+
+    <!-- jQuery -->
+    <script src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- loading -->
+    <script type="text/javascript" src="/js/core/spin.min.js"></script>
+    <script type="text/javascript" src="/js/core/loading.js"></script>
+    <!-- ztree -->
+    <script type="text/javascript" src="/vendors/zTree/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="/vendors/zTree/jquery.ztree.excheck.js"></script>
+    <!-- init -->
+    <script type="text/javascript" src="/js/init.js"></script>
+    <script type="text/javascript" src="/js/business/copyDialog.js"></script>
+  
+  </body>
+</html>

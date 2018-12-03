@@ -43,7 +43,7 @@
           overflow: hidden;
           text-overflow: ellipsis;
       }
-      #locId, #orgTypeList, #positionList, #postList {
+      #locationList, #orgTypeList, #positionList, #postList {
         opacity: 0;
         filter: alpha(opacity=0);
         position: absolute;
@@ -53,6 +53,9 @@
 
   <body style="background: #fff;">
     <div>
+      <div>
+        <a class="BoardTitle Back" href="javascript:history.go(-1);"  >返回</a>
+      </div>
         <div class="board-title">
             <span class="name ft18 orgName"></span
             ><div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;"></div>
@@ -117,8 +120,8 @@
 
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">划小组织编码</label>
-                      <input id="" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
+                      <label for="orgMartCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">划小组织编码</label>
+                      <input id="orgMartCode" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
                     </div>
                   </div>
                 </div>
@@ -141,8 +144,8 @@
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="idCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">联系人</label>
-                      <input id="idCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" readonly>
+                      <label for="psonOrgVoList" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">联系人</label>
+                      <input id="psonOrgVoList" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" readonly onclick="openContactDialog()">
                     </div>
                   </div>
 
@@ -170,7 +173,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
@@ -201,8 +203,8 @@
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="locId" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">行政管理区域</label>
-                      <input id="locId" class="ui-input col-md-10 col-sm-10 col-xs-12" style="width: 84%" onclick="openLocationDialog()" required readonly>
+                      <label for="locationList" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">行政管理区域</label>
+                      <input id="locationList" class="ui-input col-md-10 col-sm-10 col-xs-12" style="width: 84%" onclick="openLocationDialog()" required readonly>
                     </div>
                   </div>
                 </div>
@@ -266,6 +268,7 @@
               <div class="row" style="margin-bottom: 10px;">
                 <div style="margin-left: 17%;">
                     <button id="saveBtn" class="ui-button ui-button-primary" onclick="updateOrg()">保存</button>
+                    <button id="deleteBtn" class="ui-button ui-button-warning" style="margin-left: 10px;" onclick="deleteOrg()">删除</button>
                     <button id="cancelBtn" class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
                 </div>
               </div>

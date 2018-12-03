@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.web.maindata.personnel.service.fallback;
 
 
+import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.personnel.service.PersonnelService;
 import cn.ffcs.uoo.web.maindata.personnel.vo.EditFormPersonnelVo;
 import cn.ffcs.uoo.web.maindata.personnel.vo.PersonnelVo;
@@ -35,27 +36,58 @@ public class PersonnelServiceHystrix implements PersonnelService {
 
 
     @Override
-    public Object getFormPersonnel(Long personnelId, Long orgTreeId, Long orgRootId, Long orgId) {
-        return null;
+    public Object getFormPersonnel(Long personnelId, Long orgTreeId, Long orgId) {
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 
     @Override
     public Object savePersonnel(EditFormPersonnelVo editFormPersonnelVo) {
-        return null;
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 
     @Override
     public Object deletePersonnel(Long personnelId) {
-        return null;
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 
     @Override
     public Object upPersonnel(PersonnelVo personnelVo) {
-        return null;
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 
     @Override
-    public Object getPsnBasicInfo(String keyWord, int pageNo, int pageSize) {
-        return null;
+    public Object getPsnBasicInfo(String keyWord, Integer pageNo, Integer pageSize) {
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
+
+    @Override
+    public Object getIdCardInfo(String certNo) {
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
+
+    @Override
+    public Object getFreePsnInfo(String keyWord, Integer pageNo, Integer pageSize) {
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 }

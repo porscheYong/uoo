@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.ffcs.uoo.web.maindata.region.dto.TbAreaCode;
 import cn.ffcs.uoo.web.maindata.region.service.AreaCodeService;
-import cn.ffcs.uoo.web.maindata.region.vo.JquerDataTableResult;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -50,23 +49,12 @@ public class TbAreaCodeController  {
     })
     //@UooLog(value = "区号列表", key = "listAreaCode")
     @GetMapping("listAreaCode")
-    public Object listAreaCode(HttpServletRequest request) {
-        String pageNoStr,pageSizeStr;
-        pageNoStr = request.getParameter("pageNo");
-        pageSizeStr = request.getParameter("pageSize");
-        Integer pageNo=null,pageSize=null;
-        try {
-            pageNo=Integer.parseInt(pageNoStr);
-        } catch (Exception e) {
-        }
-        try {
-            pageSize=Integer.parseInt(pageSizeStr);
-        } catch (Exception e) {
-        }
+    public ResponseResult listAreaCode(String keyWord, Integer pageNo, Integer pageSize) {
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
-        ResponseResult listAreaCode = areaCodeService.listAreaCode(pageNo, pageSize);
-        return new JquerDataTableResult(listAreaCode);
+        pageNo = pageNo==null?0:pageNo;
+        pageSize = pageSize==null?20:pageSize;
+        return areaCodeService.listAreaCode(keyWord,pageNo, pageSize);
     }
     
     @ApiOperation(value = "新增区号", notes = "新增区号")

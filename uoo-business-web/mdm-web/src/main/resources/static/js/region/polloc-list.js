@@ -1,8 +1,14 @@
-
+function gotoAdd(){
+	parent.changeIframe('/inaction/region/polloc-add.html?upLocId='+parent.getCurrentSelectedNode()[0].id+'&upLocName='+parent.getCurrentSelectedNode()[0].name)
+}
 function goEdit(){
 	var cid=$('#regionStrCurrent').attr('cid');
-	console.log('goto :'+cid);
-	parent.changeIframe('/inaction/region/polloc-edit.html?id='+cid);
+	var upnode=parent.getCurrentSelectedNode()[0].getParentNode();
+	var pid=0,pname="最上级";
+	if(upnode!=null){
+		pid=upnode.id;pname=upnode.name;
+	}
+	parent.changeIframe('/inaction/region/polloc-edit.html?id='+cid+'&parentLocId='+pid+'&parentLocName='+pname);
 }
 function getRegionList (id) {
 	//初始化页面显示
@@ -43,6 +49,7 @@ function quickList(id){
 	parent.changeIframe('/inaction/region/polloc-list.html?id=' + qnode.id);
 }
 function initTable (results) {
+	var i=0;
     var table = $("#regionTable").DataTable({
         'data': results,
         'searching': false,
@@ -56,7 +63,7 @@ function initTable (results) {
         'columns': [
             { 'data': "LOC_ID","title":"序号" , 'className': 'user-account','defaultContent':'',
             	'render':function(data, type, row, meta){
-            		return "<a href='javascript:void(0)' onclick=\"quickList('"+data+"')\">"+data+"</a>";
+            		return ++i;
             	}
              
             },
@@ -91,7 +98,7 @@ function initTable (results) {
             { 'data': "LOC_ABBR", 'title': '区域简称', 'className': 'user-account'  ,'defaultContent':''},
             { 'data': "COMMON_REGION_ID", 'title': '操作', 
             'render': function (data, type, row, meta) {
-            	var html="<a href=\"javascript:void(0)\" onClick=\"parent.changeIframe('/inaction/region/polloc-edit.html?id="+row.LOC_ID+"')\">查看 </a>";
+            	var html="<a href=\"javascript:void(0)\" onClick=\"parent.changeIframe('/inaction/region/polloc-edit.html?id="+row.LOC_ID+"&parentLocId="+parent.getCurrentSelectedNode()[0].id+"&parentLocName="+parent.getCurrentSelectedNode()[0].name+"')\">> </a>";
             	html+="&nbsp;&nbsp;&nbsp;&nbsp;";
             	//html+="<a class=\"glyphicon glyphicon-remove\"   href=\"javascript:void(0)\" onclick=\"deleteRegion('"+row.LOC_ID+"')\" style=\"vertical-align: top;\"></a>";
             	return html;

@@ -103,11 +103,37 @@ public class OrgTree extends Model<OrgTree> {
     private List<String> userTypeList;
 
     /**
+     * 用工性质
+     */
+    @TableField(exist=false)
+    private String userTypeId;
+    /**
      * 现有组织树
      */
     @TableField(exist=false)
     private List<TreeNodeVo> treeNodeList;
+    /**
+     * 目标组织树标识
+     */
+    @TableField(exist=false)
+    private String tarOrgTreeId;
 
+
+    public String getUserTypeId() {
+        return userTypeId;
+    }
+
+    public void setUserTypeId(String userTypeId) {
+        this.userTypeId = userTypeId;
+    }
+
+    public String getTarOrgTreeId() {
+        return tarOrgTreeId;
+    }
+
+    public void setTarOrgTreeId(String tarOrgTreeId) {
+        this.tarOrgTreeId = tarOrgTreeId;
+    }
 
     public List<TreeNodeVo> getTreeNodeList() {
         return treeNodeList;

@@ -222,7 +222,7 @@ Class.pt.vessel = function(conType, callback){
   var that = this, times = that.index, config = that.config;
   var zIndex = config.zIndex + times, titype = typeof config.title === 'object';
   var ismax = config.maxmin && (config.type === 1 || config.type === 2);
-  var titleHTML = (config.title ? '<div class="layui-layer-title" style="'+ (titype ? config.title[1] : '') +'">' 
+  var titleHTML = (config.title ? (config.icon == 0? '<div class="message-title">': '<div class="layui-layer-title" style="'+ (titype ? config.title[1] : '') +'">')
     + (titype ? config.title[0] : config.title) 
   + '</div>' : '');
   
@@ -234,8 +234,8 @@ Class.pt.vessel = function(conType, callback){
     //主体
     '<div class="'+ doms[0] + (' layui-layer-'+ready.type[config.type]) + (((config.type == 0 || config.type == 2) && !config.shade) ? ' layui-layer-border' : '') + ' ' + (config.skin||'') +'" id="'+ doms[0] + times +'" type="'+ ready.type[config.type] +'" times="'+ times +'" showtime="'+ config.time +'" conType="'+ (conType ? 'object' : 'string') +'" style="z-index: '+ zIndex +'; width:'+ config.area[0] + ';height:' + config.area[1] + (config.fixed ? '' : ';position:absolute;') +'">'
       + (conType && config.type != 2 ? '' : titleHTML)
-      + '<div id="'+ (config.id||'') +'" class="layui-layer-content'+ ((config.type == 0 && config.icon !== -1) ? ' layui-layer-padding' :'') + (config.type == 3 ? ' layui-layer-loading'+config.icon : '') +'">'
-        + (config.type == 0 && config.icon !== -1 ? '<i class="layui-layer-ico layui-layer-ico'+ config.icon +'"></i>' : '')
+      + '<div id="'+ (config.id||'') +'" class="' + ((config.type == 0 && config.icon == 0) ? 'message-content': 'layui-layer-content'+ ((config.type == 0 && config.icon !== -1) ? ' layui-layer-padding' :'') + (config.type == 3 ? ' layui-layer-loading'+config.icon : '')) +'">'
+        + (config.type == 0 && config.icon !== -1 ? '<i class="' + ((config.type == 0 && config.icon == 0) ? 'fa fa-exclamation-circle': 'layui-layer-ico layui-layer-ico'+ config.icon) +'"></i>' : '')
         + (config.type == 1 && conType ? '' : (config.content||''))
       + '</div>'
       + '<span class="layui-layer-setwin">'+ function(){
@@ -249,7 +249,7 @@ Class.pt.vessel = function(conType, callback){
         for(var i = 0, len = config.btn.length; i < len; i++){
           button += '<a class="'+ doms[6] +''+ i +' ui-button">'+ config.btn[i] +'</a>'
         }
-        return '<div class="'+ doms[6] +' layui-layer-btn-'+ (config.btnAlign||'') +'">'+ button +'</div>'
+        return config.icon == 0? '<div class="message-btns">'+ button +'</div>': '<div class="'+ doms[6] +' layui-layer-btn-'+ (config.btnAlign||'') +'">'+ button +'</div>'
       }() : '')
       + (config.resize ? '<span class="layui-layer-resize"></span>' : '')
     + '</div>'
@@ -636,7 +636,7 @@ Class.pt.callback = function(){
   layer.ie == 6 && that.IE6(layero);
   
   //按钮
-  layero.find('.'+ doms[6]).children('a').on('click', function(){
+  layero.find('.'+ (config.icon === 0? 'message-btns': doms[6])).children('a').on('click', function(){
     var index = $(this).index();
     if(index === 0){
       if(config.yes){

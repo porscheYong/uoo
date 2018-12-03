@@ -1,4 +1,4 @@
-var orgFrame = parent.window['standardOrg'];
+var orgFrame = parent.window['standardOrg'] || parent.window['business'];
 var positionList = orgFrame.positionList;
 var checkNode = []; //选中类别显示label标签
 
@@ -10,10 +10,12 @@ function onOrgPositionCheck (e, treeId, treeNode) {
     var zTree = $.fn.zTree.getZTreeObj("orgPositionTree");
     var node = zTree.getNodeByTId(treeNode.tId);
     if (checkNode.indexOf(node) === -1) {
-        checkNode = [];
         checkNode.push(node);
     } else {
-        checkNode = [];
+        var idx = checkNode.findIndex((v) => {
+            return v.tId == node.tId;
+        });
+        checkNode.splice(idx, 1);
     }
 }
 
@@ -37,8 +39,8 @@ function getOrgPositionTree () {
         },
         check: {
             enable: true,
-            chkStyle: 'radio',
-            radioType: 'all'
+            chkStyle: 'checkbox',
+            chkboxType: { "Y": "", "N": "" }
         }
     };
     $http.get('http://134.96.253.221:11600/tbPosition/getPositionTree', {}, function (data) {

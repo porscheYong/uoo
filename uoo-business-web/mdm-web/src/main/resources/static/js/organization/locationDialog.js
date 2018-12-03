@@ -1,5 +1,5 @@
 var orgId = getQueryString('id');
-var orgFrame = parent.window['standardOrg'];
+var orgFrame = parent.window['standardOrg'] || parent.window['business'];
 var locationList = orgFrame.locationList;
 var checkNode = []; //选中区域
 
@@ -54,7 +54,7 @@ function onlocationCheck (e, treeId, treeNode) {
 function autoCheck () {
     var zTree = $.fn.zTree.getZTreeObj("locationTree");
     for (var i = 0; i < locationList.length; i++) {
-        var id = locationList[i].id;
+        var id = locationList[i].id || locationList[i].locId;
         var node = zTree.getNodeByTId("orgPostTree_" + id);
         zTree.checkNode(node, true);
         zTree.expandNode(node, true, true, true);

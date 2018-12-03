@@ -27,10 +27,14 @@ public class UserController {
     private UserService userService;
 
     @ApiOperation(value = "选择用户信息", notes = "选择用户信息")
-    @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long",paramType="path")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long",paramType="path"),
+            @ApiImplicitParam(name = "pageNo", value = "当前页数", required = true, dataType = "Integer",paramType="path"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path")
+    })
     @RequestMapping(value = "/getUserList", method = RequestMethod.GET)
-    public Object getUserList(Long personnelId){
-        return userService.getUserList(personnelId);
+    public Object getUserList(Long personnelId, Integer pageNo, Integer pageSize){
+        return userService.getUserList(personnelId , pageNo, pageSize);
     }
 
     @ApiOperation(value = "用户信息", notes = "用户信息")

@@ -64,12 +64,6 @@ public class TbCommonRegionController {
         return regionService.getCommonRegion(id);
     }
     
-    @ApiOperation(value = "公共管理区域列表", notes = "公共管理区域列表")
-    //@UooLog(value = "公共管理区域列表", key = "listAllCommonRegion")
-    @GetMapping("listAllCommonRegion")
-    public ResponseResult listAllCommonRegion() {
-        return regionService.listAllCommonRegion();
-    }
 
     @ApiOperation(value = "新增公共管理区域", notes = "新增公共管理区域")
     @ApiImplicitParams({
