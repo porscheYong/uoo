@@ -138,7 +138,7 @@
     <select id="selectPerOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
 
         <choose>
-        <when test="psonOrgVo.isSearchlower='0'">
+        <when test='psonOrgVo.isSearchlower=="0"'>
             SELECT * FROM (
             WITH ORGFULL AS (SELECT distinct FULL_NAME,
             ORG_NAME,
@@ -398,7 +398,7 @@
     <select id="selectUserOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
 
         <choose>
-            <when test="psonOrgVo.isSearchlower=='0'">
+            <when test='psonOrgVo.isSearchlower=="0"'>
                 SELECT *
                 FROM (WITH ORGFULL AS (SELECT distinct FULL_NAME,
                 ORG_NAME,
