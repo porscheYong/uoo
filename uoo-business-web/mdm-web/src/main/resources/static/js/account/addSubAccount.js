@@ -261,6 +261,10 @@ function addTbSlaveAcct(){      //从账号新增
     var certType = $('#extCerTel').get(0).selectedIndex + 1;
     var tbAcctExt = hasExtInfo(certType);
 
+    if(roleList.length == 0){
+        roleList = userRoleList;
+    }
+
     var editFormSlaveAcctVo = {
         "acctHostId": acctHostId,
         "disableDate": $('#invalidDate').val(),
@@ -268,12 +272,7 @@ function addTbSlaveAcct(){      //从账号新增
         "password": $('#defaultPswTel').val(),
         "personnelId": parseInt(personnelId),
         "resourceObjId": resourceObjId,
-        "rolesList": [
-          {
-            "roleId": parseInt($('#roleTel').val()),
-            "roleName": ""
-          }
-        ],
+        "rolesList": roleList,
         "slaveAcct": $('#acctTel').val(),
         "slaveAcctType": slaveAcctType.toString(),
         "statusCd": subStatusCd.toString(),
@@ -288,10 +287,13 @@ function addTbSlaveAcct(){      //从账号新增
         contentType: "application/json",
         data: JSON.stringify(editFormSlaveAcctVo),
         dataType:"JSON",
-        success: function (data) { //返回json结果
-          console.log(data);
-          alert('新增成功');
-          submitToOther();
+        success: function (state) { //返回json结果
+          if(state.state === 1000){
+            alert(state.message);
+            submitToOther();
+          }else{
+            alert(state.message);
+          }
         },
         error:function(err){
           console.log(err);
@@ -307,6 +309,10 @@ function updateTbSlaveAcct(){       //更新从账号信息
     var certType = $('#extCerTel').get(0).selectedIndex + 1;
     var tbAcctExt = hasExtInfo(certType);
 
+    if(roleList.length == 0){
+        roleList = userRoleList;
+    }
+
     var editFormSlaveAcctVo = {
         "acctHostId": acctHostId,
         "disableDate": $('#invalidDate').val(),
@@ -314,12 +320,7 @@ function updateTbSlaveAcct(){       //更新从账号信息
         "password": $('#defaultPswTel').val(),
         "personnelId": parseInt(personnelId),
         "resourceObjId": resourceObjId,
-        "rolesList": [
-          {
-            "roleId": parseInt($('#roleTel').val()),
-            "roleName": ""
-          }
-        ],
+        "rolesList": roleList,
         "slaveAcct": $('#acctTel').val(),
         "slaveAcctId": slaveAcctId,
         "slaveAcctType": slaveAcctType.toString(),
@@ -335,10 +336,13 @@ function updateTbSlaveAcct(){       //更新从账号信息
         contentType: "application/json",
         data: JSON.stringify(editFormSlaveAcctVo),
         dataType:"JSON",
-        success: function (data) { //返回json结果
-          console.log(data);
-          alert('保存成功');
-          submitToOther();
+        success: function (state) { //返回json结果
+            if(state.state === 1000){
+                alert(state.message);
+                submitToOther();
+            }else{
+                alert(state.message);
+            }
         },
         error:function(err){
           console.log(err);
@@ -354,10 +358,13 @@ function deleteTbSubAcct(){     //删除从账号
         contentType: "application/json",
         async:false,
         dataType:"json",
-        success: function (data) { //返回json结果
-          console.log(data);
-          alert('删除成功');
-          submitToOther();
+        success: function (state) { //返回json结果
+            if(state.state === 1000){
+                alert(state.message);
+                submitToOther();
+            }else{
+                alert(state.message);
+            }
         },
         error:function(err){
           console.log(err);

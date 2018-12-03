@@ -25,10 +25,10 @@ var $http = {
                 skin: 'layui-layer-lan'
                 ,closeBtn: 0
             });
-            break
-          case 12:
+            break;
+          default:
             alert(message);
-            break
+            break;
         }
         var httpStatus = response.status
         errorCallback(httpStatus, state, message)
