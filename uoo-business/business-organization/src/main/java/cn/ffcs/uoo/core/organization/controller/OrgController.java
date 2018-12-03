@@ -922,8 +922,8 @@ public class OrgController extends BaseController {
         org.setPoliticalLocationList(pl);
 
         //营销化小编码
-        ResponseResult<List<ExpandovalueVo>> Hxret = expandovalueService.queryExpandovalueVoList("TB_ORG",orgId);
-        org.setExpandovalueVoList(Hxret.getData());
+//        ResponseResult<List<ExpandovalueVo>> Hxret = expandovalueService.queryExpandovalueVoList("TB_ORG",orgId);
+//        org.setExpandovalueVoList(Hxret.getData());
 
 
         ret.setState(ResponseResult.STATE_OK);
