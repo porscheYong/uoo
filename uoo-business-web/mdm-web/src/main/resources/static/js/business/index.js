@@ -5,7 +5,7 @@ var orgTreeId; //业务组织ID
 var businessName; //业务名
 var orgId, //组织ID
     orgName, //组织名
-    nodeName,
+    parent,
     nodeArr;
 
 // lulu ui select插件
@@ -18,7 +18,7 @@ function onNodeClick(e,treeId, treeNode) {
     // zTree.expandNode(treeNode);
     orgId = treeNode.id;
     orgName = treeNode.name;
-    var currentNode = treeNode.name;//获取当前选中节点
+    var currentNode = {node: treeNode, current: true};//获取当前选中节点
     var parentNode = treeNode.getParentNode();
     nodeArr = [];
     getParentNodes(parentNode, currentNode);
@@ -28,13 +28,30 @@ function onNodeClick(e,treeId, treeNode) {
 // 获取父节点路径
 function getParentNodes(parentNode, currentNode) {
     if(parentNode!=null){
-        nodeName = parentNode.name;
+        parent = {node: parentNode, current: false};
         var curNode = parentNode.getParentNode();
         nodeArr.push(currentNode);
-        getParentNodes(curNode, nodeName);
+        getParentNodes(curNode, parent);
     }else{
         //根节点
         nodeArr.push(currentNode);
+    }
+}
+
+// 获取组织完整路径
+function getOrgExtInfo () {
+    var pathArry = nodeArr;
+    var pathStr = '';
+    if (pathArry && pathArry.length > 0) {
+        for (var i = pathArry.length - 1; i >= 0; i--) {
+            var node = pathArry[i].node;
+            if (pathArry[i].current) {
+                pathStr +=  '<span class="breadcrumb-item"><a href="javascript:void(0);">' + node.name + '</a></span>';
+            } else {
+                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+orgId+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+            }
+        }
+        $('#businessFrame').contents().find('.breadcrumb').html(pathStr);
     }
 }
 
@@ -94,16 +111,16 @@ function initTree (orgTreeId) {
 
 // 根据组织ID展开并选中组织
 function openTreeById (sId, id) {
-    var tId = 'businessTree_' + id;
-    var sId = 'businessTree_' + sId;
+    var tId = 'standardTree_' + id;
+    var sId = 'standardTree_' + sId;
     var zTree = $.fn.zTree.getZTreeObj("businessTree");
     var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-    zTree.cancelSelectedNode(selectNode);
-    var node = zTree.getNodeByTId(tId);
-    if (node.parent) {
-        zTree.expandNode(node, true);
+    if (!selectNode.open) {
+        zTree.expandNode(selectNode, true);
     }
-    zTree.selectNode(node, true);
+    var node = zTree.getNodeByTId(tId);
+    zTree.selectNode(node);
+    $('.curSelectedNode').trigger('click');
 }
 
 // 修改节点名称
