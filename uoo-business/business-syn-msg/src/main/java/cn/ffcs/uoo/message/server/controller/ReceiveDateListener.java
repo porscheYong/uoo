@@ -2,13 +2,13 @@ package cn.ffcs.uoo.message.server.controller;
 
 import cn.ffcs.uoo.message.server.constant.QueueConstant;
 import cn.ffcs.uoo.message.server.constant.StatusConstant;
+import cn.ffcs.uoo.message.server.constant.ValidateConstant;
 import cn.ffcs.uoo.message.server.dao.*;
 import cn.ffcs.uoo.message.server.pojo.*;
 import cn.ffcs.uoo.message.server.service.RabbitMqSendService;
 import cn.ffcs.uoo.message.server.util.OrgShowUtil;
 import cn.ffcs.uoo.message.server.vo.*;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.google.common.collect.Lists;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -62,8 +62,10 @@ public class ReceiveDateListener {
             String type = (String) jsonMap.get("type");
             Map<String, Object> context = (Map<String, Object>) jsonMap.get("context");
             String column = (String) context.get("column");
-            Long value = Long.parseLong(String.valueOf(context.get("value")));
-
+            Long value = null;
+            if(context.get("value") != null){
+                value = Long.parseLong(String.valueOf(context.get("value")));
+            }
             JSON.DEFFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
             if ("org".equals(type)) {
@@ -80,7 +82,8 @@ public class ReceiveDateListener {
                                 case "update": {
                                     TbOrgVo tbOrgVo = tbOrgMapper.getOrgVo(value, vo.getOrgTreeId(), vo.getBusinessSystemId());
 
-                                    if(tbOrgVo == null){
+                                    if (tbOrgVo == null) {
+                                        channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
                                         return;
                                     }
 
@@ -88,7 +91,7 @@ public class ReceiveDateListener {
                                     if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
 
                                     }
-                                    String id = sdf.format(new Date())+UUID.randomUUID().toString().replaceAll("-", "").trim();
+                                    String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
                                     RestfulVo restfulVo = new RestfulVo();
                                     restfulVo.setHandle(handle);
                                     restfulVo.setSerial(id);
@@ -109,31 +112,36 @@ public class ReceiveDateListener {
                                 ;
                                 break;
                                 case "delete": {
-                                    TbOrgVo tbOrgVo = new TbOrgVo();
-                                    tbOrgVo.setOrgId(value);
-                                    List<TbOrgCrossRel> crossRelList = tbOrgCrossRelMapper.getListByOrgIdAndSystemCode(value);
-                                    tbOrgVo.setOrgCrossRelations(crossRelList);
+                                    //校验
+                                    TbOrg tbOrg = tbOrgMapper.selectById(value);
 
-                                    if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
+                                    if (tbOrg != null && ValidateConstant.fail.getValue().equals(tbOrg.getStatusCd())) {
+                                        TbOrgVo tbOrgVo = new TbOrgVo();
+                                        tbOrgVo.setOrgId(value);
+                                        List<TbOrgCrossRel> crossRelList = tbOrgCrossRelMapper.getListByOrgIdAndSystemCode(value);
+                                        tbOrgVo.setOrgCrossRelations(crossRelList);
 
+                                        if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
+
+                                        }
+                                        String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
+                                        RestfulVo restfulVo = new RestfulVo();
+                                        restfulVo.setHandle(handle);
+                                        restfulVo.setSerial(id);
+                                        restfulVo.setType(type);
+                                        restfulVo.setContext(tbOrgVo);
+                                        String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
+                                        System.out.println(msg);
+                                        String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                        RabbitmqIndex index = new RabbitmqIndex();
+                                        index.setId(id);
+                                        index.setState(QueueConstant.valid.getValue());
+                                        index.setCollectionData(new Date());
+                                        index.setRabbitmqDate(msg);
+                                        index.setQueueName(queueName);
+                                        rabbitmqIndexMapper.insert(index);
+                                        rabbitMqSendService.sendMsg(queueName, msg);
                                     }
-                                    String id = sdf.format(new Date())+UUID.randomUUID().toString().replaceAll("-", "").trim();
-                                    RestfulVo restfulVo = new RestfulVo();
-                                    restfulVo.setHandle(handle);
-                                    restfulVo.setSerial(id);
-                                    restfulVo.setType(type);
-                                    restfulVo.setContext(tbOrgVo);
-                                    String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                    System.out.println(msg);
-                                    String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
-                                    RabbitmqIndex index = new RabbitmqIndex();
-                                    index.setId(id);
-                                    index.setState(QueueConstant.valid.getValue());
-                                    index.setCollectionData(new Date());
-                                    index.setRabbitmqDate(msg);
-                                    index.setQueueName(queueName);
-                                    rabbitmqIndexMapper.insert(index);
-                                    rabbitMqSendService.sendMsg(queueName, msg);
                                 }
                                 ;
                                 break;
@@ -156,18 +164,18 @@ public class ReceiveDateListener {
                                 case "insert":
                                 case "update": {
                                     List<TbSlaveAcct> slaveList = tbSlaveAcctMapper.insertOrUpdateSalveAcctByPersonnelIdAndSystemId(value, system.getBusinessSystemId());
-                                    if (slaveList != null) {
+                                    if (slaveList != null && slaveList.size() !=0) {
                                         //下发人员和从账号
                                         if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() == 1) {
                                             TbSlaveAcct temp = slaveList.get(0);
                                             TbAcctVo tbAcctVo = tbSlaveAcctMapper.insertOrUpdateSalveAcct(temp.getSlaveAcctId());
-                                            tbAcctVo.getTbSlaveAcctVo().setSystemName(system.getSystemName());
-                                            tbAcctVo.getTbSlaveAcctVo().setBusinessSystemId(system.getBusinessSystemId());
+                                            tbAcctVo.getTbSlaveAcct().setSystemName(system.getSystemName());
+                                            tbAcctVo.getTbSlaveAcct().setBusinessSystemId(system.getBusinessSystemId());
                                             PersonShowUtil.noShow(tbAcctVo);
                                             if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
 
                                             }
-                                            String id = sdf.format(new Date())+UUID.randomUUID().toString().replaceAll("-", "").trim();
+                                            String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
                                             RestfulVo restfulVo = new RestfulVo();
                                             restfulVo.setHandle(handle);
                                             restfulVo.setSerial(id);
@@ -187,14 +195,14 @@ public class ReceiveDateListener {
                                         } else if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() != 1) {
                                             TbSlaveAcct temp = slaveList.get(0);
                                             TbAcctVo tbAcctVo = tbSlaveAcctMapper.insertOrUpdateSalveAcct(temp.getSlaveAcctId());
-                                            tbAcctVo.setTbSlaveAcctVo(null);
+                                            tbAcctVo.setTbSlaveAcct(null);
                                             PersonShowUtil.noShow(tbAcctVo);
                                             if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
 
                                             }
-                                            String id = sdf.format(new Date())+UUID.randomUUID().toString().replaceAll("-", "").trim();
+                                            String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
                                             RestfulVo restfulVo = new RestfulVo();
-                                            tbAcctVo.setTbSlaveAcctVo(null);
+                                            tbAcctVo.setTbSlaveAcct(null);
                                             restfulVo.setHandle(handle);
                                             restfulVo.setSerial(id);
                                             restfulVo.setType(type);
@@ -219,9 +227,9 @@ public class ReceiveDateListener {
                                             if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
 
                                             }
-                                            String id = sdf.format(new Date())+UUID.randomUUID().toString().replaceAll("-", "").trim();
+                                            String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
                                             RestfulVo restfulVo = new RestfulVo();
-                                            tbAcctVo.setTbSlaveAcctVo(null);
+                                            tbAcctVo.setTbSlaveAcct(null);
                                             restfulVo.setHandle(handle);
                                             restfulVo.setSerial(id);
                                             restfulVo.setType(type);
@@ -243,20 +251,50 @@ public class ReceiveDateListener {
                                 ;
                                 break;
                                 case "delete": {
-                                    List<TbSlaveAcct> slaveList = tbSlaveAcctMapper.insertOrUpdateSalveAcctByPersonnelIdAndSystemId(value, system.getBusinessSystemId());
-                                    if (slaveList != null) {
 
-                                        if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() == 1) {
+                                    //人员删除或者主账号删除
+                                    int flag = tbSlaveAcctMapper.checkPersonnelAndAcct(value);
 
-                                            slaveList.forEach((temp) -> {
+                                    if (flag == 1) {
+                                        List<TbSlaveAcct> slaveList = tbSlaveAcctMapper.insertOrUpdateSalveAcctByPersonnelIdAndSystemId(value, system.getBusinessSystemId());
+                                        if (slaveList != null) {
+                                            if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() == 1) {
+                                                slaveList.forEach((temp) -> {
+                                                    TbAcctVo tbAcctVo = new TbAcctVo();
+                                                    TbSlaveAcctVo tbSlaveAcctVo = new TbSlaveAcctVo();
+                                                    tbSlaveAcctVo.setSlaveAcctId(temp.getSlaveAcctId());
+                                                    tbAcctVo.setTbSlaveAcct(tbSlaveAcctVo);
+                                                    if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
+
+                                                    }
+                                                    String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
+                                                    RestfulVo restfulVo = new RestfulVo();
+                                                    restfulVo.setHandle(handle);
+                                                    restfulVo.setSerial(id);
+                                                    restfulVo.setType(type);
+                                                    restfulVo.setContext(tbAcctVo);
+                                                    String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
+                                                    System.out.println(msg);
+                                                    String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                                    RabbitmqIndex index = new RabbitmqIndex();
+                                                    index.setId(id);
+                                                    index.setState(QueueConstant.valid.getValue());
+                                                    index.setCollectionData(new Date());
+                                                    index.setRabbitmqDate(msg);
+                                                    index.setQueueName(queueName);
+                                                    rabbitmqIndexMapper.insert(index);
+                                                    rabbitMqSendService.sendMsg(queueName, msg);
+                                                });
+                                            } else if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() != 1) {
+                                                TbSlaveAcct temp = slaveList.get(0);
                                                 TbAcctVo tbAcctVo = new TbAcctVo();
-                                                TbSlaveAcctVo tbSlaveAcctVo = new TbSlaveAcctVo();
-                                                tbSlaveAcctVo.setSlaveAcctId(temp.getSlaveAcctId());
-                                                tbAcctVo.setTbSlaveAcctVo(tbSlaveAcctVo);
+                                                TbPersonnel tbPersonnel = new TbPersonnel();
+                                                tbPersonnel.setPersonnelId(value);
+                                                tbAcctVo.setTbPersonnel(tbPersonnel);
                                                 if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
 
                                                 }
-                                                String id = sdf.format(new Date())+UUID.randomUUID().toString().replaceAll("-", "").trim();
+                                                String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
                                                 RestfulVo restfulVo = new RestfulVo();
                                                 restfulVo.setHandle(handle);
                                                 restfulVo.setSerial(id);
@@ -273,60 +311,34 @@ public class ReceiveDateListener {
                                                 index.setQueueName(queueName);
                                                 rabbitmqIndexMapper.insert(index);
                                                 rabbitMqSendService.sendMsg(queueName, msg);
-                                            });
-                                        } else if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() != 1) {
-                                            TbSlaveAcct temp = slaveList.get(0);
-                                            TbAcctVo tbAcctVo = new TbAcctVo();
-                                            TbPersonnel tbPersonnel = new TbPersonnel();
-                                            tbPersonnel.setPersonnelId(value);
-                                            tbAcctVo.setTbPersonnel(tbPersonnel);
-                                            if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
-
                                             }
-                                            String id = sdf.format(new Date())+UUID.randomUUID().toString().replaceAll("-", "").trim();
-                                            RestfulVo restfulVo = new RestfulVo();
-                                            restfulVo.setHandle(handle);
-                                            restfulVo.setSerial(id);
-                                            restfulVo.setType(type);
-                                            restfulVo.setContext(tbAcctVo);
-                                            String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                            System.out.println(msg);
-                                            String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
-                                            RabbitmqIndex index = new RabbitmqIndex();
-                                            index.setId(id);
-                                            index.setState(QueueConstant.valid.getValue());
-                                            index.setCollectionData(new Date());
-                                            index.setRabbitmqDate(msg);
-                                            index.setQueueName(queueName);
-                                            rabbitmqIndexMapper.insert(index);
-                                            rabbitMqSendService.sendMsg(queueName, msg);
-                                        }
-                                    } else {
-                                        if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() != 1) {
-                                            TbAcctVo tbAcctVo = new TbAcctVo();
-                                            TbPersonnel tbPersonnel = new TbPersonnel();
-                                            tbPersonnel.setPersonnelId(value);
-                                            tbAcctVo.setTbPersonnel(tbPersonnel);
-                                            if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
+                                        } else {
+                                            if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() != 1) {
+                                                TbAcctVo tbAcctVo = new TbAcctVo();
+                                                TbPersonnel tbPersonnel = new TbPersonnel();
+                                                tbPersonnel.setPersonnelId(value);
+                                                tbAcctVo.setTbPersonnel(tbPersonnel);
+                                                if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
 
+                                                }
+                                                String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
+                                                RestfulVo restfulVo = new RestfulVo();
+                                                restfulVo.setHandle(handle);
+                                                restfulVo.setSerial(id);
+                                                restfulVo.setType(type);
+                                                restfulVo.setContext(tbAcctVo);
+                                                String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
+                                                System.out.println(msg);
+                                                String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                                RabbitmqIndex index = new RabbitmqIndex();
+                                                index.setId(id);
+                                                index.setState(QueueConstant.valid.getValue());
+                                                index.setCollectionData(new Date());
+                                                index.setRabbitmqDate(msg);
+                                                index.setQueueName(queueName);
+                                                rabbitmqIndexMapper.insert(index);
+                                                rabbitMqSendService.sendMsg(queueName, msg);
                                             }
-                                            String id = sdf.format(new Date())+UUID.randomUUID().toString().replaceAll("-", "").trim();
-                                            RestfulVo restfulVo = new RestfulVo();
-                                            restfulVo.setHandle(handle);
-                                            restfulVo.setSerial(id);
-                                            restfulVo.setType(type);
-                                            restfulVo.setContext(tbAcctVo);
-                                            String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                            System.out.println(msg);
-                                            String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
-                                            RabbitmqIndex index = new RabbitmqIndex();
-                                            index.setId(id);
-                                            index.setState(QueueConstant.valid.getValue());
-                                            index.setCollectionData(new Date());
-                                            index.setRabbitmqDate(msg);
-                                            index.setQueueName(queueName);
-                                            rabbitmqIndexMapper.insert(index);
-                                            rabbitMqSendService.sendMsg(queueName, msg);
                                         }
                                     }
                                 }
@@ -342,12 +354,15 @@ public class ReceiveDateListener {
                     Map<String, Object> map = SystemRuleService.getSystemRuleBySlaveAcct(value);
 
                     if (map == null) {
+                        channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
                         return;
                     }
+
                     OrgTreeRuleVo vo = (OrgTreeRuleVo) map.get("OrgTreeRuleVo");
                     TbBusinessSystem system = (TbBusinessSystem) map.get("system");
                     //没有系统。
                     if (vo == null) {
+                        channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
                         return;
                     }
 
@@ -356,8 +371,8 @@ public class ReceiveDateListener {
                         case "update": {
                             TbAcctVo tbAcctVo = tbSlaveAcctMapper.insertOrUpdateSalveAcct(value);
 
-                            tbAcctVo.getTbSlaveAcctVo().setSystemName(system.getSystemName());
-                            tbAcctVo.getTbSlaveAcctVo().setBusinessSystemId(system.getBusinessSystemId());
+                            tbAcctVo.getTbSlaveAcct().setSystemName(system.getSystemName());
+                            tbAcctVo.getTbSlaveAcct().setBusinessSystemId(system.getBusinessSystemId());
                             PersonShowUtil.noShow(tbAcctVo);
 
                             if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
@@ -366,7 +381,7 @@ public class ReceiveDateListener {
 
                             if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() == 1) {
                                 //下发人员和从账号
-                                String id = sdf.format(new Date())+UUID.randomUUID().toString().replaceAll("-", "").trim();
+                                String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
                                 RestfulVo restfulVo = new RestfulVo();
                                 restfulVo.setHandle(handle);
                                 restfulVo.setSerial(id);
@@ -385,9 +400,9 @@ public class ReceiveDateListener {
                                 rabbitMqSendService.sendMsg(queueName, msg);
                             } else if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() != 1) {
                                 //只下发人员
-                                String id = sdf.format(new Date())+UUID.randomUUID().toString().replaceAll("-", "").trim();
+                                String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
                                 RestfulVo restfulVo = new RestfulVo();
-                                tbAcctVo.setTbSlaveAcctVo(null);
+                                tbAcctVo.setTbSlaveAcct(null);
                                 restfulVo.setHandle(handle);
                                 restfulVo.setSerial(id);
                                 restfulVo.setType(type);
@@ -408,31 +423,36 @@ public class ReceiveDateListener {
                         ;
                         break;
                         case "delete": {
-                            TbAcctVo tbAcctVo = new TbAcctVo();
-                            TbSlaveAcctVo tbSlaveAcctVo = new TbSlaveAcctVo();
-                            tbSlaveAcctVo.setSlaveAcctId(value);
-                            tbAcctVo.setTbSlaveAcctVo(tbSlaveAcctVo);
-                            if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
-                            }
-                            if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() == 1) {
-                                //下发人员和从账号
-                                String id = sdf.format(new Date())+UUID.randomUUID().toString().replaceAll("-", "").trim();
-                                RestfulVo restfulVo = new RestfulVo();
-                                restfulVo.setHandle(handle);
-                                restfulVo.setSerial(id);
-                                restfulVo.setType(type);
-                                restfulVo.setContext(tbAcctVo);
-                                String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                System.out.println(msg);
-                                String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
-                                RabbitmqIndex index = new RabbitmqIndex();
-                                index.setId(id);
-                                index.setState(QueueConstant.valid.getValue());
-                                index.setCollectionData(new Date());
-                                index.setRabbitmqDate(msg);
-                                index.setQueueName(queueName);
-                                rabbitmqIndexMapper.insert(index);
-                                rabbitMqSendService.sendMsg(queueName, msg);
+                            TbSlaveAcct tbSlaveAcct = tbSlaveAcctMapper.selectById(value);
+                            if (tbSlaveAcct != null && ValidateConstant.fail.getValue().equals(tbSlaveAcct.getStatusCd())) {
+
+                                TbAcctVo tbAcctVo = new TbAcctVo();
+                                TbSlaveAcctVo tbSlaveAcctVo = new TbSlaveAcctVo();
+                                tbSlaveAcctVo.setSlaveAcctId(value);
+                                tbAcctVo.setTbSlaveAcct(tbSlaveAcctVo);
+                                if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
+
+                                }
+                                if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() == 1) {
+                                    //下发人员和从账号
+                                    String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
+                                    RestfulVo restfulVo = new RestfulVo();
+                                    restfulVo.setHandle(handle);
+                                    restfulVo.setSerial(id);
+                                    restfulVo.setType(type);
+                                    restfulVo.setContext(tbAcctVo);
+                                    String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
+                                    System.out.println(msg);
+                                    String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                    RabbitmqIndex index = new RabbitmqIndex();
+                                    index.setId(id);
+                                    index.setState(QueueConstant.valid.getValue());
+                                    index.setCollectionData(new Date());
+                                    index.setRabbitmqDate(msg);
+                                    index.setQueueName(queueName);
+                                    rabbitmqIndexMapper.insert(index);
+                                    rabbitMqSendService.sendMsg(queueName, msg);
+                                }
                             }
                         }
                         ;
@@ -443,7 +463,7 @@ public class ReceiveDateListener {
                 }
             }
             //Thread.sleep(1000);
-            channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (Exception e) {
             e.printStackTrace();
             channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);

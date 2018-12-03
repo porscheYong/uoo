@@ -1,20 +1,52 @@
 package cn.ffcs.uoo.message.server.util;
+import cn.ffcs.uoo.message.server.pojo.TbAreaCode;
+import java.math.BigDecimal;
+import cn.ffcs.uoo.message.server.pojo.TbPoliticalLocation;
+import com.google.common.collect.Lists;
+import cn.ffcs.uoo.message.server.vo.TbOrgRelVo;
+import cn.ffcs.uoo.message.server.vo.OrgLevelVo;
 import java.util.Date;
+import java.util.*;
 
 import cn.ffcs.uoo.message.server.pojo.TbBusinessSystem;
 import cn.ffcs.uoo.message.server.pojo.TbOrgCrossRel;
 import cn.ffcs.uoo.message.server.vo.*;
-
-import java.util.Iterator;
 
 public class OrgShowUtil {
     public static void noShow(TbOrgVo vo, TbBusinessSystem system){
         if (vo == null) {
             return;
         }
-
+        vo.setLocId(null);
+        vo.setAreaCodeId(null);
         vo.setBusinessSystemId(null);
         vo.setOrgTreeId(null);
+        if(vo.getExtendInfo2() != null && vo.getExtendInfo2().size() !=0){
+            Set<String> set = new HashSet<>();
+
+            vo.getExtendInfo2().forEach((t)->{
+                set.add(t.getColumnName());
+            });
+
+            List<Map<String,Object>> mapArrayList = new ArrayList<>();
+
+            set.forEach((t)->{
+                Map<String,Object> map = new HashMap<>();
+                List<Object> list = new ArrayList<>();
+                vo.getExtendInfo2().forEach((temp)->{
+                    if(temp.getColumnName().equals(t)){
+                        list.add(temp.getValue());
+                    }
+
+                });
+                map.put("column",t);
+                map.put("value",list);
+                mapArrayList.add(map);
+            });
+
+            vo.setExtendInfo2(null);
+            vo.setExtendInfo(mapArrayList);
+        }
 
         if(vo.getOrgLevels() != null){
             vo.getOrgLevels().setOrgLevelId(null);
