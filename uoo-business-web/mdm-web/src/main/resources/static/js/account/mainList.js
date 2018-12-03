@@ -1,29 +1,35 @@
 var orgId = getQueryString('orgId');
 var orgName = getQueryString('orgName');
 var orgTreeId = getQueryString('orgTreeId');
+var lChBox =document.getElementById("lowerCheckBox");   //是否显示下级人员
 var orgFullName = '';
 var table;
+var isCheck = 0;
 
+// $("#searchlowerCheckBox").checked = true;
+// $("#searchlowerCheckBox").propMatch();
 
 // 获取组织完整路径
 function getOrgExtInfo() {
     var pathArry = parent.nodeArr;
-    //console.log(pathArry)
+    // console.log(pathArry)
     var pathStr = '';
     for (var i = pathArry.length - 1; i >= 0; i--) {
-        if (i === 0) {
-            pathStr +=  '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a></span>';
+        var node = pathArry[i].node;
+        if (pathArry[i].current) {
+            pathStr +=  '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + node.name + '</a></span>';
         } else {
-            pathStr += '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>'; 
+            pathStr += '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>'; 
         }
-        orgFullName += pathArry[i] + '/'; 
+        orgFullName += node.name + '/'; 
     }
     orgFullName = orgFullName.toString().substring(0,orgFullName.toString().length-1);
     $('.breadcrumb').html(pathStr);
 }
 
-function initMainTable(){
+function initMainTable(isCheck){
     table = $("#mainTable").DataTable({
+        'destroy':true,
         'searching': false,
         'autoWidth': false,
         'ordering': true,
@@ -83,6 +89,7 @@ function initMainTable(){
             param.pageNo = (data.start / data.length) + 1;//当前页码
             param.orgTreeId = orgTreeId;
             param.orgId = orgId;
+            param.isSearchlower = isCheck;
             $http.get('/orgPersonRel/getUserOrgRelPage', param, function (result) {
                 var returnData = {};
                 // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
@@ -102,10 +109,20 @@ function initMainTable(){
 $('#orgName').html(orgName);
 getOrgExtInfo();
 // getUserList(orgId);
-initMainTable();
+initMainTable(isCheck);
 console.log(orgFullName);
 
 $('#addBtn').on('click', function () {
     var url = 'add.html?&orgName=' + orgName +'&orgId=' + orgId + '&orgTreeId=' + orgTreeId + "&orgFullName=" + orgFullName;
     $(this).attr('href', url);
 })
+
+function boxClick(){            //点击复选框
+    console.log(lChBox.checked);
+    if(lChBox.checked == true){
+        isCheck = 1;
+    }else{
+        isCheck = 0;
+    }
+    initMainTable(isCheck);
+}

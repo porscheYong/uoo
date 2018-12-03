@@ -83,6 +83,7 @@ function initAcctTable(search) {
             param.orgTreeId = orgTreeId;
             param.orgId = orgId;
             param.search = search;
+            param.isSearchlower = isCheck;
             $http.get('/orgPersonRel/getUserOrgRelPage', param, function (result) {
                 var returnData = {};
                 // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
@@ -107,7 +108,7 @@ function engineWithDefaults(q, sync, async) {
     if (q === '') {
         $('#mainTable').html('');
         table.destroy();
-        initMainTable();
+        initMainTable(isCheck);
     }
     else {
         engine.search(q, sync, async);
