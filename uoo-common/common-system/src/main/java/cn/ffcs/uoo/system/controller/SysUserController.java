@@ -1,16 +1,18 @@
 package cn.ffcs.uoo.system.controller;
 
+import javax.annotation.Resource;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.system.entity.SysUser;
 import cn.ffcs.uoo.system.service.SysUserService;
 import cn.ffcs.uoo.system.util.ResponseResult;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * 系统域用户前端控制器
@@ -28,7 +30,7 @@ public class SysUserController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/sysUserLogin", method = RequestMethod.POST)
-    public ResponseResult<Void> login(SysUser sysUser) {
+    public ResponseResult<Void> login(@RequestBody SysUser sysUser) {
         ResponseResult<Void> result = new ResponseResult<>();
 
         String message = sysUserService.sysUserLogin(sysUser);
@@ -61,7 +63,7 @@ public class SysUserController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/sysUserRegister", method = RequestMethod.POST)
-    public ResponseResult<Void> register(SysUser sysUser) {
+    public ResponseResult<Void> register(@RequestBody SysUser sysUser) {
         ResponseResult<Void> result = new ResponseResult<>();
 
         String message = sysUserService.checkRegister(sysUser);
