@@ -497,7 +497,7 @@ function submitToOther(){   //提交或者取消跳转
         url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;       //跳转添加界面
     }else{
         url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + orgName + "&id=" + orgId + 
-                                      "&personnelId =" + personnelId + "&orgRootId =" + orgRootId + "&tabPage=" + tabPage;
+                                      "&personnelId=" + personnelId + "&orgRootId=" + orgRootId + "&tabPage=" + tabPage;
     }
     window.location.href = url;
 }
