@@ -2,11 +2,7 @@ package cn.ffcs.uoo.web.maindata.permission.service;
 
 
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import cn.ffcs.uoo.web.maindata.permission.dto.Roles;
 import cn.ffcs.uoo.web.maindata.permission.service.fallback.RolesHystrix;
@@ -22,7 +18,7 @@ import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
  * @since 2018-10-24
  */
  
-@FeignClient(value = "uoo-permission-provider", fallback = RolesHystrix.class)
+@FeignClient(value = "business-permission", fallback = RolesHystrix.class)
 public interface RolesService {
     @GetMapping("/permission/tbRoles/get/{id}")
     public ResponseResult get(@PathVariable(value="id" ,required=true) Long id);
@@ -46,11 +42,11 @@ public interface RolesService {
     @RequestMapping(value = "/permission/tbRoles/add", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult addTbRoles(@RequestBody Roles role) ;
 
-    @RequestMapping(value = "/getRolesPermission/{acctId}/{systemInfoId}", method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    @PostMapping("/permission/tbRoles/getRolesPermission/{acctId}/{systemInfoId}")
     public ResponseResult getRolesPermission(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId);
 
 
-    @RequestMapping(value = "/getPermissionMenu/{acctId}/{systemInfoId}", method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    @PostMapping("/permission/tbRoles/getPermissionMenu/{acctId}/{systemInfoId}")
     public ResponseResult getPermissionMenu(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId);
 }
 

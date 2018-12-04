@@ -18,7 +18,7 @@ import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
  * @since 2018-11-08
  */
 
-@FeignClient(value = "uoo-permission-provider", fallback = DataPrivRuleHystrix.class)
+@FeignClient(value = "business-permission", fallback = DataPrivRuleHystrix.class)
 public interface DataPrivRuleService {
     @RequestMapping(value = "/permission/dataPrivRule/addDataPrivRule", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult addDataPrivRule(@RequestBody DataPrivRule dataPrivRule);

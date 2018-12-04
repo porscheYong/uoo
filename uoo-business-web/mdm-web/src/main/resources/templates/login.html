@@ -11,8 +11,15 @@
 
 <style>
     #toast-container{
-        margin-top: 20% !important;
+        margin-top: 6% !important;
     }    
+    #toast-container > div{
+        width: 250px !important;
+    }
+    #toast-container.toast-top-center > div{
+        min-width: 0px !important;
+        /* margin-right: 283px !important; */
+    }
 </style>
 </head>
 
@@ -23,12 +30,12 @@
     <div class="Main">
         <div class="FormArea">
             <div class="FormHead">
-                浙江用户组织运营平台
+                浙江主数据平台
             </div>
              <form action="templates/index.html" method="POST">  <!-- main.html -->
-                <input class="Input user" type="text" placeholder="用户名/邮箱/手机" />
-                <input class="Input psw" type="password" placeholder="请输入密码" />
-                <div class="rendomcode">
+                <input class="Input user" type="text" placeholder="用户名/邮箱/手机" value="jack5" />
+                <input class="Input psw" type="password" placeholder="请输入密码" value="123abc" />
+                 <div class="rendomcode">
                     <input class="Input code" type="text" placeholder="请输入验证码" />
                     <canvas id="canvas" width="90" height="36"></canvas>
                 </div>

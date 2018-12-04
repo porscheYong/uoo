@@ -174,3 +174,8 @@ function orgSearch () {
     // $('#searchBtn').attr('href', url);
     window.location.href = url;
 }
+
+$('#orgName').on('click', function () {
+    var url = 'orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    window.location.href = url;
+});

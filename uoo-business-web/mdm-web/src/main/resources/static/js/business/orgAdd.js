@@ -10,6 +10,7 @@ var checkNode;
 var selectUser = [];
 var formValidate;
 var loading = parent.loading;
+var toastr = parent.parent.toastr;
 
 $('.orgName').html(orgName);
 parent.getOrgExtInfo();
@@ -27,8 +28,9 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
         $(this).hover(function () {
             formValidate.isPass($(this));
         });
-    })
-})
+    });
+    formValidate.isAllPass();
+});
 
 laydate.render({
     elem: '#createDate'
@@ -36,8 +38,8 @@ laydate.render({
 
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
-    $('#locId').tagsInput();
-    $('#orgTypeList').tagsInput();
+    $('#locId').tagsInput({unique: true});
+    $('#orgTypeList').tagsInput({unique: true});
     $('#positionList').tagsInput();
     $('#postList').tagsInput();
 }
@@ -302,6 +304,7 @@ function addOrg () {
         parent.openTreeById(orgId, data.id);
         window.location.replace("list.html?id=" + data.id + '&orgTreeId=' + orgTreeId + '&pid=' + data.pid + "&name=" + encodeURI(data.name));
         loading.screenMaskDisable('container');
+        toastr.success('新增成功！');
     }, function (err) {
         console.log(err);
     })

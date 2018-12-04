@@ -23,3 +23,27 @@ toastr.options = {
   "showMethod": "fadeIn", //显示的方式，和jquery相同 
   "hideMethod": "fadeOut" //隐藏的方式，和jquery相同
 };
+
+
+function initUserInfo(){  //初始化首页人员信息          
+    $http.get('/system/getCurrentLoginUserInfo', { }, 
+    function (data) {
+      console.log("userInfo: "+data);
+      //$("#psnName").text(data.name);
+    }, function (err) {
+        console.log(err)
+    })
+}
+
+function initUserPermission(){    //初始化人员权限
+    $http.post('/permission/tbRoles/getPermissionMenu/19521/0', { }, 
+    function (data) {
+      console.log("permission: "+data);
+      //$("#psnName").text(data.name);
+    }, function (err) {
+        console.log(err)
+    })
+}
+
+initUserInfo();
+// initUserPermission();

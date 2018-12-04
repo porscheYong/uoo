@@ -264,7 +264,6 @@ function addTbAcct(){         //新增
     $.ajax({
       url: '/acct/addTbAcct',
       type: 'POST',
-      async:false,
       contentType: "application/json",
       data: JSON.stringify(editFormAcctVo),
       dataType:"JSON",
@@ -310,7 +309,6 @@ function updateAcct(){      //编辑主账号
     $.ajax({
       url: '/acct/updateAcct',
       type: 'PUT',
-      async:false,
       contentType: "application/json",
       data: JSON.stringify(editFormAcctVo),
       dataType:"JSON",
@@ -334,7 +332,6 @@ function deleteTbAcct(){    //删除主账号
     url: '/acct/deleteTbAcct?&acctId='+parseInt(acctId),
     type: 'DELETE',
     contentType: "application/json",
-    async:false,
     dataType:"json",
     success: function (data) { //返回json结果
       console.log(data);
@@ -359,7 +356,6 @@ function removeAcctOrg(orgId){   //编辑时删除组织
     $.ajax({
       url: '/acct/removeAcctOrg?personnelId='+personnelId+'&acctId='+acctId+'&orgId='+parseInt(orgId),
       type: 'DELETE',
-      async:false,
       contentType: "application/json",
       dataType:"json",
       success: function (data) { //返回json结果

@@ -8,8 +8,7 @@ var show_num = [];
 
 $(function (){
     toastr.options = {
-                        "closeButton": true,
-                        "timeOut": "3000",
+                        "timeOut": "2000",
                         "preventDuplicates": true,
                         "preventManyTimes": true,
                         "hideDuration": "1"
@@ -36,14 +35,16 @@ function check(){
 
     }else if(!(isMobile.test(user) || isAccount.test(user) || isEmail.test(user))){  
 
-        $("#errorAcc").text("输入的帐号格式不正确！");
-        $("#errorAcc").show();
+        // $("#errorAcc").text("输入的帐号格式不正确！");
+        // $("#errorAcc").show();
+        toastr.error("输入的帐号格式不正确！");
         return false;
 
     }else if(pwd.length < 6){
 
-        $("#errorAcc").text("密码长度小于6位！");
-        $("#errorAcc").show();
+        // $("#errorAcc").text("密码长度小于6位！");
+        // $("#errorAcc").show();
+        toastr.error("密码长度小于6位！");
         return false;
 
     }else{
@@ -51,8 +52,9 @@ function check(){
             var val = $(".code").val().toLowerCase();
             var num = show_num.join("");
             if(val==''){
-                $("#errorAcc").text("请输入验证码！");
-                $("#errorAcc").show();
+                // $("#errorAcc").text("请输入验证码！");
+                // $("#errorAcc").show();
+                toastr.error("请输入验证码！");
                 return false;
             }else if(val == num){
                 $(".code").val('');
@@ -60,8 +62,9 @@ function check(){
                 $("#errorAcc").text("");
                 $("#errorAcc").show(); 
             }else{
-                $("#errorAcc").text("验证码错误！请重新输入！");
-                $("#errorAcc").show();
+                // $("#errorAcc").text("验证码错误！请重新输入！");
+                // $("#errorAcc").show();
+                toastr.error("验证码错误！请重新输入！");
                 $(".code").val('');
                 draw(show_num);
                 return false;
@@ -93,9 +96,11 @@ function check(){
             dataType: "json",
 			success:function(result){
                 if(result.state == 1000){
+                    toastr.success("登录成功");
                     window.location.href = "index.html";
                 }else{
-                    alert(result.message);
+                    // alert(result.message);
+                    toastr.error(result.message);
                     $(".psw").val('');
                     isError = 1;
                     $(".code").show();
@@ -103,7 +108,7 @@ function check(){
                 }
             },
             error:function(){
-                alert("Net Error");
+                toastr.error("网络连接失败！");
             }
         });
 

@@ -284,7 +284,6 @@ function addTbSlaveAcct(){      //从账号新增
     $.ajax({
         url: '/slaveAcct/addTbSlaveAcct',
         type: 'POST',
-        async:false,
         contentType: "application/json",
         data: JSON.stringify(editFormSlaveAcctVo),
         dataType:"JSON",
@@ -333,7 +332,6 @@ function updateTbSlaveAcct(){       //更新从账号信息
     $.ajax({
         url: '/slaveAcct/updateTbSlaveAcct',
         type: 'POST',
-        async:false,
         contentType: "application/json",
         data: JSON.stringify(editFormSlaveAcctVo),
         dataType:"JSON",
@@ -357,7 +355,6 @@ function deleteTbSubAcct(){     //删除从账号
         url: '/slaveAcct/delTbSlaveAcct?&slaveAcctId='+parseInt(acctId),
         type: 'DELETE',
         contentType: "application/json",
-        async:false,
         dataType:"json",
         success: function (state) { //返回json结果
             if(state.state === 1000){

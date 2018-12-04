@@ -1,46 +1,19 @@
 // loadingMask
 // var loading = new Loading();
-var orgTreeId = "1";
 
-var setting = {
-    async: {
-        enable: true,
-        url: "/orgRel/getOrgRelTree?orgTreeId="+orgTreeId + "&orgRootId=" + orgTreeId,
-        autoParam: ["id"],
-        type: "get",
-        dataFilter: filter
-    },
-    view: {
-        showLine: false,
-        showIcon: false,
-        dblClickExpand: false
-    },
-    data: {
-        key: {
-            isParent: "parent",
-        },
-        simpleData: {
-            enable:true,
-            idKey: "id",
-            pIdKey: "pid",
-            rootPId: ""
-        }
-    },
-    callback: {
-        onClick: onNodeClick
-    }
-};
 var orgId,
     orgName,
     nodeName,
-    nodeArr;
+    nodeArr,
+    orgTreeId;
 
 function onNodeClick(e,treeId, treeNode) {
     // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
     // zTree.expandNode(treeNode);
     orgId = treeNode.id;
     orgName = treeNode.name;
-    var currentNode = treeNode.name;//获取当前选中节点
+    //var currentNode = treeNode.name;//获取当前选中节点
+    var currentNode = {node: treeNode, current: true};//获取当前选中节点
     var parentNode = treeNode.getParentNode();
     nodeArr = [];
     getParentNodes(parentNode, currentNode);
@@ -50,10 +23,11 @@ function onNodeClick(e,treeId, treeNode) {
 // 获取父节点路径
 function getParentNodes(parentNode, currentNode) {
     if(parentNode!=null){
-        nodeName = parentNode.name;
+        parent = {node: parentNode, current: false};
+        //nodeName = parentNode.name;
         var curNode = parentNode.getParentNode();
         nodeArr.push(currentNode);
-        getParentNodes(curNode, nodeName);
+        getParentNodes(curNode, parent);
     }else{
         //根节点
         nodeArr.push(currentNode);
@@ -71,6 +45,36 @@ function refreshResult () {
 
 //初始化组织
 function initOrgRelTree (orgTreeId) {
+
+    var setting = {
+        async: {
+            enable: true,
+            url: "/orgRel/getOrgRelTree?orgTreeId="+orgTreeId + "&orgRootId=" + orgTreeId,
+            autoParam: ["id"],
+            type: "get",
+            dataFilter: filter
+        },
+        view: {
+            showLine: false,
+            showIcon: false,
+            dblClickExpand: false
+        },
+        data: {
+            key: {
+                isParent: "parent",
+            },
+            simpleData: {
+                enable:true,
+                idKey: "id",
+                pIdKey: "pid",
+                rootPId: ""
+            }
+        },
+        callback: {
+            onClick: onNodeClick
+        }
+    };
+
     $http.get('/orgRel/getOrgRelTree', {
         orgTreeId: orgTreeId,
         orgRootId: orgTreeId
@@ -84,7 +88,7 @@ function initOrgRelTree (orgTreeId) {
         onNodeClick(null, null, nodes[0]);
     }, function (err) {
         console.log(err)
-    })
+    });
 }
 
 // 初始化业务组织列表
@@ -109,6 +113,38 @@ function initBusinessList () {
     }, function (err) {
         console.log(err)
     })
+}
+
+// 获取组织完整路径
+function getOrgExtInfo () {
+    var pathArry = nodeArr;
+    console.log(pathArry);
+    var pathStr = '';
+    if (pathArry && pathArry.length > 0) {
+        for (var i = pathArry.length - 1; i >= 0; i--) {
+            var node = pathArry[i].node;
+            if (pathArry[i].current) {
+                pathStr +=  '<span class="breadcrumb-item"><a href="javascript:void(0);">' + node.name + '</a></span>';
+            } else {
+                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+            }
+        }
+        $('#userFrame').contents().find('.breadcrumb').html(pathStr);
+    }
+}
+
+// 根据组织ID展开并选中组织
+function openTreeById (sId, id) {
+    var tId = 'standardTree' + id;
+    var sId = 'standardTree' + sId;
+    var orgTree = $.fn.zTree.getZTreeObj("standardTree");
+    var selectNode = orgTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
+    if (!selectNode.open) {
+        orgTree.expandNode(selectNode, true);
+    }
+    var node = orgTree.getNodeByTId(tId);
+    orgTree.selectNode(node);
+    $('.curSelectedNode').trigger('click');
 }
 
 initBusinessList();

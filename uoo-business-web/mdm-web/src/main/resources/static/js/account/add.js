@@ -154,7 +154,7 @@ function cancel() {
 }
 
 function addPsn(){
-    window.location.href = "/inaction/user/add.html";
+    window.location.href = "/inaction/user/add.html?name="+orgName;
 }
 
 function psnNameClick(personnelId){

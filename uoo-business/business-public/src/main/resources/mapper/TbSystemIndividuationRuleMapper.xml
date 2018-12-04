@@ -24,7 +24,7 @@
     </sql>
 
     <select id="getId" resultType="java.lang.Long">
-        SELECT SEQ_TB_SYS_INDIVIDUA_RULE_ID.nextval FROM dual
+        SELECT SEQ_INDIVIDUATION_RULE_ID.nextval FROM dual
     </select>
 
 </mapper>
