@@ -22,7 +22,7 @@ import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
  * @since 2018-10-24
  */
  
-@FeignClient(value = "uoo-permission-provider", fallback = RolesHystrix.class)
+@FeignClient(value = "business-permission", fallback = RolesHystrix.class)
 public interface RolesService {
     @GetMapping("/permission/tbRoles/get/{id}")
     public ResponseResult get(@PathVariable(value="id" ,required=true) Long id);

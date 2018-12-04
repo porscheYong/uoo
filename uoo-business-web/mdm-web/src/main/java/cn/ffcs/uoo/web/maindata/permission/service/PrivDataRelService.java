@@ -18,7 +18,7 @@ import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
  * @author zengxsh
  * @since 2018-11-08
  */
-@FeignClient(value = "uoo-permission-provider", fallback = PrivDataRelHystrix.class)
+@FeignClient(value = "business-permission", fallback = PrivDataRelHystrix.class)
 public interface PrivDataRelService {
      
     @RequestMapping(value="/permission/privDataRel/addPrivDataRel",method=RequestMethod.POST,headers={"Content-Type=application/json"})

@@ -24,7 +24,7 @@ import cn.ffcs.uoo.web.maindata.permission.vo.UserPersonnelVo;
  * @author zhanglu
  * @since 2018-10-24
  */
-@FeignClient(value = "uoo-permission-provider", fallback = UserRoleHystrix.class)
+@FeignClient(value = "business-permission", fallback = UserRoleHystrix.class)
 public interface UserRoleService {
     @RequestMapping(value = "/permission/tbUserRole/del", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult removeTbUserRole(@RequestBody UserRole userRole);

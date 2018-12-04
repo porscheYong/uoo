@@ -20,7 +20,7 @@ import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
  * @author zxs
  * @since 2018-10-30
  */
-@FeignClient(value = "uoo-permission-provider", fallback = FuncCompHystrix.class)
+@FeignClient(value = "business-permission", fallback = FuncCompHystrix.class)
 public interface FuncCompService {
      
     @GetMapping("/permission/funcComp/get/{id}")
