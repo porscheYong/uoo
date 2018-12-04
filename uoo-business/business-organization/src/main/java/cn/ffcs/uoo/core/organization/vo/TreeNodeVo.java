@@ -20,8 +20,17 @@ public class TreeNodeVo {
     private boolean isParent;
     private String level;
     private String checked;
+    private String chkDisabled;
 
     private String extField1;
+
+    public String getChkDisabled() {
+        return chkDisabled;
+    }
+
+    public void setChkDisabled(String chkDisabled) {
+        this.chkDisabled = chkDisabled;
+    }
 
     public String getExtField1() {
         return extField1;

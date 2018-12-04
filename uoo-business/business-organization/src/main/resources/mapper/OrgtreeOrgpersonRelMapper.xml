@@ -23,7 +23,7 @@
 
     <!-- 获取OrgIdSeq -->
     <select id="getId" resultType="java.lang.Long">
-        SELECT SEQ_TB_ORGTREE_ORGPER_REL_ID.NEXTVAL FROM DUAL
+        SELECT SEQ_ORGTREE_ORGPERSON_ID.NEXTVAL FROM DUAL
     </select>
 
 

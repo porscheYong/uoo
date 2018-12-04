@@ -237,9 +237,13 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
      * @return
      */
     @Override
-    public List<TreeNodeVo> selectTarOrgRelTreeAndLv(String orgRootId, String lv, String curOrgId, boolean isFull){
+    public List<TreeNodeVo> selectTarOrgRelTreeAndLv(String orgRootId,String orgTreeId, String lv, String curOrgId, boolean isFull){
         List<TreeNodeVo> list = new ArrayList<TreeNodeVo>();
-        list = baseMapper.selectTarOrgRelTreeAndLv(orgRootId,lv,curOrgId,isFull);
+        if(isFull){
+            list = baseMapper.selectAllTarOrgRelTreeAndLv(orgRootId,orgTreeId,lv,curOrgId,isFull);
+        }else{
+            list = baseMapper.selectTarOrgRelTreeAndLv(orgRootId,orgTreeId,lv,curOrgId,isFull);
+        }
         if(list!=null && list.size()>0){
             return list;
         }
