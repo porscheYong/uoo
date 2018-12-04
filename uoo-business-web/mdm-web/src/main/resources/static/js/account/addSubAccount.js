@@ -41,6 +41,17 @@ if(statusCd == "1000"){                //判断状态
     $('#statusCd').get(0).selectedIndex=1;
   }
 
+  seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+    var addAcctForm = $('#addAcctForm');
+    formValidate = new Validate(addAcctForm);
+    formValidate.immediate();
+    //formValidate.isAllPass();
+    addAcctForm.find(':input').each(function () {
+        $(this).hover(function () {
+            formValidate.isPass($(this));
+        });
+    });
+  });
 
 function getSubUser(acctId) {       //查看并编辑从账号            
     $http.get('/user/getUser', {   //http://192.168.58.112:18000/user/getUser
@@ -256,6 +267,8 @@ function initUserInfo(results){   //新增时初始化信息
 }
 
 function addTbSlaveAcct(){      //从账号新增
+    if(!formValidate.isAllPass())
+        return;
     var slaveAcctType = $('#accTypeTel').get(0).selectedIndex + 1;
     var resourceObjId = $('#systemTel').get(0).selectedIndex + 1;
     var subStatusCd = $('#statusCd').get(0).selectedIndex*100 + 1000;
@@ -303,6 +316,8 @@ function addTbSlaveAcct(){      //从账号新增
 }
 
 function updateTbSlaveAcct(){       //更新从账号信息
+    if(!formValidate.isAllPass())
+        return;
     var slaveAcctType = $('#accTypeTel').get(0).selectedIndex + 1;
     var resourceObjId = $('#systemTel').get(0).selectedIndex + 1;
     var subStatusCd = $('#statusCd').get(0).selectedIndex*100 + 1000;

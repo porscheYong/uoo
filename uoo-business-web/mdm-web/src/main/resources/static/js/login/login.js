@@ -5,6 +5,9 @@ var accData;
 var show_num = [];
 var isError = 0;
 var show_num = [];
+var loading = new Loading();
+
+loading.screenMaskEnable('container');
 
 $(function (){
     toastr.options = {
@@ -108,7 +111,8 @@ function check(){
                 }
             },
             error:function(){
-                toastr.error("网络连接失败！");
+                loading.screenMaskEnable('container');
+                toastr.error("网络连接失败！"); 
             }
         });
 

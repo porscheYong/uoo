@@ -1,5 +1,6 @@
 
 
+
 // toastr
 toastr.options = {
   "closeButton": false,
@@ -23,8 +24,21 @@ toastr.options = {
 function initUserInfo(){  //初始化首页人员信息          
     $http.get('/system/getCurrentLoginUserInfo', { }, 
     function (data) {
-      console.log(data);
-      $("#psnName").text(data.uname);
+      //console.log(data);
+      getAcctInfo(data.acctId);
+    }, function (err) {
+        console.log(err)
+    })
+}
+
+function getAcctInfo(acctId){ //获取账号信息
+    $http.get('/user/getUser', { 
+        acctId:acctId,
+        userType:"1"
+    }, 
+    function (data) {
+      //console.log(data);   
+      $("#psnName").text(data.psnName);
     }, function (err) {
         console.log(err)
     })
