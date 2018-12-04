@@ -40,7 +40,7 @@ public class RouteController {
     }
 
     @GetMapping("/login")
-    public String route(HttpServletRequest request,HttpServletResponse response) {
+    public String login(HttpServletRequest request,HttpServletResponse response) {
         if(request.getSession().getAttribute(LoginConsts.LOGIN_KEY)!=null){
             try {
                 response.sendRedirect("/index");
