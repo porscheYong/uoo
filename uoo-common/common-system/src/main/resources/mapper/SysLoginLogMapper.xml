@@ -20,4 +20,9 @@
     LOGIN_ID, LOG_NAME, USER_ID, SUCCEED, IP, MESSAGE, NOTES, STATUS_CD, CREATE_DATE, CREATE_USER,
     UPDATE_DATE, UPDATE_USER, STATUS_DATE
   </sql>
+
+  <select id="getId" resultType="Long">
+    select SEQ_TB_SYS_LOGIN_LOG.NEXTVAL from dual
+  </select>
+
 </mapper>

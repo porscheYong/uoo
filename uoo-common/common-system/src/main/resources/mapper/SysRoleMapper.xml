@@ -21,4 +21,8 @@
     ROLE_ID, ROLE_NAME, ROLE_CODE, P_ROLE_ID, TIPS, DEPT_ID, NUM, STATUS_CD, CREATE_DATE, 
     CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, NOTES
   </sql>
+
+  <select id="getId" resultType="Long">
+    select SEQ_TB_SYS_ROLE.NEXTVAL from dual
+  </select>
 </mapper>

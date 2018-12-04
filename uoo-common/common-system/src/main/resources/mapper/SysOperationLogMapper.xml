@@ -21,4 +21,8 @@
     OPERATION_LOG_ID, LOG_TYPE, LOG_NAME, USER_ID, CLASS_NAME, METHOD_NAME, SUCCEED, 
     NOTES, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
   </sql>
+
+  <select id="getId" resultType="Long">
+    select SEQ_TB_SYS_OPERATION_LOG.NEXTVAL from dual
+  </select>
 </mapper>
