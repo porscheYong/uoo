@@ -46,11 +46,11 @@ public interface RolesService {
     @RequestMapping(value = "/permission/tbRoles/add", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult addTbRoles(@RequestBody Roles role) ;
 
-    @RequestMapping(value = "/getRolesPermission/{acctId}/{systemInfoId}", method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    @RequestMapping(value = "/permission/getRolesPermission/{acctId}/{systemInfoId}", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult getRolesPermission(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId);
 
 
-    @RequestMapping(value = "/getPermissionMenu/{acctId}/{systemInfoId}", method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    @RequestMapping(value = "/permission/getPermissionMenu/{acctId}/{systemInfoId}", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult getPermissionMenu(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId);
 }
 
