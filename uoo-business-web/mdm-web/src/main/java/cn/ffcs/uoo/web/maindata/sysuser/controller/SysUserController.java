@@ -38,9 +38,7 @@ public class SysUserController {
     public ResponseResult<SysUser> login(SysUser sysUser,HttpServletRequest request,HttpServletResponse response) {
         ResponseResult<SysUser> login = sysuserClient.login(sysUser);
         if(ResponseResult.STATE_OK==login.getState()){
-            Gson gson = new Gson();
             Object tbAcct2 = acctService.getTbAcct(sysUser.getAccout());
-            
             JSONObject json=JSONObject.parseObject(JSONObject.toJSONString(tbAcct2));
             if(json.getInteger("state")  ==1000){
                 request.getSession().setAttribute(LoginConsts.LOGIN_KEY,tbAcct2);

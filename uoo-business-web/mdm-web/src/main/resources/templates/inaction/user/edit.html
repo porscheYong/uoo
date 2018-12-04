@@ -395,7 +395,7 @@
                         <td>创建时间</td>
                          
                     </tr>
-                   {{#each userList}}
+                   {{#each userList.records}}
                     <tr>
                         <td>{{#seq @index}}{{/seq}}</td>
                         <td><a href="javascript:void(0)" onclick="gotoAccout('{{@index}}')">{{name}}</a></td>
