@@ -139,6 +139,8 @@ public class OrgController extends BaseController {
         List<Post> postList = org.getPostList();
         //组织联系人
         List<PsonOrgVo> psonorgList = org.getPsonOrgVoList();
+        //获取组织扩展属性
+        List<ExpandovalueVo> extValueList = org.getExpandovalueVoList();
 
         List<PoliticalLocation> politicalLocationList = org.getPoliticalLocationList();
         if(politicalLocationList==null || politicalLocationList.size()==0){
@@ -359,8 +361,7 @@ public class OrgController extends BaseController {
             }
         }
 //        }
-        //新增区域
-
+        //新增组织扩展属性
 
 
         orgService.add(newOrg);

@@ -123,7 +123,7 @@ public interface OrgRelService extends IService<OrgRel> {
          * @param isFull
          * @return
          */
-        public List<TreeNodeVo> selectTarOrgRelTreeAndLv(String orgRootId, String lv, String curOrgId, boolean isFull);
+        public List<TreeNodeVo> selectTarOrgRelTreeAndLv(String orgRootId,String orgTreeId, String lv, String curOrgId, boolean isFull);
 
         /**
          * 获取指定组织树和层级
