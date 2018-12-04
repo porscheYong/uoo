@@ -138,7 +138,7 @@ function updateOrgTree () {
     var orgRelType = [];
     // 组织关系类型类别
     for (var i = 0; i < orgRelTypeList.length; i++) {
-        var id = orgRelTypeList[i].id;
+        var id = orgRelTypeList[i].refCode || orgRelTypeList[i].id;
         orgRelType.push({refCode: id});
     }
     //组织类别

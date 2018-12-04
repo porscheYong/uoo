@@ -1,278 +1,276 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>编辑</title>
+  <title>详情</title>
 
-    <!-- Bootstrap -->
-    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- jquery datatable -->
-    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
-    <!-- jquery tagsinput -->
-    <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
-    <!-- lulu ui -->
-    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+  <!-- Bootstrap -->
+  <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <!-- jquery datatable -->
+  <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+  <!-- jquery tagsinput -->
+  <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
+  <!-- lulu ui -->
+  <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
 
-    <!-- Custom Theme Style -->
-    <link href="/css/reset.css" rel="stylesheet">
-    <link href="/css/custom.css" rel="stylesheet">
+  <!-- Custom Theme Style -->
+  <link href="/css/reset.css" rel="stylesheet">
+  <link href="/css/custom.css" rel="stylesheet">
 
-    <!--[if lt IE 9]>
-    <script src="/js/core/html5shiv.js"></script>
-    <script src="/js/core/respond.js"></script>
-    <script src="/js/core/excanvas.js"></script>
-    <![endif]-->
-    <style type="text/css">
-      table.dataTable {
-        table-layout: fixed;
-      }
+  <!--[if lt IE 9]>
+  <script src="/js/core/html5shiv.js"></script>
+  <script src="/js/core/respond.js"></script>
+  <script src="/js/core/excanvas.js"></script>
+  <![endif]-->
+  <style type="text/css">
+    table.dataTable {
+      table-layout: fixed;
+    }
 
-      th {
-        text-align: center;
-        white-space: nowrap;
-      }
-      table.dataTable tbody td {
-        text-align: center;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      #locId, #orgTypeList, #positionList, #postList {
-        opacity: 0;
-        filter: alpha(opacity=0);
-        position: absolute;
-      }
-    </style>
-  </head>
+    th {
+      text-align: center;
+      white-space: nowrap;
+    }
+    table.dataTable tbody td {
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #locationList, #orgTypeList, #positionList, #postList {
+      opacity: 0;
+      filter: alpha(opacity=0);
+      position: absolute;
+    }
+    .content {
+      padding: 10px;
+    }
+    .content p {
+      text-indent: 2em;
+    }
+    .row {
+      margin-bottom: 10px;
+    }
+    .row .item {
+      display: inline-block;
+      padding-right: 25px;
+      width: 100%;
+    }
+    .row .item .item-label {
+      line-height: 20px;
+      text-align: right;
+    }
+    .row .item span {
+      line-height: 20px;
+    }
+    div.tagsinput {
+      border: none;
+    }
+  </style>
+</head>
 
-  <body style="background: #fff;">
-    <div>
-      <div>
-        <a class="BoardTitle Back" href="javascript:history.go(-1);"  >返回</a>
-      </div>
-        <div class="board-title">
+<body style="background: #fff;">
+<div>
+  <div>
+    <a class="BoardTitle Back" href="javascript:history.go(-1);"  >返回</a>
+  </div>
+  <div class="board-title">
             <span class="name ft18 orgName"></span
             ><div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;"></div>
+  </div>
+  <div class="board-title">
+    <span class="name ft18">基本信息</span>
+  </div>
+  <div class="nav-tabs-brief" style="overflow-x: hidden;">
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab_content1">
+        <div class="content" id="orgContent">
+          <!--<p>公司下辖萧山、余杭、富阳、临安、桐庐、建德、淳安7个县（市、区）分公司，市区设西湖、上城、下城、江干、拱墅、滨江、下沙7个电信分局 中国电信杭州分公司主要经营范围：国内、国际各类固定电信网络设施，包括本地无线环路；基于电信网络的语音、数据、图像及多媒体通信与信息服务；经营与通讯及信息业务相关的系统集成、技术开发、技术服务、信息咨询、广告、出版、设备生产销售和进出口、设计施工等业务；并根据市场发展需要，经营国家批准或允许的其他业务。</p>-->
         </div>
-        <div class="board-title">
-          <span class="name ft18">添加子节点</span>
-        </div>
-        <div class="nav-tabs-brief" style="padding-top: 35px;">
+        <div style="padding: 10px;" id="orgEditForm">
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="item">
+                <label class="item-label col-md-4 col-sm-4 col-xs-4">组织名称:</label>
+                <span id="orgName" class="col-md-8 col-sm-8 col-xs-8"></span>
+              </div>
+            </div>
 
-          <div class="tab-content" style="overflow-x: hidden;">
-            <div class="tab-pane active" id="tab_content1">
-              <form style="padding: 10px;" id="orgAddForm">
-                <div class="row" style="margin-bottom: 10px;">
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="orgName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织名称</label>
-                      <input id="orgName" class="ui-input col-md-8 col-sm-8 col-xs-12" required>
-                    </div>
-                  </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="item">
+                <label class="item-label col-md-4 col-sm-4 col-xs-4">组织编码:</label>
+                <span id="orgCode" class="col-md-8 col-sm-8 col-xs-8"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="item">
+                <label class="item-label col-md-4 col-sm-4 col-xs-4">组织简称:</label>
+                <span id="shortName" class="col-md-8 col-sm-8 col-xs-8"></span>
+              </div>
+            </div>
 
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="orgCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织编码</label>
-                      <input id="orgCode" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" style="margin-bottom: 10px;">
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="shortName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织简称</label>
-                      <input id="shortName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" required>
-                    </div>
-                  </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="item">
+                <label class="item-label col-md-4 col-sm-4 col-xs-4">组织全称:</label>
+                <span id="fullName" class="col-md-8 col-sm-8 col-xs-8"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="item">
+                <label class="item-label col-md-4 col-sm-4 col-xs-4">城乡属性:</label>
+                <span id="cityTown" class="col-md-8 col-sm-8 col-xs-8"></span>
+              </div>
+            </div>
 
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="fullName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织全称</label>
-                      <input id="fullName" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" style="margin-bottom: 10px;">
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="cityTown" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">城乡属性</label>
-                      <select id="cityTown" class="col-md-8 col-sm-8 col-xs-12" required>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="item">
+                <label class="item-label col-md-4 col-sm-4 col-xs-4">划小组织编码:</label>
+                <span id="orgMartCode" class="col-md-8 col-sm-8 col-xs-8"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="item">
+                <label class="item-label col-md-4 col-sm-4 col-xs-4">规模:</label>
+                <span id="orgScale" class="col-md-8 col-sm-8 col-xs-8"></span>
+              </div>
+            </div>
 
-                      </select>
-                    </div>
-                  </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="item">
+                <label class="item-label col-md-4 col-sm-4 col-xs-4">成立时间:</label>
+                <span id="createDate" class="col-md-8 col-sm-8 col-xs-8"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="item">
+                <label class="item-label col-md-4 col-sm-4 col-xs-4">联系人:</label>
+                <span id="psonOrgVoList" class="col-md-8 col-sm-8 col-xs-8"></span>
+              </div>
+            </div>
 
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">划小组织编码</label>
-                      <input id="" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" style="margin-bottom: 10px;">
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="orgScale" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">规模</label>
-                      <select id="orgScale" class="col-md-8 col-sm-8 col-xs-12">
-                      </select>
-                    </div>
-                  </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="item">
+                <label class="item-label col-md-4 col-sm-4 col-xs-4">英文简称:</label>
+                <span id="orgNameEn" class="col-md-8 col-sm-8 col-xs-8"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="item">
+                <label class="item-label col-md-4 col-sm-4 col-xs-4">组织最高岗位级别:</label>
+                <span id="orgPositionLevel"  class="col-md-8 col-sm-8 col-xs-8"></span>
+              </div>
+            </div>
 
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="createDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">成立时间</label>
-                      <input id="createDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40">
-                    </div>
-                  </div>
-                </div>
-                <div class="row" style="margin-bottom: 10px;">
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="psonOrgVoList" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">联系人</label>
-                      <input id="psonOrgVoList" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" readonly onclick="openContactDialog()">
-                    </div>
-                  </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="item">
+                <label class="item-label col-md-4 col-sm-4 col-xs-4">组织办公电话:</label>
+                <span id="officePhone" class="ui-input col-md-8 col-sm-8 col-xs-8"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="item">
+                <label class="item-label col-md-4 col-sm-4 col-xs-4">状态:</label>
+                <span id="statusCd"  class="col-md-8 col-sm-8 col-xs-8"></span>
+              </div>
+            </div>
 
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="orgNameEn" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">英文简称</label>
-                      <input id="orgNameEn" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" >
-                    </div>
-                  </div>
-                </div>
-                <div class="row" style="margin-bottom: 10px;">
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="orgPositionLevel" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织最高岗位级别</label>
-                      <select id="orgPositionLevel"  class="col-md-8 col-sm-8 col-xs-12">
-                        <option></option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="officePhone" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织办公电话</label>
-                      <input id="officePhone" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40">
-                    </div>
-                  </div>
-                </div>
-                <div class="row" style="margin-bottom: 10px;">
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="statusCd" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
-                      <select id="statusCd"  class="col-md-8 col-sm-8 col-xs-12" required></select>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="sort" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">排序</label>
-                      <input id="sort" class="ui-input col-md-8 col-sm-8 col-xs-12" type="number" size="40" name="code">
-                    </div>
-                  </div>
-                </div>
-                <div class="row" style="margin-bottom: 10px;">
-                  <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="address" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">地址</label>
-                      <div class="col-md-10 col-sm-10 col-xs-12" style="width: 84%;position: relative;padding: 0;">
-                        <input id="address" class="ui-input" style="width: 100%;position: relative;" size="40">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" style="margin-bottom: 10px;">
-                  <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="locId" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">行政管理区域</label>
-                      <input id="locId" class="ui-input col-md-10 col-sm-10 col-xs-12" style="width: 84%" onclick="openLocationDialog()" required readonly>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" style="margin-bottom: 10px;">
-                  <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="orgTypeList" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织类别</label>
-                      <!--<div id="orgTypeList" class="ui-input col-md-10 col-sm-10 col-xs-12 tagsinput" style="width: 84%; height: auto; min-height: 40px; border: 1px solid #ababaf; border-radius: 4px;" onclick="openTypeDialog()" required></div>-->
-                      <input id="orgTypeList" class="ui-input col-md-10 col-sm-10 col-xs-12" style="width: 84%" onclick="openTypeDialog()" required readonly></input>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" style="margin-bottom: 10px;">
-                  <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="positionList" class="form-item-label-required form-item-label col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织岗位</label>
-                      <input id="positionList" class="ui-input col-md-10 col-sm-10 col-xs-12 " style="width: 84%;" onclick="openPositionDialog()" required readonly></input>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" style="margin-bottom: 10px;">
-                  <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="postList" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织职位</label>
-                      <!--<div id="postList" class="ui-input col-md-10 col-sm-10 col-xs-12 tagsinput" style="width: 84%; height: auto; min-height: 40px; border: 1px solid #ababaf; border-radius: 4px;" onclick="openPostDialog()" required></div>-->
-                      <input id="postList" class="ui-input col-md-10 col-sm-10 col-xs-12 tagsinput" style="width: 84%;" onclick="openPostDialog()" required readonly></input>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" style="margin-bottom: 10px;">
-                  <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="orgContent" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织简介</label>
-                      <div class="ui-textarea-x" class="col-md-10 col-sm-10 col-xs-12" style="width: 84%">
-                        <textarea id="orgContent" maxlength="140" rows="5"></textarea>
-                        <div class="ui-textarea"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" style="margin-bottom: 10px;">
-                  <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="orgDesc" class="col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织描述</label>
-                      <div class="ui-textarea-x" class="col-md-10 col-sm-10 col-xs-12" style="width: 84%">
-                        <textarea id="orgDesc" maxlength="140" rows="5"></textarea>
-                        <div class="ui-textarea"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </form>
-              <div class="row" style="margin-bottom: 10px;">
-                <div style="margin-left: 17%;">
-                    <button class="ui-button ui-button-primary" onclick="addOrg()">保存</button>
-                    <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
-                </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="item">
+                <label class="item-label col-md-4 col-sm-4 col-xs-4">排序:</label>
+                <span id="sort" class="col-md-8 col-sm-8 col-xs-8"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="item">
+                <label class="item-label col-md-2 col-sm-2 col-sm-2" style="width: 16%;">地址:</label>
+                <span id="address" class="col-md-10 col-sm-10 col-xs-10" style="width: 84%;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="item">
+                <label class="item-label col-md-2 col-sm-2 col-sm-2" style="width: 16%; line-height: 40px;">行政管理区域:</label>
+                <div id="locationList" class="col-md-10 col-sm-10 col-xs-10" style="width: 84%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="item">
+                <label class="item-label col-md-2 col-sm-2 col-sm-2" style="line-height: 40px; width: 16%;">组织类别:</label>
+                <div id="orgTypeList" class="col-md-10 col-sm-10 col-xs-10" style="width: 84%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="item">
+                <label class="item-label col-md-2 col-sm-2 col-sm-2" style="line-height: 40px ;width: 16%;">组织岗位:</label>
+                <div id="positionList" class="col-md-10 col-sm-10 col-xs-10 " style="width: 84%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="item">
+                <label class="item-label col-md-2 col-sm-2 col-sm-2" style="line-height: 40px; width: 16%;">组织职位;</label>
+                <div id="postList" class="col-md-10 col-sm-10 col-xs-10" style="width: 84%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="item">
+                <label class="item-label col-md-2 col-sm-2 col-sm-2" style="width: 16%;">组织描述:</label>
+                <div id="orgDesc" class="col-md-10 col-sm-10 col-xs-10" style="width: 84%"></div>
               </div>
             </div>
           </div>
         </div>
+      </div>
     </div>
+  </div>
+  <div class="board-title">
+    <span class="name ft18">关系信息</span>
+    <div class="tab-pane" id="tab_content2">
+      <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden;">
+        <table id="orgRelTable" class="stripe" width="100%"></table>
+      </div>
+    </div>
+  </div>
+</div>
 
-    <!-- jQuery -->
-    <script type="text/javascript" src="/js/core/jquery.js"></script>
-    <!-- Bootstrap -->
-    <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- jquery datatable -->
-    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
-    <!-- sea js -->
-    <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
-    <!-- laydate -->
-    <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
-    <!-- layer -->
-    <script type="text/javascript" src="/vendors/layer/layer.js"></script>
-    <!-- jquery tagsinput -->
-    <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
-    <!-- init -->
-    <script type="text/javascript" src="/js/init.js"></script>
-    <script type="text/javascript" src="/js/business/orgAdd.js"></script>
-	
-  </body>
+<!-- jQuery -->
+<script type="text/javascript" src="/js/core/jquery.js"></script>
+<!-- Bootstrap -->
+<script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- jquery datatable -->
+<script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+<!-- jquery tagsinput -->
+<script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
+<!-- init -->
+<script type="text/javascript" src="/js/init.js"></script>
+<script type="text/javascript" src="/js/business/orgInfo.js"></script>
+</body>
 </html>

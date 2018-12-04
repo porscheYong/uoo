@@ -157,7 +157,12 @@ function getOrgPersonnerList () {
         personnelId: personnelId
     }, function (data) {
     	personalData.personalData=data;
-    	personalData.orgInfo=data.psonOrgVoList.records;
+    	if(data.psonOrgVoList!=null){
+            personalData.orgInfo=data.psonOrgVoList.records;
+		}else{
+            personalData.orgInfo={};
+		}
+
     	console.log(personalData);
     	initUser();
     	initOrgInfo();

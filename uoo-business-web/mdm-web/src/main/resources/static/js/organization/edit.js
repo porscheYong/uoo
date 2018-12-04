@@ -5,6 +5,7 @@ var locationList;
 var orgTypeList;
 var positionList;
 var orgPostList;
+var regionList = [];
 var checkNode;
 var selectUser = [];
 var formValidate;
@@ -43,6 +44,7 @@ if(typeof $.fn.tagsInput !== 'undefined'){
   $('#orgTypeList').tagsInput();
   $('#positionList').tagsInput();
   $('#postList').tagsInput();
+  $('#regionId').tagsInput();
 }
 
 //联系人选择
@@ -114,7 +116,7 @@ function openPositionDialog() {
             checkNode = iframeWin.checkNode;
             parent.layer.close(index);
             $('#positionList').importTags(checkNode);
-            $('.ui-tips-error').css('display', 'none');
+            // $('.ui-tips-error').css('display', 'none');
             positionList = checkNode;
         },
         btn2: function(index, layero){},
@@ -140,7 +142,7 @@ function openPostDialog() {
             parent.layer.close(index);
             $('#postList').importTags(checkNode);
             //TODO 防止选中标签显示错误提示
-            $('.ui-tips-error').css('display', 'none');
+            // $('.ui-tips-error').css('display', 'none');
             orgPostList = checkNode;
         },
         btn2: function(index, layero){},
@@ -171,6 +173,40 @@ function openLocationDialog() {
         btn2: function(index, layero){},
         cancel: function(){}
     });
+}
+
+//电信管理区域选择
+function openRegionDialog() {
+    parent.layer.open({
+        type: 2,
+        title: '电信管理区域',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['50%', '80%'],
+        maxmin: true,
+        content: 'regionDialog.html',
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            checkNode = iframeWin.checkNode;
+            $('#regionId').importTags(checkNode);
+            regionList = checkNode;
+            parent.layer.close(index);
+            getAreaId(checkNode[0].id);
+        },
+        btn2: function(index, layero){},
+        cancel: function(){}
+    });
+}
+
+//根据电信管理区域ID获取区号
+function getAreaId(regionId) {
+    $http.get('/region/commonRegion/getCommonRegion/id='+ regionId, {}, function (data) {
+        $('#areaCodeId').val(data.areaCode.areaCodeId);
+    }, function (err) {
+        console.log(err)
+    })
 }
 
 //证件信息初始化
@@ -319,6 +355,7 @@ function initOrgRelTable (results) {
               //   return data[0].orgTypeName
               // }
             },
+            { 'data': "orgBizName", 'title': '组织称谓', 'className': 'user-account' },
             { 'data': "refName", 'title': '关系类型', 'className': 'user-account' },
             { 'data': "supOrgName", 'title': '上级组织', 'className': 'user-type' },
             { 'data': "createDate", 'title': '添加时间', 'className': 'role-type' }
@@ -605,6 +642,7 @@ function updateOrg () {
   var officePhone = $('#officePhone').val();
   var statusCd = $('#statusCd option:selected') .val();
   var sort = $('#sort').val();
+  var areaCodeId = $('#areaCodeId').val();
   var address = $('#address').val();
   var orgContent = $('#orgContent').val();
   var orgDesc = $('#orgDesc').val();
@@ -624,6 +662,7 @@ function updateOrg () {
       officePhone: officePhone,
       statusCd: statusCd,
       sort: sort,
+      areaCodeId: areaCodeId,
       address: address,
       politicalLocationList: location,
       orgTypeList: orgType,
@@ -635,7 +674,7 @@ function updateOrg () {
       parent.changeNodeName(orgId, orgName);
       window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
       loading.screenMaskDisable('container');
-      toastr.success('更新成功！')
+      toastr.success('更新成功！');
   }, function (err) {
 
   })
@@ -658,6 +697,7 @@ function deleteOrg () {
             parent.deleteNode(orgId);
             parent.selectRootNode();
             loading.screenMaskDisable('container');
+            toastr.success('删除成功！');
         }, function (err) {
             console.log(err);
             loading.screenMaskDisable('container');

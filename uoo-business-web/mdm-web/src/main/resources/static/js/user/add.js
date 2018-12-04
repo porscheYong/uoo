@@ -56,6 +56,18 @@ $("#userAdd").steps({
         return formValidate.isAllPass();
     },
     onFinished: function (event, currentIndex) {
+        if (orgList.length > 0 && orgList[0].postName == '') {
+            parent.layer.confirm('请添加职位信息！', {
+                icon: 0,
+                title: '提示',
+                btn: ['确定']
+            }, function(index, layero){
+                parent.layer.close(index);
+            }, function(){
+
+            });
+            return;
+        }
         savePersonnel();
     }
 });
@@ -873,6 +885,7 @@ function  initOrgTable (results) {
 // 归属组织信息编辑
 function editOrgList (index) {
     $('#orgEditBtn').hide();
+    $('.actions').hide();
     $('#orgEdit').addClass( 'edit-form');
     var data = {};
     if (index) {
@@ -939,6 +952,7 @@ function addOrgList () {
         orgTable.row.add(orgObj).draw();
     }
     $('#orgEditBtn').show();
+    $('.actions').show();
     $('#orgEdit').removeClass( 'edit-form');
     $('#orgEdit').html('');
 }
@@ -950,6 +964,7 @@ function deleteOrgList (index) {
 // 取消归属组织信息编辑
 function cancelOrgEdit () {
     $('#orgEditBtn').show();
+    $('.actions').show();
     $('#orgEdit').removeClass( 'edit-form');
     $('#orgEdit').html('');
 }
