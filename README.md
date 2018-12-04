@@ -270,7 +270,7 @@ uoo是采用Spring Cloud微服务化开发平台，具有统一授权、认证�
 | 112 | business-personnel | 人员域服务中心 | 11200、11211 | 11222、11233、11244 |
 | 113 | business-user | 用户业务服务中心 | 11300、11311 | 11322、11333、11344 |
 | 114 | business-permission | 权限域服务中心 | 11400、11411 | 11422、11433、11444 |
-| 115 | business-public | 公共域服务中心 | 11500、11511 | 11522、11533、11544 |
+| 115 | business-public | 公共域服务中心 | 11500 | 11511、 11522、11533、11544 |
 | 116 | business-position | 职位域服务中心 | 11600 | 11611、11622、11633、11644 |
 | 117 | business-region | 区域模块 | 11700 | 11711、11722、11733、11744 |
 | 118 | business-authentication | 认证管理 | 11800 | 11811、11822、11833、11844 |
@@ -293,6 +293,8 @@ uoo是采用Spring Cloud微服务化开发平台，具有统一授权、认证�
 | 204 | authentication-cs | 用户身份管理服务API-CS方式 | 20400、20411 | 20422、20433、20444 |
 
 ### 详细部署清单
+
+![avatar](https://github.com/rothschil/static/raw/master/Snipaste_2018-12-04_21-22-03.jpg)
 
 <table border=0 cellpadding=0 cellspacing=0 width=1611 style='border-collapse:
  collapse;table-layout:fixed;width:1209pt'>
@@ -330,7 +332,7 @@ uoo是采用Spring Cloud微服务化开发平台，具有统一授权、认证�
   <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>2</td>
   <td class=xl65 style='border-top:none;border-left:none'>uoo-register</td>
   <td class=xl65 style='border-top:none;border-left:none'>注册中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>8600、8611</td>
+  <td class=xl66 style='border-top:none;border-left:none'>8751、8761</td>
   <td class=xl73 style='border-top:none'>　</td>
   <td class=xl65 style='border-top:none;border-left:none'>　</td>
   <td class=xl65 style='border-top:none;border-left:none'>　</td>
@@ -395,7 +397,7 @@ uoo是采用Spring Cloud微服务化开发平台，具有统一授权、认证�
   <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>9</td>
   <td class=xl65 style='border-top:none;border-left:none'>uoo-register</td>
   <td class=xl65 style='border-top:none;border-left:none'>注册中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>8600、8611</td>
+  <td class=xl66 style='border-top:none;border-left:none'>8751、8761</td>
   <td class=xl73 style='border-top:none'>　</td>
   <td class=xl65 style='border-top:none;border-left:none'>　</td>
   <td class=xl65 style='border-top:none;border-left:none'>　</td>
@@ -460,7 +462,7 @@ uoo是采用Spring Cloud微服务化开发平台，具有统一授权、认证�
   <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>16</td>
   <td class=xl65 style='border-top:none;border-left:none'>uoo-register</td>
   <td class=xl65 style='border-top:none;border-left:none'>注册中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>8600、8611</td>
+  <td class=xl66 style='border-top:none;border-left:none'>8751、8761</td>
   <td class=xl73 style='border-top:none'>　</td>
   <td class=xl65 style='border-top:none;border-left:none'>　</td>
   <td class=xl65 style='border-top:none;border-left:none'>　</td>
