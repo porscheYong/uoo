@@ -46,4 +46,4 @@ function initUserPermission(){    //初始化人员权限
 }
 
 initUserInfo();
-initUserPermission();
+// initUserPermission();
