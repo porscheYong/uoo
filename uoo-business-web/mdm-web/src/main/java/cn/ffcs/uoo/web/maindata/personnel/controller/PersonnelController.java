@@ -111,4 +111,11 @@ public class PersonnelController {
         return personnelService.getFreePsnInfo(keyWord, pageNo, pageSize);
     }
 
+    @ApiOperation(value = "身份证对应人力编码", notes = "身份证对应人力编码")
+    @ApiImplicitParam(name = "certNo", value = "身份证号", required = true, dataType = "String",paramType="path")
+    @RequestMapping(value = "/getIdCardNcCode",method = RequestMethod.GET)
+    public Object getIdCardNcCode(String certNo){
+        return personnelService.getIdCardNcCode(certNo);
+    }
+
 }
