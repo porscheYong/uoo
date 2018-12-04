@@ -1,6 +1,9 @@
 package cn.ffcs.uoo.web.maindata.mdm.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +39,17 @@ public class RouteController {
         return "index";
     }
 
+    @GetMapping("/login")
+    public String route(HttpServletRequest request,HttpServletResponse response) {
+        if(request.getSession().getAttribute(LoginConsts.LOGIN_KEY)!=null){
+            try {
+                response.sendRedirect("/index");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return "loginPage";
+    }
     @GetMapping("/route/{url}")
     public String route(@PathVariable("url") String url) {
         return url.replaceAll("-", "/");
