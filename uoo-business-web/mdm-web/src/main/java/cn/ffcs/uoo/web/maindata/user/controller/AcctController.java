@@ -79,4 +79,11 @@ public class AcctController {
         return acctService.getAcctOrgRelPage(acctId, pageNo, pageSize);
     }
 
+    @ApiOperation(value = "主账号信息",notes = "主账号信息")
+    @ApiImplicitParam(name = "acct", value = "主账号", required = true, dataType = "String", paramType = "path")
+    @RequestMapping(value = "/getTbAcct", method = RequestMethod.GET)
+    public Object getTbAcct(String acct){
+        return acctService.getTbAcct(acct);
+    }
+
 }
