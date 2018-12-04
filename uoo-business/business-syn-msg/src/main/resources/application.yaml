@@ -3,7 +3,10 @@ spring:
     name: business-syn-msg
   datasource:
       druid:
-        url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
+        #测试环境
+        #url: jdbc:oracle:thin:@134.96.167.19:1521/uomdb1
+        #生产环境
+        url: jdbc:oracle:thin:@134.96.248.48:3436/ZJ4APRD
         driver-class-name:  oracle.jdbc.OracleDriver
         username: octopus
         password: octopus
@@ -85,7 +88,10 @@ spring:
   rabbitmq:
     username: root
     password: 123
-    host: 134.96.253.221
+    #测试
+    #host: 134.96.253.221
+    #生产
+    host: 134.96.217.231
     port: 5672
     listener:
       direct:
@@ -119,10 +125,13 @@ eureka:
     lease-expiration-duration-in-seconds: 30
     lease-renewal-interval-in-seconds: 10
   server:
-    port: 8762
+    #port: 8762
   client:
     service-url:
-      defaultZone:  http://localhost:${eureka.server.port}/eureka/
+      #测试环境
+      #defaultZone:  http://134.96.253.221:8751/eureka/,http://134.96.253.222:8751/eureka/,http://134.96.253.223:8751/eureka/
+      #生产环境
+      defaultZone: http://134.96.217.231:8751/eureka/,http://134.96.217.232:8751/eureka/,http://134.96.217.233:8751/eureka/,http://134.96.217.231:8761/eureka/,http://134.96.217.232:8761/eureka/,http://134.96.217.233:8761/eureka/
 
 feign:
   hystrix:

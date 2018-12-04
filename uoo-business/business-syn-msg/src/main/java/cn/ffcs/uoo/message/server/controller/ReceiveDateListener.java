@@ -164,7 +164,7 @@ public class ReceiveDateListener {
                                 case "insert":
                                 case "update": {
                                     List<TbSlaveAcct> slaveList = tbSlaveAcctMapper.insertOrUpdateSalveAcctByPersonnelIdAndSystemId(value, system.getBusinessSystemId());
-                                    if (slaveList != null && slaveList.size() !=0) {
+                                    if (slaveList != null && slaveList.size() > 0) {
                                         //下发人员和从账号
                                         if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() == 1) {
                                             TbSlaveAcct temp = slaveList.get(0);

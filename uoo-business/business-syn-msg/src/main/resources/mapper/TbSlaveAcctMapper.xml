@@ -191,7 +191,28 @@
     <result column="MAPP_STAFF_ID" jdbcType="VARCHAR" property="mappStaffId" />
     <collection property="tbAcctExt" ofType="cn.ffcs.uoo.message.server.pojo.TbAcctExt"
                 column="SLAVE_ACCT_ID" select="getTbAcctExt"></collection>
+  </resultMap>
 
+  <!--从账号2 不含有扩展-->
+  <resultMap id="TbSlaveAcctVoMap2" type="cn.ffcs.uoo.message.server.vo.TbSlaveAcctVo">
+    <id column="SLAVE_ACCT_ID" jdbcType="DECIMAL" property="slaveAcctId" />
+    <result column="SLAVE_ACCT" jdbcType="VARCHAR" property="slaveAcct" />
+    <result column="SALT" jdbcType="VARCHAR" property="salt" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="SYMMETRY_PASSWORD" jdbcType="VARCHAR" property="symmetryPassword" />
+    <result column="SLAVE_ACCT_TYPE" jdbcType="VARCHAR" property="slaveAcctType" />
+    <result column="RESOURCE_OBJ_ID" jdbcType="DECIMAL" property="resourceObjId" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+    <result column="ACCT_HOST_ID" jdbcType="DECIMAL" property="acctHostId" />
+    <result column="ACCT_ID" jdbcType="DECIMAL" property="acctId" />
+    <result column="ENABLE_DATE" jdbcType="DATE" property="enableDate" />
+    <result column="DISABLE_DATE" jdbcType="DATE" property="disableDate" />
+    <result column="MAPP_STAFF_ID" jdbcType="VARCHAR" property="mappStaffId" />
   </resultMap>
 
   <!--从账号扩展-->
@@ -370,7 +391,8 @@
   </select>
 
   <select id="getTbSlaveAcctVo" resultMap="TbSlaveAcctVoMap" parameterType="Long">
-    select * from tb_slave_acct where slave_acct_id = #{SLAVE_ACCT_ID} and STATUS_CD= 1000
+    select a.*,b.status_cd,case when b.status_cd = '1000' then b.map_acct_id else null end MAPP_STAFF_ID from tb_slave_acct a
+    left join tb_slave_acct_map b on a.slave_acct_id = b.slave_acct_id where a.slave_acct_id = #{SLAVE_ACCT_ID} and a.STATUS_CD= 1000
   </select>
 
   <select id="getTbAcctExt" resultMap="TbAcctExtMap" parameterType="Long">
@@ -399,6 +421,11 @@
 
   <select id="getTbPsnjob" resultMap="TbPsnjobMap" parameterType="Long">
      select a.*,b.org_name from Tb_Psnjob a,tb_org b where PERSONNEL_ID = #{PERSONNEL_ID} and a.org_id = b.org_id and a.status_cd = 1000 and b.status_cd = 1000
+  </select>
+
+  <select id="selectVoById" resultMap="TbSlaveAcctVoMap2">
+    select a.*,case when b.status_cd = '1000' then b.map_acct_id else null end MAPP_STAFF_ID from tb_slave_acct a left join tb_slave_acct_map b on a.slave_acct_id = b.slave_acct_id
+    where a.slave_acct_id = #{slaveAcctId}
   </select>
 
 </mapper>
