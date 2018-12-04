@@ -21,4 +21,8 @@
     UPDATE_DATE, UPDATE_USER, STATUS_DATE, NOTES
   </sql>
 
+  <select id="getId" resultType="Long">
+    select SEQ_TB_SYS_DICT.NEXTVAL from dual
+  </select>
+
 </mapper>

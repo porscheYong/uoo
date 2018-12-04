@@ -15,7 +15,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         HttpSession session = request.getSession();
         Object login = session.getAttribute(LoginConsts.LOGIN_KEY);
         if(login==null){
-            response.sendRedirect("/login.html");
+            response.sendRedirect("/login");
             return false;
         }
         return super.preHandle(request, response, handler);

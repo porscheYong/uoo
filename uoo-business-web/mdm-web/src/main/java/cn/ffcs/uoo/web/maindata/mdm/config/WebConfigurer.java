@@ -15,6 +15,7 @@ public class WebConfigurer extends WebMvcConfigurerAdapter {
         // 排除配置
         addInterceptor.excludePathPatterns("/error");
         addInterceptor.excludePathPatterns("/login/**");
+        addInterceptor.excludePathPatterns("/login");
         addInterceptor.excludePathPatterns("/system/sysUserLogin");
         addInterceptor.excludePathPatterns("/swagger-resources/**");
         addInterceptor.excludePathPatterns("/webjars/**");

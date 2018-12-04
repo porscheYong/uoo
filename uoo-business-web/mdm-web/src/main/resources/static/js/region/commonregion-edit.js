@@ -57,7 +57,7 @@ function get(id){
 			if(data.state==1000){
 				curUpId=data.data.PARENT_REGION_ID
 				initData(data.data);
-				loadUpRegionList(curUpId);
+				//loadUpRegionList(curUpId);
 			}else{
 				alert(data.message);
 			}

@@ -37,4 +37,7 @@ public interface AcctService {
 
     @RequestMapping(value= "/tbAccountOrgRel/getAcctOrgRelPage", method = RequestMethod.GET, headers={"Content-Type=application/json"} )
     public Object getAcctOrgRelPage(@RequestParam("acctId") Long acctId, @RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
+
+    @RequestMapping(value = "/tbAcct/getTbAcct", method = RequestMethod.GET, headers={"Content-Type=application/json"})
+    public Object getTbAcct(@RequestParam("acct") String acct);
 }
