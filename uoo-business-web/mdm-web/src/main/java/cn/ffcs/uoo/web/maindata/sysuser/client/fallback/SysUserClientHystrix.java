@@ -9,8 +9,8 @@ import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
 public class SysUserClientHystrix implements SysUserClient {
 
     @Override
-    public ResponseResult<Void> login(SysUser sysUser) {
-        ResponseResult<Void> rr=new ResponseResult<>();
+    public ResponseResult<SysUser> login(SysUser sysUser) {
+        ResponseResult<SysUser> rr=new ResponseResult<>();
         rr.setState(ResponseResult.STATE_ERROR);
         rr.setMessage("服务不可用");
         return rr;

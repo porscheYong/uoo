@@ -10,5 +10,5 @@ import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
 @FeignClient(value = "common-system",fallback = SysUserClientHystrix.class)
 public interface SysUserClient {
     @RequestMapping(value = "/system/sysUserLogin", method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult<Void> login(SysUser sysUser) ;
+    public ResponseResult<SysUser> login(SysUser sysUser) ;
 }

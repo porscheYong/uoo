@@ -28,8 +28,8 @@ public class SysUserController {
         @ApiImplicitParam(name = "sysUser", value = "sysUser", required = true, dataType = "SysUser" ),
     })
     @RequestMapping(value = "/sysUserLogin", method = RequestMethod.POST)
-    public ResponseResult<Void> login(SysUser sysUser,HttpServletRequest request,HttpServletResponse response) {
-        ResponseResult<Void> login = sysuserClient.login(sysUser);
+    public ResponseResult<SysUser> login(SysUser sysUser,HttpServletRequest request,HttpServletResponse response) {
+        ResponseResult<SysUser> login = sysuserClient.login(sysUser);
         if(ResponseResult.STATE_OK==login.getState()){
             request.getSession().setAttribute(LoginConsts.LOGIN_KEY,login);
         }
