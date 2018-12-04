@@ -141,4 +141,9 @@ eureka:
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
 logging:
   level:
-    cn.ffcs.uoo.core.region.dao: debug
+    root: INFO
+    cn.ffcs: INFO
+  file: business-region.log
+  pattern: 
+    console: "%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n"
+    file: "%d{yyyy/MM/dd-HH:mm} [%thread] %-5level %logger- %msg%n"
