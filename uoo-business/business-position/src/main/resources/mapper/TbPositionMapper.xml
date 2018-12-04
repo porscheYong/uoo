@@ -27,7 +27,7 @@
 
     <insert id="save" parameterType="cn.ffcs.uoo.core.position.entity.TbPosition">
         <selectKey keyProperty="positionId" resultType="java.lang.Long" order="BEFORE">
-            SELECT SEQ_POSITION_ID.NEXTVAL FROM dual
+            SELECT SEQ_TB_POSITION_ID.NEXTVAL FROM dual
         </selectKey>
         insert into TB_POSITION
         <trim prefix="(" suffix=")" suffixOverrides=",">

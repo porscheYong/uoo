@@ -60,4 +60,7 @@ public interface PersonnelService {
 
     @RequestMapping(value="/personnel/getFreePsnInfo",method = RequestMethod.GET, headers={"Content-Type=application/json"})
     public Object getFreePsnInfo(@RequestParam("keyWord") String keyWord, @RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
+
+    @RequestMapping(value = "/personnel/getIdCardNcCode",method = RequestMethod.GET, headers={"Content-Type=application/json"})
+    public Object getIdCardNcCode(@RequestParam("certNo") String certNo);
 }

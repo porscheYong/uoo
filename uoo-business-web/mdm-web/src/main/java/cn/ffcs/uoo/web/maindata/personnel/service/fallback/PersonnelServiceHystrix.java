@@ -90,4 +90,12 @@ public class PersonnelServiceHystrix implements PersonnelService {
         responseResult.setMessage("系统暂时不可用");
         return responseResult;
     }
+
+    @Override
+    public Object getIdCardNcCode(String certNo) {
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
 }

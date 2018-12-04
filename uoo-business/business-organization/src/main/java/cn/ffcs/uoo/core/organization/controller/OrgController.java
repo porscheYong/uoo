@@ -117,6 +117,7 @@ public class OrgController extends BaseController {
     @ApiOperation(value = "新增组织信息-web", notes = "新增组织信息")
     @UooLog(value = "新增组织信息", key = "addOrg")
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
+    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<TreeNodeVo> addOrg(@RequestBody OrgVo org){
         ResponseResult<TreeNodeVo> ret = new ResponseResult<TreeNodeVo>();
         
@@ -194,10 +195,10 @@ public class OrgController extends BaseController {
         String orgCode = orgService.getGenerateOrgCode();
         Long orgId = orgService.getId();
         newOrg.setOrgId(orgId);
-        if(pl.getLocId()!=null){
+        if(!StrUtil.isNullOrEmpty(pl.getLocId())){
             newOrg.setLocId(pl.getLocId());
         }
-        if(org.getAreaCodeId()!=null){
+        if(!StrUtil.isNullOrEmpty(org.getAreaCodeId())){
             newOrg.setAreaCodeId(new Long(org.getAreaCodeId()));
         }
         newOrg.setOrgName(StrUtil.strnull(org.getOrgName()));
@@ -444,10 +445,10 @@ public class OrgController extends BaseController {
         }
         Org newOrg = new Org();
         newOrg.setOrgId(org.getOrgId());
-        if(pl.getLocId()!=null){
+        if(!StrUtil.isNullOrEmpty(pl.getLocId())){
             newOrg.setLocId(pl.getLocId());
         }
-        if(org.getAreaCodeId()!=null){
+        if(!StrUtil.isNullOrEmpty(org.getAreaCodeId())){
             newOrg.setAreaCodeId(new Long(org.getAreaCodeId()));
         }
         newOrg.setOrgName(StrUtil.strnull(org.getOrgName()));
@@ -728,6 +729,13 @@ public class OrgController extends BaseController {
                 }
                 orgRelService.delete(or);
                 //solrService.deleteDataIntoSolr("org",or.getOrgRelId().toString());
+                newOrg.setStatusCd("1000");
+                orgService.update(newOrg);
+                String mqmsg = "{\"type\":\"org\",\"handle\":\"delete\",\"context\":{\"column\":\"orgId\",\"value\":"+newOrg.getOrgId()+"}}" ;
+                template.convertAndSend("message_sharing_center_queue",mqmsg);
+                ret.setState(ResponseResult.STATE_OK);
+                ret.setMessage("更新成功");
+                return ret;
             }
 
         }
@@ -922,8 +930,16 @@ public class OrgController extends BaseController {
         org.setPoliticalLocationList(pl);
 
         //营销化小编码
-//        ResponseResult<List<ExpandovalueVo>> Hxret = expandovalueService.queryExpandovalueVoList("TB_ORG",orgId);
-//        org.setExpandovalueVoList(Hxret.getData());
+        ResponseResult<List<ExpandovalueVo>> Hxret = expandovalueService.queryExpandovalueVoList("TB_ORG",orgId);
+        if(Hxret.getState()==ResponseResult.STATE_OK){
+            org.setExpandovalueVoList(Hxret.getData());
+        }else{
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("调用[business-public]接口[/tbExpandovalue/getValueVoList]异常:"+Hxret.getMessage());
+            ret.setData(org);
+            return ret;
+        }
+
 
 
         ret.setState(ResponseResult.STATE_OK);

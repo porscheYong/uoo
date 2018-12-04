@@ -35,4 +35,7 @@ public interface ExpandovalueService {
 
     @RequestMapping(value = "/tbExpandovalue/update", method = RequestMethod.POST)
     public ResponseResult<TbExpandovalue> updateTbExpandovalue(@RequestBody TbExpandovalue tbExpandovalue);
+
+
+
 }

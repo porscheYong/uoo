@@ -25,7 +25,7 @@
 
     <insert id="save" parameterType="cn.ffcs.uoo.core.position.entity.TbOrgPositionRel">
         <selectKey keyProperty="orgPositionId" resultType="java.lang.Long" order="BEFORE">
-            SELECT SEQ_ORG_POSITION_ID.NEXTVAL FROM dual
+            SELECT SEQ_TB_ORG_POSITION_ID.NEXTVAL FROM dual
         </selectKey>
         insert into TB_ORG_POSITION_REL
         <trim prefix="(" suffix=")" suffixOverrides=",">
