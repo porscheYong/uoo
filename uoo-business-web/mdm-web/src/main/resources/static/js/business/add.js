@@ -9,6 +9,7 @@ var orgCopyList = [];
 var tarOrgTreeId = '';
 var formValidate;
 var loading = parent.loading;
+var toastr = parent.parent.toastr;
 
 $('#orgTypeTreeName').html(orgTypeTreeName);
 
@@ -192,6 +193,7 @@ function addOrgTree () {
     }), function () {
         parent.initBusinessList();
         loading.screenMaskDisable('container');
+        toastr.success('新增成功！');
     }, function (err) {
         console.log(err);
         loading.screenMaskDisable('container');

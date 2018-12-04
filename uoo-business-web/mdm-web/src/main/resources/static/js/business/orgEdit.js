@@ -11,6 +11,7 @@ var selectUser = [];
 var deleteData; //删除组织
 var formValidate;
 var loading = parent.loading;
+var toastr = parent.parent.toastr;
 
 // var toastr = parent.parent.toastr;
 // toastr.success('提交成功！')
@@ -322,6 +323,7 @@ function initOrgRelTable (results) {
               //   return data[0].orgTypeName
               // }
             },
+            { 'data': "orgBizName", 'title': '组织称谓', 'className': 'user-account' },
             { 'data': "refName", 'title': '关系类型', 'className': 'user-account' },
             { 'data': "supOrgName", 'title': '上级组织', 'className': 'user-type' },
             { 'data': "createDate", 'title': '添加时间', 'className': 'role-type' }
@@ -636,25 +638,37 @@ function updateOrg () {
       parent.changeNodeName(orgId, orgName);
       window.location.replace("list.html?id=" + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + "&name=" + encodeURI(orgName));
       loading.screenMaskDisable('container');
-  }, function (err) {
+      toastr.success('更新成功！');
+  }, function () {
       loading.screenMaskDisable('container');
   })
 }
 
 // 删除组织
 function deleteOrg () {
-    loading.screenMaskEnable('container');
-    deleteData.orgTreeId = orgTreeId;
-    deleteData.orgId = orgId;
-    deleteData.supOrgId = orgId;
-    deleteData.statusCd = '1100';
-    $http.post('/org/updateOrg', JSON.stringify(deleteData), function () {
-        parent.deleteNode(orgId);
-        parent.selectRootNode();
-        loading.screenMaskDisable('container');
-    }, function (err) {
-        loading.screenMaskDisable('container');
-    })
+    parent.layer.confirm('此操作将删除该组织, 是否继续?', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+    }, function(index, layero){
+        parent.layer.close(index);
+        loading.screenMaskEnable('container');
+        deleteData.orgTreeId = orgTreeId;
+        deleteData.orgId = orgId;
+        deleteData.supOrgId = orgId;
+        deleteData.statusCd = '1100';
+        $http.post('/org/updateOrg', JSON.stringify(deleteData), function () {
+            parent.deleteNode(orgId);
+            parent.selectRootNode();
+            loading.screenMaskDisable('container');
+            toastr.success('删除成功！');
+        }, function (err) {
+            loading.screenMaskDisable('container');
+        })
+    }, function(){
+
+    });
+
 }
 
 // 取消

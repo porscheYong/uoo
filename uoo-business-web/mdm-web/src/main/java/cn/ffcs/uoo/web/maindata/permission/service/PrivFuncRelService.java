@@ -17,7 +17,7 @@ import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
  * </p>
  *
  */
-@FeignClient(value = "uoo-permission-provider", fallback = PrivFuncRelHystrix.class)
+@FeignClient(value = "business-permission", fallback = PrivFuncRelHystrix.class)
 public interface PrivFuncRelService {
     @GetMapping("/permission/privFuncRel/getPrivFuncRel/{id}")
     public ResponseResult getPrivFuncRel(@PathVariable(value = "id", required = true) Long id);

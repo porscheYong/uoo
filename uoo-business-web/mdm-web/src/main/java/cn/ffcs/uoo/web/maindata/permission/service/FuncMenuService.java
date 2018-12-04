@@ -18,7 +18,7 @@ import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
  * @author ffcs-gzb
  * @since 2018-10-30
  */
-@FeignClient(value = "uoo-permission-provider", fallback = FuncMenuHystrix.class)
+@FeignClient(value = "business-permission", fallback = FuncMenuHystrix.class)
 public interface FuncMenuService {
 
     @RequestMapping(value = "/permission/funcMenu/getFuncMenuPage", method = RequestMethod.GET)
