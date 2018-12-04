@@ -27,4 +27,8 @@
     NOTES
   </sql>
 
+  <select id="getId" resultType="Long">
+    select SEQ_TB_SYS_MENU.NEXTVAL from dual
+  </select>
+
 </mapper>

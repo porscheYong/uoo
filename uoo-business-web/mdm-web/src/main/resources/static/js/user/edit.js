@@ -926,7 +926,7 @@ $(document).ready(function(){
 	 
 });
 function gotoAccout(i){
-	var userAcc=personalData.userList[i];
+	var userAcc=personalData.userList.records[i];
 	var url="";
 	if(userAcc.type==1){
 		url+="/inaction/account/addMainAccount.html"

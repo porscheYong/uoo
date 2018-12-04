@@ -17,4 +17,8 @@
     RELATION_ID, MENU_ID, ROLE_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, 
     UPDATE_USER, STATUS_DATE, NOTES
   </sql>
+
+  <select id="getId" resultType="Long">
+    select SEQ_TB_SYS_RELATION.NEXTVAL from dual
+  </select>
 </mapper>

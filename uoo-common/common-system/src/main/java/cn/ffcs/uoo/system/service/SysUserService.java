@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 public interface SysUserService extends IService<SysUser> {
 
+    Long getId();
     /**
      * 用户登录
      * @param sysUser 用户信息

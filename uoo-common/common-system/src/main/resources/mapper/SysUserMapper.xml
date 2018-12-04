@@ -32,4 +32,8 @@
     BIRTHDAY, CERT_TYPE, CERT_ID, MOBILE, EMAIL, ADDRESS, REASON, STATUS_CD, CREATE_DATE, 
     CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, NOTES
   </sql>
+
+  <select id="getId" resultType="Long">
+    select SEQ_TB_SYS_USER.NEXTVAL from dual
+  </select>
 </mapper>
