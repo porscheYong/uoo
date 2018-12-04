@@ -143,7 +143,7 @@ logging:
   level:
     root: INFO
     cn.ffcs: INFO
-  file: business-region.log
+  file: ${spring.application.name}-${server.port}.log
   pattern: 
     console: "%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n"
     file: "%d{yyyy/MM/dd-HH:mm} [%thread] %-5level %logger- %msg%n"
