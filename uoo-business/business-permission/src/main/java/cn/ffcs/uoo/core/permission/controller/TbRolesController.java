@@ -89,7 +89,6 @@ public class TbRolesController extends BaseController {
     public ResponseResult listRoles(){
         Wrapper<Roles> wrapper = Condition.create().eq("STATUS_CD",StatusCD.VALID).orderBy("UPDATE_DATE", false);
         List<Roles> list = tbRolesService.selectList(wrapper);
-
         return ResponseResult.createSuccessResult(list, "");
     }
 
@@ -223,6 +222,7 @@ public class TbRolesController extends BaseController {
             roleVo.setPrivileges(privilegeList);
         }
         responseResult.setData(rolesVOList);
+        responseResult.setState(1000);
         return responseResult;
     }
 
@@ -239,6 +239,7 @@ public class TbRolesController extends BaseController {
         //获取根据条件查询的所有菜单信息列表acctType,
         List<FuncMenu> permissionMenuList = tbRolesService.getPermissionMenu(acctId,systemInfoId);
         responseResult.setData(permissionMenuList);
+        responseResult.setState(1000);
         return responseResult;
     }
 }
