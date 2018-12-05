@@ -27,12 +27,13 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
             formValidate.isPass($(this));
         });
     });
-})
+    formValidate.isAllPass();
+});
 
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
-  $('#orgRelType').tagsInput();
-  $('#orgType').tagsInput();
+  $('#orgRelType').tagsInput({unique: true});
+  $('#orgType').tagsInput({unique: true});
   $('#copyTree').tagsInput();
 }
 

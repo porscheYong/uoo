@@ -8,11 +8,11 @@ var table;
 $('#orgName').html(orgName);
 parent.getOrgExtInfo();
 
-function initOrgPersonnelTable (results) {
+function initOrgPersonnelTable (isSearchlower) {
     var num = 1;
     table = $("#personnelTable").DataTable({
-        'data': results,
         'searching': false,
+        'destroy': true,
         'autoWidth': false,
         'ordering': true,
         "scrollY": "375px",
@@ -73,6 +73,7 @@ function initOrgPersonnelTable (results) {
             var param = {};
             param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
             param.pageNo = (data.start / data.length) + 1;//当前页码
+            param.isSearchlower = isSearchlower;//是否显示下级组织人员
             param.orgTreeId = orgTreeId;
             param.orgId = orgId;
             $http.get('/orgPersonRel/getPerOrgRelPage', param, function (result) {
@@ -93,7 +94,13 @@ function initOrgPersonnelTable (results) {
     loading.screenMaskDisable('container');
 }
 
-initOrgPersonnelTable();
+//勾选显示下级组织人员
+function showLower() {
+    var checked = $('#isShowLower').is(':checked');
+    initOrgPersonnelTable(checked);
+}
+
+initOrgPersonnelTable(false);
 
 // $('#editBtn').on('click', function () {
 //     var url = 'edit.html?id=' + orgId;
