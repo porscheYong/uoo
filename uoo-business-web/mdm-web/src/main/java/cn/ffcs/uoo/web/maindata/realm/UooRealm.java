@@ -3,15 +3,17 @@ package cn.ffcs.uoo.web.maindata.realm;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import cn.ffcs.uoo.web.maindata.sysuser.client.SysUserClient;
+import cn.ffcs.uoo.web.maindata.sysuser.dto.SysUser;
+import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
 
 public class UooRealm extends AuthorizingRealm {
 
@@ -21,7 +23,8 @@ public class UooRealm extends AuthorizingRealm {
     //RoleMapper roleMapper;
     //@Resource
     //PermissionMapper permissionMapper;
-
+    @Autowired
+    SysUserClient client;
     /**
      * 验证当前登录的用户
      * @param authenticationToken
@@ -30,13 +33,15 @@ public class UooRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        String name = (String) authenticationToken.getPrincipal();
-        //User user = userMapper.getNameAndPasswordByName(name);
-        //if(user != null) {
-        //    return new SimpleAuthenticationInfo(user.getName(), user.getPassword(), "UcServerRealm");
-        //} else {
+        UsernamePasswordToken usertoken=(UsernamePasswordToken) authenticationToken;
+        String username = usertoken.getUsername();
+        ResponseResult<SysUser> login = client.login(null);
+        SysUser data = login.getData();
+        if(data==null){
             return null;
-        //}
+        }
+        AuthenticationInfo Info = new SimpleAuthenticationInfo(data, data.getPasswd(),this.getName());
+        return Info;
     }
 
     /**
@@ -46,19 +51,10 @@ public class UooRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        String name = (String) principals.getPrimaryPrincipal();
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
-                .getRequestAttributes()).getRequest();
-        HttpSession session = request!=null?request.getSession():null;
+        String name = (String) principals.getPrimaryPrincipal();//这里存储用户的acct
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-
-        if(session != null && session.getAttribute("simpleAuthorizationInfo")==null) {
-            //simpleAuthorizationInfo.setRoles(roleMapper.listRoleNameByUserName(name));
-            //simpleAuthorizationInfo.setStringPermissions(permissionMapper.listPermissionNameByUserName(name));
-            session.setAttribute("simpleAuthorizationInfo",simpleAuthorizationInfo);
-        }else {
-            simpleAuthorizationInfo = (SimpleAuthorizationInfo)session.getAttribute("simpleAuthorizationInfo");
-        }
+        simpleAuthorizationInfo.addStringPermission("/index");
+        
         return simpleAuthorizationInfo;
     }
 

@@ -4,6 +4,10 @@ package cn.ffcs.uoo.web.maindata.sysuser.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,7 +36,19 @@ public class SysUserController {
         @ApiImplicitParam(name = "sysUser", value = "sysUser", required = true, dataType = "SysUser" ),
     })
     @RequestMapping(value = "/sysUserLogin", method = RequestMethod.POST)
-    public ResponseResult<SysUser> login(SysUser sysUser,HttpServletRequest request,HttpServletResponse response) {
+    public ResponseResult<String> login(SysUser sysUser,HttpServletRequest request,HttpServletResponse response) {
+        ResponseResult<String> rr=new ResponseResult<>();
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(
+                sysUser.getAccout(),
+                sysUser.getPasswd());
+        //进行验证，这里可以捕获异常，然后返回对应信息
+        try {
+            subject.login(usernamePasswordToken);
+        } catch (AuthenticationException e) {
+            rr.setMessage("用户密码错误");
+            rr.setState(1100);
+        }
         ResponseResult<SysUser> login = sysuserClient.login(sysUser);
         if(ResponseResult.STATE_OK==login.getState()){
             Object tbAcct2 = acctService.getTbAcct(sysUser.getAccout());
@@ -44,6 +60,6 @@ public class SysUserController {
                 login.setMessage(json.getString("message"));
             }
         }
-        return login;
+        return rr;
     }
 }
