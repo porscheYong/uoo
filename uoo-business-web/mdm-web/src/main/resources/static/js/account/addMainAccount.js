@@ -251,6 +251,7 @@ function initAddUserInfo(results){    //初始化用户信息(新增)
   $('#mobileTel').val(results.mobilePhone);
   $('#emailTel').val(results.eamil);
   $('#cerNoTel').val(results.certNo);
+  $('#acctTel').val(results.psnCode);
 }
 
 function addTbAcct(){         //新增
@@ -438,15 +439,15 @@ function backToAcctInfo(){  //返回用户信息查看面板
 }
 
 function acctSubmit(){   //提交事件
-  //if($('#acctTel').val()!='' && $('#statusCd').val()!='' && $('#roleTel').val()!='' && $('#defaultPswTel').val()!=''){
+  if($('#acctTel').val()!='' && $('#statusCd').val()!='' && $('#roleTel').val()!='' && $('#defaultPswTel').val()!=''){
     if(opBtn == 1){
       addTbAcct();
     }else if(opBtn == 0){ //编辑
       updateAcct();
     }
-  //}else{
-  //   alert('必填部分不能为空');
-  // }
+  }else{
+    alert('必填部分不能为空');
+  }
 }
 
   laydate.render({
