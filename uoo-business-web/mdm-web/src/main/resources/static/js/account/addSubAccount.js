@@ -241,14 +241,23 @@ function initSubInfo(results){  //编辑时初始化信息
 }
 
 function initSubAcctInfoCheck(results){       //初始化从账号信息(编辑时查看面板)
-    $("#psnNameLable").text(results.psnName);
-    $("#mobileLable").text(results.mobilePhone);
-    $("#emailLable").text(results.eamil);
-    $("#acctLable").text(results.tbSlaveAcct.slaveAcct);
-    $("#psnNumLable").text(results.psnNbr);
-    $("#cerNoLable").text(results.certNo);
-    $("#effectDateLable").text(results.tbSlaveAcct.enableDate);
-    $("#invalidDateLable").text(results.tbSlaveAcct.disableDate);
+    // $("#psnNameLable").text(results.psnName);
+    // $("#mobileLable").text(results.mobilePhone);
+    // $("#emailLable").text(results.eamil);
+    // $("#acctLable").text(results.tbSlaveAcct.slaveAcct);
+    // $("#psnNumLable").text(results.psnNbr);
+    // $("#cerNoLable").text(results.certNo);
+    // $("#effectDateLable").text(results.tbSlaveAcct.enableDate);
+    // $("#invalidDateLable").text(results.tbSlaveAcct.disableDate);
+
+    isNull("#psnNameLable",results.psnName);
+    isNull("#mobileLable",results.mobilePhone);
+    isNull("#emailLable",results.eamil);
+    isNull("#acctLable",results.tbSlaveAcct.slaveAcct);
+    isNull("#psnNumLable",results.psnNbr);
+    isNull("#cerNoLable",results.certNo);
+    isNull("#effectDateLable",results.tbSlaveAcct.enableDate);
+    isNull("#invalidDateLable",results.tbSlaveAcct.disableDate);
 
     for(var i = 0; i <results.tbRolesList.length; i++){
         $("#nameAndRole").append($("<span class='roleTag'>"+results.tbRolesList[i].roleName+"</span>"));
@@ -267,8 +276,8 @@ function initUserInfo(results){   //新增时初始化信息
 }
 
 function addTbSlaveAcct(){      //从账号新增
-    if(!formValidate.isAllPass())
-        return;
+    // if(!formValidate.isAllPass())
+    //     return;
     var slaveAcctType = $('#accTypeTel').get(0).selectedIndex + 1;
     var resourceObjId = $('#systemTel').get(0).selectedIndex + 1;
     var subStatusCd = $('#statusCd').get(0).selectedIndex*100 + 1000;
@@ -316,8 +325,8 @@ function addTbSlaveAcct(){      //从账号新增
 }
 
 function updateTbSlaveAcct(){       //更新从账号信息
-    if(!formValidate.isAllPass())
-        return;
+    // if(!formValidate.isAllPass())
+    //     return;
     var slaveAcctType = $('#accTypeTel').get(0).selectedIndex + 1;
     var resourceObjId = $('#systemTel').get(0).selectedIndex + 1;
     var subStatusCd = $('#statusCd').get(0).selectedIndex*100 + 1000;
@@ -500,6 +509,14 @@ function extInfoFade(){     //点击复选框
         isChecked = 0;
     }
     console.log(isChecked);
+}
+
+function isNull(s,r){    //判断是否为null
+    if(r == null){
+      $(s).text("");
+    }else{
+      $(s).text(r);
+    }
 }
 
 function submitToOther(){   //提交或者取消跳转
