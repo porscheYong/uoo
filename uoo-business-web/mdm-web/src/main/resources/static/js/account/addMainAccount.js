@@ -140,7 +140,7 @@ function initOrgTable(results){         //主账号组织数据表格
       },
       {'data': "orgId", 'title': '操作', 'className': 'row-delete' ,
       'render': function (data, type, row, meta) {
-        return "<a href='javascript:void(0);'  onclick='deleteOrg("+ num + ")'  class='btn btn-default btn-xs'><i class='fa fa-arrow-down'></i> 删除</a>";
+        return "<a href='javascript:void(0);' id='delOrgBtn' onclick='deleteOrg("+ num + ")'>删除</a>";
     }
     },
     { 'data': "orgId", 'title': 'orgId', 'className': 'row-orgId' }
