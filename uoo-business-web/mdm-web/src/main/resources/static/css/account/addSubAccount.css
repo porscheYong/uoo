@@ -60,4 +60,10 @@ table.dataTable tbody td {
     opacity: 0;
     filter: alpha(opacity=0);
     position: absolute;
-    }
+}
+#delOrgBtn{
+    color: #f26d7e;
+}
+#delOrgBtn:hover{
+    color: #000;
+}

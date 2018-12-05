@@ -56,18 +56,18 @@ $("#userAdd").steps({
         return formValidate.isAllPass();
     },
     onFinished: function (event, currentIndex) {
-        if (orgList.length > 0 && orgList[0].postName == '') {
-            parent.layer.confirm('请添加职位信息！', {
-                icon: 0,
-                title: '提示',
-                btn: ['确定']
-            }, function(index, layero){
-                parent.layer.close(index);
-            }, function(){
-
-            });
-            return;
-        }
+        // if (orgList.length > 0 && orgList[0].postName == '') {
+        //     parent.layer.confirm('请添加职位信息！', {
+        //         icon: 0,
+        //         title: '提示',
+        //         btn: ['确定']
+        //     }, function(index, layero){
+        //         parent.layer.close(index);
+        //     }, function(){
+        //
+        //     });
+        //     return;
+        // }
         savePersonnel();
     }
 });
@@ -261,10 +261,26 @@ function getIdCardInfo () {
             $('#female').trigger('click');
             $('#female').trigger('hover');
         }
+        getIdCardNcCode(certNo);
     }
     else  {
         $('#nationality').val('');
     }
+}
+
+//根据身份证号获取人员编码/人力编码/员工工号
+function getIdCardNcCode (id) {
+    $http.get('/personnel/getIdCardNcCode', {
+        certNo: id
+    }, function (data) {
+        if (data && data.uniCode) {
+            $('#psnCode').val(data.uniCode);
+            $('#ncCode').val(data.uniCode.split('@')[0]);
+            $('#psnNbr').val(data.uniCode.split('@')[0]);
+        }
+    }, function (err) {
+
+    })
 }
 
 // 点击电话新增btn
