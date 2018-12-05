@@ -13,13 +13,13 @@ import java.util.List;
 
 @FeignClient(value = "business-position",configuration = {PersonnelServiceConfiguration.class},fallback = TbPostClientHystrix.class)
 public interface TbPostClient {
-    @RequestMapping(value = "/tbPost/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/tbPost/add", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     ResponseResult<TbPost> addTbPost(@RequestBody TbPost tbPost);
 
     @RequestMapping(value = "/tbPost/del", method = RequestMethod.POST)
     ResponseResult<TbPost> removeTbPost(@RequestParam("postId") Long postId, @RequestParam("updateUser") Long updateUser);
 
-    @RequestMapping(value = "/tbPost/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/tbPost/update", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     ResponseResult<TbPost> updateTbPost(@RequestBody TbPost tbPost);
 
     @RequestMapping(value = "/tbPost/get/{postName}", method = RequestMethod.GET)
