@@ -1,6 +1,5 @@
 package cn.ffcs.uoo.web.maindata.sysuser.controller;
 
-import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.sysuser.client.SysUserClient;
@@ -44,7 +41,7 @@ public class SysUserController {
                 request.getSession().setAttribute(LoginConsts.LOGIN_KEY,tbAcct2);
             }else{
                 login.setState(ResponseResult.STATE_ERROR);
-                login.setMessage("账号系统异常");
+                login.setMessage(json.getString("message"));
             }
         }
         return login;
