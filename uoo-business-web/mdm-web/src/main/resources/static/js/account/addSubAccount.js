@@ -154,7 +154,7 @@ function initOrgTable(results){
         },
         {'data': "orgId", 'title': '操作', 'className': 'row-delete' ,
             'render': function (data, type, row, meta) {
-                return "<a href='javascript:void(0);'  onclick='deleteOrg()'  class='btn btn-default btn-xs'><i class='fa fa-arrow-down'></i> 删除</a>";
+                return "<a href='javascript:void(0);' id='delOrgBtn' onclick='deleteOrg()'>删除</a>";
             }
         }
       ],

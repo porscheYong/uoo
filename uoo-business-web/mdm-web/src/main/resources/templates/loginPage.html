@@ -20,6 +20,10 @@
         min-width: 0px !important;
         /* margin-right: 283px !important; */
     }
+    .layui-layer-loading{
+        top: 431.5px !important;
+        left: 70.3% !important;
+    }
 </style>
 </head>
 
@@ -41,7 +45,6 @@
                 </div>
                 <input class="Input BtnSubmit" type="submit" value="登录" onclick="return check()"/>  
             </form>
-           <label id='errorAcc'></label>
         </div>
     </div>
 </div>
@@ -52,6 +55,9 @@
 <!-- loading -->
 <script type="text/javascript" src="/js/core/spin.min.js"></script>
 <script type="text/javascript" src="/js/core/loading.js"></script>
+
+<!-- layer -->
+<script type="text/javascript" src="/vendors/layer/layer.js"></script>
 
 <script type="text/javascript" src="/js/login/login.js"></script>
 <script type="text/javascript" src="/js/login/md5.js"></script>

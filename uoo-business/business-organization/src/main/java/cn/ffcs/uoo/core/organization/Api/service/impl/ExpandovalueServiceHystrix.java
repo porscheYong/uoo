@@ -39,12 +39,12 @@ public class ExpandovalueServiceHystrix implements ExpandovalueService {
         return ret;
     }
 
-//    @Override
-//    public ResponseResult<TbExpandovalue> removeTbExpandovalue(Long valueId,Long updateUser){
-//        ResponseResult<TbExpandovalue> ret = new ResponseResult<TbExpandovalue>();
-//        ret.setMessage("调用公共管理接口[removeTbExpandovalue]报错");
-//        ret.setState(ResponseResult.PARAMETER_ERROR);
-//        return ret;
-//    }
+    @Override
+    public ResponseResult<TbExpandovalue> removeTbExpandovalue(Long valueId,Long updateUser){
+        ResponseResult<TbExpandovalue> ret = new ResponseResult<TbExpandovalue>();
+        ret.setMessage("调用公共管理接口[removeTbExpandovalue]报错");
+        ret.setState(ResponseResult.PARAMETER_ERROR);
+        return ret;
+    }
 
 }
