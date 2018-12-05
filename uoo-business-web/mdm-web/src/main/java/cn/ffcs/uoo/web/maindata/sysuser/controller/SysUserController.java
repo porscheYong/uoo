@@ -45,19 +45,21 @@ public class SysUserController {
         //进行验证，这里可以捕获异常，然后返回对应信息
         try {
             subject.login(usernamePasswordToken);
+            rr.setMessage("登陆成功");
+            rr.setState(1000);
         } catch (AuthenticationException e) {
             rr.setMessage("用户密码错误");
             rr.setState(1100);
         }
-        ResponseResult<SysUser> login = sysuserClient.login(sysUser);
-        if(ResponseResult.STATE_OK==login.getState()){
+         
+        if(ResponseResult.STATE_OK==rr.getState()){
             Object tbAcct2 = acctService.getTbAcct(sysUser.getAccout());
             JSONObject json=JSONObject.parseObject(JSONObject.toJSONString(tbAcct2));
             if(json.getInteger("state")  ==1000){
                 request.getSession().setAttribute(LoginConsts.LOGIN_KEY,tbAcct2);
             }else{
-                login.setState(ResponseResult.STATE_ERROR);
-                login.setMessage(json.getString("message"));
+                rr.setState(ResponseResult.STATE_ERROR);
+                rr.setMessage(json.getString("message"));
             }
         }
         return rr;
