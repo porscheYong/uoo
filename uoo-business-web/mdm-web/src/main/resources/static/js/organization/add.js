@@ -169,7 +169,7 @@ function openLocationDialog() {
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
             parent.layer.close(index);
-            $('#locId').importTags(checkNode);
+            $('#locationList').importTags(checkNode);
             $('.ui-tips-error').css('display', 'none');
             locationList = checkNode;
         },
