@@ -228,14 +228,23 @@ function initEditUserInfo(results){     //初始化用户信息(编辑)
 }
 
 function initAcctInfoCheck(results){     //初始化用户信息(编辑时查看面板)
-  $("#psnNameLable").text(results.psnName);
-  $("#mobileLable").text(results.mobilePhone);
-  $("#emailLable").text(results.eamil);
-  $("#acctLable").text(results.tbAcct.acct);
-  $("#psnNumLable").text(results.psnNbr);
-  $("#cerNoLable").text(results.certNo);
-  $("#effectDateLable").text(results.tbAcct.enableDate);
-  $("#invalidDateLable").text(results.tbAcct.disableDate);
+  // $("#psnNameLable").text(results.psnName);
+  // $("#mobileLable").text(results.mobilePhone);
+  // $("#emailLable").text(results.eamil);
+  // $("#acctLable").text(results.tbAcct.acct);
+  // $("#psnNumLable").text(results.psnNbr);
+  // $("#cerNoLable").text(results.certNo);
+  // $("#effectDateLable").text(results.tbAcct.enableDate);
+  // $("#invalidDateLable").text(results.tbAcct.disableDate);
+
+  isNull("#psnNameLable",results.psnName);
+  isNull("#mobileLable",results.mobilePhone);
+  isNull("#emailLable",results.eamil);
+  isNull("#acctLable",results.tbAcct.acct);
+  isNull("#psnNumLable",results.psnNbr);
+  isNull("#cerNoLable",results.certNo);
+  isNull("#effectDateLable",results.tbAcct.enableDate);
+  isNull("#invalidDateLable",results.tbAcct.disableDate);
 
   for(var i = 0; i <results.tbRolesList.length; i++){
     $("#nameAndRole").append($("<span class='roleTag'>"+results.tbRolesList[i].roleName+"</span>"));
@@ -255,8 +264,8 @@ function initAddUserInfo(results){    //初始化用户信息(新增)
 }
 
 function addTbAcct(){         //新增
-  if(!formValidate.isAllPass())
-    return;
+  // if(!formValidate.isAllPass())
+  //   return;
   if(roleList.length == 0){
     roleList = userRoleList;
   }
@@ -299,8 +308,8 @@ function addTbAcct(){         //新增
 }
 
 function updateAcct(){      //编辑主账号
-    if(!formValidate.isAllPass())
-        return;
+    // if(!formValidate.isAllPass())
+    //     return;
     var statusCd;
     if(roleList.length == 0){
       roleList = userRoleList;
@@ -465,6 +474,14 @@ function isEnableStatus(statusCd){    //判断状态
   }else if(statusCd == "1100"){
     $('#statusCd').get(0).selectedIndex=1;
   }
+}
+
+function isNull(s,r){    //判断是否为null
+    if(r == null){
+      $(s).text("");
+    }else{
+      $(s).text(r);
+    }
 }
 
 //删除组织
