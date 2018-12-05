@@ -54,7 +54,7 @@ function getJobInfo(){
 		dataType:'json',
 		type:'get',
 		success:function(data){
-			personalData.jobInfo=data;
+			personalData.jobInfo=data.data;
 			initJobInfo();
 		}
 	});
