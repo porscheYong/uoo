@@ -6,7 +6,7 @@ import java.io.Serializable;
  * 封装json格式类
  * Created by liuxiaodong on 2018/9/17.
  */
-public class ResponseResult<T> implements Serializable {
+public class ResponseResultBean<T> implements Serializable {
 
     public static final int STATE_OK = 1000;
 
