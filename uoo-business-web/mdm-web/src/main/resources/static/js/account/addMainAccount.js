@@ -17,13 +17,24 @@ var flag = 0;
 var psw;
 var roleList = [];      //需要上传的角色列表
 var userRoleList = [];      //用户已有角色列表
-// var toastr = parent.parent.toastr;
+var formValidate;
 
 $('#invalidDate').val(''),
 $('#effectDate').val(''),
 $('#statusCd').get(0).selectedIndex=0; //判断状态，默认生效
 $('#cerType').get(0).selectedIndex=0;  //判断证件类型,默认身份证
 
+seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+  var addAcctForm = $('#addAcctForm');
+  formValidate = new Validate(addAcctForm);
+  formValidate.immediate();
+  //formValidate.isAllPass();
+  addAcctForm.find(':input').each(function () {
+      $(this).hover(function () {
+          formValidate.isPass($(this));
+      });
+  });
+});
 
 function getUser(acctId) {           //查看并编辑主账号
     $http.get('/user/getUser', {   //http://192.168.58.112:18000/user/getUser
@@ -37,6 +48,7 @@ function getUser(acctId) {           //查看并编辑主账号
         $('#main-title').html("主账号信息");
         $('#addBtnDiv').css("display","none");
         $('#acctInfo').css("display","block");
+        $('#acctEditButton').css("display","inline-block");
         initOrgTable(data.acctOrgVoPage.records);
         initAcctInfoCheck(data);
         initEditUserInfo(data);
@@ -55,7 +67,6 @@ function getAcctUser(personnelId){     //获取主账号信息(编辑或者新�
       $('#main-title').html("新增主账号");
       $("#addBtn").css("display","none");
       $("#acctInfo").css("display","none");
-      $('#acctEditButton').css("display","none");
       $('#delAcct').css("display","none");
       $('#editAcctPanel').css("display","block");
       $('#editBtnDiv').css("display","none");
@@ -68,6 +79,7 @@ function getAcctUser(personnelId){     //获取主账号信息(编辑或者新�
       $("#addBtnWFright").css("display","block");
       $('#addBtnDiv').css("display","none");
       $('#acctInfo').css("display","block");
+      $('#acctEditButton').css("display","inline-block");
       opBtn = 0;
       acctId = data.tbAcct.acctId;
       for(var i=0;i<data.acctOrgVoPage.records.length;i++){
@@ -216,14 +228,23 @@ function initEditUserInfo(results){     //初始化用户信息(编辑)
 }
 
 function initAcctInfoCheck(results){     //初始化用户信息(编辑时查看面板)
-  $("#psnNameLable").text(results.psnName);
-  $("#mobileLable").text(results.mobilePhone);
-  $("#emailLable").text(results.eamil);
-  $("#acctLable").text(results.tbAcct.acct);
-  $("#psnNumLable").text(results.psnNbr);
-  $("#cerNoLable").text(results.certNo);
-  $("#effectDateLable").text(results.tbAcct.enableDate);
-  $("#invalidDateLable").text(results.tbAcct.disableDate);
+  // $("#psnNameLable").text(results.psnName);
+  // $("#mobileLable").text(results.mobilePhone);
+  // $("#emailLable").text(results.eamil);
+  // $("#acctLable").text(results.tbAcct.acct);
+  // $("#psnNumLable").text(results.psnNbr);
+  // $("#cerNoLable").text(results.certNo);
+  // $("#effectDateLable").text(results.tbAcct.enableDate);
+  // $("#invalidDateLable").text(results.tbAcct.disableDate);
+
+  isNull("#psnNameLable",results.psnName);
+  isNull("#mobileLable",results.mobilePhone);
+  isNull("#emailLable",results.eamil);
+  isNull("#acctLable",results.tbAcct.acct);
+  isNull("#psnNumLable",results.psnNbr);
+  isNull("#cerNoLable",results.certNo);
+  isNull("#effectDateLable",results.tbAcct.enableDate);
+  isNull("#invalidDateLable",results.tbAcct.disableDate);
 
   for(var i = 0; i <results.tbRolesList.length; i++){
     $("#nameAndRole").append($("<span class='roleTag'>"+results.tbRolesList[i].roleName+"</span>"));
@@ -239,9 +260,12 @@ function initAddUserInfo(results){    //初始化用户信息(新增)
   $('#mobileTel').val(results.mobilePhone);
   $('#emailTel').val(results.eamil);
   $('#cerNoTel').val(results.certNo);
+  $('#acctTel').val(results.psnCode);
 }
 
 function addTbAcct(){         //新增
+  // if(!formValidate.isAllPass())
+  //   return;
   if(roleList.length == 0){
     roleList = userRoleList;
   }
@@ -284,6 +308,8 @@ function addTbAcct(){         //新增
 }
 
 function updateAcct(){      //编辑主账号
+    // if(!formValidate.isAllPass())
+    //     return;
     var statusCd;
     if(roleList.length == 0){
       roleList = userRoleList;
@@ -450,6 +476,14 @@ function isEnableStatus(statusCd){    //判断状态
   }
 }
 
+function isNull(s,r){    //判断是否为null
+    if(r == null){
+      $(s).text("");
+    }else{
+      $(s).text(r);
+    }
+}
+
 //删除组织
 function deleteOrg(id){
   if(opBtn == 1){    //新增
@@ -477,7 +511,7 @@ function cancel() {   //取消按钮
     url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId + "&orgFullName=" + orgFullName;
   }else if(hType == "uh"){
     url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + orgName + "&id=" + orgId + 
-    "&personnelId =" + personnelId + "&orgRootId=" + orgRootId + "&tabPage=" + tabPage;
+    "&personnelId=" + personnelId + "&orgRootId=" + orgRootId + "&tabPage=" + tabPage;
   }
   window.location.href = url;
 }   
@@ -543,7 +577,7 @@ function submitSuccess(){     //提交成功
 $("#defaultPswTel").focus(function (){    //默认密码输入框获得焦点
   if($("#defaultPswTel").attr("type") == "password"){
     $("#defaultPswTel").val('');
-    $("#defaultPswTel").attr("type","tel");
+    $("#defaultPswTel").attr("type","text");
   }
 })
 

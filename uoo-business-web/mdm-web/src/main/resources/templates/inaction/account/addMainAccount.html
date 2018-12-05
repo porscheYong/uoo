@@ -97,12 +97,12 @@
     </div>
 
     <div class="board-title">
-        <span class="name ft18" id="main-title"></span><a id="acctEditButton" onclick="editAcctInfo()" class=" Icon IconEdit" href="javascript:void(0)"></a>
+        <span class="name ft18" id="main-title"></span><a id="acctEditButton" style="display:none;" onclick="editAcctInfo()" class=" Icon IconEdit" href="javascript:void(0)"></a>
     </div> 
 
     <div class="tab-content" style="margin-left:5%;margin-top: 2%">
         <div class="tab-pane active" id="tab_content1">
-            <form action="/submit" method="post" style="padding: 10px;">
+            <form action="#" method="post" style="padding: 10px;">  <!-- id="addAcctForm" -->
 
                 <div id="acctInfo" style="margin-left:17%;display: none;">
                     <div class="col-md-2 fleft tcenter">
@@ -201,15 +201,16 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-item" style="width: 100%">
-                                <label for="acctTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户名</label>
-                                <input type="tel" id="acctTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off"> 
+                                <label for="acctTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" 
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">用户名</label>
+                                <input id="acctTel" class="ui-input col-md-8 col-sm-8 col-xs-12" required autocomplete="off"> 
                             </div>
                         </div>
 
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-item" style="width: 100%">
-                                <label for="statusCd" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
-                                <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value=""> -->
+                                <label for="statusCd" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" 
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
                                 <select  class="col-md-8 col-sm-8 col-xs-12" id="statusCd">
                                     <option>生效</option>
                                     <option>失效</option>
@@ -228,15 +229,17 @@
 
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-item" style="width: 100%">
-                                <label for="roleTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
+                                <label for="roleTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" 
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
                                 <input id="roleTel" class="ui-input col-md-8 col-sm-8 col-xs-12"  onclick="openTypeDialog()" required readonly></input>
                             </div>
                         </div>
 
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-item" style="width: 100%" id="default_psw">
-                                <label for="defaultPswTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
-                                <input type="password" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
+                            <div class="form-item" style="width: 100%">
+                                <label for="defaultPswTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" 
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
+                                <input type="password" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-12" required autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -244,15 +247,16 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-item" style="width: 100%">
-                            <label for="effectDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
-                            <input type="code" id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="2018-11-16" autocomplete="off">
+                            <label for="effectDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" 
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
+                            <input id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-12" required autocomplete="off">
                             </div>
                         </div>
 
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-item" style="width: 100%">
-                                <label for="invalidDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
-                                <input type="code" id="invalidDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="2018-12-31" autocomplete="off">
+                                <label for="invalidDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
+                                <input id="invalidDate" class="ui-input col-md-8 col-sm-8 col-xs-12" required pattern="\d{4}" autocomplete="off">
                             </div>
                         </div>
                     </div>
