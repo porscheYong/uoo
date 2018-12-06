@@ -629,7 +629,7 @@
         <span>组织归属</span>
     </div>
     <div style="padding-top: 35px;">
-        <form action="/submit" method="post" style="padding: 10px;">
+        <form id="orgEditForm" style="padding: 10px;">
             <div class="row" style="margin-bottom: 10px;">
                 <div class="form-item" style="width: 100%">
                     <label for="orgTreeName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织树名称</label>
@@ -656,14 +656,20 @@
                 <div class="form-item" style="width: 100%">
                     <label for="property" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                            style="padding-right: 20px;line-height: 40px;text-align: right;">用工性质</label>
-                    <input id="property" class="ui-input col-md-4 col-sm-4 col-xs-12" required value="{{orgData.property}}">
+                    <!--<input id="property" class="ui-input col-md-4 col-sm-4 col-xs-12" required value="{{orgData.property}}">-->
+                    <select id="property" class="col-md-4 col-sm-4 col-xs-12" required>
+                        <option></option>
+                        <option value=""></option>
+                        <option value=""></option>
+                    </select>
                 </div>
             </div>
             <div class="row" style="margin-bottom: 10px;">
                 <div class="form-item" style="width: 100%">
                     <label for="refType" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                            style="padding-right: 20px;line-height: 40px;text-align: right;">专兼职</label>
-                    <select id="refType" class="col-md-4 col-sm-4 col-xs-12">
+                    <!--<input id="refType" class="ui-input col-md-4 col-sm-4 col-xs-12" required value="{{orgData.refType}}">-->
+                    <select id="refType" class="col-md-4 col-sm-4 col-xs-12" required>
                         <option></option>
                         <option value=""></option>
                         <option value=""></option>

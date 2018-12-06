@@ -39,7 +39,7 @@ laydate.render({
 
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
-    $('#locId').tagsInput({unique: true});
+    $('#locationList').tagsInput({unique: true});
     $('#orgTypeList').tagsInput({unique: true});
     $('#positionList').tagsInput();
     $('#postList').tagsInput();

@@ -26,6 +26,11 @@ feign:
   hystrix:
     enabled: true
 
+httpclient:
+  enabled: true
+  max-connections: 200 # 默认值
+  max-connections-per-route: 50 # 默认值
+
 hystrix:
   enabled: true
   shareSecurityContext: true
