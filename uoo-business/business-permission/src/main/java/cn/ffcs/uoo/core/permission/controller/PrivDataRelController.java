@@ -52,7 +52,7 @@ public class  PrivDataRelController {
     @UooLog(key="addPrivDataRel",value="添加权限与业务对象之间多对多的关系")
     @Transactional
     @RequestMapping(value="addPrivDataRel",method=RequestMethod.POST)
-    public ResponseResult addPrivDataRel(@RequestBody PrivDataRel privDataRel){
+    public ResponseResult<Void> addPrivDataRel(@RequestBody PrivDataRel privDataRel){
         Long privId = privDataRel.getPrivId();
         if(privId==null){
             return ResponseResult.createErrorResult("权限标识不能为空");
@@ -75,7 +75,7 @@ public class  PrivDataRelController {
     @UooLog(key="updatePrivDataRel",value="修改权限与业务对象之间多对多的关系")
     @Transactional
     @RequestMapping(value="updatePrivDataRel",method=RequestMethod.POST)
-    public ResponseResult updatePrivDataRel(@RequestBody PrivDataRel privDataRel){
+    public ResponseResult<Void> updatePrivDataRel(@RequestBody PrivDataRel privDataRel){
         Long privId = privDataRel.getPrivId();
         if(privId==null){
             return ResponseResult.createErrorResult("权限标识不能为空");
@@ -96,7 +96,7 @@ public class  PrivDataRelController {
     @SuppressWarnings("unchecked")
     @Transactional
     @RequestMapping(value="deletePrivDataRel",method=RequestMethod.POST)
-    public ResponseResult deletePrivDataRel(@RequestBody PrivDataRel privDataRel){
+    public ResponseResult<Void> deletePrivDataRel(@RequestBody PrivDataRel privDataRel){
         if(privDataRel.getPrivDataRelId()==null){
             return ResponseResult.createErrorResult("不能删除无效数据");
         }

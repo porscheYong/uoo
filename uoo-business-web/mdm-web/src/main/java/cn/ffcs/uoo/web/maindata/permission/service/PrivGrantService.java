@@ -1,6 +1,9 @@
 package cn.ffcs.uoo.web.maindata.permission.service;
 
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,17 +32,17 @@ public interface PrivGrantService {
      
      
     @RequestMapping(value="/permission/privGrant/batchAddRolePrivGrant",method=RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult batchAddRolePrivGrant(@RequestBody BatchAddRolePrivGrantVO batchAddRolePrivGrantVO);
+    public ResponseResult<Void> batchAddRolePrivGrant(@RequestBody BatchAddRolePrivGrantVO batchAddRolePrivGrantVO);
    
     @RequestMapping(value="/permission/privGrant/batchAddPositionPrivGrant",method=RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult batchAddPositionPrivGrant(@RequestBody BatchAddPositionPrivGrantVO batchAddPositionPrivGrantVO);
+    public ResponseResult<Void> batchAddPositionPrivGrant(@RequestBody BatchAddPositionPrivGrantVO batchAddPositionPrivGrantVO);
     
     @GetMapping("/permission/privGrant/listAllPrivGrantByRole/{roleId}")
-    public ResponseResult listAllPrivGrantByRole(@PathVariable(value="roleId",required=true) long roleId);
+    public ResponseResult<List<Map>> listAllPrivGrantByRole(@PathVariable(value="roleId",required=true) long roleId);
     
    
     @GetMapping("/permission/privGrant/listAllPrivGrantByPosition/{posId}")
-    public ResponseResult listAllPrivGrantByPosition(@PathVariable(value="posId",required=true) long posId);
+    public ResponseResult<List<Map>> listAllPrivGrantByPosition(@PathVariable(value="posId",required=true) long posId);
         
 }
 

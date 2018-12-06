@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.web.maindata.permission.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.ffcs.uoo.web.maindata.permission.dto.FuncMenu;
 import cn.ffcs.uoo.web.maindata.permission.service.FuncMenuService;
 import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.realm.LoadUrlPermissionService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +28,8 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/permission/funcMenu")
 public class FuncMenuController {
-
+    @Autowired
+    LoadUrlPermissionService loadUrlPermissionSvc;
     @Autowired
     private FuncMenuService funcMenuService;
 /*
@@ -62,8 +66,7 @@ public class FuncMenuController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getFuncMenuPage", method = RequestMethod.GET)
-    public ResponseResult getFuncMenuPage(){
-        
+    public ResponseResult<List<FuncMenu>> getFuncMenuPage(){
         return funcMenuService.getFuncMenuPage();
     }
 
@@ -73,19 +76,24 @@ public class FuncMenuController {
         @ApiImplicitParam(name = "funcMenu", value = "funcMenu", required = true, dataType = "FuncMenu"  ),
     })
     @RequestMapping(value = "/addFuncMenu", method = RequestMethod.POST)
-    public ResponseResult addFuncMenu(@RequestBody FuncMenu funcMenu){
-         
-         
-        return funcMenuService.addFuncMenu(funcMenu);
+    public ResponseResult<Void> addFuncMenu(@RequestBody FuncMenu funcMenu){
+        ResponseResult<Void> addFuncMenu = funcMenuService.addFuncMenu(funcMenu);
+        if(addFuncMenu.getState()==ResponseResult.STATE_OK){
+            loadUrlPermissionSvc.updateUrlPermission();
+        }
+        return addFuncMenu;
     }
     @ApiOperation(value = "修改菜单-web", notes = "修改菜单")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "funcMenu", value = "funcMenu", required = true, dataType = "FuncMenu"  ),
     })
     @RequestMapping(value = "/updateFuncMenu", method = RequestMethod.POST)
-    public ResponseResult updateFuncMenu(@RequestBody FuncMenu funcMenu){
-        
-        return funcMenuService.updateFuncMenu(funcMenu);
+    public ResponseResult<Void> updateFuncMenu(@RequestBody FuncMenu funcMenu){
+        ResponseResult<Void> updateFuncMenu = funcMenuService.updateFuncMenu(funcMenu);
+        if(updateFuncMenu.getState()==ResponseResult.STATE_OK){
+            loadUrlPermissionSvc.updateUrlPermission();
+        }
+        return updateFuncMenu;
     }
     
     @ApiOperation(value = "删除菜单-web", notes = "修改菜单")
@@ -93,9 +101,12 @@ public class FuncMenuController {
         @ApiImplicitParam(name = "funcMenu", value = "funcMenu", required = true, dataType = "FuncMenu"  ),
     })
     @RequestMapping(value = "/deleteFuncMenu", method = RequestMethod.POST)
-    public ResponseResult deleteFuncMenu(@RequestBody FuncMenu funcMenu){
-        
-        return funcMenuService.deleteFuncMenu(funcMenu);
+    public ResponseResult<Void> deleteFuncMenu(@RequestBody FuncMenu funcMenu){
+        ResponseResult<Void> deleteFuncMenu = funcMenuService.deleteFuncMenu(funcMenu);
+        if(deleteFuncMenu.getState()==ResponseResult.STATE_OK){
+            loadUrlPermissionSvc.updateUrlPermission();
+        }
+        return deleteFuncMenu;
     }
 }
 

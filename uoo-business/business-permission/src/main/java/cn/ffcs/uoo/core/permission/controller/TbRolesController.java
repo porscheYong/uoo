@@ -58,7 +58,7 @@ public class TbRolesController extends BaseController {
     })
     @UooLog(key="getRoles",value="获取单个角色数据")
     @GetMapping("/get/{id}")
-    public ResponseResult get(@PathVariable(value="id" ,required=true) Long id){
+    public ResponseResult<Roles> get(@PathVariable(value="id" ,required=true) Long id){
         Roles role = tbRolesService.selectById(id);
         if(role== null || !StatusCD.VALID.equals(role.getStatusCd())){
             return ResponseResult.createErrorResult("无效数据");
@@ -73,20 +73,20 @@ public class TbRolesController extends BaseController {
     })
     @UooLog(key="listPageRoles",value="获取分页角色列表")
     @GetMapping("/listPageRoles/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listPageRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    public ResponseResult<List<Roles>> listPageRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         
         Wrapper<Roles> wrapper = Condition.create().eq("STATUS_CD",StatusCD.VALID).orderBy("UPDATE_DATE", false);
         Page<Roles> page = tbRolesService.selectPage(new Page<Roles>(pageNo, pageSize), wrapper);
         
-        return ResponseResult.createSuccessResult(page.getRecords(), "", page);
+        return ResponseResult.createSuccessResult(page ,"");
     }
 
     @ApiOperation(value = "获取角色列表", notes = "获取角色列表")
     @UooLog(key="listRoles",value="获取角色列表")
     @GetMapping("/listRoles")
-    public ResponseResult listRoles(){
+    public ResponseResult<List<Roles>> listRoles(){
         Wrapper<Roles> wrapper = Condition.create().eq("STATUS_CD",StatusCD.VALID).orderBy("UPDATE_DATE", false);
         List<Roles> list = tbRolesService.selectList(wrapper);
         return ResponseResult.createSuccessResult(list, "");
@@ -99,8 +99,8 @@ public class TbRolesController extends BaseController {
     @UooLog(value = "删除角色", key = "removeTbRoles")
     @Transactional
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult removeTbRoles(@RequestBody Roles role ) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<Void> removeTbRoles(@RequestBody Roles role ) {
+        ResponseResult<Void> responseResult = new ResponseResult<Void>();
         Long roleId = role.getRoleId();
         // 校验必填项
         if(roleId == null) {
@@ -152,8 +152,8 @@ public class TbRolesController extends BaseController {
     @UooLog(value = "修改角色", key = "updateTbRoles")
     @Transactional
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult updateTbRoles(@RequestBody Roles tbRoles) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<Void> updateTbRoles(@RequestBody Roles tbRoles) {
+        ResponseResult<Void> responseResult = new ResponseResult<Void>();
         // 校验必填项
         if(tbRoles.getRoleId() == null) {
             responseResult.setState(ResponseResult.STATE_ERROR);
@@ -173,8 +173,8 @@ public class TbRolesController extends BaseController {
     @UooLog(value = "新增角色", key = "addTbRoles")
     @Transactional
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult addTbRoles(@RequestBody Roles role) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<Void> addTbRoles(@RequestBody Roles role) {
+        ResponseResult<Void> responseResult = new ResponseResult<Void>();
 
         // 校验必填项
         if(role.getRegionId() == null ) {
@@ -209,11 +209,11 @@ public class TbRolesController extends BaseController {
             @ApiImplicitParam(name = "acctId", value = "acctId", required = true, dataType = "Long" ,paramType="path"),
             @ApiImplicitParam(name = "systemInfoId", value = "systemInfoId", required = false, dataType = "Long" ,paramType="path"),
     })
-    @UooLog(value = "修改角色", key = "updateTbRoles")
+    @UooLog(value = "根据归属系统和账号查询角色权限 ", key = "getRolesPermission")
     @Transactional
     @RequestMapping(value = "/getRolesPermission/{acctId}/{systemInfoId}", method = RequestMethod.POST)
-    public ResponseResult getRolesPermission(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId){
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<List<RoleSystemPermissionVO>> getRolesPermission(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId){
+        ResponseResult<List<RoleSystemPermissionVO>> responseResult = new ResponseResult<List<RoleSystemPermissionVO>>();
         //获取根据条件查询的所有角色信息列表acctType,
         List<RoleSystemPermissionVO> rolesVOList = tbRolesService.getRoles(acctId,systemInfoId);
         //遍历角色列表，获取对应的权限信息列表
@@ -231,11 +231,11 @@ public class TbRolesController extends BaseController {
             @ApiImplicitParam(name = "acctId", value = "acctId", required = true, dataType = "Long" ,paramType="path"),
             @ApiImplicitParam(name = "systemInfoId", value = "systemInfoId", required = false, dataType = "Long" ,paramType="path"),
     })
-    @UooLog(value = "修改角色", key = "updateTbRoles")
+    @UooLog(value = "根据权限获取菜单", key = "getPermissionMenu")
     @Transactional
     @RequestMapping(value = "/getPermissionMenu/{acctId}/{systemInfoId}", method = RequestMethod.POST)
-    public ResponseResult getPermissionMenu(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId){
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<List<FuncMenu>> getPermissionMenu(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId){
+        ResponseResult<List<FuncMenu>> responseResult = new ResponseResult<>();
         //获取根据条件查询的所有菜单信息列表acctType,
         List<FuncMenu> permissionMenuList = tbRolesService.getPermissionMenu(acctId,systemInfoId);
         responseResult.setData(permissionMenuList);

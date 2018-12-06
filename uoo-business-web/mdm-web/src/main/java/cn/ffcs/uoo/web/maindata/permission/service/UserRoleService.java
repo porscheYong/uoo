@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.permission.service;
 
+import java.util.List;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,15 +29,15 @@ import cn.ffcs.uoo.web.maindata.permission.vo.UserPersonnelVo;
 @FeignClient(value = "business-permission", fallback = UserRoleHystrix.class)
 public interface UserRoleService {
     @RequestMapping(value = "/permission/tbUserRole/del", method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult removeTbUserRole(@RequestBody UserRole userRole);
+    public ResponseResult<Void> removeTbUserRole(@RequestBody UserRole userRole);
 
     @RequestMapping(value = "/permission/tbUserRole/add", method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult addTbUserRole(@RequestBody UserRole tbUserRole);
+    public ResponseResult<Void> addTbUserRole(@RequestBody UserRole tbUserRole);
 
     @RequestMapping(value = "/permission/tbUserRole/addTbUserRoleBatch", method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult addTbUserRoleBatch(@RequestBody BatchAddRoleUserVO batchAddRoleUserVO);
+    public ResponseResult<Void> addTbUserRoleBatch(@RequestBody BatchAddRoleUserVO batchAddRoleUserVO);
 
     @RequestMapping(value = "/permission/tbUserRole/getPage/{pageNo}/{pageSize}/{roleId}", method = RequestMethod.GET)
-    public Page<UserPersonnelVo> getUserPersonnelVoPage(@PathVariable(value = "pageNo") Integer pageNo,
+    public ResponseResult<List<UserPersonnelVo>> getUserPersonnelVoPage(@PathVariable(value = "pageNo") Integer pageNo,
             @PathVariable(value = "pageSize") Integer pageSize, @PathVariable(value = "roleId") Long roleId);
 }

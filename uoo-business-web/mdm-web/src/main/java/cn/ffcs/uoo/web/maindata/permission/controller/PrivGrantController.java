@@ -1,6 +1,9 @@
 package cn.ffcs.uoo.web.maindata.permission.controller;
 
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +44,7 @@ public class PrivGrantController {
         @ApiImplicitParam(name = "batchAddRolePrivGrantVO", value = "batchAddRolePrivGrantVO", required = true, dataType = "BatchAddRolePrivGrantVO"  ),
     })
     @RequestMapping(value="batchAddRolePrivGrant",method=RequestMethod.POST)
-    public ResponseResult batchAddRolePrivGrant(@RequestBody BatchAddRolePrivGrantVO batchAddRolePrivGrantVO){
+    public ResponseResult<Void> batchAddRolePrivGrant(@RequestBody BatchAddRolePrivGrantVO batchAddRolePrivGrantVO){
         return grantSvc.batchAddRolePrivGrant(batchAddRolePrivGrantVO);
     }
     @ApiOperation(value = "给职位授权", notes = "给职位授权")
@@ -49,7 +52,7 @@ public class PrivGrantController {
         @ApiImplicitParam(name = "batchAddPositionPrivGrantVO", value = "batchAddPositionPrivGrantVO", required = true, dataType = "BatchAddPositionPrivGrantVO"  ),
     })
     @RequestMapping(value="batchAddPositionPrivGrant",method=RequestMethod.POST)
-    public ResponseResult batchAddPositionPrivGrant(@RequestBody BatchAddPositionPrivGrantVO batchAddPositionPrivGrantVO){
+    public ResponseResult<Void> batchAddPositionPrivGrant(@RequestBody BatchAddPositionPrivGrantVO batchAddPositionPrivGrantVO){
         return grantSvc.batchAddPositionPrivGrant(batchAddPositionPrivGrantVO);
     }
     @ApiOperation(value = "获取角色的授权", notes = "获取角色的授权")
@@ -58,7 +61,7 @@ public class PrivGrantController {
         //@ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
     @GetMapping("listAllPrivGrantByRole/{roleId}")
-    public ResponseResult listAllPrivGrantByRole(@PathVariable(value="roleId",required=true) long roleId){
+    public ResponseResult<List<Map>> listAllPrivGrantByRole(@PathVariable(value="roleId",required=true) long roleId){
         return grantSvc.listAllPrivGrantByRole(roleId);
     }
     
@@ -68,7 +71,7 @@ public class PrivGrantController {
         //@ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
     @GetMapping("listAllPrivGrantByPosition/{posId}")
-    public ResponseResult listAllPrivGrantByPosition(@PathVariable(value="posId",required=true) long posId){
+    public ResponseResult<List<Map>> listAllPrivGrantByPosition(@PathVariable(value="posId",required=true) long posId){
         return grantSvc.listAllPrivGrantByPosition(posId);
     }
         

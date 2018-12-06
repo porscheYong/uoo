@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.permission.controller;
 
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +51,7 @@ public class FuncCompController {
     })
     @UooLog(key="getDataPrivRule",value="获取单个功能组件")
     @GetMapping("/get/{id}")
-    public ResponseResult get(@PathVariable(value="id" ,required=true) Long id){
+    public ResponseResult<FuncComp> get(@PathVariable(value="id" ,required=true) Long id){
         FuncComp comp = funcCompService.selectById(id);
         if(comp== null || !StatusCD.VALID.equals(comp.getStatusCd())){
             return ResponseResult.createErrorResult("无效数据");
@@ -65,7 +66,7 @@ public class FuncCompController {
     })
     @UooLog(key="listFuncComp",value="获取功能组件列表")
     @GetMapping("/listFuncComp/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listFuncComp(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    public ResponseResult<List<FuncComp>> listFuncComp(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         
@@ -73,7 +74,7 @@ public class FuncCompController {
         Wrapper<FuncComp> wrapper = Condition.create().eq("STATUS_CD",StatusCD.VALID).orderBy("UPDATE_DATE", false);
         Page<FuncComp> page = funcCompService.selectPage(new Page<FuncComp>(pageNo, pageSize), wrapper);
         
-        return ResponseResult.createSuccessResult(page.getRecords(), "", page);
+        return ResponseResult.createSuccessResult(  page,"");
     }
     @ApiOperation(value = "添加功能组件列表", notes = "添加功能组件列表")
     @ApiImplicitParams({
@@ -82,7 +83,7 @@ public class FuncCompController {
     @UooLog(key="addFuncComp",value="添加功能组件")
     @Transactional
     @RequestMapping(value="/addFuncComp",method=RequestMethod.POST)
-    public ResponseResult addFuncComp(@RequestBody FuncComp funcComp){
+    public ResponseResult<Void> addFuncComp(@RequestBody FuncComp funcComp){
         Long menuId = funcComp.getMenuId();
         if(menuId==null){
             return ResponseResult.createErrorResult("请选择功能菜单");
@@ -106,7 +107,7 @@ public class FuncCompController {
     @UooLog(key="updateFuncComp",value="修改功能组件")
     @Transactional
     @RequestMapping(value="/updateFuncComp",method=RequestMethod.POST)
-    public ResponseResult updateFuncComp(@RequestBody FuncComp funcComp){
+    public ResponseResult<Void> updateFuncComp(@RequestBody FuncComp funcComp){
         Long menuId = funcComp.getMenuId();
         if(menuId==null){
             return ResponseResult.createErrorResult("请选择功能菜单");
@@ -128,7 +129,7 @@ public class FuncCompController {
     @UooLog(key="deleteFuncComp",value="删除功能组件")
     @Transactional
     @RequestMapping(value="/deleteFuncComp",method=RequestMethod.POST)
-    public ResponseResult deleteFuncComp(@RequestBody FuncComp funcComp){
+    public ResponseResult<Void> deleteFuncComp(@RequestBody FuncComp funcComp){
         Long compId = funcComp.getCompId();
         if(compId!=null){
             FuncComp comp = funcCompService.selectById(compId);

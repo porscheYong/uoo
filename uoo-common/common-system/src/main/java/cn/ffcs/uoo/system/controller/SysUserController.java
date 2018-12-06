@@ -137,7 +137,7 @@ public class SysUserController extends BaseController {
             @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long" ,paramType="path"),
     })
     @UooLog(key="getUser",value="获取单个数据")
-    @GetMapping("/get/{id}")
+    @GetMapping("/getUser/{id}")
     public cn.ffcs.uoo.system.vo.ResponseResult get(@PathVariable(value="id" ,required=true) Long id){
         SysUser User = sysUserService.selectById(id);
         if(User== null ){
@@ -151,8 +151,8 @@ public class SysUserController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
-    @UooLog(key="listPageRoles",value="获取分页列表")
-    @GetMapping("/listPageRoles/pageNo={pageNo}&pageSize={pageSize}")
+    @UooLog(key="listPageUsers",value="获取分页列表")
+    @GetMapping("/listPageUsers/pageNo={pageNo}&pageSize={pageSize}")
     public cn.ffcs.uoo.system.vo.ResponseResult listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
@@ -165,9 +165,9 @@ public class SysUserController extends BaseController {
 
     @ApiOperation(value = "修改",notes = "修改")
     @ApiImplicitParam(name = "sysUser", value = "修改", required = true, dataType = "Roles")
-    @UooLog(value = "修改角色", key = "updateTbRoles")
+    @UooLog(value = "修改角色", key = "updateUser")
     @Transactional
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
     public cn.ffcs.uoo.system.vo.ResponseResult update(@RequestBody SysUser sysUser) {
         cn.ffcs.uoo.system.vo.ResponseResult responseResult = new cn.ffcs.uoo.system.vo.ResponseResult();
         // 校验必填项
@@ -180,7 +180,7 @@ public class SysUserController extends BaseController {
         sysUserService.updateById(sysUser);
 
         responseResult.setState(cn.ffcs.uoo.system.vo.ResponseResult.STATE_OK);
-        responseResult.setMessage("修改角色成功");
+        responseResult.setMessage("修改成功");
         return responseResult;
     }
 
@@ -188,7 +188,7 @@ public class SysUserController extends BaseController {
     @ApiImplicitParam(name = "sysUser", value = "新增", required = true, dataType = "SysUser")
     @UooLog(value = "新增", key = "add")
     @Transactional
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public cn.ffcs.uoo.system.vo.ResponseResult add(@RequestBody SysUser sysUser) {
         cn.ffcs.uoo.system.vo.ResponseResult responseResult = new cn.ffcs.uoo.system.vo.ResponseResult();
 
@@ -198,7 +198,7 @@ public class SysUserController extends BaseController {
         sysUser.setStatusDate(new Date());
         sysUserService.insert(sysUser);
         responseResult.setState(cn.ffcs.uoo.system.vo.ResponseResult.STATE_OK);
-        responseResult.setMessage("新增角色成功");
+        responseResult.setMessage("新增成功");
         return responseResult;
     }
 
@@ -209,7 +209,7 @@ public class SysUserController extends BaseController {
     @UooLog(key="delete=",value="删除")
     @SuppressWarnings("unchecked")
     @Transactional
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
     public cn.ffcs.uoo.system.vo.ResponseResult deletePrivilege(@RequestBody SysUser sysUser) {
         Long UserId = sysUser.getUserId();
         if (UserId == null) {

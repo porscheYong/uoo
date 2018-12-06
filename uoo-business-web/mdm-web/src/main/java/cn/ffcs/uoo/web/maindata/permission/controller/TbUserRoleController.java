@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.web.maindata.permission.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +42,7 @@ public class TbUserRoleController  {
             @ApiImplicitParam(name = "updateStaff", value = "修改人", required = true, dataType = "Long")
     })
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult removeTbUserRole(@RequestBody UserRole userRole) {
+    public ResponseResult<Void> removeTbUserRole(@RequestBody UserRole userRole) {
         
         return userRoleService.removeTbUserRole(userRole);
     }
@@ -48,14 +50,14 @@ public class TbUserRoleController  {
     @ApiOperation(value = "新增用户角色关系", notes = "新增用户角色关系")
     @ApiImplicitParam(name = "tbUserRole", value = "用户角色关系", required = true, dataType = "UserRole")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult addTbUserRole(@RequestBody UserRole tbUserRole) {
+    public ResponseResult<Void> addTbUserRole(@RequestBody UserRole tbUserRole) {
         return userRoleService.addTbUserRole(tbUserRole);
     }
     
     @ApiOperation(value = "添加角色成员", notes = "添加角色成员")
     @ApiImplicitParam(name = "batchAddRoleUserVO", value = "用户角色关系", required = true, dataType = "BatchAddRoleUserVO")
     @RequestMapping(value = "/addTbUserRoleBatch", method = RequestMethod.POST)
-    public ResponseResult addTbUserRoleBatch(@RequestBody BatchAddRoleUserVO batchAddRoleUserVO) {
+    public ResponseResult<Void> addTbUserRoleBatch(@RequestBody BatchAddRoleUserVO batchAddRoleUserVO) {
          
         return userRoleService.addTbUserRoleBatch(batchAddRoleUserVO);
     }
@@ -67,14 +69,11 @@ public class TbUserRoleController  {
             @ApiImplicitParam(name = "roleId", value = "角色id",required = true, dataType = "Long", paramType = "path")
     })
     @RequestMapping(value = "/getPage/{pageNo}/{pageSize}/{roleId}", method = RequestMethod.GET)
-    public ResponseResult getUserPersonnelVoPage(@PathVariable(value = "pageNo") Integer pageNo,
+    public ResponseResult<List<UserPersonnelVo>> getUserPersonnelVoPage(@PathVariable(value = "pageNo") Integer pageNo,
                                                         @PathVariable(value = "pageSize") Integer pageSize,
                                                         @PathVariable(value = "roleId") Long roleId) {
-        Page<UserPersonnelVo> page = userRoleService.getUserPersonnelVoPage(pageNo, pageSize, roleId);
-        if(page==null){
-            return ResponseResult.createErrorResult("服务器异常");
-        }
-        return ResponseResult.createSuccessResult(page.getRecords(), "", page);
+        return userRoleService.getUserPersonnelVoPage(pageNo, pageSize, roleId);
+         
     }
 }
 

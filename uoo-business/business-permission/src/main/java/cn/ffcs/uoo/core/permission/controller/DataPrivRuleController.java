@@ -45,7 +45,7 @@ public class DataPrivRuleController {
     @UooLog(key="addDataPrivRule",value="添加规则")
     @Transactional
     @RequestMapping(value="addDataPrivRule",method=RequestMethod.POST)
-    public ResponseResult addDataPrivRule(@RequestBody DataPrivRule dataPrivRule){
+    public ResponseResult<Void> addDataPrivRule(@RequestBody DataPrivRule dataPrivRule){
         Long privDataRelId = dataPrivRule.getPrivDataRelId();
         if(privDataRelId==null){
             return ResponseResult.createErrorResult("请选择权限数据");
@@ -67,7 +67,7 @@ public class DataPrivRuleController {
     @UooLog(key="updateDataPrivRule",value="修改规则")
     @Transactional
     @RequestMapping(value="updateDataPrivRule",method=RequestMethod.POST)
-    public ResponseResult updateDataPrivRule(@RequestBody DataPrivRule dataPrivRule){
+    public ResponseResult<Void> updateDataPrivRule(@RequestBody DataPrivRule dataPrivRule){
         Long privDataRelId = dataPrivRule.getPrivDataRelId();
         if(privDataRelId==null){
             return ResponseResult.createErrorResult("请选择权限数据");
@@ -88,7 +88,7 @@ public class DataPrivRuleController {
     @UooLog(key="deleteDataPrivRule",value="删除规则")
     @Transactional
     @RequestMapping(value="deleteDataPrivRule",method=RequestMethod.POST)
-    public ResponseResult deleteDataPrivRule(@RequestBody DataPrivRule dataPrivRule){
+    public ResponseResult<Void> deleteDataPrivRule(@RequestBody DataPrivRule dataPrivRule){
         Long ruleId = dataPrivRule.getPrivRuleId();
         if(ruleId==null){
             return ResponseResult.createErrorResult("请选择权限规则");

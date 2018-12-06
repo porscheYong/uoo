@@ -89,7 +89,7 @@ public class SysMenuController {
         sysMenuService.updateById(sysMenu);
 
         responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("修改角色成功");
+        responseResult.setMessage("修改成功");
         return responseResult;
     }
 
