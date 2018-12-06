@@ -38,7 +38,7 @@ public class OrgRelTypeController {
     @ApiOperation(value = "组织关系类型", notes = "组织关系类型")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getOrgRelTypeList", method = RequestMethod.POST)
+    @RequestMapping(value = "/getOrgRelTypeList", method = RequestMethod.GET)
     public ResponseResult<List<OrgRelType>> getOrgRelTypeList(@RequestParam(value = "orgRelCode",required = false)String orgRelCode){
         return orgRefTypeService.getOrgRelTypeList(orgRelCode);
     }

@@ -1040,6 +1040,12 @@ public class OrgController extends BaseController {
         List<PoliticalLocation> pl = orgService.getOrgLoc(orgId);
         org.setPoliticalLocationList(pl);
 
+        //区域编码
+        List<AreaCodeVo> areaList = orgService.getOrgAreaCode(orgId);
+        if(areaList!=null && areaList.size()>0){
+            org.setAreaCode(StrUtil.strnull(areaList.get(0).getAreaCode()));
+        }
+
         //营销化小编码
         ResponseResult<List<ExpandovalueVo>> Hxret = expandovalueService.queryExpandovalueVoList("TB_ORG",orgId);
         if(Hxret.getState()==ResponseResult.STATE_OK){

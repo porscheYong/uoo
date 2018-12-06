@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.organization.service;
 
 import cn.ffcs.uoo.core.organization.entity.Org;
 import cn.ffcs.uoo.core.organization.entity.PoliticalLocation;
+import cn.ffcs.uoo.core.organization.vo.AreaCodeVo;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
 import cn.ffcs.uoo.core.organization.vo.PageVo;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -95,5 +96,10 @@ public interface OrgService extends IService<Org> {
      */
     public List<PoliticalLocation> getOrgLoc(String orgId);
 
-
+    /**
+     * 获取区域信息
+     * @param orgId
+     * @return
+     */
+    public List<AreaCodeVo> getOrgAreaCode(String orgId);
 }

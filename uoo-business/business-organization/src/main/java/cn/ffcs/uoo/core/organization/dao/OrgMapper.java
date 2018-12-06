@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.organization.dao;
 
 import cn.ffcs.uoo.core.organization.entity.Org;
 import cn.ffcs.uoo.core.organization.entity.PoliticalLocation;
+import cn.ffcs.uoo.core.organization.vo.AreaCodeVo;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -106,4 +107,10 @@ public interface OrgMapper extends BaseMapper<Org> {
      */
     public List<OrgVo> getFullOrgList(@Param("orgTreeId")String orgTreeId,@Param("orgId")String orgId);
 
+    /**
+     * 获取区域信息
+     * @param orgId
+     * @return
+     */
+    public List<AreaCodeVo> getOrgAreaCode(@Param("orgId")String orgId);
 }

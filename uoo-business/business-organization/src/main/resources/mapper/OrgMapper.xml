@@ -261,4 +261,14 @@
         AND B.ORG_ID = #{orgId}
     </select>
 
+
+    <select id="getOrgAreaCode" resultType="cn.ffcs.uoo.core.organization.vo.AreaCodeVo">
+        SELECT A.AREA_CODE_ID AREACODEID, A.AREA_CODE AREACODE
+        FROM TB_AREA_CODE A, TB_ORG B
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND B.AREA_CODE_ID = A.AREA_CODE_ID
+        AND B.ORG_ID =  #{orgId}
+    </select>
+
 </mapper>
