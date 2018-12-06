@@ -35,6 +35,8 @@ import java.util.Date;
  * @create 2018/12/4
  * @since 1.0.0
  */
+@RestController
+@RequestMapping("/system/sysLoginLog")
 public class SysLoginLogController {
 
     @Autowired
@@ -85,7 +87,7 @@ public class SysLoginLogController {
         sysLoginLog.setStatusDate(new Date());
         sysLoginLogService.insert(sysLoginLog);
         responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("新增角色成功");
+        responseResult.setMessage("新增成功");
         return responseResult;
     }
 

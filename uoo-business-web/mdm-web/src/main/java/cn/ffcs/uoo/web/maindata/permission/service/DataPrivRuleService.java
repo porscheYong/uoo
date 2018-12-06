@@ -21,11 +21,11 @@ import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
 @FeignClient(value = "business-permission", fallback = DataPrivRuleHystrix.class)
 public interface DataPrivRuleService {
     @RequestMapping(value = "/permission/dataPrivRule/addDataPrivRule", method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult addDataPrivRule(@RequestBody DataPrivRule dataPrivRule);
+    public ResponseResult<Void> addDataPrivRule(@RequestBody DataPrivRule dataPrivRule);
 
     @RequestMapping(value = "/permission/dataPrivRule/updateDataPrivRule", method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult updateDataPrivRule(@RequestBody DataPrivRule dataPrivRule);
+    public ResponseResult<Void> updateDataPrivRule(@RequestBody DataPrivRule dataPrivRule);
 
     @RequestMapping(value = "/permission/dataPrivRule/deleteDataPrivRule", method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult deleteDataPrivRule(@RequestBody DataPrivRule dataPrivRule);
+    public ResponseResult<Void> deleteDataPrivRule(@RequestBody DataPrivRule dataPrivRule);
 }

@@ -34,7 +34,7 @@ public class PrivDataRelController {
         @ApiImplicitParam(name = "privDataRel", value = "privDataRel", required = true, dataType = "PrivDataRel"  ),
     })
     @RequestMapping(value="addPrivDataRel",method=RequestMethod.POST)
-    public ResponseResult addPrivDataRel(@RequestBody PrivDataRel privDataRel){
+    public ResponseResult<Void> addPrivDataRel(@RequestBody PrivDataRel privDataRel){
          
         return relSvc.addPrivDataRel(privDataRel);
     }
@@ -44,7 +44,7 @@ public class PrivDataRelController {
         @ApiImplicitParam(name = "privDataRel", value = "privDataRel", required = true, dataType = "PrivDataRel"  ),
     })
     @RequestMapping(value="updatePrivDataRel",method=RequestMethod.POST)
-    public ResponseResult updatePrivDataRel(@RequestBody PrivDataRel privDataRel){
+    public ResponseResult<Void> updatePrivDataRel(@RequestBody PrivDataRel privDataRel){
         return relSvc.updatePrivDataRel(privDataRel);
     }
     @ApiOperation(value = "删除权限与业务对象之间多对多的关系", notes = "删除权限与业务对象之间多对多的关系")
@@ -52,7 +52,7 @@ public class PrivDataRelController {
         @ApiImplicitParam(name = "privDataRel", value = "privDataRel", required = true, dataType = "PrivDataRel"  ),
     })
     @RequestMapping(value="deletePrivDataRel",method=RequestMethod.POST)
-    public ResponseResult deletePrivDataRel(@RequestBody PrivDataRel privDataRel){
+    public ResponseResult<Void> deletePrivDataRel(@RequestBody PrivDataRel privDataRel){
         return relSvc.deletePrivDataRel(privDataRel);
     }
 }

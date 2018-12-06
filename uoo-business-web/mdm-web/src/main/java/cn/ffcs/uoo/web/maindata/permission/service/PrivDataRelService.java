@@ -22,12 +22,12 @@ import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
 public interface PrivDataRelService {
      
     @RequestMapping(value="/permission/privDataRel/addPrivDataRel",method=RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult addPrivDataRel(@RequestBody PrivDataRel privDataRel);
+    public ResponseResult<Void> addPrivDataRel(@RequestBody PrivDataRel privDataRel);
     
     @RequestMapping(value="/permission/privDataRel/updatePrivDataRel",method=RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult updatePrivDataRel(@RequestBody PrivDataRel privDataRel);
+    public ResponseResult<Void> updatePrivDataRel(@RequestBody PrivDataRel privDataRel);
      
     @RequestMapping(value="/permission/privDataRel/deletePrivDataRel",method=RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult deletePrivDataRel(@RequestBody PrivDataRel privDataRel);
+    public ResponseResult<Void> deletePrivDataRel(@RequestBody PrivDataRel privDataRel);
 }
 

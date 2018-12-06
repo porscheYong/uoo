@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.permission.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.ffcs.uoo.web.maindata.permission.dto.FuncComp;
 import cn.ffcs.uoo.web.maindata.permission.service.FuncCompService;
 import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.realm.LoadUrlPermissionService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -28,12 +31,13 @@ import io.swagger.annotations.ApiOperation;
 public class FuncCompController {
     @Autowired
     private FuncCompService funcCompService;
-
+    @Autowired
+    LoadUrlPermissionService loadUrlPermissionSvc;
     @ApiOperation(value = "获取单个功能组件", notes = "获取单个功能组件")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long", paramType = "path"), })
     @GetMapping("/get/{id}")
-    public ResponseResult get(@PathVariable(value = "id", required = true) Long id) {
+    public ResponseResult<FuncComp> get(@PathVariable(value = "id", required = true) Long id) {
         return funcCompService.get(id);
     }
 
@@ -42,7 +46,7 @@ public class FuncCompController {
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long", paramType = "path"),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long", paramType = "path"), })
     @GetMapping("/listFuncComp/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listFuncComp(@PathVariable(value = "pageNo") Integer pageNo,
+    public ResponseResult<List<FuncComp>> listFuncComp(@PathVariable(value = "pageNo") Integer pageNo,
             @PathVariable(value = "pageSize", required = false) Integer pageSize) {
         return funcCompService.listFuncComp(pageNo, pageSize);
     }
@@ -51,26 +55,35 @@ public class FuncCompController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "funcComp", value = "funcComp", required = true, dataType = "FuncComp"), })
     @RequestMapping(value = "/addFuncComp", method = RequestMethod.POST)
-    public ResponseResult addFuncComp(@RequestBody FuncComp funcComp) {
-
-        return funcCompService.addFuncComp(funcComp);
+    public ResponseResult<Void> addFuncComp(@RequestBody FuncComp funcComp) {
+        ResponseResult rr = funcCompService.addFuncComp(funcComp);
+        if(ResponseResult.STATE_OK==rr.getState()){
+            loadUrlPermissionSvc.updateUrlPermission();
+        }
+        return rr;
     }
 
     @ApiOperation(value = "修改功能组件列表", notes = "修改功能组件列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "funcComp", value = "funcComp", required = true, dataType = "FuncComp"), })
     @RequestMapping(value = "/updateFuncComp", method = RequestMethod.POST)
-    public ResponseResult updateFuncComp(@RequestBody FuncComp funcComp) {
-
-        return funcCompService.updateFuncComp(funcComp);
+    public ResponseResult<Void> updateFuncComp(@RequestBody FuncComp funcComp) {
+        ResponseResult<Void> rr = funcCompService.updateFuncComp(funcComp);
+        if(ResponseResult.STATE_OK==rr.getState()){
+            loadUrlPermissionSvc.updateUrlPermission();
+        }
+        return rr;
     }
 
     @ApiOperation(value = "删除功能组件列表", notes = "删除功能组件列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "funcComp", value = "funcComp", required = true, dataType = "FuncComp"), })
     @RequestMapping(value = "/deleteFuncComp", method = RequestMethod.POST)
-    public ResponseResult deleteFuncComp(@RequestBody FuncComp funcComp) {
-
-        return funcCompService.deleteFuncComp(funcComp);
+    public ResponseResult<Void> deleteFuncComp(@RequestBody FuncComp funcComp) {
+        ResponseResult<Void> rr = funcCompService.deleteFuncComp(funcComp);
+        if(ResponseResult.STATE_OK==rr.getState()){
+            loadUrlPermissionSvc.updateUrlPermission();
+        }
+        return rr;
     }
 }

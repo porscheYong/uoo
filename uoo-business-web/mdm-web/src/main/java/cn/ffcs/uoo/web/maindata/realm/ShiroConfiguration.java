@@ -1,21 +1,33 @@
 package cn.ffcs.uoo.web.maindata.realm;
 
-import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.LinkedHashMap;
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import cn.ffcs.uoo.web.maindata.permission.dto.FuncComp;
+import cn.ffcs.uoo.web.maindata.permission.dto.FuncMenu;
+import cn.ffcs.uoo.web.maindata.permission.service.FuncCompService;
+import cn.ffcs.uoo.web.maindata.permission.service.FuncMenuService;
+import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
 
 @Configuration
 public class ShiroConfiguration {
-
+   
+    @Autowired 
+    FuncCompService funcCompSvc;
+    @Autowired 
+    FuncMenuService funcMenuSvc;
+    
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(org.apache.shiro.mgt.SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
@@ -24,20 +36,7 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setSuccessUrl("/index");
         shiroFilterFactoryBean.setUnauthorizedUrl("/403.html");
         // 配置访问权限
-        LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/logout", "logout");
-        filterChainDefinitionMap.put("/css/**", "anon"); //静态资源必须开放
-        filterChainDefinitionMap.put("/contents/**", "anon"); //
-        filterChainDefinitionMap.put("/fonts/**", "anon"); //
-        filterChainDefinitionMap.put("/images/**", "anon"); //
-        filterChainDefinitionMap.put("/js/**", "anon"); //
-        filterChainDefinitionMap.put("/vendors/**", "anon"); //
-        filterChainDefinitionMap.put("/system/sysUserLogin", "anon"); // 登陆接口必须开放
-        //TODO 把所有菜单url和权限绑定在map
-        //filterChainDefinitionMap.put("/index", "perms[index]");
-        //filterChainDefinitionMap.put("/inaction/**", "perms[inaction]");
-        filterChainDefinitionMap.put("/**", "authc");//表示需要认证才可以访问
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(new LinkedHashMap<>());
         return shiroFilterFactoryBean;
     }
 

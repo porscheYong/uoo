@@ -1,12 +1,15 @@
 package cn.ffcs.uoo.web.maindata.sysuser.controller;
 
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +34,8 @@ public class SysUserController {
     SysUserClient sysuserClient;
     @Autowired
     private AcctService acctService;
+    @Autowired
+    ShiroFilterFactoryBean shiroFilterFactoryBean;
     @ApiOperation(value = "登陆接口", notes = "登陆接口")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "sysUser", value = "sysUser", required = true, dataType = "SysUser" ),
@@ -51,17 +56,24 @@ public class SysUserController {
             rr.setMessage("用户密码错误");
             rr.setState(1100);
         }
-         
-        if(ResponseResult.STATE_OK==rr.getState()){
-            Object tbAcct2 = acctService.getTbAcct(sysUser.getAccout());
-            JSONObject json=JSONObject.parseObject(JSONObject.toJSONString(tbAcct2));
-            if(json.getInteger("state")  ==1000){
-                request.getSession().setAttribute(LoginConsts.LOGIN_KEY,tbAcct2);
-            }else{
-                rr.setState(ResponseResult.STATE_ERROR);
-                rr.setMessage(json.getString("message"));
+        Map<String, String> filterChainDefinitionMap = shiroFilterFactoryBean.getFilterChainDefinitionMap();
+        if(filterChainDefinitionMap.isEmpty()){
+            rr.setMessage("系统权限未初始化完成，请稍后");
+            rr.setState(1100);
+        }else{
+            if(ResponseResult.STATE_OK==rr.getState()){
+                Object tbAcct2 = acctService.getTbAcct(sysUser.getAccout());
+                JSONObject json=JSONObject.parseObject(JSONObject.toJSONString(tbAcct2));
+                if(json.getInteger("state")  ==1000){
+                    request.getSession().setAttribute(LoginConsts.LOGIN_KEY,tbAcct2);
+                }else{
+                    rr.setState(ResponseResult.STATE_ERROR);
+                    rr.setMessage(json.getString("message"));
+                }
             }
+            
         }
+        
         return rr;
     }
 }

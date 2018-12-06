@@ -28,4 +28,9 @@ public class PrivilegeHystrix implements PrivilegeService {
         return ResponseResult.createErrorResult("系统数据异常");
     }
 
+    @Override
+    public ResponseResult getAccoutMenuPermission(Long accoutId) {
+        return ResponseResult.createErrorResult("系统数据异常");
+    }
+
 }

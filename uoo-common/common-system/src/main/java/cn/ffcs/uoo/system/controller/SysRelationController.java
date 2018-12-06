@@ -35,6 +35,8 @@ import java.util.Date;
  * @create 2018/12/4
  * @since 1.0.0
  */
+@RestController
+@RequestMapping("/system/sysRelation")
 public class SysRelationController {
     @Autowired
     SysRelationService sysRelationService;
@@ -87,7 +89,7 @@ public class SysRelationController {
         sysRelationService.updateById(sysRelation);
 
         responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("修改角色成功");
+        responseResult.setMessage("修改成功");
         return responseResult;
     }
 
@@ -105,7 +107,7 @@ public class SysRelationController {
         sysRelation.setStatusDate(new Date());
         sysRelationService.insert(sysRelation);
         responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("新增角色成功");
+        responseResult.setMessage("新增成功");
         return responseResult;
     }
 

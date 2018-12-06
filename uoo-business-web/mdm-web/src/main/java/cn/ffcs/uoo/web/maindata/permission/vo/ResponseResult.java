@@ -4,16 +4,17 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.plugins.Page;
 
-public class ResponseResult  {
-    public static final int STATE_OK = 1;//返回结果正常
-    public static final int STATE_ERROR = -1;//返回结果异常
+public class ResponseResult<T>  {
+    public static final int STATE_OK = 1000;//返回结果正常
+    public static final int STATE_ERROR = 1100;//返回结果异常
 
     private int state = STATE_OK;
     private String message;
-    private Object data;
+    private T data;
     
     //补充分页数据
     private long totalRecords;
+    
     /**
      * 分页的序号
      */
@@ -39,7 +40,6 @@ public class ResponseResult  {
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
-    
     public long getTotalRecords() {
         return totalRecords;
     }
@@ -64,65 +64,51 @@ public class ResponseResult  {
         this.message = message;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 
-    public static ResponseResult createErrorResult(List<? extends Object> datas, String message) {
-        ResponseResult result = new ResponseResult();
+    public static <T> ResponseResult<T> createErrorResult(T datas, String message) {
+        ResponseResult<T> result = new ResponseResult<T>();
         result.setData(datas);
         result.setMessage(message);
         result.setState(STATE_ERROR);
         return result;
     }
 
-    public static ResponseResult createErrorResult(Object data, String message) {
-        ResponseResult result = new ResponseResult();
-        result.setData(data);
+
+    public static <T> ResponseResult<T> createErrorResult(String message) {
+        ResponseResult<T> result = new ResponseResult<T>();
         result.setMessage(message);
         result.setState(STATE_ERROR);
         return result;
     }
 
-    public static ResponseResult createErrorResult(String message) {
-        ResponseResult result = new ResponseResult();
-        result.setMessage(message);
-        result.setState(STATE_ERROR);
-        return result;
-    }
-
-    public static ResponseResult createSuccessResult(String message) {
-        ResponseResult result = new ResponseResult();
+    public static <T> ResponseResult<T> createSuccessResult(String message) {
+        ResponseResult<T> result = new ResponseResult<T>();
         result.setMessage(message);
         return result;
     }
 
-    public static ResponseResult createSuccessResult(Object data, String message) {
-        ResponseResult result = new ResponseResult();
+    public static <T> ResponseResult<T> createSuccessResult(T data, String message) {
+        ResponseResult<T> result = new ResponseResult<T>();
         result.setData(data);
         result.setMessage(message);
         return result;
     }
 
-    public static ResponseResult createSuccessResult(List<? extends Object> datas, String message) {
-        ResponseResult result = new ResponseResult();
-        result.setData(datas);
-        result.setMessage(message);
-        return result;
-    }
     
-    public static ResponseResult createSuccessResult(List<? extends Object> datas, String message,Page<? extends Object> page) {
-        ResponseResult result = new ResponseResult();
-        result.setData(datas);
+    public static <T> ResponseResult<List<T>> createSuccessResult(Page<T> page, String message) {
+        ResponseResult<List<T>> result = new ResponseResult<List<T>>();
+        result.setData(page.getRecords());
         result.setMessage(message);
         result.setPageNo(page.getCurrent());
         result.setPageSize(page.getSize());
         result.setTotalRecords(page.getTotal());
         return result;
     }
-
 }

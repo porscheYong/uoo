@@ -154,7 +154,7 @@ function initOrgPersonnelTable (isSearchlower) {
 
 //勾选显示下级组织人员
 function showLower() {
-    var checked = $('#isShowLower').is(':checked');
+    var checked = $('#isShowLower').is(':checked')? 1: 0;
     initOrgPersonnelTable(checked);
 }
 
@@ -162,7 +162,7 @@ $('#orgName').html(orgName);
 // 显示组织路径
 parent.getOrgExtInfo();
 initOrgTable();
-initOrgPersonnelTable(false);
+initOrgPersonnelTable(0);
 
 $('#orgName').on('click', function () {
     var url = 'info.html?id=' + orgId + '&pid=' + pid + '&name=' + encodeURI(orgName);

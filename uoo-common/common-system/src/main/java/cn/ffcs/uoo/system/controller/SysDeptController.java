@@ -91,7 +91,7 @@ public class SysDeptController {
         sysDeptService.updateById(sysDept);
 
         responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("修改角色成功");
+        responseResult.setMessage("修改成功");
         return responseResult;
     }
 
@@ -109,7 +109,7 @@ public class SysDeptController {
         sysDept.setStatusDate(new Date());
         sysDeptService.insert(sysDept);
         responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("新增角色成功");
+        responseResult.setMessage("新增成功");
         return responseResult;
     }
 

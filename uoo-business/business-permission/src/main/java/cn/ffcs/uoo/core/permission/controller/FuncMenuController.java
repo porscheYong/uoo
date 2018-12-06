@@ -75,7 +75,7 @@ public class FuncMenuController {
     @UooLog(value = "菜单配置翻页", key = "getFuncMenuPage")
     @RequestMapping(value = "/getFuncMenuPage", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult getFuncMenuPage(){
+    public ResponseResult<List<FuncMenu>> getFuncMenuPage(){
         @SuppressWarnings("unchecked")
         Wrapper<FuncMenu> w=Condition.create().eq("STATUS_CD", StatusCD.VALID);
         List<FuncMenu> list = funcMenuService.selectList(w);
@@ -90,7 +90,7 @@ public class FuncMenuController {
     @UooLog(value = "新增菜单", key = "addFuncMenu")
     @RequestMapping(value = "/addFuncMenu", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult addFuncMenu(@RequestBody FuncMenu funcMenu){
+    public ResponseResult<Void> addFuncMenu(@RequestBody FuncMenu funcMenu){
          
         Long pmid=funcMenu.getParMenuId();
         int currentLevel = 0;
@@ -117,7 +117,7 @@ public class FuncMenuController {
     @UooLog(value = "修改菜单", key = "updateFuncMenu")
     @RequestMapping(value = "/updateFuncMenu", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult updateFuncMenu(@RequestBody FuncMenu funcMenu){
+    public ResponseResult<Void> updateFuncMenu(@RequestBody FuncMenu funcMenu){
          
         Long pmid=funcMenu.getParMenuId();
         int currentLevel = 0;
@@ -144,7 +144,7 @@ public class FuncMenuController {
     @UooLog(value = "删除菜单", key = "deleteFuncMenu")
     @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/deleteFuncMenu", method = RequestMethod.POST)
-    public ResponseResult deleteFuncMenu(@RequestBody FuncMenu funcMenu){
+    public ResponseResult<Void> deleteFuncMenu(@RequestBody FuncMenu funcMenu){
          
         //有下级不能删除
         Long menuId = funcMenu.getMenuId();

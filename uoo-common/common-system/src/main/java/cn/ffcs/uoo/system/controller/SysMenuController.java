@@ -35,6 +35,8 @@ import java.util.Date;
  * @create 2018/12/4
  * @since 1.0.0
  */
+@RestController
+@RequestMapping("/system/sysMenu")
 public class SysMenuController {
     @Autowired
     SysMenuService sysMenuService;
@@ -87,7 +89,7 @@ public class SysMenuController {
         sysMenuService.updateById(sysMenu);
 
         responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("修改角色成功");
+        responseResult.setMessage("修改成功");
         return responseResult;
     }
 

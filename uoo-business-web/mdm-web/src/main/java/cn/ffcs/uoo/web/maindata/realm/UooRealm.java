@@ -1,23 +1,40 @@
 package cn.ffcs.uoo.web.maindata.realm;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.alibaba.fastjson.JSONObject;
+
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
+import cn.ffcs.uoo.web.maindata.permission.dto.FuncComp;
+import cn.ffcs.uoo.web.maindata.permission.dto.FuncMenu;
+import cn.ffcs.uoo.web.maindata.permission.service.PrivilegeService;
+import cn.ffcs.uoo.web.maindata.permission.service.RolesService;
+import cn.ffcs.uoo.web.maindata.permission.vo.AccoutPermissionVO;
 import cn.ffcs.uoo.web.maindata.sysuser.client.SysUserClient;
 import cn.ffcs.uoo.web.maindata.sysuser.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
 
 public class UooRealm extends AuthorizingRealm {
-
+    private static Logger log=LoggerFactory.getLogger(UooRealm.class);
     // @Resource
     // UserMapper userMapper;
     // @Resource
@@ -26,7 +43,10 @@ public class UooRealm extends AuthorizingRealm {
     // PermissionMapper permissionMapper;
     @Autowired
     SysUserClient client;
-
+    @Autowired
+    PrivilegeService privSvc;
+    @Autowired
+    RolesService rolesSVC;
     /**
      * 验证当前登录的用户
      * 
@@ -60,13 +80,34 @@ public class UooRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        //String name = (String) principals.getPrimaryPrincipal();// 这里存储用户的acct
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-    //sesision loginkey acid
-
-
-        simpleAuthorizationInfo.addStringPermission("index");
-       // System.err.println("获取权限");
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+                .getRequestAttributes()).getRequest();
+        HttpSession session = request==null?null: request.getSession();
+        if(session!=null){
+            Object attribute = session.getAttribute(LoginConsts.LOGIN_KEY);
+            if(attribute!=null){
+                JSONObject json=JSONObject.parseObject(JSONObject.toJSONString(attribute));
+                JSONObject data = json.getJSONObject("data");
+                if(data!=null){
+                    Long acctId = data.getLong("acctId");
+                    cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult<AccoutPermissionVO> accoutMenuPermission = privSvc.getAccoutMenuPermission(acctId);
+                    if(accoutMenuPermission.getState()==cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult.STATE_OK){
+                        AccoutPermissionVO vo = accoutMenuPermission.getData();
+                        List<FuncComp> funcComps = vo.getFuncComps();
+                        List<FuncMenu> funcMemus = vo.getFuncMemus();
+                        for (FuncMenu funcMenu : funcMemus) {
+                            simpleAuthorizationInfo.addStringPermission("M"+funcMenu.getMenuId());
+                        }
+                        for (FuncComp funcComp : funcComps) {
+                            simpleAuthorizationInfo.addStringPermission("C"+funcComp.getCompId());
+                        }
+                    }else{
+                        log.info("没有权限的账户："+json);
+                    }
+                }
+            }
+        }
         return simpleAuthorizationInfo;
     }
     /**

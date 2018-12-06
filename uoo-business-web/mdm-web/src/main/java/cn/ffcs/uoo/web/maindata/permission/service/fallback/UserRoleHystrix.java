@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.permission.service.fallback;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.plugins.Page;
@@ -28,8 +30,8 @@ public class UserRoleHystrix implements UserRoleService {
     }
 
     @Override
-    public Page<UserPersonnelVo> getUserPersonnelVoPage(Integer pageNo, Integer pageSize, Long roleId) {
-        return null;
+    public ResponseResult<List<UserPersonnelVo>> getUserPersonnelVoPage(Integer pageNo, Integer pageSize, Long roleId) {
+        return ResponseResult.createErrorResult("系统数据异常");
     }
 
 }
