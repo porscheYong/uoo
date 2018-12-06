@@ -25,13 +25,13 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setUnauthorizedUrl("/403.html");
         // 配置访问权限
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/logout", "logout"); 
+        filterChainDefinitionMap.put("/logout", "logout");
         filterChainDefinitionMap.put("/css/**", "anon"); //静态资源必须开放
-        filterChainDefinitionMap.put("/contents/**", "anon"); // 
+        filterChainDefinitionMap.put("/contents/**", "anon"); //
         filterChainDefinitionMap.put("/fonts/**", "anon"); //
-        filterChainDefinitionMap.put("/images/**", "anon"); // 
-        filterChainDefinitionMap.put("/js/**", "anon"); // 
-        filterChainDefinitionMap.put("/vendors/**", "anon"); // 
+        filterChainDefinitionMap.put("/images/**", "anon"); //
+        filterChainDefinitionMap.put("/js/**", "anon"); //
+        filterChainDefinitionMap.put("/vendors/**", "anon"); //
         filterChainDefinitionMap.put("/system/sysUserLogin", "anon"); // 登陆接口必须开放
         //TODO 把所有菜单url和权限绑定在map
         //filterChainDefinitionMap.put("/index", "perms[index]");

@@ -96,12 +96,12 @@ spring:
         #允许清除记录
         reset-enable: false
 #      aop-patterns: cn.ffcs.uoo.**.service.*
-  data:
-    solr:
-      #host: http://localhost:8888/uooSolr
-      host: http://134.96.253.221:8762/uooSolr
-      repositories:
-        enabled: true
+#  data:
+#    solr:
+#      #host: http://localhost:8888/uooSolr
+#      host: http://134.96.253.221:8762/uooSolr
+#      repositories:
+#        enabled: true
   rabbitmq:
     host: 134.96.253.221
     port: 5672
@@ -136,6 +136,7 @@ eureka:
     lease-renewal-interval-in-seconds: 10
   server:
     port: 8751
+   #port: 8762
   client:
     service-url:
       defaultZone:  http://134.96.253.221:${eureka.server.port}/eureka/,http://134.96.253.222:${eureka.server.port}/eureka/,http://134.96.253.223:${eureka.server.port}/eureka/

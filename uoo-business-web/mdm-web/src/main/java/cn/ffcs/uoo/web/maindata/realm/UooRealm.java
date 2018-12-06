@@ -1,17 +1,24 @@
 package cn.ffcs.uoo.web.maindata.realm;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.alibaba.fastjson.JSONObject;
+
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.sysuser.client.SysUserClient;
 import cn.ffcs.uoo.web.maindata.sysuser.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
@@ -60,10 +67,25 @@ public class UooRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        String name = (String) principals.getPrimaryPrincipal();// 这里存储用户的acct
+        //String name = (String) principals.getPrimaryPrincipal();// 这里存储用户的acct
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+                .getRequestAttributes()).getRequest();
+        HttpSession session = request==null?null: request.getSession();
+        if(session!=null){
+            Object attribute = session.getAttribute(LoginConsts.LOGIN_KEY);
+            JSONObject json=JSONObject.parseObject(JSONObject.toJSONString(attribute));
+            JSONObject data = json.getJSONObject("data");
+            if(data!=null){
+                Long acctId = data.getLong("acctId");
+                
+            }
+        }
+    //sesision loginkey acid
+
+
         simpleAuthorizationInfo.addStringPermission("index");
-        System.err.println("获取权限");
+       // System.err.println("获取权限");
         return simpleAuthorizationInfo;
     }
     /**

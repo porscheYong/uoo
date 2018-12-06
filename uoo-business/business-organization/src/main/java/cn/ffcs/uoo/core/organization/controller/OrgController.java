@@ -19,7 +19,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.solr.common.SolrInputDocument;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -362,8 +361,11 @@ public class OrgController extends BaseController {
         }
 //        }
         //新增组织扩展属性
-
-
+        if(extValueList!=null && extValueList.size()>0){
+            for(ExpandovalueVo extVo : extValueList){
+                expandovalueService.addExpandoInfo(extVo);
+            }
+        }
         orgService.add(newOrg);
         TreeNodeVo vo = new TreeNodeVo();
         vo.setId(newOrg.getOrgId().toString());
@@ -409,6 +411,8 @@ public class OrgController extends BaseController {
         List<Post> postList = org.getPostList();
         List<PoliticalLocation> politicalLocationList = org.getPoliticalLocationList();
         List<PsonOrgVo> psonList = org.getPsonOrgVoList();
+
+        List<ExpandovalueVo> expList = org.getExpandovalueVoList();
 
 
         if(politicalLocationList==null || politicalLocationList.size()==0){
@@ -529,6 +533,12 @@ public class OrgController extends BaseController {
                     orgTypeRefService.delete(otf);
                 }
             }
+        }else{
+            if(orgTypeRefCurList!=null && orgTypeRefCurList.size()>0){
+                for(OrgOrgtypeRel otf : orgTypeRefCurList){
+                    orgTypeRefService.delete(otf);
+                }
+            }
         }
         //岗位
         isExists = false;
@@ -566,6 +576,12 @@ public class OrgController extends BaseController {
                     orgPositionRelService.delete(op);
                 }
             }
+        }else{
+            if(orgPositionCurList!=null && orgPositionCurList.size()>0){
+                for(OrgPositionRel op:orgPositionCurList){
+                    orgPositionRelService.delete(op);
+                }
+            }
         }
         //职位 post
         isExists = false;
@@ -598,6 +614,12 @@ public class OrgController extends BaseController {
                     }
                 }
                 if(!isExists){
+                    orgPostRelService.delete(op);
+                }
+            }
+        }else{
+            if(orgPostCurList!=null && orgPostCurList.size()>0){
+                for(OrgPostRel op : orgPostCurList){
                     orgPostRelService.delete(op);
                 }
             }
@@ -641,6 +663,12 @@ public class OrgController extends BaseController {
                     orgCertRelService.delete(ocr);
                 }
             }
+        }else{
+            if(orgCertRelcurList!=null && orgCertRelcurList.size()>0){
+                for(OrgCertRel ocr : orgCertRelcurList){
+                    orgCertRelService.delete(ocr);
+                }
+            }
         }
         //组织联系人
         Wrapper orgContactList1Wrapper = Condition.create()
@@ -679,8 +707,80 @@ public class OrgController extends BaseController {
                     orgContactRelService.delete(oct);
                 }
             }
+        }else{
+            if(orgContactRelCurList!=null && orgContactRelCurList.size()>0){
+                for(OrgContactRel oct : orgContactRelCurList){
+                    orgContactRelService.delete(oct);
+                }
+            }
         }
+        //组织扩展类型
+        ResponseResult<List<ExpandovalueVo>> publicRet = expandovalueService.queryExpandovalueVoList("TB_ORG",org.getOrgId().toString());
+        List<ExpandovalueVo> curExtList = publicRet.getData();
+        isExists = false;
+        if(expList!=null && expList.size()>0){
+            for(ExpandovalueVo  vo : expList){
+                isExists = false;
+                if(curExtList!=null && curExtList.size()>0){
+                    for(ExpandovalueVo curVo : curExtList){
+                        if(vo.getColumnName().equals(curVo.getColumnName())){
+                            isExists=true;
+                            break;
+                        }
+                    }
+                }
+                ResponseResult<ExpandovalueVo> voret;
+                if(!isExists){
+                    //新增
+                    ExpandovalueVo voadd = new ExpandovalueVo();
+                    voadd.setTableName("TB_ORG");
+                    voadd.setColumnName(vo.getColumnName());
+                    voadd.setRecordId(newOrg.getOrgId().toString());
+                    voadd.setData(vo.getData());
+                    voret = expandovalueService.addExpandoInfo(voadd);
+
+                }else{
+                    //更新
+                    TbExpandovalue voupdate = new TbExpandovalue();
+                    voupdate.setData(vo.getData());
+                    voupdate.setValueId(vo.getValueId());
+                    expandovalueService.updateTbExpandovalue(voupdate);
+                }
+            }
+            if(curExtList!=null && curExtList.size()>0){
+                for(ExpandovalueVo curVo : curExtList){
+                    for(ExpandovalueVo  vo : expList){
+                        if(vo.getColumnName().equals(curVo.getColumnName())){
+                            isExists=true;
+                            break;
+                        }
+                    }
+                    if(!isExists){
+                        //删除
+                        expandovalueService.removeTbExpandovalue(curVo.getValueId(),0L);
+                    }
+                }
+            }
+        }else{
+            if(curExtList!=null && curExtList.size()>0){
+                for(ExpandovalueVo vo : curExtList){
+                    //删除所有
+                    expandovalueService.removeTbExpandovalue(vo.getValueId(),0L);
+                }
+            }
+        }
+
+
+
+
         if (!"1000".equals(org.getStatusCd())){
+            //删除扩展类型
+            if(curExtList!=null && curExtList.size()>0){
+                for(ExpandovalueVo vo : curExtList){
+                    //删除所有
+                    expandovalueService.removeTbExpandovalue(vo.getValueId(),0L);
+                }
+            }
             //删除组织关系
             for(OrgRel or : orList){
 
@@ -732,12 +832,13 @@ public class OrgController extends BaseController {
                 //solrService.deleteDataIntoSolr("org",or.getOrgRelId().toString());
                 newOrg.setStatusCd("1000");
                 orgService.update(newOrg);
-                String mqmsg = "{\"type\":\"org\",\"handle\":\"delete\",\"context\":{\"column\":\"orgId\",\"value\":"+newOrg.getOrgId()+"}}" ;
+                String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+newOrg.getOrgId()+"}}" ;
                 template.convertAndSend("message_sharing_center_queue",mqmsg);
                 ret.setState(ResponseResult.STATE_OK);
                 ret.setMessage("更新成功");
                 return ret;
             }
+
 
         }
         newOrg.setStatusCd("1000");
@@ -859,7 +960,16 @@ public class OrgController extends BaseController {
         }
 
 
-        String mqmsg = "{\"type\":\"org\",\"handle\":\"delete\",\"context\":{\"column\":\"orgId\",\"value\":"+orgId+"}}" ;
+        ResponseResult<List<ExpandovalueVo>> publicRet = expandovalueService.queryExpandovalueVoList("TB_ORG",org.getOrgId().toString());
+        List<ExpandovalueVo> curExtList = publicRet.getData();
+        if(curExtList!=null && curExtList.size()>0){
+            for(ExpandovalueVo vo : curExtList){
+                //删除所有
+                expandovalueService.removeTbExpandovalue(vo.getValueId(),0L);
+            }
+        }
+
+        String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+orgId+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("删除成功");
