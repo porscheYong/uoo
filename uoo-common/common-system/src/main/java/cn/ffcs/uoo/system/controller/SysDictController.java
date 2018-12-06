@@ -92,7 +92,7 @@ public class SysDictController {
         sysDictService.updateById(sysDict);
 
         responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("修改角色成功");
+        responseResult.setMessage("修改成功");
         return responseResult;
     }
 
@@ -110,7 +110,7 @@ public class SysDictController {
         sysDict.setStatusDate(new Date());
         sysDictService.insert(sysDict);
         responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("新增角色成功");
+        responseResult.setMessage("新增成功");
         return responseResult;
     }
 

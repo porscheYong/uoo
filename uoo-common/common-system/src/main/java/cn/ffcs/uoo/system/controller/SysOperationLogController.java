@@ -86,7 +86,7 @@ public class SysOperationLogController {
         sysOperationLog.setStatusDate(new Date());
         sysOperationLogService.insert(sysOperationLog);
         responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("新增角色成功");
+        responseResult.setMessage("新增成功");
         return responseResult;
     }
 }

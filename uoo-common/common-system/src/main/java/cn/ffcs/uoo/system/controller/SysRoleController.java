@@ -89,7 +89,7 @@ public class SysRoleController {
         sysRoleService.updateById(sysRole);
 
         responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("修改角色成功");
+        responseResult.setMessage("修改成功");
         return responseResult;
     }
 
@@ -107,7 +107,7 @@ public class SysRoleController {
         sysRole.setStatusDate(new Date());
         sysRoleService.insert(sysRole);
         responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("新增角色成功");
+        responseResult.setMessage("新增成功");
         return responseResult;
     }
 

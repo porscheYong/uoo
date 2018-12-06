@@ -87,7 +87,7 @@ public class SysLoginLogController {
         sysLoginLog.setStatusDate(new Date());
         sysLoginLogService.insert(sysLoginLog);
         responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("新增角色成功");
+        responseResult.setMessage("新增成功");
         return responseResult;
     }
 
