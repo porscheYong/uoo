@@ -13,7 +13,10 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -31,7 +34,7 @@ import cn.ffcs.uoo.web.maindata.sysuser.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
 
 public class UooRealm extends AuthorizingRealm {
-
+    private static Logger log=LoggerFactory.getLogger(UooRealm.class);
     // @Resource
     // UserMapper userMapper;
     // @Resource
@@ -77,7 +80,6 @@ public class UooRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        //String name = (String) principals.getPrimaryPrincipal();// 这里存储用户的acct
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes()).getRequest();
@@ -99,6 +101,8 @@ public class UooRealm extends AuthorizingRealm {
                     for (FuncComp funcComp : funcComps) {
                         simpleAuthorizationInfo.addStringPermission("C"+funcComp.getCompId());
                     }
+                }else{
+                    log.info("没有权限的账户："+json);
                 }
             }
         }
