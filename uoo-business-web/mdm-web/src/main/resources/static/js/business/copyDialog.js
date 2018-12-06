@@ -1,4 +1,5 @@
 var orgId = getQueryString('id');
+var orgTreeId = getQueryString('orgTreeId');
 var businessFrame = parent.window['business'];
 var orgCopyList = businessFrame.orgCopyList;
 var checkNode = []; //选中类别显示label标签
@@ -13,9 +14,9 @@ function initBusinessList () {
             option += "<label class='" + active + "'><a href='javascript:;' value='" + data[i].orgTreeId + "'>" + data[i].orgTreeName + "</a></label>"
         }
         $('#treeList').html(option);
+        targetId = data[0].orgTreeId;
+        initTree(targetId);
 
-        initTree(data[0].orgTreeId);
-        targetId = 1;
         $('#treeList a').unbind('click').bind('click', function (event) {
             if ($(this).parent().hasClass('active') ) {
                 return;
@@ -32,12 +33,12 @@ function initBusinessList () {
 }
 
 // 组织树初始化
-function initTree () {
+function initTree (targetId) {
     var setting = {
         async: {
             enable: true,
-            url: "/orgRel/getOrgRelTree?orgRootId=1&orgTreeId=1",
-            autoParam: ["id"],
+            url: "/orgRel/getTarOrgRelTreeAndLv?orgRootId=" + targetId + "&orgTreeId=" + targetId +  "&lv=4&isFull=false",
+            autoParam: ["id=curOrgid"],
             type: "get",
             dataFilter: filter
         },
@@ -63,18 +64,21 @@ function initTree () {
         },
         check: {
             enable: true,
-            chkStyle: 'radio'
+            chkStyle: 'checkbox',
+            chkboxType: { 'Y': 'p', 'N': 's' }
         }
     };
 
-    $http.get('/orgRel/getOrgRelTree', {
-        orgRootId: '1',
-        orgTreeId: '1'
+    $http.get('/orgRel/getTarOrgRelTreeAndLv', {
+        orgRootId: targetId,
+        orgTreeId: targetId,
+        lv: '4',
+        isFull: false
     }, function (data) {
         $.fn.zTree.init($("#standardTree"), setting, data);
-        var zTree = $.fn.zTree.getZTreeObj("standardTree");
-        var nodes = zTree.getNodes();
-        zTree.expandNode(nodes[0], true);
+        var tree = $.fn.zTree.getZTreeObj("standardTree");
+        var nodes = tree.getNodes();
+        tree.expandNode(nodes[0], true);
         autoCheck();
     }, function (err) {
         console.log(err)
