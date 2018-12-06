@@ -18,6 +18,7 @@ public class OrgVo extends BaseVo{
     private Long orgId;
     private Long locId;
     private String areaCodeId;
+    private String areaCode;
     private String orgName;
     private String orgCode;
     private String shortName;
@@ -91,6 +92,13 @@ public class OrgVo extends BaseVo{
         this.politicalLocationList = politicalLocationList;
     }
 
+    public String getAreaCode() {
+        return areaCode;
+    }
+
+    public void setAreaCode(String areaCode) {
+        this.areaCode = areaCode;
+    }
 
     public List<OrgCertVo> getOrgCertVoList() {
         return orgCertVoList;
