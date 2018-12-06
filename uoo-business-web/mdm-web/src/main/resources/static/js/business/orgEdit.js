@@ -698,12 +698,17 @@ function deleteOrg () {
         deleteData.orgId = orgId;
         deleteData.supOrgId = orgId;
         deleteData.statusCd = '1100';
-        $http.post('/org/updateOrg', JSON.stringify(deleteData), function () {
+        $http.get('/org/deleteOrg', {
+            orgTreeId: orgTreeId,
+            orgId: orgId,
+            supOrgId: pid
+        }, function () {
             parent.deleteNode(orgId);
             parent.selectRootNode();
             loading.screenMaskDisable('container');
-            toastr.success('删除成功！');
+            // toastr.success('删除成功！');
         }, function (err) {
+            console.log(err);
             loading.screenMaskDisable('container');
         })
     }, function(){

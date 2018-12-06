@@ -29,7 +29,7 @@ function initOrgPersonnelTable (isSearchlower) {
                 }
             },
             { 'data': "doubleName", 'title': '重名称谓', 'className': 'row-mobile' },
-            { 'data': "certNo", 'title': '员工工号', 'className': 'cert-no' },
+            { 'data': "psnCode", 'title': '员工工号', 'className': 'cert-no' },
             { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
             { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
             { 'data': "statusCd", 'title': '状态', 'className': 'status-code',

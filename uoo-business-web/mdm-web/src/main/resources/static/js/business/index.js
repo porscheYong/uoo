@@ -4,6 +4,7 @@ var orgRootId; //业务组织ID
 var orgTreeId; //业务组织ID
 var businessName; //业务名
 var orgId, //组织ID
+    pid,
     orgName, //组织名
     parent,
     nodeArr;
@@ -17,6 +18,7 @@ function onNodeClick(e,treeId, treeNode) {
     // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
     // zTree.expandNode(treeNode);
     orgId = treeNode.id;
+    pid = treeNode.pid;
     orgName = treeNode.name;
     var currentNode = {node: treeNode, current: true};//获取当前选中节点
     var parentNode = treeNode.getParentNode();
@@ -60,7 +62,7 @@ function filter (treeId, parentNode, childNodes) {
 }
 
 function refreshResult () {
-    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName);
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + '&pid=' + pid + "&name=" + encodeURI(orgName);
     $('#businessFrame').attr("src",url);
 }
 
@@ -142,18 +144,32 @@ function addNodeById (sId, newNode) {
 }
 
 // 删除节点
+// function deleteNode(orgId) {
+//     var zTree = $.fn.zTree.getZTreeObj("businessTree");
+//     var selectNode = zTree.getNodeByTId(orgId); //获取当前选中的节点并取消选择状态
+//     zTree.cancelSelectedNode(selectNode);
+//     var node = zTree.getNodeByTId(tId);
+// }
 function deleteNode(orgId) {
+    var tId = 'businessTree_' + orgId;
     var zTree = $.fn.zTree.getZTreeObj("businessTree");
-    var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-    zTree.cancelSelectedNode(selectNode);
-    var node = zTree.getNodeByTId(tId);
+    var selectNode = zTree.getNodeByTId(tId); //获取当前选中的节点并取消选择状态
+    zTree.removeNode(selectNode);
 }
 
 // 选择根节点
+// function selectRootNode () {
+//     var rootId = 1;
+//     var rootNode = zTree.getNodeByTId(rootId);
+//     zTree.selectNode(rootNode);
+// }
+
 function selectRootNode () {
-    var rootId = 1;
-    var rootNode = zTree.getNodeByTId(rootId);
+    var pTId = 'businessTree_' + pid;
+    var zTree = $.fn.zTree.getZTreeObj("businessTree");
+    var rootNode = zTree.getNodeByTId('businessTree_' + pTId);
     zTree.selectNode(rootNode);
+    $('.curSelectedNode').trigger('click');
 }
 
 // 初始化业务组织列表
