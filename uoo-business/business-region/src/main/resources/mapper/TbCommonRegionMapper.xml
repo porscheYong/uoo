@@ -113,7 +113,7 @@
 	<select id="getTreeCommonRegion" resultType="cn.ffcs.uoo.core.region.entity.TbCommonRegion"
 		parameterType="java.util.HashMap">
 		SELECT
-		COMMON_REGION_ID, PARENT_REGION_ID, REGION_NAME
+		COMMON_REGION_ID, PARENT_REGION_ID, REGION_NAME,AREA_CODE_ID
 		FROM
 		TB_COMMON_REGION
 		WHERE

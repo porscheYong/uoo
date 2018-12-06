@@ -184,7 +184,7 @@ public class TbExpandovalueController extends BaseController {
     })
     @UooLog(value = "删除扩展值", key = "removeTbExpandovalue")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbExpandovalue> removeTbExpandovalue(@RequestBody Long valueId, @RequestBody Long updateUser) {
+    public ResponseResult<TbExpandovalue> removeTbExpandovalue(Long valueId, Long updateUser) {
         ResponseResult<TbExpandovalue> responseResult = new ResponseResult<TbExpandovalue>();
 
         // 校验必填项

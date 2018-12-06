@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.web.maindata.busipublic.dictionary.service.fallback;
 
+import cn.ffcs.uoo.web.maindata.busipublic.dictionary.dto.DictionaryListVo;
 import cn.ffcs.uoo.web.maindata.busipublic.dictionary.dto.TbDictionaryItem;
 import cn.ffcs.uoo.web.maindata.busipublic.dictionary.service.TbDictionaryItemClient;
 import cn.ffcs.uoo.web.maindata.busipublic.vo.ResponseResult;
@@ -41,5 +42,13 @@ public class TbDictionaryItemClientHystrix implements TbDictionaryItemClient {
     @Override
     public ResponseResult<List<TbDictionaryItem>> queryListByDictionaryName(String dictionaryName) {
         return null;
+    }
+
+    @Override
+    public ResponseResult<DictionaryListVo> queryAllList() {
+        ResponseResult<DictionaryListVo> responseResult = new ResponseResult<>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
     }
 }

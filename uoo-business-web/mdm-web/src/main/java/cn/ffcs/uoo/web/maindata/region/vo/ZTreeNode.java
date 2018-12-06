@@ -1,11 +1,22 @@
 package cn.ffcs.uoo.web.maindata.region.vo;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ZTreeNode {
     private String name;
     private long id;
     private long pId;
     private boolean open;
     private boolean parent;
+    private Map<String,Object> extParams=new HashMap<String, Object>();
+    
+    public Map<String, Object> getExtParams() {
+        return extParams;
+    }
+    public void setExtParams(Map<String, Object> extParams) {
+        this.extParams = extParams;
+    }
     public boolean isParent() {
         return parent;
     }
