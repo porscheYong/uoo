@@ -35,6 +35,8 @@ import java.util.Date;
  * @create 2018/12/4
  * @since 1.0.0
  */
+@RestController
+@RequestMapping("/system/sysMenu")
 public class SysMenuController {
     @Autowired
     SysMenuService sysMenuService;
