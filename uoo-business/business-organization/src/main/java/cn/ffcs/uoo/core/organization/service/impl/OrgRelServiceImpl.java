@@ -243,6 +243,12 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
             list = baseMapper.selectAllTarOrgRelTreeAndLv(orgRootId,orgTreeId,lv,curOrgId,isFull);
         }else{
             list = baseMapper.selectTarOrgRelTreeAndLv(orgRootId,orgTreeId,lv,curOrgId,isFull);
+            //判断下级
+            for(TreeNodeVo vo : list){
+                if(!vo.getLevel().equals(lv)){
+                    isLeaf(vo,orgTreeId);
+                }
+            }
         }
         if(list!=null && list.size()>0){
             return list;

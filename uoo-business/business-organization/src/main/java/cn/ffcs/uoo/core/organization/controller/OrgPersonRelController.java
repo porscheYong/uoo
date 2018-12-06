@@ -18,7 +18,6 @@ import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -422,6 +421,35 @@ public class OrgPersonRelController extends BaseController {
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
         ret.setData(page);
+        return ret;
+    }
+
+    @ApiOperation(value = "查询用户归属信息-web", notes = "查询用户归属信息")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "查询用户归属信息",key = "getPerOrgAttribution")
+    @RequestMapping(value = "/getPerOrgAttribution",method = RequestMethod.GET)
+    public ResponseResult<Page<PsonOrgVo>> getPerOrgAttribution(String orgId,
+                                                                String orgTreeId,
+                                                                String personnelId,
+                                                                Integer pageSize,
+                                                                Integer pageNo){
+        ResponseResult<Page<PsonOrgVo>> ret = new ResponseResult<Page<PsonOrgVo>>();
+        if(!StrUtil.isNullOrEmpty(orgId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织标识不能为空");
+            return ret;
+        }
+        if(!StrUtil.isNullOrEmpty(personnelId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("人员标识不能为空");
+            return ret;
+        }
+        if(!StrUtil.isNullOrEmpty(personnelId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("人员标识不能为空");
+            return ret;
+        }
         return ret;
     }
 
