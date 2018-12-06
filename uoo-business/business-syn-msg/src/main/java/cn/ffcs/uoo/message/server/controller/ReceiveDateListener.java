@@ -1,7 +1,6 @@
 package cn.ffcs.uoo.message.server.controller;
 
 import cn.ffcs.uoo.message.server.constant.QueueConstant;
-import cn.ffcs.uoo.message.server.constant.StatusConstant;
 import cn.ffcs.uoo.message.server.constant.ValidateConstant;
 import cn.ffcs.uoo.message.server.dao.*;
 import cn.ffcs.uoo.message.server.pojo.*;
@@ -34,7 +33,7 @@ import java.util.UUID;
 public class ReceiveDateListener {
 
     @Autowired
-    private SystemRuleService SystemRuleService;
+    private SystemRuleService systemRuleService;
 
     @Autowired
     private RabbitMqSendService rabbitMqSendService;
@@ -71,8 +70,8 @@ public class ReceiveDateListener {
             if ("org".equals(type)) {
                 if (value != null && "orgId".equals(column)) {
                     //获取需要下发的系统和对应的规则
-                    List<Map<String, Object>> list = SystemRuleService.getSystemRuleByOrg(value);
-                    if (list != null) {
+                    List<Map<String, Object>> list = systemRuleService.getSystemRuleByOrg(value);
+                    if (list != null && list.size() >0) {
                         for (Map<String, Object> map : list) {
                             OrgTreeRuleVo vo = (OrgTreeRuleVo) map.get("OrgTreeRuleVo");
                             TbBusinessSystem system = (TbBusinessSystem) map.get("system");
@@ -83,8 +82,7 @@ public class ReceiveDateListener {
                                     TbOrgVo tbOrgVo = tbOrgMapper.getOrgVo(value, vo.getOrgTreeId(), vo.getBusinessSystemId());
 
                                     if (tbOrgVo == null) {
-                                        channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-                                        return;
+                                        continue;
                                     }
 
                                     OrgShowUtil.noShow(tbOrgVo, system);
@@ -153,7 +151,7 @@ public class ReceiveDateListener {
                 }
             } else if ("person".equals(type)) {
                 if (value != null && "personnelId".equals(column)) {
-                    List<Map<String, Object>> list = SystemRuleService.getSystemRuleByPerson(value);
+                    List<Map<String, Object>> list = systemRuleService.getSystemRuleByPerson(value);
 
                     if (list != null) {
                         for (Map<String, Object> map : list) {
@@ -351,7 +349,7 @@ public class ReceiveDateListener {
                     }
                 } else if (value != null && "slaveAcctId".equals(column)) {
                     //获取需要下发的系统和对应的规则
-                    Map<String, Object> map = SystemRuleService.getSystemRuleBySlaveAcct(value);
+                    Map<String, Object> map = systemRuleService.getSystemRuleBySlaveAcct(value);
 
                     if (map == null) {
                         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);

@@ -4,9 +4,9 @@ spring:
   datasource:
       druid:
         #测试环境
-        #url: jdbc:oracle:thin:@134.96.167.19:1521/uomdb1
+        url: jdbc:oracle:thin:@134.96.167.19:1521/uomdb1
         #生产环境
-        url: jdbc:oracle:thin:@134.96.248.48:3436/ZJ4APRD
+        #url: jdbc:oracle:thin:@134.96.248.48:3436/ZJ4APRD
         driver-class-name:  oracle.jdbc.OracleDriver
         username: octopus
         password: octopus
@@ -89,9 +89,9 @@ spring:
     username: root
     password: 123
     #测试
-    #host: 134.96.253.221
+    host: 134.96.253.221
     #生产
-    host: 134.96.217.231
+    #host: 134.96.217.231
     port: 5672
     listener:
       direct:
@@ -129,9 +129,9 @@ eureka:
   client:
     service-url:
       #测试环境
-      #defaultZone:  http://134.96.253.221:8751/eureka/,http://134.96.253.222:8751/eureka/,http://134.96.253.223:8751/eureka/
+      defaultZone:  http://134.96.253.221:8751/eureka/,http://134.96.253.222:8751/eureka/,http://134.96.253.223:8751/eureka/
       #生产环境
-      defaultZone: http://134.96.217.231:8751/eureka/,http://134.96.217.232:8751/eureka/,http://134.96.217.233:8751/eureka/,http://134.96.217.231:8761/eureka/,http://134.96.217.232:8761/eureka/,http://134.96.217.233:8761/eureka/
+      #defaultZone: http://134.96.217.231:8751/eureka/,http://134.96.217.232:8751/eureka/,http://134.96.217.233:8751/eureka/,http://134.96.217.231:8761/eureka/,http://134.96.217.232:8761/eureka/,http://134.96.217.233:8761/eureka/
 
 feign:
   hystrix:
@@ -141,4 +141,4 @@ logging:
   level:
     cn.ffcs.uoo: info
   config: classpath:log.xml
-  path: ./rock/jpa-test3/log
+  path: ./rock/business-syn-msg/log

@@ -96,6 +96,8 @@ public class OrgShowUtil {
         if(vo.getOrgTypes() != null){
             vo.getOrgTypes().forEach((temp)->{
                 temp.setOrgTypeId(null);
+                temp.setSupPkOrgType(null);
+                temp.setSupPkOrgTypeName(null);
                 temp.setStatusCd(null);
                 temp.setCreateDate(null);
                 temp.setCreateUser(null);
@@ -173,6 +175,7 @@ public class OrgShowUtil {
 
         if(vo.getAreaCodeInfo() != null){
             vo.getAreaCodeInfo().setAreaCodeId(null);
+            vo.getAreaCodeInfo().setAreaNbr(null);
             vo.getAreaCodeInfo().setCommonRegionId(null);
             vo.getAreaCodeInfo().setStatusCd(null);
             vo.getAreaCodeInfo().setCreateDate(null);

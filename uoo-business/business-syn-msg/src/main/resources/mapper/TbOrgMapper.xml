@@ -251,8 +251,8 @@
 
   <!--组织信息-->
   <select id="getOrgVo" resultMap="OrgVoMapper">
-    select a.*,#{orgTreeId} ORG_TREE_ID ,#{businessSystemId} BUSINESS_SYSTEM_ID,b.org_biz_name from tb_org a,tb_org_orgtree_rel b  where a.org_id = #{orgId} and a.status_cd = 1000
-    and b.org_id = a.org_id and b.status_cd = 1000 and b.org_tree_id = #{orgTreeId}
+   select a.*,#{orgTreeId} ORG_TREE_ID,#{businessSystemId} BUSINESS_SYSTEM_ID,b.org_biz_name from tb_org a left join (select * from tb_org_orgtree_rel where org_tree_id = #{orgTreeId} and status_cd = 1000) b on a.org_id = b.org_id
+    where a.org_id = #{orgId} and a.status_cd = 1000
   </select>
 
   <!--组织层级-->
@@ -280,7 +280,7 @@
 
   <!--组织类别-->
   <select id="getOrgType" resultMap="OrgTypeMap">
-    select a.*,b.org_type_name sub_name from (SELECT * FROM TB_ORG_TYPE where
+    select a.*,b.org_type_name SUP_NAME from (SELECT * FROM TB_ORG_TYPE where
     org_type_id in(select org_type_id from TB_ORG_ORGTYPE_REL where org_id = #{ORG_ID}  and status_cd = 1000) and status_cd = 1000) a left join TB_ORG_TYPE b
     on a.PARENT_ORG_TYPE_ID = b.org_type_id and b.status_cd = 1000
   </select>
