@@ -54,15 +54,17 @@ public class ApiTestController {
         ExpandovalueVo vo = new ExpandovalueVo();
         vo.setTableName("TB_ORG");
         vo.setColumnName("nodeType");
-        vo.setRecordId("2");
-        vo.setData("1111");
+        vo.setRecordId("1000000001");
+        vo.setData("AA");
         ResponseResult<ExpandovalueVo> voret = expandovalueService.addExpandoInfo(vo);
 //        ResponseResult<String> obj = testService.addOrgPsn(psonOrgVo);
 
+        //更新
 
 
-//        ResponseResult<List<ExpandovalueVo>> list = expandovalueService.queryExpandovalueVoList("TB_ORG","1");
-//        ret.setState(ResponseResult.STATE_OK);
-        return ret;
+
+       ResponseResult<List<ExpandovalueVo>> list = expandovalueService.queryExpandovalueVoList("TB_ORG","1000000001");
+       ret.setState(ResponseResult.STATE_OK);
+       return ret;
     }
 }

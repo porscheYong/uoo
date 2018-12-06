@@ -67,7 +67,7 @@ public class UooRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        String name = (String) principals.getPrimaryPrincipal();// 这里存储用户的acct
+        //String name = (String) principals.getPrimaryPrincipal();// 这里存储用户的acct
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes()).getRequest();
@@ -81,6 +81,11 @@ public class UooRealm extends AuthorizingRealm {
                 
             }
         }
+    //sesision loginkey acid
+
+
+        simpleAuthorizationInfo.addStringPermission("index");
+       // System.err.println("获取权限");
         return simpleAuthorizationInfo;
     }
     /**

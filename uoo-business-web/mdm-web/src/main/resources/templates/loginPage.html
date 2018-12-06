@@ -2,10 +2,11 @@
 <html>
 <head>
 <meta charset="utf-8">
+
 <title>用户组织运营平台</title>
 
-
-<link rel="stylesheet" type="text/css" href="/css/login.css" />
+<link rel="stylesheet" type="text/css" href="/css/login/style.css" />
+<link rel="stylesheet" type="text/css" href="/css/login/login.css" />
 <!-- toastr -->
 <link href="/vendors/toastr/toastr.css" rel="stylesheet">
 
@@ -21,7 +22,7 @@
         /* margin-right: 283px !important; */
     }
     .layui-layer-loading{
-        top: 431.5px !important;
+        top: 400.5px !important;
         left: 70.3% !important;
     }
 </style>
@@ -31,20 +32,27 @@
 
 <div class="Gradient">
 	<div class="LogoBg"></div>
-    <div class="Main">
-        <div class="FormArea">
-            <div class="FormHead">
-                浙江主数据平台
-            </div>
-             <form action="templates/index.html" method="POST">  <!-- main.html -->
-                <input class="Input user" type="text" placeholder="用户名/邮箱/手机" value="jack5" />
-                <input class="Input psw" type="password" placeholder="请输入密码" value="123abc" />
-                 <div class="rendomcode">
-                    <input class="Input code" type="text" placeholder="请输入验证码" />
-                    <canvas id="canvas" width="90" height="36"></canvas>
+    <div class="WhiteAlpha">
+        <div class="Main">
+            <div class="FormArea">
+                <div class="Contents"></div>
+                <div class="BoardTitle">
+                    <span class="Name Big">浙江主数据中心平台</span>
                 </div>
-                <input class="Input BtnSubmit" type="submit" value="登录" onclick="return check()"/>  
-            </form>
+                <div class="Contents clear"></div>
+                <form action="/index.html" method="POST">
+                    <ul class="ulhide">
+                        <li><input class="Input user" type="text" placeholder="用户名/邮箱/手机" value="jack5"/></li>
+                        <li><input class="Input psw" type="password" placeholder="请输入密码" value="123abc" /></li>
+                        <li class="rendomcode">
+                            <input class="Input code" type="text" maxlength="6" placeholder="请输入验证码" />
+                            <canvas id="canvas" width="90" height="36"></canvas>
+                        </li>
+                        <li><input class="Input BtnSubmit" type="submit" value="登录" onclick="return check()" /></li>
+                        <li class="tright"><a href="#">忘记密码?</a></li> <!-- contents/forget.html -->
+                    </ul>
+                </form>
+            </div>
         </div>
     </div>
 </div>

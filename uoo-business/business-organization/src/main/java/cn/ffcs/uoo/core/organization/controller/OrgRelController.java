@@ -16,7 +16,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
-import org.apache.solr.common.SolrInputDocument;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -107,6 +106,7 @@ public class OrgRelController extends BaseController {
             return ret;
         }
 
+
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
         treeNodeVos = orgRelService.queryOrgTree(orgTreeId,orgTree.getOrgId(),relCode,id,isRoot);
         ret.setState(ResponseResult.STATE_OK);
@@ -166,13 +166,13 @@ public class OrgRelController extends BaseController {
             ret.setMessage("是否全量不能为空");
             return ret;
         }
-        if(!isFull){
-            if(StrUtil.isNullOrEmpty(curOrgid)){
-                ret.setState(ResponseResult.PARAMETER_ERROR);
-                ret.setMessage("当前节点不能为空");
-                return ret;
-            }
-        }
+//        if(!isFull){
+//            if(StrUtil.isNullOrEmpty(curOrgid)){
+//                ret.setState(ResponseResult.PARAMETER_ERROR);
+//                ret.setMessage("当前节点不能为空");
+//                return ret;
+//            }
+//        }
         Wrapper orgTreeConfWrapper = Condition.create().eq("ORG_TREE_ID",orgTreeId).eq("STATUS_CD","1000");
         OrgTree orgTree  = orgTreeService.selectOne(orgTreeConfWrapper);
         if(orgTree == null){
@@ -319,7 +319,7 @@ public class OrgRelController extends BaseController {
         vo.setId(org.getOrgId().toString());
         vo.setPid(orgRefId.toString());
         vo.setName(o.getOrgName());
-        String mqmsg = "{\"type\":\"org\",\"handle\":\"insert\",\"context\":{\"column\":\"orgId\",\"value\":"+org.getOrgId()+"}}" ;
+        String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+org.getOrgId()+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("新增成功");

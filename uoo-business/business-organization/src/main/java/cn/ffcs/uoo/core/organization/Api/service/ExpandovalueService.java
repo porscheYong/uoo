@@ -30,13 +30,13 @@ public interface ExpandovalueService {
                                                                         @PathVariable("recordId") String recordId);
 
 
-    @RequestMapping(value = "/tbExpandovalue/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/tbExpandovalue/update", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<TbExpandovalue> updateTbExpandovalue(@RequestBody TbExpandovalue tbExpandovalue);
 
-    @RequestMapping(value = "/tbExpandovalue/addByVo", method = RequestMethod.POST)
+    @RequestMapping(value = "/tbExpandovalue/addByVo", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<ExpandovalueVo> addExpandoInfo(@RequestBody ExpandovalueVo expandovalueVo);
 
-    @RequestMapping(value = "/tbExpandovalue/del", method = RequestMethod.POST)
+    @RequestMapping(value = "/tbExpandovalue/del", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     ResponseResult<TbExpandovalue> removeTbExpandovalue(@RequestParam("valueId") Long valueId, @RequestParam("updateUser") Long updateUser);
 
 
