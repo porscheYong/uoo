@@ -18,6 +18,7 @@ spring:
       #      password: uom
       driver-class-name: oracle.jdbc.OracleDriver
       url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
+      #url: jdbc:oracle:thin:@134.96.248.48:3436:ZJ4APRD
       username: octopus
       password: octopus
 

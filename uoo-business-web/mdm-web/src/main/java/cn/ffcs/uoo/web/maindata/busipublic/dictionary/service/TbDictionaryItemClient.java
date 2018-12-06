@@ -16,10 +16,10 @@ import java.util.List;
  */
 @FeignClient(value = "business-public",configuration = {PersonnelServiceConfiguration.class},fallback = TbDictionaryItemClientHystrix.class)
 public interface TbDictionaryItemClient {
-    @RequestMapping(value = "/tbDictionaryItem/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/tbDictionaryItem/update", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     ResponseResult<TbDictionaryItem> updateTbDictionaryItem(@RequestBody TbDictionaryItem tbDictionaryItem);
 
-    @RequestMapping(value = "/tbDictionaryItem/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/tbDictionaryItem/add", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     ResponseResult<TbDictionaryItem> addTbDictionaryItem(@RequestBody TbDictionaryItem tbDictionaryItem);
 
     @RequestMapping(value = "/tbDictionaryItem/del", method = RequestMethod.POST)

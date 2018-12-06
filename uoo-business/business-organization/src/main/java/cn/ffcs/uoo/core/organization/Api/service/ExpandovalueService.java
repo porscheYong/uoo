@@ -9,10 +9,7 @@ import cn.ffcs.uoo.core.organization.vo.ExpandovalueVo;
 import cn.ffcs.uoo.core.organization.vo.TbExpandovalue;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,6 +33,11 @@ public interface ExpandovalueService {
     @RequestMapping(value = "/tbExpandovalue/update", method = RequestMethod.POST)
     public ResponseResult<TbExpandovalue> updateTbExpandovalue(@RequestBody TbExpandovalue tbExpandovalue);
 
+    @RequestMapping(value = "/tbExpandovalue/addByVo", method = RequestMethod.POST)
+    public ResponseResult<ExpandovalueVo> addExpandoInfo(@RequestBody ExpandovalueVo expandovalueVo);
+
+    @RequestMapping(value = "/tbExpandovalue/del", method = RequestMethod.POST)
+    ResponseResult<TbExpandovalue> removeTbExpandovalue(@RequestParam("valueId") Long valueId, @RequestParam("updateUser") Long updateUser);
 
 
 }

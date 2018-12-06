@@ -42,7 +42,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/orgRel")
-@Api(value = "/org", description = "组织关系相关操作")
+@Api(value = "/orgRel", description = "组织关系相关操作")
 public class OrgRelController extends BaseController {
 
 
@@ -181,7 +181,7 @@ public class OrgRelController extends BaseController {
             return ret;
         }
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
-        treeNodeVos = orgRelService.selectTarOrgRelTreeAndLv(orgTree.getOrgId(),lv,curOrgid,isFull);
+        treeNodeVos = orgRelService.selectTarOrgRelTreeAndLv(orgTree.getOrgId(),orgTreeId,lv,curOrgid,isFull);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("组织树查询成功");
         ret.setData(treeNodeVos);

@@ -50,6 +50,11 @@ public class RouteController {
         }
         return "loginPage";
     }
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,HttpServletResponse response) {
+        request.getSession().invalidate();
+        return "loginPage";
+    }
     @GetMapping("/route/{url}")
     public String route(@PathVariable("url") String url) {
         return url.replaceAll("-", "/");

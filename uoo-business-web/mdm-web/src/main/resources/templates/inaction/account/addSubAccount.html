@@ -95,7 +95,7 @@
 
     <div class="tab-content" style="margin-left:5%;margin-top: 2%">
         <div class="tab-pane active" id="tab_content1">
-            <form action="/submit" method="post" style="padding: 10px;">
+            <form action="/submit" method="post" style="padding: 10px;">   <!-- id="addAcctForm" -->
 
                 <div id="acctInfo" style="margin-left:17%;display: none;">
                     <div class="col-md-2 fleft tcenter">
@@ -142,27 +142,6 @@
                     </div>
                 </div>
                 <div id="editAcctPanel" style="display:none">
-                    <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-item" style="width: 100%">
-                                <label for="accTypeTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号类型</label>
-                                <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" > -->
-                                <select  class="col-md-8 col-sm-8 col-xs-12" id='accTypeTel'>
-                                    <option>应用</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-item" style="width: 100%">
-                                <label for="accTypeTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">应用系统</label>
-                                <select  class="col-md-8 col-sm-8 col-xs-12" id='systemTel'>
-                                    <option>CRM系统</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-item" style="width: 100%">
@@ -217,7 +196,28 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-item" style="width: 100%">
-                                <label for="acctTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户名</label>
+                                <label for="accTypeTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号类型</label>
+                                <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" > -->
+                                <select  class="col-md-8 col-sm-8 col-xs-12" id='accTypeTel'>
+                                    <option>应用</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                                <label for="accTypeTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">应用系统</label>
+                                <select  class="col-md-8 col-sm-8 col-xs-12" id='systemTel'>
+                                    <option>CRM系统</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-item" style="width: 100%">
+                                <label for="acctTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户名</label>
                                 <input type="tel" id="acctTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off"> 
                             </div>
                         </div>

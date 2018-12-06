@@ -56,5 +56,15 @@ public interface OrgRelMapper extends BaseMapper<OrgRel> {
 
     public List<OrgRel> getOrgRel(@Param("orgTreeId")String orgTreeId, @Param("orgId")String orgId);
 
-    public List<TreeNodeVo> selectTarOrgRelTreeAndLv(@Param("orgRootId")String orgRootId, @Param("lv")String lv, @Param("curOrgId")String curOrgId, @Param("isFull")boolean isFull);
+    public List<TreeNodeVo> selectTarOrgRelTreeAndLv(@Param("orgRootId")String orgRootId,
+                                                     @Param("orgTreeId")String orgTreeId,
+                                                     @Param("lv")String lv,
+                                                     @Param("curOrgId")String curOrgId,
+                                                     @Param("isFull")boolean isFull);
+
+    public List<TreeNodeVo> selectAllTarOrgRelTreeAndLv(@Param("orgRootId")String orgRootId,
+                                                     @Param("orgTreeId")String orgTreeId,
+                                                     @Param("lv")String lv,
+                                                     @Param("curOrgId")String curOrgId,
+                                                     @Param("isFull")boolean isFull);
 }

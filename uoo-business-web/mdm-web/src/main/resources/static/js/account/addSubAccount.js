@@ -41,6 +41,17 @@ if(statusCd == "1000"){                //判断状态
     $('#statusCd').get(0).selectedIndex=1;
   }
 
+  seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+    var addAcctForm = $('#addAcctForm');
+    formValidate = new Validate(addAcctForm);
+    formValidate.immediate();
+    //formValidate.isAllPass();
+    addAcctForm.find(':input').each(function () {
+        $(this).hover(function () {
+            formValidate.isPass($(this));
+        });
+    });
+  });
 
 function getSubUser(acctId) {       //查看并编辑从账号            
     $http.get('/user/getUser', {   //http://192.168.58.112:18000/user/getUser
@@ -143,7 +154,7 @@ function initOrgTable(results){
         },
         {'data': "orgId", 'title': '操作', 'className': 'row-delete' ,
             'render': function (data, type, row, meta) {
-                return "<a href='javascript:void(0);'  onclick='deleteOrg()'  class='btn btn-default btn-xs'><i class='fa fa-arrow-down'></i> 删除</a>";
+                return "<a href='javascript:void(0);' id='delOrgBtn' onclick='deleteOrg()'>删除</a>";
             }
         }
       ],
@@ -230,14 +241,23 @@ function initSubInfo(results){  //编辑时初始化信息
 }
 
 function initSubAcctInfoCheck(results){       //初始化从账号信息(编辑时查看面板)
-    $("#psnNameLable").text(results.psnName);
-    $("#mobileLable").text(results.mobilePhone);
-    $("#emailLable").text(results.eamil);
-    $("#acctLable").text(results.tbSlaveAcct.slaveAcct);
-    $("#psnNumLable").text(results.psnNbr);
-    $("#cerNoLable").text(results.certNo);
-    $("#effectDateLable").text(results.tbSlaveAcct.enableDate);
-    $("#invalidDateLable").text(results.tbSlaveAcct.disableDate);
+    // $("#psnNameLable").text(results.psnName);
+    // $("#mobileLable").text(results.mobilePhone);
+    // $("#emailLable").text(results.eamil);
+    // $("#acctLable").text(results.tbSlaveAcct.slaveAcct);
+    // $("#psnNumLable").text(results.psnNbr);
+    // $("#cerNoLable").text(results.certNo);
+    // $("#effectDateLable").text(results.tbSlaveAcct.enableDate);
+    // $("#invalidDateLable").text(results.tbSlaveAcct.disableDate);
+
+    isNull("#psnNameLable",results.psnName);
+    isNull("#mobileLable",results.mobilePhone);
+    isNull("#emailLable",results.eamil);
+    isNull("#acctLable",results.tbSlaveAcct.slaveAcct);
+    isNull("#psnNumLable",results.psnNbr);
+    isNull("#cerNoLable",results.certNo);
+    isNull("#effectDateLable",results.tbSlaveAcct.enableDate);
+    isNull("#invalidDateLable",results.tbSlaveAcct.disableDate);
 
     for(var i = 0; i <results.tbRolesList.length; i++){
         $("#nameAndRole").append($("<span class='roleTag'>"+results.tbRolesList[i].roleName+"</span>"));
@@ -256,6 +276,8 @@ function initUserInfo(results){   //新增时初始化信息
 }
 
 function addTbSlaveAcct(){      //从账号新增
+    // if(!formValidate.isAllPass())
+    //     return;
     var slaveAcctType = $('#accTypeTel').get(0).selectedIndex + 1;
     var resourceObjId = $('#systemTel').get(0).selectedIndex + 1;
     var subStatusCd = $('#statusCd').get(0).selectedIndex*100 + 1000;
@@ -303,6 +325,8 @@ function addTbSlaveAcct(){      //从账号新增
 }
 
 function updateTbSlaveAcct(){       //更新从账号信息
+    // if(!formValidate.isAllPass())
+    //     return;
     var slaveAcctType = $('#accTypeTel').get(0).selectedIndex + 1;
     var resourceObjId = $('#systemTel').get(0).selectedIndex + 1;
     var subStatusCd = $('#statusCd').get(0).selectedIndex*100 + 1000;
@@ -487,6 +511,14 @@ function extInfoFade(){     //点击复选框
     console.log(isChecked);
 }
 
+function isNull(s,r){    //判断是否为null
+    if(r == null){
+      $(s).text("");
+    }else{
+      $(s).text(r);
+    }
+}
+
 function submitToOther(){   //提交或者取消跳转
     var url = "";
     if(hType == "th"){
@@ -497,7 +529,7 @@ function submitToOther(){   //提交或者取消跳转
         url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;       //跳转添加界面
     }else{
         url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + orgName + "&id=" + orgId + 
-                                      "&personnelId =" + personnelId + "&orgRootId =" + orgRootId + "&tabPage=" + tabPage;
+                                      "&personnelId=" + personnelId + "&orgRootId=" + orgRootId + "&tabPage=" + tabPage;
     }
     window.location.href = url;
 }

@@ -6,6 +6,7 @@ var show_num = [];
 var isError = 0;
 var show_num = [];
 
+
 $(function (){
     toastr.options = {
                         "timeOut": "2000",
@@ -28,22 +29,16 @@ function check(){
     
     if(user=="" || pwd==""){
 
-        // $("#errorAcc").text("账号或密码未填写！");
-        // $("#errorAcc").show();
         toastr.error("账号或密码未填写！");
         return false;
 
     }else if(!(isMobile.test(user) || isAccount.test(user) || isEmail.test(user))){  
 
-        // $("#errorAcc").text("输入的帐号格式不正确！");
-        // $("#errorAcc").show();
         toastr.error("输入的帐号格式不正确！");
         return false;
 
     }else if(pwd.length < 6){
 
-        // $("#errorAcc").text("密码长度小于6位！");
-        // $("#errorAcc").show();
         toastr.error("密码长度小于6位！");
         return false;
 
@@ -52,8 +47,6 @@ function check(){
             var val = $(".code").val().toLowerCase();
             var num = show_num.join("");
             if(val==''){
-                // $("#errorAcc").text("请输入验证码！");
-                // $("#errorAcc").show();
                 toastr.error("请输入验证码！");
                 return false;
             }else if(val == num){
@@ -62,8 +55,6 @@ function check(){
                 $("#errorAcc").text("");
                 $("#errorAcc").show(); 
             }else{
-                // $("#errorAcc").text("验证码错误！请重新输入！");
-                // $("#errorAcc").show();
                 toastr.error("验证码错误！请重新输入！");
                 $(".code").val('');
                 draw(show_num);
@@ -89,6 +80,8 @@ function check(){
             };
         }
 
+        var index = layer.load(); 
+
         $.ajax({			//提交表单
             type : "POST",
 			url : "/system/sysUserLogin",  //接口
@@ -96,10 +89,11 @@ function check(){
             dataType: "json",
 			success:function(result){
                 if(result.state == 1000){
+                    layer.close(index);  
                     toastr.success("登录成功");
                     window.location.href = "index.html";
                 }else{
-                    // alert(result.message);
+                    layer.close(index); 
                     toastr.error(result.message);
                     $(".psw").val('');
                     isError = 1;
@@ -108,7 +102,8 @@ function check(){
                 }
             },
             error:function(){
-                toastr.error("网络连接失败！");
+                layer.close(index);  
+                toastr.error("网络连接失败！"); 
             }
         });
 

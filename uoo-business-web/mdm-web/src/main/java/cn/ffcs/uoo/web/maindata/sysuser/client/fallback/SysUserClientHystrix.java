@@ -16,4 +16,12 @@ public class SysUserClientHystrix implements SysUserClient {
         return rr;
     }
 
+    @Override
+    public ResponseResult<SysUser> getSysUserByAccout(SysUser sysUser) {
+        ResponseResult<SysUser> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    }
+
 }

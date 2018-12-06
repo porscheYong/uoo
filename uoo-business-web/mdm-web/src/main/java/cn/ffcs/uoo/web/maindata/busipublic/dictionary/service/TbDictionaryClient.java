@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @FeignClient(value = "business-public",configuration = {PersonnelServiceConfiguration.class},fallback = TbDictionaryClientHystrix.class)
 public interface TbDictionaryClient {
-    @RequestMapping(value = "/tbDictionary/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/tbDictionary/update", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     ResponseResult<TbDictionary> updateTbDictionary(@RequestBody TbDictionary tbDictionary);
 
-    @RequestMapping(value = "/tbDictionary/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/tbDictionary/add", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     ResponseResult<TbDictionary> addTbDictionary(@RequestBody TbDictionary tbDictionary);
 
     @RequestMapping(value = "/tbDictionary/del", method = RequestMethod.POST)

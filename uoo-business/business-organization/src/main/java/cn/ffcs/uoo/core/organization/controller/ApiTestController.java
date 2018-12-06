@@ -10,6 +10,7 @@ import cn.ffcs.uoo.core.organization.Api.service.TestService;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.vo.ExpandovalueVo;
 import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
+import cn.ffcs.uoo.core.organization.vo.TbExpandovalue;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +50,19 @@ public class ApiTestController {
     public ResponseResult<Void> test(String orgId){
         ResponseResult<Void> ret = new ResponseResult<Void>();
         List<PsonOrgVo> psonOrgVo = new ArrayList<PsonOrgVo>();
-        //ResponseResult<String> obj = testService.addOrgPsn(psonOrgVo);
-        ResponseResult<List<ExpandovalueVo>> list = expandovalueService.queryExpandovalueVoList("TB_ORG","187978");
-        ret.setState(ResponseResult.STATE_OK);
+        //新增
+        ExpandovalueVo vo = new ExpandovalueVo();
+        vo.setTableName("TB_ORG");
+        vo.setColumnName("nodeType");
+        vo.setRecordId("2");
+        vo.setData("1111");
+        ResponseResult<ExpandovalueVo> voret = expandovalueService.addExpandoInfo(vo);
+//        ResponseResult<String> obj = testService.addOrgPsn(psonOrgVo);
+
+
+
+//        ResponseResult<List<ExpandovalueVo>> list = expandovalueService.queryExpandovalueVoList("TB_ORG","1");
+//        ret.setState(ResponseResult.STATE_OK);
         return ret;
     }
 }

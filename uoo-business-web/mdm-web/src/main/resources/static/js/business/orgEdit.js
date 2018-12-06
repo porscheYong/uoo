@@ -6,6 +6,7 @@ var locationList = [];
 var orgTypeList;
 var positionList;
 var orgPostList;
+var regionList = [];
 var checkNode;
 var selectUser = [];
 var deleteData; //删除组织
@@ -43,10 +44,11 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
-  $('#locId').tagsInput();
-  $('#orgTypeList').tagsInput();
+  $('#locationList').tagsInput({unique: true});
+  $('#orgTypeList').tagsInput({unique: true});
   $('#positionList').tagsInput();
   $('#postList').tagsInput();
+  $('#regionId').tagsInput();
 }
 
 //联系人选择
@@ -168,13 +170,47 @@ function openLocationDialog() {
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
             parent.layer.close(index);
-            $('#locId').importTags(checkNode);
+            $('#locationList').importTags(checkNode);
             $('.ui-tips-error').css('display', 'none');
             locationList = checkNode;
         },
         btn2: function(index, layero){},
         cancel: function(){}
     });
+}
+
+//电信管理区域选择
+function openRegionDialog() {
+    parent.layer.open({
+        type: 2,
+        title: '电信管理区域',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['50%', '80%'],
+        maxmin: true,
+        content: '/inaction/organization/regionDialog.html',
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            checkNode = iframeWin.checkNode;
+            $('#regionId').importTags(checkNode);
+            regionList = checkNode;
+            parent.layer.close(index);
+            getAreaId(checkNode[0].id);
+        },
+        btn2: function(index, layero){},
+        cancel: function(){}
+    });
+}
+
+//根据电信管理区域ID获取区号
+function getAreaId(regionId) {
+    $http.get('/region/commonRegion/getCommonRegion/id='+ regionId, {}, function (data) {
+        $('#areaCodeId').val(data.areaCode.areaCodeId);
+    }, function (err) {
+        console.log(err)
+    })
 }
 
 //证件信息初始化
@@ -519,6 +555,7 @@ function getOrg (orgId) {
         // $('#psonOrgVoList').val(data.psonOrgVoList[0].name);
         $('#officePhone').val(data.officePhone);
         $('#sort').val(data.sort);
+        $('#areaCodeId').val(data.areaCodeId);
         $('#address').val(data.address);
         $('#orgContent').val(data.orgContent);
         $('#orgDesc').val(data.orgDesc);
@@ -527,11 +564,11 @@ function getOrg (orgId) {
         getCityVillage(data.cityTown);
         getOrgPostLevel(data.orgPositionLevel);
         getStatusCd(data.statusCd);
+        locationList = data.politicalLocationList;
         orgTypeList = data.orgTypeList;
         positionList = data.positionList;
         orgPostList = data.postList;
-        //TODO id?
-        $('#locId').addTag(positionList);
+        $('#locationList').addTag(locationList);
         $('#orgTypeList').addTag(orgTypeList);
         $('#positionList').addTag(positionList);
         $('#postList').addTag(orgPostList);
@@ -570,6 +607,7 @@ function updateOrg () {
       return;
   loading.screenMaskEnable('container');
   var userList = [];
+  var location = [];
   var position = [];
   var post = [];
   var orgType = [];
@@ -577,6 +615,11 @@ function updateOrg () {
   for (var i = 0; i < selectUser.length; i++) {
       userList.push({personnelId: selectUser[i].personnelId});
   }
+    //行政管理区域
+    for (var i = 0; i < locationList.length; i++) {
+        var locId = locationList[i].locId || locationList[i].id;
+        location.push({locId: locId});
+    }
     //组织岗位
     for (var i = 0; i < positionList.length; i++) {
         position.push({positionId: positionList[i].positionId});
@@ -584,10 +627,6 @@ function updateOrg () {
     //组织职位
     for (var i = 0; i < orgPostList.length; i++) {
         post.push({postId: orgPostList[i].postId});
-    }
-    //行政管理区域
-    for (var i = 0; i < selectUser.length; i++) {
-        orgType.push({orgTypeId: selectUser[i].personnelId});
     }
   //组织类别
   for (var i = 0; i < orgTypeList.length; i++) {
@@ -608,6 +647,7 @@ function updateOrg () {
   var officePhone = $('#officePhone').val();
   var statusCd = $('#statusCd option:selected') .val();
   var sort = $('#sort').val();
+  var areaCodeId = $('#areaCodeId').val();
   var address = $('#address').val();
   var orgContent = $('#orgContent').val();
   var orgDesc = $('#orgDesc').val();
@@ -627,8 +667,9 @@ function updateOrg () {
       officePhone: officePhone,
       statusCd: statusCd,
       sort: sort,
+      areaCodeId: areaCodeId,
       address: address,
-      locId: locationList[0].id,
+      politicalLocationList: location,
       orgTypeList: orgType,
       positionList: position,
       postList: post,

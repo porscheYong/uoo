@@ -13,10 +13,10 @@ import java.util.List;
 
 @FeignClient(value = "business-position",configuration = {PersonnelServiceConfiguration.class},fallback = TbPositionClientHystrix.class)
 public interface TbPositionClient {
-    @RequestMapping(value = "/tbPosition/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/tbPosition/add", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     ResponseResult<TbPosition> addTbPosition(@RequestBody TbPosition tbPosition);
 
-    @RequestMapping(value = "/tbPosition/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/tbPosition/update", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     ResponseResult<TbPosition> updateTbPosition(@RequestBody TbPosition tbPosition);
 
     @RequestMapping(value = "/tbPosition/del", method = RequestMethod.POST)

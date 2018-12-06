@@ -395,7 +395,7 @@
                         <td>创建时间</td>
                          
                     </tr>
-                   {{#each userList}}
+                   {{#each userList.records}}
                     <tr>
                         <td>{{#seq @index}}{{/seq}}</td>
                         <td><a href="javascript:void(0)" onclick="gotoAccout('{{@index}}')">{{name}}</a></td>
@@ -584,7 +584,7 @@
                         <td>全日制</td>
                         <td>{{education}}</td>
                         <td>{{degree}}</td>
-                        <td>{{#eq firstEducation 1}}是{{/eq}}{{#eq firstEducation 0}}否{{/eq}}</td>
+                        <td>{{#if firstEducation}}{{#eq firstEducation 1}}是{{/eq}}{{#eq firstEducation 0}}否{{/eq}} {{else}}否{{/if}} </td>
                          <td><a class="Icon IconEdit" href="javascript:void(0);" onclick="openEduEditByEdit('{{@index}}')"></a></td>
                     </tr>
                      {{/each}}
@@ -765,7 +765,7 @@
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
-                            <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
+                            <label for="sort" class="col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">职位</label>
                             <input onclick="getPostName()" id="postId" keyId="{{currentEditOrgInfo.postId}}" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="code" readonly value="{{currentEditOrgInfo.postName}}">
                         </div>
