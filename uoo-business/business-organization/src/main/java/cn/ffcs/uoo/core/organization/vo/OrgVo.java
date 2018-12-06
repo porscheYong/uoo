@@ -20,6 +20,7 @@ public class OrgVo extends BaseVo{
     private Long orgId;
     private Long locId;
     private String areaCodeId;
+    private String areaCode;
     private String orgName;
     private String orgCode;
     private String shortName;
@@ -75,6 +76,8 @@ public class OrgVo extends BaseVo{
     private List<PoliticalLocation> politicalLocationList;
     //组织扩展属性
     List<ExpandovalueVo> expandovalueVoList;
+    //地区
+    private AreaCodeVo areaCodeVo;
 
 
     //身份证信息
@@ -84,6 +87,23 @@ public class OrgVo extends BaseVo{
     //检索
     private String search;
     private String orgRelCreatDate;
+
+
+    public String getAreaCode() {
+        return areaCode;
+    }
+
+    public void setAreaCode(String areaCode) {
+        this.areaCode = areaCode;
+    }
+
+    public AreaCodeVo getAreaCodeVo() {
+        return areaCodeVo;
+    }
+
+    public void setAreaCodeVo(AreaCodeVo areaCodeVo) {
+        this.areaCodeVo = areaCodeVo;
+    }
 
     public List<PoliticalLocation> getPoliticalLocationList() {
         return politicalLocationList;

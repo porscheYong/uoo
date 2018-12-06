@@ -49,10 +49,10 @@ public class LoadUrlPermissionService {
             filterChainDefinitionMap.put("/js/**", "anon"); //
             filterChainDefinitionMap.put("/vendors/**", "anon"); //
             filterChainDefinitionMap.put("/system/sysUserLogin", "anon"); // 登陆接口必须开放
-            // TODO 把所有菜单url和权限绑定在map
-            // filterChainDefinitionMap.put("/index", "perms[index]");
+            //filterChainDefinitionMap.put("/**", "anon");
+            //filterChainDefinitionMap.put("/aa/aa", "perms[asasd]");
             // filterChainDefinitionMap.put("/inaction/**", "perms[inaction]");
-
+            
             ResponseResult<List<FuncComp>> listFuncComp = funcCompSvc.listFuncComp(1, Integer.MAX_VALUE);
             ResponseResult<List<FuncMenu>> listMenuComp = funcMenuSvc.getFuncMenuPage();
 
@@ -69,6 +69,7 @@ public class LoadUrlPermissionService {
                 }
             }
 
+            //filterChainDefinitionMap.put("/ff/ff", "perms[sad]");// 表示需要认证才可以访问
             filterChainDefinitionMap.put("/**", "authc");// 表示需要认证才可以访问
 
             shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);

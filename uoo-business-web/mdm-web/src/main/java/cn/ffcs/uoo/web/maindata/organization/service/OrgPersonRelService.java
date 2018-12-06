@@ -24,7 +24,7 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018-10-21
  */
-@FeignClient(value = "business-organization",configuration = {PersonnelServiceConfiguration.class},fallback = OrgPersonRelServiceHystrix.class)
+@FeignClient(name = "business-organization", url = "http://134.96.253.222:11100",configuration = {PersonnelServiceConfiguration.class},fallback = OrgPersonRelServiceHystrix.class)
 public interface OrgPersonRelService{
 
     @RequestMapping(value="/orgPersonRel/addOrgPsn",method = RequestMethod.POST,headers={"Content-Type=application/json"})

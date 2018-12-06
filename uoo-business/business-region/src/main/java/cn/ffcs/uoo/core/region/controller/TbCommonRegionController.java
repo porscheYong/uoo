@@ -213,6 +213,7 @@ public class TbCommonRegionController extends BaseController {
                     break;
                 }
             }
+            n.getExtParams().put("areaCodeId", reg.getAreaCodeId());
         }
         ResponseResult r = ResponseResult.createSuccessResult(ztlist,"success");
         r.setTotalRecords(list.size());

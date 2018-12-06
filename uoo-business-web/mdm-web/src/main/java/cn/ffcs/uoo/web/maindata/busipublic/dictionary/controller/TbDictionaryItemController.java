@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.web.maindata.busipublic.dictionary.controller;
 
+import cn.ffcs.uoo.web.maindata.busipublic.dictionary.dto.DictionaryListVo;
 import cn.ffcs.uoo.web.maindata.busipublic.dictionary.dto.TbDictionaryItem;
 import cn.ffcs.uoo.web.maindata.busipublic.dictionary.service.TbDictionaryItemClient;
 import cn.ffcs.uoo.web.maindata.busipublic.vo.ResponseResult;
@@ -60,5 +61,11 @@ public class TbDictionaryItemController {
     @RequestMapping(value = "/getList/{dictionaryName}", method = RequestMethod.GET)
     public ResponseResult<List<TbDictionaryItem>> queryListByDictionaryName(@PathVariable String dictionaryName) {
         return tbDictionaryItemClient.queryListByDictionaryName(dictionaryName);
+    }
+
+    @ApiOperation(value = "查询字典所有字典项目列表", notes = "查询字典所有字典项目列表")
+    @RequestMapping(value = "/getAllList", method = RequestMethod.GET)
+    public ResponseResult<DictionaryListVo> queryAllList() {
+        return tbDictionaryItemClient.queryAllList();
     }
 }

@@ -737,14 +737,14 @@ public class OrgController extends BaseController {
                     voadd.setColumnName(vo.getColumnName());
                     voadd.setRecordId(newOrg.getOrgId().toString());
                     voadd.setData(vo.getData());
-                    voret = expandovalueService.addExpandoInfo(voadd);
+                    //voret = expandovalueService.addExpandoInfo(voadd);
 
                 }else{
                     //更新
                     TbExpandovalue voupdate = new TbExpandovalue();
                     voupdate.setData(vo.getData());
                     voupdate.setValueId(vo.getValueId());
-                    expandovalueService.updateTbExpandovalue(voupdate);
+                    //expandovalueService.updateTbExpandovalue(voupdate);
                 }
             }
             if(curExtList!=null && curExtList.size()>0){
@@ -757,7 +757,7 @@ public class OrgController extends BaseController {
                     }
                     if(!isExists){
                         //删除
-                        expandovalueService.removeTbExpandovalue(curVo.getValueId(),0L);
+                        //expandovalueService.removeTbExpandovalue(curVo.getValueId(),0L);
                     }
                 }
             }
@@ -765,7 +765,7 @@ public class OrgController extends BaseController {
             if(curExtList!=null && curExtList.size()>0){
                 for(ExpandovalueVo vo : curExtList){
                     //删除所有
-                    expandovalueService.removeTbExpandovalue(vo.getValueId(),0L);
+                    //expandovalueService.removeTbExpandovalue(vo.getValueId(),0L);
                 }
             }
         }
@@ -1039,6 +1039,12 @@ public class OrgController extends BaseController {
         //行政管理区域 2
         List<PoliticalLocation> pl = orgService.getOrgLoc(orgId);
         org.setPoliticalLocationList(pl);
+
+        //区域编码
+        List<AreaCodeVo> areaList = orgService.getOrgAreaCode(orgId);
+        if(areaList!=null && areaList.size()>0){
+            org.setAreaCode(StrUtil.strnull(areaList.get(0).getAreaCode()));
+        }
 
         //营销化小编码
         ResponseResult<List<ExpandovalueVo>> Hxret = expandovalueService.queryExpandovalueVoList("TB_ORG",orgId);

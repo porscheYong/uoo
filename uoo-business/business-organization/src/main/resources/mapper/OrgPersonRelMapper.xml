@@ -275,10 +275,10 @@
             AND A.ORG_PERSON_ID=B.ORG_PERSON_ID AND B.ORG_TREE_ID=C.ORG_TREE_ID
             AND A.ORG_ID=D.ORG_ID AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
             <if test="psonOrgVo.personnelId != null and psonOrgVo.personnelId != ''">
-                AND A.PERSONNEL_ID = #{psonOrgVo.personnelId}            LEFT JOIN TB_ORG ORG ON ORG.ORG_ID = AA.ORG_ID AND ORG.Status_Cd=AA.Status_Cd
-
+                AND A.PERSONNEL_ID = #{psonOrgVo.personnelId}
             </if>
             ) AA
+            LEFT JOIN TB_ORG ORG ON ORG.ORG_ID = AA.ORG_ID AND ORG.Status_Cd=AA.Status_Cd
             LEFT JOIN TB_PERSONNEL PER ON PER.PERSONNEL_ID = AA.PERSONNEL_ID AND ORG.STATUS_CD=AA.STATUS_CD
             LEFT JOIN TB_POST POST ON POST.POST_ID = AA.POST_ID AND ORG.STATUS_CD=AA.STATUS_CD
             LEFT JOIN TB_CONTACT CTA ON CTA.PERSONNEL_ID = AA.PERSONNEL_ID AND CTA.STATUS_CD=AA.STATUS_CD

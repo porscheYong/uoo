@@ -10,6 +10,7 @@ import cn.ffcs.uoo.core.organization.service.OrgOrgtypeRelService;
 import cn.ffcs.uoo.core.organization.service.OrgTypeService;
 import cn.ffcs.uoo.core.organization.util.OrgConstant;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
+import cn.ffcs.uoo.core.organization.vo.AreaCodeVo;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
 import cn.ffcs.uoo.core.organization.vo.PageVo;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -199,5 +200,10 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
     @Override
     public List<PoliticalLocation> getOrgLoc(String orgId){
         return baseMapper.getOrgLoc(orgId);
+    }
+
+    @Override
+    public List<AreaCodeVo> getOrgAreaCode(String orgId){
+        return baseMapper.getOrgAreaCode(orgId);
     }
 }
