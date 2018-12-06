@@ -49,9 +49,10 @@ public class LoadUrlPermissionService {
             filterChainDefinitionMap.put("/js/**", "anon"); //
             filterChainDefinitionMap.put("/vendors/**", "anon"); //
             filterChainDefinitionMap.put("/system/sysUserLogin", "anon"); // 登陆接口必须开放
-            // filterChainDefinitionMap.put("/index", "perms[index]");
+            //filterChainDefinitionMap.put("/**", "anon");
+            //filterChainDefinitionMap.put("/aa/aa", "perms[asasd]");
             // filterChainDefinitionMap.put("/inaction/**", "perms[inaction]");
-
+            
             ResponseResult<List<FuncComp>> listFuncComp = funcCompSvc.listFuncComp(1, Integer.MAX_VALUE);
             ResponseResult<List<FuncMenu>> listMenuComp = funcMenuSvc.getFuncMenuPage();
 

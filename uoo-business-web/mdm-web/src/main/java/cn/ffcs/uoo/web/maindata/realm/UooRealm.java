@@ -86,23 +86,25 @@ public class UooRealm extends AuthorizingRealm {
         HttpSession session = request==null?null: request.getSession();
         if(session!=null){
             Object attribute = session.getAttribute(LoginConsts.LOGIN_KEY);
-            JSONObject json=JSONObject.parseObject(JSONObject.toJSONString(attribute));
-            JSONObject data = json.getJSONObject("data");
-            if(data!=null){
-                Long acctId = data.getLong("acctId");
-                cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult<AccoutPermissionVO> accoutMenuPermission = privSvc.getAccoutMenuPermission(acctId);
-                if(accoutMenuPermission.getState()==cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult.STATE_OK){
-                    AccoutPermissionVO vo = accoutMenuPermission.getData();
-                    List<FuncComp> funcComps = vo.getFuncComps();
-                    List<FuncMenu> funcMemus = vo.getFuncMemus();
-                    for (FuncMenu funcMenu : funcMemus) {
-                        simpleAuthorizationInfo.addStringPermission("M"+funcMenu.getMenuId());
+            if(attribute!=null){
+                JSONObject json=JSONObject.parseObject(JSONObject.toJSONString(attribute));
+                JSONObject data = json.getJSONObject("data");
+                if(data!=null){
+                    Long acctId = data.getLong("acctId");
+                    cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult<AccoutPermissionVO> accoutMenuPermission = privSvc.getAccoutMenuPermission(acctId);
+                    if(accoutMenuPermission.getState()==cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult.STATE_OK){
+                        AccoutPermissionVO vo = accoutMenuPermission.getData();
+                        List<FuncComp> funcComps = vo.getFuncComps();
+                        List<FuncMenu> funcMemus = vo.getFuncMemus();
+                        for (FuncMenu funcMenu : funcMemus) {
+                            simpleAuthorizationInfo.addStringPermission("M"+funcMenu.getMenuId());
+                        }
+                        for (FuncComp funcComp : funcComps) {
+                            simpleAuthorizationInfo.addStringPermission("C"+funcComp.getCompId());
+                        }
+                    }else{
+                        log.info("没有权限的账户："+json);
                     }
-                    for (FuncComp funcComp : funcComps) {
-                        simpleAuthorizationInfo.addStringPermission("C"+funcComp.getCompId());
-                    }
-                }else{
-                    log.info("没有权限的账户："+json);
                 }
             }
         }
