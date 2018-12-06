@@ -94,45 +94,43 @@ uoo是采用Spring Cloud微服务化开发平台，具有统一授权、认证�
 |   |
 |   |——uoo-base-------------------------------------------基础模块
 |   |   |
-|   |   |——base-common------------------------------------基础部分，可被复用
+|   |   |——base-common------------------------------------基础部分
 |   |   |   |
-|   |   |   |——common-tool--------------------------------工具类，定义时间、文件、日期、字符串的操作脚手架
+|   |   |   |——common-tool--------------------------------工具脚手架类
 |   |   |   |
-|   |   |   |——common-abstract----------------------------基于mybatis的持久层、拦截器、配置基础包，可被模块引用，减少开发工作量
+|   |   |   |——common-abstract----------------------------通用持久层，、可复用配置包
 |   |   |   |
-|   |   |   |——common-persitence--------------------------持久层
+|   |   |   |——common-persitence--------------------------通用持久层
 |   |   |   |   |
-|   |   |   |   |——persistence-jpa------------------------JPA持久层通用类
+|   |   |   |   |——persistence-jpa------------------------JPA实现类
 |   |   |
-|   |   |——uoo-register-----------------------------------微服务注册中心
+|   |   |——uoo-register-----------------------------------注册中心
 |   |   |
-|   |   |——uoo-gateway------------------------------------微服务网关中心
+|   |   |——uoo-gateway------------------------------------网关中心
 |   |   |
-|   |   |——uoo-sleuth-------------------------------------微服务链路追踪中心
+|   |   |——uoo-sleuth-------------------------------------链路追踪中心
 |   |   |
-|   |   |——uoo-monitor------------------------------------微服务监控中心
+|   |   |——uoo-monitor------------------------------------监控中心
 |   |
-|   |——uoo-common-----------------------------------------公用模块，微服务本身的管理公共模块，可以被任何其他想尝试微服务的项目重用
+|   |——uoo-common-----------------------------------------公共模块，平台自身
 |   |   |
-|   |   |——common-auth------------------------------------公用登录认证服务中心<取消该模块与common-system合并>
+|   |   |——common-system----------------------------------平台用户、部门等
 |   |   |
-|   |   |——common-system----------------------------------系统公共部分包含用户、部门、菜单、角色、区域、字典
-|   |   |
-|   |   |——common-activiti--------------------------------公共工作流服务中心
+|   |   |——common-activiti--------------------------------平台工作流
 |   |   |   |
-|   |   |   |——activiti-core------------------------------工作流模块，目前，内蒙项目所用
+|   |   |   |——activiti-core------------------------------工作流模块，目前仅内蒙项目
 |   |   |
-|   |   |——common-cache-----------------------------------公共缓存服务中心
+|   |   |——common-cache-----------------------------------平台缓存服务中心
 |   |   |
-|   |   |——common-queues----------------------------------公共队列的基本管理服务中心
+|   |   |——common-queues----------------------------------队列管理服务中心
 |   |   |   |
-|   |   |   |——queues-manager-----------------------------提供基于rabbitMQ的队列管理能力
+|   |   |   |——queues-manager-----------------------------rabbitMQ队列管理能力
 |   |   |
-|   |   |——common-im--------------------------------------短信、邮件服务中心
+|   |   |——common-im--------------------------------------实时通讯服务中心
 |   |
-|   |——uoo-business---------------------------------------业务模块
+|   |——uoo-business---------------------------------------UOO核心模块
 |   |   |
-|   |   |——business-syn-msg-------------------------------数据共享-数据封装同步组件
+|   |   |——business-syn-msg-------------------------------数据共享组件服务中心
 |   |   |
 |   |   |——business-organization--------------------------组织域服务中心
 |   |   |
@@ -148,25 +146,25 @@ uoo是采用Spring Cloud微服务化开发平台，具有统一授权、认证�
 |   |   |
 |   |   |——business-public--------------------------------公共服务中心，目前被uoo用做系统管理
 |   |   |
-|   |   |——business-authentication------------------------用户认证管理服务中心
+|   |   |——business-authentication------------------------认证服务中心
 |   |
-|   |——uoo-business-api-----------------------------------可对外开放，被第三方使用的服务API，需要考虑数据安全
+|   |——uoo-business-api-----------------------------------UOO开放式服务API
 |   |   |
-|   |   |——api-user---------------------------------------用户对外API
+|   |   |——api-user---------------------------------------用户域开放式API
 |   |   |
-|   |   |——api-org----------------------------------------组织域服务API
+|   |   |——api-org----------------------------------------组织域开放式API
 |   |   |
-|   |   |——api-security-----------------------------------业务安全域服务API
+|   |   |——api-security-----------------------------------安全域开放式API
 |   |   |   |
 |   |   |   |——security-authorize-------------------------授权管理服务API
 |   |   |   |
-|   |   |   |——security-authentication--------------------用户身份认证服务API
+|   |   |   |——security-authentication--------------------身份认证服务API
 |   |   |   |   |
-|   |   |   |   |——authentication-cs----------------------用户身份认证服务API-CS方式
+|   |   |   |   |——authentication-cs----------------------身份认证服务API-CS方式
 |   |   |   |   |
-|   |   |   |   |——authentication-bs----------------------用户身份认证服务API-BS方式
+|   |   |   |   |——authentication-bs----------------------身份认证服务API-BS方式
 |   |
-|   |——uoo-business-web-----------------------------------WEB端
+|   |——uoo-business-web-----------------------------------UOO WEB端
 |   |   |
 |   |   |——mdm-web----------------------------------------主数据中心维护支撑WEB
 |   |   |
@@ -193,587 +191,158 @@ uoo是采用Spring Cloud微服务化开发平台，具有统一授权、认证�
 
 | 序号 | 名称 | 描述 | 阶段I部署端口 | 阶段II部署端口 |
 | ------ | ------ | ------ | ------ | ------ 
-| 86 | uoo-sleuth | 服务追踪 | 8600 | 8611、8622 |
+| 86 | uoo-sleuth | 链路追踪中心 | 8600 | 8611、8622 |
 | 87 | uoo-register | 注册中心 | 8751 | 8761、8771 |
 | 88 | uoo-gateway | 通用网关 | 8800 | 8811、8822 |
-| 89 | uoo-monitor | 微服务监控 | 8900 | 8911、8922 |
+| 89 | uoo-monitor | 监控中心 | 8900 | 8911、8922 |
 
 #### uoo-common公用模块
 
 | 序号 | 名称 | 描述 | 阶段I部署端口 | 阶段II部署端口 |
 | ------ | ------ | ------ | ------ | ------ |
-| 90 | common-auth | 公用登录认证鉴权 | 9000 | 9011、9022 |
-| 91 | common-system | 公用系统公共部分包含用户、部门、菜单等 | 9100 | 9111、9122 |
-| 92 | activiti-core | 公共工作流服务中心 | 9200 | 9211、9222 |
-| 93 | common-cache | 公共缓存服务中心 | 9300 | 9311、9322 |
-| 94 | queues-manager | 公共队列的基本管理服务中心 | 9400 |9411、9422 |
-| 95 | common-im | 短信、邮件服务中心基本管理服务中心 | 9500 | 9511、9522 |
+| 91 | common-system | 平台用户、部门等 | 9100 | 9111、9122 |
+| 92 | activiti-core | 工作流模块 | 9200 | 9211、9222 |
+| 93 | common-cache | 平台缓存服务中心 | 9300 | 9311、9322 |
+| 94 | queues-manager | 队列管理能力 | 9400 |9411、9422 |
+| 95 | common-im | 实时通讯服务中心 | 9500 | 9511、9522 |
 
-#### uoo-business业务模块
+#### uoo-business UOO核心模块
 
 | 序号 | 名称 | 描述 | 阶段I部署端口 | 阶段II部署端口 |
 | ------ | ------ | ------ | ------ | ------ |
-| 110 | business-syn-msg | 数据共享-数据封装组件 | 11000 | 11022、11033 |
+| 110 | business-syn-msg | 数据共享组件服务中心 | 11000 | 11022、11033 |
 | 111 | business-organization |组织域服务中心 | 11100 | 11111、11122 |
 | 112 | business-personnel | 人员域服务中心 | 11200 | 11211、11222 |
 | 113 | business-user | 用户业务服务中心 | 11300 | 11311、11322 |
 | 114 | business-permission | 权限域服务中心 | 11400 | 11411、11422 |
 | 115 | business-public | 公共域服务中心 | 11500 | 11511、11522 |
 | 116 | business-position | 职位域服务中心 | 11600 | 11611、11622 |
-| 117 | business-region | 区域模块 | 11700 | 11711、11722 |
-| 118 | business-authentication | 认证管理 | 11800 | 11811、11822 |
+| 117 | business-region | 区域服务中心 | 11700 | 11711、11722 |
+| 118 | business-authentication | 认证服务中心 | 11800 | 11811、11822 |
 
 #### uoo-business-web业务模块
 
 | 序号 | 名称 | 描述 | 阶段I部署端口 | 阶段II部署端口 |
 | ------ | ------ | ------ | ------ | ------ |
-| 180 | mdm-web | 用户组织运营平台WEB | 18000 | 18022、18033 |
-| 181 | auth-web | 认证管理平台WEB | 18100 | 18111、18122 |
+| 180 | mdm-web | 主数据中心维护支撑WEB | 18000 | 18022、18033 |
+| 181 | auth-web | 认证中心维护支撑WEB | 18100 | 18111、18122 |
 
 #### uoo-business-api业务模块
 
 | 序号 | 名称 | 描述 |  阶段I部署端口 | 阶段II部署端口 |
 | ------ | ------ | ------ | ------ | ------ |
-| 200 | api-user | 组织域服务API | 20000 | 20022、20033 |
-| 201 | api-org | 人员域服务API | 20100 | 20111、20122 |
+| 200 | api-user | 用户域开放式API | 20000 | 20022、20033 |
+| 201 | api-org | 组织域开放式API | 20100 | 20111、20122 |
 | 202 | security-authorize | 授权管理服务API | 20200 | 20211、20222 |
-| 203 | authentication-bs | 用户身份认证服务API-BS方式 | 20300 | 20311、20322 |
-| 204 | authentication-cs | 用户身份认证服务API-CS方式 | 20400 | 20411、20422 |
+| 203 | authentication-bs | 身份认证服务API-BS方式 | 20300 | 20311、20322 |
+| 204 | authentication-cs | 身份认证服务API-CS方式 | 20400 | 20411、20422 |
 
 ### 正式生产环境
 #### uoo-base基础模块
 
 | 序号 | 名称 | 描述 | 阶段I部署端口 | 阶段II部署端口 |
 | ------ | ------ | ------ | ------ | ------ |
-| 86 | uoo-sleuth | 服务追踪 | 8600、8611 | 8622、8633、8644 |
+| 86 | uoo-sleuth | 链路追踪中心 | 8600、8611 | 8622、8633、8644 |
 | 87 | uoo-register | 注册中心 | 8751、8761 | 8771，8781、8791 |
 | 88 | uoo-gateway | 通用网关 | 8800、8811 | 8822、8833、8444 |
-| 89 | uoo-monitor | 微服务监控 | 8900、8911 | 8922、8933、8944 |
+| 89 | uoo-monitor | 监控中心 | 8900、8911 | 8922、8933、8944 |
 
 #### uoo-common公用模块
 
 | 序号 | 名称 | 描述 | 阶段I部署端口 | 阶段II部署端口 |
 | ------ | ------ | ------ | ------ | ------ |
-| 90 | common-auth | 公用登录认证鉴权 | 9000、9011 | 9022、9033、9044 |
-| 91 | common-system | 公用系统公共部分包含用户、部门、菜单等 | 9100、9111 | 9122、9133、9144 |
-| 92 | activiti-core | 公共工作流服务中心 | 9200、9211 | 9222、9233、9244 |
-| 93 | common-cache | 公共缓存服务中心 | 9300、9311 | 9322、9333、9344 |
-| 94 | queues-manager | 公共队列的基本管理服务中心 | 9400、9411 | 9422、9433、9444 |
-| 95 | common-im | 短信、邮件服务中心基本管理服务中心 | 9500、9511 | 9522、9533、9544 |
+| 91 | common-system | 平台用户、部门等 | 9100、9111 | 9122、9133、9144 |
+| 92 | activiti-core | 工作流模块 | 9200、9211 | 9222、9233、9244 |
+| 93 | common-cache | 平台缓存服务中心 | 9300、9311 | 9322、9333、9344 |
+| 94 | queues-manager | 队列管理能力 | 9400、9411 | 9422、9433、9444 |
+| 95 | common-im | 实时通讯服务中心 | 9500、9511 | 9522、9533、9544 |
 
-#### uoo-business业务模块
+#### uoo-business UOO核心模块
 
 | 序号 | 名称 | 描述 | 阶段I部署端口 | 阶段II部署端口 |
 | ------ | ------ | ------ | ------ | ------ |
-| 110 | business-syn-msg | 数据共享-数据封装组件 | 11000、11022 | 11033、11044、11055 |
+| 110 | business-syn-msg | 数据共享组件服务中心 | 11000、11022 | 11033、11044、11055 |
 | 111 | business-organization |组织域服务中心 | 11100、11111 | 11122、11133、11144 |
 | 112 | business-personnel | 人员域服务中心 | 11200、11211 | 11222、11233、11244 |
-| 113 | business-user | 用户业务服务中心 | 11300、11311 | 11322、11333、11344 |
+| 113 | business-user | 用户域服务中心 | 11300、11311 | 11322、11333、11344 |
 | 114 | business-permission | 权限域服务中心 | 11400、11411 | 11422、11433、11444 |
 | 115 | business-public | 公共域服务中心 | 11500 | 11511、 11522、11533、11544 |
 | 116 | business-position | 职位域服务中心 | 11600 | 11611、11622、11633、11644 |
-| 117 | business-region | 区域模块 | 11700 | 11711、11722、11733、11744 |
-| 118 | business-authentication | 认证管理 | 11800 | 11811、11822、11833、11844 |
+| 117 | business-region | 区域服务中心 | 11700 | 11711、11722、11733、11744 |
+| 118 | business-authentication | 认证服务中心 | 11800 | 11811、11822、11833、11844 |
 
 #### uoo-business-web业务模块
 
 | 序号 | 名称 | 描述 | 阶段I部署端口 | 阶段II部署端口 |
 | ------ | ------ | ------ | ------ | ------ |
-| 180 | mdm-web | 用户组织运营平台WEB | 18000 | 18011、18022、18033、18044 |
-| 181 | auth-web | 认证管理平台WEB | 18100 | 18111、18122、18133、18144 |
+| 180 | mdm-web | 主数据中心维护支撑WEB | 18000 | 18011、18022、18033、18044 |
+| 181 | auth-web | 认证中心维护支撑WEB | 18100 | 18111、18122、18133、18144 |
 
 #### uoo-business-api业务模块
 
 | 序号 | 名称 | 描述 | 阶段I部署端口 | 阶段II部署端口 |
 | ------ | ------ | ------ | ------ | ------ |
-| 200 | api-user | 组织域服务API | 20000、20022 | 20033、20033、20044  |
-| 201 | api-org | 人员域服务API | 20100、20111 | 20122、20133、20144 |
+| 200 | api-user | 用户域开放式API | 20000、20022 | 20033、20033、20044  |
+| 201 | api-org | 组织域开放式API | 20100、20111 | 20122、20133、20144 |
 | 202 | security-authorize | 授权管理服务API | 20200、20211 | 20222、20233 、20244  |
-| 203 | authentication-bs | 用户身份管理服务API-BS方式 | 20300、20311 | 20322、20333、20344 |
-| 204 | authentication-cs | 用户身份管理服务API-CS方式 | 20400、20411 | 20422、20433、20444 |
+| 203 | authentication-bs | 身份管理服务API-BS方式 | 20300、20311 | 20322、20333、20344 |
+| 204 | authentication-cs | 身份管理服务API-CS方式 | 20400、20411 | 20422、20433、20444 |
 
 ### 详细部署清单
 
 ![avatar](https://github.com/rothschil/static/raw/master/Snipaste_2018-12-04_21-22-03.jpg)
 
-<table border=0 cellpadding=0 cellspacing=0 width=1611 style='border-collapse:
- collapse;table-layout:fixed;width:1209pt'>
- <col width=72 style='width:54pt'>
- <col width=172 style='mso-width-source:userset;mso-width-alt:5504;width:129pt'>
- <col width=237 style='mso-width-source:userset;mso-width-alt:7584;width:178pt'>
- <col width=321 style='mso-width-source:userset;mso-width-alt:10272;width:241pt'>
- <col class=xl70 width=270 style='mso-width-source:userset;mso-width-alt:8640;
- width:203pt'>
- <col width=140 span=2 style='mso-width-source:userset;mso-width-alt:4480;
- width:105pt'>
- <col width=259 style='mso-width-source:userset;mso-width-alt:8288;width:194pt'>
- <tr height=28 style='height:21.0pt'>
-  <td height=28 class=xl67 width=72 style='height:21.0pt;width:54pt'>序号</td>
-  <td class=xl68 width=172 style='border-left:none;width:129pt'>IP</td>
-  <td class=xl68 width=237 style='border-left:none;width:178pt'>应用名</td>
-  <td class=xl68 width=321 style='border-left:none;width:241pt'>描述</td>
-  <td class=xl71 width=270 style='border-left:none;width:203pt'>阶段I部署端口</td>
-  <td class=xl68 width=140 style='border-left:none;width:105pt'>负责人</td>
-  <td class=xl68 width=140 style='border-left:none;width:105pt'>状态</td>
-  <td class=xl69 width=259 style='border-left:none;width:194pt'>阶段II部署端口&lt;后续拓展&gt;</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>1</td>
-  <td rowspan=7 class=xl74 style='border-bottom:.5pt solid black;border-top:
-  none'>134.96.217.231</td>
-  <td class=xl65 style='border-top:none;border-left:none'>rabbitMQ</td>
-  <td class=xl65 style='border-top:none;border-left:none'>消息中间件</td>
-  <td class=xl66 style='border-top:none;border-left:none'>15672,25672,5672,4369</td>
-  <td class=xl65 style='border-top:none;border-left:none'>吴豪</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>2</td>
-  <td class=xl65 style='border-top:none;border-left:none'>uoo-register</td>
-  <td class=xl65 style='border-top:none;border-left:none'>注册中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>8751、8761</td>
-  <td class=xl73 style='border-top:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>3</td>
-  <td class=xl65 style='border-top:none;border-left:none'>common-system</td>
-  <td class=xl65 style='border-top:none;border-left:none'>公用系统公共部分包含用户、部门、菜单等</td>
-  <td class=xl66 style='border-top:none;border-left:none'>9100、9111</td>
-  <td class=xl73 style='border-top:none'>刘晓东</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>4</td>
-  <td class=xl65 style='border-top:none;border-left:none'>queues-manager</td>
-  <td class=xl65 style='border-top:none;border-left:none'>公共队列的基本管理服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>9400、9411</td>
-  <td class=xl73 style='border-top:none'>吴豪</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>5</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-syn-msg</td>
-  <td class=xl65 style='border-top:none;border-left:none'>数据共享-数据封装组件</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11000、11022</td>
-  <td class=xl73 style='border-top:none'>吴豪</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>6</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-organization</td>
-  <td class=xl65 style='border-top:none;border-left:none'>组织域服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11100、11111</td>
-  <td class=xl73 style='border-top:none'>郭章斌</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>7</td>
-  <td class=xl72 style='border-left:none'>mdm-web</td>
-  <td class=xl72 style='border-left:none'>用户组织运营平台WEB</td>
-  <td class=xl70>18000</td>
-  <td></td>
-  <td class=xl65 style='border-top:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>8</td>
-  <td rowspan=7 class=xl74 style='border-bottom:.5pt solid black;border-top:
-  none'>134.96.217.232</td>
-  <td class=xl65 style='border-left:none'>rabbitMQ</td>
-  <td class=xl65 style='border-left:none'>消息中间件</td>
-  <td class=xl66 style='border-left:none'>15672,25672,5672,4369</td>
-  <td class=xl73>吴豪</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>9</td>
-  <td class=xl65 style='border-top:none;border-left:none'>uoo-register</td>
-  <td class=xl65 style='border-top:none;border-left:none'>注册中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>8751、8761</td>
-  <td class=xl73 style='border-top:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>10</td>
-  <td class=xl65 style='border-top:none;border-left:none'>common-system</td>
-  <td class=xl65 style='border-top:none;border-left:none'>公用系统公共部分包含用户、部门、菜单等</td>
-  <td class=xl66 style='border-top:none;border-left:none'>9100、9111</td>
-  <td class=xl73 style='border-top:none'>刘晓东</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>11</td>
-  <td class=xl65 style='border-top:none;border-left:none'>queues-manager</td>
-  <td class=xl65 style='border-top:none;border-left:none'>公共队列的基本管理服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>9400、9411</td>
-  <td class=xl73 style='border-top:none'>吴豪</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>12</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-syn-msg</td>
-  <td class=xl65 style='border-top:none;border-left:none'>数据共享-数据封装组件</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11000、11022</td>
-  <td class=xl73 style='border-top:none'>吴豪</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>13</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-organization</td>
-  <td class=xl65 style='border-top:none;border-left:none'>组织域服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11100、11111</td>
-  <td class=xl73 style='border-top:none'>郭章斌</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>14</td>
-  <td class=xl72 style='border-left:none'>mdm-web</td>
-  <td class=xl72 style='border-left:none'>用户组织运营平台WEB</td>
-  <td class=xl70>18000</td>
-  <td></td>
-  <td class=xl65 style='border-top:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>15</td>
-  <td rowspan=7 class=xl74 style='border-bottom:.5pt solid black;border-top:
-  none'>134.96.217.233</td>
-  <td class=xl65 style='border-left:none'>rabbitMQ</td>
-  <td class=xl65 style='border-left:none'>消息中间件</td>
-  <td class=xl66 style='border-left:none'>15672,25672,5672,4369</td>
-  <td class=xl73>吴豪</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>16</td>
-  <td class=xl65 style='border-top:none;border-left:none'>uoo-register</td>
-  <td class=xl65 style='border-top:none;border-left:none'>注册中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>8751、8761</td>
-  <td class=xl73 style='border-top:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>17</td>
-  <td class=xl65 style='border-top:none;border-left:none'>common-system</td>
-  <td class=xl65 style='border-top:none;border-left:none'>公用系统公共部分包含用户、部门、菜单等</td>
-  <td class=xl66 style='border-top:none;border-left:none'>9100、9111</td>
-  <td class=xl73 style='border-top:none'>刘晓东</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>18</td>
-  <td class=xl65 style='border-top:none;border-left:none'>queues-manager</td>
-  <td class=xl65 style='border-top:none;border-left:none'>公共队列的基本管理服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>9400、9411</td>
-  <td class=xl73 style='border-top:none'>吴豪</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>19</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-syn-msg</td>
-  <td class=xl65 style='border-top:none;border-left:none'>数据共享-数据封装组件</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11000、11022</td>
-  <td class=xl73 style='border-top:none'>吴豪</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>20</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-organization</td>
-  <td class=xl65 style='border-top:none;border-left:none'>组织域服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11100、11111</td>
-  <td class=xl73 style='border-top:none'>郭章斌</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>21</td>
-  <td class=xl72 style='border-left:none'>mdm-web</td>
-  <td class=xl72 style='border-left:none'>用户组织运营平台WEB</td>
-  <td class=xl70>18000</td>
-  <td></td>
-  <td class=xl65 style='border-top:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>22</td>
-  <td rowspan=5 class=xl74 style='border-bottom:.5pt solid black;border-top:
-  none'>134.96.217.234</td>
-  <td class=xl65 style='border-left:none'>rabbitMQ</td>
-  <td class=xl65 style='border-left:none'>消息中间件</td>
-  <td class=xl66 style='border-left:none'>15672,25672,5672,4369</td>
-  <td class=xl73>吴豪</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>23</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-organization</td>
-  <td class=xl65 style='border-top:none;border-left:none'>组织域服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11100、11111</td>
-  <td class=xl73 style='border-top:none'>郭章斌</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>24</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-personnel</td>
-  <td class=xl65 style='border-top:none;border-left:none'>人员域服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11200、11211</td>
-  <td class=xl73 style='border-top:none'>吴德津</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>25</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-user</td>
-  <td class=xl65 style='border-top:none;border-left:none'>用户业务服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11300、11311</td>
-  <td class=xl73 style='border-top:none'>吴德津</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>26</td>
-  <td class=xl72 style='border-left:none'>mdm-web</td>
-  <td class=xl72 style='border-left:none'>用户组织运营平台WEB</td>
-  <td class=xl70>18000</td>
-  <td></td>
-  <td class=xl65 style='border-top:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>27</td>
-  <td rowspan=4 class=xl74 style='border-bottom:.5pt solid black;border-top:
-  none'>134.96.217.235</td>
-  <td class=xl65 style='border-left:none'>rabbitMQ</td>
-  <td class=xl65 style='border-left:none'>　</td>
-  <td class=xl66 style='border-left:none'>15672,25672,5672,4369</td>
-  <td class=xl65 style='border-left:none'>吴豪</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>28</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-personnel</td>
-  <td class=xl65 style='border-top:none;border-left:none'>人员域服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11200、11211</td>
-  <td class=xl73 style='border-top:none'>吴德津</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>29</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-user</td>
-  <td class=xl65 style='border-top:none;border-left:none'>用户业务服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11300、11311</td>
-  <td class=xl73 style='border-top:none'>吴德津</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>30</td>
-  <td class=xl72 style='border-left:none'>mdm-web</td>
-  <td class=xl72 style='border-left:none'>用户组织运营平台WEB</td>
-  <td class=xl70>18000</td>
-  <td></td>
-  <td class=xl65 style='border-top:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>31</td>
-  <td rowspan=3 class=xl74 style='border-bottom:.5pt solid black;border-top:
-  none'>134.96.217.236</td>
-  <td class=xl65 style='border-left:none'>rabbitMQ</td>
-  <td class=xl65 style='border-left:none'>消息中间件</td>
-  <td class=xl66 style='border-left:none'>15672,25672,5672,4369</td>
-  <td class=xl65 style='border-left:none'>吴豪</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>32</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-personnel</td>
-  <td class=xl65 style='border-top:none;border-left:none'>人员域服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11200、11211</td>
-  <td class=xl73 style='border-top:none'>吴德津</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>33</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-user</td>
-  <td class=xl65 style='border-top:none;border-left:none'>用户业务服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11300、11311</td>
-  <td class=xl73 style='border-top:none'>吴德津</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>34</td>
-  <td rowspan=2 class=xl74 style='border-bottom:.5pt solid black;border-top:
-  none'>134.96.217.242</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-personnel</td>
-  <td class=xl65 style='border-top:none;border-left:none'>人员域服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11200、11211</td>
-  <td class=xl73 style='border-top:none'>吴德津</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>35</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-user</td>
-  <td class=xl65 style='border-top:none;border-left:none'>用户业务服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11300、11311</td>
-  <td class=xl73 style='border-top:none'>吴德津</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>36</td>
-  <td rowspan=3 class=xl74 style='border-bottom:.5pt solid black;border-top:
-  none'>134.96.217.243</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-public</td>
-  <td class=xl65 style='border-top:none;border-left:none'>公共域服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11500</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>37</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-position</td>
-  <td class=xl65 style='border-top:none;border-left:none'>职位域服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11600</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>38</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-region</td>
-  <td class=xl65 style='border-top:none;border-left:none'>区域模块</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11700</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>39</td>
-  <td rowspan=3 class=xl74 style='border-bottom:.5pt solid black;border-top:
-  none'>134.96.217.244</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-public</td>
-  <td class=xl65 style='border-top:none;border-left:none'>公共域服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11500</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>40</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-position</td>
-  <td class=xl65 style='border-top:none;border-left:none'>职位域服务中心</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11600</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 align=right style='height:14.25pt;border-top:none'>41</td>
-  <td class=xl65 style='border-top:none;border-left:none'>business-region</td>
-  <td class=xl65 style='border-top:none;border-left:none'>区域模块</td>
-  <td class=xl66 style='border-top:none;border-left:none'>11700</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 style='height:14.25pt;border-top:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl66 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 style='height:14.25pt;border-top:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl66 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 style='height:14.25pt;border-top:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl66 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 style='height:14.25pt;border-top:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl66 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 style='height:14.25pt;border-top:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl66 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <tr height=19 style='height:14.25pt'>
-  <td height=19 class=xl65 style='height:14.25pt;border-top:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl66 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
-  <td class=xl65 style='border-top:none;border-left:none'>　</td>
- </tr>
- <![if supportMisalignedColumns]>
- <tr height=0 style='display:none'>
-  <td width=72 style='width:54pt'></td>
-  <td width=172 style='width:129pt'></td>
-  <td width=237 style='width:178pt'></td>
-  <td width=321 style='width:241pt'></td>
-  <td width=270 style='width:203pt'></td>
-  <td width=140 style='width:105pt'></td>
-  <td width=140 style='width:105pt'></td>
-  <td width=259 style='width:194pt'></td>
- </tr>
- <![endif]>
-</table>
+
+### 业务规则
+
+#### 人员编码、人员工号、账号
+
+- 合同制、外包制等集团管理的人员对人力编码、人员编码、人员编码、主账号按照转换规则沿用
+- 合作伙伴等第三方人员人员编码、人员工号、主账号直接H开头，8位序列
+
+举个栗子
+| 类型 | 人力编码 | 人员编码 | 人员工号 | 主账号标识 | 主账号 | 从账号标识 | 从账号 |
+| ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
+| 合同制 | 33028413@ZJ | 33028413 | 33028413 | 序列1  | 33028413  | 序列2  | yx.ff  |
+| 合同制 | 71987581@ZJ | 71987581 | 71987581 | 序列1  | 71987581  | 序列2  | yx.ff  |
+| 外包 | W33028413@ZJ | W33028413 | W33028413 | 序列1  | W33028413  | 序列2  | yx.ff  |
+| 合作伙伴 | 无 | H12345678 | H12345678 | 序列1  | H12345678  | 序列2  | yx.ff  |
+
+#### 标准组织树、专业组织树定义
+##### 标准树
+在项目开始阶段，以营销支撑为试点，按照局方管经理要求，需结合集团统一目录中1-5级组织机构并参照营销支撑中1~4级二者融合，作为今后标准树的躯干，往后在陆续接入各专业域系统过程中，完善该标准树分支节点。
+当前的标准树缺少班组、团队以及渠道单元，需要再接入渠道视图、服开、服保、客服、ITSM等系统。
+
+~~~
+营销支撑接入中标准树样例如下
+
+|——中国电信股份有限公司浙江分公司
+|   |——浙江省电信公司
+|   |   |——衢州市分公司
+|   |   |   |——衢州未落地区域
+|   |   |   |——衢州市分公司本级
+|   |   |   |——衢州市本级代理商
+|   |   |   |——衢州安保部
+|   |   |   |——常山分公司
+|   |   |   |   |——常山联营站<人力独有>
+|   |   |   |   |——常山网络运营部<人力独有>
+|   |   |   |   |——常山3G辅导中心
+|   |   |   |   |——常山分公司本级
+|   |   |   |   |——常山工会
+|   |   |   |   |——常山城西支局
+|   |   |   |   |——常山城东支局
+|   |   |   |   |——常山中小幼包区2
+|   |   |   |   |——常山大企业包区
+|   |   |   |——龙游分公司
+|   |   |——舟山市分公司
+|   |   |——台州市分公司
+|   |   |——.......
+~~~
+
+##### 专业树
+- 营销专业树：营销支撑中原封不动
+- 人力专业树：HR人力组织中的全部
+
+##### 人员组织关系、账号组织关系
+- 人员组织关系，以人力专业树为基准
+- 账号组织关系，以标准树为基准（由于营销支撑作为试点，营销支撑包区单元下的账号，此类属于特殊情况，其账号组织关系应该以营销专业树为准）
