@@ -26,6 +26,7 @@ var certType,
     orgPostList = [];
 var loading = parent.loading;
 var formValidate;
+var orgValidate;
 
 $('#orgName').html(orgName);
 parent.getOrgExtInfo();
@@ -925,9 +926,26 @@ function editOrgList (index) {
     seajs.use('/vendors/lulu/js/common/ui/Select', function () {
         $('select').selectMatch();
     });
+    // seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+    //     var orgEditForm = $('#orgEdit');
+    //     orgValidate = new Validate(orgEditForm);
+    //     orgValidate.immediate();
+    //     orgValidate.isAllPass();
+    //     orgEditForm.find(':input').each(function () {
+    //         $(this).hover(function () {
+    //             orgValidate.isPass($(this));
+    //         });
+    //     });
+    // });
 }
 //新增/修改 归属组织信息
 function addOrgList () {
+    seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+        var orgEditForm = $('#orgEdit');
+        orgValidate = new Validate(orgEditForm);
+    });
+    if (!orgValidate.isAllPass())
+        return;
     var doubleName = $('#doubleName').val();
     var property = $('#property option:selected').val();
     var refType = $('#refType option:selected').val();
