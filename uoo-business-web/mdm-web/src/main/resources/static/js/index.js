@@ -1,6 +1,3 @@
-
-
-
 // toastr
 toastr.options = {
   "closeButton": false,
@@ -24,7 +21,6 @@ toastr.options = {
 function initUserInfo(){  //初始化首页人员信息          
     $http.get('/system/getCurrentLoginUserInfo', { }, 
     function (data) {
-      //console.log(data);
       getAcctInfo(data.acctId);
     }, function (err) {
         console.log(err)
@@ -47,16 +43,21 @@ function getAcctInfo(acctId){ //获取账号信息
 // function initUserPermission(){    //初始化人员权限
 //     $http.post('/permission/tbRoles/getPermissionMenu/19521/0', { }, 
 //     function (data) {
-//       console.log(data);
-//       initSideBar(data);
-//       //$("#psnName").text(data.name);
+//         console.log(data);
+//         initSideBar(data);
+//         // layui admin
+//         layui.config({
+//             base: '/vendors/layuiadmin/' //静态资源所在路径
+//             }).extend({
+//             index: 'lib/index' //主入口模块
+//             }).use('index');
 //     }, function (err) {
 //         console.log(err)
 //     })
 // }
 
 // function initSideBar(results){     //初始化侧边菜单
-//     var tt = '';
+//     var pemList = '';
 //     var parList = [];
 //     var childList = [];
 //     var flag = 0;
@@ -80,23 +81,18 @@ function getAcctInfo(acctId){ //获取账号信息
 //             }
 //         }
 //         if(flag == 1){
-//             tt += "<li class='layui-nav-item'><a href='" + parList[i].urlAddr + "'>" +
+//             pemList += "<li class='layui-nav-item'><a href='javascript:;'>" +
 //                 "<i class='layui-icon layui-icon-component'></i><cite>" + parList[i].menuName + 
 //                 "</cite><span class='layui-nav-more'></span></a>" + dd + "</dl></li>";
-//             //dd += "</dl>";
-//             //tt += dd + "</li>";
 //         }else{
-//             tt += "<li class='layui-nav-item'><a lay-href='" + parList[i].urlAddr + "'>" +
+//             pemList += "<li class='layui-nav-item'><a lay-href='" + parList[i].urlAddr + "'>" +
 //                 "<i class='layui-icon layui-icon-component'></i><cite>" + parList[i].menuName + "</cite></a></li>";
-//             // tt += "</li>";
 //         }
         
 //         flag = 0;
 //     }
-//     console.log(tt);
-//     // console.log(parList);
-//     // console.log(childList);
-//     $("#LAY-system-side-menu").append(tt);
+//     console.log(pemList);
+//     $("#LAY-system-side-menu").append(pemList);
    
 // }
 

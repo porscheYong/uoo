@@ -543,6 +543,7 @@ function openTypeDialog() {
           parent.layer.close(index);
           $('#roleTel').importTags(checkNode);
           $('.ui-tips-error').css('display', 'none');
+          window.localStorage.setItem('userRoleList',JSON.stringify(checkRole));
           roleList = checkRole;
           console.log(roleList);
       },
@@ -589,7 +590,7 @@ $("#defaultPswTel").blur(function (){     //默认密码输入框失去焦点
     $("#defaultPswTel").val(psw);
     $("#defaultPswTel").attr("type","password");
     if(psw == ''){
-      formValidate.isAllPass($('#defaultPswTel'))
+      formValidate.isAllPass($('#defaultPswTel'));
     }
   }
 })
