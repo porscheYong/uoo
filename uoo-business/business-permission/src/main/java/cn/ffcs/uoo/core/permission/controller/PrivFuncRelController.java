@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.permission.controller;
 
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +55,7 @@ public class PrivFuncRelController {
     })
     @UooLog(key="getPrivFuncRel",value="获取单个权限和功能菜单组件关系")
     @GetMapping("getPrivFuncRel/{id}")
-    public ResponseResult  getPrivFuncRel(@PathVariable(value="id" ,required=true) Long id){
+    public ResponseResult<PrivFuncRel>  getPrivFuncRel(@PathVariable(value="id" ,required=true) Long id){
         PrivFuncRel rel = privFuncRelService.selectById(id);
         if(rel== null || !StatusCD.VALID.equals(rel.getStatusCd())){
             return ResponseResult.createErrorResult("无效数据");
@@ -68,14 +69,14 @@ public class PrivFuncRelController {
     })
     @UooLog(key="listPrivFuncRel",value="获取权限和功能菜单组件关系列表")
     @GetMapping("/listPrivFuncRel/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listPrivFuncRel(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    public ResponseResult<List<PrivFuncRel>> listPrivFuncRel(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         
         Wrapper<PrivFuncRel> wrapper = Condition.create().eq("STATUS_CD",StatusCD.VALID).orderBy("UPDATE_DATE", false);
         Page<PrivFuncRel> page = privFuncRelService.selectPage(new Page<PrivFuncRel>(pageNo, pageSize), wrapper);
         
-        return ResponseResult.createSuccessResult(page.getRecords(), "", page);
+        return ResponseResult.createSuccessResult( page,"");
     }
     
     @ApiOperation(value = "添加权限和功能菜单组件关系", notes = "添加权限和功能菜单组件关系")
@@ -85,7 +86,7 @@ public class PrivFuncRelController {
     @UooLog(key="addPrivFuncRel",value="添加权限和功能菜单组件关系")
     @Transactional
     @RequestMapping(value="/addPrivFuncRel",method=RequestMethod.POST)
-    public ResponseResult addPrivFuncRel(@RequestBody PrivFuncRel privFuncRel){
+    public ResponseResult<Void> addPrivFuncRel(@RequestBody PrivFuncRel privFuncRel){
         Long menuId = privFuncRel.getMenuId();
         if(menuId==null){
             return ResponseResult.createErrorResult("请选择功能菜单");
@@ -125,7 +126,7 @@ public class PrivFuncRelController {
     @UooLog(key="updatePrivFuncRel",value="修改权限和功能菜单组件关系")
     @Transactional
     @RequestMapping(value="/updatePrivFuncRel",method=RequestMethod.POST)
-    public ResponseResult updatePrivFuncRel(@RequestBody PrivFuncRel privFuncRel){
+    public ResponseResult<Void> updatePrivFuncRel(@RequestBody PrivFuncRel privFuncRel){
         Long menuId = privFuncRel.getMenuId();
         if(menuId==null){
             return ResponseResult.createErrorResult("请选择功能菜单");
@@ -162,7 +163,7 @@ public class PrivFuncRelController {
     @Transactional
     @UooLog(key="deletePrivFuncRel",value="删除权限和功能菜单组件关系")
     @RequestMapping(value="/deletePrivFuncRel",method=RequestMethod.POST)
-    public ResponseResult deleteFuncComp(@RequestBody PrivFuncRel privFuncRel){
+    public ResponseResult<Void> deleteFuncComp(@RequestBody PrivFuncRel privFuncRel){
         Long id = privFuncRel.getPrivFuncId();
         if(id!=null){
             PrivFuncRel rel = privFuncRelService.selectById(id);

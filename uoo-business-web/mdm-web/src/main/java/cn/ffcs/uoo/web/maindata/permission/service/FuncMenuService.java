@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.permission.service;
 
+import java.util.List;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,14 +24,14 @@ import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
 public interface FuncMenuService {
 
     @RequestMapping(value = "/permission/funcMenu/getFuncMenuPage", method = RequestMethod.GET)
-    public ResponseResult getFuncMenuPage();
+    public ResponseResult<List<FuncMenu>> getFuncMenuPage();
 
     @RequestMapping(value = "/permission/funcMenu/addFuncMenu", method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult addFuncMenu(@RequestBody FuncMenu funcMenu);
+    public ResponseResult<Void> addFuncMenu(@RequestBody FuncMenu funcMenu);
 
     @RequestMapping(value = "/permission/funcMenu/updateFuncMenu", method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult updateFuncMenu(@RequestBody FuncMenu funcMenu);
+    public ResponseResult<Void> updateFuncMenu(@RequestBody FuncMenu funcMenu);
 
     @RequestMapping(value = "/permission/funcMenu/deleteFuncMenu", method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult deleteFuncMenu(@RequestBody FuncMenu funcMenu);
+    public ResponseResult<Void> deleteFuncMenu(@RequestBody FuncMenu funcMenu);
 }

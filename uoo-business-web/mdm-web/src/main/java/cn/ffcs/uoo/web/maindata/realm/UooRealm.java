@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.realm;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -19,6 +21,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
+import cn.ffcs.uoo.web.maindata.permission.dto.FuncComp;
+import cn.ffcs.uoo.web.maindata.permission.dto.FuncMenu;
+import cn.ffcs.uoo.web.maindata.permission.service.PrivilegeService;
+import cn.ffcs.uoo.web.maindata.permission.service.RolesService;
+import cn.ffcs.uoo.web.maindata.permission.vo.AccoutPermissionVO;
 import cn.ffcs.uoo.web.maindata.sysuser.client.SysUserClient;
 import cn.ffcs.uoo.web.maindata.sysuser.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
@@ -33,7 +40,10 @@ public class UooRealm extends AuthorizingRealm {
     // PermissionMapper permissionMapper;
     @Autowired
     SysUserClient client;
-
+    @Autowired
+    PrivilegeService privSvc;
+    @Autowired
+    RolesService rolesSVC;
     /**
      * 验证当前登录的用户
      * 
@@ -78,14 +88,20 @@ public class UooRealm extends AuthorizingRealm {
             JSONObject data = json.getJSONObject("data");
             if(data!=null){
                 Long acctId = data.getLong("acctId");
-                
+                cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult<AccoutPermissionVO> accoutMenuPermission = privSvc.getAccoutMenuPermission(acctId);
+                if(accoutMenuPermission.getState()==cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult.STATE_OK){
+                    AccoutPermissionVO vo = accoutMenuPermission.getData();
+                    List<FuncComp> funcComps = vo.getFuncComps();
+                    List<FuncMenu> funcMemus = vo.getFuncMemus();
+                    for (FuncMenu funcMenu : funcMemus) {
+                        simpleAuthorizationInfo.addStringPermission("M"+funcMenu.getMenuId());
+                    }
+                    for (FuncComp funcComp : funcComps) {
+                        simpleAuthorizationInfo.addStringPermission("C"+funcComp.getCompId());
+                    }
+                }
             }
         }
-    //sesision loginkey acid
-
-
-        simpleAuthorizationInfo.addStringPermission("index");
-       // System.err.println("获取权限");
         return simpleAuthorizationInfo;
     }
     /**

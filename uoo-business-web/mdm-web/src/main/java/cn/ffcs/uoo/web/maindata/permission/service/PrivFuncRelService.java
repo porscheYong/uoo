@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.permission.service;
 
+import java.util.List;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,18 +22,18 @@ import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
 @FeignClient(value = "business-permission", fallback = PrivFuncRelHystrix.class)
 public interface PrivFuncRelService {
     @GetMapping("/permission/privFuncRel/getPrivFuncRel/{id}")
-    public ResponseResult getPrivFuncRel(@PathVariable(value = "id", required = true) Long id);
+    public ResponseResult<PrivFuncRel> getPrivFuncRel(@PathVariable(value = "id", required = true) Long id);
 
     @GetMapping("/permission/privFuncRel/listPrivFuncRel/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listPrivFuncRel(@PathVariable(value = "pageNo") Integer pageNo,
+    public ResponseResult<List<PrivFuncRel>> listPrivFuncRel(@PathVariable(value = "pageNo") Integer pageNo,
             @PathVariable(value = "pageSize", required = false) Integer pageSize);
 
     @RequestMapping(value = "/permission/privFuncRel/addPrivFuncRel", method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult addPrivFuncRel(@RequestBody PrivFuncRel privFuncRel);
+    public ResponseResult<Void> addPrivFuncRel(@RequestBody PrivFuncRel privFuncRel);
 
     @RequestMapping(value = "/permission/privFuncRel/updatePrivFuncRel", method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult updatePrivFuncRel(@RequestBody PrivFuncRel privFuncRel);
+    public ResponseResult<Void> updatePrivFuncRel(@RequestBody PrivFuncRel privFuncRel);
 
     @RequestMapping(value = "/permission/privFuncRel/deletePrivFuncRel", method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult deleteFuncComp(@RequestBody PrivFuncRel privFuncRel);
+    public ResponseResult<Void> deleteFuncComp(@RequestBody PrivFuncRel privFuncRel);
 }

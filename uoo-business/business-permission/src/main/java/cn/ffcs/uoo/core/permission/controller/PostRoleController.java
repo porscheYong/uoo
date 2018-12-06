@@ -45,8 +45,8 @@ public class PostRoleController {
     })
     @UooLog(key="addPostRole",value="添加职位角色关系")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult addTbUserRole(@RequestBody PostRole postRole) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<Void> addTbUserRole(@RequestBody PostRole postRole) {
+        ResponseResult<Void> responseResult = new ResponseResult<Void>();
         Long roleId = postRole.getRoleId();
         Long postId = postRole.getPostId();
         if(roleId==null){
@@ -75,8 +75,8 @@ public class PostRoleController {
     @Transactional
     @UooLog(value = "删除职位角色关系", key = "removePostRole")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult removeTbUserRole(@RequestBody PostRole postRole) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<Void> removeTbUserRole(@RequestBody PostRole postRole) {
+        ResponseResult<Void> responseResult = new ResponseResult<Void>();
         Long postRoleId = postRole.getPostRoleId();
         // 校验必填项
         if(postRoleId == null) {
@@ -94,10 +94,9 @@ public class PostRoleController {
     @ApiOperation(value = "查询角色职位信息", notes = "查询角色职位信息")
     @UooLog(value = "查询角色职位信息", key = "getPostRole")
     @RequestMapping(value = "/getPostRole", method = RequestMethod.GET)
-    public List<PostRole> getPostRole() {
-
-
-        return postRoleService.getPostRole();
+    public ResponseResult<List<PostRole>> getPostRole() {
+        List<PostRole> postRole = postRoleService.getPostRole();
+        return ResponseResult.createSuccessResult(postRole, "");
     }
 
 }

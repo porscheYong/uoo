@@ -1,12 +1,9 @@
 package cn.ffcs.uoo.web.maindata.permission.controller;
 
 
-import cn.ffcs.uoo.web.maindata.permission.dto.FuncMenu;
-import com.baomidou.mybatisplus.mapper.Condition;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,15 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.ffcs.uoo.web.maindata.permission.dto.FuncMenu;
 import cn.ffcs.uoo.web.maindata.permission.dto.Roles;
 import cn.ffcs.uoo.web.maindata.permission.service.RolesService;
 import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.permission.vo.RoleSystemPermissionVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-
-import java.util.List;
 
 /**
  * <p>
@@ -45,7 +42,7 @@ public class TbRolesController   {
         @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long" ,paramType="path"),
     })
     @GetMapping("/get/{id}")
-    public ResponseResult get(@PathVariable(value="id" ,required=true) Long id){
+    public ResponseResult<Roles> get(@PathVariable(value="id" ,required=true) Long id){
          
         return tbRolesService.get(id);
     }
@@ -56,13 +53,13 @@ public class TbRolesController   {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
     @GetMapping("/listPageRoles/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listPageRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    public ResponseResult<List<Roles>> listPageRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         return tbRolesService.listPageRoles(pageNo,pageSize);
     }
 
     @ApiOperation(value = "获取角色列表", notes = "获取角色列表")
     @GetMapping("/listRoles")
-    public ResponseResult listRoles(){
+    public ResponseResult<List<Roles>> listRoles(){
         return tbRolesService.listRoles();
     }
 
@@ -71,7 +68,7 @@ public class TbRolesController   {
             @ApiImplicitParam(name = "role", value = "角色 ", required = true, dataType = "Roles"),
     })
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult removeTbRoles(@RequestBody Roles role ) {
+    public ResponseResult<Void> removeTbRoles(@RequestBody Roles role ) {
          
         return tbRolesService.removeTbRoles(role);
     }
@@ -79,7 +76,7 @@ public class TbRolesController   {
     @ApiOperation(value = "修改角色",notes = "修改角色")
     @ApiImplicitParam(name = "tbRoles", value = "角色", required = true, dataType = "Roles")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult updateTbRoles(@RequestBody Roles tbRoles) {
+    public ResponseResult<Void> updateTbRoles(@RequestBody Roles tbRoles) {
          
         return tbRolesService.updateTbRoles(tbRoles);
     }
@@ -87,7 +84,7 @@ public class TbRolesController   {
     @ApiOperation(value = "新增角色",notes = "新增角色")
     @ApiImplicitParam(name = "role", value = "角色", required = true, dataType = "Roles")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult addTbRoles(@RequestBody Roles role) {
+    public ResponseResult<Void> addTbRoles(@RequestBody Roles role) {
         return tbRolesService.addTbRoles(role);
     }
 
@@ -97,7 +94,7 @@ public class TbRolesController   {
             @ApiImplicitParam(name = "systemInfoId", value = "systemInfoId", required = false, dataType = "Long" ,paramType="path"),
     })
     @RequestMapping(value = "/getRolesPermission/{acctId}/{systemInfoId}", method = RequestMethod.POST)
-    public ResponseResult getRolesPermission(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId){
+    public ResponseResult<List<RoleSystemPermissionVO>> getRolesPermission(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId){
         return tbRolesService.getRolesPermission(systemInfoId,acctId);
     }
 
@@ -107,7 +104,7 @@ public class TbRolesController   {
             @ApiImplicitParam(name = "systemInfoId", value = "systemInfoId", required = false, dataType = "Long" ,paramType="path"),
     })
     @RequestMapping(value = "/getPermissionMenu/{acctId}/{systemInfoId}", method = RequestMethod.POST)
-    public ResponseResult getPermissionMenu(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId){
+    public ResponseResult<List<FuncMenu>> getPermissionMenu(@PathVariable(value = "systemInfoId") Long systemInfoId, @PathVariable(value = "acctId") Long acctId){
         return tbRolesService.getPermissionMenu(systemInfoId,acctId);
     }
 }

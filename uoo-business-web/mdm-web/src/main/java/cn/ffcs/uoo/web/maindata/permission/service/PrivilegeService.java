@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.permission.service;
 
+import java.util.List;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import cn.ffcs.uoo.web.maindata.permission.dto.Privilege;
 import cn.ffcs.uoo.web.maindata.permission.service.fallback.PrivilegeHystrix;
+import cn.ffcs.uoo.web.maindata.permission.vo.AccoutPermissionVO;
 import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
 
 /**
@@ -23,16 +26,17 @@ import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
 public interface PrivilegeService {
      
     @GetMapping("/permission/privilege/listPrivilege")
-    public ResponseResult listPrivilege(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize);    
+    public ResponseResult<List<Privilege>> listPrivilege(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize);    
      
     @RequestMapping(value = "/permission/privilege/addPrivilege", method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult addPrivilege(@RequestBody Privilege privilege) ;
+    public ResponseResult<Void> addPrivilege(@RequestBody Privilege privilege) ;
 
      
     @RequestMapping(value = "/permission/privilege/updatePrivilege", method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult updatePrivilege(@RequestBody Privilege privilege);
+    public ResponseResult<Void> updatePrivilege(@RequestBody Privilege privilege);
      
     @RequestMapping(value = "/permission/privilege/deletePrivilege", method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult deletePrivilege(@RequestBody Privilege privilege) ;
-    
+    public ResponseResult<Void> deletePrivilege(@RequestBody Privilege privilege) ;
+    @RequestMapping(value = "/permission/privilege/getAccoutMenuPermission/{accoutId}", method = RequestMethod.GET)
+    public ResponseResult<AccoutPermissionVO> getAccoutMenuPermission(@PathVariable(value = "accoutId") Long accoutId);
 }

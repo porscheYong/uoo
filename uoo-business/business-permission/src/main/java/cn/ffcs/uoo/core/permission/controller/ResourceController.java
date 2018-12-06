@@ -47,7 +47,7 @@ public class ResourceController {
     })
     @UooLog(key="getResource",value="获取单个资源")
     @GetMapping("/get/{id}")
-    public ResponseResult get(@PathVariable(value="id" ,required=true) Long id){
+    public ResponseResult<Resource> get(@PathVariable(value="id" ,required=true) Long id){
         Resource resource = resourceService.selectById(id);
         if(resource== null){
             return ResponseResult.createErrorResult("无效数据");
@@ -62,14 +62,14 @@ public class ResourceController {
     })
     @UooLog(key="listResource",value="获取资源列表")
     @GetMapping("/listResource/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    public ResponseResult<List<Resource>> listRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
 
         Wrapper<Resource> wrapper = Condition.create().eq("STATUS_CD",StatusCD.VALID).orderBy("UPDATE_DATE", false);
         Page<Resource> page = resourceService.selectPage(new Page<Resource>(pageNo, pageSize), wrapper);
 
-        return ResponseResult.createSuccessResult(page.getRecords(), "", page);
+        return ResponseResult.createSuccessResult(page,"");
     }
 
     @ApiOperation(value = "删除资源",notes = "删除资源(只需要resourceId)")
@@ -79,8 +79,8 @@ public class ResourceController {
     @UooLog(value = "删除资源", key = "removeTbResource")
     @Transactional
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult removeTbRoles(@RequestBody Resource resource ) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<Void> removeTbRoles(@RequestBody Resource resource ) {
+        ResponseResult<Void> responseResult = new ResponseResult<Void>();
         Long resourceId = resource.getPkResource();
         // 校验必填项
         if(resourceId == null) {
@@ -100,8 +100,8 @@ public class ResourceController {
     @UooLog(value = "修改资源", key = "updateTbRoles")
     @Transactional
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult updateTbRoles(@RequestBody Resource resource) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<Void> updateTbRoles(@RequestBody Resource resource) {
+        ResponseResult<Void> responseResult = new ResponseResult<Void>();
         // 校验必填项
         if(resource.getPkResource() == null) {
             responseResult.setState(ResponseResult.STATE_ERROR);
@@ -121,8 +121,8 @@ public class ResourceController {
     @UooLog(value = "新增资源", key = "addTbResource")
     @Transactional
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult addResource(@RequestBody Resource resource) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<Void> addResource(@RequestBody Resource resource) {
+        ResponseResult<Void> responseResult = new ResponseResult<Void>();
 
         resource.setPkResource(resourceService.getId());
         resourceService.insert(resource);

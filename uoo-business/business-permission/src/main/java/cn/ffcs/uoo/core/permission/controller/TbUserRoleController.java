@@ -52,8 +52,8 @@ public class TbUserRoleController extends BaseController {
     @Transactional
     @UooLog(value = "删除用户角色关系", key = "removeTbUserRole")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult removeTbUserRole(@RequestBody UserRole userRole) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<Void> removeTbUserRole(@RequestBody UserRole userRole) {
+        ResponseResult<Void> responseResult = new ResponseResult<Void>();
         Long userRoleId = userRole.getUserRoleId();
         // 校验必填项
         if(userRoleId == null) {
@@ -73,8 +73,8 @@ public class TbUserRoleController extends BaseController {
     @UooLog(value = "新增用户角色关系", key = "addTbUserRole")
     @Transactional
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult addTbUserRole(@RequestBody UserRole tbUserRole) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<Void> addTbUserRole(@RequestBody UserRole tbUserRole) {
+        ResponseResult<Void> responseResult = new ResponseResult<Void>();
         Long roleId = tbUserRole.getRoleId();
         if(roleId==null){
             return ResponseResult.createErrorResult("角色不能为空");
@@ -95,11 +95,11 @@ public class TbUserRoleController extends BaseController {
     @UooLog(value = "新增用户角色关系", key = "addTbUserRoleBatch")
     @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value = "/addTbUserRoleBatch", method = RequestMethod.POST)
-    public ResponseResult addTbUserRoleBatch(@RequestBody BatchAddRoleUserVO batchAddRoleUserVO) {
+    public ResponseResult<Void> addTbUserRoleBatch(@RequestBody BatchAddRoleUserVO batchAddRoleUserVO) {
         //先删除之前的关系
         Wrapper<UserRole> wrapper =Condition.create().eq("ROLE_ID", batchAddRoleUserVO.getRoleId());
         userRoleService.delete(wrapper);
-        ResponseResult responseResult = new ResponseResult();
+        ResponseResult<Void> responseResult = new ResponseResult<Void>();
         List<UserTypeVO> users = batchAddRoleUserVO.getUsers();
         for (UserTypeVO vo : users) {
             UserRole obj= new UserRole();
@@ -128,7 +128,7 @@ public class TbUserRoleController extends BaseController {
     })
     @UooLog(value = "分页查询人员用户信息", key = "getUserPersonnelVoPage")
     @RequestMapping(value = "/getPage/{pageNo}/{pageSize}/{roleId}", method = RequestMethod.GET)
-    public Page<UserPersonnelVo> getUserPersonnelVoPage(@PathVariable(value = "pageNo") Integer pageNo,
+    public ResponseResult<List<UserPersonnelVo>> getUserPersonnelVoPage(@PathVariable(value = "pageNo") Integer pageNo,
                                                         @PathVariable(value = "pageSize") Integer pageSize,
                                                         @PathVariable(value = "roleId") Long roleId) {
         pageNo = pageNo == null ? 0 : pageNo;
@@ -137,7 +137,8 @@ public class TbUserRoleController extends BaseController {
             return null;
         }
         Page<UserPersonnelVo> page = new Page<UserPersonnelVo>(pageNo, pageSize);
-        return userRoleService.selectUserPersonnelPage(page, roleId);
+        page = userRoleService.selectUserPersonnelPage(page, roleId);
+        return ResponseResult.createSuccessResult(page, "");
     }
 }
 

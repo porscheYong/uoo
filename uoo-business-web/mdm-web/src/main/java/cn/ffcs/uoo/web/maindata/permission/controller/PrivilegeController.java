@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.permission.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.ffcs.uoo.web.maindata.permission.dto.Privilege;
 import cn.ffcs.uoo.web.maindata.permission.service.PrivilegeService;
+import cn.ffcs.uoo.web.maindata.permission.vo.AccoutPermissionVO;
 import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -39,7 +42,7 @@ public class PrivilegeController {
         @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
     @GetMapping("/listPrivilege")
-    public ResponseResult listPrivilege(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    public ResponseResult<List<Privilege>> listPrivilege(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         return privilegeService.listPrivilege(pageNo, pageSize);
     }
     
@@ -48,7 +51,7 @@ public class PrivilegeController {
         @ApiImplicitParam(name = "privilege", value = "privilege", required = true, dataType = "Privilege"  ),
     })
     @RequestMapping(value = "/addPrivilege", method = RequestMethod.POST)
-    public ResponseResult addPrivilege(@RequestBody Privilege privilege) {
+    public ResponseResult<Void> addPrivilege(@RequestBody Privilege privilege) {
         
         return privilegeService.addPrivilege(privilege);
     }
@@ -58,7 +61,7 @@ public class PrivilegeController {
         @ApiImplicitParam(name = "privilege", value = "privilege", required = true, dataType = "Privilege"  ),
     })
     @RequestMapping(value = "/updatePrivilege", method = RequestMethod.POST)
-    public ResponseResult updatePrivilege(@RequestBody Privilege privilege) {
+    public ResponseResult<Void> updatePrivilege(@RequestBody Privilege privilege) {
          
         return privilegeService.updatePrivilege(privilege);
     }
@@ -67,7 +70,7 @@ public class PrivilegeController {
         @ApiImplicitParam(name = "privilege", value = "privilege", required = true, dataType = "Privilege"  ),
     })
     @RequestMapping(value = "/deletePrivilege", method = RequestMethod.POST)
-    public ResponseResult deletePrivilege(@RequestBody Privilege privilege) {
+    public ResponseResult<Void> deletePrivilege(@RequestBody Privilege privilege) {
          
         return privilegeService.deletePrivilege(privilege);
     }

@@ -34,7 +34,7 @@ public class DataPrivRuleController {
         @ApiImplicitParam(name = "dataPrivRule", value = "规则", required = true, dataType = "DataPrivRule" ),
     })
     @RequestMapping(value="addDataPrivRule",method=RequestMethod.POST)
-    public ResponseResult addDataPrivRule(@RequestBody DataPrivRule dataPrivRule){
+    public ResponseResult<Void> addDataPrivRule(@RequestBody DataPrivRule dataPrivRule){
          
         return ruleSvc.addDataPrivRule(dataPrivRule);
     }
@@ -43,7 +43,7 @@ public class DataPrivRuleController {
         @ApiImplicitParam(name = "dataPrivRule", value = "规则", required = true, dataType = "DataPrivRule" ),
     })
     @RequestMapping(value="updateDataPrivRule",method=RequestMethod.POST)
-    public ResponseResult updateDataPrivRule(@RequestBody DataPrivRule dataPrivRule){
+    public ResponseResult<Void> updateDataPrivRule(@RequestBody DataPrivRule dataPrivRule){
          
         return ruleSvc.updateDataPrivRule(dataPrivRule);
     }
@@ -53,7 +53,7 @@ public class DataPrivRuleController {
         @ApiImplicitParam(name = "dataPrivRule", value = "规则", required = true, dataType = "DataPrivRule" ),
     })
     @RequestMapping(value="deleteDataPrivRule",method=RequestMethod.POST)
-    public ResponseResult deleteDataPrivRule(@RequestBody DataPrivRule dataPrivRule){
+    public ResponseResult<Void> deleteDataPrivRule(@RequestBody DataPrivRule dataPrivRule){
         return ruleSvc.deleteDataPrivRule(dataPrivRule);
     }
 }

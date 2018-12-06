@@ -77,12 +77,12 @@ public class PrivilegeController {
     })
     @UooLog(key="listPrivilege",value="获取权限")
     @GetMapping("/listPrivilege/{pageNo}/{pageSize}")
-    public ResponseResult listPrivilege(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    public ResponseResult<List<Privilege>> listPrivilege(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         Wrapper<Privilege> wrapper =Condition.create().eq("STATUS_CD", StatusCD.VALID).orderBy("UPDATE_DATE", false);
         Page<Privilege> selectList = privilegeService.selectPage(new Page<Privilege>(pageNo, pageSize), wrapper);
-        return ResponseResult.createSuccessResult(selectList.getRecords(), "",selectList);
+        return ResponseResult.createSuccessResult(selectList, "");
     }
     
     @ApiOperation(value = "添加权限", notes = "添加权限")
@@ -92,7 +92,7 @@ public class PrivilegeController {
     @UooLog(key="addPrivilege",value="添加权限")
     @Transactional
     @RequestMapping(value = "/addPrivilege", method = RequestMethod.POST)
-    public ResponseResult addPrivilege(@RequestBody Privilege privilege) {
+    public ResponseResult<Void> addPrivilege(@RequestBody Privilege privilege) {
         // regionId 校验
         Long regionId = privilege.getRegionId();
        /* ResponseResult result = restTemplate.getForObject(
@@ -117,7 +117,7 @@ public class PrivilegeController {
     @UooLog(key="updatePrivilege",value="修改权限")
     @Transactional
     @RequestMapping(value = "/updatePrivilege", method = RequestMethod.POST)
-    public ResponseResult updatePrivilege(@RequestBody Privilege privilege) {
+    public ResponseResult<Void> updatePrivilege(@RequestBody Privilege privilege) {
         Long privId = privilege.getPrivId();
         if (privId == null) {
             return ResponseResult.createErrorResult("无效数据");
@@ -149,7 +149,7 @@ public class PrivilegeController {
     @SuppressWarnings("unchecked")
     @Transactional
     @RequestMapping(value = "/deletePrivilege", method = RequestMethod.POST)
-    public ResponseResult deletePrivilege(@RequestBody Privilege privilege) {
+    public ResponseResult<Void> deletePrivilege(@RequestBody Privilege privilege) {
         Long privId = privilege.getPrivId();
         if (privId == null) {
             return ResponseResult.createErrorResult("无效数据");
@@ -183,7 +183,7 @@ public class PrivilegeController {
     @UooLog(key="getAccoutMenuPermission",value="获取菜单权限")
     @Transactional
     @RequestMapping(value = "/getAccoutMenuPermission/{accoutId}", method = RequestMethod.GET)
-    public ResponseResult getAccoutMenuPermission(@PathVariable(value = "accoutId") Long accoutId){
+    public ResponseResult<AccoutPermissionVO> getAccoutMenuPermission(@PathVariable(value = "accoutId") Long accoutId){
         Wrapper<UserRole> w1=Condition.create().eq("ACCT_ID", accoutId).eq("STATUS_CD", StatusCD.VALID);
         List<UserRole> userRoles = userRoleSvc.selectList(w1);
         if(userRoles==null||userRoles.isEmpty()){

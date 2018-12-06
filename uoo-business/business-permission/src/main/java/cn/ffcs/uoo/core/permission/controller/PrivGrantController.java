@@ -64,7 +64,7 @@ public class PrivGrantController {
     @SuppressWarnings("unchecked")
     @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value="batchAddRolePrivGrant",method=RequestMethod.POST)
-    public ResponseResult batchAddRolePrivGrant(@RequestBody BatchAddRolePrivGrantVO batchAddRolePrivGrantVO){
+    public ResponseResult<Void> batchAddRolePrivGrant(@RequestBody BatchAddRolePrivGrantVO batchAddRolePrivGrantVO){
         long roleId = batchAddRolePrivGrantVO.getRoleId();
         List<Long> privIds = batchAddRolePrivGrantVO.getPrivIds();
         //先把角色的所有权限清空，再重新保存
@@ -108,7 +108,7 @@ public class PrivGrantController {
     @SuppressWarnings("unchecked")
     @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value="batchAddPositionPrivGrant",method=RequestMethod.POST)
-    public ResponseResult batchAddPositionPrivGrant(@RequestBody BatchAddPositionPrivGrantVO batchAddPositionPrivGrantVO){
+    public ResponseResult<Void> batchAddPositionPrivGrant(@RequestBody BatchAddPositionPrivGrantVO batchAddPositionPrivGrantVO){
         long posId = batchAddPositionPrivGrantVO.getPosId();
         List<Long> privIds = batchAddPositionPrivGrantVO.getPrivIds();
         //先把    所有权限清空，再重新保存
@@ -151,7 +151,7 @@ public class PrivGrantController {
     })
     @UooLog(key="listAllPrivGrantByRole",value="获取角色的授权")
     @GetMapping("listAllPrivGrantByRole/{roleId}")
-    public ResponseResult listAllPrivGrantByRole(@PathVariable(value="roleId",required=true) long roleId){
+    public ResponseResult<List<Map>> listAllPrivGrantByRole(@PathVariable(value="roleId",required=true) long roleId){
         HashMap<String, Object> params = new HashMap<>();
         params.put("GRANT_OBJ_TYPE", PrivGrantObjectTypeConsts.GRANT_OBJECT_TYPE_ROLE);
         params.put("GRANT_OBJ_ID", roleId);
@@ -166,7 +166,7 @@ public class PrivGrantController {
     })
     @UooLog(key="listAllPrivGrantByPosition",value="获取角色的授权")
     @GetMapping("listAllPrivGrantByPosition/{posId}")
-    public ResponseResult listAllPrivGrantByPosition(@PathVariable(value="posId",required=true) long posId){
+    public ResponseResult<List<Map>> listAllPrivGrantByPosition(@PathVariable(value="posId",required=true) long posId){
         HashMap<String, Object> params = new HashMap<>();
         params.put("GRANT_OBJ_TYPE", PrivGrantObjectTypeConsts.GRANT_OBJECT_TYPE_POSITION);
         params.put("GRANT_OBJ_ID", posId);

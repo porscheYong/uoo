@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.web.maindata.permission.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +35,7 @@ public class PrivFuncRelController {
         @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long" ,paramType="path"),
     })
     @GetMapping("getPrivFuncRel/{id}")
-    public ResponseResult  getPrivFuncRel(@PathVariable(value="id" ,required=true) Long id){
+    public ResponseResult<PrivFuncRel>  getPrivFuncRel(@PathVariable(value="id" ,required=true) Long id){
         
         return privFuncRelService.getPrivFuncRel(id);
     }
@@ -43,7 +45,7 @@ public class PrivFuncRelController {
         @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
     @GetMapping("/listPrivFuncRel/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listPrivFuncRel(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    public ResponseResult<List<PrivFuncRel>> listPrivFuncRel(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         return privFuncRelService.listPrivFuncRel(pageNo, pageSize);
     }
     
@@ -52,7 +54,7 @@ public class PrivFuncRelController {
         @ApiImplicitParam(name = "privFuncRel", value = "privFuncRel", required = true, dataType = "PrivFuncRel"  ),
     })
     @RequestMapping(value="/addPrivFuncRel",method=RequestMethod.POST)
-    public ResponseResult addPrivFuncRel(@RequestBody PrivFuncRel privFuncRel){
+    public ResponseResult<Void> addPrivFuncRel(@RequestBody PrivFuncRel privFuncRel){
         return privFuncRelService.addPrivFuncRel(privFuncRel);
     }
     @ApiOperation(value = "修改权限和功能菜单组件关系", notes = "修改权限和功能菜单组件关系")
@@ -60,7 +62,7 @@ public class PrivFuncRelController {
         @ApiImplicitParam(name = "privFuncRel", value = "privFuncRel", required = true, dataType = "PrivFuncRel"  ),
     })
     @RequestMapping(value="/updatePrivFuncRel",method=RequestMethod.POST)
-    public ResponseResult updatePrivFuncRel(@RequestBody PrivFuncRel privFuncRel){
+    public ResponseResult<Void> updatePrivFuncRel(@RequestBody PrivFuncRel privFuncRel){
         return privFuncRelService.updatePrivFuncRel(privFuncRel);
     }
     @ApiOperation(value = "删除权限和功能菜单组件关系", notes = "删除权限和功能菜单组件关系")
@@ -68,7 +70,7 @@ public class PrivFuncRelController {
         @ApiImplicitParam(name = "privFuncRel", value = "privFuncRel", required = true, dataType = "PrivFuncRel"  ),
     })
     @RequestMapping(value="/deletePrivFuncRel",method=RequestMethod.POST)
-    public ResponseResult deleteFuncComp(@RequestBody PrivFuncRel privFuncRel){
+    public ResponseResult<Void> deleteFuncComp(@RequestBody PrivFuncRel privFuncRel){
         return privFuncRelService.deleteFuncComp(privFuncRel);
     }
 }
