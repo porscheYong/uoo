@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(value = "business-position",configuration = {PersonnelServiceConfiguration.class},fallback = TbSystemtableClientHystrix.class)
 public interface TbSystemtableClient {
-    @RequestMapping(value = "/tbSystemtable/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/tbSystemtable/add", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     ResponseResult<TbSystemtable> addTbSystemtable(@RequestBody TbSystemtable tbSystemtable);
 
-    @RequestMapping(value = "/tbSystemtable/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/tbSystemtable/update", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     ResponseResult<TbSystemtable> updateTbSystemtable(@RequestBody TbSystemtable tbSystemtable);
 
     @RequestMapping(value = "/tbSystemtable/del", method = RequestMethod.POST)

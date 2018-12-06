@@ -58,8 +58,8 @@ public class SysOperationLogController {
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
-    @UooLog(key="listPageRoles",value="获取分页列表")
-    @GetMapping("/listPageRoles/pageNo={pageNo}&pageSize={pageSize}")
+    @UooLog(key="listPage",value="获取分页列表")
+    @GetMapping("/listPage/pageNo={pageNo}&pageSize={pageSize}")
     public ResponseResult listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
@@ -68,27 +68,6 @@ public class SysOperationLogController {
         Page<SysOperationLog> page = sysOperationLogService.selectPage(new Page<SysOperationLog>(pageNo, pageSize), wrapper);
 
         return ResponseResult.createSuccessResult(page.getRecords(), "", page);
-    }
-
-    @ApiOperation(value = "修改",notes = "修改")
-    @ApiImplicitParam(name = "sysOperationLog", value = "修改", required = true, dataType = "Roles")
-    @UooLog(value = "修改角色", key = "updateTbRoles")
-    @Transactional
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult update(@RequestBody SysOperationLog sysOperationLog) {
-        ResponseResult responseResult = new ResponseResult();
-        // 校验必填项
-        if(sysOperationLog.getOperationLogId() == null) {
-            responseResult.setState(ResponseResult.STATE_ERROR);
-            responseResult.setMessage("请输入id");
-            return responseResult;
-        }
-
-        sysOperationLogService.updateById(sysOperationLog);
-
-        responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("修改角色成功");
-        return responseResult;
     }
 
     @ApiOperation(value = "新增",notes = "新增")
@@ -107,30 +86,5 @@ public class SysOperationLogController {
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增角色成功");
         return responseResult;
-    }
-
-    @ApiOperation(value = "删除", notes = "删除")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "sysOperationLog", value = "sysOperationLog", required = true, dataType = "sysOperationLog"  ),
-    })
-    @UooLog(key="delete=",value="删除")
-    @SuppressWarnings("unchecked")
-    @Transactional
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public ResponseResult deletePrivilege(@RequestBody SysOperationLog sysOperationLog) {
-        Long OperationLogId = sysOperationLog.getOperationLogId();
-        if (OperationLogId == null) {
-            return ResponseResult.createErrorResult("无效数据");
-        }
-        SysOperationLog obj = sysOperationLogService.selectById(OperationLogId);
-        if (obj == null ) {
-            return ResponseResult.createErrorResult("不能删除无效数据");
-        }
-
-        obj.setStatusCd(StatusCD.INVALID);
-        obj.setStatusDate(new Date());
-        obj.setUpdateDate(new Date());
-        sysOperationLogService.updateById(obj);
-        return ResponseResult.createSuccessResult("success");
     }
 }

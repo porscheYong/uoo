@@ -17,10 +17,10 @@ import java.util.List;
  */
 @FeignClient(value = "business-public",configuration = {PersonnelServiceConfiguration.class},fallback = TbExpandocolumnClientHystrix.class)
 public interface TbExpandocolumnClient {
-    @RequestMapping(value = "/tbExpandocolumn/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/tbExpandocolumn/update", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     ResponseResult<TbExpandocolumn> updateTbExpandocolumn(@RequestBody TbExpandocolumn tbExpandocolumn);
 
-    @RequestMapping(value = "/tbExpandocolumn/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/tbExpandocolumn/add", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     ResponseResult<TbExpandocolumn> addTbExpandocolumn(@RequestBody TbExpandocolumn tbExpandocolumn);
 
     @RequestMapping(value = "/tbExpandocolumn/del", method = RequestMethod.POST)

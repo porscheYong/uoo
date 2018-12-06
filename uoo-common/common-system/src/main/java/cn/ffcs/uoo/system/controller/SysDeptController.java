@@ -21,7 +21,6 @@ import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import netscape.security.Privilege;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -63,8 +62,8 @@ public class SysDeptController {
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
-    @UooLog(key="listPageRoles",value="获取分页列表")
-    @GetMapping("/listPageRoles/pageNo={pageNo}&pageSize={pageSize}")
+    @UooLog(key="listPage",value="获取分页列表")
+    @GetMapping("/listPage/pageNo={pageNo}&pageSize={pageSize}")
     public ResponseResult listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;

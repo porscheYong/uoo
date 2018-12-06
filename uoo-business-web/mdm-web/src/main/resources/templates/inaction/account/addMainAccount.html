@@ -102,7 +102,7 @@
 
     <div class="tab-content" style="margin-left:5%;margin-top: 2%">
         <div class="tab-pane active" id="tab_content1">
-            <form action="#" method="post" style="padding: 10px;">  <!-- id="addAcctForm" -->
+            <form action="/submit" id="addAcctForm" method="post" style="padding: 10px;">  <!-- id="addAcctForm" -->
 
                 <div id="acctInfo" style="margin-left:17%;display: none;">
                     <div class="col-md-2 fleft tcenter">
@@ -249,14 +249,15 @@
                             <div class="form-item" style="width: 100%">
                             <label for="effectDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" 
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
-                            <input id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-12" required autocomplete="off">
+                            <input id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-12" required readonly autocomplete="off">
                             </div>
                         </div>
 
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-item" style="width: 100%">
-                                <label for="invalidDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
-                                <input id="invalidDate" class="ui-input col-md-8 col-sm-8 col-xs-12" required pattern="\d{4}" autocomplete="off">
+                                <label for="invalidDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" 
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
+                                <input id="invalidDate" class="ui-input col-md-8 col-sm-8 col-xs-12" required readonly autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -356,6 +357,8 @@
     <script type="text/javascript" src="/vendors/layer/layer.js"></script>
     <!-- toastr -->
     <script type="text/javascript" src="/vendors/toastr/toastr.js"></script>
+    <!-- Validate -->
+    <script type="text/javascript" src="/vendors/lulu/js/common/ui/Validate.js"></script>
     <!-- init -->
     <script src="/js/account/init.js"></script>
     <!-- jquery tagsinput -->
