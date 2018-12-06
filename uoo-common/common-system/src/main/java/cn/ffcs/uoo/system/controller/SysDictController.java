@@ -37,6 +37,8 @@ import java.util.Date;
  * @create 2018/12/4
  * @since 1.0.0
  */
+@RestController
+@RequestMapping("/system/sysDict")
 public class SysDictController {
 
     @Autowired
