@@ -34,7 +34,7 @@ public class MD5Util {
         //加密后的字符串
         String encodeStr= DigestUtils.md5Hex(password + salt);
 
-        System.out.println("MD5加密后的字符串为:encodeStr="+encodeStr);
+        //System.out.println("MD5加密后的字符串为:encodeStr="+encodeStr);
         return encodeStr;
     }
 
