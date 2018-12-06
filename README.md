@@ -174,6 +174,99 @@ uoo是采用Spring Cloud微服务化开发平台，具有统一授权、认证�
 
 ## 服务中心部署
 
+### 多环境配置Shell脚本部署
+
+#### 说明
+实际开发过程中，开发环境、测试环境、生产环境的配置是不一样的，spring boot定义的规则是允许按照命名方式不同来激活响应的配置文件。
+如在启动过程中，根据 “--spring.profiles.active={自己定义}”，分别激活响应的配置
+
+![avatar](https://github.com/rothschil/static/raw/master/Snipaste_2018-12-06_18-04-13.jpg)
+要求 application.yml/application.properties具备多个spring.profiles.active，用以区分环境，案例如下：
+~~~
+spring:
+  profiles: 221
+  application:
+    name: uoo-register
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: 134.96.253.221
+  client:
+    serviceUrl:
+      defaultZone: http://134.96.253.222:8761/eureka/,http://134.96.253.223:8761/eureka/
+server:
+  port: 8761
+
+---
+spring:
+  profiles: 222
+  application:
+    name: uoo-register
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: 134.96.253.222
+  client:
+    serviceUrl:
+      defaultZone: http://134.96.253.221:8761/eureka/,http://134.96.253.223:8761/eureka/
+server:
+  port: 8761
+
+---
+spring:
+  profiles: 223
+  application:
+    name: uoo-register
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: 134.96.253.223
+  client:
+    serviceUrl:
+      defaultZone: http://134.96.253.221:8761/eureka/,http://134.96.253.222:8761/eureka/
+server:
+  port: 8761
+~~~
+
+#### shell脚本
+
+[spring-boot源码](https://github.com/rothschil/static/raw/master/spring-boot.sh)
+
+
+    sh spring-boot.sh start YOUR_APP_NAME.jar --spring.profiles.active={自己定义}
+
+
+- 第一个参数: start为启动命令 (也可以为,stop,restart,status)
+- 第二个参数: YOUR_APP_NAME.jar为需启动的jar包
+- 第三个参数: --spring.profiles.active 启动参数(为空则使用激活默认，加参数的条件下，则激活相应的配置，如”--spring.profiles.active=223“，则激活spring.profiles名字为223)
+
+~~~
+
+function start()
+{
+    count='ps -ef |grep java|grep $SpringBoot|grep -v grep|wc -l'
+    
+    if [[ $count -eq 0 ]];
+    then
+        echo "$SpringBoot is running..."
+    else
+        echo "Start $SpringBoot success..."
+        nohup java -jar $SpringBoot  $START_OPTS > /dev/null 2>&1 &
+    fi
+}
+~~~
+
+#### 执行
+- 253.221机器上执行
+    
+    sh spring-boot.sh start uoo-register-1.0.1.RELEASE.jar --spring.profiles.active=221
+- 253.222机器上执行
+    
+    sh spring-boot.sh start uoo-register-1.0.1.RELEASE.jar --spring.profiles.active=222
+- 253.223机器上执行
+    
+    sh spring-boot.sh start uoo-register-1.0.1.RELEASE.jar --spring.profiles.active=223
+
 ### 测试环境
 
 ### 地址
