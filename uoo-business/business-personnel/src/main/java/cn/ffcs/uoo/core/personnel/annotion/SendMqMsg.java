@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.base.common.annotion;
+package cn.ffcs.uoo.core.personnel.annotion;
 
 import java.lang.annotation.*;
 
