@@ -1,11 +1,13 @@
 // loadingMask
-// var loading = new Loading();
+var loading = new Loading();
 
 var orgId,
     orgName,
     nodeName,
     nodeArr,
     orgTreeId;
+    
+loading.screenMaskEnable('container');
 
 function onNodeClick(e,treeId, treeNode) {
     // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
@@ -86,8 +88,10 @@ function initOrgRelTree (orgTreeId) {
         zTree.expandNode(nodes[0], true);
         zTree.selectNode(nodes[0], true);
         onNodeClick(null, null, nodes[0]);
+        loading.screenMaskDisable('container');
     }, function (err) {
         console.log(err)
+        loading.screenMaskDisable('container');
     });
 }
 
@@ -111,7 +115,8 @@ function initBusinessList () {
             initOrgRelTree(orgTreeId);
         })
     }, function (err) {
-        console.log(err)
+        console.log(err);
+        loading.screenMaskDisable('container');
     })
 }
 
