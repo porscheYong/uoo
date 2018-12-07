@@ -7,17 +7,13 @@ import cn.ffcs.uoo.core.personnel.constant.EumPersonnelResponseCode;
 import cn.ffcs.uoo.core.personnel.entity.TbPersonnelImage;
 import cn.ffcs.uoo.core.personnel.exception.PersonnelException;
 import cn.ffcs.uoo.core.personnel.service.TbPersonnelImageService;
-import cn.ffcs.uoo.core.personnel.util.ImageUtil;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
 import cn.ffcs.uoo.core.personnel.util.StrUtil;
 import cn.ffcs.uoo.core.personnel.vo.TbPersonnelImageVo;
-import cn.ffcs.uoo.core.personnel.vo.UpLoadImgVo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RequestMethod;

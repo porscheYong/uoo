@@ -607,11 +607,25 @@ function addPsonOrg(){
 		dataType:'json',
 		success:function(data){
 			if(data.state==1000){
-				alert('新修改成功');
+				parent.layer.confirm('操作成功', {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 				personalData.currentEditOrgInfo={};
 				getOrgPersonnerList();
 			}else{
-				alert('修改失败，'+data.message);
+				parent.layer.confirm('操作失败'+data.message, {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 			}
 		}
 	});
@@ -636,12 +650,26 @@ function addPsonJob(){
 		dataType:'json',
 		success:function(data){
 			if(data.state==1000){
-				alert('新修改成功');
+				parent.layer.confirm('操作成功', {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 				 personalData.currentEditJobInfo={};
 				 
 				getJobInfo();
 			}else{
-				alert('修改失败，'+data.message);
+				parent.layer.confirm('操作失败'+data.message, {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 			}
 		}
 	});
@@ -678,11 +706,25 @@ function addPsonEdu(){
 		dataType:'json',
 		success:function(data){
 			if(data.state==1000){
-				alert('新修改成功');
+				parent.layer.confirm('操作成功', {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 				 personalData.currentEditEduInfo={};
 				getEduInfo();
 			}else{
-				alert('修改失败，'+data.message);
+				parent.layer.confirm('操作失败'+data.message, {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 			}
 		}
 	});
@@ -709,11 +751,25 @@ function addFamily(){
 		dataType:'json',
 		success:function(data){
 			if(data.state==1000){
-				alert('新修改成功');
+				parent.layer.confirm('操作成功', {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 				 personalData.currentEditFamilyInfo={};
 				getFamilyInfo();
 			}else{
-				alert('修改失败，'+data.message);
+				parent.layer.confirm('操作失败'+data.message, {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 			}
 		}
 	});
@@ -786,9 +842,24 @@ function updatePersonnel(){
 		success:function(data){
 			console.log(JSON.stringify(updates));
 			if(data.state==1000){
-				alert('新修改成功');getOrgPersonnerList();
+				parent.layer.confirm('操作成功', {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
+				getOrgPersonnerList();
 			}else{
-				alert('修改失败,'+data.message);
+				parent.layer.confirm('操作失败'+data.message, {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 			}
 		}
 	});
@@ -816,57 +887,124 @@ function addMobileInput(){
 	 });
 }
 function deleteJob(id){
-	if(confirm('确定删除？')){
-		$.ajax({
+	parent.layer.confirm('确定删除?', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+    }, function(index, layero){
+        parent.layer.close(index);
+        $.ajax({
 			url:'/psnjob/delTbPsnjob?psnjobId='+id,
 			type:'DELETE',
 			dataType:'json',
 			success:function(data){
 				if(data.state==1000){
-					alert('操作成功');
+					parent.layer.confirm('操作成功', {
+				        icon: 0,
+				        title: '提示',
+				        btn: ['确定' ]
+				    }, function(index, layero){
+				        parent.layer.close(index);
+				        
+				    }, function(){
+
+				    });
 					getJobInfo();
 				}else{
-					alert('操作失败,'+data.message);
+					parent.layer.confirm('操作失败,'+data.message, {
+				        icon: 0,
+				        title: '提示',
+				        btn: ['确定' ]
+				    }, function(index, layero){
+				        parent.layer.close(index);
+				        
+				    }, function(){
+
+				    });
 				}
 			}
 		});
-	}
-	
+    }, function(){
+
+    });
 }
 function deleteEdu(id){
-	if(confirm('确定删除？')){
-		$.ajax({
+	parent.layer.confirm('确定删除?', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+    }, function(index, layero){
+        parent.layer.close(index);
+        $.ajax({
 			url:'/edu/delTbEdu?eduId='+id,
 			type:'DELETE',
 			dataType:'json',
 			success:function(data){
 				if(data.state==1000){
-					alert('操作成功');
+					parent.layer.confirm('操作成功', {
+				        icon: 0,
+				        title: '提示',
+				        btn: ['确定' ]
+				    }, function(index, layero){
+				        parent.layer.close(index);
+				    }, function(){
+				    });
 					getEduInfo();
 				}else{
-					alert('操作失败,'+data.message);
+					parent.layer.confirm('操作失败'+data.message, {
+				        icon: 0,
+				        title: '提示',
+				        btn: ['确定' ]
+				    }, function(index, layero){
+				        parent.layer.close(index);
+				    }, function(){
+				    });
 				}
 			}
 		});
-	}
+    }, function(){
+
+    });
 	
 }
 function deleteFamily(id){
-	if(confirm('确定删除？')){
-		$.ajax({ 
+	parent.layer.confirm('确定删除?', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+    }, function(index, layero){
+        parent.layer.close(index);
+        $.ajax({ 
 			url:'/family/delTbFamily?familyId='+id,
 			type:'DELETE',
 			dataType:'json',
 			success:function(data){
 				if(data.state==1000){
-					alert('操作成功');
+					parent.layer.confirm('操作成功', {
+				        icon: 0,
+				        title: '提示',
+				        btn: ['确定' ]
+				    }, function(index, layero){
+				        parent.layer.close(index);
+				    }, function(){
+				    });
 					getFamilyInfo();
 				}else{
-					alert('操作失败,'+data.message);
+					parent.layer.confirm('操作失败'+data.message, {
+				        icon: 0,
+				        title: '提示',
+				        btn: ['确定' ]
+				    }, function(index, layero){
+				        parent.layer.close(index);
+				    }, function(){
+				    });
 				}
 			}
 		});
-	}
+    }, function(){
+
+    });
+	
 	
 }
 $(document).ready(function(){

@@ -4,7 +4,7 @@ package cn.ffcs.uoo.core.personnel.controller;
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
-import cn.ffcs.uoo.base.common.annotion.SendMqMsg;
+import cn.ffcs.uoo.core.personnel.annotion.SendMqMsg;
 import cn.ffcs.uoo.core.personnel.client.OrgPersonRelClient;
 import cn.ffcs.uoo.core.personnel.client.UserClient;
 import cn.ffcs.uoo.core.personnel.constant.BaseUnitConstants;

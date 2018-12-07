@@ -29,9 +29,7 @@ function retrieveData(data, callback, settings) {
 	       	//调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
 	       	//此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
 	      	callback(returnData);
-		}else{
-			alert('查无数据');
-		}
+		} 
      },
      error : function(msg) {
      }
@@ -57,23 +55,31 @@ function loadAreaCode(){
         "processing": true,
         'searching': false,
         'autoWidth': true,
-        'ordering': true,
+        'ordering': false,
        /* 'initComplete': function (settings, json) {
             console.log(settings, json)
         },*/
         //'destroy':true,
         'columns': [
-            { 'data': "areaCodeId","title":"序号" , 'className': 'user-account','defaultContent':'',
+            { 'data': "areaCodeId","title":"序号" , 'className': 'user-account','defaultContent':'','width':'30px',
             	'render':function(data, type, row, meta){
             		i++;
             		return i;
             	}
             },
             { 'data': "areaCode","title":"区号" , 'className': 'user-account','defaultContent':'',
+            	'render': function (data, type, row, meta) {
+            	var html="<a href=\"javascript:void(0)\" onClick=\"location.href=('/inaction/region/areacode-edit.html?id="+row.areaCodeId+"')\">"+data+" </a>";
+            	return html;
+                }  ,
             },
             { 'data': "areaNbr",
               'title': '区号编码', 'className': 'user-account'
             	  ,'defaultContent':'',
+            	  'render': function (data, type, row, meta) {
+                  	var html="<a href=\"javascript:void(0)\" onClick=\"location.href=('/inaction/region/areacode-edit.html?id="+row.areaCodeId+"')\">"+data+" </a>";
+                  	return html;
+                      }  ,
             },
 			{
             	'data':'regionNames','title':'关联电信区域','className': 'user-account','visible':showCheck!='1'
@@ -87,14 +93,7 @@ function loadAreaCode(){
                  
             },
             { 'data': "LOC_ABBR", 'title': '区域简称', 'className': 'user-account'  ,'defaultContent':''},*/
-            { 'data': "areaCodeId", 'title': '操作', 
-            'render': function (data, type, row, meta) {
-            	var html="<a href=\"javascript:void(0)\" onClick=\"location.href=('/inaction/region/areacode-edit.html?id="+row.areaCodeId+"')\">> </a>";
-            	//html+="<a class=\"glyphicon glyphicon-remove\"   href=\"javascript:void(0)\" onclick=\"deleteRegion('"+row.LOC_ID+"')\" style=\"vertical-align: top;\"></a>";
-            	return html;
-            		 //return '<a href="list.html?id='+ row.orgId +'" onclick="parent.openTreeById('+orgId+','+row.orgId+')">'+ row.orgName +'</a>'
-                }  , 'className': 'user-account','visible':showCheck!='1'
-            },
+             
              
         ],
         'language': {
@@ -185,44 +184,51 @@ function goDel(){
 			dataType:'json',
 			type:'post',
 			success:function(data){
-				if(data.state==1000){
-					//
-					var selectNode=parent.getCurrentSelectedNode()[0];
-					console.log(parent.getCurrentSelectedNode()[0])
-					var zTree=parent.getTree();
-					if(selectNode.pId==0||selectNode.pId==null){
-						parent.changeIframe('/inaction/region/none.html');
-					}
-					zTree.removeNode(selectNode, null, "prev");
-					var nodes= selectNode.getParentNode();
-					zTree.selectNode(nodes);
-					$('#regionStrCurrent').text(nodes.name);
-					var treeNode=nodes;
-					var str=treeNode.name;
-					var parentNode=treeNode.getParentNode();
-					while(parentNode!=null){
-						str=parentNode.name+">"+str;
-						parentNode=parentNode.getParentNode();
-					}
-					$('#regionStrFull').text(str);
-					$('#regionStrCurrent').attr('cid',nodes.id);
-					
-					$.ajax({
-						url:'/region/politicalLocation/getChildPoliticalLocationInfo/'+nodes.id,
-						success:function(data){
-							console.log(data);
-							if(data.state==1000){
-								initTable(data.data)
-							}else{
-								
-							}
-						},
-						dataType:'json',
-						type:'get'
-					});
-				}else{
-					alert(data.state==1000?'删除成功':data.message);
-				}
+				parent.layer.confirm(data.state==1000?'操作成功':'操作失败，'+data.message, {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			        if(data.state==1000){
+			        	//
+			        	var selectNode=parent.getCurrentSelectedNode()[0];
+			        	console.log(parent.getCurrentSelectedNode()[0])
+			        	var zTree=parent.getTree();
+			        	if(selectNode.pId==0||selectNode.pId==null){
+			        		parent.changeIframe('/inaction/region/none.html');
+			        	}
+			        	zTree.removeNode(selectNode, null, "prev");
+			        	var nodes= selectNode.getParentNode();
+			        	zTree.selectNode(nodes);
+			        	$('#regionStrCurrent').text(nodes.name);
+			        	var treeNode=nodes;
+			        	var str=treeNode.name;
+			        	var parentNode=treeNode.getParentNode();
+			        	while(parentNode!=null){
+			        		str=parentNode.name+">"+str;
+			        		parentNode=parentNode.getParentNode();
+			        	}
+			        	$('#regionStrFull').text(str);
+			        	$('#regionStrCurrent').attr('cid',nodes.id);
+			        	
+			        	$.ajax({
+			        		url:'/region/politicalLocation/getChildPoliticalLocationInfo/'+nodes.id,
+			        		success:function(data){
+			        			console.log(data);
+			        			if(data.state==1000){
+			        				initTable(data.data)
+			        			}else{
+			        				
+			        			}
+			        		},
+			        		dataType:'json',
+			        		type:'get'
+			        	});
+			        }else{
+			        }
+			    }, function(){
+			    });
 				
 			}
 		});
@@ -236,7 +242,14 @@ function deleteRegion(id){
 			dataType:'json',
 			type:'post',
 			success:function(data){
-				alert(data.state==1000?'删除成功':data.message);
+				parent.layer.confirm(data.state==1000?'操作成功':'操作失败，'+data.message, {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 				getRegionList(listId);
 				if(data.state==1000){
 					var zTree=parent.getTree();
