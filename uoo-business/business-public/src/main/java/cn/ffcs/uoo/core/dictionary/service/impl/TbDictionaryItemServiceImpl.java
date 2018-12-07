@@ -53,4 +53,9 @@ public class TbDictionaryItemServiceImpl extends ServiceImpl<TbDictionaryItemMap
     public List<TbDictionaryItem> selectDicItemList(TbDictionaryItem tbDictionaryItem) {
         return baseMapper.selectDicItemList(tbDictionaryItem);
     }
+
+    @Override
+    public List<TbDictionaryItem> selectDicItemListByDicName(String dictionaryName) {
+        return baseMapper.selectDicItemListByDicName(dictionaryName);
+    }
 }

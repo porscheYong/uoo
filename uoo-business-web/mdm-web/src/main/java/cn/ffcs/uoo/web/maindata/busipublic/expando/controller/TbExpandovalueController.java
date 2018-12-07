@@ -42,7 +42,7 @@ public class TbExpandovalueController {
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbExpandovalue> removeTbExpandovalue(@RequestBody Long valueId, @RequestBody Long updateUser) {
+    public ResponseResult<TbExpandovalue> removeTbExpandovalue(Long valueId, Long updateUser) {
         return tbExpandovalueClient.removeTbExpandovalue(valueId, updateUser);
     }
 

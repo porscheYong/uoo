@@ -333,8 +333,8 @@
         CONNECT BY AA.ORG_ID = PRIOR AA.PARENT_ORG_ID )
     </select>
     <!--检索出完检索出完整的组织树-->
-    <select id="selectFuzzyFullOrgRelTree">
-        SELECT * FROM (
+    <select id="selectFuzzyFullOrgRelTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+   <!--     SELECT * FROM (
         WITH FUZZYORGTREE AS(
         SELECT *
         FROM (SELECT ORG_ID ORGID,SUP_ORG_ID supOrgId
@@ -367,7 +367,29 @@
         START WITH ORG_ID = #{orgRootId}
         CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID))
         SELECT ROOTTREE.* FROM ROOTTREE,FUZZYORGTREE WHERE ROOTTREE.SUPORGID = FUZZYORGTREE.SUPORGID
-        )
+        )-->
+        SELECT C.ORG_ID id,C.PARENT_ORG_ID pid,B.ORG_NAME name
+        FROM TB_ORG_LEVEL            A,
+        TB_ORG                  B,
+        TB_ORG_REL              C,
+        TB_OGT_ORG_RELTYPE_CONF D,
+        TB_ORG_REL_TYPE         E
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000'
+        AND D.STATUS_CD = '1000'
+        AND E.STATUS_CD = '1000'
+        AND B.ORG_ID=A.ORG_ID
+        AND C.ORG_ID=B.ORG_ID
+        AND D.ORG_TREE_ID=A.ORG_TREE_ID
+        AND D.ORG_REL_TYPE_ID=E.ORG_REL_TYPE_ID
+        AND C.REF_CODE=E.REF_CODE
+        AND A.ORG_TREE_ID = #{orgTreeId}
+        AND A.ORG_LEVEL &lt; (SELECT ORG_LEVEL+1
+        FROM TB_ORG_LEVEL A
+        WHERE A.ORG_ID = #{orgId}
+        AND A.ORG_TREE_ID = #{orgTreeId}
+        AND A.STATUS_CD = '1000')
     </select>
 
 

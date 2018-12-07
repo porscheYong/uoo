@@ -22,7 +22,7 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018-09-25
  */
-@FeignClient(value = "business-organization",configuration = {PersonnelServiceConfiguration.class},fallback = OrgTypeServiceHystrix.class)
+@FeignClient(name = "business-organization",url="http://134.96.253.222:11100",configuration = {PersonnelServiceConfiguration.class},fallback = OrgTypeServiceHystrix.class)
 public interface OrgTypeService {
 
 

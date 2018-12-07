@@ -22,7 +22,7 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018/10/21
  */
-@FeignClient(value = "business-organization",configuration = {PersonnelServiceConfiguration.class},fallback = OrgTreeServiceHystrix.class)
+@FeignClient(name = "business-organization", url = "http://134.96.253.222:11100",configuration = {PersonnelServiceConfiguration.class},fallback = OrgTreeServiceHystrix.class)
 public interface OrgTreeService {
 
     @RequestMapping(value="/orgTree/addOrgTree",method = RequestMethod.POST,headers={"Content-Type=application/json"})
