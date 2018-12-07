@@ -5,6 +5,7 @@ var accData;
 var show_num = [];
 var isError = 0;
 var show_num = [];
+var index;
 
 
 $(function (){
@@ -80,7 +81,7 @@ function check(){
             };
         }
 
-        var index = layer.load(); 
+        index = layer.load(); 
 
         $.ajax({			//提交表单
             type : "POST",
@@ -106,7 +107,6 @@ function check(){
                 toastr.error("网络连接失败！"); 
             }
         });
-
         return false;
     }
 }

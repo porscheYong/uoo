@@ -130,13 +130,16 @@ function initOrgTable(results){         //主账号组织数据表格
       },
         { 'data': "fullName", 'title': '组织名称', 'className': 'row-fullName' ,
         'render': function (data, type, row, meta) {
-          if(row.fullName.search('->') != -1){
-            var s = row.fullName.replace(/->/g,'/');
-            return s.substring(0,s.length-1);
-          }else{
-            return row.fullName;
+          if(row.fullName != null){
+            // if(row.fullName.search('->') != -1){
+            //   var s = row.fullName.replace(/->/g,'/');
+            //   return s.substring(0,s.length-1);
+            // }else{
+              return row.fullName;
+            }else{
+              return "";
           }
-      }
+        }
       },
       {'data': "orgId", 'title': '操作', 'className': 'row-delete' ,
       'render': function (data, type, row, meta) {
@@ -543,6 +546,7 @@ function openTypeDialog() {
           parent.layer.close(index);
           $('#roleTel').importTags(checkNode);
           $('.ui-tips-error').css('display', 'none');
+          window.localStorage.setItem('userRoleList',JSON.stringify(checkRole));
           roleList = checkRole;
           console.log(roleList);
       },
@@ -589,7 +593,7 @@ $("#defaultPswTel").blur(function (){     //默认密码输入框失去焦点
     $("#defaultPswTel").val(psw);
     $("#defaultPswTel").attr("type","password");
     if(psw == ''){
-      formValidate.isAllPass($('#defaultPswTel'))
+      formValidate.isAllPass($('#defaultPswTel'));
     }
   }
 })

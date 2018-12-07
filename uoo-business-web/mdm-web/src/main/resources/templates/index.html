@@ -72,11 +72,11 @@
     </div>
     
     <!-- 侧边菜单 -->
-    <div class="layui-side layui-side-menu">
+    <div class="layui-side layui-side-menu" id="container">
         <div class="layui-side-scroll">
         <div class="layui-logo" lay-href="contents/console.html"></div>
 			<ul class="layui-nav layui-nav-tree" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu" lay-shrink="all">
-                <li class="layui-nav-item" data-name="component">
+                <!-- <li class="layui-nav-item" data-name="component">
                 	<a href="javascript:;" lay-tips="组织树管理" lay-direction="2">
                         <i class="layui-icon layui-icon-component"></i><cite>组织管理</cite>
                         <span class="layui-nav-more"></span>
@@ -131,7 +131,7 @@
                     <dl class="layui-nav-child">
                         <dd data-name="data-dictionary"><a lay-href="/inaction/resource/dataDictionary/index.html">数据字典管理</a></dd>
                     </dl>
-                </li>
+                </li> -->
             
             
             </ul>
@@ -182,6 +182,9 @@
 <!-- layer -->
 <script type="text/javascript" src="/vendors/layer/layer.js"></script>
 <script type="text/javascript" src="/vendors/layuiadmin/layui/layui.js"></script>
+<!-- loading -->
+<script type="text/javascript" src="/js/core/spin.min.js"></script>
+<script type="text/javascript" src="/js/core/loading.js"></script>
 <!-- init -->
 <script src="/js/init.js"></script>
 
