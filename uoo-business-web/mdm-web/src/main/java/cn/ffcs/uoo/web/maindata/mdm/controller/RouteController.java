@@ -5,15 +5,17 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
+import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.realm.LoadUrlPermissionService;
 
 /**
  * 测试Controller
@@ -23,7 +25,8 @@ import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
  */
 @Controller
 public class RouteController {
-
+    @Autowired
+    LoadUrlPermissionService loadUrlPermissionService;
     @RequestMapping("/aa")
     public ModelAndView index1() {
         return new ModelAndView("index");
@@ -64,5 +67,17 @@ public class RouteController {
     public Object getCurrentLoginUserInfo(HttpServletRequest request){
         return request.getSession().getAttribute(LoginConsts.LOGIN_KEY);
     }
-
+    
+    @GetMapping("/reloadUrlPermission")
+    @ResponseBody
+    public ResponseResult<Void> reloadUrlPermission(){
+        loadUrlPermissionService.updateUrlPermission();
+        return ResponseResult.createSuccessResult("");
+    }
+    @GetMapping("/testReloadUrlPermission")
+    @ResponseBody
+    public ResponseResult<Void> testReloadUrlPermission(){
+        loadUrlPermissionService.notifyAllWebNodeUpdateUrlPermission();
+        return ResponseResult.createSuccessResult("test success");
+    }
 }

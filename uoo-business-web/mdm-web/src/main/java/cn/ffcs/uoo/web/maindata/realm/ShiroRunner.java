@@ -2,6 +2,7 @@ package cn.ffcs.uoo.web.maindata.realm;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.slf4j.Logger;
@@ -21,7 +22,6 @@ public class ShiroRunner implements ApplicationRunner{
     @Override
     public void run(ApplicationArguments args) throws Exception {
         reloadSystemPermission();
-       // loadSvc.updateUrlPermission();
         log.info("加载系统权限完成");
     }
     //暂时先加一个定时器  反正卡住  10分钟检查一下
@@ -37,5 +37,6 @@ public class ShiroRunner implements ApplicationRunner{
             }
         }, 0,60000*10);
     }
+    
 
 }

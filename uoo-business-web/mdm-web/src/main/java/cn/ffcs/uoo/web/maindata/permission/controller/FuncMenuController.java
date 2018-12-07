@@ -79,7 +79,7 @@ public class FuncMenuController {
     public ResponseResult<Void> addFuncMenu(@RequestBody FuncMenu funcMenu){
         ResponseResult<Void> addFuncMenu = funcMenuService.addFuncMenu(funcMenu);
         if(addFuncMenu.getState()==ResponseResult.STATE_OK){
-            loadUrlPermissionSvc.updateUrlPermission();
+            loadUrlPermissionSvc.notifyAllWebNodeUpdateUrlPermission();
         }
         return addFuncMenu;
     }
@@ -91,7 +91,7 @@ public class FuncMenuController {
     public ResponseResult<Void> updateFuncMenu(@RequestBody FuncMenu funcMenu){
         ResponseResult<Void> updateFuncMenu = funcMenuService.updateFuncMenu(funcMenu);
         if(updateFuncMenu.getState()==ResponseResult.STATE_OK){
-            loadUrlPermissionSvc.updateUrlPermission();
+            loadUrlPermissionSvc.notifyAllWebNodeUpdateUrlPermission();
         }
         return updateFuncMenu;
     }
@@ -104,7 +104,7 @@ public class FuncMenuController {
     public ResponseResult<Void> deleteFuncMenu(@RequestBody FuncMenu funcMenu){
         ResponseResult<Void> deleteFuncMenu = funcMenuService.deleteFuncMenu(funcMenu);
         if(deleteFuncMenu.getState()==ResponseResult.STATE_OK){
-            loadUrlPermissionSvc.updateUrlPermission();
+            loadUrlPermissionSvc.notifyAllWebNodeUpdateUrlPermission();
         }
         return deleteFuncMenu;
     }

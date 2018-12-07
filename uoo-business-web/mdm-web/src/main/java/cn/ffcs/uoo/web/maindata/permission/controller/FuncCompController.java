@@ -58,7 +58,7 @@ public class FuncCompController {
     public ResponseResult<Void> addFuncComp(@RequestBody FuncComp funcComp) {
         ResponseResult rr = funcCompService.addFuncComp(funcComp);
         if(ResponseResult.STATE_OK==rr.getState()){
-            loadUrlPermissionSvc.updateUrlPermission();
+            loadUrlPermissionSvc.notifyAllWebNodeUpdateUrlPermission();
         }
         return rr;
     }
@@ -70,7 +70,7 @@ public class FuncCompController {
     public ResponseResult<Void> updateFuncComp(@RequestBody FuncComp funcComp) {
         ResponseResult<Void> rr = funcCompService.updateFuncComp(funcComp);
         if(ResponseResult.STATE_OK==rr.getState()){
-            loadUrlPermissionSvc.updateUrlPermission();
+            loadUrlPermissionSvc.notifyAllWebNodeUpdateUrlPermission();
         }
         return rr;
     }
@@ -82,7 +82,7 @@ public class FuncCompController {
     public ResponseResult<Void> deleteFuncComp(@RequestBody FuncComp funcComp) {
         ResponseResult<Void> rr = funcCompService.deleteFuncComp(funcComp);
         if(ResponseResult.STATE_OK==rr.getState()){
-            loadUrlPermissionSvc.updateUrlPermission();
+            loadUrlPermissionSvc.notifyAllWebNodeUpdateUrlPermission();
         }
         return rr;
     }
