@@ -101,7 +101,17 @@ spring:
     port: 5672
     username: root
     password: 123
-
+  zipkin:
+    base-url: http://134.96.253.223:9411
+    #本项目服务名
+    service:
+      name: ${spring.application.name}
+  sleuth:
+    #监控开关
+    enabled: true
+    #采样率
+    sampler:
+      percentage: 1
 
 mybatis-plus:
   mapper-locations: classpath:mapper/**Mapper.xml

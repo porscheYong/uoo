@@ -2,11 +2,9 @@ package cn.ffcs.uoo.core.personnel.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
-import cn.ffcs.uoo.core.personnel.constant.BaseUnitConstants;
 import cn.ffcs.uoo.core.personnel.entity.TbPsnjob;
 import cn.ffcs.uoo.core.personnel.service.TbPsnjobService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -15,8 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import cn.ffcs.uoo.base.controller.BaseController;
 
-import java.util.HashMap;
-import java.util.Map;
+
 
 /**
  * <p>

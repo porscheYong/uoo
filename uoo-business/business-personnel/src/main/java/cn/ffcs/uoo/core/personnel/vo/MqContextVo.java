@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.base.common.vo;
+package cn.ffcs.uoo.core.personnel.vo;
 
 public class MqContextVo {
 
