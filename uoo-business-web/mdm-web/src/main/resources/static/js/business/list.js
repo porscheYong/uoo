@@ -74,6 +74,8 @@ function initOrgTable (results) {
             })
         }
     });
+    var loading = parent.loading;
+    loading.screenMaskDisable('container');
 }
 
 function initOrgPersonnelTable (isSearchlower) {

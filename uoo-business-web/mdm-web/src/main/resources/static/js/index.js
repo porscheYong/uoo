@@ -54,6 +54,13 @@ function initUserPermission(){    //初始化人员权限
             }).extend({
             index: 'lib/index' //主入口模块
             }).use('index');
+        // $('.layui-nav').find('.layui-nav-item').each(function () {
+        //     $(this).on("mouseenter", function() {
+        //         $(this).find('.layui-nav-child').show();
+        //     }).on("mouseleave", function() {
+        //         $(this).find('.layui-nav-child').hide();
+        //     })
+        // })
     }, function (err) {
         console.log(err)
         loading.screenMaskDisable('container');

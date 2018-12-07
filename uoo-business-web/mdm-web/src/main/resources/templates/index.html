@@ -10,7 +10,7 @@
 <link href="/vendors/layuiadmin/layui/css/layui.css" rel="stylesheet" media="all">
 <link href="/vendors/layuiadmin/layui/css/admin.css" rel="stylesheet" media="all">
 <!-- Bootstrap -->
-<link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<!--<link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">-->
 <!-- Font Awesome -->
 <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <!-- ztree -->
@@ -40,7 +40,7 @@
             <li class="layui-nav-item layui-hide-xs" lay-unselect="">
             <input class="layui-input layui-input-search" type="text" placeholder="搜索..." layadmin-event="serach" lay-action="template/search.html?keywords=" autocomplete="off">
             </li>
-        <span class="layui-nav-bar"></span>
+        <!--<span class="layui-nav-bar"></span>-->
         </ul>
       <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
         <li class="layui-nav-item" lay-unselect=""> <a lay-href="app/message/index.html" layadmin-event="message" lay-text="消息中心"> <i class="layui-icon layui-icon-notice"></i> 
@@ -50,7 +50,7 @@
         <li class="layui-nav-item layui-hide-xs" lay-unselect=""> <a href="javascript:;" layadmin-event="theme"> <i class="layui-icon layui-icon-theme"></i> </a> </li>
         <li class="layui-nav-item layui-hide-xs" lay-unselect=""> <a href="javascript:;" layadmin-event="note"> <i class="layui-icon layui-icon-note"></i> </a> </li>
         <li class="layui-nav-item layui-hide-xs" lay-unselect=""> <a href="javascript:;" layadmin-event="fullscreen"> <i class="layui-icon layui-icon-screen-full"></i> </a> </li>
-        <li class="layui-nav-item" lay-unselect="">
+        <li class="layui-nav-item" lay-unselect="" style="margin-right: 40px;">
         <a href="javascript:;" lay-href="contents/my.html">
           <img class="layui-nav-img" th:src="@{/images/avatar.png}" alt="pic"><span id="psnName"></span>
         </a>
@@ -61,13 +61,10 @@
             <dd style="text-align: center;" layadmin-event="logout"><a>退出</a></dd>
           </dl>
         </li>
-        <li class="layui-nav-item layui-hide-xs" lay-unselect="">
-        	<a href="javascript:;" layadmin-event="about"><i class="layui-icon layui-icon-more-vertical"></i></a>
-        </li>
         <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect="">
         	<a href="javascript:;" layadmin-event="more"><i class="layui-icon layui-icon-more-vertical"></i></a>
         </li>
-        <span class="layui-nav-bar"></span>
+        <!--<span class="layui-nav-bar"></span>-->
       </ul>
     </div>
     
@@ -151,7 +148,7 @@
               <dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
             </dl>
           </li>
-          <span class="layui-nav-bar"></span>
+          <!--<span class="layui-nav-bar"></span>-->
         </ul>
       </div>
         <div class="layui-tab" lay-filter="layadmin-layout-tabs" lay-allowclose="true" lay-unauto="">
