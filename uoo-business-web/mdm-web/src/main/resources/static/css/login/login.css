@@ -13,8 +13,8 @@ img {
 	position: absolute;
 	}
 .LogoBg {
-	background: url(../images/logo2.svg) no-repeat right -220px bottom -90px;
-	background-size: 700px;
+	background: url(../images/logo2.svg) no-repeat right -120px bottom -90px;
+	background-size: 30%;
 	opacity: .2;
 	width: 100%;
 	height: 100%;

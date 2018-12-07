@@ -10,11 +10,8 @@ var orgId,
 loading.screenMaskEnable('container');
 
 function onNodeClick(e,treeId, treeNode) {
-    // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-    // zTree.expandNode(treeNode);
     orgId = treeNode.id;
     orgName = treeNode.name;
-    //var currentNode = treeNode.name;//获取当前选中节点
     var currentNode = {node: treeNode, current: true};//获取当前选中节点
     var parentNode = treeNode.getParentNode();
     nodeArr = [];
@@ -26,7 +23,6 @@ function onNodeClick(e,treeId, treeNode) {
 function getParentNodes(parentNode, currentNode) {
     if(parentNode!=null){
         parent = {node: parentNode, current: false};
-        //nodeName = parentNode.name;
         var curNode = parentNode.getParentNode();
         nodeArr.push(currentNode);
         getParentNodes(curNode, parent);
@@ -123,7 +119,6 @@ function initBusinessList () {
 // 获取组织完整路径
 function getOrgExtInfo () {
     var pathArry = nodeArr;
-    console.log(pathArry);
     var pathStr = '';
     if (pathArry && pathArry.length > 0) {
         for (var i = pathArry.length - 1; i >= 0; i--) {
@@ -131,7 +126,7 @@ function getOrgExtInfo () {
             if (pathArry[i].current) {
                 pathStr +=  '<span class="breadcrumb-item"><a href="javascript:void(0);">' + node.name + '</a></span>';
             } else {
-                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+orgId+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
             }
         }
         $('#userFrame').contents().find('.breadcrumb').html(pathStr);
@@ -140,10 +135,12 @@ function getOrgExtInfo () {
 
 // 根据组织ID展开并选中组织
 function openTreeById (sId, id) {
-    var tId = 'standardTree' + id;
-    var sId = 'standardTree' + sId;
+    var tId = 'standardTree_' + id;
+    var sId = 'standardTree_' + sId;
     var orgTree = $.fn.zTree.getZTreeObj("standardTree");
     var selectNode = orgTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
+    console.log(sId);
+    console.log(selectNode);
     if (!selectNode.open) {
         orgTree.expandNode(selectNode, true);
     }

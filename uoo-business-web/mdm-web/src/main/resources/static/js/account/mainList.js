@@ -5,26 +5,26 @@ var lChBox =document.getElementById("lowerCheckBox");   //是否显示下级人�
 var orgFullName = '';
 var table;
 var isCheck = 0;
-
-// $("#searchlowerCheckBox").checked = true;
-// $("#searchlowerCheckBox").propMatch();
+var currentData = [];
 
 // 获取组织完整路径
-function getOrgExtInfo() {
+function getOrgExtInfo () {
     var pathArry = parent.nodeArr;
-    // console.log(pathArry)
     var pathStr = '';
-    for (var i = pathArry.length - 1; i >= 0; i--) {
-        var node = pathArry[i].node;
-        if (pathArry[i].current) {
-            pathStr +=  '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + node.name + '</a></span>';
-        } else {
-            pathStr += '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>'; 
+    if (pathArry && pathArry.length > 0) {
+        for (var i = pathArry.length - 1; i >= 0; i--) {
+            var node = pathArry[i].node;
+            if (pathArry[i].current) {
+                pathStr +=  '<span class="breadcrumb-item"><a href="javascript:void(0);">' + node.name + '</a></span>';
+            } else {
+                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+orgId+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+            }
+            orgFullName += node.name + '/'; 
         }
-        orgFullName += node.name + '/'; 
+        orgFullName = orgFullName.toString().substring(0,orgFullName.toString().length-1);
+        // $('#userFrame').contents().find('.breadcrumb').html(pathStr);
+        $('.breadcrumb').html(pathStr);
     }
-    orgFullName = orgFullName.toString().substring(0,orgFullName.toString().length-1);
-    $('.breadcrumb').html(pathStr);
 }
 
 function initMainTable(isCheck){
@@ -106,11 +106,13 @@ function initMainTable(isCheck){
     });
 }
 
+
 $('#orgName').html(orgName);
 getOrgExtInfo();
 // getUserList(orgId);
 initMainTable(isCheck);
-console.log(orgFullName);
+
+
 
 $('#addBtn').on('click', function () {
     var url = 'add.html?&orgName=' + orgName +'&orgId=' + orgId + '&orgTreeId=' + orgTreeId + "&orgFullName=" + orgFullName;

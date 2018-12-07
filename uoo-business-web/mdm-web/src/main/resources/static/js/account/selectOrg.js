@@ -1,3 +1,4 @@
+var toastr = window.top.toastr;
 var setting = {
     async: {
         enable: true,
@@ -133,7 +134,7 @@ function saveBtnClick(){
             orgNa.push(editOrgList[i].orgId);
         }
         if(orgNa.indexOf(parseInt(orgIdSelect)) != -1){
-            alert("已选择该组织");
+            toastr.warning("已选择该组织");
         }else{
             addAcctOrg(orgIdSelect);
             editOrgList.push({'orgId':orgIdSelect,'fullName':getOrgExtInfo()});

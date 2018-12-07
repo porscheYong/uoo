@@ -59,8 +59,8 @@
             margin-left: -55px !important;
         }
         #delAcct{
-            margin-top: 40px !important;
-            margin-left: -15px;
+            margin-top: 20px !important;
+            margin-left: 37%;
         }
         .fleft{
             float: none !important;
@@ -268,13 +268,13 @@
                         <span class="name ft18">归属组织</span>
                     </div>
     
-                    <div class="fright" style="margin-right:85%;margin-top:-4.5%;"> 
-                        <a class="button-add" id="addBtn" data-toggle="modal" data-target="#myModal"><span class="fa fa-plus-circle icon-add"></span>添加</a>
+                    <div class="fright" style="margin-right: 36px;margin-top:-4.5%;"> 
+                        <a class="button-add" id="addBtn" data-toggle="modal" data-target="#myModal"><span class="fa fa-plus-circle icon-add"></span>新增归属组织</a>
                     </div>
 
                     <!--添加主账号时若已有主账号则点击此按钮添加左边组织树选中的组织-->
-                    <div class="fright" id="addBtnWFright" style="margin-right:85%;margin-top:-4.5%;display: none;"> 
-                        <a class="button-add" id="addBtnW" onclick="addBtnWClick()"><span class="fa fa-plus-circle icon-add"></span>添加</a>
+                    <div class="fright" id="addBtnWFright" style="margin-right:36px;margin-top:-4.5%;display: none;"> 
+                        <a class="button-add" id="addBtnW" onclick="addBtnWClick()"><span class="fa fa-plus-circle icon-add"></span>新增归属组织</a>
                     </div>
                 </div>
 
@@ -319,7 +319,7 @@
                 <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
                     <table id="subInfoTable" class="stripe" width="100%"></table>
                 </div>
-                <input class="Btn BtnRed2" id="delAcct" type="button" onclick="isDelete()" value="删除用户" style="margin-top:20px;" />
+                <input class="Btn BtnRed2" id="delAcct" type="button" onclick="deleteTbAcct()" value="删除用户" style="margin-top:20px;" />
             </form>
 
             <div class="row">

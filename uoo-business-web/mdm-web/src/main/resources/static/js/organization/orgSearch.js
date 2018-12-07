@@ -2,6 +2,7 @@ var engine;
 var empty;
 var table;
 var Regx = /^[A-Za-z0-9]*$/;
+var orgIdList = [];
 
 var settingA = {
 		data: {
@@ -171,7 +172,6 @@ function initRestructOrgRelTree (orgId) {        //初始化树
             }else{
                 nodeArr.push({"node":{"id":data[i].id,"pid":data[i].pid,"name":data[i].name},"current":false});
             }
-            // nodeArr.push(data[i].name);
         }
 
         var zTree = $.fn.zTree.init($("#standardTree"), settingA, zTreeNodes);
