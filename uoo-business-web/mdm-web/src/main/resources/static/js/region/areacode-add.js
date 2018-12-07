@@ -10,10 +10,24 @@ function saveRegion(){
 		data:$('#regionForm').serialize(),
 		success:function(data){
 			if(data.state==1000){
-				alert('添加成功');
-				location.href="/inaction/region/areacode-list.html";
+				parent.layer.confirm('操作成功', {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			        location.href="/inaction/region/areacode-list.html";
+			    }, function(){
+			    });
 			}else{
-				alert(data.message);
+				parent.layer.confirm('操作失败，'+data.message, {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 			}
 		}
 			

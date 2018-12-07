@@ -4,26 +4,12 @@ spring:
   application:
     name: business-region
   zipkin:
-    base-url: http://localhost:20010
+    base-url: http://134.96.253.223:8600
   sleuth:
     sampler:
       percentage: 1.0
   datasource:
     druid:
-      #url: jdbc:oracle:thin:@134.129.68.156:1521:fjtpdb
-      #driver-class-name:  oracle.jdbc.OracleDriver
-      #username: uoo137
-      #password: uoo137
-      #      url: jdbc:mysql://127.0.0.1:3306/springboot?characterEncoding=utf8&useSSL=false
-      #      driver-class-name:  com.mysql.jdbc.Driver
-      #      username: root
-      #      password: 123456
-      #=======
-      #      url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
-      #      driver-class-name:  oracle.jdbc.OracleDriver
-      #      username: uom
-      #      password: uom
-
       driver-class-name:  oracle.jdbc.OracleDriver
       url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
       username: octopus

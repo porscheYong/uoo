@@ -46,7 +46,7 @@
           </ul>
 
           <div class=" ">
-            <div class="tab-pane active" id="tab_content1">
+            <div class="tab-pane active tcenter" id="tab_content1">
             <form method="post" id="regionForm" class=" ">
                 <input  id="polLocIds"   name="polLocIds" type="hidden"/>
                 <input  id="parentRegionId" value="0" name="parentRegionId" type="hidden"/>
@@ -106,17 +106,10 @@
                
             </form>
                <div class="row" style="margin-bottom: 10px;">
-                <div style=" " class="FunctionBtn form-item">
-                <label for="parentRegionId" class="col-md-1 col-sm-1 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">  </label>
-                <a class="BtnDel" href="javascript:void(0)" onclick="deleteData()"><span></span>删除</a>
-                    <!-- <input type="submit" id="formSubmit" class="clip">
-                    <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
-                </div>
-                
+                <input class="Btn BtnRedWhite" type="button" value="删除" onclick="deleteData()">
               </div>
                <div class="row" style="margin-bottom: 10px;">
-                <div style="margin-left: 17%;">
+                <div style=" ">
                     <!-- <input type="submit" id="formSubmit" class="clip">
                     <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
                     <button id="saveBtn" class="Btn BtnBlue">保存</button>
