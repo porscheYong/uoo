@@ -1,5 +1,5 @@
 server:
-  port: 18000
+  port: 18022
 spring:
   application:
     name: mdm-web

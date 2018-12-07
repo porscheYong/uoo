@@ -784,7 +784,6 @@ ul.tab-title.right li {
 .content-right { /*内右内容*/
     padding: 0 0 0 250px;
     height: 100%;
-    overflow-x: hidden;
     }
 .LightGrayBg {
     background: #F6F7F8;

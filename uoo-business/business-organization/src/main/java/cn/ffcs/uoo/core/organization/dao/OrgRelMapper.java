@@ -40,7 +40,7 @@ public interface OrgRelMapper extends BaseMapper<OrgRel> {
 
     public List<TreeNodeVo> selectFuzzyOrgRelTree(@Param("orgId")String orgId,@Param("orgTreeId")String orgTreeId);
 
-    public List<TreeNodeVo> selectFuzzyFullOrgRelTree(@Param("orgleafId")String orgleafId,@Param("orgRootId")String orgRootId);
+    public List<TreeNodeVo> selectFuzzyFullOrgRelTree(@Param("orgId")String orgId,@Param("orgTreeId")String orgTreeId);
 
     public List<TreeNodeVo> queryOrgTreeRoot(@Param("orgTreeId")String orgTreeId,@Param("orgRootId")String orgRootId);
 
