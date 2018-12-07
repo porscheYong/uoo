@@ -91,19 +91,29 @@ function initTree (orgTreeId) {
             onClick: onNodeClick
         }
     };
-    $http.get('/orgRel/getOrgRelTree', {
-        orgRootId: orgTreeId,
-        orgTreeId: orgTreeId
-    }, function (data) {
+    if (orgTreeId == 'noSort') {
+        var data = [{"id":"","state":null,"pid":null,"icon":null,"iconClose":null,"iconOpen":null,"name":"未分类","open":null,"level":null,"checked":null,"chkDisabled":null,"parent":false}];
         $.fn.zTree.init($("#userTree"), setting, data);
         var zTree = $.fn.zTree.getZTreeObj("userTree");
         var nodes = zTree.getNodes();
-        zTree.expandNode(nodes[0], true);
         zTree.selectNode(nodes[0], true);
         onNodeClick(null, null, nodes[0]);
-    }, function (err) {
-        console.log(err)
-    })
+    }
+    else {
+        $http.get('/orgRel/getOrgRelTree', {
+            orgRootId: orgTreeId,
+            orgTreeId: orgTreeId
+        }, function (data) {
+            $.fn.zTree.init($("#userTree"), setting, data);
+            var zTree = $.fn.zTree.getZTreeObj("userTree");
+            var nodes = zTree.getNodes();
+            zTree.expandNode(nodes[0], true);
+            zTree.selectNode(nodes[0], true);
+            onNodeClick(null, null, nodes[0]);
+        }, function (err) {
+            console.log(err)
+        })
+    }
 }
 
 // 选择根节点
@@ -135,6 +145,7 @@ function initBusinessList () {
             var select = i === 0? 'selected' : '';
             option += "<option value='" + data[i].orgTreeId + "' " + select + ">" + data[i].orgTreeName +"</option>";
         }
+        option = option + '<option value="noSort">未分类</option>';
         $('#businessOrg').append(option);
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
             $('#businessOrg').selectMatch();
