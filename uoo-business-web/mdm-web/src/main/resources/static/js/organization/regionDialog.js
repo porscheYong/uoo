@@ -1,3 +1,5 @@
+var orgFrame = parent.window['standardOrg'] || parent.window['business'];
+var areaList = orgFrame.areaList;
 var checkNode = [];
 
 function regionBeforeClick (treeId, treeNode, clickFlag) {
@@ -33,7 +35,7 @@ function getCommonRegion() {
     };
     $http.get('/region/commonRegion/getTreeCommonRegion', {}, function (data) {
         $.fn.zTree.init($("#regionTree"), treeSetting, data);
-        // autoCheck();
+        autoCheck();
     }, function (err) {
 
     })
@@ -46,15 +48,15 @@ function onRegionCheck (e, treeId, treeNode) {
     checkNode.push(node);
 }
 
-// function autoCheck () {
-//     var zTree = $.fn.zTree.getZTreeObj("locationTree");
-//     for (var i = 0; i < locationList.length; i++) {
-//         var id = locationList[i].id || locationList[i].locId;
-//         var node = zTree.getNodeByTId("orgPostTree_" + id);
-//         zTree.checkNode(node, true);
-//         zTree.expandNode(node, true, true, true);
-//         checkNode.push(node);
-//     }
-// }
+function autoCheck () {
+    var zTree = $.fn.zTree.getZTreeObj("regionTree");
+    for (var i = 0; i < areaList.length; i++) {
+        var id = areaList[i].id;
+        var node = zTree.getNodeByTId("orgPostTree_" + id);
+        zTree.checkNode(node, true);
+        zTree.expandNode(node, true, true, true);
+        checkNode.push(node);
+    }
+}
 
 getCommonRegion();

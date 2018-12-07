@@ -1,4 +1,5 @@
 var loading = new Loading();
+var dictionaryData = new Dictionary();
 // toastr
 toastr.options = {
   "closeButton": false,
@@ -96,9 +97,55 @@ function initSideBar(results){     //初始化侧边菜单
     loading.screenMaskDisable('container');
 }
 
+// 获取字典数据
+function getDictionaryData () {
+    $http.get('/tbDictionaryItem/getAllList', {}, function (data) {
+        dictionaryData.cityVillage(data.city_VILLAGE);
+        dictionaryData.scale(data.scale);
+        dictionaryData.orgPostLevel(data.org_POST_LEVEL);
+        dictionaryData.columType(data.colum_TYPE);
+        dictionaryData.colNullable(data.col_NULLABLE);
+        dictionaryData.editTable(data.editable);
+        dictionaryData.statusCd(data.status_CD);
+        dictionaryData.yesNo(data.yes_NO);
+        dictionaryData.ruleOperator(data.rule_OPERATOR);
+        dictionaryData.nationality(data.nationality);
+        dictionaryData.gender(data.gender);
+        dictionaryData.nation(data.nation);
+        dictionaryData.marriage(data.marriage);
+        dictionaryData.pliticalStatus(data.plitical_STATUS);
+        dictionaryData.schoolType(data.school_TYPE);
+        dictionaryData.memRelation(data.mem_RELATION);
+        dictionaryData.certType(data.cert_TYPE);
+        dictionaryData.acctType(data.acct_TYPE);
+        dictionaryData.userHostType(data.user_HOST_TYPE);
+        dictionaryData.orgTreeType(data.org_TREE_TYPE);
+        dictionaryData.relaType(data.rela_TYPE);
+        dictionaryData.property(data.property);
+        dictionaryData.refType(data.ref_TYPE);
+        dictionaryData.roleType(data.role_TYPE);
+        dictionaryData.grantObjType(data.grant_OBJ_TYPE);
+        dictionaryData.privType(data.priv_TYPE);
+        dictionaryData.privRefType(data.priv_REF_TYPE);
+        dictionaryData.compType(data.comp_TYPE);
+        dictionaryData.intfType(data.intf_TYPE);
+        dictionaryData.connectType(data.connect_TYPE);
+        dictionaryData.regionType(data.region_TYPE);
+        dictionaryData.locType(data.loc_TYPE);
+        dictionaryData.postType(data.post_TYPE);
+        dictionaryData.positionType(data.position_TYPE);
+        dictionaryData.nodeType(data.nodeType);
+        dictionaryData.areaType(data.areaType);
+        dictionaryData.countType(data.countType);
+        dictionaryData.contractType(data.contractType);
+    }, function (err) {
+
+    })
+}
+
 initUserInfo();
 initUserPermission();
-
+getDictionaryData();
 // layui admin
 // layui.config({
 //     base: '/vendors/layuiadmin/' //静态资源所在路径
