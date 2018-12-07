@@ -22,6 +22,6 @@ public interface TbPsnjobMapper extends BaseMapper<TbPsnjob> {
 
     public void delete(TbPsnjob tbPsnjob);
 
-    public List<TbPsnjobVo> getPsnjobPageBypsnId(Pagination page, @Param("psnjobVo") TbPsnjobVo psnjobVo);
+    public List<TbPsnjobVo> getPsnjobPageBypsnId(Pagination page, @Param("personnelId") Long personnelId);
 
 }

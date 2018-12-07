@@ -142,14 +142,14 @@
 
     <select id="getUserList" resultType="cn.ffcs.uoo.core.user.vo.ListUserVo">
         select ROWNUM id, at.*
-        from (select '1' type, t.acct_id, '主账号' name, t.acct
+        from (select '1' type, t.acct_id, '主账号' name, t.acct,t.status_cd,to_char(t.create_date, 'yyyy-MM-dd') as create_date
               from TB_ACCT t
               where t.status_cd = 1000
                 <if test="personnelId != null and personnelId != '' " >
                     and t.personnel_id = #{personnelId}
                 </if>
               union
-              select '2' type,t1.slave_acct_id acct_id, '从账号' name, t1.slave_acct as acct
+              select '2' type,t1.slave_acct_id acct_id, '从账号' name, t1.slave_acct as acct, t1.status_cd, to_char(t1.create_date, 'yyyy-MM-dd') as create_date
               from TB_SLAVE_ACCT t1, TB_ACCT t2
               where t1.status_cd = 1000
                 and t2.status_cd = 1000
@@ -191,19 +191,32 @@
     </select>
 
     <select id="getAcctOrg" resultType="cn.ffcs.uoo.core.user.vo.ListAcctOrgVo">
-        select ROWNUM id, t1.org_id, t1.full_name
+        select ROWNUM id, t2.acct_host_id,t2.acct_id,t1.org_id, t1.full_name, t1.org_name
           from tb_org t1, TB_account_ORG_REL t2
          where t1.status_cd = 1000
            and t2.status_cd = 1000
            and t1.org_id = t2.org_id
-        <if test="acctOrgVo.acctId != null and acctOrgVo.acctId != '' " >
-            and t2.acct_id = #{acctOrgVo.acctId}
+        <if test="acctId != null and acctId != '' " >
+            and t2.acct_id = #{acctId}
+        </if>
+
+    </select>
+
+    <select id="getAcctOrgByPsnId" resultType="cn.ffcs.uoo.core.user.vo.ListAcctOrgVo">
+        select t1.org_id, t1.org_name, t1.full_name, t2.acct_host_id
+        from tb_org t1, TB_account_ORG_REL t2, tb_acct t3
+        where t1.status_cd = 1000
+          and t2.status_cd = 1000
+          and t1.org_id = t2.org_id
+          and t2.acct_id = t3.acct_id
+        <if test="personnelId != null and personnelId != '' " >
+            and t3.personnel_id = #{personnelId}
         </if>
 
     </select>
 
     <select id="getSlaveAcctOrg" resultType="cn.ffcs.uoo.core.user.vo.ListAcctOrgVo">
-        select ROWNUM id, t2.acct_host_id,t1.org_id, t1.full_name
+        select ROWNUM id, t2.acct_host_id,t2.acct_id,t1.org_id, t1.full_name, t1.org_name
         from tb_org t1, TB_account_ORG_REL t2
         where t1.status_cd = 1000
         and t2.status_cd = 1000

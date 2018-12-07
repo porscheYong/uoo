@@ -11,6 +11,8 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * <p>
  *  服务实现类
@@ -36,6 +38,7 @@ public class TbPersonnelImageServiceImpl extends ServiceImpl<TbPersonnelImageMap
     public Object delTbPersonnelImageByPsnId(Long personnelId){
         TbPersonnelImage tbPersonnelImage = new TbPersonnelImage();
         tbPersonnelImage.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+        tbPersonnelImage.setStatusDate(new Date());
         EntityWrapper<TbPersonnelImage> wrapper = new EntityWrapper<TbPersonnelImage>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);

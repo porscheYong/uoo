@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.FieldFill;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
@@ -86,11 +87,13 @@ public class TbEdu extends Model<TbEdu> {
     /**
      * 入学日期
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     @TableField("BEGINDATE")
     private Date begindate;
     /**
      * 毕业日期
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     @TableField("ENDDATE")
     private Date enddate;
     /**
@@ -112,7 +115,7 @@ public class TbEdu extends Model<TbEdu> {
      * 状态
      */
     @JsonIgnore
-    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT)
     private String statusCd;
     /**
      * 创建时间
@@ -142,7 +145,7 @@ public class TbEdu extends Model<TbEdu> {
      * 状态变更的时间
      */
     @JsonIgnore
-    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT)
     private Date statusDate;
 
 

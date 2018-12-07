@@ -4,14 +4,17 @@ import cn.ffcs.uoo.core.personnel.constant.BaseUnitConstants;
 import cn.ffcs.uoo.core.personnel.constant.EumPersonnelResponseCode;
 import cn.ffcs.uoo.core.personnel.dao.TbCertMapper;
 import cn.ffcs.uoo.core.personnel.entity.TbCert;
+import cn.ffcs.uoo.core.personnel.entity.TbEdu;
 import cn.ffcs.uoo.core.personnel.service.TbCertService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
+import cn.ffcs.uoo.core.personnel.util.StrUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import zipkin2.Call;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +52,7 @@ public class TbCertServiceImpl extends ServiceImpl<TbCertMapper, TbCert> impleme
     public Object delTbCertByPsnId(Long personnelId){
         TbCert tbCert = new TbCert();
         tbCert.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+        tbCert.setStatusDate(new Date());
         EntityWrapper<TbCert> wrapper = new EntityWrapper<TbCert>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
@@ -66,4 +70,41 @@ public class TbCertServiceImpl extends ServiceImpl<TbCertMapper, TbCert> impleme
         Page<TbCert> page =  this.selectPage(new Page<TbCert>(pageNo, pageSize), new EntityWrapper<TbCert>().like(BaseUnitConstants.TBCERT_CERT_NO, keyWord).or().like(BaseUnitConstants.TBCERT_CERT_NAME, keyWord));
         return ResultUtils.success(page);
     }
+
+    @Override
+    public Object delTbCertById(Long certId){
+        TbCert tbCert = new TbCert();
+        tbCert.setCertId(certId);
+        tbCert.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+        tbCert.setStatusDate(new Date());
+        if(retBool(baseMapper.updateById(tbCert))){
+            return ResultUtils.success(null);
+        }
+        return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
+    }
+
+    @Override
+    public Object insertOrUpdateTbCert(Long personnelId, String certType, String certNo, String certName, String address){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
+        TbCert tbCert = this.selectOne(new EntityWrapper<TbCert>().allEq(map));
+        if(StrUtil.isNullOrEmpty(tbCert)){
+            tbCert = new TbCert();
+            tbCert.setPersonnelId(personnelId);
+
+        }
+        tbCert.setCertType(certType);
+        tbCert.setCertNo(certNo);
+        tbCert.setCertName(certName);
+        tbCert.setAddress(address);
+        if(!StrUtil.isNullOrEmpty(tbCert.getCertId())){
+            baseMapper.updateById(tbCert);
+        }else {
+            tbCert.setCertId(this.getId());
+            baseMapper.insert(tbCert);
+        }
+        return ResultUtils.success(null);
+    }
+
 }

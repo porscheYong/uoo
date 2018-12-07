@@ -6,12 +6,14 @@ import cn.ffcs.uoo.core.personnel.entity.TbEdu;
 import cn.ffcs.uoo.core.personnel.dao.TbEduMapper;
 import cn.ffcs.uoo.core.personnel.service.TbEduService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
+import cn.ffcs.uoo.core.personnel.util.StrUtil;
 import cn.ffcs.uoo.core.personnel.vo.TbEduVo;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,6 +60,7 @@ public class TbEduServiceImpl extends ServiceImpl<TbEduMapper, TbEdu> implements
         TbEdu tbEdu = new TbEdu();
         tbEdu.setEduId(eduId);
         tbEdu.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+        tbEdu.setStatusDate(new Date());
         if(retBool(baseMapper.updateById(tbEdu))){
             return ResultUtils.success(null);
         }
@@ -76,6 +79,7 @@ public class TbEduServiceImpl extends ServiceImpl<TbEduMapper, TbEdu> implements
     public Object delTbEduByPsnId(Long personnelId){
         TbEdu tbEdu = new TbEdu();
         tbEdu.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+        tbEdu.setStatusDate(new Date());
         EntityWrapper<TbEdu> wrapper = new EntityWrapper<TbEdu>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
@@ -87,15 +91,20 @@ public class TbEduServiceImpl extends ServiceImpl<TbEduMapper, TbEdu> implements
 
     @Override
     public Object getTbEduPage(Long personnelId, Integer pageNo, Integer pageSize){
-        pageNo = pageNo == null ? 0 : pageNo;
-        pageSize = pageSize == null ? 5 : pageSize;
-
-        EntityWrapper<TbEdu> wrapper = new EntityWrapper<TbEdu>();
-        wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
-        wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
-        Page<TbEdu> page = this.selectPage(new Page<TbEdu>(pageNo, pageSize), wrapper);
+        Page<TbEdu> page = this.getTbEduPageByPsnId(personnelId, pageNo, pageSize);
         return ResultUtils.success(page);
     }
 
+    @Override
+    public Page<TbEdu> getTbEduPage(Long personnelId){
+        return getTbEduPageByPsnId(personnelId, 0, 0);
+    }
 
+    public Page<TbEdu> getTbEduPageByPsnId(Long personnelId, Integer pageNo, Integer pageSize){
+        EntityWrapper<TbEdu> wrapper = new EntityWrapper<TbEdu>();
+        wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
+        Page<TbEdu> page = this.selectPage(new Page<TbEdu>(StrUtil.intiPageNo(pageNo), StrUtil.intiPageSize(pageSize)), wrapper);
+        return page;
+    }
 }

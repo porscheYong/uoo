@@ -2,7 +2,6 @@ package cn.ffcs.uoo.core.user.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
-import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.user.constant.BaseUnitConstants;
 import cn.ffcs.uoo.core.user.constant.EumUserResponeCode;
@@ -12,12 +11,13 @@ import cn.ffcs.uoo.core.user.util.ResponseResult;
 import cn.ffcs.uoo.core.user.util.ResultUtils;
 import cn.ffcs.uoo.core.user.util.StrUtil;
 import cn.ffcs.uoo.core.user.vo.*;
-import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,6 +57,11 @@ public class TbUserController extends BaseController {
     @Autowired
     private TbSlaveAcctService tbSlaveAcctService;
 
+    @Autowired
+    private AmqpTemplate template;
+
+
+
     @ApiOperation(value = "用户组织条件查询", notes = "条件分页查询")
     @ApiImplicitParam(name = "psonOrgVo", value = "用户条件VO", required = true, dataType = "PsonOrgVo")
     @UooLog(value = "用户组织条件查询", key = "getPageUserOrg")
@@ -95,10 +100,10 @@ public class TbUserController extends BaseController {
 
         JSONObject jsonObject= JSONObject.fromObject(result); // 将数据转成json字符串
         ResponseResult per = (ResponseResult)JSONObject.toBean(jsonObject, ResponseResult.class); //将json转成需要的对象
-        if("0".equals(per.getCode())){
+        if("0".equals(per.getState())){
             editFormUserVo.setPsnByUserVo((PsnByUserVo) per.getData());
         }else{
-            return  ResultUtils.error(per.getCode(), per.getMessage());
+            return  ResultUtils.error(per.getState(), per.getMessage());
         }
 
         /**
@@ -127,11 +132,51 @@ public class TbUserController extends BaseController {
     //-todo---新版本------------------------------------------------------------------------------------
 
     @ApiOperation(value = "选择用户信息", notes = "选择用户信息")
-    @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long",paramType="path")
+    @ApiImplicitParams ({
+            @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long", paramType = "path"),
+            @ApiImplicitParam(name = "pageNo", value = "当前页数", required = true, dataType = "Integer",paramType="path"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path")
+    })
     @UooLog(value = "人员查看用户查询", key = "getUserList")
     @RequestMapping(value = "/getUserList", method = RequestMethod.GET)
-    public Object getUserList(Long personnelId){
-        return ResultUtils.success(tbUserService.getUserList(personnelId));
+    public Object getUserList(Long personnelId, Integer pageNo, Integer pageSize){
+        return ResultUtils.success(tbUserService.getUserList(personnelId, pageNo, pageSize));
+    }
+
+    @ApiOperation(value = "新增人员(主从账号)用户", notes = "新增人员(主从账号)用户")
+    @ApiImplicitParams ({
+            @ApiImplicitParam(name = "userType", value = "用户类型", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long", paramType = "path")
+    })
+    @UooLog(value = "新增人员(主从账号)用户", key = "addPsnUser")
+    @RequestMapping(value = "/getPsnUser", method = RequestMethod.GET)
+    public Object addUser(String userType, Long personnelId){
+        TbAcct tbAcct = (TbAcct) tbAcctService.getTbAcctByPsnId(personnelId);
+        if("1".equals(userType)){
+            if(!StrUtil.isNullOrEmpty(tbAcct)){
+                return getFormAcct(tbAcct.getAcctId());
+            }
+            FormAcctVo formAcctVo = new FormAcctVo();
+            formAcctVo.setUserType("1");
+            formAcctVo.setPersonnelId(personnelId);
+            PersonnelInfoVo tbPersonnel = tbUserService.getPersonnelInfo(personnelId);
+            BeanUtils.copyProperties(tbPersonnel, formAcctVo);
+            return ResultUtils.success(formAcctVo);
+        }
+        if("2".equals(userType)){
+            if(StrUtil.isNullOrEmpty(tbAcct)){
+                return ResultUtils.error(EumUserResponeCode.ACCT_NO_EXIST_RE);
+            }
+            FormSlaveAcctVo formSlaveAcctVo = new FormSlaveAcctVo();
+            formSlaveAcctVo.setUserType("2");//从账号
+            formSlaveAcctVo.setSlaveAcctType("1");//应用
+            formSlaveAcctVo.setPersonnelId(personnelId);
+            PersonnelInfoVo tbPersonnel = tbUserService.getPersonnelInfo(personnelId);
+            BeanUtils.copyProperties(tbPersonnel, formSlaveAcctVo);
+            return ResultUtils.success(formSlaveAcctVo);
+        }
+
+        return null;
     }
 
     @ApiOperation(value = "主账号查询",notes = "主账号查询")
@@ -146,6 +191,9 @@ public class TbUserController extends BaseController {
         map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         map.put(BaseUnitConstants.TABLE_ACCT_ID, acctId);
         TbAcct tbAcct = tbAcctService.selectOne(new EntityWrapper<TbAcct>().allEq(map));
+        if(StrUtil.isNullOrEmpty(tbAcct)){
+            return ResultUtils.error(EumUserResponeCode.ACCT_NO_EXIST);
+        }
         formAcctVo.setTbAcct(tbAcct);
 
         //人员信息
@@ -158,9 +206,7 @@ public class TbUserController extends BaseController {
         formAcctVo.setTbRolesList(tbRolesList);
 
         //归属组织信息
-        ListAcctOrgVo acctOrgVo = new ListAcctOrgVo();
-        acctOrgVo.setAcctId(tbAcct.getAcctId());
-        Page<ListAcctOrgVo> acctOrgVoPage = tbUserService.getAcctOrg(acctOrgVo);
+        Page<ListAcctOrgVo> acctOrgVoPage = tbUserService.getAcctOrg(tbAcct.getAcctId(), 0, 0);
         formAcctVo.setAcctOrgVoPage(acctOrgVoPage);
 
         //从账号
@@ -200,7 +246,9 @@ public class TbUserController extends BaseController {
         formSlaveAcctVo.setTbRolesList(tbRolesList);
 
         //扩展信息
-        TbAcctExt tbAcctExt = tbAcctExtService.selectOne(new EntityWrapper<TbAcctExt>().eq("SLAVE_ACCT_ID", tbSlaveAcct.getSlaveAcctId()));
+        map.remove(BaseUnitConstants.TABLE_ACCT_ID);
+        map.put(BaseUnitConstants.TABLE_SLAVE_ACCT_ID, tbSlaveAcct.getSlaveAcctId());
+        TbAcctExt tbAcctExt = tbAcctExtService.selectOne(new EntityWrapper<TbAcctExt>().allEq(map));
         if(!StrUtil.isNullOrEmpty(tbAcctExt)){
             formSlaveAcctVo.setTbAcctExt(tbAcctExt);
         }
@@ -213,9 +261,13 @@ public class TbUserController extends BaseController {
         return ResultUtils.success(formSlaveAcctVo);
     }
 
-
-
-
+    @ApiOperation(value = "主账号组织关系",notes = "主账号组织关系")
+    @ApiImplicitParam(name = "personnelId", value = "人员号标识", required = true, dataType = "Long", paramType = "path")
+    @UooLog(value = "主账号组织关系",key = "getAcctOrgByPsnId")
+    @RequestMapping(value = "/getAcctOrgByPsnId", method = RequestMethod.GET)
+    public Object getAcctOrgByPsnId(Long personnelId){
+        return ResultUtils.success(tbUserService.getAcctOrgByPsnId(personnelId));
+    }
 
 }
 

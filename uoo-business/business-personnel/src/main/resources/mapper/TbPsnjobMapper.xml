@@ -39,8 +39,8 @@
                      on t1.org_id = t2.org_id
                             and t1.status_cd = t2.status_cd
         where t1.status_cd = 1000
-        <if test="psnjobVo.personnelId != null and psnjobVo.personnelId != '' ">
-            and t1.personnel_id = #{psnjobVo.personnelId}
+        <if test="personnelId != null and personnelId != '' ">
+            and t1.personnel_id = #{personnelId}
         </if>
 
     </select>

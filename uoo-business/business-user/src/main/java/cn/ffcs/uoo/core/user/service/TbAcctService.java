@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.user.service;
 
 import cn.ffcs.uoo.core.user.entity.TbAcct;
 import cn.ffcs.uoo.core.user.entity.TbRoles;
+import cn.ffcs.uoo.core.user.vo.EditFormAcctVo;
 import com.baomidou.mybatisplus.service.IService;
 import org.apache.ibatis.annotations.Param;
 
@@ -57,4 +58,20 @@ public interface TbAcctService extends IService<TbAcct> {
      * @return
      */
     public Object getTbAcctByPsnId(Long personelId);
+
+    /**
+     * 主账号  新增或者更新
+     * @param editFormAcctVo
+     * @param tbAcct
+     * @param acctId
+     * @return
+     */
+    public Object insertOrUpdateTbAcct(EditFormAcctVo editFormAcctVo, TbAcct tbAcct, Long acctId);
+
+    /**
+     * 根据账号获取 账号信息
+     * @param acct
+     * @return
+     */
+    public TbAcct getTbAcctByAcct(String acct);
 }

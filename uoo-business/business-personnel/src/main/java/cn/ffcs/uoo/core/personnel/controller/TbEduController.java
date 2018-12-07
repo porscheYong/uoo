@@ -5,6 +5,7 @@ import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.core.personnel.entity.TbEdu;
 import cn.ffcs.uoo.core.personnel.entity.TbPsnjob;
 import cn.ffcs.uoo.core.personnel.service.TbEduService;
+import cn.ffcs.uoo.core.personnel.util.ResultUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;

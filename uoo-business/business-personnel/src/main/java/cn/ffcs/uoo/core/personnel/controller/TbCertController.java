@@ -3,7 +3,7 @@ package cn.ffcs.uoo.core.personnel.controller;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.controller.BaseController;
-import cn.ffcs.uoo.core.personnel.annotion.SendMqMsg;
+
 import cn.ffcs.uoo.core.personnel.entity.TbCert;
 import cn.ffcs.uoo.core.personnel.service.TbCertService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
@@ -35,29 +35,27 @@ public class TbCertController extends BaseController {
     @ApiOperation(value = "新增证件信息",notes = "证件信息新增")
     @ApiImplicitParam(name = "tbCert", value = "证件信息", required = true, dataType = "TbCert")
     @UooLog(value = "新增证件信息", key = "addCert")
-    @SendMqMsg(type = "person", handle ="update", column ="personnelId")
     @RequestMapping(value = "/addCert", method = RequestMethod.POST)
     public Object addCert(TbCert tbCert) {
-        Long certId = tbCertService.getId();
         tbCert.setCertId(tbCertService.getId());
         tbCertService.insert(tbCert);
-        return ResultUtils.success(127);
+        return ResultUtils.success(tbCert);
     }
 
     @ApiOperation(value = "修改证件信息",notes = "证件信息修改")
     @ApiImplicitParam(name = "tbCert", value = "证件信息", required = true, dataType = "TbCert")
     @UooLog(value = "修改证件信息", key = "updateCert")
-    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @RequestMapping(value = "/updateCert", method = RequestMethod.PUT)
     public void updateCert(TbCert tbCert) {
         tbCertService.updateAllColumnById(tbCert);
     }
 
     @ApiOperation(value = "删除证件信息", notes = "证件信息删除")
-    @ApiImplicitParam(name = "tbCert", value = "证件信息", required = true, dataType = "TbCert")
+    @ApiImplicitParam(name = "certId", value = "教育信息标识", required = true, dataType = "Long",paramType="path")
     @UooLog(value = "删除证件信息", key = "delCert")
-    @RequestMapping(value="", method = RequestMethod.DELETE)
-    public void delCert(TbCert tbCert) {
-        tbCertService.delete(tbCert);
+    @RequestMapping(value="/delCert", method = RequestMethod.DELETE)
+    public void delCert(Long certId) {
+        tbCertService.delTbCertById(certId);
     }
 
     @ApiOperation(value="证件查询",notes="证件查询")

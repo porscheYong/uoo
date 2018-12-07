@@ -6,11 +6,13 @@ import cn.ffcs.uoo.core.personnel.dao.TbContactMapper;
 import cn.ffcs.uoo.core.personnel.entity.TbContact;
 import cn.ffcs.uoo.core.personnel.service.TbContactService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
+import cn.ffcs.uoo.core.personnel.util.StrUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +53,7 @@ public class TbContactServiceImpl extends ServiceImpl<TbContactMapper, TbContact
     public Object delTbContactByPsnId(Long personnelId){
         TbContact tbContact = new TbContact();
         tbContact.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+        tbContact.setStatusDate(new Date());
         EntityWrapper<TbContact> wrapper = new EntityWrapper<TbContact>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
@@ -58,5 +61,23 @@ public class TbContactServiceImpl extends ServiceImpl<TbContactMapper, TbContact
             return ResultUtils.success(null);
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
+    }
+
+    @Override
+    public Object addOrUpdateTbContact(List<TbContact> tbContactList, Long personnelId, String contactType){
+        if(tbContactList != null && tbContactList.size() > 0){
+            for(TbContact tbContact : tbContactList){
+                if(!StrUtil.isNullOrEmpty(tbContact.getContactId())){
+                    tbContact.setContactType(contactType);
+                    baseMapper.updateById(tbContact);
+                }else{
+                    tbContact.setContactId(this.getId());
+                    tbContact.setContactType(contactType);
+                    tbContact.setPersonnelId(personnelId);
+                    baseMapper.insert(tbContact);
+                }
+            }
+        }
+        return null;
     }
 }

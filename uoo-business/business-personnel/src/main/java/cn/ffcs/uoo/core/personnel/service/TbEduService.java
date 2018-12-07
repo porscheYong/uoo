@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.core.personnel.service;
 
 import cn.ffcs.uoo.core.personnel.entity.TbEdu;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -60,5 +61,12 @@ public interface TbEduService extends IService<TbEdu> {
      * @return
      */
     public Object getTbEduPage(Long personnelId, Integer pageNo, Integer pageSize);
+
+    /**
+     * personnelId 查询
+     * @param personnelId
+     * @return
+     */
+    public Page<TbEdu> getTbEduPage(Long personnelId);
 
 }

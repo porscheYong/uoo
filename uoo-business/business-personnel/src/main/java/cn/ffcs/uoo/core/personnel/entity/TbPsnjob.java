@@ -42,17 +42,19 @@ public class TbPsnjob extends Model<TbPsnjob> {
     /**
      * 任职开始时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     @TableField("BEGIN_TIME")
     private Date beginTime;
     /**
      * 任职结束时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     @TableField("END_TIME")
     private Date endTime;
     /**
      * 状态
      */
-    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT)
     private String statusCd;
     /**
      * 创建时间
@@ -82,7 +84,7 @@ public class TbPsnjob extends Model<TbPsnjob> {
      * 状态变更的时间
      */
     @JsonIgnore
-    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT)
     private Date statusDate;
 
 

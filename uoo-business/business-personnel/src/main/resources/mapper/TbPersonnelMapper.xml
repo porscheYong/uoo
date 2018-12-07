@@ -95,59 +95,8 @@
         </where>
     </select>
 
-    <select id="getPsnNbrId" resultType="java.lang.Long">
-        SELECT seq_psn_nbr_id.nextval FROM dual
-    </select>
-
-    <select id="getPsnCodeId" resultType="java.lang.Long">
-        SELECT seq_psn_code_id.nextval FROM dual
-    </select>
-
-    <select id="getPsnOrg" resultType="cn.ffcs.uoo.core.personnel.vo.PsonOrgVo">
-        WITH ORGTREE AS
-        (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//','/') FULL_NAME,
-        ORG_NAME,ORG_ID,SUP_ORG_ID,SORT, LOC_ID, AREA_CODE_ID,ORG_CODE,STATUS_CD
-        FROM (SELECT A.*, B.SUP_ORG_ID
-        FROM TB_ORG A, TB_ORG_REL B
-        WHERE A.STATUS_CD = 1000
-        AND B.STATUS_CD = 1000
-        AND A.ORG_ID = B.ORG_ID) AA
-        START WITH ORG_ID = #{orgRootId}
-        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID)
-        SELECT *
-        FROM (SELECT AA.PROPERTY ,
-        AA.DOUBLE_NAME ,
-        AA.ORG_TREE_NAME ,
-        ORG.ORG_NAME ,
-        (SELECT B.FULL_NAME FROM ORGTREE B WHERE B.ORG_ID = AA.ORG_ID) full_name,
-        PER.PSN_NAME ,
-        POST.POST_NAME
-        FROM (SELECT A.*,C.Org_Tree_Name
-        FROM TB_ORG_PERSON_REL        A,
-        TB_ORGTREE_ORGPERSON_REL B,
-        TB_ORG_TREE              C
-        WHERE A.STATUS_CD = '1000'
-        AND B.STATUS_CD = '1000'
-        AND C.STATUS_CD = '1000'
-        AND A.ORG_PERSON_ID = B.ORG_PERSON_ID
-        AND B.ORG_TREE_ID = C.ORG_TREE_ID
-        AND C.ORG_ID = #{orgRootId}
-        <if test = "orgId != null and orgId != ''" >
-          AND A.ORG_ID = #{orgId}
-        </if>
-        <if test ="personId != null and personId != ''" >
-            AND A.PERSONNEL_ID = #{personId}
-        </if>
-        ) AA
-        LEFT JOIN TB_ORG ORG
-        ON ORG.ORG_ID = AA.ORG_ID
-        AND ORG.Status_Cd = AA.Status_Cd
-        LEFT JOIN TB_PERSONNEL PER
-        ON PER.PERSONNEL_ID = AA.PERSONNEL_ID
-        AND ORG.STATUS_CD = AA.STATUS_CD
-        LEFT JOIN TB_POST POST
-        ON POST.POST_ID = AA.POST_ID
-        AND ORG.STATUS_CD = AA.STATUS_CD) AB where 1 = 1
+    <select id="getSeqPsnCode" resultType="java.lang.Long">
+        SELECT seq_psn_code.nextval FROM dual
     </select>
 
     <select id="getPsnByUser" resultType="cn.ffcs.uoo.core.personnel.vo.PsnByUserVo">
@@ -196,60 +145,58 @@
 
     </select>
 
-    <insert id="insertOrgPsnRel" >
-        insert into tb_org_person_rel
-                (ORG_PERSON_ID,
-                 ORG_ID,
-                 PERSONNEL_ID,
-                 POST_ID,
-                 REF_TYPE,
-                 PROPERTY,
-                 DOUBLE_NAME,
-                 SORT,
-                 STATUS_CD,
-                 CREATE_DATE,
-                 CREATE_USER,
-                 UPDATE_DATE,
-                 UPDATE_USER,
-                 STATUS_DATE)
-        values
-               (seq_tb_org_person_rel_id.nextval,
-                #{orgId},
-                #{personnelId},
-                null,
-                '',
-                '',
-                '',
-                null,
-                '1000',
-                sysdate,
-                0,
-                sysdate,
-                0,
-                sysdate)
-    </insert>
+    <select id="getAcctNumByPsnId" resultType="java.lang.Integer">
+        select count(1)
+        from tb_acct t
+        where t.status_cd = 1000
+        <if test ="personnelId != null and personnelId != ''" >
+            and t.personnel_id = #{personnelId}
+        </if>
+    </select>
 
-    <insert id="insertOrgTreeOrgPsnRel">
-        insert into tb_orgtree_orgperson_rel
-                (ORGTREE_ORGPERSON_ID,
-                 ORG_TREE_ID,
-                 ORG_PERSON_ID,
-                 STATUS_CD,
-                 CREATE_DATE,
-                 CREATE_USER,
-                 UPDATE_DATE,
-                 UPDATE_USER,
-                 STATUS_DATE)
-        values
-               (seq_tb_orgtree_orgper_rel_id.nextval,
-                #{orgRootId},
-                #{personnelId},
-                '1000',
-                sysdate,
-                0,
-                sysdate,
-                0,
-                sysdate)
-    </insert>
+    <select id="getFreePsnInfo" resultType="cn.ffcs.uoo.core.personnel.vo.FreePsnInfoVo">
+        select d.* from (select a.*, b.cert_no, c.content as mobile
+                         from (select t.personnel_id,
+                                      t.psn_name,
+                                      t.psn_nbr,
+                                      t.create_date,
+                                      t.status_cd
+                               from tb_personnel t
+                               where t.status_cd = 1000
+                                 and not exists
+                                       (select t1.personnel_id
+                                        from tb_org_person_rel t1
+                                        where t1.status_cd = 1000
+                                          and t1.personnel_id = t.personnel_id)) a
+                                  left join tb_cert b
+                                      on a.personnel_id = b.personnel_id
+                                             and b.status_cd = 1000
+                                  left join tb_contact c
+                                      on a.personnel_id = c.personnel_id
+                                             and c.status_cd = 1000
+                                             and c.contact_type = '1'
+                                             and c.first_flag = 1) d
+        <if test ="keyWord != null and keyWord != ''" >
+        where d.psn_name like '%'||#{keyWord}||'%'
+           or d.psn_nbr like  '%'||#{keyWord}||'%'
+           or d.cert_no like '%'||#{keyWord}||'%'
+           or d.mobile like '%'||#{keyWord}||'%'
+        </if>
+    </select>
+
+    <select id="getIdCardNcCode" resultType="cn.ffcs.uoo.core.personnel.vo.UomGrpUserOrgInfoVo">
+        SELECT v.UNICODE,
+               v.USERNAME,
+               v.CTIDENTITYNUMBER  as certNo,
+               v.CTPREFERREDMOBILE as mobile,
+               v.CTOU,
+               v.DEL_STATUS
+        FROM octopus.V_UOMGRP_USER_ORG_INFO v
+        where v.DEL_STATUS = 1000
+        <if test ="certNo != null and certNo != ''" >
+          and v.CTIDENTITYNUMBER = #{certNo}
+        </if>
+    </select>
+
 
 </mapper>

@@ -6,11 +6,13 @@ import cn.ffcs.uoo.core.personnel.entity.TbFamily;
 import cn.ffcs.uoo.core.personnel.dao.TbFamilyMapper;
 import cn.ffcs.uoo.core.personnel.service.TbFamilyService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
+import cn.ffcs.uoo.core.personnel.util.StrUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,6 +64,7 @@ public class TbFamilyServiceImpl extends ServiceImpl<TbFamilyMapper, TbFamily> i
         TbFamily tbFamily = new TbFamily();
         tbFamily.setFamilyId(familyId);
         tbFamily.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+        tbFamily.setStatusDate(new Date());
         if(retBool(baseMapper.updateById(tbFamily))){
             return ResultUtils.success(null);
         }
@@ -80,6 +83,7 @@ public class TbFamilyServiceImpl extends ServiceImpl<TbFamilyMapper, TbFamily> i
     public Object delTbFamilyByPsnId(Long personnelId){
         TbFamily tbFamily = new TbFamily();
         tbFamily.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+        tbFamily.setStatusDate(new Date());
         EntityWrapper<TbFamily> wrapper = new EntityWrapper<TbFamily>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
@@ -91,14 +95,21 @@ public class TbFamilyServiceImpl extends ServiceImpl<TbFamilyMapper, TbFamily> i
 
     @Override
     public Object getTbFamilyPage(Long personnelId, Integer pageNo, Integer pageSize){
-        pageNo = pageNo == null ? 0 : pageNo;
-        pageSize = pageSize == null ? 5 : pageSize;
+        Page<TbFamily> page = getTbFamilyPageByPsnId(personnelId, pageNo, pageSize);
+        return ResultUtils.success(page);
+    }
 
+    @Override
+    public Page<TbFamily> getTbFamilyPage(Long personnelId){
+        return getTbFamilyPageByPsnId(personnelId, 0, 0);
+    }
+
+    public Page<TbFamily> getTbFamilyPageByPsnId(Long personnelId, Integer pageNo, Integer pageSize){
         EntityWrapper<TbFamily> wrapper = new EntityWrapper<TbFamily>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
-        Page<TbFamily> page = this.selectPage(new Page<TbFamily>(pageNo, pageSize), wrapper);
-        return ResultUtils.success(page);
+        Page<TbFamily> page = this.selectPage(new Page<TbFamily>(StrUtil.intiPageNo(pageNo), StrUtil.intiPageSize(pageSize)), wrapper);
+        return page;
     }
 
 }

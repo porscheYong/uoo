@@ -80,7 +80,7 @@ public class TbAcctExt extends Model<TbAcctExt> {
      * 状态
      */
     @JsonIgnore
-    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT)
     private String statusCd;
     /**
      * 创建时间
@@ -110,7 +110,7 @@ public class TbAcctExt extends Model<TbAcctExt> {
      * 状态变更的时间
      */
     @JsonIgnore
-    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT)
     private Date statusDate;
 
     @Override

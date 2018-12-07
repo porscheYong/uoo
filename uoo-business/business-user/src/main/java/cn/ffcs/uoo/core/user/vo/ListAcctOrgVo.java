@@ -4,7 +4,7 @@ import cn.ffcs.uoo.base.common.vo.BaseVo;
 import lombok.Data;
 
 @Data
-public class ListAcctOrgVo extends BaseVo {
+public class ListAcctOrgVo {
 
     /**
      * 序号
@@ -22,6 +22,10 @@ public class ListAcctOrgVo extends BaseVo {
      * 主账号标识
      */
     private Long acctId;
+    /**
+     * 组织名称
+     */
+    private String orgName;
     /**
      * 组织名称
      */

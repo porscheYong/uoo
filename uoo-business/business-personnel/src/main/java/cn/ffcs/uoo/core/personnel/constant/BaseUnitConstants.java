@@ -47,7 +47,15 @@ public class BaseUnitConstants {
 
     public static final String TBPSNJOB_PSNJOB_ID = "PSNJOB_ID";
 
+    public static final String TBCONTACT_CONTENT = "CONTENT";
+
     public static final String  MSG_SHARING_QUEUE= "message_sharing_center_queue";
+
+    public static final Integer PAGE_NO = 1;
+
+    public static final Integer PAGE_SIZE = 5;
+
+    public static final String INTI_CERT_TYPE = "1";
 
     /**
      * 是推导

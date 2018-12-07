@@ -75,7 +75,7 @@ public class TbPsnjobController extends BaseController {
     @RequestMapping(value="/getTbPsnjobPage",method = RequestMethod.GET)
     public Object getTbPsnjobPage( Long personnelId, Integer pageNo, Integer pageSize){
 
-        return tbPsnjobService.getPsnjobPageBypsnId(personnelId, pageNo, pageSize);
+        return ResultUtils.success(tbPsnjobService.getPsnjobPageBypsnId(personnelId, pageNo, pageSize));
     }
 
 

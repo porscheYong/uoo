@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.personnel.service;
 import cn.ffcs.uoo.core.personnel.entity.TbEdu;
 import cn.ffcs.uoo.core.personnel.entity.TbFamily;
 import cn.ffcs.uoo.core.personnel.vo.TbFamilyVo;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -61,11 +62,18 @@ public interface TbFamilyService extends IService<TbFamily> {
     public Object delTbFamilyByPsnId(Long personnelId);
 
     /**
-     * 家庭陈洋分页查询
+     * 家庭成员分页查询
      * @param personnelId
      * @param pageNo
      * @param pageSize
      * @return
      */
     public Object getTbFamilyPage(Long personnelId, Integer pageNo, Integer pageSize);
+
+    /**
+     * personnelId 获取 家庭成员
+     * @param personnelId
+     * @return
+     */
+    public Page<TbFamily> getTbFamilyPage(Long personnelId);
 }

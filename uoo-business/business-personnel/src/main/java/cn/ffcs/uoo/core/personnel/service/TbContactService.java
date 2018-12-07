@@ -32,4 +32,13 @@ public interface TbContactService extends IService<TbContact> {
      */
     public Object delTbContactByPsnId(Long personnelId);
 
+    /**
+     * 联系方式 新增或修改
+     * @param tbContactList
+     * @param personnelId
+     * @param contactType
+     * @return
+     */
+    public Object addOrUpdateTbContact(List<TbContact> tbContactList, Long personnelId, String contactType);
+
 }

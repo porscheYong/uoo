@@ -53,6 +53,12 @@ public class BaseUnitConstants {
 
 	public static  final String TBALE_ROLE_ID = "ROLE_ID";
 
+	public static final String  MSG_SHARING_QUEUE= "message_sharing_center_queue";
+
+	public static final Integer PAGE_NO = 1;
+
+	public static final Integer PAGE_SIZE = 5;
+
 
 
 	/**

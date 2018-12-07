@@ -6,13 +6,17 @@ import cn.ffcs.uoo.core.personnel.dao.TbPersonnelMapper;
 import cn.ffcs.uoo.core.personnel.entity.TbPersonnel;
 import cn.ffcs.uoo.core.personnel.service.TbPersonnelService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
+import cn.ffcs.uoo.core.personnel.util.StrUtil;
 import cn.ffcs.uoo.core.personnel.vo.*;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -53,19 +57,7 @@ public class TbPersonnelServiceImpl extends ServiceImpl<TbPersonnelMapper, TbPer
     }
 
     @Override
-    public Long getPsnNbrId(){ return baseMapper.getPsnNbrId();}
-
-    @Override
-    public Long getPsnCodeId(){ return baseMapper.getPsnCodeId();}
-
-    @Override
-    public Page<PsonOrgVo> selectPsonOrgPage(PsonOrgVo psonOrgVo){
-        Page<PsonOrgVo> page = new Page<PsonOrgVo>(psonOrgVo.getPageNo()==0?1:psonOrgVo.getPageNo()
-                ,psonOrgVo.getPageSize()==0?10:psonOrgVo.getPageSize());
-        List<PsonOrgVo> list = baseMapper.getPsnOrg(page, psonOrgVo);
-        page.setRecords(list);
-        return page;
-    }
+    public Long getSeqPsnCode(){ return baseMapper.getSeqPsnCode();}
 
     @Override
     public PsnByUserVo getPsnByUser(PsnByUserVo psnByUserVo){
@@ -76,6 +68,7 @@ public class TbPersonnelServiceImpl extends ServiceImpl<TbPersonnelMapper, TbPer
     public Object delTbPersonnelByPsnId(Long personnelId){
         TbPersonnel tbPersonnel = new TbPersonnel();
         tbPersonnel.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+        tbPersonnel.setStatusDate(new Date());
         EntityWrapper<TbPersonnel> wrapper = new EntityWrapper<TbPersonnel>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
@@ -86,11 +79,11 @@ public class TbPersonnelServiceImpl extends ServiceImpl<TbPersonnelMapper, TbPer
     }
 
     @Override
-    public Page<PsnBasicInfoVo> getPsnBasicInfo(String keyWord, int pageNo, int pageSize){
+    public Page<PsnBasicInfoVo> getPsnBasicInfo(String keyWord, Integer pageNo, Integer pageSize){
         PsnBasicInfoVo psnBasicInfoVo = new PsnBasicInfoVo();
         psnBasicInfoVo.setKeyWord(keyWord);
-        psnBasicInfoVo.setPageNo(pageNo == 0 ? 1 : pageNo);
-        psnBasicInfoVo.setPageSize(pageSize == 0 ? 5 : pageSize);
+        psnBasicInfoVo.setPageNo(StrUtil.intiPageNo(pageNo));
+        psnBasicInfoVo.setPageSize(StrUtil.intiPageSize(pageSize));
         Page<PsnBasicInfoVo> page = new Page<PsnBasicInfoVo>(psnBasicInfoVo.getPageNo(), psnBasicInfoVo.getPageSize());
         List<PsnBasicInfoVo> list = baseMapper.getPsnBasicInfo(page, psnBasicInfoVo);
         page.setRecords(list);
@@ -98,14 +91,49 @@ public class TbPersonnelServiceImpl extends ServiceImpl<TbPersonnelMapper, TbPer
     }
 
     @Override
-    public Object addOrgPsn(List<PsonOrgVo> psonOrgVos){
-        if(psonOrgVos != null && psonOrgVos.size() > 0){
-            for(PsonOrgVo psonOrgVo : psonOrgVos){
-                baseMapper.insertOrgPsnRel(psonOrgVo.getOrgId(), psonOrgVo.getPersonId());
-                baseMapper.insertOrgTreeOrgPsnRel(psonOrgVo.getOrgRootId(), psonOrgVo.getPersonId());
-            }
+    public boolean isExistsAcct( Long personnelId){
+        if(baseMapper.getAcctNumByPsnId(personnelId) > 0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Object insertOrUpdateTbPsn(TbPersonnel tbPersonnel){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, tbPersonnel.getPersonnelId());
+        TbPersonnel personnel = this.selectOne(new EntityWrapper<TbPersonnel>().allEq(map));
+
+        if(StrUtil.isNullOrEmpty(tbPersonnel.getNcCode())){
+            String psnCode = "H" + StrUtil.padLeading(String.valueOf(this.getSeqPsnCode()), 8 , "0");
+            tbPersonnel.setPsnCode(psnCode);
+            tbPersonnel.setPsnNbr(psnCode);
+            tbPersonnel.setNcCode("");
+        }else{
+            String[] arr = tbPersonnel.getNcCode().split("@");
+            tbPersonnel.setPsnCode(arr[0]);
+            tbPersonnel.setPsnNbr(arr[0]);
         }
 
-        return null;
+        if(StrUtil.isNullOrEmpty(personnel)){
+            tbPersonnel.setUuid(StrUtil.getUUID());
+            baseMapper.insert(tbPersonnel);
+        }else {
+            baseMapper.updateById(tbPersonnel);
+        }
+        return ResultUtils.success(null);
+    }
+
+    @Override
+    public Page<FreePsnInfoVo> getFreePsnInfo(String keyWord, Integer pageNo, Integer pageSize){
+        Page<FreePsnInfoVo> page = new Page<FreePsnInfoVo>(StrUtil.intiPageNo(pageNo), StrUtil.intiPageSize(pageSize));
+        page.setRecords(baseMapper.getFreePsnInfo(page, keyWord));
+        return page;
+    }
+
+    @Override
+    public UomGrpUserOrgInfoVo getIdCardNcCode(String certNo){
+        return baseMapper.getIdCardNcCode(certNo);
     }
 }
