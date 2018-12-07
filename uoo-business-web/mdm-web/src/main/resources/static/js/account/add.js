@@ -39,8 +39,8 @@ function initPsnTable(keyWord) {
         'initComplete': function (settings, json) {
             console.log(settings, json)
         },
-        "scrollY": "185px",
-        "scrollCollapse": true,
+        // "scrollY": "185px",
+        // "scrollCollapse": true,
         'columns': [
                 { 'data': "psnName", 'title': '姓名', 'className': 'row-psnName' ,
                 'render': function (data, type, row, meta) {
@@ -99,8 +99,8 @@ function initPsnTable(keyWord) {
 function engineWithDefaults(q, sync, async) {
     if (q === '') {
         $("#psnTable").html('');
-        $(".psn-table_wrapper .bottom").remove();
-        //$(".psn-table").removeClass("is-open");
+        // $("#psntable_wrapper .bottom").remove();
+        $(".psn-table").removeClass("is-open");
     }
     else {
         engine.search(q, sync, async);
@@ -121,7 +121,7 @@ $('#psnName').typeahead({
     }
 }, {
     source: engineWithDefaults,
-    displayKey: 'orgName',
+    displayKey: 'psnName',
     templates: {
         suggestion: empty
     }
@@ -130,6 +130,8 @@ $('#psnName').typeahead({
         $('.Typeahead-spinner').show();
         if($("#psnName").val() != '' && !Regx.test($("#psnName").val())){
             initPsnTable($("#psnName").val());
+        }else{
+            $(".psn-table").removeClass("is-open");
         }
     })
   .on('typeahead:asynccancel', function() {
@@ -166,3 +168,9 @@ function psnNameClick(personnelId){
     }
     window.location.href = url;
 }
+
+$("#psnName").focus(function (){     
+    if($("#psnName").val() == ''){
+        $(".psn-table").removeClass("is-open");
+    }
+})

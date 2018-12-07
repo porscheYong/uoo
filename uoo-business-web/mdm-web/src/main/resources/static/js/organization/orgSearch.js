@@ -3,6 +3,7 @@ var empty;
 var table;
 var Regx = /^[A-Za-z0-9]*$/;
 var orgIdList = [];
+var isCheckedOrg = 0;
 
 var settingA = {
 		data: {
@@ -53,7 +54,7 @@ function initOrgSearchTable(search) {
         'initComplete': function (settings, json) {
             console.log(settings, json)
         },
-        "scrollY": "200px",
+        // "scrollY": "200px",
         'columns': [
             { 'data': "fullName", 'title': '组织搜索结果', 'className': 'row-fullname',
                 'render': function (data, type, row, meta) {
@@ -108,7 +109,10 @@ function engineWithDefaults(q, sync, async) {
     if (q === '') {
         $('#orgTable').html('');
         $(".org-table").removeClass("is-open");
-        initOrgRelTree();
+        if(isCheckedOrg == 1){
+            initOrgRelTree();
+            isCheckedOrg = 0;
+        }
     }
     else {
         engine.search(q, sync, async);
@@ -187,7 +191,15 @@ function initRestructOrgRelTree (orgId) {        //初始化树
 }       
 
 function orgClick(orgId){
+    isCheckedOrg = 1;
     console.log(orgId);
     $(".org-table").removeClass("is-open");
     initRestructOrgRelTree(orgId);
 }
+
+$("#orgName").focus(function (){     
+    if($("#orgName").val() == ''){
+        // isCheckedOrg = 0;
+        $(".org-table").removeClass("is-open");
+    }
+})
