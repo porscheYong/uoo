@@ -1,10 +1,10 @@
-package cn.ffcs.uoo.base.common.aop;
+package cn.ffcs.uoo.core.personnel.aop;
 
-import cn.ffcs.uoo.base.common.annotion.SendMqMsg;
+import cn.ffcs.uoo.core.personnel.annotion.SendMqMsg;
 
-import cn.ffcs.uoo.base.common.vo.MqContextVo;
-import cn.ffcs.uoo.base.common.vo.MqMessageVo;
-import cn.ffcs.uoo.base.common.vo.ResponseResultVo;
+import cn.ffcs.uoo.core.personnel.vo.MqContextVo;
+import cn.ffcs.uoo.core.personnel.vo.MqMessageVo;
+import cn.ffcs.uoo.core.personnel.vo.ResponseResultVo;
 import com.alibaba.fastjson.JSON;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -29,7 +29,7 @@ public class RabbitMqAop {
     @Resource
     private AmqpTemplate template;
 
-    @Pointcut(value = "@annotation(cn.ffcs.uoo.base.common.annotion.SendMqMsg)")
+    @Pointcut(value = "@annotation(cn.ffcs.uoo.core.personnel.annotion.SendMqMsg)")
     private void pointcut() {
     }
 

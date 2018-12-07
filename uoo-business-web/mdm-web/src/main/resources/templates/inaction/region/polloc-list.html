@@ -50,13 +50,15 @@
         <span id="regionStrCurrent" class="name ft18" cid=""></span>
         <a class="icon icon-edit" id="editBtn" href="javascript:void(0)" onclick="goEdit()" style="vertical-align: top;"></a>
        <!--  <a class="glyphicon glyphicon-remove" id=" " href="javascript:void(0)" onclick="goDel()" style="vertical-align: top;"></a>
-      --> </div>
-      <div class="board-title">
-        <span id="regionStrFull" class="name ft18"> </span>
+       --> 
+       <div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;">
+            <span class="breadcrumb-item" id="regionStrFull"><!-- <a href="javascript:void(0);"> 啊实打实</a> --></span>
+        </div>
         <div class="fright">
           <a class="button-add" id="" href="JavaScript:void(0)" onclick="gotoAdd()"><span class="fa fa-plus-circle icon-add"></span>添加</a>
         </div>
       </div>
+       
       <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 5px;">
           <table id="orgTable" class="stripe" width="100%"></table>
       </div>
@@ -72,6 +74,7 @@
     <script src="/js/core/jquery.js"></script>
     <!-- Bootstrap -->
     <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/vendors/layer/layer.js"></script>
     <!-- jquery datatable -->
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
     <!-- init -->

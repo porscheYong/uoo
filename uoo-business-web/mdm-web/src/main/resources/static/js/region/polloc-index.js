@@ -24,9 +24,22 @@ $(document).ready(function() {
 		type : 'get',
 		success : function(data) {
 			if (data.state == 1000) {
-				$.fn.zTree.init($("#standardTree"), setting, data.data);
+				var ztree=$.fn.zTree.init($("#standardTree"), setting, data.data);
+				var rots=ztree.getNodes();
+				if(rots.length>0){
+					ztree.selectNode(rots[0]);
+					zTreeOnClick(null,null,rots[0]);
+				}
 			} else {
-				alert('加载行政区域树失败，请重试');
+				parent.layer.confirm(data.state==1000?'操作成功':'加载行政区域树失败，请重试', {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
+				
 			}
 		}
 	});
@@ -48,7 +61,14 @@ function loadTypeArr(){
 			if(data.state==1000){
 				typeArray=data.data;
 			}else{
-				alert('加载区域类型失败，请刷新重试');
+				parent.layer.confirm(data.state==1000?'操作成功':'加载区域类型失败，请重试', {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 			}
 			
 		}
