@@ -166,7 +166,12 @@ function initRestructOrgRelTree (orgId) {        //初始化树
 
         for(var i=0;i<data.length;i++){     //获取要显示的节点id pid name
             zTreeNodes.push({"id":data[i].id,"pid":data[i].pid,"name":data[i].name});
-            nodeArr.push(data[i].name);
+            if(i == data.length-1){
+                nodeArr.push({"node":{"id":data[i].id,"pid":data[i].pid,"name":data[i].name},"current":true});
+            }else{
+                nodeArr.push({"node":{"id":data[i].id,"pid":data[i].pid,"name":data[i].name},"current":false});
+            }
+            // nodeArr.push(data[i].name);
         }
 
         var zTree = $.fn.zTree.init($("#businessTree"), settingA, zTreeNodes);

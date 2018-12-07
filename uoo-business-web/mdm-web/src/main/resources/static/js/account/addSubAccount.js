@@ -458,6 +458,7 @@ parent.layer.open({
         parent.layer.close(index);
         $('#roleTel').importTags(checkNode);
         $('.ui-tips-error').css('display', 'none');
+        window.localStorage.setItem('userRoleList',JSON.stringify(checkRole));
         roleList = checkRole;
         console.log(roleList);
     },
