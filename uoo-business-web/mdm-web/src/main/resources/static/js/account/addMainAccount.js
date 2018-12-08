@@ -19,6 +19,11 @@ var roleList = [];      //需要上传的角色列表
 var userRoleList = [];      //用户已有角色列表
 var formValidate;
 var toastr = window.top.toastr;
+var pswTip = "1、登录密码必须包含数字、大写字母、小写字母、特殊符号中的3种，且长度大于8位"+
+              "2、登录密码中连续的或相同的数据或字母（包括倒叙）不能超过3位"+
+              "如：fz12348，abcd12格式不正确；ACabc123、Ab111aaa正确"+
+              "3、登录密码中不能包含员工账号、中文标点符号以及反斜杠\ "+
+              "4、键盘中连续按键不能超过3位；如：qweruio1，asdfuio1格式不正确；qeruio12、asdjkl12格式正确";
 
 $('#invalidDate').val(''),
 $('#effectDate').val(''),
@@ -606,6 +611,17 @@ $("#defaultPswTel").blur(function (){     //默认密码输入框失去焦点
   }
 })
 
+$('#defaultPswTel').click(function() {
+  var elSearch = $('input[type=password]');
+  if (elSearch.val() == '') {
+      elSearch.errorTip(pswTip);
+  }
+});
+
+// new Tips($('#defaultPswTel'), {
+//   content: '点击此按钮会注销你的账户，您的目前的操作都不能执行，直到你重新登录',
+//   align: 'right'
+// }); 
 
 
 if(opBtn==0){     //查看并编辑主账号

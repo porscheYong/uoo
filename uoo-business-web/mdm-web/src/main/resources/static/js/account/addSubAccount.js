@@ -362,7 +362,7 @@ function updateTbSlaveAcct(){       //更新从账号信息
         data: JSON.stringify(editFormSlaveAcctVo),
         dataType:"JSON",
         success: function (data) { //返回json结果
-            if(state.data === 1000){
+            if(data.state === 1000){
                 toastr.success(data.message);
                 submitToOther();
             }else{
