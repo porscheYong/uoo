@@ -153,6 +153,27 @@ public class PsonOrgVo extends BaseVo {
 
     private String isSearchlower;
 
+    //排序字段
+    private String sortField;
+    //排序方式
+    private String sortOrder;
+
+    public String getSortField() {
+        return sortField;
+    }
+
+    public void setSortField(String sortField) {
+        this.sortField = sortField;
+    }
+
+    public String getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(String sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+
     public String getIsSearchlower() {
         return isSearchlower;
     }

@@ -304,10 +304,34 @@ public class OrgPersonRelController extends BaseController {
                                                             String personnelId,
                                                             String isSearchlower,
                                                             String search,
+                                                            String sortField,
+                                                            String sortOrder,
                                                             Integer pageSize,
                                                             Integer pageNo
                                                             ){
         ResponseResult<Page<PsonOrgVo>> ret = new ResponseResult<>();
+
+        if(!StrUtil.isNullOrEmpty(sortField)){
+            if(StrUtil.isNullOrEmpty(sortOrder)){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("排序方式不能为空");
+                return ret;
+            }
+            if(!"DESC".equals(sortOrder.toUpperCase()) && !"ASC".equals(sortOrder.toUpperCase())){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("排序参数不对");
+                return ret;
+            }
+        }
+
+        if(!StrUtil.isNullOrEmpty(sortOrder)){
+            if(StrUtil.isNullOrEmpty(sortField)){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("排序字段不能为空");
+                return ret;
+            }
+        }
+
         if(StrUtil.isNullOrEmpty(orgId)){
             ret.setMessage("组织标识不能为空");
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -340,6 +364,8 @@ public class OrgPersonRelController extends BaseController {
         psonOrgVo.setOrgId(new Long(orgId));
         //psonOrgVo.setOrgRootId(new Long(orgRootId));
         psonOrgVo.setOrgTreeId(orgtree.getOrgTreeId());
+        psonOrgVo.setSortField(StrUtil.strnull(sortField));
+        psonOrgVo.setSortOrder(StrUtil.strnull(sortOrder));
         if(!StrUtil.isNullOrEmpty(personnelId)){
             psonOrgVo.setPersonnelId(new Long(personnelId));
         }
