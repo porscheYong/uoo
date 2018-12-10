@@ -300,6 +300,7 @@ public class OrgPersonRelController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(String orgId,
                                                             String orgTreeId,
+                                                            String refCode,
                                                             String orgRootId,
                                                             String personnelId,
                                                             String isSearchlower,
@@ -342,23 +343,34 @@ public class OrgPersonRelController extends BaseController {
 //            ret.setState(ResponseResult.PARAMETER_ERROR);
 //            return ret;
 //        }
-        if(StrUtil.isNullOrEmpty(orgTreeId)){
-            ret.setMessage("组织树标识能为空");
+        if(StrUtil.isNullOrEmpty(orgTreeId) && StrUtil.isNullOrEmpty(refCode)){
+            ret.setMessage("组织树标识和组织树关系编码不能同时为空");
             ret.setState(ResponseResult.PARAMETER_ERROR);
-            return ret;
-        }
-        //获取组织树
-        Wrapper orgTreeConfWrapper = Condition.create()
-                .eq("ORG_TREE_ID",orgTreeId)
-                .eq("STATUS_CD","1000");
-        OrgTree orgtree = orgTreeService.selectOne(orgTreeConfWrapper);
-        if(orgtree==null){
-            ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织树不存在");
             return ret;
         }
 
 
+
+        OrgTree orgtree = null;
+        if(!StrUtil.isNullOrEmpty(refCode)){
+            orgtree = orgTreeService.getOrgTreeByRefCode(refCode);
+            if (orgtree == null) {
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("组织树不存在");
+                return ret;
+            }
+        }else {
+            //获取组织树
+            Wrapper orgTreeConfWrapper = Condition.create()
+                    .eq("ORG_TREE_ID", orgTreeId)
+                    .eq("STATUS_CD", "1000");
+            orgtree = orgTreeService.selectOne(orgTreeConfWrapper);
+            if (orgtree == null) {
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("组织树不存在");
+                return ret;
+            }
+        }
         PsonOrgVo psonOrgVo = new PsonOrgVo();
         psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
         psonOrgVo.setOrgId(new Long(orgId));
