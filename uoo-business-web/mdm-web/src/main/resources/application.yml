@@ -10,20 +10,12 @@ spring:
   devtools:
     livereload:
       enabled: true
+
   zipkin:
-    locator:
-      discovery:
-        enabled: true
     base-url: http://134.96.253.223:8600
-      #本项目服务名
-    service:
-      name: ${spring.application.name}
   sleuth:
-    #监控开关
-    enabled: true
-    #采样率
     sampler:
-      percentage: 1
+      percentage: 1.0
 
 eureka:
   client:
