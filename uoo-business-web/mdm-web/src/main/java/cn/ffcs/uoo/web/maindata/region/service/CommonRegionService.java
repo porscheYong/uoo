@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.web.maindata.region.service;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.cloud.netflix.feign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,11 +13,8 @@ import cn.ffcs.uoo.web.maindata.region.dto.TbCommonRegion;
 import cn.ffcs.uoo.web.maindata.region.service.fallback.CommonRegionServiceHystrix;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
 
-@FeignClient(value = "business-region", /*
-                                             * configuration =
-                                             * {PersonnelServiceConfiguration.
-                                             * class},
-                                             */fallback = CommonRegionServiceHystrix.class)
+@FeignClient(value = "business-region", configuration = {
+        FeignClientConfiguration.class }, fallback = CommonRegionServiceHystrix.class)
 public interface CommonRegionService {
 
     @GetMapping("/region/commonRegion/getCommonRegion/id={id}")
