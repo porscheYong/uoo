@@ -1,20 +1,39 @@
 var formValid;
 function deleteData(){
 	var id=$('#areaCodeId').val();
-	if(confirm('确定删除这条数据？')){
-		$.ajax({
+	
+	parent.layer.confirm('确定删除?', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+    }, function(index, layero){
+        parent.layer.close(index);
+        $.ajax({
 			url:'/region/areaCode/deleteAreaCode',
 			data:{"areaCodeId":id},
 			dataType:'json',
 			type:'post',
 			success:function(data){
-				alert(data.state==1000?'删除成功':data.message);
-				if(data.state==1000){
-					location.href="/inaction/region/areacode-list.html";
-				}
+				parent.layer.confirm(data.state==1000?'操作成功':'操作失败，'+data.message, {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			        if(data.state==1000){
+			        	location.href="/inaction/region/areacode-list.html";
+			        }
+			    }, function(){
+			    });
+				
 			}
 		});
-	}
+    }, function(){
+
+    });
+	
+	
+ 
 }
 function saveRegion(){
 	if(!validFormData()){
@@ -26,12 +45,18 @@ function saveRegion(){
 		url:'/region/areaCode/updateAreaCode',
 		data:$('#regionForm').serialize(),
 		success:function(data){
-			if(data.state==1000){
-				alert('编辑成功');
-				location.href="/inaction/region/areacode-list.html";
-			}else{
-				alert(data.message);
-			}
+			parent.layer.confirm(data.state==1000?'操作成功':'操作失败，'+data.message, {
+		        icon: 0,
+		        title: '提示',
+		        btn: ['确定' ]
+		    }, function(index, layero){
+		        parent.layer.close(index);
+		        if(data.state==1000){
+		        	location.href="/inaction/region/areacode-list.html";
+		        }else{
+		        }
+		    }, function(){
+		    });
 		}
 			
 	});
@@ -54,9 +79,17 @@ function initData(){
 			if(data.state==1000){
 				$('#areaCodeId').val(data.data.areaCodeId);
 				$('#areaCode').val(data.data.areaCode);
-				$('#areaCodeNbr').val(data.data.areaCodeNbr);
+				$('#areaNbr').val(data.data.areaNbr);
 			}else{
-				alert('加载区号信息失败，请重试');
+				parent.layer.confirm('加载区号信息失败，请重试' , {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
+				 
 			}
 		}
 	});

@@ -142,10 +142,10 @@
     };
 
     // clear all existing tags and import new ones from a string
-    $.fn.importTags = function(str) {
+    $.fn.importTags = function(str, options) {
         var id = $(this).attr('id');
         $('#'+id+'_tagsinput .tag').remove();
-        $.fn.tagsInput.importTags(this,str);
+        $.fn.tagsInput.importTags(this,str,options);
     }
 
     $.fn.tagsInput = function(options) {
@@ -228,8 +228,9 @@
 
 
 
-    $.fn.tagsInput.importTags = function(obj, tagslist) {
-        $(obj).addTag(tagslist,{focus:false,callback:false});
+    $.fn.tagsInput.importTags = function(obj, tagslist, options) {
+        options = jQuery.extend({focus:false,callback:true},options);
+        $(obj).addTag(tagslist,options);
     };
 
     $.fn.getTags = function(obj) {

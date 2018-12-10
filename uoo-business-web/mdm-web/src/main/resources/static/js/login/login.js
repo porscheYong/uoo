@@ -7,6 +7,10 @@ var isError = 0;
 var show_num = [];
 var index;
 
+if (window != window.top) {
+    window.top.location.replace(window.location)
+    // 这是直接代替外窗，你也可以干别的
+}
 
 $(function (){
     toastr.options = {

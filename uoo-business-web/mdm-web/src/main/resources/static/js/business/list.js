@@ -9,9 +9,6 @@ function initOrgTable (results) {
         'searching': false,
         'autoWidth': false,
         'ordering': true,
-        'initComplete': function (settings, json) {
-            console.log(settings, json)
-        },
         "scrollY": "375px",
         'columns': [
             { 'data': "orgName", 'title': '部门', 'className': 'row-name',
@@ -77,6 +74,8 @@ function initOrgTable (results) {
             })
         }
     });
+    var loading = parent.loading;
+    loading.screenMaskDisable('container');
 }
 
 function initOrgPersonnelTable (isSearchlower) {

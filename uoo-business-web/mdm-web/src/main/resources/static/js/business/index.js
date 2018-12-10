@@ -8,6 +8,7 @@ var orgId, //组织ID
     orgName, //组织名
     parent,
     nodeArr;
+loading.screenMaskEnable('container');
 
 // lulu ui select插件
 seajs.use('/vendors/lulu/js/common/ui/Select', function () {
@@ -48,7 +49,7 @@ function getOrgExtInfo () {
         for (var i = pathArry.length - 1; i >= 0; i--) {
             var node = pathArry[i].node;
             if (pathArry[i].current) {
-                pathStr +=  '<span class="breadcrumb-item"><a href="javascript:void(0);">' + node.name + '</a></span>';
+                pathStr +=  '<span class="breadcrumb-item">' + node.name + '</span>';
             } else {
                 pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+orgId+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
             }
