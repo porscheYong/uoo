@@ -95,6 +95,14 @@ function getTree() {
 	var zTree = $.fn.zTree.getZTreeObj("standardTree");
 	return zTree;
 }
+function selectNodeById(id){
+	console.log(id);
+	var zTree = $.fn.zTree.getZTreeObj("standardTree");
+	var node=zTree.getNodesByParam('id',id);
+	console.log(node[0]);
+	zTree.selectNode(node[0]);
+	zTreeOnClick(null,null,node[0])
+}
 function searchNotWantFilter(node){
 	 return ( node.name.indexOf($('#searchInput').val())<0);
 }

@@ -10,6 +10,9 @@ function goEdit(){
 	}
 	parent.changeIframe('/inaction/region/commonregion-edit.html?id='+cid+'&upRegionId='+pid+'&upRegionName='+pname);
 }
+function fastGo(id){
+	parent.selectNodeById(id);
+}
 function getRegionList (id) {
 	//初始化页面显示
 	var nodes= parent.getCurrentSelectedNode();
@@ -18,10 +21,10 @@ function getRegionList (id) {
 	var str=treeNode.name;
 	var parentNode=treeNode.getParentNode();
 	while(parentNode!=null){
-		str=parentNode.name+">"+str;
+		str="<a href='javascript:void(0)' onclick=\"fastGo('"+parentNode.id+"')\">"+parentNode.name+"</a> >"+str;
 		parentNode=parentNode.getParentNode();
 	}
-	$('#regionStrFull').text(str);
+	$('#regionStrFull').html(str);
 	$('#regionStrCurrent').attr('cid',nodes[0].id);
 	$.ajax({
 		url:'/region/commonRegion/getChildCommonRegionInfo/'+id,
