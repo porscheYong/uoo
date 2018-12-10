@@ -592,7 +592,7 @@
                         <td>全日制</td>
                         <td>{{education}}</td>
                         <td>{{degree}}</td>
-                        <td>{{#if firstEducation}}{{#eq firstEducation 1}}是{{/eq}}{{#eq firstEducation 0}}否{{/eq}} {{else}}否{{/if}} </td>
+                        <td>{{#if firstEducation}} 是  {{else}}否{{/if}} </td>
                          <td><a class="Icon IconEdit" href="javascript:void(0);" onclick="openEduEditByEdit('{{@index}}')"></a></td>
                     </tr>
                      {{/each}}
@@ -624,7 +624,7 @@
                         <td>全日制</td>
                         <td>{{education}}</td>
                         <td>{{degree}}</td>
-                        <td>{{#eq firstEducation 1}}是{{/eq}}{{#eq firstEducation 0}}否{{/eq}}</td>
+                        <td>{{#if firstEducation}} 是  {{else}}否{{/if}}</td>
                     </tr>
                      {{/each}}
                 </table>
@@ -654,7 +654,7 @@
                         <td>全日制</td>
                         <td>{{education}}</td>
                         <td>{{degree}}</td>
-                        <td>{{#eq firstEducation 1}}是{{/eq}}{{#eq firstEducation 0}}否{{/eq}}</td>
+                        <td>{{#if firstEducation}} 是  {{else}}否{{/if}}</td>
                     </tr>
                      {{/each}}
                 </table>
@@ -916,8 +916,9 @@
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">是否最高学历</label>
                              <select style="border:1px solid #d0d0d5;" id="lastEducation" class="col-md-4 col-sm-4 col-xs-12">
-                                <option value="1" {{#eq '1' currentEditEduInfo.lastEducation}} selected='selected' {{/eq}}>是</option>
-                                <option value="0" {{#eq '0' currentEditEduInfo.lastEducation}} selected='selected' {{/eq}}>否</option>
+                                {{#each yesNo}}
+                                    <option value="{{itemValue}}" {{#eq itemValue ../currentEditEduInfo.lastEducation}} selected='selected' {{/eq}}>{{itemCnname}}</option>
+                                {{/each}}
                             </select>
                         </div>
                     </div>
@@ -926,8 +927,9 @@
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">是否最高学位</label>
                              <select style="border:1px solid #d0d0d5;" id="lastDegree" class="col-md-4 col-sm-4 col-xs-12">
-                                <option value="1" {{#eq '1' currentEditEduInfo.lastDegree}} selected='selected' {{/eq}}>是</option>
-                                <option value="0" {{#eq '0' currentEditEduInfo.lastDegree}} selected='selected' {{/eq}}>否</option>
+                                {{#each yesNo}}
+                                    <option value="{{itemValue}}" {{#eq itemValue ../currentEditEduInfo.lastDegree}} selected='selected' {{/eq}}>{{itemCnname}}</option>
+                                {{/each}}
                             </select>
                         </div>
                     </div>
