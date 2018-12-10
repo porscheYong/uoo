@@ -194,8 +194,8 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
     }
 
     @Override
-    public OrgVo selectOrgByOrgId(String orgId){
-        return baseMapper.selectOrgByOrgId(orgId);
+    public OrgVo selectOrgByOrgId(String orgId,String orgTreeId){
+        return baseMapper.selectOrgByOrgId(orgId,orgTreeId);
     }
     @Override
     public List<PoliticalLocation> getOrgLoc(String orgId){

@@ -39,6 +39,11 @@ public class OrgVo extends BaseVo{
     private String createDate;
 
     private String orgMartCode;
+    private Long standardFlag;
+    /**
+     * 组织称谓
+     */
+    private String orgBizName;
     //组织树
     private Long orgTreeId;
     /**
@@ -83,6 +88,36 @@ public class OrgVo extends BaseVo{
     //检索
     private String search;
     private String orgRelCreatDate;
+
+    //排序字段
+    private String sortField;
+    //排序方式
+    private String sortOrder;
+
+
+    public String getOrgBizName() {
+        return orgBizName;
+    }
+
+    public void setOrgBizName(String orgBizName) {
+        this.orgBizName = orgBizName;
+    }
+
+    public String getSortField() {
+        return sortField;
+    }
+
+    public void setSortField(String sortField) {
+        this.sortField = sortField;
+    }
+
+    public String getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(String sortOrder) {
+        this.sortOrder = sortOrder;
+    }
 
     public List<PoliticalLocation> getPoliticalLocationList() {
         return politicalLocationList;
@@ -414,4 +449,11 @@ public class OrgVo extends BaseVo{
         this.orgName = orgName;
     }
 
+    public Long getStandardFlag() {
+        return standardFlag;
+    }
+
+    public void setStandardFlag(Long standardFlag) {
+        this.standardFlag = standardFlag;
+    }
 }

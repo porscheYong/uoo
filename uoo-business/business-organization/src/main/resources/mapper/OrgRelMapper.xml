@@ -100,7 +100,7 @@
         <if test="pid != null">
             AND A.PARENT_ORG_ID = #{pid}
         </if>
-        ORDER BY B.ORG_LEVEL
+        ORDER BY B.SORT
     </select>
 
 
