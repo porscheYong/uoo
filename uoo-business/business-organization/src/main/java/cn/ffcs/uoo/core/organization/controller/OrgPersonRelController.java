@@ -426,6 +426,7 @@ public class OrgPersonRelController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(String orgId,
                                                              String orgTreeId,
+                                                             String refCode,
                                                              String isSearchlower,
                                                              String search,
                                                              Integer pageSize,
@@ -437,15 +438,37 @@ public class OrgPersonRelController extends BaseController {
             ret.setMessage("组织标识不能为空");
             return ret;
         }
-        if(StrUtil.isNullOrEmpty(orgTreeId)){
+        if(StrUtil.isNullOrEmpty(orgTreeId) && StrUtil.isNullOrEmpty(refCode)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织树标识不能为空");
+            ret.setMessage("组织树标识和组织树关系类型不能同时为空");
             return ret;
         }
+        OrgTree orgtree = null;
+        if(!StrUtil.isNullOrEmpty(refCode)){
+            orgtree = orgTreeService.getOrgTreeByRefCode(refCode);
+            if (orgtree == null) {
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("组织树不存在");
+                return ret;
+            }
+        }else {
+            //获取组织树
+            Wrapper orgTreeConfWrapper = Condition.create()
+                    .eq("ORG_TREE_ID", orgTreeId)
+                    .eq("STATUS_CD", "1000");
+            orgtree = orgTreeService.selectOne(orgTreeConfWrapper);
+            if (orgtree == null) {
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("组织树不存在");
+                return ret;
+            }
+        }
+
+
         PsonOrgVo psonOrgVo = new PsonOrgVo();
         psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
         psonOrgVo.setOrgId(new Long(orgId));
-        psonOrgVo.setOrgTreeId(new Long(orgTreeId));
+        psonOrgVo.setOrgTreeId(orgtree.getOrgTreeId());
         if(!StrUtil.isNullOrEmpty(search)){
             psonOrgVo.setSearch(search);
         }

@@ -173,12 +173,12 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
 //        if(StrUtil.isNullOrEmpty(org.getSupOrgId())){
 //            return "组织父节点不能为空";
 //        }
-        if(StrUtil.isNullOrEmpty(org.getShortName())){
-            return "组织简称不能为空";
-        }
-        if(StrUtil.isNullOrEmpty(org.getCityTown())){
-            return "城乡属性不能为空";
-        }
+//        if(StrUtil.isNullOrEmpty(org.getShortName())){
+//            return "组织简称不能为空";
+//        }
+//        if(StrUtil.isNullOrEmpty(org.getCityTown())){
+//            return "城乡属性不能为空";
+//        }
         return "";
     }
 
