@@ -1,9 +1,9 @@
 spring:
   application:
     name: uoo-sleuth
-  datasource:
-    druid:
-      driver-class-name: oracle.jdbc.OracleDriver
-      url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
-      username: octopus
-      password: octopus
+#  datasource:
+#    druid:
+#      driver-class-name: oracle.jdbc.OracleDriver
+#      url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
+#      username: octopus
+#      password: octopus
