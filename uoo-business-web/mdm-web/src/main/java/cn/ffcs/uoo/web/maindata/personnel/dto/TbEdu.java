@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.FieldFill;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
@@ -86,11 +87,13 @@ public class TbEdu extends Model<TbEdu> {
     /**
      * 入学日期
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     @TableField("BEGINDATE")
     private Date begindate;
     /**
      * 毕业日期
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     @TableField("ENDDATE")
     private Date enddate;
     /**

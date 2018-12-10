@@ -5,6 +5,7 @@ import cn.ffcs.uoo.core.personnel.vo.*;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.baomidou.mybatisplus.service.IService;
 import com.baomidou.mybatisplus.plugins.Page;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -26,22 +27,10 @@ public interface TbPersonnelService extends IService<TbPersonnel> {
     public Page<PersonnelOrgVo> getPersonnelOrg(TbPersonnelVo tbPersonnelVo);
 
     /**
-     * 员工工号  序
+     * 员工工号 人员编码
      * @return
      */
-    public Long getPsnNbrId();
-
-    /**
-     * 人员编码
-     * @return
-     */
-    public Long getPsnCodeId();
-
-    /**
-     * 人员归属组织
-     * @return
-     */
-    public Page<PsonOrgVo> selectPsonOrgPage(PsonOrgVo psonOrgVo);
+    public Long getSeqPsnCode();
 
     /**
      * 用户关联人员基础信息
@@ -64,12 +53,35 @@ public interface TbPersonnelService extends IService<TbPersonnel> {
      * @param pageSize
      * @return
      */
-    public Page<PsnBasicInfoVo> getPsnBasicInfo(String keyWord, int pageNo, int pageSize);
+    public Page<PsnBasicInfoVo> getPsnBasicInfo(String keyWord, Integer pageNo, Integer pageSize);
 
     /**
-     * 新增 组织与人员关系
-     * @param psonOrgVos
+     *主账号是否存在
+     * @param personnelId
      * @return
      */
-    public Object addOrgPsn(List<PsonOrgVo> psonOrgVos);
+    public boolean isExistsAcct( Long personnelId);
+
+    /**
+     * 人员新增或者更新
+     * @param tbPersonnel
+     * @return
+     */
+    public Object insertOrUpdateTbPsn(TbPersonnel tbPersonnel);
+
+    /**
+     * 游离人员
+     * @param keyWord
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    public Page<FreePsnInfoVo> getFreePsnInfo(String keyWord, Integer pageNo, Integer pageSize);
+
+    /**
+     * 根据身份证  查询人力编码
+     * @param certNo
+     * @return
+     */
+    public UomGrpUserOrgInfoVo getIdCardNcCode(String certNo);
 }

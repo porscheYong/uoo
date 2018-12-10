@@ -7,13 +7,18 @@ import cn.ffcs.uoo.core.user.dao.TbAcctMapper;
 import cn.ffcs.uoo.core.user.entity.TbAcct;
 import cn.ffcs.uoo.core.user.entity.TbRoles;
 import cn.ffcs.uoo.core.user.service.TbAcctService;
+import cn.ffcs.uoo.core.user.util.AESTool;
+import cn.ffcs.uoo.core.user.util.MD5Tool;
 import cn.ffcs.uoo.core.user.util.ResultUtils;
+import cn.ffcs.uoo.core.user.util.StrUtil;
+import cn.ffcs.uoo.core.user.vo.EditFormAcctVo;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,8 +47,6 @@ public class TbAcctServiceImpl extends ServiceImpl<TbAcctMapper, TbAcct> impleme
      */
     @Override
     public long saveAcct(TbAcct tbAcct) {
-
-        //return baseMapper.save(tbAcct);
         return 1L;
     }
 
@@ -72,7 +75,7 @@ public class TbAcctServiceImpl extends ServiceImpl<TbAcctMapper, TbAcct> impleme
         TbAcct tbAcct = new TbAcct();
         tbAcct.setAcctId(acctId);
         tbAcct.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
-
+        tbAcct.setStatusDate(new Date());
         if(this.updateById(tbAcct)){
             return ResultUtils.success(null);
         }
@@ -84,6 +87,48 @@ public class TbAcctServiceImpl extends ServiceImpl<TbAcctMapper, TbAcct> impleme
         Map<String, Object> map = new HashMap<String, Object>();
         map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         map.put(BaseUnitConstants.TABLE_PERSONNEL_ID, personelId);
+        return this.selectOne(new EntityWrapper<TbAcct>().allEq(map));
+    }
+
+    @Override
+    public Object insertOrUpdateTbAcct(EditFormAcctVo editFormAcctVo, TbAcct tbAcct, Long acctId){
+        String type = "update";
+        if(StrUtil.isNullOrEmpty(tbAcct)){
+            tbAcct = new TbAcct();
+            tbAcct.setAcctId(acctId);
+            type = "insert";
+        }
+        if(StrUtil.isNullOrEmpty(tbAcct) || !editFormAcctVo.getPassword().equals(tbAcct.getPassword())){
+            // 获取盐
+            String salt = MD5Tool.getSalt();
+            // 非对称密码
+            String password = MD5Tool.md5Encoding(editFormAcctVo.getPassword(), salt);
+            // 对称密码
+            String symmetryPassword = AESTool.AESEncode(editFormAcctVo.getPassword());
+            tbAcct.setSalt(salt);
+            tbAcct.setPassword(password);
+            tbAcct.setSymmetryPassword(symmetryPassword);
+        }
+        tbAcct.setPersonnelId(editFormAcctVo.getPersonnelId());
+        tbAcct.setAcct(editFormAcctVo.getAcct());
+        tbAcct.setStatusCd(editFormAcctVo.getStatusCd());
+        tbAcct.setEnableDate(editFormAcctVo.getEnableDate());
+        tbAcct.setDisableDate(editFormAcctVo.getDisableDate());
+
+        if("insert".equals(type)){
+            baseMapper.insert(tbAcct);
+        }
+        if("update".equals(type)){
+            baseMapper.updateById(tbAcct);
+        }
+        return null;
+    }
+
+    @Override
+    public TbAcct getTbAcctByAcct(String acct){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TABLE_ACCT, acct);
         return this.selectOne(new EntityWrapper<TbAcct>().allEq(map));
     }
 

@@ -5,17 +5,10 @@ import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.user.constant.EumUserResponeCode;
 import cn.ffcs.uoo.core.user.entity.*;
-import cn.ffcs.uoo.core.user.service.TbAcctExtService;
-import cn.ffcs.uoo.core.user.service.TbAcctService;
-import cn.ffcs.uoo.core.user.service.TbSlaveAcctService;
-import cn.ffcs.uoo.core.user.service.TbUserRoleService;
-import cn.ffcs.uoo.core.user.util.AESTool;
-import cn.ffcs.uoo.core.user.util.MD5Tool;
-import cn.ffcs.uoo.core.user.util.ResultUtils;
-import cn.ffcs.uoo.core.user.util.StrUtil;
+import cn.ffcs.uoo.core.user.service.*;
+import cn.ffcs.uoo.core.user.util.*;
 import cn.ffcs.uoo.core.user.vo.ApplySlaveAcctVo;
 import cn.ffcs.uoo.core.user.vo.EditFormSlaveAcctVo;
-import cn.ffcs.uoo.core.user.vo.FormSlvacctAcctRelVo;
 import cn.ffcs.uoo.core.user.vo.ResourceSlaveAcctVo;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import io.swagger.annotations.ApiImplicitParam;
@@ -50,6 +43,8 @@ public class TbSlaveAcctController extends BaseController {
     private TbAcctExtService tbAcctExtService;
     @Autowired
     private TbUserRoleService tbUserRoleService;
+    @Autowired
+    private RabbitMqService rabbitMqService;
 
 
     @ApiOperation(value = "从账号信息查看", notes = "从账号信息查看")
@@ -104,16 +99,13 @@ public class TbSlaveAcctController extends BaseController {
     @RequestMapping(value = "/addTbSlaveAcct", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
     public Object saveSlaveAcct(@RequestBody EditFormSlaveAcctVo editFormSlaveAcctVo){
-        //验证主账号是否已有
-        TbAcct tbAcct = (TbAcct) tbAcctService.getTbAcctByPsnId(editFormSlaveAcctVo.getPersonnelId());
-        if(StrUtil.isNullOrEmpty(tbAcct)){
-            return ResultUtils.error(EumUserResponeCode.ACCT_NO_EXIST_RE);
-        }
-        //从账号是否已存在
-        if(tbSlaveAcctService.checkSlaveAcct(editFormSlaveAcctVo.getSlaveAcct(), editFormSlaveAcctVo.getAcctHostId(), editFormSlaveAcctVo.getResourceObjId())){
-            return ResultUtils.error(EumUserResponeCode.SLAVE_ACCT_IS_EXIST);
+
+        Object obj = checkFormSlaveAcct(editFormSlaveAcctVo);
+        if(!StrUtil.isNullOrEmpty(obj)){
+            return obj;
         }
 
+        TbAcct tbAcct = (TbAcct) tbAcctService.getTbAcctByPsnId(editFormSlaveAcctVo.getPersonnelId());
         TbSlaveAcct tbSlaveAcct = new TbSlaveAcct();
         BeanUtils.copyProperties(editFormSlaveAcctVo, tbSlaveAcct);
         // 获取盐
@@ -140,6 +132,9 @@ public class TbSlaveAcctController extends BaseController {
             tbAcctExtService.saveTbAcctExt(tbAcctExt);
         }
 
+
+        rabbitMqService.sendMqMsg("person", "insert", "slaveAcctId", slaveAcctId);
+
         return ResultUtils.success(null);
     }
 
@@ -152,8 +147,14 @@ public class TbSlaveAcctController extends BaseController {
 
         //从账号
         tbSlaveAcctService.delTbSlaveAcct(slaveAcctId);
+
+        //2、删除角色
+        tbUserRoleService.removeUserRole(slaveAcctId, 2L);
+
         //扩展信息
         tbAcctExtService.delTbAcctExt(slaveAcctId);
+
+        rabbitMqService.sendMqMsg("person", "delete", "slaveAcctId", slaveAcctId);
 
         return ResultUtils.success(null);
     }
@@ -164,22 +165,26 @@ public class TbSlaveAcctController extends BaseController {
     @RequestMapping(value = "/updateTbSlaveAcct", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
     public Object updateTbSlaveAcct(@RequestBody EditFormSlaveAcctVo editFormSlaveAcctVo){
-        //从账号是否已存在
-        if(tbSlaveAcctService.checkSlaveAcct(editFormSlaveAcctVo.getSlaveAcct(), editFormSlaveAcctVo.getAcctHostId(), editFormSlaveAcctVo.getResourceObjId())){
-            return ResultUtils.error(EumUserResponeCode.SLAVE_ACCT_IS_EXIST);
+        Object obj = checkFormSlaveAcct(editFormSlaveAcctVo);
+        if(!StrUtil.isNullOrEmpty(obj)){
+            return obj;
         }
+
         //从账号
-        TbSlaveAcct tbSlaveAcct = new TbSlaveAcct();
+        TbSlaveAcct tbSlaveAcct = tbSlaveAcctService.selectById(editFormSlaveAcctVo.getSlaveAcctId());
         BeanUtils.copyProperties(editFormSlaveAcctVo, tbSlaveAcct);
-        // 获取盐
-        String salt = MD5Tool.getSalt();
-        // 非对称密码
-        String password = MD5Tool.md5Encoding(tbSlaveAcct.getPassword(), salt);
-        // 对称密码
-        String symmetryPassword = AESTool.AESEncode(tbSlaveAcct.getPassword());
-        tbSlaveAcct.setSalt(salt);
-        tbSlaveAcct.setPassword(password);
-        tbSlaveAcct.setSymmetryPassword(symmetryPassword);
+        if(editFormSlaveAcctVo.getPassword().equals(tbSlaveAcct.getPassword())){
+            // 获取盐
+            String salt = MD5Tool.getSalt();
+            // 非对称密码
+            String password = MD5Tool.md5Encoding(tbSlaveAcct.getPassword(), salt);
+            // 对称密码
+            String symmetryPassword = AESTool.AESEncode(tbSlaveAcct.getPassword());
+            tbSlaveAcct.setSalt(salt);
+            tbSlaveAcct.setPassword(password);
+            tbSlaveAcct.setSymmetryPassword(symmetryPassword);
+        }
+
         tbSlaveAcctService.updateTbSlaveAcct(tbSlaveAcct);
 
         //角色
@@ -191,8 +196,77 @@ public class TbSlaveAcctController extends BaseController {
             TbAcctExt tbAcctExt = editFormSlaveAcctVo.getTbAcctExt();
             tbAcctExt.setSlaveAcctId(tbSlaveAcct.getSlaveAcctId());
             tbAcctExtService.saveTbAcctExt(tbAcctExt);
+        }else{
+            tbAcctExtService.delTbAcctExt(tbSlaveAcct.getSlaveAcctId());
         }
+
+        rabbitMqService.sendMqMsg("person", "update", "slaveAcctId", tbSlaveAcct.getSlaveAcctId());
+
         return ResultUtils.success(null);
+    }
+
+
+    public Object checkFormSlaveAcct(EditFormSlaveAcctVo editFormSlaveAcctVo){
+
+        //验证主账号是否已有
+        TbAcct tbAcct = (TbAcct) tbAcctService.getTbAcctByPsnId(editFormSlaveAcctVo.getPersonnelId());
+        if(StrUtil.isNullOrEmpty(tbAcct)){
+            return ResultUtils.error(EumUserResponeCode.ACCT_NO_EXIST_RE);
+        }
+
+        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getPersonnelId())){
+            return ResultUtils.error(EumUserResponeCode.PERSONNEL_NO_CHOOSE);
+        }
+        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getSlaveAcct())){
+            return ResultUtils.error(EumUserResponeCode.SLAVE_ACCT_NULL);
+        }
+        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getAcctHostId())){
+            return ResultUtils.error(EumUserResponeCode.ACCT_HOST_NULL);
+        }
+        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getEnableDate())){
+            return ResultUtils.error(EumUserResponeCode.EFF_DATE_NULL);
+        }
+        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getDisableDate())){
+            return ResultUtils.error(EumUserResponeCode.EXP_DATE_NULL);
+        }
+        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getStatusCd())){
+            return ResultUtils.error(EumUserResponeCode.STATUS_CD_NULL);
+        }
+        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getRolesList())){
+            return ResultUtils.error(EumUserResponeCode.ROLES_NULL);
+        }
+        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getResourceObjId())){
+            return ResultUtils.error(EumUserResponeCode.RESOURCE_OBJ_NULL);
+        }
+        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getAcctHostId())){
+            return ResultUtils.error(EumUserResponeCode.ACCT_HOST_NULL);
+        }
+        if(!StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getTbAcctExt())){
+            TbAcctExt tbAcctExt = editFormSlaveAcctVo.getTbAcctExt();
+            if(StrUtil.isNullOrEmpty(tbAcctExt.getWorkEmail()) || !StrUtil.checkEmail(tbAcctExt.getWorkEmail())){
+                return ResultUtils.error(EumUserResponeCode.EMAIL_ERROR);
+            }
+            if(StrUtil.isNullOrEmpty(tbAcctExt.getContactWay()) || !StrUtil.checkTelephoneNumber(tbAcctExt.getContactWay())) {
+                return ResultUtils.error(EumUserResponeCode.MOBILE_ERROR);
+            }
+            if(StrUtil.isNullOrEmpty(tbAcctExt.getCertNo())) {
+                return ResultUtils.error(EumUserResponeCode.CERT_NO_ERROR);
+            }
+            if("1".equals(tbAcctExt.getCertType()) && IdCardVerification.idCardValidate(tbAcctExt.getCertNo())){
+                return ResultUtils.error(EumUserResponeCode.CERT_NO_ERROR);
+            }
+        }
+
+        //从账号是否已存在
+        if(tbSlaveAcctService.checkSlaveAcct(editFormSlaveAcctVo.getSlaveAcct(), editFormSlaveAcctVo.getAcctHostId(), editFormSlaveAcctVo.getResourceObjId(), editFormSlaveAcctVo.getSlaveAcctId(), null)){
+            return ResultUtils.error(EumUserResponeCode.SLAVE_ACCT_IS_EXIST);
+        }
+
+        if(tbSlaveAcctService.checkSlaveAcct(null, editFormSlaveAcctVo.getAcctHostId(), editFormSlaveAcctVo.getResourceObjId(), editFormSlaveAcctVo.getSlaveAcctId(), tbAcct.getAcctId())){
+            return ResultUtils.error(EumUserResponeCode.SLAVE_ACCT_ORGREL_EXIST);
+        }
+
+        return null;
     }
 
 

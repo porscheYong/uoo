@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.FieldFill;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -60,7 +61,7 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
      * 资源标识
      */
     @TableField("RESOURCE_OBJ_ID")
-    private String resourceObjId;
+    private Long resourceObjId;
     /**
      * 密码可被解密的
      */
@@ -74,8 +75,7 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
     /**
      * 状态
      */
-    @JsonIgnore
-    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT)
     private String statusCd;
     /**
      * 创建时间
@@ -105,16 +105,18 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
      * 状态变更的时间
      */
     @JsonIgnore
-    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT)
     private Date statusDate;
     /**
      * 生效时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     @TableField("ENABLE_DATE")
     private Date enableDate;
     /**
      * 失效时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     @TableField("DISABLE_DATE")
     private Date disableDate;
 
@@ -139,6 +141,8 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
         ", updateDate=" + updateDate +
         ", updateUser=" + updateUser +
         ", statusDate=" + statusDate +
+                ", enableDate=" + enableDate +
+                ", disableDate=" + disableDate +
         "}";
     }
 }

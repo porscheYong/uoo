@@ -5,7 +5,6 @@ import cn.ffcs.uoo.core.user.entity.TbUser;
 import cn.ffcs.uoo.core.user.vo.*;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -54,9 +53,11 @@ public interface TbUserService extends IService<TbUser> {
     /**
      * 选择用户
      * @param personnelId
+     * @param pageNo
+     * @param pageSize
      * @return
      */
-    public List<ListUserVo> getUserList( Long personnelId);
+    public Page<ListUserVo> getUserList( Long personnelId, Integer pageNo, Integer pageSize);
 
     /**
      * 人员信息
@@ -67,10 +68,12 @@ public interface TbUserService extends IService<TbUser> {
 
     /**
      * 主账号 关联 组织
-     * @param acctOrgVo
+     * @param acctId
+     * @param pageNo
+     * @param pageSize
      * @return
      */
-    public Page<ListAcctOrgVo> getAcctOrg(ListAcctOrgVo acctOrgVo);
+    public Page<ListAcctOrgVo> getAcctOrg(Long acctId, Integer pageNo, Integer pageSize);
 
     /**
      * 从账号 关联 主账号组织
@@ -78,5 +81,12 @@ public interface TbUserService extends IService<TbUser> {
      * @return
      */
     public List<ListAcctOrgVo> getSlaveAcctOrg(ListAcctOrgVo acctOrgVo);
+
+    /**
+     *  主账号 组织关系
+     * @param personnelId
+     * @return
+     */
+    public List<ListAcctOrgVo> getAcctOrgByPsnId(Long personnelId);
 
 }

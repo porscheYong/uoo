@@ -1,12 +1,11 @@
 package cn.ffcs.uoo.core.personnel.vo;
 
-import cn.ffcs.uoo.base.common.vo.BaseVo;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class TbPsnjobVo extends BaseVo {
+public class TbPsnjobVo {
 
     /**
      * 任职履历标识

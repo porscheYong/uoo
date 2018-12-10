@@ -1,3 +1,4 @@
+var toastr = window.top.toastr;
 var setting = {
     async: {
         enable: true,
@@ -28,7 +29,7 @@ var setting = {
 };
 
 var orgIdSelect,
-    orgName,
+    // orgName,
     nodeName,
     nodeArr;
     //addOrgList = [];
@@ -37,7 +38,7 @@ function onNodeClick(e,treeId, treeNode) {
     // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
     // zTree.expandNode(treeNode);
     orgIdSelect = treeNode.id;
-    orgName = treeNode.name;
+    // orgName = treeNode.name;
     var currentNode = treeNode.name;//获取当前选中节点
     var parentNode = treeNode.getParentNode();
     nodeArr = [];
@@ -133,7 +134,7 @@ function saveBtnClick(){
             orgNa.push(editOrgList[i].orgId);
         }
         if(orgNa.indexOf(parseInt(orgIdSelect)) != -1){
-            alert("已选择该组织");
+            toastr.warning("已选择该组织");
         }else{
             addAcctOrg(orgIdSelect);
             editOrgList.push({'orgId':orgIdSelect,'fullName':getOrgExtInfo()});

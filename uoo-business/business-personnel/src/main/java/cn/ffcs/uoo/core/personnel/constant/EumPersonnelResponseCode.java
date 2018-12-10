@@ -22,6 +22,9 @@ public enum  EumPersonnelResponseCode {
     CONTACT_IS_NULL(13, "手机、邮箱、QQ号、微信号、固话不能为空"),
     CERT_IS_EXIST(14, "身份证已被占用"),
     PSN_NOT_EXIST(15, "人员不存在"),
+    MOBILE_IS_EXIST(16, "手机号已被占用"),
+    MOBILE_REPEAT(17, "手机号不得重复添加"),
+    EMAIL_REPEAT(18, "邮箱不得重复添加"),
     ;
 
     @Getter

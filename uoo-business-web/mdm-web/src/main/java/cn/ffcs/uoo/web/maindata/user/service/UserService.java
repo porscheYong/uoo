@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @date 2018/11/14 14:28
  * @Version 1.0.0
  */
-@FeignClient(value = "business-user",configuration = {PersonnelServiceConfiguration.class},fallback = UserServiceHystrix.class)
+@FeignClient(value = "business-user", configuration = {PersonnelServiceConfiguration.class},fallback = UserServiceHystrix.class)
 public interface UserService {
 
     @RequestMapping(value = "/tbUser/getUserList", method = RequestMethod.GET, headers={"Content-Type=application/json"})

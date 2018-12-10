@@ -18,21 +18,37 @@ function saveRegion(){
 		data:$('#regionForm').serialize(),
 		success:function(data){
 			if(data.state==1000){
-				//在父节点增加数据啊
-				var treeObj =parent.getTree();
-				var upId=$('#parentRegionId').val();
-				var myNodes=treeObj.getNodesByParam("id",upId,null);
-				var newNodes = [{name:$('#regionName').val(),id:data.data.commonRegionId,parent:false,open:false,pId:upId.id}];
-				if(myNodes.length<=0){
-					//插入到根目录
-					newNodes = treeObj.addNodes(null,-1, newNodes);
-					parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
-				}else{
-					newNodes = treeObj.addNodes(myNodes[0],-1, newNodes);
-					parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
-				}
+				parent.layer.confirm('操作成功', {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			      //在父节点增加数据啊
+					var treeObj =parent.getTree();
+					var upId=$('#parentRegionId').val();
+					var myNodes=treeObj.getNodesByParam("id",upId,null);
+					var newNodes = [{name:$('#regionName').val(),id:data.data.commonRegionId,parent:false,open:false,pId:upId.id}];
+					if(myNodes.length<=0){
+						//插入到根目录
+						newNodes = treeObj.addNodes(null,-1, newNodes);
+						parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
+					}else{
+						newNodes = treeObj.addNodes(myNodes[0],-1, newNodes);
+						parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
+					}
+			    }, function(){
+			    });
+				
 			}else{
-				alert(data.message);
+				parent.layer.confirm('操作失败，'+data.message, {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 			}
 		}
 			

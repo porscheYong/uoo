@@ -12,9 +12,9 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -28,13 +28,18 @@ import java.util.List;
 public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMapper, TbAccountOrgRel> implements TbAccountOrgRelService {
 
     @Override
-    public Object saveAcctOrg(List<ListAcctOrgVo> acctOrgVoList){
+    public Long getId(){return baseMapper.getId(); }
+
+    @Override
+    public Object saveAcctOrg(List<ListAcctOrgVo> acctOrgVoList, Long acctId){
         List<TbAccountOrgRel> tbAccountOrgRels = new ArrayList<TbAccountOrgRel>();
         TbAccountOrgRel tbAccountOrgRel = null;
         if(acctOrgVoList != null && acctOrgVoList.size() > 0){
             for (ListAcctOrgVo acctOrg : acctOrgVoList){
                 tbAccountOrgRel = new TbAccountOrgRel();
                 BeanUtils.copyProperties(acctOrg, tbAccountOrgRel);
+                tbAccountOrgRel.setAcctHostId(this.getId());
+                tbAccountOrgRel.setAcctId(acctId);
                 tbAccountOrgRels.add(tbAccountOrgRel);
             }
         }
@@ -45,9 +50,10 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
     }
 
     @Override
-    public Object removeAcctOrg(Long acctId, Long orgId){
+    public Object removeAcctOrg(Long personnelId,Long acctId, Long orgId){
         TbAccountOrgRel tbAccountOrgRel = new TbAccountOrgRel();
         tbAccountOrgRel.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+        tbAccountOrgRel.setStatusDate(new Date());
         EntityWrapper<TbAccountOrgRel> wrapper = new EntityWrapper<TbAccountOrgRel>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TABLE_ACCT_ID, acctId);
@@ -55,8 +61,26 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
             wrapper.eq(BaseUnitConstants.TABLE_ORG_ID, orgId);
         }
         if(retBool(baseMapper.update(tbAccountOrgRel, wrapper))){
-            return ResultUtils.success(null);
+            return ResultUtils.success(personnelId);
         }
         return ResultUtils.error(EumUserResponeCode.USER_RESPONSE_ERROR);
+    }
+
+    @Override
+    public Object addAcctOrg(TbAccountOrgRel tbAccountOrgRel){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TABLE_ORG_ID, tbAccountOrgRel.getOrgId());
+        map.put(BaseUnitConstants.TABLE_ACCT_ID, tbAccountOrgRel.getAcctId());
+        TbAccountOrgRel accountOrgRel = this.selectOne(new EntityWrapper<TbAccountOrgRel>().allEq(map));
+        if(StrUtil.isNullOrEmpty(accountOrgRel)){
+            tbAccountOrgRel.setAcctHostId(this.getId());
+            if(retBool(baseMapper.insert(tbAccountOrgRel))){
+                return ResultUtils.success(null);
+            }
+        }else{
+            return ResultUtils.error(EumUserResponeCode.ACCT_ORG_REL_IS_EXIST);
+        }
+        return null;
     }
 }

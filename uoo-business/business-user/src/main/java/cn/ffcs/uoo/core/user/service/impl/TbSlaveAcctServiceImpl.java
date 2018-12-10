@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,15 +65,25 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
     }
 
     @Override
-    public boolean checkSlaveAcct(String slaveAcct, Long acctHostId , Long resourceObjId){
+    public boolean checkSlaveAcct(String slaveAcct, Long acctHostId , Long resourceObjId, Long slaveAcctId, Long acctId){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
-        map.put(BaseUnitConstants.TABLE_SLAVE_ACCT, slaveAcct);
+        if(!StrUtil.isNullOrEmpty(slaveAcct)){
+            map.put(BaseUnitConstants.TABLE_SLAVE_ACCT, slaveAcct);
+        }
+        if(!StrUtil.isNullOrEmpty(acctId)){
+            map.put(BaseUnitConstants.TABLE_ACCT_ID, acctId);
+        }
         map.put(BaseUnitConstants.TB_ACCT_HOST_ID, acctHostId);
         map.put(BaseUnitConstants.TB_RESOURCE_OBJ_ID, resourceObjId);
         TbSlaveAcct tbSlaveAcct = this.selectOne(new EntityWrapper<TbSlaveAcct>().allEq(map));
         if(StrUtil.isNullOrEmpty(tbSlaveAcct)){
             return false;
+        }
+        if(!StrUtil.isNullOrEmpty(slaveAcctId)){
+            if(slaveAcctId.equals(tbSlaveAcct.getSlaveAcctId())){
+                return false;
+            }
         }
         return true;
     }
@@ -81,6 +92,7 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
     public Object delTbSlaveAcct(Long slaveAcctId){
         TbSlaveAcct tbSlaveAcct = new TbSlaveAcct();
         tbSlaveAcct.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+        tbSlaveAcct.setStatusDate(new Date());
         EntityWrapper<TbSlaveAcct> wrapper = new EntityWrapper<TbSlaveAcct>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TABLE_SLAVE_ACCT_ID, slaveAcctId);
@@ -92,9 +104,10 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
 
     @Override
     public Object updateTbSlaveAcct(TbSlaveAcct tbSlaveAcct){
-        if(this.updateById(tbSlaveAcct)){
+        if(retBool(baseMapper.updateById(tbSlaveAcct))){
             return ResultUtils.success(null);
         }
         return ResultUtils.error(EumUserResponeCode.USER_RESPONSE_ERROR);
     }
+
 }

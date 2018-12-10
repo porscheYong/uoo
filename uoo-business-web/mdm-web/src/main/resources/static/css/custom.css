@@ -804,6 +804,9 @@ ul.tab-title.right li {
     /*float: left;*/
     color: #232c45
     }
+.board-title .org-name:hover {
+    color: #409eff
+}
 .board-content {
     padding: 10px 10px 30px 10px;
     }
@@ -1066,8 +1069,14 @@ ul.tab-title.right li {
     padding: 10px 15px 0;
     background: #fff;
 }
-.breadcrumb > .breadcrumb-item > a {
+.breadcrumb > .breadcrumb-item {
     color: #959da9;
+}
+.breadcrumb > .breadcrumb-item > a {
+    color: #5f6c7e;
+}
+.breadcrumb > .breadcrumb-item > a:hover {
+    color: #409eff;
 }
 .breadcrumb > .breadcrumb-item > .breadcrumb-separator {
     margin: 0 9px;

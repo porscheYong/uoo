@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.FieldFill;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -48,6 +50,7 @@ public class TbAcct extends Model<TbAcct> {
     /**
      * 非对称密码
      */
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     @TableField("PASSWORD")
     private String password;
     /**
@@ -73,8 +76,7 @@ public class TbAcct extends Model<TbAcct> {
     /**
      * 状态
      */
-    @JsonIgnore
-    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT)
     private String statusCd;
     /**
      * 创建时间
@@ -104,16 +106,18 @@ public class TbAcct extends Model<TbAcct> {
      * 状态变更的时间
      */
     @JsonIgnore
-    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT)
     private Date statusDate;
     /**
      * 生效时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     @TableField("ENABLE_DATE")
     private Date enableDate;
     /**
      * 失效时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     @TableField("DISABLE_DATE")
     private Date disableDate;
 

@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.core.user.util;
 
+import cn.ffcs.uoo.core.user.constant.BaseUnitConstants;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.UnsupportedEncodingException;
@@ -600,5 +601,29 @@ public class StrUtil {
             ret = null;
         }
         return ret;
+    }
+
+    /**
+     * 初始页面
+     * @param pageNo
+     * @return
+     */
+    public static Integer intiPageNo(Integer pageNo){
+        if(pageNo == null || pageNo <= 0){
+            return BaseUnitConstants.PAGE_NO;
+        }
+        return pageNo;
+    }
+
+    /**
+     * 初始页面数量
+     * @param pageSize
+     * @return
+     */
+    public static Integer intiPageSize(Integer pageSize){
+        if(pageSize == null || pageSize <= 0){
+            return BaseUnitConstants.PAGE_SIZE;
+        }
+        return pageSize;
     }
 }

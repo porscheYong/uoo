@@ -32,7 +32,7 @@ import cn.ffcs.uoo.base.controller.BaseController;
  * @since 2018-10-11
  */
 @RestController
-@RequestMapping("/tbFamily")
+@RequestMapping("/family")
 public class TbFamilyController extends BaseController {
 
     @Autowired

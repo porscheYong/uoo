@@ -4,10 +4,10 @@ import cn.ffcs.uoo.core.user.dao.TbUserMapper;
 import cn.ffcs.uoo.core.user.entity.TbRoles;
 import cn.ffcs.uoo.core.user.entity.TbUser;
 import cn.ffcs.uoo.core.user.service.TbUserService;
+import cn.ffcs.uoo.core.user.util.StrUtil;
 import cn.ffcs.uoo.core.user.vo.*;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,8 +49,10 @@ public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> impleme
 
 
     @Override
-    public List<ListUserVo> getUserList( Long personnelId){
-        return  baseMapper.getUserList(personnelId);
+    public Page<ListUserVo> getUserList( Long personnelId, Integer pageNo, Integer pageSize){
+        Page<ListUserVo> page = new Page<ListUserVo>(StrUtil.intiPageNo(pageNo), StrUtil.intiPageSize(pageSize));
+        page.setRecords(baseMapper.getUserList(page, personnelId));
+        return  page;
     }
 
     @Override
@@ -59,17 +61,21 @@ public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> impleme
     }
 
     @Override
-    public Page<ListAcctOrgVo> getAcctOrg(ListAcctOrgVo acctOrgVo){
-        Page<ListAcctOrgVo> page = new Page<ListAcctOrgVo>(acctOrgVo.getPageNo()== 0 ? 1 : acctOrgVo.getPageNo()
-            ,acctOrgVo.getPageSize() == 0 ? 5 : acctOrgVo.getPageSize());
-        List<ListAcctOrgVo> list = baseMapper.getAcctOrg(page, acctOrgVo);
-        page.setRecords(list);
+    public Page<ListAcctOrgVo> getAcctOrg(Long acctId, Integer pageNo, Integer pageSize){
+        Page<ListAcctOrgVo> page = new Page<ListAcctOrgVo>(StrUtil.intiPageNo(pageNo)
+            , StrUtil.intiPageSize(pageSize));
+        page.setRecords(baseMapper.getAcctOrg(page, acctId));
         return  page;
     }
 
     @Override
     public List<ListAcctOrgVo> getSlaveAcctOrg(ListAcctOrgVo acctOrgVo){
         return baseMapper.getSlaveAcctOrg(acctOrgVo);
+    }
+
+    @Override
+    public List<ListAcctOrgVo> getAcctOrgByPsnId(Long personnelId){
+        return baseMapper.getAcctOrgByPsnId(personnelId);
     }
 
 }

@@ -20,6 +20,8 @@
     <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
     <!-- jquery tagsinput -->
     <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
+    <!-- toastr -->
+    <link href="/vendors/toastr/toastr.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
@@ -55,8 +57,8 @@
             margin-left: -55px !important;
         }
         #delSubAcct{
-          margin-top: 40px !important;
-          margin-left: -15px;
+          margin-top: 20px !important;
+          margin-left: 34%;
         }
         .fleft{
             float: none !important;
@@ -275,7 +277,7 @@
 
                     <div class="row">
                         <div style="margin-left: 29%;margin-top: 5%;" id="editBtnDiv">
-                            <button class="ui-button ui-button-cancel"  onclick="backToAcctInfo()" style="margin-left: 40px;">取消编辑</button>
+                            <button class="ui-button ui-button-cancel"  onclick="backToAcctInfo()" style="margin-left: 95px;">取消编辑</button>
                         </div>
                     </div>
                 </div>
@@ -339,10 +341,10 @@
                         <span class="name ft18">归属组织</span>
                     </div>
 
-                    <div class="fright" style="margin-right:85%;margin-top:-4.5%;"> 
+                    <div class="fright" style="margin-right: 36px;margin-top:-4.5%;"> 
                         <a class="button-add" id="addBtn" data-toggle="modal" data-target="#slaveOrgModal" onclick="getAcctOrg()">
                             <span class="fa fa-plus-circle icon-add"></span>
-                            <span id="addText">添加</span>
+                            <span id="addText">新增归属组织</span>
                         </a>
                     </div>
                 </div>
@@ -370,7 +372,7 @@
                     <table id="orgTable" class="stripe" width="100%"></table>
                 </div>
 
-                <input class="Btn BtnRed2" id="delSubAcct" type="button" onclick="isDelete()" value="删除从账号" style="margin-top:20px;" />
+                <input class="Btn BtnRed2" id="delSubAcct" type="button" onclick="deleteTbSubAcct()" value="删除从账号" style="margin-top:20px;" />
 
             </form>
 
@@ -378,7 +380,7 @@
                 <div id="addBtnDiv" style="margin-left: 29%;margin-top: 5%;">
                     <!-- <input type="submit" id="formSubmit" class="clip">
                     <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
-                    <button class="ui-button ui-button-primary" id="opBtn" onclick="btnSubmit()">提交</button>
+                    <button class="ui-button ui-button-primary" id="opBtn" onclick="btnSubmit()">保存</button>
                     <button class="ui-button ui-button-cancel"  onclick="submitToOther()" style="margin-left: 40px;">取消</button>
                 </div>
             </div>
@@ -401,6 +403,8 @@
     <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
     <!-- layer -->
     <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+    <!-- toastr -->
+    <script type="text/javascript" src="/vendors/toastr/toastr.js"></script>
     <!-- init -->
     <script src="/js/account/init.js"></script>
     <!-- jquery tagsinput -->

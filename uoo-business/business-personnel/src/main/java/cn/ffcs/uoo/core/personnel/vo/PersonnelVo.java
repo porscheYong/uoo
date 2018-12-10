@@ -95,6 +95,12 @@ public class PersonnelVo {
      */
     private String certNo;
 
+    /**
+     * 证件地址
+     * TB_CERT
+     */
+    private String address;
+
     /**  2、联系信息    */
 
     //private List<TbContactVo> tbContactVoList;

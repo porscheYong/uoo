@@ -53,7 +53,7 @@ public interface TbSlaveAcctService extends IService<TbSlaveAcct> {
      * @param resourceObjId
      * @return
      */
-    public boolean checkSlaveAcct(String slaveAcct, Long acctHostId , Long resourceObjId);
+    public boolean checkSlaveAcct(String slaveAcct, Long acctHostId , Long resourceObjId, Long slaveAcctId, Long acctId);
 
     /**
      * 删除 从账号
@@ -68,4 +68,7 @@ public interface TbSlaveAcctService extends IService<TbSlaveAcct> {
      * @return
      */
     public Object updateTbSlaveAcct(TbSlaveAcct tbSlaveAcct);
+
+
+
 }
