@@ -173,12 +173,12 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
 //        if(StrUtil.isNullOrEmpty(org.getSupOrgId())){
 //            return "组织父节点不能为空";
 //        }
-        if(StrUtil.isNullOrEmpty(org.getShortName())){
-            return "组织简称不能为空";
-        }
-        if(StrUtil.isNullOrEmpty(org.getCityTown())){
-            return "城乡属性不能为空";
-        }
+//        if(StrUtil.isNullOrEmpty(org.getShortName())){
+//            return "组织简称不能为空";
+//        }
+//        if(StrUtil.isNullOrEmpty(org.getCityTown())){
+//            return "城乡属性不能为空";
+//        }
         return "";
     }
 
@@ -194,8 +194,8 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
     }
 
     @Override
-    public OrgVo selectOrgByOrgId(String orgId){
-        return baseMapper.selectOrgByOrgId(orgId);
+    public OrgVo selectOrgByOrgId(String orgId,String orgTreeId){
+        return baseMapper.selectOrgByOrgId(orgId,orgTreeId);
     }
     @Override
     public List<PoliticalLocation> getOrgLoc(String orgId){

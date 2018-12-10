@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.web.maindata.region.service;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.cloud.netflix.feign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,9 +13,8 @@ import cn.ffcs.uoo.web.maindata.region.service.fallback.RegionLocationRelService
 import cn.ffcs.uoo.web.maindata.region.vo.LocRegRelByLoc;
 import cn.ffcs.uoo.web.maindata.region.vo.LocRegRelByReg;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
-import common.config.PersonnelServiceConfiguration;
 
-@FeignClient(value = "business-region",configuration = {PersonnelServiceConfiguration.class},fallback = RegionLocationRelServiceHystrix.class)
+@FeignClient(value = "business-region",configuration = {FeignClientConfiguration.class},fallback = RegionLocationRelServiceHystrix.class)
 public interface RegionLocationRelService {
      
     @RequestMapping(value="/region/regionLocationRel/addLocRegRelByLoc",method = RequestMethod.POST,headers={"Content-Type=application/json"})

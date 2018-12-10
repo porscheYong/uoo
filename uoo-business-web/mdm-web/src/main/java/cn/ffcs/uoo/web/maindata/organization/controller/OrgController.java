@@ -66,9 +66,11 @@ public class OrgController {
     public ResponseResult getOrgRelPage(@RequestParam(value = "orgRootId",required = false)String orgRootId,
                                         @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                         @RequestParam(value = "orgId",required = false)String orgId,
+                                        @RequestParam(value = "sortField",required = false)String sortField,
+                                        @RequestParam(value = "sortOrder",required = false)String sortOrder,
                                         @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                         @RequestParam(value = "pageNo",required = false)Integer pageNo) {
-        return orgService.getOrgRelPage(orgRootId,orgTreeId,orgId,pageSize,pageNo);
+        return orgService.getOrgRelPage(orgRootId,orgTreeId,orgId,sortField,sortOrder,pageSize,pageNo);
     }
 
 

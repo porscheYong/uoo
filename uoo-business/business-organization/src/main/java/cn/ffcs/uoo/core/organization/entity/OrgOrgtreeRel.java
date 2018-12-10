@@ -71,6 +71,21 @@ public class OrgOrgtreeRel extends Model<OrgOrgtreeRel> {
     @TableField("ORG_BIZ_NAME")
     private String orgBizName;
 
+    /**
+     * 排序
+     */
+    @TableField("SORT")
+    private Double sort;
+
+
+    public Double getSort() {
+        return sort;
+    }
+
+    public void setSort(Double sort) {
+        this.sort = sort;
+    }
+
     public String getOrgBizName() {
         return orgBizName;
     }

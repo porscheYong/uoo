@@ -53,6 +53,8 @@ public class OrgServiceHystrix implements OrgService {
     public ResponseResult<Page<OrgVo>> getOrgRelPage(String orgRootId,
                                                      String orgTreeId,
                                                      String orgId,
+                                                     String sortField,
+                                                     String sortOrder,
                                                      Integer pageSize,
                                                      Integer pageNo){
         ResponseResult<Page<OrgVo>> responseResult = new ResponseResult<Page<OrgVo>>();

@@ -157,6 +157,12 @@ public class Org extends Model<Org> {
 
 
     /**
+     * 标准组织标志
+     */
+    @TableField("STANDARD_FLAG")
+    private Long standardFlag;
+
+    /**
      *  组织树ID
      */
     @TableField(exist=false)
@@ -223,7 +229,20 @@ public class Org extends Model<Org> {
      */
     @TableField(exist=false)
     private List<OrgCertVo> orgCertList;
+    /**
+     * 组织称谓
+     */
+    @TableField(exist=false)
+    private String orgBizName;
 
+
+    public String getOrgBizName() {
+        return orgBizName;
+    }
+
+    public void setOrgBizName(String orgBizName) {
+        this.orgBizName = orgBizName;
+    }
 
     public List<OrgCertVo> getOrgCertList() {
         return orgCertList;
@@ -538,6 +557,14 @@ public class Org extends Model<Org> {
         this.statusDate = statusDate;
     }
 
+    public Long getStandardFlag() {
+        return standardFlag;
+    }
+
+    public void setStandardFlag(Long standardFlag) {
+        this.standardFlag = standardFlag;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.orgId;
@@ -572,6 +599,7 @@ public class Org extends Model<Org> {
         ", updateUser=" + updateUser +
         ", statusDate=" + statusDate +
         ", orgMartCode=" + orgMartCode +
+        ", standardFlag=" + standardFlag +
         "}";
     }
 }

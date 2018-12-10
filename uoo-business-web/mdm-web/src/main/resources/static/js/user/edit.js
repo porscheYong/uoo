@@ -35,6 +35,13 @@ function getRefType () {
 		console.log(err)
 	})
 }
+function getYesNo () {
+	$http.get('/tbDictionaryItem/getList/YES_NO', {}, function (data) {
+		personalData.yesNo=data;
+	}, function (err) {
+		console.log(err)
+	})
+}
 function getEduInfo(){
 	$.ajax({
 		url:'/edu/getTbEduPage',
@@ -1047,7 +1054,16 @@ $(document).ready(function(){
 		$('#personnel').removeClass('active');
 		$('#user').addClass('active');
 	}
+	
+	if(!isNum(orgId)){
+		orgId=0;
+	}
+	if(!isNum(orgTreeId)){
+		orgTreeId=0;
+	}
+	
 	getRefType();
+	getYesNo();
 	getOrgTreeList();
 	getSchoolType();
 	getMemRelation();
@@ -1090,4 +1106,8 @@ function autoWriteForm(){
 		$('#nationality').val(getNationalityByCard(certNo));
 		$('#gender').val(getGenderByCard(certNo)?1:2);
 	}
+}
+function isNum(n){
+	var re = /^[0-9]+.?[0-9]*$/;
+	return re.test(n);
 }

@@ -91,7 +91,7 @@ public interface OrgMapper extends BaseMapper<Org> {
      * @param orgId
      * @return
      */
-    public OrgVo selectOrgByOrgId(@Param("orgId")String orgId);
+    public OrgVo selectOrgByOrgId(@Param("orgId")String orgId,@Param("orgTreeId")String orgTreeId);
 
     /**
      * 查询组织行政管理区域

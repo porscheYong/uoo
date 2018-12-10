@@ -86,7 +86,7 @@ public interface OrgService extends IService<Org> {
      * @param orgId
      * @return
      */
-    public OrgVo selectOrgByOrgId(String orgId);
+    public OrgVo selectOrgByOrgId(String orgId,String orgTreeId);
 
 
     /**
