@@ -20,6 +20,15 @@ uoo是采用Spring Cloud微服务化开发平台，具有统一授权、认证�
 将服务保留的Rest API进行代理和网关控制，除了平常经常使用的node.js、nginx外，Spring Cloud系列的zuul和ribbon，可以帮我们进行正常的网关管控和负载均衡。
 其中扩展基于JWT的Zuul限流插件，方面进行限流。
 
+## 系统平台自身【common-system】
+系统平台与核心业务模块是相互分来的，就是剥离掉核心业务模块，系统平台仍然能被其他人复用。所以在设计阶段，就将平台这块独立自成体系。
+
+### 逻辑模型
+
+ ![avatar](https://github.com/rothschil/static/raw/master/UOO角色权限设计V0.2.jpg)
+
+### 用户管理
+
 ## 功能
 ### uoo-base 基类
 - base-common 基类通用，可对工具类和对底层访问的Dao进行封装，建议提供基于不同数据库和不同持久化工具进行分装，供各个模块自行引用
