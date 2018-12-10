@@ -132,7 +132,14 @@ function getCurrentSelectedNode() {
 	var nodes = treeObj.getSelectedNodes();
 	return nodes;
 }
-   
+function selectNodeById(id){
+	console.log(id);
+	var zTree = $.fn.zTree.getZTreeObj("standardTree");
+	var node=zTree.getNodesByParam('id',id);
+	console.log(node[0]);
+	zTree.selectNode(node[0]);
+	zTreeOnClick(null,null,node[0])
+}
 function changeIframe(url) {
 	$('#myFrame').attr("src", url);
 }
