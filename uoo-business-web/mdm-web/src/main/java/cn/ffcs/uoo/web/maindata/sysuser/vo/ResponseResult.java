@@ -13,6 +13,7 @@ public class ResponseResult<T> implements Serializable {
     public static final int PARAMETER_ERROR = 1100;
 
     public static final int STATE_ERROR = 1200;
+    public static final int STATE_SERVICE_ERROR = 1300;
 
 
     private int state;

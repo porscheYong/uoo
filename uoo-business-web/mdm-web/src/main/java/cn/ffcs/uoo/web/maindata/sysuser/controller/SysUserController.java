@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
+import cn.ffcs.uoo.web.maindata.realm.exception.ServiceException;
 import cn.ffcs.uoo.web.maindata.sysuser.client.SysUserClient;
 import cn.ffcs.uoo.web.maindata.sysuser.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
@@ -52,6 +53,9 @@ public class SysUserController {
             subject.login(usernamePasswordToken);
             rr.setMessage("登陆成功");
             rr.setState(1000);
+        } catch (ServiceException e) {
+            rr.setMessage("登陆服务异常，请稍后重试");
+            rr.setState(1100);
         } catch (AuthenticationException e) {
             rr.setMessage("用户密码错误");
             rr.setState(1100);

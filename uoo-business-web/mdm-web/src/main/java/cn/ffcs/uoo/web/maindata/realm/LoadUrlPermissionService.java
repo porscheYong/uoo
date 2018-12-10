@@ -42,8 +42,6 @@ public class LoadUrlPermissionService {
     @Value("${spring.application.name}")
     private String appName;
     @Autowired
-    WebClient webClient;
-    @Autowired
     RestTemplate restTemplate;
     private ConcurrentLinkedQueue<String> retryUrls = new ConcurrentLinkedQueue<>();
 

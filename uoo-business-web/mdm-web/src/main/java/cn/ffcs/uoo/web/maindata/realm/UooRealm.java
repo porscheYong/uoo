@@ -29,6 +29,7 @@ import cn.ffcs.uoo.web.maindata.permission.dto.FuncMenu;
 import cn.ffcs.uoo.web.maindata.permission.service.PrivilegeService;
 import cn.ffcs.uoo.web.maindata.permission.service.RolesService;
 import cn.ffcs.uoo.web.maindata.permission.vo.AccoutPermissionVO;
+import cn.ffcs.uoo.web.maindata.realm.exception.ServiceException;
 import cn.ffcs.uoo.web.maindata.sysuser.client.SysUserClient;
 import cn.ffcs.uoo.web.maindata.sysuser.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
@@ -62,6 +63,9 @@ public class UooRealm extends AuthorizingRealm {
         SysUser t = new SysUser();
         t.setAccout(username);
         ResponseResult<SysUser> r = client.getSysUserByAccout(t);
+        if(ResponseResult.STATE_SERVICE_ERROR==r.getState()){
+            throw new ServiceException();
+        }
         if(r.getState()!=ResponseResult.STATE_OK){
             return null;
         }
