@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="cn.ffcs.uoo.message.server.pojo.TbSystemIndividuationRule">
     <id column="INDIVIDUATION_RULE_ID" jdbcType="DECIMAL" property="individuationRuleId" />
     <result column="SYSTEM_ORG_TREE_ID" jdbcType="DECIMAL" property="systemOrgTreeId" />
-    <result column="BUSI_OBJ_ID" jdbcType="DECIMAL" property="busiObjId" />
-    <result column="BUSI_OBJ_ATTR_ID" jdbcType="DECIMAL" property="busiObjAttrId" />
+    <result column="BUSI_OBJ_ID" jdbcType="VARCHAR" property="busiObjId" />
+    <result column="BUSI_OBJ_ATTR_ID" jdbcType="VARCHAR" property="busiObjAttrId" />
     <result column="RULE_OPERATOR" jdbcType="VARCHAR" property="ruleOperator" />
     <result column="ATTR_VALUE" jdbcType="VARCHAR" property="attrValue" />
     <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
@@ -16,162 +16,8 @@
     <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
   </resultMap>
   <sql id="Base_Column_List">
-    INDIVIDUATION_RULE_ID, SYSTEM_ORG_TREE_ID, BUSI_OBJ_ID, BUSI_OBJ_ATTR_ID, RULE_OPERATOR, 
+    INDIVIDUATION_RULE_ID, SYSTEM_ORG_TREE_ID, BUSI_OBJ_ID, BUSI_OBJ_ATTR_ID, RULE_OPERATOR,
     ATTR_VALUE, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from TB_SYSTEM_INDIVIDUATION_RULE
-    where INDIVIDUATION_RULE_ID = #{individuationRuleId,jdbcType=DECIMAL}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from TB_SYSTEM_INDIVIDUATION_RULE
-    where INDIVIDUATION_RULE_ID = #{individuationRuleId,jdbcType=DECIMAL}
-  </delete>
-  <insert id="insert" parameterType="cn.ffcs.uoo.message.server.pojo.TbSystemIndividuationRule">
-    insert into TB_SYSTEM_INDIVIDUATION_RULE (INDIVIDUATION_RULE_ID, SYSTEM_ORG_TREE_ID, 
-      BUSI_OBJ_ID, BUSI_OBJ_ATTR_ID, RULE_OPERATOR, 
-      ATTR_VALUE, STATUS_CD, STATUS_DATE, 
-      CREATE_DATE, CREATE_USER, UPDATE_DATE, 
-      UPDATE_USER)
-    values (#{individuationRuleId,jdbcType=DECIMAL}, #{systemOrgTreeId,jdbcType=DECIMAL}, 
-      #{busiObjId,jdbcType=DECIMAL}, #{busiObjAttrId,jdbcType=DECIMAL}, #{ruleOperator,jdbcType=VARCHAR}, 
-      #{attrValue,jdbcType=VARCHAR}, #{statusCd,jdbcType=VARCHAR}, #{statusDate,jdbcType=DATE}, 
-      #{createDate,jdbcType=DATE}, #{createUser,jdbcType=DECIMAL}, #{updateDate,jdbcType=DATE}, 
-      #{updateUser,jdbcType=DECIMAL})
-  </insert>
-  <insert id="insertSelective" parameterType="cn.ffcs.uoo.message.server.pojo.TbSystemIndividuationRule">
-    insert into TB_SYSTEM_INDIVIDUATION_RULE
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="individuationRuleId != null">
-        INDIVIDUATION_RULE_ID,
-      </if>
-      <if test="systemOrgTreeId != null">
-        SYSTEM_ORG_TREE_ID,
-      </if>
-      <if test="busiObjId != null">
-        BUSI_OBJ_ID,
-      </if>
-      <if test="busiObjAttrId != null">
-        BUSI_OBJ_ATTR_ID,
-      </if>
-      <if test="ruleOperator != null">
-        RULE_OPERATOR,
-      </if>
-      <if test="attrValue != null">
-        ATTR_VALUE,
-      </if>
-      <if test="statusCd != null">
-        STATUS_CD,
-      </if>
-      <if test="statusDate != null">
-        STATUS_DATE,
-      </if>
-      <if test="createDate != null">
-        CREATE_DATE,
-      </if>
-      <if test="createUser != null">
-        CREATE_USER,
-      </if>
-      <if test="updateDate != null">
-        UPDATE_DATE,
-      </if>
-      <if test="updateUser != null">
-        UPDATE_USER,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="individuationRuleId != null">
-        #{individuationRuleId,jdbcType=DECIMAL},
-      </if>
-      <if test="systemOrgTreeId != null">
-        #{systemOrgTreeId,jdbcType=DECIMAL},
-      </if>
-      <if test="busiObjId != null">
-        #{busiObjId,jdbcType=DECIMAL},
-      </if>
-      <if test="busiObjAttrId != null">
-        #{busiObjAttrId,jdbcType=DECIMAL},
-      </if>
-      <if test="ruleOperator != null">
-        #{ruleOperator,jdbcType=VARCHAR},
-      </if>
-      <if test="attrValue != null">
-        #{attrValue,jdbcType=VARCHAR},
-      </if>
-      <if test="statusCd != null">
-        #{statusCd,jdbcType=VARCHAR},
-      </if>
-      <if test="statusDate != null">
-        #{statusDate,jdbcType=DATE},
-      </if>
-      <if test="createDate != null">
-        #{createDate,jdbcType=DATE},
-      </if>
-      <if test="createUser != null">
-        #{createUser,jdbcType=DECIMAL},
-      </if>
-      <if test="updateDate != null">
-        #{updateDate,jdbcType=DATE},
-      </if>
-      <if test="updateUser != null">
-        #{updateUser,jdbcType=DECIMAL},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.ffcs.uoo.message.server.pojo.TbSystemIndividuationRule">
-    update TB_SYSTEM_INDIVIDUATION_RULE
-    <set>
-      <if test="systemOrgTreeId != null">
-        SYSTEM_ORG_TREE_ID = #{systemOrgTreeId,jdbcType=DECIMAL},
-      </if>
-      <if test="busiObjId != null">
-        BUSI_OBJ_ID = #{busiObjId,jdbcType=DECIMAL},
-      </if>
-      <if test="busiObjAttrId != null">
-        BUSI_OBJ_ATTR_ID = #{busiObjAttrId,jdbcType=DECIMAL},
-      </if>
-      <if test="ruleOperator != null">
-        RULE_OPERATOR = #{ruleOperator,jdbcType=VARCHAR},
-      </if>
-      <if test="attrValue != null">
-        ATTR_VALUE = #{attrValue,jdbcType=VARCHAR},
-      </if>
-      <if test="statusCd != null">
-        STATUS_CD = #{statusCd,jdbcType=VARCHAR},
-      </if>
-      <if test="statusDate != null">
-        STATUS_DATE = #{statusDate,jdbcType=DATE},
-      </if>
-      <if test="createDate != null">
-        CREATE_DATE = #{createDate,jdbcType=DATE},
-      </if>
-      <if test="createUser != null">
-        CREATE_USER = #{createUser,jdbcType=DECIMAL},
-      </if>
-      <if test="updateDate != null">
-        UPDATE_DATE = #{updateDate,jdbcType=DATE},
-      </if>
-      <if test="updateUser != null">
-        UPDATE_USER = #{updateUser,jdbcType=DECIMAL},
-      </if>
-    </set>
-    where INDIVIDUATION_RULE_ID = #{individuationRuleId,jdbcType=DECIMAL}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="cn.ffcs.uoo.message.server.pojo.TbSystemIndividuationRule">
-    update TB_SYSTEM_INDIVIDUATION_RULE
-    set SYSTEM_ORG_TREE_ID = #{systemOrgTreeId,jdbcType=DECIMAL},
-      BUSI_OBJ_ID = #{busiObjId,jdbcType=DECIMAL},
-      BUSI_OBJ_ATTR_ID = #{busiObjAttrId,jdbcType=DECIMAL},
-      RULE_OPERATOR = #{ruleOperator,jdbcType=VARCHAR},
-      ATTR_VALUE = #{attrValue,jdbcType=VARCHAR},
-      STATUS_CD = #{statusCd,jdbcType=VARCHAR},
-      STATUS_DATE = #{statusDate,jdbcType=DATE},
-      CREATE_DATE = #{createDate,jdbcType=DATE},
-      CREATE_USER = #{createUser,jdbcType=DECIMAL},
-      UPDATE_DATE = #{updateDate,jdbcType=DATE},
-      UPDATE_USER = #{updateUser,jdbcType=DECIMAL}
-    where INDIVIDUATION_RULE_ID = #{individuationRuleId,jdbcType=DECIMAL}
-  </update>
+
 </mapper>

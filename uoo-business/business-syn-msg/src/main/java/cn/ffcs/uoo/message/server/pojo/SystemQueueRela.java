@@ -1,103 +1,114 @@
 package cn.ffcs.uoo.message.server.pojo;
 
-public class SystemQueueRela {
-    private String queueName;
 
-    private String systemName;
+import com.baomidou.mybatisplus.activerecord.Model;
 
-    private String doubleName;
+import java.io.Serializable;
 
-    private String chargePerson;
+public class SystemQueueRela extends Model<SystemQueueRela> {
 
-    private String chargeContact;
+	private String queueName;
 
-    private String status;
+	private String systemName;
 
-    private String ip;
+	private String doubleName;
 
-    private String port;
+	private String chargePerson;
 
-    private String username;
+	private String chargeContact;
 
-    private String password;
+	private String status;
 
-    public String getQueueName() {
-        return queueName;
-    }
+	private String ip;
 
-    public void setQueueName(String queueName) {
-        this.queueName = queueName;
-    }
+	private String port;
 
-    public String getSystemName() {
-        return systemName;
-    }
+	private String username;
 
-    public void setSystemName(String systemName) {
-        this.systemName = systemName;
-    }
+	private String password;
 
-    public String getDoubleName() {
-        return doubleName;
-    }
+	public String getQueueName() {
+		return queueName;
+	}
 
-    public void setDoubleName(String doubleName) {
-        this.doubleName = doubleName;
-    }
+	public void setQueueName(String queueName) {
+		this.queueName = queueName;
+	}
 
-    public String getChargePerson() {
-        return chargePerson;
-    }
+	public String getSystemName() {
+		return systemName;
+	}
 
-    public void setChargePerson(String chargePerson) {
-        this.chargePerson = chargePerson;
-    }
+	public void setSystemName(String systemName) {
+		this.systemName = systemName;
+	}
 
-    public String getChargeContact() {
-        return chargeContact;
-    }
+	public String getDoubleName() {
+		return doubleName;
+	}
 
-    public void setChargeContact(String chargeContact) {
-        this.chargeContact = chargeContact;
-    }
+	public void setDoubleName(String doubleName) {
+		this.doubleName = doubleName;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public String getChargePerson() {
+		return chargePerson;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setChargePerson(String chargePerson) {
+		this.chargePerson = chargePerson;
+	}
 
-    public String getIp() {
-        return ip;
-    }
+	public String getChargeContact() {
+		return chargeContact;
+	}
 
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
+	public void setChargeContact(String chargeContact) {
+		this.chargeContact = chargeContact;
+	}
 
-    public String getPort() {
-        return port;
-    }
+	public String getStatus() {
+		return status;
+	}
 
-    public void setPort(String port) {
-        this.port = port;
-    }
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public String getIp() {
+		return ip;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getPort() {
+		return port;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setPort(String port) {
+		this.port = port;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@Override
+	protected Serializable pkVal() {
+		return this.queueName;
+	}
 }

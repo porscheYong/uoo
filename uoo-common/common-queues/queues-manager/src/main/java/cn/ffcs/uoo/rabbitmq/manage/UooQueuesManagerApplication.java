@@ -1,4 +1,5 @@
-package cn.ffcs.uoo.rabbitmq.monitor;
+package cn.ffcs.uoo.rabbitmq.manage;
+
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -13,9 +14,10 @@ import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboar
 @EnableHystrixDashboard
 @EnableCircuitBreaker
 @SpringBootApplication
-@MapperScan(basePackages= {"cn.ffcs.uoo.rabbitmq.monitor.dao"})
-public class App {
+@MapperScan(basePackages= {"cn.ffcs.uoo.rabbitmq.manage.dao"})
+public class UooQueuesManagerApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(App.class,args);
+        SpringApplication.run(UooQueuesManagerApplication.class,args);
     }
 }
