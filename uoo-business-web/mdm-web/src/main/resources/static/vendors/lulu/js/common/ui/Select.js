@@ -345,7 +345,7 @@
                     }
                 });
 
-                return htmlSelected || data[0].html;
+                return htmlSelected;
             })() + '</span><i class="' + PREFIX + joiner + 'icon" aria-hidden="true"></i>');
         }
 

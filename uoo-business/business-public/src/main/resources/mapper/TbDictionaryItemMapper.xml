@@ -35,7 +35,7 @@
         </selectKey>
         insert into TB_DICTIONARY_ITEM
         <trim prefix="(" suffix=")" suffixOverrides=",">
-                ITEM_ID,
+            ITEM_ID,
             <if test="dictionaryId != null">
                 DICTIONARY_ID,
             </if>
@@ -71,7 +71,7 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-                #{itemId,jdbcType=DECIMAL},
+            #{itemId,jdbcType=DECIMAL},
             <if test="dictionaryId != null">
                 #{dictionaryId,jdbcType=DECIMAL},
             </if>
@@ -123,6 +123,16 @@
         <if test="parItemId != null">
             AND PAR_ITEM_ID = #{parItemId}
         </if>
+    </select>
+
+    <select id="selectDicItemListByDicName" resultMap="BaseResultMap">
+        SELECT I.*
+        FROM TB_DICTIONARY D, TB_DICTIONARY_ITEM I
+        WHERE D.STATUS_CD = '1000'
+        AND I.STATUS_CD = '1000'
+        AND D.DICTIONARY_ID = I.DICTIONARY_ID
+        AND D.DICTIONARY_NAME = #{dictionaryName}
+        ORDER BY I.SORT
     </select>
 
 </mapper>

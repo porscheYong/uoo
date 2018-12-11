@@ -2,8 +2,10 @@ package cn.ffcs.uoo.core.expando.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.constant.StatusEnum;
 import cn.ffcs.uoo.core.vo.ResponseResult;
 import cn.ffcs.uoo.core.expando.entity.TbExpandocolumn;
 import cn.ffcs.uoo.core.expando.entity.TbExpandovalue;
@@ -16,11 +18,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,9 +42,9 @@ public class TbExpandocolumnController extends BaseController {
 
     @ApiOperation(value = "修改扩展列", notes = "修改扩展列")
     @ApiImplicitParam(name = "tbExpandocolumn", value = "扩展列", required = true, dataType = "TbExpandocolumn")
-    @UooLog(value = "修改扩展值", key = "updateTbExpandovalue")
+    @UooLog(value = "修改扩展列", key = "updateTbExpandovalue")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult<TbExpandocolumn> updateTbExpandocolumn(TbExpandocolumn tbExpandocolumn) {
+    public ResponseResult<TbExpandocolumn> updateTbExpandocolumn(@RequestBody TbExpandocolumn tbExpandocolumn) {
         ResponseResult<TbExpandocolumn> responseResult = new ResponseResult<TbExpandocolumn>();
 
         // 校验必填项
@@ -56,6 +54,8 @@ public class TbExpandocolumnController extends BaseController {
             return responseResult;
         }
 
+        tbExpandocolumn.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandocolumn.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbExpandocolumnService.updateById(tbExpandocolumn);
 
         responseResult.setState(ResponseResult.STATE_OK);
@@ -67,7 +67,7 @@ public class TbExpandocolumnController extends BaseController {
     @ApiImplicitParam(name = "tbExpandocolumn", value = "扩展列", required = true, dataType = "TbExpandocolumn")
     @UooLog(value = "新增扩展列", key = "addTbExpandocolumn")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<TbExpandocolumn> addTbExpandocolumn(TbExpandocolumn tbExpandocolumn) {
+    public ResponseResult<TbExpandocolumn> addTbExpandocolumn(@RequestBody TbExpandocolumn tbExpandocolumn) {
         ResponseResult<TbExpandocolumn> responseResult = new ResponseResult<TbExpandocolumn>();
 
         // 校验必填项
@@ -87,6 +87,10 @@ public class TbExpandocolumnController extends BaseController {
             return responseResult;
         }
 
+        tbExpandocolumn.setUpdateDate(DateUtils.parseDate(DateUtils.getDate()));
+        tbExpandocolumn.setStatusDate(DateUtils.parseDate(DateUtils.getDate()));
+        tbExpandocolumn.setStatusCd(StatusEnum.VALID.getValue());
+        tbExpandocolumn.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         // 新增扩展列
         tbExpandocolumnService.save(tbExpandocolumn);
 
@@ -100,6 +104,7 @@ public class TbExpandocolumnController extends BaseController {
             @ApiImplicitParam(name = "columnId", value = "扩展列标识", required = true, dataType = "Long"),
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
+    @UooLog(value = "删除扩展列", key = "removeTbExpandocolumn")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
     public ResponseResult<TbExpandocolumn> removeTbExpandocolumn(Long columnId, Long updateUser) {
         ResponseResult<TbExpandocolumn> responseResult = new ResponseResult<TbExpandocolumn>();
@@ -117,13 +122,9 @@ public class TbExpandocolumnController extends BaseController {
         }
 
         // 查询是否存在有效的扩展值
-        Wrapper<TbExpandovalue> wrapper = new EntityWrapper<TbExpandovalue>();
-        wrapper.eq("COLUMN_ID", columnId);
-        // 生效状态
-        wrapper.eq("STATUS_CD", "1000");
         TbExpandovalue tbExpandovalue = new TbExpandovalue();
         tbExpandovalue.setColumnId(columnId);
-        tbExpandovalue.setStatusCd("1000");
+        tbExpandovalue.setStatusCd(StatusEnum.VALID.getValue());
         List<TbExpandovalue> tbExpandovalueList = tbExpandovalueService.selectValueList(tbExpandovalue);
 
         // 该扩展列存在有效扩展值，不能删除

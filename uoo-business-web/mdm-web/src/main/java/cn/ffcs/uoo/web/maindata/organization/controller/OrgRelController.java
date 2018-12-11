@@ -41,11 +41,11 @@ public class OrgRelController {
     public ResponseResult<List<TreeNodeVo>> getOrgRelTree(@RequestParam(value = "id",required = false)String id,
                                                           @RequestParam(value = "orgRootId",required = false)String orgRootId,
                                                           @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
-                                                          @RequestParam(value = "refCode",required = false)String refCode,
+                                                          @RequestParam(value = "relCode",required = false)String relCode,
                                                           @RequestParam(value = "isOpen",required = false)boolean isOpen,
                                                           @RequestParam(value = "isAsync",required = false)boolean isAsync,
                                                           @RequestParam(value = "isRoot",required = false)boolean isRoot){
-        return orgRelService.getOrgRelTree(id,orgRootId,orgTreeId,refCode,isOpen, isAsync,isRoot);
+        return orgRelService.getOrgRelTree(id,orgRootId,orgTreeId,relCode,isOpen, isAsync,isRoot);
     }
 
 

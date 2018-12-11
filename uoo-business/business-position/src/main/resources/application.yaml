@@ -5,6 +5,11 @@ server:
 spring:
   application:
     name: uoo-position
+  zipkin:
+        base-url: http://134.96.253.223:8600
+  sleuth:
+       sampler:
+        percentage: 1.0
   # 目前使用的是我的阿里云上的mysql数据库
   datasource:
    # url: jdbc:mysql://localhost:3306/springboot?useSSL=true&useUnicode=true&characterEncoding=utf-8&verifyServerCertificate=false

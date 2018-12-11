@@ -2,23 +2,28 @@ package cn.ffcs.uoo.core.expando.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.constant.StatusEnum;
+import cn.ffcs.uoo.core.expando.entity.TbExpandocolumn;
+import cn.ffcs.uoo.core.expando.entity.TbSystemtable;
+import cn.ffcs.uoo.core.expando.service.TbExpandocolumnService;
+import cn.ffcs.uoo.core.expando.service.TbSystemtableService;
+import cn.ffcs.uoo.core.expando.vo.ExpandovalueVo;
 import cn.ffcs.uoo.core.vo.ResponseResult;
 import cn.ffcs.uoo.core.expando.entity.TbExpandorow;
 import cn.ffcs.uoo.core.expando.entity.TbExpandovalue;
 import cn.ffcs.uoo.core.expando.service.TbExpandorowService;
 import cn.ffcs.uoo.core.expando.service.TbExpandovalueService;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,6 +43,94 @@ public class TbExpandovalueController extends BaseController {
     TbExpandovalueService tbExpandovalueService;
     @Autowired
     TbExpandorowService tbExpandorowService;
+    @Autowired
+    TbSystemtableService tbSystemtableService;
+    @Autowired
+    TbExpandocolumnService tbExpandocolumnService;
+
+    @ApiOperation(value = "通过值对象新增扩展值", notes = "通过值对象新增扩展值")
+    @ApiImplicitParam(name = "tbExpandovalue", value = "扩展值", required = true, dataType = "TbExpandovalue")
+    @UooLog(value = "通过值对象新增扩展值", key = "addExpandoInfo")
+    @RequestMapping(value = "/addByVo", method = RequestMethod.POST)
+    public ResponseResult<ExpandovalueVo> addExpandoInfo(@RequestBody ExpandovalueVo expandovalueVo) {
+        ResponseResult<ExpandovalueVo> responseResult = new ResponseResult<ExpandovalueVo>();
+
+        // 校验必填项
+        if(StringUtils.isEmpty(expandovalueVo.getTableName())) {
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("请填写系统表名");
+            return responseResult;
+        }
+        if(StringUtils.isEmpty(expandovalueVo.getColumnName())) {
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("请填写扩展列名");
+            return responseResult;
+        }
+        if(StringUtils.isEmpty(expandovalueVo.getRecordId())) {
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("请填写记录id");
+            return responseResult;
+        }
+        if(StringUtils.isEmpty(expandovalueVo.getData())) {
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("请填写数据值");
+            return responseResult;
+        }
+
+        // 根据系统表名查询系统表id
+        Wrapper<TbSystemtable> tbSystemtableWrapper = new EntityWrapper<TbSystemtable>();
+        tbSystemtableWrapper.eq("TABLE_NAME", expandovalueVo.getTableName());
+        tbSystemtableWrapper.eq("STATUS_CD", StatusEnum.VALID.getValue());
+        List<TbSystemtable> tbSystemtables = tbSystemtableService.selectList(tbSystemtableWrapper);
+        if(tbSystemtables == null || tbSystemtables.size() <= 0) {
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("该系统表名对应的记录不存在");
+            return responseResult;
+        }
+
+        Long tableId = tbSystemtables.get(0).getTableId();
+
+        // 根据扩展列名查询扩展列id
+        Wrapper<TbExpandocolumn> tbExpandocolumnWrapper = new EntityWrapper<TbExpandocolumn>();
+        tbExpandocolumnWrapper.eq("TABLE_ID", tableId);
+        tbExpandocolumnWrapper.eq("COLUMN_NAME", expandovalueVo.getColumnName());
+        tbExpandocolumnWrapper.eq("STATUS_CD", StatusEnum.VALID.getValue());
+        List<TbExpandocolumn> tbExpandocolumns = tbExpandocolumnService.selectList(tbExpandocolumnWrapper);
+        if(tbExpandocolumns == null || tbExpandocolumns.size() <= 0) {
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("该扩展列名对应的记录不存在");
+            return responseResult;
+        }
+
+        Long columnId = tbExpandocolumns.get(0).getColumnId();
+
+        // 新增扩展行
+        TbExpandorow tbExpandorow = new TbExpandorow();
+        tbExpandorow.setTableId(tableId);
+        tbExpandorow.setRecordId(expandovalueVo.getRecordId());
+        tbExpandorow.setStatusCd(StatusEnum.VALID.getValue());
+        tbExpandorow.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandorow.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandorow.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandorowService.save(tbExpandorow);
+
+        // 新增扩展值
+        TbExpandovalue tbExpandovalue = new TbExpandovalue();
+        tbExpandovalue.setTableId(tableId);
+        tbExpandovalue.setColumnId(columnId);
+        tbExpandovalue.setRecordId(expandovalueVo.getRecordId());
+        tbExpandovalue.setData(expandovalueVo.getData());
+        tbExpandovalue.setRowId(tbExpandorow.getRowId());
+        tbExpandovalue.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandovalue.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandovalue.setStatusCd(StatusEnum.VALID.getValue());
+        tbExpandovalue.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandovalueService.save(tbExpandovalue);
+
+        responseResult.setState(ResponseResult.STATE_OK);
+        responseResult.setMessage("新增扩展值成功");
+        return responseResult;
+    }
 
     @ApiOperation(value = "新增扩展值", notes = "新增扩展值")
     @ApiImplicitParam(name = "tbExpandovalue", value = "扩展值", required = true, dataType = "TbExpandovalue")
@@ -177,6 +270,39 @@ public class TbExpandovalueController extends BaseController {
         tbExpandovalue.setRecordId(recordId);
 
         return tbExpandovalueService.selectValueList(tbExpandovalue);
+    }
+
+    @ApiOperation(value = "查询扩展值值对象列表", notes = "查询扩展值值对象列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tableName", value = "表名", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "recordId", value = "记录id", required = true, dataType = "String", paramType = "path")
+    })
+    @UooLog(value = "查询扩展值值对象列表", key = "queryExpandovalueVoList")
+    @RequestMapping(value = "/getValueVoList/{tableName}/{recordId}", method = RequestMethod.GET)
+    public ResponseResult<List<ExpandovalueVo>> queryExpandovalueVoList(@PathVariable String tableName,
+                                                                        @PathVariable String recordId) {
+        ResponseResult<List<ExpandovalueVo>> responseResult = new ResponseResult<List<ExpandovalueVo>>();
+
+        // 校验必填项
+        if(StringUtils.isEmpty(tableName)) {
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("请输入表名");
+            return responseResult;
+        }
+        if(StringUtils.isEmpty(recordId)) {
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("请输入记录id");
+            return responseResult;
+        }
+
+        // 查询扩展值值对象列表
+        List<ExpandovalueVo> valueList = tbExpandovalueService.selectExpandovalueVoList(tableName, recordId);
+
+        // 返回结果
+        responseResult.setState(ResponseResult.STATE_OK);
+        responseResult.setMessage("查询成功");
+        responseResult.setData(valueList);
+        return responseResult;
     }
 }
 

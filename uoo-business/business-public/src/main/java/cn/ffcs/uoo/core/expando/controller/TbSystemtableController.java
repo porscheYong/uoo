@@ -2,7 +2,10 @@ package cn.ffcs.uoo.core.expando.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.DateUtils;
+import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.constant.StatusEnum;
 import cn.ffcs.uoo.core.vo.ResponseResult;
 import cn.ffcs.uoo.core.expando.entity.TbExpandocolumn;
 import cn.ffcs.uoo.core.expando.entity.TbExpandorow;
@@ -17,6 +20,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,9 +52,32 @@ public class TbSystemtableController extends BaseController {
     @ApiImplicitParam(name = "tbSystemtable", value = "系统表登记", required = true, dataType = "TbSystemtable")
     @UooLog(value = "新增系统表登记", key = "addTbSystemtable")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<TbSystemtable> addTbSystemtable(TbSystemtable tbSystemtable) {
+    public ResponseResult<TbSystemtable> addTbSystemtable(@RequestBody TbSystemtable tbSystemtable) {
         ResponseResult<TbSystemtable> responseResult = new ResponseResult<TbSystemtable>();
 
+        // 校验必填项
+        if(StringUtils.isEmpty(tbSystemtable.getTableName())) {
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("请填写系统表名");
+            return responseResult;
+        }
+
+        // 判断系统表名是否已存在
+        Wrapper<TbSystemtable> systemtableWrapper = new EntityWrapper<TbSystemtable>();
+        systemtableWrapper.eq("TABLE_NAME",tbSystemtable.getTableName());
+        systemtableWrapper.eq("STATUS_CD", StatusEnum.VALID.getValue());
+        List<TbSystemtable> tbSystemtables = tbSystemtableService.selectList(systemtableWrapper);
+
+        if(tbSystemtables != null && tbSystemtables.size() > 0) {
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("该系统表名已存在");
+            return responseResult;
+        }
+
+        tbSystemtable.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbSystemtable.setStatusCd(StatusEnum.VALID.getValue());
+        tbSystemtable.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbSystemtable.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbSystemtableService.save(tbSystemtable);
 
         responseResult.setState(ResponseResult.STATE_OK);
@@ -62,7 +89,7 @@ public class TbSystemtableController extends BaseController {
     @ApiImplicitParam(name = "tbSystemtable", value = "系统表标记", required = true, dataType = "TbSystemtable")
     @UooLog(value = "修改系统表登记", key = "updateTbSystemtable")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult<TbSystemtable> updateTbSystemtable(TbSystemtable tbSystemtable) {
+    public ResponseResult<TbSystemtable> updateTbSystemtable(@RequestBody TbSystemtable tbSystemtable) {
         ResponseResult<TbSystemtable> responseResult = new ResponseResult<TbSystemtable>();
 
         // 校验必填项
@@ -72,6 +99,9 @@ public class TbSystemtableController extends BaseController {
             return responseResult;
         }
 
+        tbSystemtable.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbSystemtable.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbSystemtable.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         // 根据主键更新系统表登记
         tbSystemtableService.updateById(tbSystemtable);
 
@@ -85,8 +115,9 @@ public class TbSystemtableController extends BaseController {
             @ApiImplicitParam(name = "tableId", value = "系统表标识", required = true, dataType = "Long"),
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
+    @UooLog(value = "删除系统表登记", key = "removeTbSystemtable")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbSystemtable> removeTbSystemtable(Long tableId, Long updateUser) {
+    public ResponseResult<TbSystemtable> removeTbSystemtable(@RequestBody Long tableId, @RequestBody Long updateUser) {
         ResponseResult<TbSystemtable> responseResult = new ResponseResult<TbSystemtable>();
 
         // 校验必填项
@@ -104,7 +135,7 @@ public class TbSystemtableController extends BaseController {
         // 是否存在有效扩展列
         Wrapper<TbExpandocolumn> tbExpandocolumnWrapper = new EntityWrapper<TbExpandocolumn>();
         tbExpandocolumnWrapper.eq("TABLE_ID", tableId);
-        tbExpandocolumnWrapper.eq("STATUS_CD", "1000");
+        tbExpandocolumnWrapper.eq("STATUS_CD", StatusEnum.VALID.getValue());
         List<TbExpandocolumn> tbExpandocolumnList = tbExpandocolumnService.selectList(tbExpandocolumnWrapper);
 
         // 该系统表登记存在有效扩展列，不能删除
@@ -117,7 +148,7 @@ public class TbSystemtableController extends BaseController {
         // 是否存在有效扩展行
         TbExpandorow tbExpandorow = new TbExpandorow();
         tbExpandorow.setTableId(tableId);
-        tbExpandorow.setStatusCd("1000");
+        tbExpandorow.setStatusCd(StatusEnum.VALID.getValue());
         List<TbExpandorow> tbExpandorowList = tbExpandorowService.queryRowList(tbExpandorow);
 
         // 该系统表登记存在有效扩展行，不能删除

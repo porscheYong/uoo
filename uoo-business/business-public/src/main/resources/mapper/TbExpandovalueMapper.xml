@@ -30,7 +30,7 @@
         </selectKey>
         insert into TB_EXPANDOVALUE
         <trim prefix="(" suffix=")" suffixOverrides=",">
-                VALUE_ID,
+            VALUE_ID,
             <if test="resourceId != null">
                 RESOURCE_ID,
             </if>
@@ -69,7 +69,7 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-                #{valueId,jdbcType=DECIMAL},
+            #{valueId,jdbcType=DECIMAL},
             <if test="resourceId != null">
                 #{resourceId,jdbcType=VARCHAR},
             </if>
@@ -114,28 +114,38 @@
         SET STATUS_CD = #{statusCd}, UPDATE_DATE = #{updateDate}, UPDATE_USER = #{updateUser}, STATUS_DATE = #{statusDate}
         WHERE VALUE_ID = #{valueId}
     </update>
-    
+
     <select id="selectValueList" parameterType="cn.ffcs.uoo.core.expando.entity.TbExpandovalue" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List" />
         FROM TB_EXPANDOVALUE
-        WHERE STATUS_CD = '1000'
+        WHERE 1=1
         <if test="resourceId != null and resourceId != ''">
-          AND RESOURCE_ID = #{resourceId}
+            AND RESOURCE_ID = #{resourceId}
         </if>
         <if test="tableId != null">
-          AND TABLE_ID = #{tableId}
+            AND TABLE_ID = #{tableId}
         </if>
         <if test="columnId != null">
-          AND COLUMN_ID = #{columnId}
+            AND COLUMN_ID = #{columnId}
         </if>
         <if test="recordId != null and recordId != ''">
-          AND RECORD_ID = #{recordId}
+            AND RECORD_ID = #{recordId}
         </if>
         <if test="statusCd != null and statusCd != ''">
-          AND STATUS_CD = #{statusCd}
+            AND STATUS_CD = #{statusCd}
         </if>
         <if test="valueId != null">
             AND VALUE_ID = #{valueId}
         </if>
+    </select>
+
+    <select id="selectExpandovalueVoList" resultType="ExpandovalueVo">
+        SELECT S.TABLE_NAME,C.COLUMN_NAME, C.COLUMN_CNNAME,V.VALUE_ID,V.RECORD_ID, V.DATA_
+        FROM TB_SYSTEMTABLE S, TB_EXPANDOCOLUMN C, TB_EXPANDOVALUE V
+        WHERE S.TABLE_ID = C.TABLE_ID
+        AND V.TABLE_ID = S.TABLE_ID
+        AND V.COLUMN_ID = C.COLUMN_ID
+        AND S.TABLE_NAME = #{tableName}
+        AND V.RECORD_ID = #{recordId}
     </select>
 </mapper>

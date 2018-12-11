@@ -906,7 +906,7 @@ function refreshStepNavigation(wizard, options, state, oldIndex)
 function lineAnimate(wizard){
     var lineWidth = wizard.find(".steps > ul > li").eq(0).width() - wizard.find(".steps > ul > li > a").eq(0).width() * 2;
     //wizard.find(".linego-done").animate({width:"25%"},500);   //animate({width:lineWidth+"px"},500);
-    wizard.find(".linego-done").css("width","33%");
+    wizard.find(".linego-done").css("width","50%");
 }
 
 /**
@@ -1171,13 +1171,13 @@ function renderTitle(wizard, options, state, header, index)
             index: index + 1,
             title: header.html()
         }),
-        explainData = new Array("创建人员","创建用户(主账号)","创建从账号"),
+        explainData = new Array("基本信息","归属组织"),
         lindex= index + 1,
         explain = "<span class=\"explain\">" + explainData[index] +  "</span>",
         line = "<span class=\"line\"></span>",
         lineGo = "<span class=\"linego\"></span>";
         var stepItem;
-        if(index != 2){
+        if(index != explainData.length - 1){
             stepItem = $("<li role=\"tab\"><a id=\"" + uniqueStepId + "\" href=\"#" + uniqueHeaderId + 
             "\" aria-controls=\"" + uniqueBodyId + "\">" + title + "</a>" + line + lineGo + explain + "</li>");
         }else{
