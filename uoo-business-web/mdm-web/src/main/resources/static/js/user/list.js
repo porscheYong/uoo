@@ -24,7 +24,7 @@ function initOrgPersonnelTable (isSearchlower) {
                 }
             },
             { 'data': "doubleName", 'title': '重名称谓', 'className': 'row-mobile' },
-            { 'data': "psnCode", 'title': '员工工号', 'className': 'cert-no' },
+            { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
             { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
             { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
             { 'data': "statusCd", 'title': '状态', 'className': 'status-code',
@@ -108,10 +108,9 @@ function initFreePersonnelTable () {
                         "&name="+ orgName +"&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
                 }
             },
-            { 'data': "doubleName", 'title': '重名称谓', 'className': 'row-mobile' },
-            { 'data': "psnCode", 'title': '员工工号', 'className': 'cert-no' },
-            { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
-            { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
+            { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
+            // { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
+            // { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
             { 'data': "statusCd", 'title': '状态', 'className': 'status-code',
                 'render': function (data, type, row, meta) {
                     var statusStr = '';
@@ -175,7 +174,7 @@ function showLower() {
     initOrgPersonnelTable(checked);
 }
 
-if (orgTreeId == 'noSort') {
+if (orgId == 'noSort') {
     $('#titleName').html('游离人员');
     $('#isShow').hide();
     initFreePersonnelTable();

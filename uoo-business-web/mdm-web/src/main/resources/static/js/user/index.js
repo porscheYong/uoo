@@ -53,9 +53,6 @@ function filter (treeId, parentNode, childNodes) {
     return childNodes.data
 }
 
-function filter (treeId, parentNode, childNodes) {
-    return childNodes.data
-}
 function refreshResult () {
     var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&orgTreeName=" + encodeURI(businessName) + "&name=" + encodeURI(orgName);
     $('#userFrame').attr("src",url);
@@ -91,29 +88,31 @@ function initTree (orgTreeId) {
             onClick: onNodeClick
         }
     };
-    if (orgTreeId == 'noSort') {
-        var data = [{"id":"","state":null,"pid":null,"icon":null,"iconClose":null,"iconOpen":null,"name":"未分类","open":null,"level":null,"checked":null,"chkDisabled":null,"parent":false}];
+    // if (orgTreeId == 'noSort') {
+    //     var data = [{"id":"","state":null,"pid":null,"icon":null,"iconClose":null,"iconOpen":null,"name":"未分类","open":null,"level":null,"checked":null,"chkDisabled":null,"parent":false}];
+    //     $.fn.zTree.init($("#userTree"), setting, data);
+    //     var zTree = $.fn.zTree.getZTreeObj("userTree");
+    //     var nodes = zTree.getNodes();
+    //     zTree.selectNode(nodes[0], true);
+    //     onNodeClick(null, null, nodes[0]);
+    // }
+    // else {
+    $http.get('/orgRel/getOrgRelTree', {
+        orgRootId: orgTreeId,
+        orgTreeId: orgTreeId
+    }, function (data) {
+        var newNode = [{"id":"noSort","state":null,"pid":"1000000001","icon":null,"iconClose":null,"iconOpen":null,"name":"未分类","open":null,"level":null,"checked":null,"chkDisabled":null,"parent":false}];
         $.fn.zTree.init($("#userTree"), setting, data);
         var zTree = $.fn.zTree.getZTreeObj("userTree");
         var nodes = zTree.getNodes();
+        // zTree.expandNode(nodes[0], true);
         zTree.selectNode(nodes[0], true);
         onNodeClick(null, null, nodes[0]);
-    }
-    else {
-        $http.get('/orgRel/getOrgRelTree', {
-            orgRootId: orgTreeId,
-            orgTreeId: orgTreeId
-        }, function (data) {
-            $.fn.zTree.init($("#userTree"), setting, data);
-            var zTree = $.fn.zTree.getZTreeObj("userTree");
-            var nodes = zTree.getNodes();
-            zTree.expandNode(nodes[0], true);
-            zTree.selectNode(nodes[0], true);
-            onNodeClick(null, null, nodes[0]);
-        }, function (err) {
-            console.log(err)
-        })
-    }
+        zTree.addNodes(nodes[0], newNode);
+    }, function (err) {
+        console.log(err)
+    })
+    // }
 }
 
 // 选择根节点
@@ -142,7 +141,7 @@ function initBusinessList () {
     $http.get('/orgTree/getOrgTreeList', {}, function (data) {
         var option = '';
         for (var i = 0; i < data.length; i++) {
-            var select = i === 0? 'selected' : '';
+            var select = data[i].orgTreeId === 15961? 'selected' : '';
             option += "<option value='" + data[i].orgTreeId + "' " + select + ">" + data[i].orgTreeName +"</option>";
         }
         option = option + '<option value="noSort">未分类</option>';
@@ -150,13 +149,14 @@ function initBusinessList () {
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
             $('#businessOrg').selectMatch();
         });
-        initTree(data[0].orgTreeId);
-        orgTreeId = data[0].orgTreeId;
-        businessName = data[0].orgTreeName;
+        // initTree(data[0].orgTreeId);
+        // orgTreeId = data[0].orgTreeId;
+        // businessName = data[0].orgTreeName;
         $('#businessOrg').unbind('change').bind('change', function (event) {
             orgTreeId = event.target.options[event.target.options.selectedIndex].value;
             initTree(orgTreeId);
-        })
+        });
+        $('#businessOrg').trigger('change');
     }, function (err) {
         console.log(err)
         loading.screenMaskDisable('container');

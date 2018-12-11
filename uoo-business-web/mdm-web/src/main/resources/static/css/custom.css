@@ -779,8 +779,12 @@ ul.tab-title.right li {
     top: 0;
     left: 0;
     bottom: 0;
-    float: left
+    float: left;
+    overflow-x: hidden;
     }
+.content-left:hover {
+    overflow-x: auto;
+}
 .content-right { /*内右内容*/
     padding: 0 0 0 250px;
     height: 100%;
@@ -804,7 +808,7 @@ ul.tab-title.right li {
     /*float: left;*/
     color: #232c45
     }
-.board-title .org-name:hover {
+.board-title .org-name {
     color: #409eff
 }
 .board-content {

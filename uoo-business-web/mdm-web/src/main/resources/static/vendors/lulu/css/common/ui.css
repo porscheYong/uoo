@@ -629,6 +629,24 @@ button.ui-button-warning:focus {
   background-color: #dc5652;
   border-color: #dc5652; }
 
+.ui-button-delete {
+  border: 1px solid #ee4063;
+  background-color: #fff;
+  color: #ee4063; }
+
+.ui-button-delete:hover,
+input.ui-button-delete:focus,
+button.ui-button-delete:focus {
+  border: 1px solid #ee4063;
+  background-color: #fff;
+  color: #ee4063; }
+
+.ui-button-delete:not(.disabled):active,
+.ui-button-delete:not(.loading):active {
+  border: 1px solid #ee4063;
+  background-color: #fff;
+  color: #ee4063; }
+
 .ui-button.loading {
   cursor: default;
   -ms-pointer-events: none;

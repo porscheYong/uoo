@@ -90,11 +90,16 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
             logo: '#3A3D49',
             selected: '#009688',
             alias: 'classic-black' //经典黑
+        },{
+            main: '#001529',
+            logo: '#002140',
+            selected: '#1890ff',
+            alias: 'ant-black' //ant pro
         }]
 
       //初始的颜色索引，对应上面的配色方案数组索引
       //如果本地已经有主题色记录，则以本地记录为优先，除非请求本地数据（localStorage）
-      ,initColorIndex: 8
+      ,initColorIndex: 9
     }
   });
 });

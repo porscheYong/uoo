@@ -1,6 +1,7 @@
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
+var areaCodeId = ''; //区号ID
 var locationList;
 var orgTypeList;
 var orgMartCode; //划小组织编码
@@ -112,29 +113,37 @@ function openTypeDialog() {
             $('.ui-tips-error').css('display', 'none');
             orgTypeList = checkNode;
             //选择组织类别为营销组织类型
-            for (var i = 0; i < orgTypeList.length; i++) {
-                if (((orgTypeList[i].orgTypeCode && orgTypeList[i].orgTypeCode.substr(0, 3) == 'N11') ||
-                    (orgTypeList[i].extField1 && orgTypeList[i].extField1.substr(0, 3) == 'N11'))) {
-                    if (!editSmallField) {
-                        var smallTemplate = Handlebars.compile($("#smallTemplate").html());
-                        var smallHtml = smallTemplate();
-                        $('#small').html(smallHtml);
-                        $('#orgMartCode ').val(orgMartCode);
-                        editSmallField = true;
-                        getNodeType();
-                        getAreaType();
-                        getCountType();
-                        getContractType();
-                        // formValidate.isPass($('#nodeType'));
-                        // formValidate.isPass($('#areaType'));
-                        // formValidate.isPass($('#countType'));
-                        // formValidate.isPass($('#contractType'));
-                        return
+            if (orgTypeList.length == 0 && editSmallField) {
+                editSmallField = false;
+            }
+            else {
+                for (var i = 0; i < orgTypeList.length; i++) {
+                    var isSmallFieldExit = false;
+                    if (((orgTypeList[i].orgTypeCode && orgTypeList[i].orgTypeCode.substr(0, 3) == 'N11') ||
+                        (orgTypeList[i].extField1 && orgTypeList[i].extField1.substr(0, 3) == 'N11'))) {
+                        if (!editSmallField) {
+                            var smallTemplate = Handlebars.compile($("#smallTemplate").html());
+                            var smallHtml = smallTemplate();
+                            $('#small').html(smallHtml);
+                            $('#orgMartCode ').val(orgMartCode);
+                            editSmallField = true;
+                            getNodeType();
+                            getAreaType();
+                            getCountType();
+                            getContractType();
+                            // formValidate.isPass($('#nodeType'));
+                            // formValidate.isPass($('#areaType'));
+                            // formValidate.isPass($('#countType'));
+                            // formValidate.isPass($('#contractType'));
+                            return
+                        }
+                        else {
+                            isSmallFieldExit = true;
+                            return
+                        }
                     }
-                    else {
+                    if (i == orgTypeList.length - 1 && !isSmallFieldExit )
                         editSmallField = false;
-                        return
-                    }
                 }
             }
             if (!editSmallField)
@@ -249,6 +258,7 @@ function openRegionDialog() {
 //根据电信管理区域ID获取区号
 function getAreaId(regionId) {
     $http.get('/region/commonRegion/getCommonRegion/id='+ regionId, {}, function (data) {
+        areaCodeId = data.areaCode.areaCodeId;
         $('#areaCode').val(data.areaCode.areaCode);
     }, function (err) {
         console.log(err)
@@ -256,10 +266,10 @@ function getAreaId(regionId) {
 }
 
 //根据电信管理区域ID获取区域label
-function getAreaLabel(areaId) {
+function getAreaLabel() {
     $http.get('/region/commonRegion/getTreeCommonRegion', {}, function (data) {
         for (var i = 0; i < data.length; i++){
-            if (areaId == data[i].extParams.areaCodeId) {
+            if (areaCodeId == data[i].extParams.areaCodeId) {
                 areaList.push(data[i]);
                 $('#regionId').importTags(areaList);
                 return;
@@ -624,15 +634,17 @@ function getOrg (orgId) {
         $('#orgNameEn').val(data.orgNameEn);
         orgMartCode = data.orgMartCode;
         laydate.render({
-          elem: '#createDate',
-          value: new Date(data.createDate)
+          elem: '#foundingTime',
+          value: new Date(data.foundingTime)
         });
+        $('#foundingTime').val(data.foundingTime);
         if (data.psonOrgVoList && data.psonOrgVoList.length > 0) {
             $('#psonOrgVoList').val(data.psonOrgVoList[0].psnName);
         }
         $('#officePhone').val(data.officePhone);
         $('#sort').val(data.sort);
-        getAreaLabel(data.areaCodeId);
+        areaCodeId = data.areaCodeId;
+        getAreaLabel();
         $('#areaCode').val(data.areaCode);
         $('#address').val(data.address);
         $('#orgContent').val(data.orgContent);
@@ -757,16 +769,15 @@ function updateOrg () {
   var shortName = $('#shortName').val();
   var orgNameEn = $('#orgNameEn').val();
   var cityTown = $('#cityTown option:selected') .val();
-  var date = $('#createDate').val();
-  var createDate;
-  if (date) {
-      createDate = new Date(date).getTime();
-  }
+  var foundDate = $('#foundingTime').val();
+  // var foundDate;
+  // if (date) {
+  //     foundDate = new Date(date).getTime();
+  // }
   var orgPositionLevel = $('#orgPositionLevel option:selected') .val();
   var officePhone = $('#officePhone').val();
   var statusCd = $('#statusCd option:selected') .val();
   var sort = $('#sort').val();
-  var areaCodeId = $('#areaCode').val();
   var address = $('#address').val();
   var orgContent = $('#orgContent').val();
   var orgDesc = $('#orgDesc').val();
@@ -790,7 +801,7 @@ function updateOrg () {
       shortName: shortName,
       cityTown: cityTown,
       orgScale: orgScale,
-      createDate: createDate,
+      foundingTime: foundDate,
       psonOrgVoList: userList,
       orgNameEn: orgNameEn,
       orgPositionLevel: orgPositionLevel,
