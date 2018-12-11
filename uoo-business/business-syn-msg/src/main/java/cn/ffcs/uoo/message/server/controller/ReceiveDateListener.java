@@ -17,6 +17,8 @@ import cn.ffcs.uoo.message.server.service.SystemRuleService;
 import cn.ffcs.uoo.message.server.util.PersonShowUtil;
 import com.alibaba.fastjson.JSON;
 import com.rabbitmq.client.Channel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -51,11 +53,14 @@ public class ReceiveDateListener {
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     //获取数据
     @RabbitHandler
     public void process(String json, Channel channel, Message message) throws IOException {
         try {
             //解析json
+            logger.info("json:{}",json);
             Map<String, Object> jsonMap = JSON.parseObject(json, Map.class);
             String handle = (String) jsonMap.get("handle");
             String type = (String) jsonMap.get("type");
@@ -82,6 +87,7 @@ public class ReceiveDateListener {
                                     TbOrgVo tbOrgVo = tbOrgMapper.getOrgVo(value, vo.getOrgTreeId(), vo.getBusinessSystemId());
 
                                     if (tbOrgVo == null) {
+                                        logger.warn("json:{},treeId:{},systemId is error",json,vo.getOrgTreeId(),vo.getBusinessSystemId());
                                         continue;
                                     }
 
@@ -96,7 +102,8 @@ public class ReceiveDateListener {
                                     restfulVo.setType(type);
                                     restfulVo.setContext(tbOrgVo);
                                     String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                    System.out.println(msg);
+                                    //System.out.println(msg);
+                                    logger.info("json:{}---->msg:{}",json,msg);
                                     String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                     RabbitmqIndex index = new RabbitmqIndex();
                                     index.setId(id);
@@ -129,7 +136,8 @@ public class ReceiveDateListener {
                                         restfulVo.setType(type);
                                         restfulVo.setContext(tbOrgVo);
                                         String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                        System.out.println(msg);
+                                        //System.out.println(msg);
+                                        logger.info("json:{}---->msg:{}",json,msg);
                                         String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                         RabbitmqIndex index = new RabbitmqIndex();
                                         index.setId(id);
@@ -139,6 +147,8 @@ public class ReceiveDateListener {
                                         index.setQueueName(queueName);
                                         rabbitmqIndexMapper.insert(index);
                                         rabbitMqSendService.sendMsg(queueName, msg);
+                                    }else{
+                                        logger.warn("json:{},treeId:{},systemId is error",json,vo.getOrgTreeId(),vo.getBusinessSystemId());
                                     }
                                 }
                                 ;
@@ -180,7 +190,8 @@ public class ReceiveDateListener {
                                             restfulVo.setType(type);
                                             restfulVo.setContext(tbAcctVo);
                                             String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                            System.out.println(msg);
+                                            //System.out.println(msg);
+                                            logger.info("json:{}---->msg:{}",json,msg);
                                             String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                             RabbitmqIndex index = new RabbitmqIndex();
                                             index.setId(id);
@@ -206,7 +217,8 @@ public class ReceiveDateListener {
                                             restfulVo.setType(type);
                                             restfulVo.setContext(tbAcctVo);
                                             String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                            System.out.println(msg);
+                                            //System.out.println(msg);
+                                            logger.info("json:{}---->msg:{}",json,msg);
                                             String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                             RabbitmqIndex index = new RabbitmqIndex();
                                             index.setId(id);
@@ -233,7 +245,8 @@ public class ReceiveDateListener {
                                             restfulVo.setType(type);
                                             restfulVo.setContext(tbAcctVo);
                                             String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                            System.out.println(msg);
+                                            //System.out.println(msg);
+                                            logger.info("json:{}---->msg:{}",json,msg);
                                             String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                             RabbitmqIndex index = new RabbitmqIndex();
                                             index.setId(id);
@@ -243,6 +256,8 @@ public class ReceiveDateListener {
                                             index.setQueueName(queueName);
                                             rabbitmqIndexMapper.insert(index);
                                             rabbitMqSendService.sendMsg(queueName, msg);
+                                        }else{
+                                            logger.warn("json:{},treeId:{},systemId is error",json,vo.getOrgTreeId(),vo.getBusinessSystemId());
                                         }
                                     }
                                 }
@@ -272,7 +287,8 @@ public class ReceiveDateListener {
                                                     restfulVo.setType(type);
                                                     restfulVo.setContext(tbAcctVo);
                                                     String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                                    System.out.println(msg);
+                                                    //System.out.println(msg);
+                                                    logger.info("json:{}---->msg:{}",json,msg);
                                                     String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                                     RabbitmqIndex index = new RabbitmqIndex();
                                                     index.setId(id);
@@ -299,7 +315,8 @@ public class ReceiveDateListener {
                                                 restfulVo.setType(type);
                                                 restfulVo.setContext(tbAcctVo);
                                                 String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                                System.out.println(msg);
+                                                //System.out.println(msg);
+                                                logger.info("json:{}---->msg:{}",json,msg);
                                                 String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                                 RabbitmqIndex index = new RabbitmqIndex();
                                                 index.setId(id);
@@ -326,7 +343,8 @@ public class ReceiveDateListener {
                                                 restfulVo.setType(type);
                                                 restfulVo.setContext(tbAcctVo);
                                                 String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                                System.out.println(msg);
+                                                //System.out.println(msg);
+                                                logger.info("json:{}---->msg:{}",json,msg);
                                                 String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                                 RabbitmqIndex index = new RabbitmqIndex();
                                                 index.setId(id);
@@ -338,6 +356,8 @@ public class ReceiveDateListener {
                                                 rabbitMqSendService.sendMsg(queueName, msg);
                                             }
                                         }
+                                    }else{
+                                        logger.warn("json:{},systemId is error",json);
                                     }
                                 }
                                 ;
@@ -346,6 +366,8 @@ public class ReceiveDateListener {
                                     break;
                             }
                         }
+                    }else{
+                        logger.warn("json:{}",json);
                     }
                 } else if (value != null && "slaveAcctId".equals(column)) {
                     //获取需要下发的系统和对应的规则
@@ -353,6 +375,7 @@ public class ReceiveDateListener {
 
                     if (map == null) {
                         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+                        logger.warn("json:{},systemId is error",json,null);
                         return;
                     }
 
@@ -361,6 +384,7 @@ public class ReceiveDateListener {
                     //没有系统。
                     if (vo == null) {
                         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+                        logger.warn("json:{},systemId is error",json,null);
                         return;
                     }
 
@@ -386,7 +410,8 @@ public class ReceiveDateListener {
                                 restfulVo.setType(type);
                                 restfulVo.setContext(tbAcctVo);
                                 String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                System.out.println(msg);
+                                //System.out.println(msg);
+                                logger.info("json:{}---->msg:{}",json,msg);
                                 String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                 RabbitmqIndex index = new RabbitmqIndex();
                                 index.setId(id);
@@ -406,7 +431,8 @@ public class ReceiveDateListener {
                                 restfulVo.setType(type);
                                 restfulVo.setContext(tbAcctVo);
                                 String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                System.out.println(msg);
+                                //System.out.println(msg);
+                                logger.info("json:{}---->msg:{}",json,msg);
                                 String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                 RabbitmqIndex index = new RabbitmqIndex();
                                 index.setId(id);
@@ -440,7 +466,8 @@ public class ReceiveDateListener {
                                     restfulVo.setType(type);
                                     restfulVo.setContext(tbAcctVo);
                                     String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                    System.out.println(msg);
+                                    //System.out.println(msg);
+                                    logger.info("json:{}---->msg:{}",json,msg);
                                     String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                     RabbitmqIndex index = new RabbitmqIndex();
                                     index.setId(id);
@@ -451,6 +478,8 @@ public class ReceiveDateListener {
                                     rabbitmqIndexMapper.insert(index);
                                     rabbitMqSendService.sendMsg(queueName, msg);
                                 }
+                            }else{
+                                logger.warn("json:{},systemId is error",json,null);
                             }
                         }
                         ;
@@ -463,8 +492,9 @@ public class ReceiveDateListener {
             //Thread.sleep(1000);
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (Exception e) {
-            e.printStackTrace();
-            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
+           logger.error("msg:{},Exception:{}",json,e);
+           //重回队列
+           channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
         }
     }
 }
