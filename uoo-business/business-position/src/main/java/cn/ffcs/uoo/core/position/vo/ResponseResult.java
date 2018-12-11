@@ -6,8 +6,8 @@ import java.io.Serializable;
  * 封装接口返回类
  */
 public class ResponseResult<T> implements Serializable {
-    public static final int STATE_OK = 1000;
-    public static final int STATE_ERROR = 1100;
+    public static final int STATE_OK = 1;
+    public static final int STATE_ERROR = -1;
 
 
     private int state;

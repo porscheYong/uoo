@@ -12,10 +12,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -39,6 +36,7 @@ public class TbUserRoleServiceImpl<main> extends ServiceImpl<TbUserRoleMapper, T
             for(TbRoles tbRoles : tbRolesList){
                 tbUserRole = new TbUserRole();
                 BeanUtils.copyProperties(tbRoles, tbUserRole);
+                tbUserRole.setUserRoleId(baseMapper.getId());
                 tbUserRole.setAcctId(acctId);
                 tbUserRole.setAcctType(acctType);
                 tbUserRoles.add(tbUserRole);
@@ -54,6 +52,7 @@ public class TbUserRoleServiceImpl<main> extends ServiceImpl<TbUserRoleMapper, T
     public Object removeUserRole(Long acctId, Long acctType){
         TbUserRole tbUserRole = new TbUserRole();
         tbUserRole.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+        tbUserRole.setStatusDate(new Date());
         EntityWrapper<TbUserRole> wrapper = new EntityWrapper<TbUserRole>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TABLE_ACCT_ID, acctId);
@@ -69,18 +68,24 @@ public class TbUserRoleServiceImpl<main> extends ServiceImpl<TbUserRoleMapper, T
     @Override
     public Object updateUserRole(List<TbRoles> tbRolesList, List<TbRoles> oldTbRolesList, Long acctId, Long acctType){
         List<Long> newRoleList = getRoleIdList(tbRolesList);
-        List<Long> newRoleListBak =  newRoleList;
+        List<Long> newRoleListBak =  getRoleIdList(tbRolesList);
         List<Long> oldRoleList = getRoleIdList(oldTbRolesList);
-        List<Long> oldRoleListtBak =  oldRoleList;
+        List<Long> oldRoleListBak =  getRoleIdList(oldTbRolesList);
+
 
        //删除 新选角色中没有 的角色
         oldRoleList.removeAll(newRoleList);
-        this.updateTbRolesList(oldRoleList, "del", acctId, acctType);
+        if(oldRoleList != null && oldRoleList.size() > 0){
+            this.updateTbRolesList(oldRoleList, "del", acctId, acctType);
+        }
+
         //获取 相同角色
-        oldRoleListtBak.retainAll(newRoleList);
+        oldRoleListBak.retainAll(newRoleList);
         //新建 新选的角色
-        newRoleListBak.removeAll(oldRoleListtBak);
-        this.updateTbRolesList(newRoleListBak, "insert", acctId, acctType);
+        newRoleListBak.removeAll(oldRoleListBak);
+        if(newRoleListBak != null && newRoleListBak.size() > 0) {
+            this.updateTbRolesList(newRoleListBak, "insert", acctId, acctType);
+        }
         return null;
     }
 
@@ -115,6 +120,9 @@ public class TbUserRoleServiceImpl<main> extends ServiceImpl<TbUserRoleMapper, T
             for(TbRoles tbRoles : tbRolesList){
                 list.add(tbRoles.getRoleId());
             }
+            HashSet h = new HashSet(list);
+            list.clear();
+            list.addAll(h);
         }
         return list;
     }

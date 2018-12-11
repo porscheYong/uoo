@@ -107,7 +107,6 @@ mybatis-plus:
     field-strategy: 2
     db-column-underline: true
     refresh-mapper: true
-    meta-object-handler: cn.ffcs.uoo.base.common.tool.util.UooMetaObjectHandler
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false

@@ -11,7 +11,7 @@ public class SysUserClientHystrix implements SysUserClient {
     @Override
     public ResponseResult<SysUser> login(SysUser sysUser) {
         ResponseResult<SysUser> rr=new ResponseResult<>();
-        rr.setState(ResponseResult.STATE_ERROR);
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
         rr.setMessage("服务不可用");
         return rr;
     }
@@ -19,7 +19,7 @@ public class SysUserClientHystrix implements SysUserClient {
     @Override
     public ResponseResult<SysUser> getSysUserByAccout(SysUser sysUser) {
         ResponseResult<SysUser> rr=new ResponseResult<>();
-        rr.setState(ResponseResult.STATE_ERROR);
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
         rr.setMessage("服务不可用");
         return rr;
     }

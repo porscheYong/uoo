@@ -67,7 +67,8 @@ var $http = {
       }
     }
     var httpError = function (response) {
-      parent.loading.screenMaskDisable('container');
+      if (parent.loading)
+        parent.loading.screenMaskDisable('container');
       var httpStatus = response.status
       var state = 0
       var message = 'HTTP请求错误'

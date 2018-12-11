@@ -6,7 +6,6 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.Map;
 
 /** mybatisplus自定义填充公共字段 ,即没有传的字段自动填充*/
 @Component
@@ -15,74 +14,47 @@ public class MyMetaObjectHandler extends MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
 
-        Object statusCd = metaObject.getValue("statusCd");
-        Object createDate = metaObject.getValue("createDate");
-        Object createUser = metaObject.getValue("createUser");
-        Object updateDate = metaObject.getValue("updateDate");
-        Object updateUser = metaObject.getValue("updateUser");
-        Object statusDate = metaObject.getValue("statusDate");
-
-        //Object enableDate = metaObject.getValue("enableDate");
-        //Object disableDate = metaObject.getValue("disableDate");
-
-        if(null == statusCd){
-            metaObject.setValue("statusCd", BaseUnitConstants.ENTT_STATE_ACTIVE);
+        if(null == getFieldValByName("statusCd", metaObject)){
+            setFieldValByName("statusCd", BaseUnitConstants.ENTT_STATE_ACTIVE, metaObject);
         }
-        if(null == statusDate){
-            metaObject.setValue("statusDate", new Date());
+        if(null == getFieldValByName("statusDate", metaObject)){
+            setFieldValByName("statusDate", new Date(), metaObject);
         }
-        if(null == createDate){
-            metaObject.setValue("createDate", new Date());
+        if(null == getFieldValByName("createDate", metaObject)){
+            setFieldValByName("createDate", new Date(), metaObject);
         }
-        if(null == createUser){
-            metaObject.setValue("createUser", -1L);
+        if(null == getFieldValByName("createUser", metaObject)){
+            setFieldValByName("createUser", -1L, metaObject);
         }
-        if(null == updateDate){
-            metaObject.setValue("updateDate", new Date());
+        if(null == getFieldValByName("updateDate", metaObject)){
+            setFieldValByName("updateDate", new Date(), metaObject);
         }
-        if(null == updateUser){
-            metaObject.setValue("updateUser", -1L);
+        if(null == getFieldValByName("updateUser", metaObject)){
+            setFieldValByName("updateUser", -1L, metaObject);
         }
-        if(metaObject.hasGetter("enableDate") && null == metaObject.getValue("enableDate")){
-            metaObject.setValue("enableDate", new Date());
+        if(this.hasGetter("enableDate", metaObject) && null == getFieldValByName("enableDate", metaObject)){
+            setFieldValByName("enableDate", new Date(), metaObject);
         }
-        if(metaObject.hasGetter("disableDate") && null == metaObject.getValue("disableDate")){
-            metaObject.setValue("disableDate", StrUtil.str2date("20991231", "yyyyMMdd"));
+        if(this.hasGetter("disableDate", metaObject) && null == getFieldValByName("disableDate", metaObject)){
+            setFieldValByName("disableDate", StrUtil.str2date("20991231", "yyyyMMdd"), metaObject);
         }
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        String statusCdStr = "statusCd";
-        String updateDateStr = "updateDate";
-        String updateUserStr = "updateUser";
-        String statusDateStr = "statusDate";
-        if(!metaObject.hasGetter("updateDate")){
-            statusCdStr = "et." + statusCdStr;
-            updateDateStr = "et." + updateDateStr;
-            updateUserStr = "et." + updateUserStr;
-            statusDateStr = "et." + statusDateStr;
-        }
 
+        setFieldValByName("updateDate", new Date(), metaObject);
+        setFieldValByName("updateUser", -2L, metaObject);
 
-        Object statusCd = metaObject.getValue(statusCdStr);
-        Object updateDate = metaObject.getValue(updateDateStr);
-        Object updateUser = metaObject.getValue(updateUserStr);
-        if(null == updateDate){
-            metaObject.setValue(updateDateStr, new Date());
-        }
-        if(null == updateUser){
-            metaObject.setValue(updateUserStr, -2L);
-        }
-        if(null == statusCd){
-            metaObject.setValue(statusCdStr, BaseUnitConstants.ENTT_STATE_ACTIVE);
-            metaObject.setValue(statusDateStr, new Date());
-        }else {
-            if(!BaseUnitConstants.ENTT_STATE_ACTIVE.equals(String.valueOf(statusCd))){
-                metaObject.setValue(statusDateStr, new Date());
-            }
-        }
+    }
 
+    public boolean hasGetter(String fieldName, MetaObject metaObject){
+        if (metaObject.hasGetter(fieldName)) {
+            return true;
+        } else if (metaObject.hasGetter(META_OBJ_PREFIX + "." + fieldName)) {
+            return true;
+        }
+        return false;
     }
 
 }

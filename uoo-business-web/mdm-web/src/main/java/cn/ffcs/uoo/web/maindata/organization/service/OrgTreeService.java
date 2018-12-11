@@ -22,7 +22,7 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018/10/21
  */
-@FeignClient(value = "business-organization",configuration = {PersonnelServiceConfiguration.class},fallback = OrgTreeServiceHystrix.class)
+@FeignClient(name = "business-organization", url = "http://134.96.253.222:11100",configuration = {PersonnelServiceConfiguration.class},fallback = OrgTreeServiceHystrix.class)
 public interface OrgTreeService {
 
     @RequestMapping(value="/orgTree/addOrgTree",method = RequestMethod.POST,headers={"Content-Type=application/json"})
@@ -34,7 +34,8 @@ public interface OrgTreeService {
 
     @RequestMapping(value="/orgTree/getOrgTreeList",method = RequestMethod.GET,headers={"Content-Type=application/json"})
     public ResponseResult<List<OrgTree>> getOrgTreeList(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
-                                                        @RequestParam(value = "orgRootId",required = false)String orgRootId);
+                                                        @RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                        @RequestParam(value = "refCode",required = false)String refCode);
 
     @RequestMapping(value="/orgTree/getOrgTree",method = RequestMethod.GET,headers={"Content-Type=application/json"})
     public ResponseResult<OrgTree> getOrgTree(@RequestParam(value = "orgTreeId",required = false)String orgTreeId);

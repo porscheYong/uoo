@@ -29,7 +29,7 @@
         </selectKey>
         insert into TB_POST
         <trim prefix="(" suffix=")" suffixOverrides=",">
-                POST_ID,
+            POST_ID,
             <if test="parentPostId != null">
                 PARENT_POST_ID,
             </if>
@@ -65,7 +65,7 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-                #{postId,jdbcType=DECIMAL},
+            #{postId,jdbcType=DECIMAL},
             <if test="parentPostId != null">
                 #{parentPostId,jdbcType=DECIMAL},
             </if>
@@ -107,14 +107,14 @@
         SET EXP_DATE=#{expDate},STATUS_CD=#{statusCd},UPDATE_DATE=#{updateDate},UPDATE_USER=#{updateUser},STATUS_DATE=#{statusDate}
         WHERE POST_ID=#{postId}
     </update>
-    
+
     <select id="queryPostListByOrgId" resultType="OrgPostInfoVo">
         SELECT R.ORG_POST_ID,
-           R.POST_ID,
-           R.ORG_ID,
-           P.PARENT_POST_ID,
-           P.POST_NAME,
-           P.POST_TYPE
+        R.POST_ID,
+        R.ORG_ID,
+        P.PARENT_POST_ID,
+        P.POST_NAME,
+        P.POST_TYPE
         FROM TB_POST P, TB_ORG_POST_REL R
         WHERE P.STATUS_CD = '1000'
         AND R.STATUS_CD = '1000'

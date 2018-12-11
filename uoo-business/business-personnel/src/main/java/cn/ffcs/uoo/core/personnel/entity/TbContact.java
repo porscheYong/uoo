@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.FieldFill;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -57,38 +55,32 @@ public class TbContact extends Model<TbContact> {
     /**
      * 状态
      */
-    @JsonIgnore
-    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT_UPDATE)
+    @TableField("STATUS_CD")
     private String statusCd;
     /**
      * 创建时间
      */
-    @JsonIgnore
-    @TableField(value = "CREATE_DATE", fill = FieldFill.INSERT)
+    @TableField("CREATE_DATE")
     private Date createDate;
     /**
      * 创建人
      */
-    @JsonIgnore
-    @TableField(value = "CREATE_USER", fill = FieldFill.INSERT)
-    private Long createUser;
+    @TableField("CREATE_USER")
+    private BigDecimal createUser;
     /**
      * 修改时间
      */
-    @JsonIgnore
-    @TableField(value = "UPDATE_DATE", fill = FieldFill.INSERT_UPDATE)
+    @TableField("UPDATE_DATE")
     private Date updateDate;
     /**
      * 修改人
      */
-    @JsonIgnore
-    @TableField(value = "UPDATE_USER", fill = FieldFill.INSERT_UPDATE)
-    private Long updateUser;
+    @TableField("UPDATE_USER")
+    private BigDecimal updateUser;
     /**
      * 状态变更的时间
      */
-    @JsonIgnore
-    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT_UPDATE)
+    @TableField("STATUS_DATE")
     private Date statusDate;
 
 
@@ -148,11 +140,11 @@ public class TbContact extends Model<TbContact> {
         this.createDate = createDate;
     }
 
-    public Long getCreateUser() {
+    public BigDecimal getCreateUser() {
         return createUser;
     }
 
-    public void setCreateUser(Long createUser) {
+    public void setCreateUser(BigDecimal createUser) {
         this.createUser = createUser;
     }
 
@@ -164,11 +156,11 @@ public class TbContact extends Model<TbContact> {
         this.updateDate = updateDate;
     }
 
-    public Long getUpdateUser() {
+    public BigDecimal getUpdateUser() {
         return updateUser;
     }
 
-    public void setUpdateUser(Long updateUser) {
+    public void setUpdateUser(BigDecimal updateUser) {
         this.updateUser = updateUser;
     }
 

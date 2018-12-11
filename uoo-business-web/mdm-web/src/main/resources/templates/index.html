@@ -10,7 +10,7 @@
 <link href="/vendors/layuiadmin/layui/css/layui.css" rel="stylesheet" media="all">
 <link href="/vendors/layuiadmin/layui/css/admin.css" rel="stylesheet" media="all">
 <!-- Bootstrap -->
-<link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<!--<link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">-->
 <!-- Font Awesome -->
 <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <!-- ztree -->
@@ -40,7 +40,7 @@
             <li class="layui-nav-item layui-hide-xs" lay-unselect="">
             <input class="layui-input layui-input-search" type="text" placeholder="搜索..." layadmin-event="serach" lay-action="template/search.html?keywords=" autocomplete="off">
             </li>
-        <span class="layui-nav-bar"></span>
+        <!--<span class="layui-nav-bar"></span>-->
         </ul>
       <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
         <li class="layui-nav-item" lay-unselect=""> <a lay-href="app/message/index.html" layadmin-event="message" lay-text="消息中心"> <i class="layui-icon layui-icon-notice"></i> 
@@ -50,7 +50,7 @@
         <li class="layui-nav-item layui-hide-xs" lay-unselect=""> <a href="javascript:;" layadmin-event="theme"> <i class="layui-icon layui-icon-theme"></i> </a> </li>
         <li class="layui-nav-item layui-hide-xs" lay-unselect=""> <a href="javascript:;" layadmin-event="note"> <i class="layui-icon layui-icon-note"></i> </a> </li>
         <li class="layui-nav-item layui-hide-xs" lay-unselect=""> <a href="javascript:;" layadmin-event="fullscreen"> <i class="layui-icon layui-icon-screen-full"></i> </a> </li>
-        <li class="layui-nav-item" lay-unselect="">
+        <li class="layui-nav-item" lay-unselect="" style="margin-right: 40px;">
         <a href="javascript:;" lay-href="contents/my.html">
           <img class="layui-nav-img" th:src="@{/images/avatar.png}" alt="pic"><span id="psnName"></span>
         </a>
@@ -58,25 +58,22 @@
             <dd><a lay-href="set/user/info.html">基本资料</a></dd>
             <dd><a lay-href="set/user/password.html">修改密码</a></dd>
             <hr>
-            <dd style="text-align: center;" layadmin-event="logout"><a>退出</a></dd>
+            <dd style="text-align: center;" layadmin-event="logout"><a href="/logout">退出</a></dd>
           </dl>
-        </li>
-        <li class="layui-nav-item layui-hide-xs" lay-unselect="">
-        	<a href="javascript:;" layadmin-event="about"><i class="layui-icon layui-icon-more-vertical"></i></a>
         </li>
         <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect="">
         	<a href="javascript:;" layadmin-event="more"><i class="layui-icon layui-icon-more-vertical"></i></a>
         </li>
-        <span class="layui-nav-bar"></span>
+        <!--<span class="layui-nav-bar"></span>-->
       </ul>
     </div>
     
     <!-- 侧边菜单 -->
-    <div class="layui-side layui-side-menu">
+    <div class="layui-side layui-side-menu" id="container">
         <div class="layui-side-scroll">
         <div class="layui-logo" lay-href="contents/console.html"></div>
 			<ul class="layui-nav layui-nav-tree" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu" lay-shrink="all">
-                <li class="layui-nav-item" data-name="component">
+                <!-- <li class="layui-nav-item" data-name="component">
                 	<a href="javascript:;" lay-tips="组织树管理" lay-direction="2">
                         <i class="layui-icon layui-icon-component"></i><cite>组织管理</cite>
                         <span class="layui-nav-more"></span>
@@ -131,7 +128,7 @@
                     <dl class="layui-nav-child">
                         <dd data-name="data-dictionary"><a lay-href="/inaction/resource/dataDictionary/index.html">数据字典管理</a></dd>
                     </dl>
-                </li>
+                </li> -->
             
             
             </ul>
@@ -151,7 +148,7 @@
               <dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
             </dl>
           </li>
-          <span class="layui-nav-bar"></span>
+          <!--<span class="layui-nav-bar"></span>-->
         </ul>
       </div>
         <div class="layui-tab" lay-filter="layadmin-layout-tabs" lay-allowclose="true" lay-unauto="">
@@ -182,6 +179,10 @@
 <!-- layer -->
 <script type="text/javascript" src="/vendors/layer/layer.js"></script>
 <script type="text/javascript" src="/vendors/layuiadmin/layui/layui.js"></script>
+<!-- loading -->
+<script type="text/javascript" src="/js/core/spin.min.js"></script>
+<script type="text/javascript" src="/js/core/loading.js"></script>
+<script type="text/javascript" src="/js/common/DictionaryData.js"></script>
 <!-- init -->
 <script src="/js/init.js"></script>
 

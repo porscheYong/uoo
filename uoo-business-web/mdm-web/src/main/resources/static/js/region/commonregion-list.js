@@ -10,6 +10,9 @@ function goEdit(){
 	}
 	parent.changeIframe('/inaction/region/commonregion-edit.html?id='+cid+'&upRegionId='+pid+'&upRegionName='+pname);
 }
+function fastGo(id){
+	parent.selectNodeById(id);
+}
 function getRegionList (id) {
 	//初始化页面显示
 	var nodes= parent.getCurrentSelectedNode();
@@ -18,10 +21,10 @@ function getRegionList (id) {
 	var str=treeNode.name;
 	var parentNode=treeNode.getParentNode();
 	while(parentNode!=null){
-		str=parentNode.name+">"+str;
+		str="<a href='javascript:void(0)' onclick=\"fastGo('"+parentNode.id+"')\">"+parentNode.name+"</a> >"+str;
 		parentNode=parentNode.getParentNode();
 	}
-	$('#regionStrFull').text(str);
+	$('#regionStrFull').html(str);
 	$('#regionStrCurrent').attr('cid',nodes[0].id);
 	$.ajax({
 		url:'/region/commonRegion/getChildCommonRegionInfo/'+id,
@@ -43,10 +46,11 @@ function getDetail(id){
 }
 function quickList(id){
 	var tree=parent.getTree();
+	var upnode=parent.getCurrentSelectedNode()[0];
 	tree.expandNode(tree.getSelectedNodes[0],true,false ,true);
 	var qnode=tree.getNodesByParam('id',id,tree.getSelectedNodes[0])[0];
 	tree.selectNode(qnode,false);
-	parent.changeIframe('/inaction/region/commonregion-list.html?id=' + qnode.id);
+	parent.changeIframe('/inaction/region/commonregion-edit.html?id=' + qnode.id+'&upRegionId='+upnode.id+'&upRegionName='+upnode.name);
 }
 function initTable (results) {
 	var i=0;
@@ -64,7 +68,7 @@ function initTable (results) {
             { 'data': "commonRegionId","title":"序号" , 'className': 'user-account','defaultContent':'',
             	'render':function(data, type, row, meta){i++;
             		return i;
-            	},'width':'50px'
+            	},'width':'30px'
             },
             { 'data': "regionNbr",
               'title': '区域编码', 'className': 'user-account'
@@ -96,14 +100,14 @@ function initTable (results) {
             },
             { 'data': "locationNames", 'title': '关联行政区域名称', 'className': 'user-account'  ,'defaultContent':''},
             { 'data': "areaCode.areaCode", 'title': '关联区号', 'className': 'user-account'  ,'defaultContent':''},
-            { 'data': "commonRegionId", 'title': '编辑', 
+           /* { 'data': "commonRegionId", 'title': '编辑', 
             'render': function (data, type, row, meta) {
             	var html="<a href=\"javascript:void(0)\" onClick=\"parent.changeIframe('/inaction/region/commonregion-edit.html?id="+row.commonRegionId+"&upRegionId="+parent.getCurrentSelectedNode()[0].id+"&upRegionName="+parent.getCurrentSelectedNode()[0].name+"')\">> </a>";
             	//html+="<a class=\"glyphicon glyphicon-remove\"   href=\"javascript:void(0)\" onclick=\"deleteRegion('"+row.COMMON_REGION_ID+"')\" style=\"vertical-align: top;\"></a>";
             	return html;
             		 //return '<a href="list.html?id='+ row.orgId +'" onclick="parent.openTreeById('+orgId+','+row.orgId+')">'+ row.orgName +'</a>'
                 }  , 'className': 'user-account', 'width':'50px'
-            },
+            },*/
              
         ],
         'language': {
@@ -142,6 +146,14 @@ function goDel(){
 			dataType:'json',
 			type:'post',
 			success:function(data){
+				parent.layer.confirm(data.state==1000?'操作成功':'操作失败，'+data.message, {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 				if(data.state==1000){
 					//
 					var selectNode=parent.getCurrentSelectedNode()[0];
@@ -178,7 +190,6 @@ function goDel(){
 						type:'get'
 					});
 				}else{
-					alert(data.state==1000?'删除成功':data.message);
 				}
 				
 			}
@@ -193,7 +204,14 @@ function deleteRegion(id){
 			dataType:'json',
 			type:'post',
 			success:function(data){
-				alert(data.state==1000?'删除成功':data.message);
+				parent.layer.confirm(data.state==1000?'操作成功':'操作失败，'+data.message, {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 				getRegionList(listId);
 				if(data.state==1000){
 					var zTree=parent.getTree();

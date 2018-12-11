@@ -1,6 +1,6 @@
 spring:
   application:
-    name: business-personnel
+    name: personnel-service
   datasource:
     druid:
       #url: jdbc:oracle:thin:@134.129.68.156:1521:fjtpdb
@@ -96,11 +96,7 @@ spring:
         #允许清除记录
         reset-enable: false
 #      aop-patterns: cn.ffcs.uoo.**.service.*
-  rabbitmq:
-    host: 134.96.253.221
-    port: 5672
-    username: root
-    password: 123
+
 
 #mybatis
 mybatis-plus:
@@ -126,17 +122,17 @@ mybatis-plus:
     #自定义SQL注入器
     #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
     #自定义填充策略接口实现
-    meta-object-handler: cn.ffcs.uoo.base.common.tool.util.UooMetaObjectHandler
+    #meta-object-handler: com.baomidou.springboot.xxx
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
 
 server:
-  port: 11200
+  port: 8081
 
 eureka:
   instance:
-    appname: business-personnel
+    appname: personnel-service
     hostname: localhost
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}

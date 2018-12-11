@@ -182,7 +182,21 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
      */
     @Override
     public List<TreeNodeVo> selectFuzzyOrgRelTree(String orgId,String orgTreeId,boolean isFull){
-        List<TreeNodeVo> list = baseMapper.selectFuzzyOrgRelTree(orgId,orgTreeId);
+        List<TreeNodeVo> list = new ArrayList<>();
+        if(isFull){
+            list = baseMapper.selectFuzzyFullOrgRelTree(orgId,orgTreeId);
+            if(list!=null && list.size()>0){
+                for(TreeNodeVo vo : list){
+                    if(isLeaf(vo.getId(),orgTreeId)){
+                        vo.setParent(true);
+                    }else{
+                        vo.setParent(false);
+                    }
+                }
+            }
+        }else{
+            list = baseMapper.selectFuzzyOrgRelTree(orgId,orgTreeId);
+        }
 //        if(list!=null && list.size()>0){
 //            if(isFull){
 //                return baseMapper.selectFuzzyFullOrgRelTree(orgleafId,orgTreeId);

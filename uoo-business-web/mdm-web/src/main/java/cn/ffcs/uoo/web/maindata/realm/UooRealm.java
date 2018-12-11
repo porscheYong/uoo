@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -13,7 +14,6 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +29,7 @@ import cn.ffcs.uoo.web.maindata.permission.dto.FuncMenu;
 import cn.ffcs.uoo.web.maindata.permission.service.PrivilegeService;
 import cn.ffcs.uoo.web.maindata.permission.service.RolesService;
 import cn.ffcs.uoo.web.maindata.permission.vo.AccoutPermissionVO;
+import cn.ffcs.uoo.web.maindata.realm.exception.ServiceException;
 import cn.ffcs.uoo.web.maindata.sysuser.client.SysUserClient;
 import cn.ffcs.uoo.web.maindata.sysuser.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
@@ -62,14 +63,20 @@ public class UooRealm extends AuthorizingRealm {
         SysUser t = new SysUser();
         t.setAccout(username);
         ResponseResult<SysUser> r = client.getSysUserByAccout(t);
+        if(ResponseResult.STATE_SERVICE_ERROR==r.getState()){
+            throw new ServiceException();
+        }
         if(r.getState()!=ResponseResult.STATE_OK){
             return null;
         }
         String md5Encoding = MD5Util.md5Encoding(new String(usertoken.getPassword()), r.getData().getSalt());
         usertoken.setPassword(md5Encoding.toCharArray());
-        AuthenticationInfo Info = new SimpleAuthenticationInfo(usertoken.getUsername(), r.getData().getPasswd(),
+        AuthenticationInfo info = new SimpleAuthenticationInfo(usertoken.getUsername(), r.getData().getPasswd(),
                 this.getName());
-        return Info;
+        if(info!=null){
+            clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
+        }
+        return info;
     }
 
     /**

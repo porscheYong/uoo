@@ -18,6 +18,12 @@ var psw;
 var roleList = [];      //需要上传的角色列表
 var userRoleList = [];      //用户已有角色列表
 var formValidate;
+var toastr = window.top.toastr;
+var pswTip = "1、登录密码必须包含数字、大写字母、小写字母、特殊符号中的3种，且长度大于8位"+
+              "2、登录密码中连续的或相同的数据或字母（包括倒叙）不能超过3位"+
+              "如：fz12348，abcd12格式不正确；ACabc123、Ab111aaa正确"+
+              "3、登录密码中不能包含员工账号、中文标点符号以及反斜杠\ "+
+              "4、键盘中连续按键不能超过3位；如：qweruio1，asdfuio1格式不正确；qeruio12、asdjkl12格式正确";
 
 $('#invalidDate').val(''),
 $('#effectDate').val(''),
@@ -130,17 +136,20 @@ function initOrgTable(results){         //主账号组织数据表格
       },
         { 'data': "fullName", 'title': '组织名称', 'className': 'row-fullName' ,
         'render': function (data, type, row, meta) {
-          if(row.fullName.search('->') != -1){
-            var s = row.fullName.replace(/->/g,'/');
-            return s.substring(0,s.length-1);
-          }else{
-            return row.fullName;
+          if(row.fullName != null){
+            // if(row.fullName.search('->') != -1){
+            //   var s = row.fullName.replace(/->/g,'/');
+            //   return s.substring(0,s.length-1);
+            // }else{
+              return row.fullName;
+            }else{
+              return "";
           }
-      }
+        }
       },
       {'data': "orgId", 'title': '操作', 'className': 'row-delete' ,
       'render': function (data, type, row, meta) {
-        return "<a href='javascript:void(0);' id='delOrgBtn' onclick='deleteOrg("+ num + ")'>删除</a>";
+        return "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' onclick='deleteOrg("+ num + ")'></a>";
     }
     },
     { 'data': "orgId", 'title': 'orgId', 'className': 'row-orgId' }
@@ -262,7 +271,7 @@ function addTbAcct(){         //新增
     roleList = userRoleList;
   }
   if(addOrgList.length == 0){
-    alert('组织不能为空!');
+    toastr.warning('组织不能为空!');
   }else{
     var editFormAcctVo = {
       "acct": $('#acctTel').val(),
@@ -283,17 +292,17 @@ function addTbAcct(){         //新增
       contentType: "application/json",
       data: JSON.stringify(editFormAcctVo),
       dataType:"JSON",
-      success: function (state) { //返回json结果
-        if(state.state === 1000){
-          alert(state.message);
+      success: function (data) { //返回json结果
+        if(data.state === 1000){
+          toastr.success(data.message);
           submitSuccess();
         }else{
-          alert(state.message);
+          toastr.error(data.message);
         }
       },
       error:function(err){
         console.log(err);
-        alert('新增失败');
+        toastr.error('新增失败');
       }
     });
   }
@@ -330,45 +339,54 @@ function updateAcct(){      //编辑主账号
       contentType: "application/json",
       data: JSON.stringify(editFormAcctVo),
       dataType:"JSON",
-      success: function (state) { //返回json结果
-        if(state.state === 1000){
-          alert(state.message);
+      success: function (data) { //返回json结果
+        if(data.state === 1000){
+          toastr.success(data.message);
           submitSuccess();
         }else{
-          alert(state.message);
+          toastr.error(data.message);
         }
       },
       error:function(err){
         console.log(err);
-        alert('编辑失败');
+        toastr.error('编辑失败');
       }
     });
 }
 
 function deleteTbAcct(){    //删除主账号
-  $.ajax({
-    url: '/acct/deleteTbAcct?&acctId='+parseInt(acctId),
-    type: 'DELETE',
-    contentType: "application/json",
-    dataType:"json",
-    success: function (data) { //返回json结果
-      console.log(data);
-      alert('删除成功');
-      submitSuccess();
-    },
-    error:function(err){
-      console.log(err);
-      alert('删除失败');
-    }
+  parent.layer.confirm('此操作将删除该用户, 是否继续?', {
+    icon: 0,
+    title: '提示',
+    btn: ['确定','取消']
+}, function(index, layero){
+    parent.layer.close(index);
+    $.ajax({
+      url: '/acct/deleteTbAcct?&acctId='+parseInt(acctId),
+      type: 'DELETE',
+      contentType: "application/json",
+      dataType:"json",
+      success: function (data) { //返回json结果
+        console.log(data);
+        toastr.success(data.message);
+        submitSuccess();
+      },
+      error:function(err){
+        console.log(err);
+        toastr.error('删除失败！');
+      }
+    });
+  }, function(){
+
   });
 }
 
-function isDelete(){    //询问是否删除账号
-  var r=confirm("是否删除主账号");
-  if(r == true){
-    deleteTbAcct();   //确定，删除
-  }
-}
+// function isDelete(){    //询问是否删除账号
+//   var r=confirm("是否删除主账号");
+//   if(r == true){
+//     deleteTbAcct();   //确定，删除
+//   }
+// }
 
 function removeAcctOrg(orgId){   //编辑时删除组织
     $.ajax({
@@ -378,11 +396,11 @@ function removeAcctOrg(orgId){   //编辑时删除组织
       dataType:"json",
       success: function (data) { //返回json结果
         console.log(data);
-        alert('删除成功');
+        toastr.success(data.message);
       },
       error:function(err){
         console.log(err);
-        alert('删除失败');
+        toastr.error('删除失败');
       }
     });
 }
@@ -395,16 +413,16 @@ function addAcctOrg(orgId){ //编辑时新增组织
   $.ajax({
     url: '/acct/addAcctOrg',
     type: 'POST',
-    async:false,
     contentType: "application/json",
     data: JSON.stringify(tbAccountOrgRel),
     dataType:"JSON",
     success: function (data) { //返回json结果
       console.log(data);
+      toastr.success(data.message);
     },
     error:function(err){
       console.log(err);
-      alert('新增失败');
+      toastr.error('新增失败');
     }
   });
 }
@@ -420,7 +438,7 @@ function addBtnWClick(){    //新增时已有主账号时点击添加组织按�
         orgNa.push(editOrgList[i].orgId);
     }
     if(orgNa.indexOf(parseInt(orgId)) != -1){
-        alert("用户已在该组织下存在");
+        toastr.error("用户已在该组织下存在");
     }else{
         addAcctOrg(orgId);
         editOrgList.push({'orgId':orgId,'fullName':orgFullName});
@@ -447,9 +465,6 @@ function acctSubmit(){   //提交事件
     }else if(opBtn == 0){ //编辑
       updateAcct();
     }
-  //}else{
-    //alert('必填部分不能为空');
-  //}
 }
 
   laydate.render({
@@ -490,12 +505,13 @@ function isNull(s,r){    //判断是否为null
 //删除组织
 function deleteOrg(id){
   if(opBtn == 1){    //新增
-    addOrgList.splice(id-2,1);
-    orgTable.destroy();
-    initOrgTable(addOrgList);
+    // addOrgList.splice(id-2,1);
+    // orgTable.destroy();
+    // initOrgTable(addOrgList);
+    toastr.warning("无法删除所有组织");
   }else if(opBtn == 0){    //编辑
     if(editOrgList.length == 1){
-      alert("无法删除所有组织");
+      toastr.warning("无法删除所有组织");
     }else{
       //getTableContent();
       removeAcctOrg(editOrgList[id-2].orgId);
@@ -543,6 +559,7 @@ function openTypeDialog() {
           parent.layer.close(index);
           $('#roleTel').importTags(checkNode);
           $('.ui-tips-error').css('display', 'none');
+          window.localStorage.setItem('userRoleList',JSON.stringify(checkRole));
           roleList = checkRole;
           console.log(roleList);
       },
@@ -589,11 +606,22 @@ $("#defaultPswTel").blur(function (){     //默认密码输入框失去焦点
     $("#defaultPswTel").val(psw);
     $("#defaultPswTel").attr("type","password");
     if(psw == ''){
-      formValidate.isAllPass($('#defaultPswTel'))
+      formValidate.isAllPass($('#defaultPswTel'));
     }
   }
 })
 
+$('#defaultPswTel').click(function() {
+  var elSearch = $('input[type=password]');
+  if (elSearch.val() == '') {
+      elSearch.errorTip(pswTip);
+  }
+});
+
+// new Tips($('#defaultPswTel'), {
+//   content: '点击此按钮会注销你的账户，您的目前的操作都不能执行，直到你重新登录',
+//   align: 'right'
+// }); 
 
 
 if(opBtn==0){     //查看并编辑主账号

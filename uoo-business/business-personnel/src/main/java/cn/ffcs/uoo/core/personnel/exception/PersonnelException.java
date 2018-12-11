@@ -12,7 +12,7 @@ public class PersonnelException extends RuntimeException {
     }
 
     public  PersonnelException(EumPersonnelResponseCode responseCode){
-        super(responseCode.getMessage());
-        this.code = responseCode.getState();
+        super(responseCode.getMsg());
+        this.code = responseCode.getCode();
     }
 }

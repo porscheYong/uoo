@@ -69,15 +69,17 @@
       </div>
 
       <div class="board-title">
-        <span class="name ft18">组织人员</span>
-        <input type="checkbox" id="isShowLower" name="checkbox" onclick="showLower()">
-        <label for="isShowLower" class="ui-checkbox"></label><label for="isShowLower">显示下级组织人员</label>
+        <span id="titleName" class="name ft18">组织人员</span>
+        <div id="isShow" style="display: inline-block">
+          <input type="checkbox" id="isShowLower" name="checkbox" onclick="showLower()">
+          <label for="isShowLower" class="ui-checkbox"></label><label for="isShowLower">显示下级组织人员</label>
+        </div>
           <div class="fright">
             <a class="button-add" id="addBtn" href="add.html"><span class="fa fa-plus-circle icon-add"></span>添加</a>
           </div>
       </div>
       <!-- 新增的搜索部分 -->
-      <div class="row pos-relative" style="margin-top: 7px;margin-left:5px;">
+      <div class="pos-relative" style="margin-top: 7px;margin-left:5px;">
         <div class="col-md-6 col-sm-6 col-xs-12">
           <div class="form-item" style="width: 100%">
             <div class="typeahead col-md-8 col-sm-8 col-xs-12" style="padding: 0;">

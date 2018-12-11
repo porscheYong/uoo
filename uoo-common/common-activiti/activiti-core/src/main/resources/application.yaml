@@ -3,15 +3,10 @@ spring:
     name: activiti-core
   datasource:
       druid:
-        url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
+        url: jdbc:oracle:thin:@134.64.14.90:1521:ahorgmng
         driver-class-name:  oracle.jdbc.OracleDriver
-        username: octopus
-        password: octopus
-        #安徽测试
-#        url: jdbc:oracle:thin:@134.64.14.90:1521:ahorgmng
-#        driver-class-name:  oracle.jdbc.OracleDriver
-#        username: uecc
-#        password: uecc
+        username: uecc
+        password: uecc
   #      url: jdbc:mysql://127.0.0.1:3306/springboot?characterEncoding=utf8&useSSL=false
   #      driver-class-name:  com.mysql.jdbc.Driver
   #      username: root
@@ -114,7 +109,7 @@ mybatis-plus:
     cache-enabled: false
 
 server:
-  port: 9200
+  port: 8082
 
 eureka:
   instance:

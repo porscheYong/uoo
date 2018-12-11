@@ -11,6 +11,12 @@ spring:
     livereload:
       enabled: true
 
+  zipkin:
+    base-url: http://134.96.253.223:8600
+  sleuth:
+    sampler:
+      percentage: 1.0
+
 eureka:
   client:
     service-url:
@@ -26,10 +32,10 @@ feign:
   hystrix:
     enabled: true
 
-httpclient:
-  enabled: true
-  max-connections: 200 # 默认值
-  max-connections-per-route: 50 # 默认值
+  httpclient:
+    enabled: true
+    max-connections: 200 # 默认值
+    max-connections-per-route: 50 # 默认值
 
 hystrix:
   enabled: true

@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.web.maindata.region.service;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.cloud.netflix.feign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import cn.ffcs.uoo.web.maindata.region.dto.TbExch;
 import cn.ffcs.uoo.web.maindata.region.service.fallback.ExchServiceHystrix;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
-import common.config.PersonnelServiceConfiguration;
 
-@FeignClient(value = "business-region",configuration = {PersonnelServiceConfiguration.class},fallback = ExchServiceHystrix.class)
+@FeignClient(value = "business-region",configuration = {FeignClientConfiguration.class},fallback = ExchServiceHystrix.class)
 public interface ExchService {
     
     @GetMapping("/region/exch/getExch/id={id}")

@@ -2,6 +2,8 @@ var engine;
 var empty;
 var table;
 var Regx = /^[A-Za-z0-9]*$/;
+var orgIdList = [];
+var isCheckedOrg = 0;
 
 var settingA = {
 		data: {
@@ -52,7 +54,7 @@ function initOrgSearchTable(search) {
         'initComplete': function (settings, json) {
             console.log(settings, json)
         },
-        "scrollY": "200px",
+        // "scrollY": "200px",
         'columns': [
             { 'data': "fullName", 'title': '组织搜索结果', 'className': 'row-fullname',
                 'render': function (data, type, row, meta) {
@@ -107,7 +109,10 @@ function engineWithDefaults(q, sync, async) {
     if (q === '') {
         $('#orgTable').html('');
         $(".org-table").removeClass("is-open");
-        initOrgRelTree();
+        if(isCheckedOrg == 1){
+            initOrgRelTree();
+            isCheckedOrg = 0;
+        }
     }
     else {
         engine.search(q, sync, async);
@@ -166,7 +171,11 @@ function initRestructOrgRelTree (orgId) {        //初始化树
 
         for(var i=0;i<data.length;i++){     //获取要显示的节点id pid name
             zTreeNodes.push({"id":data[i].id,"pid":data[i].pid,"name":data[i].name});
-            nodeArr.push(data[i].name);
+            if(i == data.length-1){
+                nodeArr.push({"node":{"id":data[i].id,"pid":data[i].pid,"name":data[i].name},"current":true});
+            }else{
+                nodeArr.push({"node":{"id":data[i].id,"pid":data[i].pid,"name":data[i].name},"current":false});
+            }
         }
 
         var zTree = $.fn.zTree.init($("#standardTree"), settingA, zTreeNodes);
@@ -182,7 +191,15 @@ function initRestructOrgRelTree (orgId) {        //初始化树
 }       
 
 function orgClick(orgId){
+    isCheckedOrg = 1;
     console.log(orgId);
     $(".org-table").removeClass("is-open");
     initRestructOrgRelTree(orgId);
 }
+
+$("#orgName").focus(function (){     
+    if($("#orgName").val() == ''){
+        // isCheckedOrg = 0;
+        $(".org-table").removeClass("is-open");
+    }
+})

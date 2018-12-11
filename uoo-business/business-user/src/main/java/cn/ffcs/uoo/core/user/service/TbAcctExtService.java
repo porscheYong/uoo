@@ -15,21 +15,5 @@ public interface TbAcctExtService extends IService<TbAcctExt> {
 
     void removeAcctExt(TbAcctExt tbAcctExt);
 
-    //** todo --新版本--------------------------------
-
     Long getId();
-
-    /**
-     *  从账号对应扩展属性
-     * @param tbAcctExt
-     * @return
-     */
-    public Object saveTbAcctExt(TbAcctExt tbAcctExt);
-
-    /**
-     * 根据slaveAcctId 删除 扩展属性
-     * @param slaveAcctId
-     * @return
-     */
-    public Object delTbAcctExt(Long slaveAcctId);
 }

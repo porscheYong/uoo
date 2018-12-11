@@ -81,7 +81,7 @@ public class OrgRelController extends BaseController {
     public ResponseResult<List<TreeNodeVo>> getOrgRelTree(@RequestParam(value = "id",required = false)String id,
                                                           @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                           @RequestParam(value = "orgRootId",required = false)String orgRootId,
-                                                          @RequestParam(value = "relCode",required = false)String relCode,
+                                                          @RequestParam(value = "refCode",required = false)String refCode,
                                                           @RequestParam(value = "isOpen",required = false)boolean isOpen,
                                                           @RequestParam(value = "isAsync",required = false)boolean isAsync,
                                                           @RequestParam(value = "isRoot",required = false)boolean isRoot) throws IOException {
@@ -92,23 +92,32 @@ public class OrgRelController extends BaseController {
 //            ret.setMessage("根节点标识不能为空");
 //            return ret;
 //        }
-        if(StrUtil.isNullOrEmpty(orgTreeId)){
+        if(StrUtil.isNullOrEmpty(orgTreeId) && StrUtil.isNullOrEmpty(refCode)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织树标识不能为空");
+            ret.setMessage("组织树标识和关系类型不能同时为空");
             return ret;
         }
-        //查询组织树
-        Wrapper orgTreeConfWrapper = Condition.create().eq("ORG_TREE_ID",orgTreeId).eq("STATUS_CD","1000");
-        OrgTree orgTree  = orgTreeService.selectOne(orgTreeConfWrapper);
-        if(orgTree == null){
-            ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织树不存在");
-            return ret;
+        OrgTree orgTree = null;
+        if(!StrUtil.isNullOrEmpty(refCode)){
+            orgTree = orgTreeService.getOrgTreeByRefCode(refCode);
+            if (orgTree == null) {
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("组织树不存在");
+                return ret;
+            }
+        }else {
+            //查询组织树
+            Wrapper orgTreeConfWrapper = Condition.create().eq("ORG_TREE_ID", orgTreeId).eq("STATUS_CD", "1000");
+            orgTree = orgTreeService.selectOne(orgTreeConfWrapper);
+            if (orgTree == null) {
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("组织树不存在");
+                return ret;
+            }
         }
-
 
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
-        treeNodeVos = orgRelService.queryOrgTree(orgTreeId,orgTree.getOrgId(),relCode,id,isRoot);
+        treeNodeVos = orgRelService.queryOrgTree(orgTree.getOrgTreeId().toString(),orgTree.getOrgId(),refCode,id,isRoot);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("组织树查询成功");
         ret.setData(treeNodeVos);

@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.FieldFill;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -32,16 +30,6 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
     @TableId("SLAVE_ACCT_ID")
     private Long slaveAcctId;
     /**
-     * 主账号组织关系标识
-     */
-    @TableField("ACCT_HOST_ID")
-    private Long acctHostId;
-    /**
-     * 主账号标识
-     */
-    @TableField("ACCT_ID")
-    private Long acctId;
-    /**
      * 从账号
      */
     @TableField("SLAVE_ACCT")
@@ -57,10 +45,10 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
     @TableField("PASSWORD")
     private String password;
     /**
-     * 资源标识
+     * 来源
      */
-    @TableField("RESOURCE_OBJ_ID")
-    private String resourceObjId;
+    @TableField("SOURCE")
+    private String source;
     /**
      * 密码可被解密的
      */
@@ -72,51 +60,40 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
     @TableField("SLAVE_ACCT_TYPE")
     private String slaveAcctType;
     /**
+     * 业务系统标识
+     */
+    @TableField("BUSINESS_SYSTEM_ID")
+    private Long businessSystemId;
+    /**
      * 状态
      */
-    @JsonIgnore
-    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT_UPDATE)
+    @TableField("STATUS_CD")
     private String statusCd;
     /**
      * 创建时间
      */
-    @JsonIgnore
-    @TableField(value = "CREATE_DATE", fill = FieldFill.INSERT)
+    @TableField("CREATE_DATE")
     private Date createDate;
     /**
      * 创建人
      */
-    @JsonIgnore
-    @TableField(value = "CREATE_USER", fill = FieldFill.INSERT)
+    @TableField("CREATE_USER")
     private Long createUser;
     /**
      * 修改时间
      */
-    @JsonIgnore
-    @TableField(value = "UPDATE_DATE", fill = FieldFill.INSERT_UPDATE)
+    @TableField("UPDATE_DATE")
     private Date updateDate;
     /**
      * 修改人
      */
-    @JsonIgnore
-    @TableField(value = "UPDATE_USER", fill = FieldFill.INSERT_UPDATE)
+    @TableField("UPDATE_USER")
     private Long updateUser;
     /**
      * 状态变更的时间
      */
-    @JsonIgnore
-    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT_UPDATE)
+    @TableField("STATUS_DATE")
     private Date statusDate;
-    /**
-     * 生效时间
-     */
-    @TableField("ENABLE_DATE")
-    private Date enableDate;
-    /**
-     * 失效时间
-     */
-    @TableField("DISABLE_DATE")
-    private Date disableDate;
 
 
     @Override
@@ -133,6 +110,7 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
         ", password=" + password +
         ", symmetryPassword=" + symmetryPassword +
         ", slaveAcctType=" + slaveAcctType +
+        ", businessSystemId=" + businessSystemId +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
         ", createUser=" + createUser +

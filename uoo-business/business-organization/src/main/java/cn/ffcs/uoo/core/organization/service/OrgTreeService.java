@@ -39,4 +39,18 @@ public interface OrgTreeService extends IService<OrgTree> {
      * @return
      */
     public boolean isExistsOrgTreeRel(String refCode);
+
+    /**
+     * 根据关系编码变动
+     * @param refCode
+     * @return
+     */
+    public OrgTree getOrgTreeByRefCode(String refCode);
+
+    /**
+     * 获取组织树列表
+     * @param orgTree
+     * @return
+     */
+    public List<OrgTree> getOrgTreeList(OrgTree orgTree);
 }

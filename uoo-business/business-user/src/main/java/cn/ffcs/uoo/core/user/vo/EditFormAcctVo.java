@@ -19,6 +19,8 @@ public class EditFormAcctVo {
      */
     private String acct;
 
+    private Long acctId;
+
     private String password;
 
     private String statusCd;

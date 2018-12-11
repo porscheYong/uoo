@@ -32,10 +32,4 @@ public interface TbPersonnelMapper extends BaseMapper<TbPersonnel> {
     public List<PsonOrgVo> getPsnOrg(Pagination page, PsonOrgVo psonOrgVo);
 
     public PsnByUserVo getPsnByUser(PsnByUserVo psnByUserVo);
-
-    public List<PsnBasicInfoVo> getPsnBasicInfo(Pagination page, @Param("psnBasicInfoVo") PsnBasicInfoVo psnBasicInfoVo);
-
-    public void insertOrgPsnRel(@Param("orgId") Long orgId, @Param("personnelId") Long personnelId);
-
-    public void insertOrgTreeOrgPsnRel(@Param("orgRootId") Long orgRootId, @Param("personnelId") Long personnelId);
 }

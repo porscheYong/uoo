@@ -30,11 +30,12 @@
         <result column="UPDATE_USER" property="updateUser" />
         <result column="STATUS_DATE" property="statusDate" />
         <result column="ORG_MART_CODE" property="orgMartCode" />
+        <result column="STANDARD_FLAG" property="standardFlag" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE, SHORT_NAME, ORG_NAME_EN, FULL_NAME, CITY_TOWN, OFFICE_PHONE, FOUNDING_TIME, ORG_SCALE, ORG_LEVEL, ORG_POSITION_LEVEL, SORT, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE,ORG_MART_CODE
+        ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE, SHORT_NAME, ORG_NAME_EN, FULL_NAME, CITY_TOWN, OFFICE_PHONE, FOUNDING_TIME, ORG_SCALE, ORG_LEVEL, ORG_POSITION_LEVEL, SORT, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE,ORG_MART_CODE,STANDARD_FLAG
     </sql>
     <!-- 获取OrgIdSeq -->
     <select id="getId" resultType="java.lang.Long">
@@ -129,6 +130,7 @@
         <!--</if>-->
         <!--ORDER BY SORT-->
         <!--) D LEFT JOIN ( SELECT * FROM  TB_POLITICAL_LOCATION WHERE STATUS_CD='1000') PL ON PL.LOC_ID=D.LOC_ID-->
+        SELECT * FROM (
         SELECT D.ORG_ID ORGID,
         D.ORG_NAME ORGNAME,
         D.FULL_NAME FULLNAME,
@@ -144,12 +146,12 @@
         AND A.ORG_TYPE_ID = B.ORG_TYPE_ID
         AND A.ORG_ID = D.ORG_ID) ORGTYPESPLIT
         FROM (
-        SELECT  B.*
-        FROM TB_ORG_REL              A,
-        TB_ORG                  B,
-        TB_ORG_REL_TYPE         C,
+        SELECT B.*
+        FROM TB_ORG_REL A,
+        TB_ORG B,
+        TB_ORG_REL_TYPE C,
         TB_OGT_ORG_RELTYPE_CONF D,
-        TB_ORG_TREE             E
+        TB_ORG_TREE E
         WHERE A.STATUS_CD = '1000'
         AND B.STATUS_CD = '1000'
         AND C.STATUS_CD = '1000'
@@ -162,6 +164,10 @@
         AND E.ORG_TREE_ID=#{orgVo.orgTreeId}
         AND A.PARENT_ORG_ID=#{orgVo.orgId}) D
         LEFT JOIN TB_POLITICAL_LOCATION PL ON PL.LOC_ID=D.LOC_ID
+        ) WHERE 1=1
+        <if test="orgVo.sortField!='' and orgVo.sortField!=null and orgVo.sortOrder!=null and orgVo.sortOrder!=''">
+            order by #{orgVo.sortField}||'  '||#{orgVo.sortOrder}
+        </if>
     </select>
 
     <select id="selectOrgPage" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
@@ -234,7 +240,7 @@
     <!--INSERT INTO tb_org (ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE-->
 	<!--, SHORT_NAME, ORG_NAME_EN, FULL_NAME, CITY_TOWN, OFFICE_PHONE-->
 	<!--, FOUNDING_TIME, ORG_SCALE, ORG_LEVEL, ORG_POSITION_LEVEL, SORT-->
-	<!--, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUS_CD-->
+	<!--, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUselectOrgRelPageS_CD-->
 	<!--, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE)-->
       <!--VALUES (213524,#{OrgVo.locId}, #{OrgVo.areaCodeId}, #{OrgVo.orgName}, #{OrgVo.orgCode}-->
 	<!--, #{OrgVo.shortName}, #{OrgVo.orgNameEn},  #{OrgVo.fullName},  #{OrgVo.cityTown},#{OrgVo.officePhone}-->
@@ -243,13 +249,41 @@
 	<!--, to_date('16-11-2018 16:02:53', 'dd-mm-yyyy hh24:mi:ss'), 0, to_date('16-11-2018 16:02:53', 'dd-mm-yyyy hh24:mi:ss'), 0, to_date('16-11-2018 16:02:53', 'dd-mm-yyyy hh24:mi:ss'));-->
     <!--</select>-->
     <select id="selectOrgByOrgId" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
-        SELECT A.ORG_ID orgId,A.LOC_ID locId,A.AREA_CODE_ID areaCodeId,A.ORG_NAME orgName,A.ORG_CODE orgCode,A.SHORT_NAME shortName,
+      <!--  SELECT A.ORG_ID orgId,A.LOC_ID locId,A.AREA_CODE_ID areaCodeId,A.ORG_NAME orgName,A.ORG_CODE orgCode,A.SHORT_NAME shortName,
         A.ORG_NAME_EN orgNameEn,A.FULL_NAME fullName,
         A.CITY_TOWN cityTown,A.OFFICE_PHONE officePhone,TO_CHAR(A.FOUNDING_TIME, 'YYYY-MM-DD HH24:MI:SS') foundingTime,
         A.ORG_SCALE orgScale,A.ORG_LEVEL orgLevel,A.ORG_POSITION_LEVEL orgPositionLevel,
         A.SORT sort,A.ORG_CONTENT orgContent,A.ORG_DESC orgDesc,A.ADDRESS address,
         TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') createDate,ORG_MART_CODE orgMartCode FROM TB_ORG  A where A.org_id=#{orgId}
-    </select>
+       -->
+        SELECT A.ORG_ID ORGID,
+        A.LOC_ID LOCID,
+        A.AREA_CODE_ID AREACODEID,
+        A.ORG_NAME ORGNAME,
+        A.ORG_CODE ORGCODE,
+        A.SHORT_NAME SHORTNAME,
+        A.ORG_NAME_EN ORGNAMEEN,
+        A.FULL_NAME FULLNAME,
+        A.CITY_TOWN CITYTOWN,
+        A.OFFICE_PHONE OFFICEPHONE,
+        TO_CHAR(A.FOUNDING_TIME, 'YYYY-MM-DD') FOUNDINGTIME,
+        A.ORG_SCALE ORGSCALE,
+        A.ORG_LEVEL ORGLEVEL,
+        A.ORG_POSITION_LEVEL ORGPOSITIONLEVEL,
+        A.SORT SORT,
+        A.ORG_CONTENT ORGCONTENT,
+        A.ORG_DESC ORGDESC,
+        A.ADDRESS ADDRESS,
+        TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') CREATEDATE,
+        A.ORG_MART_CODE ORGMARTCODE,
+        B.ORG_BIZ_NAME ORGBIZNAME
+        FROM TB_ORG A, TB_ORG_ORGTREE_REL B
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND B.ORG_ID = A.ORG_ID
+        AND A.ORG_ID = #{orgId}
+        AND B.ORG_TREE_ID = #{orgTreeId}
+  </select>
 
 
     <select id="getOrgLoc"  resultType="cn.ffcs.uoo.core.organization.entity.PoliticalLocation">

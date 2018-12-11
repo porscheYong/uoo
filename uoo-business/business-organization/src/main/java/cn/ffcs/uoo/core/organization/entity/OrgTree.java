@@ -82,8 +82,8 @@ public class OrgTree extends Model<OrgTree> {
     @TableField("SORT")
     private Double sort;
 
-
-
+    @TableField(exist=false)
+    private String refCode;
     /**
      * 组织关系类型
      */
@@ -118,6 +118,13 @@ public class OrgTree extends Model<OrgTree> {
     @TableField(exist=false)
     private String tarOrgTreeId;
 
+    public String getRefCode() {
+        return refCode;
+    }
+
+    public void setRefCode(String refCode) {
+        this.refCode = refCode;
+    }
 
     public String getUserTypeId() {
         return userTypeId;

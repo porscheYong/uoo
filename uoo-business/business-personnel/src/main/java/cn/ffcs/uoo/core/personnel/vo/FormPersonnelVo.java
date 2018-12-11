@@ -1,11 +1,9 @@
 package cn.ffcs.uoo.core.personnel.vo;
 
-import cn.ffcs.uoo.core.personnel.entity.TbContact;
 import com.baomidou.mybatisplus.plugins.Page;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 public class FormPersonnelVo {
@@ -96,12 +94,9 @@ public class FormPersonnelVo {
      */
     private String certNo;
 
-    /**  2.1、联系信息(手机)    */
+    /**  2、联系信息    */
 
-    private List<TbContact> tbMobileVoList;
-
-    /**  2.2、联系信息(邮箱)    */
-    private List<TbContact> tbEamilVoList;
+    private Page<TbContactVo> tbContactVoList;
 
     /**  3、归属组织信息 */
     private Page<PsonOrgVo> psonOrgVoList;

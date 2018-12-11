@@ -16,18 +16,27 @@ import java.util.List;
  */
 public interface TbAccountOrgRelService extends IService<TbAccountOrgRel> {
 
+    public Long getId();
+
     /**
      * 保存
      * @param acctOrgVoList
      * @return
      */
-    public Object saveAcctOrg(List<ListAcctOrgVo> acctOrgVoList);
+    public Object saveAcctOrg(List<ListAcctOrgVo> acctOrgVoList, Long acctId);
 
     /**
      * 删除 主账号和组织关系
      * @param acctId
      * @return
      */
-    public Object removeAcctOrg(Long acctId, Long orgId);
+    public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId);
+
+    /**
+     * 新增 主账号和组织关系
+     * @param tbAccountOrgRel
+     * @return
+     */
+    public Object addAcctOrg(TbAccountOrgRel tbAccountOrgRel);
 
 }

@@ -96,15 +96,12 @@ public class EditFormPersonnelVo {
      */
     private String certNo;
 
-    /**  2.1、联系信息(手机)    */
+    /**  2、联系信息    */
 
-    private List<TbContact> tbMobileVoList;
-
-    /**  2.2、联系信息(邮箱)    */
-    private List<TbContact> tbEamilVoList;
+    private List<TbContact> tbContactList;
 
     /**  3、归属组织信息 */
-    private List<PsonOrgVo> psonOrgVoList;
+
 
     /**  4、工作履历信息 */
 

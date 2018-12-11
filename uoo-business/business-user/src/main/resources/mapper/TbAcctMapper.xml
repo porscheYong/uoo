@@ -5,13 +5,16 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.user.entity.TbAcct">
         <id column="ACCT_ID" property="acctId" />
-        <result column="PERSONNEL_ID" property="personnelId" />
+        <result column="USER_ID" property="userId" />
+        <result column="ACCT_NBR" property="acctNbr"/>
+        <result column="ACCT_PHONE" property="acctPhone"/>
+        <result column="ACCT_EMAIL" property="acctEmail"/>
+        <result column="ACCT_CERT" property="acctCert"/>
         <result column="ACCT" property="acct" />
         <result column="SALT" property="salt" />
         <result column="PASSWORD" property="password" />
         <result column="SYMMETRY_PASSWORD" property="symmetryPassword" />
         <result column="ACCT_TYPE" property="acctType"/>
-        <result column="USER_HOST_TYPE" property="userHostType" />
         <result column="SOURCE" property="source" />
         <result column="STATUS_CD" property="statusCd" />
         <result column="CREATE_DATE" property="createDate" />
@@ -19,13 +22,11 @@
         <result column="UPDATE_DATE" property="updateDate" />
         <result column="UPDATE_USER" property="updateUser" />
         <result column="STATUS_DATE" property="statusDate" />
-        <result column="ENABLE_DATE" property="enableDate" />
-        <result column="DISABLE_DATE" property="disableDate" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ACCT_ID, PERSONNEL_ID, ACCT, SALT, PASSWORD, SYMMETRY_PASSWORD, ACCT_TYPE, SOURCE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, ENABLE_DATE, DISABLE_DATE
+        ACCT_ID, USER_ID, ACCT, SALT, PASSWORD, SYMMETRY_PASSWORD, SOURCE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
     <select id="getId" resultType="java.lang.Long">
@@ -53,21 +54,6 @@
         </if>
         <if test="acct != null">
             AND ACCT = #{acct}
-        </if>
-    </select>
-    
-    
-    <select id="getTbRoles" resultType="cn.ffcs.uoo.core.user.entity.TbRoles">
-        select T1.ROLE_ID, T1.ROLE_NAME
-        from TB_ROLES T1, TB_USER_ROLE T2
-        where T1.STATUS_CD = 1000
-          AND T2.STATUS_CD = 1000
-          AND T1.ROLE_ID = T2.ROLE_ID
-        <if test="acctType != null and acctType != '' " >
-            AND T2.ACCT_TYPE = #{acctType}
-        </if>
-        <if test="acctId != null and acctId != '' " >
-            AND T2.ACCT_ID = #{acctId}
         </if>
     </select>
 </mapper>

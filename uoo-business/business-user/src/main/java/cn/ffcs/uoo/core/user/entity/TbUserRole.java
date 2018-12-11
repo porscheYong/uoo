@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.user.entity;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.FieldFill;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,7 +26,7 @@ public class TbUserRole extends Model<TbUserRole> {
     /**
      * 用户角色标识
      */
-    @TableField("USER_ROLE_ID")
+    @TableId("USER_ROLE_ID")
     private Long userRoleId;
     /**
      * 角色标识
@@ -46,7 +47,7 @@ public class TbUserRole extends Model<TbUserRole> {
      * 状态
      */
     @JsonIgnore
-    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT)
     private String statusCd;
     /**
      * 创建时间
@@ -76,7 +77,7 @@ public class TbUserRole extends Model<TbUserRole> {
      * 状态变更的时间
      */
     @JsonIgnore
-    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT)
     private Date statusDate;
     /**
      * 账号类型

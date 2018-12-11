@@ -23,7 +23,7 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018-09-25
  */
-@FeignClient(value = "business-organization",configuration = {PersonnelServiceConfiguration.class},fallback = OrgServiceHystrix.class)
+@FeignClient(name = "business-organization", url = "http://134.96.253.222:11100",configuration = {PersonnelServiceConfiguration.class},fallback = OrgServiceHystrix.class)
 public interface OrgService{
 
     @RequestMapping(value="/org/addOrg",method = RequestMethod.POST,headers={"Content-Type=application/json"})
@@ -42,6 +42,8 @@ public interface OrgService{
     public ResponseResult<Page<OrgVo>> getOrgRelPage(@RequestParam(value = "orgRootId",required = false)String orgRootId,
                                                      @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                      @RequestParam(value = "orgId",required = false)String orgId,
+                                                     @RequestParam(value = "sortField",required = false)String sortField,
+                                                     @RequestParam(value = "sortOrder",required = false)String sortOrder,
                                                      @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                      @RequestParam(value = "pageNo",required = false)Integer pageNo);
 

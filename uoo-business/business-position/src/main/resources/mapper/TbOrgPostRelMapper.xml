@@ -28,7 +28,7 @@
         </selectKey>
         insert into TB_ORG_POST_REL
         <trim prefix="(" suffix=")" suffixOverrides=",">
-                ORG_POST_ID,
+            ORG_POST_ID,
             <if test="postId != null">
                 POST_ID,
             </if>
@@ -61,7 +61,7 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-                #{orgPostId,jdbcType=DECIMAL},
+            #{orgPostId,jdbcType=DECIMAL},
             <if test="postId != null">
                 #{postId,jdbcType=DECIMAL},
             </if>

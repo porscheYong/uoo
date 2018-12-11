@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface TbAccountOrgRelMapper extends BaseMapper<TbAccountOrgRel> {
 
+    public Long  getId();
+
 }

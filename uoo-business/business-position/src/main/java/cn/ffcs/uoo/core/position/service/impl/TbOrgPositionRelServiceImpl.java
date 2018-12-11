@@ -6,7 +6,6 @@ import cn.ffcs.uoo.core.position.entity.TbOrgPositionRel;
 import cn.ffcs.uoo.core.position.dao.TbOrgPositionRelMapper;
 import cn.ffcs.uoo.core.position.service.TbOrgPositionRelService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import freemarker.template.utility.DateUtil;
 import org.springframework.stereotype.Service;
 
 /**

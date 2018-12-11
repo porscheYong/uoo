@@ -10,6 +10,9 @@ function goEdit(){
 	}
 	parent.changeIframe('/inaction/region/polloc-edit.html?id='+cid+'&parentLocId='+pid+'&parentLocName='+pname);
 }
+function fastGo(id){
+	parent.selectNodeById(id);
+}
 function getRegionList (id) {
 	//初始化页面显示
 	var nodes= parent.getCurrentSelectedNode();
@@ -18,10 +21,10 @@ function getRegionList (id) {
 	var str=treeNode.name;
 	var parentNode=treeNode.getParentNode();
 	while(parentNode!=null){
-		str=parentNode.name+">"+str;
+		str="<a href='javascript:void(0)' onclick=\"fastGo('"+parentNode.id+"')\">"+parentNode.name+"</a> >"+str;
 		parentNode=parentNode.getParentNode();
 	}
-	$('#regionStrFull').text(str);
+	$('#regionStrFull').html(str);
 	$('#regionStrCurrent').attr('cid',nodes[0].id);
 	$.ajax({
 		url:'/region/politicalLocation/getChildPoliticalLocationInfo/'+id,
@@ -43,10 +46,11 @@ function getDetail(id){
 }
 function quickList(id){
 	var tree=parent.getTree();
+	var upnode=parent.getCurrentSelectedNode()[0];
 	tree.expandNode(tree.getSelectedNodes[0],true,false ,true);
 	var qnode=tree.getNodesByParam('id',id,tree.getSelectedNodes[0])[0];
 	tree.selectNode(qnode,false);
-	parent.changeIframe('/inaction/region/polloc-list.html?id=' + qnode.id);
+	parent.changeIframe('/inaction/region/polloc-edit.html?id=' + qnode.id+'&parentLocName='+upnode.name+'&parentLocId='+upnode.id);
 }
 function initTable (results) {
 	var i=0;
@@ -61,7 +65,7 @@ function initTable (results) {
         'destroy':true,
         "scrollY": "375px",
         'columns': [
-            { 'data': "LOC_ID","title":"序号" , 'className': 'user-account','defaultContent':'',
+            { 'data': "LOC_ID","title":"序号" , 'className': 'user-account','defaultContent':'','width':'30px',
             	'render':function(data, type, row, meta){
             		return ++i;
             	}
@@ -96,7 +100,7 @@ function initTable (results) {
                  
             },
             { 'data': "LOC_ABBR", 'title': '区域简称', 'className': 'user-account'  ,'defaultContent':''},
-            { 'data': "COMMON_REGION_ID", 'title': '操作', 
+            /*{ 'data': "COMMON_REGION_ID", 'title': '操作', 
             'render': function (data, type, row, meta) {
             	var html="<a href=\"javascript:void(0)\" onClick=\"parent.changeIframe('/inaction/region/polloc-edit.html?id="+row.LOC_ID+"&parentLocId="+parent.getCurrentSelectedNode()[0].id+"&parentLocName="+parent.getCurrentSelectedNode()[0].name+"')\">> </a>";
             	html+="&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -104,7 +108,7 @@ function initTable (results) {
             	return html;
             		 //return '<a href="list.html?id='+ row.orgId +'" onclick="parent.openTreeById('+orgId+','+row.orgId+')">'+ row.orgName +'</a>'
                 }  , 'className': 'user-account'
-            },
+            },*/
              
         ],
         'language': {
@@ -143,6 +147,14 @@ function goDel(){
 			dataType:'json',
 			type:'post',
 			success:function(data){
+				parent.layer.confirm(data.state==1000?'操作成功':'操作失败，'+data.message, {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 				if(data.state==1000){
 					//
 					var selectNode=parent.getCurrentSelectedNode()[0];
@@ -179,7 +191,7 @@ function goDel(){
 						type:'get'
 					});
 				}else{
-					alert(data.state==1000?'删除成功':data.message);
+				 
 				}
 				
 			}
@@ -194,7 +206,14 @@ function deleteRegion(id){
 			dataType:'json',
 			type:'post',
 			success:function(data){
-				alert(data.state==1000?'删除成功':data.message);
+				parent.layer.confirm(data.state==1000?'操作成功':'操作失败，'+data.message, {
+			        icon: 0,
+			        title: '提示',
+			        btn: ['确定' ]
+			    }, function(index, layero){
+			        parent.layer.close(index);
+			    }, function(){
+			    });
 				getRegionList(listId);
 				if(data.state==1000){
 					var zTree=parent.getTree();

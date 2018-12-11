@@ -210,7 +210,7 @@ public class OrgController extends BaseController {
         newOrg.setCityTown(StrUtil.strnull(org.getCityTown()));
         newOrg.setOfficePhone(StrUtil.strnull(org.getOfficePhone()));
         if(!StrUtil.isNullOrEmpty(org.getFoundingTime())){
-            newOrg.setFoundingTime(DateUtils.getDatebystr(org.getFoundingTime(),"yyyy-MM-dd HH:mm:ss"));
+            newOrg.setFoundingTime(DateUtils.getDatebystr(org.getFoundingTime(),"yyyy-MM-dd"));
         }
         newOrg.setOrgScale(StrUtil.strnull(org.getOrgScale()));
         newOrg.setOrgLevel(StrUtil.strnull(org.getOrgLevel()));
@@ -290,7 +290,7 @@ public class OrgController extends BaseController {
             orgOrgtreeRef.setOrgOrgtreeId(orgOrgtreeRefId);
             orgOrgtreeRef.setOrgId(newOrg.getOrgId());
             orgOrgtreeRef.setOrgTreeId(orgOrgRel.getOrgTreeId());
-            orgOrgtreeRef.setOrgBizName(org.getOrgName());
+            orgOrgtreeRef.setOrgBizName(StrUtil.isNullOrEmpty(org.getOrgBizName())?org.getOrgName():StrUtil.strnull(org.getOrgBizName()));
             orgOrgtreeRef.setStatusCd("1000");
             orgOrgtreeRelService.add(orgOrgtreeRef);
 
@@ -362,8 +362,11 @@ public class OrgController extends BaseController {
 //        }
         //新增组织扩展属性
         if(extValueList!=null && extValueList.size()>0){
+            ResponseResult<ExpandovalueVo> publicRet = new ResponseResult<ExpandovalueVo>();
             for(ExpandovalueVo extVo : extValueList){
-                expandovalueService.addExpandoInfo(extVo);
+                extVo.setTableName("TB_ORG");
+                extVo.setRecordId(newOrg.getOrgId().toString());
+                publicRet = expandovalueService.addExpandoInfo(extVo);
             }
         }
         orgService.add(newOrg);
@@ -464,7 +467,7 @@ public class OrgController extends BaseController {
         newOrg.setCityTown(StrUtil.strnull(org.getCityTown()));
         newOrg.setOfficePhone(StrUtil.strnull(org.getOfficePhone()));
         if(!StrUtil.isNullOrEmpty(org.getFoundingTime())){
-            newOrg.setFoundingTime(DateUtils.getDatebystr(org.getFoundingTime(),"yyyy-MM-dd HH:mm:ss"));
+            newOrg.setFoundingTime(DateUtils.getDatebystr(org.getFoundingTime(),"yyyy-MM-dd"));
         }
         newOrg.setOrgScale(StrUtil.strnull(org.getOrgScale()));
         newOrg.setOrgLevel(StrUtil.strnull(org.getOrgLevel()));
@@ -771,6 +774,18 @@ public class OrgController extends BaseController {
         }
 
 
+        //更新组织组织树关系
+        Wrapper orgTreeRelOneWrapper = Condition.create()
+                .eq("ORG_ID",org.getOrgId())
+                .eq("STATUS_CD","1000")
+                .eq("ORG_TREE_ID",orgTree.getOrgTreeId());
+        OrgOrgtreeRel orgOrgtreeRelOne = orgOrgtreeRelService.selectOne(orgTreeRelOneWrapper);
+        if(orgOrgtreeRelOne!=null){
+            if(!StrUtil.isNullOrEmpty(org.getOrgBizName())) {
+                orgOrgtreeRelOne.setOrgBizName(org.getOrgBizName());
+                orgOrgtreeRelService.update(orgOrgtreeRelOne);
+            }
+        }
 
 
         if (!"1000".equals(org.getStatusCd())){
@@ -838,8 +853,6 @@ public class OrgController extends BaseController {
                 ret.setMessage("更新成功");
                 return ret;
             }
-
-
         }
         newOrg.setStatusCd("1000");
         orgService.update(newOrg);
@@ -1008,10 +1021,10 @@ public class OrgController extends BaseController {
             return ret;
         }
 
-        Wrapper orgWrapper = Condition.create()
-                .eq("ORG_ID",orgId)
-                .eq("STATUS_CD","1000");
-        OrgVo org = orgService.selectOrgByOrgId(orgId);
+//        Wrapper orgWrapper = Condition.create()
+//                .eq("ORG_ID",orgId)
+//                .eq("STATUS_CD","1000");
+        OrgVo org = orgService.selectOrgByOrgId(orgId,orgTree.getOrgTreeId().toString());
         //Org org = orgService.selectById(orgId);
         if(StrUtil.isNullOrEmpty(org)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -1077,6 +1090,8 @@ public class OrgController extends BaseController {
     public ResponseResult<Page<OrgVo>> getOrgRelPage(String orgRootId,
                                                      String orgTreeId,
                                                      String orgId,
+                                                     String sortField,
+                                                     String sortOrder,
                                                      Integer pageSize,
                                                      Integer pageNo){
         ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
@@ -1085,6 +1100,27 @@ public class OrgController extends BaseController {
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织树标识不能为空");
             return ret;
+        }
+
+        if(!StrUtil.isNullOrEmpty(sortField)){
+            if(StrUtil.isNullOrEmpty(sortOrder)){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("排序方式不能为空");
+                return ret;
+            }
+            if(!"DESC".equals(sortOrder.toUpperCase()) && !"ASC".equals(sortOrder.toUpperCase())){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("排序参数不对");
+                return ret;
+            }
+        }
+
+        if(!StrUtil.isNullOrEmpty(sortOrder)){
+            if(StrUtil.isNullOrEmpty(sortField)){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("排序字段不能为空");
+                return ret;
+            }
         }
 
 //        if(StrUtil.isNullOrEmpty(orgRootId)){
@@ -1112,7 +1148,8 @@ public class OrgController extends BaseController {
         orgVo.setOrgRootId(orgTree.getOrgId());
         orgVo.setOrgId(new Long(orgId));
         orgVo.setOrgTreeId(orgTree.getOrgTreeId());
-
+        orgVo.setSortField(StrUtil.strnull(sortField));
+        orgVo.setSortOrder(StrUtil.strnull(sortOrder));
         if(!StrUtil.isNullOrEmpty(pageNo)){
             orgVo.setPageNo(pageNo);
         }
