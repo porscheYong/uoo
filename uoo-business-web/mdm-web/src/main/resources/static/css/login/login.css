@@ -1,0 +1,107 @@
+/* CSS Document */
+body {
+	font: 14px/150% microsoft yahei,helvetia,pingfang sc,Arial,Tahoma;
+	background: #00baff;
+	}
+img {
+	border: none
+	}
+.Gradient {
+	background: linear-gradient(to right bottom,#af3ae5 0%,#00baff 100%);
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	}
+.LogoBg {
+	background: url(../images/logo2.svg) no-repeat right -120px bottom -90px;
+	background-size: 30%;
+	opacity: .2;
+	width: 100%;
+	height: 100%;
+	}
+.WhiteAlpha {
+	background: rgba(255,255,255,.1);
+	width: 100%;
+	height: 370px;
+	position: absolute;
+	top: 40%;
+	margin: -185px 0 0 ;
+	}
+.Main {
+	width: 980px;
+	height: 370px;
+	background: url(../images/login_img.png) no-repeat;
+	margin: 0 auto;
+	}
+.FormArea {
+	width: 360px;
+	height: 100%;
+	padding: 0 30px;
+	border-radius: 8px;
+	float: right;
+	text-align: center;
+	box-shadow: 5px 6px 12px rgba(0,0,0,.1);
+	background: #FFF;
+	}
+.FormHead {
+	padding: 50px 0 50px 0;
+	color: #232c45
+	}
+.Input {
+	width: 290px;
+	height: 36px;
+	border: none;
+	background: transparent;
+	border-bottom: 1px solid #c6cbd2;
+	padding: 0 10px 0 40px;
+	margin: 0 0 20px 0
+	}
+.Input:hover {
+	border-color: #00a4ff
+	}
+.user {
+	background: url(../images/ico_user.png) no-repeat left center
+	}
+.psw {
+	background: url(../images/ico_psw.png) no-repeat left center
+	}
+.code {
+	background: url(../images/ico_check.png) no-repeat left center;
+	width: 190px;
+	height: 36px;
+	border: none;
+	border-bottom: 1px solid #c6cbd2;
+	padding: 0 10px 0 40px;
+	margin: 0 0 20px 0;
+	display:none;
+	}
+.BtnSubmit {
+	background: #00a4ff;
+	box-shadow: 1px 4px 12px rgba(0,164,255,.4);
+	color: #FFF;
+	border: none;
+	width: 290px;
+	border-radius: 4px;
+	padding: 0;
+	opacity: 0.8
+	}
+.BtnSubmit:hover {
+	opacity: 1
+	}
+.BtnSubmit:disabled {
+	background: #c6cbd2;
+	box-shadow: none;
+	color: #959da9
+	}
+	
+.rendomcode{
+	display: inline-block;
+}
+#canvas{
+	float: right;
+	display:none;
+	border:1px solid #ccc;
+	border-radius: 5px;
+	cursor: pointer;
+
+}

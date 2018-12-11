@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.permission.dao.ResourceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.permission.entity.Resource">
+        <id column="PK_RESOURCE" property="pkResource" />
+        <result column="ACCOUT" property="accout" />
+        <result column="PASSWORD" property="password" />
+        <result column="CONNECT_TYPE" property="connectType" />
+        <result column="SYS_VERSION" property="sysVersion" />
+        <result column="HOST" property="host" />
+        <result column="PORT" property="port" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        PK_RESOURCE, ACCOUT, PASSWORD, CONNECT_TYPE, SYS_VERSION, HOST, PORT
+    </sql>
+
+    <select id="getId" resultType="Long">
+        SELECT SEQ_TB_RESOURCE_ID.NEXTVAL FROM dual
+    </select>
+</mapper>

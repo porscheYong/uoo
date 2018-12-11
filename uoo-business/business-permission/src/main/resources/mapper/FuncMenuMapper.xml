@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.permission.dao.FuncMenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.permission.entity.FuncMenu">
+        <id column="MENU_ID" property="menuId" />
+        <result column="MENU_NAME" property="menuName" />
+        <result column="MENU_TYPE" property="menuType" />
+        <result column="MENU_LEVEL" property="menuLevel" />
+        <result column="MENU_INDEX" property="menuIndex" />
+        <result column="PAR_MENU_ID" property="parMenuId" />
+        <result column="MENU_DESC" property="menuDesc" />
+        <result column="URL_ADDR" property="urlAddr" />
+        <result column="REGION_ID" property="regionId" />
+        <result column="SYSTEM_INFO_ID" property="systemInfoId" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="STATUS_DATE" property="statusDate" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        MENU_ID, MENU_NAME, MENU_TYPE, MENU_LEVEL, MENU_INDEX, PAR_MENU_ID, MENU_DESC, URL_ADDR, REGION_ID, SYSTEM_INFO_ID, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
+    </sql>
+
+    <select id="getId" resultType="java.lang.Long">
+        SELECT SEQ_TB_FUNC_MENU_ID.nextval FROM dual
+    </select>
+
+    <select id="selectFuncMenuTree" resultType="cn.ffcs.uoo.core.permission.vo.TreeNodeVo">
+        SELECT AA.MENU_ID id,AA.PAR_MENU_ID pid,AA.MENU_NAME name  FROM TB_FUNC_MENU A WHERE A.STATUS_CD='1000'
+        <choose>
+            <when test="id != null and id != ''">
+                and A.PAR_MENU_ID = #{id}
+            </when>
+            <otherwise>
+                and A.MENU_ID = 0
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="selectFuncMenuSyncTree" resultType="cn.ffcs.uoo.core.permission.vo.TreeNodeVo">
+        SELECT AA.MENU_ID id,AA.PAR_MENU_ID pid,AA.MENU_NAME name  FROM (
+        SELECT * FROM TB_FUNC_MENU A WHERE A.STATUS_CD='1000') AA
+        START WITH AA.MENU_ID = 0
+        CONNECT BY PRIOR  AA.MENU_ID = AA.PAR_MENU_ID
+    </select>
+
+    <select id="selectMenuPage" resultType="cn.ffcs.uoo.core.permission.vo.MenuVO">
+        SELECT A.MENU_ID menuId,
+               A.MENU_NAME menuName,
+               A.MENU_TYPE menuType,
+               A.MENU_LEVEL menuLevel,
+               A.MENU_INDEX menuIndex,
+               A.PAR_MENU_ID parMenuId,
+                To_Char('A.CREATE_DATE', 'yyyy-mm-dd hh24:mi:ss') createDate,
+                A.STATUS_CD statusCd
+          FROM TB_FUNC_MENU A
+         WHERE A.STATUS_CD = '1000'
+           and A.PAR_MENU_ID = #{menuId}
+    </select>
+
+
+
+</mapper>

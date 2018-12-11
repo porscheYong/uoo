@@ -34,7 +34,6 @@
         <mybatisplus-spring-boot-starter.version>1.0.5</mybatisplus-spring-boot-starter.version>
         <mybatis-plus.version>2.3</mybatis-plus.version>
         <druid-spring-boot-starter.version>1.1.9</druid-spring-boot-starter.version>
-        <pagehelper-spring-boot-starter.version>1.2.5</pagehelper-spring-boot-starter.version>
         <ojdbc6.version>11.2.0.3</ojdbc6.version>
         <swagger2.version>2.7.0</swagger2.version>
     </properties>
@@ -69,6 +68,15 @@
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
         </dependency>
     </dependencies>
 
@@ -109,11 +117,6 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>1.2.47</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.pagehelper</groupId>
-                <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>${pagehelper-spring-boot-starter.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.oracle</groupId>

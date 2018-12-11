@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.permission.dao.DataPrivRuleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.permission.entity.DataPrivRule">
+        <id column="PRIV_RULE_ID" property="privRuleId" />
+        <result column="PRIV_DATA_REL_ID" property="privDataRelId" />
+        <result column="BUSI_OBJ_ID" property="busiObjId" />
+        <result column="BUSI_OBJ_ATTR_ID" property="busiObjAttrId" />
+        <result column="RULE_OPERATOR" property="ruleOperator" />
+        <result column="ATTR_VALUE" property="attrValue" />
+        <result column="OPER_TYPE" property="operType" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="STATUS_DATE" property="statusDate" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        PRIV_RULE_ID, PRIV_DATA_REL_ID, BUSI_OBJ_ID, BUSI_OBJ_ATTR_ID, RULE_OPERATOR, ATTR_VALUE, OPER_TYPE, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
+    </sql>
+    <select id="getId" resultType="java.lang.Long">
+        SELECT SEQ_TB_DATA_PRIV_RULE.nextval FROM dual
+    </select>
+</mapper>

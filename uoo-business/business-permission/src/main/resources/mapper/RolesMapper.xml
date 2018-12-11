@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.permission.dao.RolesMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.permission.entity.Roles">
+        <id column="ROLE_ID" property="roleId" />
+        <result column="ROLE_NAME" property="roleName" />
+        <result column="ROLE_CODE" property="roleCode" />
+        <result column="ROLE_TYPE" property="roleType" />
+        <result column="ROLE_DESC" property="roleDesc" />
+        <result column="REGION_ID" property="regionId" />
+        <result column="SYSTEM_INFO_ID" property="systemInfoId" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="STATUS_DATE" property="statusDate" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+    </resultMap>
+
+    <resultMap id="getRolesResultMap" type="cn.ffcs.uoo.core.permission.vo.RoleSystemPermissionVO">
+        <id column="ROLE_ID" property="roleId" />
+        <result column="ROLE_ID" property="roleId" />
+        <result column="ROLE_NAME" property="roleName" />
+        <result column="ROLE_CODE" property="roleCode" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ROLE_ID, ROLE_NAME, ROLE_CODE, ROLE_TYPE, ROLE_DESC, REGION_ID, SYSTEM_INFO_ID, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
+    </sql>
+    <select id="getId" resultType="Long">
+        select SEQ_TB_ROLES_ID.NEXTVAL from dual
+    </select>
+    <select id="getRoles" resultMap="getRolesResultMap" parameterType="Long">
+        SELECT DISTINCT R.ROLE_ID ROLE_ID,R.ROLE_NAME ROLE_NAME,R.ROLE_CODE ROLE_CODE FROM TB_USER_ROLE UR LEFT JOIN TB_ROLES R ON R.ROLE_ID = UR.ROLE_ID WHERE UR.ACCT_ID = #{acctId} AND R.SYSTEM_INFO_ID=#{systemInfoId}
+    </select>
+    <select id="getPermission" parameterType="Long" resultType="cn.ffcs.uoo.core.permission.entity.Privilege">
+        SELECT P.PRIV_CODE,P.PRIV_NAME FROM TB_PRIV_GRANT PG INNER JOIN TB_PRIVILEGE P ON PG.PRIV_ID=P.PRIV_ID WHERE PG.GRANT_OBJ_ID=#{roleId}
+    </select>
+    
+    <select id="getPermissionMenu" parameterType="Long" resultType="cn.ffcs.uoo.core.permission.entity.FuncMenu">
+        SELECT
+            FM.MENU_ID,
+            FM.MENU_NAME,
+            FM.MENU_TYPE,
+            FM.MENU_LEVEL,
+            FM.MENU_INDEX,
+            FM.PAR_MENU_ID,
+            FM.MENU_DESC,
+            FM.URL_ADDR
+        FROM
+            TB_PRIV_GRANT PG
+            LEFT JOIN (
+                          SELECT DISTINCT
+                              R.ROLE_ID
+                          FROM
+                              TB_USER_ROLE UR
+                              LEFT JOIN TB_ROLES R ON R.ROLE_ID = UR.ROLE_ID
+                          WHERE
+                              UR.ACCT_ID = #{acctId}
+                              AND R.SYSTEM_INFO_ID = #{systemInfoId}
+                      ) RI ON RI.ROLE_ID = PG.GRANT_OBJ_ID
+            LEFT JOIN TB_PRIVILEGE P ON P.PRIV_ID = PG.PRIV_ID
+            LEFT JOIN TB_PRIV_FUNC_REL PFR ON P.PRIV_ID = PFR.PRIV_ID
+            LEFT JOIN TB_FUNC_MENU FM ON PFR.MENU_ID = FM.MENU_ID
+    </select>
+
+</mapper>
