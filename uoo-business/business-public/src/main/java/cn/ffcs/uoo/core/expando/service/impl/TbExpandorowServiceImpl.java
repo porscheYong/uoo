@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.core.expando.service.impl;
 
 import cn.ffcs.uoo.base.common.tool.util.DateUtils;
+import cn.ffcs.uoo.core.constant.StatusEnum;
 import cn.ffcs.uoo.core.expando.entity.TbExpandorow;
 import cn.ffcs.uoo.core.expando.dao.TbExpandorowMapper;
 import cn.ffcs.uoo.core.expando.service.TbExpandorowService;
@@ -30,7 +31,7 @@ public class TbExpandorowServiceImpl extends ServiceImpl<TbExpandorowMapper, TbE
         TbExpandorow tbExpandorow = new TbExpandorow();
         tbExpandorow.setRowId(rowId);
         //  失效状态
-        tbExpandorow.setStatusCd("1100");
+        tbExpandorow.setStatusCd(StatusEnum.INVALID.getValue());
         tbExpandorow.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbExpandorow.setUpdateUser(updateUser);
         tbExpandorow.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));

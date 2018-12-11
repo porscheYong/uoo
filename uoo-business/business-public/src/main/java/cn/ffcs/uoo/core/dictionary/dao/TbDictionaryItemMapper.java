@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.dictionary.dao;
 
 import cn.ffcs.uoo.core.dictionary.entity.TbDictionaryItem;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -28,4 +29,6 @@ public interface TbDictionaryItemMapper extends BaseMapper<TbDictionaryItem> {
     void remove(TbDictionaryItem tbDictionaryItem);
 
     List<TbDictionaryItem> selectDicItemList(TbDictionaryItem tbDictionaryItem);
+
+    List<TbDictionaryItem> selectDicItemListByDicName(@Param("dictionaryName") String dictionaryName);
 }
