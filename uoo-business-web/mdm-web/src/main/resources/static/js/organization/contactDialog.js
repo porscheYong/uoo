@@ -24,7 +24,7 @@ engine = new Bloodhound({
             //     'autoWidth': false,
             //     'ordering': true,
             //     'initComplete': function (settings, json) {
-            //         console.log(settings, json)
+            //         (settings, json)
             //     },
             //     'columns': [
             //         { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name',
@@ -159,9 +159,6 @@ function initTable(keyWord){
         'searching': false,
         'autoWidth': false,
         'ordering': true,
-        'initComplete': function (settings, json) {
-            console.log(settings, json)
-        },
         'columns': [
             { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name',
                 // 'render': function (data, type, row, meta) {
@@ -225,7 +222,7 @@ function initTable(keyWord){
                     }
                 });
             }, function (err) {
-                console.log(err)
+
             })
         }
     });
@@ -297,7 +294,6 @@ function  addTreeNode () {
         parent.addNodeById(orgId, newNode);
         loading.screenMaskDisable('container');
     }, function (err) {
-        console.log(err);
         loading.screenMaskDisable('container');
     })
 }
@@ -328,9 +324,6 @@ function initContactTable () {
         'searching': false,
         'autoWidth': false,
         'ordering': true,
-        'initComplete': function (settings, json) {
-            console.log(settings, json)
-        },
         'columns': [
             { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name',
                 // 'render': function (data, type, row, meta) {
@@ -390,7 +383,7 @@ function initContactTable () {
                     }
                 });
             }, function (err) {
-                console.log(err)
+
             })
         }
     });

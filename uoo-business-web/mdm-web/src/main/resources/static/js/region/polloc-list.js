@@ -29,7 +29,6 @@ function getRegionList (id) {
 	$.ajax({
 		url:'/region/politicalLocation/getChildPoliticalLocationInfo/'+id,
 		success:function(data){
-			console.log(data);
 			if(data.state==1000){
 				initTable(data.data)
 			}else{
@@ -59,9 +58,6 @@ function initTable (results) {
         'searching': false,
         'autoWidth': false,
         'ordering': true,
-        'initComplete': function (settings, json) {
-            console.log(settings, json)
-        },
         'destroy':true,
         "scrollY": "375px",
         'columns': [
@@ -158,7 +154,6 @@ function goDel(){
 				if(data.state==1000){
 					//
 					var selectNode=parent.getCurrentSelectedNode()[0];
-					console.log(parent.getCurrentSelectedNode()[0])
 					var zTree=parent.getTree();
 					if(selectNode.pId==0||selectNode.pId==null){
 						parent.changeIframe('/inaction/region/none.html');
@@ -180,7 +175,6 @@ function goDel(){
 					$.ajax({
 						url:'/region/politicalLocation/getChildPoliticalLocationInfo/'+nodes.id,
 						success:function(data){
-							console.log(data);
 							if(data.state==1000){
 								initTable(data.data)
 							}else{

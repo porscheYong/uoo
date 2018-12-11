@@ -28,9 +28,6 @@ function initAcctTable(search) {
         'searching': false,
         'autoWidth': false,
         'ordering': true,
-        'initComplete': function (settings, json) {
-            console.log(settings, json)
-        },
         "scrollY": "375px",
         'columns': [
             { 'data': "psnName", 'title': '人员姓名', 'className': 'row-psnName' ,
@@ -94,7 +91,7 @@ function initAcctTable(search) {
                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                 callback(returnData);
             }, function (err) {
-                console.log(err)
+
             })
         }
     });

@@ -77,7 +77,6 @@ function initOrgRelTree (orgTreeId) {
         orgTreeId: orgTreeId,
         orgRootId: orgTreeId
     }, function (data) {
-        console.log(data)
         $.fn.zTree.init($("#standardTree"), setting, data);
         var zTree = $.fn.zTree.getZTreeObj("standardTree");
         var nodes = zTree.getNodes();
@@ -86,7 +85,6 @@ function initOrgRelTree (orgTreeId) {
         onNodeClick(null, null, nodes[0]);
         loading.screenMaskDisable('container');
     }, function (err) {
-        console.log(err)
         loading.screenMaskDisable('container');
     });
 }
@@ -111,7 +109,6 @@ function initBusinessList () {
             initOrgRelTree(orgTreeId);
         })
     }, function (err) {
-        console.log(err);
         loading.screenMaskDisable('container');
     })
 }
@@ -139,8 +136,6 @@ function openTreeById (sId, id) {
     var sId = 'standardTree_' + sId;
     var orgTree = $.fn.zTree.getZTreeObj("standardTree");
     var selectNode = orgTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-    console.log(sId);
-    console.log(selectNode);
     if (!selectNode.open) {
         orgTree.expandNode(selectNode, true);
     }

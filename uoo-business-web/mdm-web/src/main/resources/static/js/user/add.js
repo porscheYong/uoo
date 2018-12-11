@@ -100,7 +100,7 @@ function getCertType () {
         $('#certType').append(option);
         $('#certType').selectMatch();
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -114,7 +114,7 @@ function getNation () {
         $('#nation').append(option);
         $('#nation').selectMatch();
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -128,7 +128,7 @@ function getPliticalStatus () {
         $('#pliticalStatus').append(option);
         $('#pliticalStatus').selectMatch();
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -142,7 +142,7 @@ function getMarriage () {
         $('#marriage').append(option);
         $('#marriage').selectMatch();
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -157,7 +157,7 @@ function getProperty (val) {
         $('#property').append(option);
         $('#property').selectMatch();
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -172,7 +172,7 @@ function getRefType (val) {
         $('#refType').append(option);
         $('#refType').selectMatch();
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -189,7 +189,7 @@ function getOrgTreeList () {
             $('#orgTreeName').selectMatch();
         });
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -368,9 +368,6 @@ function initTable(keyWord){
         'searching': false,
         'autoWidth': false,
         'ordering': true,
-        'initComplete': function (settings, json) {
-            console.log(settings, json)
-        },
         'columns': [
             { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name'},
             { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
@@ -422,7 +419,7 @@ function initTable(keyWord){
                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                 callback(returnData);
             }, function (err) {
-                console.log(err)
+
             })
         }
     });
@@ -458,7 +455,6 @@ $('#psnName').typeahead({
     }
 })
   .on('typeahead:asyncrequest', function(a, b) {
-      console.log(a, b)
         $('.Typeahead-spinner').show();
         if ($("#psnName").val())
             initTable($("#psnName").val());
@@ -566,7 +562,6 @@ function addWrokList () {
     $('#workEditBtn').show();
     $('#workEdit').removeClass( 'edit-form');
     $('#workEdit').html('');
-    console.log(psnjobList)
 }
 // 删除一条工作经历
 function deleteWrokList (index) {
@@ -724,7 +719,6 @@ function addEduList () {
     $('#eduEditBtn').show();
     $('#eduEdit').removeClass( 'edit-form');
     $('#eduEdit').html('');
-    console.log(eduList)
 }
 // 删除一条教育信息
 function deleteEduList (index) {
@@ -755,7 +749,6 @@ function  initFamilyTable (results) {
             { 'data': "gender", 'title': '性别', 'className': 'cert-no',
                 'render': function (data, type, row, meta) {
                     var str = '';
-                    console.log(row.gender)
                     if (row.gender == "1")
                         str = '<span>男</span>'
                     else
@@ -1134,7 +1127,6 @@ function savePersonnel () {
         parent.initBusinessList();
         loading.screenMaskDisable('container');
     }, function (err) {
-        console.log(err);
         loading.screenMaskDisable('container');
     })
 }

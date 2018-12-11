@@ -47,7 +47,6 @@ function initOrgRelTree () {
         orgRootId: '1',
         orgTreeId: '1'
     }, function (data) {
-        console.log(data)
         $.fn.zTree.init($("#jobFullNameTree"), treeSetting, data);
         var zTree = $.fn.zTree.getZTreeObj("standardTree");
         var nodes = zTree.getNodes();
@@ -55,7 +54,7 @@ function initOrgRelTree () {
         zTree.selectNode(nodes[0], true);
         onNodeClick(null, null, nodes[0]);
     }, function (err) {
-        console.log(err)
+
     })
 }
 function onOrgTypeCheck (e, treeId, treeNode) {

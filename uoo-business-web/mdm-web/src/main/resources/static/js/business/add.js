@@ -126,7 +126,7 @@ function getOrgTreeType () {
         $('#orgTreeType').append(option);
         $('#orgTreeType').selectMatch();
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -140,7 +140,7 @@ function getProperty () {
         $('#userType').append(option);
         $('#userType').selectMatch();
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -196,7 +196,6 @@ function addOrgTree () {
         loading.screenMaskDisable('container');
         toastr.success('新增成功！');
     }, function (err) {
-        console.log(err);
         loading.screenMaskDisable('container');
     })
 }

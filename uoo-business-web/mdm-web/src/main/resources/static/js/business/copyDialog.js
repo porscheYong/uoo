@@ -28,7 +28,7 @@ function initBusinessList () {
             }
         })
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -81,7 +81,7 @@ function initTree (targetId) {
         tree.expandNode(nodes[0], true);
         autoCheck();
     }, function (err) {
-        console.log(err)
+
     })
 }
 

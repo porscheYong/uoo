@@ -85,7 +85,7 @@
         $http.get('/region/politicalLocation/getTreePoliticalLocation', {}, function (data) {
             $.fn.zTree.init($("#regionTree"), treeSetting, data);
         }, function (err) {
-            console.log(err)
+
         })
     }
 

@@ -49,7 +49,7 @@ function initOrgFullNameTree () {
         zTree.expandNode(nodes[0], true);
         autoCheck();
     }, function (err) {
-        console.log(err)
+
     })
 }
 
