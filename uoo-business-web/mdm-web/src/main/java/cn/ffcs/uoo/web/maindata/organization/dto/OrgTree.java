@@ -83,6 +83,16 @@ public class OrgTree extends Model<OrgTree> {
     private Double sort;
 
 
+    @TableField(exist=false)
+    private String refCode;
+
+    public String getRefCode() {
+        return refCode;
+    }
+
+    public void setRefCode(String refCode) {
+        this.refCode = refCode;
+    }
 
     /**
      * 组织关系类型

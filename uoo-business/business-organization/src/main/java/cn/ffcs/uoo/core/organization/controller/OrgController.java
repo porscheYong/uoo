@@ -210,7 +210,7 @@ public class OrgController extends BaseController {
         newOrg.setCityTown(StrUtil.strnull(org.getCityTown()));
         newOrg.setOfficePhone(StrUtil.strnull(org.getOfficePhone()));
         if(!StrUtil.isNullOrEmpty(org.getFoundingTime())){
-            newOrg.setFoundingTime(DateUtils.getDatebystr(org.getFoundingTime(),"yyyy-MM-dd HH:mm:ss"));
+            newOrg.setFoundingTime(DateUtils.getDatebystr(org.getFoundingTime(),"yyyy-MM-dd"));
         }
         newOrg.setOrgScale(StrUtil.strnull(org.getOrgScale()));
         newOrg.setOrgLevel(StrUtil.strnull(org.getOrgLevel()));
@@ -467,7 +467,7 @@ public class OrgController extends BaseController {
         newOrg.setCityTown(StrUtil.strnull(org.getCityTown()));
         newOrg.setOfficePhone(StrUtil.strnull(org.getOfficePhone()));
         if(!StrUtil.isNullOrEmpty(org.getFoundingTime())){
-            newOrg.setFoundingTime(DateUtils.getDatebystr(org.getFoundingTime(),"yyyy-MM-dd HH:mm:ss"));
+            newOrg.setFoundingTime(DateUtils.getDatebystr(org.getFoundingTime(),"yyyy-MM-dd"));
         }
         newOrg.setOrgScale(StrUtil.strnull(org.getOrgScale()));
         newOrg.setOrgLevel(StrUtil.strnull(org.getOrgLevel()));

@@ -405,7 +405,9 @@ public class OrgTreeController extends BaseController {
         List<OrgRelType> orgRelTypeList = new ArrayList<OrgRelType>();
         orgRelTypeList = orgRelTypeService.getOrgRelType(orgTree.getOrgTreeId().toString());
         orgTree.setOrgRelTypeList(orgRelTypeList);
-
+        if(orgRelTypeList!=null && orgRelTypeList.size()>0){
+            orgTree.setRefCode(orgRelTypeList.get(0).getRefCode());
+        }
         List<OrgType> orgTypeList = orgTypeService.getOrgTypeByOrgTreeId(orgTree.getOrgTreeId());
         orgTree.setOrgTypeList(orgTypeList);
 
