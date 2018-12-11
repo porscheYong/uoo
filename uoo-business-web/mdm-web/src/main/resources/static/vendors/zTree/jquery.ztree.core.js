@@ -80,7 +80,8 @@
           name: "name",
           title: "",
           url: "url",
-          icon: "icon"
+          icon: "icon",
+          idKey: "id",
         },
         simpleData: {
           enable: false,
@@ -298,7 +299,7 @@
       var r = data.getRoot(setting),
         children = data.nodeChildren(setting, n);
       n.level = level;
-      n.tId = setting.treeId + "_" + (++r.zId);
+      n.tId = setting.treeId + "_" + (n.id || n[setting.data.key.idKey]);
       n.parentTId = parentNode ? parentNode.tId : null;
       n.open = (typeof n.open == "string") ? tools.eqs(n.open, "true") : !!n.open;
       var isParent = data.nodeIsParent(setting, n);
@@ -1482,7 +1483,7 @@
               elem = this.parentNode,
               origin;
 
-            while (elem instanceof HTMLElement) {
+            while (elem instanceof (window.HTMLElement || Element)) {
               // Apply desired scroll amount.
               origin = absolute(elem, makePoint(elem.clientLeft, elem.clientTop));
               elem.scrollLeft = coverRange(

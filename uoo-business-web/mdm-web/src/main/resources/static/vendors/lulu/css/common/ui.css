@@ -192,11 +192,13 @@ select {
   height: 40px;
   margin: 0;
   border: 1px solid #d0d0d5;
-  border-right-width: 27px;
-  opacity: 0.0001;
+  border-radius: 4px;
+  padding: 5px;
+  /*border-right-width: 27px;*/
+  /*opacity: 0.0001;*/
   font-size: 14px;
-  font-family: simsun;
-  filter: alpha(opacity=0);
+  /*font-family: simsun;*/
+  /*filter: alpha(opacity=0);*/
   vertical-align: middle; }
 
 select[multiple] {
@@ -2832,3 +2834,7 @@ span.ui-date-item {
     transform: scale(1.1); }
   100% {
     transform: scale(1); } }
+    
+    .jbzl {
+        color: red;    
+    }

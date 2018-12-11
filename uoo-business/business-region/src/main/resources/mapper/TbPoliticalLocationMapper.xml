@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ffcs.uoo.core.region.dao.TbPoliticalLocationMapper">
+	<cache />
 	<resultMap id="BaseResultMap"
 		type="cn.ffcs.uoo.core.region.entity.TbPoliticalLocation">
 		<id column="LOC_ID" property="locId" />
@@ -9,7 +10,7 @@
 		<result column="LOC_DESC" property="locDesc" />
 		<result column="LOC_TYPE" property="locType" />
 		<result column="LOC_ABBR" property="locAbbr" />
-		<result column="UP_LOC_ID" property="upLocId" />
+		<result column="PARENT_LOC_ID" property="parentLocId" />
 
 		<result column="STATUS_CD" property="statusCd" />
 		<result column="CREATE_DATE" property="createDate" />
@@ -20,11 +21,48 @@
 	</resultMap>
 	<sql id="Base_Column_List">
 		LOC_ID, LOC_CODE, LOC_NAME, LOC_DESC, LOC_TYPE, LOC_ABBR,
-		UP_LOC_ID,
+		PARENT_LOC_ID,
 		STATUS_CD, CREATE_DATE,CREATE_USER, UPDATE_DATE,
 		UPDATE_USER, STATUS_DATE
 	</sql>
 	<select id="getId" resultType="java.lang.Long">
-		SELECT SEQ_TB_POLITICAL_LOCATION.nextval FROM dual
+		SELECT
+		SEQ_TB_POLITICAL_LOCATION.nextval FROM dual
+	</select>
+
+	<select id="getChildPoliticalLocationInfo" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
+		SELECT
+		LOC_ID, LOC_CODE, LOC_NAME, LOC_DESC, LOC_TYPE, LOC_ABBR,
+		PARENT_LOC_ID,
+		STATUS_CD, CREATE_DATE,CREATE_USER, UPDATE_DATE,
+		UPDATE_USER, STATUS_DATE
+		FROM
+		TB_POLITICAL_LOCATION a
+		<where>
+			<if test="locId != null and locId != '' ">
+				and a.LOC_ID = #{locId}
+			</if>
+			<if test="statusCd != null and statusCd != '' ">
+				and a.STATUS_CD = #{statusCd}
+			</if>
+			<if test="parentLocId !=null and parentLocId lt 1">
+				and a.PARENT_LOC_ID &lt; 1
+			</if>
+			<if test="parentLocId !=null and parentLocId gte 1">
+				and a.PARENT_LOC_ID = #{parentLocId}
+			</if>
+		</where>
+
+	</select>
+	<select id="getTreePoliticalLocation" resultType="cn.ffcs.uoo.core.region.entity.TbPoliticalLocation">
+		SELECT
+		*
+		FROM
+		TB_POLITICAL_LOCATION
+		WHERE
+		STATUS_CD='1000'
+		START WITH ( PARENT_LOC_ID IS NULL OR PARENT_LOC_ID &lt; 1 )
+		CONNECT BY PRIOR LOC_ID = PARENT_LOC_ID
 	</select>
 </mapper>

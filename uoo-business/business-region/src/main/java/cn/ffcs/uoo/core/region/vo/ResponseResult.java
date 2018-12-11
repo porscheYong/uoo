@@ -7,8 +7,8 @@ import com.baomidou.mybatisplus.plugins.Page;
 import cn.ffcs.uoo.base.common.vo.BaseVo;
 
 public class ResponseResult extends BaseVo{
-    public static final int STATE_OK = 1;//返回结果正常
-    public static final int STATE_ERROR = -1;//返回结果异常
+    public static final int STATE_OK = 1000;//返回结果正常
+    public static final int STATE_ERROR = 1100;//返回结果异常
 
     private int state = STATE_OK;
     private String message;
