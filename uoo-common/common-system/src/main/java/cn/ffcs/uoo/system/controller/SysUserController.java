@@ -1,33 +1,30 @@
 package cn.ffcs.uoo.system.controller;
 
-import javax.annotation.Resource;
-
+import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.system.consts.StatusCD;
+import cn.ffcs.uoo.system.entity.SysUser;
+import cn.ffcs.uoo.system.service.SysUserService;
 import cn.ffcs.uoo.system.service.impl.SysUserServiceImpl;
-<<<<<<< HEAD
-=======
 import cn.ffcs.uoo.system.util.MD5Util;
 import cn.ffcs.uoo.system.vo.AlterPasswdVo;
 import com.baomidou.mybatisplus.mapper.Condition;
->>>>>>> dev
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
-import cn.ffcs.uoo.system.entity.SysUser;
-import cn.ffcs.uoo.system.service.SysUserService;
-import cn.ffcs.uoo.system.util.ResponseResult;
+import cn.ffcs.uoo.system.util.ResponseResultBean;
 
-<<<<<<< HEAD
-=======
 import javax.servlet.http.HttpSession;
 import java.util.Date;
->>>>>>> dev
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -38,7 +35,8 @@ import java.util.regex.Pattern;
 @RestController
 @RequestMapping(value = "/system")
 public class SysUserController extends BaseController {
-    @Resource
+
+    @Autowired
     private SysUserService sysUserService;
 
     /**
@@ -48,18 +46,12 @@ public class SysUserController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/sysUserLogin", method = RequestMethod.POST)
-<<<<<<< HEAD
-    public ResponseResult<SysUser> login(@RequestBody SysUser sysUser) {
-        ResponseResult<SysUser> result = new ResponseResult<>();
-=======
     public ResponseResultBean<SysUser> login(@RequestBody SysUser sysUser, HttpSession session) {
         ResponseResultBean<SysUser> result = new ResponseResultBean<>();
->>>>>>> dev
 
         String message = sysUserService.sysUserLogin(sysUser);
-
         if (!StringUtils.isEmpty(message)) {
-            result.setState(ResponseResult.PARAMETER_ERROR);
+            result.setState(ResponseResultBean.PARAMETER_ERROR);
             result.setMessage(message);
             return result;
         }
@@ -73,11 +65,6 @@ public class SysUserController extends BaseController {
             wrapper.eq("accout", sysUser.getAccout()).eq("status_cd", "1000");
         }
         List<SysUser> userList = sysUserService.selectList(wrapper);
-<<<<<<< HEAD
-        result.setState(ResponseResult.STATE_OK);
-        result.setMessage("登录成功");
-        result.setData(userList.get(0));
-=======
         session.setAttribute("accout", userList.get(0).getAccout());
         result.setState(ResponseResultBean.STATE_OK);
         result.setMessage("登录成功");
@@ -139,20 +126,43 @@ public class SysUserController extends BaseController {
     @RequestMapping(value = "/getSysUserByAccout", method = RequestMethod.POST)
     public ResponseResultBean<SysUser> getSysUserByAccout(@RequestBody SysUser sysUser) {
         ResponseResultBean<SysUser> result = new ResponseResultBean<>();
->>>>>>> dev
 
+        Wrapper<SysUser> wrapper = new EntityWrapper<>();
+        if (Pattern.matches(SysUserServiceImpl.REGEX_MOBILE, sysUser.getAccout())) {
+            wrapper.eq("mobile", sysUser.getAccout());
+        } else if (Pattern.matches(SysUserServiceImpl.REGEX_EMAIL, sysUser.getAccout())) {
+            wrapper.eq("email", sysUser.getAccout());
+        } else {
+            wrapper.eq("accout", sysUser.getAccout());
+        }
+
+        SysUser user;
+        try {
+            user = sysUserService.selectOne(wrapper);
+        } catch (Exception e) {
+            result.setState(ResponseResultBean.PARAMETER_ERROR);
+            result.setMessage("获取多个值");
+            return result;
+        }
+        if (null == user) {
+            result.setState(ResponseResultBean.PARAMETER_ERROR);
+            result.setMessage("用户名不存在。");
+            return result;
+        }
+        result.setState(ResponseResultBean.STATE_OK);
+        result.setMessage("返回成功");
+        result.setData(user);
         return result;
-
     }
 
     /**
      * 测试
      */
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public ResponseResult<String> test(String pwd) {
-        ResponseResult<String> result = new ResponseResult<>();
+    public ResponseResultBean<String> test(String pwd) {
+        ResponseResultBean<String> result = new ResponseResultBean<>();
         String aesContent = DigestUtils.md5Hex(pwd);
-        result.setState(ResponseResult.STATE_OK);
+        result.setState(ResponseResultBean.STATE_OK);
         result.setMessage("已获取md5加密密文");
         result.setData(aesContent);
         return result;
@@ -165,22 +175,20 @@ public class SysUserController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/sysUserRegister", method = RequestMethod.POST)
-    public ResponseResult<Void> register(@RequestBody SysUser sysUser) {
-        ResponseResult<Void> result = new ResponseResult<>();
+    public ResponseResultBean<Void> register(@RequestBody SysUser sysUser) {
+        ResponseResultBean<Void> result = new ResponseResultBean<>();
 
         String message = sysUserService.checkRegister(sysUser);
         if (!StringUtils.isEmpty(message)) {
-            result.setState(ResponseResult.PARAMETER_ERROR);
+            result.setState(ResponseResultBean.PARAMETER_ERROR);
             result.setMessage(message);
             return result;
         }
         sysUserService.sysUserRegister(sysUser);
-        result.setState(ResponseResult.STATE_OK);
+        result.setState(ResponseResultBean.STATE_OK);
         result.setMessage("注册成功");
         return result;
     }
-<<<<<<< HEAD
-=======
 
     @ApiOperation(value = "获取单个数据", notes = "获取单个数据")
     @ApiImplicitParams({
@@ -276,5 +284,4 @@ public class SysUserController extends BaseController {
         sysUserService.updateById(obj);
         return cn.ffcs.uoo.system.vo.ResponseResult.createSuccessResult("success");
     }
->>>>>>> dev
 }
