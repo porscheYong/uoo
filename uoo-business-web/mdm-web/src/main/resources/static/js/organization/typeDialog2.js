@@ -2,7 +2,6 @@ var orgId = getQueryString('id');
 var orgFrame = parent.window['standardOrg'];
 var orgTypeList = orgFrame.orgTypeList;
 var checkNode = []; //选中类别显示label标签
-console.log(orgTypeList)
 // 组织类别树初始化
 function initOrgTypeTree () {
     var treeSetting = {
@@ -35,11 +34,10 @@ function initOrgTypeTree () {
       lv: 5,
         isFull: true
     }, function (data) {
-        console.log(data)
         $.fn.zTree.init($("#orgTypeTree"), treeSetting, data);
         autoCheck();
     }, function (err) {
-        console.log(err)
+
     })
 }
 // initOrgTypeTree()
@@ -135,10 +133,9 @@ function getOrgPositionTree () {
         orgRootId: 1,
         level: 5
     }, function (data) {
-        console.log(data)
         $.fn.zTree.init($("#orgTypeTree"), treeSetting, data);
     }, function (err) {
-        console.log(err)
+
     })
 }
 getOrgPositionTree();
@@ -149,10 +146,9 @@ function getLocation() {
         orgRootId: 1,
         level: 5
     }, function (data) {
-        console.log(data)
         $.fn.zTree.init($("#orgTypeTree"), treeSetting, data);
     }, function (err) {
-        console.log(err)
+
     })
 }
 // getLocation();

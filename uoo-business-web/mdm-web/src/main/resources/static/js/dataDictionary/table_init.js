@@ -6,9 +6,6 @@ function table_init1(){
         'ordering': true,
         'paging': false,
         'info': false,
-        'initComplete': function (settings, json) {
-            console.log(settings, json)
-        },
         "scrollY": "375px",
         'columns': [
             { 'data': "code", 'title': '编码', 'className': 'row-code' },
@@ -38,9 +35,6 @@ function table_init2(){
         'ordering': true,
         'paging': false,
         'info': false,
-        'initComplete': function (settings, json) {
-            console.log(settings, json)
-        },
         "scrollY": "375px",
         'columns': [
             { 'data': "code", 'title': '编码', 'className': 'row-code' },

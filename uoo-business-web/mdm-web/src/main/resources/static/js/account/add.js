@@ -36,9 +36,6 @@ function initPsnTable(keyWord) {
         'ordering': true,
         'info': true,
         'lengthChange':true,
-        'initComplete': function (settings, json) {
-            console.log(settings, json)
-        },
         // "scrollY": "185px",
         // "scrollCollapse": true,
         'columns': [
@@ -90,7 +87,7 @@ function initPsnTable(keyWord) {
                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                 callback(returnData);
             }, function (err) {
-                console.log(err)
+
             })
         }
     });

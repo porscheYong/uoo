@@ -46,7 +46,7 @@ function getOrgTree () {
         $('#orgRelType').addTag(orgRelTypeList);
         $('#orgType').addTag(orgTypeList);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -111,7 +111,7 @@ function getOrgTreeType () {
         $('#orgTreeType').append(option);
         $('#orgTreeType').selectMatch();
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -125,7 +125,7 @@ function getProperty () {
         $('#userType').append(option);
         $('#userType').selectMatch();
     }, function (err) {
-        console.log(err)
+
     })
 }
 

@@ -26,7 +26,7 @@ function initUserInfo(){  //初始化首页人员信息
     function (data) {
       getAcctInfo(data.acctId);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -39,14 +39,13 @@ function getAcctInfo(acctId){ //获取账号信息
       //console.log(data);   
       $("#psnName").text(data.psnName);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
 function initUserPermission(){    //初始化人员权限
     $http.post('/permission/tbRoles/getPermissionMenu/19521/0', { }, 
     function (data) {
-        console.log(data);
         initSideBar(data);
         // layui admin
         layui.config({
@@ -62,7 +61,6 @@ function initUserPermission(){    //初始化人员权限
         //     })
         // })
     }, function (err) {
-        console.log(err)
         loading.screenMaskDisable('container');
     })
 }

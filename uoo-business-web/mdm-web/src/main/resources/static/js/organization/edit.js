@@ -261,7 +261,7 @@ function getAreaId(regionId) {
         areaCodeId = data.areaCode.areaCodeId;
         $('#areaCode').val(data.areaCode.areaCode);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -276,7 +276,7 @@ function getAreaLabel() {
             }
         }
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -287,9 +287,6 @@ function initCredentialTable (results) {
         'searching': false,
         'autoWidth': false,
         'ordering': true,
-        'initComplete': function (settings, json) {
-            console.log(settings, json)
-        },
         "scrollY": "375px",
         'columns': [
             { 'data': null, 'title': '序号', 'className': 'row-name' },
@@ -413,9 +410,6 @@ function initOrgRelTable (results) {
         'searching': false,
         'autoWidth': false,
         'ordering': true,
-        'initComplete': function (settings, json) {
-            console.log(settings, json)
-        },
         "scrollY": "375px",
         'columns': [
             { 'data': null, 'title': '序号', 'className': 'row-name' },
@@ -702,7 +696,7 @@ function getOrg (orgId) {
             }
         }
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -716,7 +710,7 @@ function getOrgRel (orgId) {
     }, function (data) {
         initOrgRelTable(data.records);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -846,7 +840,6 @@ function deleteOrg () {
             loading.screenMaskDisable('container');
             toastr.success('删除成功！');
         }, function (err) {
-            console.log(err);
             loading.screenMaskDisable('container');
         })
     }, function(){

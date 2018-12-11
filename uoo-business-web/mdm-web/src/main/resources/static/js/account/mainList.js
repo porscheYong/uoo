@@ -34,10 +34,6 @@ function initMainTable(isCheck){
         'autoWidth': false,
         'ordering': true,
         'info': true,
-        // 'lengthChange':false,
-        'initComplete': function (settings, json) {
-            console.log(settings, json)
-        },
         "scrollY": "375px",
         'columns': [
             { 'data': "psnName", 'title': '人员姓名', 'className': 'row-psnName' ,
@@ -100,7 +96,7 @@ function initMainTable(isCheck){
                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                 callback(returnData);
             }, function (err) {
-                console.log(err)
+
             })
         }
     });
@@ -120,7 +116,6 @@ $('#addBtn').on('click', function () {
 })
 
 function boxClick(){            //点击复选框
-    console.log(lChBox.checked);
     if(lChBox.checked == true){
         isCheck = 1;
     }else{

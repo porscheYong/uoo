@@ -34,7 +34,7 @@ function getLocation() {
         $.fn.zTree.init($("#locationTree"), treeSetting, data);
         autoCheck();
     }, function (err) {
-        console.log(err)
+
     })
 }
 

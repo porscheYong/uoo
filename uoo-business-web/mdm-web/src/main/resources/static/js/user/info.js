@@ -18,9 +18,9 @@ function getOrgPersonnerList () {
         orgTreeId: orgTreeId,
         personnelId: personnelId
     }, function (data) {
-        console.log(data)
+
     }, function (err) {
-        console.log(err)
+
     })
 }
 

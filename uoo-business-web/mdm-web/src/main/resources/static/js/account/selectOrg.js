@@ -67,7 +67,6 @@ function initOrgRelTree () {
         orgTreeId: '1',
         orgRootId: '1'
     }, function (data) {
-        console.log(data)
         $.fn.zTree.init($("#standardTree"), setting, data);
         var zTree = $.fn.zTree.getZTreeObj("standardTree");
         var nodes = zTree.getNodes();
@@ -75,7 +74,7 @@ function initOrgRelTree () {
         zTree.selectNode(nodes[0], true);
         onNodeClick(null, null, nodes[0]);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -97,7 +96,6 @@ function openTreeById (sId, id) {
 function addNodeById (sId, newNode) {
     var zTree = $.fn.zTree.getZTreeObj("standardTree");
     var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-    console.log(selectNode)
     if (selectNode)
         var newNode = zTree.addNodes(selectNode, newNode);
 }
