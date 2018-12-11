@@ -60,11 +60,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         Wrapper<SysUser> wrapper = new EntityWrapper<>();
 
         if (Pattern.matches(REGEX_MOBILE, sysUser.getAccout())) {
-            wrapper.eq("mobile", sysUser.getAccout());
+            wrapper.eq("mobile", sysUser.getAccout()).eq("status_cd","1000");
         } else if (Pattern.matches(REGEX_EMAIL, sysUser.getAccout())) {
-            wrapper.eq("email", sysUser.getAccout());
+            wrapper.eq("email", sysUser.getAccout()).eq("status_cd","1000");
         } else {
-            wrapper.eq("accout", sysUser.getAccout());
+            wrapper.eq("accout", sysUser.getAccout()).eq("status_cd","1000");
         }
         List<SysUser> userList = baseMapper.selectList(wrapper);
         if (null == userList || userList.size() == 0) {
