@@ -70,7 +70,6 @@ public class SysUserController extends BaseController {
         result.setMessage("登录成功");
         result.setData(userList.get(0));
         return result;
-
     }
 
     /**
