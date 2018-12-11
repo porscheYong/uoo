@@ -108,7 +108,7 @@ function initTree (orgTreeId) {
         zTree.selectNode(nodes[0], true);
         onNodeClick(null, null, nodes[0]);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -139,7 +139,6 @@ function changeNodeName(orgId, name) {
 function addNodeById (sId, newNode) {
     var zTree = $.fn.zTree.getZTreeObj("businessTree");
     var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-    console.log(selectNode)
     if (selectNode)
         var newNode = zTree.addNodes(selectNode, newNode);
 }
@@ -193,7 +192,7 @@ function initBusinessList () {
             initTree(orgTreeId);
         })
     }, function (err) {
-        console.log(err)
+
     })
 }
 

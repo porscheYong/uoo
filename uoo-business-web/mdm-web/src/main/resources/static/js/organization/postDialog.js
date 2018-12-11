@@ -58,7 +58,7 @@ function getOrgPostTree () {
         $.fn.zTree.init($("#orgPostTree"), treeSetting, data);
         autoCheck();
     }, function (err) {
-        console.log(err)
+
     })
 }
 

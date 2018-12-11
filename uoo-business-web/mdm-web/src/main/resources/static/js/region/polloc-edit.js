@@ -64,7 +64,6 @@ function get(id){
 		dataType:'json',
 		type:'get',
 		success:function(data){
-			console.log(data);
 			if(data.state==1000){
 				curUpId=data.data.parentLocId
 				loadLocType();

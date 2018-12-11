@@ -51,9 +51,6 @@ function initOrgSearchTable(search) {
         'searching': false,
         'autoWidth': false,
         'ordering': true,
-        'initComplete': function (settings, json) {
-            console.log(settings, json)
-        },
         // "scrollY": "200px",
         'columns': [
             { 'data': "fullName", 'title': '组织搜索结果', 'className': 'row-fullname',
@@ -97,7 +94,7 @@ function initOrgSearchTable(search) {
                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                 callback(returnData);
             }, function (err) {
-                console.log(err)
+
             })
         }
     });
@@ -180,19 +177,17 @@ function initRestructOrgRelTree (orgId) {        //初始化树
 
         var zTree = $.fn.zTree.init($("#standardTree"), settingA, zTreeNodes);
         var node = zTree.getNodeByTId("standardTree_"+orgId);
-        //console.log(node);
         var url = "list.html?id=" + orgId + '&pid=' + data[0].pid + "&name=" + encodeURI(data[0].name);
         zTree.expandAll(true);
         zTree.selectNode(node);
         $('#orgFrame').attr("src",url);
     }, function (err) {
-        console.log(err)
+
     })
 }       
 
 function orgClick(orgId){
     isCheckedOrg = 1;
-    console.log(orgId);
     $(".org-table").removeClass("is-open");
     initRestructOrgRelTree(orgId);
 }

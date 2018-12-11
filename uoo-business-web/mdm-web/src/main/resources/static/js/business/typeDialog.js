@@ -30,11 +30,10 @@ function initOrgTypeTree () {
       }
     };
     $http.post('/orgType/getOrgTypeTree', {}, function (data) {
-        console.log(data)
         $.fn.zTree.init($("#orgTypeTree"), treeSetting, data);
         autoCheck();
     }, function (err) {
-        console.log(err)
+
     })
 }
 

@@ -47,7 +47,7 @@ function getOrgPositionTree () {
         $.fn.zTree.init($("#orgPositionTree"), treeSetting, data);
         autoCheck();
     }, function (err) {
-        console.log(err)
+
     })
 }
 
