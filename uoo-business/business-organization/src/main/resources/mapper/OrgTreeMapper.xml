@@ -49,4 +49,30 @@
         AND A.ORG_TREE_ID=C.ORG_TREE_ID AND B.ORG_REL_TYPE_ID=C.ORG_REL_TYPE_ID
         AND B.REF_CODE= #{refCode}
     </select>
+
+    <select id="getOrgTreeList" resultType="cn.ffcs.uoo.core.organization.entity.OrgTree">
+        SELECT A.ORG_TREE_ID   orgTreeId,
+        A.ORG_TREE_NAME orgTreeName,
+        A.ORG_TREE_TYPE orgTreeType,
+        A.ORG_ID        orgId,
+        A.STATUS_CD     statusCd,
+        A.SORT          sort,
+        B.Ref_Code refCode
+        FROM TB_ORG_TREE A, TB_ORG_REL_TYPE B, TB_OGT_ORG_RELTYPE_CONF C
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000'
+        AND A.ORG_TREE_ID = C.ORG_TREE_ID
+        AND B.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        <if test="orgTree.refCode != '' and orgTree.refCode!=null">
+            AND B.REF_CODE = #{orgTree.refCode}
+        </if>
+        <if test="orgTree.orgTreeId != '' and orgTree.orgTreeId!=null">
+            AND A.ORG_TREE_ID = #{orgTree.orgTreeId}
+        </if>
+        <if test="orgTree.orgId != '' and orgTree.orgId!=null">
+            AND A.ORG_ID = #{orgTree.orgId}
+        </if>
+    </select>
+
 </mapper>
