@@ -1,10 +1,22 @@
 package cn.ffcs.uoo.rabbitmq.manage.pojo;
 
-public class NodeInfo {
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+
+import java.io.Serializable;
+
+@TableName("node_info")
+public class NodeInfo extends Model<NodeInfo> {
+
+    @TableId("ID")
     private Long id;
 
+    @TableField("IP")
     private String ip;
 
+    @TableField("PORT")
     private String port;
 
     public Long getId() {
@@ -29,5 +41,19 @@ public class NodeInfo {
 
     public void setPort(String port) {
         this.port = port;
+    }
+
+    @Override
+    protected Serializable pkVal() {
+        return this.id;
+    }
+
+    @Override
+    public String toString() {
+        return "NodeInfo{" +
+                "id=" + id +
+                ", ip='" + ip + '\'' +
+                ", port='" + port + '\'' +
+                '}';
     }
 }

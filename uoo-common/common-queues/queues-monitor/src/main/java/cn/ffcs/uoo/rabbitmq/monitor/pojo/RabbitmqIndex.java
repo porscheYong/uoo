@@ -1,17 +1,29 @@
 package cn.ffcs.uoo.rabbitmq.monitor.pojo;
 
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class RabbitmqIndex {
+@TableName("RABBITMQ_INDEX")
+public class RabbitmqIndex extends Model<RabbitmqIndex> {
+    @TableId("ID")
     private BigDecimal id;
 
+    @TableField("STATE")
     private String state;
 
+    @TableField("COLLECTION_DATA")
     private Date collectionData;
 
+    @TableField("USE_DATA")
     private Date useData;
 
+    @TableField("RABBITMQ_DATE")
     private String rabbitmqDate;
 
     public BigDecimal getId() {
@@ -52,5 +64,10 @@ public class RabbitmqIndex {
 
     public void setRabbitmqDate(String rabbitmqDate) {
         this.rabbitmqDate = rabbitmqDate;
+    }
+
+    @Override
+    protected Serializable pkVal() {
+        return this.id;
     }
 }
