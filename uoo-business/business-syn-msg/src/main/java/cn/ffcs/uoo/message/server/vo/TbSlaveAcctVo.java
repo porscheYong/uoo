@@ -44,6 +44,8 @@ public class TbSlaveAcctVo {
 
     private Date disableDate;
 
+    private String mappStaffId;
+
     private List<TbAcctExt> tbAcctExt;
 
     public List<TbAcctExt> getTbAcctExt() {
@@ -206,4 +208,11 @@ public class TbSlaveAcctVo {
         this.systemName = systemName;
     }
 
+    public String getMappStaffId() {
+        return mappStaffId;
+    }
+
+    public void setMappStaffId(String mappStaffId) {
+        this.mappStaffId = mappStaffId;
+    }
 }

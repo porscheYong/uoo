@@ -1,28 +1,47 @@
 package cn.ffcs.uoo.message.server.pojo;
 
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class TbOrgTree {
+@TableName("TB_ORG_TREE")
+public class TbOrgTree extends Model<TbOrgTree> {
+
+    @TableId("org_tree_id")
     private Long orgTreeId;
 
+    @TableField("org_tree_name")
     private String orgTreeName;
 
+    @TableField("org_tree_type")
     private Long orgTreeType;
 
+    @TableField("org_id")
     private String orgId;
 
+    @TableField("status_cd")
     private String statusCd;
 
+    @TableField("create_date")
     private Date createDate;
 
+    @TableField("create_user")
     private Long createUser;
 
+    @TableField("update_date")
     private Date updateDate;
 
+    @TableField("update_user")
     private Long updateUser;
 
+    @TableField("status_date")
     private Date statusDate;
 
+    @TableField("sort")
     private String sort;
 
     public Long getOrgTreeId() {
@@ -111,5 +130,10 @@ public class TbOrgTree {
 
     public void setSort(String sort) {
         this.sort = sort;
+    }
+
+    @Override
+    protected Serializable pkVal() {
+        return this.orgTreeId;
     }
 }

@@ -1,0 +1,43 @@
+spring:
+  profiles: 221
+  application:
+    name: uoo-register
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: 134.96.253.221
+  client:
+    serviceUrl:
+      defaultZone: http://134.96.253.222:8761/eureka/,http://134.96.253.223:8761/eureka/
+server:
+  port: 8761
+
+---
+spring:
+  profiles: 222
+  application:
+    name: uoo-register
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: 134.96.253.222
+  client:
+    serviceUrl:
+      defaultZone: http://134.96.253.221:8761/eureka/,http://134.96.253.223:8761/eureka/
+server:
+  port: 8761
+
+---
+spring:
+  profiles: 223
+  application:
+    name: uoo-register
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: 134.96.253.223
+  client:
+    serviceUrl:
+      defaultZone: http://134.96.253.221:8761/eureka/,http://134.96.253.222:8761/eureka/
+server:
+  port: 8761

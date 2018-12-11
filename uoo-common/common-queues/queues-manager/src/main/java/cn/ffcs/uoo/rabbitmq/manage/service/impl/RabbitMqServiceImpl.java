@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.ffcs.uoo.rabbitmq.manage.pojo.NodeInfo;
+import cn.ffcs.uoo.rabbitmq.manage.service.NodeInfoService;
+import cn.ffcs.uoo.rabbitmq.manage.service.SystemQueueRelaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpException;
@@ -22,20 +25,22 @@ import cn.ffcs.uoo.rabbitmq.manage.util.BuildQueueNameUtil;
 import cn.ffcs.uoo.rabbitmq.manage.util.StringUtil;
 import cn.ffcs.uoo.rabbitmq.manage.vo.NodeVo;
 
+import javax.annotation.Resource;
+
 @Service
 @Transactional(readOnly=false,rollbackFor=Exception.class)
 public class RabbitMqServiceImpl implements RabbitMqService {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	@Autowired
-	private SystemQueueRelaMapper systemQueueRelaMapper;
+	@Resource
+	private SystemQueueRelaService systemQueueRelaService;
 	
-	@Autowired
+	@Resource
 	private RabbitmqDao rabbitmqDao;
 	
-	@Autowired
-	private NodeInfoMapper nodeInfoMapper;
+	@Resource
+	private NodeInfoService nodeInfoService;
 	
 	@Override
 	public Map<String, Object> creatrQueue(String systemName, String doubleName, String chargePerson, String chargeContact) throws AmqpException, IOException {
@@ -51,14 +56,19 @@ public class RabbitMqServiceImpl implements RabbitMqService {
 			return resultMap;
 		}
 		
-		if(systemQueueRelaMapper.checkSystemQueueRela(systemName, doubleName,null,QueueConstant.valid.getValue()) > 0) {
+		if(systemQueueRelaService.checkSystemQueueRela(systemName, doubleName,null,QueueConstant.valid.getValue()) > 0) {
 			logger.warn("systemName:{},doubleName:{}.---系统中有该条数据---.",systemName,doubleName);
 			resultMap.put("status",StatusConstant.validateFail.getValue());
 			return resultMap;
 		}
 		
-		NodeVo rand = nodeInfoMapper.getRandNodeInfo();
-		
+		NodeVo rand = nodeInfoService.getRandNodeInfo();
+
+		//
+
+
+
+
 		String queueName = BuildQueueNameUtil.build();
 		
 		SystemQueueRela record = new SystemQueueRela();
@@ -72,8 +82,9 @@ public class RabbitMqServiceImpl implements RabbitMqService {
 		record.setPort(rand.getPort());
 		record.setUsername(rand.getUsername());
 		record.setPassword(rand.getPassword());
-		systemQueueRelaMapper.insert(record);
-		
+//		systemQueueRelaMapper.insert(record);
+		systemQueueRelaService.insert(record);
+
 		rabbitmqDao.createRabbitmqQueue(queueName);
 		logger.info("queueName:{}创建成功",queueName);
 		
@@ -102,7 +113,7 @@ public class RabbitMqServiceImpl implements RabbitMqService {
 			return resultMap;
 		}
 		
-		if(systemQueueRelaMapper.checkSystemQueueRela(systemName, doubleName,queueName,QueueConstant.valid.getValue()) <= 0) {
+		if(systemQueueRelaService.checkSystemQueueRela(systemName, doubleName,queueName,QueueConstant.valid.getValue()) <= 0) {
 			logger.warn("systemName:{},doubleName:{},queueName:{}.---系统中没有该条数据---.",systemName,doubleName,queueName);
 			resultMap.put("status",StatusConstant.validateFail.getValue());
 			return resultMap;
@@ -111,8 +122,9 @@ public class RabbitMqServiceImpl implements RabbitMqService {
 		SystemQueueRela record = new SystemQueueRela();
 		record.setQueueName(queueName);
 		record.setStatus(QueueConstant.unvalid.getValue());
-		systemQueueRelaMapper.updateByPrimaryKeySelective(record);
-		
+//		systemQueueRelaMapper.updateByPrimaryKeySelective(record);
+		systemQueueRelaService.updateById(record);
+
 		rabbitmqDao.deleteRabbitmqQueue(queueName);
 		
 		logger.info("queueName:{}删除成功",queueName);
@@ -136,7 +148,7 @@ public class RabbitMqServiceImpl implements RabbitMqService {
 			return resultMap;
 		}
 		
-		if(systemQueueRelaMapper.checkSystemQueueRela(systemName, doubleName,queueName,QueueConstant.valid.getValue()) <= 0) {
+		if(systemQueueRelaService.checkSystemQueueRela(systemName, doubleName,queueName,QueueConstant.valid.getValue()) <= 0) {
 			logger.warn("systemName:{},doubleName:{},queueName:{}.---系统中没有该条数据---.",systemName,doubleName,queueName);
 			resultMap.put("status",StatusConstant.validateFail.getValue());
 			return resultMap;
@@ -146,15 +158,17 @@ public class RabbitMqServiceImpl implements RabbitMqService {
 		SystemQueueRela record = new SystemQueueRela();
 		record.setQueueName(queueName);
 		record.setStatus(QueueConstant.unvalid.getValue());
-		systemQueueRelaMapper.updateByPrimaryKeySelective(record);
-		
+//		systemQueueRelaMapper.updateByPrimaryKeySelective(record);
+		systemQueueRelaService.updateById(record);
+
 		rabbitmqDao.deleteRabbitmqQueue(queueName);
 		logger.info("queueName:{}删除成功",queueName);
 		
 		//重新绑定
 		queueName = BuildQueueNameUtil.build();
 		
-		NodeVo rand = nodeInfoMapper.getRandNodeInfo();
+//		NodeVo rand = nodeInfoMapper.getRandNodeInfo();
+		NodeVo rand = nodeInfoService.getRandNodeInfo();
 		
 		record = new SystemQueueRela();
 		record.setSystemName(systemName);
@@ -167,8 +181,9 @@ public class RabbitMqServiceImpl implements RabbitMqService {
 		record.setPort(rand.getPort());
 		record.setUsername(rand.getUsername());
 		record.setPassword(rand.getPassword());
-		systemQueueRelaMapper.insert(record);
-		
+//		systemQueueRelaMapper.insert(record);
+		systemQueueRelaService.insertAllColumn(record);
+
 		rabbitmqDao.createRabbitmqQueue(queueName);
 		logger.info("queueName:{}创建成功",queueName);
 		

@@ -19,6 +19,6 @@ public interface NodeInfoMapper {
     int updateByPrimaryKey(NodeInfo record);
     
     
-    @Select("select * from (select ip,port,username,password from node_info,rabbitmq_user_info order by dbms_random.value ) where rownum = 1")
+    @Select("select * from (select ip,port,username,password from node_info,(select id,username,password from rabbitmq_user_info where id = (select max(id) from rabbitmq_user_info )) order by dbms_random.value ) where rownum = 1")
 	NodeVo getRandNodeInfo();
 }
