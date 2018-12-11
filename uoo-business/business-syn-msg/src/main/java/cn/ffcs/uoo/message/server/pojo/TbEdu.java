@@ -1,21 +1,72 @@
-package cn.ffcs.uoo.message.server.vo;
+package cn.ffcs.uoo.message.server.pojo;
 
-public class EduVo {
+import com.baomidou.mybatisplus.activerecord.Model;
+
+import java.io.Serializable;
+import java.util.Date;
+
+public class TbEdu extends Model<TbEdu> {
+    private Long eduId;
+
+    private Long personnelId;
+
     private String school;
+
     private String schoolType;
+
     private String major;
+
     private String majortype;
+
     private String education;
-    private String edusystem;
+
+    private Short edusystem;
+
     private String degree;
+
     private String firstEducation;
+
     private String lastEducation;
+
     private String lastDegree;
-    private String begindate;
-    private String enddate;
+
+    private Date begindate;
+
+    private Date enddate;
+
     private String certifcode;
+
     private String isFullTimeHighEdu;
+
     private String isInServiceHighEdu;
+
+    private String statusCd;
+
+    private Date createDate;
+
+    private Long createUser;
+
+    private Date updateDate;
+
+    private Long updateUser;
+
+    private Date statusDate;
+
+    public Long getEduId() {
+        return eduId;
+    }
+
+    public void setEduId(Long eduId) {
+        this.eduId = eduId;
+    }
+
+    public Long getPersonnelId() {
+        return personnelId;
+    }
+
+    public void setPersonnelId(Long personnelId) {
+        this.personnelId = personnelId;
+    }
 
     public String getSchool() {
         return school;
@@ -57,11 +108,11 @@ public class EduVo {
         this.education = education;
     }
 
-    public String getEdusystem() {
+    public Short getEdusystem() {
         return edusystem;
     }
 
-    public void setEdusystem(String edusystem) {
+    public void setEdusystem(Short edusystem) {
         this.edusystem = edusystem;
     }
 
@@ -97,19 +148,19 @@ public class EduVo {
         this.lastDegree = lastDegree;
     }
 
-    public String getBegindate() {
+    public Date getBegindate() {
         return begindate;
     }
 
-    public void setBegindate(String begindate) {
+    public void setBegindate(Date begindate) {
         this.begindate = begindate;
     }
 
-    public String getEnddate() {
+    public Date getEnddate() {
         return enddate;
     }
 
-    public void setEnddate(String enddate) {
+    public void setEnddate(Date enddate) {
         this.enddate = enddate;
     }
 
@@ -135,5 +186,58 @@ public class EduVo {
 
     public void setIsInServiceHighEdu(String isInServiceHighEdu) {
         this.isInServiceHighEdu = isInServiceHighEdu;
+    }
+
+    public String getStatusCd() {
+        return statusCd;
+    }
+
+    public void setStatusCd(String statusCd) {
+        this.statusCd = statusCd;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Long getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(Long createUser) {
+        this.createUser = createUser;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public Long getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(Long updateUser) {
+        this.updateUser = updateUser;
+    }
+
+    public Date getStatusDate() {
+        return statusDate;
+    }
+
+    public void setStatusDate(Date statusDate) {
+        this.statusDate = statusDate;
+    }
+
+    @Override
+    protected Serializable pkVal() {
+        return this.eduId;
     }
 }

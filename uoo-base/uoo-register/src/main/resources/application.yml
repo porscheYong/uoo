@@ -8,9 +8,9 @@ eureka:
     hostname: 134.96.253.221
   client:
     serviceUrl:
-      defaultZone: http://134.96.253.222:8761/eureka/,http://134.96.253.223:8761/eureka/
+      defaultZone: http://134.96.253.222:8751/eureka/,http://134.96.253.223:8751/eureka/
 server:
-  port: 8761
+  port: 8751
 
 ---
 spring:
@@ -23,9 +23,9 @@ eureka:
     hostname: 134.96.253.222
   client:
     serviceUrl:
-      defaultZone: http://134.96.253.221:8761/eureka/,http://134.96.253.223:8761/eureka/
+      defaultZone: http://134.96.253.221:8751/eureka/,http://134.96.253.223:8751/eureka/
 server:
-  port: 8761
+  port: 8751
 
 ---
 spring:
@@ -38,6 +38,6 @@ eureka:
     hostname: 134.96.253.223
   client:
     serviceUrl:
-      defaultZone: http://134.96.253.221:8761/eureka/,http://134.96.253.222:8761/eureka/
+      defaultZone: http://134.96.253.221:8751/eureka/,http://134.96.253.222:8751/eureka/
 server:
-  port: 8761
+  port: 8751

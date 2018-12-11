@@ -9,61 +9,9 @@
   <sql id="Base_Column_List">
     ID, IP, PORT
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from NODE_INFO
-    where ID = #{id,jdbcType=DECIMAL}
+
+  <select id="test" resultType="Integer">
+    select 1 from dual
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from NODE_INFO
-    where ID = #{id,jdbcType=DECIMAL}
-  </delete>
-  <insert id="insert" parameterType="cn.ffcs.uoo.rabbitmq.manage.pojo.NodeInfo">
-    insert into NODE_INFO (ID, IP, PORT)
-    values (#{id,jdbcType=DECIMAL}, #{ip,jdbcType=VARCHAR}, #{port,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="cn.ffcs.uoo.rabbitmq.manage.pojo.NodeInfo">
-    insert into NODE_INFO
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        ID,
-      </if>
-      <if test="ip != null">
-        IP,
-      </if>
-      <if test="port != null">
-        PORT,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=DECIMAL},
-      </if>
-      <if test="ip != null">
-        #{ip,jdbcType=VARCHAR},
-      </if>
-      <if test="port != null">
-        #{port,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.ffcs.uoo.rabbitmq.manage.pojo.NodeInfo">
-    update NODE_INFO
-    <set>
-      <if test="ip != null">
-        IP = #{ip,jdbcType=VARCHAR},
-      </if>
-      <if test="port != null">
-        PORT = #{port,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where ID = #{id,jdbcType=DECIMAL}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="cn.ffcs.uoo.rabbitmq.manage.pojo.NodeInfo">
-    update NODE_INFO
-    set IP = #{ip,jdbcType=VARCHAR},
-      PORT = #{port,jdbcType=VARCHAR}
-    where ID = #{id,jdbcType=DECIMAL}
-  </update>
+
 </mapper>

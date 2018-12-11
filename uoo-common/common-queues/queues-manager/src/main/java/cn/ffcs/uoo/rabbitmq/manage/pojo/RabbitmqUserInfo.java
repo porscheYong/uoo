@@ -1,10 +1,22 @@
 package cn.ffcs.uoo.rabbitmq.manage.pojo;
 
-public class RabbitmqUserInfo {
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+
+import java.io.Serializable;
+
+@TableName("rabbitmq_user_info")
+public class RabbitmqUserInfo extends Model<RabbitmqUserInfo> {
+
+    @TableId("ID")
     private Long id;
 
+    @TableField("USERNAME")
     private String username;
 
+    @TableField("PASSWORD")
     private String password;
 
     public Long getId() {
@@ -29,5 +41,10 @@ public class RabbitmqUserInfo {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    protected Serializable pkVal() {
+        return this.id;
     }
 }
