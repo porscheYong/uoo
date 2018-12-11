@@ -90,7 +90,7 @@ public class SysUserController extends BaseController {
     /**
      * 修改密码
      * @param alterPasswdVo 接收修改密码参数vo
-     * @return
+     * @return 返回状态信息
      */
     @RequestMapping(value = "/alterPwd", method = RequestMethod.POST)
     public ResponseResultBean<Void> alterPassword(@RequestBody AlterPasswdVo alterPasswdVo) {
@@ -120,6 +120,7 @@ public class SysUserController extends BaseController {
         result.setState(ResponseResultBean.STATE_OK);
         result.setMessage("密码已修改");
         return result;
+
     }
 
     @RequestMapping(value = "/getSysUserByAccout", method = RequestMethod.POST)
