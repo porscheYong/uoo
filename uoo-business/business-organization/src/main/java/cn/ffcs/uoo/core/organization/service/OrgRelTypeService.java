@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.organization.service;
 
 import cn.ffcs.uoo.core.organization.entity.OrgRelType;
 import cn.ffcs.uoo.core.organization.vo.OrgRefTypeVo;
+import cn.ffcs.uoo.core.organization.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.List;
@@ -18,5 +19,8 @@ public interface OrgRelTypeService extends IService<OrgRelType> {
 
     public Long getId();
 
-    public OrgRelType getOrgRelType(String orgRootId);
+    public List<OrgRelType> getOrgRelType(String orgTreeId);
+
+    public List<TreeNodeVo> selectOrgRelTypeTree(String refCode);
+
 }

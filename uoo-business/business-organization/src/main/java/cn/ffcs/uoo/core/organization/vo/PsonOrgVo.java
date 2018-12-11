@@ -25,6 +25,10 @@ public class PsonOrgVo extends BaseVo {
 
 /************************组织**************************/
     /**
+     * 组织树根节点
+     */
+    private Long orgTreeId;
+    /**
      * 组织根节点
      */
     private Long orgRootId;
@@ -84,7 +88,7 @@ public class PsonOrgVo extends BaseVo {
     /**
      * 用户标识
      */
-    private Long personId;
+    private Long personnelId;
 
     /**
      * 人员姓名
@@ -123,9 +127,22 @@ public class PsonOrgVo extends BaseVo {
     private String userId;
 
     /**
-     * 账号
+     * 账号或者从账号
      */
     private String acct;
+    /********************人员相关********************/
+    /**
+     * 组织账号或者从账号标识
+     */
+    private String accId;
+    /**
+     * 账号类型 1 主账号 2 从账号
+     */
+    private String type;
+    /**
+     * 账号类型 主账号 从账号
+     */
+    private String typeName;
 
     /******************* 搜索相关********************/
 
@@ -134,6 +151,68 @@ public class PsonOrgVo extends BaseVo {
      */
     private String search;
 
+    private String isSearchlower;
+
+    //排序字段
+    private String sortField;
+    //排序方式
+    private String sortOrder;
+
+    public String getSortField() {
+        return sortField;
+    }
+
+    public void setSortField(String sortField) {
+        this.sortField = sortField;
+    }
+
+    public String getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(String sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+
+    public String getIsSearchlower() {
+        return isSearchlower;
+    }
+
+    public void setIsSearchlower(String isSearchlower) {
+        this.isSearchlower = isSearchlower;
+    }
+
+    public Long getOrgTreeId() {
+        return orgTreeId;
+    }
+
+    public void setOrgTreeId(Long orgTreeId) {
+        this.orgTreeId = orgTreeId;
+    }
+
+    public String getAccId() {
+        return accId;
+    }
+
+    public void setAccId(String accId) {
+        this.accId = accId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
     public String getUserId() {
         return userId;
@@ -255,12 +334,12 @@ public class PsonOrgVo extends BaseVo {
         this.postName = postName;
     }
 
-    public Long getPersonId() {
-        return personId;
+    public Long getPersonnelId() {
+        return personnelId;
     }
 
-    public void setPersonId(Long personId) {
-        this.personId = personId;
+    public void setPersonnelId(Long personnelId) {
+        this.personnelId = personnelId;
     }
 
     public String getDoubleName() {

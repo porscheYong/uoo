@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.core.organization.service;
 
 import cn.ffcs.uoo.core.organization.entity.Org;
+import cn.ffcs.uoo.core.organization.entity.PoliticalLocation;
+import cn.ffcs.uoo.core.organization.vo.AreaCodeVo;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
 import cn.ffcs.uoo.core.organization.vo.PageVo;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -35,7 +37,16 @@ public interface OrgService extends IService<Org> {
 
     public void update(Org org);
 
-    public String JudgeOrgParams(Org org);
+//    /**
+//     * 保存组织
+//     */
+//    public void insertByObj(OrgVo org);
+    /**
+     * 组织新增参数判断
+     * @param org
+     * @return
+     */
+    public String JudgeOrgParams(OrgVo org);
 
     /**
      * 获取组织code
@@ -48,8 +59,6 @@ public interface OrgService extends IService<Org> {
      * @return
      */
     public List<Org> getOrgList(Org org);
-
-
     /**
      * 组织关系分页
      * @param org
@@ -64,12 +73,33 @@ public interface OrgService extends IService<Org> {
      */
     public Page<OrgVo> selectOrgPage(OrgVo org);
 
-
     /**
-     * 获取系统路径
-     * @param orgRelType
-     * @param id
+     * 获取系统全路径
+     * @param orgTreeId
+     * @param orgId
      * @return
      */
-    public String getSysFullName(String orgRootId,String id);
+    public String getSysFullName(String orgTreeId,String orgId);
+
+    /**
+     * 根据组织标识查询组织信息
+     * @param orgId
+     * @return
+     */
+    public OrgVo selectOrgByOrgId(String orgId,String orgTreeId);
+
+
+    /**
+     * 获取组织行政管理区域编码
+     * @param orgId
+     * @return
+     */
+    public List<PoliticalLocation> getOrgLoc(String orgId);
+
+    /**
+     * 获取区域信息
+     * @param orgId
+     * @return
+     */
+    public List<AreaCodeVo> getOrgAreaCode(String orgId);
 }

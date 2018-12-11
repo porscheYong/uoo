@@ -27,23 +27,34 @@ public class PersonShowUtil {
 
         if (vo.getTbAcctOrgRel() != null) {
             vo.getTbAcctOrgRel().forEach((temp) -> {
-                temp.setLocId(null);
-                temp.setAreaCodeId(null);
-                temp.setOrgCode(null);
-                temp.setShortName(null);
-                temp.setOrgNameEn(null);
-                temp.setFullName(null);
-                temp.setCityTown(null);
-                temp.setOfficePhone(null);
-                temp.setFoundingTime(null);
-                temp.setOrgScale(null);
-                temp.setOrgLevel(null);
-                temp.setOrgPositionLevel(null);
+                //temp.getTbOrg().setOrgId(null);//temp.getTbOrg().setOrgName(null);
+                temp.getTbOrg().setLocId(null);
+                temp.getTbOrg().setAreaCodeId(null);
+                temp.getTbOrg().setOrgCode(null);
+                temp.getTbOrg().setShortName(null);
+                temp.getTbOrg().setOrgNameEn(null);
+                temp.getTbOrg().setFullName(null);
+                temp.getTbOrg().setCityTown(null);
+                temp.getTbOrg().setOfficePhone(null);
+                temp.getTbOrg().setFoundingTime(null);
+                temp.getTbOrg().setOrgScale(null);
+                temp.getTbOrg().setOrgLevel(null);
+                temp.getTbOrg().setOrgPositionLevel(null);
+                temp.getTbOrg().setSort(null);
+                temp.getTbOrg().setOrgContent(null);
+                temp.getTbOrg().setOrgDesc(null);
+                temp.getTbOrg().setAddress(null);
+                temp.getTbOrg().setUuid(null);
+                temp.getTbOrg().setStatusCd(null);
+                temp.getTbOrg().setCreateDate(null);
+                temp.getTbOrg().setCreateUser(null);
+                temp.getTbOrg().setUpdateDate(null);
+                temp.getTbOrg().setUpdateUser(null);
+                temp.getTbOrg().setStatusDate(null);
+                temp.setAcctHostId(null);
+                temp.setOrgId(null);
+                temp.setAcctId(null);
                 temp.setSort(null);
-                temp.setOrgContent(null);
-                temp.setOrgDesc(null);
-                temp.setAddress(null);
-                temp.setUuid(null);
                 temp.setStatusCd(null);
                 temp.setCreateDate(null);
                 temp.setCreateUser(null);
@@ -56,7 +67,7 @@ public class PersonShowUtil {
         if (vo.getTbCert() != null) {
             vo.getTbCert().forEach((temp) -> {
                 //temp.setCertName(null);//temp.setCertType(null);//temp.setCertNo(null);//temp.setAddress(null);
-                //temp.setIssuing(null);//temp.setIsReal(null);//temp.setSource(null);
+                //temp.setIssuing(null);//temp.setUuid(null);//temp.setIsReal(null);//temp.setSource(null);
                 temp.setCertId(null);
                 temp.setPersonnelId(null);
                 temp.setStatusCd(null);
@@ -65,13 +76,12 @@ public class PersonShowUtil {
                 temp.setUpdateDate(null);
                 temp.setUpdateUser(null);
                 temp.setStatusDate(null);
-                temp.setUuid(null);
             });
         }
 
         if (vo.getTbContact() != null) {
             vo.getTbContact().forEach((temp) -> {
-                //temp.setContactType(null);//temp.setContent(null);//temp.setFirstFlag(null);
+                //temp.setContactType(null);//temp.setContent(null);//temp.setUuid(null);//temp.setFirstFlag(null);
                 temp.setContactId(null);
                 temp.setPersonnelId(null);
                 temp.setStatusCd(null);
@@ -80,7 +90,7 @@ public class PersonShowUtil {
                 temp.setUpdateDate(null);
                 temp.setUpdateUser(null);
                 temp.setStatusDate(null);
-                temp.setUuid(null);
+
             });
         }
 
@@ -145,10 +155,10 @@ public class PersonShowUtil {
             });
         }
 
-        if (vo.getTbSlaveAcct() != null) {
+        if (vo.getTbSlaveAcctVo() != null) {
 
-            if (vo.getTbSlaveAcct().getTbAcctExt() != null) {
-                vo.getTbSlaveAcct().getTbAcctExt().forEach((temp) -> {
+            if (vo.getTbSlaveAcctVo().getTbAcctExt() != null) {
+                vo.getTbSlaveAcctVo().getTbAcctExt().forEach((temp) -> {
                     //temp.setName(null);//temp.setContactWay(null);//temp.setWorkEmail(null);//temp.setCertType(null);
                     //temp.setCertNo(null);//temp.setGender(null);//temp.setNation(null);//temp.setNativePlace(null);
                     temp.setAcctExtId(null);
@@ -161,19 +171,19 @@ public class PersonShowUtil {
                     temp.setStatusDate(null);
                 });
             }
-            //vo.getTbSlaveAcct().setSlaveAcctId(null);//vo.getTbSlaveAcct().setSlaveAcct(null);//vo.getTbSlaveAcct().setSalt(null);
-            //vo.getTbSlaveAcct().setPassword(null);//vo.getTbSlaveAcct().setSymmetryPassword(null);//vo.getTbSlaveAcct().setSlaveAcctType(null);
-            //vo.getTbSlaveAcct().setEnableDate(null);//vo.getTbSlaveAcct().setDisableDate(null);//vo.getTbSlaveAcct().setSystemName(null);
-            //vo.getTbSlaveAcct().setBusinessSystemId(null);vo.getTbSlaveAcct().setBusinessSystemId(null);
-            vo.getTbSlaveAcct().setResourceObjId(null);
-            vo.getTbSlaveAcct().setStatusCd(null);
-            vo.getTbSlaveAcct().setCreateDate(null);
-            vo.getTbSlaveAcct().setCreateUser(null);
-            vo.getTbSlaveAcct().setUpdateDate(null);
-            vo.getTbSlaveAcct().setUpdateUser(null);
-            vo.getTbSlaveAcct().setStatusDate(null);
-            vo.getTbSlaveAcct().setAcctHostId(null);
-            vo.getTbSlaveAcct().setAcctId(null);
+            //vo.getTbSlaveAcctVo().setSlaveAcctId(null);//vo.getTbSlaveAcctVo().setSlaveAcct(null);//vo.getTbSlaveAcctVo().setSalt(null);
+            //vo.getTbSlaveAcctVo().setPassword(null);//vo.getTbSlaveAcctVo().setSymmetryPassword(null);//vo.getTbSlaveAcctVo().setSlaveAcctType(null);
+            //vo.getTbSlaveAcctVo().setEnableDate(null);//vo.getTbSlaveAcctVo().setDisableDate(null);//vo.getTbSlaveAcctVo().setSystemName(null);
+            //vo.getTbSlaveAcctVo().setBusinessSystemId(null);
+            vo.getTbSlaveAcctVo().setResourceObjId(null);
+            vo.getTbSlaveAcctVo().setStatusCd(null);
+            vo.getTbSlaveAcctVo().setCreateDate(null);
+            vo.getTbSlaveAcctVo().setCreateUser(null);
+            vo.getTbSlaveAcctVo().setUpdateDate(null);
+            vo.getTbSlaveAcctVo().setUpdateUser(null);
+            vo.getTbSlaveAcctVo().setStatusDate(null);
+            vo.getTbSlaveAcctVo().setAcctHostId(null);
+            vo.getTbSlaveAcctVo().setAcctId(null);
         }
     }
 }

@@ -1,12 +1,18 @@
 package cn.ffcs.uoo.web.maindata.personnel.controller;
 
-import cn.ffcs.uoo.web.maindata.personnel.entity.TbPersonnel;
+
 import cn.ffcs.uoo.web.maindata.personnel.service.PersonnelService;
-import com.baomidou.mybatisplus.plugins.Page;
+import cn.ffcs.uoo.web.maindata.personnel.vo.EditFormPersonnelVo;
+import cn.ffcs.uoo.web.maindata.personnel.vo.PersonnelVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  *  ┏┓　　　┏┓
@@ -28,40 +34,88 @@ import org.springframework.web.bind.annotation.*;
  *　　　┗┻┛　┗┻┛
  * @ClassName PersonnelController
  * @Description 
- * @author WCNGS@QQ.COM
- * @date 2018/9/8 20:28
+ * @author wudj
+ * @date 2018/11/14 14:28
  * @Version 1.0.0
 */
 @RestController
-@RequestMapping("/personnel")
+@RequestMapping(value = "/personnel", produces = {"application/json;charset=UTF-8"})
+@Api(value = "/personnel", description = "人员相关操作")
 public class PersonnelController {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
+    @Resource
     private PersonnelService personnelService;
 
-    @RequestMapping(value = "/testPage",method = RequestMethod.GET)
-    public Page<TbPersonnel> testPersonnel() {
-        log.error(" testPersonnel was be Requseted");
-        return personnelService.testPersonnel();
+    @ApiOperation(value = "人员信息", notes = "查看人员信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long",paramType="path"),
+            @ApiImplicitParam(name = "orgTreeId", value = "业务树标识", required = true, dataType = "Long",paramType="path"),
+            @ApiImplicitParam(name = "orgId", value = "组织标识", required = true, dataType = "Long",paramType="path")
+    })
+    @RequestMapping(value = "/getFormPersonnel",method = RequestMethod.GET)
+    public Object getFormPersonnel( Long personnelId,
+                                    Long orgTreeId,
+                                    Long orgId){
+        return  personnelService.getFormPersonnel(personnelId, orgTreeId, orgId);
     }
 
-
-    @RequestMapping(value = "/getPage/",method = RequestMethod.POST)
-    public Page<TbPersonnel> getPersonnelCondition(@RequestBody TbPersonnel tbPersonnel){
-        return personnelService.getPersonnelCondition(tbPersonnel);
+    @ApiOperation(value = "新增人员信息",notes = "人员信息新增")
+    @ApiImplicitParam(name = "editFormPersonnelVo",value = "人员信息",required = true,dataType = "EditFormPersonnelVo")
+    @RequestMapping(value = "/savePersonnel",method = RequestMethod.POST)
+    public Object savePersonnel(@RequestBody EditFormPersonnelVo editFormPersonnelVo) {
+        return personnelService.savePersonnel(editFormPersonnelVo);
     }
 
-    @RequestMapping(value = "/getPage/pageNo={pageNo}&pageSize={pageSize}",method = RequestMethod.GET)
-    public Page<TbPersonnel> getPersonnel(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
-        return personnelService.getPersonnel(pageNo,pageSize);
+    @ApiOperation(value="删除人员信息",notes="人员信息删除")
+    @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long",paramType="path")
+    @RequestMapping(value="/deletePersonnel",method = RequestMethod.DELETE)
+    public Object deletePersonnel(Long personnelId) {
+        return personnelService.deletePersonnel(personnelId);
     }
 
+    @ApiOperation(value = "修改人员基本信息",notes = "人员基本信息修改")
+    @ApiImplicitParam(name = "personnelVo",value = "人员基本信息",required = true,dataType = "PersonnelVo")
+    @RequestMapping(value = "/updatePersonnel",method = RequestMethod.PUT)
+    public Object upPersonnel(@RequestBody PersonnelVo personnelVo){
+        return personnelService.upPersonnel(personnelVo);
+    }
 
-    @RequestMapping(value = "/test",method = RequestMethod.GET)
-    public String test() {
-        return personnelService.test();
+    @ApiOperation(value="人员选择查询",notes="人员选择查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "keyWord", value = "关键字", required = true, dataType = "String",paramType="path"),
+            @ApiImplicitParam(name = "pageNo", value = "当前页数", required = true, dataType = "Integer",paramType="path"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path")
+    })
+    @RequestMapping(value="/getPsnBasicInfo",method = RequestMethod.GET)
+    public Object getPsnBasicInfo(String keyWord, Integer pageNo, Integer pageSize){
+        return personnelService.getPsnBasicInfo(keyWord, pageNo, pageSize);
+    }
+
+    @ApiOperation(value = "身份证对应信息", notes = "身份证对应信息")
+    @ApiImplicitParam(name = "certNo", value = "身份证号", required = true, dataType = "String",paramType="path")
+    @RequestMapping(value = "/getIdCardInfo",method = RequestMethod.GET)
+    public Object getIdCardInfo(String certNo){
+        return personnelService.getIdCardInfo(certNo);
+    }
+
+    @ApiOperation(value="游离人员选择查询",notes="游离人员选择查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "keyWord", value = "关键字", required = true, dataType = "String",paramType="path"),
+            @ApiImplicitParam(name = "pageNo", value = "当前页数", required = true, dataType = "Integer",paramType="path"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path")
+    })
+    @RequestMapping(value="/getFreePsnInfo",method = RequestMethod.GET)
+    public Object getFreePsnInfo(String keyWord, Integer pageNo, Integer pageSize){
+        return personnelService.getFreePsnInfo(keyWord, pageNo, pageSize);
+    }
+
+    @ApiOperation(value = "身份证对应人力编码", notes = "身份证对应人力编码")
+    @ApiImplicitParam(name = "certNo", value = "身份证号", required = true, dataType = "String",paramType="path")
+    @RequestMapping(value = "/getIdCardNcCode",method = RequestMethod.GET)
+    public Object getIdCardNcCode(String certNo){
+        return personnelService.getIdCardNcCode(certNo);
     }
 
 }

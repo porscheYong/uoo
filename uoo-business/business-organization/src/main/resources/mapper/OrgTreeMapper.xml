@@ -26,4 +26,27 @@
         SELECT SEQ_TB_ORG_TREE_ID.NEXTVAL FROM DUAL
     </select>
 
+    <select id="getOrgTreeNameByOrgId" resultType="java.lang.String">
+        SELECT TO_CHAR(WM_CONCAT(B.ORG_TREE_NAME))
+        FROM TB_ORG_ORGTREE_REL A, TB_ORG_TREE B
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND A.ORG_ID = #{orgId}
+    </select>
+
+    <select id="isExistsOrgTreeRel" resultType="java.lang.Integer">
+        SELECT  COUNT(1) FROM TB_ORG_TREE A,TB_ORG_REL_TYPE B,TB_OGT_ORG_RELTYPE_CONF C
+        WHERE A.STATUS_CD='1000' AND B.STATUS_CD='1000' AND C.STATUS_CD='1000'
+        AND A.ORG_TREE_ID=C.ORG_TREE_ID AND B.ORG_REL_TYPE_ID=C.ORG_REL_TYPE_ID
+        AND B.REF_CODE= #{refCode}
+    </select>
+
+
+    <select id="getOrgTreeByRefCode" resultType="cn.ffcs.uoo.core.organization.entity.OrgTree">
+        SELECT  A.ORG_TREE_ID orgTreeId,A.ORG_TREE_NAME orgTreeName,A.ORG_TREE_TYPE orgTreeType,A.ORG_ID orgId,A.STATUS_CD statusCd,A.SORT sort FROM TB_ORG_TREE A,TB_ORG_REL_TYPE B,TB_OGT_ORG_RELTYPE_CONF C
+        WHERE A.STATUS_CD='1000' AND B.STATUS_CD='1000' AND C.STATUS_CD='1000'
+        AND A.ORG_TREE_ID=C.ORG_TREE_ID AND B.ORG_REL_TYPE_ID=C.ORG_REL_TYPE_ID
+        AND B.REF_CODE= #{refCode}
+    </select>
 </mapper>

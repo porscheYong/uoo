@@ -1,6 +1,6 @@
 spring:
   application:
-    name: personnel-service
+    name: business-personnel
   datasource:
     druid:
       #url: jdbc:oracle:thin:@134.129.68.156:1521:fjtpdb
@@ -96,7 +96,16 @@ spring:
         #允许清除记录
         reset-enable: false
 #      aop-patterns: cn.ffcs.uoo.**.service.*
-
+  rabbitmq:
+    host: 134.96.253.221
+    port: 5672
+    username: root
+    password: 123
+  zipkin:
+    base-url: http://134.96.253.223:8600
+  sleuth:
+    sampler:
+      percentage: 1.0
 
 #mybatis
 mybatis-plus:
@@ -122,27 +131,45 @@ mybatis-plus:
     #自定义SQL注入器
     #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
     #自定义填充策略接口实现
-    #meta-object-handler: com.baomidou.springboot.xxx
+    meta-object-handler: cn.ffcs.uoo.base.common.tool.util.UooMetaObjectHandler
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
 
 server:
-  port: 8081
+  port: 11200
+feign:
+  ## 配置httpclient线程池
+  httpclient:
+    enabled: true
+    max-connections: 200 # 默认值
+    max-connections-per-route: 50 # 默认值
+    # 连接超时，默认：2000/毫秒
+    connection-timeout: 2000
+    # 生存时间，默认：900L
+    time-to-live: 900
+    # 响应超时的时间单位，默认：TimeUnit.SECONDS
+    #    timeToLiveUnit: SECONDS
+ #路由超时，即socket超时设置
+ribbon:
+  ReadTimeout: 600000
+  ConnectTimeout: 600000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
 
 eureka:
   instance:
-    appname: personnel-service
-    hostname: localhost
+    appname: business-personnel
+    hostname: ${spring.cloud.client.ipAddress}
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
     lease-expiration-duration-in-seconds: 30
     lease-renewal-interval-in-seconds: 10
   server:
-    port: 8762
+    port: 8751
   client:
     service-url:
-      defaultZone:  http://134.96.253.221:${eureka.server.port}/eureka/
+      defaultZone:  http://134.96.253.221:${eureka.server.port}/eureka/,http://134.96.253.222:${eureka.server.port}/eureka/,http://134.96.253.223:${eureka.server.port}/eureka/
 
 logging:
   level:

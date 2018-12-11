@@ -1,8 +1,11 @@
 package cn.ffcs.uoo.core.organization.dao;
 
 import cn.ffcs.uoo.core.organization.entity.OrgRelType;
+import cn.ffcs.uoo.core.organization.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -16,5 +19,9 @@ public interface OrgRelTypeMapper extends BaseMapper<OrgRelType> {
 
     public Long getId();
 
-    public OrgRelType getOrgRelType(@Param("orgRootId")String orgRootId);
+    public List<OrgRelType> getOrgRelType(@Param("orgTreeId")String orgTreeId);
+
+    public List<TreeNodeVo> selectOrgRelTypeTree();
+
+    public List<TreeNodeVo> selectTarOrgRelTypeTree(@Param("refCode")String refCode);
 }

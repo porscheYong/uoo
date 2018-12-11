@@ -24,4 +24,6 @@ public interface TbDictionaryItemService extends IService<TbDictionaryItem> {
     void remove(Long itemId, Long updateUser);
 
     List<TbDictionaryItem> selectDicItemList(TbDictionaryItem tbDictionaryItem);
+
+    List<TbDictionaryItem> selectDicItemListByDicName(String dictionaryName);
 }

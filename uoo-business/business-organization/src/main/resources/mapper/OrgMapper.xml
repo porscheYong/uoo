@@ -29,11 +29,13 @@
         <result column="UPDATE_DATE" property="updateDate" />
         <result column="UPDATE_USER" property="updateUser" />
         <result column="STATUS_DATE" property="statusDate" />
+        <result column="ORG_MART_CODE" property="orgMartCode" />
+        <result column="STANDARD_FLAG" property="standardFlag" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE, SHORT_NAME, ORG_NAME_EN, FULL_NAME, CITY_TOWN, OFFICE_PHONE, FOUNDING_TIME, ORG_SCALE, ORG_LEVEL, ORG_POSITION_LEVEL, SORT, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE, SHORT_NAME, ORG_NAME_EN, FULL_NAME, CITY_TOWN, OFFICE_PHONE, FOUNDING_TIME, ORG_SCALE, ORG_LEVEL, ORG_POSITION_LEVEL, SORT, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE,ORG_MART_CODE,STANDARD_FLAG
     </sql>
     <!-- 获取OrgIdSeq -->
     <select id="getId" resultType="java.lang.Long">
@@ -60,7 +62,7 @@
         AND C.STATUS_CD = 1000
         AND A.ORG_ID = B.ORG_ID
         <if test="org.orgId != null">
-            AND B.SUP_ORG_ID = #{org.orgId}
+            AND B.PARENT_ORG_ID = #{org.orgId}
         </if>
         <if test="org.refCode != null">
             AND C.REF_CODE = #{org.refCode}
@@ -93,39 +95,42 @@
 
 
     <select id="selectOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
-        <!--SELECT D.ORG_ID orgId,-->
-        <!--D.ORG_NAME orgName,-->
-        <!--D.FULL_NAME fullName,-->
-        <!--D.STATUS_CD statusCd,-->
-        <!--D.ORG_CODE orgCode,-->
-        <!--D.LOC_ID locId,-->
-        <!--PL.LOC_CODE locCode,-->
-        <!--PL.LOC_NAME locName,-->
-        <!--D.AREA_CODE_ID areaCodeId-->
-        <!--FROM (-->
-        <!--SELECT A.*-->
+
+        <!--WITH ORGTREE AS(-->
+        <!--SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,-->
+        <!--ORG_NAME,ORG_ID,SUP_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD-->
+        <!--FROM (SELECT A.* ,B.SUP_ORG_ID-->
         <!--FROM TB_ORG A, TB_ORG_REL B-->
-        <!--WHERE A.STATUS_CD = 1000-->
-        <!--AND B.STATUS_CD = 1000-->
-        <!--AND A.ORG_ID = B.ORG_ID-->
-        <!--<if test="orgVo.orgId != null || orgVo.orgId != ''">-->
-            <!--AND B.SUP_ORG_ID = #{orgVo.orgId}-->
+        <!--WHERE A.ORG_ID = B.ORG_ID-->
+        <!--AND A.STATUS_CD = 1000-->
+        <!--AND B.STATUS_CD = 1000) AA-->
+        <!--START WITH ORG_ID = #{orgVo.orgRootId}-->
+        <!--CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID-->
+        <!--),ORGTYPE AS(-->
+        <!--SELECT-->
+        <!--A.ORG_ID,-->
+        <!--B.ORG_TYPE_NAME-->
+        <!--FROM TB_ORG_ORGTYPE_REL A, TB_ORG_TYPE B-->
+        <!--WHERE A.STATUS_CD = '1000'-->
+        <!--AND B.STATUS_CD = '1000'-->
+        <!--AND A.ORG_TYPE_ID = B.ORG_TYPE_ID-->
+        <!--)-->
+        <!--SELECT D.ORG_ID ORGID,-->
+        <!--D.ORG_NAME ORGNAME,-->
+        <!--D.FULL_NAME FULLNAME,-->
+        <!--D.STATUS_CD STATUSCD,-->
+        <!--D.ORG_CODE ORGCODE,-->
+        <!--D.LOC_ID LOCID,-->
+        <!--PL.LOC_CODE LOCCODE,-->
+        <!--PL.LOC_NAME LOCNAME,-->
+        <!--(select to_char(wm_concat(a.ORG_TYPE_NAME)) from ORGTYPE a where a.ORG_ID = D.ORG_ID  ) ORGTYPESPLIT-->
+        <!--FROM (SELECT * FROM ORGTREE WHERE 1=1-->
+        <!--<if test="orgVo.orgId != null and orgVo.orgId != ''">-->
+           <!--AND SUP_ORG_ID = #{orgVo.orgId}-->
         <!--</if>-->
-        <!--ORDER BY A.ORG_LEVEL-->
-        <!--) D LEFT JOIN TB_POLITICAL_LOCATION PL ON PL.LOC_ID=D.LOC_ID-->
-
-
-        WITH ORGTREE AS(
-        SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,
-        ORG_NAME,ORG_ID,SUP_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD
-        FROM (SELECT A.* ,B.SUP_ORG_ID
-        FROM TB_ORG A, TB_ORG_REL B
-        WHERE A.ORG_ID = B.ORG_ID
-        AND A.STATUS_CD = 1000
-        AND B.STATUS_CD = 1000) AA
-        START WITH ORG_ID = #{orgVo.orgRootId}
-        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID
-        )
+        <!--ORDER BY SORT-->
+        <!--) D LEFT JOIN ( SELECT * FROM  TB_POLITICAL_LOCATION WHERE STATUS_CD='1000') PL ON PL.LOC_ID=D.LOC_ID-->
+        SELECT * FROM (
         SELECT D.ORG_ID ORGID,
         D.ORG_NAME ORGNAME,
         D.FULL_NAME FULLNAME,
@@ -133,14 +138,36 @@
         D.ORG_CODE ORGCODE,
         D.LOC_ID LOCID,
         PL.LOC_CODE LOCCODE,
-        PL.LOC_NAME LOCNAME
-        FROM (SELECT * FROM ORGTREE WHERE 1=1
-        <if test="orgVo.orgId != null and orgVo.orgId != ''">
-           AND SUP_ORG_ID = #{orgVo.orgId}
+        PL.LOC_NAME LOCNAME,
+        ( SELECT TO_CHAR(WM_CONCAT(B.ORG_TYPE_NAME))
+        FROM TB_ORG_ORGTYPE_REL A, TB_ORG_TYPE B
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND A.ORG_TYPE_ID = B.ORG_TYPE_ID
+        AND A.ORG_ID = D.ORG_ID) ORGTYPESPLIT
+        FROM (
+        SELECT B.*
+        FROM TB_ORG_REL A,
+        TB_ORG B,
+        TB_ORG_REL_TYPE C,
+        TB_OGT_ORG_RELTYPE_CONF D,
+        TB_ORG_TREE E
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000'
+        AND D.STATUS_CD = '1000'
+        AND E.STATUS_CD = '1000'
+        AND E.ORG_TREE_ID = D.ORG_TREE_ID
+        AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
+        AND A.REF_CODE = C.REF_CODE
+        AND A.ORG_ID=B.ORG_ID
+        AND E.ORG_TREE_ID=#{orgVo.orgTreeId}
+        AND A.PARENT_ORG_ID=#{orgVo.orgId}) D
+        LEFT JOIN TB_POLITICAL_LOCATION PL ON PL.LOC_ID=D.LOC_ID
+        ) WHERE 1=1
+        <if test="orgVo.sortField!='' and orgVo.sortField!=null and orgVo.sortOrder!=null and orgVo.sortOrder!=''">
+            order by #{orgVo.sortField}||'  '||#{orgVo.sortOrder}
         </if>
-        ORDER BY SORT
-        ) D LEFT JOIN ( SELECT * FROM  TB_POLITICAL_LOCATION WHERE STATUS_CD='1000') PL ON PL.LOC_ID=D.LOC_ID
-
     </select>
 
     <select id="selectOrgPage" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
@@ -153,7 +180,9 @@
         FROM TB_ORG A
         WHERE 1=1
         <if test="orgVo.search != null and orgVo.search != ''">
-            AND A.ORG_NAME like '%'||#{orgVo.search}||'%'
+            AND (A.ORG_NAME like '%'||#{orgVo.search}||'%'
+                or A.FULL_NAME like '%'||#{orgVo.search}||'%'
+                or A.ORG_CODE like '%'||#{orgVo.search}||'%')
         </if>
         <if test="orgVo.statusCd != null and orgVo.statusCd != ''">
             AND A.STATUS_CD = #{orgVo.statusCd}
@@ -162,15 +191,118 @@
     </select>
 
     <select id="getSysFullName" resultType="java.lang.String">
+<!--
         SELECT FULL_NAME fullName FROM (
         SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,
-        ORG_NAME,ORG_ID,SUP_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD
-        FROM (SELECT A.* ,B.SUP_ORG_ID
+        ORG_NAME,ORG_ID,PARENT_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD
+        FROM (SELECT A.* ,B.PARENT_ORG_ID
         FROM TB_ORG A, TB_ORG_REL B
         WHERE A.ORG_ID = B.ORG_ID
         AND A.STATUS_CD = 1000
         AND B.STATUS_CD = 1000) AA
         START WITH ORG_ID = #{orgRootId}
-        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID ) AA where AA.ORG_ID = #{orgId}
+        CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID ) AA where AA.ORG_ID = #{orgId}-->
+
+
+        SELECT * FROM (
+        SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'),
+        '->',
+        '//'),
+        '//',
+        '/') fullName,ORG_ID orgId FROM (
+        SELECT E.ORG_NAME,E.ORG_ID ,D.PARENT_ORG_ID,D.CREATE_DATE,E.ORG_CODE
+        FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E
+        WHERE  A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND D.ORG_ID=E.ORG_ID
+        AND C.REF_CODE=D.REF_CODE
+        AND A.ORG_TREE_ID = #{orgTreeId} )AA
+        START WITH ORG_ID = #{orgId}
+        CONNECT BY AA.ORG_ID = PRIOR AA.PARENT_ORG_ID ) WHERE  orgId= #{orgId}
+
     </select>
+
+    <select id="getFullOrgList" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
+            SELECT * FROM (
+        SELECT ORG_ID ORGID,ORG_NAME,level lv  FROM (
+        SELECT E.ORG_NAME,E.ORG_ID ,D.PARENT_ORG_ID,D.CREATE_DATE,E.ORG_CODE
+        FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E
+        WHERE  A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND D.ORG_ID=E.ORG_ID
+        AND C.REF_CODE=D.REF_CODE
+        AND A.ORG_TREE_ID = #{orgTreeId} )AA
+        START WITH ORG_ID = #{orgId}
+        CONNECT BY PRIOR AA.PARENT_ORG_ID =  AA.ORG_ID ) ORDER BY lv DESC
+    </select>
+
+    <!--<select id="insertByObj" parameterType="cn.ffcs.uoo.core.organization.vo.OrgVo">-->
+    <!--INSERT INTO tb_org (ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE-->
+	<!--, SHORT_NAME, ORG_NAME_EN, FULL_NAME, CITY_TOWN, OFFICE_PHONE-->
+	<!--, FOUNDING_TIME, ORG_SCALE, ORG_LEVEL, ORG_POSITION_LEVEL, SORT-->
+	<!--, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUselectOrgRelPageS_CD-->
+	<!--, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE)-->
+      <!--VALUES (213524,#{OrgVo.locId}, #{OrgVo.areaCodeId}, #{OrgVo.orgName}, #{OrgVo.orgCode}-->
+	<!--, #{OrgVo.shortName}, #{OrgVo.orgNameEn},  #{OrgVo.fullName},  #{OrgVo.cityTown},#{OrgVo.officePhone}-->
+	<!--, #{OrgVo.foundingTime}, #{OrgVo.orgScale},  #{OrgVo.orgLevel},  #{OrgVo.orgPositionLevel}, #{OrgVo.sort}-->
+	<!--, #{OrgVo.orgContent}, #{OrgVo.orgDesc}, #{OrgVo.address}, #{OrgVo.uuid}, '1000'-->
+	<!--, to_date('16-11-2018 16:02:53', 'dd-mm-yyyy hh24:mi:ss'), 0, to_date('16-11-2018 16:02:53', 'dd-mm-yyyy hh24:mi:ss'), 0, to_date('16-11-2018 16:02:53', 'dd-mm-yyyy hh24:mi:ss'));-->
+    <!--</select>-->
+    <select id="selectOrgByOrgId" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
+      <!--  SELECT A.ORG_ID orgId,A.LOC_ID locId,A.AREA_CODE_ID areaCodeId,A.ORG_NAME orgName,A.ORG_CODE orgCode,A.SHORT_NAME shortName,
+        A.ORG_NAME_EN orgNameEn,A.FULL_NAME fullName,
+        A.CITY_TOWN cityTown,A.OFFICE_PHONE officePhone,TO_CHAR(A.FOUNDING_TIME, 'YYYY-MM-DD HH24:MI:SS') foundingTime,
+        A.ORG_SCALE orgScale,A.ORG_LEVEL orgLevel,A.ORG_POSITION_LEVEL orgPositionLevel,
+        A.SORT sort,A.ORG_CONTENT orgContent,A.ORG_DESC orgDesc,A.ADDRESS address,
+        TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') createDate,ORG_MART_CODE orgMartCode FROM TB_ORG  A where A.org_id=#{orgId}
+       -->
+        SELECT A.ORG_ID ORGID,
+        A.LOC_ID LOCID,
+        A.AREA_CODE_ID AREACODEID,
+        A.ORG_NAME ORGNAME,
+        A.ORG_CODE ORGCODE,
+        A.SHORT_NAME SHORTNAME,
+        A.ORG_NAME_EN ORGNAMEEN,
+        A.FULL_NAME FULLNAME,
+        A.CITY_TOWN CITYTOWN,
+        A.OFFICE_PHONE OFFICEPHONE,
+        TO_CHAR(A.FOUNDING_TIME, 'YYYY-MM-DD') FOUNDINGTIME,
+        A.ORG_SCALE ORGSCALE,
+        A.ORG_LEVEL ORGLEVEL,
+        A.ORG_POSITION_LEVEL ORGPOSITIONLEVEL,
+        A.SORT SORT,
+        A.ORG_CONTENT ORGCONTENT,
+        A.ORG_DESC ORGDESC,
+        A.ADDRESS ADDRESS,
+        TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') CREATEDATE,
+        A.ORG_MART_CODE ORGMARTCODE,
+        B.ORG_BIZ_NAME ORGBIZNAME
+        FROM TB_ORG A, TB_ORG_ORGTREE_REL B
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND B.ORG_ID = A.ORG_ID
+        AND A.ORG_ID = #{orgId}
+        AND B.ORG_TREE_ID = #{orgTreeId}
+  </select>
+
+
+    <select id="getOrgLoc"  resultType="cn.ffcs.uoo.core.organization.entity.PoliticalLocation">
+        SELECT A.LOC_ID locId,A.LOC_CODE locCode,A.LOC_NAME locName,A.PARENT_LOC_ID parentLocId
+        FROM TB_POLITICAL_LOCATION A, TB_ORG B
+        WHERE A.LOC_ID = B.LOC_ID
+        AND A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND B.ORG_ID = #{orgId}
+    </select>
+
+
+    <select id="getOrgAreaCode" resultType="cn.ffcs.uoo.core.organization.vo.AreaCodeVo">
+        SELECT A.AREA_CODE_ID AREACODEID, A.AREA_CODE AREACODE
+        FROM TB_AREA_CODE A, TB_ORG B
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND B.AREA_CODE_ID = A.AREA_CODE_ID
+        AND B.ORG_ID =  #{orgId}
+    </select>
+
 </mapper>

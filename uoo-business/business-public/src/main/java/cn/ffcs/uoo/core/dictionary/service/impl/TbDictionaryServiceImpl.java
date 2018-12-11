@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.core.dictionary.service.impl;
 
 import cn.ffcs.uoo.base.common.tool.util.DateUtils;
+import cn.ffcs.uoo.core.constant.StatusEnum;
 import cn.ffcs.uoo.core.dictionary.dao.TbDictionaryMapper;
 import cn.ffcs.uoo.core.dictionary.entity.TbDictionary;
 import cn.ffcs.uoo.core.dictionary.service.TbDictionaryService;
@@ -34,7 +35,7 @@ public class TbDictionaryServiceImpl extends ServiceImpl<TbDictionaryMapper, TbD
         TbDictionary tbDictionary = new TbDictionary();
         tbDictionary.setDictionaryId(dictionaryId);
         // 失效状态
-        tbDictionary.setStatusCd("1100");
+        tbDictionary.setStatusCd(StatusEnum.INVALID.getValue());
         tbDictionary.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbDictionary.setUpdateUser(updateUser);
         tbDictionary.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));

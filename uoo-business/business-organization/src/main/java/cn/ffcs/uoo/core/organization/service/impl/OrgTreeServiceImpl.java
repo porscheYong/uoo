@@ -7,7 +7,10 @@ import cn.ffcs.uoo.core.organization.util.StrUtil;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -69,12 +72,31 @@ public class OrgTreeServiceImpl extends ServiceImpl<OrgTreeMapper, OrgTree> impl
         if(StrUtil.isNullOrEmpty(orgTree.getOrgTreeType())){
             return "组织树类型不能为空";
         }
-        if(StrUtil.isNullOrEmpty(orgTree.getSort())){
-            return "组织树排序号不能为空";
-        }
-        if(orgTree.getUserTypeList() == null || orgTree.getUserTypeList().size()==0){
-            return "用工性质不能为空";
-        }
+//        if(StrUtil.isNullOrEmpty(orgTree.getSort())){
+//            return "组织树排序号不能为空";
+//        }
+//        if(StrUtil.isNullOrEmpty(orgTree.getUserTypeId())){
+//            return "用工性质不能为空";
+//        }
         return null;
+    }
+
+    @Override
+    public String getOrgTreeNameByOrgId(String orgId){
+        return baseMapper.getOrgTreeNameByOrgId(orgId);
+    }
+
+    @Override
+    public boolean isExistsOrgTreeRel(String refCode){
+        int count = baseMapper.isExistsOrgTreeRel(refCode);
+        if(count>0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public OrgTree getOrgTreeByRefCode(String refCode){
+        return baseMapper.getOrgTreeByRefCode(refCode);
     }
 }

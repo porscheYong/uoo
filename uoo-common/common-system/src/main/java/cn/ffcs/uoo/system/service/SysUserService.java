@@ -28,6 +28,4 @@ public interface SysUserService extends IService<SysUser> {
      * @param sysUser 用户信息
      */
     void sysUserRegister(SysUser sysUser);
-
-
 }

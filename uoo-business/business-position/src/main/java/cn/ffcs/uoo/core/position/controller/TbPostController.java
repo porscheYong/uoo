@@ -5,13 +5,16 @@ import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.position.constant.StatusEnum;
 import cn.ffcs.uoo.core.position.entity.TbOrgPostRel;
 import cn.ffcs.uoo.core.position.entity.TbPost;
 import cn.ffcs.uoo.core.position.entity.TbPostLocation;
 import cn.ffcs.uoo.core.position.service.TbOrgPostRelService;
 import cn.ffcs.uoo.core.position.service.TbPostLocationService;
 import cn.ffcs.uoo.core.position.service.TbPostService;
+import cn.ffcs.uoo.core.position.util.TreeUtil;
 import cn.ffcs.uoo.core.position.vo.OrgPostInfoVo;
+import cn.ffcs.uoo.core.position.vo.PostNodeVo;
 import cn.ffcs.uoo.core.position.vo.ResponseResult;
 import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -21,11 +24,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,7 +37,7 @@ import java.util.List;
  * @author zhanglu
  * @since 2018-10-30
  */
-@Api(description = "职位",value = "Post")
+@Api(description = "职位", value = "Post")
 @RestController
 @RequestMapping("/tbPost")
 public class TbPostController extends BaseController {
@@ -53,9 +52,14 @@ public class TbPostController extends BaseController {
     @ApiImplicitParam(name = "tbPost", value = "职位", required = true, dataType = "TbPost")
     @UooLog(value = "新增职位", key = "addTbPost")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<TbPost> addTbPost(TbPost tbPost) {
+    public ResponseResult<TbPost> addTbPost(@RequestBody TbPost tbPost) {
         ResponseResult<TbPost> responseResult = new ResponseResult<TbPost>();
 
+        tbPost.setStatusCd(StatusEnum.VALID.getStatus());
+        tbPost.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPost.setEffDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPost.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPost.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbPostService.insert(tbPost);
 
         responseResult.setState(ResponseResult.STATE_OK);
@@ -63,14 +67,14 @@ public class TbPostController extends BaseController {
         return responseResult;
     }
 
-    @ApiOperation(value = "删除职位",notes = "删除职位")
+    @ApiOperation(value = "删除职位", notes = "删除职位")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postId", value = "职位标识", required = true, dataType = "Long"),
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
     @UooLog(value = "删除职位", key = "removeTbPost")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbPost> removeTbPost(Long postId, Long updateUser) {
+    public ResponseResult<TbPost> removeTbPost(@RequestBody Long postId, @RequestBody Long updateUser) {
         ResponseResult<TbPost> responseResult = new ResponseResult<TbPost>();
 
         // 校验必填项
@@ -79,7 +83,7 @@ public class TbPostController extends BaseController {
             responseResult.setMessage("请输入职位标识");
             return responseResult;
         }
-        if(updateUser == null) {
+        if (updateUser == null) {
             responseResult.setState(ResponseResult.STATE_ERROR);
             responseResult.setMessage("请输入修改人");
             return responseResult;
@@ -91,7 +95,7 @@ public class TbPostController extends BaseController {
         orgPostRelWrapper.eq("STATUS_CD", "1000");
         List<TbOrgPostRel> tbOrgPostRelList = tbOrgPostRelService.selectList(orgPostRelWrapper);
 
-        if(tbOrgPostRelList != null && tbOrgPostRelList.size() > 0) {
+        if (tbOrgPostRelList != null && tbOrgPostRelList.size() > 0) {
             responseResult.setState(ResponseResult.STATE_ERROR);
             responseResult.setMessage("存在组织职位关系，不允许删除该职位");
             return responseResult;
@@ -103,7 +107,7 @@ public class TbPostController extends BaseController {
         postLocationWrapper.eq("STATUS_CD", "1000");
         List<TbPostLocation> tbPostLocationList = tbPostLocationService.selectList(postLocationWrapper);
 
-        if(tbPostLocationList != null && tbPostLocationList.size() > 0) {
+        if (tbPostLocationList != null && tbPostLocationList.size() > 0) {
             responseResult.setState(ResponseResult.STATE_ERROR);
             responseResult.setMessage("存在职位行政区域，不允许删除该职位");
             return responseResult;
@@ -115,7 +119,7 @@ public class TbPostController extends BaseController {
         postWrapper.eq("STATUS_CD", "1000");
         List<TbPost> tbPostList = tbPostService.selectList(postWrapper);
 
-        if(tbPostList != null && tbPostList.size() > 0) {
+        if (tbPostList != null && tbPostList.size() > 0) {
             responseResult.setState(ResponseResult.STATE_ERROR);
             responseResult.setMessage("存在下级职位，不允许删除该职位");
             return responseResult;
@@ -124,10 +128,11 @@ public class TbPostController extends BaseController {
         TbPost tbPost = new TbPost();
         tbPost.setPostId(postId);
         // 失效状态
-        tbPost.setStatusCd("1100");
+        tbPost.setStatusCd(StatusEnum.INVALID.getStatus());
         tbPost.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbPost.setUpdateUser(updateUser);
         tbPost.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPost.setExpDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbPostService.updateById(tbPost);
 
         responseResult.setState(ResponseResult.STATE_OK);
@@ -135,21 +140,24 @@ public class TbPostController extends BaseController {
         return responseResult;
     }
 
-    @ApiOperation(value = "修改职位",notes = "修改职位")
+    @ApiOperation(value = "修改职位", notes = "修改职位")
     @ApiImplicitParam(name = "tbPost", value = "职位", required = true, dataType = "TbPost")
     @UooLog(value = "修改职位", key = "updateTbPost")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult<TbPost> updateTbPost(TbPost tbPost) {
+    public ResponseResult<TbPost> updateTbPost(@RequestBody TbPost tbPost) {
         ResponseResult<TbPost> responseResult = new ResponseResult<TbPost>();
         // 校验必填项
-        if(tbPost.getPostId() == null) {
+        if (tbPost.getPostId() == null) {
             responseResult.setState(ResponseResult.STATE_ERROR);
             responseResult.setMessage("请输入职位标识");
             return responseResult;
         }
 
+        tbPost.setEffDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPost.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbPost.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         boolean isSuccess = tbPostService.updateById(tbPost);
-        if(isSuccess) {
+        if (isSuccess) {
             responseResult.setState(ResponseResult.STATE_OK);
             responseResult.setMessage("修改职位成功");
             return responseResult;
@@ -160,13 +168,13 @@ public class TbPostController extends BaseController {
         }
     }
 
-    @ApiOperation(value = "查询职位",notes = "查询职位")
+    @ApiOperation(value = "查询职位", notes = "查询职位")
     @ApiImplicitParam(name = "postName", value = "职位名称", required = true, dataType = "String")
     @UooLog(value = "查询职位", key = "queryPostList")
     @RequestMapping(value = "/get/{postName}", method = RequestMethod.GET)
-    public List<TbPost> queryPostList(@PathVariable  String postName) {
+    public List<TbPost> queryPostList(@PathVariable String postName) {
         // 校验必填项
-        if(StringUtils.isEmpty(postName)) {
+        if (StringUtils.isEmpty(postName)) {
             return null;
         }
 
@@ -176,13 +184,13 @@ public class TbPostController extends BaseController {
         return tbPostService.selectList(wrapper);
     }
 
-    @ApiOperation(value = "查询下级职位",notes = "查询下级职位")
+    @ApiOperation(value = "查询下级职位", notes = "查询下级职位")
     @ApiImplicitParam(name = "parentPostId", value = "上级职位关系标识", required = true, dataType = "Long")
     @UooLog(value = "查询下级职位", key = "queryChildrenPostList")
     @RequestMapping(value = "/getChildren/{parentPostId}", method = RequestMethod.GET)
     public List<TbPost> queryChildPostList(@PathVariable Long parentPostId) {
         // 校验必填项
-        if(parentPostId == null) {
+        if (parentPostId == null) {
             return null;
         }
 
@@ -192,7 +200,7 @@ public class TbPostController extends BaseController {
         return tbPostService.selectList(wrapper);
     }
 
-    @ApiOperation(value = "查询父级职位",notes = "查询父级职位")
+    @ApiOperation(value = "查询父级职位", notes = "查询父级职位")
     @UooLog(value = "查询父级职位", key = "queryParentPostList")
     @RequestMapping(value = "/getParent", method = RequestMethod.GET)
     public List<TbPost> queryParentPostList() {
@@ -202,17 +210,31 @@ public class TbPostController extends BaseController {
         return tbPostService.selectList(wrapper);
     }
 
-    @ApiOperation(value = "根据组织标识查询职位",notes = "根据组织标识查询职位")
+    @ApiOperation(value = "根据组织标识查询职位", notes = "根据组织标识查询职位")
     @ApiImplicitParam(name = "orgId", value = "组织标识", required = true, dataType = "Long")
     @UooLog(value = "根据组织标识查询职位", key = "queryPostListByOrgId")
     @RequestMapping(value = "/getPostList/{orgId}", method = RequestMethod.GET)
     public List<OrgPostInfoVo> queryPostListByOrgId(@PathVariable Long orgId) {
         // 校验必填项
-        if(orgId == null) {
+        if (orgId == null) {
             return null;
         }
 
         return tbPostService.queryPostListByOrgId(orgId);
+    }
+
+    @ApiOperation(value = "查询职位树", notes = "查询职位树")
+    @UooLog(value = "查询职位树", key = "getPostTree")
+    @RequestMapping(value = "/getPostTree", method = RequestMethod.GET)
+    public ResponseResult<List<PostNodeVo>> getPostTree() {
+        ResponseResult<List<PostNodeVo>> responseResult = new ResponseResult<List<PostNodeVo>>();
+        List<PostNodeVo> postNodeVos = tbPostService.getAllPostNodeVo();
+        List<PostNodeVo> postNodeTree = TreeUtil.createPostTree(postNodeVos);
+
+        responseResult.setState(ResponseResult.STATE_OK);
+        responseResult.setMessage("成功");
+        responseResult.setData(postNodeTree);
+        return responseResult;
     }
 }
 

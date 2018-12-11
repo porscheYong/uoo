@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,7 +42,7 @@ import io.swagger.annotations.ApiOperation;
  * @since 2018-10-30
  */
 @RestController
-@RequestMapping("/tbRegionLocationRel")
+@RequestMapping("/region/regionLocationRel")
 public class TbRegionLocationRelController extends BaseController {
     
     @Autowired
@@ -59,7 +60,7 @@ public class TbRegionLocationRelController extends BaseController {
     @UooLog(value = "新增行政区域和公用管理区域关系", key = "addLocRegRelByLoc")
     @PostMapping("addLocRegRelByLoc")
     @Transactional(rollbackFor=Exception.class)
-    public ResponseResult addLocRegRelByLoc(LocRegRelByLoc locRegRelByLoc) {
+    public ResponseResult addLocRegRelByLoc(@RequestBody LocRegRelByLoc locRegRelByLoc) {
         Long locId = locRegRelByLoc.getLocId();
         List<Long> regIds = locRegRelByLoc.getRegIds();
         //先校验数据
@@ -99,11 +100,11 @@ public class TbRegionLocationRelController extends BaseController {
     @SuppressWarnings("unchecked")
     @ApiOperation(value = "新增行政区域和公用管理区域关系", notes = "选择某个公共区域进行添加行政区域信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "polLoc", value = "行政区域和公用管理区域关系", required = true, dataType = "LocRegRelByReg"), })
+            @ApiImplicitParam(name = "locRegRelByReg", value = "行政区域和公用管理区域关系", required = true, dataType = "LocRegRelByReg"), })
     @UooLog(value = "新增行政区域和公用管理区域关系", key = "addLocRegRelByReg")
     @PostMapping("addLocRegRelByReg")
     @Transactional(rollbackFor=Exception.class)
-    public ResponseResult addLocRegRelByReg(LocRegRelByReg locRegRelByReg) {
+    public ResponseResult addLocRegRelByReg(@RequestBody LocRegRelByReg locRegRelByReg) {
         List<Long> locIds = locRegRelByReg.getLocIds();
         Long regId = locRegRelByReg.getRegId();
         TbCommonRegion commonRegion = regSvc.selectById(regId);
@@ -145,7 +146,7 @@ public class TbRegionLocationRelController extends BaseController {
     @UooLog(value = "单独删除行政区域和公用管理区域关系", key = "deleteRegionLocationRel")
     @PostMapping("deleteRegionLocationRel")
     @Transactional(rollbackFor=Exception.class)
-    public ResponseResult deleteRegionLocationRel(TbRegionLocationRel regionLocationRel) {
+    public ResponseResult deleteRegionLocationRel(@RequestBody TbRegionLocationRel regionLocationRel) {
         Long id = regionLocationRel.getRegionLocRelId();
         if(id==null){
             return ResponseResult.createErrorResult("不能删除空数据");
@@ -210,7 +211,7 @@ public class TbRegionLocationRelController extends BaseController {
     @UooLog(value = "新增行政区域和公用管理区域关系", key = "addRegionLocationRel")
     @PostMapping("addRegionLocationRel")
     @Transactional
-    public ResponseResult addRegionLocationRel(TbRegionLocationRel regLocRel) {
+    public ResponseResult addRegionLocationRel(@RequestBody TbRegionLocationRel regLocRel) {
         //查询区域是否存在
         Long commonRegionId = regLocRel.getCommonRegionId();
         Long locId = regLocRel.getLocId();
@@ -252,7 +253,7 @@ public class TbRegionLocationRelController extends BaseController {
     @UooLog(value = "修改行政区域和公用管理区域关系", key = "updateRegionLocationRel")
     @PostMapping("updateRegionLocationRel")
     @Transactional
-    public ResponseResult updateRegionLocationRel(TbRegionLocationRel regLocRel) {
+    public ResponseResult updateRegionLocationRel(@RequestBody TbRegionLocationRel regLocRel) {
         Long id = regLocRel.getRegionLocRelId();
         if(id==null||relSvc.selectById(id)==null){
             return ResponseResult.createErrorResult("修改数据异常");

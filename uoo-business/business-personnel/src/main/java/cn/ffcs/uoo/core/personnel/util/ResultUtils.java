@@ -1,50 +1,51 @@
 package cn.ffcs.uoo.core.personnel.util;
 
+import cn.ffcs.uoo.base.common.vo.ResponseResultVo;
 import cn.ffcs.uoo.core.personnel.constant.EumPersonnelResponseCode;
 
 public class ResultUtils {
 
     public static  Object success(Object object){
 
-        ResponseResult result = new ResponseResult();
+        ResponseResultVo result = new ResponseResultVo();
         result.setData(object);
-        result.setCode(EumPersonnelResponseCode.PERSONNEL_RESPONSE_SUCCESS.getCode());
-        result.setMessage(EumPersonnelResponseCode.PERSONNEL_RESPONSE_SUCCESS.getMsg());
+        result.setState(EumPersonnelResponseCode.PERSONNEL_RESPONSE_SUCCESS.getState());
+        result.setMessage(EumPersonnelResponseCode.PERSONNEL_RESPONSE_SUCCESS.getMessage());
 
         return result;
     }
 
     public static  Object certError(){
-        ResponseResult result = new ResponseResult();
-        result.setCode(EumPersonnelResponseCode.CERT_ERROR.getCode());
-        result.setMessage(EumPersonnelResponseCode.CERT_ERROR.getMsg());
+        ResponseResultVo result = new ResponseResultVo();
+        result.setState(EumPersonnelResponseCode.CERT_ERROR.getState());
+        result.setMessage(EumPersonnelResponseCode.CERT_ERROR.getMessage());
         return result;
     }
 
     public static Object moblieError(){
-        ResponseResult result = new ResponseResult();
-        result.setCode(EumPersonnelResponseCode.MOBILE_ERROR.getCode());
-        result.setMessage(EumPersonnelResponseCode.MOBILE_ERROR.getMsg());
+        ResponseResultVo result = new ResponseResultVo();
+        result.setState(EumPersonnelResponseCode.MOBILE_ERROR.getState());
+        result.setMessage(EumPersonnelResponseCode.MOBILE_ERROR.getMessage());
         return result;
     }
 
     public static Object emailError(){
-        ResponseResult result = new ResponseResult();
-        result.setCode(EumPersonnelResponseCode.EMAIL_ERROR.getCode());
-        result.setMessage(EumPersonnelResponseCode.EMAIL_ERROR.getMsg());
+        ResponseResultVo result = new ResponseResultVo();
+        result.setState(EumPersonnelResponseCode.EMAIL_ERROR.getState());
+        result.setMessage(EumPersonnelResponseCode.EMAIL_ERROR.getMessage());
         return result;
     }
 
     public static Object error(EumPersonnelResponseCode eumPersonnelResponseCode){
-        ResponseResult result = new ResponseResult();
-        result.setCode(eumPersonnelResponseCode.getCode());
-        result.setMessage(eumPersonnelResponseCode.getMsg());
+        ResponseResultVo result = new ResponseResultVo();
+        result.setState(eumPersonnelResponseCode.getState());
+        result.setMessage(eumPersonnelResponseCode.getMessage());
         return result;
     }
 
     public static Object error(int code, String msg){
-        ResponseResult result = new ResponseResult();
-        result.setCode(code);
+        ResponseResultVo result = new ResponseResultVo();
+        result.setState(code);
         result.setMessage(msg);
         return result;
     }

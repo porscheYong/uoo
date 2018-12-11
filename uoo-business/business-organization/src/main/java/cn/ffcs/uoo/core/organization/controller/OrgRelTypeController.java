@@ -1,11 +1,13 @@
 package cn.ffcs.uoo.core.organization.controller;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.service.OrgRelTypeService;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 //import com.alibaba.fastjson.JSON;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
+import cn.ffcs.uoo.core.organization.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -30,7 +32,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/orgRelType")
-public class OrgRelTypeController {
+public class OrgRelTypeController extends BaseController {
 
     @Autowired
     private OrgRelTypeService orgRefTypeService;
@@ -62,7 +64,7 @@ public class OrgRelTypeController {
                 .eq("STATUS_CD","1000")
                 .eq("PARENT_ORG_REL_TYPE_ID",orgRefType.getOrgRelTypeId());
         List<OrgRelType> orgRefTypeList = orgRefTypeService.selectList(orgRefTypeListWrapper);
-
+        
         ret.setState(ResponseResult.STATE_OK);
         ret.setData(orgRefTypeList);
         ret.setMessage("查询成功");
@@ -70,7 +72,34 @@ public class OrgRelTypeController {
     }
 
 
+    @ApiOperation(value = "查询组织关系类型树", notes = "查询组织关系类型树")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "查询组织关系类型树", key = "getOrgRelTypeTree")
+    @RequestMapping(value = "/getOrgRelTypeTree", method = RequestMethod.GET)
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<List<TreeNodeVo>> getOrgRelTypeTree(String refCode){
+        ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
 
+        if(!StrUtil.isNullOrEmpty(refCode)){
+            Wrapper orgRefTypeWrapper = Condition.create()
+                    .eq("STATUS_CD","1000")
+                    .eq("REF_CODE",refCode);
+            OrgRelType orgRefType = orgRefTypeService.selectOne(orgRefTypeWrapper);
+            if(orgRefType==null){
+                ret.setMessage("组织关系类型不存在");
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                return ret;
+            }
+        }
+
+        List<TreeNodeVo> refCodeNode = orgRefTypeService.selectOrgRelTypeTree(refCode);
+
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setData(refCodeNode);
+        ret.setMessage("查询成功");
+        return ret;
+    }
 
 //    @ApiOperation(value = "查询组织关系类型翻页", notes = "查询组织关系类型翻页")
 //    @ApiImplicitParams({

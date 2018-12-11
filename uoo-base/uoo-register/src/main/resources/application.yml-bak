@@ -1,9 +1,0 @@
-spring:
-  profiles:
-    active: test
-    ## dev——本机开发环境
-    ## test——测试环境
-    ## pro——生产环境
-    ## 根据实际情况自行修改配置
-  application:
-    name: uoo-register

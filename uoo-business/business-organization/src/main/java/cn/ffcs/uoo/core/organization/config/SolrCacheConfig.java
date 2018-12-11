@@ -15,12 +15,12 @@ import org.springframework.context.annotation.Configuration;
 public class SolrCacheConfig {
 
 
-    @Value(value = "${spring.data.solr.host}")
-    private String host;
-
-    @Bean
-    public String getHost() {
-        return host;
-    }
+//    @Value(value = "${spring.data.solr.host}")
+//    private String host;
+//
+//    @Bean
+//    public String getHost() {
+//        return host;
+//    }
 
 }

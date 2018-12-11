@@ -779,12 +779,15 @@ ul.tab-title.right li {
     top: 0;
     left: 0;
     bottom: 0;
-    float: left
+    float: left;
+    overflow-x: hidden;
     }
+.content-left:hover {
+    overflow-x: auto;
+}
 .content-right { /*内右内容*/
     padding: 0 0 0 250px;
     height: 100%;
-    overflow-x: hidden;
     }
 .LightGrayBg {
     background: #F6F7F8;
@@ -805,9 +808,19 @@ ul.tab-title.right li {
     /*float: left;*/
     color: #232c45
     }
+.board-title .org-name {
+    color: #409eff
+}
 .board-content {
     padding: 10px 10px 30px 10px;
     }
+
+.second-title .name {
+    font: bold 15px/22px microsoft yahei,helvetia,pingfang sc,Arial,Tahoma;
+    padding: 0 15px 0 20px;
+    /*float: left;*/
+    color: #232c45
+}
 .icon {
     width: 24px;
     height: 24px;
@@ -1050,4 +1063,56 @@ ul.tab-title.right li {
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     z-index: 2000;
+}
+
+/*
+ * Component: breadcrumb
+ * --------------
+ */
+.breadcrumb {
+    padding: 10px 15px 0;
+    background: #fff;
+}
+.breadcrumb > .breadcrumb-item {
+    color: #959da9;
+}
+.breadcrumb > .breadcrumb-item > a {
+    color: #5f6c7e;
+}
+.breadcrumb > .breadcrumb-item > a:hover {
+    color: #409eff;
+}
+.breadcrumb > .breadcrumb-item > .breadcrumb-separator {
+    margin: 0 9px;
+}
+
+/*
+ * Component: user add gender radio
+ * --------------
+ */
+label.gender {
+    padding-left: 10px;
+}
+
+/*
+ * Component: back
+ * --------------
+ */
+.BoardTitle.Back {
+    display: inline-block;
+    width: 100%;
+    background: url(/images/ico_back.svg) no-repeat 10px center;
+    background-size: 24px 24px;
+    border-bottom: 1px solid #ecedef;
+    font-size: 16px;
+    opacity: 0.7;
+    padding: 6px 40px;
+}
+a.BoardTitle.Back:hover {
+    opacity: 1
+}
+a.BoardTitle.Back:hover {
+    background-position: 5px center;
+    padding: 6px 55px 6px 35px;
+    opacity: 1
 }

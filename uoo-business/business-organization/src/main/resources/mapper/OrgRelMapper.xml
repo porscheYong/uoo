@@ -6,8 +6,8 @@
     <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.organization.entity.OrgRel">
         <result column="ORG_REL_ID" property="orgRelId" />
         <result column="ORG_ID" property="orgId" />
-        <result column="SUP_ORG_ID" property="supOrgId" />
-        <result column="ORG_REL_TYPE_ID" property="orgRelTypeId" />
+        <result column="PARENT_ORG_ID" property="parentOrgId" />
+        <result column="REF_CODE" property="refCode" />
         <result column="STATUS_CD" property="statusCd" />
         <result column="CREATE_DATE" property="createDate" />
         <result column="CREATE_USER" property="createUser" />
@@ -18,7 +18,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ORG_REL_ID, ORG_ID, SUP_ORG_ID, ORG_REL_TYPE_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        ORG_REL_ID, ORG_ID, PARENT_ORG_ID, REF_CODE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
     <!-- 获取OrgIdSeq -->
@@ -38,50 +38,125 @@
 
 
     <select id="queryOrgTreeRoot" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-        SELECT A.ORG_NAME NAME, B.ORG_ID ID ,B.SUP_ORG_ID PID
-        FROM TB_ORG A, TB_ORG_REL B
-        WHERE A.STATUS_CD = 1000
-        AND B.STATUS_CD = 1000
-        AND A.ORG_ID = B.ORG_ID
-        <if test="orgRootId != null">
-            AND A.ORG_ID = #{orgRootId}
-        </if>
-        ORDER BY A.ORG_LEVEL
+        <!--SELECT A.ORG_NAME NAME, B.ORG_ID ID ,B.PARENT_ORG_ID PID-->
+        <!--FROM TB_ORG A, TB_ORG_REL B-->
+        <!--WHERE A.STATUS_CD = 1000-->
+        <!--AND B.STATUS_CD = 1000-->
+        <!--AND A.ORG_ID = B.ORG_ID-->
+        <!--<if test="orgRootId != null">-->
+            <!--AND A.ORG_ID = #{orgRootId}-->
+        <!--</if>-->
+        <!--ORDER BY A.ORG_LEVEL-->
+        SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.PARENT_ORG_ID PID
+        FROM TB_ORG_REL         A,
+        TB_ORG                  B,
+        TB_ORG_REL_TYPE         C,
+        TB_OGT_ORG_RELTYPE_CONF D,
+        TB_ORG_TREE             E
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000'
+        AND D.STATUS_CD = '1000'
+        AND E.STATUS_CD = '1000'
+        AND E.ORG_TREE_ID = D.ORG_TREE_ID
+        AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
+        AND A.REF_CODE = C.REF_CODE
+        AND A.ORG_ID=B.ORG_ID
+        AND E.ORG_TREE_ID = #{orgTreeId}
+        AND A.ORG_ID = #{orgRootId}
+
     </select>
 
 
 
     <select id="queryOrgTreeChilden" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-        SELECT A.ORG_NAME NAME, B.ORG_ID ID ,B.SUP_ORG_ID PID
-        FROM TB_ORG A, TB_ORG_REL B
-        WHERE A.STATUS_CD = 1000
-        AND B.STATUS_CD = 1000
-        AND A.ORG_ID = B.ORG_ID
-        <if test="pid != null">
-            AND B.SUP_ORG_ID = #{pid}
-        </if>
-  <!--      <if test="orgRootId != null">
-            AND A.ORG_ID = #{orgRootId}
-        </if>-->
+        <!--SELECT A.ORG_NAME NAME, B.ORG_ID ID ,B.SUP_ORG_ID PID-->
+        <!--FROM TB_ORG A, TB_ORG_REL B-->
+        <!--WHERE A.STATUS_CD = 1000-->
+        <!--AND B.STATUS_CD = 1000-->
+        <!--AND A.ORG_ID = B.ORG_ID-->
+        <!--<if test="pid != null">-->
+            <!--AND B.SUP_ORG_ID = #{pid}-->
+        <!--</if>-->
+        <!--ORDER BY A.ORG_LEVEL-->
 
-        ORDER BY A.ORG_LEVEL
+
+        SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.PARENT_ORG_ID PID
+        FROM TB_ORG_REL         A,
+        TB_ORG                  B,
+        TB_ORG_REL_TYPE         C,
+        TB_OGT_ORG_RELTYPE_CONF D,
+        TB_ORG_TREE             E
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000'
+        AND D.STATUS_CD = '1000'
+        AND E.STATUS_CD = '1000'
+        AND E.ORG_TREE_ID = D.ORG_TREE_ID
+        AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
+        AND A.REF_CODE = C.REF_CODE
+        AND A.ORG_ID=B.ORG_ID
+        AND E.ORG_TREE_ID = #{orgTreeId}
+        <if test="pid != null">
+            AND A.PARENT_ORG_ID = #{pid}
+        </if>
+        ORDER BY B.SORT
     </select>
 
 
     <select id="isLeaf" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-        SELECT A.ORG_NAME NAME, B.ORG_ID ID ,B.SUP_ORG_ID PID
-        FROM TB_ORG A, TB_ORG_REL B
-        WHERE A.STATUS_CD = 1000
-        AND B.STATUS_CD = 1000
-        AND A.ORG_ID = B.ORG_ID
+        <!--SELECT A.ORG_NAME NAME, B.ORG_ID ID ,B.SUP_ORG_ID PID-->
+        <!--FROM TB_ORG A, TB_ORG_REL B-->
+        <!--WHERE A.STATUS_CD = 1000-->
+        <!--AND B.STATUS_CD = 1000-->
+        <!--AND A.ORG_ID = B.ORG_ID-->
+        <!--<if test="pid != null">-->
+            <!--AND B.SUP_ORG_ID = #{pid}-->
+        <!--</if>-->
+        SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.PARENT_ORG_ID PID
+        FROM TB_ORG_REL         A,
+        TB_ORG                  B,
+        TB_ORG_REL_TYPE         C,
+        TB_OGT_ORG_RELTYPE_CONF D,
+        TB_ORG_TREE             E
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000'
+        AND D.STATUS_CD = '1000'
+        AND E.STATUS_CD = '1000'
+        AND E.ORG_TREE_ID = D.ORG_TREE_ID
+        AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
+        AND A.REF_CODE = C.REF_CODE
+        AND A.ORG_ID=B.ORG_ID
+        AND E.ORG_TREE_ID = #{orgTreeId}
         <if test="pid != null">
-            AND B.SUP_ORG_ID = #{pid}
+            AND A.PARENT_ORG_ID = #{pid}
         </if>
-     <!--   <if test="orgRootId != null">
-            AND A.ORG_ID = #{orgRootId}
-        </if>-->
-        ORDER BY A.ORG_LEVEL
     </select>
+
+
+    <select id="leafCount" resultType="java.lang.Integer">
+        SELECT  count(1)
+        FROM TB_ORG_REL         A,
+        TB_ORG                  B,
+        TB_ORG_REL_TYPE         C,
+        TB_OGT_ORG_RELTYPE_CONF D,
+        TB_ORG_TREE             E
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000'
+        AND D.STATUS_CD = '1000'
+        AND E.STATUS_CD = '1000'
+        AND E.ORG_TREE_ID = D.ORG_TREE_ID
+        AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
+        AND A.REF_CODE = C.REF_CODE
+        AND A.ORG_ID=B.ORG_ID
+        AND E.ORG_TREE_ID = #{orgTreeId}
+        <if test="pid != null">
+            AND A.PARENT_ORG_ID = #{pid}
+        </if>
+    </select>
+
     
     
     <select id="getOrgRelType" resultType="cn.ffcs.uoo.core.organization.vo.OrgRefTypeVo">
@@ -93,20 +168,20 @@
         (SELECT O.ORG_NAME
         FROM TB_ORG O
         WHERE O.STATUS_CD = '1000'
-        AND O.ORG_ID = B.SUP_ORG_ID) SUPORGNAME,
-        B.ORG_REL_TYPE_ID
+        AND O.ORG_ID = B.PARENT_ORG_ID) SUPORGNAME,
+        B.REF_CODE
         FROM TB_ORG_REL B
         WHERE B.STATUS_CD = '1000'
         <if test="org.orgId != null">
             AND B.ORG_ID = #{org.orgId}
         </if>
         ) BB LEFT JOIN (SELECT * FROM TB_ORG_REL_TYPE WHERE STATUS_CD = '1000') ORT
-        ON ORT.ORG_REL_TYPE_ID = BB.ORG_REL_TYPE_ID
+        ON ORT.REF_CODE = BB.REF_CODE
     </select>
 
 
     <select id="selectOrgRelTypePage" resultType="cn.ffcs.uoo.core.organization.vo.OrgRefTypeVo">
-        SELECT ORGNAME,SUPORGNAME,ORT.REF_NAME REFNAME,to_char(ORT.CREATE_DATE,'YYYY-MM-DD hh24:mi:ss') createDate
+        SELECT ORGNAME,SUPORGNAME,ORT.REF_NAME REFNAME,ORT.ORG_BIZ_NAME orgBizName,to_char(BB.CREATE_DATE,'YYYY-MM-DD hh24:mi:ss') createDate
         FROM (SELECT (SELECT O.ORG_NAME
         FROM TB_ORG O
         WHERE O.STATUS_CD = '1000'
@@ -114,15 +189,19 @@
         (SELECT O.ORG_NAME
         FROM TB_ORG O
         WHERE O.STATUS_CD = '1000'
-        AND O.ORG_ID = B.SUP_ORG_ID) SUPORGNAME,
-        B.ORG_REL_TYPE_ID
+        AND O.ORG_ID = B.PARENT_ORG_ID) SUPORGNAME,
+        B.REF_CODE,
+        B.CREATE_DATE
         FROM TB_ORG_REL B
         WHERE B.STATUS_CD = '1000'
-        <if test="orgRefTypeVo.orgId != null">
-            AND B.ORG_ID = #{orgRefTypeVo.orgId}
-        </if>
-        ) BB LEFT JOIN (SELECT * FROM TB_ORG_REL_TYPE WHERE STATUS_CD = '1000') ORT
-        ON ORT.ORG_REL_TYPE_ID = BB.ORG_REL_TYPE_ID
+           <if test="orgRefTypeVo.orgId != null">
+              AND B.ORG_ID = #{orgRefTypeVo.orgId}
+           </if>
+        ) BB  LEFT JOIN (SELECT C.REF_CODE, F.ORG_BIZ_NAME,C.REF_NAME,F.ORG_ID
+        FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C ,TB_ORG_ORGTREE_REL F
+        where A.Status_Cd=1000 AND B.STATUS_CD=1000 AND C.STATUS_CD=1000 AND F.STATUS_CD=1000
+        AND A.Org_Tree_Id = B.ORG_TREE_ID AND A.ORG_REL_TYPE_ID=C.ORG_REL_TYPE_ID AND B.ORG_TREE_ID=F.ORG_TREE_ID)ORT on ORT.REF_CODE=BB.REF_CODE
+        and ORT.Org_Id=#{orgRefTypeVo.orgId}
     </select>
 
 
@@ -146,13 +225,13 @@
         SELECT *
         FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') fullName,
         ORG_NAME orgName,LEVEL lv,ORG_ID orgId
-        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.SUP_ORG_ID
+        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.PARENT_ORG_ID
         FROM TB_ORG A, TB_ORG_REL B
         WHERE A.ORG_ID = B.ORG_ID
         AND A.STATUS_CD = 1000
         AND B.STATUS_CD = 1000) AA
         START WITH ORG_ID = ${orgRootId}
-        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID)
+        CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID)
         WHERE 1=1
         <if test="search != null and search != ''">
            AND FULLNAME like '%'||#{search}||'%'
@@ -166,13 +245,13 @@
         SELECT *
         FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') fullName,
         ORG_NAME orgName,LEVEL lv,ORG_ID orgId
-        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.SUP_ORG_ID
+        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.PARENT_ORG_ID
         FROM TB_ORG A, TB_ORG_REL B
         WHERE A.ORG_ID = B.ORG_ID
         AND A.STATUS_CD = 1000
         AND B.STATUS_CD = 1000) AA
         START WITH ORG_ID = ${orgRootId}
-        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID)
+        CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID)
         WHERE 1=1
         <if test="search != null and search != ''">
             AND FULLNAME like '%'||#{search}||'%'
@@ -181,27 +260,51 @@
     </select>
     <!--组织检索翻页-->
     <select id="selectFuzzyOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
-        SELECT *
-        FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') fullName,
-        ORG_NAME ORGNAME,ORG_ID ORGID,CREATE_DATE ORGRELCREATDATE,ORG_CODE ORGCODE
-        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.SUP_ORG_ID,to_char(B.CREATE_DATE,'YYYY-MM-DD') CREATE_DATE,A.ORG_CODE
-        FROM TB_ORG A, TB_ORG_REL B
-        WHERE A.ORG_ID = B.ORG_ID
-        AND A.STATUS_CD = 1000
-        AND B.STATUS_CD = 1000) AA
-        START WITH ORG_ID = ${orgVo.orgRootId}
-        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID)
-        WHERE 1=1
+        <!--SELECT *-->
+        <!--FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') fullName,-->
+        <!--ORG_NAME ORGNAME,ORG_ID ORGID,CREATE_DATE ORGRELCREATDATE,ORG_CODE ORGCODE-->
+        <!--FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.PARENT_ORG_ID,to_char(B.CREATE_DATE,'YYYY-MM-DD') CREATE_DATE,A.ORG_CODE-->
+        <!--FROM TB_ORG A, TB_ORG_REL B-->
+        <!--WHERE A.ORG_ID = B.ORG_ID-->
+        <!--AND A.STATUS_CD = 1000-->
+        <!--AND B.STATUS_CD = 1000) AA-->
+        <!--START WITH ORG_ID = ${orgVo.orgRootId}-->
+        <!--CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID)-->
+        <!--WHERE 1=1-->
+        <!--<if test="orgVo.search != null and orgVo.search != ''">-->
+            <!--AND FULLNAME like '%'||#{orgVo.search}||'%'-->
+        <!--</if>-->
+
+
+        <!--SELECT E.FULL_NAME fullName,E.ORG_NAME ORGNAME,E.Org_Id orgId,D.CREATE_DATE ORGRELCREATDATE,E.ORG_CODE ORGCODE-->
+        <!--FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E-->
+        <!--WHERE A.ORG_TREE_ID = #{orgVo.orgTreeId}-->
+        <!--AND A.ORG_TREE_ID = B.ORG_TREE_ID-->
+        <!--AND A.ORG_REL_TYPE_ID = c.org_rel_type_id-->
+        <!--AND D.ORG_ID=E.ORG_ID-->
+        <!--AND C.REF_CODE=D.REF_CODE-->
+        <!--<if test="orgVo.search != null and orgVo.search != ''">-->
+           <!--AND E.FULL_NAME like '%'||#{orgVo.search}||'%'-->
+        <!--</if>-->
+
+        SELECT E.ORG_NAME orgName ,E.ORG_ID orgId,D.PARENT_ORG_ID parentOrgId,E.ORG_CODE orgCode
+        FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E
+        WHERE  A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND D.ORG_ID=E.ORG_ID
+        AND C.REF_CODE=D.REF_CODE
+        AND A.ORG_TREE_ID = #{orgVo.orgTreeId}
         <if test="orgVo.search != null and orgVo.search != ''">
-            AND FULLNAME like '%'||#{orgVo.search}||'%'
+            AND E.ORG_NAME like '%'||#{orgVo.search}||'%'
         </if>
+
     </select>
     <!--检索出的组织树-->
     <select id="selectFuzzyOrgRelTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-       SELECT *
+    <!--    SELECT *
         FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULLNAME,
         ORG_NAME ORGNAME,LEVEL LV,ORG_ID ORGID
-        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.SUP_ORG_ID
+        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.PARENT_ORG_ID
         FROM TB_ORG A, TB_ORG_REL B
         WHERE A.ORG_ID = B.ORG_ID
         AND A.STATUS_CD = 1000
@@ -216,15 +319,26 @@
            AND C.ORG_TREE_ID = B.ORG_TREE_ID
            AND C.ORG_ID =  #{orgRootId})) AA
         START WITH ORG_ID =  #{orgleafId}
-        CONNECT BY PRIOR  AA.SUP_ORG_ID = AA.ORG_ID )
+        CONNECT BY PRIOR  AA.SUP_ORG_ID = AA.ORG_ID )-->
+        SELECT * FROM (
+        SELECT ORG_ID id,PARENT_ORG_ID pid,ORG_NAME name FROM (
+        SELECT E.ORG_NAME,E.ORG_ID ,D.PARENT_ORG_ID,D.CREATE_DATE,E.ORG_CODE
+        FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E
+        WHERE  A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND D.ORG_ID=E.ORG_ID
+        AND C.REF_CODE=D.REF_CODE
+        AND A.ORG_TREE_ID =#{orgTreeId} )AA
+        START WITH ORG_ID = #{orgId}
+        CONNECT BY AA.ORG_ID = PRIOR AA.PARENT_ORG_ID )
     </select>
     <!--检索出完检索出完整的组织树-->
-    <select id="selectFuzzyFullOrgRelTree">
-        SELECT * FROM (
+    <select id="selectFuzzyFullOrgRelTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+   <!--     SELECT * FROM (
         WITH FUZZYORGTREE AS(
         SELECT *
         FROM (SELECT ORG_ID ORGID,SUP_ORG_ID supOrgId
-        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.SUP_ORG_ID
+        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.PARENT_ORG_ID
         FROM TB_ORG A, TB_ORG_REL B
         WHERE A.ORG_ID = B.ORG_ID
         AND A.STATUS_CD = 1000
@@ -244,21 +358,46 @@
         ROOTTREE AS (
           SELECT *
         FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') fullName,
-        ORG_NAME ORGNAME,ORG_ID ORGID,CREATE_DATE ORGRELCREATDATE,ORG_CODE ORGCODE,SUP_ORG_ID supOrgId
-        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.SUP_ORG_ID,to_char(B.CREATE_DATE,'YYYY-MM-DD') CREATE_DATE,A.ORG_CODE
+        ORG_NAME ORGNAME,ORG_ID ORGID,CREATE_DATE ORGRELCREATDATE,ORG_CODE ORGCODE,PARENT_ORG_ID supOrgId
+        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.PARENT_ORG_ID,to_char(B.CREATE_DATE,'YYYY-MM-DD') CREATE_DATE,A.ORG_CODE
         FROM TB_ORG A, TB_ORG_REL B
         WHERE A.ORG_ID = B.ORG_ID
         AND A.STATUS_CD = 1000
         AND B.STATUS_CD = 1000) AA
         START WITH ORG_ID = #{orgRootId}
-        CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID))
+        CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID))
         SELECT ROOTTREE.* FROM ROOTTREE,FUZZYORGTREE WHERE ROOTTREE.SUPORGID = FUZZYORGTREE.SUPORGID
-        )
+        )-->
+        WITH ROOTTREE AS(
+        SELECT * FROM (
+        SELECT ORG_ID ID,PARENT_ORG_ID PID,ORG_NAME NAME FROM (
+        SELECT E.ORG_NAME,E.ORG_ID ,D.PARENT_ORG_ID,D.CREATE_DATE,E.ORG_CODE
+        FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E
+        WHERE A.STATUS_CD='1000' AND B.STATUS_CD='1000' AND C.STATUS_CD='1000' AND D.STATUS_CD='1000' AND E.STATUS_CD='1000' AND
+        A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND D.ORG_ID=E.ORG_ID
+        AND C.REF_CODE=D.REF_CODE
+        AND A.ORG_TREE_ID = #{orgTreeId} )AA
+        START WITH ORG_ID = #{orgId}
+        CONNECT BY AA.ORG_ID = PRIOR AA.PARENT_ORG_ID ))
+        SELECT distinct ORG_ID ID,PARENT_ORG_ID PID,ORG_NAME NAME FROM (
+        SELECT E.ORG_NAME,E.ORG_ID ,D.PARENT_ORG_ID,D.CREATE_DATE,E.ORG_CODE
+        FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E
+        WHERE A.STATUS_CD='1000' AND B.STATUS_CD='1000' AND C.STATUS_CD='1000' AND D.STATUS_CD='1000' AND E.STATUS_CD='1000'
+        AND A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND D.ORG_ID=E.ORG_ID
+        AND C.REF_CODE=D.REF_CODE
+        AND A.ORG_TREE_ID = #{orgTreeId}
+        AND D.PARENT_ORG_ID IN (SELECT ID FROM ROOTTREE))
+        union
+        select * from ROOTTREE
     </select>
 
 
     <select id="getOrgRel" resultType="cn.ffcs.uoo.core.organization.entity.OrgRel">
-        SELECT D.ORG_REL_ID orgRelId,D.ORG_ID orgId,D.SUP_ORG_ID supOrgId,D.ORG_REL_TYPE_ID orgRelTypeId,
+        SELECT D.ORG_REL_ID orgRelId,D.ORG_ID orgId,D.PARENT_ORG_ID parentOrgId,D.REF_CODE refCode,
         D.STATUS_CD statusCd ,D.CREATE_DATE createDate,D.CREATE_USER createUser,
         D.UPDATE_DATE updateDate,D.UPDATE_USER updateUser,D.STATUS_DATE statusDate
         FROM TB_ORG_TREE  A,
@@ -271,8 +410,126 @@
         AND D.STATUS_CD = '1000'
         AND A.ORG_TREE_ID = B.ORG_TREE_ID
         AND B.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
-        AND D.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND D.REF_CODE = C.REF_CODE
         AND A.ORG_TREE_ID = #{orgTreeId}
         AND D.ORG_ID = #{orgId}
     </select>
+
+    <!-- 获取指定组织树的层级 -->
+    <select id="selectTarOrgRelTreeAndLv" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+        <!--SELECT lv "level",ORG_NAME name,ORG_ID id,PARENT_ORG_ID pid,'true' checked,'false' chkDisabled FROM (-->
+        <!--SELECT-->
+        <!--REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,-->
+        <!--ORG_NAME,ORG_ID,PARENT_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD,LEVEL lv-->
+        <!--FROM (SELECT A.* ,B.PARENT_ORG_ID-->
+        <!--FROM TB_ORG A, TB_ORG_REL B-->
+        <!--WHERE A.ORG_ID = B.ORG_ID-->
+        <!--AND A.STATUS_CD = 1000-->
+        <!--AND B.STATUS_CD = 1000) AA-->
+        <!--START WITH ORG_ID = #{orgRootId}-->
+        <!--CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID) WHERE lv &lt; #{lv}-->
+        <!--<if test="curOrgId != null and curOrgId != ''">-->
+            <!--AND PID = #{curOrgId}-->
+        <!--</if>-->
+        <choose>
+        <when test="curOrgId != null and curOrgId != ''">
+            SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.PARENT_ORG_ID PID,F.ORG_LEVEL "level"
+            FROM TB_ORG_REL         A,
+            TB_ORG                  B,
+            TB_ORG_REL_TYPE         C,
+            TB_OGT_ORG_RELTYPE_CONF D,
+            TB_ORG_TREE             E,
+            TB_ORG_LEVEL            F
+            WHERE A.STATUS_CD = '1000'
+            AND B.STATUS_CD = '1000'
+            AND C.STATUS_CD = '1000'
+            AND D.STATUS_CD = '1000'
+            AND E.STATUS_CD = '1000'
+            AND F.STATUS_CD = '1000'
+            AND E.ORG_TREE_ID = D.ORG_TREE_ID
+            AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
+            AND A.REF_CODE = C.REF_CODE
+            AND A.ORG_ID=B.ORG_ID
+            AND E.ORG_TREE_ID = F.ORG_TREE_ID
+            AND F.ORG_ID=B.ORG_ID
+            AND E.ORG_TREE_ID = #{orgTreeId}
+            AND A.PARENT_ORG_ID = #{curOrgId}
+            AND F.ORG_LEVEL &lt;= #{lv}
+            ORDER BY B.ORG_LEVEL
+        </when>
+        <otherwise>
+            SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.PARENT_ORG_ID PID,F.ORG_LEVEL "level"
+            FROM TB_ORG_REL         A,
+            TB_ORG                  B,
+            TB_ORG_REL_TYPE         C,
+            TB_OGT_ORG_RELTYPE_CONF D,
+            TB_ORG_TREE             E,
+            TB_ORG_LEVEL            F
+            WHERE A.STATUS_CD = '1000'
+            AND B.STATUS_CD = '1000'
+            AND C.STATUS_CD = '1000'
+            AND D.STATUS_CD = '1000'
+            AND E.STATUS_CD = '1000'
+            AND F.STATUS_CD = '1000'
+            AND E.ORG_TREE_ID = D.ORG_TREE_ID
+            AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
+            AND A.REF_CODE = C.REF_CODE
+            AND A.ORG_ID=B.ORG_ID
+            AND E.ORG_TREE_ID = F.ORG_TREE_ID
+            AND F.ORG_ID=B.ORG_ID
+            AND E.ORG_TREE_ID = #{orgTreeId}
+            AND A.ORG_ID = #{orgRootId}
+        </otherwise>
+        </choose>
+    </select>
+
+    <select id="selectAllTarOrgRelTreeAndLv"  resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+       <!--  SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.PARENT_ORG_ID PID,'false' chkDisabled
+            FROM TB_ORG_REL         A,
+            TB_ORG                  B,
+            TB_ORG_REL_TYPE         C,
+            TB_OGT_ORG_RELTYPE_CONF D,
+            TB_ORG_TREE             E,
+            TB_ORG_LEVEL            F
+            WHERE A.STATUS_CD = '1000'
+            AND B.STATUS_CD = '1000'
+            AND C.STATUS_CD = '1000'
+            AND D.STATUS_CD = '1000'
+            AND E.STATUS_CD = '1000'
+            AND F.STATUS_CD = '1000'
+            AND E.ORG_TREE_ID = D.ORG_TREE_ID
+            AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
+            AND A.REF_CODE = C.REF_CODE
+            AND A.ORG_ID=B.ORG_ID
+            AND F.ORG_ID = B.ORG_ID
+            AND E.ORG_TREE_ID = F.ORG_TREE_ID
+            AND E.ORG_TREE_ID = #{orgTreeId}
+            AND F.ORG_LEVEL &lt;= #{lv}-->
+        SELECT NAME,ID,PID,CASE WHEN lv=#{lv} then 0 else DECODE(NUM,0,0,1) end ISPARENT FROM (
+        SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.PARENT_ORG_ID PID,
+        (SELECT COUNT(1) FROM TB_ORG_REL B WHERE B.STATUS_CD='1000' AND A.REF_CODE=C.REF_CODE AND B.PARENT_ORG_ID=A.ORG_ID) NUM,
+        F.ORG_LEVEL lv
+        FROM TB_ORG_REL         A,
+        TB_ORG                  B,
+        TB_ORG_REL_TYPE         C,
+        TB_OGT_ORG_RELTYPE_CONF D,
+        TB_ORG_TREE             E,
+        TB_ORG_LEVEL            F
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000'
+        AND D.STATUS_CD = '1000'
+        AND E.STATUS_CD = '1000'
+        AND F.STATUS_CD = '1000'
+        AND E.ORG_TREE_ID = D.ORG_TREE_ID
+        AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
+        AND A.REF_CODE = C.REF_CODE
+        AND A.ORG_ID=B.ORG_ID
+        AND F.ORG_ID = B.ORG_ID
+        AND E.ORG_TREE_ID = F.ORG_TREE_ID
+        AND E.ORG_TREE_ID = #{orgTreeId}
+        AND F.ORG_LEVEL &lt;= #{lv} )
+    </select>
+
+
 </mapper>

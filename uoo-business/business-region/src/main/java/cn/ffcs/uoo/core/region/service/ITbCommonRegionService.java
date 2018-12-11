@@ -1,7 +1,11 @@
 package cn.ffcs.uoo.core.region.service;
 
-import cn.ffcs.uoo.core.region.entity.TbCommonRegion;
+import java.util.List;
+import java.util.Map;
+
 import com.baomidou.mybatisplus.service.IService;
+
+import cn.ffcs.uoo.core.region.entity.TbCommonRegion;
 
 /**
  * <p>
@@ -13,4 +17,10 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ITbCommonRegionService extends IService<TbCommonRegion> {
     public Long getId();
+    @SuppressWarnings("rawtypes")
+    public List<Map> getCommonRegion(Map<String,Object> params);
+    @SuppressWarnings("rawtypes")
+    public List<Map> getChildCommonRegionInfo(Map<String,Object> params);
+    @SuppressWarnings("rawtypes")
+    public List<TbCommonRegion> getTreeCommonRegion(Map<String,Object> params);
 }

@@ -192,11 +192,13 @@ select {
   height: 40px;
   margin: 0;
   border: 1px solid #d0d0d5;
-  border-right-width: 27px;
-  opacity: 0.0001;
+  border-radius: 4px;
+  padding: 5px;
+  /*border-right-width: 27px;*/
+  /*opacity: 0.0001;*/
   font-size: 14px;
-  font-family: simsun;
-  filter: alpha(opacity=0);
+  /*font-family: simsun;*/
+  /*filter: alpha(opacity=0);*/
   vertical-align: middle; }
 
 select[multiple] {
@@ -626,6 +628,24 @@ button.ui-button-warning:focus {
 .ui-button-warning:not(.loading):active {
   background-color: #dc5652;
   border-color: #dc5652; }
+
+.ui-button-delete {
+  border: 1px solid #ee4063;
+  background-color: #fff;
+  color: #ee4063; }
+
+.ui-button-delete:hover,
+input.ui-button-delete:focus,
+button.ui-button-delete:focus {
+  border: 1px solid #ee4063;
+  background-color: #fff;
+  color: #ee4063; }
+
+.ui-button-delete:not(.disabled):active,
+.ui-button-delete:not(.loading):active {
+  border: 1px solid #ee4063;
+  background-color: #fff;
+  color: #ee4063; }
 
 .ui-button.loading {
   cursor: default;
@@ -2832,3 +2852,7 @@ span.ui-date-item {
     transform: scale(1.1); }
   100% {
     transform: scale(1); } }
+    
+    .jbzl {
+        color: red;    
+    }

@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.organization.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.organization.entity.OrgOrgtypeRel;
 import cn.ffcs.uoo.core.organization.entity.OrgType;
 import cn.ffcs.uoo.core.organization.service.OrgTypeService;
@@ -36,7 +37,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/orgType")
 @Api(value = "/orgType", description = "组织类别相关操作")
-public class OrgTypeController {
+public class OrgTypeController extends BaseController {
 
     @Autowired
     private OrgTypeService orgTypeService;
@@ -92,6 +93,32 @@ public class OrgTypeController {
         ret.setState(ResponseResult.STATE_OK);
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
         ret.setData(orgTypeService.selectOrgTypeTree(id,orgTypeCode));
+        ret.setMessage("成功");
+        return ret;
+    }
+
+
+    @ApiOperation(value = "查询组织类别树全信息-web", notes = "查询组织类别树全信息")
+    @ApiImplicitParams({
+
+    })
+    @UooLog(value = "查询组织类别树全信息", key = "getFullOrgTypeTree")
+    @RequestMapping(value = "/getFullOrgTypeTree", method = RequestMethod.GET)
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<List<TreeNodeVo>> getFullOrgTypeTree(String id,String orgTypeCode,String orgId){
+        ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
+        ret.setState(ResponseResult.STATE_OK);
+        if (StrUtil.isNullOrEmpty(orgId)) {
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织id不能为空");
+        }
+        List<TreeNodeVo> treeNodeVos = new ArrayList<>();
+        if(StrUtil.isNullOrEmpty(id)){
+            ret.setData(orgTypeService.selectFullOrgTypeTreeByOrgId(id,orgTypeCode,orgId));
+        }else{
+            ret.setData(orgTypeService.selectOrgTypeTree(id,orgTypeCode));
+        }
+
         ret.setMessage("成功");
         return ret;
     }

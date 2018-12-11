@@ -17,7 +17,7 @@ public class ResponseResult<T> implements Serializable {
     /**
      * 提示编码
      */
-    private int code;
+    private int state;
 
     /**
      * 提示信息
