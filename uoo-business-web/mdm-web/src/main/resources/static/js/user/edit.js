@@ -261,13 +261,19 @@ function  editUser() {
     if(personalData.personalData.tbMobileVoList.length>0){
     	for(var i=0;i<personalData.personalData.tbMobileVoList.length;i++){
     		var d=personalData.personalData.tbMobileVoList[i];
+    		if(d.content==null||d.content=='null'){
+    			personalData.personalData.tbMobileVoList[i].content='';
+    		}
+    	}
+    	for(var i=0;i<personalData.personalData.tbMobileVoList.length;i++){
+    		var d=personalData.personalData.tbMobileVoList[i];
     		mobileHtml+="<li>";
     		if(i==0){
     			mobileHtml+="<span class='Label'><span class='Red'>* </span>联系电话</span>";
-    			mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' class='Col6 ui-input' required type='text' value='"+d.content+"'/>";
+    			mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' class='Col5 ui-input' required type='text' value='"+d.content+"'/>";
     		}else{
     			mobileHtml+="<span class='Label'><span class='Red'> </span> </span>";
-    			mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' class='Col6' type='text' value='"+d.content+"'/>";
+    			mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' class='Col5' type='text' value='"+d.content+"'/>";
     			mobileHtml+="&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a>";
     			
     		}
@@ -282,7 +288,7 @@ function  editUser() {
     }else{
 		mobileHtml+="<li>";
 		mobileHtml+="<span class='Label'><span class='Red'>* </span>联系电话</span>";
-		mobileHtml+="<input name='mobiles' contactid='' class='Col6 ui-input' required type='text' value=''/>";
+		mobileHtml+="<input name='mobiles' contactid='' class='Col5 ui-input' required type='text' value=''/>";
 		mobileHtml+="&nbsp;<a id='' href='javascript:void(0)' onclick='addMobileInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
 		mobileHtml+="</li>";
     }
@@ -291,13 +297,19 @@ function  editUser() {
     if(personalData.personalData.tbEamilVoList.length>0){
     	for(var i=0;i<personalData.personalData.tbEamilVoList.length;i++){
     		var d=personalData.personalData.tbEamilVoList[i];
+    		if(d.content==null||d.content=='null'){
+    			personalData.personalData.tbEamilVoList[i].content='';
+    		}
+    	}
+    	for(var i=0;i<personalData.personalData.tbEamilVoList.length;i++){
+    		var d=personalData.personalData.tbEamilVoList[i];
     		emailHtml+="<li>";
     		if(i==0){
     			emailHtml+="<span class='Label'><span class='Red'>* </span>邮箱</span>";
-    			emailHtml+="<input name='emails' contactid='"+d.contactId+"' class='Col6 ui-input' required type='text' value='"+d.content+"'/>";
+    			emailHtml+="<input name='emails' contactid='"+d.contactId+"' class='Col5 ui-input' required type='text' value='"+d.content+"'/>";
     		}else{
     			emailHtml+="<span class='Label'><span class='Red'> </span> </span>";
-    			emailHtml+="<input name='emails' contactid='"+d.contactId+"' class='Col6' type='text' value='"+d.content+"'/>";
+    			emailHtml+="<input name='emails' contactid='"+d.contactId+"' class='Col5' type='text' value='"+d.content+"'/>";
     			emailHtml+="&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a>";
     		}
     		if(i==0){
@@ -308,7 +320,7 @@ function  editUser() {
     }else{
     	emailHtml+="<li>";
     	emailHtml+="<span class='Label'><span class='Red'>* </span>邮箱</span>";
-    	emailHtml+="<input name='emails' contactid='' class='Col6 ui-input' required type='text' value=''/>";
+    	emailHtml+="<input name='emails' contactid='' class='Col5 ui-input' required type='text' value=''/>";
     	emailHtml+="&nbsp;<a id='' href='javascript:void(0)' onclick='addEmailInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
     	emailHtml+="</li>";
     }
@@ -320,7 +332,9 @@ function  editUser() {
     $('.icon-del').on('click', function () {
 		 $(this).parent().remove();
 	 });
-
+    $("#choseFileImg").change( function() {
+    	addPsonImg();
+    });
 	seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 	    userFormValidate = new Validate($('#userEditForm'));
 	    userFormValidate.immediate();
@@ -476,6 +490,10 @@ function openFamilyEditByEdit (i) {
 	personalData.currentEditFamilyInfo=personalData.familyInfo.records[i];
 	openFamilyEdit();
 }
+function openChoseImg(){
+	$('#choseFileImg').click();
+}
+
 //获取组织全称
 function getOrgFullName() {
     parent.layer.open({
@@ -781,6 +799,25 @@ function addFamily(){
 		}
 	});
 }
+function addPsonImg(){
+	var formData = new FormData();
+    formData.append('psnImageId', $('#psnImageId').val());
+    formData.append('multipartFile', $('#choseFileImg').val());
+    $.ajax({
+        url: "/psnImage/uploadImg",
+        type: "PUT",
+        data: formData,
+        contentType: false,
+        processData: false,
+        mimeType: "multipart/form-data",
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    });
+}
 function updatePersonnel(){
 	if (!userFormValidate.isAllPass())
         return;
@@ -934,6 +971,48 @@ function deleteJob(id){
     }, function(){
 
     });
+}
+function deleteImg(){
+	parent.layer.confirm('确定删除?', {
+		icon: 0,
+		title: '提示',
+		btn: ['确定','取消']
+	}, function(index, layero){
+		parent.layer.close(index);
+		/*$.ajax({
+			url:'/psnjob/delTbPsnjob?psnjobId='+id,
+			type:'DELETE',
+			dataType:'json',
+			success:function(data){
+				if(data.state==1000){
+					parent.layer.confirm('操作成功', {
+						icon: 0,
+						title: '提示',
+						btn: ['确定' ]
+					}, function(index, layero){
+						parent.layer.close(index);
+						
+					}, function(){
+						
+					});
+					getJobInfo();
+				}else{
+					parent.layer.confirm('操作失败,'+data.message, {
+						icon: 0,
+						title: '提示',
+						btn: ['确定' ]
+					}, function(index, layero){
+						parent.layer.close(index);
+						
+					}, function(){
+						
+					});
+				}
+			}
+		});*/
+	}, function(){
+		
+	});
 }
 function deleteEdu(id){
 	parent.layer.confirm('确定删除?', {
