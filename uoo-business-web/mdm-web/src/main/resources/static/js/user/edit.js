@@ -1171,7 +1171,7 @@ function gotoAccout(i){
 	url+="orgRootId="+orgRootId+"&";
 	url+="personnelId="+personnelId +"&";
 	url+="orgTreeId="+orgTreeId+"&";
-	url+="orgName="+orgName+"&";
+	url+="orgName="+encodeURI(orgName)+"&";
 	url+="opBtn="+0+"&";
 	url+="hType="+"uh"+"&";
 	url+="acctId="+userAcc.acctId+"&";
