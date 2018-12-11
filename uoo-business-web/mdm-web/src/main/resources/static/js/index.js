@@ -25,7 +25,7 @@ function initUserInfo(){  //初始化首页人员信息
     $http.get('/system/getCurrentLoginUserInfo', { }, 
     function (data) {
       getAcctInfo(data.acctId);
-    }, function (err1) {
+    }, function (err) {
 
     })
 }
@@ -186,6 +186,23 @@ function getDictionaryData () {
     }, function (err) {
 
     })
+}
+
+function logOut(){  //退出登录
+    parent.layer.confirm('是否退出登录?', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+    }, function(index, layero){
+        parent.layer.close(index);
+        window.location.href = "/logout";
+      }, function(){
+    
+    });
+}
+
+function cancel(){
+    $("#LAY_app_tabsheader").children(".layui-this").children(".layui-tab-close").trigger("click");
 }
 
 initUserInfo();
