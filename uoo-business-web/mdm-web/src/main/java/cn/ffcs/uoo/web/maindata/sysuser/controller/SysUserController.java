@@ -41,7 +41,7 @@ public class SysUserController {
     
     @ApiOperation(value = "登陆接口", notes = "登陆接口")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "sysUser", value = "sysUser", required = true, dataType = "SysUser" ),
+        @ApiImplicitParam(name = "alterPwdDTO", value = "alterPwdDTO", required = true, dataType = "AlterPwdDTO" ),
     })
     @RequestMapping(value = "/alterPwd", method = RequestMethod.POST)
     public ResponseResult<String> alterPwd(AlterPwdDTO alterPwdDTO){
