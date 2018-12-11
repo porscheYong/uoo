@@ -321,7 +321,7 @@
                     <span class="Label"><span class="Red">* </span>性别</span>
                     <select id="gender" name="sex">     
                     {{#each genderData}}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <option value="{{itemValue}}" {{#eq itemValue ../personalData.gender}}selected="selected"{{/eq}} >{{itemCnname}}</option>
+                     <option value="{{itemValue}}" {{#eq itemValue ../personalData.gender}}selected="selected"{{/eq}} >{{itemCnname}}</option>
                     {{/each}}
                     </select>
                     
