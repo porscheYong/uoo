@@ -20,12 +20,10 @@ function deleteOrgPsn(){
         data: JSON.stringify(psnInfo),
         dataType:"JSON",
         success: function (data) { //返回json结果
-          console.log(data);
           alert('删除成功');
           window.location.href = "list.html?id="+orgId+"&name="+orgName+"&orgTreeId="+orgTreeId;
         },
         error:function(err){
-          console.log(err);
           alert('删除失败');
         }
     });

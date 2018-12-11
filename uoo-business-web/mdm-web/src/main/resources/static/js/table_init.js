@@ -14,7 +14,7 @@ function getOrgList (orgId) {
     }, function (data) {
         initOrgTable(data.records)
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -24,7 +24,7 @@ function getOrgPersonnerList (orgId) {
     }, function (data) {
         initOrgPersonnelTable(data.records)
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -35,7 +35,7 @@ function initOrgTable (results) {
         'autoWidth': false,
         'ordering': true,
         'initComplete': function (settings, json) {
-            console.log(settings, json)
+
         },
         "scrollY": "375px",
         'columns': [
@@ -162,9 +162,6 @@ function initOrgPersonnelTable (results) {
         'searching': false,
         'autoWidth': false,
         'ordering': true,
-        'initComplete': function (settings, json) {
-            console.log(settings, json)
-        },
         "scrollY": "375px",
         'columns': [
             { 'data': "staffName", 'title': '姓名', 'className': 'row-name' },
@@ -294,5 +291,4 @@ getOrgPersonnerList(orgId);
 $('#orgEdit').on('click', function () {
    // alert(window.parent.location)
    var frame = $(this).contents().find("#orgFrame");
-   console.log(frame)
 })

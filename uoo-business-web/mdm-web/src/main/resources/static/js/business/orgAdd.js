@@ -253,7 +253,7 @@ function getAreaId(regionId) {
         areaCodeId = data.areaCode.areaCodeId;
         $('#areaCode').val(data.areaCode.areaCode);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -431,7 +431,7 @@ function addOrg () {
         loading.screenMaskDisable('container');
         toastr.success('新增成功！');
     }, function (err) {
-        console.log(err);
+
     })
 }
 

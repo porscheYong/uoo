@@ -5,6 +5,7 @@ var checkNode = []; //选中显示label标签
 var allRoles = [];
 var checkRole = []; //选中的角色
 var userRoleList = JSON.parse(window.localStorage.getItem('userRoleList'))
+console.log(userRoleList);
 
 // 组织类别树初始化
 function initRoleTree () {
@@ -34,13 +35,15 @@ function initRoleTree () {
     };
     $http.get('/permission/tbRoles/listRoles', {}, 
     function (data) {
+        console.log(data)
         for(var i=0;i < data.length;i++){
             allRoles.push({"name":data[i].roleName,"id":data[i].roleId});
         }
+        console.log(allRoles);
         $.fn.zTree.init($("#roleTree"), roleTetting, allRoles);
         autoCheck();
     }, function (err) {
-
+        console.log(err)
     })
 }
 
@@ -51,6 +54,8 @@ function roleBeforeClick (treeId, treeNode, clickFlag) {
 function onRoleCheck (e, treeId, treeNode) {
     var zTree = $.fn.zTree.getZTreeObj("roleTree");
     var node = zTree.getNodeByTId(treeNode.tId);
+    console.log(node);
+    console.log(node.id);
     if (checkNode.indexOf(node) === -1) {
         checkNode.push(node);
         checkRole.push({"roleId":node.id,"roleName":""});
@@ -63,6 +68,7 @@ function onRoleCheck (e, treeId, treeNode) {
         checkRole.splice(idx, 1);
         renderTag();
     }
+    console.log(checkNode);
 }
 
 function renderTag () {

@@ -34,6 +34,10 @@ function initMainTable(isCheck,search){
         'autoWidth': false,
         'ordering': true,
         'info': true,
+        // 'lengthChange':false,
+        'initComplete': function (settings, json) {
+            console.log(settings, json)
+        },
         "scrollY": "375px",
         'columns': [
             { 'data': "psnName", 'title': '人员姓名', 'className': 'row-psnName' ,
@@ -41,7 +45,6 @@ function initMainTable(isCheck,search){
                 if(row.typeName == '主账号'){
                     return '<a href="addMainAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&acctId='+ row.accId + '&statusCd='+row.statusCd+'&opBtn=0&hType=mh">'+ row.psnName +'</a>'
                 }else{
-
                     return '<a href="addSubAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&acctId='+ row.accId +'&statusCd='+row.statusCd+'&opBtn=0&hType=mh">'+ row.psnName +'</a>'
                 } 
               }
@@ -99,6 +102,7 @@ function initMainTable(isCheck,search){
                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                 callback(returnData);
             }, function (err) {
+                console.log(err)
             })
         }
     });

@@ -23,9 +23,6 @@ engine = new Bloodhound({
     }
 });
 
-
-
-
 function engineWithDefaults(q, sync, async) {
     if (q === '') {
         sortFlag = 0;

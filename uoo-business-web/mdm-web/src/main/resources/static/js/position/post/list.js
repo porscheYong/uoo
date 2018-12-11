@@ -7,9 +7,6 @@ var tableProcess = {
 							'searching' : false,
 							'autoWidth' : false,
 							'ordering' : true,
-							'initComplete' : function(settings, json) {
-								console.log(settings, json)
-							},
 							'destroy' : true,
 							"scrollY" : "375px",
 							'columns' : [

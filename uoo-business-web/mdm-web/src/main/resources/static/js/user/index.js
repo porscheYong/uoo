@@ -110,7 +110,7 @@ function initTree (orgTreeId) {
         onNodeClick(null, null, nodes[0]);
         zTree.addNodes(nodes[0], newNode);
     }, function (err) {
-        console.log(err)
+
     })
     // }
 }
@@ -158,7 +158,6 @@ function initBusinessList () {
         });
         $('#businessOrg').trigger('change');
     }, function (err) {
-        console.log(err)
         loading.screenMaskDisable('container');
     })
 }

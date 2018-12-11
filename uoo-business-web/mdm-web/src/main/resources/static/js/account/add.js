@@ -37,6 +37,9 @@ function initPsnTable(keyWord) {
         'ordering': true,
         'info': true,
         'lengthChange':true,
+        'initComplete': function (settings, json) {
+            console.log(settings, json)
+        },
         // "scrollY": "185px",
         // "scrollCollapse": true,
         'columns': [
@@ -46,8 +49,7 @@ function initPsnTable(keyWord) {
                 }
             },
                 { 'data': "content", 'title': '联系方式', 'className': 'row-content'},
-                { 'data': "psnNbr", 'title': '人员编码', 'className': 'row-psnNbr'},
-                { 'data': "personnelId", 'title': 'null', 'className': 'row-personnelId'}
+                { 'data': "psnNbr", 'title': '人员编码', 'className': 'row-psnNbr'}
         ],
         'language': {
             'emptyTable': '没有数据',  
@@ -85,7 +87,7 @@ function initPsnTable(keyWord) {
                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                 callback(returnData);
             }, function (err) {
-
+                console.log(err)
             })
         }
     });
@@ -204,8 +206,7 @@ function arrSort (arr, dataLeven) { // 参数：arr 排序的数组; dataLeven �
             .data({
                 "psnName":arr[i].psnName,
                 "content":arr[i].content,
-                "psnNbr":arr[i].psnNbr,
-                "personnelId":arr[i].personnelId
+                "psnNbr":arr[i].psnNbr
             })
             .draw();
     }

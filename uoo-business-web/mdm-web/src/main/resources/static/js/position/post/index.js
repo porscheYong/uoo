@@ -25,7 +25,6 @@ $(document).ready(function() {
 	loadPostTree();
 });
 function zTreeOnClick(event, treeId, treeNode) {
-	console.log(treeNode.tId);
 	changeIframe('/inaction/position/post/list.html?id=' + treeNode.postId);
 }
 function getFontCss(treeId, treeNode) {
@@ -43,7 +42,6 @@ function loadPostTree() {
 		dataType : 'json',
 		type : 'get',
 		success : function(data) {
-			console.log(data.data);
 			if (data.state == 1000) {
 				$.fn.zTree.init($("#standardTree"), setting, data.data);
 			} else {
