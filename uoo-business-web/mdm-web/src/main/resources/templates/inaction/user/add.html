@@ -1,808 +1,405 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>人员新增</title>
+    <title>人员管理</title>
 
     <!-- Bootstrap -->
-    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../../static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- jquery datatable -->
-    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+    <link href="../../../static/vendors/datatable/datatables.css" rel="stylesheet">
+    <!-- jquery cascader -->
+    <link href="../../../static/vendors/cascader/cascader.css" rel="stylesheet">
     <!-- jquery steps -->
-    <link href="/vendors/steps/jquery.steps.css" rel="stylesheet">
+    <link href="../../../static/vendors/steps/jquery.steps.css" rel="stylesheet">
     <!-- jquery tagsinput -->
-    <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
+    <link href="../../../static/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
     <!-- lulu ui -->
-    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+   <link href="../../../static/vendors/lulu/css/common/ui.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="/css/reset.css" rel="stylesheet">
-    <link href="/css/custom.css" rel="stylesheet">
-    <link href="/vendors/typeahead/typeahead.css" rel="stylesheet">
+    <link href="../../../static/css/reset.css" rel="stylesheet">
+    <link href="../../../static/css/custom.css" rel="stylesheet">
+
 
     <!--[if lt IE 9]>
-    <script src="/js/core/html5shiv.js"></script>
-    <script src="/js/core/respond.js"></script>
-    <script src="/js/core/excanvas.js"></script>
+    <script src="../../../static/js/core/html5shiv.js"></script>
+    <script src="../../../static/js/core/respond.js"></script>
+    <script src="../../../static/js/core/excanvas.js"></script>
     <![endif]-->
     <style type="text/css">
-        table.dataTable {
-            table-layout: fixed;
-        }
-
-        th {
-            text-align: center;
-            white-space: nowrap;
-        }
-
-        table.dataTable tbody td {
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        div.tag {
-            border-radius: 2px;
-            /*display: block;
-            float: left;*/
-            padding: 5px 9px;
-            background: #00a4ff;
-            text-decoration: none;
-            line-height: 1;
-            color: #fff;
-            margin-bottom: 5px;
-        }
-
-        div.tag a {
-            text-decoration: none;
-            color: #fff;
-        }
-
-        .wizard > .content > .body {
-            position: initial;
-        }
-        .wizard > .content {
-            height: auto;
-        }
-        .typeahead-input {
-            padding: 9px 8px !important;
-            background: none;
-        }
-        .typeahead-menu {
-            border-radius: 0;
-            width: 81%;
-            padding: 10px;
-            top: 95%;
-            left: 16%;
-            margin-bottom: 0;
-        }
-        .is-empty {
-            padding: 0;
-        }
-        table.dataTable.no-footer {
-            border-bottom: 0;
-        }
-        .wizard > .content > .body ul > li {
-            display: inline-block;
-        }
-        .dataTable a {
-            cursor: pointer;
-        }
-        .ui-input-del {
-            position: relative;
-            margin-top: 10px;
-        }
-        .ui-input-del:hover .icon-del, .ui-input-del:focus .icon-del {
-            display: block;
-        }
-        .icon-del {
-            display: none;
-            position: absolute;
-            z-index: 2;
-            line-height: 40px;
-            top: 0;
-            right: 5px;
-            color: #f26d7e;
-            font-size: 23px;
-            cursor: pointer;
-        }
-        .icon-del:hover {
-            color: #f26d7e;
-        }
-        .work-edit {
-            color: rgb(0,164,255);
-        }
-        .work-delte {
-            color: #f26d7e;
-            padding-left: 10px;
-        }
-        .edit-form {
-            margin: 10px;
-            margin-top: 20px;
-            position: relative;
-            border-top: 1px solid #c6cbd2;
-        }
-        .edit-title {
-            position: absolute;
-            text-align: center;
-            top: -10px;
-            left: 50%;
-            margin-left: -50px;
-            padding: 0 1em;
-            background: #fff;
-        }
+      table.dataTable {
+        table-layout: fixed;
+      }
+      
+      th {
+          text-align: center;
+          white-space: nowrap;
+      }
+      table.dataTable tbody td {
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+      div.tag {
+          border-radius: 2px;
+          /*display: block;
+          float: left;*/
+          padding: 5px 9px;
+          background: #00a4ff;
+          text-decoration: none;
+          line-height: 1;
+          color: #fff;
+          margin-bottom: 5px;
+      }
+      div.tag a {
+          text-decoration: none;
+          color: #fff;    
+      }
     </style>
-</head>
+  </head>
 
-<body style="background-color: #fff;">
-<div>
-    <a class="BoardTitle Back" href="javascript:history.go(-1);"  >返回</a>
-</div>
-<div class="board-title">
-    <span class="name ft18" id="orgName"></span>
-    <div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;">
-    </div>
-    <div id="userAdd">
-        <h2></h2>
-        <div>
-            <form id="userAddForm">
-            <div class="board-title">
-                <span class="name ft18">基本信息</span>
-            </div>
-            <div style="padding: 10px;">
-                <div class="row pos-relative" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="psnName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">姓名</label>
-                            <!--<input id="psnName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" required>-->
-                            <div class="typeahead col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
-                                <div>
-                                    <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
-                                    <input class="ui-input typeahead-input tt-input" id="psnName" type="text" name="q" required placeholder="输入人员关键字" autocomplete="off" spellcheck="false" dir="auto">
-                                    <img class="typeahead-spinner" src="img/spinner.gif" style="display: none;">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="psnNbr" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">员工工号</label>
-                            <input id="psnNbr" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
-                        </div>
-                    </div>
-                    <div class="user-table typeahead-menu">
-                        <table id="userTable" class="stripe" width="100%"></table>
-                    </div>
-                </div>
-
-                <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="certType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">
-                                证件类型
-                            </label>
-                            <select id="certType" class="col-md-8 col-sm-8 col-xs-12" required onchange="getSelectedCert()"></select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="psnCode" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
-                            <input id="psnCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" disabled>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="certNo" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                            <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" required onkeyup="getIdCardInfo()">
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="ncCode" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">人力编码</label>
-                            <input id="ncCode" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="gender" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">性别</label>
-                            <div style="line-height: 40px;" id="gender">
-                                <input type="radio" id="male" name="validateRadio" required value="1"
-                                ><label for="male" class="ui-radio"></label
-                            ><label for="male" class="gender">男</label>
-
-                                <input type="radio" id="female" name="validateRadio" required value="2"
-                                ><label for="female" class="ui-radio" style="margin-left: 30px;"></label
-                            ><label for="female" class="gender">女</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="nationality" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">籍贯</label>
-                            <input id="nationality" class="ui-input col-md-8 col-sm-8 col-xs-12">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="nation" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">民族</label>
-                            <select id="nation" class="col-md-8 col-sm-8 col-xs-12"></select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="toWorkTime" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 10px;line-height: 40px;text-align: right;">首次参加工作时间</label>
-                            <input id="toWorkTime" class="ui-input col-md-8 col-sm-8 col-xs-12">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="pliticalStatus" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">政治面貌</label>
-                            <select id="pliticalStatus" class="col-md-8 col-sm-8 col-xs-12"></select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="marriage" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">婚姻状况</label>
-                            <select id="marriage" class="col-md-8 col-sm-8 col-xs-12"></select>
-                        </div>
-                    </div>
-                </div>
-                <!--<div class="user-table">-->
-                    <!--<table id="userTable" class="stripe" width="100%"></table>-->
-                <!--</div>-->
-            </div>
-
-            <div class="board-title">
-                <span class="name ft18">联系信息</span>
-            </div>
-            <div style="padding: 10px;">
-                <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%; position: relative;">
-                            <label for="mobile" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">电话</label>
-                            <div id="tbMobileVoList" class="ui-input col-md-8 col-sm-8 col-xs-12">
-                                <input id="mobile" required>
-                            </div>
-                            <div class="fright" style="position: absolute; right: 0; line-height: 40px;" onclick="addMobile()">
-                                <a id="mobileAdd" href="javascript:void(0)"><span class="fa fa-plus-circle icon-add" style="padding-right: 0; font-size: 23px;"></span></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%; position: relative;">
-                            <label for="tbEamilVoList" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
-                            <div id="tbEamilVoList" class="ui-input col-md-8 col-sm-8 col-xs-12">
-                                <input id="email" required>
-                            </div>
-                            <div class="fright" style="position: absolute; right: 0; line-height: 40px;" onclick="addEmail()">
-                                <a id="emailAdd" href="javascript:void(0)"><span class="fa fa-plus-circle icon-add" style="padding-right: 0; font-size: 23px;"></span></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="tbFamilyList" class="form-item-label col-md-2 col-sm-2 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">家庭地址</label>
-                            <div class="col-md-10 col-sm-10 col-xs-12" style="width: 84%;position: relative;padding: 0;">
-                                <input id="tbFamilyList" class="ui-input" style="width: 100%;position: relative;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="board-title">
-                <span class="name ft18">工作经历</span>
-            </div>
-            <div style="padding: 10px;" id="workExperience">
-                <table id="workTable" class="stripe" width="100%"></table>
-                <div class="fright" id="workEditBtn" style="margin-right: 20px; margin-top: 10px;">
-                    <a class="button-add" href="javascript:void(0)" onclick="editWrokList()"><span class="fa fa-plus-circle icon-add"></span>添加</a>
-                </div>
-            </div>
-            <div id="workEdit">
-                <!--<div class="edit-title">-->
-                    <!--<span>工作经历</span>-->
-                <!--</div>-->
-                <!--<div style="padding-top: 35px;">-->
-                    <!--<form action="/submit" method="post" style="padding: 10px;">-->
-                        <!--<div class="row" style="margin-bottom: 10px;">-->
-                            <!--<div class="form-item" style="width: 100%">-->
-                                <!--<label for="companyName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">公司名称</label>-->
-                                <!--<input id="companyName" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="row" style="margin-bottom: 10px;">-->
-                            <!--<div class="form-item" style="width: 100%">-->
-                                <!--<label for="status" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">任职状态</label>-->
-                                <!--<input id="status" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="row" style="margin-bottom: 10px;">-->
-                            <!--<div class="form-item" style="width: 100%">-->
-                                <!--<label for="beginTime" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">任职开始时间</label>-->
-                                <!--<input id="beginTime" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="row" style="margin-bottom: 10px;">-->
-                            <!--<div class="form-item" style="width: 100%">-->
-                                <!--<label for="endTime" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">任职结束时间</label>-->
-                                <!--<input id="endTime" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</form>-->
-                    <!--<div class="row" style="margin-bottom: 10px;">-->
-                        <!--<div class="col-md-offset-4 col-xs-offset-4">-->
-                            <!--<button class="ui-button ui-button-primary" onclick="addWrokList()">保存</button>-->
-                            <!--<button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancelWrokEdit()">取消</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            </div>
-
-            <div class="board-title">
-                <span class="name ft18">教育经历</span>
-            </div>
-            <div style="padding: 10px;" id="eduExperience">
-                <table id="eduTable" class="stripe" width="100%"></table>
-                <div class="fright" id="eduEditBtn" style="margin-right: 20px; margin-top: 10px;">
-                    <a class="button-add" href="javascript:void(0)" onclick="editEduList()"><span class="fa fa-plus-circle icon-add"></span>添加</a>
-                </div>
-            </div>
-            <div id="eduEdit"></div>
-
-            <div class="board-title">
-                <span class="name ft18">家庭成员</span>
-            </div>
-            <div style="padding: 10px;" id="familyMember">
-                <table id="familyTable" class="stripe" width="100%"></table>
-                <div class="fright" id="familyEditBtn" style="margin-right: 20px; margin-top: 10px;">
-                    <a class="button-add" href="javascript:void(0)" onclick="editFamilyList()"><span class="fa fa-plus-circle icon-add"></span>添加</a>
-                </div>
-            </div>
-            <div id="familyEdit"></div>
-            <div class="clearfix"></div>
-        </form>
+  <body style="background-color: #fff;">   
+    <div id="wizard">
+      <h2></h2>
+      <div>
+        <div class="board-title">
+          <span class="name ft18">基本信息</span>
         </div>
-        <h2></h2>
-        <div>
-            <form>
-                <div class="board-title">
-                    <span class="name ft18">归属组织</span>
-                </div>
-                <div style="padding: 10px;" id="orgPerson">
-                    <table id="orgTable" class="stripe" width="100%"></table>
-                    <div class="fright" id="orgEditBtn" style="margin-right: 20px">
-                        <a class="button-add" href="javascript:void(0)" onclick="editOrgList()"><span class="fa fa-plus-circle icon-add"></span>添加</a>
-                    </div>
-                </div>
-                <div id="orgEdit"></div>
-            </form>
-        </div>
-    </div>
-
-<script id="workEditTemplate" type="text/x-handlebars-template">
-    <div class="edit-title">
-        <span>工作经历</span>
-    </div>
-    <div style="padding-top: 35px;">
         <form action="/submit" method="post" style="padding: 10px;">
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="form-item" style="width: 100%">
-                    <label for="companyName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">公司名称</label>
-                    <input id="companyName" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
-                </div>
+          <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="form-item" style="width: 100%">
+                <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">姓名</label>
+                <select  class="col-md-8 col-sm-8 col-xs-12">
+                    <option></option>
+                    <option>100~200</option>
+                    <option>300~400</option>
+                  </select>
+              </div>
             </div>
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="form-item" style="width: 100%">
-                    <label for="status" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">任职状态</label>
-                    <input id="status" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
-                </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="form-item" style="width: 100%">
+                <label for="idCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">头像</label>
+                <!-- <input type="code" id="idCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="100~200"> -->
+                <select  class="col-md-8 col-sm-8 col-xs-12">
+                  <option></option>
+                  <option>100~200</option>
+                  <option>300~400</option>
+                </select>
+              </div>
             </div>
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="form-item" style="width: 100%">
-                    <label for="beginTime" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">任职开始时间</label>
-                    <input id="beginTime" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+          </div>
+
+          <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="form-item" style="width: 100%">
+                <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">性别</label>
+                <div style="line-height: 40px;">
+                  <input type="radio" id="radio1" name="radio">
+                  <label for="radio1" class="ui-radio"></label><label for="radio1" style="padding-left: 10px;">男</label>
+
+                  <input type="radio" id="radio2" name="radio">
+                  <label for="radio2" class="ui-radio" style="margin-left: 30px;"></label><label for="radio2" style="padding-left: 10px;">女</label>
                 </div>
+              </div>
             </div>
-            <div class="row" style="margin-bottom: 10px;">
+          </div>
+
+          <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="form-item" style="width: 100%">
+                <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
+                <select  class="col-md-8 col-sm-8 col-xs-12">
+                    <option></option>
+                    <option>身份证</option>
+                    <option>护照</option>
+                  </select> 
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="form-item" style="width: 100%">
+                <label for="createDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">员工工号</label>
+                <input type="code" id="createDate" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="1000023023032" disabled>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="form-item" style="width: 100%">
+                <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                <select  class="col-md-8 col-sm-8 col-xs-12">
+                    <option></option>
+                    <option>100~200</option>
+                    <option>300~400</option>
+                  </select>                      
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="form-item" style="width: 100%">
+                <label for="idCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
+                <input type="code" id="idCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="5713012" disabled>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="form-item" style="width: 100%">
+                <label for="idTel" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">籍贯</label>
+                <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" value="">
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="form-item" style="width: 100%">
+                <label for="idCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人力编码</label>
+                <input type="code" id="idCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="code" required pattern="\d{4}" value="5713012" disabled>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="form-item" style="width: 100%">
+                <label for="idTel" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">民族</label>
+                <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" value="">
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="form-item" style="width: 100%">
+                <label for="idCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 10px;line-height: 40px;text-align: right;">首次参加工作时间</label>
+                <input type="code" id="idCode" class="ui-input col-md-8 col-sm-8 col-xs-12" placeholder=请选择 size="40" name="code" required pattern="\d{4}" value="">
+              </div>
+            </div>
+          </div>
+         
+          <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="form-item" style="width: 100%">
+                <label for="idTel" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">政治面貌</label>
+                <select  class="col-md-8 col-sm-8 col-xs-12">
+                    <option></option>
+                    <option>无</option>
+                    <option>团员</option>
+                    <option>党员</option>
+                  </select>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="form-item" style="width: 100%">
+                <label for="idCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" placeholder=请选择 style="padding-right: 20px;line-height: 40px;text-align: right;">婚姻状况</label>
+                <select class="col-md-8 col-sm-8 col-xs-12">
+                    <option></option>
+                    <option>未婚</option>
+                    <option>已婚</option>
+                  </select>
+              </div>
+            </div>
+          </div>
+        </form>
+  
+        <div class="board-title">
+          <span class="name ft18">联系信息</span>
+        </div>
+        <form action="/submit" method="post" style="padding: 10px;">  
+          <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="form-item" style="width: 100%">
+                <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">电话</label>
+                <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="form-item" style="width: 100%">
+                <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
+                <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 10px;">
+              <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="form-item" style="width: 100%">
-                    <label for="endTime" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">任职结束时间</label>
-                    <input id="endTime" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" >
+                  <label for="idMark" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">省市区域</label>
+                  <div class="col-md-10 col-sm-10 col-xs-12" style="width: 84%;position: relative;padding: 0;">
+                    <input id="address" class="ui-input" placeholder=请选择省份/城市/区县 style="width: 100%;position: relative;" size="40" name="tel" readonly="readonly">
+                  </div>
                 </div>
+              </div>
             </div>
         </form>
-        <div class="row" style="margin-bottom: 10px;">
-            <div class="col-md-offset-4 col-xs-offset-4">
-                <button class="ui-button ui-button-primary" onclick="addWrokList()">保存</button>
-                <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancelWrokEdit()">取消</button>
+      </div>
+
+      <h2></h2>
+      <div>
+          <div class="board-title">
+              <span class="name ft18">主账号</span>
+          </div>
+          <form action="/submit" method="post" style="padding: 10px;">
+            <div class="row" style="margin-bottom: 10px;">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-item" style="width: 100%">
+                  <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号名</label>
+                  <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                </div>
+              </div>
+
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-item" style="width: 100%">
+                  <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">手机号码</label>
+                  <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                </div>
+              </div>
             </div>
-        </div>
+
+            <div class="row" style="margin-bottom: 10px;">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="form-item" style="width: 100%">
+                    <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
+                    <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" style="margin-bottom: 10px;">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="form-item" style="width: 100%">
+                    <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
+                    <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                  </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="form-item" style="width: 100%">
+                    <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                    <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" style="margin-bottom: 10px;">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="form-item" style="width: 100%">
+                    <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">初始密码</label>
+                    <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                  </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-item" style="width: 100%">
+                      <label for="idTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
+                      <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                    </div>
+                  </div>
+              </div>
+          </form>
+      </div>
+
+      <h2></h2>
+      <div>
+          <div class="board-title">
+              <span class="name ft18">从账号</span>
+          </div>
+
+          <form action="/submit" method="post" style="padding: 10px;">
+            <div class="row" style="margin-bottom: 10px;">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-item" style="width: 100%">
+                  <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号类型</label>
+                  <div style="line-height: 40px;">
+                    <input type="radio" id="radio3" name="radio">
+                    <label for="radio3" class="ui-radio"></label><label for="radio3" style="padding-left: 10px;">资源</label>
+
+                    <input type="radio" id="radio4" name="radio">
+                    <label for="radio4" class="ui-radio" style="margin-left: 30px;"></label><label for="radio4" style="padding-left: 10px;">应用</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 10px;">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="form-item" style="width: 100%">
+                    <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号名</label>
+                    <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                  </div>
+              </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 10px;">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="form-item" style="width: 100%">
+                    <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
+                    <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                  </div>
+              </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 10px;">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-item" style="width: 100%">
+                  <label for="idTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">资源名称</label>
+                  <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
+                </div>
+              </div>
+            </div>
+              
+          </form>
+      </div>
     </div>
-</script>
 
-<script id="eduEditTemplate" type="text/x-handlebars-template">
-    <div class="edit-title">
-        <span>教育经历</span>
-    </div>
-    <div style="padding-top: 35px;">
-        <form action="/submit" method="post" style="padding: 10px;">
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="school" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">学校名称</label>
-                        <input id="school" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{eduData.school}}">
-                    </div>
-                </div>
+    <!-- jQuery -->
+    <script type="text/javascript" src="../../../static/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="../../../static/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" src="../../../static/vendors/datatable/datatables.js"></script>
+    <!-- sea js -->
+    <script type="text/javascript" src="../../../static/vendors/lulu/js/plugin/sea.js"></script>
+    <!-- laydate -->
+    <script type="text/javascript" src="../../../static/vendors/laydate/laydate.js"></script>
+    <!-- layer -->
+    <script type="text/javascript" src="../../../static/vendors/layer/layer.js"></script>
+    <!-- jquery cascader -->
+    <script type="text/javascript" src="../../../static/vendors/cascader/cascader.js"></script>
+    <!-- jquery steps -->
+    <script type="text/javascript" src="../../../static/vendors/steps/jquery.steps.js"></script>
+    <!-- jquery tagsinput -->
+    <script type="text/javascript" src="../../../static/vendors/tagsinput/jquery.tagsinput.js"></script>
+    <!-- init -->
+    <script type="text/javascript" src="../../../static/js/init.js"></script>
+    <script type="text/javascript" src="../../../static/js/user/add.js"></script>
+    <script>
+        $(function ()
+          {
+            $("#wizard").steps({
+                headerTag: "h2",
+                bodyTag: "div",
+                transitionEffect: "slideLeft"
+            });
+          });
 
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="major" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 10px;line-height: 40px;text-align: right;">专业</label>
-                        <input id="major" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{eduData.major}}">
-                    </div>
-                </div>
-            </div>
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="begindate" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">入学时间</label>
-                        <input id="begindate" class="ui-input col-md-8 col-sm-8 col-xs-12">
-                    </div>
-                </div>
+        seajs.use('../../../static/vendors/lulu/js/common/ui/Select', function () {
+          $('select').selectMatch();
+        })
 
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="enddate" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">毕业时间</label>
-                        <input id="enddate" class="ui-input col-md-8 col-sm-8 col-xs-12">
-                    </div>
-                </div>
-            </div>
-            <div class="row" style="margin-bottom: 10px;">
-                <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
-                    <!--<div class="form-item" style="width: 100%">-->
-                        <!--<label for="schoolType" class="form-item-label col-md-4 col-sm-4 col-xs-12"-->
-                               <!--style="padding-right: 20px;line-height: 40px;text-align: right;">学习方式</label>-->
-                        <!--<input id="schoolType" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{eduData.schoolType}}">-->
-                    <!--</div>-->
-                <!--</div>-->
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="degree" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">学位</label>
-                        <input id="degree" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{eduData.degree}}">
-                    </div>
-                </div>
+      </script>
 
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="education" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">学历</label>
-                        <input id="education" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{eduData.education}}">
-                    </div>
-                </div>
-            </div>
-
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="lastDegree" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">是否最高学位</label>
-                        <select id="lastDegree" class="col-md-8 col-sm-8 col-xs-12">
-                            <option></option>
-                            <option value="0" {{#eq eduData.lastDegree 0}}selected="selected"{{/eq}}>否</option>
-                            <option value="1" {{#eq eduData.lastDegree 1}}selected="selected"{{/eq}}>是</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                        <label for="lastEducation" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">是否最高学历</label>
-                        <select id="lastEducation" class="col-md-8 col-sm-8 col-xs-12">
-                            <option></option>
-                            <option value="0" {{#eq eduData.lastEducation 0}}selected="selected"{{/eq}}>否</option>
-                            <option value="1" {{#eq eduData.lastEducation 1}}selected="selected"{{/eq}}>是</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!--<div class="row" style="margin-bottom: 10px;">-->
-                <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
-                    <!--<div class="form-item" style="width: 100%">-->
-                        <!--<label for="lastDegree" class="form-item-label col-md-4 col-sm-4 col-xs-12"-->
-                               <!--style="padding-right: 20px;line-height: 40px;text-align: right;">是否最高学位</label>-->
-                        <!--<select id="lastDegree" class="col-md-8 col-sm-8 col-xs-12">-->
-                            <!--<option></option>-->
-                            <!--<option value="0" {{#eq eduData.lastDegree 0}}selected="selected"{{/eq}}>否</option>-->
-                            <!--<option value="1" {{#eq eduData.lastDegree 1}}selected="selected"{{/eq}}>是</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        </form>
-        <div class="row" style="margin-bottom: 10px;">
-            <div class="col-md-offset-4 col-xs-offset-4">
-                <button class="ui-button ui-button-primary" onclick="addEduList()">保存</button>
-                <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancelEduEdit()">取消</button>
-            </div>
-        </div>
-    </div>
-</script>
-
-<script id="familyEditTemplate" type="text/x-handlebars-template">
-    <div class="edit-title">
-        <span>家庭成员</span>
-    </div>
-    <div style="padding-top: 35px;">
-        <form action="/submit" method="post" style="padding: 10px;">
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="form-item" style="width: 100%">
-                    <label for="memName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">家庭成员姓名</label>
-                    <input id="memName" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" value="{{familyData.memName}}">
-                </div>
-            </div>
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="form-item" style="width: 100%">
-                    <label for="appellation" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">称谓</label>
-                    <input id="appellation" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" value="{{familyData.appellation}}">
-                </div>
-            </div>
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="form-item" style="width: 100%">
-                    <label for="gender2" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">性别</label>
-                    <select id="gender2" class="col-md-4 col-sm-4 col-xs-12">
-                        <option></option>
-                        <option value="1" {{#eq familyData.gender 1}}selected="selected"{{/eq}}>男</option>
-                        <option value="2" {{#eq familyData.gender 2}}selected="selected"{{/eq}}>女</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="form-item" style="width: 100%">
-                    <label for="relaPhone" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">联系电话</label>
-                    <input id="relaPhone" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" value="{{familyData.relaPhone}}">
-                </div>
-            </div>
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="form-item" style="width: 100%">
-                    <label for="relaAddr" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">联系地址</label>
-                    <input id="relaAddr" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" value="{{familyData.relaAddr}}">
-                </div>
-            </div>
-        </form>
-        <div class="row" style="margin-bottom: 10px;">
-            <div class="col-md-offset-4 col-xs-offset-4">
-                <button class="ui-button ui-button-primary" onclick="addFamilyList()">保存</button>
-                <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancelFamilyEdit()">取消</button>
-            </div>
-        </div>
-    </div>
-</script>
-
-<script id="orgEditTemplate" type="text/x-handlebars-template">
-    <div class="edit-title">
-        <span>组织归属</span>
-    </div>
-    <div style="padding-top: 35px;">
-        <form id="orgEditForm" style="padding: 10px;">
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="form-item" style="width: 100%">
-                    <label for="orgTreeName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织树名称</label>
-                    <select id="orgTreeName" class="col-md-4 col-sm-4 col-xs-12" required disabled>
-                        <option selected>{{orgData.orgTreeName}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="form-item" style="width: 100%">
-                    <label for="orgFullName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
-                           style="padding-right: 20px;line-height: 40px;text-align: right;">组织全称</label>
-                    <input id="orgFullName" class="ui-input col-md-4 col-sm-4 col-xs-12"  required disabled value="{{orgData.orgFullName}}">
-                </div>
-            </div>
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="form-item" style="width: 100%">
-                    <label for="doubleName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
-                           style="padding-right: 20px;line-height: 40px;text-align: right;">重名称谓</label>
-                    <input id="doubleName" class="ui-input col-md-4 col-sm-4 col-xs-12" required  value="{{orgData.doubleName}}">
-                </div>
-            </div>
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="form-item" style="width: 100%">
-                    <label for="property" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
-                           style="padding-right: 20px;line-height: 40px;text-align: right;">用工性质</label>
-                    <!--<input id="property" class="ui-input col-md-4 col-sm-4 col-xs-12" required value="{{orgData.property}}">-->
-                    <select id="property" class="col-md-4 col-sm-4 col-xs-12" required>
-                        <option></option>
-                        <option value=""></option>
-                        <option value=""></option>
-                    </select>
-                </div>
-            </div>
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="form-item" style="width: 100%">
-                    <label for="refType" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
-                           style="padding-right: 20px;line-height: 40px;text-align: right;">专兼职</label>
-                    <!--<input id="refType" class="ui-input col-md-4 col-sm-4 col-xs-12" required value="{{orgData.refType}}">-->
-                    <select id="refType" class="col-md-4 col-sm-4 col-xs-12" required>
-                        <option></option>
-                        <option value=""></option>
-                        <option value=""></option>
-                    </select>
-                </div>
-            </div>
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="form-item" style="width: 100%">
-                    <label for="postName" class="form-item-label col-md-3 col-sm-3 col-xs-12"
-                           style="padding-right: 20px;line-height: 40px;text-align: right;">职位</label>
-                    <input id="postName" class="ui-input col-md-4 col-sm-4 col-xs-12" value="{{orgData.postName}}" readonly onclick="getPostName()">
-                </div>
-            </div>
-        </form>
-        <div class="row" style="margin-bottom: 10px;">
-            <div class="col-md-offset-3 col-xs-offset-3">
-                <button class="ui-button ui-button-primary" onclick="addOrgList()">保存</button>
-                <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancelOrgEdit()">取消</button>
-            </div>
-        </div>
-    </div>
-</script>    
-
-<!--<script id="orgTemplate" type="text/x-handlebars-template">-->
-    <!--<div class="nav-tabs-brief" style="padding-top: 35px;">-->
-        <!--<div class="tab-content">-->
-            <!--<div class="tab-pane active" id="tab_content1">-->
-                <!--<form action="/submit" method="post" style="padding: 10px;">-->
-                    <!--<div class="row" style="margin-bottom: 10px;">-->
-                        <!--<div class="form-item" style="width: 100%">-->
-                            <!--<label for="orgTreeName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织树名称</label>-->
-                            <!--<select id="orgTreeName" class="col-md-4 col-sm-4 col-xs-12" disabled></select>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="row" style="margin-bottom: 10px;">-->
-                        <!--<div class="form-item" style="width: 100%">-->
-                            <!--<label for="orgFullName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"-->
-                                   <!--style="padding-right: 20px;line-height: 40px;text-align: right;">组织全称</label>-->
-                            <!--<input id="orgFullName" class="ui-input col-md-4 col-sm-4 col-xs-12"  required readonly onclick="getOrgFullName()">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="row" style="margin-bottom: 10px;">-->
-                        <!--<div class="form-item" style="width: 100%">-->
-                            <!--<label for="doubleName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"-->
-                                   <!--style="padding-right: 20px;line-height: 40px;text-align: right;">重名称谓</label>-->
-                            <!--<input id="doubleName" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="code">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="row" style="margin-bottom: 10px;">-->
-                        <!--<div class="form-item" style="width: 100%">-->
-                            <!--<label for="property" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"-->
-                                   <!--style="padding-right: 20px;line-height: 40px;text-align: right;">用工性质</label>-->
-                            <!--<input id="property" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="code">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="row" style="margin-bottom: 10px;">-->
-                        <!--<div class="form-item" style="width: 100%">-->
-                            <!--<label for="refType" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"-->
-                                   <!--style="padding-right: 20px;line-height: 40px;text-align: right;">专兼职</label>-->
-                            <!--<select id="refType" class="col-md-4 col-sm-4 col-xs-12"></select>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="row" style="margin-bottom: 10px;">-->
-                        <!--<div class="form-item" style="width: 100%">-->
-                            <!--<label for="postName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"-->
-                                   <!--style="padding-right: 20px;line-height: 40px;text-align: right;">职位</label>-->
-                            <!--<input id="postName" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="code" readonly onclick="getPostName()">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</form>-->
-                <!--<div class="row" style="margin-bottom: 10px;">-->
-                    <!--<div class="col-md-offset-3 col-xs-offset-3">-->
-                        <!--<button class="ui-button ui-button-primary" onclick="saveOrgTree()">保存</button>-->
-                        <!--<button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancelOrgEdit()">取消</button>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</script>-->
-<script id="orgListTemplate" type="text/x-handlebars-template">
-    <table>
-        <tr class="Title">
-            <td>序号</td>
-            <td>组织树名称</td>
-            <td>组织全称</td>
-            <td>重名称谓</td>
-            <td>用工性质</td>
-            <td>专兼职</td>
-            <td>职位</td>
-        </tr>
-        {{#each psonOrgVoList}}
-        <tr>
-            <td>{{addOne @index}}</td>
-            <td>{{orgTreeName}}</td>
-            <td>{{fullName}}</td>
-            <td>{{doubleName}}</td>
-            <td>{{property}}</td>
-            <td>{{refType}}</td>
-        </tr>
-        {{/each}}
-    </table>
-</script>
-<!-- jQuery -->
-<script type="text/javascript" src="/js/core/jquery.js"></script>
-<!-- Bootstrap -->
-<script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- handlebars -->
-<script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
-<!-- typeahead -->
-<script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
-<!-- jquery datatable -->
-<script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
-<!-- sea js -->
-<script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
-<!-- laydate -->
-<script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
-<!-- layer -->
-<script type="text/javascript" src="/vendors/layer/layer.js"></script>
-<!-- jquery steps -->
-<script type="text/javascript" src="/vendors/steps/jquery.steps.js"></script>
-<!-- jquery tagsinput -->
-<script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
-<script type="text/javascript" src="/js/IDCardUtils.js"></script>
-<!-- init -->
-<script type="text/javascript" src="/js/init.js"></script>
-<script type="text/javascript" src="/js/user/add.js"></script>
-<script>
-    seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-        $('select').selectMatch();
-    })
-</script>
-
-
-</body>
+	
+  </body>
 </html>

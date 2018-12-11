@@ -25,15 +25,11 @@ public interface TbPersonnelMapper extends BaseMapper<TbPersonnel> {
 
     public List<PersonnelOrgVo> getPersonnelOrg(TbPersonnelVo tbPersonnelVo);
 
-    public Long getSeqPsnCode();
+    public Long getPsnNbrId();
+
+    public Long getPsnCodeId();
+
+    public List<PsonOrgVo> getPsnOrg(Pagination page, PsonOrgVo psonOrgVo);
 
     public PsnByUserVo getPsnByUser(PsnByUserVo psnByUserVo);
-
-    public List<PsnBasicInfoVo> getPsnBasicInfo(Pagination page, @Param("psnBasicInfoVo") PsnBasicInfoVo psnBasicInfoVo);
-
-    public Integer getAcctNumByPsnId(@Param("personnelId") Long personnelId);
-
-    public List<FreePsnInfoVo> getFreePsnInfo(Pagination page, @Param("keyWord") String keyWord);
-
-    public UomGrpUserOrgInfoVo getIdCardNcCode(@Param("certNo") String certNo);
 }

@@ -1,12 +1,13 @@
 package cn.ffcs.uoo.core.personnel.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 /**
  *
@@ -250,20 +251,20 @@ public class IDCardUtil {
      *            已经校验合法的身份证号
      * @return Strig YYYY/MM/DD 出生日期
      */
-//    public static Date getBirthFromCard(String cardNumber) {
-//        String birthString = getBirthDateFromCard(cardNumber);
-//        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-//        java.sql.Date birthDate = new java.sql.Date(new Date().getTime());
-//        // 将字符串转换为Date
-//        try {
-//            Date date = df.parse(birthString);
-//            birthDate = new java.sql.Date(date.getTime());
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        return birthDate;
-//
-//    }
+    public static Date getBirthFromCard(String cardNumber) {
+        String birthString = getBirthDateFromCard(cardNumber);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        java.sql.Date birthDate = new java.sql.Date(new Date().getTime());
+        // 将字符串转换为Date
+        try {
+            Date date = df.parse(birthString);
+            birthDate = new java.sql.Date(date.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return birthDate;
+
+    }
 
 
     public static void main(String[] args) {

@@ -438,9 +438,9 @@
         } else if (node.halfCheck) {
           fullStyle = c.PART;
         } else if (setting.check.chkStyle == r.STYLE) {
-          fullStyle = (node.check_Child_State < 1) ? c.FULL : c.FULL;
+          fullStyle = (node.check_Child_State < 1) ? c.FULL : c.PART;
         } else {
-          fullStyle = nodeChecked ? ((node.check_Child_State === 2 || node.check_Child_State === -1) ? c.FULL : c.FULL) : ((node.check_Child_State < 1) ? c.FULL : c.FULL);
+          fullStyle = nodeChecked ? ((node.check_Child_State === 2 || node.check_Child_State === -1) ? c.FULL : c.PART) : ((node.check_Child_State < 1) ? c.FULL : c.PART);
         }
         var chkName = setting.check.chkStyle + "_" + (nodeChecked ? c.TRUE : c.FALSE) + "_" + fullStyle;
         chkName = (node.check_Focus && node.chkDisabled !== true) ? chkName + "_" + c.FOCUS : chkName;

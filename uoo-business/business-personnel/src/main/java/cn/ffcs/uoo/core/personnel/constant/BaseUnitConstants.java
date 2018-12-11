@@ -35,27 +35,7 @@ public class BaseUnitConstants {
      */
     public static final String TBCERT_CERT_NO = "CERT_NO";
 
-    public static final String TBCERT_CERT_NAME = "CERT_NAME";
-
-    public static final String TBCONTACT_CONTACT_TYPE = "CONTACT_TYPE";
-
-    public static final String TBPERSONNEL_PERSONNEL_ID = "PERSONNEL_ID";
-
-    public static final String TBEDU_EDU_ID = "EDU_ID";
-
-    public static final String TBFAMILY_FAMILY_ID = "FAMILY_ID";
-
-    public static final String TBPSNJOB_PSNJOB_ID = "PSNJOB_ID";
-
-    public static final String TBCONTACT_CONTENT = "CONTENT";
-
-    public static final String  MSG_SHARING_QUEUE= "message_sharing_center_queue";
-
-    public static final Integer PAGE_NO = 1;
-
-    public static final Integer PAGE_SIZE = 5;
-
-    public static final String INTI_CERT_TYPE = "1";
+    public static final String TBPERSONNEL_PERSOONEL_ID = "PERSOONEL_ID";
 
     /**
      * 是推导

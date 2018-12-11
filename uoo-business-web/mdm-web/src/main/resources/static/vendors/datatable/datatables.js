@@ -14582,7 +14582,7 @@
 				attach( $(host).empty(), buttons );
 	
 				if ( activeEl !== undefined ) {
-					$(host).find( '[data-dt-idx='+activeEl+']' ).focus().focus();
+					$(host).find( '[data-dt-idx='+activeEl+']' ).focus();
 				}
 			}
 		}
@@ -15430,7 +15430,7 @@ DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, bu
 	);
 
 	if ( activeEl !== undefined ) {
-		$(host).find( '[data-dt-idx='+activeEl+']' ).focus().focus();
+		$(host).find( '[data-dt-idx='+activeEl+']' ).focus();
 	}
 };
 

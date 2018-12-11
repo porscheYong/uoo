@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.FieldFill;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -79,49 +77,33 @@ public class TbCert extends Model<TbCert> {
     /**
      * 状态
      */
-    @JsonIgnore
-    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT)
+    @TableField("STATUS_CD")
     private String statusCd;
     /**
      * 创建时间
      */
-    @JsonIgnore
-    @TableField(value = "CREATE_DATE", fill = FieldFill.INSERT)
+    @TableField("CREATE_DATE")
     private Date createDate;
     /**
      * 创建人
      */
-    @JsonIgnore
-    @TableField(value = "CREATE_USER", fill = FieldFill.INSERT)
-    private Long createUser;
+    @TableField("CREATE_USER")
+    private BigDecimal createUser;
     /**
      * 修改时间
      */
-    @JsonIgnore
-    @TableField(value = "UPDATE_DATE", fill = FieldFill.INSERT_UPDATE)
+    @TableField("UPDATE_DATE")
     private Date updateDate;
     /**
      * 修改人
      */
-    @JsonIgnore
-    @TableField(value = "UPDATE_USER", fill = FieldFill.INSERT_UPDATE)
-    private Long updateUser;
+    @TableField("UPDATE_USER")
+    private BigDecimal updateUser;
     /**
      * 状态变更的时间
      */
-    @JsonIgnore
-    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT)
+    @TableField("STATUS_DATE")
     private Date statusDate;
-    /**
-     * 生效时间
-     */
-    @TableField("ENABLE_DATE")
-    private Date enableDate;
-    /**
-     * 失效时间
-     */
-    @TableField("DISABLE_DATE")
-    private Date disableDate;
 
 
 
@@ -150,10 +132,6 @@ public class TbCert extends Model<TbCert> {
         ", updateDate=" + updateDate +
         ", updateUser=" + updateUser +
         ", statusDate=" + statusDate +
-                ", enableDate=" + enableDate +
-                ", disableDate=" + disableDate +
         "}";
     }
-
-
 }

@@ -2,9 +2,7 @@ package cn.ffcs.uoo.core.position.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
-import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
-import cn.ffcs.uoo.core.position.constant.StatusEnum;
 import cn.ffcs.uoo.core.position.entity.TbOrgPostRel;
 import cn.ffcs.uoo.core.position.service.TbOrgPostRelService;
 import cn.ffcs.uoo.core.position.vo.ResponseResult;
@@ -13,7 +11,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,7 +36,7 @@ public class TbOrgPostRelController extends BaseController {
     @ApiImplicitParam(name = "tbOrgPostRel", value = "组织职位关系", required = true, dataType = "TbOrgPostRel")
     @UooLog(value = "新增组织职位关系", key = "addTbOrgPostRel")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<TbOrgPostRel> addTbOrgPostRel(@RequestBody TbOrgPostRel tbOrgPostRel) {
+    public ResponseResult<TbOrgPostRel> addTbOrgPostRel(TbOrgPostRel tbOrgPostRel) {
         ResponseResult<TbOrgPostRel> responseResult = new ResponseResult<TbOrgPostRel>();
 
         // 校验必填项
@@ -54,11 +51,6 @@ public class TbOrgPostRelController extends BaseController {
             return responseResult;
         }
 
-        tbOrgPostRel.setEffDate(DateUtils.parseDate(DateUtils.getDateTime()));
-        tbOrgPostRel.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
-        tbOrgPostRel.setStatusCd(StatusEnum.VALID.getStatus());
-        tbOrgPostRel.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
-        tbOrgPostRel.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbOrgPostRelService.save(tbOrgPostRel);
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增组织职位关系成功");
@@ -72,7 +64,7 @@ public class TbOrgPostRelController extends BaseController {
     })
     @UooLog(value = "删除组织职位关系", key = "removeTbOrgPostRel")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbOrgPostRel> removeTbOrgPostRel(@RequestBody Long orgPostId, @RequestBody Long updateUser) {
+    public ResponseResult<TbOrgPostRel> removeTbOrgPostRel(Long orgPostId, Long updateUser) {
         ResponseResult<TbOrgPostRel> responseResult = new ResponseResult<TbOrgPostRel>();
 
         // 校验必填项

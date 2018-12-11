@@ -1,8 +1,5 @@
 package cn.ffcs.uoo.core.region.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,18 +24,5 @@ public class TbCommonRegionServiceImpl extends ServiceImpl<TbCommonRegionMapper,
     @Override
     public Long getId() {
         return mapper.getId();
-    }
-    @SuppressWarnings("rawtypes")
-    @Override
-    public List<Map> getCommonRegion(Map<String,Object> params) {
-        return mapper.getCommonRegion(params);
-    }
-    @Override
-    public List<Map> getChildCommonRegionInfo(Map<String, Object> params) {
-        return mapper.getChildCommonRegionInfo(params);
-    }
-    @Override
-    public List<TbCommonRegion> getTreeCommonRegion(Map<String, Object> params) {
-        return mapper.getTreeCommonRegion(params);
     }
 }

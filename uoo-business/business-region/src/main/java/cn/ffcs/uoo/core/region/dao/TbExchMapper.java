@@ -1,6 +1,5 @@
 package cn.ffcs.uoo.core.region.dao;
 
-import cn.ffcs.uoo.base.common.annotion.MyBatisDao;
 import cn.ffcs.uoo.core.region.entity.TbExch;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
@@ -12,7 +11,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @author zxs
  * @since 2018-10-30
  */
-@MyBatisDao
 public interface TbExchMapper extends BaseMapper<TbExch> {
 
     public Long getId();

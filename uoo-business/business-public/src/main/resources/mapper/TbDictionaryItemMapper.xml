@@ -125,14 +125,4 @@
         </if>
     </select>
 
-    <select id="selectDicItemListByDicName" resultMap="BaseResultMap">
-        SELECT I.*
-        FROM TB_DICTIONARY D, TB_DICTIONARY_ITEM I
-        WHERE D.STATUS_CD = '1000'
-        AND I.STATUS_CD = '1000'
-        AND D.DICTIONARY_ID = I.DICTIONARY_ID
-        AND D.DICTIONARY_NAME = #{dictionaryName}
-        ORDER BY I.SORT
-    </select>
-
 </mapper>

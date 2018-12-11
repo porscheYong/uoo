@@ -38,7 +38,7 @@ turbine:
 ---
 spring:
   application:
-    name: FAT-uoo-sleuth-2
+    name: FAT-uoo-sleuth-2TbAcctExtService
   profiles: FAT-uoo-sleuth-2
 server:
   port: 20011

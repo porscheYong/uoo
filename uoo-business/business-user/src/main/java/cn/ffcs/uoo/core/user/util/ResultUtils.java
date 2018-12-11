@@ -8,30 +8,30 @@ public class ResultUtils {
 
         ResponseResult result = new ResponseResult();
         result.setData(object);
-        result.setState(EumUserResponeCode.USER_RESPONSE_SUCCESS.getState());
-        result.setMessage(EumUserResponeCode.USER_RESPONSE_SUCCESS.getMessage());
+        result.setCode(EumUserResponeCode.USER_RESPONSE_SUCCESS.getCode());
+        result.setMessage(EumUserResponeCode.USER_RESPONSE_SUCCESS.getMsg());
 
         return result;
     }
 
     public static Object error(EumUserResponeCode eumUserResponeCode){
         ResponseResult result = new ResponseResult();
-        result.setState(eumUserResponeCode.getState());
-        result.setMessage(eumUserResponeCode.getMessage());
+        result.setCode(eumUserResponeCode.getCode());
+        result.setMessage(eumUserResponeCode.getMsg());
         return result;
     }
 
     public static Object error(int code, String msg){
         ResponseResult result = new ResponseResult();
-        result.setState(code);
+        result.setCode(code);
         result.setMessage(msg);
         return result;
     }
 
     public static Object successfulTip(EumUserResponeCode eumUserResponeCode){
         ResponseResult result = new ResponseResult();
-        result.setState(eumUserResponeCode.getState());
-        result.setMessage(eumUserResponeCode.getMessage());
+        result.setCode(eumUserResponeCode.getCode());
+        result.setMessage(eumUserResponeCode.getMsg());
         return result;
     }
 }

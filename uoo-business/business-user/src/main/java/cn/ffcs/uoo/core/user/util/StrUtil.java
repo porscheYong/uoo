@@ -1,12 +1,10 @@
 package cn.ffcs.uoo.core.user.util;
 
-import cn.ffcs.uoo.core.user.constant.BaseUnitConstants;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -578,52 +576,5 @@ public class StrUtil {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
         Date date = new Date();
         return sdf.format(date);
-    }
-
-    /**
-     * @param str
-     *            字符串
-     * @param format
-     *            "yyyy-MM-dd HH:mm:ss"
-     * @return date
-     * @author: zfz
-     * @修改记录： ==============================================================<br>
-     *        日期:Aug 30, 2008 zfz 创建方法，并实现其功能
-     *        ==============================================================<br>
-     */
-    public static java.util.Date str2date(final String str, final String format) {
-        java.util.Date ret = null;
-        final SimpleDateFormat sdf = new SimpleDateFormat(format);
-        try {
-            ret = sdf.parse(str);
-        } catch (final ParseException e) {
-            e.printStackTrace();
-            ret = null;
-        }
-        return ret;
-    }
-
-    /**
-     * 初始页面
-     * @param pageNo
-     * @return
-     */
-    public static Integer intiPageNo(Integer pageNo){
-        if(pageNo == null || pageNo <= 0){
-            return BaseUnitConstants.PAGE_NO;
-        }
-        return pageNo;
-    }
-
-    /**
-     * 初始页面数量
-     * @param pageSize
-     * @return
-     */
-    public static Integer intiPageSize(Integer pageSize){
-        if(pageSize == null || pageSize <= 0){
-            return BaseUnitConstants.PAGE_SIZE;
-        }
-        return pageSize;
     }
 }

@@ -97,7 +97,7 @@
 
     <update id="remove" parameterType="cn.ffcs.uoo.core.position.entity.TbPostLocation">
         UPDATE TB_POST_LOCATION
-        SET EXP_DATE=#{expDate},STATUS_CD=#{statusCd},UPDATE_DATE=#{updateDate},UPDATE_USER=#{updateUser},STATUS_DATE=#{statusDate}
+        SET STATUS_CD=#{statusCd},UPDATE_DATE=#{updateDate},UPDATE_USER=#{updateUser},STATUS_DATE=#{statusDate}
         WHERE POST_LOCATION_ID=#{postLocationId}
     </update>
 </mapper>

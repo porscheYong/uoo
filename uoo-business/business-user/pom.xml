@@ -72,15 +72,6 @@
             <version>2.2.3</version>
             <classifier>jdk15</classifier><!-- jdk版本 -->
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.47</version>
-        </dependency>
 
 
     </dependencies>

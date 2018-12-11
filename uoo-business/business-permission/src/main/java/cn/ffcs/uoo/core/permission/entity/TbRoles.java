@@ -12,11 +12,11 @@ import java.io.Serializable;
  * 描述员工的系统权限集合，是用以定义系统使用人员操作权限的实体。
  * </p>
  *
- * @author zengxsh
- * @since 2018-11-13
+ * @author zhanglu
+ * @since 2018-10-24
  */
 @TableName("TB_ROLES")
-public class Roles extends Model<Roles> {
+public class TbRoles extends Model<TbRoles> {
 
     private static final long serialVersionUID = 1L;
 
@@ -46,12 +46,12 @@ public class Roles extends Model<Roles> {
     @TableField("ROLE_DESC")
     private String roleDesc;
     /**
-     * 公用管理区域标识,记录区域唯一标识
+     * 区域标识
      */
     @TableField("REGION_ID")
     private Long regionId;
     /**
-     * 系统用户的归属系统
+     * 归属系统
      */
     @TableField("SYSTEM_INFO_ID")
     private Long systemInfoId;
@@ -73,8 +73,8 @@ public class Roles extends Model<Roles> {
     /**
      * 创建人
      */
-    @TableField("CREATE_USER")
-    private Long createUser;
+    @TableField("CREATE_STAFF")
+    private Long createStaff;
     /**
      * 修改时间
      */
@@ -83,8 +83,8 @@ public class Roles extends Model<Roles> {
     /**
      * 修改人
      */
-    @TableField("UPDATE_USER")
-    private Long updateUser;
+    @TableField("UPDATE_STAFF")
+    private Long updateStaff;
 
 
     public Long getRoleId() {
@@ -167,12 +167,12 @@ public class Roles extends Model<Roles> {
         this.createDate = createDate;
     }
 
-    public Long getCreateUser() {
-        return createUser;
+    public Long getCreateStaff() {
+        return createStaff;
     }
 
-    public void setCreateUser(Long createUser) {
-        this.createUser = createUser;
+    public void setCreateStaff(Long createStaff) {
+        this.createStaff = createStaff;
     }
 
     public Date getUpdateDate() {
@@ -183,12 +183,12 @@ public class Roles extends Model<Roles> {
         this.updateDate = updateDate;
     }
 
-    public Long getUpdateUser() {
-        return updateUser;
+    public Long getUpdateStaff() {
+        return updateStaff;
     }
 
-    public void setUpdateUser(Long updateUser) {
-        this.updateUser = updateUser;
+    public void setUpdateStaff(Long updateStaff) {
+        this.updateStaff = updateStaff;
     }
 
     @Override
@@ -198,7 +198,7 @@ public class Roles extends Model<Roles> {
 
     @Override
     public String toString() {
-        return "Roles{" +
+        return "TbRoles{" +
         ", roleId=" + roleId +
         ", roleName=" + roleName +
         ", roleCode=" + roleCode +
@@ -209,9 +209,9 @@ public class Roles extends Model<Roles> {
         ", statusCd=" + statusCd +
         ", statusDate=" + statusDate +
         ", createDate=" + createDate +
-        ", createUser=" + createUser +
+        ", createStaff=" + createStaff +
         ", updateDate=" + updateDate +
-        ", updateUser=" + updateUser +
+        ", updateStaff=" + updateStaff +
         "}";
     }
 }

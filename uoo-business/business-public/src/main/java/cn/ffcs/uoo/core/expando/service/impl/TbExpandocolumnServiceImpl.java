@@ -1,7 +1,6 @@
 package cn.ffcs.uoo.core.expando.service.impl;
 
 import cn.ffcs.uoo.base.common.tool.util.DateUtils;
-import cn.ffcs.uoo.core.constant.StatusEnum;
 import cn.ffcs.uoo.core.expando.entity.TbExpandocolumn;
 import cn.ffcs.uoo.core.expando.dao.TbExpandocolumnMapper;
 import cn.ffcs.uoo.core.expando.service.TbExpandocolumnService;
@@ -33,7 +32,7 @@ public class TbExpandocolumnServiceImpl extends ServiceImpl<TbExpandocolumnMappe
         tbExpandocolumn.setUpdateUser(updateUser);
         tbExpandocolumn.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         // 失效状态
-        tbExpandocolumn.setStatusCd(StatusEnum.INVALID.getValue());
+        tbExpandocolumn.setStatusCd("1100");
         tbExpandocolumn.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
         baseMapper.remove(tbExpandocolumn);
     }

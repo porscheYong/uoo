@@ -4,9 +4,6 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.FieldFill;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -21,7 +18,6 @@ import java.util.Date;
  * @since 2018-09-13
  */
 @TableName("tb_contact")
-@Data
 public class TbContact extends Model<TbContact> {
 
     private static final long serialVersionUID = 1L;
@@ -49,7 +45,6 @@ public class TbContact extends Model<TbContact> {
     /**
      * UUID
      */
-    @JsonIgnore
     @TableField("UUID")
     private String uuid;
     /**
@@ -60,40 +55,122 @@ public class TbContact extends Model<TbContact> {
     /**
      * 状态
      */
-    @JsonIgnore
-    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT)
+    @TableField("STATUS_CD")
     private String statusCd;
     /**
      * 创建时间
      */
-    @JsonIgnore
-    @TableField(value = "CREATE_DATE", fill = FieldFill.INSERT)
+    @TableField("CREATE_DATE")
     private Date createDate;
     /**
      * 创建人
      */
-    @JsonIgnore
-    @TableField(value = "CREATE_USER", fill = FieldFill.INSERT)
-    private Long createUser;
+    @TableField("CREATE_USER")
+    private BigDecimal createUser;
     /**
      * 修改时间
      */
-    @JsonIgnore
-    @TableField(value = "UPDATE_DATE", fill = FieldFill.INSERT_UPDATE)
+    @TableField("UPDATE_DATE")
     private Date updateDate;
     /**
      * 修改人
      */
-    @JsonIgnore
-    @TableField(value = "UPDATE_USER", fill = FieldFill.INSERT_UPDATE)
-    private Long updateUser;
+    @TableField("UPDATE_USER")
+    private BigDecimal updateUser;
     /**
      * 状态变更的时间
      */
-    @JsonIgnore
-    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT)
+    @TableField("STATUS_DATE")
     private Date statusDate;
 
+
+    public Long getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(Long contactId) {
+        this.contactId = contactId;
+    }
+
+    public Long getPersonnelId() {
+        return personnelId;
+    }
+
+    public void setPersonnelId(Long personnelId) {
+        this.personnelId = personnelId;
+    }
+
+    public String getContactType() {
+        return contactType;
+    }
+
+    public void setContactType(String contactType) {
+        this.contactType = contactType;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getStatusCd() {
+        return statusCd;
+    }
+
+    public void setStatusCd(String statusCd) {
+        this.statusCd = statusCd;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public BigDecimal getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(BigDecimal createUser) {
+        this.createUser = createUser;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public BigDecimal getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(BigDecimal updateUser) {
+        this.updateUser = updateUser;
+    }
+
+    public Date getStatusDate() {
+        return statusDate;
+    }
+
+    public void setStatusDate(Date statusDate) {
+        this.statusDate = statusDate;
+    }
 
     @Override
     protected Serializable pkVal() {

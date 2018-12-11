@@ -20,13 +20,11 @@
         <result column="UPDATE_DATE" property="updateDate" />
         <result column="UPDATE_USER" property="updateUser" />
         <result column="STATUS_DATE" property="statusDate" />
-        <result column="ENABLE_DATE" property="enableDate" />
-        <result column="DISABLE_DATE" property="disableDate" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        CERT_ID, PERSONNEL_ID, CERT_NAME, CERT_TYPE, CERT_NO, ADDRESS, ISSUING, UUID, IS_REAL, RESOURCE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, ENABLE_DATE, DISABLE_DATE
+        CERT_ID, PERSONNEL_ID, CERT_NAME, CERT_TYPE, CERT_NO, ADDRESS, ISSUING, UUID, IS_REAL, RESOURCE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
     <select id="getId" resultType="java.lang.Long">
@@ -48,13 +46,7 @@
                 TB_CERT
         SET
             STATUS_CD = 1100
-        WHERE STATUS_CD = 1000
-        <if test="personnelId != null and personnelId != '' ">
-            and personnel_id = #{personnelId}
-        </if>
-        <if test="certId != null and certId != ''">
-            CERT_ID = #{certId}
-        </if>
-
+        WHERE
+                CERT_ID = #{certId}
     </update>
 </mapper>

@@ -1,7 +1,10 @@
-var orgId = getQueryString('id');
-var orgName = getQueryString('name');
-var engine, template, empty, selectNode;
 
+  var orgId = getQueryString('id');
+  var engine, remoteHost, template, empty, selectNode;
+
+  $.support.cors = true;
+
+  remoteHost = 'http://192.168.58.128:30024';
   template = Handlebars.compile($("#result-template").html());
   empty = Handlebars.compile($("#empty-template").html());
 
@@ -12,7 +15,7 @@ var engine, template, empty, selectNode;
     dupDetector: function(a, b) { return a.id_str === b.id_str; },
     // prefetch: remoteHost + '/demo/prefetch',
     remote: {
-      url: '/org/getOrgPage?orgRootId=1&search=%QUERY',
+      url: remoteHost + '/org/getOrgPage?orgRootId=1&search=%QUERY',
       wildcard: '%QUERY',
       filter: function (response) {
         // console.log('response', response)
@@ -68,45 +71,11 @@ var engine, template, empty, selectNode;
   });
 
   $('#addBtn').on('click', function () {
-     var url = 'add.html?id=' + orgId  + '&name=' + encodeURI(orgName);
+     var url = 'add.html?id=' + orgId;
      $(this).attr('href', url);
   })
-  
-  function  addTreeNode () {
-      if (!selectNode) {
-          parent.layer.alert("请选择一个组织", {
-              skin: 'layui-layer-lan'
-              ,closeBtn: 0
-          });
-          return;
-      }
-      var loading = parent.loading;
-      loading.screenMaskEnable('container');
-      $http.post('/orgRel/addOrgRel', JSON.stringify({
-          orgRootId: '1',
-          orgTreeId: '1',
-          supOrgId: orgId,
-          orgId: selectNode.orgId
-      }), function (data) {
-        var newNode = {
-            name: selectNode.orgName,
-            id: selectNode.orgId
-        }
-        parent.addNodeById(orgId, newNode);
-        loading.screenMaskDisable('container');
-      }, function (err) {
-          console.log(err);
-          loading.screenMaskDisable('container');
-      })
-  }
 
   function cancel () {
-      var url = 'list.html?id=' + orgId + '&name=' + encodeURI(orgName);
+    var url = "list.html?id=" + orgId;
     window.location.href = url;
   }
-
-  $('#orgName').html(orgName);
-  // 显示组织路径
-  parent.getOrgExtInfo();
-
-

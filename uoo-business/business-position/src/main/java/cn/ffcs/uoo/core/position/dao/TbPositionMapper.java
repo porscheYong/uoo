@@ -2,7 +2,6 @@ package cn.ffcs.uoo.core.position.dao;
 
 import cn.ffcs.uoo.core.position.entity.TbPosition;
 import cn.ffcs.uoo.core.position.vo.OrgPositionInfoVo;
-import cn.ffcs.uoo.core.position.vo.PositionNodeVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 import java.util.List;
@@ -35,10 +34,4 @@ public interface TbPositionMapper extends BaseMapper<TbPosition> {
      * @return
      */
     List<OrgPositionInfoVo> queryOrgPositionInfoList(Long orgId);
-
-    /**
-     * 获取岗位信息列表
-     * @return
-     */
-    List<PositionNodeVo> getAllPositionNodeVo();
 }

@@ -11,9 +11,6 @@ function Loading () {
         self.loadingMaskDom = "<div class='loadingMask'></div>"
         $(self.loadingMaskDom).appendTo($dialog)
       }
-      else {
-          self.$loadingMask.show();
-      }
 
       self.$loadingMask = $dialog.find('.loadingMask')
 

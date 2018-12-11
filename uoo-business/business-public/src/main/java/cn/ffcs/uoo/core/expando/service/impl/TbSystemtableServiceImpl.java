@@ -1,7 +1,6 @@
 package cn.ffcs.uoo.core.expando.service.impl;
 
 import cn.ffcs.uoo.base.common.tool.util.DateUtils;
-import cn.ffcs.uoo.core.constant.StatusEnum;
 import cn.ffcs.uoo.core.expando.entity.TbSystemtable;
 import cn.ffcs.uoo.core.expando.dao.TbSystemtableMapper;
 import cn.ffcs.uoo.core.expando.service.TbSystemtableService;
@@ -29,7 +28,7 @@ public class TbSystemtableServiceImpl extends ServiceImpl<TbSystemtableMapper, T
         TbSystemtable tbSystemtable = new TbSystemtable();
         tbSystemtable.setTableId(tableId);
         // 失效状态
-        tbSystemtable.setStatusCd(StatusEnum.INVALID.getValue());
+        tbSystemtable.setStatusCd("1100");
         tbSystemtable.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbSystemtable.setUpdateUser(updateUser);
         tbSystemtable.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));

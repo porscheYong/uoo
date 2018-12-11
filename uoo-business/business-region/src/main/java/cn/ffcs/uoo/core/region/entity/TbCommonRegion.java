@@ -23,7 +23,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 public class TbCommonRegion extends Model<TbCommonRegion> {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * 公共管理区域标识
      */
@@ -33,13 +33,8 @@ public class TbCommonRegion extends Model<TbCommonRegion> {
     /**
      * 上级区域标识
      */
-    @TableField("PARENT_REGION_ID")
-    private Long parentRegionId;
-    /**
-     * 区号
-     */
-    @TableField("AREA_CODE_ID")
-    private Long areaCodeId;
+    @TableField("UP_REGION_ID")
+    private Long upRegionId;
 
     /**
      * 区域名称
@@ -139,13 +134,12 @@ public class TbCommonRegion extends Model<TbCommonRegion> {
         this.commonRegionId = commonRegionId;
     }
 
-
-    public Long getParentRegionId() {
-        return parentRegionId;
+    public Long getUpRegionId() {
+        return upRegionId;
     }
 
-    public void setParentRegionId(Long parentRegionId) {
-        this.parentRegionId = parentRegionId;
+    public void setUpRegionId(Long upRegionId) {
+        this.upRegionId = upRegionId;
     }
 
     public String getRegionName() {
@@ -268,17 +262,9 @@ public class TbCommonRegion extends Model<TbCommonRegion> {
         this.statusDate = statusDate;
     }
 
-    public Long getAreaCodeId() {
-        return areaCodeId;
-    }
-
-    public void setAreaCodeId(Long areaCodeId) {
-        this.areaCodeId = areaCodeId;
-    }
-
     @Override
     public String toString() {
-        return "TbCommonRegion [commonRegionId=" + commonRegionId + ", parentRegionId=" + parentRegionId + ", regionName="
+        return "TbCommonRegion [commonRegionId=" + commonRegionId + ", upRegionId=" + upRegionId + ", regionName="
                 + regionName + ", regionPyName=" + regionPyName + ", regionNbr=" + regionNbr + ", regionType="
                 + regionType + ", regionDesc=" + regionDesc + ", regionLevel=" + regionLevel + ", regionSort="
                 + regionSort + ", provinceNbr=" + provinceNbr + ", cityFlag=" + cityFlag + ", statusCd=" + statusCd

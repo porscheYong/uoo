@@ -1,7 +1,6 @@
 package cn.ffcs.uoo.core.position.service.impl;
 
 import cn.ffcs.uoo.base.common.tool.util.DateUtils;
-import cn.ffcs.uoo.core.position.constant.StatusEnum;
 import cn.ffcs.uoo.core.position.entity.TbOrgPostRel;
 import cn.ffcs.uoo.core.position.dao.TbOrgPostRelMapper;
 import cn.ffcs.uoo.core.position.service.TbOrgPostRelService;
@@ -29,11 +28,10 @@ public class TbOrgPostRelServiceImpl extends ServiceImpl<TbOrgPostRelMapper, TbO
     public void remove(Long orgPostId, Long updateUser) {
         TbOrgPostRel tbOrgPostRel = new TbOrgPostRel();
         tbOrgPostRel.setOrgPostId(orgPostId);
-        tbOrgPostRel.setExpDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbOrgPostRel.setUpdateUser(updateUser);
         tbOrgPostRel.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         // 失效状态
-        tbOrgPostRel.setStatusCd(StatusEnum.INVALID.getStatus());
+        tbOrgPostRel.setStatusCd("1100");
         tbOrgPostRel.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
 
         baseMapper.remove(tbOrgPostRel);

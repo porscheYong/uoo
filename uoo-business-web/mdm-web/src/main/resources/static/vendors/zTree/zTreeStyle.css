@@ -8,7 +8,7 @@ website:	http://code.google.com/p/jquerytree/
 
 -------------------------------------*/
 
-.ztree * {padding:0; margin:0; font-size:14px; font-family: Verdana, Arial, Helvetica, AppleGothic, sans-serif}
+.ztree * {padding:0; margin:0; font-size:12px; font-family: Verdana, Arial, Helvetica, AppleGothic, sans-serif}
 .ztree {margin:0; padding:5px; color:#333; position:relative}
 .ztree li{padding:0; margin:0; list-style:none; line-height:14px; text-align:left; white-space:nowrap; outline:0; padding-left:10px;}
 .ztree li ul{ margin:0; padding:0 0 0 18px}
@@ -17,8 +17,7 @@ website:	http://code.google.com/p/jquerytree/
 .ztree li a {padding:1px 3px 0 0; margin:0; cursor:pointer; height:17px; color:#333; background-color: transparent;
 	text-decoration:none; vertical-align:top; display: inline-block}
 /*.ztree li a:hover {text-decoration:underline}*/
-/*.ztree li a.curSelectedNode {padding-top:0px; color:black; height:16px; opacity:0.8;}*/
-.ztree li a.curSelectedNode {padding-top:0px; color:black; height:16px;}
+.ztree li a.curSelectedNode {padding-top:0px; color:black; height:16px; opacity:0.8;}
 .ztree li a.curSelectedNode:before {content:''; background:#ddeff9; position:absolute; left:0; right:0; height:26px;border-left:3px solid #00a8ff; margin-left:-1px}
 .ztree li a.curSelectedNode_Edit {padding-top:0px; background-color:#FFE6B0; color:black; height:16px; border:1px #FFB951 solid; opacity:0.8;}
 .ztree li a.tmpTargetNode_inner {padding-top:0px; background-color:#316AC5; color:white; height:16px; border:1px #316AC5 solid;
@@ -183,7 +182,7 @@ ul.ztree.zTreeDragUL {margin:0; padding:0; position:absolute; width:auto; height
 }
 
 .ztree li span.button.noline_docu {
-    width: 20px;
+    width: 10px;
 }
 
 .ztree li span.button[class$="Page"] {
@@ -262,13 +261,13 @@ ul.ztree.zTreeDragUL {margin:0; padding:0; position:absolute; width:auto; height
 .ztree li span.button.chk.radio_true_full:before,
 .ztree li span.button.chk.radio_true_disable:before,
 .ztree li span.button.chk.radio_true_full_focus:before {
-    content: "\f046";
+    content: "\f05d";
 }
 
 .ztree li span.button.chk.radio_false_full:before,
 .ztree li span.button.chk.radio_false_disable:before,
 .ztree li span.button.chk.radio_false_full_focus:before {
-    content: "\f096";
+    content: "\f10c";
 }
 
 .ztree li span.button.chk.radio_true_part:before,
@@ -278,17 +277,17 @@ ul.ztree.zTreeDragUL {margin:0; padding:0; position:absolute; width:auto; height
     content: "\f192";
 }
 
-/*.ztree li span.button.ico_open:before {*/
-    /*content: "\f115";*/
-/*}*/
+.ztree li span.button.ico_open:before {
+    content: "\f115";
+}
 
-/*.ztree li span.button.ico_close:before {*/
-    /*content: "\f114";*/
-/*}*/
+.ztree li span.button.ico_close:before {
+    content: "\f114";
+}
 
-/*.ztree li span.button.ico_docu:before {*/
-    /*content: "\f016";*/
-/*}*/
+.ztree li span.button.ico_docu:before {
+    content: "\f016";
+}
 
 .ztree li span.button.add:before {
     content: "\f196";

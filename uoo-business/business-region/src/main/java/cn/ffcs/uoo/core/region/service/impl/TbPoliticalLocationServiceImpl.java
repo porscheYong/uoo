@@ -1,8 +1,5 @@
 package cn.ffcs.uoo.core.region.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,13 +24,5 @@ public class TbPoliticalLocationServiceImpl extends ServiceImpl<TbPoliticalLocat
     @Override
     public Long getId() {
         return mapper.getId();
-    }
-    @Override
-    public List<TbPoliticalLocation> getTreePoliticalLocation(Map<String, Object> params) {
-        return mapper.getTreePoliticalLocation(params);
-    }
-    @Override
-    public List<Map> getChildPoliticalLocationInfo(Map<String, Object> params) {
-        return mapper.getChildPoliticalLocationInfo(params);
     }
 }

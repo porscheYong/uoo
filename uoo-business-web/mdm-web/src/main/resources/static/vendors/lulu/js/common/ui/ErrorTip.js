@@ -13,7 +13,7 @@
     }
 }(this, function (require) {
     if (typeof require == 'function') {
-        require('/vendors/lulu/js/common/ui/Follow');
+        require('common/ui/Follow');
     } else if (!$().follow) {
         if (window.console) {
             window.console.error('need Follow.js');

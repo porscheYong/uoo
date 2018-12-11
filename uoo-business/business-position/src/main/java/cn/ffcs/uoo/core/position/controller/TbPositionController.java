@@ -2,17 +2,13 @@ package cn.ffcs.uoo.core.position.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
-import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
-import cn.ffcs.uoo.core.position.constant.StatusEnum;
 import cn.ffcs.uoo.core.position.entity.TbOrgPositionRel;
 import cn.ffcs.uoo.core.position.entity.TbPosition;
 import cn.ffcs.uoo.core.position.service.TbOrgPositionRelService;
 import cn.ffcs.uoo.core.position.service.TbPositionService;
-import cn.ffcs.uoo.core.position.util.TreeUtil;
 import cn.ffcs.uoo.core.position.vo.OrgPositionInfoVo;
-import cn.ffcs.uoo.core.position.vo.PositionNodeVo;
 import cn.ffcs.uoo.core.position.vo.ResponseResult;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -21,7 +17,11 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -46,16 +46,9 @@ public class TbPositionController extends BaseController {
     @ApiImplicitParam(name = "tbPosition", value = "岗位", required = true, dataType = "TbPosition")
     @UooLog(value = "新增岗位", key = "addTbPosition")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<TbPosition> addTbPosition(@RequestBody TbPosition tbPosition) {
+    public ResponseResult<TbPosition> addTbPosition(TbPosition tbPosition) {
         ResponseResult<TbPosition> responseResult = new ResponseResult<TbPosition>();
-
-        tbPosition.setEffDate(DateUtils.parseDate(DateUtils.getDateTime()));
-        tbPosition.setStatusCd(StatusEnum.VALID.getStatus());
-        tbPosition.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
-        tbPosition.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
-
         tbPositionService.save(tbPosition);
-
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增岗位成功");
         return responseResult;
@@ -65,7 +58,7 @@ public class TbPositionController extends BaseController {
     @ApiImplicitParam(name = "tbPosition", value = "岗位", required = true, dataType = "TbPosition")
     @UooLog(value = "修改岗位", key = "updateTbPosition")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult<TbPosition> updateTbPosition(@RequestBody TbPosition tbPosition) {
+    public ResponseResult<TbPosition> updateTbPosition(TbPosition tbPosition) {
         ResponseResult<TbPosition> responseResult = new ResponseResult<TbPosition>();
         if (tbPosition.getPositionId() == null) {
             responseResult.setState(ResponseResult.STATE_ERROR);
@@ -73,11 +66,7 @@ public class TbPositionController extends BaseController {
             return responseResult;
         }
 
-        tbPosition.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
-        tbPosition.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
-        tbPosition.setEffDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbPositionService.updateById(tbPosition);
-
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("更新岗位信息成功");
         return responseResult;
@@ -90,7 +79,7 @@ public class TbPositionController extends BaseController {
     })
     @UooLog(value = "删除岗位", key = "removeTbPosition")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbPosition> removeTbPosition(@RequestBody Long positionId, @RequestBody Long updateUser) {
+    public ResponseResult<TbPosition> removeTbPosition(Long positionId, Long updateUser) {
         ResponseResult<TbPosition> responseResult = new ResponseResult<TbPosition>();
 
         // 校验必填项
@@ -149,7 +138,7 @@ public class TbPositionController extends BaseController {
         return tbPositionService.queryOrgPositionInfoList(orgId);
     }
 
-    @ApiOperation(value = "查询岗位", notes = "查询岗位")
+    @ApiOperation(value = "查询岗位",notes = "查询岗位")
     @ApiImplicitParam(name = "positionName", value = "岗位名称", required = true, dataType = "String")
     @UooLog(value = "查询岗位", key = "queryPositionList")
     @RequestMapping(value = "/get/{positionName}", method = RequestMethod.GET)
@@ -165,7 +154,7 @@ public class TbPositionController extends BaseController {
         return tbPositionService.selectList(positionWrapper);
     }
 
-    @ApiOperation(value = "查询父级岗位", notes = "查询父级岗位")
+    @ApiOperation(value = "查询父级岗位",notes = "查询父级岗位")
     @UooLog(value = "查询父级岗位", key = "queryParentPositionList")
     @RequestMapping(value = "/getParent", method = RequestMethod.GET)
     public List<TbPosition> queryParentPositionList() {
@@ -175,13 +164,13 @@ public class TbPositionController extends BaseController {
         return tbPositionService.selectList(positionWrapper);
     }
 
-    @ApiOperation(value = "查询下级岗位", notes = "查询下级岗位")
+    @ApiOperation(value = "查询下级岗位",notes = "查询下级岗位")
     @ApiImplicitParam(name = "parentPositionId", value = "上级岗位标识", required = true, dataType = "Long")
     @UooLog(value = "查询下级岗位", key = "queryChildPositionList")
     @RequestMapping(value = "/getChildren/{parentPositionId}", method = RequestMethod.GET)
     public List<TbPosition> queryChildPositionList(@PathVariable Long parentPositionId) {
         // 校验必填项
-        if (parentPositionId == null) {
+        if(parentPositionId == null) {
             return null;
         }
 
@@ -189,20 +178,6 @@ public class TbPositionController extends BaseController {
         positionWrapper.eq("PARENT_POSITION_ID", parentPositionId);
         positionWrapper.eq("STATUS_CD", "1000");
         return tbPositionService.selectList(positionWrapper);
-    }
-
-    @ApiOperation(value = "查询岗位树", notes = "查询岗位树")
-    @UooLog(value = "查询岗位树", key = "getPositionTree")
-    @RequestMapping(value = "/getPositionTree", method = RequestMethod.GET)
-    public ResponseResult<List<PositionNodeVo>> getPositionTree() {
-        ResponseResult<List<PositionNodeVo>> responseResult = new ResponseResult<List<PositionNodeVo>>();
-        List<PositionNodeVo> positionNodeVoList = tbPositionService.getAllPositionNodeVo();
-        List<PositionNodeVo> positionTree = TreeUtil.createPositionTree(positionNodeVoList);
-
-        responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("成功");
-        responseResult.setData(positionTree);
-        return responseResult;
     }
 }
 

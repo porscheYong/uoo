@@ -5,10 +5,6 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.FieldFill;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.io.Serializable;
 
 /**
@@ -42,49 +38,42 @@ public class TbPsnjob extends Model<TbPsnjob> {
     /**
      * 任职开始时间
      */
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     @TableField("BEGIN_TIME")
     private Date beginTime;
     /**
      * 任职结束时间
      */
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     @TableField("END_TIME")
     private Date endTime;
     /**
      * 状态
      */
-    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT)
+    @TableField("STATUS_CD")
     private String statusCd;
     /**
      * 创建时间
      */
-    @JsonIgnore
-    @TableField(value = "CREATE_DATE", fill = FieldFill.INSERT)
+    @TableField("CREATE_DATE")
     private Date createDate;
     /**
      * 创建人
      */
-    @JsonIgnore
-    @TableField(value = "CREATE_USER", fill = FieldFill.INSERT)
+    @TableField("CREATE_USER")
     private Long createUser;
     /**
      * 修改时间
      */
-    @JsonIgnore
-    @TableField(value = "UPDATE_DATE", fill = FieldFill.INSERT_UPDATE)
+    @TableField("UPDATE_DATE")
     private Date updateDate;
     /**
      * 修改人
      */
-    @JsonIgnore
-    @TableField(value = "UPDATE_USER", fill = FieldFill.INSERT_UPDATE)
+    @TableField("UPDATE_USER")
     private Long updateUser;
     /**
      * 状态变更的时间
      */
-    @JsonIgnore
-    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT)
+    @TableField("STATUS_DATE")
     private Date statusDate;
 
 

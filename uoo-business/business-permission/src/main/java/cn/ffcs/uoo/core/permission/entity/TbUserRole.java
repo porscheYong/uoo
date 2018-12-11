@@ -12,29 +12,24 @@ import java.io.Serializable;
  * 描述系统用户与角色之间的对应关系，是多对多关系。一个系统用户除了拥有系统岗位所带的角色和权限，也可以拥有多个私有的角色，一个角色可以分配给多个系统用户。
  * </p>
  *
- * @author zengxsh
- * @since 2018-11-13
+ * @author zhanglu
+ * @since 2018-10-24
  */
 @TableName("TB_USER_ROLE")
-public class UserRole extends Model<UserRole> {
+public class TbUserRole extends Model<TbUserRole> {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 系统用户角色标识，主键
+     * 用户角色标识
      */
     @TableId("USER_ROLE_ID")
     private Long userRoleId;
     /**
-     * 主账号、从账号
+     * 用户标识
      */
-    @TableField("ACCT_TYPE")
-    private Long acctType;
-    /**
-     * 账号标识
-     */
-    @TableField("ACCT_ID")
-    private Long acctId;
+    @TableField("USER_ID")
+    private String userId;
     /**
      * 角色标识
      */
@@ -68,8 +63,8 @@ public class UserRole extends Model<UserRole> {
     /**
      * 创建人
      */
-    @TableField("CREATE_USER")
-    private Long createUser;
+    @TableField("CREATE_STAFF")
+    private Long createStaff;
     /**
      * 修改时间
      */
@@ -78,8 +73,8 @@ public class UserRole extends Model<UserRole> {
     /**
      * 修改人
      */
-    @TableField("UPDATE_USER")
-    private Long updateUser;
+    @TableField("UPDATE_STAFF")
+    private Long updateStaff;
 
 
     public Long getUserRoleId() {
@@ -90,20 +85,12 @@ public class UserRole extends Model<UserRole> {
         this.userRoleId = userRoleId;
     }
 
-    public Long getAcctType() {
-        return acctType;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setAcctType(Long acctType) {
-        this.acctType = acctType;
-    }
-
-    public Long getAcctId() {
-        return acctId;
-    }
-
-    public void setAcctId(Long acctId) {
-        this.acctId = acctId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public Long getRoleId() {
@@ -154,12 +141,12 @@ public class UserRole extends Model<UserRole> {
         this.createDate = createDate;
     }
 
-    public Long getCreateUser() {
-        return createUser;
+    public Long getCreateStaff() {
+        return createStaff;
     }
 
-    public void setCreateUser(Long createUser) {
-        this.createUser = createUser;
+    public void setCreateStaff(Long createStaff) {
+        this.createStaff = createStaff;
     }
 
     public Date getUpdateDate() {
@@ -170,12 +157,12 @@ public class UserRole extends Model<UserRole> {
         this.updateDate = updateDate;
     }
 
-    public Long getUpdateUser() {
-        return updateUser;
+    public Long getUpdateStaff() {
+        return updateStaff;
     }
 
-    public void setUpdateUser(Long updateUser) {
-        this.updateUser = updateUser;
+    public void setUpdateStaff(Long updateStaff) {
+        this.updateStaff = updateStaff;
     }
 
     @Override
@@ -185,19 +172,18 @@ public class UserRole extends Model<UserRole> {
 
     @Override
     public String toString() {
-        return "UserRole{" +
+        return "TbUserRole{" +
         ", userRoleId=" + userRoleId +
-        ", acctType=" + acctType +
-        ", acctId=" + acctId +
+        ", userId=" + userId +
         ", roleId=" + roleId +
         ", effDate=" + effDate +
         ", expDate=" + expDate +
         ", statusCd=" + statusCd +
         ", statusDate=" + statusDate +
         ", createDate=" + createDate +
-        ", createUser=" + createUser +
+        ", createStaff=" + createStaff +
         ", updateDate=" + updateDate +
-        ", updateUser=" + updateUser +
+        ", updateStaff=" + updateStaff +
         "}";
     }
 }

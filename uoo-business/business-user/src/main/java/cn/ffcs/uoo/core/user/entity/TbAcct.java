@@ -4,10 +4,6 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.FieldFill;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -33,10 +29,30 @@ public class TbAcct extends Model<TbAcct> {
     @TableId("ACCT_ID")
     private Long acctId;
     /**
-     * 人员标识
+     * 用户标识
      */
-    @TableField("PERSONNEL_ID")
-    private Long personnelId;
+    @TableField("USER_ID")
+    private String userId;
+    /**
+     * 工号
+     */
+    @TableField("ACCT_NBR")
+    private String acctNbr;
+    /**
+     * 手机号
+     */
+    @TableField("ACCT_PHONE")
+    private String acctPhone;
+    /**
+     * 邮箱
+     */
+    @TableField("ACCT_EMAIL")
+    private String acctEmail;
+    /**
+     * 身份证
+     */
+    @TableField("ACCT_CERT")
+    private String acctCert;
     /**
      * 主账号
      */
@@ -50,7 +66,6 @@ public class TbAcct extends Model<TbAcct> {
     /**
      * 非对称密码
      */
-    @JsonInclude(JsonInclude.Include.ALWAYS)
     @TableField("PASSWORD")
     private String password;
     /**
@@ -64,11 +79,6 @@ public class TbAcct extends Model<TbAcct> {
     @TableField("ACCT_TYPE")
     private String acctType;
     /**
-     *用户主体类型
-     */
-    @TableField("USER_HOST_TYPE")
-    private String userHostType;
-    /**
      * 来源
      */
     @TableField("SOURCE")
@@ -76,50 +86,33 @@ public class TbAcct extends Model<TbAcct> {
     /**
      * 状态
      */
-    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT)
+    @TableField("STATUS_CD")
     private String statusCd;
     /**
      * 创建时间
      */
-    @JsonIgnore
-    @TableField(value = "CREATE_DATE", fill = FieldFill.INSERT)
+    @TableField("CREATE_DATE")
     private Date createDate;
     /**
      * 创建人
      */
-    @JsonIgnore
-    @TableField(value = "CREATE_USER", fill = FieldFill.INSERT)
+    @TableField("CREATE_USER")
     private Long createUser;
     /**
      * 修改时间
      */
-    @JsonIgnore
-    @TableField(value = "UPDATE_DATE", fill = FieldFill.INSERT_UPDATE)
+    @TableField("UPDATE_DATE")
     private Date updateDate;
     /**
      * 修改人
      */
-    @JsonIgnore
-    @TableField(value = "UPDATE_USER", fill = FieldFill.INSERT_UPDATE)
+    @TableField("UPDATE_USER")
     private Long updateUser;
     /**
      * 状态变更的时间
      */
-    @JsonIgnore
-    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT)
+    @TableField("STATUS_DATE")
     private Date statusDate;
-    /**
-     * 生效时间
-     */
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
-    @TableField("ENABLE_DATE")
-    private Date enableDate;
-    /**
-     * 失效时间
-     */
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
-    @TableField("DISABLE_DATE")
-    private Date disableDate;
 
 
     @Override
@@ -131,7 +124,7 @@ public class TbAcct extends Model<TbAcct> {
     public String toString() {
         return "TbAcct{" +
         ", acctId=" + acctId +
-        ", personnelId=" + personnelId +
+        ", userId=" + userId +
         ", acct=" + acct +
         ", salt=" + salt +
         ", password=" + password +

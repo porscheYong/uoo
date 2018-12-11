@@ -13,7 +13,7 @@
     }
 }(this, function (require) {
     if (typeof require == 'function') {
-        require('/vendors/lulu/js/common/ui/ErrorTip');
+        require('common/ui/ErrorTip');
     } else if (!$().follow) {
         if (window.console) {
             window.console.error('need ErrorTip.js');

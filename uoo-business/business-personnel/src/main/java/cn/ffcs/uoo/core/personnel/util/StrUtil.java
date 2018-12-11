@@ -3,7 +3,6 @@ package cn.ffcs.uoo.core.personnel.util;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -11,7 +10,6 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import cn.ffcs.uoo.core.personnel.constant.BaseUnitConstants;
 import org.apache.commons.codec.binary.Base64;
 
 /**
@@ -532,13 +530,12 @@ public class StrUtil {
      * 电信:2G号段(CDMA网络)有133,153 3G号段(CDMA网络)有189,181,180
      * 虚拟运营商有17开头的手机号码段，具体是哪几个部分还未确定。
      */
-    private static Pattern p = Pattern.compile("^1\\d{10}$");
     public static boolean checkTelephoneNumber(String telephoneNumber) {
 		/*Pattern p = Pattern
 				.compile("^((13[0-9])|147|(15[^4,\\D])|(18[0,1,2,3,5-9]))\\d{8}$");
 		Matcher m = p.matcher(telephoneNumber);
 		return m.matches();*/
-
+        Pattern p = Pattern.compile("^1\\d{10}$");
         Matcher m = p.matcher(telephoneNumber);
         if(m.matches()){
 			/*List<NumberSegment> list = numberSegmentManager.findAllByActive();
@@ -579,52 +576,5 @@ public class StrUtil {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
         Date date = new Date();
         return sdf.format(date);
-    }
-
-    /**
-     * @param str
-     *            字符串
-     * @param format
-     *            "yyyy-MM-dd HH:mm:ss"
-     * @return date
-     * @author: zfz
-     * @修改记录： ==============================================================<br>
-     *        日期:Aug 30, 2008 zfz 创建方法，并实现其功能
-     *        ==============================================================<br>
-     */
-    public static java.util.Date str2date(final String str, final String format) {
-        java.util.Date ret = null;
-        final SimpleDateFormat sdf = new SimpleDateFormat(format);
-        try {
-            ret = sdf.parse(str);
-        } catch (final ParseException e) {
-            e.printStackTrace();
-            ret = null;
-        }
-        return ret;
-    }
-
-    /**
-     * 初始页面
-     * @param pageNo
-     * @return
-     */
-    public static Integer intiPageNo(Integer pageNo){
-        if(pageNo == null || pageNo <= 0){
-            return BaseUnitConstants.PAGE_NO;
-        }
-        return pageNo;
-    }
-
-    /**
-     * 初始页面数量
-     * @param pageSize
-     * @return
-     */
-    public static Integer intiPageSize(Integer pageSize){
-        if(pageSize == null || pageSize <= 0){
-            return BaseUnitConstants.PAGE_SIZE;
-        }
-        return pageSize;
     }
 }
