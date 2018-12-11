@@ -25,7 +25,7 @@ function initUserInfo(){  //初始化首页人员信息
     $http.get('/system/getCurrentLoginUserInfo', { }, 
     function (data) {
       getAcctInfo(data.acctId);
-    }, function (err) {
+    }, function (err1) {
 
     })
 }
