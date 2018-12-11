@@ -55,7 +55,7 @@ function getUser(acctId) {           //查看并编辑主账号
         initEditUserInfo(data);
         initSubOrgTable(data.slaveAcctOrgVoPage.records);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -92,7 +92,7 @@ function getAcctUser(personnelId){     //获取主账号信息(编辑或者新�
       initSubOrgTable(data.slaveAcctOrgVoPage.records);
     }
   }, function (err) {
-    console.log(err)
+
   })
 }
 
@@ -114,9 +114,6 @@ function initOrgTable(results){         //主账号组织数据表格
     'ordering': true,
     'paging': false,
     'info': false,
-    'initComplete': function (settings, json) {
-        console.log(settings, json)
-    },
     "scrollY": "120px",
     'columns': [
         { 'data': "id", 'title': '序号', 'className': 'row-id' ,
@@ -165,9 +162,6 @@ function initSubOrgTable(results){    //从账号组织数据
     'ordering': true,
     'paging': false,
     'info': false,
-    'initComplete': function (settings, json) {
-        console.log(settings, json)
-    },
     "scrollY": "105px",
     'columns': [
         { 'data': "id", 'title': '序号', 'className': 'row-number' },
@@ -275,7 +269,6 @@ function addTbAcct(){         //新增
       "tbRolesList":roleList,
       "userType": "1"
     };
-    console.log(editFormAcctVo);
   
     $.ajax({
       url: '/acct/addTbAcct',
@@ -292,7 +285,6 @@ function addTbAcct(){         //新增
         }
       },
       error:function(err){
-        console.log(err);
         toastr.error('新增失败');
       }
     });
@@ -322,7 +314,6 @@ function updateAcct(){      //编辑主账号
       "tbRolesList":roleList,
       "userType": "1"
     };
-    console.log(editFormAcctVo);
 
     $.ajax({
       url: '/acct/updateAcct',
@@ -339,7 +330,6 @@ function updateAcct(){      //编辑主账号
         }
       },
       error:function(err){
-        console.log(err);
         toastr.error('编辑失败');
       }
     });
@@ -358,12 +348,10 @@ function deleteTbAcct(){    //删除主账号
       contentType: "application/json",
       dataType:"json",
       success: function (data) { //返回json结果
-        console.log(data);
         toastr.success(data.message);
         submitSuccess();
       },
       error:function(err){
-        console.log(err);
         toastr.error('删除失败！');
       }
     });
@@ -379,11 +367,9 @@ function removeAcctOrg(orgId){   //编辑时删除组织
       contentType: "application/json",
       dataType:"json",
       success: function (data) { //返回json结果
-        console.log(data);
         toastr.success(data.message);
       },
       error:function(err){
-        console.log(err);
         toastr.error('删除失败');
       }
     });
@@ -401,11 +387,9 @@ function addAcctOrg(orgId){ //编辑时新增组织
     data: JSON.stringify(tbAccountOrgRel),
     dataType:"JSON",
     success: function (data) { //返回json结果
-      console.log(data);
       toastr.success(data.message);
     },
     error:function(err){
-      console.log(err);
       toastr.error('新增失败');
     }
   });
@@ -478,9 +462,6 @@ function isNull(s,r){    //判断是否为null
 //删除组织
 function deleteOrg(id){
   if(opBtn == 1){    //新增
-    // addOrgList.splice(id-2,1);
-    // orgTable.destroy();
-    // initOrgTable(addOrgList);
     toastr.warning("无法删除所有组织");
   }else if(opBtn == 0){    //编辑
     if(editOrgList.length == 1){
@@ -534,7 +515,6 @@ function openTypeDialog() {
           $('.ui-tips-error').css('display', 'none');
           window.localStorage.setItem('userRoleList',JSON.stringify(checkRole));
           roleList = checkRole;
-          console.log(roleList);
       },
       btn2: function(index, layero){},
       cancel: function(){}
