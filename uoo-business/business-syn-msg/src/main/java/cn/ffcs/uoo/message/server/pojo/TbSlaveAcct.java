@@ -1,69 +1,44 @@
 package cn.ffcs.uoo.message.server.pojo;
 
 import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
 
-@TableName("TB_SLAVE_ACCT")
 public class TbSlaveAcct extends Model<TbSlaveAcct> {
-
-    @TableId("SLAVE_ACCT_ID")
     private Long slaveAcctId;
 
-    @TableField("SLAVE_ACCT")
     private String slaveAcct;
 
-    @TableField("SALT")
     private String salt;
 
-    @TableField("PASSWORD")
     private String password;
 
-    @TableField("SYMMETRY_PASSWORD")
     private String symmetryPassword;
 
-    @TableField("SLAVE_ACCT_TYPE")
     private String slaveAcctType;
 
-    @TableField("RESOURCE_OBJ_ID")
     private Long resourceObjId;
 
-    @TableField("STATUS_CD")
     private String statusCd;
 
-    @TableField("CREATE_DATE")
     private Date createDate;
 
-    @TableField("CREATE_USER")
     private Long createUser;
 
-    @TableField("UPDATE_DATE")
     private Date updateDate;
 
-    @TableField("UPDATE_USER")
     private Long updateUser;
 
-    @TableField("STATUS_DATE")
     private Date statusDate;
 
-    @TableField("ACCT_HOST_ID")
     private Long acctHostId;
 
-    @TableField("ACCT_ID")
     private Long acctId;
 
-    @TableField("ENABLE_DATE")
     private Date enableDate;
 
-    @TableField("DISABLE_DATE")
     private Date disableDate;
-
-    @TableField("MAPP_STAFF_ID")
-    private String mappStaffId;
 
     public Long getSlaveAcctId() {
         return slaveAcctId;
@@ -199,14 +174,6 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
 
     public void setDisableDate(Date disableDate) {
         this.disableDate = disableDate;
-    }
-
-    public String getMappStaffId() {
-        return mappStaffId;
-    }
-
-    public void setMappStaffId(String mappStaffId) {
-        this.mappStaffId = mappStaffId;
     }
 
     @Override

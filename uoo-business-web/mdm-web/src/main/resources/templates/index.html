@@ -40,7 +40,7 @@
             <li class="layui-nav-item layui-hide-xs" lay-unselect="">
             <input class="layui-input layui-input-search" type="text" placeholder="搜索..." layadmin-event="serach" lay-action="template/search.html?keywords=" autocomplete="off">
             </li>
-        <!--<span class="layui-nav-bar"></span>-->
+        <span class="layui-nav-bar"></span>
         </ul>
       <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
         <li class="layui-nav-item" lay-unselect=""> <a lay-href="app/message/index.html" layadmin-event="message" lay-text="消息中心"> <i class="layui-icon layui-icon-notice"></i> 
@@ -56,9 +56,9 @@
         </a>
           <dl class="layui-nav-child">
             <dd><a lay-href="set/user/info.html">基本资料</a></dd>
-            <dd><a lay-href="set/user/password.html">修改密码</a></dd>
+            <dd><a lay-href="/inaction/password/password.html">修改密码</a></dd>
             <hr>
-            <dd style="text-align: center;" layadmin-event="logout"><a href="/logout">退出</a></dd>
+            <dd style="text-align: center;" layadmin-event="logout"><a>退出</a></dd>
           </dl>
         </li>
         <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect="">
@@ -71,7 +71,12 @@
     <!-- 侧边菜单 -->
     <div class="layui-side layui-side-menu" id="container">
         <div class="layui-side-scroll">
-        <div class="layui-logo" lay-href="contents/console.html"></div>
+        <div class="layui-logo" lay-href="contents/console.html">
+            <a href="">
+                <img src="../../../../images/logo.svg" alt="" >
+                <h1>主数据中心</h1>
+            </a>
+        </div>
 			<ul class="layui-nav layui-nav-tree" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu" lay-shrink="all">
                 <!-- <li class="layui-nav-item" data-name="component">
                 	<a href="javascript:;" lay-tips="组织树管理" lay-direction="2">

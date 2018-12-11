@@ -9,5 +9,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class UooUserApplicationTests {
 
+    @Test
+    public void contexts() {
+    }
+
 
 }

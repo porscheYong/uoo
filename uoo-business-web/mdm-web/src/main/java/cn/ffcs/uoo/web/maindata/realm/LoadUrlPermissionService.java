@@ -128,7 +128,10 @@ public class LoadUrlPermissionService {
                 }
             }
 
+            // filterChainDefinitionMap.put("/ff/ff", "perms[sad]");//
+            // 表示需要认证才可以访问
             filterChainDefinitionMap.put("/**", "authc");// 表示需要认证才可以访问
+
             shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
             // 重新构建生成
             Map<String, String> chains = shiroFilterFactoryBean.getFilterChainDefinitionMap();

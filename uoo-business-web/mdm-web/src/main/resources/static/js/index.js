@@ -81,6 +81,7 @@ function initSideBar(results){     //初始化侧边菜单
         }
     }
     for(var i = 0;i<parList.length;i++){
+        var icon = setIcon(parList[i].menuName);
         var dd = "<dl class='layui-nav-child'>";
         
         for(var j=0;j<childList.length;j++){
@@ -91,11 +92,11 @@ function initSideBar(results){     //初始化侧边菜单
         }
         if(flag == 1){
             pemList += "<li class='layui-nav-item'><a href='javascript:;'>" +
-                "<i class='layui-icon layui-icon-component'></i><cite>" + parList[i].menuName + 
+                icon + "</i><cite>" + parList[i].menuName + 
                 "</cite><span class='layui-nav-more'></span></a>" + dd + "</dl></li>";
         }else{
             pemList += "<li class='layui-nav-item'><a lay-href='" + parList[i].urlAddr + "'>" +
-                "<i class='layui-icon layui-icon-component'></i><cite>" + parList[i].menuName + "</cite></a></li>";
+                icon + "</i><cite>" + parList[i].menuName + "</cite></a></li>";
         }
         
         flag = 0;
@@ -103,6 +104,45 @@ function initSideBar(results){     //初始化侧边菜单
     $("#LAY-system-side-menu").append(pemList);
     loading.screenMaskDisable('container');
 }
+
+function setIcon(menuName){         //设置菜单icon
+    var icon;
+    switch(menuName){
+        case '组织管理': 
+            icon = "<i class='layui-icon layui-icon-component'>";
+            break;
+
+        case '人员管理':
+            icon = "<i class='layui-icon layui-icon-form'>";
+            break;
+
+        case '账号管理':
+            icon = "<i class='layui-icon layui-icon-release'>";
+            break;
+
+        case '职位管理':
+            icon = "<i class='layui-icon layui-icon-star'>";
+            break;
+
+        case '权限管理':
+            icon = "<i class='layui-icon layui-icon-auz'>";
+            break;
+
+        case '角色管理':
+            icon = "<i class='layui-icon layui-icon-user'>";
+            break;
+
+        case '区域管理':
+            icon = "<i class='layui-icon layui-icon-app'>";
+            break;
+
+        case '资源管理':
+            icon = "<i class='layui-icon layui-icon-template'>";
+            break;
+    }
+    return icon;
+}
+
 
 // 获取字典数据
 function getDictionaryData () {

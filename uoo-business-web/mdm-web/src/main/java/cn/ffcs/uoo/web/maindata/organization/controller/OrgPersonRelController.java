@@ -74,13 +74,14 @@ public class OrgPersonRelController {
     @RequestMapping(value = "/getPerOrgRelPage", method = RequestMethod.GET)
     public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(@RequestParam(value = "orgId",required = false)String orgId,
                                                             @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                                            @RequestParam(value = "refCode",required = false)String refCode,
                                                             @RequestParam(value = "orgRootId",required = false)String orgRootId,
                                                             @RequestParam(value = "personnelId",required = false)String personnelId,
                                                             @RequestParam(value = "isSearchlower",required = false)String isSearchlower,
                                                             @RequestParam(value = "search",required = false)String search,
                                                             @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                             @RequestParam(value = "pageNo",required = false)Integer pageNo){
-        return orgPersonRelService.getPerOrgRelPage(orgId,orgTreeId,orgRootId,personnelId,isSearchlower,search,pageSize,pageNo);
+        return orgPersonRelService.getPerOrgRelPage(orgId,orgTreeId,refCode,orgRootId,personnelId,isSearchlower,search,pageSize,pageNo);
     }
 
 
@@ -90,11 +91,12 @@ public class OrgPersonRelController {
     @RequestMapping(value = "/getUserOrgRelPage", method = RequestMethod.GET)
     public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(@RequestParam(value = "orgId",required = false)String orgId,
                                                              @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                                             @RequestParam(value = "refCode",required = false)String refCode,
                                                              @RequestParam(value = "isSearchlower",required = false)String isSearchlower,
                                                              @RequestParam(value = "search",required = false)String search,
                                                              @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                              @RequestParam(value = "pageNo",required = false)Integer pageNo){
-        return orgPersonRelService.getUserOrgRelPage(orgId,orgTreeId,isSearchlower,search,pageSize,pageNo);
+        return orgPersonRelService.getUserOrgRelPage(orgId,orgTreeId,refCode,isSearchlower,search,pageSize,pageNo);
     }
 
 }

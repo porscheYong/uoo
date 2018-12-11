@@ -13,7 +13,7 @@ function initOrgTable (results) {
         'columns': [
             { 'data': "orgName", 'title': '部门', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return '<a href="list.html?id='+ row.orgId + '&orgTreeId=' + orgTreeId + '&name=' + row.orgName + '" onclick="parent.openTreeById('+orgId+','+row.orgId+')">'+ row.orgName +'</a>'
+                    return '<a href="orgInfo.html?id=' + row.orgId + '&pid=' + orgId + '&orgTreeId=' + orgTreeId + '&name=' + encodeURI(row.orgName) + '">'+ row.orgName +'</a>'
                 }
             },
             { 'data': "orgTypeSplit",
@@ -96,7 +96,7 @@ function initOrgPersonnelTable (isSearchlower) {
                 }
             },
             { 'data': "mobile", 'title': '手机号码', 'className': 'row-mobile' },
-            { 'data': "psnCode", 'title': '员工工号', 'className': 'cert-no' },
+            { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
             { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
             { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
             { 'data': "statusCd", 'title': '状态', 'className': 'status-code',

@@ -60,7 +60,7 @@ public class ApiTestController {
 //        ResponseResult<String> obj = testService.addOrgPsn(psonOrgVo);
 
         //更新
-        //ResponseResult<TbExpandovalue> voret = expandovalueService.removeTbExpandovalue(2709887L,0L);
+        ResponseResult<TbExpandovalue> voret = expandovalueService.removeTbExpandovalue(2709887L,0L);
 
 
        ResponseResult<List<ExpandovalueVo>> list = expandovalueService.queryExpandovalueVoList("TB_ORG","1000000001");

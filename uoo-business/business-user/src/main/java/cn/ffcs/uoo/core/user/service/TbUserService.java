@@ -2,9 +2,7 @@ package cn.ffcs.uoo.core.user.service;
 
 import cn.ffcs.uoo.core.user.entity.TbRoles;
 import cn.ffcs.uoo.core.user.entity.TbUser;
-import cn.ffcs.uoo.core.user.vo.ListSlaveAcctVo;
-import cn.ffcs.uoo.core.user.vo.ListUserOrgVo;
-import cn.ffcs.uoo.core.user.vo.PsonOrgVo;
+import cn.ffcs.uoo.core.user.vo.*;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 
@@ -47,4 +45,48 @@ public interface TbUserService extends IService<TbUser> {
      */
     public Page<ListUserOrgVo> selectUserOrgPage(PsonOrgVo psonOrgVo);
 
-    }
+
+    /**
+     * -todo----新版本---------------------------------------------------------
+     */
+
+    /**
+     * 选择用户
+     * @param personnelId
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    public Page<ListUserVo> getUserList( Long personnelId, Integer pageNo, Integer pageSize);
+
+    /**
+     * 人员信息
+     * @param personnelId
+     * @return
+     */
+    public PersonnelInfoVo getPersonnelInfo( Long personnelId);
+
+    /**
+     * 主账号 关联 组织
+     * @param acctId
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    public Page<ListAcctOrgVo> getAcctOrg(Long acctId, Integer pageNo, Integer pageSize);
+
+    /**
+     * 从账号 关联 主账号组织
+     * @param acctOrgVo
+     * @return
+     */
+    public List<ListAcctOrgVo> getSlaveAcctOrg(ListAcctOrgVo acctOrgVo);
+
+    /**
+     *  主账号 组织关系
+     * @param personnelId
+     * @return
+     */
+    public List<ListAcctOrgVo> getAcctOrgByPsnId(Long personnelId);
+
+}

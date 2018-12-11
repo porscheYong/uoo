@@ -99,9 +99,4 @@ public class OrgTreeServiceImpl extends ServiceImpl<OrgTreeMapper, OrgTree> impl
     public OrgTree getOrgTreeByRefCode(String refCode){
         return baseMapper.getOrgTreeByRefCode(refCode);
     }
-
-    @Override
-    public List<OrgTree> getOrgTreeList(OrgTree orgTree){
-        return baseMapper.getOrgTreeList(orgTree);
-    }
 }

@@ -90,7 +90,7 @@ public class TbPositionController extends BaseController {
     })
     @UooLog(value = "删除岗位", key = "removeTbPosition")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbPosition> removeTbPosition(Long positionId, Long updateUser) {
+    public ResponseResult<TbPosition> removeTbPosition(@RequestBody Long positionId, @RequestBody Long updateUser) {
         ResponseResult<TbPosition> responseResult = new ResponseResult<TbPosition>();
 
         // 校验必填项

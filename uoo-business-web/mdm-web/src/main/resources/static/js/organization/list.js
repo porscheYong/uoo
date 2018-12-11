@@ -11,7 +11,7 @@ function initOrgTable () {
         'columns': [
             { 'data': "orgName", 'title': '部门', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return '<a href="javascript:void(0);" onclick="window.parent.openTreeById('+orgId+','+row.orgId+')">'+ row.orgName +'</a>'
+                    return '<a href="info.html?id=' + row.orgId + '&pid=' + orgId + '&name=' + encodeURI(row.orgName) + '">'+ row.orgName +'</a>'
                 }
             },
             { 'data': "orgTypeSplit",
@@ -94,7 +94,7 @@ function initOrgPersonnelTable (isSearchlower) {
                 }
             },
             { 'data': "mobile", 'title': '手机号码', 'className': 'row-mobile' },
-            { 'data': "psnCode", 'title': '员工工号', 'className': 'cert-no' },
+            { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
             { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
             { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
             { 'data': "statusCd", 'title': '状态', 'className': 'status-code',
@@ -165,6 +165,13 @@ $('#orgName').html(orgName);
 parent.getOrgExtInfo();
 initOrgTable();
 initOrgPersonnelTable(0);
+
+// lulu ui tips插件
+seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
+    $('#editBtn').tips({
+        align: 'rotate'
+    });
+});
 
 $('#orgName').on('click', function () {
     var url = 'info.html?id=' + orgId + '&pid=' + pid + '&name=' + encodeURI(orgName);

@@ -425,20 +425,13 @@ public class OrgTreeController extends BaseController {
     @UooLog(value = "查询组织树列表",key = "getOrgTreeList")
     @RequestMapping(value = "/getOrgTreeList",method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<List<OrgTree>>  getOrgTreeList(String orgTreeId,String orgRootId,String refCode){
+    public ResponseResult<List<OrgTree>>  getOrgTreeList(String orgTreeId,String orgRootId){
         ResponseResult<List<OrgTree>> ret = new ResponseResult<List<OrgTree>>();
-//        Wrapper orgTreeWrapper = Condition.create().eq("STATUS_CD","1000").orderBy("SORT");
-//        if(!StrUtil.isNullOrEmpty(orgTreeId)){
-//            orgTreeWrapper.eq("ORG_TREE_ID",orgTreeId);
-//        }
-//      List<OrgTree> orgTreeList = orgTreeService.selectList(orgTreeWrapper);
-        OrgTree orgTree = new OrgTree();
+        Wrapper orgTreeWrapper = Condition.create().eq("STATUS_CD","1000").orderBy("SORT");
         if(!StrUtil.isNullOrEmpty(orgTreeId)){
-            orgTree.setOrgTreeId(new Long(orgTreeId));
+            orgTreeWrapper.eq("ORG_TREE_ID",orgTreeId);
         }
-        orgTree.setOrgId(StrUtil.strnull(orgRootId));
-        orgTree.setRefCode(StrUtil.strnull(refCode));
-        List<OrgTree> orgTreeList = orgTreeService.getOrgTreeList(orgTree);
+        List<OrgTree> orgTreeList = orgTreeService.selectList(orgTreeWrapper);
         ret.setData(orgTreeList);
         ret.setState(ResponseResult.STATE_OK);
         return ret;

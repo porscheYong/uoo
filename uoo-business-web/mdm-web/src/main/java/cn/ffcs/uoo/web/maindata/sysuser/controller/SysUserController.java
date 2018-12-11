@@ -21,6 +21,7 @@ import com.alibaba.fastjson.JSONObject;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.realm.exception.ServiceException;
 import cn.ffcs.uoo.web.maindata.sysuser.client.SysUserClient;
+import cn.ffcs.uoo.web.maindata.sysuser.dto.AlterPwdDTO;
 import cn.ffcs.uoo.web.maindata.sysuser.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.user.service.AcctService;
@@ -37,6 +38,20 @@ public class SysUserController {
     private AcctService acctService;
     @Autowired
     ShiroFilterFactoryBean shiroFilterFactoryBean;
+    
+    @ApiOperation(value = "登陆接口", notes = "登陆接口")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "sysUser", value = "sysUser", required = true, dataType = "SysUser" ),
+    })
+    @RequestMapping(value = "/alterPwd", method = RequestMethod.POST)
+    public ResponseResult<String> alterPwd(AlterPwdDTO alterPwdDTO){
+        Subject sub=SecurityUtils.getSubject();
+        Object primaryPrincipal = sub.getPrincipals().getPrimaryPrincipal();
+        alterPwdDTO.setAccout(primaryPrincipal.toString());
+        ResponseResult<String> alterPwd = sysuserClient.alterPwd(alterPwdDTO);
+        return alterPwd;
+    }
+    
     @ApiOperation(value = "登陆接口", notes = "登陆接口")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "sysUser", value = "sysUser", required = true, dataType = "SysUser" ),

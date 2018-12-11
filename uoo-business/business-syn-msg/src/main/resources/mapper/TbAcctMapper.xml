@@ -25,13 +25,5 @@
     CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, USER_HOST_TYPE, 
     ENABLE_DATE, DISABLE_DATE, ACCT_TYPE
   </sql>
-
-  <select id="selectBySlaveAcctId" resultMap="BaseResultMap">
-    select * from Tb_Acct where acct_id = (select acct_id from tb_slave_acct where slave_acct_id = #{slaveAcctId})
-  </select>
-
-  <select id="selectByPersonId" resultMap="BaseResultMap">
-    select * from Tb_Acct where PERSONNEL_ID = #{personId}
-  </select>
   
 </mapper>

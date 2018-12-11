@@ -2,7 +2,6 @@ package cn.ffcs.uoo.core.organization.dao;
 
 import cn.ffcs.uoo.core.organization.entity.OrgTree;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -23,7 +22,5 @@ public interface OrgTreeMapper extends BaseMapper<OrgTree> {
     public int isExistsOrgTreeRel(String refCode);
 
     public OrgTree getOrgTreeByRefCode(String refCode);
-
-    public List<OrgTree> getOrgTreeList(@Param("orgTree")OrgTree orgTree);
 
 }

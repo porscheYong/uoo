@@ -136,7 +136,7 @@ public class TbExpandovalueController extends BaseController {
     @ApiImplicitParam(name = "tbExpandovalue", value = "扩展值", required = true, dataType = "TbExpandovalue")
     @UooLog(value = "新增扩展值", key = "addTbExpandovalue")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<TbExpandovalue> addTbExpandovalue(TbExpandovalue tbExpandovalue) {
+    public ResponseResult<TbExpandovalue> addTbExpandovalue(@RequestBody TbExpandovalue tbExpandovalue) {
         ResponseResult<TbExpandovalue> responseResult = new ResponseResult<TbExpandovalue>();
 
         // 校验必填项
@@ -156,14 +156,20 @@ public class TbExpandovalueController extends BaseController {
         tbExpandorow.setTableId(tbExpandovalue.getTableId());
         tbExpandorow.setResourceId(tbExpandovalue.getResourceId());
         tbExpandorow.setRecordId(tbExpandovalue.getRecordId());
-        tbExpandorow.setStatusCd(tbExpandovalue.getStatusCd());
-        tbExpandorow.setCreateDate(tbExpandovalue.getCreateDate());
+        tbExpandorow.setStatusCd(StatusEnum.VALID.getValue());
+        tbExpandorow.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbExpandorow.setCreateUser(tbExpandovalue.getCreateUser());
-        tbExpandorow.setStatusDate(tbExpandovalue.getStatusDate());
+        tbExpandorow.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandorow.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandorow.setUpdateUser(tbExpandovalue.getUpdateUser());
         tbExpandorowService.save(tbExpandorow);
 
         // 新增扩展值
         tbExpandovalue.setRowId(tbExpandorow.getRowId());
+        tbExpandovalue.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandovalue.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandovalue.setStatusCd(StatusEnum.VALID.getValue());
+        tbExpandovalue.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbExpandovalueService.save(tbExpandovalue);
 
         responseResult.setState(ResponseResult.STATE_OK);
@@ -176,6 +182,7 @@ public class TbExpandovalueController extends BaseController {
             @ApiImplicitParam(name = "valueId", value = "扩展值标识", required = true, dataType = "Long"),
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
+    @UooLog(value = "删除扩展值", key = "removeTbExpandovalue")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
     public ResponseResult<TbExpandovalue> removeTbExpandovalue(Long valueId, Long updateUser) {
         ResponseResult<TbExpandovalue> responseResult = new ResponseResult<TbExpandovalue>();
@@ -194,10 +201,10 @@ public class TbExpandovalueController extends BaseController {
 
         TbExpandovalue tbExpandovalue = new TbExpandovalue();
         tbExpandovalue.setValueId(valueId);
-        tbExpandovalue.setStatusCd("1000");
+        tbExpandovalue.setStatusCd(StatusEnum.VALID.getValue());
 
-        List<TbExpandovalue>  tbExpandovalueList = tbExpandovalueService.selectValueList(tbExpandovalue);
-        if(tbExpandovalueList == null || tbExpandovalueList.size() <= 0) {
+        List<TbExpandovalue> tbExpandovalueList = tbExpandovalueService.selectValueList(tbExpandovalue);
+        if (tbExpandovalueList == null || tbExpandovalueList.size() <= 0) {
             responseResult.setState(ResponseResult.STATE_ERROR);
             responseResult.setMessage("该扩展值id对应的扩展值不存在");
             return responseResult;
@@ -221,7 +228,7 @@ public class TbExpandovalueController extends BaseController {
     @ApiImplicitParam(name = "tbExpandovalue", value = "扩展值", required = true, dataType = "TbExpandovalue")
     @UooLog(value = "修改扩展值", key = "updateTbExpandovalue")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult<TbExpandovalue> updateTbExpandovalue(TbExpandovalue tbExpandovalue) {
+    public ResponseResult<TbExpandovalue> updateTbExpandovalue(@RequestBody TbExpandovalue tbExpandovalue) {
         ResponseResult<TbExpandovalue> responseResult = new ResponseResult<TbExpandovalue>();
 
         // 校验必填项
@@ -231,6 +238,9 @@ public class TbExpandovalueController extends BaseController {
             return responseResult;
         }
 
+        tbExpandovalue.setUpdateDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandovalue.setStatusDate(DateUtils.parseDate(DateUtils.getDateTime()));
+        tbExpandovalue.setCreateDate(DateUtils.parseDate(DateUtils.getDateTime()));
         tbExpandovalueService.updateById(tbExpandovalue);
 
         responseResult.setState(ResponseResult.STATE_OK);

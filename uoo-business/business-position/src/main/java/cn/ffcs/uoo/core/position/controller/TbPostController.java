@@ -74,7 +74,7 @@ public class TbPostController extends BaseController {
     })
     @UooLog(value = "删除职位", key = "removeTbPost")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbPost> removeTbPost(Long postId, Long updateUser) {
+    public ResponseResult<TbPost> removeTbPost(@RequestBody Long postId, @RequestBody Long updateUser) {
         ResponseResult<TbPost> responseResult = new ResponseResult<TbPost>();
 
         // 校验必填项

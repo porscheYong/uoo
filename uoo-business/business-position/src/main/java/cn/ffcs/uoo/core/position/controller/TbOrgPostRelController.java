@@ -72,7 +72,7 @@ public class TbOrgPostRelController extends BaseController {
     })
     @UooLog(value = "删除组织职位关系", key = "removeTbOrgPostRel")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbOrgPostRel> removeTbOrgPostRel(Long orgPostId, Long updateUser) {
+    public ResponseResult<TbOrgPostRel> removeTbOrgPostRel(@RequestBody Long orgPostId, @RequestBody Long updateUser) {
         ResponseResult<TbOrgPostRel> responseResult = new ResponseResult<TbOrgPostRel>();
 
         // 校验必填项

@@ -63,12 +63,7 @@ public class RabbitMqServiceImpl implements RabbitMqService {
 		}
 		
 		NodeVo rand = nodeInfoService.getRandNodeInfo();
-
-		//
-
-
-
-
+		
 		String queueName = BuildQueueNameUtil.build();
 		
 		SystemQueueRela record = new SystemQueueRela();

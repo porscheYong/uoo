@@ -19,7 +19,6 @@
     <result column="ACCT_ID" jdbcType="DECIMAL" property="acctId" />
     <result column="ENABLE_DATE" jdbcType="DATE" property="enableDate" />
     <result column="DISABLE_DATE" jdbcType="DATE" property="disableDate" />
-    <result column="MAPP_STAFF_ID" jdbcType="VARCHAR" property="mappStaffId" />
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -28,7 +27,6 @@
     ACCT_ID, ENABLE_DATE, DISABLE_DATE
   </sql>
 
-  <!--含有从账号-->
   <resultMap id="VoResultMap" type="cn.ffcs.uoo.message.server.vo.TbAcctVo">
     <id column="ACCT_ID" jdbcType="DECIMAL" property="acctId" />
     <result column="PERSONNEL_ID" jdbcType="VARCHAR" property="personnelId" />
@@ -49,7 +47,7 @@
     <result column="ACCT_TYPE" jdbcType="VARCHAR" property="acctType" />
     <result column="SLAVE_ACCT_ID" jdbcType="DECIMAL" property="slaveAcctId" />
 
-    <association property="tbSlaveAcct" javaType="cn.ffcs.uoo.message.server.vo.TbSlaveAcctVo"
+    <association property="tbSlaveAcctVo" javaType="cn.ffcs.uoo.message.server.vo.TbSlaveAcctVo"
                  column="SLAVE_ACCT_ID" select="getTbSlaveAcctVo"></association>
 
     <association property="tbPersonnel" javaType="cn.ffcs.uoo.message.server.pojo.TbPersonnel"
@@ -58,7 +56,7 @@
     <collection property="tbAcctCrossRel" ofType="cn.ffcs.uoo.message.server.pojo.TbAcctCrossRel"
                 select="getTbAcctCrossRel" column="ACCT_ID"></collection>
 
-    <collection property="tbAcctOrgRel" ofType="cn.ffcs.uoo.message.server.pojo.TbOrg"
+    <collection property="tbAcctOrgRel" ofType="cn.ffcs.uoo.message.server.vo.TbSalveAcctOrgRelVo"
                 select="getTbAcctOrgRel" column="SLAVE_ACCT_ID"></collection>
 
     <collection property="tbContact" ofType="cn.ffcs.uoo.message.server.pojo.TbContact"
@@ -78,7 +76,6 @@
 
   </resultMap>
 
-  <!--不含有从账号-->
   <resultMap id="VoResultMap2" type="cn.ffcs.uoo.message.server.vo.TbAcctVo">
     <id column="ACCT_ID" jdbcType="DECIMAL" property="acctId" />
     <result column="PERSONNEL_ID" jdbcType="VARCHAR" property="personnelId" />
@@ -106,8 +103,8 @@
     <collection property="tbAcctCrossRel" ofType="cn.ffcs.uoo.message.server.pojo.TbAcctCrossRel"
                 select="getTbAcctCrossRel" column="ACCT_ID"></collection>
 
-    <collection property="tbAcctOrgRel" ofType="cn.ffcs.uoo.message.server.pojo.TbOrg"
-                select="getTbAcctOrgRel2" column="{acctId=ACCT_ID,orgTreeId=ORG_TREE_ID}"></collection>
+    <collection property="tbAcctOrgRel" ofType="cn.ffcs.uoo.message.server.vo.TbSalveAcctOrgRelVo"
+                select="getTbAcctOrgRel" column="SLAVE_ACCT_ID"></collection>
 
     <collection property="tbContact" ofType="cn.ffcs.uoo.message.server.pojo.TbContact"
                 column="PERSONNEL_ID" select="getTbContact"></collection>
@@ -126,7 +123,6 @@
 
   </resultMap>
 
-  <!--跨域-->
   <resultMap id="TbAcctCrossRelMap" type="cn.ffcs.uoo.message.server.pojo.TbAcctCrossRel">
     <id column="ACCT_CROSS_ID" jdbcType="DECIMAL" property="acctCrossId" />
     <result column="ACCT_ID" jdbcType="DECIMAL" property="acctId" />
@@ -140,7 +136,23 @@
     <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
   </resultMap>
 
-  <!--组织-->
+  <resultMap id="TbAcctOrgRelMap" type="cn.ffcs.uoo.message.server.vo.TbSalveAcctOrgRelVo">
+    <result column="ACCT_HOST_ID" jdbcType="DECIMAL" property="acctHostId" />
+    <result column="ORG_ID" jdbcType="DECIMAL" property="orgId" />
+    <result column="ACCT_ID" jdbcType="DECIMAL" property="acctId" />
+    <result column="SORT" jdbcType="DECIMAL" property="sort" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+    <association property="tbOrg" javaType="cn.ffcs.uoo.message.server.pojo.TbOrg"
+                 column="ORG_ID" select="getTbOrg">
+    </association>
+
+  </resultMap>
+
   <resultMap id="TbOrgMap" type="cn.ffcs.uoo.message.server.pojo.TbOrg">
     <id column="ORG_ID" jdbcType="DECIMAL" property="orgId" />
     <result column="LOC_ID" jdbcType="DECIMAL" property="locId" />
@@ -169,7 +181,6 @@
     <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
   </resultMap>
 
-  <!--从账号-->
   <resultMap id="TbSlaveAcctVoMap" type="cn.ffcs.uoo.message.server.vo.TbSlaveAcctVo">
     <id column="SLAVE_ACCT_ID" jdbcType="DECIMAL" property="slaveAcctId" />
     <result column="SLAVE_ACCT" jdbcType="VARCHAR" property="slaveAcct" />
@@ -188,34 +199,12 @@
     <result column="ACCT_ID" jdbcType="DECIMAL" property="acctId" />
     <result column="ENABLE_DATE" jdbcType="DATE" property="enableDate" />
     <result column="DISABLE_DATE" jdbcType="DATE" property="disableDate" />
-    <result column="MAPP_STAFF_ID" jdbcType="VARCHAR" property="mappStaffId" />
+
     <collection property="tbAcctExt" ofType="cn.ffcs.uoo.message.server.pojo.TbAcctExt"
                 column="SLAVE_ACCT_ID" select="getTbAcctExt"></collection>
+
   </resultMap>
 
-  <!--从账号2 不含有扩展-->
-  <resultMap id="TbSlaveAcctVoMap2" type="cn.ffcs.uoo.message.server.vo.TbSlaveAcctVo">
-    <id column="SLAVE_ACCT_ID" jdbcType="DECIMAL" property="slaveAcctId" />
-    <result column="SLAVE_ACCT" jdbcType="VARCHAR" property="slaveAcct" />
-    <result column="SALT" jdbcType="VARCHAR" property="salt" />
-    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
-    <result column="SYMMETRY_PASSWORD" jdbcType="VARCHAR" property="symmetryPassword" />
-    <result column="SLAVE_ACCT_TYPE" jdbcType="VARCHAR" property="slaveAcctType" />
-    <result column="RESOURCE_OBJ_ID" jdbcType="DECIMAL" property="resourceObjId" />
-    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
-    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
-    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
-    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
-    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
-    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
-    <result column="ACCT_HOST_ID" jdbcType="DECIMAL" property="acctHostId" />
-    <result column="ACCT_ID" jdbcType="DECIMAL" property="acctId" />
-    <result column="ENABLE_DATE" jdbcType="DATE" property="enableDate" />
-    <result column="DISABLE_DATE" jdbcType="DATE" property="disableDate" />
-    <result column="MAPP_STAFF_ID" jdbcType="VARCHAR" property="mappStaffId" />
-  </resultMap>
-
-  <!--从账号扩展-->
   <resultMap id="TbAcctExtMap" type="cn.ffcs.uoo.message.server.pojo.TbAcctExt">
     <id column="ACCT_EXT_ID" jdbcType="DECIMAL" property="acctExtId" />
     <result column="SLAVE_ACCT_ID" jdbcType="DECIMAL" property="slaveAcctId" />
@@ -235,7 +224,6 @@
     <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
   </resultMap>
 
-  <!--人员-->
   <resultMap id="TbPersonnelMap" type="cn.ffcs.uoo.message.server.pojo.TbPersonnel">
     <id column="PERSONNEL_ID" jdbcType="DECIMAL" property="personnelId" />
     <result column="PSN_NAME" jdbcType="VARCHAR" property="psnName" />
@@ -262,7 +250,6 @@
     <result column="NOTES" jdbcType="VARCHAR" property="notes" />
   </resultMap>
 
-  <!--联系-->
   <resultMap id="TbContactMap" type="cn.ffcs.uoo.message.server.pojo.TbContact">
     <id column="CONTACT_ID" jdbcType="DECIMAL" property="contactId" />
     <result column="PERSONNEL_ID" jdbcType="DECIMAL" property="personnelId" />
@@ -278,7 +265,6 @@
     <result column="FIRST_FLAG" jdbcType="DECIMAL" property="firstFlag" />
   </resultMap>
 
-  <!--教育-->
   <resultMap id="TbEduMap" type="cn.ffcs.uoo.message.server.pojo.TbEdu">
     <id column="EDU_ID" jdbcType="DECIMAL" property="eduId" />
     <result column="PERSONNEL_ID" jdbcType="DECIMAL" property="personnelId" />
@@ -305,7 +291,6 @@
     <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
   </resultMap>
 
-  <!--家人-->
   <resultMap id="TbFamilyMap" type="cn.ffcs.uoo.message.server.pojo.TbFamily">
     <id column="FAMILY_ID" jdbcType="DECIMAL" property="familyId" />
     <result column="PERSONNEL_ID" jdbcType="DECIMAL" property="personnelId" />
@@ -322,7 +307,6 @@
     <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
   </resultMap>
 
-  <!--证件-->
   <resultMap id="TbCertMap" type="cn.ffcs.uoo.message.server.pojo.TbCert">
     <result column="CERT_ID" jdbcType="DECIMAL" property="certId" />
     <result column="PERSONNEL_ID" jdbcType="DECIMAL" property="personnelId" />
@@ -342,7 +326,6 @@
     <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
   </resultMap>
 
-  <!--工作-->
   <resultMap id="TbPsnjobMap" type="cn.ffcs.uoo.message.server.vo.TbPsnjobVo">
     <id column="PSNJOB_ID" jdbcType="DECIMAL" property="psnjobId" />
     <result column="PERSONNEL_ID" jdbcType="DECIMAL" property="personnelId" />
@@ -358,41 +341,33 @@
     <result column="org_name" jdbcType="VARCHAR" property="orgName" />
   </resultMap>
 
-  <!--从账号获取主账号-->
   <select id="insertOrUpdateSalveAcct" resultMap="VoResultMap">
     select A.*,#{slaveAcctId} SLAVE_ACCT_ID from tb_acct A where acct_id = (select acct_id from tb_slave_acct where slave_acct_id = #{slaveAcctId} and STATUS_CD= 1000) and STATUS_CD= 1000
   </select>
 
-  <!--获取所有的从账号-->
   <select id="insertOrUpdateSalveAcctByPersonnelIdAndSystemId" resultMap="BaseResultMap">
     select b.* from tb_acct a left join tb_slave_acct b on a.acct_id = b.acct_id where a.personnel_id = #{personnelId} and a.status_cd = 1000 and b.status_cd = 1000 and b.slave_acct_type = 1
     and b.resource_obj_id = #{systemId}
   </select>
 
-  <!--人获取主账号-->
   <select id="insertOrUpdateAcct" resultMap="VoResultMap2">
     select A.*,#{orgTreeId} ORG_TREE_ID　from tb_acct A where PERSONNEL_ID = #{personnelId} and STATUS_CD= 1000
   </select>
 
-  <!--跨域-->
   <select id="getTbAcctCrossRel" parameterType="Long" resultMap="TbAcctCrossRelMap">
     select * from tb_Acct_Cross_Rel where acct_id = #{ACCT_ID} and STATUS_CD= 1000
   </select>
 
-  <select id="getTbAcctOrgRel" parameterType="Long" resultMap="TbOrgMap">
-    select * from  tb_org where status_cd = 1000 and org_id = (select org_id from TB_account_ORG_REL where acct_host_id =
-    (select acct_host_id from tb_slave_acct where slave_acct_id = #{SLAVE_ACCT_ID}) and STATUS_CD= 1000)
+  <select id="getTbAcctOrgRel" parameterType="Long" resultMap="TbAcctOrgRelMap">
+    select * from TB_account_ORG_REL where acct_host_id = (select acct_host_id from tb_slave_acct where slave_acct_id = #{SLAVE_ACCT_ID}) and STATUS_CD= 1000
   </select>
 
-  <select id="getTbAcctOrgRel2" resultMap="TbOrgMap">
-    select a.* from  tb_org a left join tb_org_orgtree_rel b on a.org_id = b.org_id and b.status_cd = 1000
-    left join tb_org_tree c on c.org_tree_id = b.org_tree_id and c.status_cd = 1000 where a.status_cd = 1000 and
-    a.org_id = (select org_id from TB_account_ORG_REL where acct_id = #{acctId} and STATUS_CD= 1000) and c.org_tree_id = #{orgTreeId}
+  <select id="getTbOrg" resultMap="TbOrgMap" parameterType="Long">
+    select * from tb_org where org_id = #{ORG_ID} and STATUS_CD= 1000
   </select>
 
   <select id="getTbSlaveAcctVo" resultMap="TbSlaveAcctVoMap" parameterType="Long">
-    select a.*,b.status_cd,case when b.status_cd = '1000' then b.map_acct_id else null end MAPP_STAFF_ID from tb_slave_acct a
-    left join tb_slave_acct_map b on a.slave_acct_id = b.slave_acct_id where a.slave_acct_id = #{SLAVE_ACCT_ID} and a.STATUS_CD= 1000
+    select * from tb_slave_acct where slave_acct_id = #{SLAVE_ACCT_ID} and STATUS_CD= 1000
   </select>
 
   <select id="getTbAcctExt" resultMap="TbAcctExtMap" parameterType="Long">
@@ -421,11 +396,6 @@
 
   <select id="getTbPsnjob" resultMap="TbPsnjobMap" parameterType="Long">
      select a.*,b.org_name from Tb_Psnjob a,tb_org b where PERSONNEL_ID = #{PERSONNEL_ID} and a.org_id = b.org_id and a.status_cd = 1000 and b.status_cd = 1000
-  </select>
-
-  <select id="selectVoById" resultMap="TbSlaveAcctVoMap2">
-    select a.*,case when b.status_cd = '1000' then b.map_acct_id else null end MAPP_STAFF_ID from tb_slave_acct a left join tb_slave_acct_map b on a.slave_acct_id = b.slave_acct_id
-    where a.slave_acct_id = #{slaveAcctId}
   </select>
 
 </mapper>

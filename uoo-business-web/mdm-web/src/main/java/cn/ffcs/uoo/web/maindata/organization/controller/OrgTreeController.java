@@ -57,9 +57,8 @@ public class OrgTreeController {
     })
     @RequestMapping(value = "/getOrgTreeList", method = RequestMethod.GET)
     public ResponseResult<List<OrgTree>> getOrgTreeList(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
-                                                        @RequestParam(value = "orgRootId",required = false)String orgRootId,
-                                                        @RequestParam(value = "refCode",required = false)String refCode){
-        return orgTreeService.getOrgTreeList(orgTreeId,orgRootId,refCode);
+                                                        @RequestParam(value = "orgRootId",required = false)String orgRootId){
+        return orgTreeService.getOrgTreeList(orgTreeId,orgRootId);
     }
 
 

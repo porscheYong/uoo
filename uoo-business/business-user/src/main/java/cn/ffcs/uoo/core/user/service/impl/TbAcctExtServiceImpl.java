@@ -1,12 +1,18 @@
 package cn.ffcs.uoo.core.user.service.impl;
 
+import cn.ffcs.uoo.core.user.constant.BaseUnitConstants;
+import cn.ffcs.uoo.core.user.constant.EumUserResponeCode;
 import cn.ffcs.uoo.core.user.dao.TbAcctExtMapper;
 import cn.ffcs.uoo.core.user.entity.TbAcctExt;
 import cn.ffcs.uoo.core.user.service.TbAcctExtService;
+import cn.ffcs.uoo.core.user.util.ResultUtils;
+import cn.ffcs.uoo.core.user.util.StrUtil;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * <p>
@@ -30,5 +36,34 @@ public class TbAcctExtServiceImpl extends ServiceImpl<TbAcctExtMapper, TbAcctExt
     @Override
     public Long getId(){
         return baseMapper.getId();
+    }
+
+    @Override
+    public Object saveTbAcctExt(TbAcctExt tbAcctExt){
+        if(StrUtil.isNullOrEmpty(tbAcctExt.getAcctExtId())){
+            tbAcctExt.setAcctExtId(this.getId());
+            if(this.insert(tbAcctExt)){
+                return ResultUtils.success(null);
+            }
+        }else{
+            if(this.updateById(tbAcctExt)){
+                return ResultUtils.success(null);
+            }
+        }
+        return ResultUtils.error(EumUserResponeCode.USER_RESPONSE_ERROR);
+    }
+
+    @Override
+    public Object delTbAcctExt(Long slaveAcctId){
+        TbAcctExt tbAcctExt = new TbAcctExt();
+        tbAcctExt.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+        tbAcctExt.setStatusDate(new Date());
+        EntityWrapper<TbAcctExt> wrapper = new EntityWrapper<TbAcctExt>();
+        wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        wrapper.eq(BaseUnitConstants.TABLE_SLAVE_ACCT_ID, slaveAcctId);
+        if(retBool(baseMapper.update(tbAcctExt, wrapper))){
+            return ResultUtils.success(null);
+        }
+        return ResultUtils.error(EumUserResponeCode.USER_RESPONSE_ERROR);
     }
 }
