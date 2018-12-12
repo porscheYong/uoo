@@ -48,12 +48,20 @@ if(statusCd == "1000"){                //判断状态
     formValidate = new Validate(addAcctForm);
     formValidate.immediate();
     //formValidate.isAllPass();
-    addAcctForm.find(':input').each(function () {
-        $(this).hover(function () {
-            formValidate.isPass($(this));
-        });
+    // addAcctForm.find(':input').each(function () {
+    //     $(this).hover(function () {
+    //         formValidate.isPass($(this));
+    //     });
+    // });
+  });
+
+  // lulu ui tips插件
+seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
+    $('#defaultPswTel').tips({
+        align: 'right'
     });
   });
+  
 
 function getSubUser(acctId) {       //查看并编辑从账号            
     $http.get('/user/getUser', {   //http://192.168.58.112:18000/user/getUser
@@ -269,8 +277,8 @@ function initUserInfo(results){   //新增时初始化信息
 }
 
 function addTbSlaveAcct(){      //从账号新增
-    // if(!formValidate.isAllPass())
-    //     return;
+    if(!formValidate.isAllPass())
+        return;
     var slaveAcctType = $('#accTypeTel').get(0).selectedIndex + 1;
     var resourceObjId = $('#systemTel').get(0).selectedIndex + 1;
     var subStatusCd = $('#statusCd').get(0).selectedIndex*100 + 1000;
@@ -317,8 +325,8 @@ function addTbSlaveAcct(){      //从账号新增
 }
 
 function updateTbSlaveAcct(){       //更新从账号信息
-    // if(!formValidate.isAllPass())
-    //     return;
+    if(!formValidate.isAllPass())
+        return;
     var slaveAcctType = $('#accTypeTel').get(0).selectedIndex + 1;
     var resourceObjId = $('#systemTel').get(0).selectedIndex + 1;
     var subStatusCd = $('#statusCd').get(0).selectedIndex*100 + 1000;
@@ -476,23 +484,23 @@ function backToAcctInfo(){  //返回用户信息查看面板
 
 
 function btnSubmit(){       //提交
-    if($('#acctTel').val()!='' && $('#statusCd').val()!='' && $('#roleTel').val()!='' 
-                               && $('#defaultPswTel').val()!='' && $('#effectDate').val()!='' 
-                               && $('#invalidDate').val()!='' && acctHostId != 0){
-        if(isChecked == 0 || $('#extNameTel').val()!= '' || $('#extEmailTel').val()!= '' || $('#extMobileTel').val()!= '' || $('#extCerNoTel').val()!= '' ){
+    // if($('#acctTel').val()!='' && $('#statusCd').val()!='' && $('#roleTel').val()!='' 
+    //                            && $('#defaultPswTel').val()!='' && $('#effectDate').val()!='' 
+    //                            && $('#invalidDate').val()!='' && acctHostId != 0){
+    //     if(isChecked == 0 || $('#extNameTel').val()!= '' || $('#extEmailTel').val()!= '' || $('#extMobileTel').val()!= '' || $('#extCerNoTel').val()!= '' ){
             if(opBtn == 0){
                 updateTbSlaveAcct();
             }else{
                 addTbSlaveAcct();
             }
-        }else{
-            toastr.warning('扩展信息不能全为空');
-        }
-    }else if(acctHostId == 0){
-        toastr.warning('组织不能为空');
-    }else{
-        toastr.warning('必填部分不能为空');
-    }
+    //     }else{
+    //         toastr.warning('扩展信息不能全为空');
+    //     }
+    // }else if(acctHostId == 0){
+    //     toastr.warning('组织不能为空');
+    // else{
+    //     toastr.warning('必填部分不能为空');
+    // }
 }
 
 function extInfoFade(){     //点击复选框
@@ -519,13 +527,13 @@ function isNull(s,r){    //判断是否为null
 function submitToOther(){   //提交或者取消跳转
     var url = "";
     if(hType == "th"){
-        url = "addMainAccount.html?orgTreeId=" + orgTreeId + "&hType="+ toMainType +"&opBtn=0&orgName=" + orgName + "&orgId=" + orgId + "&acctId=" + mainAcctId;   //跳转主账号编辑界面
+        url = "addMainAccount.html?orgTreeId=" + orgTreeId + "&hType="+ toMainType +"&opBtn=0&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&acctId=" + mainAcctId;   //跳转主账号编辑界面
     }else if(hType == "mh"){
-        url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;       //跳转主界面
+        url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;       //跳转主界面
     }else if(hType == "ah"){
-        url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;       //跳转添加界面
+        url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;       //跳转添加界面
     }else{
-        url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + orgName + "&id=" + orgId + 
+        url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName) + "&id=" + orgId + 
                                       "&personnelId=" + personnelId + "&orgRootId=" + orgRootId + "&tabPage=" + tabPage;
     }
     window.location.href = url;
@@ -534,7 +542,7 @@ function submitToOther(){   //提交或者取消跳转
 $("#defaultPswTel").focus(function (){    //默认密码输入框获得焦点
     if($("#defaultPswTel").attr("type") == "password"){
       $("#defaultPswTel").val('');
-      $("#defaultPswTel").attr("type","tel");
+      $("#defaultPswTel").attr("type","text");
     }
   })
   
@@ -542,6 +550,7 @@ $("#defaultPswTel").blur(function (){     //默认密码输入框失去焦点
     if($("#defaultPswTel").val() == ''){
       $("#defaultPswTel").val(psw);
       $("#defaultPswTel").attr("type","password");
+      formValidate.isAllPass($('#defaultPswTel'));
     }
   })
 

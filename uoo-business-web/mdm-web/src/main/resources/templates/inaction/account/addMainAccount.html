@@ -255,17 +255,17 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-item" style="width: 100%">
-                                <label for="effectDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" 
+                                <label for="effectDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" 
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
-                                <input id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-12" required readonly autocomplete="off">
+                                <input id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-12" readonly autocomplete="off">
                             </div>
                         </div>
 
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-item" style="width: 100%">
-                                <label for="invalidDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" 
+                                <label for="invalidDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" 
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
-                                <input id="invalidDate" class="ui-input col-md-8 col-sm-8 col-xs-12" required readonly autocomplete="off">
+                                <input id="invalidDate" class="ui-input col-md-8 col-sm-8 col-xs-12" readonly autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -383,6 +383,12 @@
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
           $('select').selectMatch();
         })
+
+        $("#defaultPswTel").attr("title","1、登录密码必须包含数字、大写字母、小写字母、特殊符号中的3种，且长度大于8位；"+
+                                         "2、登录密码中连续的或相同的数据或字母（包括倒叙）不能超过3位。"+
+                                            "如：fz12348，abcd12格式不正确；ACabc123、Ab111aaa正确；"+
+                                         "3、登录密码中不能包含员工账号、中文标点符号以及反斜杠\ ；"+
+                                         "4、键盘中连续按键不能超过3位；如：qweruio1，asdfuio1格式不正确；qeruio12、asdjkl12格式正确。");
 
     </script>
   </body>

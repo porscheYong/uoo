@@ -26,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -62,14 +64,14 @@ public class SysMenuController {
     })
     @UooLog(key="listPage",value="获取分页列表")
     @GetMapping("/listPage/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    public ResponseResult<List<SysMenu>> listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
 
-        Wrapper<SysMenu> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID).orderBy("UPDATE_DATE", false);
+        Wrapper<SysMenu> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID);
         Page<SysMenu> page = sysMenuService.selectPage(new Page<SysMenu>(pageNo, pageSize), wrapper);
 
-        return ResponseResult.createSuccessResult(page.getRecords(), "", page);
+        return ResponseResult.createSuccessResult(page , "");
     }
 
     @ApiOperation(value = "修改",notes = "修改")
@@ -134,5 +136,20 @@ public class SysMenuController {
         obj.setUpdateDate(new Date());
         sysMenuService.updateById(obj);
         return ResponseResult.createSuccessResult("success");
+    }
+    @ApiOperation(value = "获取单个用户的菜单", notes = "获取单个用户的菜单")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "accout", value = "accout", required = true, dataType = "String" ,paramType="path"),
+    })
+    @UooLog(key="getMenuByAccout=",value="获取单个用户的菜单")
+    @Transactional
+    @RequestMapping(value = "/getMenuByAccout/{accout}", method = RequestMethod.GET)
+    public ResponseResult<List<SysMenu>> getMenuByAccout(@PathVariable(value = "accout") String accout){
+        if(accout==null||accout.trim().length()<=0){
+            return ResponseResult.createErrorResult("账号不存在");
+        }
+        HashMap<String , Object> map=new HashMap<>();
+        map.put("accout", accout);
+        return ResponseResult.createSuccessResult(sysMenuService.getMenuByAccout(map), "");
     }
 }

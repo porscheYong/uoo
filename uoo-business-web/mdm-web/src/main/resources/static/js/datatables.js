@@ -3511,7 +3511,6 @@
 		oSettings.bSorted = false;
 		oSettings.bFiltered = false;
 		oSettings.bDrawing = false;
-        oSettings.oFeatures.bServerSide = true;
 	}
 	
 	
@@ -3963,19 +3962,21 @@
 	 */
 	function _fnAjaxUpdate( settings )
 	{
-		if ( settings.bAjaxDataGet ) {
-			settings.iDraw++;
-			_fnProcessingDisplay( settings, true );
-	
-			_fnBuildAjax(
-				settings,
-				_fnAjaxParameters( settings ),
-				function(json) {
-					_fnAjaxUpdateDraw( settings, json );
-				}
-			);
-	
-			return false;
+		if(sortFlag == 0){
+			if ( settings.bAjaxDataGet ) {
+				settings.iDraw++;
+				_fnProcessingDisplay( settings, true );
+		
+				_fnBuildAjax(
+					settings,
+					_fnAjaxParameters( settings ),
+					function(json) {
+						_fnAjaxUpdateDraw( settings, json );
+					}
+				);
+		
+				return false;
+			}
 		}
 		return true;
 	}
@@ -4844,6 +4845,7 @@
 		$('select', div)
 			.val( settings._iDisplayLength )
 			.on( 'change.DT', function(e) {
+				sortFlag = 0;
 				_fnLengthChange( settings, $(this).val() );
 				_fnDraw( settings );
 			} );
@@ -6096,7 +6098,6 @@
 	 */
 	function _fnSortListener ( settings, colIdx, append, callback )
 	{
-        settings.oFeatures.bServerSide = false;
 		var col = settings.aoColumns[ colIdx ];
 		var sorting = settings.aaSorting;
 		var asSorting = col.asSorting;
@@ -6575,6 +6576,18 @@
 	{
 		$(n)
 			.on( 'click.DT', oData, function (e) {
+					if(n.toString().search("HTMLTableCellElement") != -1){
+						currentPage = table.page();
+						sortFlag = 1;
+					}else if($(this).hasClass("next")){
+						currentPage = table.page()+1;
+						sortFlag = 0;
+					}else if($(this).hasClass("previous")){
+						currentPage = table.page()-1;
+						sortFlag = 0;
+					}else{
+						sortFlag = 0;
+					}
 					n.blur(); // Remove focus outline for mouse users
 					fn(e);
 				} )
@@ -15323,118 +15336,121 @@ $.extend( DataTable.ext.classes, {
 
 /* Bootstrap paging button renderer */
 DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, buttons, page, pages ) {
-	var api     = new DataTable.Api( settings );
-	var classes = settings.oClasses;
-	var lang    = settings.oLanguage.oPaginate;
-	var aria = settings.oLanguage.oAria.paginate || {};
-	var btnDisplay, btnClass, counter=0;
-
-	var attach = function( container, buttons ) {
-		var i, ien, node, button;
-		var clickHandler = function ( e ) {
-			e.preventDefault();
-			if ( !$(e.currentTarget).hasClass('disabled') && api.page() != e.data.action ) {
-				api.page( e.data.action ).draw( 'page' );
+	if(sortFlag == 0){
+		var api     = new DataTable.Api( settings );
+		var classes = settings.oClasses;
+		var lang    = settings.oLanguage.oPaginate;
+		var aria = settings.oLanguage.oAria.paginate || {};
+		var btnDisplay, btnClass, counter=0;
+		currentPage = table.page();
+		var attach = function( container, buttons ) {
+			var i, ien, node, button;
+			var clickHandler = function ( e ) {
+				e.preventDefault();
+				if ( !$(e.currentTarget).hasClass('disabled') && api.page() != e.data.action ) {
+					api.page( e.data.action ).draw( 'page' );
+				}
+			};
+	
+			for ( i=0, ien=buttons.length ; i<ien ; i++ ) {
+				button = buttons[i];
+	
+				if ( $.isArray( button ) ) {
+					attach( container, button );
+				}
+				else {
+					btnDisplay = '';
+					btnClass = '';
+	
+					switch ( button ) {
+						case 'ellipsis':
+							btnDisplay = '&#x2026;';
+							btnClass = 'disabled';
+							break;
+	
+						case 'first':
+							btnDisplay = lang.sFirst;
+							btnClass = button + (page > 0 ?
+								'' : ' disabled');
+							break;
+	
+						case 'previous':
+							btnDisplay = lang.sPrevious;
+							btnClass = button + (page > 0 ?
+								'' : ' disabled');
+							break;
+	
+						case 'next':
+							btnDisplay = lang.sNext;
+							btnClass = button + (page < pages-1 ?
+								'' : ' disabled');
+							break;
+	
+						case 'last':
+							btnDisplay = lang.sLast;
+							btnClass = button + (page < pages-1 ?
+								'' : ' disabled');
+							break;
+	
+						default:
+							btnDisplay = button + 1;
+							btnClass = page === button ?
+								'active' : '';
+							break;
+					}
+	
+					if ( btnDisplay ) {
+						node = $('<li>', {
+								'class': classes.sPageButton+' '+btnClass,
+								'id': idx === 0 && typeof button === 'string' ?
+									settings.sTableId +'_'+ button :
+									null
+							} )
+							.append( $('<a>', {
+									'href': '#',
+									'aria-controls': settings.sTableId,
+									'aria-label': aria[ button ],
+									'data-dt-idx': counter,
+									'tabindex': settings.iTabIndex
+								} )
+								.html( btnDisplay )
+							)
+							.appendTo( container );
+	
+						settings.oApi._fnBindAction(
+							node, {action: button}, clickHandler
+						);
+	
+						counter++;
+					}
+				}
 			}
 		};
-
-		for ( i=0, ien=buttons.length ; i<ien ; i++ ) {
-			button = buttons[i];
-
-			if ( $.isArray( button ) ) {
-				attach( container, button );
-			}
-			else {
-				btnDisplay = '';
-				btnClass = '';
-
-				switch ( button ) {
-					case 'ellipsis':
-						btnDisplay = '&#x2026;';
-						btnClass = 'disabled';
-						break;
-
-					case 'first':
-						btnDisplay = lang.sFirst;
-						btnClass = button + (page > 0 ?
-							'' : ' disabled');
-						break;
-
-					case 'previous':
-						btnDisplay = lang.sPrevious;
-						btnClass = button + (page > 0 ?
-							'' : ' disabled');
-						break;
-
-					case 'next':
-						btnDisplay = lang.sNext;
-						btnClass = button + (page < pages-1 ?
-							'' : ' disabled');
-						break;
-
-					case 'last':
-						btnDisplay = lang.sLast;
-						btnClass = button + (page < pages-1 ?
-							'' : ' disabled');
-						break;
-
-					default:
-						btnDisplay = button + 1;
-						btnClass = page === button ?
-							'active' : '';
-						break;
-				}
-
-				if ( btnDisplay ) {
-					node = $('<li>', {
-							'class': classes.sPageButton+' '+btnClass,
-							'id': idx === 0 && typeof button === 'string' ?
-								settings.sTableId +'_'+ button :
-								null
-						} )
-						.append( $('<a>', {
-								'href': '#',
-								'aria-controls': settings.sTableId,
-								'aria-label': aria[ button ],
-								'data-dt-idx': counter,
-								'tabindex': settings.iTabIndex
-							} )
-							.html( btnDisplay )
-						)
-						.appendTo( container );
-
-					settings.oApi._fnBindAction(
-						node, {action: button}, clickHandler
-					);
-
-					counter++;
-				}
-			}
+	
+		// IE9 throws an 'unknown error' if document.activeElement is used
+		// inside an iframe or frame. 
+		var activeEl;
+	
+		try {
+			// Because this approach is destroying and recreating the paging
+			// elements, focus is lost on the select button which is bad for
+			// accessibility. So we want to restore focus once the draw has
+			// completed
+			activeEl = $(host).find(document.activeElement).data('dt-idx');
+		}
+		catch (e) {}
+	
+		attach(
+			$(host).empty().html('<ul class="pagination"/>').children('ul'),
+			buttons
+		);
+	
+		if ( activeEl !== undefined ) {
+			$(host).find( '[data-dt-idx='+activeEl+']' ).focus().focus();
 		}
 	};
-
-	// IE9 throws an 'unknown error' if document.activeElement is used
-	// inside an iframe or frame. 
-	var activeEl;
-
-	try {
-		// Because this approach is destroying and recreating the paging
-		// elements, focus is lost on the select button which is bad for
-		// accessibility. So we want to restore focus once the draw has
-		// completed
-		activeEl = $(host).find(document.activeElement).data('dt-idx');
-	}
-	catch (e) {}
-
-	attach(
-		$(host).empty().html('<ul class="pagination"/>').children('ul'),
-		buttons
-	);
-
-	if ( activeEl !== undefined ) {
-		$(host).find( '[data-dt-idx='+activeEl+']' ).focus().focus();
-	}
-};
+}
+	
 
 
 return DataTable;
