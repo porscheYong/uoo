@@ -38,6 +38,17 @@ public class SysUserController {
     private AcctService acctService;
     @Autowired
     ShiroFilterFactoryBean shiroFilterFactoryBean;
+    @ApiOperation(value = " 接口", notes = " 接口")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/getCurrentLoginUserInfo", method = RequestMethod.GET)
+    public ResponseResult<SysUser> getCurrentLoginUserInfo(){
+        Subject sub=SecurityUtils.getSubject();
+        Object primaryPrincipal = sub.getPrincipals().getPrimaryPrincipal();
+        SysUser sysUser=new SysUser();
+        sysUser.setAccout(primaryPrincipal.toString());
+        return sysuserClient.getSysUserByAccout(sysUser);
+    }
     
     @ApiOperation(value = "登陆接口", notes = "登陆接口")
     @ApiImplicitParams({
@@ -79,7 +90,7 @@ public class SysUserController {
         if(filterChainDefinitionMap.isEmpty()){
             rr.setMessage("系统权限未初始化完成，请稍后");
             rr.setState(1100);
-        }else{
+        }/*else{
             if(ResponseResult.STATE_OK==rr.getState()){
                 Object tbAcct2 = acctService.getTbAcct(sysUser.getAccout());
                 JSONObject json=JSONObject.parseObject(JSONObject.toJSONString(tbAcct2));
@@ -91,7 +102,7 @@ public class SysUserController {
                 }
             }
             
-        }
+        }*/
         
         return rr;
     }
