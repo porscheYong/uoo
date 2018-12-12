@@ -8,7 +8,7 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package cn.ffcs.uoo.web.maindata.sysuser.controller;
+package cn.ffcs.uoo.web.maindata.common.system.controller;
 
 import java.util.List;
 
@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.ffcs.uoo.web.maindata.sysuser.client.SysRoleClient;
-import cn.ffcs.uoo.web.maindata.sysuser.dto.SysRole;
-import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.common.system.client.SysRoleClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysRole;
+import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;

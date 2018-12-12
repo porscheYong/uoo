@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.web.maindata.sysuser.controller;
+package cn.ffcs.uoo.web.maindata.common.system.controller;
 
 
 import java.util.List;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.ffcs.uoo.web.maindata.sysuser.client.SysMenuClient;
-import cn.ffcs.uoo.web.maindata.sysuser.dto.SysMenu;
-import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.common.system.client.SysMenuClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysMenu;
+import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 

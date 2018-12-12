@@ -22,13 +22,13 @@ import org.springframework.web.client.RestTemplate;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
+import cn.ffcs.uoo.web.maindata.common.system.client.SysMenuClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysMenu;
 import cn.ffcs.uoo.web.maindata.permission.dto.FuncComp;
 import cn.ffcs.uoo.web.maindata.permission.dto.FuncMenu;
 import cn.ffcs.uoo.web.maindata.permission.service.FuncCompService;
 import cn.ffcs.uoo.web.maindata.permission.service.FuncMenuService;
 import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
-import cn.ffcs.uoo.web.maindata.sysuser.client.SysMenuClient;
-import cn.ffcs.uoo.web.maindata.sysuser.dto.SysMenu;
 
 @Service
 public class LoadUrlPermissionService {
@@ -136,8 +136,8 @@ public class LoadUrlPermissionService {
 
             // filterChainDefinitionMap.put("/ff/ff", "perms[sad]");//
             
-            cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult<List<SysMenu>> listPage = sysMenuClient.listPage(1, Integer.MAX_VALUE);
-            if(listPage.getState()==cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult.STATE_OK){
+            cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<List<SysMenu>> listPage = sysMenuClient.listPage(1, Integer.MAX_VALUE);
+            if(listPage.getState()==cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult.STATE_OK){
                 List<SysMenu> data = listPage.getData();
                 if(data!=null){
                     for (SysMenu sysMenu : data) {

@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.web.maindata.sysuser.client;
+package cn.ffcs.uoo.web.maindata.common.system.client;
 
 import java.util.List;
 
@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import cn.ffcs.uoo.web.maindata.sysuser.client.fallback.SysMenuClientHystrix;
-import cn.ffcs.uoo.web.maindata.sysuser.client.fallback.SysUserClientHystrix;
-import cn.ffcs.uoo.web.maindata.sysuser.dto.SysMenu;
-import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysMenuClientHystrix;
+import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysUserClientHystrix;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysMenu;
+import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 
 @FeignClient(value = "common-system",configuration = {FeignClientConfiguration.class},fallback = SysMenuClientHystrix.class)
 public interface SysMenuClient {

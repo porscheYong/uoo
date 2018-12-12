@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.web.maindata.sysuser.dto;
+package cn.ffcs.uoo.web.maindata.common.system.dto;
 
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.KeySequence;

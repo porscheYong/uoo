@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.web.maindata.sysuser.vo;
+package cn.ffcs.uoo.web.maindata.common.system.vo;
 
 import java.io.Serializable;
 
