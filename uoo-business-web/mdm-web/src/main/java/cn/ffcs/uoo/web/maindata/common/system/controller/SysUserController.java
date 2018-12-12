@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.web.maindata.sysuser.controller;
+package cn.ffcs.uoo.web.maindata.common.system.controller;
 
 
 import java.util.Map;
@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 
+import cn.ffcs.uoo.web.maindata.common.system.client.SysUserClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.AlterPwdDTO;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
+import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.realm.exception.ServiceException;
-import cn.ffcs.uoo.web.maindata.sysuser.client.SysUserClient;
-import cn.ffcs.uoo.web.maindata.sysuser.dto.AlterPwdDTO;
-import cn.ffcs.uoo.web.maindata.sysuser.dto.SysUser;
-import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.user.service.AcctService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
