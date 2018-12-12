@@ -19,6 +19,6 @@ public interface SysMenuClient {
     
     @GetMapping("/system/sysMenu/listPage/pageNo={pageNo}&pageSize={pageSize}")
     public ResponseResult<List<SysMenu>> listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize);
-    @RequestMapping(value = "/system/sysMenu/getMenuByAccout/{accout}", method = RequestMethod.POST)
+    @RequestMapping(value = "/system/sysMenu/getMenuByAccout/{accout}", method = RequestMethod.GET)
     public ResponseResult<List<SysMenu>> getMenuByAccout(@PathVariable(value = "accout") String accout);
 }
