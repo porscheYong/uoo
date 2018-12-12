@@ -6,13 +6,17 @@ import cn.ffcs.uoo.core.user.dao.TbSlaveAcctMapper;
 import cn.ffcs.uoo.core.user.entity.ListUser;
 import cn.ffcs.uoo.core.user.entity.TbAcct;
 import cn.ffcs.uoo.core.user.entity.TbSlaveAcct;
+import cn.ffcs.uoo.core.user.service.RabbitMqService;
+import cn.ffcs.uoo.core.user.service.TbAcctExtService;
 import cn.ffcs.uoo.core.user.service.TbSlaveAcctService;
+import cn.ffcs.uoo.core.user.service.TbUserRoleService;
 import cn.ffcs.uoo.core.user.util.ResultUtils;
 import cn.ffcs.uoo.core.user.util.StrUtil;
 import cn.ffcs.uoo.core.user.vo.ListSlaveAcctOrgVo;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -30,7 +34,12 @@ import java.util.Map;
  */
 @Service
 public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSlaveAcct> implements TbSlaveAcctService {
-
+    @Autowired
+    private TbAcctExtService tbAcctExtService;
+    @Autowired
+    private TbUserRoleService tbUserRoleService;
+    @Autowired
+    private RabbitMqService rabbitMqService;
     @Override
     public Long getId(){
        return baseMapper.getId();
@@ -108,6 +117,22 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
             return ResultUtils.success(null);
         }
         return ResultUtils.error(EumUserResponeCode.USER_RESPONSE_ERROR);
+    }
+
+    @Override
+    public Object delAllTbSlaveAcct(Long slaveAcctId){
+        //从账号
+        this.delTbSlaveAcct(slaveAcctId);
+
+        //2、删除角色
+        tbUserRoleService.removeUserRole(slaveAcctId, 2L);
+
+        //扩展信息
+        tbAcctExtService.delTbAcctExt(slaveAcctId);
+
+        rabbitMqService.sendMqMsg("person", "delete", "slaveAcctId", slaveAcctId);
+
+        return null;
     }
 
 }
