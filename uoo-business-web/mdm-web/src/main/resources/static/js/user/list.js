@@ -11,6 +11,11 @@ var currentPage = 0;
 $('#orgName').html(orgName);
 parent.getOrgExtInfo();
 
+$('#orgName').on('click', function () {
+    var url = '/inaction/business/orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    window.location.href = url;
+});
+
 function initOrgPersonnelTable (isSearchlower,search) {
     table = $("#personnelTable").DataTable({
         'searching': false,
@@ -29,7 +34,7 @@ function initOrgPersonnelTable (isSearchlower,search) {
             { 'data': "doubleName", 'title': '重名称谓', 'className': 'row-mobile' },
             { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
             { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
-            { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
+            { 'data': "orgName", 'title': '所属组织', 'className': '' },
             { 'data': "statusCd", 'title': '状态', 'className': 'status-code',
                 'render': function (data, type, row, meta) {
                     var statusStr = '';
@@ -192,8 +197,8 @@ function initFreePersonnelTable () {
 //勾选显示下级组织人员
 function showLower() {
     sortFlag = 0;
-    checked = $('#isShowLower').is(':checked');
-    initOrgPersonnelTable(checked,'');
+    checked = $('#isShowLower').is(':checked')? 1: 0;
+    initOrgPersonnelTable(checked, '');
 }
 
 if (orgId == 'noSort') {
@@ -204,7 +209,7 @@ if (orgId == 'noSort') {
 else {
     $('#titleName').html('组织人员');
     $('#isShow').show();
-    initOrgPersonnelTable(false,'');
+    initOrgPersonnelTable(0, '');
 }
 // $('#editBtn').on('click', function () {
 //     var url = 'edit.html?id=' + orgId;
