@@ -24,8 +24,7 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018-09-25
  */
-//@FeignClient(name = "business-organization", url = "http://134.96.253.222:11100",configuration = {PersonnelServiceConfiguration.class},fallback = OrgRelTypeServiceHystrix.class)
-@FeignClient(value = "business-organization",configuration = {PersonnelServiceConfiguration.class},fallback = OrgRelTypeServiceHystrix.class)
+@FeignClient(name = "business-organization", url = "http://134.96.253.222:11100",configuration = {PersonnelServiceConfiguration.class},fallback = OrgRelTypeServiceHystrix.class)
 public interface OrgRelTypeService{
 
     @RequestMapping(value="/orgRelType/getOrgRelTypeList",method = RequestMethod.GET,headers={"Content-Type=application/json"})
