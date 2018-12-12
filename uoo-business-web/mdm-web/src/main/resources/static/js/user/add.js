@@ -28,6 +28,9 @@ var loading = parent.loading;
 var formValidate;
 var orgValidate;
 
+var sortFlag = 0;
+var currentPage = 0;
+
 $('#orgName').html(orgName);
 parent.getOrgExtInfo();
 
@@ -369,20 +372,21 @@ function initTable(keyWord){
         'autoWidth': false,
         'ordering': true,
         'columns': [
-            { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name'},
-            { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
-            { 'data': "content", 'title': '联系方式', 'className': 'row-mobile' },
-            { 'data': "createDate", 'title': '创建时间', 'className': 'status-code',
+            { 'data': "psnName", 'title': '人员姓名', 'className': 'row-nameS'},
+            { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-noS' },
+            { 'data': "content", 'title': '联系方式', 'className': 'row-mobileS' },
+            { 'data': "createDate", 'title': '创建时间', 'className': 'status-codeS',
             'render': function (data, type, row, meta) {
                 var time = formatDateTime(row.createDate);
                 return time;
             }
             },
-            { 'data': "", 'title': '操作', 'className': 'status-code',
+            { 'data': "", 'title': '操作', 'className': 'status-codeS',
                 'render': function (data, type, row, meta) {
                     return "<a href='edit.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&personnelId=" + row.personnelId + "&name=" + orgName + "&addOrg=1'>查看</a>";
                 }
-            }
+            },
+            { 'data': "personnelId", 'title': '', 'className': 'row-personnelIdS'}
         ],
         'language': {
             'emptyTable': '没有数据',
@@ -423,10 +427,17 @@ function initTable(keyWord){
             })
         }
     });
+
+    initSort(".row-nameS","psnName");
+    initSort(".cert-noS","psnNbr");
+    initSort(".row-mobileS","content");
+    initSort(".status-codeS","createDate");
+
 }
 
 function engineWithDefaults(q, sync, async) {
     if (q === '') {
+        sortFlag = 0;
         $('#userTable').html('');
         $('#userTable_wrapper .bottom').remove();
     }
@@ -456,6 +467,7 @@ $('#psnName').typeahead({
 })
   .on('typeahead:asyncrequest', function(a, b) {
         $('.Typeahead-spinner').show();
+        sortFlag = 0;
         if ($("#psnName").val())
             initTable($("#psnName").val());
     })
@@ -1129,6 +1141,68 @@ function savePersonnel () {
     }, function (err) {
         loading.screenMaskDisable('container');
     })
+}
+
+function arrSort (arr, dataLeven) { // 参数：arr 排序的数组; dataLeven 数组内的需要比较的元素属性 
+    /* 获取数组元素内需要比较的值 */
+    function getValue (option) { // 参数： option 数组元素
+      if (!dataLeven) return option
+      var data = option
+      dataLeven.split('.').filter(function (item) {
+        data = data[item]
+      })
+      return data + ''
+    }
+    arr.sort(function (item1, item2) {
+      return getValue(item1).localeCompare(getValue(item2), 'zh-CN');
+    })
+  }
+
+  function descSort(asc,desc){      //desc排序
+    for(var i=asc.length-1;i>=0;i--){
+        desc.push(asc[i]);
+    }
+    return desc;
+  }
+
+  function sortToTable(arr){   //将排完序的数据写入表格
+    for(var i =0;i<arr.length;i++){
+        sortFlag = 1;
+        table
+            .row(i)
+            .data({
+                "psnName":arr[i].psnName,
+                "psnNbr":arr[i].psnNbr,
+                "content":arr[i].content,
+                "createDate":arr[i].createDate,
+                "statusCd":arr[i].statusCd,
+                "personnelId":arr[i].personnelId
+            })
+            .draw();
+    }
+  }
+
+  //初始化排序
+  function initSort(thClass,param){       
+    $(thClass).on('click', function () {
+        var tableLength = table.data().length;
+        var arr = [];
+        var descArr = [];
+    
+        for(var i = 0;i < tableLength;i++){
+            arr.push(table.row(i).data());
+        }
+        
+        arrSort(arr,param);
+        
+        if($(this).hasClass("sorting_desc")){
+            descArr = descSort(arr,descArr);
+            sortToTable(descArr);
+        }else{
+            sortToTable(arr);
+        }
+        table.page(currentPage).draw( false );
+    });
 }
 
 // getOrgExtInfo();

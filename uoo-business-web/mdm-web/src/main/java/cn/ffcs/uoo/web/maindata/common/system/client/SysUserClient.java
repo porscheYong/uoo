@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.web.maindata.sysuser.client;
+package cn.ffcs.uoo.web.maindata.common.system.client;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.cloud.netflix.feign.FeignClientProperties.FeignClientConfiguration;
@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import cn.ffcs.uoo.web.maindata.sysuser.client.fallback.SysUserClientHystrix;
-import cn.ffcs.uoo.web.maindata.sysuser.dto.AlterPwdDTO;
-import cn.ffcs.uoo.web.maindata.sysuser.dto.SysUser;
-import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysUserClientHystrix;
+import cn.ffcs.uoo.web.maindata.common.system.dto.AlterPwdDTO;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
+import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 @FeignClient(value = "common-system",configuration = {FeignClientConfiguration.class},fallback = SysUserClientHystrix.class)
 public interface SysUserClient {
     @RequestMapping(value = "/system/sysUserLogin", method = RequestMethod.POST,headers={"Content-Type=application/json"})

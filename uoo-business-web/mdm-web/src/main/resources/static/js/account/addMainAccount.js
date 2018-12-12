@@ -37,6 +37,13 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
   // });
 });
 
+// lulu ui tips插件
+seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
+  $('#defaultPswTel').tips({
+      align: 'right'
+  });
+});
+
 function getUser(acctId) {           //查看并编辑主账号
     $http.get('/user/getUser', {   //http://192.168.58.112:18000/user/getUser
         acctId: acctId,

@@ -55,6 +55,14 @@ if(statusCd == "1000"){                //判断状态
     // });
   });
 
+  // lulu ui tips插件
+seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
+    $('#defaultPswTel').tips({
+        align: 'right'
+    });
+  });
+  
+
 function getSubUser(acctId) {       //查看并编辑从账号            
     $http.get('/user/getUser', {   //http://192.168.58.112:18000/user/getUser
         acctId: acctId,

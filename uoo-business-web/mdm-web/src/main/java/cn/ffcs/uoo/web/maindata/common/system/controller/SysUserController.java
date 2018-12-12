@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.web.maindata.sysuser.controller;
+package cn.ffcs.uoo.web.maindata.common.system.controller;
 
 
 import java.util.Map;
@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 
+import cn.ffcs.uoo.web.maindata.common.system.client.SysUserClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.AlterPwdDTO;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
+import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.realm.exception.ServiceException;
-import cn.ffcs.uoo.web.maindata.sysuser.client.SysUserClient;
-import cn.ffcs.uoo.web.maindata.sysuser.dto.AlterPwdDTO;
-import cn.ffcs.uoo.web.maindata.sysuser.dto.SysUser;
-import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.user.service.AcctService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -38,6 +38,17 @@ public class SysUserController {
     private AcctService acctService;
     @Autowired
     ShiroFilterFactoryBean shiroFilterFactoryBean;
+    @ApiOperation(value = " 接口", notes = " 接口")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/getCurrentLoginUserInfo", method = RequestMethod.GET)
+    public ResponseResult<SysUser> getCurrentLoginUserInfo(){
+        Subject sub=SecurityUtils.getSubject();
+        Object primaryPrincipal = sub.getPrincipals().getPrimaryPrincipal();
+        SysUser sysUser=new SysUser();
+        sysUser.setAccout(primaryPrincipal.toString());
+        return sysuserClient.getSysUserByAccout(sysUser);
+    }
     
     @ApiOperation(value = "登陆接口", notes = "登陆接口")
     @ApiImplicitParams({
@@ -79,7 +90,7 @@ public class SysUserController {
         if(filterChainDefinitionMap.isEmpty()){
             rr.setMessage("系统权限未初始化完成，请稍后");
             rr.setState(1100);
-        }else{
+        }/*else{
             if(ResponseResult.STATE_OK==rr.getState()){
                 Object tbAcct2 = acctService.getTbAcct(sysUser.getAccout());
                 JSONObject json=JSONObject.parseObject(JSONObject.toJSONString(tbAcct2));
@@ -91,7 +102,7 @@ public class SysUserController {
                 }
             }
             
-        }
+        }*/
         
         return rr;
     }

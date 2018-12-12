@@ -9,6 +9,7 @@ import cn.ffcs.uoo.rabbitmq.manage.pojo.NodeInfo;
 import cn.ffcs.uoo.rabbitmq.manage.pojo.RabbitmqUserInfo;
 import cn.ffcs.uoo.rabbitmq.manage.service.NodeInfoService;
 import cn.ffcs.uoo.rabbitmq.manage.service.SystemQueueRelaService;
+import cn.ffcs.uoo.rabbitmq.manage.util.CreateShUtil;
 import cn.ffcs.uoo.rabbitmq.manage.vo.NodeVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ import cn.ffcs.uoo.rabbitmq.manage.service.RabbitMqService;
 import cn.ffcs.uoo.rabbitmq.manage.vo.SystemQueueVo;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class MainController {
@@ -75,10 +77,12 @@ public class MainController {
     }
 
     @RequestMapping(value = "/test")
-	public ResultBean<NodeInfo> test() {
-		NodeInfo vo = nodeInfoService.selectById(1L);
-		System.out.println("测试的值------" + nodeInfoService.test());
-		return new ResultBean<NodeInfo>("成功返回", vo);
+	public void test(HttpServletRequest request) {
+		try {
+			CreateShUtil.createRabbitMqUser(request,"wh","test");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
     
 }

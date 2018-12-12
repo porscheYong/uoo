@@ -1,6 +1,11 @@
 spring:
   application:
     name: queues-monitor
+  zipkin:
+      base-url: http://134.96.253.223:8600
+  sleuth:
+      sampler:
+        percentage: 1.0
   datasource:
       druid:
         url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1

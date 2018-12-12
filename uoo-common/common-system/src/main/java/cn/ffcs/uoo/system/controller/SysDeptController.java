@@ -71,7 +71,7 @@ public class SysDeptController {
         Wrapper<SysDept> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID).orderBy("UPDATE_DATE", false);
         Page<SysDept> page = sysDeptService.selectPage(new Page<SysDept>(pageNo, pageSize), wrapper);
 
-        return ResponseResult.createSuccessResult(page.getRecords(), "", page);
+        return ResponseResult.createSuccessResult(page  ,"");
     }
 
     @ApiOperation(value = "修改",notes = "修改")

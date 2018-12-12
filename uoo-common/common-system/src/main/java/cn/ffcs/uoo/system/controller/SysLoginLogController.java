@@ -70,7 +70,7 @@ public class SysLoginLogController {
         Wrapper<SysLoginLog> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID).orderBy("UPDATE_DATE", false);
         Page<SysLoginLog> page = sysLoginLogService.selectPage(new Page<SysLoginLog>(pageNo, pageSize), wrapper);
 
-        return ResponseResult.createSuccessResult(page.getRecords(), "", page);
+        return ResponseResult.createSuccessResult(page, "");
     }
 
     @ApiOperation(value = "新增",notes = "新增")
