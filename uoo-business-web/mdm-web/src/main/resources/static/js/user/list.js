@@ -4,11 +4,19 @@ var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var orgTreeName = getQueryString('orgTreeName');
 var table;
+var checked = false;
+var sortFlag = 0;
+var currentPage = 0;
 
 $('#orgName').html(orgName);
 parent.getOrgExtInfo();
 
-function initOrgPersonnelTable (isSearchlower) {
+$('#orgName').on('click', function () {
+    var url = '/inaction/business/orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    window.location.href = url;
+});
+
+function initOrgPersonnelTable (isSearchlower,search) {
     table = $("#personnelTable").DataTable({
         'searching': false,
         'destroy': true,
@@ -37,7 +45,10 @@ function initOrgPersonnelTable (isSearchlower) {
                     }
                     return statusStr
                 }
-            }
+            },
+            { 'data': "orgId", 'title': '', 'className': 'row-orgId'},
+            { 'data': "orgRootId", 'title': '', 'className': 'row-orgRootId'},
+            { 'data': "personnelId", 'title': '', 'className': 'row-personnelId'}
         ],
         'language': {
             'emptyTable': '没有数据',  
@@ -69,6 +80,7 @@ function initOrgPersonnelTable (isSearchlower) {
             param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
             param.pageNo = (data.start / data.length) + 1;//当前页码
             param.isSearchlower = isSearchlower;//是否显示下级组织人员
+            param.search = search;
             param.orgTreeId = orgTreeId;
             param.orgId = orgId;
             $http.get('/orgPersonRel/getPerOrgRelPage', param, function (result) {
@@ -85,6 +97,13 @@ function initOrgPersonnelTable (isSearchlower) {
             })
         }
     });
+
+    initSort(".row-name","psnName");
+    initSort(".row-mobile","doubleName");
+    initSort(".cert-no","psnNbr");
+    initSort(".post-name","postName");
+    initSort(".org-name","orgName");
+    
     var loading = parent.loading;
     loading.screenMaskDisable('container');
 }
@@ -121,7 +140,10 @@ function initFreePersonnelTable () {
                     }
                     return statusStr
                 }
-            }
+            },
+            { 'data': "orgId", 'title': '', 'className': 'row-orgId'},
+            { 'data': "orgRootId", 'title': '', 'className': 'row-orgRootId'},
+            { 'data': "personnelId", 'title': '', 'className': 'row-personnelId'}
         ],
         'language': {
             'emptyTable': '没有数据',
@@ -142,11 +164,11 @@ function initFreePersonnelTable () {
         "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
         'pagingType': 'simple_numbers',
         'dom': '<"top"f>t<"bottom"ipl>',
-        // 'drawCallback': function(){
-        //     this.api().column(0).nodes().each(function(cell, i) {
-        //         cell.innerHTML =  i + 1;
-        //     });
-        // },
+        'drawCallback': function(){
+            this.api().column(0).nodes().each(function(cell, i) {
+                cell.innerHTML =  i + 1;
+            });
+        },
         'serverSide': true,  //启用服务器端分页
         'ajax': function (data, callback, settings) {
             var param = {};
@@ -164,14 +186,19 @@ function initFreePersonnelTable () {
             })
         }
     });
+
+    initSortFree(".row-name","psnName");
+    initSortFree(".cert-no","psnNbr");
+
     var loading = parent.loading;
     loading.screenMaskDisable('container');
 }
 
 //勾选显示下级组织人员
 function showLower() {
-    var checked = $('#isShowLower').is(':checked');
-    initOrgPersonnelTable(checked);
+    sortFlag = 0;
+    checked = $('#isShowLower').is(':checked')? 1: 0;
+    initOrgPersonnelTable(checked, '');
 }
 
 if (orgId == 'noSort') {
@@ -182,7 +209,7 @@ if (orgId == 'noSort') {
 else {
     $('#titleName').html('组织人员');
     $('#isShow').show();
-    initOrgPersonnelTable(false);
+    initOrgPersonnelTable(0, '');
 }
 // $('#editBtn').on('click', function () {
 //     var url = 'edit.html?id=' + orgId;
@@ -192,3 +219,109 @@ $('#addBtn').on('click', function () {
    var url = "add.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&orgTreeName=" + encodeURI(orgTreeName) + "&name=" + encodeURI(orgName);
    $(this).attr('href', url);
 })
+
+function arrSort (arr, dataLeven) { // 参数：arr 排序的数组; dataLeven 数组内的需要比较的元素属性 
+    /* 获取数组元素内需要比较的值 */
+    function getValue (option) { // 参数： option 数组元素
+      if (!dataLeven) return option
+      var data = option
+      dataLeven.split('.').filter(function (item) {
+        data = data[item]
+      })
+      return data + ''
+    }
+    arr.sort(function (item1, item2) {
+      return getValue(item1).localeCompare(getValue(item2), 'zh-CN');
+    })
+  }
+
+  function descSort(asc,desc){      //desc排序
+    for(var i=asc.length-1;i>=0;i--){
+        desc.push(asc[i]);
+    }
+    return desc;
+  }
+
+  function sortToTable(arr){   //将排完序的数据写入表格
+    for(var i =0;i<arr.length;i++){
+        sortFlag = 1;
+        table
+            .row(i)
+            .data({
+                "psnName":arr[i].psnName,
+                "doubleName":arr[i].doubleName,
+                "psnNbr":arr[i].psnNbr,
+                "postName":arr[i].postName,
+                "orgName":arr[i].orgName,
+                "statusCd":arr[i].statusCd,
+                "orgId":arr[i].orgId,
+                "orgRootId":arr[i].orgRootId,
+                "personnelId":arr[i].personnelId
+
+            })
+            .draw();
+    }
+  }
+
+  function sortToTableFree(arr){   //将排完序的数据写入表格(游离人员)
+    for(var i =0;i<arr.length;i++){
+        sortFlag = 1;
+        table
+            .row(i)
+            .data({
+                "psnName":arr[i].psnName,
+                "psnNbr":arr[i].psnNbr,
+                "orgId":arr[i].orgId,
+                "orgRootId":arr[i].orgRootId,
+                "personnelId":arr[i].personnelId
+            })
+            .draw();
+    }
+  }
+
+    //初始化排序
+  function initSort(thClass,param){       
+    $(thClass).on('click', function () {
+        var tableLength = table.data().length;
+        var arr = [];
+        var descArr = [];
+    
+        for(var i = 0;i < tableLength;i++){
+            arr.push(table.row(i).data());
+        }
+        
+        arrSort(arr,param);
+        
+        if($(this).hasClass("sorting_desc")){
+            descArr = descSort(arr,descArr);
+            sortToTable(descArr);
+        }else{
+            sortToTable(arr);
+        }
+        table.page(currentPage).draw( false );
+    });
+}
+
+
+ //初始化排序(游离人员)
+function initSortFree(thClass,param){       
+    $(thClass).on('click', function () {
+        var tableLength = table.data().length;
+        var arr = [];
+        var descArr = [];
+    
+        for(var i = 0;i < tableLength;i++){
+            arr.push(table.row(i).data());
+        }
+        
+        arrSort(arr,param);
+        
+        if($(this).hasClass("sorting_desc")){
+            descArr = descSort(arr,descArr);
+            sortToTableFree(descArr);
+        }else{
+            sortToTableFree(arr);
+        }
+        table.page(currentPage).draw( false );
+    });
+}

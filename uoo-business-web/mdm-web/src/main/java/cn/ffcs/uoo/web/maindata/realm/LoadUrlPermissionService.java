@@ -22,6 +22,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
+import cn.ffcs.uoo.web.maindata.common.system.client.SysMenuClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysMenu;
 import cn.ffcs.uoo.web.maindata.permission.dto.FuncComp;
 import cn.ffcs.uoo.web.maindata.permission.dto.FuncMenu;
 import cn.ffcs.uoo.web.maindata.permission.service.FuncCompService;
@@ -33,12 +35,14 @@ public class LoadUrlPermissionService {
     private static Logger log = LoggerFactory.getLogger(LoadUrlPermissionService.class);
     @Autowired
     ShiroFilterFactoryBean shiroFilterFactoryBean;
-    @Autowired
+    /*@Autowired
     FuncCompService funcCompSvc;
     @Autowired
-    FuncMenuService funcMenuSvc;
+    FuncMenuService funcMenuSvc;*/
     @Autowired
     private DiscoveryClient discoveryClient;
+    @Autowired
+    private SysMenuClient sysMenuClient;
     @Value("${spring.application.name}")
     private String appName;
     @Autowired
@@ -108,11 +112,15 @@ public class LoadUrlPermissionService {
             filterChainDefinitionMap.put("/vendors/**", "anon"); //
             filterChainDefinitionMap.put("/system/sysUserLogin", "anon"); // 登陆接口必须开放
             filterChainDefinitionMap.put("/reloadUrlPermission", "anon"); // 
+            filterChainDefinitionMap.put("/swagger-ui.html", "anon");
+            filterChainDefinitionMap.put("/swagger-resources", "anon");
+            filterChainDefinitionMap.put("/v2/api-docs", "anon");
+            filterChainDefinitionMap.put("/webjars/springfox-swagger-ui/**", "anon");
             // filterChainDefinitionMap.put("/**", "anon");
             // filterChainDefinitionMap.put("/aa/aa", "perms[asasd]");
             // filterChainDefinitionMap.put("/inaction/**", "perms[inaction]");
 
-            ResponseResult<List<FuncComp>> listFuncComp = funcCompSvc.listFuncComp(1, Integer.MAX_VALUE);
+            /*ResponseResult<List<FuncComp>> listFuncComp = funcCompSvc.listFuncComp(1, Integer.MAX_VALUE);
             ResponseResult<List<FuncMenu>> listMenuComp = funcMenuSvc.getFuncMenuPage();
 
             if (listFuncComp.getData() != null && !listFuncComp.getData().isEmpty()) {
@@ -126,9 +134,21 @@ public class LoadUrlPermissionService {
                 for (FuncMenu funcComp : comps) {
                     filterChainDefinitionMap.put(funcComp.getUrlAddr(), "perms[M" + funcComp.getMenuId() + "]");
                 }
-            }
+            }*/
+            
+            
 
             // filterChainDefinitionMap.put("/ff/ff", "perms[sad]");//
+            
+            cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<List<SysMenu>> listPage = sysMenuClient.listPage(1, Integer.MAX_VALUE);
+            if(listPage.getState()==cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult.STATE_OK){
+                List<SysMenu> data = listPage.getData();
+                if(data!=null){
+                    for (SysMenu sysMenu : data) {
+                        filterChainDefinitionMap.put(sysMenu.getUrl(), "perms[M" + sysMenu.getMenuId() + "]");
+                    }
+                }
+            }
             // 表示需要认证才可以访问
             filterChainDefinitionMap.put("/**", "authc");// 表示需要认证才可以访问
 
@@ -140,6 +160,7 @@ public class LoadUrlPermissionService {
                 String chainDefinition = entry.getValue().trim().replace(" ", "");
                 manager.createChain(url, chainDefinition);
             }
+            log.info("重新更新URL权限信息完成");
         }
 
     }

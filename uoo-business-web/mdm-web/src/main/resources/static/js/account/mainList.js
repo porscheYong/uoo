@@ -103,12 +103,12 @@ function initMainTable(isCheck,search){
         }
     });
 
-    initPsnNameSort();
-    initTypeNameSort();
-    initAcctSort();
-    initOrgNameSort();
-    initCertNoSort();
-    initStatusCdSort();
+    initSort(".row-psnName","psnName");
+    initSort(".row-typeName","typeName");
+    initSort(".row-acc","acct");
+    initSort(".row-org","orgName");
+    initSort(".row-certNo","certNo");
+    initSort(".row-statusCd","statusCd");
 }
 
 
@@ -173,8 +173,8 @@ function arrSort (arr, dataLeven) { // 参数：arr 排序的数组; dataLeven �
     }
   }
       
-function initPsnNameSort(){        //初始化用户姓名排序
-    $('.row-psnName').on('click', function () {
+function initSort(thClass,param){        //初始化用户姓名排序
+    $(thClass).on('click', function () {
         var tableLength = table.data().length;
         var arr = [];
         var descArr = [];
@@ -183,117 +183,7 @@ function initPsnNameSort(){        //初始化用户姓名排序
             arr.push(table.row(i).data());
         }
         
-        arrSort(arr,'psnName');
-        
-        if($(this).hasClass("sorting_desc")){
-            descArr = descSort(arr,descArr);
-            sortToTable(descArr);
-        }else{
-            sortToTable(arr);
-        }
-        table.page(currentPage).draw( false );
-    });
-}
-
-function initTypeNameSort(){    //初始化用户类型排序
-    $('.row-typeName').on('click', function () {
-        var tableLength = table.data().length;
-        var arr = [];
-        var descArr = [];
-    
-        for(var i = 0;i < tableLength;i++){
-            arr.push(table.row(i).data());
-        }
-        
-        arrSort(arr,'typeName');
-        
-        if($(this).hasClass("sorting_desc")){
-            descArr = descSort(arr,descArr);
-            sortToTable(descArr);
-        }else{
-            sortToTable(arr);
-        }
-        table.page(currentPage).draw( false );
-    });
-}
-
-function initAcctSort(){    //初始化用户名排序
-    $('.row-acc').on('click', function () {   
-        var tableLength = table.data().length;
-        var arr = [];
-        var descArr = [];
-    
-        for(var i = 0;i < tableLength;i++){
-            arr.push(table.row(i).data());
-        }
-        
-        arrSort(arr,'acct');
-        
-        if($(this).hasClass("sorting_desc")){
-            descArr = descSort(arr,descArr);
-            sortToTable(descArr);
-        }else{
-            sortToTable(arr);
-        }
-        table.page(currentPage).draw( false );
-    });
-}
-
-function initOrgNameSort(){        //初始化组织排序
-    $('.row-org').on('click', function () {   
-        var tableLength = table.data().length;
-        var arr = [];
-        var descArr = [];
-    
-        for(var i = 0;i < tableLength;i++){
-            arr.push(table.row(i).data());
-        }
-        
-        arrSort(arr,'orgName');
-        
-        if($(this).hasClass("sorting_desc")){
-            descArr = descSort(arr,descArr);
-            sortToTable(descArr);
-        }else{
-            sortToTable(arr);
-        }
-        table.page(currentPage).draw( false );
-    });
-}
-
-function initCertNoSort(){        //初始化身份证排序
-    $('.row-certNo').on('click', function () {   
-        var tableLength = table.data().length;
-        var arr = [];
-        var descArr = [];
-    
-        for(var i = 0;i < tableLength;i++){
-            arr.push(table.row(i).data());
-        }
-        
-        arrSort(arr,'certNo');
-        
-        if($(this).hasClass("sorting_desc")){
-            descArr = descSort(arr,descArr);
-            sortToTable(descArr);
-        }else{
-            sortToTable(arr);
-        }
-        table.page(currentPage).draw( false );
-    });
-}
-
-function initStatusCdSort(){    //初始化状态排序
-    $('.row-statusCd').on('click', function () {   
-        var tableLength = table.data().length;
-        var arr = [];
-        var descArr = [];
-    
-        for(var i = 0;i < tableLength;i++){
-            arr.push(table.row(i).data());
-        }
-        
-        arrSort(arr,'statusCd');
+        arrSort(arr,param);
         
         if($(this).hasClass("sorting_desc")){
             descArr = descSort(arr,descArr);

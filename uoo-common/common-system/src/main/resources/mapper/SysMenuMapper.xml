@@ -10,9 +10,9 @@
     <result column="ICON" jdbcType="VARCHAR" property="icon" />
     <result column="URL" jdbcType="VARCHAR" property="url" />
     <result column="NUM" jdbcType="DECIMAL" property="num" />
-    <result column="LEVEL" jdbcType="DECIMAL" property="level" />
-    <result column="IS_MENU" jdbcType="DECIMAL" property="isMenu" />
-    <result column="IS_OPEN" jdbcType="DECIMAL" property="isOpen" />
+    <result column="MENU_LEVEL" jdbcType="DECIMAL" property="menuLevel" />
+    <result column="MENU_FLAG" jdbcType="DECIMAL" property="menuFlag" />
+    <result column="OPEN_FLAG" jdbcType="DECIMAL" property="openFlag" />
     <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
     <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
     <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
@@ -22,13 +22,22 @@
     <result column="NOTES" jdbcType="VARCHAR" property="notes" />
   </resultMap>
   <sql id="Base_Column_List">
-    MENU_ID, MENU_NAME, MENU_CODE, P_MENU_ID, P_MENU_IDS, ICON, URL, NUM, LEVEL, IS_MENU, 
-    IS_OPEN, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, 
+    MENU_ID, MENU_NAME, MENU_CODE, P_MENU_ID, P_MENU_IDS, ICON, URL, NUM, MENU_LEVEL, MENU_FLAG,
+    OPEN_FLAG, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, 
     NOTES
   </sql>
 
   <select id="getId" resultType="Long">
     select SEQ_TB_SYS_MENU.NEXTVAL from dual
+  </select>
+  <select id="getMenuByAccout" resultType="cn.ffcs.uoo.system.entity.SysMenu" parameterType="java.util.HashMap">
+	SELECT M.*
+	FROM SYS_USER U
+	LEFT JOIN SYS_ROLE R ON R.ROLE_ID = U.ROLE_ID
+	LEFT JOIN SYS_RELATION REL ON REL.ROLE_ID = R.ROLE_ID
+	LEFT JOIN SYS_MENU M ON M.MENU_ID = REL.MENU_ID 
+	WHERE U.ACCOUT=#{accout}
+	AND U.STATUS_CD='1000' AND R.STATUS_CD='1000' AND REL.STATUS_CD='1000' AND M.STATUS_CD='1000'
   </select>
 
 </mapper>

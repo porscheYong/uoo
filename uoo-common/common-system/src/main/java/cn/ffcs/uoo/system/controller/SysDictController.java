@@ -72,7 +72,7 @@ public class SysDictController {
         Wrapper<SysDict> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID).orderBy("UPDATE_DATE", false);
         Page<SysDict> page = sysDictService.selectPage(new Page<SysDict>(pageNo, pageSize), wrapper);
 
-        return ResponseResult.createSuccessResult(page.getRecords(), "", page);
+        return ResponseResult.createSuccessResult(page , "");
     }
 
     @ApiOperation(value = "修改",notes = "修改")

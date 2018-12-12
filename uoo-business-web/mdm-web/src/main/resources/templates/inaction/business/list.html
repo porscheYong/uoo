@@ -44,13 +44,18 @@
       .org-name {
         cursor: pointer;
       }
+      .row-orgId,
+      .row-orgRootId,
+      .row-personnelId{
+        display:none;
+      }
     </style>
   </head>
 
   <body style="background: #fff;">
     <div>
       <div class="board-title">
-        <span class="name ft18 org-name" id="orgName"></span><a class="icon icon-edit" style="vertical-align: top;" id="editBtn" href="javascript:void(0);" onclick="orgEdit()"></a>
+        <span class="name ft18 org-name" id="orgName"></span><a class="icon icon-edit jsVTips" style="vertical-align: top;" id="editBtn" title="组织编辑" href="javascript:void(0);" onclick="orgEdit()"></a>
         <div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;">
           <!--<span class="breadcrumb-item">-->
             <!--<a href="javascript:viod(0);">杭州</a-->
@@ -89,7 +94,10 @@
     <!-- Bootstrap -->
     <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- jquery datatable -->
-    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+    <!-- <script type="text/javascript" src="/vendors/datatable/datatables.js"></script> -->
+    <script type="text/javascript" src="/js/datatables.js"></script>
+    <!-- sea js -->
+    <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
     <!-- init -->
     <script src="/js/init.js"></script>
 	  <script type="text/javascript" src="/js/business/list.js"></script>
