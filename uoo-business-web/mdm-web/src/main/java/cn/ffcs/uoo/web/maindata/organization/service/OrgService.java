@@ -5,6 +5,7 @@ import cn.ffcs.uoo.web.maindata.organization.dto.Org;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgVo;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.dto.TreeNodeVo;
+import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgRelTypeServiceHystrix;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgServiceHystrix;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
@@ -23,7 +24,8 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018-09-25
  */
-@FeignClient(name = "business-organization", url = "http://134.96.253.222:11100",configuration = {PersonnelServiceConfiguration.class},fallback = OrgServiceHystrix.class)
+//@FeignClient(name = "business-organization", url = "http://134.96.253.222:11100",configuration = {PersonnelServiceConfiguration.class},fallback = OrgServiceHystrix.class)
+@FeignClient(value = "business-organization",configuration = {PersonnelServiceConfiguration.class},fallback = OrgServiceHystrix.class)
 public interface OrgService{
 
     @RequestMapping(value="/org/addOrg",method = RequestMethod.POST,headers={"Content-Type=application/json"})

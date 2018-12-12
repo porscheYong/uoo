@@ -3,6 +3,7 @@ package cn.ffcs.uoo.web.maindata.organization.service;
 
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgTree;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
+import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgRelTypeServiceHystrix;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgTreeServiceHystrix;
 import common.config.PersonnelServiceConfiguration;
 
@@ -22,7 +23,8 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018/10/21
  */
-@FeignClient(name = "business-organization", url = "http://134.96.253.222:11100",configuration = {PersonnelServiceConfiguration.class},fallback = OrgTreeServiceHystrix.class)
+//@FeignClient(name = "business-organization", url = "http://134.96.253.222:11100",configuration = {PersonnelServiceConfiguration.class},fallback = OrgTreeServiceHystrix.class)
+@FeignClient(value = "business-organization",configuration = {PersonnelServiceConfiguration.class},fallback = OrgTreeServiceHystrix.class)
 public interface OrgTreeService {
 
     @RequestMapping(value="/orgTree/addOrgTree",method = RequestMethod.POST,headers={"Content-Type=application/json"})

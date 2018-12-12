@@ -69,7 +69,7 @@ public class SysRelationController {
         Wrapper<SysRelation> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID).orderBy("UPDATE_DATE", false);
         Page<SysRelation> page = sysRelationService.selectPage(new Page<SysRelation>(pageNo, pageSize), wrapper);
 
-        return ResponseResult.createSuccessResult(page.getRecords(), "", page);
+        return ResponseResult.createSuccessResult(page , "" );
     }
 
     @ApiOperation(value = "修改",notes = "修改")

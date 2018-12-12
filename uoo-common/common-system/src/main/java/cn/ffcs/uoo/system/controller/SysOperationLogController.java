@@ -69,7 +69,7 @@ public class SysOperationLogController {
         Wrapper<SysOperationLog> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID).orderBy("UPDATE_DATE", false);
         Page<SysOperationLog> page = sysOperationLogService.selectPage(new Page<SysOperationLog>(pageNo, pageSize), wrapper);
 
-        return ResponseResult.createSuccessResult(page.getRecords(), "", page);
+        return ResponseResult.createSuccessResult(page , "");
     }
 
     @ApiOperation(value = "新增",notes = "新增")

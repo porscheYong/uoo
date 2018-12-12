@@ -218,7 +218,7 @@ public class SysUserController extends BaseController {
         Wrapper<SysUser> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID).orderBy("UPDATE_DATE", false);
         Page<SysUser> page = sysUserService.selectPage(new Page<SysUser>(pageNo, pageSize), wrapper);
 
-        return cn.ffcs.uoo.system.vo.ResponseResult.createSuccessResult(page.getRecords(), "", page);
+        return cn.ffcs.uoo.system.vo.ResponseResult.createSuccessResult(page, "");
     }
 
     @ApiOperation(value = "修改", notes = "修改")

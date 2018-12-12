@@ -7,6 +7,10 @@ import cn.ffcs.uoo.system.entity.SysMenu;
 import cn.ffcs.uoo.system.service.SysDictService;
 import cn.ffcs.uoo.system.service.SysMenuService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+
+import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +28,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     public Long getId() {
         return sysMenuMapper.getId();
+    }
+
+    @Override
+    public List<SysMenu> getMenuByAccout(HashMap<String, Object> map) {
+        return sysMenuMapper.getMenuByAccout(map);
     }
 }
