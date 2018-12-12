@@ -60,7 +60,7 @@ seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
     $('#defaultPswTel').tips({
         align: 'right'
     });
-  });
+});
   
 
 function getSubUser(acctId) {       //查看并编辑从账号            
@@ -158,7 +158,7 @@ function initOrgTable(results){
         },
         {'data': "orgId", 'title': '操作', 'className': 'row-delete' ,
             'render': function (data, type, row, meta) {
-                return "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' onclick='deleteOrg()'></a>";
+                return "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' title='删除' onclick='deleteOrg()'></a>";
             }
         }
       ],

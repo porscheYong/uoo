@@ -35,6 +35,7 @@ function initMainTable(isCheck,search){
         'ordering': true,
         'info': true,
         "scrollY": "375px",
+        'scrollCollapse': true,
         'columns': [
             { 'data': "psnName", 'title': '人员姓名', 'className': 'row-psnName' ,
             'render': function (data, type, row, meta) {
