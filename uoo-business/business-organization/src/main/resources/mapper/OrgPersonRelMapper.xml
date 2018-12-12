@@ -122,9 +122,9 @@
         </if>
         ) AA
         LEFT JOIN TB_ORG ORG ON ORG.ORG_ID = AA.ORG_ID AND ORG.Status_Cd=AA.Status_Cd
-        LEFT JOIN TB_PERSONNEL PER ON PER.PERSONNEL_ID = AA.PERSONNEL_ID AND ORG.STATUS_CD=AA.STATUS_CD
-        LEFT JOIN TB_POST POST ON POST.POST_ID = AA.POST_ID AND ORG.STATUS_CD=AA.STATUS_CD
-        LEFT JOIN TB_CONTACT CTA ON CTA.PERSONNEL_ID = AA.PERSONNEL_ID AND CTA.STATUS_CD=AA.STATUS_CD
+        LEFT JOIN TB_PERSONNEL PER ON PER.STATUS_CD='1000' AND PER.PERSONNEL_ID = AA.PERSONNEL_ID
+        LEFT JOIN TB_POST POST ON POST.STATUS_CD='1000' AND POST.POST_ID = AA.POST_ID
+        LEFT JOIN TB_CONTACT CTA ON CTA.STATUS_CD='1000' AND CTA.PERSONNEL_ID = AA.PERSONNEL_ID
         AND CTA.FIRST_FLAG=1 AND CTA.CONTACT_TYPE=1
         ) AB where 1=1
         <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
@@ -182,8 +182,8 @@
             AA.REF_TYPE refType,
             AA.PROPERTY property,
             AA.DOUBLE_NAME doubleName,
-            ORG.ORG_NAME orgName,
-            ORG.Full_Name fullName,
+            AA.ORG_NAME orgName,
+            AA.Full_Name fullName,
             PER.PSN_NAME PsnName,
             PER.PSN_CODE psnCode,
             PER.PSN_NBR psnNbr,
@@ -195,24 +195,23 @@
             AA.ORG_TREE_ID orgTreeId,
             AA.ORG_PERSON_ID orgPersonId,
             AA.SORT sort
-            FROM (SELECT A.*,C.ORG_TREE_NAME,C.ORG_TREE_ID FROM TB_ORG_PERSON_REL A, TB_ORGTREE_ORGPERSON_REL B ,TB_ORG_TREE C,ORGFULL D
+            FROM (SELECT A.*,C.ORG_TREE_NAME,C.ORG_TREE_ID,D.ORG_NAME,D.Full_Name FROM TB_ORG_PERSON_REL A, TB_ORGTREE_ORGPERSON_REL B ,TB_ORG_TREE C,ORGFULL D
             WHERE A.STATUS_CD = '1000' AND B.STATUS_CD='1000' AND C.STATUS_CD='1000' AND D.STATUS_CD='1000'
-            AND A.ORG_PERSON_ID=B.ORG_PERSON_ID AND B.ORG_TREE_ID=C.ORG_TREE_ID
-            AND A.ORG_ID=D.ORG_ID AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
+            AND A.ORG_PERSON_ID=B.ORG_PERSON_ID  AND A.ORG_ID=D.ORG_ID AND B.ORG_TREE_ID=C.ORG_TREE_ID
+            AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
             <if test="psonOrgVo.personnelId != null and psonOrgVo.personnelId != ''">
                 AND A.PERSONNEL_ID = #{psonOrgVo.personnelId}
             </if>
             ) AA
-            LEFT JOIN TB_ORG ORG ON ORG.ORG_ID = AA.ORG_ID AND ORG.Status_Cd=AA.Status_Cd
-            LEFT JOIN TB_PERSONNEL PER ON PER.PERSONNEL_ID = AA.PERSONNEL_ID AND ORG.STATUS_CD=AA.STATUS_CD
-            LEFT JOIN TB_POST POST ON POST.POST_ID = AA.POST_ID AND ORG.STATUS_CD=AA.STATUS_CD
-            LEFT JOIN TB_CONTACT CTA ON CTA.PERSONNEL_ID = AA.PERSONNEL_ID AND CTA.STATUS_CD=AA.STATUS_CD
+            <!--LEFT JOIN TB_ORG ORG ON ORG.ORG_ID = AA.ORG_ID AND ORG.Status_Cd=AA.Status_Cd-->
+            LEFT JOIN TB_PERSONNEL PER ON PER.STATUS_CD='1000' AND PER.PERSONNEL_ID = AA.PERSONNEL_ID
+            LEFT JOIN TB_POST POST ON POST.STATUS_CD='1000' AND POST.POST_ID = AA.POST_ID
+            LEFT JOIN TB_CONTACT CTA ON  CTA.STATUS_CD='1000' AND CTA.PERSONNEL_ID = AA.PERSONNEL_ID
             AND CTA.FIRST_FLAG=1 AND CTA.CONTACT_TYPE=1
             ) AB where 1=1
             <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
                 AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR PSNCODE LIKE '%'||#{psonOrgVo.search}||'%' OR MOBILE LIKE '%'||#{psonOrgVo.search}||'%' OR ORGNAME LIKE '%'||#{psonOrgVo.search}||'%')
             </if>
-                ORDER BY SORT
             )
             <if test="psonOrgVo.sortField!=null and psonOrgVo.sortField!='' and psonOrgVo.sortOrder!=null and psonOrgVo.sortOrder!='' ">
                 order by #{psonOrgVo.sortField}||' '||#{psonOrgVo.sortOrder}
@@ -263,8 +262,8 @@
             AA.REF_TYPE refType,
             AA.PROPERTY property,
             AA.DOUBLE_NAME doubleName,
-            ORG.ORG_NAME orgName,
-            ORG.Full_Name fullName,
+            AA.ORG_NAME orgName,
+            AA.Full_Name fullName,
             PER.PSN_NAME PsnName,
             PER.PSN_CODE psnCode,
             PER.PSN_NBR psnNbr,
@@ -276,24 +275,23 @@
             AA.ORG_TREE_ID orgTreeId,
             AA.ORG_PERSON_ID orgPersonId,
             AA.SORT sort
-            FROM (SELECT A.*,C.ORG_TREE_NAME,C.ORG_TREE_ID FROM TB_ORG_PERSON_REL A, TB_ORGTREE_ORGPERSON_REL B ,TB_ORG_TREE C,ORGFULL D
+            FROM (SELECT A.*,C.ORG_TREE_NAME,C.ORG_TREE_ID,D.ORG_NAME,D.Full_Name FROM TB_ORG_PERSON_REL A, TB_ORGTREE_ORGPERSON_REL B ,TB_ORG_TREE C,ORGFULL D
             WHERE A.STATUS_CD = '1000' AND B.STATUS_CD='1000' AND C.STATUS_CD='1000' AND D.STATUS_CD='1000'
-            AND A.ORG_PERSON_ID=B.ORG_PERSON_ID AND B.ORG_TREE_ID=C.ORG_TREE_ID
-            AND A.ORG_ID=D.ORG_ID AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
+            AND A.ORG_PERSON_ID=B.ORG_PERSON_ID AND A.ORG_ID=D.ORG_ID AND B.ORG_TREE_ID=C.ORG_TREE_ID
+            AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
             <if test="psonOrgVo.personnelId != null and psonOrgVo.personnelId != ''">
                 AND A.PERSONNEL_ID = #{psonOrgVo.personnelId}
             </if>
             ) AA
-            LEFT JOIN TB_ORG ORG ON ORG.ORG_ID = AA.ORG_ID AND ORG.Status_Cd=AA.Status_Cd
-            LEFT JOIN TB_PERSONNEL PER ON PER.PERSONNEL_ID = AA.PERSONNEL_ID AND ORG.STATUS_CD=AA.STATUS_CD
-            LEFT JOIN TB_POST POST ON POST.POST_ID = AA.POST_ID AND ORG.STATUS_CD=AA.STATUS_CD
-            LEFT JOIN TB_CONTACT CTA ON CTA.PERSONNEL_ID = AA.PERSONNEL_ID AND CTA.STATUS_CD=AA.STATUS_CD
+            <!--LEFT JOIN TB_ORG ORG ON ORG.ORG_ID = AA.ORG_ID AND ORG.Status_Cd=AA.Status_Cd-->
+            LEFT JOIN TB_PERSONNEL PER ON PER.STATUS_CD='1000' AND PER.PERSONNEL_ID = AA.PERSONNEL_ID
+            LEFT JOIN TB_POST POST ON POST.STATUS_CD='1000' AND POST.POST_ID = AA.POST_ID
+            LEFT JOIN TB_CONTACT CTA ON  CTA.STATUS_CD='1000' AND CTA.PERSONNEL_ID = AA.PERSONNEL_ID
             AND CTA.FIRST_FLAG=1 AND CTA.CONTACT_TYPE=1
             ) AB where 1=1
             <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
                 AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR PSNCODE LIKE '%'||#{psonOrgVo.search}||'%' OR MOBILE LIKE '%'||#{psonOrgVo.search}||'%' OR ORGNAME LIKE '%'||#{psonOrgVo.search}||'%')
             </if>
-            ORDER BY SORT
             )
             <if test="psonOrgVo.sortField!=null and psonOrgVo.sortField!='' and psonOrgVo.sortOrder!=null and psonOrgVo.sortOrder!='' ">
                 order by #{psonOrgVo.sortField}||' '||#{psonOrgVo.sortOrder}
