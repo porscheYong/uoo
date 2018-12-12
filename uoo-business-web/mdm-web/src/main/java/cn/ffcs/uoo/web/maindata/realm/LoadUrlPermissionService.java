@@ -27,18 +27,22 @@ import cn.ffcs.uoo.web.maindata.permission.dto.FuncMenu;
 import cn.ffcs.uoo.web.maindata.permission.service.FuncCompService;
 import cn.ffcs.uoo.web.maindata.permission.service.FuncMenuService;
 import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.sysuser.client.SysMenuClient;
+import cn.ffcs.uoo.web.maindata.sysuser.dto.SysMenu;
 
 @Service
 public class LoadUrlPermissionService {
     private static Logger log = LoggerFactory.getLogger(LoadUrlPermissionService.class);
     @Autowired
     ShiroFilterFactoryBean shiroFilterFactoryBean;
-    @Autowired
+    /*@Autowired
     FuncCompService funcCompSvc;
     @Autowired
-    FuncMenuService funcMenuSvc;
+    FuncMenuService funcMenuSvc;*/
     @Autowired
     private DiscoveryClient discoveryClient;
+    @Autowired
+    private SysMenuClient sysMenuClient;
     @Value("${spring.application.name}")
     private String appName;
     @Autowired
@@ -112,7 +116,7 @@ public class LoadUrlPermissionService {
             // filterChainDefinitionMap.put("/aa/aa", "perms[asasd]");
             // filterChainDefinitionMap.put("/inaction/**", "perms[inaction]");
 
-            ResponseResult<List<FuncComp>> listFuncComp = funcCompSvc.listFuncComp(1, Integer.MAX_VALUE);
+            /*ResponseResult<List<FuncComp>> listFuncComp = funcCompSvc.listFuncComp(1, Integer.MAX_VALUE);
             ResponseResult<List<FuncMenu>> listMenuComp = funcMenuSvc.getFuncMenuPage();
 
             if (listFuncComp.getData() != null && !listFuncComp.getData().isEmpty()) {
@@ -126,9 +130,21 @@ public class LoadUrlPermissionService {
                 for (FuncMenu funcComp : comps) {
                     filterChainDefinitionMap.put(funcComp.getUrlAddr(), "perms[M" + funcComp.getMenuId() + "]");
                 }
-            }
+            }*/
+            
+            
 
             // filterChainDefinitionMap.put("/ff/ff", "perms[sad]");//
+            
+            cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult<List<SysMenu>> listPage = sysMenuClient.listPage(1, Integer.MAX_VALUE);
+            if(listPage.getState()==cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult.STATE_OK){
+                List<SysMenu> data = listPage.getData();
+                if(data!=null){
+                    for (SysMenu sysMenu : data) {
+                        filterChainDefinitionMap.put(sysMenu.getUrl(), "perms[M" + sysMenu.getMenuId() + "]");
+                    }
+                }
+            }
             // 表示需要认证才可以访问
             filterChainDefinitionMap.put("/**", "authc");// 表示需要认证才可以访问
 

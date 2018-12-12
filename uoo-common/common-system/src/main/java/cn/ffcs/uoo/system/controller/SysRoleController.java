@@ -69,7 +69,7 @@ public class SysRoleController {
         Wrapper<SysRole> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID).orderBy("UPDATE_DATE", false);
         Page<SysRole> page = sysRoleService.selectPage(new Page<SysRole>(pageNo, pageSize), wrapper);
 
-        return ResponseResult.createSuccessResult(page.getRecords(), "", page);
+        return ResponseResult.createSuccessResult(page, "");
     }
 
     @ApiOperation(value = "修改",notes = "修改")
