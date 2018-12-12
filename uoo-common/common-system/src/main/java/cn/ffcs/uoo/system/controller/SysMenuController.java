@@ -68,7 +68,7 @@ public class SysMenuController {
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
 
-        Wrapper<SysMenu> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID).orderBy("UPDATE_DATE", false);
+        Wrapper<SysMenu> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID);
         Page<SysMenu> page = sysMenuService.selectPage(new Page<SysMenu>(pageNo, pageSize), wrapper);
 
         return ResponseResult.createSuccessResult(page , "");
@@ -143,7 +143,7 @@ public class SysMenuController {
     })
     @UooLog(key="getMenuByAccout=",value="获取单个用户的菜单")
     @Transactional
-    @RequestMapping(value = "/getMenuByAccout/{accout}", method = RequestMethod.POST)
+    @RequestMapping(value = "/getMenuByAccout/{accout}", method = RequestMethod.GET)
     public ResponseResult<List<SysMenu>> getMenuByAccout(@PathVariable(value = "accout") String accout){
         if(accout==null||accout.trim().length()<=0){
             return ResponseResult.createErrorResult("账号不存在");
