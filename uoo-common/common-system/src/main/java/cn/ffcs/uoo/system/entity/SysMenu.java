@@ -47,11 +47,11 @@ public class SysMenu extends Model<SysMenu> {
     private Integer num;
 
     /** 层级  */
-    @TableField("LEVEL")
+    @TableField("MENU_LEVEL")
     private Integer level;
 
     /** 是否菜单    */
-    @TableField("IS_MENU")
+    @TableField("MENU_FLAG")
     private Integer isMenu;
 
     /** 是否打开    */
