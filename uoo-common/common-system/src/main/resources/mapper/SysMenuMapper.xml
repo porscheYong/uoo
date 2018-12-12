@@ -10,9 +10,9 @@
     <result column="ICON" jdbcType="VARCHAR" property="icon" />
     <result column="URL" jdbcType="VARCHAR" property="url" />
     <result column="NUM" jdbcType="DECIMAL" property="num" />
-    <result column="MENU_LEVEL" jdbcType="DECIMAL" property="level" />
-    <result column="MENU_FLAG" jdbcType="DECIMAL" property="isMenu" />
-    <result column="IS_OPEN" jdbcType="DECIMAL" property="isOpen" />
+    <result column="MENU_LEVEL" jdbcType="DECIMAL" property="menuLevel" />
+    <result column="MENU_FLAG" jdbcType="DECIMAL" property="menuFlag" />
+    <result column="OPEN_FLAG" jdbcType="DECIMAL" property="openFlag" />
     <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
     <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
     <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
@@ -23,7 +23,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     MENU_ID, MENU_NAME, MENU_CODE, P_MENU_ID, P_MENU_IDS, ICON, URL, NUM, MENU_LEVEL, MENU_FLAG,
-    IS_OPEN, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, 
+    OPEN_FLAG, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, 
     NOTES
   </sql>
 

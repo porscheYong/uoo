@@ -48,15 +48,15 @@ public class SysMenu extends Model<SysMenu> {
 
     /** 层级  */
     @TableField("MENU_LEVEL")
-    private Integer level;
+    private Integer menuLevel;
 
     /** 是否菜单    */
     @TableField("MENU_FLAG")
-    private Integer isMenu;
+    private Integer menuFlag;
 
     /** 是否打开    */
-    @TableField("IS_OPEN")
-    private Integer isOpen;
+    @TableField("OPEN_FLAG")
+    private Integer openFlag;
 
     /** 状态  */
     @TableField("STATUS_CD")
@@ -150,28 +150,30 @@ public class SysMenu extends Model<SysMenu> {
         this.num = num;
     }
 
-    public Integer getLevel() {
-        return level;
+     
+
+    public Integer getMenuLevel() {
+        return menuLevel;
     }
 
-    public void setLevel(Integer level) {
-        this.level = level;
+    public void setMenuLevel(Integer menuLevel) {
+        this.menuLevel = menuLevel;
     }
 
-    public Integer getIsMenu() {
-        return isMenu;
+    public Integer getMenuFlag() {
+        return menuFlag;
     }
 
-    public void setIsMenu(Integer isMenu) {
-        this.isMenu = isMenu;
+    public void setMenuFlag(Integer menuFlag) {
+        this.menuFlag = menuFlag;
     }
 
-    public Integer getIsOpen() {
-        return isOpen;
+    public Integer getOpenFlag() {
+        return openFlag;
     }
 
-    public void setIsOpen(Integer isOpen) {
-        this.isOpen = isOpen;
+    public void setOpenFlag(Integer openFlag) {
+        this.openFlag = openFlag;
     }
 
     public String getStatusCd() {
