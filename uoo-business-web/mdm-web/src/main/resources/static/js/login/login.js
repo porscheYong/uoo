@@ -14,7 +14,7 @@ if (window != window.top) {
 
 $(function (){
     toastr.options = {
-                        "timeOut": "2000",
+                        "timeOut": "1000",
                         "preventDuplicates": true,
                         "preventManyTimes": true,
                         "hideDuration": "1"

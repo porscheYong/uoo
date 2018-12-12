@@ -1,5 +1,6 @@
 var loading = new Loading();
 var dictionaryData = new Dictionary();
+var account;
 // toastr
 toastr.options = {
   "closeButton": false,
@@ -24,7 +25,8 @@ loading.screenMaskEnable('container');
 function initUserInfo(){  //初始化首页人员信息          
     $http.get('/system/getCurrentLoginUserInfo', { }, 
     function (data) {
-      getAcctInfo(data.acctId);
+        account = data.acct;
+        getAcctInfo(data.acctId);
     }, function (err) {
 
     })
