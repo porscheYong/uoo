@@ -28,7 +28,6 @@ function initUserInfo(){  //初始化首页人员信息
         account = data.acct;
         getAcctInfo(data.acctId);
     }, function (err) {
-
     })
 }
 

@@ -8,7 +8,7 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package cn.ffcs.uoo.web.maindata.sysuser.client;
+package cn.ffcs.uoo.web.maindata.common.system.client;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ import org.springframework.cloud.netflix.feign.FeignClientProperties.FeignClient
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import cn.ffcs.uoo.web.maindata.sysuser.client.fallback.SysRoleClientHystrix;
-import cn.ffcs.uoo.web.maindata.sysuser.dto.SysRole;
-import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysRoleClientHystrix;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysRole;
+import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 
 /**
  * 〈一句话功能简述〉<br> 

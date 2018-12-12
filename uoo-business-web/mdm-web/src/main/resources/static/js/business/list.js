@@ -187,6 +187,13 @@ parent.getOrgExtInfo();
 initOrgTable();
 initOrgPersonnelTable(0);
 
+// lulu ui tips插件
+seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
+    $('#editBtn').tips({
+        align: 'rotate'
+    });
+});
+
 function orgEdit () {
     var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
     $('#editBtn').attr('href', url);

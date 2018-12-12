@@ -4,12 +4,17 @@ var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var orgTreeName = getQueryString('orgTreeName');
 var table;
-var checked = false;
+var checked = 0;
 var sortFlag = 0;
 var currentPage = 0;
 
 $('#orgName').html(orgName);
 parent.getOrgExtInfo();
+
+$('#orgName').on('click', function () {
+    var url = '/inaction/business/orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    window.location.href = url;
+});
 
 function initOrgPersonnelTable (isSearchlower,search) {
     table = $("#personnelTable").DataTable({
@@ -192,8 +197,8 @@ function initFreePersonnelTable () {
 //勾选显示下级组织人员
 function showLower() {
     sortFlag = 0;
-    checked = $('#isShowLower').is(':checked');
-    initOrgPersonnelTable(checked,'');
+    checked = $('#isShowLower').is(':checked')? 1: 0;
+    initOrgPersonnelTable(checked, '');
 }
 
 if (orgId == 'noSort') {
@@ -204,7 +209,7 @@ if (orgId == 'noSort') {
 else {
     $('#titleName').html('组织人员');
     $('#isShow').show();
-    initOrgPersonnelTable(false,'');
+    initOrgPersonnelTable(0, '');
 }
 // $('#editBtn').on('click', function () {
 //     var url = 'edit.html?id=' + orgId;

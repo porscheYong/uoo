@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.web.maindata.sysuser.dto;
+package cn.ffcs.uoo.web.maindata.common.system.dto;
 
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -47,16 +47,16 @@ public class SysMenu extends Model<SysMenu> {
     private Integer num;
 
     /** 层级  */
-    @TableField("LEVEL")
-    private Integer level;
+    @TableField("MENU_LEVEL")
+    private Integer menuLevel;
 
     /** 是否菜单    */
-    @TableField("IS_MENU")
-    private Integer isMenu;
+    @TableField("MENU_FLAG")
+    private Integer menuFlag;
 
     /** 是否打开    */
-    @TableField("IS_OPEN")
-    private Integer isOpen;
+    @TableField("OPEN_FLAG")
+    private Integer openFlag;
 
     /** 状态  */
     @TableField("STATUS_CD")
@@ -150,28 +150,30 @@ public class SysMenu extends Model<SysMenu> {
         this.num = num;
     }
 
-    public Integer getLevel() {
-        return level;
+     
+
+    public Integer getMenuLevel() {
+        return menuLevel;
     }
 
-    public void setLevel(Integer level) {
-        this.level = level;
+    public void setMenuLevel(Integer menuLevel) {
+        this.menuLevel = menuLevel;
     }
 
-    public Integer getIsMenu() {
-        return isMenu;
+    public Integer getMenuFlag() {
+        return menuFlag;
     }
 
-    public void setIsMenu(Integer isMenu) {
-        this.isMenu = isMenu;
+    public void setMenuFlag(Integer menuFlag) {
+        this.menuFlag = menuFlag;
     }
 
-    public Integer getIsOpen() {
-        return isOpen;
+    public Integer getOpenFlag() {
+        return openFlag;
     }
 
-    public void setIsOpen(Integer isOpen) {
-        this.isOpen = isOpen;
+    public void setOpenFlag(Integer openFlag) {
+        this.openFlag = openFlag;
     }
 
     public String getStatusCd() {

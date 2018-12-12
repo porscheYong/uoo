@@ -1,11 +1,11 @@
-package cn.ffcs.uoo.web.maindata.sysuser.client.fallback;
+package cn.ffcs.uoo.web.maindata.common.system.client.fallback;
 
 import org.springframework.stereotype.Component;
 
-import cn.ffcs.uoo.web.maindata.sysuser.client.SysUserClient;
-import cn.ffcs.uoo.web.maindata.sysuser.dto.AlterPwdDTO;
-import cn.ffcs.uoo.web.maindata.sysuser.dto.SysUser;
-import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.common.system.client.SysUserClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.AlterPwdDTO;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
+import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 @Component
 public class SysUserClientHystrix implements SysUserClient {
 
