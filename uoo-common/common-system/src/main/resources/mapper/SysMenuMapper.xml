@@ -30,7 +30,7 @@
   <select id="getId" resultType="Long">
     select SEQ_TB_SYS_MENU.NEXTVAL from dual
   </select>
-  <select id="getMenuByAccout" resultType="cn.ffcs.uoo.system.entity.SysMenu" parameterMap="java.util.HashMap">
+  <select id="getMenuByAccout" resultType="cn.ffcs.uoo.system.entity.SysMenu" parameterType="java.util.HashMap">
 	SELECT M.*
 	FROM SYS_USER U
 	LEFT JOIN SYS_ROLE R ON R.ROLE_ID = U.ROLE_ID

@@ -156,6 +156,7 @@ public class LoadUrlPermissionService {
                 String chainDefinition = entry.getValue().trim().replace(" ", "");
                 manager.createChain(url, chainDefinition);
             }
+            log.info("重新更新URL权限信息完成");
         }
 
     }

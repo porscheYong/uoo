@@ -12,6 +12,7 @@ spring:
     druid:
       driver-class-name:  oracle.jdbc.OracleDriver
       url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
+      #url: jdbc:oracle:thin:@(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.48)(PORT = 3436))(ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.49)(PORT = 3436))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = ZJ4APRD)))
       username: octopus
       password: octopus
 
