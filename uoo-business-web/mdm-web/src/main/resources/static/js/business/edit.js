@@ -7,7 +7,7 @@ var orgRelTypeList = [];
 var orgTypeList = [];
 var formValidate;
 var loading = parent.loading;
-var toastr = parent.parent.toastr;
+var toastr = window.top.toastr;
 
 $('#orgTypeTreeName').html(orgTypeTreeName);
 
@@ -46,7 +46,7 @@ function getOrgTree () {
         $('#orgRelType').addTag(orgRelTypeList);
         $('#orgType').addTag(orgTypeList);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -111,7 +111,7 @@ function getOrgTreeType () {
         $('#orgTreeType').append(option);
         $('#orgTreeType').selectMatch();
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -125,7 +125,7 @@ function getProperty () {
         $('#userType').append(option);
         $('#userType').selectMatch();
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -170,7 +170,7 @@ function updateOrgTree () {
 
 // 取消
 function cancel () {
-    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&name=" + orgName;
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName);
     window.location.href = url;
 }
 

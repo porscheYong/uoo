@@ -31,7 +31,7 @@
         </selectKey>
         insert into TB_POSITION
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            POSITION_ID,
+                POSITION_ID,
             <if test="positionCode != null">
                 POSITION_CODE,
             </if>
@@ -73,7 +73,7 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            #{positionId,jdbcType=DECIMAL},
+                #{positionId,jdbcType=DECIMAL},
             <if test="positionCode != null">
                 #{positionCode,jdbcType=VARCHAR},
             </if>
@@ -124,14 +124,14 @@
 
     <select id="queryOrgPositionInfoList" resultType="OrgPositionInfoVo">
         SELECT R.ORG_POSITION_ID,
-        R.ORG_ID,
-        R.POSITION_ID,
-        R.ORG_TREE_ID,
-        P.POSITION_CODE,
-        P.POSITION_TYPE,
-        P.POSITION_DESC,
-        P.POSITION_NAME,
-        P.PARENT_POSITION_ID
+           R.ORG_ID,
+           R.POSITION_ID,
+           R.ORG_TREE_ID,
+           P.POSITION_CODE,
+           P.POSITION_TYPE,
+           P.POSITION_DESC,
+           P.POSITION_NAME,
+           P.PARENT_POSITION_ID
         FROM TB_ORG_POSITION_REL R, TB_POSITION P
         WHERE R.POSITION_ID = P.POSITION_ID
         AND R.STATUS_CD = '1000'

@@ -24,7 +24,7 @@ public class OrgOrgtreeRel extends Model<OrgOrgtreeRel> {
     /**
      * 组织标识
      */
-    @TableField("ORG_ORGTREE_ID")
+    @TableId("ORG_ORGTREE_ID")
     private Long orgOrgtreeId;
     /**
      * 组织标识
@@ -67,6 +67,32 @@ public class OrgOrgtreeRel extends Model<OrgOrgtreeRel> {
     @TableField("STATUS_DATE")
     private Date statusDate;
 
+
+    @TableField("ORG_BIZ_NAME")
+    private String orgBizName;
+
+    /**
+     * 排序
+     */
+    @TableField("SORT")
+    private Double sort;
+
+
+    public Double getSort() {
+        return sort;
+    }
+
+    public void setSort(Double sort) {
+        this.sort = sort;
+    }
+
+    public String getOrgBizName() {
+        return orgBizName;
+    }
+
+    public void setOrgBizName(String orgBizName) {
+        this.orgBizName = orgBizName;
+    }
 
     public Long getOrgOrgtreeId() {
         return orgOrgtreeId;
@@ -151,6 +177,7 @@ public class OrgOrgtreeRel extends Model<OrgOrgtreeRel> {
         ", orgOrgtreeId=" + orgOrgtreeId +
         ", orgId=" + orgId +
         ", orgTreeId=" + orgTreeId +
+        ", orgBizName=" + orgBizName +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
         ", createUser=" + createUser +

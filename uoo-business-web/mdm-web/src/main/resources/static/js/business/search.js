@@ -16,7 +16,6 @@ var engine, template, empty, selectNode;
       url: '/org/getOrgPage?orgRootId=1&search=%QUERY',
       wildcard: '%QUERY',
       filter: function (response) {
-        // console.log('response', response)
         return response.data.records;
       }
     }
@@ -96,7 +95,6 @@ var engine, template, empty, selectNode;
         parent.addNodeById(orgId, newNode);
         loading.screenMaskDisable('container');
       }, function (err) {
-          console.log(err);
           loading.screenMaskDisable('container');
       })
   }

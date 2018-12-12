@@ -26,7 +26,7 @@ function initUserInfo(){  //初始化首页人员信息
     function (data) {
       getAcctInfo(data.acctId);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -39,14 +39,13 @@ function getAcctInfo(acctId){ //获取账号信息
       //console.log(data);   
       $("#psnName").text(data.psnName);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
 function initUserPermission(){    //初始化人员权限
     $http.post('/permission/tbRoles/getPermissionMenu/19521/0', { }, 
     function (data) {
-        console.log(data);
         initSideBar(data);
         // layui admin
         layui.config({
@@ -62,7 +61,6 @@ function initUserPermission(){    //初始化人员权限
         //     })
         // })
     }, function (err) {
-        console.log(err)
         loading.screenMaskDisable('container');
     })
 }
@@ -81,6 +79,7 @@ function initSideBar(results){     //初始化侧边菜单
         }
     }
     for(var i = 0;i<parList.length;i++){
+        var icon = setIcon(parList[i].menuName);
         var dd = "<dl class='layui-nav-child'>";
         
         for(var j=0;j<childList.length;j++){
@@ -91,11 +90,11 @@ function initSideBar(results){     //初始化侧边菜单
         }
         if(flag == 1){
             pemList += "<li class='layui-nav-item'><a href='javascript:;'>" +
-                "<i class='layui-icon layui-icon-component'></i><cite>" + parList[i].menuName + 
+                icon + "</i><cite>" + parList[i].menuName + 
                 "</cite><span class='layui-nav-more'></span></a>" + dd + "</dl></li>";
         }else{
             pemList += "<li class='layui-nav-item'><a lay-href='" + parList[i].urlAddr + "'>" +
-                "<i class='layui-icon layui-icon-component'></i><cite>" + parList[i].menuName + "</cite></a></li>";
+                icon + "</i><cite>" + parList[i].menuName + "</cite></a></li>";
         }
         
         flag = 0;
@@ -103,6 +102,45 @@ function initSideBar(results){     //初始化侧边菜单
     $("#LAY-system-side-menu").append(pemList);
     loading.screenMaskDisable('container');
 }
+
+function setIcon(menuName){         //设置菜单icon
+    var icon;
+    switch(menuName){
+        case '组织管理': 
+            icon = "<i class='layui-icon layui-icon-component'>";
+            break;
+
+        case '人员管理':
+            icon = "<i class='layui-icon layui-icon-form'>";
+            break;
+
+        case '账号管理':
+            icon = "<i class='layui-icon layui-icon-release'>";
+            break;
+
+        case '职位管理':
+            icon = "<i class='layui-icon layui-icon-star'>";
+            break;
+
+        case '权限管理':
+            icon = "<i class='layui-icon layui-icon-auz'>";
+            break;
+
+        case '角色管理':
+            icon = "<i class='layui-icon layui-icon-user'>";
+            break;
+
+        case '区域管理':
+            icon = "<i class='layui-icon layui-icon-app'>";
+            break;
+
+        case '资源管理':
+            icon = "<i class='layui-icon layui-icon-template'>";
+            break;
+    }
+    return icon;
+}
+
 
 // 获取字典数据
 function getDictionaryData () {
@@ -148,6 +186,23 @@ function getDictionaryData () {
     }, function (err) {
 
     })
+}
+
+function logOut(){  //退出登录
+    parent.layer.confirm('是否退出登录?', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+    }, function(index, layero){
+        parent.layer.close(index);
+        window.location.href = "/logout";
+      }, function(){
+    
+    });
+}
+
+function cancel(){
+    $("#LAY_app_tabsheader").children(".layui-this").children(".layui-tab-close").trigger("click");
 }
 
 initUserInfo();

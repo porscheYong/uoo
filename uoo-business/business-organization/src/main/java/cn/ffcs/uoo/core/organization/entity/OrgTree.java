@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.core.organization.entity;
 
 import java.util.Date;
+
+import cn.ffcs.uoo.core.organization.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -80,8 +82,8 @@ public class OrgTree extends Model<OrgTree> {
     @TableField("SORT")
     private Double sort;
 
-
-
+    @TableField(exist=false)
+    private String refCode;
     /**
      * 组织关系类型
      */
@@ -100,6 +102,53 @@ public class OrgTree extends Model<OrgTree> {
     @TableField(exist=false)
     private List<String> userTypeList;
 
+    /**
+     * 用工性质
+     */
+    @TableField(exist=false)
+    private String userTypeId;
+    /**
+     * 现有组织树
+     */
+    @TableField(exist=false)
+    private List<TreeNodeVo> treeNodeList;
+    /**
+     * 目标组织树标识
+     */
+    @TableField(exist=false)
+    private String tarOrgTreeId;
+
+    public String getRefCode() {
+        return refCode;
+    }
+
+    public void setRefCode(String refCode) {
+        this.refCode = refCode;
+    }
+
+    public String getUserTypeId() {
+        return userTypeId;
+    }
+
+    public void setUserTypeId(String userTypeId) {
+        this.userTypeId = userTypeId;
+    }
+
+    public String getTarOrgTreeId() {
+        return tarOrgTreeId;
+    }
+
+    public void setTarOrgTreeId(String tarOrgTreeId) {
+        this.tarOrgTreeId = tarOrgTreeId;
+    }
+
+    public List<TreeNodeVo> getTreeNodeList() {
+        return treeNodeList;
+    }
+
+    public void setTreeNodeList(List<TreeNodeVo> treeNodeList) {
+        this.treeNodeList = treeNodeList;
+    }
 
     public List<String> getUserTypeList() {
         return userTypeList;

@@ -82,7 +82,7 @@ function getScale (orgScale) {
         }
         $('#orgScale').html(value);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -97,7 +97,7 @@ function getCityVillage (cityTown) {
         }
         $('#cityTown').html(value);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -112,7 +112,7 @@ function getOrgPostLevel (orgPositionLevel) {
         }
         $('#orgPositionLevel').html(value);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -127,7 +127,7 @@ function getStatusCd (statusCd) {
         }
         $('#statusCd').html(value);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -166,7 +166,7 @@ function getOrg (orgId) {
         $('#positionList').addTag(positionList);
         $('#postList').addTag(orgPostList);
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -180,7 +180,7 @@ function getOrgRel (orgId) {
     }, function (data) {
         initOrgRelTable(data.records);
     }, function (err) {
-        console.log(err)
+
     })
 }
 

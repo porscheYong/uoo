@@ -24,7 +24,8 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018-10-21
  */
-@FeignClient(name = "business-organization", url = "http://134.96.253.222:11100",configuration = {PersonnelServiceConfiguration.class},fallback = OrgPersonRelServiceHystrix.class)
+//@FeignClient(name = "business-organization", url = "http://134.96.253.222:11100",configuration = {PersonnelServiceConfiguration.class},fallback = OrgPersonRelServiceHystrix.class)
+@FeignClient(value = "business-organization",configuration = {PersonnelServiceConfiguration.class},fallback = OrgPersonRelServiceHystrix.class)
 public interface OrgPersonRelService{
 
     @RequestMapping(value="/orgPersonRel/addOrgPsn",method = RequestMethod.POST,headers={"Content-Type=application/json"})
@@ -43,6 +44,7 @@ public interface OrgPersonRelService{
     @RequestMapping(value="/orgPersonRel/getPerOrgRelPage",method = RequestMethod.GET)
     public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(@RequestParam(value = "orgId",required = false)String orgId,
                                                             @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                                            @RequestParam(value = "refCode",required = false)String refCode,
                                                             @RequestParam(value = "orgRootId",required = false)String orgRootId,
                                                             @RequestParam(value = "personnelId",required = false)String personnelId,
                                                             @RequestParam(value = "isSearchlower",required = false)String isSearchlower,
@@ -53,6 +55,7 @@ public interface OrgPersonRelService{
     @RequestMapping(value="/orgPersonRel/getUserOrgRelPage",method = RequestMethod.GET)
     public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(@RequestParam(value = "orgId",required = false)String orgId,
                                                              @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                                             @RequestParam(value = "refCode",required = false)String refCode,
                                                              @RequestParam(value = "isSearchlower",required = false)String isSearchlower,
                                                              @RequestParam(value = "search",required = false)String search,
                                                              @RequestParam(value = "pageSize",required = false)Integer pageSize,

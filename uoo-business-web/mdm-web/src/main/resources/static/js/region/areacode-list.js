@@ -128,7 +128,6 @@ $(document).ready(function(){
 
 function goEdit(){
 	var cid=$('#regionStrCurrent').attr('cid');
-	console.log('goto :'+cid);
 	parent.changeIframe('/inaction/region/polloc-edit.html?id='+cid);
 }
 function getRegionList (id) {
@@ -147,7 +146,6 @@ function getRegionList (id) {
 	$.ajax({
 		url:'/region/politicalLocation/getChildPoliticalLocationInfo/'+id,
 		success:function(data){
-			console.log(data);
 			if(data.state==1000){
 				initTable(data.data)
 			}else{
@@ -193,7 +191,6 @@ function goDel(){
 			        if(data.state==1000){
 			        	//
 			        	var selectNode=parent.getCurrentSelectedNode()[0];
-			        	console.log(parent.getCurrentSelectedNode()[0])
 			        	var zTree=parent.getTree();
 			        	if(selectNode.pId==0||selectNode.pId==null){
 			        		parent.changeIframe('/inaction/region/none.html');
@@ -215,7 +212,6 @@ function goDel(){
 			        	$.ajax({
 			        		url:'/region/politicalLocation/getChildPoliticalLocationInfo/'+nodes.id,
 			        		success:function(data){
-			        			console.log(data);
 			        			if(data.state==1000){
 			        				initTable(data.data)
 			        			}else{

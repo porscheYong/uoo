@@ -29,7 +29,6 @@ function getRegionList (id) {
 	$.ajax({
 		url:'/region/commonRegion/getChildCommonRegionInfo/'+id,
 		success:function(data){
-			console.log(data);
 			if(data.state==1000){
 				initTable(data.data)
 			}else{
@@ -59,9 +58,6 @@ function initTable (results) {
         'searching': false,
         'autoWidth': true,
         'ordering': true,
-        'initComplete': function (settings, json) {
-            console.log(settings, json)
-        },
         'destroy':true,
         "scrollY": "375px",
         'columns': [
@@ -157,7 +153,6 @@ function goDel(){
 				if(data.state==1000){
 					//
 					var selectNode=parent.getCurrentSelectedNode()[0];
-					console.log(parent.getCurrentSelectedNode()[0])
 					var zTree=parent.getTree();
 					if(selectNode.pId==0||selectNode.pId==null){
 						parent.changeIframe('/inaction/region/none.html');
@@ -179,7 +174,6 @@ function goDel(){
 					$.ajax({
 						url:'/region/commonRegion/getChildCommonRegionInfo/'+nodes.id,
 						success:function(data){
-							console.log(data);
 							if(data.state==1000){
 								initTable(data.data)
 							}else{

@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.organization.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.organization.service.PostService;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
@@ -32,7 +33,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/post")
 @Api(value = "/post", description = "组织职位相关操作")
-public class PostController {
+public class PostController extends BaseController {
 
     @Autowired
     private PostService postService;

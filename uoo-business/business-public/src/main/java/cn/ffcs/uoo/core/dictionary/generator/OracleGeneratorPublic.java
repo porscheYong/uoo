@@ -41,19 +41,19 @@ public class OracleGeneratorPublic {
     /**文件路径
      *
      */
-    private static String packageName="expando";
+    private static String packageName="resource";
 
-    private static String localhostUrl="C:\\dev_code\\uoo\\uoo-core\\uoo-public";
+    private static String localhostUrl="D:\\dev_code\\uoo\\uoo-core\\uoo-public";
 
     private static String preffix_packageName="cn.ffcs.uoo.core";
     /**作者
      *
      */
-    private static String authorName="zhanglu";
+    private static String authorName="ffcs-gzb";
     /**table名字
      *
      */
-    private static String table="tb_expandorow";
+    private static String table="TB_SYSTEM_INDIVIDUATION_RULE";
     /**table前缀
      *
      */
@@ -101,9 +101,9 @@ public class OracleGeneratorPublic {
 //                            }
 //                        })
                         .setDriverName("oracle.jdbc.driver.OracleDriver")
-                        .setUsername("uom")
-                        .setPassword("uom12345")
-                        .setUrl("jdbc:oracle:thin:@134.64.14.90:1521:ahorgmng")
+                        .setUsername("octopus")
+                        .setPassword("octopus")
+                        .setUrl("jdbc:oracle:thin:@134.96.167.19:1521:uomdb1")
 //                        .setUsername("octopus")
 //                        .setPassword("octopus")
 //                        .setUrl("jdbc:oracle:thin:@134.96.167.19:1521:uomdb1")

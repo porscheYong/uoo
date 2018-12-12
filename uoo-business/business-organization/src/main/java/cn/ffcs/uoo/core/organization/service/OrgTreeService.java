@@ -4,6 +4,8 @@ import cn.ffcs.uoo.core.organization.entity.OrgTree;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -25,6 +27,30 @@ public interface OrgTreeService extends IService<OrgTree> {
 
     public String judgeOrgTreeParams(OrgTree orgTree);
 
+    /**
+     * 获取组织的其他信息：组织全路径、组织归属哪些树
+     * @param orgId
+     * @return
+     */
+    public String getOrgTreeNameByOrgId(String orgId);
 
+    /**
+     * 是否存在组织树组织关系
+     * @return
+     */
+    public boolean isExistsOrgTreeRel(String refCode);
 
+    /**
+     * 根据关系编码变动
+     * @param refCode
+     * @return
+     */
+    public OrgTree getOrgTreeByRefCode(String refCode);
+
+    /**
+     * 获取组织树列表
+     * @param orgTree
+     * @return
+     */
+    public List<OrgTree> getOrgTreeList(OrgTree orgTree);
 }

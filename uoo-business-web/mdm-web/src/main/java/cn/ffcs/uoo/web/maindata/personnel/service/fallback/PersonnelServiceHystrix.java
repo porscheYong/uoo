@@ -25,7 +25,6 @@ import org.springframework.stereotype.Component;
  *　　┗┓┓┏━┳┓┏┛
  *　　　┃┫┫　┃┫┫
  *　　　┗┻┛　┗┻┛
- * @ClassName PersonnelServiceHystrix
  * @Description 
  * @author WCNGS@QQ.COM
  * @date 2018/9/8 22:00

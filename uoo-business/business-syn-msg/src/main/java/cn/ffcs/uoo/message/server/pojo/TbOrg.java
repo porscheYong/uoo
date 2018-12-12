@@ -1,90 +1,60 @@
 package cn.ffcs.uoo.message.server.pojo;
 
 import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@TableName("TB_ORG")
 public class TbOrg extends Model<TbOrg> {
-
-    @TableId("ORG_ID")
     private Long orgId;
 
-    @TableField("LOC_ID")
     private Long locId;
 
-    @TableField("AREA_CODE_ID")
     private Long areaCodeId;
 
-    @TableField("ORG_NAME")
     private String orgName;
 
-    @TableField("ORG_CODE")
     private String orgCode;
 
-    @TableField("SHORT_NAME")
     private String shortName;
 
-    @TableField("ORG_NAME_EN")
     private String orgNameEn;
 
-    @TableField("FULL_NAME")
     private String fullName;
 
-    @TableField("CITY_TOWN")
     private String cityTown;
 
-    @TableField("OFFICE_PHONE")
     private String officePhone;
 
-    @TableField("FOUNDING_TIME")
     private Date foundingTime;
 
-    @TableField("ORG_SCALE")
     private String orgScale;
 
-    @TableField("ORG_LEVEL")
     private String orgLevel;
 
-    @TableField("ORG_POSITION_LEVEL")
     private String orgPositionLevel;
 
-    @TableField("SORT")
     private BigDecimal sort;
 
-    @TableField("ORG_CONTENT")
     private String orgContent;
 
-    @TableField("ORG_DESC")
     private String orgDesc;
 
-    @TableField("ADDRESS")
     private String address;
 
-    @TableField("UUID")
     private String uuid;
 
-    @TableField("STATUS_CD")
     private String statusCd;
 
-    @TableField("CREATE_DATE")
     private Date createDate;
 
-    @TableField("CREATE_USER")
     private Long createUser;
 
-    @TableField("UPDATE_DATE")
     private Date updateDate;
 
-    @TableField("UPDATE_USER")
     private Long updateUser;
 
-    @TableField("STATUS_DATE")
     private Date statusDate;
 
     public Long getOrgId() {

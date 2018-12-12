@@ -45,8 +45,8 @@ public class OrgType extends Model<OrgType> {
     /**
      * 上级组织类别标识
      */
-    @TableField("SUP_PK_ORG_TYPE")
-    private Long supPkOrgType;
+    @TableField("PARENT_ORG_TYPE_ID")
+    private Long parentOrgTypeId;
     /**
      * 状态
      */
@@ -111,12 +111,13 @@ public class OrgType extends Model<OrgType> {
         this.orgTypeDesc = orgTypeDesc;
     }
 
-    public Long getSupPkOrgType() {
-        return supPkOrgType;
+
+    public Long getParentOrgTypeId() {
+        return parentOrgTypeId;
     }
 
-    public void setSupPkOrgType(Long supPkOrgType) {
-        this.supPkOrgType = supPkOrgType;
+    public void setParentOrgTypeId(Long parentOrgTypeId) {
+        this.parentOrgTypeId = parentOrgTypeId;
     }
 
     public String getStatusCd() {
@@ -179,7 +180,7 @@ public class OrgType extends Model<OrgType> {
         ", orgTypeCode=" + orgTypeCode +
         ", orgTypeName=" + orgTypeName +
         ", orgTypeDesc=" + orgTypeDesc +
-        ", supPkOrgType=" + supPkOrgType +
+        ", parentOrgTypeId=" + parentOrgTypeId +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
         ", createUser=" + createUser +

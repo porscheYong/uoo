@@ -9,7 +9,7 @@ var orgCopyList = [];
 var tarOrgTreeId = '';
 var formValidate;
 var loading = parent.loading;
-var toastr = parent.parent.toastr;
+var toastr = window.top.toastr;
 
 $('#orgTypeTreeName').html(orgTypeTreeName);
 
@@ -126,7 +126,7 @@ function getOrgTreeType () {
         $('#orgTreeType').append(option);
         $('#orgTreeType').selectMatch();
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -140,7 +140,7 @@ function getProperty () {
         $('#userType').append(option);
         $('#userType').selectMatch();
     }, function (err) {
-        console.log(err)
+
     })
 }
 
@@ -196,14 +196,13 @@ function addOrgTree () {
         loading.screenMaskDisable('container');
         toastr.success('新增成功！');
     }, function (err) {
-        console.log(err);
         loading.screenMaskDisable('container');
     })
 }
 
 // 取消
 function cancel () {
-    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&name=" + orgName;
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName);
     window.location.href = url;
 }
 

@@ -28,7 +28,7 @@
         </selectKey>
         insert into TB_POST_LOCATION
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            POST_LOCATION_ID,
+                POST_LOCATION_ID,
             <if test="postId != null">
                 POST_ID,
             </if>
@@ -61,7 +61,7 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            #{postLocationId,jdbcType=DECIMAL},
+                #{postLocationId,jdbcType=DECIMAL},
             <if test="postId != null">
                 #{postId,jdbcType=DECIMAL},
             </if>

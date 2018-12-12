@@ -1,7 +1,6 @@
 package cn.ffcs.uoo.message.server.vo;
 
 import cn.ffcs.uoo.message.server.pojo.*;
-import com.alibaba.fastjson.annotation.JSONField;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -67,10 +66,6 @@ public class TbOrgVo {
 
     //组织树Id
     private Long orgTreeId;
-
-    //扩展信息(从数据库获取的)
-    @JSONField(serialize=false)
-    private List<ExpandVo> extendInfo2;
 
     //扩展信息
     private List<Map<String,Object>> extendInfo;
@@ -315,12 +310,12 @@ public class TbOrgVo {
         this.orgTreeId = orgTreeId;
     }
 
-    public List<ExpandVo> getExtendInfo2() {
-        return extendInfo2;
+    public List<Map<String, Object>> getExtendInfo() {
+        return extendInfo;
     }
 
-    public void setExtendInfo2(List<ExpandVo> extendInfo2) {
-        this.extendInfo2 = extendInfo2;
+    public void setExtendInfo(List<Map<String, Object>> extendInfo) {
+        this.extendInfo = extendInfo;
     }
 
     public OrgLevelVo getOrgLevels() {
@@ -393,13 +388,5 @@ public class TbOrgVo {
 
     public void setOrgBizName(String orgBizName) {
         this.orgBizName = orgBizName;
-    }
-
-    public List<Map<String, Object>> getExtendInfo() {
-        return extendInfo;
-    }
-
-    public void setExtendInfo(List<Map<String, Object>> extendInfo) {
-        this.extendInfo = extendInfo;
     }
 }

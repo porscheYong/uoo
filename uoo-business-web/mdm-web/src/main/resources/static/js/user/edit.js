@@ -17,7 +17,7 @@ function getUserAccount(){
 		personalData.userList=data;
 		initUserList();
 	}, function (err) {
-		console.log(err)
+
 	})
 	
 }
@@ -25,21 +25,21 @@ function getOrgTreeList () {
     $http.get('/orgTree/getOrgTreeList', {}, function (data) {
         personalData.orgTreeList=data;
     }, function (err) {
-        console.log(err)
+
     })
 }
 function getRefType () {
 	$http.get('/tbDictionaryItem/getList/REF_TYPE', {}, function (data) {
 		personalData.refType=data;
 	}, function (err) {
-		console.log(err)
+
 	})
 }
 function getYesNo () {
 	$http.get('/tbDictionaryItem/getList/YES_NO', {}, function (data) {
 		personalData.yesNo=data;
 	}, function (err) {
-		console.log(err)
+
 	})
 }
 function getEduInfo(){
@@ -86,73 +86,66 @@ function getFamilyInfo(){
  // 与本人关系
  function getMemRelation () {
      $http.get('/tbDictionaryItem/getList/MEM_RELATION', {}, function (data) {
-         console.log(data)
          personalData.memRelation=data;
      }, function (err) {
-         console.log(err)
+
      })
  }
  // SCHOOL_TYPE
  function getSchoolType () {
 	 $http.get('/tbDictionaryItem/getList/SCHOOL_TYPE', {}, function (data) {
-		 console.log(data)
 		 personalData.schoolType=data;
 	 }, function (err) {
-		 console.log(err)
+
 	 })
  }
  // 获取性别字典数据
  function getGender () {
 	 $http.get('/tbDictionaryItem/getList/GENDER', {}, function (data) {
-		 console.log(data)
 		 genderData=data;
 		 personalData.genderData=genderData;
 	 }, function (err) {
-		 console.log(err)
+
 	 })
  }
 
  // 获取证件类型字典数据
  function getCertType () {
      $http.get('/tbDictionaryItem/getList/CERT_TYPE', {}, function (data) {
-         console.log(data)
          certTypeData=data;
          personalData.certTypeData=certTypeData;
      }, function (err) {
-         console.log(err)
+
      })
  }
 
  // 获取民族字典数据
  function getNation () {
      $http.get('/tbDictionaryItem/getList/NATION', {}, function (data) {
-         console.log(data)
          nationData=data;
          personalData.nationData=nationData;
      }, function (err) {
-         console.log(err)
+
      })
  }
 
  // 获取政治面貌字典数据
  function getPliticalStatus () {
      $http.get('/tbDictionaryItem/getList/PLITICAL_STATUS', {}, function (data) {
-         console.log(data)
          pliticalStatusData=data;
          personalData.pliticalStatusData=pliticalStatusData;
      }, function (err) {
-         console.log(err)
+
      })
  }
 
  // 获取婚姻状况字典数据
  function getMarriage () {
      $http.get('/tbDictionaryItem/getList/MARRIAGE', {}, function (data) {
-         console.log(data)
          marriageData=data;
          personalData.marriageData=marriageData;
      }, function (err) {
-         console.log(err)
+
      })
  }
 
@@ -170,11 +163,10 @@ function getOrgPersonnerList () {
             personalData.orgInfo={};
 		}
 
-    	console.log(personalData);
     	initUser();
     	initOrgInfo();
     }, function (err) {
-        console.log(err)
+
     })
 }
 function initUser(){
@@ -224,8 +216,6 @@ function initJobInfo(){
 	$('#jobInfoTable2').html(h2);
 }
 function initEduInfo(){
-	console.log('开始渲染教育信息');
-	console.log(personalData);
 	//预编译模板
 	var eduInfoTemplate1 = Handlebars.compile($("#eduInfoTemplate1").html());
 	var eduInfoTemplate2 = Handlebars.compile($("#eduInfoTemplate2").html());
@@ -411,7 +401,6 @@ function openOrgEdit () {
 }
 function openOrgEditByEdit (i) {
 	personalData.currentEditOrgInfo=personalData.orgInfo[i];
-	console.log(personalData);
 	openOrgEdit();
 }
 function openJobEdit () {
@@ -578,7 +567,6 @@ function getPostName () {
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
             parent.layer.close(index);
-            console.log(checkNode);
             $('#postId').val(checkNode[0].postName);
             $('#postId').attr('keyId',checkNode[0].postId);
         },
@@ -802,7 +790,7 @@ function addFamily(){
 function addPsonImg(){
 	var formData = new FormData();
     formData.append('psnImageId', $('#psnImageId').val());
-    formData.append('editormd-image-file', $('#choseFileImg').val());
+    formData.append('multipartFile', $('#choseFileImg').val());
     $.ajax({
         url: "/psnImage/uploadImg",
         type: "PUT",
@@ -811,10 +799,10 @@ function addPsonImg(){
         processData: false,
         mimeType: "multipart/form-data",
         success: function (data) {
-            console.log(data);
+
         },
         error: function (data) {
-            console.log(data);
+
         }
     });
 }
@@ -884,7 +872,6 @@ function updatePersonnel(){
 		contentType:'application/json',
 		dataType:'json',
 		success:function(data){
-			console.log(JSON.stringify(updates));
 			if(data.state==1000){
 				parent.layer.confirm('操作成功', {
 			        icon: 0,
@@ -1171,7 +1158,7 @@ function gotoAccout(i){
 	url+="orgRootId="+orgRootId+"&";
 	url+="personnelId="+personnelId +"&";
 	url+="orgTreeId="+orgTreeId+"&";
-	url+="orgName="+orgName+"&";
+	url+="orgName="+encodeURI(orgName)+"&";
 	url+="opBtn="+0+"&";
 	url+="hType="+"uh"+"&";
 	url+="acctId="+userAcc.acctId+"&";

@@ -73,7 +73,6 @@ var zNodes =[
 function onNodeClick(e,treeId, treeNode) {
     // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
     // zTree.expandNode(treeNode);
-    console.log(treeNode.id)
     getOrgList(treeNode.id);
     getOrgPersonnerList(treeNode.id);
 }
@@ -84,12 +83,10 @@ function filter (treeId, parentNode, childNodes) {
 }
 
 function onNodeCheck (e, treeId, treeNode) {
-    console.log(e, treeId, treeNode)
     var zTree = $.fn.zTree.getZTreeObj("treeDemo");
     var node = zTree.getNodeByTId(treeNode.tId);
     // zTree.checkNode(node, false, false);
     addTag("tags_2", node.name);
-    console.log(node)
 }
 
 function checkNode (e) {
@@ -132,7 +129,6 @@ function initOrgRelTree (orgId) {
     $http.get('orgRel/getOrgRelTree', {
         orgRootId: orgId
     }, function (data) {
-        console.log(data)
         $.fn.zTree.init($("#treeDemo"), setting, data);
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
         var nodes = zTree.getNodes();
@@ -141,7 +137,7 @@ function initOrgRelTree (orgId) {
         onNodeClick(null, null, nodes[0]);
         // NProgress.done();
     }, function (err) {
-        console.log(err)
+
     })
 }
 

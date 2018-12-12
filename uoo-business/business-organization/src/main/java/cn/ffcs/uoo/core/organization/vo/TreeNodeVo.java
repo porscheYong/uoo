@@ -16,9 +16,37 @@ public class TreeNodeVo {
     private String iconClose;
     private String iconOpen;
     private String name;
-    private boolean open;
+    private String open;
     private boolean isParent;
     private String level;
+    private String checked;
+    private String chkDisabled;
+
+    private String extField1;
+
+    public String getChkDisabled() {
+        return chkDisabled;
+    }
+
+    public void setChkDisabled(String chkDisabled) {
+        this.chkDisabled = chkDisabled;
+    }
+
+    public String getExtField1() {
+        return extField1;
+    }
+
+    public void setExtField1(String extField1) {
+        this.extField1 = extField1;
+    }
+
+    public String getChecked() {
+        return checked;
+    }
+
+    public void setChecked(String checked) {
+        this.checked = checked;
+    }
 
     public String getLevel() {
         return level;
@@ -84,11 +112,11 @@ public class TreeNodeVo {
         this.name = name;
     }
 
-    public boolean isOpen() {
+    public String getOpen() {
         return open;
     }
 
-    public void setOpen(boolean open) {
+    public void setOpen(String open) {
         this.open = open;
     }
 

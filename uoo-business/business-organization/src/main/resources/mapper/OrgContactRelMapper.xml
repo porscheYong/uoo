@@ -37,7 +37,7 @@
     </update>
 
     <select id="selectOrgContactPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
-        SELECT AA.ORG_CONTACT_REL_ID orgContactRelId, AA.PERSONNEL_ID personId, AA.PSN_NAME psnName, TCT.CONTENT mobile
+        SELECT AA.ORG_CONTACT_REL_ID orgContactRelId, AA.PERSONNEL_ID personnelId, AA.PSN_NAME psnName, TCT.CONTENT mobile
         FROM (SELECT A.ORG_CONTACT_REL_ID, B.PERSONNEL_ID, B.PSN_NAME
         FROM TB_ORG_CONTACT_REL A, TB_PERSONNEL B
         WHERE A.STATUS_CD = '1000'
@@ -50,7 +50,7 @@
     </select>
 
     <select id="getOrgContact" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
-        SELECT AA.ORG_CONTACT_REL_ID orgContactRelId, AA.PERSONNEL_ID personId, AA.PSN_NAME psnName, TCT.CONTENT mobile
+        SELECT AA.ORG_CONTACT_REL_ID orgContactRelId, AA.PERSONNEL_ID personnelId, AA.PSN_NAME psnName, TCT.CONTENT mobile
         FROM (SELECT A.ORG_CONTACT_REL_ID, B.PERSONNEL_ID, B.PSN_NAME
         FROM TB_ORG_CONTACT_REL A, TB_PERSONNEL B
         WHERE A.STATUS_CD = '1000'

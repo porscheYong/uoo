@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.organization.service;
 import cn.ffcs.uoo.core.organization.entity.Org;
 import cn.ffcs.uoo.core.organization.entity.OrgRel;
 import cn.ffcs.uoo.core.organization.entity.OrgRelType;
+import cn.ffcs.uoo.core.organization.entity.OrgTree;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.vo.OrgRefTypeVo;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
@@ -77,23 +78,24 @@ public interface OrgRelService extends IService<OrgRel> {
 
         /**
          * 查询检索的组织树信息
-         * @param orgleafId
-         * @param orgRootId
+         * @param orgId
+         * @param orgTreeId
          * @param isFull
          * @return
          */
-        public List<TreeNodeVo> selectFuzzyOrgRelTree(String orgleafId,String orgRootId,boolean isFull);
+        public List<TreeNodeVo> selectFuzzyOrgRelTree(String orgId,String orgTreeId,boolean isFull);
 
 
         /**
          * 组织树查询
+         * @param orgTreeId
          * @param orgRootId
          * @param refCode
          * @param pid
          * @param isRoot
          * @return
          */
-        public List<TreeNodeVo> queryOrgTree(String orgRootId,String refCode,String pid,boolean isRoot);
+        public List<TreeNodeVo> queryOrgTree(String orgTreeId,String orgRootId,String refCode,String pid,boolean isRoot);
 
         /**
          * 获取组织关系类型
@@ -112,4 +114,22 @@ public interface OrgRelService extends IService<OrgRel> {
          * 获取树的组织关系
          */
         public List<OrgRel> getOrgRel(String orgTreeId,String orgId);
+
+        /**
+         * 获取指定组织树和层级
+         * @param orgRootId
+         * @param lv
+         * @param curOrgId
+         * @param isFull
+         * @return
+         */
+        public List<TreeNodeVo> selectTarOrgRelTreeAndLv(String orgRootId,String orgTreeId, String lv, String curOrgId, boolean isFull);
+
+        /**
+         * 获取指定组织树和层级
+         * @param orgId
+         * @param orgTreeId
+         * @return
+         */
+        public boolean isLeaf(String orgId,String orgTreeId);
 }

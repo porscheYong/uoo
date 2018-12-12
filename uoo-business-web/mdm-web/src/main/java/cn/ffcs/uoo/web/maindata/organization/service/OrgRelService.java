@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.web.maindata.organization.service;
 
 import cn.ffcs.uoo.web.maindata.organization.dto.*;
+import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgPersonRelServiceHystrix;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgRelServiceHystrix;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgServiceHystrix;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -20,14 +21,15 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018-09-25
  */
-@FeignClient(name = "business-organization", url = "http://134.96.253.222:11100",configuration = {PersonnelServiceConfiguration.class},fallback = OrgRelServiceHystrix.class)
+//@FeignClient(name = "business-organization", url = "http://134.96.253.222:11100",configuration = {PersonnelServiceConfiguration.class},fallback = OrgRelServiceHystrix.class)
+@FeignClient(value = "business-organization",configuration = {PersonnelServiceConfiguration.class},fallback = OrgRelServiceHystrix.class)
 public interface OrgRelService {
 
    @RequestMapping(value="/orgRel/getOrgRelTree",method = RequestMethod.GET)
    public ResponseResult<List<TreeNodeVo>> getOrgRelTree(@RequestParam(value = "id",required = false)String id,
                                                          @RequestParam(value = "orgRootId",required = false)String orgRootId,
                                                          @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
-                                                         @RequestParam(value = "relCode",required = false)String relCode,
+                                                         @RequestParam(value = "refCode",required = false)String refCode,
                                                          @RequestParam(value = "isOpen",required = false)boolean isOpen,
                                                          @RequestParam(value = "isAsync",required = false)boolean isAsync,
                                                          @RequestParam(value = "isRoot",required = false)boolean isRoot);

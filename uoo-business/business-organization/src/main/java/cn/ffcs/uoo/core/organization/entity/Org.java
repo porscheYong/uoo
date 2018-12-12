@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.organization.entity;
 
 import java.util.Date;
 
+import cn.ffcs.uoo.core.organization.vo.OrgCertVo;
 import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -148,9 +149,18 @@ public class Org extends Model<Org> {
     @TableField("STATUS_DATE")
     private Date statusDate;
 
+    /**
+     * 化小编码
+     */
+    @TableField("ORG_MART_CODE")
+    private String orgMartCode;
 
 
-
+    /**
+     * 标准组织标志
+     */
+    @TableField("STANDARD_FLAG")
+    private Long standardFlag;
 
     /**
      *  组织树ID
@@ -208,6 +218,47 @@ public class Org extends Model<Org> {
      */
     @TableField(exist=false)
     private List<PsonOrgVo> psonOrgVoList;
+    /**
+     * 身份证标识
+     */
+    @TableField(exist=false)
+    private List<String> certIdList;
+
+    /**
+     * 组织岗位
+     */
+    @TableField(exist=false)
+    private List<OrgCertVo> orgCertList;
+    /**
+     * 组织称谓
+     */
+    @TableField(exist=false)
+    private String orgBizName;
+
+
+    public String getOrgBizName() {
+        return orgBizName;
+    }
+
+    public void setOrgBizName(String orgBizName) {
+        this.orgBizName = orgBizName;
+    }
+
+    public List<OrgCertVo> getOrgCertList() {
+        return orgCertList;
+    }
+
+    public void setOrgCertList(List<OrgCertVo> orgCertList) {
+        this.orgCertList = orgCertList;
+    }
+
+    public List<String> getCertIdList() {
+        return certIdList;
+    }
+
+    public void setCertIdList(List<String> certIdList) {
+        this.certIdList = certIdList;
+    }
 
     public List<PsonOrgVo> getPsonOrgVoList() {
         return psonOrgVoList;
@@ -298,12 +349,13 @@ public class Org extends Model<Org> {
     }
 
 
+    public String getOrgMartCode() {
+        return orgMartCode;
+    }
 
-
-
-
-
-
+    public void setOrgMartCode(String orgMartCode) {
+        this.orgMartCode = orgMartCode;
+    }
 
     public Long getOrgId() {
         return orgId;
@@ -505,6 +557,14 @@ public class Org extends Model<Org> {
         this.statusDate = statusDate;
     }
 
+    public Long getStandardFlag() {
+        return standardFlag;
+    }
+
+    public void setStandardFlag(Long standardFlag) {
+        this.standardFlag = standardFlag;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.orgId;
@@ -538,6 +598,8 @@ public class Org extends Model<Org> {
         ", updateDate=" + updateDate +
         ", updateUser=" + updateUser +
         ", statusDate=" + statusDate +
+        ", orgMartCode=" + orgMartCode +
+        ", standardFlag=" + standardFlag +
         "}";
     }
 }
