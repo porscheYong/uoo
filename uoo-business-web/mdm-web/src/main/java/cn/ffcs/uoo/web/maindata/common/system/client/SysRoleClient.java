@@ -33,7 +33,7 @@ import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 public interface SysRoleClient {
      
      
-    @GetMapping("/listPage/pageNo={pageNo}&pageSize={pageSize}")
+    @GetMapping("/system/sysRole/listPage/pageNo={pageNo}&pageSize={pageSize}")
     public ResponseResult<List<SysRole>> listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize);
 
     

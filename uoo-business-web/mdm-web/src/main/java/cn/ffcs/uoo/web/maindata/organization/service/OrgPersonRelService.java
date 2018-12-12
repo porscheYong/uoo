@@ -37,6 +37,9 @@ public interface OrgPersonRelService{
     @RequestMapping(value="/orgPersonRel/deleteOrgPsn",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<String> deleteOrgPsn(@RequestBody PsonOrgVo psonOrgVo);
 
+    @RequestMapping(value="/orgPersonRel/deletePsnRel",method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    public ResponseResult<String> deletePsnRel(@RequestBody PsonOrgVo psonOrgVo);
+
     @RequestMapping(value="/orgPersonRel/getPerOrgRelList",method = RequestMethod.GET)
     public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                             @RequestParam(value = "personnelId",required = false)String personnelId);
