@@ -47,10 +47,11 @@ public class TbAcctVo {
     private List<TbAcctCrossRel> tbAcctCrossRel;
 
     //账号组织信息
-    private List<TbSalveAcctOrgRelVo> tbAcctOrgRel;
+    //private List<TbSalveAcctOrgRelVo> tbAcctOrgRel;
+    private List<TbOrg> tbAcctOrgRel;
 
     //从账号信息
-    private TbSlaveAcctVo tbSlaveAcctVo;
+    private TbSlaveAcctVo tbSlaveAcct;
 
     //人员信息
     private TbPersonnel tbPersonnel;
@@ -214,20 +215,20 @@ public class TbAcctVo {
         this.tbAcctCrossRel = tbAcctCrossRel;
     }
 
-    public List<TbSalveAcctOrgRelVo> getTbAcctOrgRel() {
+    public List<TbOrg> getTbAcctOrgRel() {
         return tbAcctOrgRel;
     }
 
-    public void setTbAcctOrgRel(List<TbSalveAcctOrgRelVo> tbAcctOrgRel) {
+    public void setTbAcctOrgRel(List<TbOrg> tbAcctOrgRel) {
         this.tbAcctOrgRel = tbAcctOrgRel;
     }
 
-    public TbSlaveAcctVo getTbSlaveAcctVo() {
-        return tbSlaveAcctVo;
+    public TbSlaveAcctVo getTbSlaveAcct() {
+        return tbSlaveAcct;
     }
 
-    public void setTbSlaveAcctVo(TbSlaveAcctVo tbSlaveAcctVo) {
-        this.tbSlaveAcctVo = tbSlaveAcctVo;
+    public void setTbSlaveAcct(TbSlaveAcctVo tbSlaveAcct) {
+        this.tbSlaveAcct = tbSlaveAcct;
     }
 
     public TbPersonnel getTbPersonnel() {
