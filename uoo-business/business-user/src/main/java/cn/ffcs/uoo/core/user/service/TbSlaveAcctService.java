@@ -69,6 +69,13 @@ public interface TbSlaveAcctService extends IService<TbSlaveAcct> {
      */
     public Object updateTbSlaveAcct(TbSlaveAcct tbSlaveAcct);
 
+    /**
+     * 删除 从账号关联新
+     * @param slaveAcctId
+     * @return
+     */
+    public Object delAllTbSlaveAcct(Long slaveAcctId);
+
 
 
 }

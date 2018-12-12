@@ -47,6 +47,8 @@ public class TbAcctController extends BaseController {
     private TbUserRoleService tbUserRoleService;
     @Autowired
     private TbAccountOrgRelService tbAccountOrgRelService;
+    @Autowired
+    private TbSlaveAcctService tbSlaveAcctService;
 
 
 
@@ -84,7 +86,10 @@ public class TbAcctController extends BaseController {
 //        tbAcct.setSalt(salt);
 //        tbAcct.setPassword(password);
 //        tbAcct.setSymmetryPassword(symmetryPassword);
-        tbAcctService.insertOrUpdateTbAcct(editFormAcctVo, null, acctId);
+        Object obj = tbAcctService.insertOrUpdateTbAcct(editFormAcctVo, null, acctId);
+        if(!StrUtil.isNullOrEmpty(obj)){
+            return obj;
+        }
 
         //角色
         tbUserRoleService.saveUserRole(editFormAcctVo.getTbRolesList(), acctId, 1L);
@@ -94,6 +99,22 @@ public class TbAcctController extends BaseController {
 
         rabbitMqService.sendMqMsg("person", "insert", "personnelId", editFormAcctVo.getPersonnelId());
         return ResultUtils.success(null);
+    }
+
+    @ApiOperation(value = "删除主账号信息", notes = "主账号相关信息删除")
+    @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long", paramType = "path")
+    @UooLog(value = "删除主账号信息", key = "deleteTbAcct")
+    @RequestMapping(value = "/delTbAcctByPsnId", method = RequestMethod.DELETE)
+    @Transactional(rollbackFor = Exception.class)
+    public Object delTbAcctByPsnId(Long personnelId){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TABLE_PERSONNEL_ID, personnelId);
+        TbAcct tbAcct = tbAcctService.selectOne(new EntityWrapper<TbAcct>().allEq(map));
+        if(!StrUtil.isNullOrEmpty(tbAcct)){
+            removeAcct(tbAcct.getAcctId());
+        }
+        return null;
     }
 
     @ApiOperation(value = "删除主账号信息", notes = "主账号相关信息删除")
@@ -114,6 +135,17 @@ public class TbAcctController extends BaseController {
 
         TbAcct tbAcct = tbAcctService.selectById(acctId);
         rabbitMqService.sendMqMsg("person", "delete", "personnelId", tbAcct.getPersonnelId());
+
+        //从账号关联信息
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TABLE_ACCT_ID, tbAcct.getAcctId());
+        List<TbSlaveAcct> tbSlaveAccts = tbSlaveAcctService.selectByMap(map);
+        if(tbSlaveAccts != null && tbSlaveAccts.size() > 0 ){
+            for(TbSlaveAcct tbSlaveAcct : tbSlaveAccts){
+                tbSlaveAcctService.delAllTbSlaveAcct(tbSlaveAcct.getSlaveAcctId());
+            }
+        }
 
         return ResultUtils.successfulTip(EumUserResponeCode.ACCT_IS_DELETE);
     }
@@ -152,7 +184,10 @@ public class TbAcctController extends BaseController {
 //        tbAcct.setEnableDate(editFormAcctVo.getEnableDate());
 //        tbAcct.setDisableDate(editFormAcctVo.getDisableDate());
 //        tbAcct.updateById();
-        tbAcctService.insertOrUpdateTbAcct(editFormAcctVo, tbAcct, tbAcct.getAcctId());
+        Object obj = tbAcctService.insertOrUpdateTbAcct(editFormAcctVo, tbAcct, tbAcct.getAcctId());
+        if(!StrUtil.isNullOrEmpty(obj)){
+            return obj;
+        }
 
         //角色
         List<TbRoles> oldTbRolesList = tbAcctService.getTbRoles(1L,tbAcct.getAcctId());
