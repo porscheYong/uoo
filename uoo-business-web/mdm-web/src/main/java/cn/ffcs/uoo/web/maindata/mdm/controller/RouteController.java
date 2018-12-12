@@ -62,11 +62,11 @@ public class RouteController {
     public String route(@PathVariable("url") String url) {
         return url.replaceAll("-", "/");
     }
-    @GetMapping("/system/getCurrentLoginUserInfo")
+    /*@GetMapping("/system/getCurrentLoginUserInfo")
     @ResponseBody
     public Object getCurrentLoginUserInfo(HttpServletRequest request){
         return request.getSession().getAttribute(LoginConsts.LOGIN_KEY);
-    }
+    }*/
     
     @GetMapping("/reloadUrlPermission")
     @ResponseBody
