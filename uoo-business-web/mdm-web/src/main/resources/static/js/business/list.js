@@ -14,6 +14,7 @@ function initOrgTable (results) {
         'autoWidth': false,
         'ordering': true,
         "scrollY": "375px",
+        'scrollCollapse': true,
         'columns': [
             { 'data': "orgName", 'title': '部门', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
@@ -96,6 +97,7 @@ function initOrgPersonnelTable (isSearchlower) {
         'autoWidth': false,
         'ordering': true,
         "scrollY": "375px",
+        'scrollCollapse': true,
         'columns': [
             { 'data': null, 'title': '序号', 'className': 'row-no' },
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
@@ -186,13 +188,6 @@ $('#orgName').html(orgName);
 parent.getOrgExtInfo();
 initOrgTable();
 initOrgPersonnelTable(0);
-
-// lulu ui tips插件
-seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
-    $('#editBtn').tips({
-        align: 'rotate'
-    });
-});
 
 function orgEdit () {
     var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);

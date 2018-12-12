@@ -4,7 +4,7 @@ var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var orgTreeName = getQueryString('orgTreeName');
 var table;
-var checked = 0;
+var checked = false;
 var sortFlag = 0;
 var currentPage = 0;
 
@@ -22,7 +22,8 @@ function initOrgPersonnelTable (isSearchlower,search) {
         'destroy': true,
         'autoWidth': false,
         'ordering': true,
-        // "scrollY": "375px",
+        "scrollY": "375px",
+        'scrollCollapse': true,
         'columns': [
             { 'data': null, 'title': '序号', 'className': 'row-no'},
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
@@ -34,7 +35,7 @@ function initOrgPersonnelTable (isSearchlower,search) {
             { 'data': "doubleName", 'title': '重名称谓', 'className': 'row-mobile' },
             { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
             { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
-            { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
+            { 'data': "orgName", 'title': '所属组织', 'className': '' },
             { 'data': "statusCd", 'title': '状态', 'className': 'status-code',
                 'render': function (data, type, row, meta) {
                     var statusStr = '';
@@ -115,6 +116,8 @@ function initFreePersonnelTable () {
         'destroy': true,
         'autoWidth': false,
         'ordering': true,
+        "scrollY": "375px",
+        'scrollCollapse': true,
         'columns': [
             { 'data': "psnName", 'title': '序号', 'className': 'row-no' ,
                 'render': function (data, type, row, meta) {
@@ -123,7 +126,8 @@ function initFreePersonnelTable () {
             },
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return "<a href='edit.html?personnelId=" + row.personnelId +"&name="+ orgName +"&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
+                    return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId +
+                        "&name="+ orgName +"&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
                 }
             },
             { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
@@ -139,8 +143,7 @@ function initFreePersonnelTable () {
                     }
                     return statusStr
                 }
-            },
-            { 'data': "personnelId", 'title': '', 'className': 'row-personnelId'}
+            }
         ],
         'language': {
             'emptyTable': '没有数据',

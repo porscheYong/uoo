@@ -13,7 +13,7 @@ loading.screenMaskEnable('container');
 // lulu ui select插件
 seajs.use('/vendors/lulu/js/common/ui/Select', function () {
     // $('#businessOrg').selectMatch();
-})
+});
 
 function onNodeClick(e,treeId, treeNode) {
     // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
