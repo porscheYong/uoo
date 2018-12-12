@@ -2,10 +2,12 @@ package cn.ffcs.uoo.web.maindata.sysuser.client.fallback;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import cn.ffcs.uoo.web.maindata.sysuser.client.SysRoleClient;
 import cn.ffcs.uoo.web.maindata.sysuser.dto.SysRole;
 import cn.ffcs.uoo.web.maindata.sysuser.vo.ResponseResult;
-
+@Component
 public class SysRoleClientHystrix implements SysRoleClient{
 
     @Override
