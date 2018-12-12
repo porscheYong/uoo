@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.core.user.util;
 
+import java.text.ParseException;
 import java.util.regex.Pattern;
 import org.springframework.util.StringUtils;
 
@@ -20,7 +21,11 @@ import org.springframework.util.StringUtils;
 public class PwdPolicyUtil {
 	//private static final Pattern pwdBasicPattern = Pattern.compile("(?=.*\\d)(?=.*[a-zA-Z])^[a-zA-Z\\d`~!@#$%^&\\*\\+\\=\\{\\}\\':;,\\[\\]\\.<>\\?\\(\\)\\_\\-\\|/\"]{6,20}$");
 /**
-	 * 
+	 * 1、登录密码必须包含数字、大写字母、小写字母、特殊符号中的3种，且长度大于8位
+ * 2、登录密码中连续的或相同的数据或字母（包括倒叙）不能超过3位
+ * 如：fz12348，abcd12格式不正确；ACabc123、Ab111aaa正确
+ * 3、登录密码中不能包含员工账号、中文标点符号以及反斜杠\
+ * 4、键盘中连续按键不能超过3位；如：qweruio1，asdfuio1格式不正确；qeruio12、asdjkl12格式正确
 	 *功能说明:判断密码是否符合密码基础规范.
 	 *创建人:李涌
 	 *创建时间:2014-1-7 下午3:38:22
@@ -34,7 +39,7 @@ public class PwdPolicyUtil {
 			if (checkInput(pwd) && pwd.length() >= 8){
 				return true;
 			}else{
-				return false;
+				checkInput(pwd);
 			}
 		}
         return false;
@@ -118,5 +123,7 @@ public class PwdPolicyUtil {
 		}
 		return false;
 	}
-	
+	public static void main(String[] args) throws Exception {
+		System.out.println(PwdPolicyUtil.isMatchBasicPattern("Ab9,07665"));
+	}
 }

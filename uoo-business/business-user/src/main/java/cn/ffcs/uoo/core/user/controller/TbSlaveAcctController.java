@@ -144,18 +144,7 @@ public class TbSlaveAcctController extends BaseController {
     @RequestMapping(value = "/delTbSlaveAcct", method = RequestMethod.DELETE)
     @Transactional(rollbackFor = Exception.class)
     public Object delTbSlaveAcct(Long slaveAcctId){
-
-        //从账号
-        tbSlaveAcctService.delTbSlaveAcct(slaveAcctId);
-
-        //2、删除角色
-        tbUserRoleService.removeUserRole(slaveAcctId, 2L);
-
-        //扩展信息
-        tbAcctExtService.delTbAcctExt(slaveAcctId);
-
-        rabbitMqService.sendMqMsg("person", "delete", "slaveAcctId", slaveAcctId);
-
+        tbSlaveAcctService.delAllTbSlaveAcct(slaveAcctId);
         return ResultUtils.success(null);
     }
 

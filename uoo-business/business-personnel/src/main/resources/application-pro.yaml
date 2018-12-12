@@ -18,8 +18,7 @@ spring:
       #      password: uom
 
       driver-class-name:  oracle.jdbc.OracleDriver
-      url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
-      #url: jdbc:oracle:thin:@134.96.248.48:3436/ZJ4APRD
+      url: jdbc:oracle:thin:@134.96.248.48:3436/ZJ4APRD
       username: octopus
       password: octopus
 
@@ -96,10 +95,9 @@ spring:
         url-pattern: /druid/*
         #允许清除记录
         reset-enable: false
-#      aop-patterns: cn.ffcs.uoo.**.service.*
+  #      aop-patterns: cn.ffcs.uoo.**.service.*
   rabbitmq:
-    host: 134.96.253.221
-    #host: 134.96.217.231
+    host: 134.96.217.231
     port: 5672
     username: root
     password: 123
@@ -152,7 +150,7 @@ feign:
     time-to-live: 900
     # 响应超时的时间单位，默认：TimeUnit.SECONDS
     #    timeToLiveUnit: SECONDS
- #路由超时，即socket超时设置
+  #路由超时，即socket超时设置
 ribbon:
   ReadTimeout: 600000
   ConnectTimeout: 600000
@@ -171,8 +169,7 @@ eureka:
     port: 8751
   client:
     service-url:
-      defaultZone:  http://134.96.253.221:${eureka.server.port}/eureka/,http://134.96.253.222:${eureka.server.port}/eureka/,http://134.96.253.223:${eureka.server.port}/eureka/
-      #defaultZone: http://134.96.217.231:8751/eureka/
+      defaultZone: http://134.96.217.231:8751/eureka/
 logging:
   level:
     cn.ffcs.uoo: info

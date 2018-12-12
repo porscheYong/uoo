@@ -9,16 +9,15 @@ import cn.ffcs.uoo.core.personnel.exception.PersonnelException;
 import cn.ffcs.uoo.core.personnel.service.TbPersonnelImageService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
 import cn.ffcs.uoo.core.personnel.util.StrUtil;
+import cn.ffcs.uoo.core.personnel.vo.PsnImageVo;
 import cn.ffcs.uoo.core.personnel.vo.TbPersonnelImageVo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import cn.ffcs.uoo.base.controller.BaseController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,8 +54,11 @@ public class TbPersonnelImageController extends BaseController {
 
     @ApiOperation(value="图片上传",notes="图片上传")
     @UooLog(value = "图片上传",key = "uploadImg")
-    @RequestMapping(value="/uploadImg", method = RequestMethod.PUT)
-    public Object uploadImg(@RequestParam("editormd-image-file") MultipartFile multipartFile,@RequestParam("psnImageId") Long psnImageId ) {
+    @RequestMapping(value="/uploadImg", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Object uploadImg(@RequestPart("multipartFile") MultipartFile multipartFile, @RequestParam("psnImageId") Long psnImageId ) {
+    //public Object uploadImg(PsnImageVo psnImageVo){
+        //MultipartFile multipartFile = psnImageVo.getMultipartFile();
+
         if (multipartFile.isEmpty() || StringUtils.isBlank(multipartFile.getOriginalFilename())) {
             throw new PersonnelException(EumPersonnelResponseCode.IMG_NOT_EMPTY);
         }
