@@ -2,9 +2,7 @@ package cn.ffcs.uoo.core.user.dao;
 
 import cn.ffcs.uoo.core.user.entity.TbRoles;
 import cn.ffcs.uoo.core.user.entity.TbUser;
-import cn.ffcs.uoo.core.user.vo.ListSlaveAcctVo;
-import cn.ffcs.uoo.core.user.vo.ListUserOrgVo;
-import cn.ffcs.uoo.core.user.vo.PsonOrgVo;
+import cn.ffcs.uoo.core.user.vo.*;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import org.apache.ibatis.annotations.Param;
@@ -28,5 +26,17 @@ public interface TbUserMapper extends BaseMapper<TbUser> {
     public List<ListSlaveAcctVo> getSlaveAcctInfo(@Param("userId") Long userId,@Param("acctId") Long acctId);
 
     public List<ListUserOrgVo> getUserOrg(Pagination page, PsonOrgVo psonOrgVo);
+
+    // todo ----新版本------------------------------------------------------------------------
+    public List<ListUserVo> getUserList(Pagination page, @Param("personnelId") Long personnelId);
+
+    public PersonnelInfoVo getPersonnelInfo(@Param("personnelId") Long personnelId);
+
+    public List<ListAcctOrgVo> getAcctOrg(Pagination page, @Param("acctId") Long acctId);
+
+    public List<ListAcctOrgVo> getSlaveAcctOrg(@Param("acctOrgVo") ListAcctOrgVo acctOrgVo);
+
+    public List<ListAcctOrgVo> getAcctOrgByPsnId(@Param("personnelId") Long personnelId);
+
 
 }
