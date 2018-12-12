@@ -123,8 +123,7 @@ function initFreePersonnelTable () {
             },
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId +
-                        "&name="+ orgName +"&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
+                    return "<a href='edit.html?personnelId=" + row.personnelId +"&name="+ orgName +"&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
                 }
             },
             { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
@@ -141,8 +140,6 @@ function initFreePersonnelTable () {
                     return statusStr
                 }
             },
-            { 'data': "orgId", 'title': '', 'className': 'row-orgId'},
-            { 'data': "orgRootId", 'title': '', 'className': 'row-orgRootId'},
             { 'data': "personnelId", 'title': '', 'className': 'row-personnelId'}
         ],
         'language': {
@@ -271,8 +268,6 @@ function arrSort (arr, dataLeven) { // 参数：arr 排序的数组; dataLeven �
             .data({
                 "psnName":arr[i].psnName,
                 "psnNbr":arr[i].psnNbr,
-                "orgId":arr[i].orgId,
-                "orgRootId":arr[i].orgRootId,
                 "personnelId":arr[i].personnelId
             })
             .draw();

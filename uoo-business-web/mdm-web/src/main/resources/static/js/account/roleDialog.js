@@ -32,7 +32,7 @@ function initRoleTree () {
           chkboxType: { "Y": "", "N": "" }
       }
     };
-    $http.get('/permission/tbRoles/listRoles', {}, 
+    $http.get('/system/sysRole/listPage/pageNo=1&pageSize=10000', {}, 
     function (data) {
         for(var i=0;i < data.length;i++){
             allRoles.push({"name":data[i].roleName,"id":data[i].roleId});
