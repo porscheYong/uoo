@@ -269,6 +269,10 @@ public class OrgTreeController extends BaseController {
             ret.setState(ResponseResult.PARAMETER_ERROR);
             return ret;
         }
+        if(!StrUtil.isNullOrEmpty(orgTree.getSort())){
+            otree.setSort(orgTree.getSort());
+        }
+        otree.setOrgTreeName(orgTree.getOrgTreeName());
         boolean isExists = false;
         //组织树组织关系类型
 //        Wrapper ogtOrgReftypeConfWrapper = Condition.create().eq("STATUS_CD","1000")
@@ -366,6 +370,7 @@ public class OrgTreeController extends BaseController {
             treeStaffTypeRelCur.setUserTypeId(new Long(orgTree.getUserTypeId()));
             treeStaffTypeRelService.update(treeStaffTypeRelCur);
         }
+        orgTreeService.update(otree);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("更新成功");
         return ret;

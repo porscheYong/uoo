@@ -1,4 +1,7 @@
 var typeArray=null;
+var loading = new Loading();
+loading.screenMaskEnable('container');
+
 var setting = {
 
 	data : {
@@ -24,6 +27,7 @@ $(document).ready(function() {
 		type : 'get',
 		success : function(data) {
 			if (data.state == 1000) {
+				loading.screenMaskDisable('container');
 				var ztree=$.fn.zTree.init($("#standardTree"), setting, data.data);
 				var rots=ztree.getNodes();
 				if(rots.length>0){
