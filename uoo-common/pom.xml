@@ -15,7 +15,6 @@
     <modules>
         <module>common-system</module>
         <module>common-cache</module>
-        <module>common-auth</module>
         <module>common-queues</module>
         <module>common-activiti</module>
     </modules>
