@@ -1,4 +1,7 @@
 var i=0,showCheck=getQueryString('showCheck');
+//var loading = new Loading();
+//loading.screenMaskEnable('container0');
+
 var  dataTable,checkAreaCode;
 function retrieveData(data, callback, settings) {
  var pageSize=0,pageNo=0;
@@ -21,6 +24,7 @@ function retrieveData(data, callback, settings) {
      dataType : 'json',
      success : function(result) {
 		var returnData = {};
+		//loading.screenMaskDisable('container');
 		if(result.state==1000){
 			returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
 	       	returnData.recordsTotal = result.totalRecords;//总记录数
