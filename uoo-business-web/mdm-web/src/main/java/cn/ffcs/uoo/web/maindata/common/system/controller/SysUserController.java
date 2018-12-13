@@ -43,11 +43,12 @@ public class SysUserController {
     })
     @RequestMapping(value = "/getCurrentLoginUserInfo", method = RequestMethod.GET)
     public ResponseResult<SysUser> getCurrentLoginUserInfo(){
-        Subject sub=SecurityUtils.getSubject();
-        Object primaryPrincipal = sub.getPrincipals().getPrimaryPrincipal();
-        SysUser sysUser=new SysUser();
-        sysUser.setAccout(primaryPrincipal.toString());
-        return sysuserClient.getSysUserByAccout(sysUser);
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        ResponseResult<SysUser> r=new ResponseResult<>();
+        r.setState(ResponseResult.STATE_OK);
+        r.setData(currentLoginUser);
+        return r;
     }
     
     @ApiOperation(value = "登陆接口", notes = "登陆接口")
@@ -79,6 +80,7 @@ public class SysUserController {
             subject.login(usernamePasswordToken);
             rr.setMessage("登陆成功");
             rr.setState(1000);
+            //ResponseResult<SysUser> r = sysuserClient.getSysUserByAccout(t);
         } catch (ServiceException e) {
             rr.setMessage("登陆服务异常，请稍后重试");
             rr.setState(1100);

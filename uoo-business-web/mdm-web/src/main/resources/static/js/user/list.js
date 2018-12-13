@@ -11,10 +11,10 @@ var currentPage = 0;
 $('#orgName').html(orgName);
 parent.getOrgExtInfo();
 
-$('#orgName').on('click', function () {
-    var url = '/inaction/business/orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
-    window.location.href = url;
-});
+// function orgInfo() {
+//     var url = '/inaction/business/orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+//     window.location.href = url;
+// }
 
 function initOrgPersonnelTable (isSearchlower,search) {
     table = $("#personnelTable").DataTable({
@@ -22,7 +22,8 @@ function initOrgPersonnelTable (isSearchlower,search) {
         'destroy': true,
         'autoWidth': false,
         'ordering': true,
-        // "scrollY": "375px",
+        "scrollY": "375px",
+        'scrollCollapse': true,
         'columns': [
             { 'data': null, 'title': '序号', 'className': 'row-no'},
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
@@ -115,6 +116,8 @@ function initFreePersonnelTable () {
         'destroy': true,
         'autoWidth': false,
         'ordering': true,
+        "scrollY": "375px",
+        'scrollCollapse': true,
         'columns': [
             { 'data': "psnName", 'title': '序号', 'className': 'row-no' ,
                 'render': function (data, type, row, meta) {
@@ -140,10 +143,7 @@ function initFreePersonnelTable () {
                     }
                     return statusStr
                 }
-            },
-            { 'data': "orgId", 'title': '', 'className': 'row-orgId'},
-            { 'data': "orgRootId", 'title': '', 'className': 'row-orgRootId'},
-            { 'data': "personnelId", 'title': '', 'className': 'row-personnelId'}
+            }
         ],
         'language': {
             'emptyTable': '没有数据',
@@ -271,8 +271,6 @@ function arrSort (arr, dataLeven) { // 参数：arr 排序的数组; dataLeven �
             .data({
                 "psnName":arr[i].psnName,
                 "psnNbr":arr[i].psnNbr,
-                "orgId":arr[i].orgId,
-                "orgRootId":arr[i].orgRootId,
                 "personnelId":arr[i].personnelId
             })
             .draw();
