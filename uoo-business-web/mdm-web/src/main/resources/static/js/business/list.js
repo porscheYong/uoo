@@ -7,6 +7,11 @@ var personnelTable;
 var sortFlag = 0;
 var currentPage = 0;
 
+if (!window.addEventListener) {
+    seajs.use('/vendors/lulu/js/common/ui/Radio');
+    seajs.use('/vendors/lulu/js/common/ui/Checkbox');
+}
+
 function initOrgTable (results) {
     table = $("#orgTable").DataTable({
         'data': results,
@@ -189,6 +194,10 @@ parent.getOrgExtInfo();
 initOrgTable();
 initOrgPersonnelTable(0);
 
+function orgInfo() {
+    var url = 'orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    window.location.href = url;
+}
 function orgEdit () {
     var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
     $('#editBtn').attr('href', url);
@@ -200,10 +209,10 @@ function orgSearch () {
     window.location.href = url;
 }
 
-$('#orgName').on('click', function () {
-    var url = 'orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
-    window.location.href = url;
-});
+// $('#orgName').on('click', function () {
+//     var url = 'orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+//     window.location.href = url;
+// });
 
 function arrSort (arr, dataLeven) { // 参数：arr 排序的数组; dataLeven 数组内的需要比较的元素属性 
     /* 获取数组元素内需要比较的值 */

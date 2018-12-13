@@ -193,6 +193,10 @@ $('#orgName').on('click', function () {
     var url = 'info.html?id=' + orgId + '&pid=' + pid + '&name=' + encodeURI(orgName);
     window.location.href = url;
 });
+$('#infoBtn').on('click', function () {
+    var url = 'info.html?id=' + orgId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    window.location.href = url;
+});
 $('#editBtn').on('click', function () {
     var url = 'edit.html?id=' + orgId + '&pid=' + pid + '&name=' + encodeURI(orgName);
     $(this).attr('href', url);
