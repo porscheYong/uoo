@@ -209,5 +209,10 @@ function getOrgRel (orgId) {
     })
 }
 
+function orgEdit () {
+    var url = 'edit.html?id=' + orgId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    $('#editBtn').attr('href', url);
+}
+
 getOrg(orgId);
 getOrgRel(orgId);
