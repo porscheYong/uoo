@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.web.maindata.region.controller;
 
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.region.dto.TbExch;
 import cn.ffcs.uoo.web.maindata.region.service.ExchService;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
@@ -62,7 +66,9 @@ public class TbExchController {
     @PostMapping("addExch")
     //@Transactional
     public ResponseResult addExch(TbExch exch) {
-         
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        exch.setCreateUser(currentLoginUser.getUserId());
         return exchService.addExch(exch);
     }
     @ApiOperation(value = "修改局向", notes = "修改局向")
@@ -72,6 +78,9 @@ public class TbExchController {
     @PostMapping("updateExch")
     //@Transactional
     public ResponseResult updateExch(TbExch exch) {
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        exch.setUpdateUser(currentLoginUser.getUserId());
         return exchService.updateExch(exch);
     }
     
@@ -82,7 +91,9 @@ public class TbExchController {
     @PostMapping("deleteExch")
     //@Transactional
     public ResponseResult deleteExch(TbExch exch) {
-         
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        exch.setUpdateUser(currentLoginUser.getUserId());
         return exchService.deleteExch(exch);
     }
     

@@ -80,6 +80,8 @@ public class UooRealm extends AuthorizingRealm {
                 this.getName());
         if(info!=null){
             clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
+            Subject subject = SecurityUtils.getSubject();
+            subject.getSession().setAttribute(LoginConsts.LOGIN_KEY, r.getData());
         }
         return info;
     }

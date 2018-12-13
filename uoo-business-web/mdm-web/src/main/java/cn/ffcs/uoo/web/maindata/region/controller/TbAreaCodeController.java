@@ -3,6 +3,8 @@ package cn.ffcs.uoo.web.maindata.region.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.region.dto.TbAreaCode;
 import cn.ffcs.uoo.web.maindata.region.service.AreaCodeService;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
@@ -64,7 +68,9 @@ public class TbAreaCodeController  {
     @PostMapping("addAreaCode")
     //@Transactional
     public ResponseResult addAreaCode(TbAreaCode areaCode) {
-         
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        areaCode.setCreateUser(currentLoginUser.getUserId());
         return areaCodeService.addAreaCode(areaCode);
     }
     @ApiOperation(value = "修改区号", notes = "修改区号")
@@ -74,7 +80,9 @@ public class TbAreaCodeController  {
     @PostMapping("updateAreaCode")
     //@Transactional
     public ResponseResult updateAreaCode(TbAreaCode areaCode) {
-         
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        areaCode.setUpdateUser(currentLoginUser.getUserId());
         return areaCodeService.updateAreaCode(areaCode);
     }
     
@@ -85,6 +93,9 @@ public class TbAreaCodeController  {
     @PostMapping("deleteAreaCode")
     //@Transactional
     public ResponseResult deleteAreaCode(TbAreaCode areaCode) {
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        areaCode.setUpdateUser(currentLoginUser.getUserId());
         return areaCodeService.deleteAreaCode(areaCode);
     }
     
