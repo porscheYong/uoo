@@ -47,7 +47,6 @@ function initUserInfo(){  //初始化首页人员信息
 function initUserPermission(){    //初始化人员权限
     $http.get('/system/getAccoutMenu', { }, 
     function (data) {
-        console.log(data);
         initSideBar(data);
         // layui admin
         layui.config({

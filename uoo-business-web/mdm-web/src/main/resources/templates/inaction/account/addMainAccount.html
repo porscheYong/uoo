@@ -39,12 +39,6 @@
     <script src="../../../static/js/core/excanvas.js"></script>
     <![endif]-->
 
-    <!--[if lt IE 9]>
-    <script src="../../../static/js/core/html5shiv.js"></script>
-    <script src="../../../static/js/core/respond.js"></script>
-    <script src="../../../static/js/core/excanvas.js"></script>
-    <![endif]-->
-
     <style>
         
         #conSubInfo .fright 
@@ -66,7 +60,8 @@
         .fleft{
             float: none !important;
         }
-        .Icon{
+        .board-title .Icon,
+        #icon .Icon{
             margin: 3px 3px !important;
             margin-bottom: -6px !important;
             margin-left: -5px !important;
@@ -129,7 +124,7 @@
                             <!-- <span class="roleTag">平台管理员</span> -->
                         </div>   
                         <div style="padding-top: 10px;">
-                            <div style="margin-bottom:15px;">
+                            <div style="margin-bottom:15px;" id="icon">
                                 <span>
                                     <label class="Icon fleft IconMobile"></label><label id="mobileLable"></label>
                                 </span>
@@ -304,7 +299,7 @@
                                 <span id="selectTile">选择组织</span>
                             </div>
 
-                            <div style="height: 350px;overflow: auto;margin-top: -15px;">
+                            <div style="height: 350px;overflow-y: auto;margin-top: -15px;">
                                 <div style="display: inline-block;width: 100%;padding-top: 10px;">
                                     <ul id="standardTree" class="ztree"></ul>
                                 </div>
@@ -325,9 +320,9 @@
                         <span class="name ft18">关联从账号信息</span>
                     </div>
     
-                    <div class="fright" id="addSubFright" style="margin-right:36px;margin-top:-4.5%;"> 
+                    <!-- <div class="fright" id="addSubFright" style="margin-right:36px;margin-top:-4.5%;"> 
                         <a class="button-add" id="addSubAcctBtn"><span class="fa fa-plus-circle icon-add"></span>新增从账号</a>
-                    </div>
+                    </div> -->
                 </div>
 
             
