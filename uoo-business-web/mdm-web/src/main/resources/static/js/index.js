@@ -83,11 +83,11 @@ function initSideBar(results){     //初始化侧边菜单
             }
         }
         if(flag == 1){
-            pemList += "<li class='layui-nav-item'><a href='javascript:;'>" +
+            pemList += "<li class='layui-nav-item'><a href='javascript:;' lay-tips='" + parList[i].menuName + "'>" +
                 icon + "</i><cite>" + parList[i].menuName + 
                 "</cite><span class='layui-nav-more'></span></a>" + dd + "</dl></li>";
         }else{
-            pemList += "<li class='layui-nav-item'><a lay-href='" + parList[i].url + "'>" +
+            pemList += "<li class='layui-nav-item'><a lay-href='" + parList[i].url + "' lay-tips='" + parList[i].menuName + "'>" +
                 icon + "</i><cite>" + parList[i].menuName + "</cite></a></li>";
         }
         

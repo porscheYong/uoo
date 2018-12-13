@@ -11,10 +11,10 @@ var currentPage = 0;
 $('#orgName').html(orgName);
 parent.getOrgExtInfo();
 
-$('#orgName').on('click', function () {
-    var url = '/inaction/business/orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
-    window.location.href = url;
-});
+// function orgInfo() {
+//     var url = '/inaction/business/orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+//     window.location.href = url;
+// }
 
 function initOrgPersonnelTable (isSearchlower,search) {
     table = $("#personnelTable").DataTable({
