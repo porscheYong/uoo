@@ -237,7 +237,7 @@ public class IdCardVerification {
 //        String IdCard = new String(s.next());
 //        // 将身份证最后一位的x转换为大写，便于统一
 //        IdCard = IdCard.toUpperCase();
-        System.out.println(IdCardVerification.IDCardValidate("61082120061222612X"));
+        System.out.println(IdCardVerification.idCardValidate("340122199311300311"));
     }
 
 
