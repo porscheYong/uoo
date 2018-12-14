@@ -1,6 +1,11 @@
 spring:
   application:
     name: business-user
+  zipkin:
+    base-url: http://134.96.253.223:8600
+  sleuth:
+      sampler:
+        percentage: 1.0
   datasource:
     druid:
       #url: jdbc:oracle:thin:@134.129.68.156:1521:fjtpdb
@@ -102,11 +107,6 @@ spring:
     port: 5672
     username: root
     password: 123
-  zipkin:
-    base-url: http://134.96.253.223:8600
-  sleuth:
-    sampler:
-      percentage: 0.5
 
 mybatis-plus:
   mapper-locations: classpath:mapper/**Mapper.xml
