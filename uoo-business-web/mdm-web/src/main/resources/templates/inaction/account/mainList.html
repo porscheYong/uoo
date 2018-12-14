@@ -48,19 +48,18 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .row-psnName,
-        .row-typeName,
-        .row-acct
+        .row-psnName{
+            width: 10%;
+        }
+        .row-acc,
+        .row-psnNbr,
+        .row-typeName
         {
             width: 15%;
         }
         .row-orgName
         {
             width: 35%;
-        }
-        .row-certNo
-        {
-            width: 20%;
         }
         .row-statusCd{
             width: 10%;
@@ -104,7 +103,7 @@
             <div class="typeahead col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
               <div>
                 <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
-                <input class="ui-input typeahead-input tt-input" id="acctName" type="text" name="q" placeholder="请输入关键词进行搜索" autocomplete="off" spellcheck="false" dir="auto">
+                <input class="ui-input typeahead-input tt-input" id="acctName" type="text" name="q" placeholder="请输入人员或账号进行搜索" autocomplete="off" spellcheck="false" dir="auto">
                 <img class="typeahead-spinner" src="img/spinner.gif" style="display: none;">
               </div>
             </div>
@@ -131,7 +130,7 @@
     <!-- jquery tagsinput -->
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- init -->
-    <script src="/js/account/init.js"></script>
+    <script src="/js/init.js"></script>
     <!-- jquery datatable -->
     <script type="text/javascript" src="/js/datatables.js"></script>
     <!-- account -->

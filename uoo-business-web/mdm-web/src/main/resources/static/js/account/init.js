@@ -1,5 +1,14 @@
 //var base = 'http://127.0.0.1:18000/'; //开发地址
+var toastr = window.top.toastr;
 
+$(function (){
+  toastr.options = {
+                      "timeOut": "1000",
+                      "preventDuplicates": true,
+                      "preventManyTimes": true,
+                      "hideDuration": "1"
+                  };  
+})
 // 全局异步封装
 var $http = {
   // baseUri: base,
@@ -21,13 +30,10 @@ var $http = {
       else {
         switch (state) {
           case 1100:
-            parent.layer.alert(message, {
-                skin: 'layui-layer-lan'
-                ,closeBtn: 0
-            });
+            toastr.error(message);
             break;
           default:
-            alert(message);
+            toastr.error(message);
             break;
         }
         var httpStatus = response.status
