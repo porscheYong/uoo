@@ -49,7 +49,7 @@
         
         #conSubInfo .fright 
         {
-            margin-right: 73% !important;
+            /* margin-right: 73% !important; */
         }
         .row-delete{
             width: 28px !important;
@@ -112,7 +112,7 @@
     </div>
 
     <div class="board-title">
-        <span class="name ft18" id="main-title"></span><a id="acctEditButton" style="display:none;" onclick="editAcctInfo()" class=" Icon IconEdit" href="javascript:void(0)"></a>
+        <span class="name ft18" id="main-title"></span><a id="acctEditButton" title="信息编辑" style="display:none;" onclick="editAcctInfo()" class=" Icon IconEdit" href="javascript:void(0)"></a>
     </div> 
 
     <div class="tab-content" style="margin-left:5%;margin-top: 2%">
@@ -325,9 +325,9 @@
                         <span class="name ft18">关联从账号信息</span>
                     </div>
     
-                    <!-- <div class="fright" id="addSubFright" style="margin-right:85%;margin-top:-4.5%;"> 
-                        <a class="button-add" id="addSubAcctBtn"><span class="fa fa-plus-circle icon-add"></span>添加从账号</a>
-                    </div> -->
+                    <div class="fright" id="addSubFright" style="margin-right:36px;margin-top:-4.5%;"> 
+                        <a class="button-add" id="addSubAcctBtn"><span class="fa fa-plus-circle icon-add"></span>新增从账号</a>
+                    </div>
                 </div>
 
             
@@ -367,9 +367,6 @@
     <script type="text/javascript" src="/vendors/toastr/toastr.js"></script>
     <!-- lulu -->
     <script type="text/javascript" src="/vendors/lulu/js/common/ui/Validate.js"></script>
-    <!-- <script type="text/javascript" src="/vendors/lulu/js/common/ui/ErrorTip.js"></script>
-    <script type="text/javascript" src="/vendors/lulu/js/common/ui/Tips.js"></script>
-    <script type="text/javascript" src="/vendors/lulu/js/common/ui/Follow.js"></script> -->
 
     <!-- init -->
     <script src="/js/account/init.js"></script>
@@ -385,7 +382,7 @@
         })
 
         $("#defaultPswTel").attr("title","1、登录密码必须包含数字、大写字母、小写字母、特殊符号中的3种，且长度大于8位；"+
-                                         "2、登录密码中连续的或相同的数据或字母（包括倒叙）不能超过3位。"+
+                                         "2、登录密码中连续的或相同的数据或字母（包括倒序）不能超过3位。"+
                                             "如：fz12348，abcd12格式不正确；ACabc123、Ab111aaa正确；"+
                                          "3、登录密码中不能包含员工账号、中文标点符号以及反斜杠\ ；"+
                                          "4、键盘中连续按键不能超过3位；如：qweruio1，asdfuio1格式不正确；qeruio12、asdjkl12格式正确。");

@@ -7,6 +7,11 @@ var personnelTable;
 var sortFlag = 0;
 var currentPage = 0;
 
+if (!window.addEventListener) {
+    seajs.use('/vendors/lulu/js/common/ui/Radio');
+    seajs.use('/vendors/lulu/js/common/ui/Checkbox');
+}
+
 function initOrgTable (results) {
     table = $("#orgTable").DataTable({
         'data': results,
@@ -14,6 +19,7 @@ function initOrgTable (results) {
         'autoWidth': false,
         'ordering': true,
         "scrollY": "375px",
+        'scrollCollapse': true,
         'columns': [
             { 'data': "orgName", 'title': '部门', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
@@ -96,6 +102,7 @@ function initOrgPersonnelTable (isSearchlower) {
         'autoWidth': false,
         'ordering': true,
         "scrollY": "375px",
+        'scrollCollapse': true,
         'columns': [
             { 'data': null, 'title': '序号', 'className': 'row-no' },
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
@@ -187,13 +194,10 @@ parent.getOrgExtInfo();
 initOrgTable();
 initOrgPersonnelTable(0);
 
-// lulu ui tips插件
-seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
-    $('#editBtn').tips({
-        align: 'rotate'
-    });
-});
-
+function orgInfo() {
+    var url = 'orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    window.location.href = url;
+}
 function orgEdit () {
     var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
     $('#editBtn').attr('href', url);
@@ -205,10 +209,10 @@ function orgSearch () {
     window.location.href = url;
 }
 
-$('#orgName').on('click', function () {
-    var url = 'orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
-    window.location.href = url;
-});
+// $('#orgName').on('click', function () {
+//     var url = 'orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+//     window.location.href = url;
+// });
 
 function arrSort (arr, dataLeven) { // 参数：arr 排序的数组; dataLeven 数组内的需要比较的元素属性 
     /* 获取数组元素内需要比较的值 */

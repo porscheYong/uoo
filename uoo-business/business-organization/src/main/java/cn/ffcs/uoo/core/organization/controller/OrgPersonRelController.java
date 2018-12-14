@@ -51,6 +51,9 @@ public class OrgPersonRelController extends BaseController {
     @Autowired
     private OrgTreeService orgTreeService;
 
+    @Autowired
+    private OrgLevelService orgLevelService;
+
 //    @Autowired
 //    private SolrService solrService;
     @Autowired
@@ -432,7 +435,21 @@ public class OrgPersonRelController extends BaseController {
         if(!StrUtil.isNullOrEmpty(pageNo)){
             psonOrgVo.setPageNo(pageNo);
         }
-        Page<PsonOrgVo> page = orgPersonRelService.selectPerOrgRelPage(psonOrgVo);
+
+        Wrapper orgLevelConfWrapper = Condition.create()
+                .eq("ORG_TREE_ID", psonOrgVo.getOrgTreeId())
+                .eq("ORG_ID",psonOrgVo.getOrgId())
+                .eq("STATUS_CD", "1000");
+        OrgLevel orgLev = orgLevelService.selectOne(orgLevelConfWrapper);
+        Page<PsonOrgVo> page = null;
+        if(orgLev.getOrgLevel()<3 && "1".equals(psonOrgVo.getIsSearchlower())){
+            //查全部
+            page = orgPersonRelService.selectAllPerOrgRelPage(psonOrgVo);
+        }else{
+            //查部分
+            page = orgPersonRelService.selectPerOrgRelPage(psonOrgVo);
+        }
+
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
         ret.setData(page);

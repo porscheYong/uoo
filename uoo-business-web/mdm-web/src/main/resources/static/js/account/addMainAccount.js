@@ -44,6 +44,8 @@ seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
   });
 });
 
+
+
 function getUser(acctId) {           //查看并编辑主账号
     $http.get('/user/getUser', {   //http://192.168.58.112:18000/user/getUser
         acctId: acctId,
@@ -144,10 +146,10 @@ function initOrgTable(results){         //主账号组织数据表格
       },
       {'data': "orgId", 'title': '操作', 'className': 'row-delete' ,
       'render': function (data, type, row, meta) {
-        return "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' onclick='deleteOrg("+ num + ")'></a>";
+          return "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn_' title='删除' onclick='deleteOrg("+ num + ")'></a>";
     }
     },
-    { 'data': "orgId", 'title': 'orgId', 'className': 'row-orgId' }
+    { 'data': "orgId", 'title': 'orgId', 'className': 'row-orgId'}
     ],
     'language': {
         'emptyTable': '没有数据',  
@@ -422,6 +424,12 @@ function addBtnWClick(){    //新增时已有主账号时点击添加组织按�
     }
 }
 
+$("#addSubAcctBtn").on('click', function () {    //新增从账号
+  var url = 'addSubAccount.html?orgTreeId=' + orgTreeId + '&hType=th&personnelId=' + personnelId + 
+                    '&opBtn=1&mainAcctId='+ acctId +'&orgName=' + orgName + '&orgId=' + orgId +'&toMainType=' + hType;
+  $(this).attr('href', url);
+})
+
 function editAcctInfo(){    //切换到用户信息编辑面板
     $("#acctInfo").css("display","none");
     $("#editAcctPanel").css("display","block");
@@ -554,13 +562,6 @@ $("#defaultPswTel").blur(function (){     //默认密码输入框失去焦点
     formValidate.isAllPass($('#defaultPswTel'));
   }
 })
-
-$('#defaultPswTel').click(function() {
-  var elSearch = $('input[type=password]');
-  if (elSearch.val() == '') {
-      elSearch.errorTip(pswTip);
-  }
-});
 
 
 if(opBtn==0){     //查看并编辑主账号

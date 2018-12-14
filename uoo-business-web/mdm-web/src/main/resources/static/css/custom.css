@@ -804,7 +804,7 @@ ul.tab-title.right li {
 .board-title .name {
     border-left: 5px solid #008aff;
     font: bold 16px/22px microsoft yahei,helvetia,pingfang sc,Arial,Tahoma;
-    padding: 0 15px 0 10px;
+    padding: 0 10px;
     /*float: left;*/
     color: #232c45
     }
@@ -826,8 +826,16 @@ ul.tab-title.right li {
     height: 24px;
     display: inline-block;
     }
+.icon-info {
+    background-image: url(../images/ico_info.png);
+    background-image: url(../images/ico_info.svg), none;
+    background-size: 100%;
+    cursor: pointer;
+}
 .icon-edit {
-    background: url(../images/ico_edit.svg);
+    /*background: url(../images/ico_edit.svg);*/
+    background-image: url(../images/ico_edit.png);
+    background-image: url(../images/ico_edit.svg), none;
     cursor: pointer;
     }
 .icon-cal {

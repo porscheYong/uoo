@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.core.organization.dao;
 
 import cn.ffcs.uoo.core.organization.entity.OrgPersonRel;
+import cn.ffcs.uoo.core.organization.entity.Post;
 import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
@@ -26,6 +27,8 @@ public interface OrgPersonRelMapper extends BaseMapper<OrgPersonRel> {
 
     public List<PsonOrgVo> selectPerOrgRelPage(Pagination page, @Param("psonOrgVo")PsonOrgVo psonOrgVo);
 
+    public List<PsonOrgVo> selectAllPerOrgRelPage(Pagination page, @Param("psonOrgVo")PsonOrgVo psonOrgVo);
+
     public List<PsonOrgVo> selectUserOrgRelPage(Pagination page, @Param("psonOrgVo")PsonOrgVo psonOrgVo);
 
     public List<PsonOrgVo> selectPerOrOrgRelPage(Pagination page, @Param("psonOrgVo")PsonOrgVo psonOrgVo);
@@ -37,4 +40,9 @@ public interface OrgPersonRelMapper extends BaseMapper<OrgPersonRel> {
                                                          @Param("orgId")String orgId);
 
     public List<OrgPersonRel> getOrgPsnRel(@Param("orgTreeId")String orgTreeId,@Param("orgId")String orgId);
+
+    //EXT
+    //获取职位
+    public Post getPost(@Param("postId")String postId);
+
 }

@@ -2,10 +2,15 @@ package cn.ffcs.uoo.core.organization.service.impl;
 
 import cn.ffcs.uoo.core.organization.entity.OrgPersonRel;
 import cn.ffcs.uoo.core.organization.dao.OrgPersonRelMapper;
+import cn.ffcs.uoo.core.organization.entity.Post;
 import cn.ffcs.uoo.core.organization.service.OrgPersonRelService;
+import cn.ffcs.uoo.core.organization.service.PostService;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
 import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -121,6 +126,33 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
         Page<PsonOrgVo> page = new Page<PsonOrgVo>(psonOrgVo.getPageNo()==0?1:psonOrgVo.getPageNo()
                 ,psonOrgVo.getPageSize()==0?10:psonOrgVo.getPageSize());
         List<PsonOrgVo> list = baseMapper.selectPerOrgRelPage(page,psonOrgVo);
+        for(PsonOrgVo psOrg : list){
+            if(!StrUtil.isNullOrEmpty(psOrg.getPostId())){
+                Post post = baseMapper.getPost(psOrg.getPostId());
+                psOrg.setPostName(StrUtil.strnull(post.getPostName()));
+            }
+        }
+        page.setRecords(list);
+        return page;
+    }
+
+
+    /**
+     * 获取全量人员组织关系翻页
+     * @param psonOrgVo
+     * @return
+     */
+    @Override
+    public Page<PsonOrgVo> selectAllPerOrgRelPage(PsonOrgVo psonOrgVo){
+        Page<PsonOrgVo> page = new Page<PsonOrgVo>(psonOrgVo.getPageNo()==0?1:psonOrgVo.getPageNo()
+                ,psonOrgVo.getPageSize()==0?10:psonOrgVo.getPageSize());
+        List<PsonOrgVo> list = baseMapper.selectAllPerOrgRelPage(page,psonOrgVo);
+        for(PsonOrgVo psOrg : list){
+            if(!StrUtil.isNullOrEmpty(psOrg.getPostId())){
+                Post post = baseMapper.getPost(psOrg.getPostId());
+                psOrg.setPostName(StrUtil.strnull(post.getPostName()));
+            }
+        }
         page.setRecords(list);
         return page;
     }

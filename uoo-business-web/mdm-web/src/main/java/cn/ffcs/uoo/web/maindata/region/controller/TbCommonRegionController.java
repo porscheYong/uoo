@@ -2,6 +2,8 @@ package cn.ffcs.uoo.web.maindata.region.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.region.dto.CommonRegionDTO;
 import cn.ffcs.uoo.web.maindata.region.dto.TbCommonRegion;
 import cn.ffcs.uoo.web.maindata.region.service.CommonRegionService;
@@ -72,6 +76,9 @@ public class TbCommonRegionController {
     @PostMapping("addCommonRegion")
     //@Transactional
     public ResponseResult addCommonRegion(CommonRegionDTO commonRegion) {
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        commonRegion.setOperateUser(currentLoginUser.getUserId());
         return regionService.addCommonRegion(commonRegion);
     }
     @ApiOperation(value = "修改公共管理区域", notes = "修改公共管理区域")
@@ -81,6 +88,9 @@ public class TbCommonRegionController {
     @PostMapping("updateCommonRegion")
     //@Transactional
     public ResponseResult updateCommonRegion(CommonRegionDTO commonRegion) {
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        commonRegion.setOperateUser(currentLoginUser.getUserId());
         return regionService.updateCommonRegion(commonRegion);
     }
     
@@ -91,7 +101,9 @@ public class TbCommonRegionController {
     @PostMapping("deleteCommonRegion")
     //@Transactional(rollbackFor=Exception.class)
     public ResponseResult deleteCommonRegion(TbCommonRegion commonRegion) {
-        
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        commonRegion.setUpdateUser(currentLoginUser.getUserId());
         return regionService.deleteCommonRegion(commonRegion);
     }
 }
