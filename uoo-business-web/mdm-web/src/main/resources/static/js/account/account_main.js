@@ -5,6 +5,7 @@ var orgId,
     orgName,
     nodeName,
     nodeArr,
+    parent,
     orgTreeId;
     
 loading.screenMaskEnable('container');

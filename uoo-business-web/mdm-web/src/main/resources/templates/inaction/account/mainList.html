@@ -77,6 +77,10 @@
         .row-acctId{
             display: none;
         }
+        /* IE8 placeholder */
+        .ui-placeholder{
+            margin-left:-271px !important;
+        }
     </style>
   </head>
 
@@ -98,9 +102,9 @@
 
          <!-- 新增的搜索部分 -->
       <div class="pos-relative" style="margin-top: 7px;margin-left:5px;">
-        <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6">
           <div class="form-item" style="width: 100%">
-            <div class="typeahead col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
+            <div class="typeahead col-md-8 col-sm-8 col-xs-8" style="padding: 0;">
               <div>
                 <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
                 <input class="ui-input typeahead-input tt-input" id="acctName" type="text" name="q" placeholder="请输入人员或账号进行搜索" autocomplete="off" spellcheck="false" dir="auto">
@@ -127,6 +131,8 @@
     <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
     <!-- typeahead -->
     <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
+    <!-- Placeholder -->
+    <script type="text/javascript" src="/vendors/lulu/js/common/ui/Placeholder.js"></script>
     <!-- jquery tagsinput -->
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- init -->
@@ -139,7 +145,7 @@
  
 
     <script>
-      
+        $('input').placeholder();
     </script>
   </body>
 </html>

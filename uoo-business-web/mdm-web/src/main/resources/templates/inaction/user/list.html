@@ -63,6 +63,10 @@
       .row-personnelId{
         display:none;
       }
+      /* IE8 placeholder */
+      .ui-placeholder{
+          margin-left:-271px !important;
+      }
     </style>
   </head>
 
@@ -78,7 +82,7 @@
         <span id="titleName" class="name ft18">组织人员</span>
         <div id="isShow" style="display: inline-block">
           <input type="checkbox" id="isShowLower" name="checkbox" onclick="showLower()">
-          <label for="isShowLower" class="ui-checkbox"></label><label for="isShowLower">显示下级组织人员</label>
+          <label for="isShowLower" class="ui-checkbox"></label><label for="isShowLower" style="margin-left:4px">显示下级组织人员</label>
         </div>
           <div class="fright">
             <a class="button-add" id="addBtn" href="add.html"><span class="fa fa-plus-circle icon-add"></span>添加</a>
@@ -115,20 +119,18 @@
     <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
     <!-- jquery tagsinput -->
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
+    <!-- Placeholder -->
+    <script type="text/javascript" src="/vendors/lulu/js/common/ui/Placeholder.js"></script>
     <!-- jquery datatable -->
     <!-- <script type="text/javascript" src="/vendors/datatable/datatables.js"></script> -->
     <script type="text/javascript" src="/js/datatables.js"></script>
     <!-- init -->
     <script src="/js/init.js"></script>
-	<script type="text/javascript" src="/js/user/list.js"></script>
+	  <script type="text/javascript" src="/js/user/list.js"></script>
     <script type="text/javascript" src="/js/user/psnSearch.js"></script>
+
     <script>
-      // var loading = parent.loading;
-      // loading.screenMaskEnable('container');
-      // var NProgress = parent.NProgress;
-      // NProgress.done();
-      // var toastr = parent.parent.toastr;
-      // toastr.success('提交成功！')
+        $('input').placeholder();
     </script>
   </body>
 </html>

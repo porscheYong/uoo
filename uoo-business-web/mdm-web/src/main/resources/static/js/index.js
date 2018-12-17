@@ -26,7 +26,7 @@ function initUserInfo(){  //初始化首页人员信息
     $http.get('/system/getCurrentLoginUserInfo', { }, 
     function (data) {
         account = data.accout;
-        $("#psnName").text(data.uname);
+        $("#psnName").text(data.userName);
     }, function (err) {
     })
 }
