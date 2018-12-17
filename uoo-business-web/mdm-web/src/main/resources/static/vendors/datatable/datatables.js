@@ -4896,7 +4896,7 @@
 				"fn": function( settings ) {
 					if ( modern ) {
 						var
-							start      = settings._iDisplayStart,
+							start      = settings._displayStartCache || settings._iDisplayStart,
 							len        = settings._iDisplayLength,
 							visRecords = settings.fnRecordsDisplay(),
 							all        = len === -1,
@@ -4985,7 +4985,7 @@
 	
 		var changed = settings._iDisplayStart !== start;
 		settings._iDisplayStart = start;
-	
+        settings._displayStartCache = start;
 		if ( changed ) {
 			_fnCallbackFire( settings, null, 'page', [settings] );
 	
@@ -6096,7 +6096,7 @@
 	 */
 	function _fnSortListener ( settings, colIdx, append, callback )
 	{
-        // settings.oFeatures.bServerSide = false;
+        settings.oFeatures.bServerSide = false;
 		var col = settings.aoColumns[ colIdx ];
 		var sorting = settings.aaSorting;
 		var asSorting = col.asSorting;
@@ -6182,7 +6182,7 @@
 	function _fnSortAttachListener ( settings, attachTo, colIdx, callback )
 	{
 		var col = settings.aoColumns[ colIdx ];
-	
+        settings.sortColIdx = colIdx;
 		_fnBindAction( attachTo, {}, function (e) {
 			/* If the column is not sortable - don't to anything */
 			if ( col.bSortable === false ) {
@@ -7506,7 +7506,7 @@
 	
 		var
 			settings   = this.context[0],
-			start      = settings._iDisplayStart,
+			start      = settings._displayStartCache || settings._iDisplayStart,
 			len        = settings.oFeatures.bPaginate ? settings._iDisplayLength : -1,
 			visRecords = settings.fnRecordsDisplay(),
 			all        = len === -1;
@@ -15333,8 +15333,9 @@ DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, bu
 		var i, ien, node, button;
 		var clickHandler = function ( e ) {
 			e.preventDefault();
-			if ( !$(e.currentTarget).hasClass('disabled') && api.page() != e.data.action ) {
+			if ( !$(e.currentTarget).hasClass('disabled') && (settings._displayStartCache || api.page()) != e.data.action ) {
 				api.page( e.data.action ).draw( 'page' );
+                DataTable.ext.internal._fnSortListener(settings, settings.sortColIdx);
 			}
 		};
 
