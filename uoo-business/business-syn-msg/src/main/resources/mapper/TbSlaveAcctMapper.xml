@@ -19,7 +19,6 @@
     <result column="ACCT_ID" jdbcType="DECIMAL" property="acctId" />
     <result column="ENABLE_DATE" jdbcType="DATE" property="enableDate" />
     <result column="DISABLE_DATE" jdbcType="DATE" property="disableDate" />
-    <result column="MAPP_STAFF_ID" jdbcType="VARCHAR" property="mappStaffId" />
   </resultMap>
 
   <sql id="Base_Column_List">
