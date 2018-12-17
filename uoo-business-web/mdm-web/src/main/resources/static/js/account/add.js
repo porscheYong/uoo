@@ -6,6 +6,7 @@ var Regx = /^[A-Za-z0-9]*$/;
 var table;
 var engine;
 var empty;
+var hasAcct = 0;
 var sortFlag = 0;
 var currentPage = 0;
 
@@ -159,13 +160,13 @@ function addPsn(){
 }
 
 function psnNameClick(personnelId){
-    var url = "";
     if($("#userType").val() == '主账号'){
-        url = "addMainAccount.html?orgFullName=" + orgFullName + "&orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId + "&personnelId=" + personnelId + "&opBtn=1&hType=ah";
+        getPsnUser(personnelId);
     }else if($("#userType").val() == '从账号'){
-        url = "addSubAccount.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId + "&personnelId=" + personnelId + "&opBtn=1&hType=ah";
+        var url = "";
+        url = "addSubAccount.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId + "&personnelId=" + personnelId + "&hType=ah";
+        window.location.href = url;
     }
-    window.location.href = url;
 }
 
 $("#psnName").focus(function (){     
@@ -173,6 +174,24 @@ $("#psnName").focus(function (){
         $(".psn-table").removeClass("is-open");
     }
 })
+
+function getPsnUser(personnelId){       //主账号跳转
+    var url = "";
+    $http.get('/user/getPsnUser', {    
+        personnelId: personnelId,
+        userType: "1"
+      }, function (data) {
+        if(data.tbAcct != null){
+            url = "editMainAccount.html?acctId="+ data.tbAcct.acctId +"&orgFullName=" + orgFullName + "&orgTreeId=" + orgTreeId + 
+                    "&orgName=" + orgName + "&orgId=" + orgId + "&hType=ah";
+        }else{
+            url = "addMainAccount.html?orgFullName=" + orgFullName + "&orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId + "&personnelId=" + personnelId + "&hType=ah";
+        }
+        window.location.href = url;
+      }, function (err) {
+    
+      })
+}
 
 function arrSort (arr, dataLeven) { // 参数：arr 排序的数组; dataLeven 数组内的需要比较的元素属性 
     /* 获取数组元素内需要比较的值 */
