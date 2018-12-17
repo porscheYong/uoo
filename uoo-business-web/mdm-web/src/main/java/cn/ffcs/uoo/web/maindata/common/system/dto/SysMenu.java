@@ -1,90 +1,75 @@
 package cn.ffcs.uoo.web.maindata.common.system.dto;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-
-import java.io.Serializable;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
 
 /**
- * 系统域菜单
+ * <p>
+ * 权限登记时菜单所有和明细路径，如 user/*,user/add、user/del
+ * </p>
+ *
+ * @author zengxsh
+ * @since 2018-12-17
  */
 @TableName("SYS_MENU")
 public class SysMenu extends Model<SysMenu> {
 
-    /** 系统菜单标识  */
-    @TableId(value = "MENU_ID")
-    private Long menuId;
+    private static final long serialVersionUID = 1L;
 
-    /** 菜单名称    */
+    /**
+     * 菜单标识
+     */
+    @TableField("MENU_ID")
+    private Long menuId;
     @TableField("MENU_NAME")
     private String menuName;
-
-    /** 编码  */
     @TableField("MENU_CODE")
     private String menuCode;
-
-    /** 上级菜单    */
-    @TableField("P_MENU_ID")
-    private Long pMenuId;
-
-    /** 所有上级菜单  */
-    @TableField("P_MENU_IDS")
-    private String pMenuIds;
-
-    /** 图标  */
-    @TableField("ICON")
-    private String icon;
-
-    /** url地址   */
-    @TableField("URL")
-    private String url;
-
-    /** 排序号 */
-    @TableField("NUM")
-    private Integer num;
-
-    /** 层级  */
+    @TableField("MENU_URL")
+    private String menuUrl;
+    @TableField("MENU_SORT")
+    private Integer menuSort;
+    /**
+     * 菜单项级别(从1开始)
+     */
     @TableField("MENU_LEVEL")
     private Integer menuLevel;
-
-    /** 是否菜单    */
-    @TableField("MENU_FLAG")
-    private Integer menuFlag;
-
-    /** 是否打开    */
-    @TableField("OPEN_FLAG")
-    private Integer openFlag;
-
-    /** 状态  */
+    @TableField("PARENT_MENU_CODE")
+    private String parentMenuCode;
+    /**
+     * 状态
+     */
     @TableField("STATUS_CD")
     private String statusCd;
-
-    /** 创建时间  */
+    /**
+     * 创建时间
+     */
     @TableField("CREATE_DATE")
     private Date createDate;
-
-    /** 创建人    */
+    /**
+     * 创建人
+     */
     @TableField("CREATE_USER")
     private Long createUser;
-
-    /** 修改时间 */
+    /**
+     * 修改时间
+     */
     @TableField("UPDATE_DATE")
     private Date updateDate;
-
-    /** 修改人 */
+    /**
+     * 修改人
+     */
     @TableField("UPDATE_USER")
     private Long updateUser;
-
-    /** 状态时间    */
+    /**
+     * 状态变更的时间
+     */
     @TableField("STATUS_DATE")
     private Date statusDate;
 
-    /** 备注  */
-    @TableField("NOTES")
-    private String notes;
 
     public Long getMenuId() {
         return menuId;
@@ -110,47 +95,21 @@ public class SysMenu extends Model<SysMenu> {
         this.menuCode = menuCode;
     }
 
-    public Long getpMenuId() {
-        return pMenuId;
+    public String getMenuUrl() {
+        return menuUrl;
     }
 
-    public void setpMenuId(Long pMenuId) {
-        this.pMenuId = pMenuId;
+    public void setMenuUrl(String menuUrl) {
+        this.menuUrl = menuUrl;
     }
 
-    public String getpMenuIds() {
-        return pMenuIds;
+    public Integer getMenuSort() {
+        return menuSort;
     }
 
-    public void setpMenuIds(String pMenuIds) {
-        this.pMenuIds = pMenuIds;
+    public void setMenuSort(Integer menuSort) {
+        this.menuSort = menuSort;
     }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Integer getNum() {
-        return num;
-    }
-
-    public void setNum(Integer num) {
-        this.num = num;
-    }
-
-     
 
     public Integer getMenuLevel() {
         return menuLevel;
@@ -160,20 +119,12 @@ public class SysMenu extends Model<SysMenu> {
         this.menuLevel = menuLevel;
     }
 
-    public Integer getMenuFlag() {
-        return menuFlag;
+    public String getParentMenuCode() {
+        return parentMenuCode;
     }
 
-    public void setMenuFlag(Integer menuFlag) {
-        this.menuFlag = menuFlag;
-    }
-
-    public Integer getOpenFlag() {
-        return openFlag;
-    }
-
-    public void setOpenFlag(Integer openFlag) {
-        this.openFlag = openFlag;
+    public void setParentMenuCode(String parentMenuCode) {
+        this.parentMenuCode = parentMenuCode;
     }
 
     public String getStatusCd() {
@@ -224,16 +175,27 @@ public class SysMenu extends Model<SysMenu> {
         this.statusDate = statusDate;
     }
 
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
+    @Override
+    protected Serializable pkVal() {
+        return null;
     }
 
     @Override
-    protected Serializable pkVal() {
-        return this.menuId;
+    public String toString() {
+        return "SysMenu{" +
+        ", menuId=" + menuId +
+        ", menuName=" + menuName +
+        ", menuCode=" + menuCode +
+        ", menuUrl=" + menuUrl +
+        ", menuSort=" + menuSort +
+        ", menuLevel=" + menuLevel +
+        ", parentMenuCode=" + parentMenuCode +
+        ", statusCd=" + statusCd +
+        ", createDate=" + createDate +
+        ", createUser=" + createUser +
+        ", updateDate=" + updateDate +
+        ", updateUser=" + updateUser +
+        ", statusDate=" + statusDate +
+        "}";
     }
 }

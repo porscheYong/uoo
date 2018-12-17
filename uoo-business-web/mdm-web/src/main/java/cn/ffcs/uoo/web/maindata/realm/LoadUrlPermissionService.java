@@ -145,7 +145,7 @@ public class LoadUrlPermissionService {
                 List<SysMenu> data = listPage.getData();
                 if(data!=null){
                     for (SysMenu sysMenu : data) {
-                        filterChainDefinitionMap.put(sysMenu.getUrl(), "perms[M" + sysMenu.getMenuId() + "]");
+                        filterChainDefinitionMap.put(sysMenu.getMenuUrl(), "perms[M" + sysMenu.getMenuId() + "]");
                     }
                 }
             }

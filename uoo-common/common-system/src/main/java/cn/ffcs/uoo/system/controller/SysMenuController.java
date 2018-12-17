@@ -137,6 +137,7 @@ public class SysMenuController {
         sysMenuService.updateById(obj);
         return ResponseResult.createSuccessResult("success");
     }
+    @SuppressWarnings("unchecked")
     @ApiOperation(value = "获取单个用户的菜单", notes = "获取单个用户的菜单")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "accout", value = "accout", required = true, dataType = "String" ,paramType="path"),
@@ -148,8 +149,9 @@ public class SysMenuController {
         if(accout==null||accout.trim().length()<=0){
             return ResponseResult.createErrorResult("账号不存在");
         }
-        HashMap<String , Object> map=new HashMap<>();
-        map.put("accout", accout);
-        return ResponseResult.createSuccessResult(sysMenuService.getMenuByAccout(map), "");
+        List selectList = sysMenuService.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID));
+        /*HashMap<String , Object> map=new HashMap<>();
+        map.put("accout", accout);*/
+        return ResponseResult.createSuccessResult(selectList, "");
     }
 }

@@ -8,24 +8,10 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package cn.ffcs.uoo.system.controller;
+package cn.ffcs.uoo.web.maindata.common.system.controller;
 
-import cn.ffcs.uoo.base.common.annotion.UooLog;
-import cn.ffcs.uoo.system.consts.StatusCD;
-import cn.ffcs.uoo.system.entity.SysOperationLog;
-import cn.ffcs.uoo.system.service.SysOperationLogService;
-import cn.ffcs.uoo.system.vo.ResponseResult;
-import com.baomidou.mybatisplus.mapper.Condition;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -38,7 +24,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/system/sysOperationLog")
 public class SysOperationLogController {
-    @Autowired
+    /*@Autowired
     SysOperationLogService sysOperationLogService;
 
     @ApiOperation(value = "获取单个数据", notes = "获取单个数据")
@@ -83,9 +69,10 @@ public class SysOperationLogController {
         sysOperationLog.setCreateDate(new Date());
         sysOperationLog.setOperationLogId((sysOperationLogService.getId()));
         sysOperationLog.setStatusCd(StatusCD.VALID);
+        sysOperationLog.setStatusDate(new Date());
         sysOperationLogService.insert(sysOperationLog);
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增成功");
         return responseResult;
-    }
+    }*/
 }

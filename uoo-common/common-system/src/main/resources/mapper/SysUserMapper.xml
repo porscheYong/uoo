@@ -2,36 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ffcs.uoo.system.dao.SysUserMapper">
   <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysUser">
-    <id column="USER_ID" jdbcType="DECIMAL" property="userId" />
-    <result column="ACCOUT" jdbcType="VARCHAR" property="accout" />
-    <result column="PASSWD" jdbcType="VARCHAR" property="passwd" />
-    <result column="SALT" jdbcType="VARCHAR" property="salt" />
-    <result column="UNAME" jdbcType="VARCHAR" property="uname" />
-    <result column="GENDER" jdbcType="VARCHAR" property="gender" />
-    <result column="UCODE" jdbcType="VARCHAR" property="ucode" />
-    <result column="DEPT_ID" jdbcType="DECIMAL" property="deptId" />
-    <result column="ROLE_ID" jdbcType="DECIMAL" property="roleId" />
-    <result column="POSTION_ID" jdbcType="DECIMAL" property="postionId" />
-    <result column="BIRTHDAY" jdbcType="TIMESTAMP" property="birthday" />
-    <result column="CERT_TYPE" jdbcType="VARCHAR" property="certType" />
-    <result column="CERT_ID" jdbcType="VARCHAR" property="certId" />
-    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
-    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
-    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
-    <result column="REASON" jdbcType="VARCHAR" property="reason" />
-    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
-    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
-    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
-    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
-    <result column="NOTES" jdbcType="VARCHAR" property="notes" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    USER_ID, ACCOUT, PASSWD, SALT, UNAME, GENDER, UCODE, DEPT_ID, ROLE_ID, POSTION_ID, 
-    BIRTHDAY, CERT_TYPE, CERT_ID, MOBILE, EMAIL, ADDRESS, REASON, STATUS_CD, CREATE_DATE, 
-    CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, NOTES
-  </sql>
+   
+<id property="userId" column="USER_ID"/>
+
+<result property="accout" column="ACCOUT"/>
+
+<result property="passwd" column="PASSWD"/>
+
+<result property="salt" column="SALT"/>
+
+<result property="userName" column="USER_NAME"/>
+
+<result property="gender" column="GENDER"/>
+
+<result property="userCode" column="USER_CODE"/>
+
+<result property="birthday" column="BIRTHDAY"/>
+
+<result property="certType" column="CERT_TYPE"/>
+
+<result property="certId" column="CERT_ID"/>
+
+<result property="mobile" column="MOBILE"/>
+
+<result property="email" column="EMAIL"/>
+
+<result property="imageUrl" column="IMAGE_URL"/>
+
+<result property="lastIp" column="LAST_IP"/>
+
+<result property="acctLevel" column="ACCT_LEVEL"/>
+
+<result property="locked" column="LOCKED"/>
+
+<result property="lastLogin" column="LAST_LOGIN"/>
+
+<result property="statusCd" column="STATUS_CD"/>
+
+<result property="createDate" column="CREATE_DATE"/>
+
+<result property="createUser" column="CREATE_USER"/>
+
+<result property="updateDate" column="UPDATE_DATE"/>
+
+<result property="updateUser" column="UPDATE_USER"/>
+
+<result property="statusDate" column="STATUS_DATE"/>
+
+</resultMap>
+
+<!-- 通用查询结果列 -->
+
+
+<sql id="Base_Column_List"> USER_ID, ACCOUT, PASSWD, SALT, USER_NAME, GENDER, USER_CODE, BIRTHDAY, CERT_TYPE, CERT_ID, MOBILE, EMAIL, IMAGE_URL, LAST_IP, ACCT_LEVEL, LOCKED, LAST_LOGIN, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE </sql>
 
   <select id="getId" resultType="Long">
     select SEQ_TB_SYS_USER.NEXTVAL from dual

@@ -116,8 +116,8 @@ eureka:
 #    port: 8761
   client:
     service-url:
-      defaultZone:  http://134.96.253.221:8751/eureka/,http://134.96.253.222:8751/eureka/,http://134.96.253.223:8751/eureka/
-
+      #defaultZone:  http://134.96.253.221:8751/eureka/,http://134.96.253.222:8751/eureka/,http://134.96.253.223:8751/eureka/
+      defaultZone:  http://localhost:8751/eureka
 logging:
   level:
     cn.ffcs.uoo: info

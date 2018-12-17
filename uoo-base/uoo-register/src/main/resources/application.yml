@@ -1,43 +1,10 @@
-spring:
-  profiles: 221
-  application:
-    name: uoo-register
 eureka:
   instance:
     prefer-ip-address: true
-    hostname: 134.96.253.221
   client:
+    fetch-registry: false             #抓取注
+    register-with-eureka: false
     serviceUrl:
-      defaultZone: http://134.96.253.222:8751/eureka/,http://134.96.253.223:8751/eureka/
-server:
-  port: 8751
-
----
-spring:
-  profiles: 222
-  application:
-    name: uoo-register
-eureka:
-  instance:
-    prefer-ip-address: true
-    hostname: 134.96.253.222
-  client:
-    serviceUrl:
-      defaultZone: http://134.96.253.221:8751/eureka/,http://134.96.253.223:8751/eureka/
-server:
-  port: 8751
-
----
-spring:
-  profiles: 223
-  application:
-    name: uoo-register
-eureka:
-  instance:
-    prefer-ip-address: true
-    hostname: 134.96.253.223
-  client:
-    serviceUrl:
-      defaultZone: http://134.96.253.221:8751/eureka/,http://134.96.253.222:8751/eureka/
+      defaultZone: http://localhost:${server.port}/eureka/
 server:
   port: 8751

@@ -1,43 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ffcs.uoo.system.dao.SysMenuMapper">
-  <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysMenu">
-    <id column="MENU_ID" jdbcType="DECIMAL" property="menuId" />
-    <result column="MENU_NAME" jdbcType="VARCHAR" property="menuName" />
-    <result column="MENU_CODE" jdbcType="VARCHAR" property="menuCode" />
-    <result column="P_MENU_ID" jdbcType="DECIMAL" property="pMenuId" />
-    <result column="P_MENU_IDS" jdbcType="VARCHAR" property="pMenuIds" />
-    <result column="ICON" jdbcType="VARCHAR" property="icon" />
-    <result column="URL" jdbcType="VARCHAR" property="url" />
-    <result column="NUM" jdbcType="DECIMAL" property="num" />
-    <result column="MENU_LEVEL" jdbcType="DECIMAL" property="menuLevel" />
-    <result column="MENU_FLAG" jdbcType="DECIMAL" property="menuFlag" />
-    <result column="OPEN_FLAG" jdbcType="DECIMAL" property="openFlag" />
-    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
-    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
-    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
-    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
-    <result column="NOTES" jdbcType="VARCHAR" property="notes" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    MENU_ID, MENU_NAME, MENU_CODE, P_MENU_ID, P_MENU_IDS, ICON, URL, NUM, MENU_LEVEL, MENU_FLAG,
-    OPEN_FLAG, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, 
-    NOTES
-  </sql>
+	<resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysMenu">
 
-  <select id="getId" resultType="Long">
-    select SEQ_TB_SYS_MENU.NEXTVAL from dual
-  </select>
-  <select id="getMenuByAccout" resultType="cn.ffcs.uoo.system.entity.SysMenu" parameterType="java.util.HashMap">
-	SELECT M.*
-	FROM SYS_USER U
-	LEFT JOIN SYS_ROLE R ON R.ROLE_ID = U.ROLE_ID
-	LEFT JOIN SYS_RELATION REL ON REL.ROLE_ID = R.ROLE_ID
-	LEFT JOIN SYS_MENU M ON M.MENU_ID = REL.MENU_ID 
-	WHERE U.ACCOUT=#{accout}
-	AND U.STATUS_CD='1000' AND R.STATUS_CD='1000' AND REL.STATUS_CD='1000' AND M.STATUS_CD='1000'
-  </select>
+		<result property="menuId" column="MENU_ID" />
+
+		<result property="menuName" column="MENU_NAME" />
+
+		<result property="menuCode" column="MENU_CODE" />
+
+		<result property="menuUrl" column="MENU_URL" />
+
+		<result property="menuSort" column="MENU_SORT" />
+
+		<result property="menuLevel" column="MENU_LEVEL" />
+
+		<result property="parentMenuCode" column="PARENT_MENU_CODE" />
+
+		<result property="statusCd" column="STATUS_CD" />
+
+		<result property="createDate" column="CREATE_DATE" />
+
+		<result property="createUser" column="CREATE_USER" />
+
+		<result property="updateDate" column="UPDATE_DATE" />
+
+		<result property="updateUser" column="UPDATE_USER" />
+
+		<result property="statusDate" column="STATUS_DATE" />
+
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+
+
+	<sql id="Base_Column_List"> MENU_ID, MENU_NAME, MENU_CODE, MENU_URL, MENU_SORT,
+		MENU_LEVEL, PARENT_MENU_CODE, STATUS_CD, CREATE_DATE, CREATE_USER,
+		UPDATE_DATE, UPDATE_USER, STATUS_DATE </sql>
+
+	<select id="getId" resultType="Long">
+		select SEQ_TB_SYS_MENU.NEXTVAL from dual
+	</select>
+	<select id="getMenuByAccout" resultType="cn.ffcs.uoo.system.entity.SysMenu"
+		parameterType="java.util.HashMap">
+		SELECT M.*
+		FROM SYS_USER U
+		LEFT JOIN SYS_ROLE R ON R.ROLE_ID = U.ROLE_ID
+		LEFT JOIN SYS_RELATION REL ON REL.ROLE_ID = R.ROLE_ID
+		LEFT JOIN SYS_MENU M ON M.MENU_ID = REL.MENU_ID
+		WHERE U.ACCOUT=#{accout}
+		AND U.STATUS_CD='1000' AND R.STATUS_CD='1000' AND REL.STATUS_CD='1000'
+		AND M.STATUS_CD='1000'
+	</select>
 
 </mapper>

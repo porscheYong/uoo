@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.system.entity;
+package cn.ffcs.uoo.web.maindata.common.system.dto;
 
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;

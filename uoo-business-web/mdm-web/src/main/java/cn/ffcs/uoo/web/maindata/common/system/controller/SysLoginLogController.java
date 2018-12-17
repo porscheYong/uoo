@@ -8,31 +8,20 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package cn.ffcs.uoo.system.controller;
+package cn.ffcs.uoo.web.maindata.common.system.controller;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.baomidou.mybatisplus.mapper.Condition;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-
-import cn.ffcs.uoo.base.common.annotion.UooLog;
-import cn.ffcs.uoo.system.consts.StatusCD;
-import cn.ffcs.uoo.system.entity.SysLoginLog;
-import cn.ffcs.uoo.system.service.SysLoginLogService;
-import cn.ffcs.uoo.system.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.common.system.client.SysLoginLogClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysLoginLog;
+import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 /**
@@ -48,9 +37,9 @@ import io.swagger.annotations.ApiOperation;
 public class SysLoginLogController {
 
     @Autowired
-    SysLoginLogService sysLoginLogService;
+    SysLoginLogClient sysLoginLogClient;
 
-    @ApiOperation(value = "获取单个数据", notes = "获取单个数据")
+    /*@ApiOperation(value = "获取单个数据", notes = "获取单个数据")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long" ,paramType="path"),
     })
@@ -71,7 +60,7 @@ public class SysLoginLogController {
     })
     @UooLog(key="listPage",value="获取分页列表")
     @GetMapping("/listPage/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult<List<SysLoginLog>> listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    public ResponseResult listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
 
@@ -79,23 +68,14 @@ public class SysLoginLogController {
         Page<SysLoginLog> page = sysLoginLogService.selectPage(new Page<SysLoginLog>(pageNo, pageSize), wrapper);
 
         return ResponseResult.createSuccessResult(page, "");
-    }
+    }*/
 
     @ApiOperation(value = "新增",notes = "新增")
     @ApiImplicitParam(name = "sysLoginLog", value = "新增", required = true, dataType = "SysLoginLog")
-    @UooLog(value = "新增", key = "add")
-    @Transactional
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseResult<Void> add(@RequestBody SysLoginLog sysLoginLog) {
         ResponseResult<Void> responseResult = new ResponseResult<Void>();
-
-        sysLoginLog.setCreateDate(new Date());
-        sysLoginLog.setLoginId((sysLoginLogService.getId()));
-        sysLoginLog.setStatusCd(StatusCD.VALID);
-        sysLoginLog.setStatusDate(new Date());
-        sysLoginLogService.insert(sysLoginLog);
-        responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("新增成功");
+ 
         return responseResult;
     }
 

@@ -3,8 +3,8 @@
 <mapper namespace="cn.ffcs.uoo.system.dao.SysLoginLogMapper">
   <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysLoginLog">
     <id column="LOGIN_ID" jdbcType="DECIMAL" property="loginId" />
-    <result column="LOG_NAME" jdbcType="DECIMAL" property="logName" />
-    <result column="USER_ID" jdbcType="DECIMAL" property="userId" />
+    <result column="LOG_NAME" jdbcType="VARCHAR" property="logName" />
+    <result column="ACCOUT" jdbcType="VARCHAR" property="userCode" />
     <result column="SUCCEED" jdbcType="DECIMAL" property="succeed" />
     <result column="IP" jdbcType="DECIMAL" property="ip" />
     <result column="MESSAGE" jdbcType="VARCHAR" property="message" />
@@ -17,7 +17,7 @@
     <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    LOGIN_ID, LOG_NAME, USER_ID, SUCCEED, IP, MESSAGE, NOTES, STATUS_CD, CREATE_DATE, CREATE_USER,
+    LOGIN_ID, LOG_NAME, ACCOUT, SUCCEED, IP, MESSAGE, NOTES, STATUS_CD, CREATE_DATE, CREATE_USER,
     UPDATE_DATE, UPDATE_USER, STATUS_DATE
   </sql>
 

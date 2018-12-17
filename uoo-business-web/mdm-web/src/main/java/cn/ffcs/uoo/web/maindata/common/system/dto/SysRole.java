@@ -1,74 +1,91 @@
 package cn.ffcs.uoo.web.maindata.common.system.dto;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-
-import java.io.Serializable;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
 
 /**
- * 系统域角色
+ * <p>
+ * 
+ * </p>
+ *
+ * @author zengxsh
+ * @since 2018-12-17
  */
 @TableName("SYS_ROLE")
 public class SysRole extends Model<SysRole> {
 
-    /** 角色标识    */
-    @TableId(value = "ROLE_ID")
-    private Long roleId;
+    private static final long serialVersionUID = 1L;
 
-    /** 名称  */
+    /**
+     * 角色标识
+     */
+    @TableId("ROLE_ID")
+    private Long roleId;
+    /**
+     * 角色名称
+     */
     @TableField("ROLE_NAME")
     private String roleName;
-
-    /** 编码  */
+    /**
+     * 角色编码
+     */
     @TableField("ROLE_CODE")
     private String roleCode;
-
-    /** 上级角色    */
-    @TableField("P_ROLE_ID")
-    private Long pRoleId;
-
-    /** 标签  */
-    @TableField("TIPS")
-    private String tips;
-
-    /** 部门  */
-    @TableField("DEPT_ID")
-    private Long deptId;
-
-    /** 排序号 */
-    @TableField("NUM")
-    private Short num;
-
-    /** 状态  */
+    /**
+     * 上级角色角色编码
+     */
+    @TableField("PARENT_ROLE_CODE")
+    private Long parentRoleCode;
+    /**
+     * 引用电信管理区域
+     */
+    @TableField("REGION_NBR")
+    private String regionNbr;
+    /**
+     * 角色优先级排序
+     */
+    @TableField("SORT_NUM")
+    private Integer sortNum;
+    /**
+     * 备注
+     */
+    @TableField("NOTES")
+    private String notes;
+    /**
+     * 状态
+     */
     @TableField("STATUS_CD")
     private String statusCd;
-
-    /** 创建时间  */
+    /**
+     * 创建时间
+     */
     @TableField("CREATE_DATE")
     private Date createDate;
-
-    /** 创建人    */
+    /**
+     * 创建人
+     */
     @TableField("CREATE_USER")
     private Long createUser;
-
-    /** 修改时间 */
+    /**
+     * 修改时间
+     */
     @TableField("UPDATE_DATE")
     private Date updateDate;
-
-    /** 修改人 */
+    /**
+     * 修改人
+     */
     @TableField("UPDATE_USER")
     private Long updateUser;
-
-    /** 状态时间    */
+    /**
+     * 状态变更的时间
+     */
     @TableField("STATUS_DATE")
     private Date statusDate;
 
-    /** 备注  */
-    @TableField("NOTES")
-    private String notes;
 
     public Long getRoleId() {
         return roleId;
@@ -94,36 +111,36 @@ public class SysRole extends Model<SysRole> {
         this.roleCode = roleCode;
     }
 
-    public Long getpRoleId() {
-        return pRoleId;
+    public Long getParentRoleCode() {
+        return parentRoleCode;
     }
 
-    public void setpRoleId(Long pRoleId) {
-        this.pRoleId = pRoleId;
+    public void setParentRoleCode(Long parentRoleCode) {
+        this.parentRoleCode = parentRoleCode;
     }
 
-    public String getTips() {
-        return tips;
+    public String getRegionNbr() {
+        return regionNbr;
     }
 
-    public void setTips(String tips) {
-        this.tips = tips;
+    public void setRegionNbr(String regionNbr) {
+        this.regionNbr = regionNbr;
     }
 
-    public Long getDeptId() {
-        return deptId;
+    public Integer getSortNum() {
+        return sortNum;
     }
 
-    public void setDeptId(Long deptId) {
-        this.deptId = deptId;
+    public void setSortNum(Integer sortNum) {
+        this.sortNum = sortNum;
     }
 
-    public Short getNum() {
-        return num;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setNum(Short num) {
-        this.num = num;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public String getStatusCd() {
@@ -174,16 +191,27 @@ public class SysRole extends Model<SysRole> {
         this.statusDate = statusDate;
     }
 
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
     @Override
     protected Serializable pkVal() {
         return this.roleId;
+    }
+
+    @Override
+    public String toString() {
+        return "SysRole{" +
+        ", roleId=" + roleId +
+        ", roleName=" + roleName +
+        ", roleCode=" + roleCode +
+        ", parentRoleCode=" + parentRoleCode +
+        ", regionNbr=" + regionNbr +
+        ", sortNum=" + sortNum +
+        ", notes=" + notes +
+        ", statusCd=" + statusCd +
+        ", createDate=" + createDate +
+        ", createUser=" + createUser +
+        ", updateDate=" + updateDate +
+        ", updateUser=" + updateUser +
+        ", statusDate=" + statusDate +
+        "}";
     }
 }
