@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Component
-@RabbitListener(queues = {"message_sharing_center_queue"})
+@RabbitListener(queues = {"queue_test"})
 public class ReceiveDateListener {
 
     @Autowired
@@ -50,6 +50,8 @@ public class ReceiveDateListener {
     private SystemQueueRelaMapper systemQueueRelaMapper;
     @Resource
     private RabbitmqIndexMapper rabbitmqIndexMapper;
+    @Resource
+    private TbAcctMapper tbAcctMapper;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
@@ -266,17 +268,28 @@ public class ReceiveDateListener {
                                 case "delete": {
 
                                     //人员删除或者主账号删除
-                                    int flag = tbSlaveAcctMapper.checkPersonnelAndAcct(value);
-
+                                    int flag = tbSlaveAcctMapper.checkPersonnelAndAcctByUnUse(value);
+                                    TbAcct tbAcct = tbAcctMapper.selectByPersonId(value);
                                     if (flag == 1) {
                                         List<TbSlaveAcct> slaveList = tbSlaveAcctMapper.insertOrUpdateSalveAcctByPersonnelIdAndSystemId(value, system.getBusinessSystemId());
                                         if (slaveList != null) {
                                             if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() == 1) {
                                                 slaveList.forEach((temp) -> {
+                                                    TbSlaveAcctVo tbSlaveAcct = tbSlaveAcctMapper.selectVoById(temp.getSlaveAcctId());
+
                                                     TbAcctVo tbAcctVo = new TbAcctVo();
+                                                    tbAcctVo.setAcctId(tbAcct.getAcctId());
+                                                    tbAcctVo.setAcct(tbAcct.getAcct());
+                                                    tbAcctVo.setStatusCd(tbAcct.getStatusCd());
+
                                                     TbSlaveAcctVo tbSlaveAcctVo = new TbSlaveAcctVo();
-                                                    tbSlaveAcctVo.setSlaveAcctId(temp.getSlaveAcctId());
+                                                    tbSlaveAcctVo.setMappStaffId(tbSlaveAcct.getMappStaffId());
+                                                    tbSlaveAcctVo.setStatusCd(tbSlaveAcct.getStatusCd());
+                                                    tbSlaveAcctVo.setSlaveAcct(tbSlaveAcct.getSlaveAcct());
+                                                    tbSlaveAcctVo.setSlaveAcctId(tbSlaveAcct.getSlaveAcctId());
+
                                                     tbAcctVo.setTbSlaveAcct(tbSlaveAcctVo);
+
                                                     if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
 
                                                     }
@@ -300,10 +313,15 @@ public class ReceiveDateListener {
                                                     rabbitMqSendService.sendMsg(queueName, msg);
                                                 });
                                             } else if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() != 1) {
-                                                TbSlaveAcct temp = slaveList.get(0);
                                                 TbAcctVo tbAcctVo = new TbAcctVo();
+                                                tbAcctVo.setAcctId(tbAcct.getAcctId());
+                                                tbAcctVo.setAcct(tbAcct.getAcct());
+                                                tbAcctVo.setStatusCd(tbAcct.getStatusCd());
+
                                                 TbPersonnel tbPersonnel = new TbPersonnel();
                                                 tbPersonnel.setPersonnelId(value);
+                                                tbPersonnel.setStatusCd("1100");
+
                                                 tbAcctVo.setTbPersonnel(tbPersonnel);
                                                 if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
 
@@ -330,8 +348,14 @@ public class ReceiveDateListener {
                                         } else {
                                             if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() != 1) {
                                                 TbAcctVo tbAcctVo = new TbAcctVo();
+                                                tbAcctVo.setAcctId(tbAcct.getAcctId());
+                                                tbAcctVo.setAcct(tbAcct.getAcct());
+                                                tbAcctVo.setStatusCd(tbAcct.getStatusCd());
+
                                                 TbPersonnel tbPersonnel = new TbPersonnel();
                                                 tbPersonnel.setPersonnelId(value);
+                                                tbPersonnel.setStatusCd("1100");
+
                                                 tbAcctVo.setTbPersonnel(tbPersonnel);
                                                 if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
 
@@ -447,7 +471,7 @@ public class ReceiveDateListener {
                         ;
                         break;
                         case "delete": {
-                            TbSlaveAcct tbSlaveAcct = tbSlaveAcctMapper.selectById(value);
+                            TbSlaveAcctVo tbSlaveAcct = tbSlaveAcctMapper.selectVoById(value);
                             if (tbSlaveAcct != null && ValidateConstant.fail.getValue().equals(tbSlaveAcct.getStatusCd())) {
 
                                 TbAcctVo tbAcctVo = new TbAcctVo();
