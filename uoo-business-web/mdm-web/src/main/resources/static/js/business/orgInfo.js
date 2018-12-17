@@ -184,5 +184,10 @@ function getOrgRel (orgId) {
     })
 }
 
+function orgEdit () {
+    var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    $('#editBtn').attr('href', url);
+}
+
 getOrg(orgId);
 getOrgRel(orgId);

@@ -31,6 +31,7 @@ public enum EumUserResponeCode {
     CERT_NO_ERROR(24, "证件号有误"),
     SLAVE_ACCT_ORGREL_EXIST(25, "主账号组织关系已被占用"),
     ACCT_NOT_NULL(26, "账号不能为空"),
+    PWD_ERROR(27, "不符合密码安全规范"),
     ;
 
     @Getter

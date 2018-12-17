@@ -1,5 +1,6 @@
 var loading = new Loading();
 var dictionaryData = new Dictionary();
+var account;
 // toastr
 toastr.options = {
   "closeButton": false,
@@ -24,27 +25,27 @@ loading.screenMaskEnable('container');
 function initUserInfo(){  //初始化首页人员信息          
     $http.get('/system/getCurrentLoginUserInfo', { }, 
     function (data) {
-      getAcctInfo(data.acctId);
-    }, function (err1) {
-
-    })
-}
-
-function getAcctInfo(acctId){ //获取账号信息
-    $http.get('/user/getUser', { 
-        acctId:acctId,
-        userType:"1"
-    }, 
-    function (data) {
-      //console.log(data);   
-      $("#psnName").text(data.psnName);
+        account = data.accout;
+        $("#psnName").text(data.uname);
     }, function (err) {
-
     })
 }
+
+// function getAcctInfo(acctId){ //获取账号信息
+//     $http.get('/user/getUser', { 
+//         acctId:acctId,
+//         userType:"1"
+//     }, 
+//     function (data) {
+//       //console.log(data);   
+//       $("#psnName").text(data.psnName);
+//     }, function (err) {
+
+//     })
+// }
 
 function initUserPermission(){    //初始化人员权限
-    $http.post('/permission/tbRoles/getPermissionMenu/19521/0', { }, 
+    $http.get('/system/getAccoutMenu', { }, 
     function (data) {
         initSideBar(data);
         // layui admin
@@ -53,13 +54,6 @@ function initUserPermission(){    //初始化人员权限
             }).extend({
             index: 'lib/index' //主入口模块
             }).use('index');
-        // $('.layui-nav').find('.layui-nav-item').each(function () {
-        //     $(this).on("mouseenter", function() {
-        //         $(this).find('.layui-nav-child').show();
-        //     }).on("mouseleave", function() {
-        //         $(this).find('.layui-nav-child').hide();
-        //     })
-        // })
     }, function (err) {
         loading.screenMaskDisable('container');
     })
@@ -72,7 +66,7 @@ function initSideBar(results){     //初始化侧边菜单
     var flag = 0;
 
     for(var i = 0;i<results.length-1;i++){
-        if(results[i].parMenuId == 0){
+        if(results[i].pMenuId == 0){
             parList.push(results[i]);
         }else{
             childList.push(results[i]);
@@ -83,17 +77,17 @@ function initSideBar(results){     //初始化侧边菜单
         var dd = "<dl class='layui-nav-child'>";
         
         for(var j=0;j<childList.length;j++){
-            if(childList[j].parMenuId == parList[i].menuId){
+            if(childList[j].pMenuId == parList[i].menuId){
                 flag = 1;
-                dd += "<dd><a lay-href='" + childList[j].urlAddr + "'>" + childList[j].menuName + "</a></dd>"
+                dd += "<dd><a lay-href='" + childList[j].url + "'>" + childList[j].menuName + "</a></dd>"
             }
         }
         if(flag == 1){
-            pemList += "<li class='layui-nav-item'><a href='javascript:;'>" +
+            pemList += "<li class='layui-nav-item'><a href='javascript:;' lay-tips='" + parList[i].menuName + "'>" +
                 icon + "</i><cite>" + parList[i].menuName + 
                 "</cite><span class='layui-nav-more'></span></a>" + dd + "</dl></li>";
         }else{
-            pemList += "<li class='layui-nav-item'><a lay-href='" + parList[i].urlAddr + "'>" +
+            pemList += "<li class='layui-nav-item'><a lay-href='" + parList[i].url + "' lay-tips='" + parList[i].menuName + "'>" +
                 icon + "</i><cite>" + parList[i].menuName + "</cite></a></li>";
         }
         

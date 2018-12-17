@@ -279,10 +279,10 @@ public class TbPersonnelController extends BaseController {
         tbContactService.addOrUpdateTbContact(personnelVo.getTbMobileVoList(), editFormPersonnelVo.getPersonnelId(), "1");
         tbContactService.addOrUpdateTbContact(personnelVo.getTbEamilVoList(), editFormPersonnelVo.getPersonnelId(), "2");
 
-        if(tbPersonnelService.isExistsAcct(editFormPersonnelVo.getPersonnelId())){
-            return ResultUtils.success(editFormPersonnelVo.getPersonnelId());
-        }
-        return ResultUtils.success(null);
+//        if(tbPersonnelService.isExistsAcct(editFormPersonnelVo.getPersonnelId())){
+//            return ResultUtils.success(editFormPersonnelVo.getPersonnelId());
+//        }
+        return ResultUtils.success(editFormPersonnelVo.getPersonnelId());
     }
 
 
@@ -402,6 +402,13 @@ public class TbPersonnelController extends BaseController {
 
         /**  7、家庭成员信息      */
         tbPersonnelImageService.delTbPersonnelImageByPsnId(personnelId);
+
+        /**  8、删除人员组织关系      */
+        PsonOrgVo psonOrgVo = new PsonOrgVo();
+        psonOrgVo.setPersonnelId(personnelId);
+        orgPersonRelClient.deletePsnRel(psonOrgVo);
+        /**  9、删除账号相关信息      */
+        userClient.removeAcct(personnelId);
         return ResultUtils.success(personnelId);
     }
 

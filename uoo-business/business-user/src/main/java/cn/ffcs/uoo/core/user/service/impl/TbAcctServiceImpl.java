@@ -7,10 +7,7 @@ import cn.ffcs.uoo.core.user.dao.TbAcctMapper;
 import cn.ffcs.uoo.core.user.entity.TbAcct;
 import cn.ffcs.uoo.core.user.entity.TbRoles;
 import cn.ffcs.uoo.core.user.service.TbAcctService;
-import cn.ffcs.uoo.core.user.util.AESTool;
-import cn.ffcs.uoo.core.user.util.MD5Tool;
-import cn.ffcs.uoo.core.user.util.ResultUtils;
-import cn.ffcs.uoo.core.user.util.StrUtil;
+import cn.ffcs.uoo.core.user.util.*;
 import cn.ffcs.uoo.core.user.vo.EditFormAcctVo;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -99,6 +96,9 @@ public class TbAcctServiceImpl extends ServiceImpl<TbAcctMapper, TbAcct> impleme
             type = "insert";
         }
         if(StrUtil.isNullOrEmpty(tbAcct) || !editFormAcctVo.getPassword().equals(tbAcct.getPassword())){
+            if(!PwdPolicyUtil.isMatchBasicPattern(editFormAcctVo.getPassword())){
+                return ResultUtils.error(EumUserResponeCode.PWD_ERROR);
+            }
             // 获取盐
             String salt = MD5Tool.getSalt();
             // 非对称密码

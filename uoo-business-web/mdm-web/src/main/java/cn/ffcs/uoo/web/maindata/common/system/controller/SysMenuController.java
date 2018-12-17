@@ -28,7 +28,7 @@ public class SysMenuController {
     @ApiOperation(value = "登陆接口", notes = "登陆接口")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/getAccoutMenu", method = RequestMethod.POST)
+    @RequestMapping(value = "/getAccoutMenu", method = RequestMethod.GET)
     public ResponseResult<List<SysMenu>> getAccoutMenu(){
         Subject sub=SecurityUtils.getSubject();
         Object primaryPrincipal = sub.getPrincipals().getPrimaryPrincipal();

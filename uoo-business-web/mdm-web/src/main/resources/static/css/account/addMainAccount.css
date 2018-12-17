@@ -24,7 +24,10 @@ td,th{
     width: 32%;
 }
 .row-acc{
-    width: 15%;
+    width: 14%;
+}
+.row-acctype{
+    width: 18%;
 }
 .row-number,
 .row-state{

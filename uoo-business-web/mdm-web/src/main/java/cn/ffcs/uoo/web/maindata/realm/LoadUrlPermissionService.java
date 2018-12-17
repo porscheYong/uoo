@@ -112,6 +112,10 @@ public class LoadUrlPermissionService {
             filterChainDefinitionMap.put("/vendors/**", "anon"); //
             filterChainDefinitionMap.put("/system/sysUserLogin", "anon"); // 登陆接口必须开放
             filterChainDefinitionMap.put("/reloadUrlPermission", "anon"); // 
+            filterChainDefinitionMap.put("/swagger-ui.html", "anon");
+            filterChainDefinitionMap.put("/swagger-resources", "anon");
+            filterChainDefinitionMap.put("/v2/api-docs", "anon");
+            filterChainDefinitionMap.put("/webjars/springfox-swagger-ui/**", "anon");
             // filterChainDefinitionMap.put("/**", "anon");
             // filterChainDefinitionMap.put("/aa/aa", "perms[asasd]");
             // filterChainDefinitionMap.put("/inaction/**", "perms[inaction]");
@@ -131,11 +135,11 @@ public class LoadUrlPermissionService {
                     filterChainDefinitionMap.put(funcComp.getUrlAddr(), "perms[M" + funcComp.getMenuId() + "]");
                 }
             }*/
-            
-            
+
+
 
             // filterChainDefinitionMap.put("/ff/ff", "perms[sad]");//
-            
+
             cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<List<SysMenu>> listPage = sysMenuClient.listPage(1, Integer.MAX_VALUE);
             if(listPage.getState()==cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult.STATE_OK){
                 List<SysMenu> data = listPage.getData();

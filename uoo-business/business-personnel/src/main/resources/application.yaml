@@ -1,6 +1,11 @@
 spring:
   application:
     name: business-personnel
+  zipkin:
+    base-url: http://134.96.253.223:8600
+  sleuth:
+    sampler:
+      percentage: 1.0
   datasource:
     druid:
       #url: jdbc:oracle:thin:@134.129.68.156:1521:fjtpdb
@@ -19,6 +24,7 @@ spring:
 
       driver-class-name:  oracle.jdbc.OracleDriver
       url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
+      #url: jdbc:oracle:thin:@134.96.248.48:3436/ZJ4APRD
       username: octopus
       password: octopus
 
@@ -98,14 +104,11 @@ spring:
 #      aop-patterns: cn.ffcs.uoo.**.service.*
   rabbitmq:
     host: 134.96.253.221
+    #host: 134.96.217.231
     port: 5672
     username: root
     password: 123
-  zipkin:
-    base-url: http://134.96.253.223:8600
-  sleuth:
-    sampler:
-      percentage: 1.0
+
 
 #mybatis
 mybatis-plus:
@@ -170,7 +173,7 @@ eureka:
   client:
     service-url:
       defaultZone:  http://134.96.253.221:${eureka.server.port}/eureka/,http://134.96.253.222:${eureka.server.port}/eureka/,http://134.96.253.223:${eureka.server.port}/eureka/
-
+      #defaultZone: http://134.96.217.231:8751/eureka/
 logging:
   level:
     cn.ffcs.uoo: info

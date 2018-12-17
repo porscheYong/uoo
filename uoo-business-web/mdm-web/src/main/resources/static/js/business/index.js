@@ -13,7 +13,7 @@ loading.screenMaskEnable('container');
 // lulu ui select插件
 seajs.use('/vendors/lulu/js/common/ui/Select', function () {
     // $('#businessOrg').selectMatch();
-})
+});
 
 function onNodeClick(e,treeId, treeNode) {
     // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
@@ -180,7 +180,7 @@ function initBusinessList () {
             var select = i === 0? 'selected' : '';
             option += "<option value='" + data[i].orgTreeId + "' " + select + ">" + data[i].orgTreeName +"</option>";
         }
-        $('#businessOrg').append(option);
+        $('#businessOrg').html(option);
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
             $('#businessOrg').selectMatch();
         });
@@ -189,6 +189,7 @@ function initBusinessList () {
         businessName = data[0].orgTreeName;
         $('#businessOrg').unbind('change').bind('change', function (event) {
             orgTreeId = event.target.options[event.target.options.selectedIndex].value;
+            businessName = event.target.options[event.target.options.selectedIndex].innerHTML;
             initTree(orgTreeId);
         })
     }, function (err) {

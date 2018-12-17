@@ -15,6 +15,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.alibaba.fastjson.JSONObject;
 
+import cn.ffcs.uoo.web.maindata.common.system.client.SysMenuClient;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysUserClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysMenu;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
@@ -48,6 +51,8 @@ public class UooRealm extends AuthorizingRealm {
     PrivilegeService privSvc;
     @Autowired
     RolesService rolesSVC;
+    @Autowired 
+    SysMenuClient sysMenuClient;
     /**
      * 验证当前登录的用户
      * 
@@ -75,6 +80,8 @@ public class UooRealm extends AuthorizingRealm {
                 this.getName());
         if(info!=null){
             clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
+            Subject subject = SecurityUtils.getSubject();
+            subject.getSession().setAttribute(LoginConsts.LOGIN_KEY, r.getData());
         }
         return info;
     }
@@ -88,33 +95,18 @@ public class UooRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
-                .getRequestAttributes()).getRequest();
-        HttpSession session = request==null?null: request.getSession();
-        if(session!=null){
-            Object attribute = session.getAttribute(LoginConsts.LOGIN_KEY);
-            if(attribute!=null){
-                JSONObject json=JSONObject.parseObject(JSONObject.toJSONString(attribute));
-                JSONObject data = json.getJSONObject("data");
-                if(data!=null){
-                    Long acctId = data.getLong("acctId");
-                    cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult<AccoutPermissionVO> accoutMenuPermission = privSvc.getAccoutMenuPermission(acctId);
-                    if(accoutMenuPermission.getState()==cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult.STATE_OK){
-                        AccoutPermissionVO vo = accoutMenuPermission.getData();
-                        List<FuncComp> funcComps = vo.getFuncComps();
-                        List<FuncMenu> funcMemus = vo.getFuncMemus();
-                        for (FuncMenu funcMenu : funcMemus) {
-                            simpleAuthorizationInfo.addStringPermission("M"+funcMenu.getMenuId());
-                        }
-                        for (FuncComp funcComp : funcComps) {
-                            simpleAuthorizationInfo.addStringPermission("C"+funcComp.getCompId());
-                        }
-                    }else{
-                        log.info("没有权限的账户："+json);
-                    }
+        Subject sub=SecurityUtils.getSubject();
+        Object primaryPrincipal = sub.getPrincipals().getPrimaryPrincipal();
+        //alterPwdDTO.setAccout(primaryPrincipal.toString());
+        ResponseResult<List<SysMenu>> ms = sysMenuClient.getMenuByAccout(primaryPrincipal.toString());
+        if(ResponseResult.STATE_OK==ms.getState()){
+            if(ms.getData()!=null){
+                for (SysMenu m : ms.getData()) {
+                    simpleAuthorizationInfo.addStringPermission("M"+m.getMenuId());
                 }
             }
         }
+         
         return simpleAuthorizationInfo;
     }
     /**

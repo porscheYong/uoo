@@ -58,6 +58,15 @@ public class OrgPersonRelController {
         return orgPersonRelService.deleteOrgPsn(psonOrgVo);
     }
 
+    @ApiOperation(value = "删除人员所有相关信息", notes = "删除人员所有相关信息")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/deletePsnRel", method = RequestMethod.POST)
+    public ResponseResult<String> deletePsnRel(@RequestBody PsonOrgVo psonOrgVo){
+        return orgPersonRelService.deletePsnRel(psonOrgVo);
+    }
+
+
     @ApiOperation(value = "获取组织人员关系列表", notes = "获取组织人员关系列表")
     @ApiImplicitParams({
     })
@@ -98,6 +107,7 @@ public class OrgPersonRelController {
                                                              @RequestParam(value = "pageNo",required = false)Integer pageNo){
         return orgPersonRelService.getUserOrgRelPage(orgId,orgTreeId,refCode,isSearchlower,search,pageSize,pageNo);
     }
+
 
 }
 

@@ -48,6 +48,15 @@ public class OrgPersonRelServiceHystrix implements OrgPersonRelService {
         responseResult.setMessage("系统暂时不可用");
         return responseResult;
     }
+
+    @Override
+    public ResponseResult<String> deletePsnRel(PsonOrgVo psonOrgVo){
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
+
     @Override
     public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(String orgTreeId,String personnelId){
         ResponseResult<List<PsonOrgVo>> responseResult = new ResponseResult<List<PsonOrgVo>>();

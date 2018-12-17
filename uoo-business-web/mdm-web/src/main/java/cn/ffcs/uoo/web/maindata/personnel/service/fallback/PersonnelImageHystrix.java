@@ -2,6 +2,7 @@ package cn.ffcs.uoo.web.maindata.personnel.service.fallback;
 
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.personnel.service.PersonnelImageService;
+import cn.ffcs.uoo.web.maindata.personnel.vo.PsnImageVo;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
