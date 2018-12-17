@@ -365,13 +365,17 @@ legend {
 	background: url(../images/ico_user.svg);
 	}
 .IconMobile {
-	background: url(../images/ico_mobile.svg);
+	background-image: url(../images/ico_mobile.png);
+	background-image: url(../images/ico_mobile.svg), none;
+	cursor: pointer;
 	}
 .IconLocation {
 	background: url(../images/ico_location.svg);
 	}
 .IconEmail {
-	background: url(../images/ico_email.svg);
+	background-image: url(../images/ico_email.png);
+	background-image: url(../images/ico_email.svg), none;
+	cursor: pointer;
 	}
 .IconInput {
 	margin: 0 6px -7px -34px;
