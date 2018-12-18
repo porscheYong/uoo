@@ -1,3 +1,7 @@
+// loadingMask
+// var loading = parent.loading;
+// loading.screenMaskEnable('container');
+
 var orgId = getQueryString('orgId');
 var orgName = getQueryString('orgName');
 var orgFullName = getQueryString('orgFullName');
@@ -18,7 +22,6 @@ var formValidate;
 // var sFullName;
 var toastr = window.top.toastr;
 
-
 $('#statusCd').get(0).selectedIndex=0; //判断状态，默认生效
 $('#cerType').get(0).selectedIndex=0;  //判断证件类型,默认身份证
 
@@ -35,7 +38,25 @@ seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
   });
 });
 
+//添加数组IndexOf方法
+if (!Array.prototype.indexOf){
+  Array.prototype.indexOf = function(elt /*, from*/){
+    var len = this.length >>> 0;
 
+    var from = Number(arguments[1]) || 0;
+    from = (from < 0)
+         ? Math.ceil(from)
+         : Math.floor(from);
+    if (from < 0)
+      from += len;
+
+    for (; from < len; from++){
+      if (from in this && this[from] === elt)
+        return from;
+    }
+    return -1;
+  };
+}
 
 function getUser(acctId) {           //查看并编辑主账号
     $http.get('/user/getUser', {   
@@ -83,7 +104,7 @@ function initOrgTable(results){         //主账号组织数据表格
         { 'data': "fullName", 'title': '组织名称', 'className': 'row-fullName' ,
         'render': function (data, type, row, meta) {
           if(row.fullName != null){
-              return row.fullName;
+              return "<span class='spanPoint' title='"+row.fullName+"'>"+row.fullName+"</span>";
             }else{
               return "";
           }
@@ -94,8 +115,7 @@ function initOrgTable(results){         //主账号组织数据表格
           if(slaveOrgIdList.indexOf(row.orgId) != -1){
             return "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' title='删除' onclick='deleteOrg("+ row.orgId + ")'></a>";
           }else{
-            // sFullName = row.fullName;
-            return "<a class='Icon IconEdit' href='javascript:void(0);' id='addSlaveBtn' title='创建从账号' onclick='addSlaveBtnClick(" + row.acctHostId + "," + row.id + ")'></a>"+
+            return "<a class='Icon IconAdd' href='javascript:void(0);' id='addSlaveBtn' title='创建从账号' onclick='addSlaveBtnClick(" + row.acctHostId + "," + row.id + ")'></a>"+
                     "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' title='删除' onclick='deleteOrg("+ row.orgId + ")'></a>";
           }
         }
@@ -129,19 +149,23 @@ function initSubOrgTable(results){    //从账号组织数据
         { 'data': "id", 'title': '序号', 'className': 'row-number' },
         { 'data': "slaveAcct", 'title': '账号名', 'className': 'row-acc' ,
         'render': function (data, type, row, meta) {
-            return '<a href="editSubAccount.html?orgTreeId=' + orgTreeId + '&toMainType=' + hType +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&hType=th&mainAcctId='+ acctId +
+            return '<a title="'+ row.slaveAcct +'" href="editSubAccount.html?orgTreeId=' + orgTreeId + '&toMainType=' + hType +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&hType=th&mainAcctId='+ acctId +
                                   '&acctId='+ row.slaveAcctId + '&statusCd='+ row.statusCd +'">'+ row.slaveAcct +'</a>';
         }
       },
         { 'data': "slaveAcctType", 'title': '从账号类型', 'className': 'row-acctype' },
         { 'data': "orgTreeName", 'title': '组织树', 'className': 'row-orgtree' },
+        { 'data': "orgTreeName", 'title': '系统', 'className': 'row-system' ,
+          'render': function (data, type, row, meta) {
+              return '营销系统';
+          }
+        },
         { 'data': "fullName", 'title': '归属组织', 'className': 'row-org' ,
         'render': function (data, type, row, meta) {
-          if(row.fullName.search('->') != -1){
-            var s = row.fullName.replace(/->/g,'/');
-            return s.substring(0,s.length-1);
+          if(row.fullName != null){
+            return "<span class='spanPoint' title='"+row.fullName+"'>"+row.fullName+"</span>";
           }else{
-            return row.fullName;
+            return "";
           }
         }
       },

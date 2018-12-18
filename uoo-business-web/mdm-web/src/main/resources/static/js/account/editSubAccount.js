@@ -1,3 +1,6 @@
+var isIE=!!window.ActiveXObject;
+var isIE8=isIE&&document.documentMode<9;
+
 var orgId = getQueryString('orgId');
 var orgName = getQueryString('orgName');
 var mainAcctId = getQueryString('mainAcctId');
@@ -462,10 +465,16 @@ function extInfoFade(){     //点击复选框
         extCheckBox.attr("value","1")
         $("#extInfo").css("border-color","#00A4FF"); 
         isChecked = 1;
+        if(isIE8){
+            $(".ui-checkbox").css("background-position","0px -40px");
+        }
     }else{
         extCheckBox.attr("value","0")
         $("#extInfo").css("border-color","#b6b6b6"); 
         isChecked = 0;
+        if(isIE8){
+            $(".ui-checkbox").css("background-position","0px 0px");
+        }
     }
 }
 
