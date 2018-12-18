@@ -12,6 +12,10 @@ var currentPage = 0;
 
 $('#userType').get(0).selectedIndex=1;
 
+seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+  $('select').selectMatch();
+})
+
 empty = Handlebars.compile($(".typeahead-menu").html());
 
 engine = new Bloodhound({
@@ -151,12 +155,12 @@ Handlebars.registerHelper("addOne", function (index) {
 });
 
 function cancel() {
-    var url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId;
+    var url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;
     window.location.href = url;
 }
 
 function addPsn(){
-    window.location.href = "/inaction/user/add.html?name="+orgName;
+    window.location.href = "/inaction/user/add.html?name="+encodeURI(orgName);
 }
 
 function psnNameClick(personnelId){
@@ -164,7 +168,7 @@ function psnNameClick(personnelId){
         getPsnUser(personnelId);
     }else if($("#userType").val() == '从账号'){
         var url = "";
-        url = "addSubAccount.html?orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId + "&personnelId=" + personnelId + "&hType=ah";
+        url = "addSubAccount.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&personnelId=" + personnelId + "&hType=ah";
         window.location.href = url;
     }
 }
@@ -182,10 +186,11 @@ function getPsnUser(personnelId){       //主账号跳转
         userType: "1"
       }, function (data) {
         if(data.tbAcct != null){
-            url = "editMainAccount.html?acctId="+ data.tbAcct.acctId +"&orgFullName=" + orgFullName + "&orgTreeId=" + orgTreeId + 
-                    "&orgName=" + orgName + "&orgId=" + orgId + "&hType=ah";
+            url = "editMainAccount.html?acctId="+ data.tbAcct.acctId +"&orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + 
+                    "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=ah";
         }else{
-            url = "addMainAccount.html?orgFullName=" + orgFullName + "&orgTreeId=" + orgTreeId + "&orgName=" + orgName + "&orgId=" + orgId + "&personnelId=" + personnelId + "&hType=ah";
+            url = "addMainAccount.html?orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) +
+                    "&orgId=" + orgId + "&personnelId=" + personnelId + "&hType=ah";
         }
         window.location.href = url;
       }, function (err) {

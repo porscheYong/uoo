@@ -21,7 +21,10 @@ td,th{
     text-align: center;
 }
 .row-org{
-    width: 32%;
+    width: 18%;
+}
+.row-system{
+    width: 14%;
 }
 .row-acc{
     width: 14%;
@@ -79,6 +82,9 @@ table.dataTable tbody td {
 }
 #delOrgBtn:hover{
     color: #000;
+}
+.spanPoint{
+    cursor: pointer;
 }
 
 

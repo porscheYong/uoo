@@ -14,10 +14,11 @@
     <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- jquery datatable -->
     <link href="/vendors/datatable/datatables.css" rel="stylesheet">
-    <!-- lulu ui -->
-    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
     <!-- jquery tagsinput -->
     <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
+    <link href="/vendors/typeahead/typeahead.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
@@ -25,18 +26,12 @@
     <link href="/css/user/style.css" rel="stylesheet">
     <link href="/css/account/style1.css" rel="stylesheet">
 
-    <link href="/vendors/typeahead/typeahead.css" rel="stylesheet">
+
 
     <!--[if lt IE 9]>
-    <script src="../../../static/js/core/html5shiv.js"></script>
-    <script src="../../../static/js/core/respond.js"></script>
-    <script src="../../../static/js/core/excanvas.js"></script>
-    <![endif]-->
-
-    <!--[if lt IE 9]>
-    <script src="../../../static/js/core/html5shiv.js"></script>
-    <script src="../../../static/js/core/respond.js"></script>
-    <script src="../../../static/js/core/excanvas.js"></script>
+    <script src="/js/core/html5shiv.js"></script>
+    <script src="/js/core/respond.js"></script>
+    <script src="/js/core/excanvas.js"></script>
     <![endif]-->
 
     <style>
@@ -57,9 +52,6 @@
             width: 64%;
             text-align: center;
         }
-        /* .typeahead{
-            width:190px;
-        } */
         td,th{
             text-align: center;
         }
@@ -93,6 +85,10 @@
         .row-personnelId{
             display: none !important;
         }
+        /* IE8 placeholder */
+        .ui-placeholder{
+            margin-left:-271px !important;
+        }
     </style>
 </head>
 
@@ -111,11 +107,10 @@
             <form action="/submit" method="post" style="padding: 10px;">
 
                 <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-6">
                         <div class="form-item" style="width: 100%">
-                            <label for="userType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号类型</label>
-                            <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市公司直属"> -->
-                            <select  class="col-md-8 col-sm-8 col-xs-12" id="userType">
+                            <label for="userType" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">账号类型</label>
+                            <select  class="col-md-8 col-sm-8 col-xs-8" id="userType">
                             <option></option>
                             <option>主账号</option>
                             <option>从账号</option>
@@ -125,22 +120,15 @@
                 </div>
 
                 <div class="row" style="margin-bottom: 10px;">
-                    <!-- <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="keyWordTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">选择人员</label>
-                            <input type="tel" id="keyWordTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="">
-                        </div>
-                    </div> -->
-
                     <div class="row pos-relative" style="margin-top: 7px;margin-left:5px;">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="psnName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">选择人员</label>
-                                <div class="typeahead col-md-8 col-sm-8 col-xs-12" style="padding: 0;margin-left:-4px;">
+                                <label for="psnName" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">选择人员</label>
+                                <div class="typeahead col-md-8 col-sm-8 col-xs-8" style="padding: 0;margin-left:-4px;">
                                     <div>
                                         <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
                                         <input class="ui-input typeahead-input tt-input" id="psnName" type="text" name="q" placeholder="输入关键词搜索" autocomplete="off" spellcheck="false" dir="auto">
-                                        <img class="typeahead-spinner" src="img/spinner.gif" style="display: none;">
+                                        <!-- <img class="typeahead-spinner" src="img/spinner.gif" style="display: none;"> -->
                                     </div>
                                 </div>
                             </div>
@@ -154,19 +142,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
-                    <table id="psnInfoTable" class="stripe" width="100%"></table>
-                </div> -->
-
             </form>
-
-            <!-- <div class="row">
-                <div style="margin-left: 12%;margin-top: 5%;">
-                    <button class="ui-button ui-button-primary" id="yesBtn" onclick="check()">搜索</button>
-                    <button class="ui-button ui-button-cancel" id="cancelBtn" onclick="cancel()" style="margin-left: 40px;">取消</button>
-                </div>
-            </div> -->
         </div>
     </div>
 
@@ -176,13 +152,14 @@
     <script src="/vendors/lulu/js/plugin/sea.js"></script>
     <!-- Bootstrap -->
     <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
     <!-- handlebars -->
     <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
     <!-- typeahead -->
     <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
+    <!-- Placeholder -->
+    <script type="text/javascript" src="/vendors/lulu/js/common/ui/Placeholder.js"></script>
     <!-- jquery tagsinput -->
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- jquery datatable -->
@@ -192,10 +169,8 @@
     <!-- custom -->
     <script type="text/javascript" src="/js/account/add.js"></script>
     
-    <script type="text/javascript">
-        seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-          $('select').selectMatch();
-        })
+    <script>
+        $('input').placeholder();
     </script>
   </body>
 </html>

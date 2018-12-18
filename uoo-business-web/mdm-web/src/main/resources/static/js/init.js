@@ -56,6 +56,9 @@ var $http = {
                         btn: ['确定']
                     }, function(index, layero){
                         parent.layer.close(index);
+                        if(message === "主账号不存在,请新建主账号"){
+                            window.history.back();
+                        }
                     }, function(){
 
                     });

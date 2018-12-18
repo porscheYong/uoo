@@ -48,22 +48,26 @@ function initMainTable(isCheck,search){
         'autoWidth': false,
         'ordering': true,
         'info': true,
-        "scrollY": "375px",
+        "scrollY": "395px",
         'scrollCollapse': true,
         'columns': [
             { 'data': "psnNbr", 'title': '人员编码', 'className': 'row-psnNbr' },
             { 'data': "psnName", 'title': '姓名', 'className': 'row-psnName' ,
-            'render': function (data, type, row, meta) {
-                if(row.typeName == '主账号'){
-                    return '<a href="editMainAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&acctId='+ row.accId + '&hType=mh">'+ row.psnName +'</a>'
-                }else{
-                    return '<a href="editSubAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&acctId='+ row.accId +'&statusCd='+row.statusCd+'&hType=mh">'+ row.psnName +'</a>'
-                } 
-              }
+                'render': function (data, type, row, meta) {
+                    if(row.typeName == '主账号'){
+                        return '<a href="editMainAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&acctId='+ row.accId + '&hType=mh">'+ row.psnName +'</a>'
+                    }else{
+                        return '<a href="editSubAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&acctId='+ row.accId +'&statusCd='+row.statusCd+'&hType=mh">'+ row.psnName +'</a>'
+                    } 
+                }
             },
             { 'data': "typeName", 'title': '账号类型', 'className': 'row-typeName' },
             { 'data': "acct", 'title': '账号', 'className': 'row-acc' },
-            { 'data': "orgName", 'title': '归属组织', 'className': 'row-org' },
+            { 'data': "orgName", 'title': '归属组织', 'className': 'row-org' ,
+                'render': function (data, type, row, meta) {
+                    return '<span title="'+ row.orgName +'" class="orgNamePoint">'+row.orgName+'</span>';
+                }
+            },
             { 'data': "statusCd", 'title': '状态', 'className': 'row-statusCd' ,
             'render': function (data, type, row, meta) {
                 if(row.statusCd == 1000){
@@ -142,7 +146,7 @@ function boxClick(){            //点击复选框
     if(lChBox.checked == true){
         isCheck = 1;
         if(isIE8){
-            $(".ui-checkbox").css("background-position","0 -40px");
+            $(".ui-checkbox").css("background-position","0px -40px");
         }
     }else{
         isCheck = 0;
