@@ -3511,7 +3511,6 @@
 		oSettings.bSorted = false;
 		oSettings.bFiltered = false;
 		oSettings.bDrawing = false;
-        oSettings.oFeatures.bServerSide = true;
         //oSettings.oFeatures.bServerSide = true;
 	}
 	
@@ -6097,7 +6096,6 @@
 	 */
 	function _fnSortListener ( settings, colIdx, append, callback )
 	{
-        // settings.oFeatures.bServerSide = false;
         //settings.oFeatures.bServerSide = false;
 		var col = settings.aoColumns[ colIdx ];
 		var sorting = settings.aaSorting;

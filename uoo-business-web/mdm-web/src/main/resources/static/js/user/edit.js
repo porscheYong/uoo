@@ -1149,9 +1149,9 @@ function gotoAccout(i){
     var userAcc=personalData.userList.records[i];
     var url="";
     if(userAcc.type==1){
-        url+="/inaction/account/addMainAccount.html"
+        url+="/inaction/account/editMainAccount.html"
     }else{
-        url+="/inaction/account/addSubAccount.html"
+        url+="/inaction/account/editSubAccount.html"
     }
     url+="?";
     url+="orgId="+orgId+"&";

@@ -1,32 +1,28 @@
-// loadingMask
-var loading = new Loading();
+var toastr = window.top.toastr;
 
-var orgId,
-    orgName,
+
+var orgIdSelect,
     nodeName,
-    nodeArr,
-    parent,
-    orgTreeId;
-    
-loading.screenMaskEnable('container');
+    nodeArr;
 
 function onNodeClick(e,treeId, treeNode) {
-    orgId = treeNode.id;
-    orgName = treeNode.name;
-    var currentNode = {node: treeNode, current: true};//获取当前选中节点
+    // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+    // zTree.expandNode(treeNode);
+    orgIdSelect = treeNode.id;
+    // orgName = treeNode.name;
+    var currentNode = treeNode.name;//获取当前选中节点
     var parentNode = treeNode.getParentNode();
     nodeArr = [];
     getParentNodes(parentNode, currentNode);
-    refreshResult();
 }
 
 // 获取父节点路径
 function getParentNodes(parentNode, currentNode) {
     if(parentNode!=null){
-        parent = {node: parentNode, current: false};
+        nodeName = parentNode.name;
         var curNode = parentNode.getParentNode();
         nodeArr.push(currentNode);
-        getParentNodes(curNode, parent);
+        getParentNodes(curNode, nodeName);
     }else{
         //根节点
         nodeArr.push(currentNode);
@@ -37,18 +33,12 @@ function filter (treeId, parentNode, childNodes) {
     return childNodes.data
 }
 
-function refreshResult () {
-    var url = "mainList.html?orgId=" + orgId + "&orgName=" + encodeURI(orgName) + "&orgTreeId=" + orgTreeId;
-    $('#userFrame').attr("src",url);
-}
-
-//初始化组织
 function initOrgRelTree (orgTreeId) {
 
     var setting = {
         async: {
             enable: true,
-            url: "/orgRel/getOrgRelTree?orgTreeId="+orgTreeId + "&orgRootId=" + orgTreeId,
+            url: "/orgRel/getOrgRelTree?orgRootId=1&orgTreeId=1",
             autoParam: ["id"],
             type: "get",
             dataFilter: filter
@@ -84,10 +74,9 @@ function initOrgRelTree (orgTreeId) {
         zTree.expandNode(nodes[0], true);
         zTree.selectNode(nodes[0], true);
         onNodeClick(null, null, nodes[0]);
-        loading.screenMaskDisable('container');
     }, function (err) {
-        loading.screenMaskDisable('container');
-    });
+
+    })
 }
 
 // 初始化业务组织列表
@@ -110,40 +99,46 @@ function initBusinessList () {
             initOrgRelTree(orgTreeId);
         })
     }, function (err) {
-        loading.screenMaskDisable('container');
     })
 }
+    
 
 // 获取组织完整路径
-function getOrgExtInfo () {
-    var pathArry = nodeArr;
-    var pathStr = '';
-    if (pathArry && pathArry.length > 0) {
-        for (var i = pathArry.length - 1; i >= 0; i--) {
-            var node = pathArry[i].node;
-            if (pathArry[i].current) {
-                pathStr +=  '<span class="breadcrumb-item"><a href="javascript:void(0);">' + node.name + '</a></span>';
-            } else {
-                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+orgId+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
-            }
-        }
-        $('#userFrame').contents().find('.breadcrumb').html(pathStr);
-    }
-}
+// function getOrgExtInfo() {
+//   var pathArry = nodeArr;
+//   var pathStr = '';
+//   for (var i = pathArry.length - 1; i >= 0; i--) {
+//       pathStr += pathArry[i] + '/'; 
+//   }
+//   return pathStr.toString().substring(0,pathStr.toString().length-1);;
+// }
 
-// 根据组织ID展开并选中组织
-function openTreeById (sId, id) {
-    var tId = 'standardTree_' + id;
-    var sId = 'standardTree_' + sId;
-    var orgTree = $.fn.zTree.getZTreeObj("standardTree");
-    var selectNode = orgTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-    if (!selectNode.open) {
-        orgTree.expandNode(selectNode, true);
-    }
-    var node = orgTree.getNodeByTId(tId);
-    orgTree.selectNode(node);
-    $('.curSelectedNode').trigger('click');
-}
+
+// 获取组织完整路径
+// function getOrgExtInfo () {
+//     var pathArry = nodeArr;
+//     var pathStr = '';
+//     if (pathArry && pathArry.length > 0) {
+//         for (var i = pathArry.length - 1; i >= 0; i--) {
+//             pathStr +=  pathArry[i].node.name + '/';    
+//         }
+//     }
+//     return pathStr.toString().substring(0,pathStr.toString().length-1);;
+//   }
+
+// function saveBtnClick(){
+//         var orgNa = [];
+//         for(var i = 0;i < editOrgList.length; i++){
+//             orgNa.push(editOrgList[i].orgId);
+//         }
+//         if(orgNa.indexOf(parseInt(orgIdSelect)) != -1){
+//             toastr.warning("已选择该组织");
+//         }else{
+//             addAcctOrg(orgIdSelect);
+//             editOrgList.push({'orgId':orgIdSelect,'fullName':getOrgExtInfo()});
+//         }
+//     $('#myModal').modal('hide');
+// }
+
 
 initBusinessList();
-

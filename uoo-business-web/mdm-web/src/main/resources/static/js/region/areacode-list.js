@@ -5,7 +5,10 @@ var i=0,showCheck=getQueryString('showCheck');
 var  dataTable,checkAreaCode;
 function retrieveData(data, callback, settings) {
  var pageSize=0,pageNo=0;
+ var colspan=4;
  
+ var loadTr="<tr role='row' class='odd' > <td class='user-account' colspan='"+colspan+"'>查询中...</td> </tr>"
+ $('#areaCodeTable tbody').html(loadTr);
 /* for(var i=0;i<aoData.length;i++){
 	 if(aoData[i].name=='length'){
 	 }

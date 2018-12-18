@@ -1,6 +1,4 @@
-// var userRoleList = getQueryString('userRoleList');
-// var orgFrame = parent.window['standardOrg'];
-// var orgTypeList = orgFrame.orgTypeList;
+
 var checkNode = []; //选中显示label标签
 var allRoles = [];
 var checkRole = []; //选中的角色
