@@ -3,6 +3,7 @@ package cn.ffcs.uoo.web.maindata.personnel.controller;
 import cn.ffcs.uoo.web.maindata.personnel.service.PersonnelImageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,8 +28,8 @@ public class PersonnelImageController {
     private PersonnelImageService personnelImageService;
 
     @ApiOperation(value="图片上传",notes="图片上传")
-    @RequestMapping(value="/uploadImg", method = RequestMethod.PUT)
-    public Object uploadImg(@RequestParam("editormd-image-file") MultipartFile multipartFile, @RequestParam("psnImageId") Long psnImageId ){
+    @RequestMapping(value="/uploadImg", method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Object uploadImg(@RequestParam("multipartFile") MultipartFile multipartFile, @RequestParam(value="psnImageId",defaultValue = "0")Long psnImageId ){
         return personnelImageService.uploadImg(multipartFile, psnImageId);
     }
 }
