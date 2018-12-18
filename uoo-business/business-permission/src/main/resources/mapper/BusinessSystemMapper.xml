@@ -25,19 +25,5 @@
     <sql id="Base_Column_List">
         BUSINESS_SYSTEM_ID, SYSTEM_CODE, SYSTEM_NAME, SYSTEM_DESC, SYSTEM_URL, INTF_TYPE, UUID, EFF_DATE, EXP_DATE, STATUS_CD, STATUS_DATE, CREATE_USER, CREATE_DATE, UPDATE_USER, UPDATE_DATE
     </sql>
-    <select id="getId" resultType="java.lang.Long">
-        SELECT SEQ_TB_BUSINESS_SYSTEM_ID.nextval FROM dual
-    </select>
-    <select id="listBusinessSystemByOrgTree" resultType="cn.ffcs.uoo.core.permission.entity.BusinessSystem" parameterType="java.lang.Long">
-	SELECT
-	b.*
-	FROM
-	TB_BUSINESS_SYSTEM b
-	LEFT JOIN TB_SYSTEM_ORG_TREE r ON r.BUSINESS_SYSTEM_ID =
-	b.BUSINESS_SYSTEM_ID
-	WHERE
-	r.ORG_TREE_ID = #{treeId}
-	AND b.STATUS_CD = '1000'
-	AND r.STATUS_CD = '1000'
-    </select>
+
 </mapper>

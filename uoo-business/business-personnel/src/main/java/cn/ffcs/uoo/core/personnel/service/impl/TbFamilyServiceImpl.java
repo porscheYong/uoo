@@ -5,13 +5,11 @@ import cn.ffcs.uoo.core.personnel.constant.EumPersonnelResponseCode;
 import cn.ffcs.uoo.core.personnel.entity.TbFamily;
 import cn.ffcs.uoo.core.personnel.dao.TbFamilyMapper;
 import cn.ffcs.uoo.core.personnel.service.TbFamilyService;
-import cn.ffcs.uoo.core.personnel.service.TbPersonnelService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
 import cn.ffcs.uoo.core.personnel.util.StrUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -48,7 +46,7 @@ public class TbFamilyServiceImpl extends ServiceImpl<TbFamilyMapper, TbFamily> i
     public Object saveTbFamily(TbFamily tbFamily) {
         tbFamily.setFamilyId(this.getId());
         if(retBool(baseMapper.insert(tbFamily))){
-            return ResultUtils.success(tbFamily.getPersonnelId());
+            return ResultUtils.success(null);
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
     }
@@ -56,7 +54,7 @@ public class TbFamilyServiceImpl extends ServiceImpl<TbFamilyMapper, TbFamily> i
     @Override
     public Object updateTbFamily(TbFamily tbFamily) {
         if(retBool(baseMapper.updateById(tbFamily))){
-            return ResultUtils.success(tbFamily.getPersonnelId());
+            return ResultUtils.success(null);
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
     }
@@ -68,22 +66,17 @@ public class TbFamilyServiceImpl extends ServiceImpl<TbFamilyMapper, TbFamily> i
         tbFamily.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbFamily.setStatusDate(new Date());
         if(retBool(baseMapper.updateById(tbFamily))){
-            TbFamily family = getFamilyById(familyId);
-            return ResultUtils.success(family.getPersonnelId());
+            return ResultUtils.success(null);
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
     }
 
-    public TbFamily getFamilyById(Long familyId){
+    @Override
+    public Object getTbFamilyById(Long familyId) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         params.put(BaseUnitConstants.TBFAMILY_FAMILY_ID, familyId);
-        return this.selectOne(new EntityWrapper<TbFamily>().allEq(params));
-    }
-
-    @Override
-    public Object getTbFamilyById(Long familyId) {
-        return ResultUtils.success(getFamilyById(familyId));
+        return ResultUtils.success(this.selectOne(new EntityWrapper<TbFamily>().allEq(params)));
     }
 
     @Override

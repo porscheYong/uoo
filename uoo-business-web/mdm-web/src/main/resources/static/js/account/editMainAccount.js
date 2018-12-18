@@ -308,12 +308,12 @@ function addAcctOrg(orgId){ //编辑时新增组织
     data: JSON.stringify(tbAccountOrgRel),
     dataType:"JSON",
     success: function (data) { //返回json结果
-      if(data.state == 13){
-        toastr.error(data.message);
-      }else{
+      if(data.state == 1000){
         toastr.success(data.message);
         refreshTb(acctId);
         orgNum += 1;
+      }else{
+        toastr.error(data.message);
       }
     },
     error:function(err){

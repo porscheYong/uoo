@@ -1,3 +1,6 @@
+var isIE=!!window.ActiveXObject;
+var isIE8=isIE&&document.documentMode<9;
+
 var orgId = getQueryString('orgId');
 var orgName = getQueryString('orgName');
 var orgTreeId = getQueryString('orgTreeId');
@@ -7,6 +10,17 @@ var table;
 var isCheck = 0;
 var sortFlag = 0;
 var currentPage = 0;
+
+Array.prototype.filter = Array.prototype.filter || function(func) {
+    var arr = this;
+    var r = [];
+    for (var i = 0; i < arr.length; i++) {
+        if (func(arr[i],i,arr)) {
+            r.push(arr[i]);
+        }
+    }
+    return r;
+}
 
 // 获取组织完整路径
 function getOrgExtInfo () {
@@ -127,8 +141,14 @@ function boxClick(){            //点击复选框
     sortFlag = 0;
     if(lChBox.checked == true){
         isCheck = 1;
+        if(isIE8){
+            $(".ui-checkbox").css("background-position","0 -40px");
+        }
     }else{
         isCheck = 0;
+        if(isIE8){
+            $(".ui-checkbox").css("background-position","0px 0px");
+        }
     }
     initMainTable(isCheck,'');
 }
