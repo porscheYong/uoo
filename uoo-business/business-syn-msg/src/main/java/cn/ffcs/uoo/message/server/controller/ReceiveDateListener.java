@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Component
-@RabbitListener(queues = {"queue_test"})
+@RabbitListener(queues = {"queue_66"})
 public class ReceiveDateListener {
 
     @Autowired

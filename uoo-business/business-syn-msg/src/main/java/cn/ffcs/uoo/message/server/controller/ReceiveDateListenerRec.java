@@ -81,11 +81,11 @@ public class ReceiveDateListenerRec {
             }
             //人员
             else if("person".equals(type) && "personnelId".equals(column) && value != null){
-                rs = handleOrg(json,handle,type,value);
+                rs = handlePersonnel(json,handle,type,value);
             }
             //从账号
             else if("person".equals(type) && "slaveAcctId".equals(column) && value != null){
-                rs = handleOrg(json,handle,type,value);
+                rs = handleSlaveAcct(json,handle,type,value);
             }
 
             //下发报文
