@@ -14,6 +14,8 @@ public interface TbSlaveAcctMapper extends BaseMapper<TbSlaveAcct> {
 
     List<TbSlaveAcct> insertOrUpdateSalveAcctByPersonnelIdAndSystemId(@Param("personnelId") Long personnelId, @Param("systemId") Long systemId);
 
+    List<TbSlaveAcct> deleteSalveAcctByAcct(@Param("acctId") Long acctId,@Param("systemId") Long systemId);
+
     TbAcctVo insertOrUpdateAcct(@Param("personnelId") Long personnelId, @Param("orgTreeId") Long orgTreeId);
 
     @Select("select count(*) from tb_personnel a ,tb_acct b where a.personnel_id = b.personnel_id " +

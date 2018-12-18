@@ -62,14 +62,14 @@ public class ReceiveDateListener {
     public void process(String json, Channel channel, Message message) throws IOException {
         try {
             //解析json
-            logger.info("json:{}",json);
+            logger.info("json:{}", json);
             Map<String, Object> jsonMap = JSON.parseObject(json, Map.class);
             String handle = (String) jsonMap.get("handle");
             String type = (String) jsonMap.get("type");
             Map<String, Object> context = (Map<String, Object>) jsonMap.get("context");
             String column = (String) context.get("column");
             Long value = null;
-            if(context.get("value") != null){
+            if (context.get("value") != null) {
                 value = Long.parseLong(String.valueOf(context.get("value")));
             }
             JSON.DEFFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -78,7 +78,7 @@ public class ReceiveDateListener {
                 if (value != null && "orgId".equals(column)) {
                     //获取需要下发的系统和对应的规则
                     List<Map<String, Object>> list = systemRuleService.getSystemRuleByOrg(value);
-                    if (list != null && list.size() >0) {
+                    if (list != null && list.size() > 0) {
                         for (Map<String, Object> map : list) {
                             OrgTreeRuleVo vo = (OrgTreeRuleVo) map.get("OrgTreeRuleVo");
                             TbBusinessSystem system = (TbBusinessSystem) map.get("system");
@@ -89,7 +89,7 @@ public class ReceiveDateListener {
                                     TbOrgVo tbOrgVo = tbOrgMapper.getOrgVo(value, vo.getOrgTreeId(), vo.getBusinessSystemId());
 
                                     if (tbOrgVo == null) {
-                                        logger.warn("json:{},treeId:{},systemId is error",json,vo.getOrgTreeId(),vo.getBusinessSystemId());
+                                        logger.warn("json:{},treeId:{},systemId is error", json, vo.getOrgTreeId(), vo.getBusinessSystemId());
                                         continue;
                                     }
 
@@ -105,7 +105,7 @@ public class ReceiveDateListener {
                                     restfulVo.setContext(tbOrgVo);
                                     String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                     //System.out.println(msg);
-                                    logger.info("json:{}---->msg:{}",json,msg);
+                                    logger.info("json:{}---->msg:{}", json, msg);
                                     String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                     RabbitmqIndex index = new RabbitmqIndex();
                                     index.setId(id);
@@ -139,7 +139,7 @@ public class ReceiveDateListener {
                                         restfulVo.setContext(tbOrgVo);
                                         String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                         //System.out.println(msg);
-                                        logger.info("json:{}---->msg:{}",json,msg);
+                                        logger.info("json:{}---->msg:{}", json, msg);
                                         String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                         RabbitmqIndex index = new RabbitmqIndex();
                                         index.setId(id);
@@ -149,8 +149,8 @@ public class ReceiveDateListener {
                                         index.setQueueName(queueName);
                                         rabbitmqIndexMapper.insert(index);
                                         rabbitMqSendService.sendMsg(queueName, msg);
-                                    }else{
-                                        logger.warn("json:{},treeId:{},systemId is error",json,vo.getOrgTreeId(),vo.getBusinessSystemId());
+                                    } else {
+                                        logger.warn("json:{},treeId:{},systemId is error", json, vo.getOrgTreeId(), vo.getBusinessSystemId());
                                     }
                                 }
                                 ;
@@ -163,7 +163,25 @@ public class ReceiveDateListener {
                 }
             } else if ("person".equals(type)) {
                 if (value != null && "personnelId".equals(column)) {
-                    List<Map<String, Object>> list = systemRuleService.getSystemRuleByPerson(value);
+
+                    int UnUseFlag = tbSlaveAcctMapper.checkPersonnelAndAcctByUnUse(value);//失效的人员或主账号条数
+                    int UseFlag = tbSlaveAcctMapper.checkPersonnelAndAcctByUser(value);//1:是有效的人员和主账号
+
+                    List<Map<String, Object>> list = null;
+                    if ("insert".equals(handle) || "update".equals(handle)) {
+
+                        if (UseFlag != 1) {
+                            logger.warn("json:{},人员，主账号信息不是有效数据不存在", json);
+                            return;
+                        }
+                        list = systemRuleService.getSystemRuleByPerson(value);
+                    } else if ("delete".equals(handle)) {
+                        if (UseFlag == 1 || UnUseFlag == 0) {
+                            logger.warn("json:{},人员，主账号信息是有效数据或者不存在", json);
+                            return;
+                        }
+                        list = systemRuleService.getSystemRuleByPersonLimitDelete(value);
+                    }
 
                     if (list != null) {
                         for (Map<String, Object> map : list) {
@@ -193,7 +211,7 @@ public class ReceiveDateListener {
                                             restfulVo.setContext(tbAcctVo);
                                             String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                             //System.out.println(msg);
-                                            logger.info("json:{}---->msg:{}",json,msg);
+                                            logger.info("json:{}---->msg:{}", json, msg);
                                             String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                             RabbitmqIndex index = new RabbitmqIndex();
                                             index.setId(id);
@@ -220,7 +238,7 @@ public class ReceiveDateListener {
                                             restfulVo.setContext(tbAcctVo);
                                             String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                             //System.out.println(msg);
-                                            logger.info("json:{}---->msg:{}",json,msg);
+                                            logger.info("json:{}---->msg:{}", json, msg);
                                             String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                             RabbitmqIndex index = new RabbitmqIndex();
                                             index.setId(id);
@@ -248,7 +266,7 @@ public class ReceiveDateListener {
                                             restfulVo.setContext(tbAcctVo);
                                             String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                             //System.out.println(msg);
-                                            logger.info("json:{}---->msg:{}",json,msg);
+                                            logger.info("json:{}---->msg:{}", json, msg);
                                             String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                             RabbitmqIndex index = new RabbitmqIndex();
                                             index.setId(id);
@@ -258,71 +276,34 @@ public class ReceiveDateListener {
                                             index.setQueueName(queueName);
                                             rabbitmqIndexMapper.insert(index);
                                             rabbitMqSendService.sendMsg(queueName, msg);
-                                        }else{
-                                            logger.warn("json:{},treeId:{},systemId is error",json,vo.getOrgTreeId(),vo.getBusinessSystemId());
+                                        } else {
+                                            logger.warn("json:{},treeId:{},systemId is error", json, vo.getOrgTreeId(), vo.getBusinessSystemId());
                                         }
                                     }
                                 }
                                 ;
                                 break;
                                 case "delete": {
+                                    TbAcct tbAcct = tbAcctMapper.selectByPersonIdLimitDelete(value);
+                                    List<TbSlaveAcct> slaveList = tbSlaveAcctMapper.insertOrUpdateSalveAcctByPersonnelIdAndSystemId(value, system.getBusinessSystemId());
+                                    if (slaveList != null) {
+                                        if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() == 1) {
+                                            slaveList.forEach((temp) -> {
+                                                TbSlaveAcctVo tbSlaveAcct = tbSlaveAcctMapper.selectVoById(temp.getSlaveAcctId());
 
-                                    //人员删除或者主账号删除
-                                    int flag = tbSlaveAcctMapper.checkPersonnelAndAcctByUnUse(value);
-                                    TbAcct tbAcct = tbAcctMapper.selectByPersonId(value);
-                                    if (flag == 1) {
-                                        List<TbSlaveAcct> slaveList = tbSlaveAcctMapper.insertOrUpdateSalveAcctByPersonnelIdAndSystemId(value, system.getBusinessSystemId());
-                                        if (slaveList != null) {
-                                            if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() == 1) {
-                                                slaveList.forEach((temp) -> {
-                                                    TbSlaveAcctVo tbSlaveAcct = tbSlaveAcctMapper.selectVoById(temp.getSlaveAcctId());
-
-                                                    TbAcctVo tbAcctVo = new TbAcctVo();
-                                                    tbAcctVo.setAcctId(tbAcct.getAcctId());
-                                                    tbAcctVo.setAcct(tbAcct.getAcct());
-                                                    tbAcctVo.setStatusCd(tbAcct.getStatusCd());
-
-                                                    TbSlaveAcctVo tbSlaveAcctVo = new TbSlaveAcctVo();
-                                                    tbSlaveAcctVo.setMappStaffId(tbSlaveAcct.getMappStaffId());
-                                                    tbSlaveAcctVo.setStatusCd(tbSlaveAcct.getStatusCd());
-                                                    tbSlaveAcctVo.setSlaveAcct(tbSlaveAcct.getSlaveAcct());
-                                                    tbSlaveAcctVo.setSlaveAcctId(tbSlaveAcct.getSlaveAcctId());
-
-                                                    tbAcctVo.setTbSlaveAcct(tbSlaveAcctVo);
-
-                                                    if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
-
-                                                    }
-                                                    String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
-                                                    RestfulVo restfulVo = new RestfulVo();
-                                                    restfulVo.setHandle(handle);
-                                                    restfulVo.setSerial(id);
-                                                    restfulVo.setType(type);
-                                                    restfulVo.setContext(tbAcctVo);
-                                                    String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                                    //System.out.println(msg);
-                                                    logger.info("json:{}---->msg:{}",json,msg);
-                                                    String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
-                                                    RabbitmqIndex index = new RabbitmqIndex();
-                                                    index.setId(id);
-                                                    index.setState(QueueConstant.valid.getValue());
-                                                    index.setCollectionData(new Date());
-                                                    index.setRabbitmqDate(msg);
-                                                    index.setQueueName(queueName);
-                                                    rabbitmqIndexMapper.insert(index);
-                                                    rabbitMqSendService.sendMsg(queueName, msg);
-                                                });
-                                            } else if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() != 1) {
                                                 TbAcctVo tbAcctVo = new TbAcctVo();
                                                 tbAcctVo.setAcctId(tbAcct.getAcctId());
                                                 tbAcctVo.setAcct(tbAcct.getAcct());
                                                 tbAcctVo.setStatusCd(tbAcct.getStatusCd());
 
-                                                TbPersonnel tbPersonnel = new TbPersonnel();
-                                                tbPersonnel.setPersonnelId(value);
-                                                tbPersonnel.setStatusCd("1100");
+                                                TbSlaveAcctVo tbSlaveAcctVo = new TbSlaveAcctVo();
+                                                tbSlaveAcctVo.setMappStaffId(tbSlaveAcct.getMappStaffId());
+                                                tbSlaveAcctVo.setStatusCd(tbSlaveAcct.getStatusCd());
+                                                tbSlaveAcctVo.setSlaveAcct(tbSlaveAcct.getSlaveAcct());
+                                                tbSlaveAcctVo.setSlaveAcctId(tbSlaveAcct.getSlaveAcctId());
 
-                                                tbAcctVo.setTbPersonnel(tbPersonnel);
+                                                tbAcctVo.setTbSlaveAcct(tbSlaveAcctVo);
+
                                                 if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
 
                                                 }
@@ -334,7 +315,7 @@ public class ReceiveDateListener {
                                                 restfulVo.setContext(tbAcctVo);
                                                 String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                                 //System.out.println(msg);
-                                                logger.info("json:{}---->msg:{}",json,msg);
+                                                logger.info("json:{}---->msg:{}", json, msg);
                                                 String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                                 RabbitmqIndex index = new RabbitmqIndex();
                                                 index.setId(id);
@@ -344,45 +325,76 @@ public class ReceiveDateListener {
                                                 index.setQueueName(queueName);
                                                 rabbitmqIndexMapper.insert(index);
                                                 rabbitMqSendService.sendMsg(queueName, msg);
+                                            });
+                                        } else if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() != 1) {
+                                            TbAcctVo tbAcctVo = new TbAcctVo();
+                                            tbAcctVo.setAcctId(tbAcct.getAcctId());
+                                            tbAcctVo.setAcct(tbAcct.getAcct());
+                                            tbAcctVo.setStatusCd(tbAcct.getStatusCd());
+
+                                            TbPersonnel tbPersonnel = new TbPersonnel();
+                                            tbPersonnel.setPersonnelId(value);
+                                            tbPersonnel.setStatusCd("1100");
+
+                                            tbAcctVo.setTbPersonnel(tbPersonnel);
+                                            if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
+
                                             }
-                                        } else {
-                                            if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() != 1) {
-                                                TbAcctVo tbAcctVo = new TbAcctVo();
-                                                tbAcctVo.setAcctId(tbAcct.getAcctId());
-                                                tbAcctVo.setAcct(tbAcct.getAcct());
-                                                tbAcctVo.setStatusCd(tbAcct.getStatusCd());
-
-                                                TbPersonnel tbPersonnel = new TbPersonnel();
-                                                tbPersonnel.setPersonnelId(value);
-                                                tbPersonnel.setStatusCd("1100");
-
-                                                tbAcctVo.setTbPersonnel(tbPersonnel);
-                                                if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
-
-                                                }
-                                                String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
-                                                RestfulVo restfulVo = new RestfulVo();
-                                                restfulVo.setHandle(handle);
-                                                restfulVo.setSerial(id);
-                                                restfulVo.setType(type);
-                                                restfulVo.setContext(tbAcctVo);
-                                                String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
-                                                //System.out.println(msg);
-                                                logger.info("json:{}---->msg:{}",json,msg);
-                                                String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
-                                                RabbitmqIndex index = new RabbitmqIndex();
-                                                index.setId(id);
-                                                index.setState(QueueConstant.valid.getValue());
-                                                index.setCollectionData(new Date());
-                                                index.setRabbitmqDate(msg);
-                                                index.setQueueName(queueName);
-                                                rabbitmqIndexMapper.insert(index);
-                                                rabbitMqSendService.sendMsg(queueName, msg);
-                                            }
+                                            String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
+                                            RestfulVo restfulVo = new RestfulVo();
+                                            restfulVo.setHandle(handle);
+                                            restfulVo.setSerial(id);
+                                            restfulVo.setType(type);
+                                            restfulVo.setContext(tbAcctVo);
+                                            String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
+                                            //System.out.println(msg);
+                                            logger.info("json:{}---->msg:{}", json, msg);
+                                            String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                            RabbitmqIndex index = new RabbitmqIndex();
+                                            index.setId(id);
+                                            index.setState(QueueConstant.valid.getValue());
+                                            index.setCollectionData(new Date());
+                                            index.setRabbitmqDate(msg);
+                                            index.setQueueName(queueName);
+                                            rabbitmqIndexMapper.insert(index);
+                                            rabbitMqSendService.sendMsg(queueName, msg);
                                         }
-                                    }else{
-                                        logger.warn("json:{},systemId is error",json);
+                                    } else {
+                                        if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() != 1) {
+                                            TbAcctVo tbAcctVo = new TbAcctVo();
+                                            tbAcctVo.setAcctId(tbAcct.getAcctId());
+                                            tbAcctVo.setAcct(tbAcct.getAcct());
+                                            tbAcctVo.setStatusCd(tbAcct.getStatusCd());
+
+                                            TbPersonnel tbPersonnel = new TbPersonnel();
+                                            tbPersonnel.setPersonnelId(value);
+                                            tbPersonnel.setStatusCd("1100");
+
+                                            tbAcctVo.setTbPersonnel(tbPersonnel);
+                                            if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
+
+                                            }
+                                            String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
+                                            RestfulVo restfulVo = new RestfulVo();
+                                            restfulVo.setHandle(handle);
+                                            restfulVo.setSerial(id);
+                                            restfulVo.setType(type);
+                                            restfulVo.setContext(tbAcctVo);
+                                            String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
+                                            //System.out.println(msg);
+                                            logger.info("json:{}---->msg:{}", json, msg);
+                                            String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                            RabbitmqIndex index = new RabbitmqIndex();
+                                            index.setId(id);
+                                            index.setState(QueueConstant.valid.getValue());
+                                            index.setCollectionData(new Date());
+                                            index.setRabbitmqDate(msg);
+                                            index.setQueueName(queueName);
+                                            rabbitmqIndexMapper.insert(index);
+                                            rabbitMqSendService.sendMsg(queueName, msg);
+                                        }
                                     }
+
                                 }
                                 ;
                                 break;
@@ -390,8 +402,8 @@ public class ReceiveDateListener {
                                     break;
                             }
                         }
-                    }else{
-                        logger.warn("json:{}",json);
+                    } else {
+                        logger.warn("json:{}", json);
                     }
                 } else if (value != null && "slaveAcctId".equals(column)) {
                     //获取需要下发的系统和对应的规则
@@ -399,7 +411,7 @@ public class ReceiveDateListener {
 
                     if (map == null) {
                         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-                        logger.warn("json:{},systemId is error",json,null);
+                        logger.warn("json:{},systemId is error", json, null);
                         return;
                     }
 
@@ -408,7 +420,7 @@ public class ReceiveDateListener {
                     //没有系统。
                     if (vo == null) {
                         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-                        logger.warn("json:{},systemId is error",json,null);
+                        logger.warn("json:{},systemId is error", json, null);
                         return;
                     }
 
@@ -435,7 +447,7 @@ public class ReceiveDateListener {
                                 restfulVo.setContext(tbAcctVo);
                                 String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                 //System.out.println(msg);
-                                logger.info("json:{}---->msg:{}",json,msg);
+                                logger.info("json:{}---->msg:{}", json, msg);
                                 String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                 RabbitmqIndex index = new RabbitmqIndex();
                                 index.setId(id);
@@ -456,7 +468,7 @@ public class ReceiveDateListener {
                                 restfulVo.setContext(tbAcctVo);
                                 String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                 //System.out.println(msg);
-                                logger.info("json:{}---->msg:{}",json,msg);
+                                logger.info("json:{}---->msg:{}", json, msg);
                                 String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                 RabbitmqIndex index = new RabbitmqIndex();
                                 index.setId(id);
@@ -491,7 +503,7 @@ public class ReceiveDateListener {
                                     restfulVo.setContext(tbAcctVo);
                                     String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                     //System.out.println(msg);
-                                    logger.info("json:{}---->msg:{}",json,msg);
+                                    logger.info("json:{}---->msg:{}", json, msg);
                                     String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
                                     RabbitmqIndex index = new RabbitmqIndex();
                                     index.setId(id);
@@ -502,8 +514,8 @@ public class ReceiveDateListener {
                                     rabbitmqIndexMapper.insert(index);
                                     rabbitMqSendService.sendMsg(queueName, msg);
                                 }
-                            }else{
-                                logger.warn("json:{},systemId is error",json,null);
+                            } else {
+                                logger.warn("json:{},systemId is error", json, null);
                             }
                         }
                         ;
@@ -516,9 +528,9 @@ public class ReceiveDateListener {
             //Thread.sleep(1000);
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (Exception e) {
-           logger.error("msg:{},Exception:{}",json,e);
-           //重回队列
-           channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
+            logger.error("msg:{},Exception:{}", json, e);
+            //重回队列
+            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
         }
     }
 }
