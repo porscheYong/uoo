@@ -29,7 +29,7 @@
     <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE, SHORT_NAME, ORG_NAME_EN,FULL_NAME,
+    ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE, SHORT_NAME, ORG_NAME_EN, FULL_NAME, 
     CITY_TOWN, OFFICE_PHONE, FOUNDING_TIME, ORG_SCALE, ORG_LEVEL, ORG_POSITION_LEVEL, 
     SORT, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUS_CD, CREATE_DATE, CREATE_USER, 
     UPDATE_DATE, UPDATE_USER, STATUS_DATE
@@ -251,11 +251,7 @@
 
   <!--组织信息-->
   <select id="getOrgVo" resultMap="OrgVoMapper">
-   select a.ORG_ID, a.LOC_ID, a.AREA_CODE_ID, a.ORG_NAME, a.ORG_CODE, a.SHORT_NAME, a.ORG_NAME_EN,
-    a.CITY_TOWN, a.OFFICE_PHONE, a.FOUNDING_TIME, a.ORG_SCALE, a.ORG_LEVEL, a.ORG_POSITION_LEVEL,
-    a.SORT, a.ORG_CONTENT, a.ORG_DESC, a.ADDRESS, a.UUID, a.STATUS_CD, a.CREATE_DATE, a.CREATE_USER,
-    a.UPDATE_DATE, a.UPDATE_USER, a.STATUS_DATE,#{orgTreeId} ORG_TREE_ID,#{businessSystemId} BUSINESS_SYSTEM_ID,
-    b.org_biz_name,b.org_biz_full_name FULL_NAME from tb_org a left join (select * from tb_org_orgtree_rel where org_tree_id = #{orgTreeId} and status_cd = 1000) b on a.org_id = b.org_id
+   select a.*,#{orgTreeId} ORG_TREE_ID,#{businessSystemId} BUSINESS_SYSTEM_ID,b.org_biz_name from tb_org a left join (select * from tb_org_orgtree_rel where org_tree_id = #{orgTreeId} and status_cd = 1000) b on a.org_id = b.org_id
     where a.org_id = #{orgId} and a.status_cd = 1000
   </select>
 

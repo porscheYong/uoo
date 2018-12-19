@@ -8,7 +8,7 @@ var hType = getQueryString('hType');
 var toMainType = getQueryString('toMainType');
 var orgTreeId = getQueryString('orgTreeId');
 var orgRootId = getQueryString('orgRootId');
-var hostId = getQueryString('acctHostId');
+var hostId = getQueryString('acctOrgRelId');
 var fullName = getQueryString('fullName');
 var tabPage = getQueryString('tabPage');
 var acctId = getQueryString('acctId');
@@ -17,7 +17,7 @@ var personnelId = getQueryString('personnelId');
 
 var table;
 var slaveTable;
-var acctHostId = 0;
+var acctOrgRelId = 0;
 var slaveOrgList = [];
 var slaveAcctId;
 var acctExtId = null;
@@ -30,7 +30,7 @@ var resourceObjId = null;
 
 
 if(hostId != null){
-    acctHostId = hostId;
+    acctOrgRelId = hostId;
 }
 
 $('#cerType').get(0).selectedIndex=0;  //判断证件类型
@@ -67,7 +67,7 @@ function getSubUser(acctId) {       //查看并编辑从账号
         }
         $('#acctInfo').css("display","block");
         personnelId = data.personnelId;
-        acctHostId = data.tbSlaveAcct.acctHostId;
+        acctOrgRelId = data.tbSlaveAcct.acctOrgRelId;
         slaveAcctId = data.tbSlaveAcct.slaveAcctId;
         initOrgTable(data.acctOrgVoList);
         initSubAcctInfoCheck(data);
@@ -199,9 +199,9 @@ function initOrgTable(results){
               num++;
               if(row.fullName.search('->') != -1){
                 var s = row.fullName.replace(/->/g,'/');
-                return "<a href='javascript:void(0);' onclick='saveSlaveOrg("+ num + ","+ row.acctHostId + ")'>"+ s.substring(0,s.length-1) +'</a>'
+                return "<a href='javascript:void(0);' onclick='saveSlaveOrg("+ num + ","+ row.acctOrgRelId + ")'>"+ s.substring(0,s.length-1) +'</a>'
               }else{
-                return "<a href='javascript:void(0);' onclick='saveSlaveOrg("+ num + ","+ row.acctHostId + ")'>"+ row.fullName +'</a>'
+                return "<a href='javascript:void(0);' onclick='saveSlaveOrg("+ num + ","+ row.acctOrgRelId + ")'>"+ row.fullName +'</a>'
               }
           }
         }
@@ -284,7 +284,7 @@ function updateTbSlaveAcct(){       //更新从账号信息
     }
 
     var editFormSlaveAcctVo = {
-        "acctHostId": acctHostId,
+        "acctOrgRelId": acctOrgRelId,
         "disableDate": $('#invalidDate').val(),
         "enableDate": $('#effectDate').val(),
         "password": $('#defaultPswTel').val(),
@@ -394,7 +394,7 @@ function  hasExtInfo(certType){  //判断是否需要扩展信息
 }
 
 function saveSlaveOrg(id,hostId){  //获取acctHostId
-    acctHostId = hostId;
+    acctOrgRelId = hostId;
     $('#slaveOrgModal').modal('hide');
     initOrgTable([{"fullName":slaveOrgList[id-1]}]);
     $('#addText').text('更换归属组织');
@@ -402,7 +402,7 @@ function saveSlaveOrg(id,hostId){  //获取acctHostId
 
 function deleteOrg(){
     initOrgTable({"fullName":""});
-    acctHostId = 0;
+    acctOrgRelId = 0;
     $('#addText').text('新增归属组织');
 }
 
@@ -452,7 +452,7 @@ function backToAcctInfo(){  //返回用户信息查看面板
 
 
 function btnSubmit(){       //提交
-    if(acctHostId != 0){
+    if(acctOrgRelId != 0){
         updateTbSlaveAcct();
     }else{
         toastr.error("组织不能为空");

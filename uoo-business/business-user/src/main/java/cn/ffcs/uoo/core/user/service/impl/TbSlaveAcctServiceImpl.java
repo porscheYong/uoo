@@ -42,7 +42,7 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
     private RabbitMqService rabbitMqService;
     @Override
     public Long getId(){
-       return baseMapper.getId();
+        return baseMapper.getId();
     }
 
     @Override

@@ -27,41 +27,41 @@
         select t1.role_id, t1.role_name
         from tb_roles t1, tb_user_role t2
         <where> 1 = 1
-          and t1.status_cd = 1000
-          and t2.status_cd = 1000
-          and t1.role_id = t2.role_id
+            and t1.status_cd = 1000
+            and t2.status_cd = 1000
+            and t1.role_id = t2.role_id
             <if test="userId != null and userId != '' " >
-              and t2.user_id = #{userId}
+                and t2.user_id = #{userId}
             </if>
         </where>
     </select>
 
     <select id="getSlaveAcctInfo" resultType="cn.ffcs.uoo.core.user.vo.ListSlaveAcctVo">
         select t2.slave_acct_id,
-               t2.slave_acct,
-               t2.slave_acct_type,
-               t1.host_obj_id,
-               t1.host_obj_name
+        t2.slave_acct,
+        t2.slave_acct_type,
+        t1.host_obj_id,
+        t1.host_obj_name
         from TB_SLAVE_ACCT_HOST_REL t1, tb_slave_acct t2, TB_SLVACCT_ACCT_REL t3
         <where> t1.status_cd = 1000
-          and t2.status_cd = 1000
-          and t3.status_cd = 1000
-          and t1.slave_acct_id = t2.slave_acct_id
-          and t2.slave_acct_id = t3.slave_acct_id
+            and t2.status_cd = 1000
+            and t3.status_cd = 1000
+            and t1.slave_acct_id = t2.slave_acct_id
+            and t2.slave_acct_id = t3.slave_acct_id
             <if test="acctId != null and acctId != '' " >
                 and t3.acct_id = #{acctId}
             </if>
         </where>
         union all
         select t1.slave_acct_id,
-               t1.slave_acct,
-               t1.slave_acct_type,
-               null host_obj_id,
-               '' host_obj_name
+        t1.slave_acct,
+        t1.slave_acct_type,
+        null host_obj_id,
+        '' host_obj_name
         from tb_slave_acct t1, TB_SLVACCT_USER_REL t2
         <where> t1.status_cd = 1000
-          and t2.status_cd = 1000
-          and t1.slave_acct_id = t2.slave_acct_id
+            and t2.status_cd = 1000
+            and t1.slave_acct_id = t2.slave_acct_id
             <if test="userId != null and userId != '' " >
                 and t2.user_id = #{userId}
             </if>
@@ -143,21 +143,21 @@
     <select id="getUserList" resultType="cn.ffcs.uoo.core.user.vo.ListUserVo">
         select ROWNUM id, at.*
         from (select '1' type, t.acct_id, '主账号' name, t.acct,t.status_cd,to_char(t.create_date, 'yyyy-MM-dd') as create_date
-              from TB_ACCT t
-              where t.status_cd = 1000
-                <if test="personnelId != null and personnelId != '' " >
-                    and t.personnel_id = #{personnelId}
-                </if>
-              union
-              select '2' type,t1.slave_acct_id acct_id, '从账号' name, t1.slave_acct as acct, t1.status_cd, to_char(t1.create_date, 'yyyy-MM-dd') as create_date
-              from TB_SLAVE_ACCT t1, TB_ACCT t2
-              where t1.status_cd = 1000
-                and t2.status_cd = 1000
-                and t1.slave_acct_type = '1'
-                and t1.acct_id = t2.acct_id
-                <if test="personnelId != null and personnelId != '' " >
-                  and t2.personnel_id = #{personnelId}
-                </if>
+        from TB_ACCT t
+        where t.status_cd = 1000
+        <if test="personnelId != null and personnelId != '' " >
+            and t.personnel_id = #{personnelId}
+        </if>
+        union
+        select '2' type,t1.slave_acct_id acct_id, '从账号' name, t1.slave_acct as acct, t1.status_cd, to_char(t1.create_date, 'yyyy-MM-dd') as create_date
+        from TB_SLAVE_ACCT t1, TB_ACCT t2
+        where t1.status_cd = 1000
+        and t2.status_cd = 1000
+        and t1.slave_acct_type = '1'
+        and t1.acct_id = t2.acct_id
+        <if test="personnelId != null and personnelId != '' " >
+            and t2.personnel_id = #{personnelId}
+        </if>
         ) at
     </select>
 
@@ -192,10 +192,10 @@
 
     <select id="getAcctOrg" resultType="cn.ffcs.uoo.core.user.vo.ListAcctOrgVo">
         select ROWNUM id, t2.acct_org_rel_id,t2.acct_id,t1.org_id, t1.full_name, t1.org_name
-          from tb_org t1, TB_account_ORG_REL t2
-         where t1.status_cd = 1000
-           and t2.status_cd = 1000
-           and t1.org_id = t2.org_id
+        from tb_org t1, TB_account_ORG_REL t2
+        where t1.status_cd = 1000
+        and t2.status_cd = 1000
+        and t1.org_id = t2.org_id
         <if test="acctId != null and acctId != '' " >
             and t2.acct_id = #{acctId}
         </if>
@@ -206,9 +206,9 @@
         select t1.org_id, t1.org_name, t1.full_name, t2.acct_org_rel_id
         from tb_org t1, tb_account_org_rel t2, tb_acct t3
         where t1.status_cd = 1000
-          and t2.status_cd = 1000
-          and t1.org_id = t2.org_id
-          and t2.acct_id = t3.acct_id
+        and t2.status_cd = 1000
+        and t1.org_id = t2.org_id
+        and t2.acct_id = t3.acct_id
         <if test="personnelId != null and personnelId != '' " >
             and t3.personnel_id = #{personnelId}
         </if>

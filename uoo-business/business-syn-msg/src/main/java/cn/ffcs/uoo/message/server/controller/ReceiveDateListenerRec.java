@@ -81,11 +81,11 @@ public class ReceiveDateListenerRec {
             }
             //人员
             else if("person".equals(type) && "personnelId".equals(column) && value != null){
-                rs = handlePersonnel(json,handle,type,value);
+                rs = handleOrg(json,handle,type,value);
             }
             //从账号
             else if("person".equals(type) && "slaveAcctId".equals(column) && value != null){
-                rs = handleSlaveAcct(json,handle,type,value);
+                rs = handleOrg(json,handle,type,value);
             }
 
             //下发报文
@@ -176,24 +176,25 @@ public class ReceiveDateListenerRec {
     //操作人员
     private List<RabbitmqIndex> handlePersonnel(String json,String handle,String type,Long personnelId)throws IOException{
         List<RabbitmqIndex> rs = new ArrayList<>();
-        int UnUseFlag = tbSlaveAcctMapper.checkPersonnelAndAcctByUnUse(personnelId);//失效的人员或主账号条数
+        int UnUseFlag = tbSlaveAcctMapper.checkPersonnelAndAcctByUnUse(personnelId);//1:是失效的人员或主账号
         int UseFlag = tbSlaveAcctMapper.checkPersonnelAndAcctByUser(personnelId);//1:是有效的人员和主账号
 
-        List<Map<String, Object>> list = null;
         if("insert".equals(handle) || "update".equals(handle) ){
 
             if(UseFlag != 1){
                 logger.warn("json:{},人员，主账号信息不是有效数据不存在",json);
                 return null;
             }
-            list = systemRuleService.getSystemRuleByPerson(personnelId);
+
         }else if("delete".equals(handle)){
-            if(UseFlag == 1 || UnUseFlag == 0){
+            if(UnUseFlag != 1){
                 logger.warn("json:{},人员，主账号信息是有效数据或者不存在",json);
                 return null;
             }
-            list = systemRuleService.getSystemRuleByPersonLimitDelete(personnelId);
         }
+
+
+        List<Map<String, Object>> list = systemRuleService.getSystemRuleByPerson(personnelId);
         if (list== null || list.size() ==0 ) {
             logger.warn("json:{},没有需要下发的系统",json);
             rs = null;
@@ -202,13 +203,15 @@ public class ReceiveDateListenerRec {
                 OrgTreeRuleVo vo = (OrgTreeRuleVo) map.get("OrgTreeRuleVo");
                 TbBusinessSystem system = (TbBusinessSystem) map.get("system");
 
+                //获取所有的从账号
+                List<TbSlaveAcct> slaveList = tbSlaveAcctMapper.insertOrUpdateSalveAcctByPersonnelIdAndSystemId(personnelId, system.getBusinessSystemId());
+
+                //是否有从账号
+                boolean isHaveSlave = slaveList !=null && slaveList.size()>0;
+
                 switch (handle){
                     case "insert":
                     case "update":{
-                        //获取所有的从账号
-                        List<TbSlaveAcct> slaveList = tbSlaveAcctMapper.insertOrUpdateSalveAcctByPersonnelIdAndSystemId(personnelId, system.getBusinessSystemId());
-                        //是否有从账号
-                        boolean isHaveSlave = slaveList !=null && slaveList.size()>0;
                         //下发人员和从账号
                         if(vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() ==1 && isHaveSlave){
                             TbSlaveAcct temp = slaveList.get(0);
@@ -234,10 +237,8 @@ public class ReceiveDateListenerRec {
                         }
                     };break;
                     case "delete":{
-                        TbAcct tbAcct = tbAcctMapper.selectByPersonIdLimitDelete(personnelId);
-                        List<TbSlaveAcct> slaveList = tbSlaveAcctMapper.deleteSalveAcctByAcct(tbAcct.getAcctId(),system.getBusinessSystemId());
-                        //是否有从账号
-                        boolean isHaveSlave = slaveList !=null && slaveList.size()>0;
+
+                        TbAcct tbAcct = tbAcctMapper.selectByPersonId(personnelId);
                         //下发人员和从账号
                         if(vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() ==1 && isHaveSlave){
                             for (TbSlaveAcct temp:slaveList){
@@ -261,7 +262,7 @@ public class ReceiveDateListenerRec {
                                     RabbitmqIndex index =montage(handle,type,json,tbAcctVo,system);
                                     rs.add(index);
                                 }else{
-                                    logger.warn("json:{},从账号是有效的",json);
+                                    logger.warn("json:{},从账号是有效的");
                                 }
 
                             }
@@ -311,12 +312,6 @@ public class ReceiveDateListenerRec {
             case "insert":
             case "update": {
                 TbAcctVo tbAcctVo = tbSlaveAcctMapper.insertOrUpdateSalveAcct(slaveAcctId);//获取下发的报文
-
-                if(tbAcctVo == null){
-                    logger.warn("json:{},systemId:{} 账号信息不是有效数据不存在",json,null);
-                    return null;
-                }
-
                 tbAcctVo.getTbSlaveAcct().setSystemName(system.getSystemName());//添加系统的名称
                 tbAcctVo.getTbSlaveAcct().setBusinessSystemId(system.getBusinessSystemId());//添加系统的id
                 PersonShowUtil.noShow(tbAcctVo);//不下发数据

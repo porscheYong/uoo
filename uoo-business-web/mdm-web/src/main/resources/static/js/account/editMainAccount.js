@@ -115,7 +115,7 @@ function initOrgTable(results){         //主账号组织数据表格
           if(slaveOrgIdList.indexOf(row.orgId) != -1){
             return "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' title='删除' onclick='deleteOrg("+ row.orgId + ")'></a>";
           }else{
-            return "<a class='Icon IconAdd' href='javascript:void(0);' id='addSlaveBtn' title='创建从账号' onclick='addSlaveBtnClick(" + row.acctHostId + "," + row.id + ")'></a>"+
+            return "<a class='Icon IconAdd' href='javascript:void(0);' id='addSlaveBtn' title='创建从账号' onclick='addSlaveBtnClick(" + row.acctOrgRelId + "," + row.id + ")'></a>"+
                     "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' title='删除' onclick='deleteOrg("+ row.orgId + ")'></a>";
           }
         }
@@ -361,11 +361,11 @@ function addBtnWClick(){    //新增时已有主账号时点击添加组织按�
     addAcctOrg(orgId);
 }
 
-function addSlaveBtnClick(acctHostId,id){      //点击新增从账号
+function addSlaveBtnClick(acctOrgRelId,id){      //点击新增从账号
     var sFullName = orgTable.row(id-1).data().fullName;
     var url = 'addSubAccount.html?orgTreeId=' + orgTreeId + '&hType=th&personnelId=' + personnelId + 
                       '&mainAcctId='+ acctId +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&toMainType=' + hType +
-                      '&fullName=' + encodeURI(sFullName) + '&acctHostId=' + acctHostId;
+                      '&fullName=' + encodeURI(sFullName) + '&acctOrgRelId=' + acctOrgRelId;
     window.location.href = url;
 }
 

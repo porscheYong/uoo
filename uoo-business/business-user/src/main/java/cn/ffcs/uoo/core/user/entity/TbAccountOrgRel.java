@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author wudj
@@ -90,16 +90,16 @@ public class TbAccountOrgRel extends Model<TbAccountOrgRel> {
     @Override
     public String toString() {
         return "TbAccountOrgRel{" +
-        ", acctOrgRelId=" + acctOrgRelId +
-        ", orgId=" + orgId +
-        ", acctId=" + acctId +
-        ", sort=" + sort +
-        ", statusCd=" + statusCd +
-        ", createDate=" + createDate +
-        ", createUser=" + createUser +
-        ", updateDate=" + updateDate +
-        ", updateUser=" + updateUser +
-        ", statusDate=" + statusDate +
-        "}";
+                ", acctOrgRelId=" + acctOrgRelId +
+                ", orgId=" + orgId +
+                ", acctId=" + acctId +
+                ", sort=" + sort +
+                ", statusCd=" + statusCd +
+                ", createDate=" + createDate +
+                ", createUser=" + createUser +
+                ", updateDate=" + updateDate +
+                ", updateUser=" + updateUser +
+                ", statusDate=" + statusDate +
+                "}";
     }
 }

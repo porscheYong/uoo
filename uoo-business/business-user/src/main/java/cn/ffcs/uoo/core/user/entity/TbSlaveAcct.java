@@ -129,20 +129,20 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
     @Override
     public String toString() {
         return "TbSlaveAcct{" +
-        ", slaveAcctId=" + slaveAcctId +
-        ", slaveAcct=" + slaveAcct +
-        ", salt=" + salt +
-        ", password=" + password +
-        ", symmetryPassword=" + symmetryPassword +
-        ", slaveAcctType=" + slaveAcctType +
-        ", statusCd=" + statusCd +
-        ", createDate=" + createDate +
-        ", createUser=" + createUser +
-        ", updateDate=" + updateDate +
-        ", updateUser=" + updateUser +
-        ", statusDate=" + statusDate +
+                ", slaveAcctId=" + slaveAcctId +
+                ", slaveAcct=" + slaveAcct +
+                ", salt=" + salt +
+                ", password=" + password +
+                ", symmetryPassword=" + symmetryPassword +
+                ", slaveAcctType=" + slaveAcctType +
+                ", statusCd=" + statusCd +
+                ", createDate=" + createDate +
+                ", createUser=" + createUser +
+                ", updateDate=" + updateDate +
+                ", updateUser=" + updateUser +
+                ", statusDate=" + statusDate +
                 ", enableDate=" + enableDate +
                 ", disableDate=" + disableDate +
-        "}";
+                "}";
     }
 }

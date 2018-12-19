@@ -8,8 +8,6 @@ public interface SystemRuleService {
     Map<String,Object> getSystemRuleBySlaveAcct(Long slaveAcctId);
     //人员获取规则
     List<Map<String, Object>> getSystemRuleByPerson(Long PersonalId);
-    //人员删除获取规则
-    List<Map<String, Object>> getSystemRuleByPersonLimitDelete(Long PersonalId);
     //组织获取规则
     List<Map<String, Object>> getSystemRuleByOrg(Long orgId);
 }

@@ -46,12 +46,6 @@ public class SystemRuleServiceImpl implements SystemRuleService {
     }
 
     @Override
-    public List<Map<String, Object>> getSystemRuleByPersonLimitDelete(Long PersonalId) {
-        List<TbBusinessSystem> systems = tbBusinessSystemMapper.getSystemByPersonalLimitDelete(PersonalId);
-        return getList(systems);
-    }
-
-    @Override
     public List<Map<String, Object>> getSystemRuleByOrg(Long orgId) {
         List<TbBusinessSystem> systems = tbBusinessSystemMapper.getSystemByOrg(orgId);
         return getList(systems);

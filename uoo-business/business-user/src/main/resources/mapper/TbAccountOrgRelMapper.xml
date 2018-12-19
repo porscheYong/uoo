@@ -28,9 +28,9 @@
     <select id="findSlaveAcct" resultType="cn.ffcs.uoo.core.user.entity.TbSlaveAcct">
         select t2.* from tb_account_org_rel t1, tb_slave_acct t2
         where t1.status_cd = 1000
-          and t2.status_cd = 1000
-          and t1.acct_org_rel_id = t2.acct_org_rel_id
-          and t1.acct_id = t2.acct_id
+        and t2.status_cd = 1000
+        and t1.acct_org_rel_id = t2.acct_org_rel_id
+        and t1.acct_id = t2.acct_id
         <if test="orgTreeId != null and orgTreeId != '' " >
             and t1.org_tree_id = #{orgTreeId}
         </if>

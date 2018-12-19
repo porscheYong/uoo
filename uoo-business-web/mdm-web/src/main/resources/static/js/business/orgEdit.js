@@ -7,6 +7,7 @@ var locationList = [];
 var orgTypeList;
 var orgMartCode; //划小组织编码
 var expandovalueVoList; //划小扩展字段
+var nodeTypeList = [];
 var nodeTypeId;
 var areaTypeId;
 var countTypeId;
@@ -63,7 +64,7 @@ if(typeof $.fn.tagsInput !== 'undefined'){
   $('#orgTypeList').tagsInput({unique: true});
   $('#positionList').tagsInput();
   $('#postList').tagsInput();
-  $('#regionId').tagsInput();
+  $('#regionId').tagsInput({unique: true});
 }
 
 //联系人选择
@@ -239,6 +240,7 @@ function openRegionDialog() {
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
             $('#regionId').importTags(checkNode);
+            $('.ui-tips-error').css('display', 'none');
             regionList = checkNode;
             parent.layer.close(index);
             getAreaId(checkNode[0].id);
@@ -565,14 +567,31 @@ function getStatusCd (statusCd) {
 }
 
 // 获取组织节点类型字典数据
-function getNodeType (type) {
+// function getNodeType (type) {
+//     var option = '<option></option>';
+//     for (var i = 0; i < nodeTypeData.length; i++) {
+//         var select = type === nodeTypeData[i].itemValue? 'selected' : '';
+//         option += "<option value='" + nodeTypeData[i].itemValue + "' " + select + ">" + nodeTypeData[i].itemCnname +"</option>";
+//     }
+//     $('#nodeType').append(option);
+//     // $('#nodeType').selectMatch();
+//     formSelects.render('nodeType')
+// }
+function getNodeType () {
     var option = '<option></option>';
     for (var i = 0; i < nodeTypeData.length; i++) {
-        var select = type === nodeTypeData[i].itemValue? 'selected' : '';
-        option += "<option value='" + nodeTypeData[i].itemValue + "' " + select + ">" + nodeTypeData[i].itemCnname +"</option>";
+        var select = '';
+        for (var j = 0; j < nodeTypeList.length; j++) {
+            if (nodeTypeList[j].data === nodeTypeData[i].itemValue) {
+                select = 'selected';
+                break;
+            }
+        }
+        option += "<option value='" + nodeTypeData[i].itemValue + "' id='" +  nodeTypeData[i].itemId + "'" + select + ">" + nodeTypeData[i].itemCnname +"</option>";
     }
     $('#nodeType').append(option);
     $('#nodeType').selectMatch();
+    // formSelects.render('nodeType')
 }
 
 // 获取区域级别字典数据
@@ -617,6 +636,7 @@ function getOrg (orgId) {
         $('#orgName').val(data.orgName).focus();
         $('#orgCode').val(data.orgCode);
         $('#shortName').val(data.shortName);
+        $('#orgBizName').val(data.orgBizName);
         $('#fullName').val(data.fullName);
         $('#orgNameEn').val(data.orgNameEn);
         orgMartCode = data.orgMartCode;
@@ -658,8 +678,9 @@ function getOrg (orgId) {
                 editSmallField = true;
                 for (var i = 0; i < expandovalueVoList.length; i++) {
                     if (expandovalueVoList[i].columnName == 'nodeType') {
-                        getNodeType(expandovalueVoList[i].data);
-                        nodeTypeId = expandovalueVoList[i].valueId;
+                        // getNodeType(expandovalueVoList[i].data);
+                        // nodeTypeId = expandovalueVoList[i].valueId;
+                        nodeTypeList.push(expandovalueVoList[i]);
                     }
                     if (expandovalueVoList[i].columnName == 'areaType') {
                         getAreaType(expandovalueVoList[i].data);
@@ -674,6 +695,7 @@ function getOrg (orgId) {
                         contractTypeId = expandovalueVoList[i].valueId;
                     }
                 }
+                getNodeType();
                 $('#small').find(':input').each(function () {
                     $(this).hover(function () {
                         formValidate.isPass($(this));
@@ -753,6 +775,7 @@ function updateOrg () {
   var orgName = $('#orgName').val();
   var orgScale = $('#orgScale option:selected') .val();
   var shortName = $('#shortName').val();
+  var orgBizName = $('#orgBizName').val();
   var orgNameEn = $('#orgNameEn').val();
   var cityTown = $('#cityTown option:selected') .val();
   var foundDate = $('#foundingTime').val();
@@ -772,12 +795,19 @@ function updateOrg () {
   var areaType = $('#areaType option:selected') .val();
   var countType = $('#countType option:selected') .val();
   var contractType = $('#contractType option:selected') .val();
-  expandovalueVoList = [
-    {columnName: 'nodeType', data: nodeType, valueId: nodeTypeId},
-    {columnName: 'areaType', data: areaType, valueId: areaTypeId},
-    {columnName: 'countType', data: countType, valueId: countTypeId},
-    {columnName: 'contractType', data: contractType, valueId: contractTypeId}
-  ];
+  var orgMart; //传给后台的划小组织编码
+  if (editSmallField) {
+      expandovalueVoList = [
+          {columnName: 'nodeType', data: nodeType, valueId: nodeTypeId},
+          {columnName: 'areaType', data: areaType, valueId: areaTypeId},
+          {columnName: 'countType', data: countType, valueId: countTypeId},
+          {columnName: 'contractType', data: contractType, valueId: contractTypeId}
+      ];
+      orgMart = orgMartCode;
+  }
+  else  {
+      orgMart = '';
+  }
   $http.post('/org/updateOrg', JSON.stringify({
       orgRootId: '1',
       orgTreeId: orgTreeId,
@@ -785,6 +815,7 @@ function updateOrg () {
       supOrgId: pid,
       orgName: orgName,
       shortName: shortName,
+      orgBizName: orgBizName,
       cityTown: cityTown,
       orgScale: orgScale,
       foundingTime: foundDate,
@@ -802,7 +833,8 @@ function updateOrg () {
       postList: post,
       orgContent: orgContent,
       orgDesc: orgDesc,
-      expandovalueVoList: expandovalueVoList
+      expandovalueVoList: expandovalueVoList,
+      orgMartCode: orgMart
   }), function () {
       parent.changeNodeName(orgId, orgName);
       window.location.replace("list.html?id=" + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + "&name=" + encodeURI(orgName));
@@ -815,6 +847,7 @@ function updateOrg () {
 
 // 删除组织
 function deleteOrg () {
+    console.log(formSelects.value('nodeType'));
     parent.layer.confirm('此操作将删除该组织, 是否继续?', {
         icon: 0,
         title: '提示',
