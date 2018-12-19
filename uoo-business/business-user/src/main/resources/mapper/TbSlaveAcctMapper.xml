@@ -5,7 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.user.entity.TbSlaveAcct">
         <id column="SLAVE_ACCT_ID" property="slaveAcctId" />
-        <result column="ACCT_HOST_ID" property="acctHostId" />
+        <result column="ACCT_ORG_REL_ID" property="acctOrgRelId" />
         <result column="ACCT_ID" property="acctId" />
         <result column="SLAVE_ACCT" property="slaveAcct" />
         <result column="SALT" property="salt" />
@@ -25,7 +25,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        SLAVE_ACCT_ID, ACCT_HOST_ID, ACCT_ID, SLAVE_ACCT, SALT, PASSWORD, SYMMETRY_PASSWORD, SLAVE_ACCT_TYPE, RESOURCE_OBJ_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, ENABLE_DATE, DISABLE_DATE
+        SLAVE_ACCT_ID, ACCT_ORG_REL_ID, ACCT_ID, SLAVE_ACCT, SALT, PASSWORD, SYMMETRY_PASSWORD, SLAVE_ACCT_TYPE, RESOURCE_OBJ_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, ENABLE_DATE, DISABLE_DATE
     </sql>
 
     <select id="getId" resultType="java.lang.Long">
@@ -36,10 +36,10 @@
         select t1.user_id, t3.psn_name, t2.create_date
         from TB_SLVACCT_USER_REL t1, TB_USER t2, TB_PERSONNEL t3
         <where> t1.status_cd = 1000
-          and t2.status_cd = 1000
-          and t3.status_cd = 1000
-          and t1.user_id = t2.user_id
-          and t2.personnel_id = t3.personnel_id
+            and t2.status_cd = 1000
+            and t3.status_cd = 1000
+            and t1.user_id = t2.user_id
+            and t2.personnel_id = t3.personnel_id
             <if test="slaveAcctId != null and slaveAcctId != '' " >
                 and t1.slave_acct_id = #{slaveAcctId}
             </if>
@@ -50,12 +50,12 @@
         select t2.user_id, t3.psn_name, t2.create_date
         from TB_SLVACCT_ACCT_REL t1, TB_ACCT t, TB_USER t2, TB_PERSONNEL t3
         <where> t.status_cd = 1000
-          and t1.status_cd = 1000
-          and t2.status_cd = 1000
-          and t3.status_cd = 1000
-          and t2.personnel_id = t3.personnel_id
-          and t2.user_id = t.user_id
-          and t1.acct_id = t.acct_id
+            and t1.status_cd = 1000
+            and t2.status_cd = 1000
+            and t3.status_cd = 1000
+            and t2.personnel_id = t3.personnel_id
+            and t2.user_id = t.user_id
+            and t1.acct_id = t.acct_id
             <if test="slaveAcctId != null and slaveAcctId != '' " >
                 and t1.slave_acct_id = #{slaveAcctId}
             </if>
@@ -66,8 +66,8 @@
         select t2.*
         from TB_SLVACCT_ACCT_REL t1, TB_ACCT t2
         <where> t1.status_cd = 1000
-          and t2.status_cd = 1000
-          and t1.acct_id = t2.acct_id
+            and t2.status_cd = 1000
+            and t1.acct_id = t2.acct_id
             <if test="slaveAcctId != null and slaveAcctId != '' " >
                 and t1.slave_acct_id = #{slaveAcctId}
             </if>
@@ -77,18 +77,18 @@
     <select id="getSlaveAcctOrg" resultType="cn.ffcs.uoo.core.user.vo.ListSlaveAcctOrgVo">
         select ROWNUM id, t3.*,'应用' slave_acct_type,'标准组织树' orgTreeName, t4.full_name
         from (select t1.slave_acct_id, t1.slave_acct, t1.status_cd, t2.org_id
-              from tb_slave_acct t1, TB_account_ORG_REL t2
-              where t1.status_cd = 1000
-                and t2.status_cd = 1000
-                and t1.acct_host_id = t2.acct_host_id
-                and t1.slave_acct_type = 1
-               <if test="slaveAcctOrgVo.acctId != null and slaveAcctOrgVo.acctId != '' " >
-                and t1.acct_id = #{slaveAcctOrgVo.acctId}
-               </if>
-             ) t3
-                 left join tb_org t4
-                     on t3.org_id = t4.org_id
-                            and t4.status_cd = 1000
+        from tb_slave_acct t1, tb_account_org_rel t2
+        where t1.status_cd = 1000
+        and t2.status_cd = 1000
+        and t1.acct_org_rel_id = t2.acct_org_rel_id
+        and t1.slave_acct_type = 1
+        <if test="slaveAcctOrgVo.acctId != null and slaveAcctOrgVo.acctId != '' " >
+            and t1.acct_id = #{slaveAcctOrgVo.acctId}
+        </if>
+        ) t3
+        left join tb_org t4
+        on t3.org_id = t4.org_id
+        and t4.status_cd = 1000
     </select>
 
 </mapper>

@@ -59,9 +59,11 @@ if (!Array.prototype.indexOf){
 }
 
 function getUser(acctId) {           //查看并编辑主账号
+    var date = new Date();
     $http.get('/user/getUser', {   
         acctId: acctId,
-        userType: "1"
+        userType: "1",
+        _:date.getTime()
     }, function (data) {
         personnelId = data.personnelId;
         orgNum = data.acctOrgVoPage.records.length;
@@ -155,10 +157,10 @@ function initSubOrgTable(results){    //从账号组织数据
       },
         { 'data': "slaveAcctType", 'title': '从账号类型', 'className': 'row-acctype' },
         { 'data': "orgTreeName", 'title': '组织树', 'className': 'row-orgtree' },
-        { 'data': "orgTreeName", 'title': '系统', 'className': 'row-system' ,
-          'render': function (data, type, row, meta) {
-              return '营销系统';
-          }
+        { 'data': "systemName", 'title': '系统', 'className': 'row-system'
+          // 'render': function (data, type, row, meta) {
+          //     return '营销系统';
+          // }
         },
         { 'data': "fullName", 'title': '归属组织', 'className': 'row-org' ,
         'render': function (data, type, row, meta) {
@@ -347,9 +349,11 @@ function addAcctOrg(orgId){ //编辑时新增组织
 }
 
 function refreshTb(acctId) {           //新增组织后刷新表格
+  var date = new Date();
   $http.get('/user/getUser', {   
       acctId: acctId,
-      userType: "1"
+      userType: "1",
+      _:date.getTime()
   }, function (data) {
       initOrgTable(data.acctOrgVoPage.records);
   }, function (err) {
@@ -400,16 +404,16 @@ function setDate(eDate,bDate){    //设置时间
         nowDate = eDate;
         toDate = bDate;
     }
+    
+    laydate.render({
+      elem: '#effectDate', //指定元素
+      value: nowDate
+    }); 
 
-  laydate.render({
-    elem: '#effectDate', //指定元素
-    value: new Date(nowDate)
-  }); 
-
-  laydate.render({
-    elem: '#invalidDate', //指定元素
-    value: new Date(toDate)
-  }); 
+    laydate.render({
+      elem: '#invalidDate', //指定元素
+      value: toDate
+    }); 
 }
 
 function isEnableStatus(statusCd){    //判断状态
@@ -471,11 +475,12 @@ function openTypeDialog() {
           var iframeWin = parent.window[layero.find('iframe')[0].name];
           var checkRole = iframeWin.checkRole;
           var checkNode = iframeWin.checkNode;
-          parent.layer.close(index);
           $('#roleTel').importTags(checkNode);
+          $('#roleTel',window.parent.document).importTags(checkNode);
           $('.ui-tips-error').css('display', 'none');
           window.localStorage.setItem('userRoleList',JSON.stringify(checkRole));
           roleList = checkRole;
+          parent.layer.close(index);
       },
       btn2: function(index, layero){},
       cancel: function(){}

@@ -144,6 +144,9 @@
           FROM TB_SYSTEMTABLE S, TB_EXPANDOCOLUMN C, TB_EXPANDOVALUE V
          WHERE S.TABLE_ID = C.TABLE_ID
            AND V.TABLE_ID = S.TABLE_ID
+           AND S.STATUS_CD = '1000'
+           AND C.STATUS_CD = '1000'
+           AND V.STATUS_CD = '1000'
            AND V.COLUMN_ID = C.COLUMN_ID
            AND S.TABLE_NAME = #{tableName}
            AND V.RECORD_ID = #{recordId}

@@ -31,6 +31,9 @@ public interface OrgPersonRelService{
     @RequestMapping(value="/orgPersonRel/addOrgPsn",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<String> addOrgPsn(@RequestBody List<PsonOrgVo> psonOrgVo);
 
+    @RequestMapping(value="/orgPersonRel/addOrgPsn2",method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    public ResponseResult<String> addOrgPsn2(@RequestBody List<PsonOrgVo> psonOrgVo);
+
     @RequestMapping(value="/orgPersonRel/updateOrgPsn",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<String> updateOrgPsn(@RequestBody PsonOrgVo psonOrgVo);
 
