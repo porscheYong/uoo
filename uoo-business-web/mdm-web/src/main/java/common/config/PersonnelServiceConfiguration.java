@@ -4,7 +4,7 @@ import feign.Contract;
 import feign.Logger;
 import feign.Retryer;
 import feign.codec.Encoder;
-//import feign.form.spring.SpringFormEncoder;
+import feign.form.spring.SpringFormEncoder;
 import org.springframework.context.annotation.Bean;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -34,11 +34,11 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  * @Version 1.0.0
 */
 public class PersonnelServiceConfiguration {
-//
-//    @Bean
-//    public Encoder feignFormEncoder() {
-//        return new SpringFormEncoder();
-//    }
+
+    @Bean
+    public Encoder feignFormEncoder() {
+        return new SpringFormEncoder();
+    }
 
     @Bean
     Logger.Level feignLoggerLevel() {
