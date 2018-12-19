@@ -131,6 +131,10 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
                 Post post = baseMapper.getPost(psOrg.getPostId());
                 psOrg.setPostName(StrUtil.strnull(post.getPostName()));
             }
+            if(!StrUtil.isNullOrEmpty(psOrg.getPersonnelId())){
+                String mobile = baseMapper.getMobile(psOrg.getPersonnelId().toString());
+                psOrg.setMobile(mobile);
+            }
         }
         page.setRecords(list);
         return page;
@@ -152,6 +156,10 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
                 Post post = baseMapper.getPost(psOrg.getPostId());
                 psOrg.setPostName(StrUtil.strnull(post.getPostName()));
             }
+            if(!StrUtil.isNullOrEmpty(psOrg.getPersonnelId())){
+                String mobile = baseMapper.getMobile(psOrg.getPersonnelId().toString());
+                psOrg.setMobile(mobile);
+            }
         }
         page.setRecords(list);
         return page;
@@ -167,10 +175,31 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
         Page<PsonOrgVo> page = new Page<PsonOrgVo>(psonOrgVo.getPageNo()==0?1:psonOrgVo.getPageNo()
                 ,psonOrgVo.getPageSize()==0?10:psonOrgVo.getPageSize());
         List<PsonOrgVo> list = baseMapper.selectUserOrgRelPage(page,psonOrgVo);
+        for(PsonOrgVo vo : list){
+            String cert = baseMapper.getCert(vo.getPersonnelId().toString());
+            vo.setCertNo(cert);
+        }
         page.setRecords(list);
         return page;
     }
 
+    /**
+     * 用户组织查询翻页
+     * @param psonOrgVo
+     * @return
+     */
+    @Override
+    public Page<PsonOrgVo> selectAllUserOrgRelPage(PsonOrgVo psonOrgVo){
+        Page<PsonOrgVo> page = new Page<PsonOrgVo>(psonOrgVo.getPageNo()==0?1:psonOrgVo.getPageNo()
+                ,psonOrgVo.getPageSize()==0?10:psonOrgVo.getPageSize());
+        List<PsonOrgVo> list = baseMapper.selectAllUserOrgRelPage(page,psonOrgVo);
+        for(PsonOrgVo vo : list){
+            String cert = baseMapper.getCert(vo.getPersonnelId().toString());
+            vo.setCertNo(cert);
+        }
+        page.setRecords(list);
+        return page;
+    }
     /**
      * 人员查询
      * @param psonOrgVo

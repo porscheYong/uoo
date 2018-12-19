@@ -8,6 +8,7 @@
         <result column="ORG_ID" property="orgId" />
         <result column="ORG_TREE_ID" property="orgTreeId" />
         <result column="ORG_BIZ_NAME" property="orgBizName" />
+        <result column="ORG_BIZ_FULL_NAME" property="orgBizFullName" />
         <result column="SORT" property="sort" />
         <result column="STATUS_CD" property="statusCd" />
         <result column="CREATE_DATE" property="createDate" />
@@ -19,7 +20,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ORG_ORGTREE_ID, ORG_ID, ORG_TREE_ID,ORG_BIZ_NAME,SORT, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        ORG_ORGTREE_ID, ORG_ID, ORG_TREE_ID,ORG_BIZ_NAME,ORG_BIZ_FULL_NAME,SORT, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
 
@@ -38,4 +39,19 @@
         ORG_ORGTREE_REL_ID = #{orgOrgtreeRelId}
     </update>
 
+    <select id="getFullBizOrgList" resultType="cn.ffcs.uoo.core.organization.entity.OrgOrgtreeRel">
+        SELECT * FROM (
+        SELECT ORG_ID orgId,ORG_BIZ_NAME orgBizName , level lv FROM (
+        SELECT E.ORG_BIZ_NAME,E.ORG_ID ,D.PARENT_ORG_ID,D.CREATE_DATE
+        FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG_ORGTREE_REL E
+        WHERE  A.STATUS_CD='1000' AND B.STATUS_CD='1000' AND C.STATUS_CD='1000' AND D.STATUS_CD='1000' AND E.STATUS_CD='1000'
+        AND A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND D.ORG_ID=E.ORG_ID
+        AND C.REF_CODE=D.REF_CODE
+        AND E.ORG_TREE_ID = A.ORG_TREE_ID
+        AND A.ORG_TREE_ID = #{orgTreeId} )AA
+        START WITH ORG_ID = #{orgId}
+        CONNECT BY PRIOR AA.PARENT_ORG_ID = AA.ORG_ID ) ORDER BY lv DESC
+    </select>
 </mapper>

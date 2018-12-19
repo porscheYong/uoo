@@ -14,10 +14,12 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,12 +33,12 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018-10-21
  */
-@Controller
+@RestController
 @RequestMapping("/orgOrgtreeRel")
 @Api(value = "/orgOrgtreeRel", description = "组织组织树关系相关操作")
 public class OrgOrgtreeRelController extends BaseController {
 
-
+    @Autowired
     private OrgOrgtreeRelService orgOrgtreeRelService;
 
     @ApiOperation(value = "修改组织组织树信息", notes = "修改组织组织树信息")
@@ -70,8 +72,24 @@ public class OrgOrgtreeRelController extends BaseController {
         if(orgOrgTreeRelList!=null && orgOrgTreeRelList.size()>0){
             OrgOrgtreeRel orgTreeRel = orgOrgTreeRelList.get(0);
             orgTreeRel.setOrgBizName(orgOrgTreeRel.getOrgBizName());
+
+
+            List<OrgOrgtreeRel> ootrList = orgOrgtreeRelService.getFullBizOrgList(orgTreeRel.getOrgTreeId().toString(),orgTreeRel.getOrgId().toString());
+            if(ootrList!=null && ootrList.size()>0){
+                if(ootrList.size()==1){
+                    orgTreeRel.setOrgBizFullName(orgOrgTreeRel.getOrgBizName());
+                }else{
+                    String fullName = "";
+                    for(int i=0;i<ootrList.size()-1;i++){
+                        fullName += ootrList.get(i).getOrgBizName();
+                    }
+                    fullName+=orgOrgTreeRel.getOrgBizName();
+                    orgTreeRel.setOrgBizFullName(fullName);
+                }
+            }
             orgOrgtreeRelService.update(orgTreeRel);
         }
+
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("修改成功");
         return ret;

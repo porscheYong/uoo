@@ -21,7 +21,9 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,10 @@ import org.springframework.stereotype.Controller;
 import sun.swing.StringUIClientPropertyKey;
 
 import javax.annotation.Resource;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -186,9 +192,10 @@ public class OrgController extends BaseController {
 
 
 
+
         String fullName = "";
         if(!StrUtil.isNullOrEmpty(supOrg.getFullName())){
-            fullName = supOrg.getFullName()+"/"+org.getOrgName();
+            fullName = supOrg.getFullName()+org.getOrgName();
         }else{
             fullName = org.getOrgName();
         }
@@ -196,6 +203,7 @@ public class OrgController extends BaseController {
         String orgCode = orgService.getGenerateOrgCode();
         Long orgId = orgService.getId();
         newOrg.setOrgId(orgId);
+
         if(!StrUtil.isNullOrEmpty(pl.getLocId())){
             newOrg.setLocId(pl.getLocId());
         }
@@ -361,6 +369,7 @@ public class OrgController extends BaseController {
         }
 //        }
         //新增组织扩展属性
+        boolean isExitExp = false;
         if(extValueList!=null && extValueList.size()>0){
             ResponseResult<ExpandovalueVo> publicRet = new ResponseResult<ExpandovalueVo>();
             for(ExpandovalueVo extVo : extValueList){
@@ -368,8 +377,42 @@ public class OrgController extends BaseController {
                 extVo.setRecordId(newOrg.getOrgId().toString());
                 publicRet = expandovalueService.addExpandoInfo(extVo);
             }
+            isExitExp = true;
         }
         orgService.add(newOrg);
+
+        if (isExitExp) {
+
+            String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
+                @Override
+                public String doInConnection(Connection conn) throws SQLException, DataAccessException {
+                    CallableStatement cstmt = null;
+                    String result = "";
+                    try {
+                        cstmt = conn.prepareCall("{CALL P_ORG_CNTRT_MGMT_GENERATOR (?,?)}");
+                        cstmt.setObject(1, orgCode);
+                        cstmt.registerOutParameter(2, Types.VARCHAR);
+                        cstmt.execute();
+                        if(!StrUtil.isNullOrEmpty(cstmt.getString(2))){
+                            result = cstmt.getString(2).toString();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (cstmt != null) {
+                            cstmt.close();
+                            cstmt = null;
+                        }
+                        if (conn != null) {
+                            conn.close();
+                            conn = null;
+                        }
+                    }
+                    return result;
+                }
+            });
+        }
         TreeNodeVo vo = new TreeNodeVo();
         vo.setId(newOrg.getOrgId().toString());
         vo.setPid(org.getSupOrgId().toString());
@@ -459,6 +502,21 @@ public class OrgController extends BaseController {
         if(!StrUtil.isNullOrEmpty(org.getAreaCodeId())){
             newOrg.setAreaCodeId(new Long(org.getAreaCodeId()));
         }
+
+        List<OrgVo> orgListVo = orgRelService.getFullOrgList("1",newOrg.getOrgId().toString());
+        if(orgListVo!=null && orgListVo.size()>0){
+            if(orgListVo.size()==1){
+                newOrg.setFullName(org.getOrgName());
+            }else{
+                String fullName = "";
+                for(int i=0;i<orgListVo.size()-1;i++){
+                    fullName += orgListVo.get(i).getOrgName();
+                }
+                fullName+=org.getOrgName();
+                newOrg.setFullName(fullName);
+            }
+        }
+
         newOrg.setOrgName(StrUtil.strnull(org.getOrgName()));
         //newOrg.setOrgCode(StrUtil.strnull(org.getOrgCode()));
         newOrg.setShortName(StrUtil.strnull(org.getShortName()));
@@ -726,7 +784,7 @@ public class OrgController extends BaseController {
                 isExists = false;
                 if(curExtList!=null && curExtList.size()>0){
                     for(ExpandovalueVo curVo : curExtList){
-                        if(vo.getColumnName().equals(curVo.getColumnName())){
+                        if((vo.getValueId().toString()).equals(curVo.getValueId().toString())){
                             isExists=true;
                             break;
                         }
@@ -753,7 +811,7 @@ public class OrgController extends BaseController {
             if(curExtList!=null && curExtList.size()>0){
                 for(ExpandovalueVo curVo : curExtList){
                     for(ExpandovalueVo  vo : expList){
-                        if(vo.getColumnName().equals(curVo.getColumnName())){
+                        if((vo.getValueId().toString()).equals(curVo.getValueId().toString())){
                             isExists=true;
                             break;
                         }
@@ -1214,8 +1272,10 @@ public class OrgController extends BaseController {
         HashMap<String,String> listMap = new HashMap<String,String>();
        // String fullName = orgService.getSysFullName(orgRootId,orgId);
         String followOrg = orgTreeService.getOrgTreeNameByOrgId(orgId);
+        String orgTypeInfo = orgTypeService.getOrgTypeInfoByOrgId(orgId);
        // listMap.put("FULL_NAME",fullName);
         listMap.put("FOLLOW_ORG",followOrg);
+        listMap.put("ORG_TYPE_INFO",orgTypeInfo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("查询成功");
         ret.setData(listMap);

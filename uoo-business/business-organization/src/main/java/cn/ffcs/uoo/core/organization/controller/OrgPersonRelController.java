@@ -82,6 +82,7 @@ public class OrgPersonRelController extends BaseController {
                 OrgPersonRel orgPersonRel = orgPersonRelService.convertObj(psonOrgVo);
                 Long orgPsndocRefId = orgPersonRelService.getId();
                 orgPersonRel.setOrgPersonId(orgPsndocRefId);
+                orgPersonRel.setOrgTreeId(psonOrgVo.getOrgTreeId().toString());
                 orgPersonRelService.add(orgPersonRel);
 
                 Long orgTreePerId = orgtreeOrgpersonRelService.getId();
@@ -393,8 +394,6 @@ public class OrgPersonRelController extends BaseController {
             return ret;
         }
 
-
-
         OrgTree orgtree = null;
         if(!StrUtil.isNullOrEmpty(refCode)){
             orgtree = orgTreeService.getOrgTreeByRefCode(refCode);
@@ -441,6 +440,11 @@ public class OrgPersonRelController extends BaseController {
                 .eq("ORG_ID",psonOrgVo.getOrgId())
                 .eq("STATUS_CD", "1000");
         OrgLevel orgLev = orgLevelService.selectOne(orgLevelConfWrapper);
+        if(orgLev==null){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树层级不存在");
+            return ret;
+        }
         Page<PsonOrgVo> page = null;
         if(orgLev.getOrgLevel()<3 && "1".equals(psonOrgVo.getIsSearchlower())){
             //查全部
@@ -536,7 +540,31 @@ public class OrgPersonRelController extends BaseController {
         if(!StrUtil.isNullOrEmpty(pageNo)){
             psonOrgVo.setPageNo(pageNo);
         }
-        Page<PsonOrgVo> page = orgPersonRelService.selectUserOrgRelPage(psonOrgVo);
+
+
+        Wrapper orgLevelConfWrapper = Condition.create()
+                .eq("ORG_TREE_ID", psonOrgVo.getOrgTreeId())
+                .eq("ORG_ID",psonOrgVo.getOrgId())
+                .eq("STATUS_CD", "1000");
+        OrgLevel orgLev = orgLevelService.selectOne(orgLevelConfWrapper);
+        if(orgLev==null){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树层级不存在");
+            return ret;
+        }
+
+        Wrapper orgLevel2ConfWrapper = Condition.create()
+                .eq("ORG_TREE_ID", psonOrgVo.getOrgTreeId())
+                .eq("ORG_LEVEL",orgLev.getOrgLevel())
+                .eq("STATUS_CD", "1000");
+        List<OrgLevel> orgLevList = orgLevelService.selectList(orgLevel2ConfWrapper);
+
+        Page<PsonOrgVo> page = null;
+        if(orgLev.getOrgLevel()<3 && orgLevList.size()==1 && "1".equals(psonOrgVo.getIsSearchlower())){
+            page = orgPersonRelService.selectAllUserOrgRelPage(psonOrgVo);
+        }else{
+            page = orgPersonRelService.selectUserOrgRelPage(psonOrgVo);
+        }
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
         ret.setData(page);
