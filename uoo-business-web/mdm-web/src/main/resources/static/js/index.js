@@ -26,23 +26,10 @@ function initUserInfo(){  //初始化首页人员信息
     $http.get('/system/getCurrentLoginUserInfo', { }, 
     function (data) {
         account = data.accout;
-        $("#psnName").text(data.uname);
+        $("#psnName").text(data.userName);
     }, function (err) {
     })
 }
-
-// function getAcctInfo(acctId){ //获取账号信息
-//     $http.get('/user/getUser', { 
-//         acctId:acctId,
-//         userType:"1"
-//     }, 
-//     function (data) {
-//       //console.log(data);   
-//       $("#psnName").text(data.psnName);
-//     }, function (err) {
-
-//     })
-// }
 
 function initUserPermission(){    //初始化人员权限
     $http.get('/system/getAccoutMenu', { }, 
@@ -66,7 +53,7 @@ function initSideBar(results){     //初始化侧边菜单
     var flag = 0;
 
     for(var i = 0;i<results.length-1;i++){
-        if(results[i].pMenuId == 0){
+        if(results[i].parentMenuCode === "0"){
             parList.push(results[i]);
         }else{
             childList.push(results[i]);
@@ -77,9 +64,9 @@ function initSideBar(results){     //初始化侧边菜单
         var dd = "<dl class='layui-nav-child'>";
         
         for(var j=0;j<childList.length;j++){
-            if(childList[j].pMenuId == parList[i].menuId){
+            if(childList[j].parentMenuCode == parList[i].menuCode){
                 flag = 1;
-                dd += "<dd><a lay-href='" + childList[j].url + "'>" + childList[j].menuName + "</a></dd>"
+                dd += "<dd><a lay-href='" + childList[j].menuUrl + "'>" + childList[j].menuName + "</a></dd>"
             }
         }
         if(flag == 1){
@@ -87,7 +74,7 @@ function initSideBar(results){     //初始化侧边菜单
                 icon + "</i><cite>" + parList[i].menuName + 
                 "</cite><span class='layui-nav-more'></span></a>" + dd + "</dl></li>";
         }else{
-            pemList += "<li class='layui-nav-item'><a lay-href='" + parList[i].url + "' lay-tips='" + parList[i].menuName + "'>" +
+            pemList += "<li class='layui-nav-item'><a lay-href='" + parList[i].menuUrl + "' lay-tips='" + parList[i].menuName + "'>" +
                 icon + "</i><cite>" + parList[i].menuName + "</cite></a></li>";
         }
         
@@ -129,6 +116,9 @@ function setIcon(menuName){         //设置菜单icon
             break;
 
         case '资源管理':
+            icon = "<i class='layui-icon layui-icon-template'>";
+            break;
+        default:
             icon = "<i class='layui-icon layui-icon-template'>";
             break;
     }

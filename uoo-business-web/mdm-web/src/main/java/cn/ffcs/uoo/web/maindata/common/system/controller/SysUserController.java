@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.web.maindata.common.system.controller;
 
 
+import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,15 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSONObject;
-
+import cn.ffcs.uoo.web.maindata.common.system.client.SysLoginLogClient;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysUserClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.AlterPwdDTO;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysLoginLog;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
+import cn.ffcs.uoo.web.maindata.common.system.utils.IPUtils;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.realm.exception.ServiceException;
-import cn.ffcs.uoo.web.maindata.user.service.AcctService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -35,7 +36,7 @@ public class SysUserController {
     @Autowired
     SysUserClient sysuserClient;
     @Autowired
-    private AcctService acctService;
+    private SysLoginLogClient loginLogClient;
     @Autowired
     ShiroFilterFactoryBean shiroFilterFactoryBean;
     @ApiOperation(value = " 接口", notes = " 接口")
@@ -101,11 +102,16 @@ public class SysUserController {
                 }else{
                     rr.setState(ResponseResult.STATE_ERROR);
                     rr.setMessage(json.getString("message"));
-                }
+                }`
             }
             
         }*/
-        
+        /*SysLoginLog sysLoginLog=new SysLoginLog();
+        sysLoginLog.setLogName("用户登录");
+        sysLoginLog.setIp(IPUtils.string2Long(subject.getSession().getHost()));
+        sysLoginLog.setSucceed(rr.getState()==ResponseResult.STATE_OK?1L:0L);
+        sysLoginLog.setAccout(sysUser.getAccout());
+        loginLogClient.add(sysLoginLog);*/
         return rr;
     }
 }

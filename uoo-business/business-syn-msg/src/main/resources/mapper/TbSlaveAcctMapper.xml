@@ -15,16 +15,15 @@
     <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
     <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
     <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
-    <result column="ACCT_HOST_ID" jdbcType="DECIMAL" property="acctHostId" />
+    <result column="ACCT_ORG_REL_ID" jdbcType="DECIMAL" property="acctHostId" />
     <result column="ACCT_ID" jdbcType="DECIMAL" property="acctId" />
     <result column="ENABLE_DATE" jdbcType="DATE" property="enableDate" />
     <result column="DISABLE_DATE" jdbcType="DATE" property="disableDate" />
-    <result column="MAPP_STAFF_ID" jdbcType="VARCHAR" property="mappStaffId" />
   </resultMap>
 
   <sql id="Base_Column_List">
     SLAVE_ACCT_ID, SLAVE_ACCT, SALT, PASSWORD, SYMMETRY_PASSWORD, SLAVE_ACCT_TYPE, RESOURCE_OBJ_ID,
-    STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, ACCT_HOST_ID,
+    STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, ACCT_ORG_REL_ID,
     ACCT_ID, ENABLE_DATE, DISABLE_DATE
   </sql>
 
@@ -184,7 +183,7 @@
     <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
     <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
     <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
-    <result column="ACCT_HOST_ID" jdbcType="DECIMAL" property="acctHostId" />
+    <result column="ACCT_ORG_REL_ID" jdbcType="DECIMAL" property="acctHostId" />
     <result column="ACCT_ID" jdbcType="DECIMAL" property="acctId" />
     <result column="ENABLE_DATE" jdbcType="DATE" property="enableDate" />
     <result column="DISABLE_DATE" jdbcType="DATE" property="disableDate" />
@@ -208,7 +207,7 @@
     <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
     <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
     <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
-    <result column="ACCT_HOST_ID" jdbcType="DECIMAL" property="acctHostId" />
+    <result column="ACCT_ORG_REL_ID" jdbcType="DECIMAL" property="acctHostId" />
     <result column="ACCT_ID" jdbcType="DECIMAL" property="acctId" />
     <result column="ENABLE_DATE" jdbcType="DATE" property="enableDate" />
     <result column="DISABLE_DATE" jdbcType="DATE" property="disableDate" />
@@ -369,6 +368,11 @@
     and b.resource_obj_id = #{systemId}
   </select>
 
+    <!--获取所有的从账号根据主账号-->
+   <select id="deleteSalveAcctByAcct" resultMap="BaseResultMap">
+    select b.* from tb_acct a left join tb_slave_acct b on a.acct_id = b.acct_id where a.acct_Id = #{acctId}  and b.slave_acct_type = 1 and b.resource_obj_id = #{systemId}
+   </select>
+
   <!--人获取主账号-->
   <select id="insertOrUpdateAcct" resultMap="VoResultMap2">
     select A.*,#{orgTreeId} ORG_TREE_ID　from tb_acct A where PERSONNEL_ID = #{personnelId} and STATUS_CD= 1000
@@ -380,8 +384,8 @@
   </select>
 
   <select id="getTbAcctOrgRel" parameterType="Long" resultMap="TbOrgMap">
-    select * from  tb_org where status_cd = 1000 and org_id = (select org_id from TB_account_ORG_REL where acct_host_id =
-    (select acct_host_id from tb_slave_acct where slave_acct_id = #{SLAVE_ACCT_ID}) and STATUS_CD= 1000)
+    select * from  tb_org where status_cd = 1000 and org_id = (select org_id from TB_account_ORG_REL where ACCT_ORG_REL_ID =
+    (select ACCT_ORG_REL_ID from tb_slave_acct where slave_acct_id = #{SLAVE_ACCT_ID}) and STATUS_CD= 1000)
   </select>
 
   <select id="getTbAcctOrgRel2" resultMap="TbOrgMap">

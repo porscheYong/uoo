@@ -6,16 +6,14 @@ import cn.ffcs.uoo.core.user.dao.TbSlaveAcctMapper;
 import cn.ffcs.uoo.core.user.entity.ListUser;
 import cn.ffcs.uoo.core.user.entity.TbAcct;
 import cn.ffcs.uoo.core.user.entity.TbSlaveAcct;
-import cn.ffcs.uoo.core.user.service.RabbitMqService;
-import cn.ffcs.uoo.core.user.service.TbAcctExtService;
-import cn.ffcs.uoo.core.user.service.TbSlaveAcctService;
-import cn.ffcs.uoo.core.user.service.TbUserRoleService;
-import cn.ffcs.uoo.core.user.util.ResultUtils;
-import cn.ffcs.uoo.core.user.util.StrUtil;
+import cn.ffcs.uoo.core.user.service.*;
+import cn.ffcs.uoo.core.user.util.*;
+import cn.ffcs.uoo.core.user.vo.EditFormSlaveAcctVo;
 import cn.ffcs.uoo.core.user.vo.ListSlaveAcctOrgVo;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +36,8 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
     private TbAcctExtService tbAcctExtService;
     @Autowired
     private TbUserRoleService tbUserRoleService;
+    @Autowired
+    private TbAcctService tbAcctService;
     @Autowired
     private RabbitMqService rabbitMqService;
     @Override
@@ -74,7 +74,7 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
     }
 
     @Override
-    public boolean checkSlaveAcct(String slaveAcct, Long acctHostId , Long resourceObjId, Long slaveAcctId, Long acctId){
+    public boolean checkSlaveAcct(String slaveAcct, Long acctOrgRelId , Long resourceObjId, Long slaveAcctId, Long acctId){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         if(!StrUtil.isNullOrEmpty(slaveAcct)){
@@ -83,7 +83,7 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
         if(!StrUtil.isNullOrEmpty(acctId)){
             map.put(BaseUnitConstants.TABLE_ACCT_ID, acctId);
         }
-        map.put(BaseUnitConstants.TB_ACCT_HOST_ID, acctHostId);
+        map.put(BaseUnitConstants.TB_ACCT_ORG_REL_ID, acctOrgRelId);
         map.put(BaseUnitConstants.TB_RESOURCE_OBJ_ID, resourceObjId);
         TbSlaveAcct tbSlaveAcct = this.selectOne(new EntityWrapper<TbSlaveAcct>().allEq(map));
         if(StrUtil.isNullOrEmpty(tbSlaveAcct)){
@@ -132,6 +132,46 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
 
         rabbitMqService.sendMqMsg("person", "delete", "slaveAcctId", slaveAcctId);
 
+        return null;
+    }
+
+    @Override
+    public Object insertOrUpdateTbSlaveAcct(EditFormSlaveAcctVo editFormSlaveAcctVo, Long slaveAcctId){
+        String type = "update";
+        String pwd = "";
+        TbSlaveAcct tbSlaveAcct = baseMapper.selectById(slaveAcctId);
+        if(StrUtil.isNullOrEmpty(tbSlaveAcct)){
+            tbSlaveAcct = new TbSlaveAcct();
+            type = "insert";
+        }else{
+            pwd = tbSlaveAcct.getPassword();
+        }
+        CopyUtils.copyProperties(editFormSlaveAcctVo, tbSlaveAcct);
+
+        if("insert".equals(type) || !editFormSlaveAcctVo.getPassword().equals(pwd)){
+            if(!PwdPolicyUtil.isMatchBasicPattern(editFormSlaveAcctVo.getPassword())){
+                return ResultUtils.error(EumUserResponeCode.PWD_ERROR);
+            }
+            // 获取盐
+            String salt = MD5Tool.getSalt();
+            // 非对称密码
+            String password = MD5Tool.md5Encoding(editFormSlaveAcctVo.getPassword(), salt);
+            // 对称密码
+            String symmetryPassword = AESTool.AESEncode(editFormSlaveAcctVo.getPassword());
+            tbSlaveAcct.setSalt(salt);
+            tbSlaveAcct.setPassword(password);
+            tbSlaveAcct.setSymmetryPassword(symmetryPassword);
+        }
+
+        if("insert".equals(type)){
+            TbAcct tbAcct = (TbAcct) tbAcctService.getTbAcctByPsnId(editFormSlaveAcctVo.getPersonnelId());
+            tbSlaveAcct.setAcctId(tbAcct.getAcctId());
+            tbSlaveAcct.setSlaveAcctId(slaveAcctId);
+            baseMapper.insert(tbSlaveAcct);
+        }
+        if("update".equals(type)){
+            baseMapper.updateById(tbSlaveAcct);
+        }
         return null;
     }
 

@@ -30,14 +30,8 @@
     <!-- <link href="/css/account/style2.css" rel="stylesheet"> -->
     <link href="/css/account/style1.css" rel="stylesheet">
     <link href="/css/account/artModal.css" rel="stylesheet">
-    <link href="/css/account/addMainAccount.css" rel="stylesheet">
+    <link href="/css/account/mainAccount.css" rel="stylesheet">
     <link href="/css/user/style.css" rel="stylesheet">
-
-    <!--[if lt IE 9]>
-    <script src="../../../static/js/core/html5shiv.js"></script>
-    <script src="../../../static/js/core/respond.js"></script>
-    <script src="../../../static/js/core/excanvas.js"></script>
-    <![endif]-->
 
     <!--[if lt IE 9]>
     <script src="../../../static/js/core/html5shiv.js"></script>
@@ -54,31 +48,13 @@
         .row-delete{
             width: 28px !important;
         }
-        
         .tcenter{
             text-align: left !important;
             margin-left: -55px !important;
         }
-        #delAcct{
-            margin-top: 20px !important;
-            margin-left: 37%;
-        }
-        .fleft{
-            float: none !important;
-        }
-        .Icon{
-            margin: 3px 3px !important;
-            margin-bottom: -6px !important;
-            margin-left: -5px !important;
-        }
         .Tag{
             background: rgb(193, 237, 255) !important;
             color:#959da9 !important;
-        }
-        .BtnRed2 {
-            border: 1px solid #ee4063 !important;
-            color: #ee4063 !important;
-            background: #FFF !important;
         }
         #roleTel_tagsinput .tag{
             padding: 2px !important;
@@ -112,121 +88,78 @@
     </div>
 
     <div class="board-title">
-        <span class="name ft18" id="main-title"></span><a id="acctEditButton" title="信息编辑" style="display:none;" onclick="editAcctInfo()" class=" Icon IconEdit" href="javascript:void(0)"></a>
+        <span class="name ft18" id="main-title">新增主账号</span>
     </div> 
 
     <div class="tab-content" style="margin-left:5%;margin-top: 2%">
         <div class="tab-pane active" id="tab_content1">
-            <form action="/submit" id="addAcctForm" method="post" style="padding: 10px;">  <!-- id="addAcctForm" -->
+            <form action="/submit" id="addAcctForm" method="post" style="padding: 10px;">
 
-                <div id="acctInfo" style="margin-left:17%;display: none;">
-                    <div class="col-md-2 fleft tcenter">
-                        <img class="avatar" src="/images/avatar.png" alt="头像" />
-                    </div>
-                    <div style="width: auto;margin-left: 120px;margin-top: -20%;">
-                        <div id="nameAndRole">
-                            <strong class="Font24 Black" id="psnNameLable"></strong>
-                            <!-- <span class="roleTag">平台管理员</span> -->
-                        </div>   
-                        <div style="padding-top: 10px;">
-                            <div style="margin-bottom:15px;">
-                                <span>
-                                    <label class="Icon fleft IconMobile"></label><label id="mobileLable"></label>
-                                </span>
-                                <span style="margin-left:20px;">
-                                    <label class="Icon fleft IconEmail"></label><label id="emailLable"></label>
-                                </span>
-                            </div>
-                            
-                            <div>
-                                <div style="margin-bottom:10px">
-                                    <span style="color:#959da9;">用户名：</span>
-                                    <span class="Font24 Black" id="acctLable"></span>
-                                    <span class="Tag BgBlue">主账号</span>
-                                </div>
-                                <div style="margin-bottom:10px;color:#959da9;">
-                                    <span>人员编码：</span><span id="psnNumLable"></span>
-                                </div>
-                                <div style="margin-bottom:10px;color:#959da9;">
-                                    <span>身份证号码：</span><span id="cerNoLable"></span>
-                                </div>
-                                <div style="margin-bottom:10px;color:#959da9;">
-                                    <span>生效日期：</span><span id="effectDateLable"></span>
-                                </div>
-                                <div style="margin-bottom:10px;color:#959da9;">
-                                    <span>失效日期：</span><span id="invalidDateLable"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="editAcctPanel" style="display:none">
+                <div id="editAcctPanel">
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="psnTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员姓名</label>
-                                <input type="tel" id="psnTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
+                                <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">人员姓名</label>
+                                <input type="tel" id="psnTel" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" name="tel" required value="" autocomplete="off">
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="psnNumTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
-                                <input type="tel" id="psnNumTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
+                                <label for="psnNumTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
+                                <input type="tel" id="psnNumTel" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" name="tel" required value="" autocomplete="off">
                             </div>
                         </div>
                     </div>
 
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="mobileTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">手机号码</label>
-                                <input type="tel" id="mobileTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
+                                <label for="mobileTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">手机号码</label>
+                                <input type="tel" id="mobileTel" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" name="tel" required value="" autocomplete="off">
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="emailTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
-                                <input type="tel" id="emailTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
+                                <label for="emailTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
+                                <input type="tel" id="emailTel" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" name="tel" required value="" autocomplete="off">
                             </div>
                         </div>
                     </div>
 
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="cerType" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
-                                <!-- <input type="tel" id="idTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="市公司直属"> -->
-                                <select  class="col-md-8 col-sm-8 col-xs-12" id="cerType">
+                                <label for="cerType" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
+                                <select  class="col-md-8 col-sm-8 col-xs-8" id="cerType">
                                 <option>身份证</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="cerNoTel" class="col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                                <input type="tel" id="cerNoTel" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" name="tel" required value="" autocomplete="off">
+                                <label for="cerNoTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                                <input type="tel" id="cerNoTel" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" name="tel" required value="" autocomplete="off">
                             </div>
                         </div>
                     </div>
 
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="acctTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" 
-                                       style="padding-right: 20px;line-height: 40px;text-align: right;">用户名</label>
-                                <input id="acctTel" class="ui-input col-md-8 col-sm-8 col-xs-12" required autocomplete="off"> 
+                                <label for="acctTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">账号</label>
+                                <input id="acctTel" class="ui-input col-md-8 col-sm-8 col-xs-8" required autocomplete="off"> 
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="statusCd" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" 
+                                <label for="statusCd" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
-                                <select  class="col-md-8 col-sm-8 col-xs-12" id="statusCd">
+                                <select  class="col-md-8 col-sm-8 col-xs-8" id="statusCd">
                                     <option>生效</option>
                                     <option>失效</option>
                                 </select>
@@ -235,44 +168,38 @@
                     </div>
 
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="roleTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" 
+                                <label for="roleTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
-                                <input id="roleTel" class="ui-input col-md-8 col-sm-8 col-xs-12"  onclick="openTypeDialog()" required readonly></input>
+                                <input id="roleTel" class="ui-input col-md-8 col-sm-8 col-xs-8"  onclick="openTypeDialog()" required readonly></input>
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="defaultPswTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" 
+                                <label for="defaultPswTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
-                                <input type="password" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-12" required autocomplete="off">
+                                <input type="text" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-8" required autocomplete="off">
                             </div>
                         </div>
                     </div>
 
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="effectDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" 
+                                <label for="effectDate" class="form-item-label col-md-4 col-sm-4 col-xs-4" 
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
-                                <input id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-12" readonly autocomplete="off">
+                                <input id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-8" readonly autocomplete="off">
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="invalidDate" class="form-item-label col-md-4 col-sm-4 col-xs-12" 
+                                <label for="invalidDate" class="form-item-label col-md-4 col-sm-4 col-xs-4" 
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
-                                <input id="invalidDate" class="ui-input col-md-8 col-sm-8 col-xs-12" readonly autocomplete="off">
+                                <input id="invalidDate" class="ui-input col-md-8 col-sm-8 col-xs-8" readonly autocomplete="off">
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div style="margin-left: 29%;margin-top: 5%;" id="editBtnDiv">
-                            <button class="ui-button ui-button-primary" id="editBtn" onclick="acctSubmit()">保存</button>
-                            <button class="ui-button ui-button-cancel"  onclick="backToAcctInfo()" style="margin-left: 40px;">取消</button>
                         </div>
                     </div>
 
@@ -282,66 +209,26 @@
                     <div class="board-title" style="margin-left:-6.7%;">
                         <span class="name ft18">归属组织</span>
                     </div>
-    
-                    <div class="fright" style="margin-right: 36px;margin-top:-4.5%;"> 
-                        <a class="button-add" id="addBtn" data-toggle="modal" data-target="#myModal"><span class="fa fa-plus-circle icon-add"></span>新增归属组织</a>
-                    </div>
-
-                    <!--添加主账号时若已有主账号则点击此按钮添加左边组织树选中的组织-->
-                    <div class="fright" id="addBtnWFright" style="margin-right:36px;margin-top:-4.5%;display: none;"> 
-                        <a class="button-add" id="addBtnW" onclick="addBtnWClick()"><span class="fa fa-plus-circle icon-add"></span>新增归属组织</a>
-                    </div>
-                </div>
-
-                <!-- 组织模态框（Modal） -->
-                <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header" style="border-radius:6px;">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                    &times;
-                                </button>
-                                <span id="selectTile">选择组织</span>
-                            </div>
-
-                            <div style="height: 350px;overflow: auto;margin-top: -15px;">
-                                <div style="display: inline-block;width: 100%;padding-top: 10px;">
-                                    <ul id="standardTree" class="ztree"></ul>
-                                </div>
-                            </div>
-                            <button id="saveBtn" onclick="saveBtnClick()">确定</button>
-                            <button data-dismiss="modal" id="cancelBtn">取消</button>
-
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal -->
                 </div>
                 
                 <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
                     <table id="orgTable" class="stripe" width="100%"></table>
                 </div>
 
-                <div style="margin-top:1%" id="conSubInfo">
+                <!-- <div style="margin-top:1%" id="conSubInfo">
                     <div class="board-title" style="margin-left:-6.7%;">
                         <span class="name ft18">关联从账号信息</span>
                     </div>
-    
-                    <div class="fright" id="addSubFright" style="margin-right:36px;margin-top:-4.5%;"> 
-                        <a class="button-add" id="addSubAcctBtn"><span class="fa fa-plus-circle icon-add"></span>新增从账号</a>
-                    </div>
                 </div>
 
-            
                 <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
                     <table id="subInfoTable" class="stripe" width="100%"></table>
-                </div>
-                <input class="Btn BtnRed2" id="delAcct" type="button" onclick="deleteTbAcct()" value="删除用户" style="margin-top:20px;" />
+                </div> -->
             </form>
 
             <div class="row">
                 <div id="addBtnDiv" style="margin-left: 29%;margin-top: 5%;">
-                    <!-- <input type="submit" id="formSubmit" class="clip">
-                    <label for="formSubmit" class="ui-button ui-button-primary">注册</label> -->
-                    <button class="ui-button ui-button-primary" id="opBtn" onclick="acctSubmit()">保存</button>
+                    <button class="ui-button ui-button-primary" id="opBtn" onclick="addTbAcct()">保存</button>
                     <button class="ui-button ui-button-cancel"  onclick="cancel()" style="margin-left: 40px;">取消</button>
                 </div>
             </div>
@@ -354,9 +241,6 @@
     <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- sea js -->
     <script src="/vendors/lulu/js/plugin/sea.js"></script>
-    <!-- ztree -->
-    <script type="text/javascript" src="/vendors/zTree/jquery.ztree.core.js"></script>
-    <script type="text/javascript" src="/vendors/zTree/jquery.ztree.excheck.js"></script>
     <!-- jquery datatable -->
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
     <!-- laydate -->
@@ -369,12 +253,11 @@
     <script type="text/javascript" src="/vendors/lulu/js/common/ui/Validate.js"></script>
 
     <!-- init -->
-    <script src="/js/account/init.js"></script>
+    <script src="/js/init.js"></script>
     <!-- jquery tagsinput -->
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- custom -->
     <script type="text/javascript" src="/js/account/addMainAccount.js"></script>
-    <script type="text/javascript" src="/js/account/selectOrg.js"></script>
 
     <script type="text/javascript">
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
