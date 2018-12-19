@@ -86,12 +86,12 @@ function setDate(){    //设置时间
   
     laydate.render({
       elem: '#effectDate', //指定元素
-      value: new Date(nowDate)
+      value: nowDate
     }); 
   
     laydate.render({
       elem: '#invalidDate', //指定元素
-      value: new Date(toDate)
+      value: toDate
     }); 
 }
 
@@ -347,11 +347,11 @@ parent.layer.open({
         var iframeWin = parent.window[layero.find('iframe')[0].name];
         var checkRole = iframeWin.checkRole;
         var checkNode = iframeWin.checkNode;
-        parent.layer.close(index);
         $('#roleTel').importTags(checkNode);
         $('.ui-tips-error').css('display', 'none');
         window.localStorage.setItem('userRoleList',JSON.stringify(checkRole));
         roleList = checkRole;
+        parent.layer.close(index);
     },
     btn2: function(index, layero){},
     cancel: function(){}

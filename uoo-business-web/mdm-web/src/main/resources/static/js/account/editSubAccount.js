@@ -57,10 +57,12 @@ seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
 });
   
 
-function getSubUser(acctId) {       //查看并编辑从账号            
+function getSubUser(acctId) {       //查看并编辑从账号    
+    var date = new Date();        
     $http.get('/user/getUser', {  
         acctId: acctId,
-        userType: "2"
+        userType: "2",
+        _:date.getTime()
     }, function (data) {
         if(data.tbAcctExt != null){
             acctExtId = data.tbAcctExt.acctExtId;
@@ -100,12 +102,12 @@ function setDate(eDate,bDate){    //设置时间
   
     laydate.render({
       elem: '#effectDate', //指定元素
-      value: new Date(nowDate)
+      value: nowDate
     }); 
   
     laydate.render({
       elem: '#invalidDate', //指定元素
-      value: new Date(toDate)
+      value: toDate
     }); 
   }
 
@@ -427,11 +429,11 @@ parent.layer.open({
         var iframeWin = parent.window[layero.find('iframe')[0].name];
         var checkRole = iframeWin.checkRole;
         var checkNode = iframeWin.checkNode;
-        parent.layer.close(index);
         $('#roleTel').importTags(checkNode);
         $('.ui-tips-error').css('display', 'none');
         window.localStorage.setItem('userRoleList',JSON.stringify(checkRole));
         roleList = checkRole;
+        parent.layer.close(index);
     },
     btn2: function(index, layero){},
     cancel: function(){}

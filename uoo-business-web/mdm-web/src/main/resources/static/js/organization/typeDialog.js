@@ -3,6 +3,26 @@ var orgFrame = parent.window['standardOrg'] || parent.window['business'];
 var orgTypeList = orgFrame.orgTypeList;
 var checkNode = []; //选中类别显示label标签
 
+//添加数组IndexOf方法
+if (!Array.prototype.indexOf){
+    Array.prototype.indexOf = function(elt /*, from*/){
+      var len = this.length >>> 0;
+  
+      var from = Number(arguments[1]) || 0;
+      from = (from < 0)
+           ? Math.ceil(from)
+           : Math.floor(from);
+      if (from < 0)
+        from += len;
+  
+      for (; from < len; from++){
+        if (from in this && this[from] === elt)
+          return from;
+      }
+      return -1;
+    };
+}
+
 // 组织类别树初始化
 function initOrgTypeTree () {
     var treeSetting = {
@@ -50,9 +70,14 @@ function onOrgTypeCheck (e, treeId, treeNode) {
         checkNode.push(node);
         renderTag()
     } else {
-        var idx = checkNode.findIndex((v) => {
-            return v.tId == node.tId;
-        });
+        var idx = checkNode.findIndex(
+            // (v) => {
+            // return v.tId == node.tId;
+            // }
+            function(v){
+                return v.tId == node.tId;
+            }
+        );
         checkNode.splice(idx, 1);
         renderTag();
     }
@@ -82,9 +107,14 @@ function removeNode (e) {
     zTree.checkNode(node, false);
     
     var tId = $(e.target).parent().attr('treeId');
-    var idx = checkNode.findIndex((v) => {
-        return v.tId == tId;
-    });
+    var idx = checkNode.findIndex(
+        // (v) => {
+        // return v.tId == tId;
+        // }
+        function(v){
+            return v.tId == tId;
+        }
+    );
     checkNode.splice(idx, 1);
 }
 
