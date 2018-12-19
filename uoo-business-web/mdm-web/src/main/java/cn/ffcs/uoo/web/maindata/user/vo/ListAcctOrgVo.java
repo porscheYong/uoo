@@ -14,7 +14,7 @@ public class ListAcctOrgVo extends BaseVo {
     /**
      * 主账号组织关系标识
      */
-    private Long acctHostId;
+    private Long acctOrgRelId;
     /**
      * 组织ID
      */
