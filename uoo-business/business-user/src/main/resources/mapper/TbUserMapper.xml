@@ -191,7 +191,7 @@
     </select>
 
     <select id="getAcctOrg" resultType="cn.ffcs.uoo.core.user.vo.ListAcctOrgVo">
-        select ROWNUM id, t2.acct_org_rel_id,t2.acct_id,t1.org_id, t1.full_name, t1.org_name
+        select ROWNUM id, t2.acct_host_id,t2.acct_id,t1.org_id, t1.full_name, t1.org_name
           from tb_org t1, TB_account_ORG_REL t2
          where t1.status_cd = 1000
            and t2.status_cd = 1000
@@ -203,8 +203,8 @@
     </select>
 
     <select id="getAcctOrgByPsnId" resultType="cn.ffcs.uoo.core.user.vo.ListAcctOrgVo">
-        select t1.org_id, t1.org_name, t1.full_name, t2.acct_org_rel_id
-        from tb_org t1, tb_account_org_rel t2, tb_acct t3
+        select t1.org_id, t1.org_name, t1.full_name, t2.acct_host_id
+        from tb_org t1, TB_account_ORG_REL t2, tb_acct t3
         where t1.status_cd = 1000
           and t2.status_cd = 1000
           and t1.org_id = t2.org_id
@@ -216,13 +216,13 @@
     </select>
 
     <select id="getSlaveAcctOrg" resultType="cn.ffcs.uoo.core.user.vo.ListAcctOrgVo">
-        select ROWNUM id, t2.acct_org_rel_id,t2.acct_id,t1.org_id, t1.full_name, t1.org_name
-        from tb_org t1, tb_account_org_rel t2
+        select ROWNUM id, t2.acct_host_id,t2.acct_id,t1.org_id, t1.full_name, t1.org_name
+        from tb_org t1, TB_account_ORG_REL t2
         where t1.status_cd = 1000
         and t2.status_cd = 1000
         and t1.org_id = t2.org_id
-        <if test="acctOrgVo.acctOrgRelId != null and acctOrgVo.acctOrgRelId != '' " >
-            and t2.ACCT_ORG_REL_ID = #{acctOrgVo.acctOrgRelId}
+        <if test="acctOrgVo.acctId != null and acctOrgVo.acctId != '' " >
+            and t2.ACCT_HOST_ID = #{acctOrgVo.acctId}
         </if>
 
     </select>

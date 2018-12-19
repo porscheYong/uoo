@@ -35,8 +35,8 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
     /**
      * 主账号组织关系标识
      */
-    @TableField("ACCT_ORG_REL_ID")
-    private Long acctOrgRelId;
+    @TableField("ACCT_HOST_ID")
+    private Long acctHostId;
     /**
      * 主账号标识
      */

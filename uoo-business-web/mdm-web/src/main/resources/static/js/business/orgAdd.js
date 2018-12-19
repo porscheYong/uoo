@@ -56,7 +56,7 @@ if(typeof $.fn.tagsInput !== 'undefined'){
     $('#orgTypeList').tagsInput({unique: true});
     $('#positionList').tagsInput();
     $('#postList').tagsInput();
-    $('#regionId').tagsInput();
+    $('#regionId').tagsInput({unique: true});
 }
 //自动填写组织简称
 function autoFillShortName () {
@@ -238,6 +238,7 @@ function openRegionDialog() {
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
             $('#regionId').importTags(checkNode);
+            $('.ui-tips-error').css('display', 'none');
             regionList = checkNode;
             parent.layer.close(index);
             getAreaId(checkNode[0].id);

@@ -25,7 +25,7 @@ public class EditFormSlaveAcctVo {
     /**
      * 主账号组织关系标识
      */
-    private Long acctOrgRelId;
+    private Long acctHostId;
 
     private String slaveAcct;
 

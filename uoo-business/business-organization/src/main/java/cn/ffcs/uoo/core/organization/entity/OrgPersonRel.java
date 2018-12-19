@@ -92,10 +92,26 @@ public class OrgPersonRel extends Model<OrgPersonRel> {
     private Date statusDate;
 
     /**
+     * 组织树ID
+     */
+    @TableField("ORG_TREE_ID")
+    private String orgTreeId;
+
+
+    /**
      * 组织树根节点
      */
     @TableField(exist=false)
     private String orgRootId;
+
+
+    public String getOrgTreeId() {
+        return orgTreeId;
+    }
+
+    public void setOrgTreeId(String orgTreeId) {
+        this.orgTreeId = orgTreeId;
+    }
 
     public String getOrgRootId() {
         return orgRootId;

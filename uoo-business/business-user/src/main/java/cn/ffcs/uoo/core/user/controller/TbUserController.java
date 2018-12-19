@@ -254,7 +254,7 @@ public class TbUserController extends BaseController {
         }
         //归属组织信息
         ListAcctOrgVo acctOrgVo = new ListAcctOrgVo();
-        acctOrgVo.setAcctOrgRelId(tbSlaveAcct.getAcctOrgRelId());
+        acctOrgVo.setAcctId(tbSlaveAcct.getAcctHostId());
         List<ListAcctOrgVo> acctOrgVoList = tbUserService.getSlaveAcctOrg(acctOrgVo);
         formSlaveAcctVo.setAcctOrgVoList(acctOrgVoList);
 

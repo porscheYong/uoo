@@ -13,7 +13,7 @@ public class ListAcctOrgVo {
     /**
      * 主账号组织关系标识
      */
-    private Long acctOrgRelId;
+    private Long acctHostId;
     /**
      * 组织ID
      */

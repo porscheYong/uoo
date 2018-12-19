@@ -26,6 +26,15 @@ public class OrgRefTypeVo extends BaseVo {
     private String createDate;
     private String refCode;
     private String orgBizName;
+    private String orgTreeId;
+
+    public String getOrgTreeId() {
+        return orgTreeId;
+    }
+
+    public void setOrgTreeId(String orgTreeId) {
+        this.orgTreeId = orgTreeId;
+    }
 
     public String getOrgBizName() {
         return orgBizName;

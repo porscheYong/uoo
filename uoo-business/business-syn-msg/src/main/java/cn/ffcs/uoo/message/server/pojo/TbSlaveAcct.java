@@ -62,6 +62,9 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
     @TableField("DISABLE_DATE")
     private Date disableDate;
 
+    @TableField("MAPP_STAFF_ID")
+    private String mappStaffId;
+
     public Long getSlaveAcctId() {
         return slaveAcctId;
     }
@@ -196,6 +199,14 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
 
     public void setDisableDate(Date disableDate) {
         this.disableDate = disableDate;
+    }
+
+    public String getMappStaffId() {
+        return mappStaffId;
+    }
+
+    public void setMappStaffId(String mappStaffId) {
+        this.mappStaffId = mappStaffId;
     }
 
     @Override

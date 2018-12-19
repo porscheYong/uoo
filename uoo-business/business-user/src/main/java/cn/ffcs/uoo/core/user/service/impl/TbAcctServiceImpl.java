@@ -95,7 +95,7 @@ public class TbAcctServiceImpl extends ServiceImpl<TbAcctMapper, TbAcct> impleme
             tbAcct.setAcctId(acctId);
             type = "insert";
         }
-        if("insert".equals(type) || !editFormAcctVo.getPassword().equals(tbAcct.getPassword())){
+        if(StrUtil.isNullOrEmpty(tbAcct) || !editFormAcctVo.getPassword().equals(tbAcct.getPassword())){
             if(!PwdPolicyUtil.isMatchBasicPattern(editFormAcctVo.getPassword())){
                 return ResultUtils.error(EumUserResponeCode.PWD_ERROR);
             }

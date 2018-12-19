@@ -39,7 +39,7 @@ public class BaseUnitConstants {
 
 	public static final String TABLE_SLAVE_ACCT = "SLAVE_ACCT";
 
-	public static final String TB_ACCT_ORG_REL_ID = "ACCT_ORG_REL_ID";
+	public static final String TB_ACCT_HOST_ID = "ACCT_HOST_ID";
 
 	public static final String TB_RESOURCE_OBJ_ID = "RESOURCE_OBJ_ID";
 
