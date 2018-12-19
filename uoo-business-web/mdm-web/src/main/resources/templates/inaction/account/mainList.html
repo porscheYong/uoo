@@ -35,7 +35,6 @@
         {
             table-layout: fixed;
         }
-
         th 
         {
             text-align: center;
@@ -81,6 +80,9 @@
         .ui-placeholder{
             margin-left:-271px !important;
         }
+        .orgNamePoint{
+            cursor: pointer;
+        }
     </style>
   </head>
 
@@ -108,7 +110,7 @@
               <div>
                 <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
                 <input class="ui-input typeahead-input tt-input" id="acctName" type="text" name="q" placeholder="请输入人员或账号进行搜索" autocomplete="off" spellcheck="false" dir="auto">
-                <img class="typeahead-spinner" src="img/spinner.gif" style="display: none;">
+                <!-- <img class="typeahead-spinner" src="img/spinner.gif" style="display: none;"> -->
               </div>
             </div>
           </div>
@@ -142,7 +144,6 @@
     <!-- account -->
     <script type="text/javascript" src="/js/account/mainList.js"></script>
     <script type="text/javascript" src="/js/account/acctSearch.js"></script>
- 
 
     <script>
         $('input').placeholder();

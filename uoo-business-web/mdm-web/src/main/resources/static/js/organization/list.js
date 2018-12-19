@@ -12,6 +12,7 @@ function initOrgTable () {
         'searching': false,
         'autoWidth': false,
         'ordering': true,
+        'lSort': true,
         "scrollY": "375px",
         'scrollCollapse': true,
         'columns': [
@@ -83,10 +84,10 @@ function initOrgTable () {
         }
     });
 
-    initSort(".row-name","orgName");
-    initSort(".row-sex","orgTypeSplit");
-    initSort(".user-account","orgCode");
-    initSort(".user-type","locName");
+    // initSort(".row-name","orgName");
+    // initSort(".row-sex","orgTypeSplit");
+    // initSort(".user-account","orgCode");
+    // initSort(".user-type","locName");
 
     var loading = parent.loading;
     loading.screenMaskDisable('container');
@@ -183,9 +184,22 @@ function showLower() {
     initOrgPersonnelTable(checked);
 }
 
+//获取组织扩展信息
+function getOrgExt() {
+    $http.get('/org/getOrgExtByOrgId', {
+        orgTreeId: '1',
+        orgId: orgId
+    }, function (data) {
+
+    }, function (err) {
+
+    })
+}
+
 $('#orgName').html(orgName);
 // 显示组织路径
 parent.getOrgExtInfo();
+getOrgExt();
 initOrgTable();
 initOrgPersonnelTable(0);
 

@@ -209,10 +209,18 @@ legend {
     display: inline-block
     }*/
 .IconDel {
-    background: url(../images/ico_del2.svg);
+    background-image: url(../images/ico_del2.png);
+    background: url(../images/ico_del2.svg),none;
 }
 .IconEdit {
-    background: url(../images/ico_edit.svg);
+    background-image: url(../images/ico_edit.png);
+    background: url(../images/ico_edit.svg),none;
+    background-repeat: no-repeat;
+    }
+.IconAdd {
+    background-image: url(../images/ico_add2.png);
+    background: url(../images/ico_add2.svg),none;
+    background-repeat: no-repeat;
     }
 .IconCal {
     background: url(../images/ico_calendar.svg);
