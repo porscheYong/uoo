@@ -42,4 +42,6 @@ public interface OrgCertRelService extends IService<OrgCertRel> {
      * 获取组织信息
      */
     public List<OrgCertVo> getOrgCerRelByOrgId(Long orgId);
+
+
 }

@@ -232,6 +232,17 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
     }
 
     /**
+     * 获取组织全路径列表
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    @Override
+    public List<OrgVo> getFullOrgList(String orgTreeId,String orgId){
+        return orgMapper.getFullOrgList(orgTreeId,orgId);
+    }
+
+    /**
      * 查询树对应的组织关系
      * @param orgTreeId
      * @param orgId
