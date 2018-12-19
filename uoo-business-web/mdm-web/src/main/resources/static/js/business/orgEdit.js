@@ -795,12 +795,19 @@ function updateOrg () {
   var areaType = $('#areaType option:selected') .val();
   var countType = $('#countType option:selected') .val();
   var contractType = $('#contractType option:selected') .val();
-  expandovalueVoList = [
-    {columnName: 'nodeType', data: nodeType, valueId: nodeTypeId},
-    {columnName: 'areaType', data: areaType, valueId: areaTypeId},
-    {columnName: 'countType', data: countType, valueId: countTypeId},
-    {columnName: 'contractType', data: contractType, valueId: contractTypeId}
-  ];
+  var orgMart; //传给后台的划小组织编码
+  if (editSmallField) {
+      expandovalueVoList = [
+          {columnName: 'nodeType', data: nodeType, valueId: nodeTypeId},
+          {columnName: 'areaType', data: areaType, valueId: areaTypeId},
+          {columnName: 'countType', data: countType, valueId: countTypeId},
+          {columnName: 'contractType', data: contractType, valueId: contractTypeId}
+      ];
+      orgMart = orgMartCode;
+  }
+  else  {
+      orgMart = '';
+  }
   $http.post('/org/updateOrg', JSON.stringify({
       orgRootId: '1',
       orgTreeId: orgTreeId,
@@ -826,7 +833,8 @@ function updateOrg () {
       postList: post,
       orgContent: orgContent,
       orgDesc: orgDesc,
-      expandovalueVoList: expandovalueVoList
+      expandovalueVoList: expandovalueVoList,
+      orgMartCode: orgMart
   }), function () {
       parent.changeNodeName(orgId, orgName);
       window.location.replace("list.html?id=" + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + "&name=" + encodeURI(orgName));

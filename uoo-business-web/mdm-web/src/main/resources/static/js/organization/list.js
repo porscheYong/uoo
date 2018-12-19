@@ -190,7 +190,22 @@ function getOrgExt() {
         orgTreeId: '1',
         orgId: orgId
     }, function (data) {
-
+        var followOrgList = [];
+        var orgTypeInfoList = [];
+        var followOrgStr= '';
+        var orgTypeInfoStr= '';
+        if (data.FOLLOW_ORG)
+            followOrgList = data.FOLLOW_ORG.split(',');
+        if (data.ORG_TYPE_INFO)
+            orgTypeInfoList = data.ORG_TYPE_INFO.split(',');
+        for (var i = 0; i < followOrgList.length; i++) {
+            followOrgStr += '<span class="uoo-tag">'+ followOrgList[i] +'</span>';
+        }
+        for (var i = 0; i < orgTypeInfoList.length; i++) {
+            orgTypeInfoStr += '<span class="uoo-tag">'+ orgTypeInfoList[i] +'</span>';
+        }
+        $('#followOrg').html(followOrgStr);
+        $('#orgTypeInfo').html(orgTypeInfoStr);
     }, function (err) {
 
     })

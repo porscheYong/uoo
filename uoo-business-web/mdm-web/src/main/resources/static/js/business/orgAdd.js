@@ -393,12 +393,14 @@ function addOrg () {
     var areaType = $('#areaType option:selected') .val();
     var countType = $('#countType option:selected') .val();
     var contractType = $('#contractType option:selected') .val();
-    expandovalueVoList = [
-        {columnName: 'nodeType', data: nodeType},
-        {columnName: 'areaType', data: areaType},
-        {columnName: 'countType', data: countType},
-        {columnName: 'contractType', data: contractType}
-    ];
+    if (editSmallField) {
+        expandovalueVoList = [
+            {columnName: 'nodeType', data: nodeType},
+            {columnName: 'areaType', data: areaType},
+            {columnName: 'countType', data: countType},
+            {columnName: 'contractType', data: contractType}
+        ];
+    }
     $http.post('/org/addOrg', JSON.stringify({
         orgRootId: '1',
         orgTreeId: orgTreeId,
