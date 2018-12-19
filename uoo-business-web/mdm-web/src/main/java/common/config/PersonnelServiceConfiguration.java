@@ -28,7 +28,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  *　　　┃┫┫　┃┫┫
  *　　　┗┻┛　┗┻┛
  * @ClassName PersonnelServiceConfiguration
- * @Description 
+ * @Description
  * @author WCNGS@QQ.COM
  * @date 2018/9/8 21:52
  * @Version 1.0.0
