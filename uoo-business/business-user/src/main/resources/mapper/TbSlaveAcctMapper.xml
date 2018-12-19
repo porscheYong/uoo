@@ -5,7 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.user.entity.TbSlaveAcct">
         <id column="SLAVE_ACCT_ID" property="slaveAcctId" />
-        <result column="ACCT_HOST_ID" property="acctHostId" />
+        <result column="ACCT_ORG_REL_ID" property="acctOrgRelId" />
         <result column="ACCT_ID" property="acctId" />
         <result column="SLAVE_ACCT" property="slaveAcct" />
         <result column="SALT" property="salt" />
@@ -25,7 +25,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        SLAVE_ACCT_ID, ACCT_HOST_ID, ACCT_ID, SLAVE_ACCT, SALT, PASSWORD, SYMMETRY_PASSWORD, SLAVE_ACCT_TYPE, RESOURCE_OBJ_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, ENABLE_DATE, DISABLE_DATE
+        SLAVE_ACCT_ID, ACCT_ORG_REL_ID, ACCT_ID, SLAVE_ACCT, SALT, PASSWORD, SYMMETRY_PASSWORD, SLAVE_ACCT_TYPE, RESOURCE_OBJ_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, ENABLE_DATE, DISABLE_DATE
     </sql>
 
     <select id="getId" resultType="java.lang.Long">
@@ -77,10 +77,10 @@
     <select id="getSlaveAcctOrg" resultType="cn.ffcs.uoo.core.user.vo.ListSlaveAcctOrgVo">
         select ROWNUM id, t3.*,'应用' slave_acct_type,'标准组织树' orgTreeName, t4.full_name
         from (select t1.slave_acct_id, t1.slave_acct, t1.status_cd, t2.org_id
-              from tb_slave_acct t1, TB_account_ORG_REL t2
+              from tb_slave_acct t1, tb_account_org_rel t2
               where t1.status_cd = 1000
                 and t2.status_cd = 1000
-                and t1.acct_host_id = t2.acct_host_id
+                and t1.acct_org_rel_id = t2.acct_org_rel_id
                 and t1.slave_acct_type = 1
                <if test="slaveAcctOrgVo.acctId != null and slaveAcctOrgVo.acctId != '' " >
                 and t1.acct_id = #{slaveAcctOrgVo.acctId}
