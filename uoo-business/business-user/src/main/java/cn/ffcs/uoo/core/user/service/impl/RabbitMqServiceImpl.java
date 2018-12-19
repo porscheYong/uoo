@@ -28,7 +28,7 @@ public class RabbitMqServiceImpl implements RabbitMqService {
     public Object sendMqMsg(String type, String handle, String column, Long value){
         MqUserMessageVo mqMessageVo = new MqUserMessageVo();
         MqUserContextVo mqContextVo = new MqUserContextVo();
-        if("person".equals(type) && "personnelId".equals(column)){
+        if("person".equals(type)){
             TbAcct tbAcct = (TbAcct) tbAcctService.getTbAcctByPsnId(value);
             if(StrUtil.isNullOrEmpty(tbAcct)){
                 return null;

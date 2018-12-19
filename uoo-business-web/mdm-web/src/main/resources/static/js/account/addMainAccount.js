@@ -39,7 +39,6 @@ function getAcctUser(personnelId){     //获取人员信息(新增)
       //新增
       initAddUserInfo(data);
       addAcctAutoSelectOrg();
-      initSubOrgTable(data.slaveAcctOrgVoPage);
   }, function (err) {
 
   })
@@ -92,55 +91,6 @@ function initOrgTable(results){         //主账号组织数据表格
       }
     },
     { 'data': "orgId", 'title': 'orgId', 'className': 'row-orgId'}
-    ],
-    'language': {
-        'emptyTable': '没有数据',  
-        'loadingRecords': '加载中...',  
-        'processing': '查询中...',  
-        'search': '检索:',  
-        'lengthMenu': ' _MENU_ ',  
-        'zeroRecords': '没有数据', 
-        'infoEmpty': '没有数据'
-    }
-  });
-}
-
-function initSubOrgTable(results){    //从账号组织数据
-  var subTable = $("#subInfoTable").DataTable({
-    'data': results,
-    'destroy':true,
-    'searching': false,
-    'autoWidth': false,
-    'ordering': true,
-    'paging': false,
-    'info': false,
-    "scrollY": "375px",
-    'scrollCollapse': true,
-    'columns': [
-        { 'data': "id", 'title': '序号', 'className': 'row-number' },
-        { 'data': "slaveAcct", 'title': '账号名', 'className': 'row-acc' ,
-        'render': function (data, type, row, meta) {
-            return '<a href="addSubAccount.html?orgTreeId=' + orgTreeId + '&toMainType=' + hType +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&hType=th&mainAcctId='+ acctId +
-                                  '&acctId='+ row.slaveAcctId + '&statusCd='+ row.statusCd +'&opBtn=0">'+ row.slaveAcct +'</a>'
-        }
-      },
-        { 'data': "slaveAcctType", 'title': '从账号类型', 'className': 'row-acctype' },
-        { 'data': "orgTreeName", 'title': '组织树', 'className': 'row-orgtree' },
-        { 'data': "fullName", 'title': '归属组织', 'className': 'row-org' ,
-        'render': function (data, type, row, meta) {
-          if(row.fullName.search('->') != -1){
-            var s = row.fullName.replace(/->/g,'/');
-            return s.substring(0,s.length-1);
-          }else{
-            return row.fullName;
-          }
-        }
-      },
-        { 'data': "statusCd", 'title': '状态', 'className': 'row-state' ,
-        'render': function (data, type, row, meta) {
-          return "生效";
-        }
-      }
     ],
     'language': {
         'emptyTable': '没有数据',  

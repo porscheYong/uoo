@@ -249,7 +249,7 @@ public class TbSlaveAcctController extends BaseController {
             if(StrUtil.isNullOrEmpty(tbAcctExt.getCertNo())) {
                 return ResultUtils.error(EumUserResponeCode.CERT_NO_ERROR);
             }
-            if("1".equals(tbAcctExt.getCertType()) && !IdCardVerification.idCardValidate(tbAcctExt.getCertNo())){
+            if("1".equals(tbAcctExt.getCertType()) && IdCardVerification.idCardValidate(tbAcctExt.getCertNo())){
                 return ResultUtils.error(EumUserResponeCode.CERT_NO_ERROR);
             }
         }

@@ -1,7 +1,5 @@
 package cn.ffcs.uoo.core.permission.service.impl;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -20,10 +18,5 @@ import cn.ffcs.uoo.core.permission.service.BusinessSystemService;
  */
 @Service
 public class BusinessSystemServiceImpl extends ServiceImpl<BusinessSystemMapper, BusinessSystem> implements BusinessSystemService {
-
-    @Override
-    public List<BusinessSystem> listBusinessSystemByOrgTree(Long treeId) {
-        return baseMapper.listBusinessSystemByOrgTree(treeId);
-    }
 
 }

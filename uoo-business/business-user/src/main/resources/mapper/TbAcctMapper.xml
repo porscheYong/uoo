@@ -59,7 +59,7 @@
     
     <select id="getTbRoles" resultType="cn.ffcs.uoo.core.user.entity.TbRoles">
         select T1.ROLE_ID, T1.ROLE_NAME
-        from SYS_ROLE T1, TB_USER_ROLE T2
+        from TB_ROLES T1, TB_USER_ROLE T2
         where T1.STATUS_CD = 1000
           AND T2.STATUS_CD = 1000
           AND T1.ROLE_ID = T2.ROLE_ID

@@ -5,14 +5,12 @@ import cn.ffcs.uoo.core.personnel.constant.EumPersonnelResponseCode;
 import cn.ffcs.uoo.core.personnel.entity.TbEdu;
 import cn.ffcs.uoo.core.personnel.dao.TbEduMapper;
 import cn.ffcs.uoo.core.personnel.service.TbEduService;
-import cn.ffcs.uoo.core.personnel.service.TbPersonnelService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
 import cn.ffcs.uoo.core.personnel.util.StrUtil;
 import cn.ffcs.uoo.core.personnel.vo.TbEduVo;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -44,7 +42,7 @@ public class TbEduServiceImpl extends ServiceImpl<TbEduMapper, TbEdu> implements
     public Object saveTbEdu(TbEdu tbEdu){
         tbEdu.setEduId(this.getId());
         if(retBool(baseMapper.insert(tbEdu))){
-            return ResultUtils.success(tbEdu.getPersonnelId());
+            return ResultUtils.success(null);
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
     }
@@ -52,7 +50,7 @@ public class TbEduServiceImpl extends ServiceImpl<TbEduMapper, TbEdu> implements
     @Override
     public Object updateTbEdu(TbEdu tbEdu){
         if(retBool(baseMapper.updateById(tbEdu))){
-            return ResultUtils.success(tbEdu.getPersonnelId());
+            return ResultUtils.success(null);
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
     }
@@ -64,22 +62,17 @@ public class TbEduServiceImpl extends ServiceImpl<TbEduMapper, TbEdu> implements
         tbEdu.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbEdu.setStatusDate(new Date());
         if(retBool(baseMapper.updateById(tbEdu))){
-            TbEdu edu = getEduById(eduId);
-            return ResultUtils.success(edu.getPersonnelId());
+            return ResultUtils.success(null);
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
     }
 
-    public TbEdu getEduById(Long eduId){
+    @Override
+    public Object getTbEduById(Long eduId){
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         params.put(BaseUnitConstants.TBEDU_EDU_ID, eduId);
-        return this.selectOne(new EntityWrapper<TbEdu>().allEq(params));
-    }
-
-    @Override
-    public Object getTbEduById(Long eduId){
-        return ResultUtils.success(getEduById(eduId));
+        return ResultUtils.success(this.selectOne(new EntityWrapper<TbEdu>().allEq(params)));
     }
 
     @Override
