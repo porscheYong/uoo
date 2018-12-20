@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @date 2018/12/20
  * @Version 1.0.0
  */
-@FeignClient(name = "business-personnel", url = "http://192.168.58.146:11200",configuration = {PersonnelServiceConfiguration.class},fallback = HomeStatisticsServiceHystrix.class)
+@FeignClient(value = "business-personnel",configuration = {PersonnelServiceConfiguration.class},fallback = HomeStatisticsServiceHystrix.class)
 public interface HomeStatisticsService {
 
     @RequestMapping(value="/homeStatistics/getHomeStatistics",method = RequestMethod.GET, headers={"Content-Type=application/json"})
