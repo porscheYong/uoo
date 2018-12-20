@@ -30,8 +30,9 @@
     select * from Tb_Acct where acct_id = (select acct_id from tb_slave_acct where slave_acct_id = #{slaveAcctId})
   </select>
 
-  <select id="selectByPersonId" resultMap="BaseResultMap">
-    select * from Tb_Acct where PERSONNEL_ID = #{personId}
+  <select id="selectByPersonIdLimitDelete" resultMap="BaseResultMap">
+    select * from (select b.* from tb_personnel A, TB_ACCT B where A.Personnel_Id =B.personnel_id and A.Status_Cd + B.Status_Cd > 2000
+    and A.personnel_id = #{personId}  order by b.update_date desc) where rownum = 1
   </select>
-  
+
 </mapper>
