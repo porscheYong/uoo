@@ -77,13 +77,12 @@ public class SysOperationLogController {
     @UooLog(value = "新增", key = "add")
     @Transactional
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult add(@RequestBody SysOperationLog sysOperationLog) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<Void> add(@RequestBody SysOperationLog sysOperationLog) {
+        ResponseResult<Void> responseResult = new ResponseResult<Void>();
 
         sysOperationLog.setCreateDate(new Date());
         sysOperationLog.setOperationLogId((sysOperationLogService.getId()));
         sysOperationLog.setStatusCd(StatusCD.VALID);
-        sysOperationLog.setStatusDate(new Date());
         sysOperationLogService.insert(sysOperationLog);
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增成功");

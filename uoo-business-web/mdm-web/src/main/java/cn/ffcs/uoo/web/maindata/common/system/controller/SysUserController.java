@@ -106,12 +106,12 @@ public class SysUserController {
             }
             
         }*/
-        /*SysLoginLog sysLoginLog=new SysLoginLog();
+        SysLoginLog sysLoginLog=new SysLoginLog();
         sysLoginLog.setLogName("用户登录");
         sysLoginLog.setIp(IPUtils.string2Long(subject.getSession().getHost()));
         sysLoginLog.setSucceed(rr.getState()==ResponseResult.STATE_OK?1L:0L);
         sysLoginLog.setAccout(sysUser.getAccout());
-        loginLogClient.add(sysLoginLog);*/
+        loginLogClient.add(sysLoginLog);
         return rr;
     }
 }

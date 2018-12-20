@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zengxsh
- * @since 2018-12-17
+ * @since 2018-12-20
  */
 @TableName("SYS_OPERATION_LOG")
 public class SysOperationLog extends Model<SysOperationLog> {
@@ -36,10 +36,25 @@ public class SysOperationLog extends Model<SysOperationLog> {
     @TableField("LOG_NAME")
     private String logName;
     /**
-     * 用户
+     * 人员编码
      */
     @TableField("USER_CODE")
-    private Long userCode;
+    private String userCode;
+    /**
+     * 菜单
+     */
+    @TableField("MENU_CODE")
+    private Long menuCode;
+    /**
+     * 功能
+     */
+    @TableField("FUNC_CODE")
+    private Long funcCode;
+    /**
+     * 表单数据
+     */
+    @TableField("FORM_DATA")
+    private String formData;
     /**
      * 是否成功
      */
@@ -60,12 +75,6 @@ public class SysOperationLog extends Model<SysOperationLog> {
      */
     @TableField("CREATE_DATE")
     private Date createDate;
-    @TableField("MENU_CODE")
-    private Long menuCode;
-    @TableField("FUNC_CODE")
-    private Long funcCode;
-    @TableField("FORM_DATA")
-    private String formData;
 
 
     public Long getOperationLogId() {
@@ -92,12 +101,36 @@ public class SysOperationLog extends Model<SysOperationLog> {
         this.logName = logName;
     }
 
-    public Long getUserCode() {
+    public String getUserCode() {
         return userCode;
     }
 
-    public void setUserCode(Long userCode) {
+    public void setUserCode(String userCode) {
         this.userCode = userCode;
+    }
+
+    public Long getMenuCode() {
+        return menuCode;
+    }
+
+    public void setMenuCode(Long menuCode) {
+        this.menuCode = menuCode;
+    }
+
+    public Long getFuncCode() {
+        return funcCode;
+    }
+
+    public void setFuncCode(Long funcCode) {
+        this.funcCode = funcCode;
+    }
+
+    public String getFormData() {
+        return formData;
+    }
+
+    public void setFormData(String formData) {
+        this.formData = formData;
     }
 
     public Long getSucceed() {
@@ -132,30 +165,6 @@ public class SysOperationLog extends Model<SysOperationLog> {
         this.createDate = createDate;
     }
 
-    public Long getMenuCode() {
-        return menuCode;
-    }
-
-    public void setMenuCode(Long menuCode) {
-        this.menuCode = menuCode;
-    }
-
-    public Long getFuncCode() {
-        return funcCode;
-    }
-
-    public void setFuncCode(Long funcCode) {
-        this.funcCode = funcCode;
-    }
-
-    public String getFormData() {
-        return formData;
-    }
-
-    public void setFormData(String formData) {
-        this.formData = formData;
-    }
-
     @Override
     protected Serializable pkVal() {
         return this.operationLogId;
@@ -168,13 +177,13 @@ public class SysOperationLog extends Model<SysOperationLog> {
         ", logType=" + logType +
         ", logName=" + logName +
         ", userCode=" + userCode +
+        ", menuCode=" + menuCode +
+        ", funcCode=" + funcCode +
+        ", formData=" + formData +
         ", succeed=" + succeed +
         ", notes=" + notes +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
-        ", menuCode=" + menuCode +
-        ", funcCode=" + funcCode +
-        ", formData=" + formData +
         "}";
     }
 }
