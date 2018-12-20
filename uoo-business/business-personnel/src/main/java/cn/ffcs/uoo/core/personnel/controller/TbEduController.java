@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.personnel.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.core.personnel.annotion.SendMqMsg;
 import cn.ffcs.uoo.core.personnel.entity.TbEdu;
 import cn.ffcs.uoo.core.personnel.service.TbEduService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -30,6 +31,7 @@ public class TbEduController extends BaseController {
     @ApiOperation(value = "新增教育信息", notes = "新增教育信息")
     @ApiImplicitParam(name = "tbEdu", value = "教育信息", required = true, dataType = "TbEdu")
     @UooLog(value = "新增教育信息", key = "saveTbEdu")
+    @SendMqMsg(type = "person", handle ="update", column ="personnelId")
     @RequestMapping(value = "/saveTbEdu", method = RequestMethod.POST)
     public Object saveTbEdu(@RequestBody TbEdu tbEdu) {
         return tbEduService.saveTbEdu(tbEdu);
@@ -38,6 +40,7 @@ public class TbEduController extends BaseController {
     @ApiOperation(value="更新教育信息",notes="更新教育信息")
     @ApiImplicitParam(name = "tbEdu", value = "教育信息", required = true, dataType = "TbEdu")
     @UooLog(value = "更新教育信息",key = "updateTbEdu")
+    @SendMqMsg(type = "person", handle ="update", column ="personnelId")
     @RequestMapping(value="/updateTbEdu",method = RequestMethod.PUT)
     public Object updateTbEdu(@RequestBody TbEdu tbEdu){
         return  tbEduService.updateTbEdu(tbEdu);
@@ -46,6 +49,7 @@ public class TbEduController extends BaseController {
     @ApiOperation(value="删除教育信息",notes="删除教育信息")
     @ApiImplicitParam(name = "eduId", value = "教育信息标识", required = true, dataType = "Long",paramType="path")
     @UooLog(value = "删除教育信息标识",key = "delTbEdu")
+    @SendMqMsg(type = "person", handle ="update", column ="personnelId")
     @RequestMapping(value="/delTbEdu",method = RequestMethod.DELETE)
     public Object delTbEdu(Long eduId ){
         return  tbEduService.delTbEdu(eduId);

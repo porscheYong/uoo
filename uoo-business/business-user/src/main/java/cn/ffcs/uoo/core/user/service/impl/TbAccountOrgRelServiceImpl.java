@@ -4,8 +4,11 @@ import cn.ffcs.uoo.core.user.constant.BaseUnitConstants;
 import cn.ffcs.uoo.core.user.constant.EumUserResponeCode;
 import cn.ffcs.uoo.core.user.entity.TbAccountOrgRel;
 import cn.ffcs.uoo.core.user.dao.TbAccountOrgRelMapper;
+import cn.ffcs.uoo.core.user.entity.TbAcct;
 import cn.ffcs.uoo.core.user.entity.TbSlaveAcct;
+import cn.ffcs.uoo.core.user.service.RabbitMqService;
 import cn.ffcs.uoo.core.user.service.TbAccountOrgRelService;
+import cn.ffcs.uoo.core.user.service.TbAcctService;
 import cn.ffcs.uoo.core.user.service.TbSlaveAcctService;
 import cn.ffcs.uoo.core.user.util.ResultUtils;
 import cn.ffcs.uoo.core.user.util.StrUtil;
@@ -32,6 +35,12 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
 
     @Autowired
     private TbSlaveAcctService tbSlaveAcctService;
+
+    @Autowired
+    private TbAcctService tbAcctService;
+
+    @Autowired
+    private RabbitMqService rabbitMqService;
 
     @Override
     public Long getId(){return baseMapper.getId(); }
@@ -73,6 +82,9 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
             wrapper.eq(BaseUnitConstants.TABLE_ORG_ID, orgId);
         }
         if(retBool(baseMapper.update(tbAccountOrgRel, wrapper))){
+            if(!StrUtil.isNullOrEmpty(personnelId)){
+                rabbitMqService.sendMqMsg("person", "update", "personnelId", personnelId);
+            }
             return ResultUtils.success(personnelId);
         }
         return ResultUtils.error(EumUserResponeCode.USER_RESPONSE_ERROR);
@@ -88,6 +100,8 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
         if(StrUtil.isNullOrEmpty(accountOrgRel)){
             tbAccountOrgRel.setAcctOrgRelId(this.getId());
             if(retBool(baseMapper.insert(tbAccountOrgRel))){
+                TbAcct tbAcct = tbAcctService.getTbAcctById(tbAccountOrgRel.getAcctId());
+                rabbitMqService.sendMqMsg("person", "update", "personnelId", tbAcct.getPersonnelId());
                 return ResultUtils.success(null);
             }
         }else{

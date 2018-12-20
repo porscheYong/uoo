@@ -74,4 +74,11 @@ public interface TbAcctService extends IService<TbAcct> {
      * @return
      */
     public TbAcct getTbAcctByAcct(String acct);
+
+    /**
+     * 根据ID 获取账号信息
+     * @param acctId
+     * @return
+     */
+    public TbAcct getTbAcctById(Long acctId);
 }

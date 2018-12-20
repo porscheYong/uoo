@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.personnel.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.core.personnel.annotion.SendMqMsg;
 import cn.ffcs.uoo.core.personnel.entity.TbPsnjob;
 import cn.ffcs.uoo.core.personnel.service.TbPsnjobService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
@@ -33,6 +34,7 @@ public class TbPsnjobController extends BaseController {
     @ApiOperation(value="新增工作履历",notes="新增工作履历")
     @ApiImplicitParam(name = "tbPsnjob",value = "工作履历",required = true,dataType = "TbPsnjob")
     @UooLog(value = "新增工作履历",key = "saveTbPsnjob")
+    @SendMqMsg(type = "person", handle ="update", column ="personnelId")
     @RequestMapping(value="/saveTbPsnjob",method = RequestMethod.POST)
     public Object saveTbPsnjob(@RequestBody TbPsnjob tbPsnjob){
         return tbPsnjobService.saveTbPsnjob(tbPsnjob);
@@ -41,6 +43,7 @@ public class TbPsnjobController extends BaseController {
     @ApiOperation(value="更新工作履历",notes="更新工作履历")
     @ApiImplicitParam(name = "tbPsnjob",value = "工作履历",required = true,dataType = "TbPsnjob")
     @UooLog(value = "更新工作履历",key = "updateTbPsnjob")
+    @SendMqMsg(type = "person", handle ="update", column ="personnelId")
     @RequestMapping(value="/updateTbPsnjob",method = RequestMethod.PUT)
     public Object updateTbPsnjob(@RequestBody TbPsnjob tbPsnjob){
         return  tbPsnjobService.updateTbPsnjob(tbPsnjob);
@@ -49,6 +52,7 @@ public class TbPsnjobController extends BaseController {
     @ApiOperation(value="删除工作履历",notes="删除工作履历")
     @ApiImplicitParam(name = "psnjobId", value = "工作履历标识", required = true, dataType = "Long",paramType="path")
     @UooLog(value = "删除工作履历",key = "delTbPsnjob")
+    @SendMqMsg(type = "person", handle ="update", column ="personnelId")
     @RequestMapping(value="/delTbPsnjob",method = RequestMethod.DELETE)
     public Object delTbPsnjob(Long psnjobId ){
         return  tbPsnjobService.delTbPsnjob(psnjobId);
