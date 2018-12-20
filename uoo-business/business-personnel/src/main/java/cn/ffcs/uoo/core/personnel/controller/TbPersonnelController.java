@@ -498,21 +498,22 @@ public class TbPersonnelController extends BaseController {
                     return ResultUtils.error(EumPersonnelResponseCode.MOBILE_IS_NULL);
                 }else if( !StrUtil.checkTelephoneNumber(tbContact.getContent())){
                     return ResultUtils.error(EumPersonnelResponseCode.MOBILE_ERROR);
-                }else{
-                    Map<String, Object> phoneMap = new HashMap<String, Object>();
-                    phoneMap.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
-                    phoneMap.put(BaseUnitConstants.TBCONTACT_CONTENT, tbContact.getContent());
-                    phoneMap.put(BaseUnitConstants.TBCONTACT_CONTACT_TYPE, "1");
-                    TbContact tbContact1 = tbContactService.selectOne(new EntityWrapper<TbContact>().allEq(phoneMap));
-                    if((StrUtil.isNullOrEmpty(editFormPersonnelVo.getPersonnelId()) && !StrUtil.isNullOrEmpty(tbContact1))
-                            || (!StrUtil.isNullOrEmpty(tbContact1) && !tbContact1.getPersonnelId().equals(editFormPersonnelVo.getPersonnelId()))){
-                        Map<String, Object> psnMap = new HashMap<String, Object>();
-                        psnMap.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
-                        psnMap.put(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, tbContact1.getPersonnelId());
-                        TbPersonnel tbPersonnel = tbPersonnelService.selectOne(new EntityWrapper<TbPersonnel>().allEq(psnMap));
-                        return ResultUtils.error(EumPersonnelResponseCode.MOBILE_IS_EXIST.getState(), "手机号已被【" + tbPersonnel.getPsnName() + "】使用");
-                    }
-                }
+               }
+// else{
+//                    Map<String, Object> phoneMap = new HashMap<String, Object>();
+//                    phoneMap.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+//                    phoneMap.put(BaseUnitConstants.TBCONTACT_CONTENT, tbContact.getContent());
+//                    phoneMap.put(BaseUnitConstants.TBCONTACT_CONTACT_TYPE, "1");
+//                    TbContact tbContact1 = tbContactService.selectOne(new EntityWrapper<TbContact>().allEq(phoneMap));
+//                    if((StrUtil.isNullOrEmpty(editFormPersonnelVo.getPersonnelId()) && !StrUtil.isNullOrEmpty(tbContact1))
+//                            || (!StrUtil.isNullOrEmpty(tbContact1) && !tbContact1.getPersonnelId().equals(editFormPersonnelVo.getPersonnelId()))){
+//                        Map<String, Object> psnMap = new HashMap<String, Object>();
+//                        psnMap.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+//                        psnMap.put(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, tbContact1.getPersonnelId());
+//                        TbPersonnel tbPersonnel = tbPersonnelService.selectOne(new EntityWrapper<TbPersonnel>().allEq(psnMap));
+//                        return ResultUtils.error(EumPersonnelResponseCode.MOBILE_IS_EXIST.getState(), "手机号已被【" + tbPersonnel.getPsnName() + "】使用");
+//                    }
+//                }
             }
         }
 

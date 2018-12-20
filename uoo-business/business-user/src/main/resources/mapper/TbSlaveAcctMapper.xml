@@ -75,8 +75,8 @@
     </select>
 
     <select id="getSlaveAcctOrg" resultType="cn.ffcs.uoo.core.user.vo.ListSlaveAcctOrgVo">
-        select ROWNUM id, t3.*,'应用' slave_acct_type,'标准组织树' orgTreeName, t4.full_name
-        from (select t1.slave_acct_id, t1.slave_acct, t1.status_cd, t2.org_id
+        select ROWNUM id, t3.*,'应用' slave_acct_type,'标准组织树' orgTreeName, t4.full_name, t6.system_name
+        from (select t1.slave_acct_id, t1.slave_acct, t1.status_cd, t2.org_id, t1.resource_obj_id
         from tb_slave_acct t1, tb_account_org_rel t2
         where t1.status_cd = 1000
         and t2.status_cd = 1000
@@ -89,6 +89,9 @@
         left join tb_org t4
         on t3.org_id = t4.org_id
         and t4.status_cd = 1000
+        left join tb_business_system t6
+        on t3.resource_obj_id = t6.business_system_id
+        and t6.status_cd = 1000
     </select>
 
 </mapper>
