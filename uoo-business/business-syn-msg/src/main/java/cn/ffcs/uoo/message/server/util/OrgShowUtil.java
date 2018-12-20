@@ -11,11 +11,20 @@ import java.util.*;
 import cn.ffcs.uoo.message.server.pojo.TbBusinessSystem;
 import cn.ffcs.uoo.message.server.pojo.TbOrgCrossRel;
 import cn.ffcs.uoo.message.server.vo.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class OrgShowUtil {
+    private static Logger logger = LoggerFactory.getLogger(PersonShowUtil.class);
+    //true：校验后结果不生效，false:校验后结果生效。
+    private static boolean f = true;
     public static void noShow(TbOrgVo vo, TbBusinessSystem system){
         if (vo == null) {
             return;
+        }
+        if(!check(vo)){
+            vo = null;
+           return;
         }
         vo.setLocId(null);
         vo.setAreaCodeId(null);
@@ -30,7 +39,7 @@ public class OrgShowUtil {
 
             List<Map<String,Object>> mapArrayList = new ArrayList<>();
 
-            set.forEach((t)->{
+            for(String t:set){
                 Map<String,Object> map = new HashMap<>();
                 List<Object> list = new ArrayList<>();
                 vo.getExtendInfo2().forEach((temp)->{
@@ -42,8 +51,7 @@ public class OrgShowUtil {
                 map.put("column",t);
                 map.put("value",list);
                 mapArrayList.add(map);
-            });
-
+            }
             vo.setExtendInfo2(null);
             vo.setExtendInfo(mapArrayList);
         }
@@ -185,4 +193,56 @@ public class OrgShowUtil {
             vo.getAreaCodeInfo().setStatusDate(null);
         }
     }
+
+   private  static boolean check(TbOrgVo vo){
+       int flag = 0;
+       if(vo.getOrgId()== null ){
+           logger.warn("组织标识不存在");
+           flag++;
+       }
+       if(vo.getOrgName()== null || "".equals(vo.getOrgName()) ){
+           logger.warn("组织名称不存在");
+           flag++;
+       }
+       if(vo.getOrgCode()== null || "".equals(vo.getOrgCode())){
+           logger.warn("组织编码不存在");
+           flag++;
+       }
+       if(vo.getShortName()== null || "".equals(vo.getShortName())){
+           logger.warn("主账号标识不存在");
+           /*flag++;*/
+       }
+       if(vo.getCityTown()== null || "".equals(vo.getCityTown())){
+           logger.warn("农村/城镇标志不存在");
+           flag++;
+       }
+       if(vo.getUuid()== null || "".equals(vo.getUuid())){
+           logger.warn("UUID不存在");
+           flag++;
+       }
+       if(vo.getOrgLevels()== null){
+           logger.warn("组织层级（组织与组织树关系）不存在");
+           flag++;
+       }
+       if(vo.getOrgRelations()== null){
+           logger.warn("主组织关系不存在");
+           flag++;
+       }
+       if(vo.getOrgTypes()== null){
+           logger.warn("组织类别不存在");
+           flag++;
+       }
+       if(vo.getPoliticalLocationInfo()== null){
+           logger.warn("组织行政区域不存在");
+           flag++;
+       }
+       if(vo.getAreaCodeInfo()== null){
+           logger.warn("组织区号不存在");
+           flag++;
+       }
+       if(flag >=1 ){
+           return f;
+       }
+       return true;
+   }
 }
