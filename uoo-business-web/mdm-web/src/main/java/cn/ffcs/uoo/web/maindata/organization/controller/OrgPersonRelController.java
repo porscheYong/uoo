@@ -42,6 +42,14 @@ public class OrgPersonRelController {
         return orgPersonRelService.addOrgPsn(psonOrgVo);
     }
 
+    @ApiOperation(value = "新增组织人员关系2", notes = "新增组织人员关系")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/addOrgPsn2", method = RequestMethod.POST)
+    public ResponseResult addOrgPsn2(@RequestBody List<PsonOrgVo> psonOrgVo){
+        return orgPersonRelService.addOrgPsn2(psonOrgVo);
+    }
+
     @ApiOperation(value = "更新组织人员关系", notes = "新增组织人员关系")
     @ApiImplicitParams({
     })

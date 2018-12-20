@@ -613,7 +613,7 @@ function addPsonOrg(){
     };
     psonOrgArr[0]=psonOrg;
     $.ajax({
-        url:isUpdate?'/orgPersonRel/updateOrgPsn':'/orgPersonRel/addOrgPsn',
+        url:isUpdate?'/orgPersonRel/updateOrgPsn':'/orgPersonRel/addOrgPsn2',
         type:'post',
         data:isUpdate?JSON.stringify(psonOrg):JSON.stringify(psonOrgArr),
         contentType:'application/json',

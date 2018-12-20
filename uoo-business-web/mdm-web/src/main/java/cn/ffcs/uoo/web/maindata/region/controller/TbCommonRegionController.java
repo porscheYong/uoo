@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.region.dto.CommonRegionDTO;
 import cn.ffcs.uoo.web.maindata.region.dto.TbCommonRegion;
 import cn.ffcs.uoo.web.maindata.region.service.CommonRegionService;
@@ -35,7 +37,7 @@ import io.swagger.annotations.ApiOperation;
 public class TbCommonRegionController {
     @Autowired
     private CommonRegionService regionService;
-
+    @OperateLog(type=OperateType.SELECT,module="公共管理区域模块",methods="获取子级信息",desc="")
     @ApiOperation(value = "根据ID获取下一级信息", notes = "根据ID获取下一级信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long", paramType = "path"), })
@@ -44,6 +46,7 @@ public class TbCommonRegionController {
         return regionService.getChildCommonRegionInfo(id);
          
     }
+    @OperateLog(type=OperateType.SELECT,module="公共管理区域模块",methods="获取树级信息",desc="")
     @ApiOperation(value = "公共管理区域树", notes = "公共管理区域树")
     @GetMapping("getTreeCommonRegion")
     public ResponseResult getTreeCommonRegion(HttpServletRequest request){
@@ -57,7 +60,7 @@ public class TbCommonRegionController {
         }
         return regionService.getTreeCommonRegion(id);
     }
-    
+    @OperateLog(type=OperateType.SELECT,module="公共管理区域模块",methods="获取单条数据",desc="")
     @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),
@@ -68,7 +71,7 @@ public class TbCommonRegionController {
         return regionService.getCommonRegion(id);
     }
     
-
+    @OperateLog(type=OperateType.ADD,module="公共管理区域模块",methods="新增",desc="")
     @ApiOperation(value = "新增公共管理区域", notes = "新增公共管理区域")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "commonRegion", value = "公共管理区域信息", required = true, dataType = "CommonRegionDTO"), })
@@ -81,6 +84,7 @@ public class TbCommonRegionController {
         commonRegion.setOperateUser(currentLoginUser.getUserId());
         return regionService.addCommonRegion(commonRegion);
     }
+    @OperateLog(type=OperateType.UPDATE,module="公共管理区域模块",methods="修改",desc="")
     @ApiOperation(value = "修改公共管理区域", notes = "修改公共管理区域")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "commonRegion", value = "公共管理区域信息", required = true, dataType = "CommonRegionDTO"), })
@@ -93,7 +97,7 @@ public class TbCommonRegionController {
         commonRegion.setOperateUser(currentLoginUser.getUserId());
         return regionService.updateCommonRegion(commonRegion);
     }
-    
+    @OperateLog(type=OperateType.DELETE,module="公共管理区域模块",methods="删除",desc="")
     @ApiOperation(value = "删除公共管理区域", notes = "删除公共管理区域")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "commonRegion", value = "公共管理区域信息", required = true, dataType = "TbCommonRegion"), })

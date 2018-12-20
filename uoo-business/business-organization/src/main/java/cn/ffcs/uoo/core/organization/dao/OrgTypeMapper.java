@@ -28,4 +28,6 @@ public interface OrgTypeMapper extends BaseMapper<OrgType> {
     public List<TreeNodeVo> selectFullOrgTypeTreeByOrgId(@Param("orgTypeId")String orgTypeId,@Param("orgTypeCode")String orgTypeCode,@Param("orgId")String orgId);
 
     public List<TreeNodeVo> isLeaf(@Param("supOrgTypeId")Long supOrgTypeId);
+
+    public String getOrgTypeInfoByOrgId(@Param("orgId") String orgId);
 }

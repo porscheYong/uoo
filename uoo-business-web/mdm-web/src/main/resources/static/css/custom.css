@@ -1084,6 +1084,7 @@ ul.tab-title.right li {
 .breadcrumb {
     padding: 10px 15px 0;
     background: #fff;
+    margin-bottom: 10px;
 }
 .breadcrumb > .breadcrumb-item {
     color: #959da9;
@@ -1098,6 +1099,28 @@ ul.tab-title.right li {
     margin: 0 9px;
 }
 
+.org-ext {
+    padding-left: 15px;
+    color: #959da9;
+}
+.org-ext .follow-org {
+    padding-bottom: 10px;
+}
+.org-ext .follow-org div {
+    display: inline-block;
+}
+.org-ext .org-type-info div {
+    display: inline-block;
+}
+.uoo-tag {
+    background: #dfe1e5;
+    border-radius: 4px;
+    line-height: 1.5em;
+    color: rgba(0,0,0,.5);
+    padding: 3px 10px;
+    display: inline-block;
+    margin-right: 5px;
+}
 /*
  * Component: user add gender radio
  * --------------

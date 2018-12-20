@@ -1,71 +1,91 @@
 package cn.ffcs.uoo.system.entity;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-
-import java.io.Serializable;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
 
 /**
- * 系统登录日志
- * Created by liuxiaodong on 2018/11/12.
+ * <p>
+ * 
+ * </p>
+ *
+ * @author zengxsh
+ * @since 2018-12-20
  */
 @TableName("SYS_LOGIN_LOG")
 public class SysLoginLog extends Model<SysLoginLog> {
 
-    /** 登录日志标识   */
-    @TableId(value = "LOGIN_ID")
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 登录日志标识
+     */
+    @TableId("LOGIN_ID")
     private Long loginId;
-
-    /** 日志名称    */
+    /**
+     * 日志名称
+     */
     @TableField("LOG_NAME")
-    private Long logName;
-
-    /** 管理员 */
-    @TableField("USER_ID")
-    private Long userId;
-
-    /** 是否成功    */
+    private String logName;
+    /**
+     * 用户登录账号
+     */
+    @TableField("ACCOUT")
+    private String accout;
+    /**
+     * 是否成功
+     */
     @TableField("SUCCEED")
     private Long succeed;
-
-    /** IP  */
+    /**
+     * IP
+     */
     @TableField("IP")
     private Long ip;
-
-    /** 具体消息    */
+    /**
+     * 具体消息
+     */
     @TableField("MESSAGE")
     private String message;
-
-    /** 备注  */
+    /**
+     * 备注
+     */
     @TableField("NOTES")
     private String notes;
-
-    /** 状态  */
+    /**
+     * 状态
+     */
     @TableField("STATUS_CD")
     private String statusCd;
-
-    /** 创建时间  */
+    /**
+     * 创建时间
+     */
     @TableField("CREATE_DATE")
     private Date createDate;
-
-    /** 创建人    */
+    /**
+     * 创建人
+     */
     @TableField("CREATE_USER")
     private Long createUser;
-
-    /** 修改时间 */
+    /**
+     * 修改时间
+     */
     @TableField("UPDATE_DATE")
     private Date updateDate;
-
-    /** 修改人 */
+    /**
+     * 修改人
+     */
     @TableField("UPDATE_USER")
     private Long updateUser;
-
-    /** 状态时间    */
+    /**
+     * 状态变更的时间
+     */
     @TableField("STATUS_DATE")
     private Date statusDate;
+
 
     public Long getLoginId() {
         return loginId;
@@ -75,20 +95,20 @@ public class SysLoginLog extends Model<SysLoginLog> {
         this.loginId = loginId;
     }
 
-    public Long getLogName() {
+    public String getLogName() {
         return logName;
     }
 
-    public void setLogName(Long logName) {
+    public void setLogName(String logName) {
         this.logName = logName;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getAccout() {
+        return accout;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setAccout(String accout) {
+        this.accout = accout;
     }
 
     public Long getSucceed() {
@@ -105,6 +125,14 @@ public class SysLoginLog extends Model<SysLoginLog> {
 
     public void setIp(Long ip) {
         this.ip = ip;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getNotes() {
@@ -163,16 +191,27 @@ public class SysLoginLog extends Model<SysLoginLog> {
         this.statusDate = statusDate;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     @Override
     protected Serializable pkVal() {
         return this.loginId;
+    }
+
+    @Override
+    public String toString() {
+        return "SysLoginLog{" +
+        ", loginId=" + loginId +
+        ", logName=" + logName +
+        ", accout=" + accout +
+        ", succeed=" + succeed +
+        ", ip=" + ip +
+        ", message=" + message +
+        ", notes=" + notes +
+        ", statusCd=" + statusCd +
+        ", createDate=" + createDate +
+        ", createUser=" + createUser +
+        ", updateDate=" + updateDate +
+        ", updateUser=" + updateUser +
+        ", statusDate=" + statusDate +
+        "}";
     }
 }

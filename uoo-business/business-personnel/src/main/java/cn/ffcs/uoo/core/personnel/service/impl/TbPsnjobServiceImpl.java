@@ -4,6 +4,7 @@ import cn.ffcs.uoo.core.personnel.constant.BaseUnitConstants;
 import cn.ffcs.uoo.core.personnel.constant.EumPersonnelResponseCode;
 import cn.ffcs.uoo.core.personnel.entity.TbPsnjob;
 import cn.ffcs.uoo.core.personnel.dao.TbPsnjobMapper;
+import cn.ffcs.uoo.core.personnel.service.TbPersonnelService;
 import cn.ffcs.uoo.core.personnel.service.TbPsnjobService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
 import cn.ffcs.uoo.core.personnel.util.StrUtil;
@@ -14,6 +15,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -46,7 +48,7 @@ public class TbPsnjobServiceImpl extends ServiceImpl<TbPsnjobMapper, TbPsnjob> i
     public Object saveTbPsnjob(TbPsnjob tbPsnjob){
         tbPsnjob.setPsnjobId(this.getId());
         if(retBool(baseMapper.insert(tbPsnjob))){
-            return ResultUtils.success(null);
+            return ResultUtils.success(tbPsnjob.getPersonnelId());
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
     }
@@ -54,7 +56,7 @@ public class TbPsnjobServiceImpl extends ServiceImpl<TbPsnjobMapper, TbPsnjob> i
     @Override
     public Object updateTbPsnjob(TbPsnjob tbPsnjob) {
         if(retBool(baseMapper.updateById(tbPsnjob))){
-            return ResultUtils.success(null);
+            return ResultUtils.success(tbPsnjob.getPersonnelId());
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
     }
@@ -66,17 +68,22 @@ public class TbPsnjobServiceImpl extends ServiceImpl<TbPsnjobMapper, TbPsnjob> i
         tbPsnjob.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbPsnjob.setStatusDate(new Date());
         if(retBool(baseMapper.updateById(tbPsnjob))){
-            return ResultUtils.success(null);
+            TbPsnjob psnjob = getPsnjobById(psnjobId);
+            return ResultUtils.success(psnjob.getPersonnelId());
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
     }
 
-    @Override
-    public Object getTbPsnjobById(Long psnjobId){
+    public TbPsnjob getPsnjobById(Long familyId){
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
-        params.put(BaseUnitConstants.TBPSNJOB_PSNJOB_ID, psnjobId);
-        return ResultUtils.success(this.selectOne(new EntityWrapper<TbPsnjob>().allEq(params)));
+        params.put(BaseUnitConstants.TBFAMILY_FAMILY_ID, familyId);
+        return this.selectOne(new EntityWrapper<TbPsnjob>().allEq(params));
+    }
+
+    @Override
+    public Object getTbPsnjobById(Long psnjobId){
+        return ResultUtils.success(getPsnjobById(psnjobId));
     }
 
     @Override

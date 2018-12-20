@@ -15,9 +15,6 @@ public interface TbBusinessSystemMapper extends BaseMapper<TbBusinessSystem> {
     //根据人员获取系统
     List<TbBusinessSystem> getSystemByPersonal(@Param("personalId") Long personalId);
 
-    //根据人员获取系统
-    List<TbBusinessSystem> getSystemByPersonalLimitDelete(@Param("personalId") Long personalId);
-
     //根据组织获取系统
     List<TbBusinessSystem> getSystemByOrg(@Param("orgId") Long orgId);
 }

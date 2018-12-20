@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.permission.dto.BusinessSystem;
 import cn.ffcs.uoo.web.maindata.permission.service.BusinessSystemService;
 import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
@@ -29,6 +31,7 @@ import io.swagger.annotations.ApiOperation;
 public class BusinessSystemController {
     @Autowired
     BusinessSystemService bizSysSvc;
+    @OperateLog(type=OperateType.SELECT,module="接入系统模块",methods="根据TreeID获取信息",desc="")
     @ApiOperation(value = "接入系统列表-web", notes = "接入系统列表")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "treeId", value = "treeId", required = true, dataType = "Long" ,paramType="path"),

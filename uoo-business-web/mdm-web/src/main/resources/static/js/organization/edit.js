@@ -108,9 +108,9 @@ function openTypeDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#orgTypeList').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
+            parent.layer.close(index);
             orgTypeList = checkNode;
             //选择组织类别为营销组织类型
             if (orgTypeList.length == 0 && editSmallField) {
@@ -169,10 +169,10 @@ function openPositionDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#positionList').importTags(checkNode);
             // $('.ui-tips-error').css('display', 'none');
             positionList = checkNode;
+            parent.layer.close(index);
         },
         btn2: function(index, layero){},
         cancel: function(){}
@@ -194,11 +194,11 @@ function openPostDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#postList').importTags(checkNode);
             //TODO 防止选中标签显示错误提示
             // $('.ui-tips-error').css('display', 'none');
             orgPostList = checkNode;
+            parent.layer.close(index);
         },
         btn2: function(index, layero){},
         cancel: function(){}
@@ -220,10 +220,10 @@ function openLocationDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#locationList').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
             locationList = checkNode;
+            parent.layer.close(index);
         },
         btn2: function(index, layero){},
         cancel: function(){}
@@ -247,8 +247,8 @@ function openRegionDialog() {
             checkNode = iframeWin.checkNode;
             $('#regionId').importTags(checkNode);
             regionList = checkNode;
-            parent.layer.close(index);
             getAreaId(checkNode[0].id);
+            parent.layer.close(index);
         },
         btn2: function(index, layero){},
         cancel: function(){}
@@ -780,12 +780,20 @@ function updateOrg () {
   var areaType = $('#areaType option:selected') .val();
   var countType = $('#countType option:selected') .val();
   var contractType = $('#contractType option:selected') .val();
-  expandovalueVoList = [
-      {columnName: 'nodeType', data: nodeType, valueId: nodeTypeId},
-      {columnName: 'areaType', data: areaType, valueId: areaTypeId},
-      {columnName: 'countType', data: countType, valueId: countTypeId},
-      {columnName: 'contractType', data: contractType, valueId: contractTypeId}
-  ];
+  var orgMart; //传给后台的划小组织编码
+  if (editSmallField) {
+      expandovalueVoList = [
+          {columnName: 'nodeType', data: nodeType, valueId: nodeTypeId},
+          {columnName: 'areaType', data: areaType, valueId: areaTypeId},
+          {columnName: 'countType', data: countType, valueId: countTypeId},
+          {columnName: 'contractType', data: contractType, valueId: contractTypeId}
+      ];
+      orgMart = orgMartCode;
+  }
+  else {
+      orgMart = '';
+  }
+
   $http.post('/org/updateOrg', JSON.stringify({
       orgRootId: '1',
       orgTreeId: '1',
@@ -810,7 +818,8 @@ function updateOrg () {
       postList: post,
       orgContent: orgContent,
       orgDesc: orgDesc,
-      expandovalueVoList: expandovalueVoList
+      expandovalueVoList: expandovalueVoList,
+      orgMartCode: orgMart
   }), function () {
       parent.changeNodeName(orgId, orgName);
       window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));

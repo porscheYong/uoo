@@ -4,7 +4,7 @@ var orgName = getQueryString('name');
 var areaCodeId = ''; //区号ID
 var locationList = [];
 var orgTypeList = [];
-var expandovalueVoList; //划小扩展字段
+var expandovalueVoList = []; //划小扩展字段
 var positionList = [];
 var orgPostList = [];
 var regionList = [];
@@ -391,12 +391,14 @@ function addOrg () {
     var areaType = $('#areaType option:selected') .val();
     var countType = $('#countType option:selected') .val();
     var contractType = $('#contractType option:selected') .val();
-    expandovalueVoList = [
-        {columnName: 'nodeType', data: nodeType},
-        {columnName: 'areaType', data: areaType},
-        {columnName: 'countType', data: countType},
-        {columnName: 'contractType', data: contractType}
-    ];
+    if (editSmallField) {
+        expandovalueVoList = [
+            {columnName: 'nodeType', data: nodeType},
+            {columnName: 'areaType', data: areaType},
+            {columnName: 'countType', data: countType},
+            {columnName: 'contractType', data: contractType}
+        ];
+    }
     $http.post('/org/addOrg', JSON.stringify({
         orgRootId: '1',
         orgTreeId: '1',

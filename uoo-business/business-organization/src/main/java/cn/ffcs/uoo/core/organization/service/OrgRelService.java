@@ -132,4 +132,12 @@ public interface OrgRelService extends IService<OrgRel> {
          * @return
          */
         public boolean isLeaf(String orgId,String orgTreeId);
+
+        /**
+         * 获取组织全路径列表
+         * @param orgTreeId
+         * @param orgId
+         * @return
+         */
+        public List<OrgVo> getFullOrgList(String orgTreeId,String orgId);
 }

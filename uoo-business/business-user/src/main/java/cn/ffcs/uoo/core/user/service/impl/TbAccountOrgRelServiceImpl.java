@@ -4,13 +4,19 @@ import cn.ffcs.uoo.core.user.constant.BaseUnitConstants;
 import cn.ffcs.uoo.core.user.constant.EumUserResponeCode;
 import cn.ffcs.uoo.core.user.entity.TbAccountOrgRel;
 import cn.ffcs.uoo.core.user.dao.TbAccountOrgRelMapper;
+import cn.ffcs.uoo.core.user.entity.TbAcct;
+import cn.ffcs.uoo.core.user.entity.TbSlaveAcct;
+import cn.ffcs.uoo.core.user.service.RabbitMqService;
 import cn.ffcs.uoo.core.user.service.TbAccountOrgRelService;
+import cn.ffcs.uoo.core.user.service.TbAcctService;
+import cn.ffcs.uoo.core.user.service.TbSlaveAcctService;
 import cn.ffcs.uoo.core.user.util.ResultUtils;
 import cn.ffcs.uoo.core.user.util.StrUtil;
 import cn.ffcs.uoo.core.user.vo.ListAcctOrgVo;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -27,6 +33,15 @@ import java.util.*;
 @Service
 public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMapper, TbAccountOrgRel> implements TbAccountOrgRelService {
 
+    @Autowired
+    private TbSlaveAcctService tbSlaveAcctService;
+
+    @Autowired
+    private TbAcctService tbAcctService;
+
+    @Autowired
+    private RabbitMqService rabbitMqService;
+
     @Override
     public Long getId(){return baseMapper.getId(); }
 
@@ -38,7 +53,7 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
             for (ListAcctOrgVo acctOrg : acctOrgVoList){
                 tbAccountOrgRel = new TbAccountOrgRel();
                 BeanUtils.copyProperties(acctOrg, tbAccountOrgRel);
-                tbAccountOrgRel.setAcctHostId(this.getId());
+                tbAccountOrgRel.setAcctOrgRelId(this.getId());
                 tbAccountOrgRel.setAcctId(acctId);
                 tbAccountOrgRels.add(tbAccountOrgRel);
             }
@@ -51,6 +66,12 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
 
     @Override
     public Object removeAcctOrg(Long personnelId,Long acctId, Long orgId){
+        List<TbSlaveAcct> tbSlaveAcctList = baseMapper.findSlaveAcct(orgId, acctId, null);
+        if(tbSlaveAcctList != null && tbSlaveAcctList.size() > 0 ){
+            for(TbSlaveAcct tbSlaveAcct : tbSlaveAcctList){
+                tbSlaveAcctService.delAllTbSlaveAcct(tbSlaveAcct.getSlaveAcctId());
+            }
+        }
         TbAccountOrgRel tbAccountOrgRel = new TbAccountOrgRel();
         tbAccountOrgRel.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbAccountOrgRel.setStatusDate(new Date());
@@ -61,6 +82,9 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
             wrapper.eq(BaseUnitConstants.TABLE_ORG_ID, orgId);
         }
         if(retBool(baseMapper.update(tbAccountOrgRel, wrapper))){
+            if(!StrUtil.isNullOrEmpty(personnelId)){
+                rabbitMqService.sendMqMsg("person", "update", "personnelId", personnelId);
+            }
             return ResultUtils.success(personnelId);
         }
         return ResultUtils.error(EumUserResponeCode.USER_RESPONSE_ERROR);
@@ -74,8 +98,10 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
         map.put(BaseUnitConstants.TABLE_ACCT_ID, tbAccountOrgRel.getAcctId());
         TbAccountOrgRel accountOrgRel = this.selectOne(new EntityWrapper<TbAccountOrgRel>().allEq(map));
         if(StrUtil.isNullOrEmpty(accountOrgRel)){
-            tbAccountOrgRel.setAcctHostId(this.getId());
+            tbAccountOrgRel.setAcctOrgRelId(this.getId());
             if(retBool(baseMapper.insert(tbAccountOrgRel))){
+                TbAcct tbAcct = tbAcctService.getTbAcctById(tbAccountOrgRel.getAcctId());
+                rabbitMqService.sendMqMsg("person", "update", "personnelId", tbAcct.getPersonnelId());
                 return ResultUtils.success(null);
             }
         }else{

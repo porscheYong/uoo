@@ -35,8 +35,8 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
     /**
      * 主账号组织关系标识
      */
-    @TableField("ACCT_HOST_ID")
-    private Long acctHostId;
+    @TableField("ACCT_ORG_REL_ID")
+    private Long acctOrgRelId;
     /**
      * 主账号标识
      */
@@ -129,20 +129,20 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
     @Override
     public String toString() {
         return "TbSlaveAcct{" +
-        ", slaveAcctId=" + slaveAcctId +
-        ", slaveAcct=" + slaveAcct +
-        ", salt=" + salt +
-        ", password=" + password +
-        ", symmetryPassword=" + symmetryPassword +
-        ", slaveAcctType=" + slaveAcctType +
-        ", statusCd=" + statusCd +
-        ", createDate=" + createDate +
-        ", createUser=" + createUser +
-        ", updateDate=" + updateDate +
-        ", updateUser=" + updateUser +
-        ", statusDate=" + statusDate +
+                ", slaveAcctId=" + slaveAcctId +
+                ", slaveAcct=" + slaveAcct +
+                ", salt=" + salt +
+                ", password=" + password +
+                ", symmetryPassword=" + symmetryPassword +
+                ", slaveAcctType=" + slaveAcctType +
+                ", statusCd=" + statusCd +
+                ", createDate=" + createDate +
+                ", createUser=" + createUser +
+                ", updateDate=" + updateDate +
+                ", updateUser=" + updateUser +
+                ", statusDate=" + statusDate +
                 ", enableDate=" + enableDate +
                 ", disableDate=" + disableDate +
-        "}";
+                "}";
     }
 }
