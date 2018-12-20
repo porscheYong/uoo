@@ -9,17 +9,6 @@ var orgFullName = '';
 var table;
 var isCheck = 0;
 
-Array.prototype.filter = Array.prototype.filter || function(func) {
-    var arr = this;
-    var r = [];
-    for (var i = 0; i < arr.length; i++) {
-        if (func(arr[i],i,arr)) {
-            r.push(arr[i]);
-        }
-    }
-    return r;
-}
-
 // 获取组织完整路径
 function getOrgExtInfo () {
     var pathArry = parent.nodeArr;

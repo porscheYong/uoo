@@ -70,7 +70,7 @@ function getUser(acctId) {           //查看并编辑主账号
         initAcctInfoCheck(data);
         initEditUserInfo(data);
         initOrgTable(data.acctOrgVoPage.records);
-        initSubOrgTable(data.slaveAcctOrgVoPage.records);
+        initSlaveOrgTable(data.slaveAcctOrgVoPage.records);
     }, function (err) {
 
     })
@@ -136,7 +136,7 @@ function initOrgTable(results){         //主账号组织数据表格
   });
 }
 
-function initSubOrgTable(results){    //从账号组织数据
+function initSlaveOrgTable(results){    //从账号组织数据
   var subTable = $("#subInfoTable").DataTable({
     'data': results,
     'destroy':true,
@@ -314,6 +314,7 @@ function removeAcctOrg(orgId){   //编辑时删除组织
       success: function (data) { //返回json结果
         toastr.success(data.message);
         refreshTb(acctId);
+        refreshSlaveTb(acctId);
         orgNum -= 1;
       },
       error:function(err){
@@ -348,7 +349,7 @@ function addAcctOrg(orgId){ //编辑时新增组织
   });
 }
 
-function refreshTb(acctId) {           //新增组织后刷新表格
+function refreshTb(acctId) {           //新增组织后刷新主账号组织表格
   var date = new Date();
   $http.get('/user/getUser', {   
       acctId: acctId,
@@ -356,6 +357,19 @@ function refreshTb(acctId) {           //新增组织后刷新表格
       _:date.getTime()
   }, function (data) {
       initOrgTable(data.acctOrgVoPage.records);
+  }, function (err) {
+
+  })
+}
+
+function refreshSlaveTb(acctId) {           //删除组织后刷新从账号表格
+  var date = new Date();
+  $http.get('/user/getUser', {   
+      acctId: acctId,
+      userType: "1",
+      _:date.getTime()
+  }, function (data) {
+      initSlaveOrgTable(data.slaveAcctOrgVoPage.records);
   }, function (err) {
 
   })
@@ -434,8 +448,21 @@ function isNull(s,r){    //判断是否为null
 
 //删除组织
 function deleteOrg(orgId){
+    var oId = slaveOrgIdList.indexOf(orgId);
     if(orgNum == 1){
       toastr.warning("无法删除所有组织");
+    }else if(oId != -1){        //如果该组织下有从账号，则提示
+      parent.layer.confirm('组织下有从账号,删除组织将删除该从账号！', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+      }, function(index, layero){
+        removeAcctOrg(orgId);
+        slaveOrgIdList.splice(oId,1);
+        parent.layer.close(index);
+      }, function(){
+    
+      });
     }else{
       removeAcctOrg(orgId);
     }
