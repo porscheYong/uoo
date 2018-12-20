@@ -43,6 +43,7 @@ public class MpGenerator {
         gc.setActiveRecord(true);// 不需要ActiveRecord特性的请改为false
         gc.setEnableCache(false);// XML 二级缓存
         gc.setBaseResultMap(true);// XML ResultMap
+        gc.setFileOverride(true);
         gc.setBaseColumnList(true);// XML columList
     // .setKotlin(true) 是否生成 kotlin 代码
         gc.setAuthor("zengxsh");
@@ -77,7 +78,7 @@ public class MpGenerator {
     // strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
         strategy.setTablePrefix(new String[] { "TB_", "tsys_" });// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude(new String[] { "SYS_OPERATION_LOG"  }); // 需要生成的表
+        strategy.setInclude(new String[] { "SYS_ROLE_PERMISSION_REF","SYS_DEPT_ROLE_REF","SYS_USER_ROLE_REF","SYS_POSITIONT_ROLE_REF"  }); // 需要生成的表
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类
         // strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");
@@ -101,8 +102,8 @@ public class MpGenerator {
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent("cn.ffcs.uoo.core");
-        pc.setModuleName("permission");
+        pc.setParent("cn.ffcs.uoo");
+        pc.setModuleName("system");
         mpg.setPackageInfo(pc);
 
         // 注入自定义配置，可以在 VM 中使用 cfg.abc 【可无】

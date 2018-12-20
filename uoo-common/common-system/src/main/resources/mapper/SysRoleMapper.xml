@@ -25,4 +25,34 @@
   <select id="getId" resultType="Long">
     select SEQ_TB_SYS_ROLE.NEXTVAL from dual
   </select>
+  <select id="selectToPage" resultType="cn.ffcs.uoo.system.vo.SysRoleDTO" parameterType="java.util.HashMap">
+    SELECT
+     r.ROLE_ID as roleId, r.ROLE_NAME as roleName, r.ROLE_CODE as roleCode, r.PARENT_ROLE_CODE as parentRoleCode, 
+     r.REGION_NBR as regionNbr, r.SORT_NUM as sortNum, 
+     r.NOTES as notes, r.STATUS_CD as statusCd, r.CREATE_DATE as createDate, r.CREATE_USER as createUser, r.UPDATE_DATE as updateDate, 
+     r.UPDATE_USER as updateUser, r.STATUS_DATE as statusDate
+    ,
+    t.*,
+    pr.ROLE_NAME AS parentRoleName,
+    c.REGION_NAME AS commonRegionName 
+FROM
+    SYS_ROLE r
+    LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON r.ROLE_CODE = rpr.ROLE_CODE
+    LEFT JOIN (
+    SELECT
+        rpr.ROLE_CODE,
+        wm_concat ( p.PERMISSION_NAME ) AS permissionNames,
+        wm_concat ( p.PERMISSION_CODE ) AS permissionCodes 
+    FROM
+        SYS_PERMISSION p
+        LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON p.PERMISSION_CODE = rpr.PERMISSION_CODE 
+    GROUP BY
+        rpr.ROLE_CODE 
+    ) t ON t.ROLE_CODE = rpr.ROLE_CODE
+    LEFT JOIN SYS_ROLE pr ON pr.ROLE_CODE = r.PARENT_ROLE_CODE
+    LEFT JOIN TB_COMMON_REGION c ON c.REGION_NBR = r.REGION_NBR
+  </select>
+  <select id="countToPage" resultType="Long" parameterType="java.util.HashMap">
+    select SEQ_TB_SYS_ROLE.NEXTVAL from dual
+  </select>
 </mapper>
