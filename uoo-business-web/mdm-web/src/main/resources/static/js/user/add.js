@@ -82,8 +82,17 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
     formValidate.immediate();
     formValidate.isAllPass();
     userAddForm.find(':input').each(function () {
-        $(this).hover(function () {
-            formValidate.isPass($(this));
+        // $(this).hover(function () {
+        //     formValidate.isPass($(this));
+        // });
+        $(this).bind({
+            hover : function(){
+                formValidate.isPass($(this));
+            },
+            paste : function(){
+                formValidate.isPass($(this));
+                $(this).removeClass('error');
+            }
         });
     });
 });
@@ -246,7 +255,9 @@ function getPostName () {
 
 //选择证件类型
 function getSelectedCert () {
-    return certType = $('#certType option:selected') .val();
+    certType = $('#certType option:selected') .val();
+    getIdCardInfo();
+    return certType;
 }
 
 //正则身份证信息
