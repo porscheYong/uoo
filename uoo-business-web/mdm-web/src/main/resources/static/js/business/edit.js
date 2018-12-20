@@ -65,10 +65,10 @@ function openRelTypeDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#orgRelType').importTags(checkNode);
             $('.ui-tips-error').css('display', 'none');
             orgRelTypeList = checkNode;
+            parent.layer.close(index);
         },
         btn2: function(index, layero){},
         cancel: function(){}
@@ -90,10 +90,10 @@ function openTypeDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#orgType').importTags(checkNode);
             $('.ui-tips-error').css('display', 'none');
             orgTypeList = checkNode;
+            parent.layer.close(index);
         },
         btn2: function(index, layero){},
         cancel: function(){}

@@ -139,6 +139,17 @@ public class OrgController extends BaseController {
             ret.setMessage("组织树不存在");
             return ret;
         }
+
+        List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
+        orgRelTypeListCur = orgRelTypeService.getOrgRelType(orgTree.getOrgTreeId().toString());
+        if(orgRelTypeListCur==null || orgRelTypeListCur.size()<1){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织关系类型不存在");
+            return ret;
+        }
+        OrgRelType ortCur = orgRelTypeListCur.get(0);
+
+
         List<OrgType> orgTypeList = org.getOrgTypeList();
         List<Position> positionList = org.getPositionList();
         List<Post> postList = org.getPostList();
@@ -368,20 +379,21 @@ public class OrgController extends BaseController {
             }
         }
 //        }
-        //新增组织扩展属性
-        boolean isExitExp = false;
-        if(extValueList!=null && extValueList.size()>0){
-            ResponseResult<ExpandovalueVo> publicRet = new ResponseResult<ExpandovalueVo>();
-            for(ExpandovalueVo extVo : extValueList){
-                extVo.setTableName("TB_ORG");
-                extVo.setRecordId(newOrg.getOrgId().toString());
-                publicRet = expandovalueService.addExpandoInfo(extVo);
+        //新增营销组织扩展属性
+        if("0401".equals(ortCur.getRefCode())){
+            //boolean isExitExp = false;
+            if(extValueList!=null && extValueList.size()>0){
+                ResponseResult<ExpandovalueVo> publicRet = new ResponseResult<ExpandovalueVo>();
+                for(ExpandovalueVo extVo : extValueList){
+                    extVo.setTableName("TB_ORG");
+                    extVo.setRecordId(newOrg.getOrgId().toString());
+                    publicRet = expandovalueService.addExpandoInfo(extVo);
+                }
+                //isExitExp = true;
             }
-            isExitExp = true;
-        }
-        orgService.add(newOrg);
 
-        if (isExitExp) {
+
+            //if (isExitExp) {
 
             String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
                 @Override
@@ -389,9 +401,10 @@ public class OrgController extends BaseController {
                     CallableStatement cstmt = null;
                     String result = "";
                     try {
-                        cstmt = conn.prepareCall("{CALL P_ORG_CNTRT_MGMT_GENERATOR (?,?)}");
+                        cstmt = conn.prepareCall("{CALL P_ORG_CNTRT_MGMT_GENERATOR (?,?,?)}");
                         cstmt.setObject(1, orgCode);
                         cstmt.registerOutParameter(2, Types.VARCHAR);
+                        cstmt.registerOutParameter(3, Types.VARCHAR);
                         cstmt.execute();
                         if(!StrUtil.isNullOrEmpty(cstmt.getString(2))){
                             result = cstmt.getString(2).toString();
@@ -412,7 +425,9 @@ public class OrgController extends BaseController {
                     return result;
                 }
             });
+            //}
         }
+        orgService.add(newOrg);
         TreeNodeVo vo = new TreeNodeVo();
         vo.setId(newOrg.getOrgId().toString());
         vo.setPid(org.getSupOrgId().toString());
@@ -452,6 +467,18 @@ public class OrgController extends BaseController {
             ret.setMessage("组织树不存在");
             return ret;
         }
+
+        List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
+        orgRelTypeListCur = orgRelTypeService.getOrgRelType(orgTree.getOrgTreeId().toString());
+        if(orgRelTypeListCur==null || orgRelTypeListCur.size()<1){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织关系类型不存在");
+            return ret;
+        }
+        OrgRelType ortCur = orgRelTypeListCur.get(0);
+
+
+
         List<OrgType> orgTypeList = org.getOrgTypeList();
         List<Position> positionList = org.getPositionList();
         List<Post> postList = org.getPostList();
@@ -775,63 +802,143 @@ public class OrgController extends BaseController {
                 }
             }
         }
-        //组织扩展类型
+
         ResponseResult<List<ExpandovalueVo>> publicRet = expandovalueService.queryExpandovalueVoList("TB_ORG",org.getOrgId().toString());
         List<ExpandovalueVo> curExtList = publicRet.getData();
-        isExists = false;
-        if(expList!=null && expList.size()>0){
-            for(ExpandovalueVo  vo : expList){
-                isExists = false;
-                if(curExtList!=null && curExtList.size()>0){
-                    for(ExpandovalueVo curVo : curExtList){
-                        if((vo.getValueId().toString()).equals(curVo.getValueId().toString())){
-                            isExists=true;
-                            break;
-                        }
-                    }
-                }
-                ResponseResult<ExpandovalueVo> voret;
-                if(!isExists){
-                    //新增
-                    ExpandovalueVo voadd = new ExpandovalueVo();
-                    voadd.setTableName("TB_ORG");
-                    voadd.setColumnName(vo.getColumnName());
-                    voadd.setRecordId(newOrg.getOrgId().toString());
-                    voadd.setData(vo.getData());
-                    voret = expandovalueService.addExpandoInfo(voadd);
+        //营销组织扩展类型
+        if("0401".equals(ortCur.getRefCode()) && "1000".equals(org.getStatusCd())){
 
-                }else{
-                    //更新
-                    TbExpandovalue voupdate = new TbExpandovalue();
-                    voupdate.setData(vo.getData());
-                    voupdate.setValueId(vo.getValueId());
-                    expandovalueService.updateTbExpandovalue(voupdate);
-                }
-            }
-            if(curExtList!=null && curExtList.size()>0){
-                for(ExpandovalueVo curVo : curExtList){
-                    for(ExpandovalueVo  vo : expList){
-                        if((vo.getValueId().toString()).equals(curVo.getValueId().toString())){
-                            isExists=true;
-                            break;
+            //更新营销组织属性
+            isExists = false;
+            if(expList!=null && expList.size()>0){
+                for(ExpandovalueVo  vo : expList){
+                    if(StrUtil.isNullOrEmpty(vo.getData())){
+                        break;
+                    }
+                    isExists = false;
+                    if(curExtList!=null && curExtList.size()>0){
+                        for(ExpandovalueVo curVo : curExtList){
+                            if(StrUtil.isNullOrEmpty(vo.getValueId())){
+                                isExists=false;
+                                break;
+                            }
+                            if((vo.getValueId().toString()).equals(curVo.getValueId().toString())){
+                                isExists=true;
+                                break;
+                            }
                         }
                     }
+                    ResponseResult<ExpandovalueVo> voret;
                     if(!isExists){
-                        //删除
-                        expandovalueService.removeTbExpandovalue(curVo.getValueId(),0L);
+                        //新增
+                        ExpandovalueVo voadd = new ExpandovalueVo();
+                        voadd.setTableName("TB_ORG");
+                        voadd.setColumnName(vo.getColumnName());
+                        voadd.setRecordId(newOrg.getOrgId().toString());
+                        voadd.setData(vo.getData());
+                        voret = expandovalueService.addExpandoInfo(voadd);
+
+                    }else{
+                        //更新
+                        TbExpandovalue voupdate = new TbExpandovalue();
+                        voupdate.setData(vo.getData());
+                        voupdate.setValueId(vo.getValueId());
+                        expandovalueService.updateTbExpandovalue(voupdate);
+                    }
+                }
+                if(curExtList!=null && curExtList.size()>0){
+                    ResponseResult<TbExpandovalue>  rr =null;
+                    for(ExpandovalueVo curVo : curExtList){
+                        for(ExpandovalueVo  vo : expList){
+                            if(StrUtil.isNullOrEmpty(vo.getValueId())){
+                                isExists=false;
+                                break;
+                            }
+                            if((vo.getValueId().toString()).equals(curVo.getValueId().toString())){
+                                isExists=true;
+                                break;
+                            }
+                        }
+                        if(!isExists){
+                            //删除
+                            rr = expandovalueService.removeTbExpandovalue(curVo.getValueId(),0L);
+                        }
+                    }
+                }
+            }else{
+                if(curExtList!=null && curExtList.size()>0){
+                    for(ExpandovalueVo vo : curExtList){
+                        //删除所有
+                        expandovalueService.removeTbExpandovalue(vo.getValueId(),0L);
                     }
                 }
             }
-        }else{
-            if(curExtList!=null && curExtList.size()>0){
-                for(ExpandovalueVo vo : curExtList){
-                    //删除所有
-                    expandovalueService.removeTbExpandovalue(vo.getValueId(),0L);
-                }
+            //更新组织 并且新增营销化小编码
+            if(curExtList.size()>0 && StrUtil.isNullOrEmpty(org.getOrgMartCode())){
+                String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
+                    @Override
+                    public String doInConnection(Connection conn) throws SQLException, DataAccessException {
+                        CallableStatement cstmt = null;
+                        String result = "";
+                        try {
+                            cstmt = conn.prepareCall("{CALL P_ORG_CNTRT_MGMT_GENERATOR (?,?,?)}");
+                            cstmt.setObject(1, o.getOrgCode());
+                            cstmt.registerOutParameter(2, Types.VARCHAR);
+                            cstmt.registerOutParameter(3, Types.VARCHAR);
+                            cstmt.execute();
+                            if(!StrUtil.isNullOrEmpty(cstmt.getString(2))){
+                                result = cstmt.getString(2).toString();
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            if (cstmt != null) {
+                                cstmt.close();
+                                cstmt = null;
+                            }
+                            if (conn != null) {
+                                conn.close();
+                                conn = null;
+                            }
+                        }
+                        return result;
+                    }
+                });
+            }
+            if(curExtList.size()==0 && !StrUtil.isNullOrEmpty(o.getOrgMartCode())){
+                //删除营销属性
+                String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
+                    @Override
+                    public String doInConnection(Connection conn) throws SQLException, DataAccessException {
+                        CallableStatement cstmt = null;
+                        String result = "";
+                        try {
+                            cstmt = conn.prepareCall("{CALL P_ORG_CNTRT_MGMT_DEL (?,?)}");
+                            cstmt.setObject(1, o.getOrgCode());
+                            cstmt.registerOutParameter(2, Types.VARCHAR);
+                            cstmt.execute();
+                            if(!StrUtil.isNullOrEmpty(cstmt.getString(2))){
+                                result = cstmt.getString(2).toString();
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            if (cstmt != null) {
+                                cstmt.close();
+                                cstmt = null;
+                            }
+                            if (conn != null) {
+                                conn.close();
+                                conn = null;
+                            }
+                        }
+                        return result;
+                    }
+                });
             }
         }
-
-
         //更新组织组织树关系
         Wrapper orgTreeRelOneWrapper = Condition.create()
                 .eq("ORG_ID",org.getOrgId())
@@ -847,12 +954,44 @@ public class OrgController extends BaseController {
 
 
         if (!"1000".equals(org.getStatusCd())){
-            //删除扩展类型
-            if(curExtList!=null && curExtList.size()>0){
-                for(ExpandovalueVo vo : curExtList){
-                    //删除所有
-                    expandovalueService.removeTbExpandovalue(vo.getValueId(),0L);
+
+            if("0401".equals(ortCur.getRefCode())) {
+                //删除扩展类型
+                if(curExtList!=null && curExtList.size()>0){
+                    for(ExpandovalueVo vo : curExtList){
+                        //删除所有
+                        expandovalueService.removeTbExpandovalue(vo.getValueId(),0L);
+                    }
                 }
+                String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
+                    @Override
+                    public String doInConnection(Connection conn) throws SQLException, DataAccessException {
+                        CallableStatement cstmt = null;
+                        String result = "";
+                        try {
+                            cstmt = conn.prepareCall("{CALL P_ORG_CNTRT_MGMT_DEL (?,?)}");
+                            cstmt.setObject(1, o.getOrgCode());
+                            cstmt.registerOutParameter(2, Types.VARCHAR);
+                            cstmt.execute();
+                            if (!StrUtil.isNullOrEmpty(cstmt.getString(2))) {
+                                result = cstmt.getString(2).toString();
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            if (cstmt != null) {
+                                cstmt.close();
+                                cstmt = null;
+                            }
+                            if (conn != null) {
+                                conn.close();
+                                conn = null;
+                            }
+                        }
+                        return result;
+                    }
+                });
             }
             //删除组织关系
             for(OrgRel or : orList){
@@ -956,6 +1095,16 @@ public class OrgController extends BaseController {
             ret.setMessage("组织树不存在");
             return ret;
         }
+
+
+        List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
+        orgRelTypeListCur = orgRelTypeService.getOrgRelType(orgTreeId);
+        if(orgRelTypeListCur==null || orgRelTypeListCur.size()<1){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织关系类型不存在");
+            return ret;
+        }
+        OrgRelType ortCur = orgRelTypeListCur.get(0);
         //Wrapper leafOrgConfWrapper = Condition.create().eq("PARENT_ORG_ID",orgId).eq("STATUS_CD","1000");
         if(orgRelService.isLeaf(orgId,orgTreeId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -1030,15 +1179,47 @@ public class OrgController extends BaseController {
             orgContactRelService.delete(vo);
         }
 
-
-        ResponseResult<List<ExpandovalueVo>> publicRet = expandovalueService.queryExpandovalueVoList("TB_ORG",org.getOrgId().toString());
-        List<ExpandovalueVo> curExtList = publicRet.getData();
-        if(curExtList!=null && curExtList.size()>0){
-            for(ExpandovalueVo vo : curExtList){
-                //删除所有
-                expandovalueService.removeTbExpandovalue(vo.getValueId(),0L);
+        if("0401".equals(ortCur.getRefCode())) {
+            //删除扩展类型
+            ResponseResult<List<ExpandovalueVo>> publicRet = expandovalueService.queryExpandovalueVoList("TB_ORG",org.getOrgId().toString());
+            List<ExpandovalueVo> curExtList = publicRet.getData();
+            if(curExtList!=null && curExtList.size()>0){
+                for(ExpandovalueVo vo : curExtList){
+                    //删除所有
+                    expandovalueService.removeTbExpandovalue(vo.getValueId(),0L);
+                }
             }
+            String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
+                @Override
+                public String doInConnection(Connection conn) throws SQLException, DataAccessException {
+                    CallableStatement cstmt = null;
+                    String result = "";
+                    try {
+                        cstmt = conn.prepareCall("{CALL P_ORG_CNTRT_MGMT_DEL (?,?)}");
+                        cstmt.setObject(1, org.getOrgCode());
+                        cstmt.registerOutParameter(2, Types.VARCHAR);
+                        cstmt.execute();
+                        if (!StrUtil.isNullOrEmpty(cstmt.getString(2))) {
+                            result = cstmt.getString(2).toString();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (cstmt != null) {
+                            cstmt.close();
+                            cstmt = null;
+                        }
+                        if (conn != null) {
+                            conn.close();
+                            conn = null;
+                        }
+                    }
+                    return result;
+                }
+            });
         }
+
 
         String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+orgId+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);

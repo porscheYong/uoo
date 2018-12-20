@@ -1,3 +1,6 @@
+var isIE=!!window.ActiveXObject;
+var isIE8=isIE&&document.documentMode<9;
+
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
@@ -181,6 +184,11 @@ function initOrgPersonnelTable (isSearchlower) {
 function showLower() {
     sortFlag = 0;
     var checked = $('#isShowLower').is(':checked')? 1: 0;
+    if(isIE8 && checked == 1){
+        $(".ui-checkbox").css("background-position","0 -40px");
+    }else if(isIE8 && checked == 0){
+        $(".ui-checkbox").css("background-position","0px 0px");
+    }
     initOrgPersonnelTable(checked);
 }
 

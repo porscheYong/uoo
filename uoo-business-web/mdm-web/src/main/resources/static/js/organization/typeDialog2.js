@@ -52,9 +52,14 @@ function onOrgTypeCheck (e, treeId, treeNode) {
         checkNode.push(node);
         renderTag()
     } else {
-        var idx = checkNode.findIndex((v) => {
-            return v.tId == node.tId;
-        });
+        var idx = checkNode.findIndex(
+        //     (v) => {
+        //     return v.tId == node.tId;
+        // }
+            function(v){
+                return v.tId == node.tId;
+            }
+        );
         checkNode.splice(idx, 1);
         renderTag();
     }
@@ -84,9 +89,14 @@ function removeNode (e) {
     zTree.checkNode(node, false);
     
     var tId = $(e.target).parent().attr('treeId');
-    var idx = checkNode.findIndex((v) => {
-        return v.tId == tId;
-    });
+    var idx = checkNode.findIndex(
+    //     (v) => {
+    //     return v.tId == tId;
+    // }
+        function(v){
+            return v.tId == tId;
+        }
+    );
     checkNode.splice(idx, 1);
 }
 
