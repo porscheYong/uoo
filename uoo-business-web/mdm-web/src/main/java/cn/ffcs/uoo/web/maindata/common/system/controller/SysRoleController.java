@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysRoleClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysRole;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
-import cn.ffcs.uoo.web.maindata.mdm.log.OperateLog;
-import cn.ffcs.uoo.web.maindata.mdm.log.OperateType;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -53,9 +53,7 @@ public class SysRoleController {
     public ResponseResult<List<SysRole>> listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
-
-
         return sysRoleClient.listPage(pageNo, pageSize);
     }
-
+    
 }

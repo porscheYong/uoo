@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysMenuClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysMenu;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
-import cn.ffcs.uoo.web.maindata.mdm.log.OperateLog;
-import cn.ffcs.uoo.web.maindata.mdm.log.OperateType;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 

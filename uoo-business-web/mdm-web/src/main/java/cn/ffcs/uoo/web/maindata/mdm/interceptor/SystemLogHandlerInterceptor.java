@@ -1,6 +1,5 @@
 package cn.ffcs.uoo.web.maindata.mdm.interceptor;
 
-import java.util.Arrays;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,9 +11,6 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,9 +21,8 @@ import cn.ffcs.uoo.web.maindata.common.system.client.SysOperationLogClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysOperationLog;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
-import cn.ffcs.uoo.web.maindata.log.OpreateLog;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
-import cn.ffcs.uoo.web.maindata.mdm.log.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
 
 public class SystemLogHandlerInterceptor implements HandlerInterceptor{
     private static final Logger log=LoggerFactory.getLogger(SystemLogHandlerInterceptor.class);

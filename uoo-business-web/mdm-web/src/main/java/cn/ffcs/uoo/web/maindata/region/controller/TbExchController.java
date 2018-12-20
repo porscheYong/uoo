@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
-import cn.ffcs.uoo.web.maindata.mdm.log.OperateLog;
-import cn.ffcs.uoo.web.maindata.mdm.log.OperateType;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.region.dto.TbExch;
 import cn.ffcs.uoo.web.maindata.region.service.ExchService;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.ffcs.uoo.web.maindata.mdm.log.OperateLog;
-import cn.ffcs.uoo.web.maindata.mdm.log.OperateType;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.permission.dto.BusinessSystem;
 import cn.ffcs.uoo.web.maindata.permission.service.BusinessSystemService;
 import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
