@@ -2,25 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ffcs.uoo.system.dao.SysRoleMapper">
   <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysRole">
-    <id column="ROLE_ID" jdbcType="DECIMAL" property="roleId" />
-    <result column="ROLE_NAME" jdbcType="VARCHAR" property="roleName" />
-    <result column="ROLE_CODE" jdbcType="VARCHAR" property="roleCode" />
-    <result column="P_ROLE_ID" jdbcType="DECIMAL" property="pRoleId" />
-    <result column="TIPS" jdbcType="VARCHAR" property="tips" />
-    <result column="DEPT_ID" jdbcType="DECIMAL" property="deptId" />
-    <result column="NUM" jdbcType="DECIMAL" property="num" />
-    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
-    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
-    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
-    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
-    <result column="NOTES" jdbcType="VARCHAR" property="notes" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    ROLE_ID, ROLE_NAME, ROLE_CODE, P_ROLE_ID, TIPS, DEPT_ID, NUM, STATUS_CD, CREATE_DATE, 
-    CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, NOTES
-  </sql>
+    <id column="ROLE_ID" property="roleId" />
+        <result column="ROLE_NAME" property="roleName" />
+        <result column="ROLE_CODE" property="roleCode" />
+        <result column="PARENT_ROLE_CODE" property="parentRoleCode" />
+        <result column="REGION_NBR" property="regionNbr" />
+        <result column="SORT_NUM" property="sortNum" />
+        <result column="NOTES" property="notes" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ROLE_ID, ROLE_NAME, ROLE_CODE, PARENT_ROLE_CODE, REGION_NBR, SORT_NUM, NOTES, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
 
   <select id="getId" resultType="Long">
     select SEQ_TB_SYS_ROLE.NEXTVAL from dual

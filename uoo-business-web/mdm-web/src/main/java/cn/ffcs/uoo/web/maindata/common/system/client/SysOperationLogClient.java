@@ -29,13 +29,13 @@ import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 @FeignClient(value = "common-system",configuration = {FeignClientConfiguration.class},fallback = SysOperationLogClientHystrix.class)
 public interface SysOperationLogClient {
      
-    @GetMapping("/get/{id}")
+    @GetMapping("/system/sysOperationLog/get/{id}")
     public ResponseResult<SysOperationLog> get(@PathVariable(value="id" ,required=true) Long id);
 
-    @GetMapping("/listPage/pageNo={pageNo}&pageSize={pageSize}")
+    @GetMapping("/system/sysOperationLog/listPage/pageNo={pageNo}&pageSize={pageSize}")
     public ResponseResult<List<SysOperationLog>> listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize);
 
      
-    @RequestMapping(value = "/add", method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    @RequestMapping(value = "/system/sysOperationLog/add", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<Void> add(@RequestBody SysOperationLog sysOperationLog);
 }

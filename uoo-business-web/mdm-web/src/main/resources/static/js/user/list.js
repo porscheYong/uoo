@@ -209,7 +209,7 @@ function showLower() {
     initOrgPersonnelTable(checked, '');
 }
 
-if (orgId == 'noSort') {
+if (orgId == '88888888') {
     $('#titleName').html('游离人员');
     $('#isShow').hide();
     initFreePersonnelTable();

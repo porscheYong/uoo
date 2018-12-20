@@ -90,13 +90,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (StringUtils.isEmpty(sysUser.getPasswd())) {
             return "密码为空!";
         }
-        if (StringUtils.isEmpty(sysUser.getUname())) {
+       /* if (StringUtils.isEmpty(sysUser.getUname())) {
             return "姓名为空！";
-        }
+        }*/
         if (StringUtils.isEmpty(sysUser.getGender())) {
             return "性别为空！";
         }
-        if (null == sysUser.getDeptId()) {
+        /*if (null == sysUser.getDeptId()) {
             return "部门为空！";
         }
         if (null == sysUser.getRoleId()) {
@@ -104,7 +104,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         if (null == sysUser.getPostionId()) {
             return "岗位为空！";
-        }
+        }*/
         if (StringUtils.isEmpty(sysUser.getCertType())) {
             return "证件类型为空！";
         }
@@ -117,9 +117,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (StringUtils.isEmpty(sysUser.getEmail())) {
             return "邮箱为空！";
         }
-        if (StringUtils.isEmpty(sysUser.getReason())) {
+        /*if (StringUtils.isEmpty(sysUser.getReason())) {
             return "变更原因为空！";
-        }
+        }*/
 
         return null;
     }

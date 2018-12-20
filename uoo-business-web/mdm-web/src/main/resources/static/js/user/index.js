@@ -101,14 +101,12 @@ function initTree (orgTreeId) {
         orgRootId: orgTreeId,
         orgTreeId: orgTreeId
     }, function (data) {
-        var newNode = [{"id":"noSort","state":null,"pid":"1000000001","icon":null,"iconClose":null,"iconOpen":null,"name":"未分类","open":null,"level":null,"checked":null,"chkDisabled":null,"parent":false}];
         $.fn.zTree.init($("#userTree"), setting, data);
         var zTree = $.fn.zTree.getZTreeObj("userTree");
         var nodes = zTree.getNodes();
-        // zTree.expandNode(nodes[0], true);
+        zTree.expandNode(nodes[0], true);
         zTree.selectNode(nodes[0], true);
         onNodeClick(null, null, nodes[0]);
-        zTree.addNodes(nodes[0], newNode);
     }, function (err) {
 
     })
