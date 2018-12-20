@@ -11,6 +11,7 @@ import cn.ffcs.uoo.core.personnel.vo.*;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -135,5 +136,10 @@ public class TbPersonnelServiceImpl extends ServiceImpl<TbPersonnelMapper, TbPer
     @Override
     public UomGrpUserOrgInfoVo getIdCardNcCode(String certNo){
         return baseMapper.getIdCardNcCode(certNo);
+    }
+
+    @Override
+    public Object getHomeStatistics(String labelType){
+        return ResultUtils.success(baseMapper.getHomeStatistics(labelType));
     }
 }
