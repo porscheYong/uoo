@@ -36,4 +36,6 @@ public interface TbPersonnelMapper extends BaseMapper<TbPersonnel> {
     public List<FreePsnInfoVo> getFreePsnInfo(Pagination page, @Param("keyWord") String keyWord);
 
     public UomGrpUserOrgInfoVo getIdCardNcCode(@Param("certNo") String certNo);
+
+    public List<HomeStatisticsVo> getHomeStatistics(@Param("labelType") String labelType);
 }

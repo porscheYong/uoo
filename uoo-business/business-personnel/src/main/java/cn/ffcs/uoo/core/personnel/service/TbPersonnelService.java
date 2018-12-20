@@ -84,4 +84,11 @@ public interface TbPersonnelService extends IService<TbPersonnel> {
      * @return
      */
     public UomGrpUserOrgInfoVo getIdCardNcCode(String certNo);
+
+    /**
+     * 首页统计
+     * @param labelType
+     * @return
+     */
+    public Object getHomeStatistics(String labelType);
 }
