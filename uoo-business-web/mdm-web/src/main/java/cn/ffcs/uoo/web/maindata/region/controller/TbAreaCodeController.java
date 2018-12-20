@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
+import cn.ffcs.uoo.web.maindata.mdm.log.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.log.OperateType;
 import cn.ffcs.uoo.web.maindata.region.dto.TbAreaCode;
 import cn.ffcs.uoo.web.maindata.region.service.AreaCodeService;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
@@ -60,7 +62,8 @@ public class TbAreaCodeController  {
         pageSize = pageSize==null?20:pageSize;
         return areaCodeService.listAreaCode(keyWord,pageNo, pageSize);
     }
-    
+  //type 必填，module必填，methods必填，desc选填
+    @OperateLog(type=OperateType.ADD,module="区号模块",methods="新增区号",desc="新增一条区号信息")
     @ApiOperation(value = "新增区号", notes = "新增区号")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "areaCode", value = "区号信息", required = true, dataType = "TbAreaCode"), })
