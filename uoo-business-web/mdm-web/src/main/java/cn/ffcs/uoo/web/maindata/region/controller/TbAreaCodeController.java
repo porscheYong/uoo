@@ -37,7 +37,7 @@ public class TbAreaCodeController  {
     
     @Autowired
     private AreaCodeService areaCodeService;
-    
+    @OperateLog(type=OperateType.SELECT,module="区号模块",methods="GET BY ID",desc="")
     @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),
@@ -47,7 +47,7 @@ public class TbAreaCodeController  {
     public ResponseResult getAreaCode(@PathVariable(value = "id") Long id){
         return areaCodeService.getAreaCode(id);
     }
-    
+    @OperateLog(type=OperateType.SELECT,module="区号模块",methods="区号列表",desc="")
     @ApiOperation(value = "区号列表", notes = "区号列表")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "pageNo", value = "分页的序号", required = true, dataType = "Integer",paramType="path"),
@@ -76,6 +76,7 @@ public class TbAreaCodeController  {
         areaCode.setCreateUser(currentLoginUser.getUserId());
         return areaCodeService.addAreaCode(areaCode);
     }
+    @OperateLog(type=OperateType.UPDATE,module="区号模块",methods="修改区号",desc="")
     @ApiOperation(value = "修改区号", notes = "修改区号")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "areaCode", value = "区号信息", required = true, dataType = "TbreaCode"), })
@@ -88,7 +89,7 @@ public class TbAreaCodeController  {
         areaCode.setUpdateUser(currentLoginUser.getUserId());
         return areaCodeService.updateAreaCode(areaCode);
     }
-    
+    @OperateLog(type=OperateType.DELETE,module="区号模块",methods="删除区号",desc="")
     @ApiOperation(value = "删除区号", notes = "删除区号")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "areaCode", value = "区号信息", required = true, dataType = "TbAreaCode"), })

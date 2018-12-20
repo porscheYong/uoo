@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysRoleClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysRole;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.mdm.log.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.log.OperateType;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +42,7 @@ public class SysRoleController {
     SysRoleClient sysRoleClient;
 
    
-
+    @OperateLog(type=OperateType.SELECT,module="平台系统角色模块",methods="分页查询角色列表",desc="")
     @ApiOperation(value = "获取分页列表", notes = "获取分页列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),

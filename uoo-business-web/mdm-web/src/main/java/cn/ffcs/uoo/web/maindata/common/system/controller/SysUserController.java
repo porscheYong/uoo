@@ -25,6 +25,8 @@ import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.common.system.utils.IPUtils;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
+import cn.ffcs.uoo.web.maindata.mdm.log.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.log.OperateType;
 import cn.ffcs.uoo.web.maindata.realm.exception.ServiceException;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -39,6 +41,7 @@ public class SysUserController {
     private SysLoginLogClient loginLogClient;
     @Autowired
     ShiroFilterFactoryBean shiroFilterFactoryBean;
+    @OperateLog(type=OperateType.SELECT,module="平台系统用户模块",methods="获取当前登陆用户信息",desc="")
     @ApiOperation(value = " 接口", notes = " 接口")
     @ApiImplicitParams({
     })
@@ -51,7 +54,7 @@ public class SysUserController {
         r.setData(currentLoginUser);
         return r;
     }
-    
+    @OperateLog(type=OperateType.UPDATE,module="平台系统用户模块",methods="修改用户密码",desc="")
     @ApiOperation(value = "登陆接口", notes = "登陆接口")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "sysUser", value = "sysUser", required = true, dataType = "SysUser" ),

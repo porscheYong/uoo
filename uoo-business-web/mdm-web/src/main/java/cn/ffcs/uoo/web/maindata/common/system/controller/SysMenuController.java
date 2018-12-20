@@ -36,6 +36,7 @@ public class SysMenuController {
         Subject sub=SecurityUtils.getSubject();
         Object primaryPrincipal = sub.getPrincipals().getPrimaryPrincipal();
         //alterPwdDTO.setAccout(primaryPrincipal.toString());
+        //int i=1/0;
         ResponseResult<List<SysMenu>> alterPwd = sysMenuClient.getMenuByAccout(primaryPrincipal.toString());
         return alterPwd;
     }
