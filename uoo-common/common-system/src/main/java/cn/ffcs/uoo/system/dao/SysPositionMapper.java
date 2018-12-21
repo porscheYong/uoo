@@ -1,7 +1,13 @@
 package cn.ffcs.uoo.system.dao;
 
-import cn.ffcs.uoo.system.controller.entity.SysPosition;
+import cn.ffcs.uoo.system.entity.SysPosition;
+import cn.ffcs.uoo.system.entity.SysPosition;
+import cn.ffcs.uoo.system.vo.SysPositionVo;
+import cn.ffcs.uoo.system.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +18,9 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @since 2018-12-20
  */
 public interface SysPositionMapper extends BaseMapper<SysPosition> {
+
+    public List<TreeNodeVo> getPositionTree(@Param("positionId") String positionId);
+
+    public List<SysPositionVo> getPositionRel(@Param("positionId")String positionId,@Param("isSearchlower") String isSearchlower);
 
 }

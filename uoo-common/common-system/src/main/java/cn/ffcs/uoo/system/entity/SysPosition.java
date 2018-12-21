@@ -25,7 +25,7 @@ public class SysPosition extends Model<SysPosition> {
     /**
      * 职位标识
      */
-    @TableId(value = "POSITION_ID", type = IdType.AUTO)
+    @TableId(value = "POSITION_ID")
     private Long positionId;
     /**
      * 职位名称

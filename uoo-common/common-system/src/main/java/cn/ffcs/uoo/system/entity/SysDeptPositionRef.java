@@ -25,7 +25,7 @@ public class SysDeptPositionRef extends Model<SysDeptPositionRef> {
     /**
      * 系统部门可选职位关系标识
      */
-    @TableId(value = "DEPT_POSITION_REF_ID", type = IdType.AUTO)
+    @TableId(value = "DEPT_POSITION_REF_ID")
     private Long deptPositionRefId;
     /**
      * 部门编码

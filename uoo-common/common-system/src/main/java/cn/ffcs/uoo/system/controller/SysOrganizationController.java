@@ -4,6 +4,7 @@ package cn.ffcs.uoo.system.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Controller;
  * @author ffcs-gzb
  * @since 2018-12-20
  */
-@Controller
+@RestController
 @RequestMapping("/sysOrganization")
 public class SysOrganizationController {
 
