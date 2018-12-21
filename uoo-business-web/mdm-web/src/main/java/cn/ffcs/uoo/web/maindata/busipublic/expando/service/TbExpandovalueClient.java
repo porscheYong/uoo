@@ -5,6 +5,8 @@ import cn.ffcs.uoo.web.maindata.busipublic.expando.dto.TbExpandovalue;
 import cn.ffcs.uoo.web.maindata.busipublic.expando.service.fallback.TbExpandovalueClientHystrix;
 import cn.ffcs.uoo.web.maindata.busipublic.vo.ResponseResult;
 import common.config.PersonnelServiceConfiguration;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,4 +33,7 @@ public interface TbExpandovalueClient {
 
     @RequestMapping(value = "/tbExpandovalue/addByVo", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     ResponseResult<ExpandovalueVo> addExpandoInfo(@RequestBody ExpandovalueVo expandovalueVo);
+
+    @RequestMapping(value = "/tbExpandovalue/checkOrgU5Node", method = RequestMethod.POST, headers={"Content-Type=application/json"})
+    ResponseResult<String> checkOrganizationU5NodeType(@RequestBody List<String> orgIds);
 }
