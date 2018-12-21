@@ -149,34 +149,40 @@
             <div id="orgInfoTable1" class="BoardContent TableStyle tcenter">
                 
             </div>
-
-            <div class="board-title">
+            <div class="BoardContent TableStyle tcenter">
+                <a href="javascript:void(0)" onclick="showMore()" id="showMore">查看更多信息</a>
+            </div>
+            <div style="display: none;" id="jobTitleDiv" class="board-title">
                 <span class="name">工作经历</span>
                 <a class="button-add" href="javascript:void(0)" style="float:right" onclick="openJobEdit()"><span class="fa fa-plus-circle icon-add"></span>新增工作经历</a>
               
             </div>
-            <div id="jobInfoTable1" class="BoardContent TableStyle tcenter">
+            <div style="display: none;" id="jobInfoTable1" class="BoardContent TableStyle tcenter">
                 
             </div>
 
-            <div class="board-title">
+            <div style="display: none;" class="board-title" id="eduTitleDiv">
                 <span class="name">教育经历</span>
                <a class="button-add" href="javascript:void(0)" style="float:right" onclick="openEduEdit()"><span class="fa fa-plus-circle icon-add"></span>新增教育经历</a>
                 
             </div>
 
-            <div id="eduInfoTable1" class="BoardContent TableStyle tcenter">
+            <div style="display: none;" id="eduInfoTable1" class="BoardContent TableStyle tcenter">
                 
             </div>
 
-            <div class="board-title">
+            <div style="display: none;" class="board-title" id="familyTitleDiv">
                 <span class="name">家庭成员</span>
                 <a class="button-add" href="javascript:void(0)" style="float:right" onclick="openFamilyEdit()"><span class="fa fa-plus-circle icon-add"></span>新增家庭成员</a>
                
             </div>
-            <div id="familyInfoTable1" class="BoardContent TableStyle tcenter">
+            <div style="display: none;" id="familyInfoTable1" class="BoardContent TableStyle tcenter">
                 
             </div>
+            <div class="BoardContent TableStyle tcenter" >
+                <a href="javascript:void(0)" onclick="showLess()" id="showLess" style="display: none;">收起</a>
+            </div>
+            
             <div   class="BoardContent TableStyle tcenter">
                 
             <input class="Btn BtnRedWhite" id="delPsn" type="button" onclick="isDelete()" value="删除人员" style="margin-top:20px;" />

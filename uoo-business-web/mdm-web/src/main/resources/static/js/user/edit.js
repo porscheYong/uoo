@@ -1177,3 +1177,23 @@ function isNum(n){
     var re = /^[0-9]+.?[0-9]*$/;
     return re.test(n);
 }
+function showMore(){
+	$('#showMore').hide();
+	$('#jobTitleDiv').show();
+	$('#jobInfoTable1').show();
+	$('#eduTitleDiv').show();
+	$('#eduInfoTable1').show();
+	$('#familyTitleDiv').show();
+	$('#familyInfoTable1').show();
+	$('#showLess').show();
+}
+function showLess(){
+	$('#showLess').hide();
+	$('#jobTitleDiv').hide();
+	$('#jobInfoTable1').hide();
+	$('#eduTitleDiv').hide();
+	$('#eduInfoTable1').hide();
+	$('#familyTitleDiv').hide();
+	$('#familyInfoTable1').hide();
+	$('#showMore').show();
+}

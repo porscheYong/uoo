@@ -6,7 +6,13 @@ import cn.ffcs.uoo.system.entity.SysMenu;
 import cn.ffcs.uoo.system.entity.SysOperationLog;
 import cn.ffcs.uoo.system.service.SysMenuService;
 import cn.ffcs.uoo.system.service.SysOperationLogService;
+import cn.ffcs.uoo.system.vo.LogDTO;
+
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+
+import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +24,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysOperationLogServiceImpl extends ServiceImpl<SysOperationLogMapper, SysOperationLog> implements SysOperationLogService {
 
-    @Autowired
-    SysOperationLogMapper sysOperationLogMapper;
 
     @Override
     public Long getId() {
-        return sysOperationLogMapper.getId();
+        return baseMapper.getId();
+    }
+
+    @Override
+    public List<LogDTO> listLog(HashMap<String, Object> map) {
+        return baseMapper.listLog(map);
+    }
+
+    @Override
+    public Long countLog(HashMap<String, Object> map) {
+        return baseMapper.countLog(map);
     }
 }
