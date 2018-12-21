@@ -24,4 +24,11 @@
         POSITION_ID, POSITION_NAME, POSITION_CODE, P_POSITION_ID, REGION_NBR, SORT_NUM, NOTES, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
+    <select id="getPositionTree" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
+        SELECT A.POSITION_ID id ,A.POSITION_NAME name,A.P_POSITION_ID pid
+        FROM SYS_POSITION A
+        WHERE A.STATUS_CD = '1000'
+        START WITH A.POSITION_ID = #{positionId}
+        CONNECT BY PRIOR A.POSITION_ID = A.P_POSITION_ID
+    </select>
 </mapper>
