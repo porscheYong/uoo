@@ -85,8 +85,9 @@ public interface TbUserService extends IService<TbUser> {
     /**
      *  主账号 组织关系
      * @param personnelId
+     * @param resourceObjId
      * @return
      */
-    public List<ListAcctOrgVo> getAcctOrgByPsnId(Long personnelId);
+    public List<ListAcctOrgVo> getAcctOrgByPsnId(Long personnelId, Long resourceObjId);
 
 }

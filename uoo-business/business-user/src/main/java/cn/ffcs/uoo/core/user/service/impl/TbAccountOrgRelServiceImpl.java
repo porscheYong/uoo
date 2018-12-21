@@ -100,6 +100,7 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
         map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         map.put(BaseUnitConstants.TABLE_ORG_ID, tbAccountOrgRel.getOrgId());
         map.put(BaseUnitConstants.TABLE_ACCT_ID, tbAccountOrgRel.getAcctId());
+        map.put(BaseUnitConstants.TB_ORG_TREE_ID, tbAccountOrgRel.getOrgTreeId());
         TbAccountOrgRel accountOrgRel = this.selectOne(new EntityWrapper<TbAccountOrgRel>().allEq(map));
         if(StrUtil.isNullOrEmpty(accountOrgRel)){
             tbAccountOrgRel.setAcctOrgRelId(this.getId());
