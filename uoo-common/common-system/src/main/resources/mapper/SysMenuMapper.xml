@@ -45,24 +45,26 @@
 	<select id="getMenuByAccout" resultType="cn.ffcs.uoo.system.entity.SysMenu"
 		parameterType="java.util.HashMap">
 		SELECT
-		m.*
-		FROM
-		SYS_MENU m
-		LEFT JOIN SYS_PERMISSION_MENU_REL pmr ON pmr.MENU_CODE = m.MENU_CODE
-		LEFT JOIN SYS_PERMISSION p ON p.PERMISSION_CODE = pmr.PERMISSION_CODE
-		LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON rpr.PERMISSION_CODE =
-		p.PERMISSION_CODE
-		LEFT JOIN SYS_ROLE r ON r.ROLE_CODE = rpr.ROLE_CODE
-		LEFT JOIN SYS_USER_ROLE_REF urr ON urr.ROLE_CODE = r.ROLE_CODE
-		LEFT JOIN SYS_USER u ON u.USER_CODE = urr.USER_CODE
-		WHERE
-		m.STATUS_CD = '1000'
-		AND pmr.STATUS_CD = '1000'
-		AND p.STATUS_CD = '1000'
-		AND rpr.STATUS_CD = '1000'
-		AND r.STATUS_CD = '1000'
-		AND urr.STATUS_CD = '1000'
-		AND u.STATUS_CD = '1000'
+        m.*
+        FROM
+        SYS_MENU m
+        LEFT JOIN SYS_PERMISSION_MENU_REL pmr ON pmr.MENU_CODE = m.MENU_CODE
+        LEFT JOIN SYS_PERMISSION p ON p.PERMISSION_CODE = pmr.PERMISSION_CODE
+        LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON rpr.PERMISSION_CODE =
+        p.PERMISSION_CODE
+        LEFT JOIN SYS_ROLE r ON r.ROLE_CODE = rpr.ROLE_CODE
+        left join SYS_POSITIONT_ROLE_REF prr on prr.ROLE_CODE=r.ROLE_CODE
+        left join SYS_USER_POSITION_REF upr on upr.POSITION_CODE=prr.POSITION_CODE
+        LEFT JOIN SYS_USER u ON u.USER_CODE = upr.USER_CODE
+        WHERE
+        m.STATUS_CD = '1000'
+        AND pmr.STATUS_CD = '1000'
+        AND p.STATUS_CD = '1000'
+        AND rpr.STATUS_CD = '1000'
+        AND r.STATUS_CD = '1000'
+        AND prr.STATUS_CD = '1000'
+        AND upr.STATUS_CD = '1000'
+        AND u.STATUS_CD = '1000'
 		AND u.ACCOUT = #{accout}
 	</select>
 

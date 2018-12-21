@@ -39,7 +39,7 @@ public class SysRole extends Model<SysRole> {
      * 上级角色角色编码
      */
     @TableField("PARENT_ROLE_CODE")
-    private Long parentRoleCode;
+    private String parentRoleCode;
     /**
      * 引用电信管理区域
      */
@@ -111,11 +111,11 @@ public class SysRole extends Model<SysRole> {
         this.roleCode = roleCode;
     }
 
-    public Long getParentRoleCode() {
+    public String getParentRoleCode() {
         return parentRoleCode;
     }
 
-    public void setParentRoleCode(Long parentRoleCode) {
+    public void setParentRoleCode(String parentRoleCode) {
         this.parentRoleCode = parentRoleCode;
     }
 

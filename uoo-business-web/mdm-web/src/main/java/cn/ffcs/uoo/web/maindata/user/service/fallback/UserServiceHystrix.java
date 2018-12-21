@@ -39,7 +39,7 @@ public class UserServiceHystrix implements UserService {
     }
 
     @Override
-    public Object getAcctOrgByPsnId(Long personnelId) {
+    public Object getAcctOrgByPsnId(Long personnelId, Long resourceObjId) {
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
