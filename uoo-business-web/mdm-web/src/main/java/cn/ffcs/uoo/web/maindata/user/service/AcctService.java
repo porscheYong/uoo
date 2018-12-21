@@ -30,7 +30,7 @@ public interface AcctService {
     public Object updateAcct(@RequestBody EditFormAcctVo editFormAcctVo);
 
     @RequestMapping(value = "/tbAccountOrgRel/removeAcctOrg", method = RequestMethod.DELETE, headers={"Content-Type=application/json"})
-    public Object removeAcctOrg(@RequestParam("personnelId") Long personnelId, @RequestParam("acctId") Long acctId, @RequestParam("orgId") Long orgId);
+    public Object removeAcctOrg(@RequestParam("personnelId") Long personnelId, @RequestParam("acctId") Long acctId, @RequestParam("orgId") Long orgId, @RequestParam("orgTreeId") Long orgTreeId);
 
     @RequestMapping(value = "/tbAccountOrgRel/addAcctOrg", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     public Object addAcctOrg(@RequestBody TbAccountOrgRel tbAccountOrgRel);

@@ -66,8 +66,8 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
     }
 
     @Override
-    public Object removeAcctOrg(Long personnelId,Long acctId, Long orgId){
-        List<TbSlaveAcct> tbSlaveAcctList = baseMapper.findSlaveAcct(orgId, acctId, null);
+    public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId, Long orgTreeId){
+        List<TbSlaveAcct> tbSlaveAcctList = baseMapper.findSlaveAcct(orgId, acctId, orgTreeId);
         if(tbSlaveAcctList != null && tbSlaveAcctList.size() > 0 ){
             for(TbSlaveAcct tbSlaveAcct : tbSlaveAcctList){
                 tbSlaveAcctService.delAllTbSlaveAcct(tbSlaveAcct.getSlaveAcctId());
@@ -81,6 +81,9 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
         wrapper.eq(BaseUnitConstants.TABLE_ACCT_ID, acctId);
         if(!StrUtil.isNullOrEmpty(orgId)){
             wrapper.eq(BaseUnitConstants.TABLE_ORG_ID, orgId);
+        }
+        if(!StrUtil.isNullOrEmpty(orgTreeId)){
+            wrapper.eq(BaseUnitConstants.TB_ORG_TREE_ID, orgTreeId);
         }
         if(retBool(baseMapper.update(tbAccountOrgRel, wrapper))){
             if(!StrUtil.isNullOrEmpty(personnelId)){

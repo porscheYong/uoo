@@ -1,10 +1,17 @@
 package cn.ffcs.uoo.system.service.impl;
 
-import cn.ffcs.uoo.system.controller.entity.SysPosition;
-import cn.ffcs.uoo.system.controller.dao.SysPositionMapper;
-import cn.ffcs.uoo.system.controller.service.SysPositionService;
+import cn.ffcs.uoo.system.entity.SysPosition;
+import cn.ffcs.uoo.system.dao.SysPositionMapper;
+import cn.ffcs.uoo.system.service.SysPositionService;
+import cn.ffcs.uoo.system.dao.SysPositionMapper;
+import cn.ffcs.uoo.system.entity.SysPosition;
+import cn.ffcs.uoo.system.service.SysPositionService;
+import cn.ffcs.uoo.system.vo.SysPositionVo;
+import cn.ffcs.uoo.system.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +24,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPosition> implements SysPositionService {
 
+    @Override
+    public List<TreeNodeVo> getPositionTree(String positionId){
+        return baseMapper.getPositionTree(positionId);
+    }
+
+    @Override
+    public List<SysPositionVo> getPositionRel(String positionId, String isSearchlower){
+        return baseMapper.getPositionRel(positionId,isSearchlower);
+    }
 }
