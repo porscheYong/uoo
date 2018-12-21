@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Param;
 public interface TbAcctMapper  extends BaseMapper<TbAcct> {
     TbAcct selectBySlaveAcctId(@Param("slaveAcctId") Long slaveAcctId);
 
-    TbAcct selectByPersonId(@Param("personId") Long personId);
+    TbAcct selectByPersonIdLimitDelete(@Param("personId") Long personId);
 }

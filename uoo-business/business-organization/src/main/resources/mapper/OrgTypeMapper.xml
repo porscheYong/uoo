@@ -127,4 +127,15 @@
         AND A.ORG_ID = #{orgId}
     </select>
 
+
+    <select id="isYxsxType" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM (SELECT *
+          FROM TB_ORG_TYPE A
+         WHERE A.STATUS_CD = '1000'
+         START WITH A.ORG_TYPE_CODE = 'N11'
+        CONNECT BY PRIOR A.ORG_TYPE_ID = A.PARENT_ORG_TYPE_ID)
+        WHERE A.ORG_TYPE_ID = #{orgTypeId}
+    </select>
+
 </mapper>

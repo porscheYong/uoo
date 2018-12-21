@@ -42,6 +42,16 @@ public class OrgVo extends BaseVo{
 
     private String orgMartCode;
     private Long standardFlag;
+    private String orgBizFullName;
+
+    public String getOrgBizFullName() {
+        return orgBizFullName;
+    }
+
+    public void setOrgBizFullName(String orgBizFullName) {
+        this.orgBizFullName = orgBizFullName;
+    }
+
     /**
      * 组织称谓
      */
@@ -99,6 +109,8 @@ public class OrgVo extends BaseVo{
     private String sortField;
     //排序方式
     private String sortOrder;
+
+
 
     public String getSortField() {
         return sortField;

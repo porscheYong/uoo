@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.system.controller.dao.SysPositionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.controller.entity.SysPosition">
+        <id column="POSITION_ID" property="positionId" />
+        <result column="POSITION_NAME" property="positionName" />
+        <result column="POSITION_CODE" property="positionCode" />
+        <result column="P_POSITION_ID" property="pPositionId" />
+        <result column="REGION_NBR" property="regionNbr" />
+        <result column="SORT_NUM" property="sortNum" />
+        <result column="NOTES" property="notes" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        POSITION_ID, POSITION_NAME, POSITION_CODE, P_POSITION_ID, REGION_NBR, SORT_NUM, NOTES, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+</mapper>

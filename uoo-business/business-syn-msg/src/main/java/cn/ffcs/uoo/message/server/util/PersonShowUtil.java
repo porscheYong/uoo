@@ -1,14 +1,25 @@
 package cn.ffcs.uoo.message.server.util;
 
 import cn.ffcs.uoo.message.server.vo.TbAcctVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PersonShowUtil {
+    private static Logger logger = LoggerFactory.getLogger(PersonShowUtil.class);
+    //true：校验后结果不生效，false:校验后结果生效。
+    private static boolean f = true;
+
     public static void noShow(TbAcctVo vo) {
 
-        if (vo == null) {
+        //校验数据
+
+        if (vo == null ) {
             return;
         }
-
+        if(!check(vo)){
+            vo = null;
+            return;
+        }
         vo.setSlaveAcctId(null);
 
         if (vo.getTbAcctCrossRel() != null) {
@@ -175,5 +186,59 @@ public class PersonShowUtil {
             vo.getTbSlaveAcct().setAcctHostId(null);
             vo.getTbSlaveAcct().setAcctId(null);
         }
+    }
+
+    private static boolean check(TbAcctVo vo){
+        //flag > 0 缺少对应的数据。
+        int flag = 0;
+        if(vo.getAcctId() == null){
+            logger.warn("主账号标识不存在");
+            flag++;
+        }
+        if(vo.getAcct() == null || "".equals(vo.getAcct())){
+            logger.warn("主账号不存在");
+            flag++;
+        }
+        if(vo.getAcctType()== null || "".equals(vo.getAcctType())){
+            logger.warn("账号类型不存在");
+            /*flag++;*/
+        }
+        if(vo.getUserHostType()== null || "".equals(vo.getUserHostType())){
+            logger.warn("用户主体类型不存在");
+            /*flag++;*/
+        }
+        if(vo.getEnableDate()== null){
+            logger.warn("生效时间不存在");
+            /*flag++;*/
+        }
+
+        if(vo.getDisableDate()== null){
+            logger.warn("失效时间不存在");
+            /*flag++;*/
+        }
+
+        if(vo.getTbAcctOrgRel() == null){
+            logger.warn("账号组织关系不存在");
+            flag++;
+        }
+
+        if( vo.getTbPersonnel()==null){
+            logger.warn("人员不存在");
+            flag++;
+        }
+
+        if( vo.getTbContact()==null){
+            logger.warn("联系方式不存在");
+            flag++;
+        }
+
+        if( vo.getTbCert()==null){
+            logger.warn("证件不存在");
+            flag++;
+        }
+        if(flag >=1 ){
+            return true;
+        }
+        return true;
     }
 }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.system.controller.dao.SysOrganizationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.controller.entity.SysOrganization">
+        <id column="ORG_ID" property="orgId" />
+        <result column="ORG_NAME" property="orgName" />
+        <result column="ORG_CODE" property="orgCode" />
+        <result column="PARENT_ORG_CODE" property="parentOrgCode" />
+        <result column="REGION_NBR" property="regionNbr" />
+        <result column="SORT" property="sort" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ORG_ID, ORG_NAME, ORG_CODE, PARENT_ORG_CODE, REGION_NBR, SORT, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+</mapper>
