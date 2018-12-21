@@ -1,93 +1,94 @@
-package cn.ffcs.uoo.system.controller.entity;
+package cn.ffcs.uoo.system.vo;
 
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.enums.IdType;
-import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
- * 对部门可选岗位的限定
+ * 根据不同部门的工作性质、责任轻重、难易程度和所需资格条件等进行分类，在平台上，不对职位进行过细的区分
  * </p>
  *
  * @author ffcs-gzb
  * @since 2018-12-20
  */
-@TableName("SYS_DEPT_POSITION_REF")
-public class SysDeptPositionRef extends Model<SysDeptPositionRef> {
+public class SysPositionVo {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 系统部门可选职位关系标识
+     * 职位标识
      */
-    @TableId(value = "DEPT_POSITION_REF_ID", type = IdType.AUTO)
-    private Long deptPositionRefId;
+    private Long positionId;
     /**
-     * 部门编码
+     * 职位名称
      */
-    @TableField("ORG_CODE")
-    private String orgCode;
+    private String positionName;
     /**
      * 职位编码
      */
-    @TableField("POSITION_CODE")
     private String positionCode;
+    /**
+     * 上级职位
+     */
+    private Long pPositionId;
+    /**
+     * 引用电信管理区域
+     */
+    private String regionNbr;
+    /**
+     * 职位优先级排序
+     */
+    private Integer sortNum;
+    /**
+     * 备注
+     */
+    private String notes;
     /**
      * 状态
      */
-    @TableField("STATUS_CD")
     private String statusCd;
     /**
      * 创建时间
      */
-    @TableField("CREATE_DATE")
     private Date createDate;
     /**
      * 创建人
      */
-    @TableField("CREATE_USER")
     private Long createUser;
     /**
      * 修改时间
      */
-    @TableField("UPDATE_DATE")
     private Date updateDate;
     /**
      * 修改人
      */
-    @TableField("UPDATE_USER")
     private Long updateUser;
     /**
      * 状态变更的时间
      */
-    @TableField("STATUS_DATE")
     private Date statusDate;
-    /**
-     * 备注
-     */
-    @TableField("NOTES")
-    private String notes;
 
 
-    public Long getDeptPositionRefId() {
-        return deptPositionRefId;
+    public Long getPositionId() {
+        return positionId;
     }
 
-    public void setDeptPositionRefId(Long deptPositionRefId) {
-        this.deptPositionRefId = deptPositionRefId;
+    public void setPositionId(Long positionId) {
+        this.positionId = positionId;
     }
 
-    public String getOrgCode() {
-        return orgCode;
+    public String getPositionName() {
+        return positionName;
     }
 
-    public void setOrgCode(String orgCode) {
-        this.orgCode = orgCode;
+    public void setPositionName(String positionName) {
+        this.positionName = positionName;
     }
 
     public String getPositionCode() {
@@ -96,6 +97,38 @@ public class SysDeptPositionRef extends Model<SysDeptPositionRef> {
 
     public void setPositionCode(String positionCode) {
         this.positionCode = positionCode;
+    }
+
+    public Long getpPositionId() {
+        return pPositionId;
+    }
+
+    public void setpPositionId(Long pPositionId) {
+        this.pPositionId = pPositionId;
+    }
+
+    public String getRegionNbr() {
+        return regionNbr;
+    }
+
+    public void setRegionNbr(String regionNbr) {
+        this.regionNbr = regionNbr;
+    }
+
+    public Integer getSortNum() {
+        return sortNum;
+    }
+
+    public void setSortNum(Integer sortNum) {
+        this.sortNum = sortNum;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public String getStatusCd() {
@@ -146,32 +179,21 @@ public class SysDeptPositionRef extends Model<SysDeptPositionRef> {
         this.statusDate = statusDate;
     }
 
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    @Override
-    protected Serializable pkVal() {
-        return this.deptPositionRefId;
-    }
-
-    @Override
     public String toString() {
-        return "SysDeptPositionRef{" +
-        ", deptPositionRefId=" + deptPositionRefId +
-        ", orgCode=" + orgCode +
+        return "SysPosition{" +
+        ", positionId=" + positionId +
+        ", positionName=" + positionName +
         ", positionCode=" + positionCode +
+        ", pPositionId=" + pPositionId +
+        ", regionNbr=" + regionNbr +
+        ", sortNum=" + sortNum +
+        ", notes=" + notes +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
         ", createUser=" + createUser +
         ", updateDate=" + updateDate +
         ", updateUser=" + updateUser +
         ", statusDate=" + statusDate +
-        ", notes=" + notes +
         "}";
     }
 }
