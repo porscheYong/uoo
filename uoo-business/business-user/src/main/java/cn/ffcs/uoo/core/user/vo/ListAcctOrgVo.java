@@ -30,4 +30,12 @@ public class ListAcctOrgVo {
      * 组织名称
      */
     private String fullName;
+    /**
+     * 组织树ID
+     */
+    private Long orgTreeId;
+    /**
+     * 组织树名称
+     */
+    private String orgTreeName;
 }

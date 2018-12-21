@@ -55,6 +55,7 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
                 BeanUtils.copyProperties(acctOrg, tbAccountOrgRel);
                 tbAccountOrgRel.setAcctOrgRelId(this.getId());
                 tbAccountOrgRel.setAcctId(acctId);
+                tbAccountOrgRel.setOrgTreeId(acctOrg.getOrgTreeId());
                 tbAccountOrgRels.add(tbAccountOrgRel);
             }
         }
