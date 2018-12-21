@@ -78,4 +78,13 @@ public class OrgTypeServiceImpl extends ServiceImpl<OrgTypeMapper, OrgType> impl
     public String getOrgTypeInfoByOrgId(String orgId){
         return baseMapper.getOrgTypeInfoByOrgId(orgId);
     }
+
+    @Override
+    public boolean isYxsxType(String orgTypeId){
+        int count = baseMapper.isYxsxType(orgTypeId);
+        if(count>0){
+            return true;
+        }
+        return false;
+    }
 }

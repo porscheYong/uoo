@@ -31,6 +31,9 @@ public class RabbitMqSendServiceImpl implements RabbitMqSendService {
 
         if(queueName != null && !queueName.equals("")){
             template.convertAndSend(queueName,msg);
+            //所有的数据给uom一份。
+            template.convertAndSend("queue_3",msg);
+
             JSONObject jo = JSON.parseObject(msg);
             String serial = (String) jo.get("serial");
             RabbitmqIndex index = new RabbitmqIndex();

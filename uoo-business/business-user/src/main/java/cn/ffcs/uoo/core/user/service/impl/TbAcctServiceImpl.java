@@ -132,4 +132,12 @@ public class TbAcctServiceImpl extends ServiceImpl<TbAcctMapper, TbAcct> impleme
         return this.selectOne(new EntityWrapper<TbAcct>().allEq(map));
     }
 
+    @Override
+    public TbAcct getTbAcctById(Long acctId){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TABLE_ACCT_ID, acctId);
+        return this.selectOne(new EntityWrapper<TbAcct>().allEq(map));
+    }
+
 }

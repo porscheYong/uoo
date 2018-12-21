@@ -279,9 +279,9 @@ public class TbPersonnelController extends BaseController {
         tbContactService.addOrUpdateTbContact(personnelVo.getTbMobileVoList(), editFormPersonnelVo.getPersonnelId(), "1");
         tbContactService.addOrUpdateTbContact(personnelVo.getTbEamilVoList(), editFormPersonnelVo.getPersonnelId(), "2");
 
-        if(tbPersonnelService.isExistsAcct(editFormPersonnelVo.getPersonnelId())){
-            return ResultUtils.success(editFormPersonnelVo.getPersonnelId());
-        }
+//        if(tbPersonnelService.isExistsAcct(editFormPersonnelVo.getPersonnelId())){
+//            return ResultUtils.success(editFormPersonnelVo.getPersonnelId());
+//        }
         return ResultUtils.success(null);
     }
 

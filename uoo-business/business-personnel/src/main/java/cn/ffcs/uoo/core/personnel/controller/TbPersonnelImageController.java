@@ -73,7 +73,7 @@ public class TbPersonnelImageController extends BaseController {
             is.read(data);
             is.close();
             TbPersonnelImage tbPersonnelImage = new TbPersonnelImage();
-            if(StrUtil.isNullOrEmpty(psnImageId)){
+            if("0".equals(String.valueOf(psnImageId))){
                 tbPersonnelImage.setPsnImageId(tbPersonnelImageService.getId());
             }else{
                 tbPersonnelImage.setPsnImageId(psnImageId);

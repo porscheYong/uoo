@@ -62,4 +62,10 @@ public interface OrgTypeService extends IService<OrgType> {
      */
     public String getOrgTypeInfoByOrgId(String orgId);
 
+
+    /**
+     * 判断是否是营销类别
+     */
+    public boolean isYxsxType(String orgTypeId);
+
 }
