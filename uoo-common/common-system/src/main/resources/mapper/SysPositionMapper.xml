@@ -3,7 +3,7 @@
 <mapper namespace="cn.ffcs.uoo.system.controller.dao.SysPositionMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.controller.entity.SysPosition">
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysPosition">
         <id column="POSITION_ID" property="positionId" />
         <result column="POSITION_NAME" property="positionName" />
         <result column="POSITION_CODE" property="positionCode" />
