@@ -1,28 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ffcs.uoo.system.dao.SysRoleMapper">
-  <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysRole">
-    <id column="ROLE_ID" property="roleId" />
-        <result column="ROLE_NAME" property="roleName" />
-        <result column="ROLE_CODE" property="roleCode" />
-        <result column="PARENT_ROLE_CODE" property="parentRoleCode" />
-        <result column="REGION_NBR" property="regionNbr" />
-        <result column="SORT_NUM" property="sortNum" />
-        <result column="NOTES" property="notes" />
-        <result column="STATUS_CD" property="statusCd" />
-        <result column="CREATE_DATE" property="createDate" />
-        <result column="CREATE_USER" property="createUser" />
-        <result column="UPDATE_DATE" property="updateDate" />
-        <result column="UPDATE_USER" property="updateUser" />
-        <result column="STATUS_DATE" property="statusDate" />
-    </resultMap>
+	<resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysRole">
+		<id column="ROLE_ID" property="roleId" />
+		<result column="ROLE_NAME" property="roleName" />
+		<result column="ROLE_CODE" property="roleCode" />
+		<result column="PARENT_ROLE_CODE" property="parentRoleCode" />
+		<result column="REGION_NBR" property="regionNbr" />
+		<result column="SORT_NUM" property="sortNum" />
+		<result column="NOTES" property="notes" />
+		<result column="STATUS_CD" property="statusCd" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_DATE" property="updateDate" />
+		<result column="UPDATE_USER" property="updateUser" />
+		<result column="STATUS_DATE" property="statusDate" />
+	</resultMap>
 
-    <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        ROLE_ID, ROLE_NAME, ROLE_CODE, PARENT_ROLE_CODE, REGION_NBR, SORT_NUM, NOTES, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
-    </sql>
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		ROLE_ID, ROLE_NAME, ROLE_CODE, PARENT_ROLE_CODE, REGION_NBR, SORT_NUM, NOTES,
+		STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER,
+		STATUS_DATE
+	</sql>
 
-  <select id="getId" resultType="Long">
-    select SEQ_TB_SYS_ROLE.NEXTVAL from dual
-  </select>
+	<select id="getId" resultType="Long">
+		select SEQ_TB_SYS_ROLE.NEXTVAL from dual
+	</select>
+	<select id="selectToPage" resultType="cn.ffcs.uoo.system.vo.SysRoleDTO"
+		parameterType="java.util.HashMap">
+		SELECT * FROM
+        (
+        SELECT TB.*,ROWNUM RN
+        FROM (
+		SELECT
+		r.ROLE_ID AS roleId,
+		r.ROLE_NAME AS roleName,
+		r.ROLE_CODE AS roleCode,
+		r.PARENT_ROLE_CODE AS parentRoleCode,
+		r.REGION_NBR AS regionNbr,
+		r.SORT_NUM AS sortNum,
+		r.NOTES AS notes,
+		r.STATUS_CD AS statusCd,
+		r.CREATE_DATE AS createDate,
+		r.CREATE_USER AS createUser,
+		r.UPDATE_DATE AS updateDate,
+		r.UPDATE_USER AS updateUser,
+		r.STATUS_DATE AS statusDate,
+		t.*,
+		t2.parentRoleName AS parentRoleName,
+		t3.commonRegionName AS commonRegionName
+		FROM
+		SYS_ROLE r
+		LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON r.ROLE_CODE = rpr.ROLE_CODE
+		LEFT JOIN (
+		SELECT
+		rpr.ROLE_CODE,
+		wm_concat ( p.PERMISSION_NAME ) AS permissionNames,
+		wm_concat ( p.PERMISSION_CODE ) AS permissionCodes
+		FROM
+		SYS_PERMISSION p
+		LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON p.PERMISSION_CODE =
+		rpr.PERMISSION_CODE
+		WHERE
+		p.STATUS_CD = '1000'
+		AND rpr.STATUS_CD = '1000'
+		GROUP BY
+		rpr.ROLE_CODE
+		) t ON t.ROLE_CODE = rpr.ROLE_CODE
+		LEFT JOIN ( SELECT pr.ROLE_CODE AS rc, pr.ROLE_NAME AS parentRoleName FROM
+		SYS_ROLE pr WHERE pr.STATUS_CD = '1000' ) t2 ON t2.rc =
+		r.PARENT_ROLE_CODE
+		LEFT JOIN ( SELECT c.REGION_NAME AS commonRegionName, c.REGION_NBR FROM
+		TB_COMMON_REGION c WHERE c.STATUS_CD = '1000' ) t3 ON t3.REGION_NBR =
+		r.REGION_NBR
+		WHERE
+		r.STATUS_CD = '1000'
+		<if test="ROLE_ID !=null and ROLE_ID !=''">
+		  AND ROLE_ID=#{ROLE_ID}
+		</if>
+		<if test="ROLE_NAME !=null and ROLE_NAME !=''">
+          AND ROLE_NAME LIKE #{ROLE_NAME}
+        </if>
+        )TB WHERE ROWNUM &lt;= #{end}
+        )
+        WHERE RN &gt;= #{from}
+	</select>
+	<select id="countToPage" resultType="Long" parameterType="java.util.HashMap">
+		SELECT
+        count(*)
+        FROM
+        SYS_ROLE r
+        LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON r.ROLE_CODE = rpr.ROLE_CODE
+        LEFT JOIN (
+        SELECT
+        rpr.ROLE_CODE,
+        wm_concat ( p.PERMISSION_NAME ) AS permissionNames,
+        wm_concat ( p.PERMISSION_CODE ) AS permissionCodes
+        FROM
+        SYS_PERMISSION p
+        LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON p.PERMISSION_CODE =
+        rpr.PERMISSION_CODE
+        WHERE
+        p.STATUS_CD = '1000'
+        AND rpr.STATUS_CD = '1000'
+        GROUP BY
+        rpr.ROLE_CODE
+        ) t ON t.ROLE_CODE = rpr.ROLE_CODE
+        LEFT JOIN ( SELECT pr.ROLE_CODE AS rc, pr.ROLE_NAME AS parentRoleName FROM
+        SYS_ROLE pr WHERE pr.STATUS_CD = '1000' ) t2 ON t2.rc =
+        r.PARENT_ROLE_CODE
+        LEFT JOIN ( SELECT c.REGION_NAME AS commonRegionName, c.REGION_NBR FROM
+        TB_COMMON_REGION c WHERE c.STATUS_CD = '1000' ) t3 ON t3.REGION_NBR =
+        r.REGION_NBR
+        WHERE
+        r.STATUS_CD = '1000'
+        <if test="ROLE_ID !=null and ROLE_ID !=''">
+          AND ROLE_ID=#{ROLE_ID}
+        </if>
+        <if test="ROLE_NAME !=null and ROLE_NAME !=''">
+          AND ROLE_NAME LIKE #{ROLE_NAME}
+        </if>
+	</select>
 </mapper>

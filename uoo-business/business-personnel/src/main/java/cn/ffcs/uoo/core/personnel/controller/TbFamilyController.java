@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.personnel.controller;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
+import cn.ffcs.uoo.core.personnel.annotion.SendMqMsg;
 import cn.ffcs.uoo.core.personnel.entity.TbFamily;
 import cn.ffcs.uoo.core.personnel.entity.TbPersonnel;
 import cn.ffcs.uoo.core.personnel.service.TbFamilyService;
@@ -41,6 +42,7 @@ public class TbFamilyController extends BaseController {
     @ApiOperation(value = "新增家庭成员信息", notes = "新增家庭成员信息")
     @ApiImplicitParam(name = "tbFamily", value = "家庭成员信息", required = true, dataType = "TbFamily")
     @UooLog(value = "新增家庭成员信息", key = "saveTbFamily")
+    @SendMqMsg(type = "person", handle ="update", column ="personnelId")
     @RequestMapping(value = "/saveTbFamily", method = RequestMethod.POST)
     public Object saveTbFamily(@RequestBody TbFamily tbFamily) {
         return tbFamilyService.saveTbFamily(tbFamily);
@@ -49,6 +51,7 @@ public class TbFamilyController extends BaseController {
     @ApiOperation(value = "更新家庭成员信息", notes = "更新家庭成员信息")
     @ApiImplicitParam(name = "tbFamily", value = "家庭成员信息", required = true, dataType = "TbFamily")
     @UooLog(value = "更新家庭成员信息", key = "updateTbFamily")
+    @SendMqMsg(type = "person", handle ="update", column ="personnelId")
     @RequestMapping(value = "/updateTbFamily", method = RequestMethod.POST)
     public Object updateTbFamily(@RequestBody TbFamily tbFamily){
         return tbFamilyService.updateTbFamily(tbFamily);
@@ -57,6 +60,7 @@ public class TbFamilyController extends BaseController {
     @ApiOperation(value="删除家庭成员信息",notes="删除家庭成员信息")
     @ApiImplicitParam(name = "familyId", value = "家庭成员信息标识", required = true, dataType = "Long",paramType="path")
     @UooLog(value = "删除教育信息标识",key = "delTbFamily")
+    @SendMqMsg(type = "person", handle ="update", column ="personnelId")
     @RequestMapping(value="/delTbFamily",method = RequestMethod.DELETE)
     public Object delTbFamily(Long familyId ){
         return  tbFamilyService.delTbFamily(familyId);

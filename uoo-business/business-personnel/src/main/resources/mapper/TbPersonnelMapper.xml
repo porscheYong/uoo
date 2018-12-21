@@ -197,6 +197,13 @@
           and v.CTIDENTITYNUMBER = #{certNo}
         </if>
     </select>
-
+    
+    <select id="getHomeStatistics" resultType="cn.ffcs.uoo.core.personnel.vo.HomeStatisticsVo">
+        select t.* from TB_HOME_STATISTICS t where t.status_cd = 1000
+        <if test ="labelType != null and labelType != ''" >
+            and t.label_type = #{labelType}
+        </if>
+        order by t.label_type,t.sort
+    </select>
 
 </mapper>
