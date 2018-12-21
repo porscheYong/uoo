@@ -11,6 +11,7 @@
 package cn.ffcs.uoo.system.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,12 @@ public class SysRoleController {
     @UooLog(key="getRole",value="获取单个数据")
     @GetMapping("/get/{id}")
     public ResponseResult<SysRoleDTO> get(@PathVariable(value="id" ,required=true) Long id){
-        List<SysRoleDTO> Roles = sysRoleService.selectToPage(null);
+        HashMap<String, Object> params=new HashMap<>();
+        params.put("ROLE_ID", id);
+        params.put("from", 0);
+        params.put("end", 1);
+        
+        List<SysRoleDTO> Roles = sysRoleService.selectToPage(params);
         if(Roles== null ||Roles.size()!=1 ){
             return ResponseResult.createErrorResult("无效数据");
         }
@@ -86,10 +92,16 @@ public class SysRoleController {
     public ResponseResult<List<SysRoleDTO>> listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
-        List<SysRoleDTO> Roles = sysRoleService.selectToPage(null);
-         
+        HashMap<String,Object> map=new HashMap<>();
+        /*if(keyWord!=null&&keyWord.trim().length()>0){
+            map.put("keyWord", "%"+keyWord+"%");
+        }*/
+        Long count = sysRoleService.countToPage(map);
+        map.put("from", (pageNo-1)*pageSize);
+        map.put("end", pageNo * pageSize);
+        List<SysRoleDTO> Roles = sysRoleService.selectToPage(map);
         ResponseResult<List<SysRoleDTO>> createSuccessResult = ResponseResult.createSuccessResult(Roles, "");
-        createSuccessResult.setTotalRecords(0);
+        createSuccessResult.setTotalRecords(count);
         return createSuccessResult;
     }
 
