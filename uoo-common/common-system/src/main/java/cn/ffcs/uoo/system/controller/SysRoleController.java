@@ -13,7 +13,9 @@ package cn.ffcs.uoo.system.controller;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.druid.support.spring.stat.annotation.Stat;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -70,36 +73,46 @@ public class SysRoleController {
     @UooLog(key="getRole",value="获取单个数据")
     @GetMapping("/get/{id}")
     public ResponseResult<SysRoleDTO> get(@PathVariable(value="id" ,required=true) Long id){
-        HashMap<String, Object> params=new HashMap<>();
-        params.put("ROLE_ID", id);
-        params.put("from", 0);
-        params.put("end", 1);
         
-        List<SysRoleDTO> Roles = sysRoleService.selectToPage(params);
-        if(Roles== null ||Roles.size()!=1 ){
-            return ResponseResult.createErrorResult("无效数据");
-        }
-        return ResponseResult.createSuccessResult(Roles.get(0), "success");
+        SysRoleDTO Roles = sysRoleService.selectOne(id);
+        return ResponseResult.createSuccessResult(Roles, "success");
     }
-
+    public ResponseResult<List<SysRole>> treeRole(@PathVariable(value = "parentRoleCode") String parentRoleCode){
+        Wrapper<SysRole> wrapper=Condition.create();
+        if("null".equals(parentRoleCode)||StringUtils.isBlank(parentRoleCode)){
+            wrapper.eq("STATUS_CD", StatusCD.VALID).isNull("PARENT_ROLE_CODE");
+        }else{
+            wrapper.eq("STATUS_CD", StatusCD.VALID).eq("PARENT_ROLE_CODE", parentRoleCode);
+        }
+        List<SysRole> selectList = sysRoleService.selectList(wrapper);
+        return ResponseResult.createSuccessResult(selectList, "");
+    }
     @ApiOperation(value = "获取分页列表", notes = "获取分页列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
     @UooLog(key="listPage",value="获取分页列表")
-    @GetMapping("/listPage/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult<List<SysRoleDTO>> listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    @GetMapping("/listPage")
+    public ResponseResult<List<SysRoleDTO>> listPage(Integer pageNo, Integer pageSize,String keyWord,String parentRoleCode,Integer includChild){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         HashMap<String,Object> map=new HashMap<>();
-        /*if(keyWord!=null&&keyWord.trim().length()>0){
+        if(keyWord!=null&&keyWord.trim().length()>0){
             map.put("keyWord", "%"+keyWord+"%");
-        }*/
-        Long count = sysRoleService.countToPage(map);
+        }
+        if(parentRoleCode!=null&&parentRoleCode.trim().length()>0){
+            map.put("PARENT_ROLE_CODE",  parentRoleCode );
+        }
         map.put("from", (pageNo-1)*pageSize);
         map.put("end", pageNo * pageSize);
-        List<SysRoleDTO> Roles = sysRoleService.selectToPage(map);
+        if(includChild==1){
+            
+            map.put("includeChild",includChild);
+        } 
+        List<SysRoleDTO> Roles=sysRoleService.selectList(map);
+        Long count = sysRoleService.countList(map);
+        
         ResponseResult<List<SysRoleDTO>> createSuccessResult = ResponseResult.createSuccessResult(Roles, "");
         createSuccessResult.setTotalRecords(count);
         return createSuccessResult;

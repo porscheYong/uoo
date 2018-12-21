@@ -31,12 +31,18 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public List<SysRoleDTO> selectToPage(HashMap<String, Object> map) {
-        return baseMapper.selectToPage(map);
+    public List<SysRoleDTO> selectList(HashMap<String, Object> map) {
+        return baseMapper.selectList(map);
     }
 
     @Override
-    public Long countToPage(HashMap<String, Object> map) {
-        return baseMapper.countToPage(map);
+    public Long countList(HashMap<String, Object> map) {
+        return baseMapper.countList(map);
     }
+
+    @Override
+    public SysRoleDTO selectOne(Long ROLE_ID) {
+        return baseMapper.selectOne(ROLE_ID);
+    }
+ 
 }

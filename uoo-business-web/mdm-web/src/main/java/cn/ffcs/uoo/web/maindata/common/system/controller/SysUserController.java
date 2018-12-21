@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
+
 import cn.ffcs.uoo.web.maindata.common.system.client.SysLoginLogClient;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysUserClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.AlterPwdDTO;
@@ -114,6 +116,7 @@ public class SysUserController {
         sysLoginLog.setIp(IPUtils.string2Long(subject.getSession().getHost()));
         sysLoginLog.setSucceed(rr.getState()==ResponseResult.STATE_OK?1L:0L);
         sysLoginLog.setAccout(sysUser.getAccout());
+        sysLoginLog.setMessage(JSONObject.toJSONString(sysUser));
         loginLogClient.add(sysLoginLog);
         return rr;
     }
