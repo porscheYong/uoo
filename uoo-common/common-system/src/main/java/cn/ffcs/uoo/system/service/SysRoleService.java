@@ -14,7 +14,7 @@ import cn.ffcs.uoo.system.vo.SysRoleDTO;
  */
 public interface SysRoleService extends IService<SysRole> {
     Long getId();
-    List<SysRoleDTO> selectList(HashMap<String, Object> map);
+    List<SysRoleDTO> findList(HashMap<String, Object> map);
     Long countList(HashMap<String, Object> map);
     
     SysRoleDTO selectOne(Long ROLE_ID);

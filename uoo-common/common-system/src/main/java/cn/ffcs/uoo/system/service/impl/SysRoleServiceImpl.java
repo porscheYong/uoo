@@ -31,8 +31,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public List<SysRoleDTO> selectList(HashMap<String, Object> map) {
-        return baseMapper.selectList(map);
+    public List<SysRoleDTO> findList(HashMap<String, Object> map) {
+        return baseMapper.findList(map);
     }
 
     @Override

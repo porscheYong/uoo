@@ -31,7 +31,7 @@
 		from dual
 	</select>
 	<select id="selectOne" resultType="cn.ffcs.uoo.system.vo.SysRoleDTO"
-        parameterType="java.util.HashMap">
+        parameterType="Long">
         SELECT
         r.ROLE_ID AS roleId,
         r.ROLE_NAME AS roleName,
@@ -92,13 +92,11 @@
         r.REGION_NBR
         WHERE
         r.STATUS_CD = '1000'
-        <if test="ROLE_ID !=null and ROLE_ID !=''">
             AND ROLE_ID=#{ROLE_ID}
-        </if>
         
         
         </select>
-	<select id="selectList" resultType="cn.ffcs.uoo.system.vo.SysRoleDTO"
+	<select id="findList" resultType="cn.ffcs.uoo.system.vo.SysRoleDTO"
 		parameterType="java.util.HashMap">
 		SELECT * FROM
 		(
