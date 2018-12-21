@@ -262,11 +262,20 @@ public class TbUserController extends BaseController {
     }
 
     @ApiOperation(value = "主账号组织关系",notes = "主账号组织关系")
-    @ApiImplicitParam(name = "personnelId", value = "人员号标识", required = true, dataType = "Long", paramType = "path")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long", paramType = "path"),
+            @ApiImplicitParam(name = "resourceObjId", value = "应用系统标识", required = true, dataType = "Long", paramType = "path")
+    })
     @UooLog(value = "主账号组织关系",key = "getAcctOrgByPsnId")
     @RequestMapping(value = "/getAcctOrgByPsnId", method = RequestMethod.GET)
-    public Object getAcctOrgByPsnId(Long personnelId){
-        return ResultUtils.success(tbUserService.getAcctOrgByPsnId(personnelId));
+    public Object getAcctOrgByPsnId(Long personnelId, Long resourceObjId){
+        if(StrUtil.isNullOrEmpty(personnelId)){
+            return ResultUtils.error(EumUserResponeCode.PSN_ID_NO_NULL);
+        }
+        if(StrUtil.isNullOrEmpty(resourceObjId)){
+            return ResultUtils.error(EumUserResponeCode.SYS_ID_NO_NULL);
+        }
+        return ResultUtils.success(tbUserService.getAcctOrgByPsnId(personnelId, resourceObjId));
     }
 
 }
