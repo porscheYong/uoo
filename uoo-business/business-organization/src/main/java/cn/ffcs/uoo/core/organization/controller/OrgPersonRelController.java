@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -51,10 +52,16 @@ public class OrgPersonRelController extends BaseController {
     @Autowired
     private OrgTreeService orgTreeService;
 
+    @Autowired
+    private OrgLevelService orgLevelService;
+
 //    @Autowired
 //    private SolrService solrService;
     @Autowired
     private OrgContactRelService orgContactRelService;
+
+    @Autowired
+    private AmqpTemplate template;
 
     @ApiOperation(value = "新增组织人员关系-web" , notes = "新增组织人员")
     @ApiImplicitParams({
@@ -79,6 +86,7 @@ public class OrgPersonRelController extends BaseController {
                 OrgPersonRel orgPersonRel = orgPersonRelService.convertObj(psonOrgVo);
                 Long orgPsndocRefId = orgPersonRelService.getId();
                 orgPersonRel.setOrgPersonId(orgPsndocRefId);
+                orgPersonRel.setOrgTreeId(psonOrgVo.getOrgTreeId().toString());
                 orgPersonRelService.add(orgPersonRel);
 
                 Long orgTreePerId = orgtreeOrgpersonRelService.getId();
@@ -88,26 +96,55 @@ public class OrgPersonRelController extends BaseController {
                 orgtreeOrgpersonRel.setOrgtreeOrgpersonId(orgTreePerId);
                 orgtreeOrgpersonRel.setStatusCd("1000");
                 orgtreeOrgpersonRelService.add(orgtreeOrgpersonRel);
-
-
-
-//            SolrInputDocument input = new SolrInputDocument();
-//            input.addField("psnName", psonOrgVo.getPsnName());
-//            input.addField("certNo", psonOrgVo.getCertNo());
-//            input.addField("orgRootId", psonOrgVo.getOrgRootId());
-//            input.addField("userId", psonOrgVo.getUserId());
-//            input.addField("id", orgPsndocRefId);
-//            String sysfullName = orgService.getSysFullName(orgtree.getOrgId(),orgPersonRel.getOrgId().toString());
-//            input.addField("psnFullName", sysfullName);
-//            input.addField("acct", psonOrgVo.getAcct());
-//            input.addField("mobile", psonOrgVo.getMobile());
-//            solrService.addDataIntoSolr("pson",input);
             }
         }
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
         return ret;
     }
+
+    @ApiOperation(value = "新增组织人员关系2-web" , notes = "新增组织人员2")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "新增组织人员关系2", key = "addOrgPsn2")
+    @RequestMapping(value = "/addOrgPsn2", method = RequestMethod.POST)
+    public ResponseResult<String> addOrgPsn2(@RequestBody List<PsonOrgVo> psonOrgList){
+        System.out.println(new Date());
+        ResponseResult<String> ret = new ResponseResult<String>();
+        if(psonOrgList!=null){
+            for(PsonOrgVo psonOrgVo : psonOrgList){
+                Wrapper orgTreeConfWrapper = Condition.create()
+                        .eq("ORG_TREE_ID",psonOrgVo.getOrgTreeId())
+                        .eq("STATUS_CD","1000");
+                OrgTree orgtree = orgTreeService.selectOne(orgTreeConfWrapper);
+                if(orgtree==null){
+                    ret.setState(ResponseResult.PARAMETER_ERROR);
+                    ret.setMessage("组织树不存在");
+                    return ret;
+                }
+
+                OrgPersonRel orgPersonRel = orgPersonRelService.convertObj(psonOrgVo);
+                Long orgPsndocRefId = orgPersonRelService.getId();
+                orgPersonRel.setOrgPersonId(orgPsndocRefId);
+                orgPersonRel.setOrgTreeId(psonOrgVo.getOrgTreeId().toString());
+                orgPersonRelService.add(orgPersonRel);
+
+                Long orgTreePerId = orgtreeOrgpersonRelService.getId();
+                OrgtreeOrgpersonRel orgtreeOrgpersonRel = new OrgtreeOrgpersonRel();
+                orgtreeOrgpersonRel.setOrgTreeId(orgtree.getOrgTreeId());
+                orgtreeOrgpersonRel.setOrgPersonId(orgPsndocRefId);
+                orgtreeOrgpersonRel.setOrgtreeOrgpersonId(orgTreePerId);
+                orgtreeOrgpersonRel.setStatusCd("1000");
+                orgtreeOrgpersonRelService.add(orgtreeOrgpersonRel);
+            }
+            String mqmsg = "{\"type\":\"person\",\"handle\":\"update\",\"context\":{\"column\":\"personnelId\",\"value\":"+psonOrgList.get(0).getPersonnelId()+"}}" ;
+            template.convertAndSend("message_sharing_center_queue",mqmsg);
+        }
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setMessage("成功");
+        return ret;
+    }
+
 
     @ApiOperation(value = "修改组织人员-web", notes = "修改组织人员")
     @ApiImplicitParams({
@@ -147,7 +184,10 @@ public class OrgPersonRelController extends BaseController {
                 orgPersonRel.setSort(new Double(psonOrgVo.getSort()));
             }
             orgPersonRelService.update(orgPersonRel);
+
         }
+        String mqmsg = "{\"type\":\"person\",\"handle\":\"update\",\"context\":{\"column\":\"personnelId\",\"value\":"+personnelId+"}}" ;
+        template.convertAndSend("message_sharing_center_queue",mqmsg);
 //        if(orgPersonRel == null){
 //            ret.setState(ResponseResult.STATE_ERROR);
 //            ret.setMessage("人员组织关系不存在");
@@ -232,6 +272,8 @@ public class OrgPersonRelController extends BaseController {
                 }
             }
         }
+        String mqmsg = "{\"type\":\"person\",\"handle\":\"update\",\"context\":{\"column\":\"personnelId\",\"value\":"+orgPsndocRefId+"}}" ;
+        template.convertAndSend("message_sharing_center_queue",mqmsg);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
         return ret;
@@ -277,7 +319,8 @@ public class OrgPersonRelController extends BaseController {
         for(OrgContactRel ocr : orgContactRels){
             orgContactRelService.delete(ocr);
         }
-
+        String mqmsg = "{\"type\":\"person\",\"handle\":\"update\",\"context\":{\"column\":\"personnelId\",\"value\":"+orgPsndocRefId+"}}" ;
+        template.convertAndSend("message_sharing_center_queue",mqmsg);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
         return ret;
@@ -390,8 +433,6 @@ public class OrgPersonRelController extends BaseController {
             return ret;
         }
 
-
-
         OrgTree orgtree = null;
         if(!StrUtil.isNullOrEmpty(refCode)){
             orgtree = orgTreeService.getOrgTreeByRefCode(refCode);
@@ -432,7 +473,26 @@ public class OrgPersonRelController extends BaseController {
         if(!StrUtil.isNullOrEmpty(pageNo)){
             psonOrgVo.setPageNo(pageNo);
         }
-        Page<PsonOrgVo> page = orgPersonRelService.selectPerOrgRelPage(psonOrgVo);
+
+        Wrapper orgLevelConfWrapper = Condition.create()
+                .eq("ORG_TREE_ID", psonOrgVo.getOrgTreeId())
+                .eq("ORG_ID",psonOrgVo.getOrgId())
+                .eq("STATUS_CD", "1000");
+        OrgLevel orgLev = orgLevelService.selectOne(orgLevelConfWrapper);
+        if(orgLev==null){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树层级不存在");
+            return ret;
+        }
+        Page<PsonOrgVo> page = null;
+        if(orgLev.getOrgLevel()<3 && "1".equals(psonOrgVo.getIsSearchlower())){
+            //查全部
+            page = orgPersonRelService.selectAllPerOrgRelPage(psonOrgVo);
+        }else{
+            //查部分
+            page = orgPersonRelService.selectPerOrgRelPage(psonOrgVo);
+        }
+
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
         ret.setData(page);
@@ -519,7 +579,31 @@ public class OrgPersonRelController extends BaseController {
         if(!StrUtil.isNullOrEmpty(pageNo)){
             psonOrgVo.setPageNo(pageNo);
         }
-        Page<PsonOrgVo> page = orgPersonRelService.selectUserOrgRelPage(psonOrgVo);
+
+
+        Wrapper orgLevelConfWrapper = Condition.create()
+                .eq("ORG_TREE_ID", psonOrgVo.getOrgTreeId())
+                .eq("ORG_ID",psonOrgVo.getOrgId())
+                .eq("STATUS_CD", "1000");
+        OrgLevel orgLev = orgLevelService.selectOne(orgLevelConfWrapper);
+        if(orgLev==null){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树层级不存在");
+            return ret;
+        }
+
+        Wrapper orgLevel2ConfWrapper = Condition.create()
+                .eq("ORG_TREE_ID", psonOrgVo.getOrgTreeId())
+                .eq("ORG_LEVEL",orgLev.getOrgLevel())
+                .eq("STATUS_CD", "1000");
+        List<OrgLevel> orgLevList = orgLevelService.selectList(orgLevel2ConfWrapper);
+
+        Page<PsonOrgVo> page = null;
+        if(orgLev.getOrgLevel()<3 && orgLevList.size()==1 && "1".equals(psonOrgVo.getIsSearchlower())){
+            page = orgPersonRelService.selectAllUserOrgRelPage(psonOrgVo);
+        }else{
+            page = orgPersonRelService.selectUserOrgRelPage(psonOrgVo);
+        }
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
         ret.setData(page);

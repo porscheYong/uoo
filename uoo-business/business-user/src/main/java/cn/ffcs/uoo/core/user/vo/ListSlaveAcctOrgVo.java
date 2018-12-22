@@ -30,6 +30,10 @@ public class ListSlaveAcctOrgVo extends BaseVo {
      */
     private String slaveAcctType;
     /**
+     * 组织树ID
+     */
+    private Long orgTreeId;
+    /**
      * 组织树
      */
     private String orgTreeName;
@@ -37,6 +41,10 @@ public class ListSlaveAcctOrgVo extends BaseVo {
      * 组织标识
      */
     private Long orgId;
+    /**
+     *应用系统
+     */
+    private String systemName;
     /**
      * 归属组织
      */

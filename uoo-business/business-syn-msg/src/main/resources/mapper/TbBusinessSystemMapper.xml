@@ -20,10 +20,10 @@
   </resultMap>
 
   <select id="getSystemBySlaveAcct" resultMap="BaseResultMap">
-      select * from tb_business_system where business_system_id = ( select resource_obj_id from tb_slave_acct where slave_acct_type = 1 and slave_acct_id = #{slaveAcctId})
+      select * from tb_business_system where status_cd = 1000 and business_system_id = ( select resource_obj_id from tb_slave_acct where slave_acct_type = 1 and slave_acct_id = #{slaveAcctId})
   </select>
 
-
+  <!--状态为有效的-->
   <select id="getSystemByOrg" resultMap="BaseResultMap">
     select DISTINCT * from tb_business_system where status_cd = 1000 and business_system_id in (select business_system_id from TB_SYSTEM_ORG_TREE
     where org_tree_id in (select org_tree_id from tb_org_orgtree_rel where  org_id = #{orgId}))
@@ -32,8 +32,14 @@
   <select id="getSystemByPersonal" resultMap="BaseResultMap">
      select DISTINCT * from tb_business_system where status_cd = 1000 and business_system_id in (select business_system_id from TB_SYSTEM_ORG_TREE
      where org_tree_id in (select org_tree_id from tb_org_orgtree_rel where  org_id in (select org_id from TB_account_ORG_REL where acct_id =
-    (select b.acct_id from tb_personnel A, TB_ACCT B where A.Personnel_Id =b.personnel_id and A.Status_Cd = 1000 and B.Status_Cd = 1000 and
-    A.personnel_id = #{personalId}))))
+    (select b.acct_id from tb_personnel A, TB_ACCT B where A.Personnel_Id =b.personnel_id and A.Status_Cd = 1000 and B.Status_Cd = 1000 and A.personnel_id = #{personalId}))))
+  </select>
+
+  <select id="getSystemByPersonalLimitDelete" resultMap="BaseResultMap">
+    select DISTINCT * from tb_business_system where status_cd = 1000 and business_system_id in (select business_system_id from TB_SYSTEM_ORG_TREE
+     where org_tree_id in (select org_tree_id from tb_org_orgtree_rel where  org_id in (select org_id from TB_account_ORG_REL where acct_id =
+    (select * from (select b.acct_id from tb_personnel A, TB_ACCT B where A.Personnel_Id =B.personnel_id and A.Status_Cd + B.Status_Cd > 2000
+    and A.personnel_id = #{personalId} order by b.update_date desc) where rownum = 1 ))))
   </select>
 
 </mapper>

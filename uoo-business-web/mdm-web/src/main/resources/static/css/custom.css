@@ -836,6 +836,7 @@ ul.tab-title.right li {
     /*background: url(../images/ico_edit.svg);*/
     background-image: url(../images/ico_edit.png);
     background-image: url(../images/ico_edit.svg), none;
+    background-repeat:no-repeat;
     cursor: pointer;
     }
 .icon-cal {
@@ -1083,6 +1084,7 @@ ul.tab-title.right li {
 .breadcrumb {
     padding: 10px 15px 0;
     background: #fff;
+    margin-bottom: 10px;
 }
 .breadcrumb > .breadcrumb-item {
     color: #959da9;
@@ -1097,6 +1099,28 @@ ul.tab-title.right li {
     margin: 0 9px;
 }
 
+.org-ext {
+    padding-left: 15px;
+    color: #959da9;
+}
+.org-ext .follow-org {
+    padding-bottom: 10px;
+}
+.org-ext .follow-org div {
+    display: inline-block;
+}
+.org-ext .org-type-info div {
+    display: inline-block;
+}
+.uoo-tag {
+    background: #dfe1e5;
+    border-radius: 4px;
+    line-height: 1.5em;
+    color: rgba(0,0,0,.5);
+    padding: 3px 10px;
+    display: inline-block;
+    margin-right: 5px;
+}
 /*
  * Component: user add gender radio
  * --------------
@@ -1112,8 +1136,11 @@ label.gender {
 .BoardTitle.Back {
     display: inline-block;
     width: 100%;
-    background: url(/images/ico_back.svg) no-repeat 10px center;
+    background-image: url(/images/ico_back.png);
+    background: url(/images/ico_back.svg),none;
     background-size: 24px 24px;
+    background-repeat: no-repeat;
+    background-position:10px center;
     border-bottom: 1px solid #ecedef;
     font-size: 16px;
     opacity: 0.7;

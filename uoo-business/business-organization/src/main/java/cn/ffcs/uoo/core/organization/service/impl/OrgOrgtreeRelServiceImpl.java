@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -62,5 +63,17 @@ public class OrgOrgtreeRelServiceImpl extends ServiceImpl<OrgOrgtreeRelMapper, O
         orgOrgtreeRef.setUpdateUser(0L);
         orgOrgtreeRef.setStatusDate(new Date());
         updateById(orgOrgtreeRef);
+    }
+
+
+    /**
+     * 获取组织全路径列表
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    @Override
+    public List<OrgOrgtreeRel> getFullBizOrgList(String orgTreeId, String orgId){
+        return baseMapper.getFullBizOrgList(orgTreeId,orgId);
     }
 }

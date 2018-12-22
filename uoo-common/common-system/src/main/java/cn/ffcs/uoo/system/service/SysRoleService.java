@@ -1,8 +1,12 @@
 package cn.ffcs.uoo.system.service;
 
-import cn.ffcs.uoo.system.entity.SysRole;
-import cn.ffcs.uoo.system.entity.SysUser;
+import java.util.HashMap;
+import java.util.List;
+
 import com.baomidou.mybatisplus.service.IService;
+
+import cn.ffcs.uoo.system.entity.SysRole;
+import cn.ffcs.uoo.system.vo.SysRoleDTO;
 
 /**
  * 系统域用户Service接口
@@ -10,4 +14,8 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface SysRoleService extends IService<SysRole> {
     Long getId();
+    List<SysRoleDTO> findList(HashMap<String, Object> map);
+    Long countList(HashMap<String, Object> map);
+    
+    SysRoleDTO selectOne(Long ROLE_ID);
 }

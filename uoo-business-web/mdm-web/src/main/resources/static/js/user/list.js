@@ -1,3 +1,6 @@
+var isIE=!!window.ActiveXObject;
+var isIE8=isIE&&document.documentMode<9;
+
 var orgId = getQueryString('id');
 var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
@@ -198,10 +201,15 @@ function initFreePersonnelTable () {
 function showLower() {
     sortFlag = 0;
     checked = $('#isShowLower').is(':checked')? 1: 0;
+    if(isIE8 && checked == 1){
+        $(".ui-checkbox").css("background-position","0 -40px");
+    }else if(isIE8 && checked == 0){
+        $(".ui-checkbox").css("background-position","0px 0px");
+    }
     initOrgPersonnelTable(checked, '');
 }
 
-if (orgId == 'noSort') {
+if (orgId == '88888888') {
     $('#titleName').html('游离人员');
     $('#isShow').hide();
     initFreePersonnelTable();

@@ -4,10 +4,11 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.user.entity.TbAccountOrgRel">
-        <id column="ACCT_HOST_ID" property="acctHostId" />
+        <id column="ACCT_ORG_REL_ID" property="acctOrgRelId" />
         <result column="ORG_ID" property="orgId" />
         <result column="ACCT_ID" property="acctId" />
         <result column="SORT" property="sort" />
+        <result column="ORG_TREE_ID" property="orgTreeId" />
         <result column="STATUS_CD" property="statusCd" />
         <result column="CREATE_DATE" property="createDate" />
         <result column="CREATE_USER" property="createUser" />
@@ -18,11 +19,29 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ACCT_HOST_ID, ORG_ID, ACCT_ID, SORT, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        ACCT_ORG_REL_ID, ORG_ID, ACCT_ID, SORT, ORG_TREE_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
     <select id="getId" resultType="java.lang.Long">
-        select SEQ_ACCT_HOST_ID.nextval from dual
+        select SEQ_ACCT_ORG_REL_ID.nextval from dual
+    </select>
+
+    <select id="findSlaveAcct" resultType="cn.ffcs.uoo.core.user.entity.TbSlaveAcct">
+        select t2.* from tb_account_org_rel t1, tb_slave_acct t2
+        where t1.status_cd = 1000
+        and t2.status_cd = 1000
+        and t1.acct_org_rel_id = t2.acct_org_rel_id
+        and t1.acct_id = t2.acct_id
+        <if test="orgTreeId != null and orgTreeId != '' " >
+            and t1.org_tree_id = #{orgTreeId}
+        </if>
+        <if test="orgId != null and orgId != '' " >
+            and t1.org_id = #{orgId}
+        </if>
+        <if test="acctId != null and acctId != '' " >
+            and t2.acct_id = #{acctId}
+        </if>
+
     </select>
 
 </mapper>

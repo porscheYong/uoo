@@ -13,7 +13,7 @@ public class ListAcctOrgVo {
     /**
      * 主账号组织关系标识
      */
-    private Long acctHostId;
+    private Long acctOrgRelId;
     /**
      * 组织ID
      */
@@ -30,4 +30,12 @@ public class ListAcctOrgVo {
      * 组织名称
      */
     private String fullName;
+    /**
+     * 组织树ID
+     */
+    private Long orgTreeId;
+    /**
+     * 组织树名称
+     */
+    private String orgTreeName;
 }

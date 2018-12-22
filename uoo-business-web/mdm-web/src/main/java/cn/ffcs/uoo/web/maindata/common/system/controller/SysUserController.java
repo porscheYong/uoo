@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.web.maindata.common.system.controller;
 
 
+import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,13 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 
+import cn.ffcs.uoo.web.maindata.common.system.client.SysLoginLogClient;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysUserClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.AlterPwdDTO;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysLoginLog;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
+import cn.ffcs.uoo.web.maindata.common.system.utils.IPUtils;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.realm.exception.ServiceException;
-import cn.ffcs.uoo.web.maindata.user.service.AcctService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -35,21 +40,23 @@ public class SysUserController {
     @Autowired
     SysUserClient sysuserClient;
     @Autowired
-    private AcctService acctService;
+    private SysLoginLogClient loginLogClient;
     @Autowired
     ShiroFilterFactoryBean shiroFilterFactoryBean;
+    @OperateLog(type=OperateType.SELECT,module="平台系统用户模块",methods="获取当前登陆用户信息",desc="")
     @ApiOperation(value = " 接口", notes = " 接口")
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getCurrentLoginUserInfo", method = RequestMethod.GET)
     public ResponseResult<SysUser> getCurrentLoginUserInfo(){
-        Subject sub=SecurityUtils.getSubject();
-        Object primaryPrincipal = sub.getPrincipals().getPrimaryPrincipal();
-        SysUser sysUser=new SysUser();
-        sysUser.setAccout(primaryPrincipal.toString());
-        return sysuserClient.getSysUserByAccout(sysUser);
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        ResponseResult<SysUser> r=new ResponseResult<>();
+        r.setState(ResponseResult.STATE_OK);
+        r.setData(currentLoginUser);
+        return r;
     }
-    
+    @OperateLog(type=OperateType.UPDATE,module="平台系统用户模块",methods="修改用户密码",desc="")
     @ApiOperation(value = "登陆接口", notes = "登陆接口")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "sysUser", value = "sysUser", required = true, dataType = "SysUser" ),
@@ -79,6 +86,7 @@ public class SysUserController {
             subject.login(usernamePasswordToken);
             rr.setMessage("登陆成功");
             rr.setState(1000);
+            //ResponseResult<SysUser> r = sysuserClient.getSysUserByAccout(t);
         } catch (ServiceException e) {
             rr.setMessage("登陆服务异常，请稍后重试");
             rr.setState(1100);
@@ -99,11 +107,17 @@ public class SysUserController {
                 }else{
                     rr.setState(ResponseResult.STATE_ERROR);
                     rr.setMessage(json.getString("message"));
-                }
+                }`
             }
             
         }*/
-        
+        SysLoginLog sysLoginLog=new SysLoginLog();
+        sysLoginLog.setLogName("用户登录");
+        sysLoginLog.setIp(IPUtils.string2Long(subject.getSession().getHost()));
+        sysLoginLog.setSucceed(rr.getState()==ResponseResult.STATE_OK?1L:0L);
+        sysLoginLog.setAccout(sysUser.getAccout());
+        sysLoginLog.setMessage(JSONObject.toJSONString(sysUser));
+        loginLogClient.add(sysLoginLog);
         return rr;
     }
 }

@@ -1,3 +1,6 @@
+var isIE=!!window.ActiveXObject;
+var isIE8=isIE&&document.documentMode<9;
+
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
@@ -12,6 +15,7 @@ function initOrgTable () {
         'searching': false,
         'autoWidth': false,
         'ordering': true,
+        'lSort': true,
         "scrollY": "375px",
         'scrollCollapse': true,
         'columns': [
@@ -83,10 +87,10 @@ function initOrgTable () {
         }
     });
 
-    initSort(".row-name","orgName");
-    initSort(".row-sex","orgTypeSplit");
-    initSort(".user-account","orgCode");
-    initSort(".user-type","locName");
+    // initSort(".row-name","orgName");
+    // initSort(".row-sex","orgTypeSplit");
+    // initSort(".user-account","orgCode");
+    // initSort(".user-type","locName");
 
     var loading = parent.loading;
     loading.screenMaskDisable('container');
@@ -180,12 +184,45 @@ function initOrgPersonnelTable (isSearchlower) {
 function showLower() {
     sortFlag = 0;
     var checked = $('#isShowLower').is(':checked')? 1: 0;
+    if(isIE8 && checked == 1){
+        $(".ui-checkbox").css("background-position","0 -40px");
+    }else if(isIE8 && checked == 0){
+        $(".ui-checkbox").css("background-position","0px 0px");
+    }
     initOrgPersonnelTable(checked);
+}
+
+//获取组织扩展信息
+function getOrgExt() {
+    $http.get('/org/getOrgExtByOrgId', {
+        orgTreeId: '1',
+        orgId: orgId
+    }, function (data) {
+        var followOrgList = [];
+        var orgTypeInfoList = [];
+        var followOrgStr= '';
+        var orgTypeInfoStr= '';
+        if (data.FOLLOW_ORG)
+            followOrgList = data.FOLLOW_ORG.split(',');
+        if (data.ORG_TYPE_INFO)
+            orgTypeInfoList = data.ORG_TYPE_INFO.split(',');
+        for (var i = 0; i < followOrgList.length; i++) {
+            followOrgStr += '<span class="uoo-tag">'+ followOrgList[i] +'</span>';
+        }
+        for (var i = 0; i < orgTypeInfoList.length; i++) {
+            orgTypeInfoStr += '<span class="uoo-tag">'+ orgTypeInfoList[i] +'</span>';
+        }
+        $('#followOrg').html(followOrgStr);
+        $('#orgTypeInfo').html(orgTypeInfoStr);
+    }, function (err) {
+
+    })
 }
 
 $('#orgName').html(orgName);
 // 显示组织路径
 parent.getOrgExtInfo();
+getOrgExt();
 initOrgTable();
 initOrgPersonnelTable(0);
 

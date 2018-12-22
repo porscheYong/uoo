@@ -95,7 +95,7 @@ public class TbAcctServiceImpl extends ServiceImpl<TbAcctMapper, TbAcct> impleme
             tbAcct.setAcctId(acctId);
             type = "insert";
         }
-        if(StrUtil.isNullOrEmpty(tbAcct) || !editFormAcctVo.getPassword().equals(tbAcct.getPassword())){
+        if("insert".equals(type) || !editFormAcctVo.getPassword().equals(tbAcct.getPassword())){
             if(!PwdPolicyUtil.isMatchBasicPattern(editFormAcctVo.getPassword())){
                 return ResultUtils.error(EumUserResponeCode.PWD_ERROR);
             }
@@ -129,6 +129,14 @@ public class TbAcctServiceImpl extends ServiceImpl<TbAcctMapper, TbAcct> impleme
         Map<String, Object> map = new HashMap<String, Object>();
         map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         map.put(BaseUnitConstants.TABLE_ACCT, acct);
+        return this.selectOne(new EntityWrapper<TbAcct>().allEq(map));
+    }
+
+    @Override
+    public TbAcct getTbAcctById(Long acctId){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TABLE_ACCT_ID, acctId);
         return this.selectOne(new EntityWrapper<TbAcct>().allEq(map));
     }
 

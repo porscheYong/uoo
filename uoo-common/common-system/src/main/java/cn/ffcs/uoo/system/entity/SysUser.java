@@ -1,117 +1,141 @@
 package cn.ffcs.uoo.system.entity;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.KeySequence;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
-
-import java.io.Serializable;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
 
 /**
- * 系统域用户
+ * <p>
+ * 
+ * </p>
+ *
+ * @author zengxsh
+ * @since 2018-12-17
  */
 @TableName("SYS_USER")
-@KeySequence(value = "SEQ_SYS_USER_ID", clazz = Long.class)
 public class SysUser extends Model<SysUser> {
 
-    /** 用户标识    */
-    @TableId(value = "USER_ID", type = IdType.INPUT)
-    private Long userId;
+    private static final long serialVersionUID = 1L;
 
-    /** 账号  */
+    /**
+     * 用户标识
+     */
+    @TableId("USER_ID")
+    private Long userId;
+    /**
+     * 用户登录账号
+     */
     @TableField("ACCOUT")
     private String accout;
-
-    /** 密码  */
+    /**
+     * 用户密码
+     */
     @TableField("PASSWD")
     private String passwd;
-
-    /** 盐   */
+    /**
+     * 密码加密的盐
+     */
     @TableField("SALT")
     private String salt;
-
-    /** 姓名  */
-    @TableField("UNAME")
-    private String uname;
-
-    /** 性别  */
+    /**
+     * 用户姓名
+     */
+    @TableField("USER_NAME")
+    private String userName;
+    /**
+     * 性别
+     */
     @TableField("GENDER")
     private String gender;
-
-    /** 编码  */
-    @TableField("UCODE")
-    private String ucode;
-
-    /** 部门标识    */
-    @TableField("DEPT_ID")
-    private Long deptId;
-
-    /** 角色标识    */
-    @TableField("ROLE_ID")
-    private Long roleId;
-
-    /** 岗位标识    */
-    @TableField("POSTION_ID")
-    private Long postionId;
-
-    /** 生日  */
+    /**
+     * 人员编码
+     */
+    @TableField("USER_CODE")
+    private String userCode;
+    /**
+     * 出生年月
+     */
     @TableField("BIRTHDAY")
     private Date birthday;
-
-    /** 证件类型    */
+    /**
+     * 用户持有的证件类别
+     */
     @TableField("CERT_TYPE")
     private String certType;
-
-    /** 证件号 */
+    /**
+     * 用户持有的证件号码
+     */
     @TableField("CERT_ID")
     private String certId;
-
-    /** 手机  */
+    /**
+     * 联系号码
+     */
     @TableField("MOBILE")
     private String mobile;
-
-    /** 邮箱  */
+    /**
+     * 邮件地址
+     */
     @TableField("EMAIL")
     private String email;
-
-    /** 家庭住址    */
-    @TableField("ADDRESS")
-    private String address;
-
-    /** 变更原因    */
-    @TableField("REASON")
-    private String reason;
-
-    /** 状态  */
+    /**
+     * 头像图片路径
+     */
+    @TableField("IMAGE_URL")
+    private String imageUrl;
+    /**
+     * 登录ip
+     */
+    @TableField("LAST_IP")
+    private String lastIp;
+    /**
+     * 账号等级
+     */
+    @TableField("ACCT_LEVEL")
+    private String acctLevel;
+    /**
+     * 账号是否被锁定
+     */
+    @TableField("LOCKED")
+    private Integer locked;
+    /**
+     * 最后一次登录时间
+     */
+    @TableField("LAST_LOGIN")
+    private Date lastLogin;
+    /**
+     * 状态
+     */
     @TableField("STATUS_CD")
     private String statusCd;
-
-    /** 创建时间  */
+    /**
+     * 创建时间
+     */
     @TableField("CREATE_DATE")
     private Date createDate;
-
-    /** 创建人    */
+    /**
+     * 创建人
+     */
     @TableField("CREATE_USER")
     private Long createUser;
-
-    /** 修改时间 */
+    /**
+     * 修改时间
+     */
     @TableField("UPDATE_DATE")
     private Date updateDate;
-
-    /** 修改人 */
+    /**
+     * 修改人
+     */
     @TableField("UPDATE_USER")
     private Long updateUser;
-
-    /** 状态时间    */
+    /**
+     * 状态变更的时间
+     */
     @TableField("STATUS_DATE")
     private Date statusDate;
 
-    /** 备注  */
-    @TableField("NOTES")
-    private String notes;
 
     public Long getUserId() {
         return userId;
@@ -145,12 +169,12 @@ public class SysUser extends Model<SysUser> {
         this.salt = salt;
     }
 
-    public String getUname() {
-        return uname;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUname(String uname) {
-        this.uname = uname;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getGender() {
@@ -161,36 +185,12 @@ public class SysUser extends Model<SysUser> {
         this.gender = gender;
     }
 
-    public String getUcode() {
-        return ucode;
+    public String getUserCode() {
+        return userCode;
     }
 
-    public void setUcode(String ucode) {
-        this.ucode = ucode;
-    }
-
-    public Long getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(Long deptId) {
-        this.deptId = deptId;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public Long getPostionId() {
-        return postionId;
-    }
-
-    public void setPostionId(Long postionId) {
-        this.postionId = postionId;
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
     }
 
     public Date getBirthday() {
@@ -233,20 +233,44 @@ public class SysUser extends Model<SysUser> {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public String getReason() {
-        return reason;
+    public String getLastIp() {
+        return lastIp;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
+    public void setLastIp(String lastIp) {
+        this.lastIp = lastIp;
+    }
+
+    public String getAcctLevel() {
+        return acctLevel;
+    }
+
+    public void setAcctLevel(String acctLevel) {
+        this.acctLevel = acctLevel;
+    }
+
+    public Integer getLocked() {
+        return locked;
+    }
+
+    public void setLocked(Integer locked) {
+        this.locked = locked;
+    }
+
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
     }
 
     public String getStatusCd() {
@@ -297,16 +321,37 @@ public class SysUser extends Model<SysUser> {
         this.statusDate = statusDate;
     }
 
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
     @Override
     protected Serializable pkVal() {
         return this.userId;
+    }
+
+    @Override
+    public String toString() {
+        return "SysUser{" +
+        ", userId=" + userId +
+        ", accout=" + accout +
+        ", passwd=" + passwd +
+        ", salt=" + salt +
+        ", userName=" + userName +
+        ", gender=" + gender +
+        ", userCode=" + userCode +
+        ", birthday=" + birthday +
+        ", certType=" + certType +
+        ", certId=" + certId +
+        ", mobile=" + mobile +
+        ", email=" + email +
+        ", imageUrl=" + imageUrl +
+        ", lastIp=" + lastIp +
+        ", acctLevel=" + acctLevel +
+        ", locked=" + locked +
+        ", lastLogin=" + lastLogin +
+        ", statusCd=" + statusCd +
+        ", createDate=" + createDate +
+        ", createUser=" + createUser +
+        ", updateDate=" + updateDate +
+        ", updateUser=" + updateUser +
+        ", statusDate=" + statusDate +
+        "}";
     }
 }

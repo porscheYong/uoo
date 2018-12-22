@@ -9,7 +9,7 @@ public class BaseUnitConstants {
 	 * 失效状态
 	 */
 	public static final String ENTT_STATE_INACTIVE = "1100";
-	
+
 	/**
 	 * 人员组织变更状态
 	 */
@@ -39,7 +39,7 @@ public class BaseUnitConstants {
 
 	public static final String TABLE_SLAVE_ACCT = "SLAVE_ACCT";
 
-	public static final String TB_ACCT_HOST_ID = "ACCT_HOST_ID";
+	public static final String TB_ACCT_ORG_REL_ID = "ACCT_ORG_REL_ID";
 
 	public static final String TB_RESOURCE_OBJ_ID = "RESOURCE_OBJ_ID";
 
@@ -58,6 +58,8 @@ public class BaseUnitConstants {
 	public static final Integer PAGE_NO = 1;
 
 	public static final Integer PAGE_SIZE = 5;
+
+	public static final String TB_ORG_TREE_ID = "ORG_TREE_ID";
 
 
 
@@ -81,12 +83,12 @@ public class BaseUnitConstants {
 	 * 删除
 	 */
 	public static final String OPE_TYPE_DEL = "3";
-	
+
 	/**
 	 * 归属主部门
 	 */
 	public static final String RALA_CD_1 = "1";
-	
+
 	/**
 	 * 兼职  rala_cd=2
 	 */
@@ -95,12 +97,12 @@ public class BaseUnitConstants {
 	 * 兼职  rala_cd 由3修改为2
 	 */
 	public static final String RALA_CD_3 = "2";
-	
+
 	/**
 	 * 开关开启
 	 */
 	public static final String SWITCH_OPEN ="1";
-	
+
 	/**
 	 * 开关关闭
 	 */

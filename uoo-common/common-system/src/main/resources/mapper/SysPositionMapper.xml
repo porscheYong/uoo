@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.system.controller.dao.SysPositionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysPosition">
+        <id column="POSITION_ID" property="positionId" />
+        <result column="POSITION_NAME" property="positionName" />
+        <result column="POSITION_CODE" property="positionCode" />
+        <result column="P_POSITION_ID" property="pPositionId" />
+        <result column="REGION_NBR" property="regionNbr" />
+        <result column="SORT_NUM" property="sortNum" />
+        <result column="NOTES" property="notes" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        POSITION_ID, POSITION_NAME, POSITION_CODE, P_POSITION_ID, REGION_NBR, SORT_NUM, NOTES, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+    <select id="getPositionTree" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
+        SELECT A.POSITION_ID id ,A.POSITION_NAME name,A.P_POSITION_ID pid
+        FROM SYS_POSITION A
+        WHERE A.STATUS_CD = '1000'
+        START WITH A.POSITION_ID = #{positionId}
+        CONNECT BY PRIOR A.POSITION_ID = A.P_POSITION_ID
+    </select>
+
+    <select id="getPositionRel" resultType="cn.ffcs.uoo.system.vo.SysPositionVo">
+        SELECT A.POSITION_NAME,
+        A.REGION_NBR,
+        (SELECT TCR.REGION_NAME FROM TB_COMMON_REGION TCR WHERE TCR.STATUS_CD='1000' AND TCR.REGION_NBR=A.REGION_NBR) REGIONNAME,
+        (SELECT WM_CONCAT(SR.ROLE_NAME)
+          FROM SYS_POSITIONT_ROLE_REF SPRR, SYS_ROLE SR
+         WHERE SPRR.STATUS_CD = '1000'
+           AND SR.STATUS_CD = '1000'
+           AND SR.ROLE_CODE = SPRR.ROLE_CODE
+           AND SPRR.POSITION_CODE = A.POSITION_CODE) ROLENAMES,
+        (SELECT COUNT(1) FROM SYS_DEPT_POSITION_REF SDPR WHERE SDPR.STATUS_CD='1000' AND SDPR.POSITION_CODE=A.POSITION_CODE) ORGPOSITIONNUM,
+        (SELECT COUNT(1) FROM SYS_USER_POSITION_REF SUPR WHERE SUPR.STATUS_CD='1000' AND SUPR.POSITION_CODE=A.POSITION_CODE) ORGUSERNUM
+        FROM SYS_POSITION A
+        WHERE A.STATUS_CD = '1000'
+        AND A.P_POSITION_ID = #{positionId}
+    </select>
+</mapper>

@@ -131,7 +131,7 @@ public class TbAcctController extends BaseController {
         tbUserRoleService.removeUserRole(acctId, 1L);
 
         //3、删除组织
-        tbAccountOrgRelService.removeAcctOrg(null, acctId, null);
+        tbAccountOrgRelService.removeAcctOrg(null, acctId, null, null);
 
         TbAcct tbAcct = tbAcctService.selectById(acctId);
         rabbitMqService.sendMqMsg("person", "delete", "personnelId", tbAcct.getPersonnelId());

@@ -46,6 +46,18 @@ legend {
 .tiright {
     text-align: right
     }
+.More {
+    background: url(../../images/ico_arrow_bottom.svg) no-repeat right center;
+    background-size: 24px;
+    padding: 0 32px 0 0;
+    line-height: 24px;
+}
+.Lesss {
+    background: url(../../images/ico_arrow_top.svg) no-repeat right center;
+    background-size: 24px;
+    padding: 0 32px 0 0;
+    line-height: 24px;
+}
 .ulhide,
 .ulhide ul,
 .ulhide li {
@@ -209,10 +221,18 @@ legend {
     display: inline-block
     }*/
 .IconDel {
-    background: url(../images/ico_del2.svg);
+    background-image: url(../images/ico_del2.png);
+    background: url(../images/ico_del2.svg),none;
 }
 .IconEdit {
-    background: url(../images/ico_edit.svg);
+    background-image: url(../images/ico_edit.png);
+    background: url(../images/ico_edit.svg),none;
+    background-repeat: no-repeat;
+    }
+.IconAdd {
+    background-image: url(../images/ico_add2.png);
+    background: url(../images/ico_add2.svg),none;
+    background-repeat: no-repeat;
     }
 .IconCal {
     background: url(../images/ico_calendar.svg);

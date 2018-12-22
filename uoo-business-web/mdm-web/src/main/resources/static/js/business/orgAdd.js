@@ -56,7 +56,7 @@ if(typeof $.fn.tagsInput !== 'undefined'){
     $('#orgTypeList').tagsInput({unique: true});
     $('#positionList').tagsInput();
     $('#postList').tagsInput();
-    $('#regionId').tagsInput();
+    $('#regionId').tagsInput({unique: true});
 }
 //自动填写组织简称
 function autoFillShortName () {
@@ -238,6 +238,7 @@ function openRegionDialog() {
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
             $('#regionId').importTags(checkNode);
+            $('.ui-tips-error').css('display', 'none');
             regionList = checkNode;
             parent.layer.close(index);
             getAreaId(checkNode[0].id);
@@ -392,12 +393,14 @@ function addOrg () {
     var areaType = $('#areaType option:selected') .val();
     var countType = $('#countType option:selected') .val();
     var contractType = $('#contractType option:selected') .val();
-    expandovalueVoList = [
-        {columnName: 'nodeType', data: nodeType},
-        {columnName: 'areaType', data: areaType},
-        {columnName: 'countType', data: countType},
-        {columnName: 'contractType', data: contractType}
-    ];
+    if (editSmallField) {
+        expandovalueVoList = [
+            {columnName: 'nodeType', data: nodeType},
+            {columnName: 'areaType', data: areaType},
+            {columnName: 'countType', data: countType},
+            {columnName: 'contractType', data: contractType}
+        ];
+    }
     $http.post('/org/addOrg', JSON.stringify({
         orgRootId: '1',
         orgTreeId: orgTreeId,

@@ -74,8 +74,8 @@ public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> impleme
     }
 
     @Override
-    public List<ListAcctOrgVo> getAcctOrgByPsnId(Long personnelId){
-        return baseMapper.getAcctOrgByPsnId(personnelId);
+    public List<ListAcctOrgVo> getAcctOrgByPsnId(Long personnelId, Long resourceObjId){
+        return baseMapper.getAcctOrgByPsnId(personnelId, resourceObjId);
     }
 
 }

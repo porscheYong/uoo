@@ -1,3 +1,6 @@
+var isIE=!!window.ActiveXObject;
+var isIE8=isIE&&document.documentMode<9;
+
 var orgId = getQueryString('orgId');
 var orgName = getQueryString('orgName');
 var orgTreeId = getQueryString('orgTreeId');
@@ -5,8 +8,17 @@ var lChBox =document.getElementById("lowerCheckBox");   //是否显示下级人�
 var orgFullName = '';
 var table;
 var isCheck = 0;
-var sortFlag = 0;
-var currentPage = 0;
+
+Array.prototype.filter = Array.prototype.filter || function(func) {
+    var arr = this;
+    var r = [];
+    for (var i = 0; i < arr.length; i++) {
+        if (func(arr[i],i,arr)) {
+            r.push(arr[i]);
+        }
+    }
+    return r;
+}
 
 // 获取组织完整路径
 function getOrgExtInfo () {
@@ -28,35 +40,40 @@ function getOrgExtInfo () {
 }
 
 function initMainTable(isCheck,search){
+    var date = new Date();
     table = $("#mainTable").DataTable({
         'destroy':true,
         'searching': false,
         'autoWidth': false,
         'ordering': true,
+        'lSort': true,
         'info': true,
-        "scrollY": "375px",
+        "scrollY": "395px",
         'scrollCollapse': true,
         'columns': [
-            { 'data': "psnName", 'title': '人员姓名', 'className': 'row-psnName' ,
-            'render': function (data, type, row, meta) {
-                if(row.typeName == '主账号'){
-                    return '<a href="addMainAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&acctId='+ row.accId + '&statusCd='+row.statusCd+'&opBtn=0&hType=mh">'+ row.psnName +'</a>'
-                }else{
-
-                    return '<a href="addSubAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&acctId='+ row.accId +'&statusCd='+row.statusCd+'&opBtn=0&hType=mh">'+ row.psnName +'</a>'
-                } 
-              }
+            { 'data': "psnNbr", 'title': '人员编码', 'className': 'row-psnNbr' },
+            { 'data': "psnName", 'title': '姓名', 'className': 'row-psnName' ,
+                'render': function (data, type, row, meta) {
+                    if(row.typeName == '主账号'){
+                        return '<a href="editMainAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&acctId='+ row.accId + '&hType=mh">'+ row.psnName +'</a>'
+                    }else{
+                        return '<a href="editSubAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&acctId='+ row.accId +'&statusCd='+row.statusCd+'&hType=mh">'+ row.psnName +'</a>'
+                    } 
+                }
             },
-            { 'data': "typeName", 'title': '用户类型', 'className': 'row-typeName' },
-            { 'data': "acct", 'title': '用户名', 'className': 'row-acc' },
-            { 'data': "orgName", 'title': '归属组织', 'className': 'row-org' },
-            { 'data': "certNo", 'title': '证件号码', 'className': 'row-certNo' },
+            { 'data': "typeName", 'title': '账号类型', 'className': 'row-typeName' },
+            { 'data': "acct", 'title': '账号', 'className': 'row-acc' },
+            { 'data': "orgName", 'title': '归属组织', 'className': 'row-org' ,
+                'render': function (data, type, row, meta) {
+                    return '<span title="'+ row.orgName +'" class="orgNamePoint">'+row.orgName+'</span>';
+                }
+            },
             { 'data': "statusCd", 'title': '状态', 'className': 'row-statusCd' ,
             'render': function (data, type, row, meta) {
                 if(row.statusCd == 1000){
-                    return '生效';
+                    return '正常';
                 }else{
-                    return '失效';
+                    return '锁定';
                 }
             }
             },
@@ -90,6 +107,7 @@ function initMainTable(isCheck,search){
             param.orgId = orgId;
             param.isSearchlower = isCheck;
             param.search = search;
+            param._ = date.getTime();
             $http.get('/orgPersonRel/getUserOrgRelPage', param, function (result) {
                 var returnData = {};
                 // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
@@ -103,19 +121,11 @@ function initMainTable(isCheck,search){
             })
         }
     });
-
-    initSort(".row-psnName","psnName");
-    initSort(".row-typeName","typeName");
-    initSort(".row-acc","acct");
-    initSort(".row-org","orgName");
-    initSort(".row-certNo","certNo");
-    initSort(".row-statusCd","statusCd");
 }
 
 
 $('#orgName').html(orgName);
 getOrgExtInfo();
-// getUserList(orgId);
 initMainTable(isCheck,'');
 
 
@@ -128,70 +138,14 @@ function boxClick(){            //点击复选框
     sortFlag = 0;
     if(lChBox.checked == true){
         isCheck = 1;
+        if(isIE8){
+            $(".ui-checkbox").css("background-position","0px -40px");
+        }
     }else{
         isCheck = 0;
+        if(isIE8){
+            $(".ui-checkbox").css("background-position","0px 0px");
+        }
     }
     initMainTable(isCheck,'');
-}
-
-function arrSort (arr, dataLeven) { // 参数：arr 排序的数组; dataLeven 数组内的需要比较的元素属性 
-    /* 获取数组元素内需要比较的值 */
-    function getValue (option) { // 参数： option 数组元素
-      if (!dataLeven) return option
-      var data = option
-      dataLeven.split('.').filter(function (item) {
-        data = data[item]
-      })
-      return data + ''
-    }
-    arr.sort(function (item1, item2) {
-      return getValue(item1).localeCompare(getValue(item2), 'zh-CN');
-    })
-  }
-
-  function descSort(asc,desc){      //desc排序
-    for(var i=asc.length-1;i>=0;i--){
-        desc.push(asc[i]);
-    }
-    return desc;
-  }
-
-  function sortToTable(arr){   //将排完序的数据写入表格
-    for(var i =0;i<arr.length;i++){
-        sortFlag = 1;
-        table
-            .row(i)
-            .data({
-                "psnName":arr[i].psnName,
-                "typeName":arr[i].typeName,
-                "acct":arr[i].acct,
-                "orgName":arr[i].orgName,
-                "certNo":arr[i].certNo,
-                "statusCd":arr[i].statusCd,
-                "accId":arr[i].accId
-            })
-            .draw();
-    }
-  }
-      
-function initSort(thClass,param){        //初始化用户姓名排序
-    $(thClass).on('click', function () {
-        var tableLength = table.data().length;
-        var arr = [];
-        var descArr = [];
-    
-        for(var i = 0;i < tableLength;i++){
-            arr.push(table.row(i).data());
-        }
-        
-        arrSort(arr,param);
-        
-        if($(this).hasClass("sorting_desc")){
-            descArr = descSort(arr,descArr);
-            sortToTable(descArr);
-        }else{
-            sortToTable(arr);
-        }
-        table.page(currentPage).draw( false );
-    });
 }

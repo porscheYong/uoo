@@ -1,10 +1,28 @@
-// var userRoleList = getQueryString('userRoleList');
-// var orgFrame = parent.window['standardOrg'];
-// var orgTypeList = orgFrame.orgTypeList;
+
 var checkNode = []; //选中显示label标签
 var allRoles = [];
 var checkRole = []; //选中的角色
 var userRoleList = JSON.parse(window.localStorage.getItem('userRoleList'))
+
+//添加数组IndexOf方法
+if (!Array.prototype.indexOf){
+    Array.prototype.indexOf = function(elt /*, from*/){
+      var len = this.length >>> 0;
+  
+      var from = Number(arguments[1]) || 0;
+      from = (from < 0)
+           ? Math.ceil(from)
+           : Math.floor(from);
+      if (from < 0)
+        from += len;
+  
+      for (; from < len; from++){
+        if (from in this && this[from] === elt)
+          return from;
+      }
+      return -1;
+    };
+}
 
 // 组织类别树初始化
 function initRoleTree () {
@@ -56,9 +74,11 @@ function onRoleCheck (e, treeId, treeNode) {
         checkRole.push({"roleId":node.id,"roleName":""});
         renderTag()
     } else {
-        var idx = checkNode.findIndex((v) => {
-            return v.tId == node.tId;
-        });
+        var idx = checkNode.findIndex(
+            function(v){
+                return v.tId == node.tId;
+            }
+        );
         checkNode.splice(idx, 1);
         checkRole.splice(idx, 1);
         renderTag();
@@ -89,9 +109,11 @@ function removeNode (e) {
     zTree.checkNode(node, false);
     
     var tId = $(e.target).parent().attr('treeId');
-    var idx = checkNode.findIndex((v) => {
-        return v.tId == tId;
-    });
+    var idx = checkNode.findIndex(
+        function(v){
+            return v.tId == tId;
+        }
+    );
     checkNode.splice(idx, 1);
     checkRole.splice(idx, 1);
 }

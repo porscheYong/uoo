@@ -3,6 +3,26 @@ var orgFrame = parent.window['standardOrg'] || parent.window['business'];
 var locationList = orgFrame.locationList;
 var checkNode = []; //选中区域
 
+//添加数组IndexOf方法
+if (!Array.prototype.indexOf){
+    Array.prototype.indexOf = function(elt /*, from*/){
+      var len = this.length >>> 0;
+  
+      var from = Number(arguments[1]) || 0;
+      from = (from < 0)
+           ? Math.ceil(from)
+           : Math.floor(from);
+      if (from < 0)
+        from += len;
+  
+      for (; from < len; from++){
+        if (from in this && this[from] === elt)
+          return from;
+      }
+      return -1;
+    };
+}
+
 function locationBeforeClick (treeId, treeNode, clickFlag) {
   return false;
 }

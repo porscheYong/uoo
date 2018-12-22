@@ -31,5 +31,5 @@ public interface UserService {
     public Object addUser(@RequestParam("userType") String userType, @RequestParam("personnelId") Long personnelId);
 
     @RequestMapping(value = "/tbUser/getAcctOrgByPsnId", method = RequestMethod.GET, headers={"Content-Type=application/json"})
-    public Object getAcctOrgByPsnId(@RequestParam("personnelId") Long personnelId);
+    public Object getAcctOrgByPsnId(@RequestParam("personnelId") Long personnelId, @RequestParam("resourceObjId") Long resourceObjId);
 }

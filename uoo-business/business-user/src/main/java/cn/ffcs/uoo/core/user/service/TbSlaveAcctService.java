@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.user.service;
 import cn.ffcs.uoo.core.user.entity.ListUser;
 import cn.ffcs.uoo.core.user.entity.TbAcct;
 import cn.ffcs.uoo.core.user.entity.TbSlaveAcct;
+import cn.ffcs.uoo.core.user.vo.EditFormSlaveAcctVo;
 import cn.ffcs.uoo.core.user.vo.ListSlaveAcctOrgVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
@@ -51,6 +52,8 @@ public interface TbSlaveAcctService extends IService<TbSlaveAcct> {
      * @param slaveAcct
      * @param acctHostId
      * @param resourceObjId
+     * @param slaveAcctId
+     * @param acctId
      * @return
      */
     public boolean checkSlaveAcct(String slaveAcct, Long acctHostId , Long resourceObjId, Long slaveAcctId, Long acctId);
@@ -75,6 +78,14 @@ public interface TbSlaveAcctService extends IService<TbSlaveAcct> {
      * @return
      */
     public Object delAllTbSlaveAcct(Long slaveAcctId);
+
+    /**
+     * 新增 更新 从账号
+     * @param editFormSlaveAcctVo
+     * @param slaveAcctId
+     * @return
+     */
+    public Object insertOrUpdateTbSlaveAcct(EditFormSlaveAcctVo editFormSlaveAcctVo, Long slaveAcctId);
 
 
 

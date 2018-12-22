@@ -613,7 +613,7 @@ function addPsonOrg(){
     };
     psonOrgArr[0]=psonOrg;
     $.ajax({
-        url:isUpdate?'/orgPersonRel/updateOrgPsn':'/orgPersonRel/addOrgPsn',
+        url:isUpdate?'/orgPersonRel/updateOrgPsn':'/orgPersonRel/addOrgPsn2',
         type:'post',
         data:isUpdate?JSON.stringify(psonOrg):JSON.stringify(psonOrgArr),
         contentType:'application/json',
@@ -1149,9 +1149,9 @@ function gotoAccout(i){
     var userAcc=personalData.userList.records[i];
     var url="";
     if(userAcc.type==1){
-        url+="/inaction/account/addMainAccount.html"
+        url+="/inaction/account/editMainAccount.html"
     }else{
-        url+="/inaction/account/addSubAccount.html"
+        url+="/inaction/account/editSubAccount.html"
     }
     url+="?";
     url+="orgId="+orgId+"&";
@@ -1176,4 +1176,24 @@ function autoWriteForm(){
 function isNum(n){
     var re = /^[0-9]+.?[0-9]*$/;
     return re.test(n);
+}
+function showMore(){
+	$('#showMore').hide();
+	$('#jobTitleDiv').show();
+	$('#jobInfoTable1').show();
+	$('#eduTitleDiv').show();
+	$('#eduInfoTable1').show();
+	$('#familyTitleDiv').show();
+	$('#familyInfoTable1').show();
+	$('#showLess').show();
+}
+function showLess(){
+	$('#showLess').hide();
+	$('#jobTitleDiv').hide();
+	$('#jobInfoTable1').hide();
+	$('#eduTitleDiv').hide();
+	$('#eduInfoTable1').hide();
+	$('#familyTitleDiv').hide();
+	$('#familyInfoTable1').hide();
+	$('#showMore').show();
 }

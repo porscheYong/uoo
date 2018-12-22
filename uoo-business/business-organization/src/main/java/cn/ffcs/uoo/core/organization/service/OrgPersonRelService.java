@@ -56,6 +56,12 @@ public interface OrgPersonRelService extends IService<OrgPersonRel> {
      * @return
      */
     public Page<PsonOrgVo> selectPerOrgRelPage(PsonOrgVo psonOrgVo);
+    /**
+     * 获取全量人员组织翻页
+     * @param psonOrgVo
+     * @return
+     */
+    public Page<PsonOrgVo> selectAllPerOrgRelPage(PsonOrgVo psonOrgVo);
 
     /**
      * 获取人员or人员组织翻页
@@ -79,6 +85,14 @@ public interface OrgPersonRelService extends IService<OrgPersonRel> {
 
 
     /**
+     * 查询全部用户查询
+     * @param psonOrgVo
+     * @return
+     */
+    public Page<PsonOrgVo> selectAllUserOrgRelPage(PsonOrgVo psonOrgVo);
+
+
+    /**
      * 查询组织树组织信息
      */
     public List<OrgPersonRel> getOrgPsnByOrgAndPsnId(String orgTreeId,String personnelId,String orgId);
@@ -87,5 +101,7 @@ public interface OrgPersonRelService extends IService<OrgPersonRel> {
      * 查询组织树组织信息
      */
     public List<OrgPersonRel> getOrgPsnRel(String orgTreeId,String orgId);
+
+
 
 }

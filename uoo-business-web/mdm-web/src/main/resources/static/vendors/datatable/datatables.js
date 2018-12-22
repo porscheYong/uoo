@@ -1003,6 +1003,7 @@
 				"bLengthChange",
 				"bFilter",
 				"bSort",
+                "lSort",
 				"bSortMulti",
 				"bInfo",
 				"bProcessing",
@@ -3511,7 +3512,7 @@
 		oSettings.bSorted = false;
 		oSettings.bFiltered = false;
 		oSettings.bDrawing = false;
-        oSettings.oFeatures.bServerSide = true;
+        //oSettings.oFeatures.bServerSide = true;
 	}
 	
 	
@@ -4895,8 +4896,16 @@
 			settings.aoDrawCallback.push( {
 				"fn": function( settings ) {
 					if ( modern ) {
+						var start;
+                        if (settings.oFeatures.lSort) {
+                            start      = settings._displayStartCache || settings._iDisplayStart;
+                            settings.oFeatures.bServerSide = true;
+                        }
+                        else {
+                            start      = settings._iDisplayStart;
+                        }
 						var
-							start      = settings._iDisplayStart,
+							// start      = settings._iDisplayStart,
 							len        = settings._iDisplayLength,
 							visRecords = settings.fnRecordsDisplay(),
 							all        = len === -1,
@@ -4904,7 +4913,6 @@
 							pages = all ? 1 : Math.ceil( visRecords / len ),
 							buttons = plugin(page, pages),
 							i, ien;
-	
 						for ( i=0, ien=features.p.length ; i<ien ; i++ ) {
 							_fnRenderer( settings, 'pageButton' )(
 								settings, features.p[i], i, buttons, page, pages
@@ -4985,6 +4993,8 @@
 	
 		var changed = settings._iDisplayStart !== start;
 		settings._iDisplayStart = start;
+        if (settings.oFeatures.lSort)
+            settings._displayStartCache = start;
 	
 		if ( changed ) {
 			_fnCallbackFire( settings, null, 'page', [settings] );
@@ -6096,7 +6106,8 @@
 	 */
 	function _fnSortListener ( settings, colIdx, append, callback )
 	{
-        settings.oFeatures.bServerSide = false;
+		if (settings.oFeatures.lSort)
+        	settings.oFeatures.bServerSide = false;
 		var col = settings.aoColumns[ colIdx ];
 		var sorting = settings.aaSorting;
 		var asSorting = col.asSorting;
@@ -6182,7 +6193,8 @@
 	function _fnSortAttachListener ( settings, attachTo, colIdx, callback )
 	{
 		var col = settings.aoColumns[ colIdx ];
-	
+        if (settings.oFeatures.lSort)
+            settings.sortColIdx = colIdx;
 		_fnBindAction( attachTo, {}, function (e) {
 			/* If the column is not sortable - don't to anything */
 			if ( col.bSortable === false ) {
@@ -7503,10 +7515,17 @@
 		if ( this.context.length === 0 ) {
 			return undefined;
 		}
-	
+		var start,
+            settings   = this.context[0];
+        if (settings.oFeatures.lSort) {
+            start      = settings._displayStartCache || settings._iDisplayStart;
+        }
+        else {
+            start      = settings._iDisplayStart;
+        }
 		var
-			settings   = this.context[0],
-			start      = settings._iDisplayStart,
+			// settings   = this.context[0],
+			// start      = settings._iDisplayStart,
 			len        = settings.oFeatures.bPaginate ? settings._iDisplayLength : -1,
 			visRecords = settings.fnRecordsDisplay(),
 			all        = len === -1;
@@ -10516,7 +10535,6 @@
 		 */
 		"bSort": true,
 	
-	
 		/**
 		 * Enable or display DataTables' ability to sort multiple columns at the
 		 * same time (activated by shift-click by the user).
@@ -13000,7 +13018,15 @@
 			 *  @type boolean
 			 */
 			"bSort": null,
-	
+
+            /**
+             * Sorting local not server flag.
+             * Note that this parameter will be set by the initialisation routine. To
+             * set a default use {@link DataTable.defaults}.
+             *  @type boolean
+             */
+            "lSort": null,
+
 			/**
 			 * Multi-column sorting
 			 * Note that this parameter will be set by the initialisation routine. To
@@ -15333,6 +15359,7 @@ DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, bu
 		var i, ien, node, button;
 		var clickHandler = function ( e ) {
 			e.preventDefault();
+			var a = api.page()
 			if ( !$(e.currentTarget).hasClass('disabled') && api.page() != e.data.action ) {
 				api.page( e.data.action ).draw( 'page' );
 			}

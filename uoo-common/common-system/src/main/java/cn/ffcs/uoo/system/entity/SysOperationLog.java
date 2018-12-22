@@ -1,75 +1,81 @@
 package cn.ffcs.uoo.system.entity;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-
-import java.io.Serializable;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
 
 /**
- * 系统操作日志
- * Created by liuxiaodong on 2018/11/12.
+ * <p>
+ * 
+ * </p>
+ *
+ * @author zengxsh
+ * @since 2018-12-20
  */
 @TableName("SYS_OPERATION_LOG")
 public class SysOperationLog extends Model<SysOperationLog> {
 
-    /** 操作日志标识  */
-    @TableId(value = "OPERATION_LOG_ID")
-    private Long operationLogId;
+    private static final long serialVersionUID = 1L;
 
-    /** 日志类型    */
+    /**
+     * 操作日志标识
+     */
+    @TableId("OPERATION_LOG_ID")
+    private Long operationLogId;
+    /**
+     * 日志类型
+     */
     @TableField("LOG_TYPE")
     private Long logType;
-
-    /** 日志名称    */
+    /**
+     * 日志名称
+     */
     @TableField("LOG_NAME")
-    private Long logName;
-
-    /** 用户  */
-    @TableField("USER_ID")
-    private Long userId;
-
-    /** 类名称 */
-    @TableField("CLASS_NAME")
-    private Long className;
-
-    /** 方法名 */
-    @TableField("METHOD_NAME")
-    private Long methodName;
-
-    /** 是否成功    */
+    private String logName;
+    /**
+     * 人员编码
+     */
+    @TableField("USER_CODE")
+    private String userCode;
+    /**
+     * 菜单
+     */
+    @TableField("MENU_CODE")
+    private Long menuCode;
+    /**
+     * 功能
+     */
+    @TableField("FUNC_CODE")
+    private Long funcCode;
+    /**
+     * 表单数据
+     */
+    @TableField("FORM_DATA")
+    private String formData;
+    /**
+     * 是否成功
+     */
     @TableField("SUCCEED")
     private Long succeed;
-
-    /** 备注  */
+    /**
+     * 备注
+     */
     @TableField("NOTES")
     private String notes;
-
-    /** 状态  */
+    /**
+     * 状态
+     */
     @TableField("STATUS_CD")
     private String statusCd;
-
-    /** 创建时间  */
+    /**
+     * 创建时间
+     */
     @TableField("CREATE_DATE")
     private Date createDate;
 
-    /** 创建人    */
-    @TableField("CREATE_USER")
-    private Long createUser;
-
-    /** 修改时间 */
-    @TableField("UPDATE_DATE")
-    private Date updateDate;
-
-    /** 修改人 */
-    @TableField("UPDATE_USER")
-    private Long updateUser;
-
-    /** 状态时间    */
-    @TableField("STATUS_DATE")
-    private Date statusDate;
 
     public Long getOperationLogId() {
         return operationLogId;
@@ -87,36 +93,44 @@ public class SysOperationLog extends Model<SysOperationLog> {
         this.logType = logType;
     }
 
-    public Long getLogName() {
+    public String getLogName() {
         return logName;
     }
 
-    public void setLogName(Long logName) {
+    public void setLogName(String logName) {
         this.logName = logName;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getUserCode() {
+        return userCode;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
     }
 
-    public Long getClassName() {
-        return className;
+    public Long getMenuCode() {
+        return menuCode;
     }
 
-    public void setClassName(Long className) {
-        this.className = className;
+    public void setMenuCode(Long menuCode) {
+        this.menuCode = menuCode;
     }
 
-    public Long getMethodName() {
-        return methodName;
+    public Long getFuncCode() {
+        return funcCode;
     }
 
-    public void setMethodName(Long methodName) {
-        this.methodName = methodName;
+    public void setFuncCode(Long funcCode) {
+        this.funcCode = funcCode;
+    }
+
+    public String getFormData() {
+        return formData;
+    }
+
+    public void setFormData(String formData) {
+        this.formData = formData;
     }
 
     public Long getSucceed() {
@@ -151,40 +165,25 @@ public class SysOperationLog extends Model<SysOperationLog> {
         this.createDate = createDate;
     }
 
-    public Long getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(Long createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public Long getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(Long updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    public Date getStatusDate() {
-        return statusDate;
-    }
-
-    public void setStatusDate(Date statusDate) {
-        this.statusDate = statusDate;
-    }
-
     @Override
     protected Serializable pkVal() {
         return this.operationLogId;
+    }
+
+    @Override
+    public String toString() {
+        return "SysOperationLog{" +
+        ", operationLogId=" + operationLogId +
+        ", logType=" + logType +
+        ", logName=" + logName +
+        ", userCode=" + userCode +
+        ", menuCode=" + menuCode +
+        ", funcCode=" + funcCode +
+        ", formData=" + formData +
+        ", succeed=" + succeed +
+        ", notes=" + notes +
+        ", statusCd=" + statusCd +
+        ", createDate=" + createDate +
+        "}";
     }
 }
