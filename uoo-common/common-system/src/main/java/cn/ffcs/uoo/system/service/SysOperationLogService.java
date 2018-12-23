@@ -1,8 +1,12 @@
 package cn.ffcs.uoo.system.service;
 
-import cn.ffcs.uoo.system.entity.SysOperationLog;
-import cn.ffcs.uoo.system.entity.SysUser;
+import java.util.HashMap;
+import java.util.List;
+
 import com.baomidou.mybatisplus.service.IService;
+
+import cn.ffcs.uoo.system.entity.SysOperationLog;
+import cn.ffcs.uoo.system.vo.LogDTO;
 
 /**
  * 系统域用户Service接口
@@ -10,4 +14,6 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface SysOperationLogService extends IService<SysOperationLog> {
     Long getId();
+    List<LogDTO> listLog(HashMap<String, Object> map); 
+    Long countLog(HashMap<String, Object> map); 
 }
