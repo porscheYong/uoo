@@ -2,6 +2,7 @@ var orgId = getQueryString('orgId');
 var orgName = getQueryString('orgName');
 var orgFullName = getQueryString('orgFullName');
 var orgTreeId = getQueryString('orgTreeId');
+var businessName = getQueryString('businessName');
 var Regx = /^[A-Za-z0-9]*$/;
 var table;
 var engine;
@@ -187,10 +188,10 @@ function getPsnUser(personnelId){       //主账号跳转
       }, function (data) {
         if(data.tbAcct != null){
             url = "editMainAccount.html?acctId="+ data.tbAcct.acctId +"&orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + 
-                    "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=ah";
+                    "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=ah" + "&orgTreeName="+encodeURI(businessName);
         }else{
             url = "addMainAccount.html?orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) +
-                    "&orgId=" + orgId + "&personnelId=" + personnelId + "&hType=ah";
+                    "&orgId=" + orgId + "&personnelId=" + personnelId + "&hType=ah" + "&orgTreeName="+encodeURI(businessName);
         }
         window.location.href = url;
       }, function (err) {

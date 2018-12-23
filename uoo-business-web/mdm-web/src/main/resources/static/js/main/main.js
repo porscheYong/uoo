@@ -1,12 +1,50 @@
+var orgVal,
+    psnVal,
+    acctVal,
+    slaveAcctVal,
+    psnValData = [],
+    psnNameData = [],
+    orgValData = [],
+    orgNameData = [];
 
+// var loading = new Loading();
+var loading = parent.loadingHome;
 
-function getPsnTl(){
-    $http.get('/homeStatistics/getHomeStatistics?labelType=ORG_PSN', {}, 
+loading.screenMaskEnable('LAY_app_body');
+
+function getHomeStatistics(){
+    $http.get('/homeStatistics/getHomeStatistics', {}, 
         function (data) {
-          //新增
-            console.log("OK");
+            for(var i=0;i<data.length;i++){
+                switch(data[i].labelType){
+                    case "LOCAL_ORG":
+                        orgValData.push(data[i].labelVal);
+                        orgNameData.push(data[i].labelName);
+                        break;
+                    case "LOCAL_PSN":
+                        psnValData.push(data[i].labelVal);
+                        psnNameData.push(data[i].labelName);
+                        break;
+                    case "ORG_PSN":
+                        if(data[i].labelKey == "ORG_PSN_1"){
+                            orgVal = formatVal(data[i].labelVal);
+                        }else if(data[i].labelKey == "ORG_PSN_2"){
+                            psnVal = formatVal(data[i].labelVal);
+                        }else if(data[i].labelKey == "ORG_PSN_3"){
+                            acctVal = formatVal(data[i].labelVal);
+                        }else{
+                            slaveAcctVal = formatVal(data[i].labelVal);
+                        }
+                        break;
+                }
+            }
+            setSysInfo();
+            setPsnChart();
+            setOrgChart();
+            setSysChart();
+            loading.screenMaskDisable('LAY_app_body');
       }, function (err) {
-    
+        loading.screenMaskDisable('LAY_app_body');
       })
 }
 
@@ -35,7 +73,7 @@ function setPsnChart(){
                     rotate:-30,//-30度角倾斜显示
                 },
             },
-            data : ['省公司','杭州','宁波','温州','绍兴','湖州','嘉兴','金华','衢州','台州','丽水','舟山']
+            data : psnNameData   //['省公司','杭州','宁波','温州','绍兴','湖州','嘉兴','金华','衢州','台州','丽水','舟山']
             }
         ],
         yAxis: {
@@ -68,7 +106,7 @@ function setPsnChart(){
                     }
                 },
                 type:'bar',
-                data:[234, 456, 345, 228, 156, 181, 229, 314, 276, 137, 256, 125],
+                data: psnValData,
                 itemStyle:{
                     normal:{
                         color:'#a0d98c',
@@ -103,7 +141,7 @@ function setOrgChart(){
                     rotate:-30,//-30度角倾斜显示
                 },
             },
-                data : ['省公司','杭州','宁波','温州','绍兴','湖州','嘉兴','金华','衢州','台州','丽水','舟山']
+                data : orgNameData
             }
         ],
         yAxis: {
@@ -136,7 +174,7 @@ function setOrgChart(){
                     }
                 },
                 type:'bar',
-                data:[234, 456, 345, 228, 156, 181, 229, 314, 276, 137, 256, 125],
+                data: orgValData,          //[234, 456, 345, 228, 156, 181, 229, 314, 276, 137, 256, 125],
                 itemStyle:{
                     normal:{
                         color:'#61c7ff',
@@ -241,7 +279,20 @@ function setSysChart(){
     }, 3000);
 }
 
-getPsnTl();
-setPsnChart();
-setOrgChart();
-setSysChart();
+//设置系统概览面板
+function setSysInfo(){
+    $("#orgVal").text(orgVal);
+    $("#psnVal").text(psnVal);
+    $("#acctVal").text(acctVal);
+    $("#slaveAcctVal").text(slaveAcctVal);
+}
+
+//数值超过3位加间隔
+function formatVal(b){
+    var len=b.length;
+    if(len<=3){return b;}
+    var r=len%3;
+    return r>0?b.slice(0,r)+","+b.slice(r,len).match(/\d{3}/g).join(","):b.slice(r,len).match(/\d{3}/g).join(",");
+}
+
+getHomeStatistics();

@@ -65,9 +65,9 @@ p {
 .fright {
 	float: right
 	}
-.clear {
+/* .clear {
 	clear: both
-	}
+	} */
 .tleft {
 	text-align: left
 	}
@@ -506,9 +506,9 @@ p {
 	background-size: 24px 24px;
 	padding: 0 34px 0 32px !important;
 	}
-.Contents {
+/* .Contents {
 	padding: 10px;
-	}
+	} */
 .ContentsMin {
 	padding: 7.5px;
 	}

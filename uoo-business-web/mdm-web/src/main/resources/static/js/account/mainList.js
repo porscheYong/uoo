@@ -119,7 +119,8 @@ initMainTable(isCheck,'');
 
 
 $('#addBtn').on('click', function () {
-    var url = 'add.html?&orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&orgTreeId=' + orgTreeId + "&orgFullName=" + encodeURI(orgFullName);
+    var url = 'add.html?&orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&orgTreeId=' + orgTreeId + 
+                "&orgFullName=" + encodeURI(orgFullName)+"&businessName="+encodeURI(parent.businessName);
     $(this).attr('href', url);
 })
 
