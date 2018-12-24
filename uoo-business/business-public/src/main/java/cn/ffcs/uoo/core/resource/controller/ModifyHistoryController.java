@@ -60,18 +60,5 @@ public class ModifyHistoryController {
         return ret;
     }
 
-    @ApiOperation(value = "新增变化日志表", notes = "新增变化日志表")
-    @UooLog(value = "新增变化日志表", key = "addModifyHistory11")
-    @RequestMapping(value = "/addModifyHistory11", method = RequestMethod.POST)
-    public ResponseResult<String> addModifyHistory11(Object oldObj) {
-        ResponseResult<String> ret = new ResponseResult<>();
-        if(oldObj==null){
-            ret.setState(ResponseResult.STATE_ERROR);
-            ret.setMessage("新值和旧值不能同时为空");
-            return ret;
-        }
-        ret.setState(ResponseResult.STATE_ERROR);
-        return ret;
-    }
 }
 

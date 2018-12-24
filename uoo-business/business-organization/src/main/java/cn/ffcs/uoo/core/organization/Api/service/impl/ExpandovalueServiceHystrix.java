@@ -55,12 +55,5 @@ public class ExpandovalueServiceHystrix implements ExpandovalueService {
 //        ret.setState(ResponseResult.PARAMETER_ERROR);
 //        return ret;
 //    }
-    @Override
-    public ResponseResult<String> addModifyHistory11(Object obj){
-        ResponseResult<String> ret = new ResponseResult<String>();
-        ret.setMessage("调用公共管理接口[addModifyHistory]报错");
-        ret.setState(ResponseResult.PARAMETER_ERROR);
-        return ret;
-    }
 
 }
