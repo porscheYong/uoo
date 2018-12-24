@@ -95,6 +95,14 @@ public class TbPersonnelImageController extends BaseController {
         return null;
     }
 
+    @ApiOperation(value = "图片查看", notes = "图片查看")
+    @ApiImplicitParam(name = "personnelId", value = "人员标识", dataType = "Long",paramType="path")
+    @UooLog(value = "图片查看",key = "getTbPsnImageByPsnId")
+    @RequestMapping(value = "/getTbPsnImageByPsnId",method = RequestMethod.GET)
+    public Object getTbPsnImageByPsnId(Long personnelId){
+        return ResultUtils.success(tbPersonnelImageService.getTbPsnImageByPsnId(personnelId));
+    }
+
 
 }
 

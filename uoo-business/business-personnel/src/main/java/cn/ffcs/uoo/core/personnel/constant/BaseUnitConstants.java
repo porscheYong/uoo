@@ -41,6 +41,8 @@ public class BaseUnitConstants {
 
     public static final String TBPERSONNEL_PERSONNEL_ID = "PERSONNEL_ID";
 
+    public static final String TB_PSN_IMAGE_ID = "PSN_IMAGE_ID";
+
     public static final String TBEDU_EDU_ID = "EDU_ID";
 
     public static final String TBFAMILY_FAMILY_ID = "FAMILY_ID";

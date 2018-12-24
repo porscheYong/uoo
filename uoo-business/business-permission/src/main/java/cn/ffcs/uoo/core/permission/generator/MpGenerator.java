@@ -78,7 +78,7 @@ public class MpGenerator {
     // strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
         strategy.setTablePrefix(new String[] { "TB_", "tsys_" });// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude(new String[] {"SYS_PERMISSION_DATA_RULES_REL","SYS_DATA_RULE","SYS_TABLE","SYS_TABLE_COLUMN"}); // 需要生成的表
+        strategy.setInclude(new String[] {"SYS_FUNCTION","SYS_ELEMENT","SYS_FILE"}); // 需要生成的表
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类
         // strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");
@@ -104,6 +104,7 @@ public class MpGenerator {
         PackageConfig pc = new PackageConfig();
         pc.setParent("cn.ffcs.uoo");
         pc.setModuleName("system");
+        pc.setMapper("dao");
         mpg.setPackageInfo(pc);
 
         // 注入自定义配置，可以在 VM 中使用 cfg.abc 【可无】

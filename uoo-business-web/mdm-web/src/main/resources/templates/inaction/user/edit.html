@@ -302,13 +302,13 @@
 <script id="userEditTemplate" type="text/x-handlebars-template">
     <div style="display:'none'">
     <form id="imgForm" enctype='multipart/form-data'>
-    <input type="file" id="choseFileImg" name="editormd-image-file" style="display: none;" accept="image/jpeg,image/gif,iage/png" />    
+    <input type="file" id="choseFileImg" name="editormd-image-file" style="display: none;" accept="image/jpeg,image/gif,image/png" />    
     <input type="hidden" id="psnImageId" value="{{personalData.personalData.image}}" name="psnImageId"/>
     </form>
     </div>
     <div style="width: 100%">
         <div class="fleft Col1 " style="width: 10%;">
-                    <img class="BigFace" src="{{personalData.personalData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null" />
+                    <img class="BigFace" id="psnImg" src="{{personalData.personalData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null" />
                     <div class="KeyWords tcenter">
                        <!-- <span><a href="#" onclick="openChoseImg()">编辑</a></span>-->
                          <a href="#" onclick="openChoseImg()">编辑</a> 
@@ -1055,6 +1055,7 @@
 <!-- init -->
 <script type="text/javascript" src="/js/init.js"></script>
 <script type="text/javascript" src="/js/user/delPsn.js"></script>
+<!-- <script type="text/javascript" src="/js/user/psnImgUpload.js"></script> -->
 <script type="text/javascript" src="/js/user/edit.js"></script>
 <script type="text/javascript" src="/js/IDCardUtils.js"></script>
 <script type="text/javascript" src="/js/jquery.form.js"></script>

@@ -36,8 +36,8 @@ public class SystemLogHandlerInterceptor implements HandlerInterceptor{
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-            ModelAndView modelAndView) throws Exception {
-        
+                           ModelAndView modelAndView) throws Exception {
+
     }
 
     @Override
@@ -86,8 +86,8 @@ public class SystemLogHandlerInterceptor implements HandlerInterceptor{
                 }
             }
         }
-        
-        
+
+
     }
 
 }

@@ -1,12 +1,10 @@
 package cn.ffcs.uoo.system.service.impl;
 
-import org.springframework.stereotype.Service;
-
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-
-import cn.ffcs.uoo.system.dao.SysPermissionDataRulesRelMapper;
 import cn.ffcs.uoo.system.entity.SysPermissionDataRulesRel;
+import cn.ffcs.uoo.system.dao.SysPermissionDataRulesRelMapper;
 import cn.ffcs.uoo.system.service.ISysPermissionDataRulesRelService;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -14,9 +12,14 @@ import cn.ffcs.uoo.system.service.ISysPermissionDataRulesRelService;
  * </p>
  *
  * @author zengxsh
- * @since 2018-12-21
+ * @since 2018-12-24
  */
 @Service
 public class SysPermissionDataRulesRelServiceImpl extends ServiceImpl<SysPermissionDataRulesRelMapper, SysPermissionDataRulesRel> implements ISysPermissionDataRulesRelService {
+
+    @Override
+    public Long getId() {
+        return baseMapper.getId();
+    }
 
 }

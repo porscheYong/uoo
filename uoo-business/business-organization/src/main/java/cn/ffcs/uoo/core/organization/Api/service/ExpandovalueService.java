@@ -4,6 +4,7 @@ package cn.ffcs.uoo.core.organization.Api.service;/**
  * @date: 2018-11-30
  */
 
+import cn.ffcs.uoo.core.organization.Api.service.impl.ExpandovalueServiceHystrix;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.vo.ExpandovalueVo;
 import cn.ffcs.uoo.core.organization.vo.TbExpandovalue;
@@ -39,5 +40,8 @@ public interface ExpandovalueService {
     @RequestMapping(value = "/tbExpandovalue/del", method = RequestMethod.POST)
     ResponseResult<TbExpandovalue> removeTbExpandovalue(@RequestParam("valueId") Long valueId, @RequestParam("updateUser") Long updateUser);
 
+
+//    @RequestMapping(value = "/modifyHistory/addModifyHistory", method = RequestMethod.POST)
+//    ResponseResult<String> addModifyHistory(@RequestBody Object oldObj,@RequestBody Object newObj);
 
 }

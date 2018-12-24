@@ -21,5 +21,7 @@
     <sql id="Base_Column_List">
         PRIV_DATA_REL_ID, PERMISSION_CODE, DATA_RULE_ID, EFF_DATE, EXP_DATE, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
     </sql>
-
+    <select id="getId" resultType="Long">
+        select SEQ_PERMISSION_DATA_RULES_REL.NEXTVAL from dual
+    </select>
 </mapper>

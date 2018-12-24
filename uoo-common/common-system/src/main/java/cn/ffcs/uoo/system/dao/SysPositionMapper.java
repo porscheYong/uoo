@@ -19,8 +19,12 @@ import java.util.List;
  */
 public interface SysPositionMapper extends BaseMapper<SysPosition> {
 
+    public Long getId();
+
     public List<TreeNodeVo> getPositionTree(@Param("positionId") String positionId);
 
     public List<SysPositionVo> getPositionRel(@Param("positionId")String positionId,@Param("isSearchlower") String isSearchlower);
+
+    public String getRolesByPositionId(@Param("positionId")String positionId);
 
 }

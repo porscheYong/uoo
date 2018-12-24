@@ -12,6 +12,8 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -42,6 +44,28 @@ public class TbPersonnelImageServiceImpl extends ServiceImpl<TbPersonnelImageMap
         EntityWrapper<TbPersonnelImage> wrapper = new EntityWrapper<TbPersonnelImage>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
+        if(retBool(baseMapper.update(tbPersonnelImage, wrapper))){
+            return ResultUtils.success(null);
+        }
+        return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
+    }
+
+    @Override
+    public Object getTbPsnImageByPsnId(Long personnelId){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
+        return this.selectOne(new EntityWrapper<TbPersonnelImage>().allEq(map));
+    }
+
+    @Override
+    public Object updatePsnId(Long personnelId, Long psnImageId){
+        TbPersonnelImage tbPersonnelImage = new TbPersonnelImage();
+        tbPersonnelImage.setPersonnelId(personnelId);
+        tbPersonnelImage.setPsnImageId(psnImageId);
+        EntityWrapper<TbPersonnelImage> wrapper = new EntityWrapper<TbPersonnelImage>();
+        wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        wrapper.eq(BaseUnitConstants.TB_PSN_IMAGE_ID, psnImageId);
         if(retBool(baseMapper.update(tbPersonnelImage, wrapper))){
             return ResultUtils.success(null);
         }
