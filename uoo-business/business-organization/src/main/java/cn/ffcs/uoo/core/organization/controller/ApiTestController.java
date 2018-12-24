@@ -7,6 +7,7 @@ package cn.ffcs.uoo.core.organization.controller;/**
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.core.organization.Api.service.ExpandovalueService;
 import cn.ffcs.uoo.core.organization.Api.service.TestService;
+import cn.ffcs.uoo.core.organization.entity.Org;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.vo.ExpandovalueVo;
 import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
@@ -48,6 +49,18 @@ public class ApiTestController {
     @UooLog(value = "test",key = "test")
     @RequestMapping(value = "/test",method = RequestMethod.GET)
     public ResponseResult<Void> test(String orgId){
+
+        Org orgVo1 = new Org();
+        //orgVo1.setOrgId(1L);
+        orgVo1.setFullName("11111");
+        orgVo1.setStatusCd("1000");
+        Org orgVo2 = new Org();
+        orgVo2.setOrgId(111L);
+        orgVo2.setFullName("222221111");
+        orgVo2.setStatusCd("12001111");
+       // expandovalueService.addModifyHistory(orgVo1,orgVo2);
+
+
         ResponseResult<Void> ret = new ResponseResult<Void>();
         List<PsonOrgVo> psonOrgVo = new ArrayList<PsonOrgVo>();
         //新增
