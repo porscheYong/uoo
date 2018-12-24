@@ -9,32 +9,32 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 记录权限与业务对象之间多对多的关系
+ * 定义权限关联的文件，一个权限可包含多个文件。
  * </p>
  *
  * @author zengxsh
  * @since 2018-12-24
  */
-@TableName("SYS_PERMISSION_DATA_RULES_REL")
-public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> {
+@TableName("SYS_PRIV_FILE_REL")
+public class SysPrivFileRel extends Model<SysPrivFileRel> {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 权限数据关联标识,主键
+     * 权限文件关联标识,主键
      */
-    @TableId("PRIV_DATA_REL_ID")
-    private Long privDataRelId;
+    @TableId("PRIV_FILE_ID")
+    private Long privFileId;
     /**
      * 权限编码
      */
     @TableField("PERMISSION_CODE")
     private String permissionCode;
     /**
-     * 权限规则标识,主键
+     * 文件标识，主键
      */
-    @TableField("DATA_RULE_ID")
-    private Long dataRuleId;
+    @TableField("FILE_ID")
+    private Integer fileId;
     /**
      * 生效时间
      */
@@ -77,12 +77,12 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
     private Long updateUser;
 
 
-    public Long getPrivDataRelId() {
-        return privDataRelId;
+    public Long getPrivFileId() {
+        return privFileId;
     }
 
-    public void setPrivDataRelId(Long privDataRelId) {
-        this.privDataRelId = privDataRelId;
+    public void setPrivFileId(Long privFileId) {
+        this.privFileId = privFileId;
     }
 
     public String getPermissionCode() {
@@ -93,12 +93,12 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
         this.permissionCode = permissionCode;
     }
 
-    public Long getDataRuleId() {
-        return dataRuleId;
+    public Integer getFileId() {
+        return fileId;
     }
 
-    public void setDataRuleId(Long dataRuleId) {
-        this.dataRuleId = dataRuleId;
+    public void setFileId(Integer fileId) {
+        this.fileId = fileId;
     }
 
     public Date getEffDate() {
@@ -167,15 +167,15 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
 
     @Override
     protected Serializable pkVal() {
-        return this.privDataRelId;
+        return this.privFileId;
     }
 
     @Override
     public String toString() {
-        return "SysPermissionDataRulesRel{" +
-        ", privDataRelId=" + privDataRelId +
+        return "SysPrivFileRel{" +
+        ", privFileId=" + privFileId +
         ", permissionCode=" + permissionCode +
-        ", dataRuleId=" + dataRuleId +
+        ", fileId=" + fileId +
         ", effDate=" + effDate +
         ", expDate=" + expDate +
         ", statusCd=" + statusCd +

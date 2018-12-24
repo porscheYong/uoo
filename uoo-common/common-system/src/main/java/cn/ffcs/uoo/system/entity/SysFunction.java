@@ -1,7 +1,6 @@
 package cn.ffcs.uoo.system.entity;
 
 import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -9,52 +8,42 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 记录权限与业务对象之间多对多的关系
+ * 
  * </p>
  *
  * @author zengxsh
  * @since 2018-12-24
  */
-@TableName("SYS_PERMISSION_DATA_RULES_REL")
-public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> {
+@TableName("SYS_FUNCTION")
+public class SysFunction extends Model<SysFunction> {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 权限数据关联标识,主键
+     * 功能标识
      */
-    @TableId("PRIV_DATA_REL_ID")
-    private Long privDataRelId;
+    @TableField("FUNC_ID")
+    private Long funcId;
     /**
-     * 权限编码
+     * 功能名称
      */
-    @TableField("PERMISSION_CODE")
-    private String permissionCode;
+    @TableField("FUNC_NAME")
+    private String funcName;
     /**
-     * 权限规则标识,主键
+     * 功能编码
      */
-    @TableField("DATA_RULE_ID")
-    private Long dataRuleId;
+    @TableField("FUNC_CODE")
+    private String funcCode;
     /**
-     * 生效时间
+     * 功能API
      */
-    @TableField("EFF_DATE")
-    private Date effDate;
-    /**
-     * 失效时间
-     */
-    @TableField("EXP_DATE")
-    private Date expDate;
+    @TableField("FUNC_API")
+    private String funcApi;
     /**
      * 状态
      */
     @TableField("STATUS_CD")
     private String statusCd;
-    /**
-     * 状态时间
-     */
-    @TableField("STATUS_DATE")
-    private Date statusDate;
     /**
      * 创建时间
      */
@@ -75,46 +64,43 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
      */
     @TableField("UPDATE_USER")
     private Long updateUser;
+    /**
+     * 状态变更的时间
+     */
+    @TableField("STATUS_DATE")
+    private Date statusDate;
 
 
-    public Long getPrivDataRelId() {
-        return privDataRelId;
+    public Long getFuncId() {
+        return funcId;
     }
 
-    public void setPrivDataRelId(Long privDataRelId) {
-        this.privDataRelId = privDataRelId;
+    public void setFuncId(Long funcId) {
+        this.funcId = funcId;
     }
 
-    public String getPermissionCode() {
-        return permissionCode;
+    public String getFuncName() {
+        return funcName;
     }
 
-    public void setPermissionCode(String permissionCode) {
-        this.permissionCode = permissionCode;
+    public void setFuncName(String funcName) {
+        this.funcName = funcName;
     }
 
-    public Long getDataRuleId() {
-        return dataRuleId;
+    public String getFuncCode() {
+        return funcCode;
     }
 
-    public void setDataRuleId(Long dataRuleId) {
-        this.dataRuleId = dataRuleId;
+    public void setFuncCode(String funcCode) {
+        this.funcCode = funcCode;
     }
 
-    public Date getEffDate() {
-        return effDate;
+    public String getFuncApi() {
+        return funcApi;
     }
 
-    public void setEffDate(Date effDate) {
-        this.effDate = effDate;
-    }
-
-    public Date getExpDate() {
-        return expDate;
-    }
-
-    public void setExpDate(Date expDate) {
-        this.expDate = expDate;
+    public void setFuncApi(String funcApi) {
+        this.funcApi = funcApi;
     }
 
     public String getStatusCd() {
@@ -123,14 +109,6 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
-    }
-
-    public Date getStatusDate() {
-        return statusDate;
-    }
-
-    public void setStatusDate(Date statusDate) {
-        this.statusDate = statusDate;
     }
 
     public Date getCreateDate() {
@@ -165,25 +143,32 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
         this.updateUser = updateUser;
     }
 
+    public Date getStatusDate() {
+        return statusDate;
+    }
+
+    public void setStatusDate(Date statusDate) {
+        this.statusDate = statusDate;
+    }
+
     @Override
     protected Serializable pkVal() {
-        return this.privDataRelId;
+        return null;
     }
 
     @Override
     public String toString() {
-        return "SysPermissionDataRulesRel{" +
-        ", privDataRelId=" + privDataRelId +
-        ", permissionCode=" + permissionCode +
-        ", dataRuleId=" + dataRuleId +
-        ", effDate=" + effDate +
-        ", expDate=" + expDate +
+        return "SysFunction{" +
+        ", funcId=" + funcId +
+        ", funcName=" + funcName +
+        ", funcCode=" + funcCode +
+        ", funcApi=" + funcApi +
         ", statusCd=" + statusCd +
-        ", statusDate=" + statusDate +
         ", createDate=" + createDate +
         ", createUser=" + createUser +
         ", updateDate=" + updateDate +
         ", updateUser=" + updateUser +
+        ", statusDate=" + statusDate +
         "}";
     }
 }

@@ -9,32 +9,34 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 记录权限与业务对象之间多对多的关系
+ * 定义权限关联的元素，一个权限可包含多个元素。
  * </p>
  *
  * @author zengxsh
  * @since 2018-12-24
  */
-@TableName("SYS_PERMISSION_DATA_RULES_REL")
-public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> {
+@TableName("SYS_PERMISSION_ELEMENT_REL")
+public class SysPermissionElementRel extends Model<SysPermissionElementRel> {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 权限数据关联标识,主键
+     * 权限元素关联标识,主键
      */
-    @TableId("PRIV_DATA_REL_ID")
-    private Long privDataRelId;
+    @TableId("PRIV_ELEMENT_ID")
+    private Long privElementId;
     /**
      * 权限编码
      */
     @TableField("PERMISSION_CODE")
     private String permissionCode;
+    @TableField("ELEMENT_CODE")
+    private String elementCode;
     /**
-     * 权限规则标识,主键
+     * 元素标识，主键
      */
-    @TableField("DATA_RULE_ID")
-    private Long dataRuleId;
+    @TableField("ELEMENT_ID")
+    private Integer elementId;
     /**
      * 生效时间
      */
@@ -77,12 +79,12 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
     private Long updateUser;
 
 
-    public Long getPrivDataRelId() {
-        return privDataRelId;
+    public Long getPrivElementId() {
+        return privElementId;
     }
 
-    public void setPrivDataRelId(Long privDataRelId) {
-        this.privDataRelId = privDataRelId;
+    public void setPrivElementId(Long privElementId) {
+        this.privElementId = privElementId;
     }
 
     public String getPermissionCode() {
@@ -93,12 +95,20 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
         this.permissionCode = permissionCode;
     }
 
-    public Long getDataRuleId() {
-        return dataRuleId;
+    public String getElementCode() {
+        return elementCode;
     }
 
-    public void setDataRuleId(Long dataRuleId) {
-        this.dataRuleId = dataRuleId;
+    public void setElementCode(String elementCode) {
+        this.elementCode = elementCode;
+    }
+
+    public Integer getElementId() {
+        return elementId;
+    }
+
+    public void setElementId(Integer elementId) {
+        this.elementId = elementId;
     }
 
     public Date getEffDate() {
@@ -167,15 +177,16 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
 
     @Override
     protected Serializable pkVal() {
-        return this.privDataRelId;
+        return this.privElementId;
     }
 
     @Override
     public String toString() {
-        return "SysPermissionDataRulesRel{" +
-        ", privDataRelId=" + privDataRelId +
+        return "SysPermissionElementRel{" +
+        ", privElementId=" + privElementId +
         ", permissionCode=" + permissionCode +
-        ", dataRuleId=" + dataRuleId +
+        ", elementCode=" + elementCode +
+        ", elementId=" + elementId +
         ", effDate=" + effDate +
         ", expDate=" + expDate +
         ", statusCd=" + statusCd +

@@ -9,32 +9,32 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 记录权限与业务对象之间多对多的关系
+ * 定义权限关联的菜单，一个权限可包含多个菜单。
  * </p>
  *
  * @author zengxsh
  * @since 2018-12-24
  */
-@TableName("SYS_PERMISSION_DATA_RULES_REL")
-public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> {
+@TableName("SYS_PERMISSION_MENU_REL")
+public class SysPermissionMenuRel extends Model<SysPermissionMenuRel> {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 权限数据关联标识,主键
+     * 权限菜单关联标识,主键
      */
-    @TableId("PRIV_DATA_REL_ID")
-    private Long privDataRelId;
+    @TableId("PRIV_MENU_ID")
+    private Long privMenuId;
     /**
      * 权限编码
      */
     @TableField("PERMISSION_CODE")
     private String permissionCode;
     /**
-     * 权限规则标识,主键
+     * 菜单编码
      */
-    @TableField("DATA_RULE_ID")
-    private Long dataRuleId;
+    @TableField("MENU_CODE")
+    private String menuCode;
     /**
      * 生效时间
      */
@@ -77,12 +77,12 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
     private Long updateUser;
 
 
-    public Long getPrivDataRelId() {
-        return privDataRelId;
+    public Long getPrivMenuId() {
+        return privMenuId;
     }
 
-    public void setPrivDataRelId(Long privDataRelId) {
-        this.privDataRelId = privDataRelId;
+    public void setPrivMenuId(Long privMenuId) {
+        this.privMenuId = privMenuId;
     }
 
     public String getPermissionCode() {
@@ -93,12 +93,12 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
         this.permissionCode = permissionCode;
     }
 
-    public Long getDataRuleId() {
-        return dataRuleId;
+    public String getMenuCode() {
+        return menuCode;
     }
 
-    public void setDataRuleId(Long dataRuleId) {
-        this.dataRuleId = dataRuleId;
+    public void setMenuCode(String menuCode) {
+        this.menuCode = menuCode;
     }
 
     public Date getEffDate() {
@@ -167,15 +167,15 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
 
     @Override
     protected Serializable pkVal() {
-        return this.privDataRelId;
+        return this.privMenuId;
     }
 
     @Override
     public String toString() {
-        return "SysPermissionDataRulesRel{" +
-        ", privDataRelId=" + privDataRelId +
+        return "SysPermissionMenuRel{" +
+        ", privMenuId=" + privMenuId +
         ", permissionCode=" + permissionCode +
-        ", dataRuleId=" + dataRuleId +
+        ", menuCode=" + menuCode +
         ", effDate=" + effDate +
         ", expDate=" + expDate +
         ", statusCd=" + statusCd +

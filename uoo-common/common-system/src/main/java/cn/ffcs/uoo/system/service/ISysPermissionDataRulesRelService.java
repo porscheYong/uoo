@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.service.IService;
  * </p>
  *
  * @author zengxsh
- * @since 2018-12-21
+ * @since 2018-12-24
  */
 public interface ISysPermissionDataRulesRelService extends IService<SysPermissionDataRulesRel> {
-
+    Long getId();
 }

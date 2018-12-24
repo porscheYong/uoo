@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.system.dao.SysFileMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysFile">
+        <id column="FILE_ID" property="fileId" />
+        <result column="FILE_NAME" property="fileName" />
+        <result column="FILE_TYPE" property="fileType" />
+        <result column="FILE_SIZE" property="fileSize" />
+        <result column="FILE_DESC" property="fileDesc" />
+        <result column="FILE_VERSION" property="fileVersion" />
+        <result column="FILE_ADDR" property="fileAddr" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        FILE_ID, FILE_NAME, FILE_TYPE, FILE_SIZE, FILE_DESC, FILE_VERSION, FILE_ADDR, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+</mapper>

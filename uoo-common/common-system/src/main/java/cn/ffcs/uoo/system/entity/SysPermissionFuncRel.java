@@ -9,32 +9,32 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 记录权限与业务对象之间多对多的关系
+ * 定义权限关联的功能，一个权限可包含多个功能。
  * </p>
  *
  * @author zengxsh
  * @since 2018-12-24
  */
-@TableName("SYS_PERMISSION_DATA_RULES_REL")
-public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> {
+@TableName("SYS_PERMISSION_FUNC_REL")
+public class SysPermissionFuncRel extends Model<SysPermissionFuncRel> {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 权限数据关联标识,主键
+     * 权限功能关联标识,主键
      */
-    @TableId("PRIV_DATA_REL_ID")
-    private Long privDataRelId;
+    @TableId("PRIV_FUNC_ID")
+    private Long privFuncId;
     /**
      * 权限编码
      */
     @TableField("PERMISSION_CODE")
     private String permissionCode;
     /**
-     * 权限规则标识,主键
+     * 功能编码
      */
-    @TableField("DATA_RULE_ID")
-    private Long dataRuleId;
+    @TableField("FUNC_CODE")
+    private String funcCode;
     /**
      * 生效时间
      */
@@ -77,12 +77,12 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
     private Long updateUser;
 
 
-    public Long getPrivDataRelId() {
-        return privDataRelId;
+    public Long getPrivFuncId() {
+        return privFuncId;
     }
 
-    public void setPrivDataRelId(Long privDataRelId) {
-        this.privDataRelId = privDataRelId;
+    public void setPrivFuncId(Long privFuncId) {
+        this.privFuncId = privFuncId;
     }
 
     public String getPermissionCode() {
@@ -93,12 +93,12 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
         this.permissionCode = permissionCode;
     }
 
-    public Long getDataRuleId() {
-        return dataRuleId;
+    public String getFuncCode() {
+        return funcCode;
     }
 
-    public void setDataRuleId(Long dataRuleId) {
-        this.dataRuleId = dataRuleId;
+    public void setFuncCode(String funcCode) {
+        this.funcCode = funcCode;
     }
 
     public Date getEffDate() {
@@ -167,15 +167,15 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
 
     @Override
     protected Serializable pkVal() {
-        return this.privDataRelId;
+        return this.privFuncId;
     }
 
     @Override
     public String toString() {
-        return "SysPermissionDataRulesRel{" +
-        ", privDataRelId=" + privDataRelId +
+        return "SysPermissionFuncRel{" +
+        ", privFuncId=" + privFuncId +
         ", permissionCode=" + permissionCode +
-        ", dataRuleId=" + dataRuleId +
+        ", funcCode=" + funcCode +
         ", effDate=" + effDate +
         ", expDate=" + expDate +
         ", statusCd=" + statusCd +

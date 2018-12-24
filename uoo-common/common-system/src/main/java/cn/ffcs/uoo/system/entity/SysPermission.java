@@ -9,52 +9,52 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 记录权限与业务对象之间多对多的关系
+ * 
  * </p>
  *
  * @author zengxsh
  * @since 2018-12-24
  */
-@TableName("SYS_PERMISSION_DATA_RULES_REL")
-public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> {
+@TableName("SYS_PERMISSION")
+public class SysPermission extends Model<SysPermission> {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 权限数据关联标识,主键
+     * 权限标识
      */
-    @TableId("PRIV_DATA_REL_ID")
-    private Long privDataRelId;
+    @TableId("PERMISSION_ID")
+    private Long permissionId;
+    /**
+     * 权限名称
+     */
+    @TableField("PERMISSION_NAME")
+    private String permissionName;
+    /**
+     * 权限名称
+     */
+    @TableField("PERMISSION_DESC")
+    private String permissionDesc;
     /**
      * 权限编码
      */
     @TableField("PERMISSION_CODE")
     private String permissionCode;
     /**
-     * 权限规则标识,主键
+     * 引用电信管理区域
      */
-    @TableField("DATA_RULE_ID")
-    private Long dataRuleId;
+    @TableField("REGION_NBR")
+    private String regionNbr;
     /**
-     * 生效时间
+     * 备注
      */
-    @TableField("EFF_DATE")
-    private Date effDate;
-    /**
-     * 失效时间
-     */
-    @TableField("EXP_DATE")
-    private Date expDate;
+    @TableField("NOTES")
+    private String notes;
     /**
      * 状态
      */
     @TableField("STATUS_CD")
     private String statusCd;
-    /**
-     * 状态时间
-     */
-    @TableField("STATUS_DATE")
-    private Date statusDate;
     /**
      * 创建时间
      */
@@ -75,14 +75,35 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
      */
     @TableField("UPDATE_USER")
     private Long updateUser;
+    /**
+     * 状态变更的时间
+     */
+    @TableField("STATUS_DATE")
+    private Date statusDate;
 
 
-    public Long getPrivDataRelId() {
-        return privDataRelId;
+    public Long getPermissionId() {
+        return permissionId;
     }
 
-    public void setPrivDataRelId(Long privDataRelId) {
-        this.privDataRelId = privDataRelId;
+    public void setPermissionId(Long permissionId) {
+        this.permissionId = permissionId;
+    }
+
+    public String getPermissionName() {
+        return permissionName;
+    }
+
+    public void setPermissionName(String permissionName) {
+        this.permissionName = permissionName;
+    }
+
+    public String getPermissionDesc() {
+        return permissionDesc;
+    }
+
+    public void setPermissionDesc(String permissionDesc) {
+        this.permissionDesc = permissionDesc;
     }
 
     public String getPermissionCode() {
@@ -93,28 +114,20 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
         this.permissionCode = permissionCode;
     }
 
-    public Long getDataRuleId() {
-        return dataRuleId;
+    public String getRegionNbr() {
+        return regionNbr;
     }
 
-    public void setDataRuleId(Long dataRuleId) {
-        this.dataRuleId = dataRuleId;
+    public void setRegionNbr(String regionNbr) {
+        this.regionNbr = regionNbr;
     }
 
-    public Date getEffDate() {
-        return effDate;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setEffDate(Date effDate) {
-        this.effDate = effDate;
-    }
-
-    public Date getExpDate() {
-        return expDate;
-    }
-
-    public void setExpDate(Date expDate) {
-        this.expDate = expDate;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public String getStatusCd() {
@@ -123,14 +136,6 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
-    }
-
-    public Date getStatusDate() {
-        return statusDate;
-    }
-
-    public void setStatusDate(Date statusDate) {
-        this.statusDate = statusDate;
     }
 
     public Date getCreateDate() {
@@ -165,25 +170,34 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
         this.updateUser = updateUser;
     }
 
+    public Date getStatusDate() {
+        return statusDate;
+    }
+
+    public void setStatusDate(Date statusDate) {
+        this.statusDate = statusDate;
+    }
+
     @Override
     protected Serializable pkVal() {
-        return this.privDataRelId;
+        return this.permissionId;
     }
 
     @Override
     public String toString() {
-        return "SysPermissionDataRulesRel{" +
-        ", privDataRelId=" + privDataRelId +
+        return "SysPermission{" +
+        ", permissionId=" + permissionId +
+        ", permissionName=" + permissionName +
+        ", permissionDesc=" + permissionDesc +
         ", permissionCode=" + permissionCode +
-        ", dataRuleId=" + dataRuleId +
-        ", effDate=" + effDate +
-        ", expDate=" + expDate +
+        ", regionNbr=" + regionNbr +
+        ", notes=" + notes +
         ", statusCd=" + statusCd +
-        ", statusDate=" + statusDate +
         ", createDate=" + createDate +
         ", createUser=" + createUser +
         ", updateDate=" + updateDate +
         ", updateUser=" + updateUser +
+        ", statusDate=" + statusDate +
         "}";
     }
 }
