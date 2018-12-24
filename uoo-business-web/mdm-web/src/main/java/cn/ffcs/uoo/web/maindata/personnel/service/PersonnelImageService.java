@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @date 2018/11/14 14:28
  * @Version 1.0.0
  */
-@FeignClient(name = "business-personnel", url = "http://192.168.58.146:11200", configuration = {PersonnelServiceConfiguration.class}, fallback = PersonnelImageHystrix.class)
+@FeignClient(value = "business-personnel", configuration = {PersonnelServiceConfiguration.class}, fallback = PersonnelImageHystrix.class)
 public interface PersonnelImageService {
 
     @RequestMapping(value="/tbPersonnelImage/uploadImg", method = RequestMethod.POST,produces = {MediaType.APPLICATION_JSON_UTF8_VALUE}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
