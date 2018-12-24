@@ -16,4 +16,6 @@ public interface ModifyHistoryMapper extends BaseMapper<ModifyHistory> {
     public Long getId();
 
     public Long getCommonTableId(String tableName);
+
+    public String getSeqBatchNumber();
 }

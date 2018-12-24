@@ -30,4 +30,10 @@ public interface ModifyHistoryService extends IService<ModifyHistory> {
      */
     public String addModifyHistory(Object oldObj,Object newObj);
 
+    /**
+     * 获取批次号
+     * @return
+     */
+    public String getBatchNumber();
+
 }

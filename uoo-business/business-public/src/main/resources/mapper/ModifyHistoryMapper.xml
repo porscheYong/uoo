@@ -33,4 +33,8 @@
         select a.tab_id from SYS_TABLE a where a.status_cd='1000' and a.tab_name=#{tableName}
     </select>
 
+    <select id="getSeqBatchNumber" resultType="java.lang.Long">
+        SELECT SEQ_BATCH_NUMBER.NEXTVAL FROM DUAL
+    </select>
+
 </mapper>

@@ -67,6 +67,27 @@ public class ModifyHistoryServiceImpl extends ServiceImpl<ModifyHistoryMapper, M
         return baseMapper.getCommonTableId(tableName);
     }
 
+    public String getSeqBatchNumber(){
+        return baseMapper.getSeqBatchNumber();
+    }
+
+    @Override
+    public String getBatchNumber(){
+        String batchNumber = getSeqBatchNumber();
+        if (!StrUtil.isNullOrEmpty(batchNumber)) {
+            int legh = 16 - batchNumber.length();
+            if (legh >= 0) {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < legh; i++) {
+                    sb.append("0");
+                }
+                sb.append(batchNumber);
+                return sb.toString();
+            }
+        }
+        return null;
+    }
+
     @Override
     public String addModifyHistory(Object oldObj,Object newObj){
         try {
@@ -91,7 +112,7 @@ public class ModifyHistoryServiceImpl extends ServiceImpl<ModifyHistoryMapper, M
                 modifyHistory.setTabId(tabId);
                 modifyHistory.setRecordId(newObjId.toString());
                 modifyHistory.setOperateType(operType);
-                modifyHistory.setBatchNumber("1");
+                modifyHistory.setBatchNumber(getBatchNumber());
                 add(modifyHistory);
             }else if(oldObj!=null && newObj==null){
                 String operType  = "delete";
@@ -113,7 +134,7 @@ public class ModifyHistoryServiceImpl extends ServiceImpl<ModifyHistoryMapper, M
                 modifyHistory.setTabId(tabId);
                 modifyHistory.setRecordId(newObjId.toString());
                 modifyHistory.setOperateType(operType);
-                modifyHistory.setBatchNumber("1");
+                modifyHistory.setBatchNumber(getBatchNumber());
                 add(modifyHistory);
             }else if(oldObj!=null && newObj!=null){
 
@@ -132,7 +153,7 @@ public class ModifyHistoryServiceImpl extends ServiceImpl<ModifyHistoryMapper, M
                 if(StrUtil.isNullOrEmpty(tabId)){
                     return "SYS_TABLE数据没有配置";
                 }
-
+                String bathNum = getBatchNumber();
                 DiffNode diff = ObjectDifferBuilder.buildDefault().compare(oldObj, newObj);
                 if(diff.hasChanges()){
                     Class<?> newCls = Class.forName(oldObj.getClass().getName());
@@ -163,13 +184,11 @@ public class ModifyHistoryServiceImpl extends ServiceImpl<ModifyHistoryMapper, M
                                 modifyHistory.setOperateType(operType);
                                 modifyHistory.setFieldName(colName);
                                 modifyHistory.setFieldValue(oldValue.toString());
-                                modifyHistory.setBatchNumber("1");
+                                modifyHistory.setBatchNumber(bathNum);
                                 add(modifyHistory);
                             }
-
                         }
                     });
-
                 }
             }
         } catch (ClassNotFoundException e) {
