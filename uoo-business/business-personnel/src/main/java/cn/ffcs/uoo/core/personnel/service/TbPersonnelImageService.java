@@ -39,4 +39,12 @@ public interface TbPersonnelImageService extends IService<TbPersonnelImage> {
      */
     public Object getTbPsnImageByPsnId(Long personnelId);
 
+    /**
+     * 更新personnelId
+     * @param personnelId
+     * @param psnImageId
+     * @return
+     */
+    public Object updatePsnId(Long personnelId, Long psnImageId);
+
 }
