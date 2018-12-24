@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -48,11 +49,18 @@ public class ExpandovalueServiceHystrix implements ExpandovalueService {
     }
 
 //    @Override
-//    public ResponseResult<String> addModifyHistory(Object oldObj,Object newObj){
+//    public ResponseResult<String> addModifyHistory(HashMap<String,Object> obj){
 //        ResponseResult<String> ret = new ResponseResult<String>();
 //        ret.setMessage("调用公共管理接口[addModifyHistory]报错");
 //        ret.setState(ResponseResult.PARAMETER_ERROR);
 //        return ret;
 //    }
+    @Override
+    public ResponseResult<String> addModifyHistory11(Object obj){
+        ResponseResult<String> ret = new ResponseResult<String>();
+        ret.setMessage("调用公共管理接口[addModifyHistory]报错");
+        ret.setState(ResponseResult.PARAMETER_ERROR);
+        return ret;
+    }
 
 }

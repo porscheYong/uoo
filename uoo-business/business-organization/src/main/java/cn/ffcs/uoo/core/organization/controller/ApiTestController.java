@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -58,7 +59,11 @@ public class ApiTestController {
         orgVo2.setOrgId(111L);
         orgVo2.setFullName("222221111");
         orgVo2.setStatusCd("12001111");
-       // expandovalueService.addModifyHistory(orgVo1,orgVo2);
+        HashMap<String,Object> obj = new HashMap<String,Object>();
+        obj.put("OLD_OBJ",orgVo1);
+        obj.put("NEW_OBJ",orgVo1);
+        expandovalueService.addModifyHistory11(orgVo1);
+ //       expandovalueService.addModifyHistory(obj);
 
 
         ResponseResult<Void> ret = new ResponseResult<Void>();

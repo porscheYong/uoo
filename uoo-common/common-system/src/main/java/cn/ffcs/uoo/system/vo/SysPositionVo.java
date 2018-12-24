@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -84,6 +85,15 @@ public class SysPositionVo {
 
     private String orgUserNum;
 
+    private List<String> roleCodeList;
+
+    public List<String> getRoleCodeList() {
+        return roleCodeList;
+    }
+
+    public void setRoleCodeList(List<String> roleCodeList) {
+        this.roleCodeList = roleCodeList;
+    }
 
     public String getRoleNames() {
         return roleNames;

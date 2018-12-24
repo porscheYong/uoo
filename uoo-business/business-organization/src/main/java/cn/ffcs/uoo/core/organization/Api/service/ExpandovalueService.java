@@ -12,6 +12,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -22,8 +23,12 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018/11/30
  */
+//@FeignClient(name = "business-public", url = "http://192.168.58.128:11500",fallback = ExpandovalueServiceHystrix.class)
+
 @Service
-@FeignClient(value = "business-public")
+//@FeignClient(value = "business-public")
+@FeignClient(name = "business-public", url = "http://192.168.58.128:11500",fallback = ExpandovalueServiceHystrix.class)
+
 public interface ExpandovalueService {
 
     @RequestMapping(value = "/tbExpandovalue/getValueVoList/{tableName}/{recordId}", method = RequestMethod.GET)
@@ -40,8 +45,11 @@ public interface ExpandovalueService {
     @RequestMapping(value = "/tbExpandovalue/del", method = RequestMethod.POST)
     ResponseResult<TbExpandovalue> removeTbExpandovalue(@RequestParam("valueId") Long valueId, @RequestParam("updateUser") Long updateUser);
 
+    @RequestMapping(value = "/modifyHistory/addModifyHistory11", method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    ResponseResult<String> addModifyHistory11(@RequestBody Object obj);
 
-//    @RequestMapping(value = "/modifyHistory/addModifyHistory", method = RequestMethod.POST)
-//    ResponseResult<String> addModifyHistory(@RequestBody Object oldObj,@RequestBody Object newObj);
+
+//    @RequestMapping(value = "/modifyHistory/addModifyHistory", method = RequestMethod.POST,headers={"Content-Type=application/json"})
+//    ResponseResult<String> addModifyHistory(@RequestBody HashMap<String,Object> obj);
 
 }
