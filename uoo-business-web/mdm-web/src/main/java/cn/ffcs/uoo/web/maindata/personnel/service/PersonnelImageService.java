@@ -3,7 +3,15 @@ package cn.ffcs.uoo.web.maindata.personnel.service;
 import cn.ffcs.uoo.web.maindata.personnel.service.fallback.PersonnelImageHystrix;
 import common.config.PersonnelImageServiceConfiguration;
 import common.config.PersonnelServiceConfiguration;
+import feign.Logger;
+import feign.codec.Encoder;
+import feign.form.spring.SpringFormEncoder;
+import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.cloud.netflix.feign.support.SpringEncoder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,4 +34,5 @@ public interface PersonnelImageService {
 
     @RequestMapping(value = "/tbPersonnelImage/getTbPsnImageByPsnId",method = RequestMethod.GET, headers={"Content-Type=application/json"})
     public Object getTbPsnImageByPsnId(@RequestParam("personnelId") Long personnelId);
+
 }

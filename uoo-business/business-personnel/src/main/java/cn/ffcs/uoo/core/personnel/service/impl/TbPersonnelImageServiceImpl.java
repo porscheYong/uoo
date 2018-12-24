@@ -62,7 +62,7 @@ public class TbPersonnelImageServiceImpl extends ServiceImpl<TbPersonnelImageMap
     public Object updatePsnId(Long personnelId, Long psnImageId){
         TbPersonnelImage tbPersonnelImage = new TbPersonnelImage();
         tbPersonnelImage.setPersonnelId(personnelId);
-        tbPersonnelImage.setPsnImageId(psnImageId);
+        //tbPersonnelImage.setPsnImageId(psnImageId);
         EntityWrapper<TbPersonnelImage> wrapper = new EntityWrapper<TbPersonnelImage>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TB_PSN_IMAGE_ID, psnImageId);
