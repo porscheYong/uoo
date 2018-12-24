@@ -807,6 +807,7 @@ function updateOrg () {
       orgMart = orgMartCode;
   }
   else  {
+      expandovalueVoList = [];
       orgMart = '';
   }
   $http.post('/org/updateOrg', JSON.stringify({

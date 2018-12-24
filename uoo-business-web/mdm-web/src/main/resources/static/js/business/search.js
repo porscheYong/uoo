@@ -1,6 +1,7 @@
 var orgId = getQueryString('id');
 var orgTreeId = getQueryString('orgTreeId');
 var orgName = getQueryString('name');
+var refCode = getQueryString('refCode');
 var engine, template, empty, selectNode;
 
   template = Handlebars.compile($("#result-template").html());
@@ -68,7 +69,7 @@ var engine, template, empty, selectNode;
   });
 
   $('#addBtn').on('click', function () {
-     var url = 'orgAdd.html?id=' + orgId  + '&orgTreeId=' + orgTreeId + '&name=' + encodeURI(orgName);
+     var url = 'orgAdd.html?id=' + orgId  + '&orgTreeId=' + orgTreeId + '&refCode=' + refCode + '&name=' + encodeURI(orgName);
      $(this).attr('href', url);
   })
   
@@ -100,7 +101,7 @@ var engine, template, empty, selectNode;
   }
 
   function cancel () {
-    var url = 'list.html?id=' + orgId  + '&orgTreeId=' + orgTreeId + '&name=' + encodeURI(orgName);
+    var url = 'list.html?id=' + orgId  + '&orgTreeId=' + orgTreeId +  '&name=' + encodeURI(orgName);
     window.location.href = url;
   }
 

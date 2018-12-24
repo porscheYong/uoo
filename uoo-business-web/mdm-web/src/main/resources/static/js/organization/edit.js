@@ -131,10 +131,7 @@ function openTypeDialog() {
                             getAreaType();
                             getCountType();
                             getContractType();
-                            // formValidate.isPass($('#nodeType'));
-                            // formValidate.isPass($('#areaType'));
-                            // formValidate.isPass($('#countType'));
-                            // formValidate.isPass($('#contractType'));
+                            formValidate.isAllPass();
                             return
                         }
                         else {
@@ -578,8 +575,8 @@ function getNodeType (type) {
         var select = type === nodeTypeData[i].itemValue? 'selected' : '';
         option += "<option value='" + nodeTypeData[i].itemValue + "' " + select + ">" + nodeTypeData[i].itemCnname +"</option>";
     }
-    $('#nodeType').append(option);
-    $('#nodeType').selectMatch();
+    $('#nodeTypes').append(option);
+    $('#nodeTypes').selectMatch();
 }
 
 // 获取区域级别字典数据
@@ -776,7 +773,7 @@ function updateOrg () {
   var orgContent = $('#orgContent').val();
   var orgDesc = $('#orgDesc').val();
   //划小扩展字段
-  var nodeType = $('#nodeType option:selected') .val();
+  var nodeType = $('#nodeTypes option:selected') .val();
   var areaType = $('#areaType option:selected') .val();
   var countType = $('#countType option:selected') .val();
   var contractType = $('#contractType option:selected') .val();
@@ -791,6 +788,7 @@ function updateOrg () {
       orgMart = orgMartCode;
   }
   else {
+      expandovalueVoList = [];
       orgMart = '';
   }
 
