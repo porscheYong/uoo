@@ -46,6 +46,11 @@ public class TbAccountOrgRel extends Model<TbAccountOrgRel> {
     @TableField("SORT")
     private Long sort;
     /**
+     * 业务树ID
+     */
+    @TableField("ORG_TREE_ID")
+    private Long orgTreeId;
+    /**
      * 状态
      */
     @JsonIgnore

@@ -1,4 +1,5 @@
 var loading = new Loading();
+var loadingHome = new Loading();
 var dictionaryData = new Dictionary();
 var account;
 // toastr
@@ -21,6 +22,7 @@ toastr.options = {
 };
 
 loading.screenMaskEnable('container');
+loadingHome.screenMaskEnable('LAY_app_body');
 
 function initUserInfo(){  //初始化首页人员信息          
     $http.get('/system/getCurrentLoginUserInfo', { }, 

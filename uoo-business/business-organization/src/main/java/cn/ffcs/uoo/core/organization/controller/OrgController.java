@@ -304,12 +304,23 @@ public class OrgController extends BaseController {
 
 
             //组织组织树关系
+            List<OrgOrgtreeRel> ootrList = orgOrgtreeRelService.getFullBizOrgList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString());
+            String fullBizName = "";
+            if(ootrList!=null && ootrList.size()>0){
+                for(int i=0;i<ootrList.size();i++){
+                    fullBizName += ootrList.get(i).getOrgBizName();
+                }
+                fullBizName+=StrUtil.strnull(org.getOrgName());
+            }else{
+                fullBizName+=StrUtil.strnull(org.getOrgName());
+            }
             Long orgOrgtreeRefId = orgOrgtreeRelService.getId();
             OrgOrgtreeRel orgOrgtreeRef = new OrgOrgtreeRel();
             orgOrgtreeRef.setOrgOrgtreeId(orgOrgtreeRefId);
             orgOrgtreeRef.setOrgId(newOrg.getOrgId());
             orgOrgtreeRef.setOrgTreeId(orgOrgRel.getOrgTreeId());
             orgOrgtreeRef.setOrgBizName(StrUtil.isNullOrEmpty(org.getOrgBizName())?org.getOrgName():StrUtil.strnull(org.getOrgBizName()));
+            orgOrgtreeRef.setOrgBizFullName(fullBizName);
             orgOrgtreeRef.setStatusCd("1000");
             orgOrgtreeRelService.add(orgOrgtreeRef);
 
@@ -378,6 +389,7 @@ public class OrgController extends BaseController {
                 orgContactRelService.add(orgConRel);
             }
         }
+        orgService.add(newOrg);
 //        }
         //新增营销组织扩展属性
         if("0401".equals(ortCur.getRefCode())){
@@ -427,7 +439,7 @@ public class OrgController extends BaseController {
             });
             //}
         }
-        orgService.add(newOrg);
+
         TreeNodeVo vo = new TreeNodeVo();
         vo.setId(newOrg.getOrgId().toString());
         vo.setPid(org.getSupOrgId().toString());
@@ -849,6 +861,7 @@ public class OrgController extends BaseController {
                 if(curExtList!=null && curExtList.size()>0){
                     ResponseResult<TbExpandovalue>  rr =null;
                     for(ExpandovalueVo curVo : curExtList){
+                        isExists = false;
                         for(ExpandovalueVo  vo : expList){
                             if(StrUtil.isNullOrEmpty(vo.getValueId())){
                                 isExists=false;
@@ -948,8 +961,23 @@ public class OrgController extends BaseController {
         if(orgOrgtreeRelOne!=null){
             if(!StrUtil.isNullOrEmpty(org.getOrgBizName())) {
                 orgOrgtreeRelOne.setOrgBizName(org.getOrgBizName());
-                orgOrgtreeRelService.update(orgOrgtreeRelOne);
+                //orgOrgtreeRelService.update(orgOrgtreeRelOne);
             }
+
+            List<OrgOrgtreeRel> ootrList = orgOrgtreeRelService.getFullBizOrgList(orgTree.getOrgTreeId().toString(),org.getOrgId().toString());
+            if(ootrList!=null && ootrList.size()>0){
+                if(ootrList.size()==1){
+                    orgOrgtreeRelOne.setOrgBizFullName(org.getOrgBizName());
+                }else{
+                    String fullName = "";
+                    for(int i=0;i<ootrList.size()-1;i++){
+                        fullName += ootrList.get(i).getOrgBizName();
+                    }
+                    fullName+=orgOrgtreeRelOne.getOrgBizName();
+                    orgOrgtreeRelOne.setOrgBizFullName(fullName);
+                }
+            }
+            orgOrgtreeRelService.update(orgOrgtreeRelOne);
         }
 
 

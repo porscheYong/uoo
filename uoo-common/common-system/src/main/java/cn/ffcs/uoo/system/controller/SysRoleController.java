@@ -10,9 +10,13 @@
  */
 package cn.ffcs.uoo.system.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.system.consts.StatusCD;
@@ -37,6 +40,7 @@ import cn.ffcs.uoo.system.service.ISysUserRoleRefService;
 import cn.ffcs.uoo.system.service.SysRoleService;
 import cn.ffcs.uoo.system.vo.ResponseResult;
 import cn.ffcs.uoo.system.vo.SysRoleDTO;
+import cn.ffcs.uoo.system.vo.TreeNodeVo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -69,27 +73,66 @@ public class SysRoleController {
     @UooLog(key="getRole",value="获取单个数据")
     @GetMapping("/get/{id}")
     public ResponseResult<SysRoleDTO> get(@PathVariable(value="id" ,required=true) Long id){
-        List<SysRoleDTO> Roles = sysRoleService.selectToPage(null);
-        if(Roles== null ||Roles.size()!=1 ){
-            return ResponseResult.createErrorResult("无效数据");
-        }
-        return ResponseResult.createSuccessResult(Roles.get(0), "success");
+        
+        SysRoleDTO Roles = sysRoleService.selectOne(id);
+        return ResponseResult.createSuccessResult(Roles, "success");
     }
-
+    @ApiOperation(value = "角色树", notes = "角色树")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "parentRoleCode", value = "parentRoleCode", required = false, dataType = "String"  ),
+    })
+    @UooLog(key="treeRole",value="treeRole")
+    @GetMapping("/treeRole")
+    public ResponseResult<List<TreeNodeVo>> treeRole( String parentRoleCode){
+        Wrapper<SysRole> wrapper=Condition.create();
+        if("null".equals(parentRoleCode)||StringUtils.isBlank(parentRoleCode)){
+            wrapper.eq("STATUS_CD", StatusCD.VALID).isNull("PARENT_ROLE_CODE");
+        }else{
+            wrapper.eq("STATUS_CD", StatusCD.VALID).eq("PARENT_ROLE_CODE", parentRoleCode);
+        }
+        List<SysRole> selectList = sysRoleService.selectList(wrapper);
+        List<TreeNodeVo> list=new ArrayList<>();
+        if(selectList!=null)
+        for (SysRole sysRole : selectList) {
+            TreeNodeVo vo=new TreeNodeVo();
+            vo.setExtField1(sysRole.getRoleId().toString());
+            vo.setId(sysRole.getRoleCode());
+            vo.setName(sysRole.getRoleName());
+            vo.setPid(sysRole.getParentRoleCode());
+            int i=sysRoleService.selectCount(Condition.create().eq("PARENT_ROLE_CODE", sysRole.getRoleCode()).eq("STATUS_CD", StatusCD.VALID));
+            vo.setParent(i>0);
+            list.add(vo);
+        }
+        return ResponseResult.createSuccessResult(list, "");
+    }
     @ApiOperation(value = "获取分页列表", notes = "获取分页列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
     @UooLog(key="listPage",value="获取分页列表")
-    @GetMapping("/listPage/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult<List<SysRoleDTO>> listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    @GetMapping("/listPage")
+    public ResponseResult<List<SysRoleDTO>> listPage(Integer pageNo, Integer pageSize,String keyWord,String parentRoleCode,Integer includChild){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
-        List<SysRoleDTO> Roles = sysRoleService.selectToPage(null);
-         
+        HashMap<String,Object> map=new HashMap<>();
+        if(keyWord!=null&&keyWord.trim().length()>0){
+            map.put("keyWord", "%"+keyWord+"%");
+        }
+        if(parentRoleCode!=null&&parentRoleCode.trim().length()>0){
+            map.put("PARENT_ROLE_CODE",  parentRoleCode );
+        }
+        map.put("from", (pageNo-1)*pageSize);
+        map.put("end", pageNo * pageSize);
+        if(includChild==1){
+            
+            map.put("includeChild",includChild);
+        } 
+        List<SysRoleDTO> Roles=sysRoleService.findList(map);
+        Long count = sysRoleService.countList(map);
+        
         ResponseResult<List<SysRoleDTO>> createSuccessResult = ResponseResult.createSuccessResult(Roles, "");
-        createSuccessResult.setTotalRecords(0);
+        createSuccessResult.setTotalRecords(count);
         return createSuccessResult;
     }
 
@@ -107,7 +150,9 @@ public class SysRoleController {
             return responseResult;
         }
         sysRole.setUpdateDate(new Date());
-        sysRoleService.updateById(sysRole);
+        SysRole obj=new SysRole();
+        BeanUtils.copyProperties(sysRole, obj);
+        sysRoleService.updateById(obj);
         rolePermRefSvc.delete(Condition.create().eq("ROLE_CODE", sysRole.getRoleCode()));
         String permissionCodes = sysRole.getPermissionCodes();
         if(permissionCodes!=null&&!permissionCodes.trim().isEmpty()){
@@ -138,7 +183,9 @@ public class SysRoleController {
         sysRole.setRoleId((sysRoleService.getId()));
         sysRole.setStatusCd(StatusCD.VALID);
         sysRole.setStatusDate(new Date());
-        sysRoleService.insert(sysRole);
+        SysRole obj=new SysRole();
+        BeanUtils.copyProperties(sysRole, obj);
+        sysRoleService.insert(obj);
         String permissionCodes = sysRole.getPermissionCodes();
         if(permissionCodes!=null&&!permissionCodes.trim().isEmpty()){
             String[] split = permissionCodes.split(",");

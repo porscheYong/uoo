@@ -59,6 +59,8 @@ public class BaseUnitConstants {
 
 	public static final Integer PAGE_SIZE = 5;
 
+	public static final String TB_ORG_TREE_ID = "ORG_TREE_ID";
+
 
 
 	/**

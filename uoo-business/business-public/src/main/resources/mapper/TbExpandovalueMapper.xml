@@ -137,6 +137,9 @@
         <if test="valueId != null">
             AND VALUE_ID = #{valueId}
         </if>
+        <if test="data != null">
+            AND DATA_ LIKE #{data}
+        </if>
     </select>
 
     <select id="selectExpandovalueVoList" resultType="ExpandovalueVo">

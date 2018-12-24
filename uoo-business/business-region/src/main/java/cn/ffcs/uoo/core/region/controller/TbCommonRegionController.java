@@ -279,6 +279,7 @@ public class TbCommonRegionController extends BaseController {
         return rr;
     }
 
+    @SuppressWarnings("unchecked")
     @ApiOperation(value = "新增公共管理区域", notes = "新增公共管理区域")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "commonRegion", value = "公共管理区域信息", required = true, dataType = "CommonRegionDTO"), })
@@ -296,6 +297,15 @@ public class TbCommonRegionController extends BaseController {
             if (region == null) {
                 return ResponseResult.createErrorResult("选择的上一级区域不存在");
             }
+        }
+        //编码检查
+        String regionNbr = commonRegion.getRegionNbr();
+        if(StringUtils.isBlank(regionNbr)){
+            return ResponseResult.createErrorResult("请输入区域编码");
+        }
+        int selectCount = regionService.selectCount(Condition.create().eq("REGION_NBR", regionNbr).eq("STATUS_CD", DeleteConsts.VALID));
+        if(selectCount>0){
+            return ResponseResult.createErrorResult("区域编码已存在");
         }
         // 检查行政区域
         List<Long> polLocIds = commonRegion.getPolLocIds();
@@ -360,7 +370,22 @@ public class TbCommonRegionController extends BaseController {
                 return ResponseResult.createErrorResult("上一级区域不存在");
             }
         }
-
+      //编码检查
+        String regionNbr = commonRegion.getRegionNbr();
+        if(StringUtils.isBlank(regionNbr)){
+            return ResponseResult.createErrorResult("请输入区域编码");
+        }
+        List<TbCommonRegion> tmp = regionService.selectList(Condition.create().eq("REGION_NBR", regionNbr).eq("STATUS_CD", DeleteConsts.VALID));
+        if(tmp!=null&&!tmp.isEmpty()){
+            if(tmp.size()>1){
+                return ResponseResult.createErrorResult("区域编码已存在");
+            }else{
+                TbCommonRegion tbCommonRegion = tmp.get(0);
+                if(!tbCommonRegion.getCommonRegionId().equals(commonRegion.getCommonRegionId())){
+                    return ResponseResult.createErrorResult("区域编码已存在");
+                }
+            }
+        }
         // 检查行政区域
         List<Long> polLocIds = commonRegion.getPolLocIds();
         if (polLocIds != null&&!polLocIds.isEmpty()) {

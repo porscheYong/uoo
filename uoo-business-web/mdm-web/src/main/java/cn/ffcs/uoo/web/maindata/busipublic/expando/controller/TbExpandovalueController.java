@@ -83,5 +83,12 @@ public class TbExpandovalueController {
     public ResponseResult<ExpandovalueVo> addExpandoInfo(@RequestBody ExpandovalueVo expandovalueVo) {
         return tbExpandovalueClient.addExpandoInfo(expandovalueVo);
     }
+
+    @ApiOperation(value = "校验组织U5节点", notes = "校验组织U5节点")
+    @ApiImplicitParam(name = "orgIds", value = "组织数组", required = true, dataType = "List")
+    @RequestMapping(value = "/checkOrgU5Node", method = RequestMethod.POST)
+    public ResponseResult<String> checkOrganizationU5NodeType(@RequestBody List<String> orgIds) {
+        return tbExpandovalueClient.checkOrganizationU5NodeType(orgIds);
+    }
 }
 
