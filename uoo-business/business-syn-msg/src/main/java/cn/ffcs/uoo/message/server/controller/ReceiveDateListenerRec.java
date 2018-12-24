@@ -46,6 +46,8 @@ public class ReceiveDateListenerRec {
     private TbSlaveAcctMapper tbSlaveAcctMapper;//从账号
     @Resource
     private TbAcctMapper tbAcctMapper;
+    @Resource
+    private TbBusinessSystemMapper tbBusinessSystemMapper;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");//日期
 
@@ -223,6 +225,11 @@ public class ReceiveDateListenerRec {
                         //下发人员和从账号
                         if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() == 1 && isHaveSlave) {
                             for (TbSlaveAcct temp : slaveList) {
+                                //校验
+                                if(tbBusinessSystemMapper.validateSlave(system.getBusinessSystemId(),temp.getSlaveAcctId()) == 2){
+                                    logger.warn("json:{},SlaveAcctId:{}校验失败，错误数据,请检查据库数据据。", json,temp.getSlaveAcctId());
+                                    continue;
+                                }
                                 TbAcctVo tbAcctVo = tbSlaveAcctMapper.insertOrUpdateSalveAcct(temp.getSlaveAcctId());
                                 tbAcctVo.getTbSlaveAcct().setSystemName(system.getSystemName());
                                 tbAcctVo.getTbSlaveAcct().setBusinessSystemId(system.getBusinessSystemId());
@@ -266,6 +273,11 @@ public class ReceiveDateListenerRec {
                         if (vo.getIncludePsn() == 1 && vo.getIncludeSlaveAcct() == 1 && isHaveSlave) {
                             for (TbSlaveAcct temp : slaveList) {
                                 if (temp != null && ValidateConstant.fail.getValue().equals(temp.getStatusCd())) {
+                                    //校验
+                                    if(tbBusinessSystemMapper.validateSlave(system.getBusinessSystemId(),temp.getSlaveAcctId()) == 2){
+                                        logger.warn("json:{},SlaveAcctId:{}校验失败，错误数据,请检查数据库数据据。", json,temp.getSlaveAcctId());
+                                        continue;
+                                    }
                                     TbSlaveAcctVo tbSlaveAcct = tbSlaveAcctMapper.selectVoById(temp.getSlaveAcctId());
                                     //规则判断
                                     if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
@@ -332,6 +344,11 @@ public class ReceiveDateListenerRec {
         //没有系统。
         if (vo == null) {
             logger.warn("json:{},systemId:{} is error", json, null);
+            return null;
+        }
+        //校验
+        if(tbBusinessSystemMapper.validateSlave(system.getBusinessSystemId(),slaveAcctId) == 2){
+            logger.warn("json:{} 校验失败，错误数据,请检查数据库数据。", json);
             return null;
         }
         switch (handle) {
