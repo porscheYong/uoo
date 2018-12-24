@@ -20,4 +20,5 @@ public interface ITbAreaCodeService extends IService<TbAreaCode> {
     public Long getId();
     public List<AreaCodeVO> selectListAreaCode(HashMap<String,Object> map);
     public Long countListAreaCode(HashMap<String,Object> map);
+    public List<TbAreaCode> getAreaCodeByPollocId(Long id);
 }

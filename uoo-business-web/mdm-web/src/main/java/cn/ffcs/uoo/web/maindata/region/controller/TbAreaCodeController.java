@@ -1,8 +1,6 @@
 package cn.ffcs.uoo.web.maindata.region.controller;
 
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +35,16 @@ public class TbAreaCodeController  {
     
     @Autowired
     private AreaCodeService areaCodeService;
+    
+    @ApiOperation(value = "根据行政区域 ID获取单条数据", notes = "根据行政区域 ID获取单条数据")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),
+    })
+    @GetMapping("getAreaCodeByPollocId/id={id}")
+    public ResponseResult getAreaCodeByPollocId(@PathVariable(value = "id") Long id){
+        return areaCodeService.getAreaCodeByPollocId(id);
+    }
+    
     @OperateLog(type=OperateType.SELECT,module="区号模块",methods="GET BY ID",desc="")
     @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
     @ApiImplicitParams({
