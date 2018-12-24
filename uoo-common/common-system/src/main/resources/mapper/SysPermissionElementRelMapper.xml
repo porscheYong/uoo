@@ -25,4 +25,7 @@
     <select id="getId" resultType="Long">
         select SEQ_SYS_PERMISSION_ELEMENT_REL.NEXTVAL from dual
     </select>
+    <update id="updatePermissionCode">
+       update SYS_PERMISSION_ELEMENT_REL set PERMISSION_CODE = #{newCode} where PERMISSION_CODE=#{oldCode}
+    </update>
 </mapper>

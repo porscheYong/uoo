@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ISysPermissionFuncRelService extends IService<SysPermissionFuncRel> {
     Long getId();
+
+    void updatePermissionCode(String oldCode, String newCode);
 }

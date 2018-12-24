@@ -35,7 +35,7 @@ public class TbAreaCodeController  {
     
     @Autowired
     private AreaCodeService areaCodeService;
-    
+    @OperateLog(type=OperateType.SELECT,module="区号模块",methods="行政区域ID查区号",desc="")
     @ApiOperation(value = "根据行政区域 ID获取单条数据", notes = "根据行政区域 ID获取单条数据")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),

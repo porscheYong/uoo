@@ -22,4 +22,9 @@ public class SysPermissionDataRulesRelServiceImpl extends ServiceImpl<SysPermiss
         return baseMapper.getId();
     }
 
+    @Override
+    public void updatePermissionCode(String oldCode, String newCode) {
+        baseMapper.updatePermissionCode(oldCode,newCode);
+    }
+
 }

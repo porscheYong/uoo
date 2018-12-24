@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ISysPrivFileRelService extends IService<SysPrivFileRel> {
     Long getId();
+    
+    void updatePermissionCode(String oldCode, String newCode);
 }

@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface SysPrivFileRelMapper extends BaseMapper<SysPrivFileRel> {
     Long getId();
+
+    void updatePermissionCode(String oldCode, String newCode);
 }

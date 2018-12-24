@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-12-20
  */
 public interface ISysRolePermissionRefService extends IService<SysRolePermissionRef> {
-
+    void updatePermissionCode(String oldCode, String newCode);
     Long getId();
 
 }

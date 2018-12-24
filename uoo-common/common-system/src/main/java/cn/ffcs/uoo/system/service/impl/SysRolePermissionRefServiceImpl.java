@@ -23,5 +23,9 @@ public class SysRolePermissionRefServiceImpl extends ServiceImpl<SysRolePermissi
     public Long getId() {
         return baseMapper.getId();
     }
+    @Override
+    public void updatePermissionCode(String oldCode, String newCode) {
+        baseMapper.updatePermissionCode(oldCode,newCode);
+    }
 
 }
