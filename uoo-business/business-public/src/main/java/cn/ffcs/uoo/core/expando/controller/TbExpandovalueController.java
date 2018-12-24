@@ -25,6 +25,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -312,6 +314,42 @@ public class TbExpandovalueController extends BaseController {
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("查询成功");
         responseResult.setData(valueList);
+        return responseResult;
+    }
+
+    @ApiOperation(value = "校验组织U5节点", notes = "校验组织U5节点")
+    @ApiImplicitParam(name = "orgIds", value = "组织数组", required = true, dataType = "List")
+    @UooLog(value = "校验组织U5节点", key = "checkOrganizationU5NodeType")
+    @RequestMapping(value = "/checkOrgU5Node", method = RequestMethod.POST)
+    public ResponseResult<String> checkOrganizationU5NodeType(@RequestBody List<String> orgIds) {
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        // 初始化为0,表示没有U5节点
+        String flag = "0";
+
+        // 校验必填项
+        if(orgIds == null || orgIds.isEmpty()) {
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("请输入组织id");
+            return responseResult;
+        }
+
+        for(String orgId : orgIds) {
+            TbExpandovalue tbExpandovalue = new TbExpandovalue();
+            tbExpandovalue.setRecordId(orgId);
+            tbExpandovalue.setStatusCd(StatusEnum.VALID.getValue());
+            tbExpandovalue.setData("U5-%");
+            List<TbExpandovalue> valueList = tbExpandovalueService.selectValueList(tbExpandovalue);
+
+            // 存在U5类型组织
+            if(valueList !=  null && valueList.size() >0) {
+                flag = "1";
+                break;
+            }
+        }
+
+        responseResult.setState(ResponseResult.STATE_OK);
+        responseResult.setMessage("校验U5节点");
+        responseResult.setData(flag);
         return responseResult;
     }
 }

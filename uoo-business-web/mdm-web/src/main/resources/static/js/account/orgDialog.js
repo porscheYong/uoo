@@ -2,27 +2,29 @@ var toastr = window.top.toastr;
 
 
 var orgIdSelect,
+    orgFullName,
+    orgTreeId,
     nodeName,
-    nodeArr;
+    nodeArr,
+    businessName;
 
 function onNodeClick(e,treeId, treeNode) {
-    // var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-    // zTree.expandNode(treeNode);
     orgIdSelect = treeNode.id;
     // orgName = treeNode.name;
-    var currentNode = treeNode.name;//获取当前选中节点
+    var currentNode = {node: treeNode, current: true};//获取当前选中节点
     var parentNode = treeNode.getParentNode();
     nodeArr = [];
     getParentNodes(parentNode, currentNode);
+    orgFullName = getOrgExtInfo();
 }
 
 // 获取父节点路径
 function getParentNodes(parentNode, currentNode) {
     if(parentNode!=null){
-        nodeName = parentNode.name;
+        parent = {node: parentNode, current: false};
         var curNode = parentNode.getParentNode();
         nodeArr.push(currentNode);
-        getParentNodes(curNode, nodeName);
+        getParentNodes(curNode, parent);
     }else{
         //根节点
         nodeArr.push(currentNode);
@@ -96,35 +98,24 @@ function initBusinessList () {
         businessName = data[0].orgTreeName;
         $('#businessOrg').unbind('change').bind('change', function (event) {
             orgTreeId = event.target.options[event.target.options.selectedIndex].value;
+            businessName = event.target.options[event.target.options.selectedIndex].innerHTML;
             initOrgRelTree(orgTreeId);
         })
     }, function (err) {
     })
 }
-    
 
 // 获取组织完整路径
-// function getOrgExtInfo() {
-//   var pathArry = nodeArr;
-//   var pathStr = '';
-//   for (var i = pathArry.length - 1; i >= 0; i--) {
-//       pathStr += pathArry[i] + '/'; 
-//   }
-//   return pathStr.toString().substring(0,pathStr.toString().length-1);;
-// }
-
-
-// 获取组织完整路径
-// function getOrgExtInfo () {
-//     var pathArry = nodeArr;
-//     var pathStr = '';
-//     if (pathArry && pathArry.length > 0) {
-//         for (var i = pathArry.length - 1; i >= 0; i--) {
-//             pathStr +=  pathArry[i].node.name + '/';    
-//         }
-//     }
-//     return pathStr.toString().substring(0,pathStr.toString().length-1);;
-//   }
+function getOrgExtInfo () {
+    var pathArry = nodeArr;
+    var pathStr = '';
+    if (pathArry && pathArry.length > 0) {
+        for (var i = pathArry.length - 1; i >= 0; i--) {
+            pathStr +=  pathArry[i].node.name + '/';    
+        }
+    }
+    return pathStr.toString().substring(0,pathStr.toString().length-1);
+  }
 
 // function saveBtnClick(){
 //         var orgNa = [];
