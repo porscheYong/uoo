@@ -20,4 +20,8 @@ public class SysPermissionElementRelServiceImpl extends ServiceImpl<SysPermissio
     public Long getId() {
         return baseMapper.getId();
     }
+    @Override
+    public void updatePermissionCode(String oldCode, String newCode) {
+        baseMapper.updatePermissionCode(oldCode,newCode);
+    }
 }

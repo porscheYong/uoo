@@ -15,4 +15,6 @@ public interface SysRolePermissionRefMapper extends BaseMapper<SysRolePermission
 
     Long getId();
 
+    void updatePermissionCode(String oldCode, String newCode);
+
 }

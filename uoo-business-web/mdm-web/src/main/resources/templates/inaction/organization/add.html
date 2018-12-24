@@ -18,6 +18,8 @@
     <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
     <!-- lulu ui -->
     <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+    <!-- lay multiselect -->
+    <link href="/vendors/multiselect/multiselect.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
@@ -173,8 +175,8 @@
 
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="areaCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">区号</label>
-                      <input id="areaCode" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
+                      <label for="areaCode" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">区号</label>
+                      <input id="areaCode" class="ui-input col-md-8 col-sm-8 col-xs-12" required>
                     </div>
                   </div>
                 </div>
@@ -269,8 +271,8 @@
         <div class="row" style="margin-bottom: 10px;">
           <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="form-item" style="width: 100%">
-              <label for="nodeType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">节点类型</label>
-              <select id="nodeType" class="col-md-8 col-sm-8 col-xs-12" required></select>
+              <label for="nodeTypes" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">节点类型</label>
+              <select id="nodeTypes" class="col-md-8 col-sm-8 col-xs-12" name="nodeTypes" xm-select="nodeTypes"></select>
             </div>
           </div>
 
@@ -285,7 +287,7 @@
           <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="form-item" style="width: 100%">
               <label for="countType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">统计属性</label>
-              <select id="countType" class="col-md-8 col-sm-8 col-xs-12" required></select>
+              <select id="countType" class="col-md-8 col-sm-8 col-xs-12" name="countType" xm-select="countType"></select>
             </div>
           </div>
 
@@ -314,6 +316,8 @@
     <script type="text/javascript" src="/vendors/layer/layer.js"></script>
     <!-- jquery tagsinput -->
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
+    <!-- layui multiselect -->
+    <script type="text/javascript" src="/vendors/multiselect/multiselect.js"></script>
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
     <script type="text/javascript" src="/js/organization/add.js"></script>

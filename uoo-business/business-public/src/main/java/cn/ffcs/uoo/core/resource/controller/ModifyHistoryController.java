@@ -6,9 +6,11 @@ import cn.ffcs.uoo.core.resource.entity.TbBusinessSystem;
 import cn.ffcs.uoo.core.resource.service.ModifyHistoryService;
 import cn.ffcs.uoo.core.resource.service.TbBusinessSystemService;
 import cn.ffcs.uoo.core.resource.util.StrUtil;
+import cn.ffcs.uoo.core.resource.vo.Org;
 import cn.ffcs.uoo.core.vo.ResponseResult;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -28,6 +31,8 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018-12-24
  */
+
+@Api(value = "modifyHistory", description = "日志")
 @RestController
 @RequestMapping("/modifyHistory")
 public class ModifyHistoryController {
@@ -40,6 +45,11 @@ public class ModifyHistoryController {
     @RequestMapping(value = "/addModifyHistory", method = RequestMethod.POST)
     public ResponseResult<String> addModifyHistory(Object oldObj,Object newObj) {
         ResponseResult<String> ret = new ResponseResult<>();
+        if(oldObj==null && newObj==null){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("新值和旧值不能同时为空");
+            return ret;
+        }
         String retstr = modifyHistoryService.addModifyHistory(oldObj,newObj);
         if(StrUtil.isNullOrEmpty(retstr)){
             ret.setState(ResponseResult.STATE_OK);
@@ -47,8 +57,8 @@ public class ModifyHistoryController {
             return ret;
         }
         ret.setState(ResponseResult.STATE_ERROR);
-        ret.setMessage(retstr);
         return ret;
     }
+
 }
 
