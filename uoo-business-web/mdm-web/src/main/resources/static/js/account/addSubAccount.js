@@ -101,6 +101,7 @@ function getAcctOrg(){          //获取从账号可选组织列表(添加组织
         personnelId: personnelId,
         resourceObjId: resourceObjId
       }, function (data) {
+        slaveOrgList = [];
         for(var i=0;i<data.length;i++){
             slaveOrgList.push({"orgTreeName":data[i].orgTreeName,"fullName":data[i].fullName});
         }
@@ -139,12 +140,11 @@ function initOrgTable(results){
           { 'data': "orgTreeName", 'title': '组织树', 'className': 'row-orgTree'},
           { 'data': "fullName", 'title': '组织名称', 'className': 'row-fullName' ,
           'render': function (data, type, row, meta) {
-            if(row.fullName.search('->') != -1){
-                var s = row.fullName.replace(/->/g,'/');
-                return s.substring(0,s.length-1);
-              }else{
+            if(row.fullName != null){
                 return row.fullName;
-              }
+              }else{
+                return "";
+            }
         }
         },
         {'data': "orgId", 'title': '操作', 'className': 'row-delete' ,
@@ -166,7 +166,7 @@ function initOrgTable(results){
   }
 
   function initAcctOrgTable(results){
-    var num = 0;
+    var num = 1;
     slaveTable = $("#acctOrgTable").DataTable({
       'data': results,
       'destroy':true,
@@ -177,11 +177,16 @@ function initOrgTable(results){
       'info': false,
       "scrollY": "240px",
       'columns': [
-          { 'data': "fullName", 'title': '可选组织', 'className': 'row-tl',
-          'render': function (data, type, row, meta) {
-              num++;
-            return "<a href='javascript:void(0);' onclick='saveSlaveOrg("+ num + ","+ row.acctOrgRelId + ")'>"+ row.fullName +'</a>'
-          }
+        { 'data': "id", 'title': '序号', 'className': 'row-t1' ,
+            'render': function (data, type, row, meta) {
+                return num++;
+            }
+        },
+        { 'data': "orgTreeName", 'title': '组织树', 'className': 'row-t2'},
+        { 'data': "fullName", 'title': '可选组织', 'className': 'row-t3',
+        'render': function (data, type, row, meta) {
+            return "<a href='javascript:void(0);' title='"+row.fullName+"' onclick='saveSlaveOrg("+ num + ","+ row.acctOrgRelId + ")'>"+ row.fullName +'</a>'
+        }
         }
       ],
       'language': {
@@ -308,7 +313,7 @@ function  hasExtInfo(certType){  //判断是否需要扩展信息
 function saveSlaveOrg(id,hostId){  //获取acctOrgRelId
     acctOrgRelId = hostId;
     $('#slaveOrgModal').modal('hide');
-    initOrgTable([{"orgTreeName":slaveOrgList[id-1].orgTreeName,"fullName":slaveOrgList[id-1].fullName}]);
+    initOrgTable([{"orgTreeName":slaveOrgList[id-2].orgTreeName,"fullName":slaveOrgList[id-2].fullName}]);
     $('#addText').text('更换归属组织');
 }
 
