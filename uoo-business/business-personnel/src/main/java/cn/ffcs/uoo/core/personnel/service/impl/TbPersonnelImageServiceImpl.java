@@ -57,4 +57,18 @@ public class TbPersonnelImageServiceImpl extends ServiceImpl<TbPersonnelImageMap
         map.put(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
         return this.selectOne(new EntityWrapper<TbPersonnelImage>().allEq(map));
     }
+
+    @Override
+    public Object updatePsnId(Long personnelId, Long psnImageId){
+        TbPersonnelImage tbPersonnelImage = new TbPersonnelImage();
+        tbPersonnelImage.setPersonnelId(personnelId);
+        tbPersonnelImage.setPsnImageId(psnImageId);
+        EntityWrapper<TbPersonnelImage> wrapper = new EntityWrapper<TbPersonnelImage>();
+        wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        wrapper.eq(BaseUnitConstants.TB_PSN_IMAGE_ID, psnImageId);
+        if(retBool(baseMapper.update(tbPersonnelImage, wrapper))){
+            return ResultUtils.success(null);
+        }
+        return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
+    }
 }

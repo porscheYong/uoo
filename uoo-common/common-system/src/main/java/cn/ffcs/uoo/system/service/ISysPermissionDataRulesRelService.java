@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ISysPermissionDataRulesRelService extends IService<SysPermissionDataRulesRel> {
     Long getId();
+    void updatePermissionCode(String oldCode, String newCode);
 }

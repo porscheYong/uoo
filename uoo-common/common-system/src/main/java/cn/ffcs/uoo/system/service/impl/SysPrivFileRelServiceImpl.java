@@ -20,4 +20,8 @@ public class SysPrivFileRelServiceImpl extends ServiceImpl<SysPrivFileRelMapper,
     public Long getId() {
         return baseMapper.getId();
     }
+    @Override
+    public void updatePermissionCode(String oldCode, String newCode) {
+        baseMapper.updatePermissionCode(oldCode,newCode);
+    }
 }
