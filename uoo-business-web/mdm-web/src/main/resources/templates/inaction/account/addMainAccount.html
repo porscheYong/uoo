@@ -41,10 +41,6 @@
 
     <style>
         
-        #conSubInfo .fright 
-        {
-            /* margin-right: 73% !important; */
-        }
         .row-delete{
             width: 28px !important;
         }
@@ -209,21 +205,15 @@
                     <div class="board-title" style="margin-left:-6.7%;">
                         <span class="name ft18">归属组织</span>
                     </div>
+
+                    <div class="fright" style="margin-right: 36px;margin-top:-4.5%;"> 
+                        <a class="button-add" id="addBtn" onclick="openOrgDialog()"><span class="fa fa-plus-circle icon-add"></span>新增归属组织</a>
+                    </div>
                 </div>
                 
                 <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
                     <table id="orgTable" class="stripe" width="100%"></table>
                 </div>
-
-                <!-- <div style="margin-top:1%" id="conSubInfo">
-                    <div class="board-title" style="margin-left:-6.7%;">
-                        <span class="name ft18">关联从账号信息</span>
-                    </div>
-                </div>
-
-                <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
-                    <table id="subInfoTable" class="stripe" width="100%"></table>
-                </div> -->
             </form>
 
             <div class="row">

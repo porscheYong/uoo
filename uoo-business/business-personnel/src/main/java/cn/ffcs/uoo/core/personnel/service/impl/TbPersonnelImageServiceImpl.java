@@ -12,6 +12,8 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -46,5 +48,13 @@ public class TbPersonnelImageServiceImpl extends ServiceImpl<TbPersonnelImageMap
             return ResultUtils.success(null);
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
+    }
+
+    @Override
+    public Object getTbPsnImageByPsnId(Long personnelId){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
+        return this.selectOne(new EntityWrapper<TbPersonnelImage>().allEq(map));
     }
 }

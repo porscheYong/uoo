@@ -17,8 +17,14 @@
 td,th{
     text-align: center;
 }
-th.row-tl{
-    display: none;
+.row-tl{
+    width: 20%;
+}
+.row-t2{
+    width: 25%;
+}
+.row-t3{
+    width: 55%;
 }
 .row-acctHostId{
     display: none;

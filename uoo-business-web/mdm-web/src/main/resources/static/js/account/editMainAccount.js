@@ -10,6 +10,7 @@ var orgTreeId = getQueryString('orgTreeId');
 var orgRootId = getQueryString('orgRootId');
 var tabPage = getQueryString('tabPage');
 var acctId = getQueryString('acctId');
+var orgTreeName = getQueryString('orgTreeName');
 
 var personnelId;
 var orgTable;
@@ -19,7 +20,7 @@ var psw;
 var roleList = [];      //需要上传的角色列表
 var userRoleList = [];      //用户已有角色列表
 var formValidate;
-// var sFullName;
+var treeNameList = [];
 var toastr = window.top.toastr;
 
 $('#statusCd').get(0).selectedIndex=0; //判断状态，默认生效
@@ -70,7 +71,7 @@ function getUser(acctId) {           //查看并编辑主账号
         initAcctInfoCheck(data);
         initEditUserInfo(data);
         initOrgTable(data.acctOrgVoPage.records);
-        initSubOrgTable(data.slaveAcctOrgVoPage.records);
+        initSlaveOrgTable(data.slaveAcctOrgVoPage.records);
     }, function (err) {
 
     })
@@ -98,11 +99,7 @@ function initOrgTable(results){         //主账号组织数据表格
     'scrollCollapse': true,
     'columns': [
         { 'data': "id", 'title': '序号', 'className': 'row-id'},
-        { 'data': "orgId", 'title': '组织树', 'className': 'row-orgTree' ,
-        'render': function (data, type, row, meta) {
-          return '标准组织树';
-      }
-      },
+        { 'data': "orgTreeName", 'title': '组织树', 'className': 'row-orgTree'},
         { 'data': "fullName", 'title': '组织名称', 'className': 'row-fullName' ,
         'render': function (data, type, row, meta) {
           if(row.fullName != null){
@@ -114,12 +111,13 @@ function initOrgTable(results){         //主账号组织数据表格
       },
       {'data': "orgId", 'title': '操作', 'className': 'row-delete' ,
       'render': function (data, type, row, meta) {
-          if(slaveOrgIdList.indexOf(row.orgId) != -1){
-            return "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' title='删除' onclick='deleteOrg("+ row.orgId + ")'></a>";
-          }else{
-            return "<a class='Icon IconAdd' href='javascript:void(0);' id='addSlaveBtn' title='创建从账号' onclick='addSlaveBtnClick(" + row.acctOrgRelId + "," + row.id + ")'></a>"+
-                    "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' title='删除' onclick='deleteOrg("+ row.orgId + ")'></a>";
-          }
+          // if(slaveOrgIdList.indexOf(row.orgId) != -1){
+          //   return "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' title='删除' onclick='deleteOrg("+ row.orgId + ")'></a>";
+          // }else{
+            treeNameList.push(row.orgTreeName);
+            return "<a class='Icon IconAdd' href='javascript:void(0);' id='addSlaveBtn' title='创建从账号' onclick='addSlaveBtnClick(" + row.acctOrgRelId + "," + row.id + "," + row.orgTreeId +")'></a>"+
+                    "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' title='删除' onclick='deleteOrg("+ row.orgId + "," + row.orgTreeId + ")'></a>";
+          //}
         }
     },
     { 'data': "orgId", 'title': 'orgId', 'className': 'row-orgId'}
@@ -136,7 +134,7 @@ function initOrgTable(results){         //主账号组织数据表格
   });
 }
 
-function initSubOrgTable(results){    //从账号组织数据
+function initSlaveOrgTable(results){    //从账号组织数据
   var subTable = $("#subInfoTable").DataTable({
     'data': results,
     'destroy':true,
@@ -209,11 +207,6 @@ function initEditUserInfo(results){     //初始化用户信息(编辑)
 
   for(var i = 0;i < slaveOrg.length;i++){
       slaveOrgIdList.push(slaveOrg[i].orgId);
-  }
-
-  if(hType == 'ah'){
-    $("#addBtn").css("display","none");
-    $("#addBtnWFright").css("display","block");
   }
 }
 
@@ -305,16 +298,20 @@ function deleteTbAcct(){    //删除主账号
   });
 }
 
-function removeAcctOrg(orgId){   //编辑时删除组织
+function removeAcctOrg(orgId,orgTreeId){   //编辑时删除组织
     $.ajax({
-      url: '/acct/removeAcctOrg?personnelId='+personnelId+'&acctId='+acctId+'&orgId='+parseInt(orgId),
+      url: '/acct/removeAcctOrg?personnelId='+personnelId+'&acctId='+acctId+'&orgId='+parseInt(orgId)+'&orgTreeId='+orgTreeId,
       type: 'DELETE',
       contentType: "application/json",
       dataType:"json",
       success: function (data) { //返回json结果
-        toastr.success(data.message);
-        refreshTb(acctId);
-        orgNum -= 1;
+        if(data.state == 1000){
+          toastr.success(data.message);
+          refreshTb(acctId);
+          orgNum -= 1;
+        }else{
+          toastr.error(data.message);
+        }
       },
       error:function(err){
         toastr.error('删除失败');
@@ -322,10 +319,11 @@ function removeAcctOrg(orgId){   //编辑时删除组织
     });
 }
 
-function addAcctOrg(orgId){ //编辑时新增组织
+function addAcctOrg(orgId,orgTreeId){ //编辑时新增组织
   var tbAccountOrgRel={
     "acctId": acctId,
-    "orgId": parseInt(orgId)
+    "orgId": parseInt(orgId),
+    "orgTreeId": parseInt(orgTreeId)
   };
   $.ajax({
     url: '/acct/addAcctOrg',
@@ -336,6 +334,7 @@ function addAcctOrg(orgId){ //编辑时新增组织
     success: function (data) { //返回json结果
       if(data.state == 1000){
         toastr.success(data.message);
+        treeNameList = [];
         refreshTb(acctId);
         orgNum += 1;
       }else{
@@ -348,7 +347,7 @@ function addAcctOrg(orgId){ //编辑时新增组织
   });
 }
 
-function refreshTb(acctId) {           //新增组织后刷新表格
+function refreshTb(acctId) {           //新增组织后刷新组织表格
   var date = new Date();
   $http.get('/user/getUser', {   
       acctId: acctId,
@@ -356,20 +355,17 @@ function refreshTb(acctId) {           //新增组织后刷新表格
       _:date.getTime()
   }, function (data) {
       initOrgTable(data.acctOrgVoPage.records);
+      initSlaveOrgTable(data.slaveAcctOrgVoPage.records);
   }, function (err) {
 
   })
 }
 
-function addBtnWClick(){    //新增时已有主账号时点击添加组织按钮事件
-    addAcctOrg(orgId);
-}
-
-function addSlaveBtnClick(acctOrgRelId,id){      //点击新增从账号
+function addSlaveBtnClick(acctOrgRelId,id,orgTreeId){      //点击新增从账号
     var sFullName = orgTable.row(id-1).data().fullName;
-    var url = 'addSubAccount.html?orgTreeId=' + orgTreeId + '&hType=th&personnelId=' + personnelId + 
+    var url = 'addSubAccount.html?orgTreeId=' + orgTreeId + '&hType=th&personnelId=' + personnelId + '&orgTreeId=' + orgTreeId +
                       '&mainAcctId='+ acctId +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&toMainType=' + hType +
-                      '&fullName=' + encodeURI(sFullName) + '&acctOrgRelId=' + acctOrgRelId;
+                      '&fullName=' + encodeURI(sFullName) + '&acctOrgRelId=' + acctOrgRelId + '&orgTreeName=' + treeNameList[id-1];
     window.location.href = url;
 }
 
@@ -433,11 +429,24 @@ function isNull(s,r){    //判断是否为null
 }
 
 //删除组织
-function deleteOrg(orgId){
+function deleteOrg(orgId,orgTreeId){
+    // var oId = slaveOrgIdList.indexOf(orgId);
     if(orgNum == 1){
       toastr.warning("无法删除所有组织");
+    // }else if(oId != -1){        //如果该组织下有从账号，则提示
+    //   parent.layer.confirm('组织下有从账号,删除组织将删除该从账号！', {
+    //     icon: 0,
+    //     title: '提示',
+    //     btn: ['确定','取消']
+    //   }, function(index, layero){
+    //     removeAcctOrg(orgId,orgTreeId);
+    //     slaveOrgIdList.splice(oId,1);
+    //     parent.layer.close(index);
+    //   }, function(){
+    
+    //   });
     }else{
-      removeAcctOrg(orgId);
+      removeAcctOrg(orgId,orgTreeId);
     }
 }
 
@@ -502,8 +511,9 @@ function openOrgDialog() {
           //获取layer iframe对象
           var iframeWin = parent.window[layero.find('iframe')[0].name];
           var orgIdSelect = iframeWin.orgIdSelect;
+          var orgTreeId = iframeWin.orgTreeId;
           parent.layer.close(index);
-          addAcctOrg(orgIdSelect);
+          addAcctOrg(orgIdSelect,orgTreeId);
       },
       btn2: function(index, layero){},
       cancel: function(){}

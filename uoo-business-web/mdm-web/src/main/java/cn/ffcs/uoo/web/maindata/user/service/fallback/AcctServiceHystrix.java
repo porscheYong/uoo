@@ -33,7 +33,7 @@ public class AcctServiceHystrix implements AcctService {
     }
 
     @Override
-    public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId) {
+    public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId, Long orgTreeId) {
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

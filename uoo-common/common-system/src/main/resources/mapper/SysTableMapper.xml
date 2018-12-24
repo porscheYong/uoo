@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.system.dao.SysTableMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysTable">
+        <id column="TAB_ID" property="tabId" />
+        <result column="TAB_NAME" property="tabName" />
+        <result column="TAB_PK" property="tabPk" />
+        <result column="REMARK" property="remark" />
+        <result column="VER_NUM" property="verNum" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_STAFF" property="createStaff" />
+        <result column="UPDATE_STAFF" property="updateStaff" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="STATUS_DATE" property="statusDate" />
+        <result column="UPDATE_DATE" property="updateDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        TAB_ID, TAB_NAME, TAB_PK, REMARK, VER_NUM, STATUS_CD, CREATE_STAFF, UPDATE_STAFF, CREATE_DATE, STATUS_DATE, UPDATE_DATE
+    </sql>
+
+</mapper>

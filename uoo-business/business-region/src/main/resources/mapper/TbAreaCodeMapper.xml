@@ -23,6 +23,21 @@
 		SELECT SEQ_TB_AREA_CODE_ID.nextval
 		FROM dual
 	</select>
+	<select id="getAreaCodeByPollocId" parameterType="Long" resultType="cn.ffcs.uoo.core.region.entity.TbAreaCode">
+	SELECT
+	    a.* 
+	FROM
+	    TB_AREA_CODE a
+	    LEFT JOIN TB_COMMON_REGION c ON c.AREA_CODE_ID = a.AREA_CODE_ID
+	    LEFT JOIN TB_REGION_LOCATION_REL r ON r.COMMON_REGION_ID = c.COMMON_REGION_ID
+	    LEFT JOIN TB_POLITICAL_LOCATION pl ON pl.LOC_ID = r.LOC_ID 
+	WHERE
+	    pl.LOC_ID = #{id} 
+	    AND pl.STATUS_CD = '1000'
+	    AND r.STATUS_CD =  '1000'
+	    AND c.STATUS_CD =  '1000'
+	    AND a.STATUS_CD =  '1000'
+	</select>
 
 	<select id="selectListAreaCode" parameterType="java.util.HashMap" resultType="cn.ffcs.uoo.core.region.vo.AreaCodeVO">
 		SELECT * FROM

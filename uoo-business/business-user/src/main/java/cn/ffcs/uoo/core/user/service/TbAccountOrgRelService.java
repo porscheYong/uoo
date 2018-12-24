@@ -27,10 +27,13 @@ public interface TbAccountOrgRelService extends IService<TbAccountOrgRel> {
 
     /**
      * 删除 主账号和组织关系
+     * @param personnelId
      * @param acctId
+     * @param orgId
+     * @param orgTreeId
      * @return
      */
-    public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId);
+    public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId, Long orgTreeId);
 
     /**
      * 新增 主账号和组织关系

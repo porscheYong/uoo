@@ -4,7 +4,7 @@ var allRoles = [];
 var checkRole = []; //选中的角色
 var userRoleList = JSON.parse(window.localStorage.getItem('userRoleList'))
 
-//添加数组IndexOf方法
+//IE8下添加数组IndexOf方法
 if (!Array.prototype.indexOf){
     Array.prototype.indexOf = function(elt /*, from*/){
       var len = this.length >>> 0;
@@ -74,11 +74,18 @@ function onRoleCheck (e, treeId, treeNode) {
         checkRole.push({"roleId":node.id,"roleName":""});
         renderTag()
     } else {
-        var idx = checkNode.findIndex(
-            function(v){
-                return v.tId == node.tId;
+        // var idx = checkNode.findIndex(
+        //     function(v){
+        //         return v.tId == node.tId;
+        //     }
+        // );
+        var idx;
+        for(var i=0;i<checkNode.length;i++){
+            if(checkNode[i].tId == node.tId){
+                idx = i;
+                break;
             }
-        );
+        }
         checkNode.splice(idx, 1);
         checkRole.splice(idx, 1);
         renderTag();
@@ -109,11 +116,18 @@ function removeNode (e) {
     zTree.checkNode(node, false);
     
     var tId = $(e.target).parent().attr('treeId');
-    var idx = checkNode.findIndex(
-        function(v){
-            return v.tId == tId;
+    // var idx = checkNode.findIndex(
+    //     function(v){
+    //         return v.tId == tId;
+    //     }
+    // );
+    var idx;
+    for(var i=0;i<checkNode.length;i++){
+        if(checkNode[i].tId == tId){
+            idx = i;
+            break;
         }
-    );
+    }
     checkNode.splice(idx, 1);
     checkRole.splice(idx, 1);
 }

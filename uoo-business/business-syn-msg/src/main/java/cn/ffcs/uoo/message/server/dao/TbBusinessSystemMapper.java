@@ -20,4 +20,7 @@ public interface TbBusinessSystemMapper extends BaseMapper<TbBusinessSystem> {
 
     //根据组织获取系统
     List<TbBusinessSystem> getSystemByOrg(@Param("orgId") Long orgId);
+
+    //校验
+    Integer validateSlave(@Param("systemId") Long systemId,@Param("slaveAcctId") Long slaveAcctId);
 }

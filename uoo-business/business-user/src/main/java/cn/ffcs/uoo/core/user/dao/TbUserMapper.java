@@ -36,7 +36,7 @@ public interface TbUserMapper extends BaseMapper<TbUser> {
 
     public List<ListAcctOrgVo> getSlaveAcctOrg(@Param("acctOrgVo") ListAcctOrgVo acctOrgVo);
 
-    public List<ListAcctOrgVo> getAcctOrgByPsnId(@Param("personnelId") Long personnelId);
+    public List<ListAcctOrgVo> getAcctOrgByPsnId(@Param("personnelId") Long personnelId, @Param("resourceObjId") Long resourceObjId);
 
 
 }

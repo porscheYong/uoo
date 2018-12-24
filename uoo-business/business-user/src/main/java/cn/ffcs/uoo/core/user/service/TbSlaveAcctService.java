@@ -52,6 +52,8 @@ public interface TbSlaveAcctService extends IService<TbSlaveAcct> {
      * @param slaveAcct
      * @param acctHostId
      * @param resourceObjId
+     * @param slaveAcctId
+     * @param acctId
      * @return
      */
     public boolean checkSlaveAcct(String slaveAcct, Long acctHostId , Long resourceObjId, Long slaveAcctId, Long acctId);
