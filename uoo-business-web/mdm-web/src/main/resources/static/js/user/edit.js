@@ -9,6 +9,7 @@ var addOrg = getQueryString('addOrg');
 var personalData={},genderData,certTypeData,nationData,pliticalStatusData,marriageData,orgInfo={},
     userFormValidate,jobFormValidate,eduFormValidate,familyFormValidate,orgFormValidate;
 var toastr = window.top.toastr;
+var psnImageId;
 // lulu ui select插件
 // seajs.use('../../../static/vendors/lulu/js/common/ui/Select', function () {
 //   $('select').selectMatch();
@@ -789,23 +790,6 @@ function addFamily(){
     });
 }
 function addPsonImg(){
-    // var formData = new FormData();
-    // formData.append('psnImageId', $('#psnImageId').val());
-    // formData.append('multipartFile', $('#choseFileImg').val());
-    // $.ajax({
-    //     url: "/psnImage/uploadImg",
-    //     type: "PUT",
-    //     data: formData,
-    //     contentType: false,
-    //     processData: false,
-    //     mimeType: "multipart/form-data",
-    //     success: function (data) {
-
-    //     },
-    //     error: function (data) {
-
-    //     }
-    // });
     var isIE=!!window.ActiveXObject;
     var isIE8910=isIE&&document.documentMode<11;
     
@@ -855,6 +839,7 @@ function convertToFile(base64Codes){
         contentType : false,        // 告诉jQuery不要去设置Content-Type请求头
         success:function(data){
             toastr.success(data.message);
+            psnImageId = data.data.psnImageId;
         },
         error:function(data){
             console.log(data);
@@ -932,6 +917,8 @@ function updatePersonnel(){
 
     updates.tbMobileVoList=tbMobileVoList;
     updates.tbEamilVoList=tbEamilVoList;
+
+    updates.image = psnImageId.toString();
 
     $.ajax({
         url:'/personnel/updatePersonnel',
