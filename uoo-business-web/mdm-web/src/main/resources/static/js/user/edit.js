@@ -10,7 +10,7 @@ var personalData={},genderData,certTypeData,nationData,pliticalStatusData,marria
     userFormValidate,jobFormValidate,eduFormValidate,familyFormValidate,orgFormValidate;
 var toastr = window.top.toastr;
 var psnImageId;
-var imgUrl;
+var imgUrl = "";
 // lulu ui select插件
 // seajs.use('../../../static/vendors/lulu/js/common/ui/Select', function () {
 //   $('select').selectMatch();
@@ -178,13 +178,19 @@ function getPsnImage(){
     $http.get('/psnImage/getPsnImage', {
         personnelId: personnelId
     }, function (data) {
-        imgUrl =  "data:image/png;base64," + data.image;
+        if(data != null){
+            imgUrl =  "data:image/png;base64," + data.image;
+            $('#psnImg').attr("src",imgUrl);
+            $('#psnimg2').attr("src",imgUrl);
+            $('#psnimg1').attr("src",imgUrl);
+        }
     }, function (err) {
 
     })
 }
 
 function initUser(){
+    psnImageId=personalData.personalData.image;
     $('#userEditButton').show();
     //预编译模板
     var userTemplate = Handlebars.compile($("#userTemplate").html());
@@ -195,6 +201,7 @@ function initUser(){
     //输入模板
     $('#userInfo').html(userHtml);
     // $('#baseInfo').html(baseHtml);
+    getPsnImage();
 }
 function initUserList(){
     $('#userEditButton').show();
@@ -207,6 +214,7 @@ function initUserList(){
     //输入模板
     //$('#userInfo').html(userHtml);
     $('#baseInfo').html(baseHtml);
+    getPsnImage();
 }
 function initOrgInfo(){
     //预编译模板
@@ -349,7 +357,7 @@ function  editUser() {
              });
          });*/
     });
-
+    getPsnImage();
 }
 function editOrgInfo(){
 
@@ -891,7 +899,7 @@ function updatePersonnel(){
     updates.toWorkTime=toWorkTime;
     updates.marriage=marriage;
     updates.pliticalStatus=pliticalStatus;
-
+    updates.image=psnImageId;
     var tbMobileVoList =new Array();
     var mobiles=$("input[name='mobiles']").each(function(){
         var obj={};

@@ -1,6 +1,10 @@
 package cn.ffcs.uoo.system.service;
 
 import cn.ffcs.uoo.system.entity.SysDataRule;
+
+import java.util.HashMap;
+import java.util.List;
+
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -13,5 +17,5 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-12-21
  */
 public interface ISysDataRuleService extends IService<SysDataRule> {
-
+    List<SysDataRule> listByAccout(HashMap<String, Object> map);
 }

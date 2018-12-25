@@ -42,7 +42,7 @@ public class TbOrgPositionRelController {
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbOrgPositionRel> removeTbOrgPositionRel(@RequestBody Long orgPositionId, @RequestBody Long updateUser) {
+    public ResponseResult<TbOrgPositionRel> removeTbOrgPositionRel(Long orgPositionId, Long updateUser) {
         return tbOrgPositionRelClient.removeTbOrgPositionRel(orgPositionId, updateUser);
     }
 }

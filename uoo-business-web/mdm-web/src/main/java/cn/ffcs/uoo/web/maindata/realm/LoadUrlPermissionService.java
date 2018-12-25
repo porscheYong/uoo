@@ -22,7 +22,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
+import cn.ffcs.uoo.web.maindata.common.system.client.SysFunctionClient;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysMenuClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysFunction;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysMenu;
 import cn.ffcs.uoo.web.maindata.permission.dto.FuncComp;
 import cn.ffcs.uoo.web.maindata.permission.dto.FuncMenu;
@@ -47,6 +49,9 @@ public class LoadUrlPermissionService {
     private String appName;
     @Autowired
     RestTemplate restTemplate;
+    @Autowired
+    SysFunctionClient sysFunctionClient;
+    
     private ConcurrentLinkedQueue<String> retryUrls = new ConcurrentLinkedQueue<>();
 
     @Async
@@ -149,6 +154,15 @@ public class LoadUrlPermissionService {
                     }
                 }
             }
+            /*cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<List<SysFunction>> fs = sysFunctionClient.list(1, Integer.MAX_VALUE,"");
+            if(fs.getState()==cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult.STATE_OK){
+                List<SysFunction> data = fs.getData();
+                if(data!=null){
+                    for (SysFunction sysMenu : data) {
+                        filterChainDefinitionMap.put(sysMenu.getFuncApi(), "perms[F" + sysMenu.getFuncId() + "]");
+                    }
+                }
+            }*/
             // 表示需要认证才可以访问
             filterChainDefinitionMap.put("/**", "authc");// 表示需要认证才可以访问
 
