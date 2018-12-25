@@ -41,10 +41,6 @@
 
     <style>
         
-        #conSubInfo .fright 
-        {
-            /* margin-right: 73% !important; */
-        }
         .row-delete{
             width: 34px !important;
         }
@@ -121,7 +117,7 @@
 
                 <div id="acctInfo" style="margin-left:17%;">
                     <div class="col-md-2 fleft tcenter">
-                        <img class="avatar" src="/images/avatar.png" alt="头像" />
+                        <img class="avatar" id="psnImg" src="/images/avatar.png" alt="头像" />
                     </div>
                     <div style="width: auto;margin-left: 120px;margin-top: -20%;">
                         <div id="nameAndRole">
@@ -283,13 +279,7 @@
                     </div>
     
                     <div class="fright" style="margin-right: 36px;margin-top:-4.5%;"> 
-                        <!-- <a class="button-add" id="addBtn" data-toggle="modal" data-target="#myModal"><span class="fa fa-plus-circle icon-add"></span>新增归属组织</a> -->
                         <a class="button-add" id="addBtn" onclick="openOrgDialog()"><span class="fa fa-plus-circle icon-add"></span>新增归属组织</a>
-                    </div>
-
-                    <!--添加主账号时若已有主账号则点击此按钮添加左边组织树选中的组织-->
-                    <div class="fright" id="addBtnWFright" style="margin-right:36px;margin-top:-4.5%;display: none;"> 
-                        <a class="button-add" id="addBtnW" onclick="addBtnWClick()"><span class="fa fa-plus-circle icon-add"></span>新增归属组织</a>
                     </div>
                 </div>
                 

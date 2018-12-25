@@ -209,7 +209,7 @@ public class OrgShowUtil {
            flag++;
        }
        if(vo.getShortName()== null || "".equals(vo.getShortName())){
-           logger.warn("主账号标识不存在");
+           logger.warn("组织简称不存在");
            /*flag++;*/
        }
        if(vo.getCityTown()== null || "".equals(vo.getCityTown())){

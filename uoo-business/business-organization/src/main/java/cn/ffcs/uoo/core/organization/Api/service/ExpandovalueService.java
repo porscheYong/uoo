@@ -4,6 +4,7 @@ package cn.ffcs.uoo.core.organization.Api.service;/**
  * @date: 2018-11-30
  */
 
+import cn.ffcs.uoo.core.organization.Api.service.impl.ExpandovalueServiceHystrix;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.vo.ExpandovalueVo;
 import cn.ffcs.uoo.core.organization.vo.TbExpandovalue;
@@ -11,6 +12,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,6 +23,8 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018/11/30
  */
+//@FeignClient(name = "business-public", url = "http://192.168.58.128:11500",fallback = ExpandovalueServiceHystrix.class)
+
 @Service
 @FeignClient(value = "business-public")
 public interface ExpandovalueService {
@@ -39,5 +43,8 @@ public interface ExpandovalueService {
     @RequestMapping(value = "/tbExpandovalue/del", method = RequestMethod.POST)
     ResponseResult<TbExpandovalue> removeTbExpandovalue(@RequestParam("valueId") Long valueId, @RequestParam("updateUser") Long updateUser);
 
+
+//    @RequestMapping(value = "/modifyHistory/addModifyHistory", method = RequestMethod.POST,headers={"Content-Type=application/json"})
+//    ResponseResult<String> addModifyHistory(@RequestBody HashMap<String,Object> obj);
 
 }

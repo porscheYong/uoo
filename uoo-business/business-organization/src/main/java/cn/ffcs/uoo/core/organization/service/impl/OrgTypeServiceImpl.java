@@ -53,6 +53,16 @@ public class OrgTypeServiceImpl extends ServiceImpl<OrgTypeMapper, OrgType> impl
     }
 
     @Override
+    public List<TreeNodeVo> selectFullOrgTypeTree(){
+        List<TreeNodeVo> volist = new ArrayList<>();
+        volist = baseMapper.selectOrgTypeTree(null,null);
+        for(TreeNodeVo vo : volist){
+            isLeaf(vo);
+        }
+        return volist;
+    }
+
+    @Override
     public List<TreeNodeVo> selectFullOrgTypeTreeByOrgId(String orgTypeId,String orgTypeCode,String orgId){
         List<TreeNodeVo> volist = new ArrayList<>();
         if(StrUtil.isNullOrEmpty(orgTypeId)){orgTypeId="0";}

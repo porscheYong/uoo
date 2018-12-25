@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -74,6 +75,57 @@ public class SysPositionVo {
      */
     private Date statusDate;
 
+
+    private String regionName;
+
+
+    private String roleNames;
+
+    private String orgPositionNum;
+
+    private String orgUserNum;
+
+    private List<String> roleCodeList;
+
+    public List<String> getRoleCodeList() {
+        return roleCodeList;
+    }
+
+    public void setRoleCodeList(List<String> roleCodeList) {
+        this.roleCodeList = roleCodeList;
+    }
+
+    public String getRoleNames() {
+        return roleNames;
+    }
+
+    public void setRoleNames(String roleNames) {
+        this.roleNames = roleNames;
+    }
+
+    public String getOrgPositionNum() {
+        return orgPositionNum;
+    }
+
+    public void setOrgPositionNum(String orgPositionNum) {
+        this.orgPositionNum = orgPositionNum;
+    }
+
+    public String getOrgUserNum() {
+        return orgUserNum;
+    }
+
+    public void setOrgUserNum(String orgUserNum) {
+        this.orgUserNum = orgUserNum;
+    }
+
+    public String getRegionName() {
+        return regionName;
+    }
+
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
+    }
 
     public Long getPositionId() {
         return positionId;
@@ -179,21 +231,5 @@ public class SysPositionVo {
         this.statusDate = statusDate;
     }
 
-    public String toString() {
-        return "SysPosition{" +
-        ", positionId=" + positionId +
-        ", positionName=" + positionName +
-        ", positionCode=" + positionCode +
-        ", pPositionId=" + pPositionId +
-        ", regionNbr=" + regionNbr +
-        ", sortNum=" + sortNum +
-        ", notes=" + notes +
-        ", statusCd=" + statusCd +
-        ", createDate=" + createDate +
-        ", createUser=" + createUser +
-        ", updateDate=" + updateDate +
-        ", updateUser=" + updateUser +
-        ", statusDate=" + statusDate +
-        "}";
-    }
+
 }

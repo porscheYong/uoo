@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zengxsh
- * @since 2018-12-21
+ * @since 2018-12-24
  */
 @TableName("SYS_PERMISSION_DATA_RULES_REL")
 public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> {

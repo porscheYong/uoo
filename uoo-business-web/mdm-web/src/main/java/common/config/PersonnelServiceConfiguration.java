@@ -2,6 +2,12 @@ package common.config;
 
 import feign.Logger;
 import feign.Retryer;
+import feign.codec.Encoder;
+import feign.form.spring.SpringFormEncoder;
+import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
+import org.springframework.cloud.netflix.feign.support.SpringEncoder;
 import org.springframework.context.annotation.Bean;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -41,9 +47,12 @@ public class PersonnelServiceConfiguration {
     public Retryer feignRetryer() {
         return new Retryer.Default(200, SECONDS.toMillis(2), 10);
     }
-//
-//    @Bean
-//    public Contract feignContract() {
-//        return new feign.Contract.Default();
-//    }
+
+    @Autowired
+    private ObjectFactory<HttpMessageConverters> messageConverters;
+
+    @Bean
+    public Encoder feignFormEncoder() {
+        return new SpringFormEncoder(new SpringEncoder(messageConverters));
+    }
 }

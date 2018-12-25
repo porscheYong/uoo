@@ -19,7 +19,7 @@ import cn.ffcs.uoo.core.region.vo.AreaCodeVO;
  */
 @MyBatisDao
 public interface TbAreaCodeMapper extends BaseMapper<TbAreaCode> {
-
+    public List<TbAreaCode> getAreaCodeByPollocId(Long id);
     public Long getId();
     public List<AreaCodeVO> selectListAreaCode(HashMap<String,Object> map);
     public Long countListAreaCode(HashMap<String,Object> map);

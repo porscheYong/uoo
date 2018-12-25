@@ -17,7 +17,33 @@ import java.util.List;
  */
 public interface SysPositionService extends IService<SysPosition> {
 
+    /**
+     * 获取seq
+     * @return
+     */
+    public Long getId();
+
+    /**
+     * 失效状态
+     * @param sysPosition
+     */
+    public void delete(SysPosition sysPosition);
+
+    /**
+     * 新增
+     */
+    public void add(SysPosition sysPosition);
+
+    /**
+     * 更新
+     */
+    public void update(SysPosition sysPosition);
+
+
+
     public List<TreeNodeVo> getPositionTree(String positionId);
 
     public List<SysPositionVo> getPositionRel(String positionId,String isSearchlower);
+
+    public String getRolesByPositionId(String positionId);
 }

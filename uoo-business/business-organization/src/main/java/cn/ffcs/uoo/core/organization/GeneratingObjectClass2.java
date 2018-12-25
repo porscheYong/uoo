@@ -20,7 +20,8 @@ import java.io.File;
  * @since 2018/10/15
  */
 public class GeneratingObjectClass2 {
-    public static String scDir = "cn.ffcs.uoo.system.controller";
+    //public static String scDir = "cn.ffcs.uoo.system.controller";
+    public static String scDir = "cn.ffcs.uoo.core.resource";
     public static String scXmlDir = "src.main.resources";
     public static String authorName = "ffcs-gzb";
     public static String dbuser = "octopus";
@@ -43,7 +44,7 @@ public class GeneratingObjectClass2 {
 
 //    public static String[] tabeNamesList={"TB_POSITION200","TB_POST","TB_POST_LOCATION","TB_POSITION","TB_ORG_POSITION_REL"
 //    ,"TB_POST2","TB_ORG_POST_REL"};
-    public static String[] tabeNamesList = {"SYS_POSITION","SYS_ORGANIZATION","SYS_DEPT_POSITION_REF"};
+    public static String[] tabeNamesList = {"MODIFY_HISTORY"};
 public static String modelName="public-gg";
     public static void main(String[] args) {
         File f = new File(modelName);
@@ -83,7 +84,7 @@ public static String modelName="public-gg";
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setTablePrefix(new String[] { "TB_"});
+        //strategy.setTablePrefix(new String[] { "TB_"});
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
         strategy.setInclude(tabelNames); // 需要生成相关代码的表名
         // 自定义 dao 父类

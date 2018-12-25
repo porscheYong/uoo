@@ -81,7 +81,7 @@ function initTable (results) {
             },
             { 'data': "regionType", 'title': '区域类型' , 'className': 'user-account' ,'defaultContent':'',
             	'render': function (data, type, row, meta) {
-              		var types='未知类型：'+data;
+              		var types='';
             	  	for(var i=0;i<parent.typeArray.length;i++){
             	  		if(parent.typeArray[i].itemValue==data){
             	  			types=parent.typeArray[i].itemCnname;

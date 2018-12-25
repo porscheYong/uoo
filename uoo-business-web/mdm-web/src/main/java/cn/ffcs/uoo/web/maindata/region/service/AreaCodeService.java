@@ -14,7 +14,8 @@ import cn.ffcs.uoo.web.maindata.region.service.fallback.AreaCodeServiceHystrix;
 import cn.ffcs.uoo.web.maindata.region.vo.ResponseResult;
 @FeignClient(value = "business-region",configuration = {FeignClientConfiguration.class},fallback = AreaCodeServiceHystrix.class)
 public interface AreaCodeService {
-    
+    @GetMapping("/region/areaCode/getAreaCodeByPollocId/id={id}")
+    public ResponseResult getAreaCodeByPollocId(@PathVariable(value = "id") Long id);
     @GetMapping("/region/areaCode/getAreaCode/id={id}")
     public ResponseResult getAreaCode(@PathVariable(value = "id") Long id);
     

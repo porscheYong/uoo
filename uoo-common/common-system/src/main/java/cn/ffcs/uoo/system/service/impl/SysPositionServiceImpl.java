@@ -11,6 +11,7 @@ import cn.ffcs.uoo.system.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +25,53 @@ import java.util.List;
 @Service
 public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPosition> implements SysPositionService {
 
+    /**
+     * 获取seq
+     * @return
+     */
+    @Override
+    public Long getId(){
+        return baseMapper.getId();
+    }
+
+    /**
+     * 失效状态
+     * @param sysPosition
+     */
+    @Override
+    public void delete(SysPosition sysPosition){
+        sysPosition.setStatusCd("1100");
+        sysPosition.setStatusDate(new Date());
+        sysPosition.setUpdateDate(new Date());
+        sysPosition.setUpdateUser(0L);
+        updateById(sysPosition);
+    }
+
+
+
+    /**
+     * 新增
+     */
+    @Override
+    public void add(SysPosition sysPosition){
+        sysPosition.setCreateDate(new Date());
+        sysPosition.setCreateUser(0L);
+        sysPosition.setStatusCd("1000");
+        sysPosition.setStatusDate(new Date());
+        insert(sysPosition);
+    }
+
+    /**
+     * 更新
+     */
+    @Override
+    public void update(SysPosition sysPosition){
+        sysPosition.setUpdateDate(new Date());
+        sysPosition.setUpdateUser(0L);
+        sysPosition.setStatusDate(new Date());
+        updateById(sysPosition);
+    }
+
     @Override
     public List<TreeNodeVo> getPositionTree(String positionId){
         return baseMapper.getPositionTree(positionId);
@@ -32,5 +80,10 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
     @Override
     public List<SysPositionVo> getPositionRel(String positionId, String isSearchlower){
         return baseMapper.getPositionRel(positionId,isSearchlower);
+    }
+
+    @Override
+    public String getRolesByPositionId(String positionId){
+        return baseMapper.getRolesByPositionId(positionId);
     }
 }

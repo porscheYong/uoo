@@ -191,6 +191,10 @@ public class TbPersonnelController extends BaseController {
         tbPersonnel.setGender(IDCardUtil.getGender(editFormPersonnelVo.getCertNo()));
         tbPersonnelService.insertOrUpdateTbPsn(tbPersonnel);
 
+        if(!StrUtil.isNullOrEmpty(editFormPersonnelVo.getImage())){
+            tbPersonnelImageService.updatePsnId(personnelId, Long.valueOf(editFormPersonnelVo.getImage()));
+        }
+
         /**  2、证件           */
         tbCertService.insertOrUpdateTbCert(personnelId, editFormPersonnelVo.getCertType(),editFormPersonnelVo.getCertNo(),
                 editFormPersonnelVo.getPsnName(), editFormPersonnelVo.getAddress());
@@ -268,6 +272,10 @@ public class TbPersonnelController extends BaseController {
         TbPersonnel tbPersonnel = new TbPersonnel();
         BeanUtils.copyProperties(personnelVo, tbPersonnel);
         tbPersonnel.setGender(IDCardUtil.getGender(editFormPersonnelVo.getCertNo()));
+
+        if(!StrUtil.isNullOrEmpty(personnelVo.getImage())){
+            tbPersonnelImageService.updatePsnId(personnelVo.getPersonnelId(), Long.valueOf(personnelVo.getImage()));
+        }
 
         tbPersonnelService.insertOrUpdateTbPsn(tbPersonnel);
 
@@ -400,7 +408,7 @@ public class TbPersonnelController extends BaseController {
         /**  6、家庭成员信息      */
         tbFamilyService.delTbFamilyByPsnId(personnelId);
 
-        /**  7、家庭成员信息      */
+        /**  7、图片信息      */
         tbPersonnelImageService.delTbPersonnelImageByPsnId(personnelId);
 
         /**  8、删除人员组织关系      */

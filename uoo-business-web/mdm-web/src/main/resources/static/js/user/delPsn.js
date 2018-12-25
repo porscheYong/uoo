@@ -8,7 +8,7 @@ var orgNum;
 //删除人员组织关系
 function deleteOrgPsn(){        
     var psnInfo={
-        "orgTreeId": "1",
+        "orgTreeId": orgTreeId,
         "orgId": orgId,
         "personnelId": parseInt(personnelId)
       };

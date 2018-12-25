@@ -8,6 +8,9 @@ var orgName = getQueryString('name');
 var addOrg = getQueryString('addOrg');
 var personalData={},genderData,certTypeData,nationData,pliticalStatusData,marriageData,orgInfo={},
     userFormValidate,jobFormValidate,eduFormValidate,familyFormValidate,orgFormValidate;
+var toastr = window.top.toastr;
+var psnImageId;
+var imgUrl = "";
 // lulu ui select插件
 // seajs.use('../../../static/vendors/lulu/js/common/ui/Select', function () {
 //   $('select').selectMatch();
@@ -169,7 +172,25 @@ function getOrgPersonnerList () {
 
     })
 }
+
+//获取人员头像
+function getPsnImage(){
+    $http.get('/psnImage/getPsnImage', {
+        personnelId: personnelId
+    }, function (data) {
+        if(data != null){
+            imgUrl =  "data:image/png;base64," + data.image;
+            $('#psnImg').attr("src",imgUrl);
+            $('#psnimg2').attr("src",imgUrl);
+            $('#psnimg1').attr("src",imgUrl);
+        }
+    }, function (err) {
+
+    })
+}
+
 function initUser(){
+    psnImageId=personalData.personalData.image;
     $('#userEditButton').show();
     //预编译模板
     var userTemplate = Handlebars.compile($("#userTemplate").html());
@@ -180,6 +201,7 @@ function initUser(){
     //输入模板
     $('#userInfo').html(userHtml);
     // $('#baseInfo').html(baseHtml);
+    getPsnImage();
 }
 function initUserList(){
     $('#userEditButton').show();
@@ -192,6 +214,7 @@ function initUserList(){
     //输入模板
     //$('#userInfo').html(userHtml);
     $('#baseInfo').html(baseHtml);
+    getPsnImage();
 }
 function initOrgInfo(){
     //预编译模板
@@ -334,7 +357,7 @@ function  editUser() {
              });
          });*/
     });
-
+    getPsnImage();
 }
 function editOrgInfo(){
 
@@ -788,24 +811,71 @@ function addFamily(){
     });
 }
 function addPsonImg(){
+    var isIE=!!window.ActiveXObject;
+    var isIE8910=isIE&&document.documentMode<11;
+    
+    if(isIE8910){
+        xmlHttp = new ActiveXObject("MSXML2.XMLHTTP");
+        xmlHttp.open("POST",this.value, false);
+        xmlHttp.send("");
+        xml_dom = new ActiveXObject("MSXML2.DOMDocument");
+        tmpNode = xml_dom.createElement("tmpNode");
+        tmpNode.dataType = "bin.base64";
+        tmpNode.nodeTypedValue = xmlHttp.responseBody;
+        imgData = "data:image/"+ "bmp" +";base64," + tmpNode.text.replace(/\n/g,"");
+        $("#psnImg").attr('src', imgData);
+        convertToFile(imgData);
+    }else{
+        var $file = $('#choseFileImg');
+        var fileObj = $file[0];
+        if(fileObj.value!=""){
+            var dataURL;
+            var fr = new FileReader;
+            var $img = $("#psnImg");
+            fr.readAsDataURL(fileObj.files[0]);
+            fr.onload=function(){
+                dataURL = fr.result;
+                // console.log(dataURL);
+                $img.attr('src', dataURL);
+                setTimeout(convertToFile(dataURL),"500");
+            } 
+        }
+    }
+}
+
+function convertToFile(base64Codes){
     var formData = new FormData();
-    formData.append('psnImageId', $('#psnImageId').val());
-    formData.append('multipartFile', $('#choseFileImg').val());
-    $.ajax({
-        url: "/psnImage/uploadImg",
-        type: "PUT",
-        data: formData,
-        contentType: false,
-        processData: false,
-        mimeType: "multipart/form-data",
-        success: function (data) {
 
+    // formData.append("psnImageId", $('#psnImageId').val());
+    formData.append("multipartFile",convertBase64UrlToBlob(base64Codes));	
+    $.ajax({			//提交表单，异步上传图片
+        url : "/psnImage/uploadImg",  //上传图片调用的服务
+        type : "POST",
+        data : formData,
+        // dataType:"json",
+        processData : false,         // 告诉jQuery不要去处理发送的数据
+        contentType : false,        // 告诉jQuery不要去设置Content-Type请求头
+        success:function(data){
+            toastr.success(data.message);
+            psnImageId = data.data.psnImageId;
         },
-        error: function (data) {
-
+        error:function(data){
+            console.log(data);
         }
     });
 }
+
+function convertBase64UrlToBlob(urlData){
+    var bytes=window.atob(urlData.split(',')[1]);        //去掉url的头，并转换为byte
+    var ab = new ArrayBuffer(bytes.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < bytes.length; i++) {
+        ia[i] = bytes.charCodeAt(i);
+    }
+    return new Blob( [ab] , {type : 'image/png'});
+}
+
+
 function updatePersonnel(){
     if (!userFormValidate.isAllPass())
         return;
@@ -829,7 +899,7 @@ function updatePersonnel(){
     updates.toWorkTime=toWorkTime;
     updates.marriage=marriage;
     updates.pliticalStatus=pliticalStatus;
-
+    updates.image=psnImageId;
     var tbMobileVoList =new Array();
     var mobiles=$("input[name='mobiles']").each(function(){
         var obj={};
@@ -863,6 +933,8 @@ function updatePersonnel(){
 
     updates.tbMobileVoList=tbMobileVoList;
     updates.tbEamilVoList=tbEamilVoList;
+
+    updates.image = psnImageId.toString();
 
     $.ajax({
         url:'/personnel/updatePersonnel',
@@ -1143,6 +1215,7 @@ $(document).ready(function(){
     getFamilyInfo();
     getOrgPersonnerList();
     getUserAccount();
+    getPsnImage();
 
 });
 function gotoAccout(i){

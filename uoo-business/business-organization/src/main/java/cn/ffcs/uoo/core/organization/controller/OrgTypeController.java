@@ -108,15 +108,19 @@ public class OrgTypeController extends BaseController {
     public ResponseResult<List<TreeNodeVo>> getFullOrgTypeTree(String id,String orgTypeCode,String orgId){
         ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
         ret.setState(ResponseResult.STATE_OK);
-        if (StrUtil.isNullOrEmpty(orgId)) {
-            ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织id不能为空");
-        }
-        List<TreeNodeVo> treeNodeVos = new ArrayList<>();
-        if(StrUtil.isNullOrEmpty(id)){
-            ret.setData(orgTypeService.selectFullOrgTypeTreeByOrgId(id,orgTypeCode,orgId));
+//        if (StrUtil.isNullOrEmpty(orgId)) {
+//            ret.setState(ResponseResult.PARAMETER_ERROR);
+//            ret.setMessage("组织id不能为空");
+//        }
+//        List<TreeNodeVo> treeNodeVos = new ArrayList<>();
+        if(!StrUtil.isNullOrEmpty(orgId)){
+            if(StrUtil.isNullOrEmpty(id)){
+                ret.setData(orgTypeService.selectFullOrgTypeTreeByOrgId(id,orgTypeCode,orgId));
+            }else{
+                ret.setData(orgTypeService.selectOrgTypeTree(id,orgTypeCode));
+            }
         }else{
-            ret.setData(orgTypeService.selectOrgTypeTree(id,orgTypeCode));
+            ret.setData(orgTypeService.selectFullOrgTypeTree());
         }
 
         ret.setMessage("成功");

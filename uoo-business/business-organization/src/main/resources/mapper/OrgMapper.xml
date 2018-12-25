@@ -96,40 +96,7 @@
 
     <select id="selectOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
 
-        <!--WITH ORGTREE AS(-->
-        <!--SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,-->
-        <!--ORG_NAME,ORG_ID,SUP_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD-->
-        <!--FROM (SELECT A.* ,B.SUP_ORG_ID-->
-        <!--FROM TB_ORG A, TB_ORG_REL B-->
-        <!--WHERE A.ORG_ID = B.ORG_ID-->
-        <!--AND A.STATUS_CD = 1000-->
-        <!--AND B.STATUS_CD = 1000) AA-->
-        <!--START WITH ORG_ID = #{orgVo.orgRootId}-->
-        <!--CONNECT BY PRIOR AA.ORG_ID = AA.SUP_ORG_ID-->
-        <!--),ORGTYPE AS(-->
-        <!--SELECT-->
-        <!--A.ORG_ID,-->
-        <!--B.ORG_TYPE_NAME-->
-        <!--FROM TB_ORG_ORGTYPE_REL A, TB_ORG_TYPE B-->
-        <!--WHERE A.STATUS_CD = '1000'-->
-        <!--AND B.STATUS_CD = '1000'-->
-        <!--AND A.ORG_TYPE_ID = B.ORG_TYPE_ID-->
-        <!--)-->
-        <!--SELECT D.ORG_ID ORGID,-->
-        <!--D.ORG_NAME ORGNAME,-->
-        <!--D.FULL_NAME FULLNAME,-->
-        <!--D.STATUS_CD STATUSCD,-->
-        <!--D.ORG_CODE ORGCODE,-->
-        <!--D.LOC_ID LOCID,-->
-        <!--PL.LOC_CODE LOCCODE,-->
-        <!--PL.LOC_NAME LOCNAME,-->
-        <!--(select to_char(wm_concat(a.ORG_TYPE_NAME)) from ORGTYPE a where a.ORG_ID = D.ORG_ID  ) ORGTYPESPLIT-->
-        <!--FROM (SELECT * FROM ORGTREE WHERE 1=1-->
-        <!--<if test="orgVo.orgId != null and orgVo.orgId != ''">-->
-           <!--AND SUP_ORG_ID = #{orgVo.orgId}-->
-        <!--</if>-->
-        <!--ORDER BY SORT-->
-        <!--) D LEFT JOIN ( SELECT * FROM  TB_POLITICAL_LOCATION WHERE STATUS_CD='1000') PL ON PL.LOC_ID=D.LOC_ID-->
+
         SELECT * FROM (
         SELECT D.ORG_ID ORGID,
         D.ORG_NAME ORGNAME,
@@ -191,17 +158,6 @@
     </select>
 
     <select id="getSysFullName" resultType="java.lang.String">
-<!--
-        SELECT FULL_NAME fullName FROM (
-        SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,
-        ORG_NAME,ORG_ID,PARENT_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD
-        FROM (SELECT A.* ,B.PARENT_ORG_ID
-        FROM TB_ORG A, TB_ORG_REL B
-        WHERE A.ORG_ID = B.ORG_ID
-        AND A.STATUS_CD = 1000
-        AND B.STATUS_CD = 1000) AA
-        START WITH ORG_ID = #{orgRootId}
-        CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID ) AA where AA.ORG_ID = #{orgId}-->
 
 
         SELECT * FROM (
@@ -239,28 +195,8 @@
 
 
 
-
-
-    <!--<select id="insertByObj" parameterType="cn.ffcs.uoo.core.organization.vo.OrgVo">-->
-    <!--INSERT INTO tb_org (ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE-->
-	<!--, SHORT_NAME, ORG_NAME_EN, FULL_NAME, CITY_TOWN, OFFICE_PHONE-->
-	<!--, FOUNDING_TIME, ORG_SCALE, ORG_LEVEL, ORG_POSITION_LEVEL, SORT-->
-	<!--, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUselectOrgRelPageS_CD-->
-	<!--, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE)-->
-      <!--VALUES (213524,#{OrgVo.locId}, #{OrgVo.areaCodeId}, #{OrgVo.orgName}, #{OrgVo.orgCode}-->
-	<!--, #{OrgVo.shortName}, #{OrgVo.orgNameEn},  #{OrgVo.fullName},  #{OrgVo.cityTown},#{OrgVo.officePhone}-->
-	<!--, #{OrgVo.foundingTime}, #{OrgVo.orgScale},  #{OrgVo.orgLevel},  #{OrgVo.orgPositionLevel}, #{OrgVo.sort}-->
-	<!--, #{OrgVo.orgContent}, #{OrgVo.orgDesc}, #{OrgVo.address}, #{OrgVo.uuid}, '1000'-->
-	<!--, to_date('16-11-2018 16:02:53', 'dd-mm-yyyy hh24:mi:ss'), 0, to_date('16-11-2018 16:02:53', 'dd-mm-yyyy hh24:mi:ss'), 0, to_date('16-11-2018 16:02:53', 'dd-mm-yyyy hh24:mi:ss'));-->
-    <!--</select>-->
     <select id="selectOrgByOrgId" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
-      <!--  SELECT A.ORG_ID orgId,A.LOC_ID locId,A.AREA_CODE_ID areaCodeId,A.ORG_NAME orgName,A.ORG_CODE orgCode,A.SHORT_NAME shortName,
-        A.ORG_NAME_EN orgNameEn,A.FULL_NAME fullName,
-        A.CITY_TOWN cityTown,A.OFFICE_PHONE officePhone,TO_CHAR(A.FOUNDING_TIME, 'YYYY-MM-DD HH24:MI:SS') foundingTime,
-        A.ORG_SCALE orgScale,A.ORG_LEVEL orgLevel,A.ORG_POSITION_LEVEL orgPositionLevel,
-        A.SORT sort,A.ORG_CONTENT orgContent,A.ORG_DESC orgDesc,A.ADDRESS address,
-        TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') createDate,ORG_MART_CODE orgMartCode FROM TB_ORG  A where A.org_id=#{orgId}
-       -->
+
         SELECT A.ORG_ID ORGID,
         A.LOC_ID LOCID,
         A.AREA_CODE_ID AREACODEID,
