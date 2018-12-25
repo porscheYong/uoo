@@ -45,7 +45,7 @@
 	<select id="getMenuByAccout" resultType="cn.ffcs.uoo.system.entity.SysMenu"
 		parameterType="java.util.HashMap">
 		SELECT
-        m.*
+        DISTINCT(m.MENU_ID),m.*
         FROM
         SYS_MENU m
         LEFT JOIN SYS_PERMISSION_MENU_REL pmr ON pmr.MENU_CODE = m.MENU_CODE
