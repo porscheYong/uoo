@@ -57,6 +57,19 @@ seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
     });
 });
   
+//获取人员头像
+function getPsnImage(){
+    $http.get('/psnImage/getPsnImage', {
+        personnelId: personnelId
+    }, function (data) {
+        if(data != null){
+            imgUrl =  "data:image/png;base64," + data.image;
+            $("#psnImg").attr("src",imgUrl);
+        }
+    }, function (err) {
+  
+    })
+}
 
 function getSubUser(acctId) {       //查看并编辑从账号    
     var date = new Date();        
@@ -248,7 +261,8 @@ function initSubInfo(results){  //编辑时初始化信息
     }
 }
 
-function initSubAcctInfoCheck(results){       //初始化从账号信息(编辑时查看面板)
+function initSubAcctInfoCheck(results){       //初始化从账号信息(查看)
+    getPsnImage();
     isNull("#psnNameLable",results.psnName);
     isNull("#mobileLable",results.mobilePhone);
     isNull("#emailLable",results.eamil);

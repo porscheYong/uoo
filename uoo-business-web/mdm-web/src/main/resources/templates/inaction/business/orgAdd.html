@@ -167,7 +167,7 @@
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="orgPositionLevel" class="form-item-label col-md-4 col-sm-4 col-xs-12" 
-                            style="padding-right: 18px;line-height: 40px;text-align:right;width:136px;margin-left:-12px">组织最高岗位级别</label>
+                            style="padding-right: 20px;line-height: 40px;text-align:right;">最高岗位级别</label>
                       <select id="orgPositionLevel"  class="col-md-8 col-sm-8 col-xs-12">
                         <option></option>
                       </select>
@@ -198,8 +198,8 @@
 
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="areaCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">区号</label>
-                      <input id="areaCode" class="ui-input col-md-8 col-sm-8 col-xs-12">
+                      <label for="areaCode" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">区号</label>
+                      <select id="areaCode" class="ui-input col-md-8 col-sm-8 col-xs-12" required onchange="getAreaCodeId()"></select>
                     </div>
                   </div>
                 </div>
