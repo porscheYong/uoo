@@ -225,11 +225,22 @@ function openLocationDialog() {
 //根据电信管理区域ID获取区号
 function getAreaId(regionId) {
     $http.get('/region/areaCode/getAreaCodeByPollocId/id='+ regionId, {}, function (data) {
-        areaCodeId = data[0].areaCodeId;
-        $('#areaCode').val(data[0].areaCode);
+        if (data[0])
+            areaCodeId = data[0].areaCodeId;
+        var option = '';
+        for (var i = 0; i < data.length; i++) {
+            option += "<option value='" + data[i].areaCodeId + "'>" + data[i].areaCode +"</option>";
+        }
+        $('#areaCode').html(option);
+        $('#areaCode').selectMatch();
+        formValidate.isPass($('#areaCode'));
     }, function (err) {
 
     })
+}
+//根据拉下框获取当前选中的区号ID
+function getAreaCodeId() {
+    areaCodeId = $(this).children('option:selected').val();
 }
 
 // 获取规模字典数据
