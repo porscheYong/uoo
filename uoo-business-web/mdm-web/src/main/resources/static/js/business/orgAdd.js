@@ -149,10 +149,10 @@ function openTypeDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#orgTypeList').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
             orgTypeList = checkNode;
+            parent.layer.close(index);
             //选择组织类别为营销组织类型
             if (orgTypeList.length == 0 && editSmallField) {
                 editSmallField = false;
@@ -210,10 +210,10 @@ function openPositionDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#positionList').importTags(checkNode);
             // $('.ui-tips-error').css('display', 'none');
             positionList = checkNode;
+            parent.layer.close(index);
         },
         btn2: function(index, layero){},
         cancel: function(){}
@@ -235,11 +235,11 @@ function openPostDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#postList').importTags(checkNode);
             //TODO 防止选中标签显示错误提示
             // $('.ui-tips-error').css('display', 'none');
             orgPostList = checkNode;
+            parent.layer.close(index);
         },
         btn2: function(index, layero){},
         cancel: function(){}
@@ -261,11 +261,11 @@ function openLocationDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#locationList').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
             locationList = checkNode;
             getAreaId(checkNode[0].id);
+            parent.layer.close(index);
         },
         btn2: function(index, layero){},
         cancel: function(){}
