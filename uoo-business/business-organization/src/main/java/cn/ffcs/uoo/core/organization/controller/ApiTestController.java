@@ -62,7 +62,7 @@ public class ApiTestController {
         HashMap<String,Object> obj = new HashMap<String,Object>();
         obj.put("OLD_OBJ",orgVo1);
         obj.put("NEW_OBJ",orgVo1);
-        expandovalueService.addModifyHistory11(orgVo1);
+ //       expandovalueService.addModifyHistory11(orgVo1);
  //       expandovalueService.addModifyHistory(obj);
 
 

@@ -4,6 +4,7 @@ import cn.ffcs.uoo.core.resource.entity.ModifyHistory;
 import cn.ffcs.uoo.core.resource.dao.ModifyHistoryMapper;
 import cn.ffcs.uoo.core.resource.service.ModifyHistoryService;
 import cn.ffcs.uoo.core.resource.util.StrUtil;
+import cn.ffcs.uoo.core.resource.vo.ModifyHistoryVo;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
