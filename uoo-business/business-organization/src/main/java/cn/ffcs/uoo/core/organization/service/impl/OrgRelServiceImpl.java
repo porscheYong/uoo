@@ -49,14 +49,14 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
         orgRel.setStatusCd("1100");
         orgRel.setStatusDate(new Date());
         orgRel.setUpdateDate(new Date());
-        orgRel.setUpdateUser(0L);
+        orgRel.setUpdateUser(StrUtil.isNullOrEmpty(orgRel.getUpdateUser())?0L:orgRel.getUpdateUser());
         updateById(orgRel);
     }
 
     @Override
     public void add(OrgRel orgRel){
         orgRel.setCreateDate(new Date());
-        orgRel.setCreateUser(0L);
+        orgRel.setCreateUser(StrUtil.isNullOrEmpty(orgRel.getCreateUser())?0L:orgRel.getCreateUser());
         orgRel.setStatusCd("1000");
         orgRel.setStatusDate(new Date());
         insert(orgRel);
@@ -66,7 +66,7 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
     @Override
     public void update(OrgRel orgRel){
         orgRel.setUpdateDate(new Date());
-        orgRel.setUpdateUser(0L);
+        orgRel.setUpdateUser(StrUtil.isNullOrEmpty(orgRel.getUpdateUser())?0L:orgRel.getUpdateUser());
         orgRel.setStatusDate(new Date());
         updateById(orgRel);
     }

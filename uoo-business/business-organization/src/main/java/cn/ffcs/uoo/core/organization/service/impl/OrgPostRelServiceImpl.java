@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.organization.service.impl;
 import cn.ffcs.uoo.core.organization.entity.OrgPostRel;
 import cn.ffcs.uoo.core.organization.dao.OrgPostRelMapper;
 import cn.ffcs.uoo.core.organization.service.OrgPostRelService;
+import cn.ffcs.uoo.core.organization.util.StrUtil;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -27,14 +28,14 @@ public class OrgPostRelServiceImpl extends ServiceImpl<OrgPostRelMapper, OrgPost
         orgPostRel.setStatusCd("1100");
         orgPostRel.setStatusDate(new Date());
         orgPostRel.setUpdateDate(new Date());
-        orgPostRel.setUpdateUser(0L);
+        orgPostRel.setUpdateUser(StrUtil.isNullOrEmpty(orgPostRel.getUpdateUser())?0L:orgPostRel.getUpdateUser());
         updateById(orgPostRel);
     }
 
     @Override
     public void add(OrgPostRel orgPostRel){
         orgPostRel.setCreateDate(new Date());
-        orgPostRel.setCreateUser(0L);
+        orgPostRel.setCreateUser(StrUtil.isNullOrEmpty(orgPostRel.getCreateUser())?0L:orgPostRel.getCreateUser());
         orgPostRel.setStatusCd("1000");
         orgPostRel.setStatusDate(new Date());
         insert(orgPostRel);
@@ -44,7 +45,7 @@ public class OrgPostRelServiceImpl extends ServiceImpl<OrgPostRelMapper, OrgPost
     @Override
     public void update(OrgPostRel orgPostRel){
         orgPostRel.setUpdateDate(new Date());
-        orgPostRel.setUpdateUser(0L);
+        orgPostRel.setUpdateUser(StrUtil.isNullOrEmpty(orgPostRel.getUpdateUser())?0L:orgPostRel.getUpdateUser());
         orgPostRel.setStatusDate(new Date());
         updateById(orgPostRel);
     }

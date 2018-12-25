@@ -122,6 +122,7 @@ public class OrgTreeController extends BaseController {
         org.setFullName(orgTree.getOrgTreeName());
         org.setUuid(StrUtil.getUUID());
         org.setOrgCode(orgService.getGenerateOrgCode());
+        org.setCreateUser(orgTree.getUpdateUser());
         orgService.add(org);
 
         OrgRel orgRelRoot = new OrgRel();
@@ -130,6 +131,7 @@ public class OrgTreeController extends BaseController {
         orgRelRoot.setOrgId(orgId);
         orgRelRoot.setRefCode(ort.getRefCode());
         orgRelRoot.setStatusCd("1000");
+        orgRelRoot.setCreateUser(orgTree.getUpdateUser());
         orgRelService.add(orgRelRoot);
 
         Long orgTreeId = orgTreeService.getId();
@@ -138,26 +140,8 @@ public class OrgTreeController extends BaseController {
         orgTree.setOrgId(String.valueOf(orgId));
         orgTree.setOrgTreeType(orgTree.getOrgTreeType());
         orgTree.setSort(orgTree.getSort());
+        orgTree.setCreateUser(orgTree.getUpdateUser());
         orgTreeService.add(orgTree);
-
-
-//        OgtOrgReltypeConf ogtOrgReftypeConf = new OgtOrgReltypeConf();
-//        for(OrgRelType orgRelType : orgRelTypeList){
-//            Long ogtOrgReftypeConfId = ogtOrgReltypeConfService.getId();
-//            ogtOrgReftypeConf.setOrgTreeId(orgTreeId);
-//            ogtOrgReftypeConf.setOrgRelTypeId(orgRelType.getOrgRelTypeId());
-//            ogtOrgReftypeConf.setOgtOrgReltypeConfId(ogtOrgReftypeConfId);
-//            ogtOrgReltypeConfService.add(ogtOrgReftypeConf);
-//
-//        }
-        //        Wrapper orgRelTypeWrapper = Condition.create().eq("STATUS_CD","1000")
-//                .eq("REF_CODE",orgRelTypeList.get(0).getRefCode());
-//        OrgRelType orgtype = orgRelTypeService.selectOne(orgRelTypeWrapper);
-//        if(orgtype==null){
-//            ret.setMessage("组织关系类型不存在");
-//            ret.setState(ResponseResult.PARAMETER_ERROR);
-//            return ret;
-//        }
 
 
         OgtOrgReltypeConf ogtOrgReftypeConf = new OgtOrgReltypeConf();
@@ -165,6 +149,7 @@ public class OrgTreeController extends BaseController {
         ogtOrgReftypeConf.setOrgTreeId(orgTreeId);
         ogtOrgReftypeConf.setOrgRelTypeId(ort.getOrgRelTypeId());
         ogtOrgReftypeConf.setOgtOrgReltypeConfId(ogtOrgReftypeConfId);
+        ogtOrgReftypeConf.setCreateUser(orgTree.getUpdateUser());
         ogtOrgReltypeConfService.add(ogtOrgReftypeConf);
 
 
@@ -175,6 +160,7 @@ public class OrgTreeController extends BaseController {
             ogtOrgtypeConf.setOrgTreeId(orgTreeId);
             ogtOrgtypeConf.setOrgTypeId(ot.getOrgTypeId());
             ogtOrgtypeConf.setOgtOrgtypeConfId(ogtOrgtypeConfId);
+            ogtOrgtypeConf.setCreateUser(orgTree.getUpdateUser());
             ogtOrgtypeConfService.add(ogtOrgtypeConf);
         }
 
@@ -205,6 +191,7 @@ public class OrgTreeController extends BaseController {
                 }
                 orgRel.setRefCode(ort.getRefCode());
                 orgRel.setStatusCd("1000");
+                orgRel.setCreateUser(orgTree.getUpdateUser());
                 orgRelService.add(orgRel);
 
                 //新增组织层级
@@ -215,6 +202,7 @@ public class OrgTreeController extends BaseController {
                 orgLevel.setOrgLevel(Integer.valueOf(vo.getLevel()));
                 orgLevel.setOrgTreeId(orgTreeId);
                 orgLevel.setStatusCd("1000");
+                orgLevel.setCreateUser(orgTree.getUpdateUser());
                 orgLevelService.add(orgLevel);
 
                 //组织组织树关系
@@ -224,6 +212,7 @@ public class OrgTreeController extends BaseController {
                 orgOrgtreeRef.setOrgId(new Long(vo.getId()));
                 orgOrgtreeRef.setOrgTreeId(orgTreeId);
                 orgOrgtreeRef.setStatusCd("1000");
+                orgOrgtreeRef.setCreateUser(orgTree.getUpdateUser());
                 orgOrgtreeRelService.add(orgOrgtreeRef);
 
                 String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+vo.getId()+"}}" ;
@@ -347,6 +336,7 @@ public class OrgTreeController extends BaseController {
                 ogtOrgtypeConf.setOrgTreeId(orgTree.getOrgTreeId());
                 ogtOrgtypeConf.setOrgTypeId(ot.getOrgTypeId());
                 ogtOrgtypeConf.setOgtOrgtypeConfId(ogtOrgtypeConfId);
+                ogtOrgtypeConf.setCreateUser(orgTree.getUpdateUser());
                 ogtOrgtypeConfService.add(ogtOrgtypeConf);
             }
         }
@@ -359,6 +349,7 @@ public class OrgTreeController extends BaseController {
                 }
             }
             if(!isExists){
+                ogtOrgtypeConf.setUpdateUser(orgTree.getUpdateUser());
                 ogtOrgtypeConfService.delete(ogtOrgtypeConf);
             }
         }
@@ -368,8 +359,10 @@ public class OrgTreeController extends BaseController {
         TreeStaffTypeRel treeStaffTypeRelCur = treeStaffTypeRelService.selectOne(treeStaffRelWrapper);
         if(treeStaffTypeRelCur!=null){
             treeStaffTypeRelCur.setUserTypeId(new Long(orgTree.getUserTypeId()));
+            treeStaffTypeRelCur.setUpdateUser(orgTree.getUpdateUser());
             treeStaffTypeRelService.update(treeStaffTypeRelCur);
         }
+        otree.setUpdateUser(orgTree.getUpdateUser());
         orgTreeService.update(otree);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("更新成功");

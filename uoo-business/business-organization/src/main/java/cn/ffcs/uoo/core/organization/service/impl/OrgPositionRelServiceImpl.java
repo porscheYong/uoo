@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.organization.service.impl;
 import cn.ffcs.uoo.core.organization.entity.OrgPositionRel;
 import cn.ffcs.uoo.core.organization.dao.OrgPositionRelMapper;
 import cn.ffcs.uoo.core.organization.service.OrgPositionRelService;
+import cn.ffcs.uoo.core.organization.util.StrUtil;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -27,14 +28,14 @@ public class OrgPositionRelServiceImpl extends ServiceImpl<OrgPositionRelMapper,
         orgPositionRel.setStatusCd("1100");
         orgPositionRel.setStatusDate(new Date());
         orgPositionRel.setUpdateDate(new Date());
-        orgPositionRel.setUpdateUser(0L);
+        orgPositionRel.setUpdateUser(StrUtil.isNullOrEmpty(orgPositionRel.getUpdateUser())?0L:orgPositionRel.getUpdateUser());
         updateById(orgPositionRel);
     }
 
     @Override
     public void add(OrgPositionRel orgPositionRel){
         orgPositionRel.setCreateDate(new Date());
-        orgPositionRel.setCreateUser(0L);
+        orgPositionRel.setCreateUser(StrUtil.isNullOrEmpty(orgPositionRel.getCreateUser())?0L:orgPositionRel.getCreateUser());
         orgPositionRel.setStatusCd("1000");
         orgPositionRel.setStatusDate(new Date());
         insert(orgPositionRel);
@@ -44,7 +45,7 @@ public class OrgPositionRelServiceImpl extends ServiceImpl<OrgPositionRelMapper,
     @Override
     public void update(OrgPositionRel orgPositionRel){
         orgPositionRel.setUpdateDate(new Date());
-        orgPositionRel.setUpdateUser(0L);
+        orgPositionRel.setUpdateUser(StrUtil.isNullOrEmpty(orgPositionRel.getUpdateUser())?0L:orgPositionRel.getUpdateUser());
         orgPositionRel.setStatusDate(new Date());
         updateById(orgPositionRel);
     }

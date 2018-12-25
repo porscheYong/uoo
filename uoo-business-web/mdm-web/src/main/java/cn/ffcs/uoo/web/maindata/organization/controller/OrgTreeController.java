@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.web.maindata.organization.controller;
 
 
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgRelType;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgTree;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
@@ -11,6 +13,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +43,10 @@ public class OrgTreeController {
     })
     @RequestMapping(value = "/addOrgTree", method = RequestMethod.POST)
     public ResponseResult<String> addOrgTree(@RequestBody OrgTree orgTree){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        orgTree.setUpdateUser(userId);
         return orgTreeService.addOrgTree(orgTree);
     }
 
@@ -48,6 +56,10 @@ public class OrgTreeController {
     })
     @RequestMapping(value = "/updateOrgTree", method = RequestMethod.POST)
     public ResponseResult<String> updateOrgTree(@RequestBody OrgTree orgTree){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        orgTree.setUpdateUser(userId);
         return orgTreeService.updateOrgTree(orgTree);
     }
 

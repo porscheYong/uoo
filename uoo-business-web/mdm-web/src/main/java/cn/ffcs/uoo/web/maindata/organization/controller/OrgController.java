@@ -40,6 +40,10 @@ public class OrgController {
     })
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
     public ResponseResult addOrg(@RequestBody OrgVo org) {
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        org.setUpdateUser(userId);
         return orgService.addOrg(org);
     }
 
@@ -49,6 +53,10 @@ public class OrgController {
     })
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
     public ResponseResult updateOrg(@RequestBody OrgVo org) {
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        org.setUpdateUser(userId);
         return orgService.updateOrg(org);
     }
 
@@ -111,7 +119,7 @@ public class OrgController {
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         Long userId = currentLoginUser.getUserId();
-        return orgService.deleteOrg(orgTreeId,orgId,supOrgId);
+        return orgService.deleteOrg(orgTreeId,orgId,supOrgId,userId);
     }
 
 }

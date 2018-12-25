@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.organization.service.impl;
 import cn.ffcs.uoo.core.organization.entity.OrgCertRel;
 import cn.ffcs.uoo.core.organization.dao.OrgCertRelMapper;
 import cn.ffcs.uoo.core.organization.service.OrgCertRelService;
+import cn.ffcs.uoo.core.organization.util.StrUtil;
 import cn.ffcs.uoo.core.organization.vo.OrgCertVo;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class OrgCertRelServiceImpl extends ServiceImpl<OrgCertRelMapper, OrgCert
         orgCertRel.setStatusCd("1100");
         orgCertRel.setStatusDate(new Date());
         orgCertRel.setUpdateDate(new Date());
-        orgCertRel.setUpdateUser(0L);
+        orgCertRel.setUpdateUser(StrUtil.isNullOrEmpty(orgCertRel.getUpdateUser())?0L:orgCertRel.getUpdateUser());
         updateById(orgCertRel);
     }
 
@@ -50,7 +51,7 @@ public class OrgCertRelServiceImpl extends ServiceImpl<OrgCertRelMapper, OrgCert
     @Override
     public void add(OrgCertRel orgCertRel){
         orgCertRel.setCreateDate(new Date());
-        orgCertRel.setCreateUser(0L);
+        orgCertRel.setCreateUser(StrUtil.isNullOrEmpty(orgCertRel.getCreateUser())?0L:orgCertRel.getCreateUser());
         orgCertRel.setStatusCd("1000");
         orgCertRel.setStatusDate(new Date());
         insert(orgCertRel);
@@ -62,7 +63,7 @@ public class OrgCertRelServiceImpl extends ServiceImpl<OrgCertRelMapper, OrgCert
     @Override
     public void update(OrgCertRel orgCertRel){
         orgCertRel.setUpdateDate(new Date());
-        orgCertRel.setUpdateUser(0L);
+        orgCertRel.setUpdateUser(StrUtil.isNullOrEmpty(orgCertRel.getUpdateUser())?0L:orgCertRel.getUpdateUser());
         orgCertRel.setStatusDate(new Date());
         updateById(orgCertRel);
     }

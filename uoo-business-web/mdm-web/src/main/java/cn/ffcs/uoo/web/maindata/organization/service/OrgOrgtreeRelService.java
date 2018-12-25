@@ -25,6 +25,6 @@ import java.util.List;
 public interface OrgOrgtreeRelService{
 
     @RequestMapping(value="/orgOrgtreeRel/updateOrgOrgTreeRel",method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult<String> getFullBizOrgList(@RequestBody OrgOrgtreeRel orgOrgTreeRel);
+    public ResponseResult<String> updateOrgOrgTreeRel(@RequestBody OrgOrgtreeRel orgOrgTreeRel);
 
 }

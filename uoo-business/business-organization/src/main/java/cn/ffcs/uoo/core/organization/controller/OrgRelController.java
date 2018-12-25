@@ -283,6 +283,7 @@ public class OrgRelController extends BaseController {
         orgRel.setParentOrgId(org.getSupOrgId());
         orgRel.setRefCode(ort.getRefCode());
         orgRel.setStatusCd("1000");
+        orgRel.setCreateUser(org.getUpdateUser());
         orgRelService.add(orgRel);
 
 
@@ -301,6 +302,7 @@ public class OrgRelController extends BaseController {
             orgLevel.setOrgLevel(lv);
             orgLevel.setOrgTreeId(orgTree.getOrgTreeId());
             orgLevel.setStatusCd("1000");
+            orgLevel.setCreateUser(org.getUpdateUser());
             orgLevelService.add(orgLevel);
         }
 
@@ -311,19 +313,10 @@ public class OrgRelController extends BaseController {
         orgOrgtreeRef.setOrgId(org.getOrgId());
         orgOrgtreeRef.setOrgTreeId(orgTree.getOrgTreeId());
         orgOrgtreeRef.setStatusCd("1000");
-        orgOrgtreeRef.insert();
+        orgOrgtreeRef.setCreateUser(org.getUpdateUser());
+        orgOrgtreeRelService.add(orgOrgtreeRef);
+        //orgOrgtreeRef.insert();
 
-//        SolrInputDocument input = new SolrInputDocument();
-//        input.addField("id", orgRefId);
-//        input.addField("orgId", org.getOrgId());
-//        input.addField("orgCode", org.getOrgCode());
-//        input.addField("orgRelTypeId", ogtOrgReftypeConf.getOrgRelTypeId());
-//        input.addField("orgName", org.getOrgName());
-//        //获取系统路径
-//        String sysfullName = orgService.getSysFullName(org.getOrgRootId().toString(),org.getSupOrgId().toString());
-//        sysfullName = sysfullName+"/"+org.getOrgName();
-//        input.addField("fullName",sysfullName);
-//        solrService.addDataIntoSolr("org",input);
         TreeNodeVo vo = new TreeNodeVo();
         vo.setId(org.getOrgId().toString());
         vo.setPid(orgRefId.toString());
