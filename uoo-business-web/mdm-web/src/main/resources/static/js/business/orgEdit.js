@@ -678,7 +678,7 @@ function getOrg (orgId) {
             option = "<option value='" + areaCodeId + "'>" + data.areaCode +"</option>";
         $('#areaCode').append(option);
         $('#areaCode').selectMatch();
-        formValidate.isPass($('#areaCode'));
+        // formValidate.isPass($('#areaCode'));
 
         $('#address').val(data.address);
         $('#orgContent').val(data.orgContent);

@@ -1546,8 +1546,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             return;
         }
         if (!dd.hasClass(THIS)) {
-            dd.addClass(THIS)
-            this.addLabel(id, div, item)
+            dd.addClass(THIS);
+            this.addLabel(id, div, item);
+            data[id].values.push(item);
         }
     };
     Common.prototype.delOne = function (id, item) {
