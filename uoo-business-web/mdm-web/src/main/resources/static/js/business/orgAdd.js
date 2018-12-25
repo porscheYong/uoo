@@ -2,6 +2,7 @@ var orgId = getQueryString('id');
 var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
+var refCode = getQueryString('refCode');
 var areaCodeId = ''; //区号ID
 var locationList = [];
 var orgTypeList = [];
@@ -116,8 +117,10 @@ function openTypeDialog() {
             else {
                 for (var i = 0; i < orgTypeList.length; i++) {
                     var isSmallFieldExit = false;
-                    if (((orgTypeList[i].orgTypeCode && orgTypeList[i].orgTypeCode.substr(0, 3) == 'N11') ||
-                        (orgTypeList[i].extField1 && orgTypeList[i].extField1.substr(0, 3) == 'N11'))) {
+                    if (refCode == '0401' &&
+                        ((orgTypeList[i].orgTypeCode && orgTypeList[i].orgTypeCode.substr(0, 3) == 'N11') ||
+                         (orgTypeList[i].extField1 && orgTypeList[i].extField1.substr(0, 3) == 'N11')
+                        )) {
                         if (!editSmallField) {
                             var smallTemplate = Handlebars.compile($("#smallTemplate").html());
                             var smallHtml = smallTemplate();
@@ -305,8 +308,24 @@ function getNodeType () {
     for (var i = 0; i < nodeTypeData.length; i++) {
         option += "<option value='" + nodeTypeData[i].itemValue + "'>" + nodeTypeData[i].itemCnname +"</option>";
     }
-    $('#nodeType').append(option);
-    $('#nodeType').selectMatch();
+    $('#nodeTypes').append(option);
+    // $('#nodeType').selectMatch();
+    formSelects.render('nodeTypes');
+    formSelects.on('nodeTypes', function(id, vals, val, isAdd, isDisabled){
+        var data = formSelects.value('countType');
+        formSelects.render('countType', {
+            init: data,
+            template: function(name, value, selected, disabled){
+                if (isAdd && val.value == 'A1' && value.value == 'B2') {
+                    value.disabled = true;
+                }
+                else if (!isAdd && val.value == 'A1' && value.value == 'B2') {
+                    value.disabled = false;
+                }
+                return value.name;        //返回一个html结构, 用于显示选项
+            }
+        });
+    }, true);
 }
 
 // 获取区域级别字典数据
@@ -326,7 +345,35 @@ function getCountType () {
         option += "<option value='" + countTypeData[i].itemValue + "'>" + countTypeData[i].itemCnname +"</option>";
     }
     $('#countType').append(option);
-    $('#countType').selectMatch();
+    // $('#countType').selectMatch();
+    formSelects.render('countType');
+    formSelects.on('countType', function(id, vals, val, isAdd, isDisabled){
+        var data = formSelects.value('countType');
+        formSelects.render('countType', {
+            init: data,
+            template: function(name, value, selected, disabled){
+                if (isAdd && val.value == 'B2') {
+                    //虚拟节点
+                    if (value.value == 'B4')
+                        value.disabled = true;
+                }
+                else if (!isAdd && val.value == 'B2') {
+                    if (value.value == 'B4')
+                        value.disabled = false;
+                }
+                if (isAdd && val.value == 'B4') {
+                    //收入中心
+                    if (value.value == 'B2')
+                        value.disabled = false;
+                }
+                else if (!isAdd && val.value == 'B4') {
+                    if (value.value == 'B2')
+                        value.disabled = false;
+                }
+                return value.name;        //返回一个html结构, 用于显示选项
+            }
+        });
+    }, true);
 }
 
 // 获取承包类型字典数据
@@ -389,17 +436,25 @@ function addOrg () {
     var orgContent = $('#orgContent').val();
     var orgDesc = $('#orgDesc').val();
     //划小扩展字段
-    var nodeType = $('#nodeType option:selected') .val();
+    // var nodeType = $('#nodeType option:selected') .val();
+    var nodeType = formSelects.value('nodeTypes');
     var areaType = $('#areaType option:selected') .val();
-    var countType = $('#countType option:selected') .val();
+    // var countType = $('#countType option:selected') .val();
+    var countType = formSelects.value('countType');
     var contractType = $('#contractType option:selected') .val();
     if (editSmallField) {
         expandovalueVoList = [
-            {columnName: 'nodeType', data: nodeType},
+            // {columnName: 'nodeType', data: nodeType},
             {columnName: 'areaType', data: areaType},
-            {columnName: 'countType', data: countType},
+            // {columnName: 'countType', data: countType},
             {columnName: 'contractType', data: contractType}
         ];
+        for (var i = 0; i < nodeType.length; i++){
+            expandovalueVoList.push({columnName: 'nodeType', data: nodeType[i].value})
+        }
+        for (var i = 0; i < countType.length; i++){
+            expandovalueVoList.push({columnName: 'countType', data: countType[i].value})
+        }
     }
     $http.post('/org/addOrg', JSON.stringify({
         orgRootId: '1',

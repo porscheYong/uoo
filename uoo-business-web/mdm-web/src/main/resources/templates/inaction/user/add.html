@@ -175,19 +175,40 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="psnNbr" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">员工工号</label>
-                            <input id="psnNbr" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
+
+                    <input type="file" id="psnImgFile" name="psnImgFile" style="display: none;" accept="image/jpeg,image/gif,image/png" />   
+                    <div style="width:100%">
+                        <div class="fleft Col1" style="width: 8%;">
+                            <img class="BigFace" id="psnImg" style="position:absolute;border-radius:50%;border: 1px solid #dce1e6;bottom:-3em;right:6em;cursor: pointer" 
+                                src="{{personalData.personalData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null" onclick="setPsnImg()" />
                         </div>
                     </div>
+
                     <div class="user-table typeahead-menu">
                         <table id="userTable" class="stripe" width="100%"></table>
                     </div>
                 </div>
 
+                
+
                 <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="psnNbr" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                    style="padding-right: 20px;line-height: 40px;text-align: right;">员工工号</label>
+                            <input id="psnNbr" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="psnCode" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                    style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
+                            <input id="psnCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" disabled>
+                        </div>
+                    </div>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
                             <label for="certType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">
@@ -196,29 +217,21 @@
                             <select id="certType" class="col-md-8 col-sm-8 col-xs-12" required onchange="getSelectedCert()"></select>
                         </div>
                     </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="psnCode" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
-                            <input id="psnCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" disabled>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="certNo" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                            <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" required onkeyup="getIdCardInfo()" onpaste="getIdCardInfo()">
-                        </div>
-                    </div>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
                             <label for="ncCode" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">人力编码</label>
+                                    style="padding-right: 20px;line-height: 40px;text-align: right;">人力编码</label>
                             <input id="ncCode" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="certNo" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                                    style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                            <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" required onkeyup="getIdCardInfo()" onpaste="getIdCardInfo()">
                         </div>
                     </div>
                 </div>
@@ -226,8 +239,15 @@
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
+                            <label for="nationality" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                    style="padding-right: 20px;line-height: 40px;text-align: right;">籍贯</label>
+                            <input id="nationality" class="ui-input col-md-8 col-sm-8 col-xs-12">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
                             <label for="gender" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">性别</label>
+                                    style="padding-right: 20px;line-height: 40px;text-align: right;">性别</label>
                             <div style="line-height: 40px;" id="gender">
                                 <input type="radio" id="male" name="validateRadio" required value="1"
                                 ><label for="male" class="ui-radio"></label
@@ -239,29 +259,21 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="nationality" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">籍贯</label>
-                            <input id="nationality" class="ui-input col-md-8 col-sm-8 col-xs-12">
-                        </div>
-                    </div>
                 </div>
 
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="nation" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">民族</label>
-                            <select id="nation" class="col-md-8 col-sm-8 col-xs-12"></select>
+                            <label for="toWorkTime" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                    style="padding-right: 18px;line-height: 40px;text-align: right;width: 136px;margin-left: -12px">首次参加工作时间</label>
+                            <input id="toWorkTime" class="ui-input col-md-8 col-sm-8 col-xs-12">
                         </div>
                     </div>
-
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="toWorkTime" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 10px;line-height: 40px;text-align: right;">首次参加工作时间</label>
-                            <input id="toWorkTime" class="ui-input col-md-8 col-sm-8 col-xs-12">
+                            <label for="nation" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                    style="padding-right: 20px;line-height: 40px;text-align: right;">民族</label>
+                            <select id="nation" class="col-md-8 col-sm-8 col-xs-12"></select>
                         </div>
                     </div>
                 </div>
@@ -270,19 +282,19 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
                             <label for="pliticalStatus" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">政治面貌</label>
+                                    style="padding-right: 20px;line-height: 40px;text-align: right;">政治面貌</label>
                             <select id="pliticalStatus" class="col-md-8 col-sm-8 col-xs-12"></select>
                         </div>
                     </div>
-
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
                             <label for="marriage" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">婚姻状况</label>
+                                    style="padding-right: 20px;line-height: 40px;text-align: right;">婚姻状况</label>
                             <select id="marriage" class="col-md-8 col-sm-8 col-xs-12"></select>
                         </div>
                     </div>
                 </div>
+                
                 <!--<div class="user-table">-->
                     <!--<table id="userTable" class="stripe" width="100%"></table>-->
                 <!--</div>-->

@@ -18,6 +18,8 @@
     <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
     <!-- lulu ui -->
     <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+    <!-- lay multiselect -->
+    <link href="/vendors/multiselect/multiselect.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
@@ -164,7 +166,8 @@
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
-                      <label for="orgPositionLevel" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织最高岗位级别</label>
+                      <label for="orgPositionLevel" class="form-item-label col-md-4 col-sm-4 col-xs-12" 
+                            style="padding-right: 18px;line-height: 40px;text-align:right;width:136px;margin-left:-12px">组织最高岗位级别</label>
                       <select id="orgPositionLevel"  class="col-md-8 col-sm-8 col-xs-12">
                         <option></option>
                       </select>
@@ -179,10 +182,17 @@
                   </div>
                 </div>
                 <div class="row" style="margin-bottom: 10px;">
-                  <div class="col-md-6 col-sm-6 col-xs-12">
+                  <!-- <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="regionId" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">电信管理区域</label>
                       <input id="regionId" class="ui-input col-md-8 col-sm-8 col-xs-12" onclick="openRegionDialog()" required readonly>
+                    </div>
+                  </div> -->
+
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-item" style="width: 100%">
+                      <label for="locationList" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">行政管理区域</label>
+                      <input id="locationList" class="ui-input col-md-8 col-sm-8 col-xs-12" onclick="openLocationDialog()" required readonly>
                     </div>
                   </div>
 
@@ -203,14 +213,14 @@
                     </div>
                   </div>
                 </div>
-                <div class="row" style="margin-bottom: 10px;">
+                <!-- <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="locationList" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">行政管理区域</label>
                       <input id="locationList" class="ui-input col-md-10 col-sm-10 col-xs-12" style="width: 84%" onclick="openLocationDialog()" required readonly>
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-item" style="width: 100%">
@@ -275,8 +285,8 @@
         <div class="row" style="margin-bottom: 10px;">
           <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="form-item" style="width: 100%">
-              <label for="nodeType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">节点类型</label>
-              <select id="nodeType" class="col-md-8 col-sm-8 col-xs-12" required></select>
+              <label for="nodeTypes" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">节点类型</label>
+              <select id="nodeTypes" class="col-md-8 col-sm-8 col-xs-12" name="nodeTypes" xm-select="nodeTypes"></select>
             </div>
           </div>
 
@@ -290,15 +300,15 @@
         <div class="row">
           <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="form-item" style="width: 100%">
-              <label for="countType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">统计属性</label>
-              <select id="countType" class="col-md-8 col-sm-8 col-xs-12" required></select>
+              <label for="countType" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">统计属性</label>
+              <select id="countType" class="col-md-8 col-sm-8 col-xs-12" name="countType" xm-select="countType"></select>
             </div>
           </div>
 
           <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="form-item" style="width: 100%">
-              <label for="contractType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">承包类型</label>
-              <select id="contractType" class="col-md-8 col-sm-8 col-xs-12" required></select>
+              <label for="contractType" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">承包类型</label>
+              <select id="contractType" class="col-md-8 col-sm-8 col-xs-12"></select>
             </div>
           </div>
         </div>
@@ -320,6 +330,8 @@
     <script type="text/javascript" src="/vendors/layer/layer.js"></script>
     <!-- jquery tagsinput -->
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
+    <!-- layui multiselect -->
+    <script type="text/javascript" src="/vendors/multiselect/multiselect.js"></script>
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
     <script type="text/javascript" src="/js/business/orgAdd.js"></script>
