@@ -59,6 +59,20 @@ if (!Array.prototype.indexOf){
   };
 }
 
+//获取人员头像
+function getPsnImage(){
+  $http.get('/psnImage/getPsnImage', {
+      personnelId: personnelId
+  }, function (data) {
+      if(data != null){
+          imgUrl =  "data:image/png;base64," + data.image;
+          $("#psnImg").attr("src",imgUrl);
+      }
+  }, function (err) {
+
+  })
+}
+
 function getUser(acctId) {           //查看并编辑主账号
     var date = new Date();
     $http.get('/user/getUser', {   
@@ -210,8 +224,10 @@ function initEditUserInfo(results){     //初始化用户信息(编辑)
   }
 }
 
-function initAcctInfoCheck(results){     //初始化用户信息(编辑时查看面板)
+function initAcctInfoCheck(results){     //初始化用户信息(查看)
 
+  getPsnImage();
+  
   isNull("#psnNameLable",results.psnName);
   isNull("#mobileLable",results.mobilePhone);
   isNull("#emailLable",results.eamil);

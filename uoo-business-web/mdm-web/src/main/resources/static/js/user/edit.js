@@ -180,6 +180,9 @@ function getPsnImage(){
     }, function (data) {
         if(data != null){
             imgUrl =  "data:image/png;base64," + data.image;
+            $('#psnImg').attr("src",imgUrl);
+            $('#psnimg2').attr("src",imgUrl);
+            $('#psnimg1').attr("src",imgUrl);
         }
     }, function (err) {
 
@@ -187,6 +190,7 @@ function getPsnImage(){
 }
 
 function initUser(){
+    psnImageId=personalData.personalData.image;
     $('#userEditButton').show();
     //预编译模板
     var userTemplate = Handlebars.compile($("#userTemplate").html());
@@ -197,6 +201,7 @@ function initUser(){
     //输入模板
     $('#userInfo').html(userHtml);
     // $('#baseInfo').html(baseHtml);
+    getPsnImage();
 }
 function initUserList(){
     $('#userEditButton').show();
@@ -209,6 +214,7 @@ function initUserList(){
     //输入模板
     //$('#userInfo').html(userHtml);
     $('#baseInfo').html(baseHtml);
+    getPsnImage();
 }
 function initOrgInfo(){
     //预编译模板
@@ -351,7 +357,7 @@ function  editUser() {
              });
          });*/
     });
-
+    getPsnImage();
 }
 function editOrgInfo(){
 
@@ -893,7 +899,7 @@ function updatePersonnel(){
     updates.toWorkTime=toWorkTime;
     updates.marriage=marriage;
     updates.pliticalStatus=pliticalStatus;
-
+    updates.image=psnImageId;
     var tbMobileVoList =new Array();
     var mobiles=$("input[name='mobiles']").each(function(){
         var obj={};
