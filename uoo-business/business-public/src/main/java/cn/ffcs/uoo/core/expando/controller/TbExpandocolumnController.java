@@ -106,7 +106,7 @@ public class TbExpandocolumnController extends BaseController {
     })
     @UooLog(value = "删除扩展列", key = "removeTbExpandocolumn")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbExpandocolumn> removeTbExpandocolumn(@RequestBody Long columnId, @RequestBody Long updateUser) {
+    public ResponseResult<TbExpandocolumn> removeTbExpandocolumn(Long columnId, Long updateUser) {
         ResponseResult<TbExpandocolumn> responseResult = new ResponseResult<TbExpandocolumn>();
 
         // 校验必填项
