@@ -141,6 +141,16 @@
         .row-personnelIdS{
             display: none;
         }
+        .BigFace {
+            position:absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 60px;
+            border: 1px solid #dce1e6;
+            bottom:-3em;
+            right:6em;
+            cursor: pointer
+        }
     </style>
 </head>
 
@@ -179,8 +189,7 @@
                     <input type="file" id="psnImgFile" name="psnImgFile" style="display: none;" accept="image/jpeg,image/gif,image/png" />   
                     <div style="width:100%">
                         <div class="fleft Col1" style="width: 8%;">
-                            <img class="BigFace" id="psnImg" style="position:absolute;border-radius:50%;border: 1px solid #dce1e6;bottom:-3em;right:6em;cursor: pointer" 
-                                src="{{personalData.personalData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null" onclick="setPsnImg()" />
+                            <img class="BigFace" id="psnImg" src="{{personalData.personalData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null" onclick="setPsnImg()" />
                         </div>
                     </div>
 

@@ -10,7 +10,7 @@ var personalData={},genderData,certTypeData,nationData,pliticalStatusData,marria
     userFormValidate,jobFormValidate,eduFormValidate,familyFormValidate,orgFormValidate;
 var toastr = window.top.toastr;
 var psnImageId;
-var imgUrl;
+var imgUrl = "";
 // lulu ui select插件
 // seajs.use('../../../static/vendors/lulu/js/common/ui/Select', function () {
 //   $('select').selectMatch();
@@ -178,7 +178,9 @@ function getPsnImage(){
     $http.get('/psnImage/getPsnImage', {
         personnelId: personnelId
     }, function (data) {
-        imgUrl =  "data:image/png;base64," + data.image;
+        if(data != null){
+            imgUrl =  "data:image/png;base64," + data.image;
+        }
     }, function (err) {
 
     })

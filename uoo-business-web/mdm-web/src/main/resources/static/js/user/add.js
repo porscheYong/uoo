@@ -31,6 +31,10 @@ var orgValidate;
 var sortFlag = 0;
 var currentPage = 0;
 
+var psnImageId;
+
+var toastr = window.top.toastr;
+
 $('#orgName').html(orgName);
 parent.getOrgExtInfo();
 
@@ -1100,7 +1104,7 @@ function formatDateTime(unix) {
 
 //设置人员头像
 function setPsnImg(){  
-    // $("#psnImgFile").click();
+    $("#psnImgFile").click();
 }
 
 $("#psnImgFile").change(function(){
@@ -1149,7 +1153,7 @@ function convertToFile(base64Codes){
         contentType : false,        // 告诉jQuery不要去设置Content-Type请求头
         success:function(data){
             toastr.success(data.message);
-            psnImageId = data.data.psnImageId;
+            psnImageId = data.data.psnImageId.toString();
         },
         error:function(data){
             console.log(data);
@@ -1197,6 +1201,7 @@ function savePersonnel () {
     var tbMobileVoList = mobileList;
     var tbEamilVoList = emailList;
     $http.post('/personnel/savePersonnel', JSON.stringify({
+        image: psnImageId,
         psnName: psnName,
         gender: gender,
         certType: certType,
