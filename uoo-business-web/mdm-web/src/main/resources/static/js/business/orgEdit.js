@@ -564,6 +564,12 @@ function getNodeType () {
     $('#nodeTypes').append(option);
     // $('#nodeTypes').selectMatch();
     formSelects.render('nodeTypes');
+    for (var i = 0; i < nodeTypeList.length; i++) {
+        if (nodeTypeList[i].data == 'A1')
+            selectStandardNode = true
+        if (nodeTypeList[i].data == 'A3')
+            selectRevenueCenter = true;
+    }
     formSelects.on('nodeTypes', function(id, vals, val, isAdd, isDisabled){
         if (isAdd && val.value == 'A1') {
             selectStandardNode = true;
@@ -610,6 +616,8 @@ function getCountType (type) {
     $('#countType').append(option);
     // $('#countType').selectMatch();
     formSelects.render('countType');
+    if (selectStandardNode)
+        formSelects.oDisabled('countType', {value: 'B2'});
     formSelects.on('countType', function(id, vals, val, isAdd, isDisabled){
         if (selectRevenueCenter && !selectStandardNode) {
             if (isAdd && val.value == 'B2') {
@@ -689,6 +697,7 @@ function getOrg (orgId) {
         $('#positionList').addTag(positionList);
         $('#postList').addTag(orgPostList);
         expandovalueVoList = data.expandovalueVoList;
+
         if (refCode == '0401') {
             for (var i = 0; i < orgTypeList.length; i++) {
                 if (orgTypeList[i].orgTypeCode && orgTypeList[i].orgTypeCode.substr(0, 3) == 'N11') {
