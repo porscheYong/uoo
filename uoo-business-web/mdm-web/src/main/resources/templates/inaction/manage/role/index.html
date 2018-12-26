@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>角色管理</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- ztree -->
+    <link href="/vendors/zTree/zTreeStyle.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet"> 
+
+    <!--[if lt IE 9]>
+    <script src="./vendors/html5shiv.js"></script>
+    <script src="./vendors/respond.js"></script>
+    <script src="./vendors/excanvas.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      table.dataTable {
+        table-layout: fixed;
+      }
+      
+      th {
+          text-align: center;
+          white-space: nowrap;
+      }
+      table.dataTable tbody td {
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+    </style>
+  </head>
+
+  <body class="nav-md">
+    <div class="container">
+      <div class="main-container">
+        <div class="content-left">
+          <!-- <iframe name="standardTree" class="layadmin-iframe" src="../views/standardTree.html" frameborder="0" width="250px"></iframe> -->
+          <div style="display: inline-block;width: 100%;padding-top: 10px;">
+              <ul id="roleTree" class="ztree"></ul>
+          </div>
+        </div>
+        <div class="content-right">
+          <iframe id="roleFrame" name="roleManage" class="layadmin-iframe" src="list.html" frameborder="0" width="100%" height="99%"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- ztree -->
+    <script type="text/javascript" src="/vendors/zTree/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="/vendors/zTree/jquery.ztree.excheck.js"></script>
+    <!-- layer -->
+    <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+    <!-- loading -->
+    <script type="text/javascript" src="/js/core/spin.min.js"></script>
+    <script type="text/javascript" src="/js/core/loading.js"></script>
+    <!-- init -->
+    <script type="text/javascript" src="/js/init.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script type="text/javascript" src="/js/manage/role/index.js"></script>
+	<script type="text/javascript" src="/js/manage/tree_init.js"></script>
+  </body>
+</html>
