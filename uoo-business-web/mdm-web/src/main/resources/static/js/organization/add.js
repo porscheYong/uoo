@@ -103,9 +103,9 @@ function openTypeDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#orgTypeList').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
+            parent.layer.close(index);
             orgTypeList = checkNode;
             // //选择组织类别为营销组织类型
             // if (orgTypeList.length == 0 && editSmallField) {
@@ -160,9 +160,9 @@ function openPositionDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#positionList').importTags(checkNode);
             // $('.ui-tips-error').css('display', 'none');
+            parent.layer.close(index);
             positionList = checkNode;
         },
         btn2: function(index, layero){},
@@ -185,8 +185,8 @@ function openPostDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#postList').importTags(checkNode);
+            parent.layer.close(index);
             //TODO 防止选中标签显示错误提示
             // $('.ui-tips-error').css('display', 'none');
             orgPostList = checkNode;
@@ -211,10 +211,10 @@ function openLocationDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#locationList').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
             locationList = checkNode;
+            parent.layer.close(index);
             getAreaId(checkNode[0].id);
         },
         btn2: function(index, layero){},
