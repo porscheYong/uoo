@@ -1501,6 +1501,72 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 		console.log(obj);
 	};
 
+    Common.prototype.setDisabled = function (id, item) {
+        var dl = $('dl[xid="' + id + '"]'),
+            dd = dl.find('dd[lay-value="' + item.value + '"]'),
+            div = $('[xid="' + id + '"]').prev().find('.' + LABEL);
+        if (!dl[0]) {
+            return;
+        }
+        if (dl.find('.xm-select-linkage')[0]) {
+            return;
+        }
+        if (!dd.hasClass(DISABLED)) {
+            dd.addClass(DISABLED);
+            div.addClass(DISABLED);
+        }
+        if (dd.hasClass(THIS)) {
+            dd.removeClass(THIS)
+            this.delLabel(id, div, item)
+        }
+    };
+    Common.prototype.setUnDisabled = function (id, item) {
+        var dl = $('dl[xid="' + id + '"]'),
+            dd = dl.find('dd[lay-value="' + item.value + '"]'),
+            div = $('[xid="' + id + '"]').prev().find('.' + LABEL);
+        if (!dl[0]) {
+            return;
+        }
+        if (dl.find('.xm-select-linkage')[0]) {
+            return;
+        }
+        if (dd.hasClass(DISABLED)) {
+            dd.removeClass(DISABLED);
+            div.removeClass(DISABLED);
+        }
+    };
+    Common.prototype.addOne = function (id, item) {
+        var dl = $('dl[xid="' + id + '"]'),
+            dd = dl.find('dd[lay-value="' + item.value + '"]'),
+            div = $('[xid="' + id + '"]').prev().find('.' + LABEL);
+        if (!dl[0]) {
+            return;
+        }
+        if (dl.find('.xm-select-linkage')[0]) {
+            return;
+        }
+        if (!dd.hasClass(THIS)) {
+            dd.addClass(THIS);
+            this.addLabel(id, div, item);
+            data[id].values.push(item);
+        }
+    };
+    Common.prototype.delOne = function (id, item) {
+        var dl = $('dl[xid="' + id + '"]'),
+            dd = dl.find('dd[lay-value="' + item.value + '"]'),
+            div = $('[xid="' + id + '"]').prev().find('.' + LABEL);
+        if (!dl[0]) {
+            return;
+        }
+        if (dl.find('.xm-select-linkage')[0]) {
+            return;
+        }
+        if (dd.hasClass(THIS)) {
+            dd.removeClass(THIS)
+            this.delLabel(id, div, item)
+        }
+    };
+
 	var Select4 = function Select4() {
 		this.v = v;
 		this.render();
@@ -1687,6 +1753,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 		});
 		return this;
 	};
+
+    Select4.prototype.disabled = function (id) {
+        var target = {};
+        id ? common.check(id) && (target[id] = data[id]) : target = data;
+
+        $.each(target, function (key, val) {
+            $('dl[xid="' + key + '"]').prev().addClass(DIS);
+        });
+        return this;
+    };
+
+    //set option disable
+    Select4.prototype.oDisabled = function (id, item) {
+        common.setDisabled(id, item);
+    };
+    Select4.prototype.oUnDisabled = function (id, item) {
+        common.setUnDisabled(id, item);
+    };
+    Select4.prototype.addOne = function (id, item) {
+        common.addOne(id, item);
+    };
+    Select4.prototype.delOne = function (id, item) {
+        common.delOne(id, item);
+    };
 
 	Select4.prototype.data = function (id, type, config) {
 		if (!id || !type || !config) {

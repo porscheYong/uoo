@@ -24,8 +24,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.alibaba.fastjson.JSONObject;
 
+import cn.ffcs.uoo.web.maindata.common.system.client.SysFunctionClient;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysMenuClient;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysUserClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysFunction;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysMenu;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
@@ -53,6 +55,8 @@ public class UooRealm extends AuthorizingRealm {
     RolesService rolesSVC;
     @Autowired 
     SysMenuClient sysMenuClient;
+    @Autowired
+    SysFunctionClient sysFuncClient;
     /**
      * 验证当前登录的用户
      * 
@@ -78,10 +82,13 @@ public class UooRealm extends AuthorizingRealm {
         usertoken.setPassword(md5Encoding.toCharArray());
         AuthenticationInfo info = new SimpleAuthenticationInfo(usertoken.getUsername(), r.getData().getPasswd(),
                 this.getName());
-        if(info!=null){
+        if(info!=null && md5Encoding.equals(r.getData().getPasswd())){
             clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
             Subject subject = SecurityUtils.getSubject();
-            subject.getSession().setAttribute(LoginConsts.LOGIN_KEY, r.getData());
+            SysUser data = r.getData();
+            data.setPasswd(null);
+            data.setSalt(null);
+            subject.getSession().setAttribute(LoginConsts.LOGIN_KEY, data);
         }
         return info;
     }
@@ -106,7 +113,15 @@ public class UooRealm extends AuthorizingRealm {
                 }
             }
         }
-         
+        ResponseResult<List<SysFunction>> fs = sysFuncClient.getFunctionByAccout(primaryPrincipal.toString());
+        if(ResponseResult.STATE_OK==fs.getState()){
+            if(fs.getData()!=null){
+                for (SysFunction f : fs.getData()) {
+                    simpleAuthorizationInfo.addStringPermission("F"+f.getFuncId());
+                }
+            }
+        }
+       // simpleAuthorizationInfo.addStringPermission("sad");
         return simpleAuthorizationInfo;
     }
     /**

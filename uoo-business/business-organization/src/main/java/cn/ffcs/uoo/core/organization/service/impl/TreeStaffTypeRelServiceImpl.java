@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.organization.service.impl;
 import cn.ffcs.uoo.core.organization.entity.TreeStaffTypeRel;
 import cn.ffcs.uoo.core.organization.dao.TreeStaffTypeRelMapper;
 import cn.ffcs.uoo.core.organization.service.TreeStaffTypeRelService;
+import cn.ffcs.uoo.core.organization.util.StrUtil;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -29,14 +30,14 @@ public class TreeStaffTypeRelServiceImpl extends ServiceImpl<TreeStaffTypeRelMap
         treeStaffTypeRel.setStatusCd("1100");
         treeStaffTypeRel.setStatusDate(new Date());
         treeStaffTypeRel.setUpdateDate(new Date());
-        treeStaffTypeRel.setUpdateUser(0L);
+        treeStaffTypeRel.setUpdateUser(StrUtil.isNullOrEmpty(treeStaffTypeRel.getUpdateUser())?0L:treeStaffTypeRel.getUpdateUser());
         updateById(treeStaffTypeRel);
     }
 
     @Override
     public void add(TreeStaffTypeRel treeStaffTypeRel){
         treeStaffTypeRel.setCreateDate(new Date());
-        treeStaffTypeRel.setCreateUser(0L);
+        treeStaffTypeRel.setCreateUser(StrUtil.isNullOrEmpty(treeStaffTypeRel.getCreateUser())?0L:treeStaffTypeRel.getCreateUser());
         treeStaffTypeRel.setStatusCd("1000");
         treeStaffTypeRel.setStatusDate(new Date());
         insert(treeStaffTypeRel);
@@ -45,7 +46,7 @@ public class TreeStaffTypeRelServiceImpl extends ServiceImpl<TreeStaffTypeRelMap
     @Override
     public void update(TreeStaffTypeRel treeStaffTypeRel){
         treeStaffTypeRel.setUpdateDate(new Date());
-        treeStaffTypeRel.setUpdateUser(0L);
+        treeStaffTypeRel.setUpdateUser(StrUtil.isNullOrEmpty(treeStaffTypeRel.getUpdateUser())?0L:treeStaffTypeRel.getUpdateUser());
         treeStaffTypeRel.setStatusDate(new Date());
         updateById(treeStaffTypeRel);
     }

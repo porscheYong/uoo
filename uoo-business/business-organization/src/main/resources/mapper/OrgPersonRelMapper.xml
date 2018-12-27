@@ -148,9 +148,7 @@
                         AA.PSN_CODE     psnCode,
                         AA.PSN_NBR      psnNbr,
                         AA.NC_CODE      ncCode,
-                       <!-- POST.POST_NAME   postName,-->
                         ORG_TREE_NAME    orgTreeName,
-                       <!-- CTA.CONTENT      mobile,-->
                         AA.STATUS_CD     statusCd,
                         AA.ORG_TREE_ID   orgTreeId,
                         AA.ORG_PERSON_ID orgPersonId,
@@ -190,9 +188,12 @@
                             AND D.STATUS_CD = '1000'
                             AND E.STATUS_CD = '1000'
                             AND F.STATUS_CD = '1000'
-                            AND D.ORG_ID = B.ORG_ID
-                            AND F.ORG_ID = D.ORG_ID
                             AND A.PERSONNEL_ID = B.PERSONNEL_ID
+                            AND F.ORG_ID = D.ORG_ID
+                            AND D.ORG_ID = B.ORG_ID
+                <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
+                    AND ${psonOrgVo.tabOrgParams}
+                </if>
                             AND B.ORG_PERSON_ID=C.ORG_PERSON_ID
                             AND E.ORG_TREE_ID = C.ORG_TREE_ID
                             AND E.ORG_TREE_ID = F.ORG_TREE_ID
@@ -250,6 +251,9 @@
             AND C.ORG_TREE_ID = D.ORG_TREE_ID
             AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
             AND B.ORG_ID = #{psonOrgVo.orgId}
+            <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
+                AND ${psonOrgVo.tabOrgParams}
+            </if>
             ) AA)
             SELECT * FROM (
             SELECT AA.ORG_ID orgId,
@@ -338,6 +342,9 @@
             AND D.Status_Cd = 1000
             and E.STATUS_CD = 1000
             AND A.ORG_ID = B.ORG_ID
+            <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
+                AND ${psonOrgVo.tabOrgParams}
+            </if>
             AND B.REF_CODE = E.REF_CODE
             and D.ORG_REL_TYPE_ID = E.ORG_REL_TYPE_ID
             AND C.ORG_TREE_ID = D.ORG_TREE_ID

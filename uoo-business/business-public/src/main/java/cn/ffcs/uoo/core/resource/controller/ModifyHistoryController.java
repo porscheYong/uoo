@@ -2,26 +2,18 @@ package cn.ffcs.uoo.core.resource.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
-import cn.ffcs.uoo.core.resource.entity.TbBusinessSystem;
+import cn.ffcs.uoo.core.resource.entity.ModifyHistory;
 import cn.ffcs.uoo.core.resource.service.ModifyHistoryService;
-import cn.ffcs.uoo.core.resource.service.TbBusinessSystemService;
 import cn.ffcs.uoo.core.resource.util.StrUtil;
-import cn.ffcs.uoo.core.resource.vo.Org;
+import cn.ffcs.uoo.core.resource.vo.ModifyHistoryVo;
 import cn.ffcs.uoo.core.vo.ResponseResult;
-import com.baomidou.mybatisplus.mapper.Condition;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * <p>
@@ -56,6 +48,30 @@ public class ModifyHistoryController {
             ret.setMessage("成功");
             return ret;
         }
+        ret.setState(ResponseResult.STATE_ERROR);
+        return ret;
+    }
+
+
+    @ApiOperation(value = "新增变化日志表", notes = "新增变化日志表")
+    @UooLog(value = "新增变化日志表", key = "addModifyHistoryVo")
+    @RequestMapping(value = "/addModifyHistoryVo", method = RequestMethod.POST)
+    public ResponseResult<String> addModifyHistoryVo(ModifyHistoryVo modifyHistoryVo) {
+        ResponseResult<String> ret = new ResponseResult<>();
+        ModifyHistory modifyHistory = new ModifyHistory();
+        Long mdyId = modifyHistoryService.getId();
+        String batNum = modifyHistoryService.getBatchNumber();
+        modifyHistory.setModifyId(mdyId);
+        modifyHistory.setBatchNumber(batNum);
+        Long tabId = modifyHistoryService.getCommonTableId(modifyHistoryVo.getTabName());
+        modifyHistory.setTabId(tabId);
+        modifyHistory.setRecordId(modifyHistoryVo.getRecordId());
+        modifyHistory.setOperateType(modifyHistoryVo.getOperateType());
+        modifyHistory.setBatchNumber(batNum);
+        modifyHistory.setNote(modifyHistoryVo.getNote());
+        modifyHistory.setFieldName(modifyHistoryVo.getFieldName());
+        modifyHistory.setFieldValue(modifyHistoryVo.getFieldValue());
+        modifyHistoryService.add(modifyHistory);
         ret.setState(ResponseResult.STATE_ERROR);
         return ret;
     }

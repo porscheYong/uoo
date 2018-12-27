@@ -124,6 +124,9 @@
         AND C.STATUS_CD = '1000'
         AND D.STATUS_CD = '1000'
         AND E.STATUS_CD = '1000'
+        <if test="orgVo.tabOrgParams!='' and orgVo.tabOrgParams!=null">
+            AND ${orgVo.tabOrgParams}
+        </if>
         AND E.ORG_TREE_ID = D.ORG_TREE_ID
         AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
         AND A.REF_CODE = C.REF_CODE

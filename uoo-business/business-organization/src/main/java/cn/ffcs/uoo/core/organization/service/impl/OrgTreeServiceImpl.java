@@ -35,14 +35,14 @@ public class OrgTreeServiceImpl extends ServiceImpl<OrgTreeMapper, OrgTree> impl
         orgTree.setStatusCd("1100");
         orgTree.setStatusDate(new Date());
         orgTree.setUpdateDate(new Date());
-        orgTree.setUpdateUser(0L);
+        orgTree.setUpdateUser(StrUtil.isNullOrEmpty(orgTree.getUpdateUser())?0L:orgTree.getUpdateUser());
         updateById(orgTree);
     }
 
     @Override
     public void add(OrgTree orgTree){
         orgTree.setCreateDate(new Date());
-        orgTree.setCreateUser(0L);
+        orgTree.setCreateUser(StrUtil.isNullOrEmpty(orgTree.getCreateUser())?0L:orgTree.getCreateUser());
         orgTree.setStatusCd("1000");
         orgTree.setStatusDate(new Date());
         insert(orgTree);
@@ -52,7 +52,7 @@ public class OrgTreeServiceImpl extends ServiceImpl<OrgTreeMapper, OrgTree> impl
     @Override
     public void update(OrgTree orgTree){
         orgTree.setUpdateDate(new Date());
-        orgTree.setUpdateUser(0L);
+        orgTree.setUpdateUser(StrUtil.isNullOrEmpty(orgTree.getUpdateUser())?0L:orgTree.getUpdateUser());
         orgTree.setStatusDate(new Date());
         updateById(orgTree);
     }

@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.web.maindata.organization.controller;
 
 
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.organization.dto.*;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgRelService;
 import com.baomidou.mybatisplus.mapper.Condition;
@@ -10,6 +12,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,7 +49,12 @@ public class OrgRelController {
                                                           @RequestParam(value = "isOpen",required = false)boolean isOpen,
                                                           @RequestParam(value = "isAsync",required = false)boolean isAsync,
                                                           @RequestParam(value = "isRoot",required = false)boolean isRoot){
-        return orgRelService.getOrgRelTree(id,orgRootId,orgTreeId,refCode,isOpen, isAsync,isRoot);
+
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout = currentLoginUser.getAccout();
+        return orgRelService.getOrgRelTree(id,orgRootId,orgTreeId,refCode,isOpen, isAsync,isRoot,userId,accout);
     }
 
 
@@ -60,7 +69,6 @@ public class OrgRelController {
             @RequestParam(value = "orgRootId",required = false)String orgRootId,
             @RequestParam(value = "isFull",required = false)boolean isFull){
         return orgRelService.getRestructOrgRelTree(orgId,orgTreeId,orgRootId,isFull);
-       // return null;
     }
 
 
@@ -82,6 +90,10 @@ public class OrgRelController {
     })
     @RequestMapping(value = "/addOrgRel", method = RequestMethod.POST)
     public ResponseResult<TreeNodeVo> addOrgRel(@RequestBody Org org){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        org.setUpdateUser(userId);
         return orgRelService.addOrgRel(org);
     }
 

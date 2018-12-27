@@ -391,7 +391,7 @@
   <select id="getTbAcctOrgRel2" resultMap="TbOrgMap">
     select a.* from  tb_org a left join tb_org_orgtree_rel b on a.org_id = b.org_id and b.status_cd = 1000
     left join tb_org_tree c on c.org_tree_id = b.org_tree_id and c.status_cd = 1000 where a.status_cd = 1000 and
-    a.org_id in (select org_id from TB_account_ORG_REL where acct_id = #{acctId} and STATUS_CD= 1000) and c.org_tree_id = #{orgTreeId}
+    (a.org_id,#{orgTreeId}) in (select org_id,org_tree_id from TB_account_ORG_REL where acct_id = #{acctId} and STATUS_CD= 1000) and c.org_tree_id = #{orgTreeId}
   </select>
 
   <select id="getTbSlaveAcctVo" resultMap="TbSlaveAcctVoMap" parameterType="Long">

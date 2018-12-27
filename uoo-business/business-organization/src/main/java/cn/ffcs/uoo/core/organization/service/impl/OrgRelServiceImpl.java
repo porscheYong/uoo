@@ -49,14 +49,14 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
         orgRel.setStatusCd("1100");
         orgRel.setStatusDate(new Date());
         orgRel.setUpdateDate(new Date());
-        orgRel.setUpdateUser(0L);
+        orgRel.setUpdateUser(StrUtil.isNullOrEmpty(orgRel.getUpdateUser())?0L:orgRel.getUpdateUser());
         updateById(orgRel);
     }
 
     @Override
     public void add(OrgRel orgRel){
         orgRel.setCreateDate(new Date());
-        orgRel.setCreateUser(0L);
+        orgRel.setCreateUser(StrUtil.isNullOrEmpty(orgRel.getCreateUser())?0L:orgRel.getCreateUser());
         orgRel.setStatusCd("1000");
         orgRel.setStatusDate(new Date());
         insert(orgRel);
@@ -66,19 +66,20 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
     @Override
     public void update(OrgRel orgRel){
         orgRel.setUpdateDate(new Date());
-        orgRel.setUpdateUser(0L);
+        orgRel.setUpdateUser(StrUtil.isNullOrEmpty(orgRel.getUpdateUser())?0L:orgRel.getUpdateUser());
         orgRel.setStatusDate(new Date());
         updateById(orgRel);
     }
 
 
     @Override
-    public List<TreeNodeVo> queryOrgTree(String orgTreeId, String orgRootId, String refCode, String pid, boolean isRoot){
+    public List<TreeNodeVo> queryOrgTree(String orgTreeId, String orgRootId, String refCode, String pid, boolean isRoot,
+                                         String orgParams){
         List<TreeNodeVo> volist = new ArrayList<>();
         if(StrUtil.isNullOrEmpty(pid)){
             volist = orgRelMapper.queryOrgTreeRoot(orgTreeId,orgRootId);
         }else{
-            volist = orgRelMapper.queryOrgTreeChilden(orgTreeId,pid);
+            volist = orgRelMapper.queryOrgTreeChilden(orgTreeId,pid,orgParams);
         }
         for(TreeNodeVo vo : volist){
             isLeaf(vo,orgTreeId);

@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.organization.service.impl;
 import cn.ffcs.uoo.core.organization.entity.OgtOrgtypeConf;
 import cn.ffcs.uoo.core.organization.dao.OgtOrgtypeConfMapper;
 import cn.ffcs.uoo.core.organization.service.OgtOrgtypeConfService;
+import cn.ffcs.uoo.core.organization.util.StrUtil;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ public class OgtOrgtypeConfServiceImpl extends ServiceImpl<OgtOrgtypeConfMapper,
         ogtOrgtypeConf.setStatusCd("1100");
         ogtOrgtypeConf.setStatusDate(new Date());
         ogtOrgtypeConf.setUpdateDate(new Date());
-        ogtOrgtypeConf.setUpdateUser(0L);
+        ogtOrgtypeConf.setUpdateUser(StrUtil.isNullOrEmpty(ogtOrgtypeConf.getUpdateUser())?0L:ogtOrgtypeConf.getUpdateUser());
         updateById(ogtOrgtypeConf);
     }
 
@@ -39,7 +40,7 @@ public class OgtOrgtypeConfServiceImpl extends ServiceImpl<OgtOrgtypeConfMapper,
     @Override
     public void add(OgtOrgtypeConf ogtOrgtypeConf){
         ogtOrgtypeConf.setCreateDate(new Date());
-        ogtOrgtypeConf.setCreateUser(0L);
+        ogtOrgtypeConf.setCreateUser(StrUtil.isNullOrEmpty(ogtOrgtypeConf.getCreateUser())?0L:ogtOrgtypeConf.getCreateUser());
         ogtOrgtypeConf.setStatusCd("1000");
         ogtOrgtypeConf.setStatusDate(new Date());
         insert(ogtOrgtypeConf);
@@ -51,7 +52,7 @@ public class OgtOrgtypeConfServiceImpl extends ServiceImpl<OgtOrgtypeConfMapper,
     @Override
     public void update(OgtOrgtypeConf ogtOrgtypeConf){
         ogtOrgtypeConf.setUpdateDate(new Date());
-        ogtOrgtypeConf.setUpdateUser(0L);
+        ogtOrgtypeConf.setUpdateUser(StrUtil.isNullOrEmpty(ogtOrgtypeConf.getUpdateUser())?0L:ogtOrgtypeConf.getUpdateUser());
         ogtOrgtypeConf.setStatusDate(new Date());
         updateById(ogtOrgtypeConf);
     }

@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.organization.service.impl;
 import cn.ffcs.uoo.core.organization.entity.OrgLevel;
 import cn.ffcs.uoo.core.organization.dao.OrgLevelMapper;
 import cn.ffcs.uoo.core.organization.service.OrgLevelService;
+import cn.ffcs.uoo.core.organization.util.StrUtil;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,7 @@ public class OrgLevelServiceImpl extends ServiceImpl<OrgLevelMapper, OrgLevel> i
         orgLevel.setStatusCd("1100");
         orgLevel.setStatusDate(new Date());
         orgLevel.setUpdateDate(new Date());
-        orgLevel.setUpdateUser(0L);
+        orgLevel.setUpdateUser(StrUtil.isNullOrEmpty(orgLevel.getUpdateUser())?0L:orgLevel.getUpdateUser());
         updateById(orgLevel);
     }
 
@@ -48,7 +49,7 @@ public class OrgLevelServiceImpl extends ServiceImpl<OrgLevelMapper, OrgLevel> i
     @Override
     public void add(OrgLevel orgLevel){
         orgLevel.setCreateDate(new Date());
-        orgLevel.setCreateUser(0L);
+        orgLevel.setCreateUser(StrUtil.isNullOrEmpty(orgLevel.getCreateUser())?0L:orgLevel.getCreateUser());
         orgLevel.setStatusCd("1000");
         orgLevel.setStatusDate(new Date());
         insert(orgLevel);
@@ -60,7 +61,7 @@ public class OrgLevelServiceImpl extends ServiceImpl<OrgLevelMapper, OrgLevel> i
     @Override
     public void update(OrgLevel orgLevel){
         orgLevel.setUpdateDate(new Date());
-        orgLevel.setUpdateUser(0L);
+        orgLevel.setUpdateUser(StrUtil.isNullOrEmpty(orgLevel.getUpdateUser())?0L:orgLevel.getUpdateUser());
         orgLevel.setStatusDate(new Date());
         updateById(orgLevel);
     }

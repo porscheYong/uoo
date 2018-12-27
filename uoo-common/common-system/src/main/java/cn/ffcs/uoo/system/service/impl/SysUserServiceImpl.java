@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -83,20 +84,24 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      */
     @Override
     public String checkRegister(SysUser sysUser) {
-        // 必需项有：账号，密码，姓名，性别，部门，角色，岗位，证件类型，证件号，手机，邮箱，变更原因
+        // 选项有：账号，密码，姓名，性别，部门，角色，岗位，证件类型，证件号，手机，邮箱，变更原因
         if (StringUtils.isEmpty(sysUser.getAccout())) {
             return "账号为空！";
         }
         if (StringUtils.isEmpty(sysUser.getPasswd())) {
             return "密码为空!";
         }
-       /* if (StringUtils.isEmpty(sysUser.getUname())) {
+        if (StringUtils.isEmpty(sysUser.getUserName())) {
             return "姓名为空！";
-        }*/
+        }
+        if (StringUtils.isEmpty(sysUser.getMobile())) {
+            return "手机号为空！";
+        }
+        /*
         if (StringUtils.isEmpty(sysUser.getGender())) {
             return "性别为空！";
         }
-        /*if (null == sysUser.getDeptId()) {
+        if (null == sysUser.getDeptId()) {
             return "部门为空！";
         }
         if (null == sysUser.getRoleId()) {
@@ -104,20 +109,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         if (null == sysUser.getPostionId()) {
             return "岗位为空！";
-        }*/
+        }
         if (StringUtils.isEmpty(sysUser.getCertType())) {
             return "证件类型为空！";
         }
         if (StringUtils.isEmpty(sysUser.getCertId())) {
             return "证件号为空！";
         }
-        if (StringUtils.isEmpty(sysUser.getMobile())) {
-            return "手机号为空！";
-        }
         if (StringUtils.isEmpty(sysUser.getEmail())) {
             return "邮箱为空！";
         }
-        /*if (StringUtils.isEmpty(sysUser.getReason())) {
+        if (StringUtils.isEmpty(sysUser.getReason())) {
             return "变更原因为空！";
         }*/
 
@@ -125,11 +127,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public void sysUserRegister(SysUser sysUser) {
+    public void sysUserRegister(@RequestBody SysUser sysUser) {
         String salt = MD5Util.getSalt();
         String md5Content = DigestUtils.md5Hex(sysUser.getPasswd());
         sysUser.setSalt(salt);
         sysUser.setPasswd(MD5Util.md5Encoding(md5Content, salt));
+        sysUser.setUserId(getId());
         setObjStatus(sysUser);
         baseMapper.insert(sysUser);
     }

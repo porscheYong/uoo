@@ -5,11 +5,10 @@ package cn.ffcs.uoo.web.maindata.organization.service.fallback;/**
  */
 
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgTree;
-import cn.ffcs.uoo.web.maindata.organization.dto.OrgType;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgTreeService;
-import cn.ffcs.uoo.web.maindata.organization.service.OrgTypeService;
 import org.springframework.stereotype.Component;
+
 
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class OrgTreeServiceHystrix implements OrgTreeService {
     }
 
     @Override
-    public ResponseResult<List<OrgTree>> getOrgTreeList(String orgTreeId,String orgRootId){
+    public ResponseResult<List<OrgTree>> getOrgTreeList(String orgTreeId,String orgRootId,Long userId,String accout){
         ResponseResult<List<OrgTree>> responseResult = new ResponseResult<List<OrgTree>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
@@ -49,7 +48,7 @@ public class OrgTreeServiceHystrix implements OrgTreeService {
     }
 
     @Override
-    public ResponseResult<OrgTree> getOrgTree(String orgTreeId){
+    public ResponseResult<OrgTree> getOrgTree(String orgTreeId,Long userId,String accout){
         ResponseResult<OrgTree> responseResult = new ResponseResult<OrgTree>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

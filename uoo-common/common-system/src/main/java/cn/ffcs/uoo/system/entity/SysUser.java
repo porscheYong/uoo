@@ -1,10 +1,14 @@
 package cn.ffcs.uoo.system.entity;
 
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotations.KeySequence;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
 
 /**
@@ -23,7 +27,7 @@ public class SysUser extends Model<SysUser> {
     /**
      * 用户标识
      */
-    @TableId("USER_ID")
+    @TableId(value = "USER_ID", type = IdType.INPUT)
     private Long userId;
     /**
      * 用户登录账号

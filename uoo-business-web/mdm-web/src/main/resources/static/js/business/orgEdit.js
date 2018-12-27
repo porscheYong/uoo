@@ -2,12 +2,14 @@ var orgId = getQueryString('id');
 var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
+var refCode = getQueryString('refCode');
 var areaCodeId = ''; //区号ID
 var locationList = [];
 var orgTypeList;
 var orgMartCode; //划小组织编码
 var expandovalueVoList; //划小扩展字段
 var nodeTypeList = [];
+var countTypeList = [];
 var nodeTypeId;
 var areaTypeId;
 var countTypeId;
@@ -22,6 +24,9 @@ var formValidate;
 var loading = parent.loading;
 var toastr = window.top.toastr;
 var editSmallField = false;
+var selectStandardNode = false; //是否选中标准节点
+var selectRevenueCenter = false; //是否选中收入中心
+var U5Node = false; //是否存在U5节点
 
 //字典数据
 var scaleData = window.top.dictionaryData.scale();
@@ -113,38 +118,43 @@ function openTypeDialog() {
             $('.ui-tips-error').css('display', 'none');
             orgTypeList = checkNode;
             parent.layer.close(index);
-            //选择组织类别为营销组织类型
-            if (orgTypeList.length == 0 && editSmallField) {
-                editSmallField = false;
-            }
-            else {
-                for (var i = 0; i < orgTypeList.length; i++) {
-                    var isSmallFieldExit = false;
-                    if (((orgTypeList[i].orgTypeCode && orgTypeList[i].orgTypeCode.substr(0, 3) == 'N11') ||
-                        (orgTypeList[i].extField1 && orgTypeList[i].extField1.substr(0, 3) == 'N11'))) {
-                        if (!editSmallField) {
-                            var smallTemplate = Handlebars.compile($("#smallTemplate").html());
-                            var smallHtml = smallTemplate();
-                            $('#small').html(smallHtml);
-                            $('#orgMartCode ').val(orgMartCode);
-                            editSmallField = true;
-                            getNodeType();
-                            getAreaType();
-                            getCountType();
-                            getContractType();
-                            return
+            //选择组织类别为营销组织类型且组织树为营销组织树
+            if (refCode == '0401') {
+                if (orgTypeList.length == 0 && editSmallField) {
+                    editSmallField = false;
+                }
+                else {
+                    for (var i = 0; i < orgTypeList.length; i++) {
+                        var isSmallFieldExit = false;
+                        if (((orgTypeList[i].orgTypeCode && orgTypeList[i].orgTypeCode.substr(0, 3) == 'N11') ||
+                                (orgTypeList[i].extField1 && orgTypeList[i].extField1.substr(0, 3) == 'N11'))) {
+                            if (!editSmallField) {
+                                var smallTemplate = Handlebars.compile($("#smallTemplate").html());
+                                var smallHtml = smallTemplate();
+                                $('#small').html(smallHtml);
+                                $('#orgMartCode ').val(orgMartCode);
+                                editSmallField = true;
+                                getNodeType();
+                                getAreaType();
+                                getCountType();
+                                getContractType();
+                                return
+                            }
+                            else {
+                                isSmallFieldExit = true;
+                                return
+                            }
                         }
-                        else {
-                            isSmallFieldExit = true;
-                            return
-                        }
+                        if (i == orgTypeList.length - 1 && !isSmallFieldExit)
+                            editSmallField = false;
                     }
-                    if (i == orgTypeList.length - 1 && !isSmallFieldExit )
-                        editSmallField = false;
+                }
+                if (!editSmallField) {
+                    $('#small').html('');
+                    selectStandardNode = false;
+                    selectRevenueCenter = false;
                 }
             }
-            if (!editSmallField)
-                $('#small').html('');
         },
         btn2: function(index, layero){},
         cancel: function(){}
@@ -217,31 +227,6 @@ function openLocationDialog() {
             $('#locationList').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
             locationList = checkNode;
-            parent.layer.close(index);
-        },
-        btn2: function(index, layero){},
-        cancel: function(){}
-    });
-}
-
-//电信管理区域选择
-function openRegionDialog() {
-    parent.layer.open({
-        type: 2,
-        title: '电信管理区域',
-        shadeClose: true,
-        shade: 0.8,
-        area: ['50%', '80%'],
-        maxmin: true,
-        content: '/inaction/organization/regionDialog.html',
-        btn: ['确认', '取消'],
-        yes: function(index, layero){
-            //获取layer iframe对象
-            var iframeWin = parent.window[layero.find('iframe')[0].name];
-            checkNode = iframeWin.checkNode;
-            $('#regionId').importTags(checkNode);
-            $('.ui-tips-error').css('display', 'none');
-            regionList = checkNode;
             getAreaId(checkNode[0].id);
             parent.layer.close(index);
         },
@@ -250,29 +235,26 @@ function openRegionDialog() {
     });
 }
 
-//根据电信管理区域ID获取区号
+//根据行政管理区域ID获取区号
 function getAreaId(regionId) {
-    $http.get('/region/commonRegion/getCommonRegion/id='+ regionId, {}, function (data) {
-        areaCodeId = data.areaCode.areaCodeId;
-        $('#areaCode').val(data.areaCode.areaCode);
+    $http.get('/region/areaCode/getAreaCodeByPollocId/id='+ regionId, {}, function (data) {
+        if (data[0])
+            areaCodeId = data[0].areaCodeId;
+        // $('#areaCode').val(data[0].areaCode);
+        var option = '';
+        for (var i = 0; i < data.length; i++) {
+            option += "<option value='" + data[i].areaCodeId + "'>" + data[i].areaCode +"</option>";
+        }
+        $('#areaCode').html(option);
+        $('#areaCode').selectMatch();
+        formValidate.isPass($('#areaCode'));
     }, function (err) {
 
     })
 }
-
-//根据电信管理区域ID获取区域label
-function getAreaLabel() {
-    $http.get('/region/commonRegion/getTreeCommonRegion', {}, function (data) {
-        for (var i = 0; i < data.length; i++){
-            if (areaCodeId == data[i].extParams.areaCodeId) {
-                areaList.push(data[i]);
-                $('#regionId').importTags(areaList);
-                return;
-            }
-        }
-    }, function (err) {
-
-    })
+//根据拉下框获取当前选中的区号ID
+function getAreaCodeId() {
+    areaCodeId = $(this).children('option:selected').val();
 }
 
 //证件信息初始化
@@ -567,16 +549,6 @@ function getStatusCd (statusCd) {
 }
 
 // 获取组织节点类型字典数据
-// function getNodeType (type) {
-//     var option = '<option></option>';
-//     for (var i = 0; i < nodeTypeData.length; i++) {
-//         var select = type === nodeTypeData[i].itemValue? 'selected' : '';
-//         option += "<option value='" + nodeTypeData[i].itemValue + "' " + select + ">" + nodeTypeData[i].itemCnname +"</option>";
-//     }
-//     $('#nodeType').append(option);
-//     // $('#nodeType').selectMatch();
-//     formSelects.render('nodeType')
-// }
 function getNodeType () {
     var option = '<option></option>';
     for (var i = 0; i < nodeTypeData.length; i++) {
@@ -589,9 +561,32 @@ function getNodeType () {
         }
         option += "<option value='" + nodeTypeData[i].itemValue + "' id='" +  nodeTypeData[i].itemId + "'" + select + ">" + nodeTypeData[i].itemCnname +"</option>";
     }
-    $('#nodeType').append(option);
-    $('#nodeType').selectMatch();
-    // formSelects.render('nodeType')
+    $('#nodeTypes').append(option);
+    // $('#nodeTypes').selectMatch();
+    formSelects.render('nodeTypes');
+    for (var i = 0; i < nodeTypeList.length; i++) {
+        if (nodeTypeList[i].data == 'A1')
+            selectStandardNode = true
+        if (nodeTypeList[i].data == 'A3')
+            selectRevenueCenter = true;
+    }
+    formSelects.on('nodeTypes', function(id, vals, val, isAdd, isDisabled){
+        if (isAdd && val.value == 'A1') {
+            selectStandardNode = true;
+            formSelects.oDisabled('countType', {value: 'B2'});
+            formSelects.addOne('countType', {value: 'B4', name: '收入中心'});
+        }
+        if (isAdd && val.value == 'A3') {
+            selectRevenueCenter = true;
+        }
+        if (!isAdd && val.value == 'A1') {
+            selectStandardNode = false;
+            formSelects.oUnDisabled('countType', {value: 'B2'});
+        }
+        if (!isAdd && val.value == 'A3') {
+            selectRevenueCenter = false;
+        }
+    }, true);
 }
 
 // 获取区域级别字典数据
@@ -609,15 +604,42 @@ function getAreaType (type) {
 function getCountType (type) {
     var option = '<option></option>';
     for (var i = 0; i < countTypeData.length; i++) {
-        var select = type === countTypeData[i].itemValue? 'selected' : '';
+        var select = '';
+        for (var j = 0; j < countTypeList.length; j++) {
+            if (countTypeList[j].data === countTypeData[i].itemValue) {
+                select = 'selected';
+                break;
+            }
+        }
         option += "<option value='" + countTypeData[i].itemValue + "' " + select + ">" + countTypeData[i].itemCnname +"</option>";
     }
     $('#countType').append(option);
-    $('#countType').selectMatch();
+    // $('#countType').selectMatch();
+    formSelects.render('countType');
+    if (selectStandardNode)
+        formSelects.oDisabled('countType', {value: 'B2'});
+    formSelects.on('countType', function(id, vals, val, isAdd, isDisabled){
+        if (selectRevenueCenter && !selectStandardNode) {
+            if (isAdd && val.value == 'B2') {
+                formSelects.delOne('countType', {value: 'B4'});
+            }
+            if (isAdd && val.value == 'B4') {
+                formSelects.delOne('countType', {value: 'B2'});
+            }
+        }
+
+    }, true);
 }
 
 // 获取承包类型字典数据
 function getContractType (type) {
+    if (U5Node) {
+        for (var i = 0; i < contractTypeData.length; i++) {
+            if (contractTypeData[i].itemValue.split('-')[0] == 'U5') {
+                contractTypeData.splice(i, 1)
+            }
+        }
+    }
     var option = '<option></option>';
     for (var i = 0; i < contractTypeData.length; i++) {
         var select = type === contractTypeData[i].itemValue? 'selected' : '';
@@ -642,7 +664,6 @@ function getOrg (orgId) {
         orgMartCode = data.orgMartCode;
         laydate.render({
           elem: '#foundingTime',
-        //   value: new Date(data.foundingTime)
           value: data.foundingTime
         });
         if (data.psonOrgVoList && data.psonOrgVoList.length > 0) {
@@ -651,8 +672,14 @@ function getOrg (orgId) {
         $('#officePhone').val(data.officePhone);
         $('#sort').val(data.sort);
         areaCodeId = data.areaCodeId;
-        getAreaLabel();
-        $('#areaCode').val(data.areaCode);
+        // render area code
+        var option = '';
+        if (data.areaCode)
+            option = "<option value='" + areaCodeId + "'>" + data.areaCode +"</option>";
+        $('#areaCode').append(option);
+        $('#areaCode').selectMatch();
+        // formValidate.isPass($('#areaCode'));
+
         $('#address').val(data.address);
         $('#orgContent').val(data.orgContent);
         $('#orgDesc').val(data.orgDesc);
@@ -670,44 +697,46 @@ function getOrg (orgId) {
         $('#positionList').addTag(positionList);
         $('#postList').addTag(orgPostList);
         expandovalueVoList = data.expandovalueVoList;
-        for (var i = 0; i < orgTypeList.length; i++) {
-            if (orgTypeList[i].orgTypeCode && orgTypeList[i].orgTypeCode.substr(0, 3) == 'N11') {
-                var smallTemplate = Handlebars.compile($("#smallTemplate").html());
-                var smallHtml = smallTemplate();
-                $('#small').html(smallHtml);
-                $('#orgMartCode ').val(orgMartCode);
-                editSmallField = true;
-                for (var i = 0; i < expandovalueVoList.length; i++) {
-                    if (expandovalueVoList[i].columnName == 'nodeType') {
-                        // getNodeType(expandovalueVoList[i].data);
-                        // nodeTypeId = expandovalueVoList[i].valueId;
-                        nodeTypeList.push(expandovalueVoList[i]);
+
+        if (refCode == '0401') {
+            for (var i = 0; i < orgTypeList.length; i++) {
+                if (orgTypeList[i].orgTypeCode && orgTypeList[i].orgTypeCode.substr(0, 3) == 'N11') {
+                    var smallTemplate = Handlebars.compile($("#smallTemplate").html());
+                    var smallHtml = smallTemplate();
+                    var areaData = '';
+                    var contractData = '';
+                    $('#small').html(smallHtml);
+                    $('#orgMartCode ').val(orgMartCode);
+                    editSmallField = true;
+                    for (var i = 0; i < expandovalueVoList.length; i++) {
+                        if (expandovalueVoList[i].columnName == 'nodeType') {
+                            nodeTypeId = expandovalueVoList[i].valueId;
+                            nodeTypeList.push(expandovalueVoList[i]);
+                        }
+                        if (expandovalueVoList[i].columnName == 'areaType') {
+                            areaData = expandovalueVoList[i].data;
+                            areaTypeId = expandovalueVoList[i].valueId;
+                        }
+                        if (expandovalueVoList[i].columnName == 'countType') {
+                            countTypeId = expandovalueVoList[i].valueId;
+                            countTypeList.push(expandovalueVoList[i]);
+                        }
+                        if (expandovalueVoList[i].columnName == 'contractType') {
+                            contractData = expandovalueVoList[i].data;
+                            contractTypeId = expandovalueVoList[i].valueId;
+                        }
                     }
-                    if (expandovalueVoList[i].columnName == 'areaType') {
-                        getAreaType(expandovalueVoList[i].data);
-                        areaTypeId = expandovalueVoList[i].valueId;
-                    }
-                    if (expandovalueVoList[i].columnName == 'countType') {
-                        getCountType(expandovalueVoList[i].data);
-                        countTypeId = expandovalueVoList[i].valueId;
-                    }
-                    if (expandovalueVoList[i].columnName == 'contractType') {
-                        getContractType(expandovalueVoList[i].data);
-                        contractTypeId = expandovalueVoList[i].valueId;
-                    }
-                }
-                getNodeType();
-                $('#small').find(':input').each(function () {
-                    $(this).hover(function () {
-                        formValidate.isPass($(this));
+                    getNodeType();
+                    getAreaType(areaData);
+                    getCountType();
+                    getContractType(contractData);
+                    $('#small').find(':input').each(function () {
+                        $(this).hover(function () {
+                            formValidate.isPass($(this));
+                        });
                     });
-                });
-                // formValidate.isPass($('#smallCode'));
-                // formValidate.isPass($('#orgNodeType'));
-                // formValidate.isPass($('#areaType'));
-                // formValidate.isPass($('#statisticProperty'));
-                // formValidate.isPass($('#contractType'));
-                return
+                    return
+                }
             }
         }
     }, function (err) {
@@ -792,7 +821,7 @@ function updateOrg () {
   var orgContent = $('#orgContent').val();
   var orgDesc = $('#orgDesc').val();
   //划小扩展字段
-  var nodeType = $('#nodeType option:selected') .val();
+  var nodeType = $('#nodeTypes option:selected') .val();
   var areaType = $('#areaType option:selected') .val();
   var countType = $('#countType option:selected') .val();
   var contractType = $('#contractType option:selected') .val();
@@ -849,7 +878,6 @@ function updateOrg () {
 
 // 删除组织
 function deleteOrg () {
-    console.log(formSelects.value('nodeType'));
     parent.layer.confirm('此操作将删除该组织, 是否继续?', {
         icon: 0,
         title: '提示',

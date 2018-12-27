@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.web.maindata.organization.controller;
 
 
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgRelType;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgTree;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
@@ -11,6 +13,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +31,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/orgTree")
-@Api(value = "/org", description = "组织树相关操作")
+@Api(value = "/orgTree", description = "组织树相关操作")
 public class OrgTreeController {
 
 
@@ -39,6 +43,12 @@ public class OrgTreeController {
     })
     @RequestMapping(value = "/addOrgTree", method = RequestMethod.POST)
     public ResponseResult<String> addOrgTree(@RequestBody OrgTree orgTree){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout =currentLoginUser.getAccout();
+        orgTree.setUpdateUser(userId);
+        orgTree.setAccout(accout);
         return orgTreeService.addOrgTree(orgTree);
     }
 
@@ -48,6 +58,10 @@ public class OrgTreeController {
     })
     @RequestMapping(value = "/updateOrgTree", method = RequestMethod.POST)
     public ResponseResult<String> updateOrgTree(@RequestBody OrgTree orgTree){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        orgTree.setUpdateUser(userId);
         return orgTreeService.updateOrgTree(orgTree);
     }
 
@@ -57,8 +71,14 @@ public class OrgTreeController {
     })
     @RequestMapping(value = "/getOrgTreeList", method = RequestMethod.GET)
     public ResponseResult<List<OrgTree>> getOrgTreeList(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
-                                                        @RequestParam(value = "orgRootId",required = false)String orgRootId){
-        return orgTreeService.getOrgTreeList(orgTreeId,orgRootId);
+                                                        @RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                        @RequestParam(value = "refCode",required = false)String refCode
+                                                        ){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout =currentLoginUser.getAccout();
+        return orgTreeService.getOrgTreeList(orgTreeId,orgRootId,refCode,userId,accout);
     }
 
 
@@ -67,7 +87,11 @@ public class OrgTreeController {
     })
     @RequestMapping(value = "/getOrgTree",method = RequestMethod.GET)
     public ResponseResult<OrgTree> getOrgTree(@RequestParam(value = "orgTreeId",required = false)String orgTreeId){
-        return orgTreeService.getOrgTree(orgTreeId);
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout =currentLoginUser.getAccout();
+        return orgTreeService.getOrgTree(orgTreeId,userId,accout);
     }
 
 }

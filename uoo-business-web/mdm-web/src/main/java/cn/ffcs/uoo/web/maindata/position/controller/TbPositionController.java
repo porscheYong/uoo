@@ -52,7 +52,7 @@ public class TbPositionController {
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbPosition> removeTbPosition(@RequestBody Long positionId, @RequestBody Long updateUser) {
+    public ResponseResult<TbPosition> removeTbPosition(Long positionId, Long updateUser) {
         return tbPositionClient.removeTbPosition(positionId, updateUser);
     }
 

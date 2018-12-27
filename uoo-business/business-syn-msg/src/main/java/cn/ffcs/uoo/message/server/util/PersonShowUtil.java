@@ -21,6 +21,7 @@ public class PersonShowUtil {
             return;
         }
         vo.setSlaveAcctId(null);
+        vo.setPersonnelId(null);
 
         if (vo.getTbAcctCrossRel() != null) {
             vo.getTbAcctCrossRel().forEach((temp) -> {

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>编辑</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- jquery datatable -->
+    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="./vendors/html5shiv.js"></script>
+    <script src="./vendors/respond.js"></script>
+    <script src="./vendors/excanvas.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        .col-sm-8 {
+            width: 64% !important;
+        }
+        .col-sm-4 {
+            width: 30% !important;
+        }
+        .row{
+            margin-left: 0px !important;
+            margin-right: 0px !important;
+        }
+    </style>
+  </head>
+
+  <body style="background: #fff;">
+        <a class="BoardTitle Back" href="list.html" style="color:#008aff;margin-bottom:10px;" onclick="">返回</a>
+        <div class="board-title">
+            <span class="name ft18" style="margin-top: 15px;">创建角色</span>
+        </div>
+        <div id="editInfo" style="margin-top:30px;">
+            <div class="row" style="margin-bottom: 10px;">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-item" style="width: 100%">
+                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">职位名称</label>
+                        <input type="tel" id="psnTel" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                size="40" name="tel" value="" autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-item" style="width: 100%">
+                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">职位编码</label>
+                        <input type="tel" id="psnTel" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                size="40" name="tel" value="" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 10px;">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-item" style="width: 100%">
+                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">上级职位</label>
+                        <select class="col-md-8 col-sm-8 col-xs-8" id="select">
+                            <option></option>
+                            <option>杭州市单位管理员</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-item" style="width: 100%">
+                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">管理区域</label>
+                        <select  class="col-md-8 col-sm-8 col-xs-8" id="select">
+                            <option></option>
+                            <option>杭州</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 10px;">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-item" style="width: 100%">
+                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">所含角色</label>
+                        <input type="tel" id="psnTel" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                size="40" name="tel" value="" autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-item" style="width: 100%">
+                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
+                        <select  class="col-md-8 col-sm-8 col-xs-8" id="select">
+                            <option></option>
+                            <option>有效</option>
+                            <option>无效</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 10px;">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-item" style="width: 100%">
+                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">排序号</label>
+                        <input type="tel" id="psnTel" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                size="40" name="tel" value="" autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-item" style="width: 100%">
+                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">备注</label>
+                        <input type="tel" id="psnTel" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                size="40" name="tel" value="" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 10px;">
+                <div style="margin-left:38%;margin-top:4%;">
+                    <button class="ui-button ui-button-primary">保存</button>
+                    <button class="ui-button ui-button-cancel" onclick="cancel()" style="margin-left: 10px;">取消</button>
+                </div>
+            </div>
+        </div>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- sea js -->
+    <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
+    <!-- layer -->
+    <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+    <!-- init -->
+    <script type="text/javascript" src="/js/init.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script type="text/javascript" src="/js/manage/position/add.js"></script>
+    <script type="text/javascript">
+        seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+            $('select').selectMatch();
+        })
+    </script>
+  </body>
+</html>

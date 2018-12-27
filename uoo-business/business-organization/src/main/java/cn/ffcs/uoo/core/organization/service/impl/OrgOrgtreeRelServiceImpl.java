@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.organization.service.impl;
 import cn.ffcs.uoo.core.organization.entity.OrgOrgtreeRel;
 import cn.ffcs.uoo.core.organization.dao.OrgOrgtreeRelMapper;
 import cn.ffcs.uoo.core.organization.service.OrgOrgtreeRelService;
+import cn.ffcs.uoo.core.organization.util.StrUtil;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,7 @@ public class OrgOrgtreeRelServiceImpl extends ServiceImpl<OrgOrgtreeRelMapper, O
         orgOrgtreeRef.setStatusCd("1100");
         orgOrgtreeRef.setStatusDate(new Date());
         orgOrgtreeRef.setUpdateDate(new Date());
-        orgOrgtreeRef.setUpdateUser(0L);
+        orgOrgtreeRef.setUpdateUser(StrUtil.isNullOrEmpty(orgOrgtreeRef.getUpdateUser())?0L:orgOrgtreeRef.getUpdateUser());
         updateById(orgOrgtreeRef);
     }
 
@@ -48,7 +49,7 @@ public class OrgOrgtreeRelServiceImpl extends ServiceImpl<OrgOrgtreeRelMapper, O
     @Override
     public void add(OrgOrgtreeRel orgOrgtreeRef){
         orgOrgtreeRef.setCreateDate(new Date());
-        orgOrgtreeRef.setCreateUser(0L);
+        orgOrgtreeRef.setCreateUser(StrUtil.isNullOrEmpty(orgOrgtreeRef.getCreateUser())?0L:orgOrgtreeRef.getCreateUser());
         orgOrgtreeRef.setStatusCd("1000");
         orgOrgtreeRef.setStatusDate(new Date());
         insert(orgOrgtreeRef);
@@ -60,7 +61,7 @@ public class OrgOrgtreeRelServiceImpl extends ServiceImpl<OrgOrgtreeRelMapper, O
     @Override
     public void update(OrgOrgtreeRel orgOrgtreeRef){
         orgOrgtreeRef.setUpdateDate(new Date());
-        orgOrgtreeRef.setUpdateUser(0L);
+        orgOrgtreeRef.setUpdateUser(StrUtil.isNullOrEmpty(orgOrgtreeRef.getUpdateUser())?0L:orgOrgtreeRef.getUpdateUser());
         orgOrgtreeRef.setStatusDate(new Date());
         updateById(orgOrgtreeRef);
     }

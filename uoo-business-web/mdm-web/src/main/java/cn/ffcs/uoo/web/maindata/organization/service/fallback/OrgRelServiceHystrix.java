@@ -25,7 +25,7 @@ public class OrgRelServiceHystrix implements OrgRelService {
 
     @Override
     public ResponseResult<List<TreeNodeVo>> getOrgRelTree(String id, String orgRootId,String orgTreeId, String refCode, boolean isOpen,
-                                                          boolean isAsync, boolean isRoot){
+                                                          boolean isAsync, boolean isRoot,Long userId,String accout){
         ResponseResult<List<TreeNodeVo>> responseResult = new ResponseResult<List<TreeNodeVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

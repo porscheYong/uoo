@@ -51,11 +51,11 @@ function openRelTypeDialog() {
         yes: function(index, layero){
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
-            checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
+            checkNode = iframeWin.checkNode;  
             $('#orgRelType').importTags(checkNode);
             $('.ui-tips-error').css('display', 'none');
             orgRelTypeList = checkNode;
+            parent.layer.close(index);
         },
         btn2: function(index, layero){},
         cancel: function(){}
@@ -77,10 +77,10 @@ function openTypeDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#orgType').importTags(checkNode);
             $('.ui-tips-error').css('display', 'none');
             orgTypeList = checkNode;
+            parent.layer.close(index);
         },
         btn2: function(index, layero){},
         cancel: function(){}
@@ -102,12 +102,12 @@ function openCopyDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             // checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             checkNode = iframeWin.getCheckdNodes();
             $('#copyTree').importTags(checkNode);
             $('.ui-tips-error').css('display', 'none');
             tarOrgTreeId = iframeWin.targetId;
             orgCopyList = checkNode;
+            parent.layer.close(index);
         },
         btn2: function(index, layero){},
         cancel: function(){}

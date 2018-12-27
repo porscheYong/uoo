@@ -10,6 +10,7 @@ var personalData={},genderData,certTypeData,nationData,pliticalStatusData,marria
     userFormValidate,jobFormValidate,eduFormValidate,familyFormValidate,orgFormValidate;
 var toastr = window.top.toastr;
 var psnImageId;
+var imgUrl = "";
 // lulu ui select插件
 // seajs.use('../../../static/vendors/lulu/js/common/ui/Select', function () {
 //   $('select').selectMatch();
@@ -171,7 +172,25 @@ function getOrgPersonnerList () {
 
     })
 }
+
+//获取人员头像
+function getPsnImage(){
+    $http.get('/psnImage/getPsnImage', {
+        personnelId: personnelId
+    }, function (data) {
+        if(data != null){
+            imgUrl =  "data:image/png;base64," + data.image;
+            $('#psnImg').attr("src",imgUrl);
+            $('#psnimg2').attr("src",imgUrl);
+            $('#psnimg1').attr("src",imgUrl);
+        }
+    }, function (err) {
+
+    })
+}
+
 function initUser(){
+    psnImageId=personalData.personalData.image;
     $('#userEditButton').show();
     //预编译模板
     var userTemplate = Handlebars.compile($("#userTemplate").html());
@@ -182,6 +201,7 @@ function initUser(){
     //输入模板
     $('#userInfo').html(userHtml);
     // $('#baseInfo').html(baseHtml);
+    getPsnImage();
 }
 function initUserList(){
     $('#userEditButton').show();
@@ -194,6 +214,7 @@ function initUserList(){
     //输入模板
     //$('#userInfo').html(userHtml);
     $('#baseInfo').html(baseHtml);
+    getPsnImage();
 }
 function initOrgInfo(){
     //预编译模板
@@ -336,7 +357,7 @@ function  editUser() {
              });
          });*/
     });
-
+    getPsnImage();
 }
 function editOrgInfo(){
 
@@ -814,21 +835,18 @@ function addPsonImg(){
             fr.readAsDataURL(fileObj.files[0]);
             fr.onload=function(){
                 dataURL = fr.result;
-                $img.attr('src', dataURL);
                 // console.log(dataURL);
-                setTimeout(convertToFile(dataURL),"1000");
+                $img.attr('src', dataURL);
+                setTimeout(convertToFile(dataURL),"500");
             } 
         }
     }
 }
 
 function convertToFile(base64Codes){
-    // var form=document.forms[0];
     var formData = new FormData();
 
-    var user_pic_name = "user";    //user_pic_name ：后台保存的用户头像文件名
-    console.log(convertBase64UrlToBlob(base64Codes));
-    formData.append("psnImageId", $('#psnImageId').val());
+    // formData.append("psnImageId", $('#psnImageId').val());
     formData.append("multipartFile",convertBase64UrlToBlob(base64Codes));	
     $.ajax({			//提交表单，异步上传图片
         url : "/psnImage/uploadImg",  //上传图片调用的服务
@@ -848,9 +866,7 @@ function convertToFile(base64Codes){
 }
 
 function convertBase64UrlToBlob(urlData){
-    //console.log(urlData);
     var bytes=window.atob(urlData.split(',')[1]);        //去掉url的头，并转换为byte
-    //处理异常,将ascii码小于0的转换为大于0
     var ab = new ArrayBuffer(bytes.length);
     var ia = new Uint8Array(ab);
     for (var i = 0; i < bytes.length; i++) {
@@ -883,7 +899,7 @@ function updatePersonnel(){
     updates.toWorkTime=toWorkTime;
     updates.marriage=marriage;
     updates.pliticalStatus=pliticalStatus;
-
+    updates.image=psnImageId;
     var tbMobileVoList =new Array();
     var mobiles=$("input[name='mobiles']").each(function(){
         var obj={};
@@ -1199,6 +1215,7 @@ $(document).ready(function(){
     getFamilyInfo();
     getOrgPersonnerList();
     getUserAccount();
+    getPsnImage();
 
 });
 function gotoAccout(i){

@@ -56,7 +56,9 @@ public class OrgServiceHystrix implements OrgService {
                                                      String sortField,
                                                      String sortOrder,
                                                      Integer pageSize,
-                                                     Integer pageNo){
+                                                     Integer pageNo,
+                                                     Long userId,
+                                                     String accout){
         ResponseResult<Page<OrgVo>> responseResult = new ResponseResult<Page<OrgVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
@@ -84,7 +86,7 @@ public class OrgServiceHystrix implements OrgService {
 
 
     @Override
-    public ResponseResult<String> deleteOrg(String orgTreeId, String orgId,String supOrgId){
+    public ResponseResult<String> deleteOrg(String orgTreeId, String orgId,String supOrgId,Long userId){
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

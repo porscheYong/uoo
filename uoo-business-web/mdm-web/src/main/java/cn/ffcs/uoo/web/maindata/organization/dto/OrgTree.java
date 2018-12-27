@@ -86,6 +86,17 @@ public class OrgTree extends Model<OrgTree> {
     @TableField(exist=false)
     private String refCode;
 
+    @TableField(exist=false)
+    private String accout;
+
+    public String getAccout() {
+        return accout;
+    }
+
+    public void setAccout(String accout) {
+        this.accout = accout;
+    }
+
     public String getRefCode() {
         return refCode;
     }

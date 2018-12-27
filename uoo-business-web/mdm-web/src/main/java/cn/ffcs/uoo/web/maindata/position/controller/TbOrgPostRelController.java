@@ -45,7 +45,7 @@ public class TbOrgPostRelController {
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbOrgPostRel> removeTbOrgPostRel(@RequestBody Long orgPostId, @RequestBody Long updateUser) {
+    public ResponseResult<TbOrgPostRel> removeTbOrgPostRel(Long orgPostId, Long updateUser) {
         return tbOrgPostRelClient.removeTbOrgPostRel(orgPostId, updateUser);
     }
 }

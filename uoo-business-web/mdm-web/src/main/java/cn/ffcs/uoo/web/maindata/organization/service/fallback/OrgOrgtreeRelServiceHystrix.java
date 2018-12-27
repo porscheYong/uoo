@@ -25,7 +25,7 @@ public class OrgOrgtreeRelServiceHystrix implements OrgOrgtreeRelService {
 
 
     @Override
-    public ResponseResult<String> getFullBizOrgList(OrgOrgtreeRel orgOrgTreeRel){
+    public ResponseResult<String> updateOrgOrgTreeRel(OrgOrgtreeRel orgOrgTreeRel){
         ResponseResult<String> responseResult = new ResponseResult<>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

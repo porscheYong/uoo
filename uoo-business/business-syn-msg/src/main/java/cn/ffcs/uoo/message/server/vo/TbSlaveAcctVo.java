@@ -24,6 +24,8 @@ public class TbSlaveAcctVo {
 
     private String systemName;
 
+    private String systemCode;
+
     private String statusCd;
 
     private Date createDate;
@@ -206,6 +208,14 @@ public class TbSlaveAcctVo {
 
     public void setSystemName(String systemName) {
         this.systemName = systemName;
+    }
+
+    public String getSystemCode() {
+        return systemCode;
+    }
+
+    public void setSystemCode(String systemCode) {
+        this.systemCode = systemCode;
     }
 
     public String getMappStaffId() {

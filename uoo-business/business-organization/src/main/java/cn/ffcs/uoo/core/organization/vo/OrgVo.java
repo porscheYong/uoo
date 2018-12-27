@@ -40,6 +40,10 @@ public class OrgVo extends BaseVo{
     private String statusCd;
     private String createDate;
 
+    private Long updateUser;
+
+
+
     private String orgMartCode;
     private Long standardFlag;
     private String orgBizFullName;
@@ -110,12 +114,37 @@ public class OrgVo extends BaseVo{
     //排序方式
     private String sortOrder;
 
+    //tb_org 权限参数
+    private String tabOrgParams;
+    //tb_org_rel权限参数
+    private String tabOrgRelParams;
 
+    public String getTabOrgRelParams() {
+        return tabOrgRelParams;
+    }
+
+    public void setTabOrgRelParams(String tabOrgRelParams) {
+        this.tabOrgRelParams = tabOrgRelParams;
+    }
+
+    public String getTabOrgParams() {
+        return tabOrgParams;
+    }
+
+    public void setTabOrgParams(String tabOrgParams) {
+        this.tabOrgParams = tabOrgParams;
+    }
 
     public String getSortField() {
         return sortField;
     }
+    public Long getUpdateUser() {
+        return updateUser;
+    }
 
+    public void setUpdateUser(Long updateUser) {
+        this.updateUser = updateUser;
+    }
     public void setSortField(String sortField) {
         this.sortField = sortField;
     }
