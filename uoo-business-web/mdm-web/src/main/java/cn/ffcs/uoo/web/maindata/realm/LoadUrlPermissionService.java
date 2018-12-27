@@ -3,6 +3,8 @@ package cn.ffcs.uoo.web.maindata.realm;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -143,26 +145,39 @@ public class LoadUrlPermissionService {
 
 
 
-            // filterChainDefinitionMap.put("/ff/ff", "perms[sad]");//
+//            filterChainDefinitionMap.put("/ff*/ff", "perms[sad]");//
+//            filterChainDefinitionMap.put("/bb/ff=*", "perms[sad]");//
+//            filterChainDefinitionMap.put("/cc/*/ff", "perms[sad]");//
 
             cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<List<SysMenu>> listPage = sysMenuClient.listPage(1, Integer.MAX_VALUE);
             if(listPage.getState()==cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult.STATE_OK){
                 List<SysMenu> data = listPage.getData();
                 if(data!=null){
+                    log.info("菜单权限数量："+data.size());
                     for (SysMenu sysMenu : data) {
                         filterChainDefinitionMap.put(sysMenu.getMenuUrl(), "perms[M" + sysMenu.getMenuId() + "]");
                     }
                 }
             }
-            /*cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<List<SysFunction>> fs = sysFunctionClient.list(1, Integer.MAX_VALUE,"");
+            cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<List<SysFunction>> fs = sysFunctionClient.list(1, Integer.MAX_VALUE,"");
             if(fs.getState()==cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult.STATE_OK){
                 List<SysFunction> data = fs.getData();
                 if(data!=null){
+                    log.info("功能权限数量："+data.size());
                     for (SysFunction sysMenu : data) {
-                        filterChainDefinitionMap.put(sysMenu.getFuncApi(), "perms[F" + sysMenu.getFuncId() + "]");
+                        String funcApi = sysMenu.getFuncApi();
+                        int indexOf = funcApi.indexOf("{");
+                        while(indexOf>=0){
+                            int end=funcApi.indexOf("}");
+                            String tmp=funcApi.substring(indexOf, end+1);
+                            funcApi=funcApi.replace(tmp, "*");
+                            indexOf= funcApi.indexOf("{");
+                        }
+                        filterChainDefinitionMap.put(funcApi, "perms[F" + sysMenu.getFuncId() + "]");
                     }
                 }
-            }*/
+            }
+            
             // 表示需要认证才可以访问
             filterChainDefinitionMap.put("/**", "authc");// 表示需要认证才可以访问
 
@@ -178,5 +193,15 @@ public class LoadUrlPermissionService {
         }
 
     }
-
+    public static void main(String[] args) {
+        String str="asd {fff}asdas{fffsss}asd{}"; 
+        int indexOf = str.indexOf("{");
+        while(indexOf>=0){
+            int end=str.indexOf("}");
+            String tmp=str.substring(indexOf, end+1);
+            str=str.replace(tmp, "*");
+            indexOf= str.indexOf("{");
+        }
+        System.out.println(str);
+    }
 }

@@ -53,5 +53,7 @@ public class MD5Util {
 
         return md5Text.equalsIgnoreCase(md5Content);
     }
-
+    public static void main(String[] args) {
+        md5Encoding(DigestUtils.md5Hex("abc_123"),"2036218984741307");
+    }
 }
