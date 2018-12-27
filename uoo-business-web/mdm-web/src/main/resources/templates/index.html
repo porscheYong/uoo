@@ -63,11 +63,11 @@
         <li class="layui-nav-item layui-hide-xs" lay-unselect=""> <a href="javascript:;" layadmin-event="note"> <i class="layui-icon layui-icon-note"></i> </a> </li>
         <li class="layui-nav-item layui-hide-xs" lay-unselect=""> <a href="javascript:;" layadmin-event="fullscreen"> <i class="layui-icon layui-icon-screen-full"></i> </a> </li>
         <li class="layui-nav-item" lay-unselect="" style="margin-right: 40px;">
-        <a href="javascript:;" lay-href="contents/my.html">
+        <a href="javascript:;">
           <img class="layui-nav-img" th:src="@{/images/avatar.png}" alt="pic"><span id="psnName"></span>
         </a>
           <dl class="layui-nav-child">
-            <dd><a lay-href="set/user/info.html">基本资料</a></dd>
+            <dd><a lay-href="" id="psnInfo">基本资料</a></dd>
             <dd><a lay-href="/inaction/password/password.html">修改密码</a></dd>
             <hr>
             <dd style="text-align: center;" layadmin-event="logout" onclick="logOut()"><a>退出</a></dd>
