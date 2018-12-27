@@ -66,6 +66,7 @@
         AND upr.STATUS_CD = '1000'
         AND u.STATUS_CD = '1000'
 		AND u.ACCOUT = #{accout}
+		ORDER BY MENU_SORT
 	</select>
 
 </mapper>
