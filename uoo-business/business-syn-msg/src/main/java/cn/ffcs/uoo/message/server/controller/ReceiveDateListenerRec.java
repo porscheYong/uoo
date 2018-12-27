@@ -439,7 +439,7 @@ public class ReceiveDateListenerRec {
     private RabbitmqIndex montage(String handle, String type, String json, Object obj, TbBusinessSystem system) {
         RabbitmqIndex index = new RabbitmqIndex();
         String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
-        List<String> queueNames = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+        List<String> queueNames = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getSystemCode(), QueueConstant.valid.getValue());
         //下发内容拼接
         RestfulVo restfulVo = new RestfulVo();
         restfulVo.setHandle(handle);

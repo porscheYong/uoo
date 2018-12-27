@@ -2,6 +2,7 @@ var loading = new Loading();
 var loadingHome = new Loading();
 var dictionaryData = new Dictionary();
 var account;
+var personnelId;
 // toastr
 toastr.options = {
   "closeButton": false,
@@ -29,6 +30,7 @@ function initUserInfo(){  //初始化首页人员信息
     function (data) {
         account = data.accout;
         $("#psnName").text(data.userName);
+        getPsnId();
     }, function (err) {
     })
 }
@@ -54,8 +56,8 @@ function initSideBar(results){     //初始化侧边菜单
     var childList = [];
     var flag = 0;
 
-    for(var i = 0;i<results.length-1;i++){
-        if(results[i].parentMenuCode === "0"){
+    for(var i = 0;i<results.length;i++){
+        if(results[i].parentMenuCode === null || results[i].parentMenuCode === ""){
             parList.push(results[i]);
         }else{
             childList.push(results[i]);
@@ -174,6 +176,14 @@ function getDictionaryData () {
     })
 }
 
+function getPsnId(){
+    $http.get('/acct/getCurrentAcct', {}, 
+    function (data) {
+        $("#psnInfo").attr("lay-href","/inaction/psnInfo/index.html?personnelId=" + data.personnelId+"&psnInfoHtml="+1);
+    }, function (err) {
+    })
+}
+
 function logOut(){  //退出登录
     parent.layer.confirm('是否退出登录?', {
         icon: 0,
@@ -186,6 +196,10 @@ function logOut(){  //退出登录
     
     });
 }
+
+// $("#psnInfo").on('click',function(){
+//     window.location.href = "/inaction/user/edit.html?personnelId=" + personnelId;
+// })
 
 function cancel(){
     $("#LAY_app_tabsheader").children(".layui-this").children(".layui-tab-close").trigger("click");

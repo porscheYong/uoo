@@ -11,8 +11,6 @@ var formValidate;
 var loading = parent.loading;
 var toastr = window.top.toastr;
 
-$('#orgTypeTreeName').html(orgTypeTreeName);
-
 // lulu ui select插件
 seajs.use('/vendors/lulu/js/common/ui/Select', function () {
 
