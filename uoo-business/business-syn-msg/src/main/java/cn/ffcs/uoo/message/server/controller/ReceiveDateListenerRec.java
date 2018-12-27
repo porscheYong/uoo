@@ -91,11 +91,13 @@ public class ReceiveDateListenerRec {
             }
 
             //下发报文
-            if (rs != null) {
+            if (rs != null && rs.size() >0) {
                 for (RabbitmqIndex index : rs) {
                     rabbitmqIndexMapper.insert(index);
                     rabbitMqSendService.sendMsg(index.getQueueName(), index.getRabbitmqDate());
                 }
+            }else{
+                logger.warn("json:{},该json不进行下发的数据。",json);
             }
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (Exception e) {
@@ -233,6 +235,8 @@ public class ReceiveDateListenerRec {
                                 TbAcctVo tbAcctVo = tbSlaveAcctMapper.insertOrUpdateSalveAcct(temp.getSlaveAcctId());
                                 tbAcctVo.getTbSlaveAcct().setSystemName(system.getSystemName());
                                 tbAcctVo.getTbSlaveAcct().setBusinessSystemId(system.getBusinessSystemId());
+                                tbAcctVo.getTbSlaveAcct().setSystemCode(system.getSystemCode());
+
                                 PersonShowUtil.noShow(tbAcctVo);
                                 if (tbAcctVo == null) {
                                     logger.warn("json:{},treeId:{},systemId:{} 数据校验不合规。", json, vo.getOrgTreeId(), vo.getBusinessSystemId());
@@ -292,6 +296,9 @@ public class ReceiveDateListenerRec {
                                     tbSlaveAcctVo.setStatusCd(tbSlaveAcct.getStatusCd());
                                     tbSlaveAcctVo.setSlaveAcct(tbSlaveAcct.getSlaveAcct());
                                     tbSlaveAcctVo.setSlaveAcctId(tbSlaveAcct.getSlaveAcctId());
+                                    tbSlaveAcctVo.setSystemName(system.getSystemName());//添加系统的名称
+                                    tbSlaveAcctVo.setBusinessSystemId(system.getBusinessSystemId());//添加系统的id
+                                    tbSlaveAcctVo.setSystemCode(system.getSystemCode());//添加系统的编码
 
                                     tbAcctVo.setTbSlaveAcct(tbSlaveAcctVo);
                                     RabbitmqIndex index = montage(handle, type, json, tbAcctVo, system);
@@ -363,6 +370,7 @@ public class ReceiveDateListenerRec {
 
                 tbAcctVo.getTbSlaveAcct().setSystemName(system.getSystemName());//添加系统的名称
                 tbAcctVo.getTbSlaveAcct().setBusinessSystemId(system.getBusinessSystemId());//添加系统的id
+                tbAcctVo.getTbSlaveAcct().setSystemCode(system.getSystemCode());//添加系统的编码
                 PersonShowUtil.noShow(tbAcctVo);//不下发数据
                 if (tbAcctVo == null) {
                     logger.warn("json:{},treeId:{},systemId:{} 数据校验不合规。", json, vo.getOrgTreeId(), vo.getBusinessSystemId());
@@ -401,6 +409,9 @@ public class ReceiveDateListenerRec {
                     tbSlaveAcctVo.setSlaveAcct(tbSlaveAcct.getSlaveAcct());
                     tbSlaveAcctVo.setStatusCd(tbSlaveAcct.getStatusCd());
                     tbSlaveAcctVo.setMappStaffId(tbSlaveAcct.getMappStaffId());
+                    tbSlaveAcctVo.setSystemName(system.getSystemName());//添加系统的名称
+                    tbSlaveAcctVo.setBusinessSystemId(system.getBusinessSystemId());//添加系统的id
+                    tbSlaveAcctVo.setSystemCode(system.getSystemCode());//添加系统的编码
 
                     tbAcctVo.setTbSlaveAcct(tbSlaveAcctVo);
                     //规则判断
@@ -413,7 +424,7 @@ public class ReceiveDateListenerRec {
                         rs.add(index);
                     }
                 } else {
-                    logger.warn("json:{},非法从账号Id,或者从账号Id已经不是失效状态了。");
+                    logger.warn("json:{},非法从账号Id,或者从账号Id已经不是失效状态了。",json);
                 }
             }
             ;
@@ -428,12 +439,24 @@ public class ReceiveDateListenerRec {
     private RabbitmqIndex montage(String handle, String type, String json, Object obj, TbBusinessSystem system) {
         RabbitmqIndex index = new RabbitmqIndex();
         String id = sdf.format(new Date()) + UUID.randomUUID().toString().replaceAll("-", "").trim();
-        String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+        List<String> queueNames = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
         //下发内容拼接
         RestfulVo restfulVo = new RestfulVo();
         restfulVo.setHandle(handle);
         restfulVo.setSerial(id);
         restfulVo.setType(type);
+
+
+        String queueName = "";
+        if(queueNames != null){
+            for(int i =0 ;i < queueNames.size();i++){
+               if(i==0){
+                   queueName = queueNames.get(i);
+               }else{
+                   queueName = queueName+","+queueNames.get(i);
+               }
+            }
+        }
 
         if (obj instanceof TbOrgVo) {
             restfulVo.setContext((TbOrgVo) obj);

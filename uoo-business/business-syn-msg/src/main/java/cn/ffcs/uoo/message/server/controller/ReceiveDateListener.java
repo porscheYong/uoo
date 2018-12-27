@@ -106,7 +106,19 @@ public class ReceiveDateListener {
                                     String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                     //System.out.println(msg);
                                     logger.info("json:{}---->msg:{}", json, msg);
-                                    String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                    List<String> queueNames = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+
+                                    String queueName = "";
+                                    if(queueNames != null){
+                                        for(int i =0 ;i < queueNames.size();i++){
+                                            if(i==0){
+                                                queueName = queueNames.get(i);
+                                            }else{
+                                                queueName = queueName+","+queueNames.get(i);
+                                            }
+                                        }
+                                    }
+
                                     RabbitmqIndex index = new RabbitmqIndex();
                                     index.setId(id);
                                     index.setState(QueueConstant.valid.getValue());
@@ -140,7 +152,18 @@ public class ReceiveDateListener {
                                         String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                         //System.out.println(msg);
                                         logger.info("json:{}---->msg:{}", json, msg);
-                                        String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                        List<String> queueNames = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                        String queueName = "";
+                                        if(queueNames != null){
+                                            for(int i =0 ;i < queueNames.size();i++){
+                                                if(i==0){
+                                                    queueName = queueNames.get(i);
+                                                }else{
+                                                    queueName = queueName+","+queueNames.get(i);
+                                                }
+                                            }
+                                        }
+
                                         RabbitmqIndex index = new RabbitmqIndex();
                                         index.setId(id);
                                         index.setState(QueueConstant.valid.getValue());
@@ -212,7 +235,17 @@ public class ReceiveDateListener {
                                             String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                             //System.out.println(msg);
                                             logger.info("json:{}---->msg:{}", json, msg);
-                                            String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                            List<String> queueNames = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                            String queueName = "";
+                                            if(queueNames != null){
+                                                for(int i =0 ;i < queueNames.size();i++){
+                                                    if(i==0){
+                                                        queueName = queueNames.get(i);
+                                                    }else{
+                                                        queueName = queueName+","+queueNames.get(i);
+                                                    }
+                                                }
+                                            }
                                             RabbitmqIndex index = new RabbitmqIndex();
                                             index.setId(id);
                                             index.setState(QueueConstant.valid.getValue());
@@ -239,7 +272,17 @@ public class ReceiveDateListener {
                                             String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                             //System.out.println(msg);
                                             logger.info("json:{}---->msg:{}", json, msg);
-                                            String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                            List<String> queueNames = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                            String queueName = "";
+                                            if(queueNames != null){
+                                                for(int i =0 ;i < queueNames.size();i++){
+                                                    if(i==0){
+                                                        queueName = queueNames.get(i);
+                                                    }else{
+                                                        queueName = queueName+","+queueNames.get(i);
+                                                    }
+                                                }
+                                            }
                                             RabbitmqIndex index = new RabbitmqIndex();
                                             index.setId(id);
                                             index.setState(QueueConstant.valid.getValue());
@@ -267,7 +310,17 @@ public class ReceiveDateListener {
                                             String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                             //System.out.println(msg);
                                             logger.info("json:{}---->msg:{}", json, msg);
-                                            String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                            List<String> queueNames = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                            String queueName = "";
+                                            if(queueNames != null){
+                                                for(int i =0 ;i < queueNames.size();i++){
+                                                    if(i==0){
+                                                        queueName = queueNames.get(i);
+                                                    }else{
+                                                        queueName = queueName+","+queueNames.get(i);
+                                                    }
+                                                }
+                                            }
                                             RabbitmqIndex index = new RabbitmqIndex();
                                             index.setId(id);
                                             index.setState(QueueConstant.valid.getValue());
@@ -316,7 +369,18 @@ public class ReceiveDateListener {
                                                 String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                                 //System.out.println(msg);
                                                 logger.info("json:{}---->msg:{}", json, msg);
-                                                String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                                List<String> queueNames = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+
+                                                String queueName = "";
+                                                if(queueNames != null){
+                                                    for(int i =0 ;i < queueNames.size();i++){
+                                                        if(i==0){
+                                                            queueName = queueNames.get(i);
+                                                        }else{
+                                                            queueName = queueName+","+queueNames.get(i);
+                                                        }
+                                                    }
+                                                }
                                                 RabbitmqIndex index = new RabbitmqIndex();
                                                 index.setId(id);
                                                 index.setState(QueueConstant.valid.getValue());
@@ -349,7 +413,17 @@ public class ReceiveDateListener {
                                             String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                             //System.out.println(msg);
                                             logger.info("json:{}---->msg:{}", json, msg);
-                                            String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                            List<String> queueNames= systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                            String queueName = "";
+                                            if(queueNames != null){
+                                                for(int i =0 ;i < queueNames.size();i++){
+                                                    if(i==0){
+                                                        queueName = queueNames.get(i);
+                                                    }else{
+                                                        queueName = queueName+","+queueNames.get(i);
+                                                    }
+                                                }
+                                            }
                                             RabbitmqIndex index = new RabbitmqIndex();
                                             index.setId(id);
                                             index.setState(QueueConstant.valid.getValue());
@@ -383,7 +457,17 @@ public class ReceiveDateListener {
                                             String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                             //System.out.println(msg);
                                             logger.info("json:{}---->msg:{}", json, msg);
-                                            String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                            List<String> queueNames = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                            String queueName = "";
+                                            if(queueNames != null){
+                                                for(int i =0 ;i < queueNames.size();i++){
+                                                    if(i==0){
+                                                        queueName = queueNames.get(i);
+                                                    }else{
+                                                        queueName = queueName+","+queueNames.get(i);
+                                                    }
+                                                }
+                                            }
                                             RabbitmqIndex index = new RabbitmqIndex();
                                             index.setId(id);
                                             index.setState(QueueConstant.valid.getValue());
@@ -448,7 +532,17 @@ public class ReceiveDateListener {
                                 String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                 //System.out.println(msg);
                                 logger.info("json:{}---->msg:{}", json, msg);
-                                String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                List<String> queueNames = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                String queueName = "";
+                                if(queueNames != null){
+                                    for(int i =0 ;i < queueNames.size();i++){
+                                        if(i==0){
+                                            queueName = queueNames.get(i);
+                                        }else{
+                                            queueName = queueName+","+queueNames.get(i);
+                                        }
+                                    }
+                                }
                                 RabbitmqIndex index = new RabbitmqIndex();
                                 index.setId(id);
                                 index.setState(QueueConstant.valid.getValue());
@@ -469,7 +563,17 @@ public class ReceiveDateListener {
                                 String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                 //System.out.println(msg);
                                 logger.info("json:{}---->msg:{}", json, msg);
-                                String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                List<String> queueNames = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                String queueName = "";
+                                if(queueNames != null){
+                                    for(int i =0 ;i < queueNames.size();i++){
+                                        if(i==0){
+                                            queueName = queueNames.get(i);
+                                        }else{
+                                            queueName = queueName+","+queueNames.get(i);
+                                        }
+                                    }
+                                }
                                 RabbitmqIndex index = new RabbitmqIndex();
                                 index.setId(id);
                                 index.setState(QueueConstant.valid.getValue());
@@ -504,7 +608,17 @@ public class ReceiveDateListener {
                                     String msg = JSON.toJSONString(restfulVo, SerializerFeature.WriteDateUseDateFormat);
                                     //System.out.println(msg);
                                     logger.info("json:{}---->msg:{}", json, msg);
-                                    String queueName = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                    List<String> queueNames = systemQueueRelaMapper.getQueueName(system.getSystemName(), "" + system.getBusinessSystemId(), QueueConstant.valid.getValue());
+                                    String queueName = "";
+                                    if(queueNames != null){
+                                        for(int i =0 ;i < queueNames.size();i++){
+                                            if(i==0){
+                                                queueName = queueNames.get(i);
+                                            }else{
+                                                queueName = queueName+","+queueNames.get(i);
+                                            }
+                                        }
+                                    }
                                     RabbitmqIndex index = new RabbitmqIndex();
                                     index.setId(id);
                                     index.setState(QueueConstant.valid.getValue());

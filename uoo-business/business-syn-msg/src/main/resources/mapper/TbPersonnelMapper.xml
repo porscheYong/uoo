@@ -32,4 +32,12 @@
     STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, UUID, 
     NOTES
   </sql>
+
+  <select id="selectPersonnelAndAcctById" resultMap="BaseResultMap">
+    select a.personnel_id,a.psn_name,a.psn_code,a.nc_code, a.psn_nbr,a.nationality,a.gender,a.nation,a.marriage,a.plitical_status, a.image,
+       a.reason, a.to_work_time, a.serving_age,a.length_service,a.status_cd + b.status_cd status_cd,a.create_date,a.create_user,a.update_date,
+       a.update_user,a.status_date, a.uuid,a.notes from tb_personnel a, tb_acct b where a.personnel_id = b.personnel_id  and a.personnel_id = #{personnelId}
+  </select>
+
+
 </mapper>
