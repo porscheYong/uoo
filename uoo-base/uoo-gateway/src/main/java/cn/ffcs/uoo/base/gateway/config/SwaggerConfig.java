@@ -1,4 +1,4 @@
-//package cn.ffcs.uoo.base.gateway.properties;
+//package cn.ffcs.uoo.base.gateway.config;
 //
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
