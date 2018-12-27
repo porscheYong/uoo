@@ -1,6 +1,9 @@
 package cn.ffcs.uoo.system.service;
 
 import cn.ffcs.uoo.system.entity.SysFunction;
+
+import java.util.List;
+
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -12,5 +15,7 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-12-24
  */
 public interface ISysFunctionService extends IService<SysFunction> {
+
+    List<SysFunction> getFunctionByAccout(String accout);
 
 }

@@ -42,7 +42,7 @@ public class TbPostController {
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbPost> removeTbPost(@RequestBody Long postId, @RequestBody Long updateUser) {
+    public ResponseResult<TbPost> removeTbPost(Long postId, Long updateUser) {
         return tbPostClient.removeTbPost(postId, updateUser);
     }
 

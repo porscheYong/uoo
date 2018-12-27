@@ -62,5 +62,6 @@ public interface OrgService{
     @RequestMapping(value = "/org/deleteOrg", method = RequestMethod.GET,headers={"Content-Type=application/json"})
     public ResponseResult<String> deleteOrg(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                             @RequestParam(value = "orgId",required = false)String orgId,
-                                            @RequestParam(value = "supOrgId",required = false)String supOrgId);
+                                            @RequestParam(value = "supOrgId",required = false)String supOrgId,
+                                            @RequestParam(value = "userId",required = false)Long userId);
 }

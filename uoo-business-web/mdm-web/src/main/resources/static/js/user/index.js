@@ -152,6 +152,7 @@ function initBusinessList () {
         // businessName = data[0].orgTreeName;
         $('#businessOrg').unbind('change').bind('change', function (event) {
             orgTreeId = event.target.options[event.target.options.selectedIndex].value;
+            businessName = event.target.options[event.target.options.selectedIndex].text;
             initTree(orgTreeId);
         });
         $('#businessOrg').trigger('change');

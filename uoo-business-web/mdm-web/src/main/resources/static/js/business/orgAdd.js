@@ -2,19 +2,23 @@ var orgId = getQueryString('id');
 var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
+var refCode = getQueryString('refCode');
 var areaCodeId = ''; //区号ID
 var locationList = [];
 var orgTypeList = [];
-var expandovalueVoList; //划小扩展字段
+var expandovalueVoList = []; //划小扩展字段
 var positionList = [];
 var orgPostList = [];
-var regionList = [];
 var checkNode;
 var selectUser = [];
 var formValidate;
 var loading = parent.loading;
 var toastr = window.top.toastr;
+var nodeArr = parent.nodeArr;
 var editSmallField = false;
+var selectStandardNode = false; //是否选中标准节点
+var selectRevenueCenter = false; //是否选中收入中心
+var U5Node = false; //是否存在U5节点
 
 //字典数据
 var scaleData = window.top.dictionaryData.scale();
@@ -57,6 +61,46 @@ if(typeof $.fn.tagsInput !== 'undefined'){
     $('#positionList').tagsInput();
     $('#postList').tagsInput();
     $('#regionId').tagsInput({unique: true});
+}
+// 父节点U5类型检查
+function checkU5Org() {
+    var nodeIdArr = [];
+    for (var i = 0; i < nodeArr.length; i++) {
+        var id = nodeArr[i].node.id;
+        nodeIdArr.push(id);
+    }
+    $http.post('/tbExpandovalue/checkOrgU5Node', JSON.stringify(nodeIdArr), function (data) {
+        if (parseInt(data))
+            U5Node = true;
+    }, function (err) {
+
+    })
+}
+//营销组织树新增页面组织类别默认选中营销类别
+function getFullOrgTypeTree() {
+    if (refCode == '0401') {
+        $http.get('/orgType/getFullOrgTypeTree', {
+            orgId: orgId
+        }, function (data) {
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].extField1 == 'N11') {
+                    orgTypeList.push(data[i]);
+                    $('#orgTypeList').importTags(orgTypeList, {unique: true});
+                    var smallTemplate = Handlebars.compile($("#smallTemplate").html());
+                    var smallHtml = smallTemplate();
+                    $('#small').html(smallHtml);
+                    getNodeType();
+                    getAreaType();
+                    getCountType();
+                    getContractType();
+                    editSmallField = true;
+                    return;
+                }
+            }
+        }, function (err) {
+
+        })
+    }
 }
 //自动填写组织简称
 function autoFillShortName () {
@@ -105,10 +149,10 @@ function openTypeDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#orgTypeList').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
             orgTypeList = checkNode;
+            parent.layer.close(index);
             //选择组织类别为营销组织类型
             if (orgTypeList.length == 0 && editSmallField) {
                 editSmallField = false;
@@ -116,8 +160,10 @@ function openTypeDialog() {
             else {
                 for (var i = 0; i < orgTypeList.length; i++) {
                     var isSmallFieldExit = false;
-                    if (((orgTypeList[i].orgTypeCode && orgTypeList[i].orgTypeCode.substr(0, 3) == 'N11') ||
-                        (orgTypeList[i].extField1 && orgTypeList[i].extField1.substr(0, 3) == 'N11'))) {
+                    if (refCode == '0401' &&
+                        ((orgTypeList[i].orgTypeCode && orgTypeList[i].orgTypeCode.substr(0, 3) == 'N11') ||
+                         (orgTypeList[i].extField1 && orgTypeList[i].extField1.substr(0, 3) == 'N11')
+                        )) {
                         if (!editSmallField) {
                             var smallTemplate = Handlebars.compile($("#smallTemplate").html());
                             var smallHtml = smallTemplate();
@@ -138,8 +184,11 @@ function openTypeDialog() {
                         editSmallField = false;
                 }
             }
-            if (!editSmallField)
+            if (!editSmallField) {
                 $('#small').html('');
+                selectStandardNode = false;
+                selectRevenueCenter = false;
+            }
         },
         btn2: function(index, layero){},
         cancel: function(){}
@@ -161,10 +210,10 @@ function openPositionDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#positionList').importTags(checkNode);
             // $('.ui-tips-error').css('display', 'none');
             positionList = checkNode;
+            parent.layer.close(index);
         },
         btn2: function(index, layero){},
         cancel: function(){}
@@ -186,11 +235,11 @@ function openPostDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#postList').importTags(checkNode);
             //TODO 防止选中标签显示错误提示
             // $('.ui-tips-error').css('display', 'none');
             orgPostList = checkNode;
+            parent.layer.close(index);
         },
         btn2: function(index, layero){},
         cancel: function(){}
@@ -212,50 +261,36 @@ function openLocationDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
             $('#locationList').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
             locationList = checkNode;
-        },
-        btn2: function(index, layero){},
-        cancel: function(){}
-    });
-}
-
-//电信管理区域选择
-function openRegionDialog() {
-    parent.layer.open({
-        type: 2,
-        title: '电信管理区域',
-        shadeClose: true,
-        shade: 0.8,
-        area: ['50%', '80%'],
-        maxmin: true,
-        content: '/inaction/organization/regionDialog.html',
-        btn: ['确认', '取消'],
-        yes: function(index, layero){
-            //获取layer iframe对象
-            var iframeWin = parent.window[layero.find('iframe')[0].name];
-            checkNode = iframeWin.checkNode;
-            $('#regionId').importTags(checkNode);
-            $('.ui-tips-error').css('display', 'none');
-            regionList = checkNode;
-            parent.layer.close(index);
             getAreaId(checkNode[0].id);
+            parent.layer.close(index);
         },
         btn2: function(index, layero){},
         cancel: function(){}
     });
 }
 
-//根据电信管理区域ID获取区号
+//根据行政管理区域ID获取区号
 function getAreaId(regionId) {
-    $http.get('/region/commonRegion/getCommonRegion/id='+ regionId, {}, function (data) {
-        areaCodeId = data.areaCode.areaCodeId;
-        $('#areaCode').val(data.areaCode.areaCode);
+    $http.get('/region/areaCode/getAreaCodeByPollocId/id='+ regionId, {}, function (data) {
+        if (data[0])
+            areaCodeId = data[0].areaCodeId;
+        var option = '';
+        for (var i = 0; i < data.length; i++) {
+            option += "<option value='" + data[i].areaCodeId + "'>" + data[i].areaCode +"</option>";
+        }
+        $('#areaCode').html(option);
+        $('#areaCode').selectMatch();
+        formValidate.isPass($('#areaCode'));
     }, function (err) {
 
     })
+}
+//根据拉下框获取当前选中的区号ID
+function getAreaCodeId() {
+    areaCodeId = $(this).children('option:selected').val();
 }
 
 // 获取规模字典数据
@@ -305,8 +340,26 @@ function getNodeType () {
     for (var i = 0; i < nodeTypeData.length; i++) {
         option += "<option value='" + nodeTypeData[i].itemValue + "'>" + nodeTypeData[i].itemCnname +"</option>";
     }
-    $('#nodeType').append(option);
-    $('#nodeType').selectMatch();
+    $('#nodeTypes').append(option);
+    // $('#nodeType').selectMatch();
+    formSelects.render('nodeTypes');
+    formSelects.on('nodeTypes', function(id, vals, val, isAdd, isDisabled){
+        if (isAdd && val.value == 'A1') {
+            selectStandardNode = true;
+            formSelects.oDisabled('countType', {value: 'B2'});
+            formSelects.addOne('countType', {value: 'B4', name: '收入中心'});
+        }
+        if (isAdd && val.value == 'A3') {
+            selectRevenueCenter = true;
+        }
+        if (!isAdd && val.value == 'A1') {
+            selectStandardNode = false;
+            formSelects.oUnDisabled('countType', {value: 'B2'});
+        }
+        if (!isAdd && val.value == 'A3') {
+            selectRevenueCenter = false;
+        }
+    }, true);
 }
 
 // 获取区域级别字典数据
@@ -326,11 +379,30 @@ function getCountType () {
         option += "<option value='" + countTypeData[i].itemValue + "'>" + countTypeData[i].itemCnname +"</option>";
     }
     $('#countType').append(option);
-    $('#countType').selectMatch();
+    // $('#countType').selectMatch();
+    formSelects.render('countType');
+    formSelects.on('countType', function(id, vals, val, isAdd, isDisabled){
+        if (selectRevenueCenter && !selectStandardNode) {
+            if (isAdd && val.value == 'B2') {
+                formSelects.delOne('countType', {value: 'B4'});
+            }
+            if (isAdd && val.value == 'B4') {
+                formSelects.delOne('countType', {value: 'B2'});
+            }
+        }
+
+    }, true);
 }
 
 // 获取承包类型字典数据
 function getContractType () {
+    if (U5Node) {
+        for (var i = 0; i < contractTypeData.length; i++) {
+            if (contractTypeData[i].itemValue.split('-')[0] == 'U5') {
+                contractTypeData.splice(i, 1)
+            }
+        }
+    }
     var option = '<option></option>';
     for (var i = 0; i < contractTypeData.length; i++) {
         option += "<option value='" + contractTypeData[i].itemValue + "'>" + contractTypeData[i].itemCnname +"</option>";
@@ -389,17 +461,23 @@ function addOrg () {
     var orgContent = $('#orgContent').val();
     var orgDesc = $('#orgDesc').val();
     //划小扩展字段
-    var nodeType = $('#nodeType option:selected') .val();
+    // var nodeType = $('#nodeType option:selected') .val();
+    var nodeType = formSelects.value('nodeTypes');
     var areaType = $('#areaType option:selected') .val();
-    var countType = $('#countType option:selected') .val();
+    // var countType = $('#countType option:selected') .val();
+    var countType = formSelects.value('countType');
     var contractType = $('#contractType option:selected') .val();
     if (editSmallField) {
-        expandovalueVoList = [
-            {columnName: 'nodeType', data: nodeType},
-            {columnName: 'areaType', data: areaType},
-            {columnName: 'countType', data: countType},
-            {columnName: 'contractType', data: contractType}
-        ];
+        if (areaType)
+            expandovalueVoList.push({columnName: 'areaType', data: areaType});
+        if (contractType)
+            expandovalueVoList.push({columnName: 'contractType', data: contractType})
+        for (var i = 0; i < nodeType.length; i++){
+            expandovalueVoList.push({columnName: 'nodeType', data: nodeType[i].value})
+        }
+        for (var i = 0; i < countType.length; i++){
+            expandovalueVoList.push({columnName: 'countType', data: countType[i].value})
+        }
     }
     $http.post('/org/addOrg', JSON.stringify({
         orgRootId: '1',
@@ -448,4 +526,6 @@ getScale();
 getCityVillage();
 getOrgPostLevel();
 getStatusCd('1000'); //默认选择生效
+checkU5Org();
+getFullOrgTypeTree();
 

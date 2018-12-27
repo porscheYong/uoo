@@ -1154,3 +1154,11 @@ a.BoardTitle.Back:hover {
     padding: 6px 55px 6px 35px;
     opacity: 1
 }
+
+/*
+ * Component: multi select
+ * --------------
+ */
+.xm-select-parent {
+    padding: 0;
+}

@@ -37,7 +37,7 @@ public class OrgVo extends BaseVo{
     private String uuid;
     private String statusCd;
     private String createDate;
-
+    private Long updateUser;
     private String orgMartCode;
     private Long standardFlag;
     private String orgBizFullName;
@@ -103,6 +103,13 @@ public class OrgVo extends BaseVo{
     //排序方式
     private String sortOrder;
 
+    public Long getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(Long updateUser) {
+        this.updateUser = updateUser;
+    }
 
     public String getOrgBizName() {
         return orgBizName;

@@ -71,7 +71,7 @@ public class TbPostLocationController extends BaseController {
     })
     @UooLog(value = "删除职位行政区域", key = "removeTbPostLocation")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbPostLocation> removeTbPostLocation(@RequestBody Long postLocationId, @RequestBody Long updateUser) {
+    public ResponseResult<TbPostLocation> removeTbPostLocation(Long postLocationId, Long updateUser) {
         ResponseResult<TbPostLocation> responseResult = new ResponseResult<TbPostLocation>();
 
         // 校验必填项

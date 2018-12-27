@@ -2,55 +2,67 @@ package cn.ffcs.uoo.system.vo;
 
 import java.util.List;
 
+import cn.ffcs.uoo.system.entity.SysDataRule;
+import cn.ffcs.uoo.system.entity.SysElement;
+import cn.ffcs.uoo.system.entity.SysFile;
+import cn.ffcs.uoo.system.entity.SysFunction;
+import cn.ffcs.uoo.system.entity.SysMenu;
 import cn.ffcs.uoo.system.entity.SysPermission;
+import cn.ffcs.uoo.system.entity.SysPermissionDataRulesRel;
+import cn.ffcs.uoo.system.entity.SysPermissionElementRel;
+import cn.ffcs.uoo.system.entity.SysPermissionFuncRel;
+import cn.ffcs.uoo.system.entity.SysPermissionMenuRel;
+import cn.ffcs.uoo.system.entity.SysPrivFileRel;
 
 public class SysPermissionEditDTO extends SysPermission{
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
-    private List<String> funcCodes;
-    private List<String> menuCodes;
-    private List<String> elementCodes;
-    private List<Long> fileIds;
-    private List<Long> dataRuleIds;
-    
+    private List<SysPermissionFuncRel> funcRels;
+    private List<SysPermissionMenuRel> menuRels;
+    private List<SysPermissionElementRel> elementRels;
+    private List<SysPrivFileRel> fileRels;
+    private List<SysPermissionDataRulesRel> dataRuleRels;
     private String regionName;
+     
     public String getRegionName() {
         return regionName;
     }
     public void setRegionName(String regionName) {
         this.regionName = regionName;
     }
-    public List<String> getFuncCodes() {
-        return funcCodes;
+    public List<SysPermissionFuncRel> getFuncRels() {
+        return funcRels;
     }
-    public void setFuncCodes(List<String> funcCodes) {
-        this.funcCodes = funcCodes;
+    public void setFuncRels(List<SysPermissionFuncRel> funcRels) {
+        this.funcRels = funcRels;
     }
-    public List<String> getMenuCodes() {
-        return menuCodes;
+    public List<SysPermissionMenuRel> getMenuRels() {
+        return menuRels;
     }
-    public void setMenuCodes(List<String> menuCodes) {
-        this.menuCodes = menuCodes;
+    public void setMenuRels(List<SysPermissionMenuRel> menuRels) {
+        this.menuRels = menuRels;
     }
-    public List<String> getElementCodes() {
-        return elementCodes;
+    public List<SysPermissionElementRel> getElementRels() {
+        return elementRels;
     }
-    public void setElementCodes(List<String> elementCodes) {
-        this.elementCodes = elementCodes;
+    public void setElementRels(List<SysPermissionElementRel> elementRels) {
+        this.elementRels = elementRels;
     }
-    public List<Long> getFileIds() {
-        return fileIds;
+    public List<SysPrivFileRel> getFileRels() {
+        return fileRels;
     }
-    public void setFileIds(List<Long> fileIds) {
-        this.fileIds = fileIds;
+    public void setFileRels(List<SysPrivFileRel> fileRels) {
+        this.fileRels = fileRels;
     }
-    public List<Long> getDataRuleIds() {
-        return dataRuleIds;
+    public List<SysPermissionDataRulesRel> getDataRuleRels() {
+        return dataRuleRels;
     }
-    public void setDataRuleIds(List<Long> dataRuleIds) {
-        this.dataRuleIds = dataRuleIds;
+    public void setDataRuleRels(List<SysPermissionDataRulesRel> dataRuleRels) {
+        this.dataRuleRels = dataRuleRels;
     }
+     
+     
     
 }

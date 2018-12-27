@@ -3,6 +3,7 @@ var loading = new Loading();
 var orgRootId; //业务组织ID
 var orgTreeId; //业务组织ID
 var businessName; //业务名
+var refCode; //唯一标识
 var orgId, //组织ID
     pid,
     orgName, //组织名
@@ -63,7 +64,7 @@ function filter (treeId, parentNode, childNodes) {
 }
 
 function refreshResult () {
-    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + '&pid=' + pid + "&name=" + encodeURI(orgName);
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + '&pid=' + pid + "&refCode=" + refCode + "&name=" + encodeURI(orgName);
     $('#businessFrame').attr("src",url);
 }
 
@@ -178,7 +179,7 @@ function initBusinessList () {
         var option = '';
         for (var i = 0; i < data.length; i++) {
             var select = i === 0? 'selected' : '';
-            option += "<option value='" + data[i].orgTreeId + "' " + select + ">" + data[i].orgTreeName +"</option>";
+            option += "<option value='" + data[i].orgTreeId + "' code='" + data[i].refCode + "' " + select + ">" + data[i].orgTreeName +"</option>";
         }
         $('#businessOrg').html(option);
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
@@ -187,9 +188,11 @@ function initBusinessList () {
         initTree(data[0].orgTreeId);
         orgTreeId = data[0].orgTreeId;
         businessName = data[0].orgTreeName;
-        $('#businessOrg').unbind('change').bind('change', function (event) {
-            orgTreeId = event.target.options[event.target.options.selectedIndex].value;
-            businessName = event.target.options[event.target.options.selectedIndex].innerHTML;
+        refCode = data[0].refCode;
+        $('#businessOrg').unbind('change').bind('change', function () {
+            orgTreeId = $(this).children('option:selected').val();
+            businessName = $(this).children('option:selected').text();
+            refCode = $(this).children('option:selected').attr('code');
             initTree(orgTreeId);
         })
     }, function (err) {
@@ -204,7 +207,7 @@ function orgTreeEdit () {
 }
 //跳转页面至新增业务树
 function addBusiness () {
-    var url = "add.html?id=" + orgId +"&orgTreeId=" + orgTreeId + "&name=" + encodeURI(businessName) + "&treeName=" + encodeURI(businessName);
+    var url = "add.html?id=" + orgId +"&orgTreeId=" + orgTreeId + "&refCode=" + refCode + "&name=" + encodeURI(businessName) + "&treeName=" + encodeURI(businessName);
     $('#businessFrame').attr("src",url);
 }
 initBusinessList();

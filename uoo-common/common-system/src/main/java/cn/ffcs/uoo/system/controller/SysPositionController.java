@@ -113,6 +113,10 @@ public class SysPositionController {
         sysPosition.setpPositionId(pos.getpPositionId());
         sysPosition.setRegionNbr(pos.getRegionNbr());
         sysPositionService.add(sysPosition);
+
+        for(String roleCode : pos.getRoleCodeList()){
+            
+        }
         return ret;
     }
 

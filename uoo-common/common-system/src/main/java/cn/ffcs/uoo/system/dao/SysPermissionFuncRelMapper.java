@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface SysPermissionFuncRelMapper extends BaseMapper<SysPermissionFuncRel> {
     Long getId();
+
+    void updatePermissionCode(String oldCode, String newCode);
 }

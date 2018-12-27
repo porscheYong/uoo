@@ -2,23 +2,18 @@ package cn.ffcs.uoo.core.resource.controller;
 
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
-import cn.ffcs.uoo.core.resource.entity.TbBusinessSystem;
+import cn.ffcs.uoo.core.resource.entity.ModifyHistory;
 import cn.ffcs.uoo.core.resource.service.ModifyHistoryService;
-import cn.ffcs.uoo.core.resource.service.TbBusinessSystemService;
 import cn.ffcs.uoo.core.resource.util.StrUtil;
+import cn.ffcs.uoo.core.resource.vo.ModifyHistoryVo;
 import cn.ffcs.uoo.core.vo.ResponseResult;
-import com.baomidou.mybatisplus.mapper.Condition;
-import com.baomidou.mybatisplus.mapper.Wrapper;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * <p>
@@ -28,6 +23,8 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018-12-24
  */
+
+@Api(value = "modifyHistory", description = "日志")
 @RestController
 @RequestMapping("/modifyHistory")
 public class ModifyHistoryController {
@@ -40,6 +37,11 @@ public class ModifyHistoryController {
     @RequestMapping(value = "/addModifyHistory", method = RequestMethod.POST)
     public ResponseResult<String> addModifyHistory(Object oldObj,Object newObj) {
         ResponseResult<String> ret = new ResponseResult<>();
+        if(oldObj==null && newObj==null){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("新值和旧值不能同时为空");
+            return ret;
+        }
         String retstr = modifyHistoryService.addModifyHistory(oldObj,newObj);
         if(StrUtil.isNullOrEmpty(retstr)){
             ret.setState(ResponseResult.STATE_OK);
@@ -47,8 +49,32 @@ public class ModifyHistoryController {
             return ret;
         }
         ret.setState(ResponseResult.STATE_ERROR);
-        ret.setMessage(retstr);
         return ret;
     }
+
+
+    @ApiOperation(value = "新增变化日志表", notes = "新增变化日志表")
+    @UooLog(value = "新增变化日志表", key = "addModifyHistoryVo")
+    @RequestMapping(value = "/addModifyHistoryVo", method = RequestMethod.POST)
+    public ResponseResult<String> addModifyHistoryVo(ModifyHistoryVo modifyHistoryVo) {
+        ResponseResult<String> ret = new ResponseResult<>();
+        ModifyHistory modifyHistory = new ModifyHistory();
+        Long mdyId = modifyHistoryService.getId();
+        String batNum = modifyHistoryService.getBatchNumber();
+        modifyHistory.setModifyId(mdyId);
+        modifyHistory.setBatchNumber(batNum);
+        Long tabId = modifyHistoryService.getCommonTableId(modifyHistoryVo.getTabName());
+        modifyHistory.setTabId(tabId);
+        modifyHistory.setRecordId(modifyHistoryVo.getRecordId());
+        modifyHistory.setOperateType(modifyHistoryVo.getOperateType());
+        modifyHistory.setBatchNumber(batNum);
+        modifyHistory.setNote(modifyHistoryVo.getNote());
+        modifyHistory.setFieldName(modifyHistoryVo.getFieldName());
+        modifyHistory.setFieldValue(modifyHistoryVo.getFieldValue());
+        modifyHistoryService.add(modifyHistory);
+        ret.setState(ResponseResult.STATE_ERROR);
+        return ret;
+    }
+
 }
 

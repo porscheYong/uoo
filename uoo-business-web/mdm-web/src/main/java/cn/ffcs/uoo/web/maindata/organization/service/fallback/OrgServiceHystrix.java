@@ -84,7 +84,7 @@ public class OrgServiceHystrix implements OrgService {
 
 
     @Override
-    public ResponseResult<String> deleteOrg(String orgTreeId, String orgId,String supOrgId){
+    public ResponseResult<String> deleteOrg(String orgTreeId, String orgId,String supOrgId,Long userId){
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

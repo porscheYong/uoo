@@ -185,7 +185,7 @@
             
             <div   class="BoardContent TableStyle tcenter">
                 
-            <input class="Btn BtnRedWhite" id="delPsn" type="button" onclick="isDelete()" value="删除人员" style="margin-top:20px;" />
+            <input class="Btn BtnRedWhite" id="delPsn" type="button" onclick="deleteTbAcct()" value="删除人员" style="margin-top:20px;" />
             </div>
         </div>
         <div class="tab-pane" id="user">
@@ -238,7 +238,7 @@
 <!--用户信息-->
 <script id="userTemplate" type="text/x-handlebars-template">
         <div class="col-md-2 fleft tcenter">
-            <img class="avatar" src="{{personalData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null" />
+            <img class="avatar" id="psnimg2" src="{{personalData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null" />
         </div>
         <div class="col-md-10 fleft Col8">
             <strong class="Font24 Black">{{personalData.psnName}}</strong>
@@ -413,7 +413,7 @@
 </script>
 <script id="baseInfoTemplate" type="text/x-handlebars-template">
 <div class="col-md-2 fleft tcenter">
-    <img class="avatar" src="{{personalData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null"/>
+    <img class="avatar" id="psnimg1" src="{{personalData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null"/>
 </div>    
                     
 <div class="col-md-10 fleft Col8">

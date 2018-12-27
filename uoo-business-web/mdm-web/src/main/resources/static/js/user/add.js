@@ -31,6 +31,10 @@ var orgValidate;
 var sortFlag = 0;
 var currentPage = 0;
 
+var psnImageId;
+
+var toastr = window.top.toastr;
+
 $('#orgName').html(orgName);
 parent.getOrgExtInfo();
 
@@ -1098,6 +1102,75 @@ function formatDateTime(unix) {
     return now;
 }
 
+//设置人员头像
+function setPsnImg(){  
+    $("#psnImgFile").click();
+}
+
+$("#psnImgFile").change(function(){
+    var isIE=!!window.ActiveXObject;
+    var isIE8910=isIE&&document.documentMode<11;
+    
+    if(isIE8910){
+        xmlHttp = new ActiveXObject("MSXML2.XMLHTTP");
+        xmlHttp.open("POST",this.value, false);
+        xmlHttp.send("");
+        xml_dom = new ActiveXObject("MSXML2.DOMDocument");
+        tmpNode = xml_dom.createElement("tmpNode");
+        tmpNode.dataType = "bin.base64";
+        tmpNode.nodeTypedValue = xmlHttp.responseBody;
+        imgData = "data:image/"+ "bmp" +";base64," + tmpNode.text.replace(/\n/g,"");
+        $("#psnImg").attr('src', imgData);
+        convertToFile(imgData);
+    }else{
+        var $file = $('#psnImgFile');
+        var fileObj = $file[0];
+        if(fileObj.value!=""){
+            var dataURL;
+            var fr = new FileReader;
+            var $img = $("#psnImg");
+            fr.readAsDataURL(fileObj.files[0]);
+            fr.onload=function(){
+                dataURL = fr.result;
+                // console.log(dataURL);
+                $img.attr('src', dataURL);
+                setTimeout(convertToFile(dataURL),"500");
+            } 
+        }
+    }
+})
+
+function convertToFile(base64Codes){
+    var formData = new FormData();
+
+    formData.append("multipartFile",convertBase64UrlToBlob(base64Codes));	
+    $.ajax({			//提交表单，异步上传图片
+        url : "/psnImage/uploadImg",  //上传图片调用的服务
+        type : "POST",
+        data : formData,
+        // dataType:"json",
+        processData : false,         // 告诉jQuery不要去处理发送的数据
+        contentType : false,        // 告诉jQuery不要去设置Content-Type请求头
+        success:function(data){
+            toastr.success(data.message);
+            psnImageId = data.data.psnImageId.toString();
+        },
+        error:function(data){
+            console.log(data);
+        }
+    });
+}
+
+function convertBase64UrlToBlob(urlData){
+    var bytes=window.atob(urlData.split(',')[1]);        //去掉url的头，并转换为byte
+    var ab = new ArrayBuffer(bytes.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < bytes.length; i++) {
+        ia[i] = bytes.charCodeAt(i);
+    }
+    return new Blob( [ab] , {type : 'image/png'});
+}
+
 // 新增人员信息
 function savePersonnel () {
     loading.screenMaskEnable('container');
@@ -1128,6 +1201,7 @@ function savePersonnel () {
     var tbMobileVoList = mobileList;
     var tbEamilVoList = emailList;
     $http.post('/personnel/savePersonnel', JSON.stringify({
+        image: psnImageId,
         psnName: psnName,
         gender: gender,
         certType: certType,

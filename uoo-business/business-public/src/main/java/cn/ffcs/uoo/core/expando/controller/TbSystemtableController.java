@@ -117,7 +117,7 @@ public class TbSystemtableController extends BaseController {
     })
     @UooLog(value = "删除系统表登记", key = "removeTbSystemtable")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbSystemtable> removeTbSystemtable(@RequestBody Long tableId, @RequestBody Long updateUser) {
+    public ResponseResult<TbSystemtable> removeTbSystemtable(Long tableId, Long updateUser) {
         ResponseResult<TbSystemtable> responseResult = new ResponseResult<TbSystemtable>();
 
         // 校验必填项

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysRoleClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysRole;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.common.system.vo.TreeNodeVo;
 import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
 import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import io.swagger.annotations.ApiImplicitParam;
@@ -54,6 +55,15 @@ public class SysRoleController {
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         return sysRoleClient.listPage(pageNo, pageSize);
+    }
+    
+    @ApiOperation(value = "角色树", notes = "角色树")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "parentRoleCode", value = "parentRoleCode", required = false, dataType = "String"  ),
+    })
+    @GetMapping("/treeRole")
+    public ResponseResult<List<TreeNodeVo>> treeRole( String parentRoleCode){
+        return sysRoleClient.treeRole(parentRoleCode);
     }
     
 }
