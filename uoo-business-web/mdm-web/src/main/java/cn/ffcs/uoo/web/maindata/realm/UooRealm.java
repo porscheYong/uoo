@@ -85,7 +85,10 @@ public class UooRealm extends AuthorizingRealm {
         if(info!=null){
             clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
             Subject subject = SecurityUtils.getSubject();
-            subject.getSession().setAttribute(LoginConsts.LOGIN_KEY, r.getData());
+            SysUser data = r.getData();
+            data.setPasswd(null);
+            data.setSalt(null);
+            subject.getSession().setAttribute(LoginConsts.LOGIN_KEY, data);
         }
         return info;
     }
@@ -118,6 +121,7 @@ public class UooRealm extends AuthorizingRealm {
                 }
             }
         }
+       // simpleAuthorizationInfo.addStringPermission("sad");
         return simpleAuthorizationInfo;
     }
     /**
