@@ -1,0 +1,24 @@
+server:
+  port: 11900
+
+spring:
+  application:
+    name: cache-write
+  redis:
+    database: 0
+    host: 192.168.247.128
+    port: 6380
+    password:
+    pool:
+      max-active: 8
+      max-wait: -1
+      max-idle: 8
+      min-idle: 0
+    timeout: 0
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://134.96.253.222:8751/eureka/,http://134.96.253.223:8751/eureka/
