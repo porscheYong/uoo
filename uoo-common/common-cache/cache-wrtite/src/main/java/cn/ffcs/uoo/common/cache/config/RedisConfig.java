@@ -44,10 +44,10 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
 
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-    }
+//    @Bean
+//    public ObjectMapper objectMapper() {
+//        return new ObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+//    }
 
     @Bean
     public CacheManager cacheManager(RedisTemplate<?, ?> redisTemplate) {
@@ -71,6 +71,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+//        om.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         jackson2JsonRedisSerializer.setObjectMapper(om);
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         //key采用String的序列化方式

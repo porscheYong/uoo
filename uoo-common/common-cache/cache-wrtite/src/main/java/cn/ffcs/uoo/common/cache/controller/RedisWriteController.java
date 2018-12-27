@@ -161,7 +161,7 @@ public class RedisWriteController {
     @ApiOperation(value = "递增KEY", notes = "delta要增加几(大于0)")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "key", value = "键", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "delta", value = "要增加几(大于0)", required = true, dataType = "long", paramType = "path")
+            @ApiImplicitParam(name = "delta", value = "要增加几(大于0)", required = true, dataType = "Long", paramType = "path")
     })
     @RequestMapping(method = RequestMethod.POST,value = "/incr")
     public long incr(String key, long delta){
