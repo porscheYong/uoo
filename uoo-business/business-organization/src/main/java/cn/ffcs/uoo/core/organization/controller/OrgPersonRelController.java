@@ -463,6 +463,9 @@ public class OrgPersonRelController extends BaseController {
             List<String> tabNames = new ArrayList<String>();
             tabNames.add("TB_ORG_TREE");
             tabNames.add("TB_ORG");
+            tabNames.add("TB_ACCOUNT_ORG_REL");
+            tabNames.add("TB_ORG_ORGTYPE_REL");
+            tabNames.add("TB_ORG_PERSON_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
@@ -474,6 +477,8 @@ public class OrgPersonRelController extends BaseController {
                 psonOrgVo.setTabOrgParams(orgParams);
                 String orgPerParams =  commonSystemService.getSysDataRuleSql("TB_ORG_PERSON_REL",sdrList);
                 psonOrgVo.setTabOrgPerRelParams(orgPerParams);
+                String orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
+                psonOrgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
             }
         }
 
@@ -600,6 +605,8 @@ public class OrgPersonRelController extends BaseController {
             tabNames.add("TB_ORG_TREE");
             tabNames.add("TB_ORG");
             tabNames.add("TB_ORG_PERSON_REL");
+            tabNames.add("TB_ACCOUNT_ORG_REL");
+            tabNames.add("TB_ORG_ORGTYPE_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
@@ -611,7 +618,8 @@ public class OrgPersonRelController extends BaseController {
                 psonOrgVo.setTabOrgParams(orgParams);
                 String orgPerParams =  commonSystemService.getSysDataRuleSql("TB_ORG_PERSON_REL",sdrList);
                 psonOrgVo.setTabOrgPerRelParams(orgPerParams);
-
+                String orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
+                psonOrgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
             }
         }
 

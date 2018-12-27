@@ -118,6 +118,16 @@ public class OrgVo extends BaseVo{
     private String tabOrgParams;
     //tb_org_rel权限参数
     private String tabOrgRelParams;
+    //TB_ORG_ORGTYPE_REL
+    private String tabOrgOrgTypeParams;
+
+    public String getTabOrgOrgTypeParams() {
+        return tabOrgOrgTypeParams;
+    }
+
+    public void setTabOrgOrgTypeParams(String tabOrgOrgTypeParams) {
+        this.tabOrgOrgTypeParams = tabOrgOrgTypeParams;
+    }
 
     public String getTabOrgRelParams() {
         return tabOrgRelParams;

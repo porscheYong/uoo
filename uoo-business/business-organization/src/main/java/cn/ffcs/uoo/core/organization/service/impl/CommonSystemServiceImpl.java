@@ -103,30 +103,37 @@ public class CommonSystemServiceImpl implements CommonSystemService {
         String params = "";
         if(sdrList!=null && sdrList.size()>0){
             for(SysDataRule sysDataRule : sdrList){
-                String oper = EnumRuleOperator.getSqlRuleOper(sysDataRule.getRuleOperator());
-                if(sysDataRule.getRuleOperator().equals("eq") ||
-                        sysDataRule.getRuleOperator().equals("gt") ||
-                        sysDataRule.getRuleOperator().equals("lt") ||
-                        sysDataRule.getRuleOperator().equals("lte") ||
-                        sysDataRule.getRuleOperator().equals("gte") ||
-                        sysDataRule.getRuleOperator().equals("ne")
-                        ){
-                    params+=" "+sysDataRule.getColName()+" "+oper+" "+sysDataRule.getColValue()+" ";
+                if(sysDataRule.getTabName().equals(tabName)){
+                    String oper = EnumRuleOperator.getSqlRuleOper(sysDataRule.getRuleOperator());
+                    if(sysDataRule.getRuleOperator().equals("eq") ||
+                            sysDataRule.getRuleOperator().equals("gt") ||
+                            sysDataRule.getRuleOperator().equals("lt") ||
+                            sysDataRule.getRuleOperator().equals("lte") ||
+                            sysDataRule.getRuleOperator().equals("gte") ||
+                            sysDataRule.getRuleOperator().equals("ne")
+                            ){
+                        params+=" "+sysDataRule.getColName()+" "+oper+" "+sysDataRule.getColValue()+" ";
+                    }
+                    if(sysDataRule.getRuleOperator().equals("in") ||
+                            sysDataRule.getRuleOperator().equals("notin")){
+                        params+=" "+sysDataRule.getColName()+" "+oper+" ("+sysDataRule.getColValue()+") ";
+                    }
+                    if(sysDataRule.getRuleOperator().equals("isnull") ||
+                            sysDataRule.getRuleOperator().equals("isnotnull")){
+                        params+=" "+sysDataRule.getColName()+" "+oper+" ";
+                    }
+                    if(sysDataRule.getRuleOperator().equals("like")){
+                        params+=" "+sysDataRule.getColName()+" "+oper+" '%"+sysDataRule.getColValue()+"%' ";
+                    }
+                    params+="AND";
                 }
-                if(sysDataRule.getRuleOperator().equals("in") ||
-                        sysDataRule.getRuleOperator().equals("notin")){
-                    params+=" "+sysDataRule.getColName()+" "+oper+" ("+sysDataRule.getColValue()+") ";
-                }
-                if(sysDataRule.getRuleOperator().equals("isnull") ||
-                        sysDataRule.getRuleOperator().equals("isnotnull")){
-                    params+=" "+sysDataRule.getColName()+" "+oper+" ";
-                }
-                if(sysDataRule.getRuleOperator().equals("like")){
-                    params+=" "+sysDataRule.getColName()+" "+oper+" '%"+sysDataRule.getColValue()+"%' ";
-                }
-                params+="AND";
             }
-            params = params.substring(0,params.length()-3);
+            if(!StrUtil.isNullOrEmpty(params)){
+                params = "";
+            }else{
+                params = params.substring(0,params.length()-3);
+            }
+//            params = params.substring(0,params.length()-3);
         }
         return params;
     }
@@ -143,30 +150,34 @@ public class CommonSystemServiceImpl implements CommonSystemService {
         String params = "";
         if(sysDataRuleList!=null && sysDataRuleList.size()>0){
             for(SysDataRule sysDataRule : sysDataRuleList){
-                String oper = EnumRuleOperator.getSqlRuleOper(sysDataRule.getRuleOperator());
-                if(sysDataRule.getRuleOperator().equals("eq") ||
-                        sysDataRule.getRuleOperator().equals("gt") ||
-                        sysDataRule.getRuleOperator().equals("lt") ||
-                        sysDataRule.getRuleOperator().equals("lte") ||
-                        sysDataRule.getRuleOperator().equals("gte") ||
-                        sysDataRule.getRuleOperator().equals("ne")
-                        ){
-                    params+=" "+sysDataRule.getColName()+" "+oper+" "+sysDataRule.getColValue()+" ";
+                if(sysDataRule.getTabName().equals(tabName)){
+                    String oper = EnumRuleOperator.getSqlRuleOper(sysDataRule.getRuleOperator());
+                    if(sysDataRule.getRuleOperator().equals("eq") ||
+                            sysDataRule.getRuleOperator().equals("gt") ||
+                            sysDataRule.getRuleOperator().equals("lt") ||
+                            sysDataRule.getRuleOperator().equals("lte") ||
+                            sysDataRule.getRuleOperator().equals("gte") ||
+                            sysDataRule.getRuleOperator().equals("ne")
+                            ){
+                        params+=" "+sysDataRule.getColName()+" "+oper+" "+sysDataRule.getColValue()+" ";
+                    }
+                    if(sysDataRule.getRuleOperator().equals("in") ||
+                            sysDataRule.getRuleOperator().equals("notin")){
+                        params+=" "+sysDataRule.getColName()+" "+oper+" ("+sysDataRule.getColValue()+") ";
+                    }
+                    if(sysDataRule.getRuleOperator().equals("isnull") ||
+                            sysDataRule.getRuleOperator().equals("isnotnull")){
+                        params+=" "+sysDataRule.getColName()+" "+oper+" ";
+                    }
+                    if(sysDataRule.getRuleOperator().equals("like")){
+                        params+=" "+sysDataRule.getColName()+" "+oper+" '%"+sysDataRule.getColValue()+"%' ";
+                    }
+                    params+="AND";
                 }
-                if(sysDataRule.getRuleOperator().equals("in") ||
-                        sysDataRule.getRuleOperator().equals("notin")){
-                    params+=" "+sysDataRule.getColName()+" "+oper+" ("+sysDataRule.getColValue()+") ";
-                }
-                if(sysDataRule.getRuleOperator().equals("isnull") ||
-                        sysDataRule.getRuleOperator().equals("isnotnull")){
-                    params+=" "+sysDataRule.getColName()+" "+oper+" ";
-                }
-                if(sysDataRule.getRuleOperator().equals("like")){
-                    params+=" "+sysDataRule.getColName()+" "+oper+" '%"+sysDataRule.getColValue()+"%' ";
-                }
-                params+="AND";
             }
-            params = params.substring(0,params.length()-3);
+            if(!StrUtil.isNullOrEmpty(params)){
+                params = params.substring(0,params.length()-3);
+            }
         }
         return params;
     }
@@ -224,7 +235,7 @@ public class CommonSystemServiceImpl implements CommonSystemService {
         }
         if(isExits){
             Wrapper wrapper = getConfWrapper(rulelist,"TB_ORG_TREE");
-            List<OrgTree> orgTreeList = orgTreeService.selectObjs(wrapper);
+            List<OrgTree> orgTreeList = orgTreeService.selectList(wrapper);
             if(orgTreeList!=null && orgTreeList.size()>0){
                 for(OrgTree ot : orgTreeList){
                     if(ot.getOrgTreeId().toString().equals(orgTreeId)){

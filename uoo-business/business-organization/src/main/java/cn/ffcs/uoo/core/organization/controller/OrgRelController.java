@@ -107,11 +107,13 @@ public class OrgRelController extends BaseController {
         }
         //获取权限
         String orgParams = "";
+        String orgOrgTypeParams = "";
         if(!StrUtil.isNullOrEmpty(accout)) {
             List<String> tabNames = new ArrayList<String>();
             tabNames.add("TB_ORG_TREE");
             tabNames.add("TB_ORG");
             tabNames.add("TB_ORG_REL");
+            tabNames.add("TB_ORG_ORGTYPE_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
@@ -120,10 +122,12 @@ public class OrgRelController extends BaseController {
                     return ret;
                 }
                 orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
+                orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
             }
         }
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
-        treeNodeVos = orgRelService.queryOrgTree(orgTree.getOrgTreeId().toString(),orgTree.getOrgId(),refCode,id,isRoot,orgParams);
+        treeNodeVos = orgRelService.queryOrgTree(orgTree.getOrgTreeId().toString(),orgTree.getOrgId(),refCode,
+                id,isRoot,orgParams,orgOrgTypeParams);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("组织树查询成功");
         ret.setData(treeNodeVos);
