@@ -3,7 +3,6 @@ package cn.ffcs.uoo.message.server.controller;
 import cn.ffcs.uoo.message.server.dao.TbHandelMapper;
 import cn.ffcs.uoo.message.server.dao.TbImportLogMapper;
 import cn.ffcs.uoo.message.server.dao.TbImportMapper;
-import cn.ffcs.uoo.message.server.dao.TbOrgMapper;
 import cn.ffcs.uoo.message.server.pojo.TbHandel;
 import cn.ffcs.uoo.message.server.pojo.TbImport;
 import cn.ffcs.uoo.message.server.pojo.TbImportLog;
@@ -19,10 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -34,6 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
+@RequestMapping("SysMsg")
 public class BatchController {
 
     private Logger logger = LoggerFactory.getLogger(BatchController.class);
@@ -49,7 +46,7 @@ public class BatchController {
 
 
     /*下载模板*/
-    @GetMapping("downExcel")
+    @GetMapping("/downExcel")
     public ResponseEntity<byte[]> downLoadExcel(HttpServletRequest request) throws IOException {
         String path = request.getSession().getServletContext().getRealPath("/");
         String resourceName = "demo.xls";
