@@ -94,9 +94,9 @@ spring:
     username: root
     password: 123
     #测试
-    host: 134.96.253.221
+    host: 134.96.253.221,134.96.253.222,134.96.253.223
     #生产
-    #host: 134.96.217.231
+    #host: 134.96.249.38
     port: 5672
     listener:
       direct:
