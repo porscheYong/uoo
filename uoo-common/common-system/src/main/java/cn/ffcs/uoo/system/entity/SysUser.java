@@ -20,7 +20,6 @@ import java.io.Serializable;
  * @since 2018-12-17
  */
 @TableName("SYS_USER")
-@KeySequence(value = "SEQ_SYS_USER_ID", clazz = Long.class)
 public class SysUser extends Model<SysUser> {
 
     private static final long serialVersionUID = 1L;

@@ -132,6 +132,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         String md5Content = DigestUtils.md5Hex(sysUser.getPasswd());
         sysUser.setSalt(salt);
         sysUser.setPasswd(MD5Util.md5Encoding(md5Content, salt));
+        sysUser.setUserId(getId());
         setObjStatus(sysUser);
         baseMapper.insert(sysUser);
     }

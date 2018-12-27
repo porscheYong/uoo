@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.message.server.dao.TbHandelMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.uoo.message.server.pojo.TbHandel">
+    <id column="BATCH_CODE" jdbcType="VARCHAR" property="batchCode" />
+    <result column="HANDLE_PERSON" jdbcType="VARCHAR" property="handlePerson" />
+    <result column="HANDLE_DATE" jdbcType="DATE" property="handleDate" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    BATCH_CODE, HANDLE_PERSON, HANDLE_DATE, STATUS_CD
+  </sql>
+</mapper>

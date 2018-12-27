@@ -46,7 +46,9 @@ public class OrgTreeController {
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         Long userId = currentLoginUser.getUserId();
+        String accout =currentLoginUser.getAccout();
         orgTree.setUpdateUser(userId);
+        orgTree.setAccout(accout);
         return orgTreeService.addOrgTree(orgTree);
     }
 
@@ -69,8 +71,14 @@ public class OrgTreeController {
     })
     @RequestMapping(value = "/getOrgTreeList", method = RequestMethod.GET)
     public ResponseResult<List<OrgTree>> getOrgTreeList(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
-                                                        @RequestParam(value = "orgRootId",required = false)String orgRootId){
-        return orgTreeService.getOrgTreeList(orgTreeId,orgRootId);
+                                                        @RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                        @RequestParam(value = "refCode",required = false)String refCode
+                                                        ){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout =currentLoginUser.getAccout();
+        return orgTreeService.getOrgTreeList(orgTreeId,orgRootId,refCode,userId,accout);
     }
 
 
@@ -79,7 +87,11 @@ public class OrgTreeController {
     })
     @RequestMapping(value = "/getOrgTree",method = RequestMethod.GET)
     public ResponseResult<OrgTree> getOrgTree(@RequestParam(value = "orgTreeId",required = false)String orgTreeId){
-        return orgTreeService.getOrgTree(orgTreeId);
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout =currentLoginUser.getAccout();
+        return orgTreeService.getOrgTree(orgTreeId,userId,accout);
     }
 
 }

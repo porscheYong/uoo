@@ -225,7 +225,7 @@ public class OrgShowUtil {
            flag++;
        }
        if(vo.getOrgRelations()== null){
-           logger.warn("主组织关系不存在");
+           logger.warn("组织关系不存在");
            flag++;
        }
        if(vo.getOrgTypes()== null){

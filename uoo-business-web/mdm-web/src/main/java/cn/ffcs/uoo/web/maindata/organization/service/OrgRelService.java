@@ -32,7 +32,9 @@ public interface OrgRelService {
                                                          @RequestParam(value = "refCode",required = false)String refCode,
                                                          @RequestParam(value = "isOpen",required = false)boolean isOpen,
                                                          @RequestParam(value = "isAsync",required = false)boolean isAsync,
-                                                         @RequestParam(value = "isRoot",required = false)boolean isRoot);
+                                                         @RequestParam(value = "isRoot",required = false)boolean isRoot,
+                                                         @RequestParam(value = "userId",required = false)Long userId,
+                                                         @RequestParam(value = "accout",required = false)String accout);
 
    @RequestMapping(value="/orgRel/getRestructOrgRelTree",method = RequestMethod.GET)
    public ResponseResult<List<TreeNodeVo>> getRestructOrgRelTree(@RequestParam(value = "orgId",required = false)String orgId,

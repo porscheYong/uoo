@@ -82,7 +82,9 @@ public class OrgPersonRelServiceHystrix implements OrgPersonRelService {
                                                             String isSearchlower,
                                                             String search,
                                                             Integer pageSize,
-                                                            Integer pageNo){
+                                                            Integer pageNo,
+                                                            Long userId,
+                                                            String accout){
         ResponseResult<Page<PsonOrgVo>> responseResult = new ResponseResult<Page<PsonOrgVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
@@ -96,7 +98,9 @@ public class OrgPersonRelServiceHystrix implements OrgPersonRelService {
                                                              String isSearchlower,
                                                              String search,
                                                              Integer pageSize,
-                                                             Integer pageNo){
+                                                             Integer pageNo,
+                                                             Long userId,
+                                                             String accout){
         ResponseResult<Page<PsonOrgVo>> responseResult = new ResponseResult<Page<PsonOrgVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

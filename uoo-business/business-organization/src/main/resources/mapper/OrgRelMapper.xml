@@ -62,9 +62,6 @@
 
 
     <select id="queryOrgTreeChilden" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-
-
-
         SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.PARENT_ORG_ID PID
         FROM TB_ORG_REL         A,
         TB_ORG                  B,
@@ -80,6 +77,9 @@
         AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
         AND A.REF_CODE = C.REF_CODE
         AND A.ORG_ID=B.ORG_ID
+        <if test="orgParams!='' and orgParams!=null">
+            AND ${orgParams}
+        </if>
         AND E.ORG_TREE_ID = #{orgTreeId}
         <if test="pid != null">
             AND A.PARENT_ORG_ID = #{pid}

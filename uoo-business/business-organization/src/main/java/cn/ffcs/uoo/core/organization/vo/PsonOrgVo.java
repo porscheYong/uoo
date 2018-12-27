@@ -158,6 +158,38 @@ public class PsonOrgVo extends BaseVo {
     //排序方式
     private String sortOrder;
 
+    /***********************权限************************/
+
+    private String tabOrgParams;
+
+    private String tabOrgTreeParams;
+
+    private String tabOrgPerRelParams;
+
+    public String getTabOrgPerRelParams() {
+        return tabOrgPerRelParams;
+    }
+
+    public void setTabOrgPerRelParams(String tabOrgPerRelParams) {
+        this.tabOrgPerRelParams = tabOrgPerRelParams;
+    }
+
+    public String getTabOrgParams() {
+        return tabOrgParams;
+    }
+
+    public void setTabOrgParams(String tabOrgParams) {
+        this.tabOrgParams = tabOrgParams;
+    }
+
+    public String getTabOrgTreeParams() {
+        return tabOrgTreeParams;
+    }
+
+    public void setTabOrgTreeParams(String tabOrgTreeParams) {
+        this.tabOrgTreeParams = tabOrgTreeParams;
+    }
+
     public String getSortField() {
         return sortField;
     }

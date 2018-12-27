@@ -15,6 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.Xml;
 import io.swagger.models.auth.In;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +68,7 @@ public class OrgRelController extends BaseController {
     private OrgService orgService;
 
     @Autowired
-    private SolrService solrService;
-
+    private CommonSystemService commonSystemService;
 
     @Autowired
     private AmqpTemplate template;
@@ -78,20 +78,10 @@ public class OrgRelController extends BaseController {
     })
     @UooLog(value = "查询组织树", key = "getOrgRelTree")
     @RequestMapping(value = "/getOrgRelTree", method = RequestMethod.GET)
-    public ResponseResult<List<TreeNodeVo>> getOrgRelTree(@RequestParam(value = "id",required = false)String id,
-                                                          @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
-                                                          @RequestParam(value = "orgRootId",required = false)String orgRootId,
-                                                          @RequestParam(value = "refCode",required = false)String refCode,
-                                                          @RequestParam(value = "isOpen",required = false)boolean isOpen,
-                                                          @RequestParam(value = "isAsync",required = false)boolean isAsync,
-                                                          @RequestParam(value = "isRoot",required = false)boolean isRoot) throws IOException {
+    public ResponseResult<List<TreeNodeVo>> getOrgRelTree(String id,String orgTreeId,String orgRootId,String refCode,
+                                                          boolean isOpen,boolean isAsync,boolean isRoot,Long userId,String accout) throws IOException {
         System.out.println(new Date());
         ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
-//        if(StrUtil.isNullOrEmpty(orgRootId)){
-//            ret.setState(ResponseResult.PARAMETER_ERROR);
-//            ret.setMessage("根节点标识不能为空");
-//            return ret;
-//        }
         if(StrUtil.isNullOrEmpty(orgTreeId) && StrUtil.isNullOrEmpty(refCode)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织树标识和关系类型不能同时为空");
@@ -115,9 +105,25 @@ public class OrgRelController extends BaseController {
                 return ret;
             }
         }
-
+        //获取权限
+        String orgParams = "";
+        if(!StrUtil.isNullOrEmpty(accout)) {
+            List<String> tabNames = new ArrayList<String>();
+            tabNames.add("TB_ORG_TREE");
+            tabNames.add("TB_ORG");
+            tabNames.add("TB_ORG_REL");
+            List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
+            if(sdrList!=null && sdrList.size()>0){
+                if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
+                    ret.setState(ResponseResult.PARAMETER_ERROR);
+                    ret.setMessage("无权限");
+                    return ret;
+                }
+                orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
+            }
+        }
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
-        treeNodeVos = orgRelService.queryOrgTree(orgTree.getOrgTreeId().toString(),orgTree.getOrgId(),refCode,id,isRoot);
+        treeNodeVos = orgRelService.queryOrgTree(orgTree.getOrgTreeId().toString(),orgTree.getOrgId(),refCode,id,isRoot,orgParams);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("组织树查询成功");
         ret.setData(treeNodeVos);
@@ -175,13 +181,6 @@ public class OrgRelController extends BaseController {
             ret.setMessage("是否全量不能为空");
             return ret;
         }
-//        if(!isFull){
-//            if(StrUtil.isNullOrEmpty(curOrgid)){
-//                ret.setState(ResponseResult.PARAMETER_ERROR);
-//                ret.setMessage("当前节点不能为空");
-//                return ret;
-//            }
-//        }
         Wrapper orgTreeConfWrapper = Condition.create().eq("ORG_TREE_ID",orgTreeId).eq("STATUS_CD","1000");
         OrgTree orgTree  = orgTreeService.selectOne(orgTreeConfWrapper);
         if(orgTree == null){
@@ -426,30 +425,6 @@ public class OrgRelController extends BaseController {
         ret.setData(page);
         return ret;
     }
-
-
-
-
-
-//
-//    @ApiOperation(value = "查询组织关系类型", notes = "查询组织关系类型")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "orgId", value = "组织Id", required = true, dataType = "String")
-//    })
-//    @UooLog(value = "查询组织关系类型", key = "getOrgRelType")
-//    @RequestMapping(value = "/getOrgRelType", method = RequestMethod.POST)
-//    @Transactional(rollbackFor = Exception.class)
-//    public ResponseResult<List<OrgRefTypeVo>> getOrgRelType(Long orgId) throws IOException {
-//        ResponseResult<List<OrgRefTypeVo>> ret = new ResponseResult<>();
-//        Org org = new Org();
-//        org.setOrgId(orgId);
-//        List<OrgRefTypeVo> orfList = orgRelService.getOrgRelType(org);
-//        ret.setData(orfList);
-//        ret.setState(ResponseResult.STATE_OK);
-//        ret.setMessage("成功");
-//        return ret;
-//    }
-
 
 
     @ApiOperation(value = "查询组织关系类型翻页-web", notes = "查询组织关系类型翻页")

@@ -2,6 +2,8 @@ package cn.ffcs.uoo.web.maindata.organization.controller;
 
 
 
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.organization.dto.PsonOrgVo;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgPersonRelService;
@@ -11,6 +13,8 @@ import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -98,7 +102,11 @@ public class OrgPersonRelController {
                                                             @RequestParam(value = "search",required = false)String search,
                                                             @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                             @RequestParam(value = "pageNo",required = false)Integer pageNo){
-        return orgPersonRelService.getPerOrgRelPage(orgId,orgTreeId,refCode,orgRootId,personnelId,isSearchlower,search,pageSize,pageNo);
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout = currentLoginUser.getAccout();
+        return orgPersonRelService.getPerOrgRelPage(orgId,orgTreeId,refCode,orgRootId,personnelId,isSearchlower,search,pageSize,pageNo,userId,accout);
     }
 
 
@@ -113,7 +121,11 @@ public class OrgPersonRelController {
                                                              @RequestParam(value = "search",required = false)String search,
                                                              @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                              @RequestParam(value = "pageNo",required = false)Integer pageNo){
-        return orgPersonRelService.getUserOrgRelPage(orgId,orgTreeId,refCode,isSearchlower,search,pageSize,pageNo);
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout = currentLoginUser.getAccout();
+        return orgPersonRelService.getUserOrgRelPage(orgId,orgTreeId,refCode,isSearchlower,search,pageSize,pageNo,userId,accout);
     }
 
 

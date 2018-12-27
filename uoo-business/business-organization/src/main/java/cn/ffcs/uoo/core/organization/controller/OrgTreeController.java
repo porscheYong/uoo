@@ -4,13 +4,12 @@ package cn.ffcs.uoo.core.organization.controller;
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.organization.Api.service.SystemService;
 import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.service.*;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
-import cn.ffcs.uoo.core.organization.vo.OrgRefTypeVo;
-import cn.ffcs.uoo.core.organization.vo.OrgVo;
-import cn.ffcs.uoo.core.organization.vo.TreeNodeVo;
+import cn.ffcs.uoo.core.organization.vo.*;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -76,6 +75,9 @@ public class OrgTreeController extends BaseController {
 
     @Autowired
     private AmqpTemplate template;
+
+    @Autowired
+    private CommonSystemService commonSystemService;
 
 
     @ApiOperation(value = "新增组织树信息-web", notes = "新增组织树信息")
@@ -376,7 +378,7 @@ public class OrgTreeController extends BaseController {
     @UooLog(value = "查询组织树信息",key = "getOrgTree")
     @RequestMapping(value = "/getOrgTree",method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<OrgTree>  getOrgTree(String orgTreeId){
+    public ResponseResult<OrgTree>  getOrgTree(String orgTreeId,Long userId,String accout){
         ResponseResult<OrgTree> ret = new ResponseResult<OrgTree>();
         if(StrUtil.isNullOrEmpty(orgTreeId)){
             ret.setMessage("组织树标识不存在");
@@ -423,19 +425,21 @@ public class OrgTreeController extends BaseController {
     @UooLog(value = "查询组织树列表",key = "getOrgTreeList")
     @RequestMapping(value = "/getOrgTreeList",method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<List<OrgTree>>  getOrgTreeList(String orgTreeId,String orgRootId,String refCode){
+    public ResponseResult<List<OrgTree>>  getOrgTreeList(String orgTreeId,String orgRootId,String refCode,Long userId,String accout){
         ResponseResult<List<OrgTree>> ret = new ResponseResult<List<OrgTree>>();
-//        Wrapper orgTreeWrapper = Condition.create().eq("STATUS_CD","1000").orderBy("SORT");
-//        if(!StrUtil.isNullOrEmpty(orgTreeId)){
-//            orgTreeWrapper.eq("ORG_TREE_ID",orgTreeId);
-//        }
-//      List<OrgTree> orgTreeList = orgTreeService.selectList(orgTreeWrapper);
+
         OrgTree orgTree = new OrgTree();
         if(!StrUtil.isNullOrEmpty(orgTreeId)){
             orgTree.setOrgTreeId(new Long(orgTreeId));
         }
         orgTree.setOrgId(StrUtil.strnull(orgRootId));
         orgTree.setRefCode(StrUtil.strnull(refCode));
+        if(!StrUtil.isNullOrEmpty(accout)){
+            String params = commonSystemService.getSysDataRuleSql("TB_ORG_TREE",accout);
+            if(!StrUtil.isNullOrEmpty(params)){
+                orgTree.setTabOrgTreeParams(params);
+            }
+        }
         List<OrgTree> orgTreeList = orgTreeService.getOrgTreeList(orgTree);
         ret.setData(orgTreeList);
         ret.setState(ResponseResult.STATE_OK);

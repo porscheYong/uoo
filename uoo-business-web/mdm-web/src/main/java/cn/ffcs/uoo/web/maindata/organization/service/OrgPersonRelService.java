@@ -56,7 +56,9 @@ public interface OrgPersonRelService{
                                                             @RequestParam(value = "isSearchlower",required = false)String isSearchlower,
                                                             @RequestParam(value = "search",required = false)String search,
                                                             @RequestParam(value = "pageSize",required = false)Integer pageSize,
-                                                            @RequestParam(value = "pageNo",required = false)Integer pageNo);
+                                                            @RequestParam(value = "pageNo",required = false)Integer pageNo,
+                                                            @RequestParam(value = "userId",required = false)Long userId,
+                                                            @RequestParam(value = "accout",required = false)String accout);
 
     @RequestMapping(value="/orgPersonRel/getUserOrgRelPage",method = RequestMethod.GET)
     public ResponseResult<Page<PsonOrgVo>> getUserOrgRelPage(@RequestParam(value = "orgId",required = false)String orgId,
@@ -65,7 +67,9 @@ public interface OrgPersonRelService{
                                                              @RequestParam(value = "isSearchlower",required = false)String isSearchlower,
                                                              @RequestParam(value = "search",required = false)String search,
                                                              @RequestParam(value = "pageSize",required = false)Integer pageSize,
-                                                             @RequestParam(value = "pageNo",required = false)Integer pageNo);
+                                                             @RequestParam(value = "pageNo",required = false)Integer pageNo,
+                                                             @RequestParam(value = "userId",required = false)Long userId,
+                                                             @RequestParam(value = "accout",required = false)String accout);
 
 
 }

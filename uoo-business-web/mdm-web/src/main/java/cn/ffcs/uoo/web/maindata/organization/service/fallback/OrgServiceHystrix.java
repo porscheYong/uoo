@@ -56,7 +56,9 @@ public class OrgServiceHystrix implements OrgService {
                                                      String sortField,
                                                      String sortOrder,
                                                      Integer pageSize,
-                                                     Integer pageNo){
+                                                     Integer pageNo,
+                                                     Long userId,
+                                                     String accout){
         ResponseResult<Page<OrgVo>> responseResult = new ResponseResult<Page<OrgVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.web.maindata.organization.service;
 
 
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgTree;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgRelTypeServiceHystrix;
@@ -36,9 +37,14 @@ public interface OrgTreeService {
 
     @RequestMapping(value="/orgTree/getOrgTreeList",method = RequestMethod.GET,headers={"Content-Type=application/json"})
     public ResponseResult<List<OrgTree>> getOrgTreeList(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
-                                                        @RequestParam(value = "orgRootId",required = false)String orgRootId);
+                                                        @RequestParam(value = "orgRootId",required = false)String orgRootId,
+                                                        @RequestParam(value = "refCode",required = false)String refCode,
+                                                        @RequestParam(value = "userId",required = false)Long userId,
+                                                        @RequestParam(value = "accout",required = false)String accout);
 
     @RequestMapping(value="/orgTree/getOrgTree",method = RequestMethod.GET,headers={"Content-Type=application/json"})
-    public ResponseResult<OrgTree> getOrgTree(@RequestParam(value = "orgTreeId",required = false)String orgTreeId);
+    public ResponseResult<OrgTree> getOrgTree(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                              @RequestParam(value = "userId",required = false)Long userId,
+                                              @RequestParam(value = "accout",required = false)String accout);
 
 }
