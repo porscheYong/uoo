@@ -3,7 +3,7 @@
 <mapper namespace="cn.ffcs.uoo.core.resource.dao.ModifyHistoryMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.resource.entity.ModifyHistory">
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.organization.entity.ModifyHistory">
         <id column="MODIFY_ID" property="modifyId" />
         <result column="TAB_ID" property="tabId" />
         <result column="RECORD_ID" property="recordId" />

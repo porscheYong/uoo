@@ -7,6 +7,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -85,6 +88,13 @@ public class AcctController {
     @RequestMapping(value = "/getTbAcct", method = RequestMethod.GET)
     public Object getTbAcct(String acct){
         return acctService.getTbAcct(acct);
+    }
+    @ApiOperation(value = "当前登陆主账号信息",notes = "当前登陆主账号信息")
+    @ApiImplicitParam( )
+    @RequestMapping(value = "/getCurrentAcct", method = RequestMethod.GET)
+    public Object getCurrentAcct(){
+        Subject sub=SecurityUtils.getSubject();
+        return acctService.getTbAcct(sub.getPrincipal().toString());
     }
 
 }

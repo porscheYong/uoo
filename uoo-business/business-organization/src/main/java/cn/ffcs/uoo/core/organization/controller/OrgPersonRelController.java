@@ -9,6 +9,7 @@ import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
 import cn.ffcs.uoo.core.organization.vo.OrgRefTypeVo;
 import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
+import cn.ffcs.uoo.core.organization.vo.SysDataRule;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,13 +57,15 @@ public class OrgPersonRelController extends BaseController {
     @Autowired
     private OrgLevelService orgLevelService;
 
-//    @Autowired
-//    private SolrService solrService;
     @Autowired
     private OrgContactRelService orgContactRelService;
 
     @Autowired
     private AmqpTemplate template;
+
+
+    @Autowired
+    private CommonSystemService commonSystemService;
 
     @ApiOperation(value = "新增组织人员关系-web" , notes = "新增组织人员")
     @ApiImplicitParams({
@@ -392,7 +396,9 @@ public class OrgPersonRelController extends BaseController {
                                                             String sortField,
                                                             String sortOrder,
                                                             Integer pageSize,
-                                                            Integer pageNo
+                                                            Integer pageNo,
+                                                            Long userId,
+                                                            String accout
                                                             ){
         ResponseResult<Page<PsonOrgVo>> ret = new ResponseResult<>();
 
@@ -422,11 +428,7 @@ public class OrgPersonRelController extends BaseController {
             ret.setState(ResponseResult.PARAMETER_ERROR);
             return ret;
         }
-//        if(StrUtil.isNullOrEmpty(orgRootId)){
-//            ret.setMessage("组织树根节点不能为空");
-//            ret.setState(ResponseResult.PARAMETER_ERROR);
-//            return ret;
-//        }
+
         if(StrUtil.isNullOrEmpty(orgTreeId) && StrUtil.isNullOrEmpty(refCode)){
             ret.setMessage("组织树标识和组织树关系编码不能同时为空");
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -453,7 +455,29 @@ public class OrgPersonRelController extends BaseController {
                 return ret;
             }
         }
+
+
         PsonOrgVo psonOrgVo = new PsonOrgVo();
+        //获取权限
+        if(!StrUtil.isNullOrEmpty(accout)) {
+            List<String> tabNames = new ArrayList<String>();
+            tabNames.add("TB_ORG_TREE");
+            tabNames.add("TB_ORG");
+            List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
+            if(sdrList!=null && sdrList.size()>0){
+                if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
+                    ret.setState(ResponseResult.PARAMETER_ERROR);
+                    ret.setMessage("树无权限");
+                    return ret;
+                }
+                String orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
+                psonOrgVo.setTabOrgParams(orgParams);
+                String orgPerParams =  commonSystemService.getSysDataRuleSql("TB_ORG_PERSON_REL",sdrList);
+                psonOrgVo.setTabOrgPerRelParams(orgPerParams);
+            }
+        }
+
+
         psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
         psonOrgVo.setOrgId(new Long(orgId));
         //psonOrgVo.setOrgRootId(new Long(orgRootId));
@@ -531,7 +555,9 @@ public class OrgPersonRelController extends BaseController {
                                                              String isSearchlower,
                                                              String search,
                                                              Integer pageSize,
-                                                             Integer pageNo
+                                                             Integer pageNo,
+                                                             Long userId,
+                                                             String accout
                                                              ){
         ResponseResult<Page<PsonOrgVo>> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(orgId)){
@@ -567,6 +593,29 @@ public class OrgPersonRelController extends BaseController {
 
 
         PsonOrgVo psonOrgVo = new PsonOrgVo();
+
+        //获取权限
+        if(!StrUtil.isNullOrEmpty(accout)) {
+            List<String> tabNames = new ArrayList<String>();
+            tabNames.add("TB_ORG_TREE");
+            tabNames.add("TB_ORG");
+            tabNames.add("TB_ORG_PERSON_REL");
+            List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
+            if(sdrList!=null && sdrList.size()>0){
+                if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
+                    ret.setState(ResponseResult.PARAMETER_ERROR);
+                    ret.setMessage("树无权限");
+                    return ret;
+                }
+                String orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
+                psonOrgVo.setTabOrgParams(orgParams);
+                String orgPerParams =  commonSystemService.getSysDataRuleSql("TB_ORG_PERSON_REL",sdrList);
+                psonOrgVo.setTabOrgPerRelParams(orgPerParams);
+
+            }
+        }
+
+
         psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
         psonOrgVo.setOrgId(new Long(orgId));
         psonOrgVo.setOrgTreeId(orgtree.getOrgTreeId());

@@ -122,7 +122,8 @@ public class LoadUrlPermissionService {
             filterChainDefinitionMap.put("/swagger-ui.html", "anon");
             filterChainDefinitionMap.put("/swagger-resources", "anon");
             filterChainDefinitionMap.put("/v2/api-docs", "anon");
-            filterChainDefinitionMap.put("/webjars/springfox-swagger-ui/**", "anon");
+            filterChainDefinitionMap.put("/login", "anon");
+            filterChainDefinitionMap.put("/loginPage.html", "anon");
             // filterChainDefinitionMap.put("/**", "anon");
             // filterChainDefinitionMap.put("/aa/aa", "perms[asasd]");
             // filterChainDefinitionMap.put("/inaction/**", "perms[inaction]");

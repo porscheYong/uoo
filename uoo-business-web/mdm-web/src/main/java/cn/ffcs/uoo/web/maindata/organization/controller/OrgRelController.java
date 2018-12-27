@@ -49,7 +49,12 @@ public class OrgRelController {
                                                           @RequestParam(value = "isOpen",required = false)boolean isOpen,
                                                           @RequestParam(value = "isAsync",required = false)boolean isAsync,
                                                           @RequestParam(value = "isRoot",required = false)boolean isRoot){
-        return orgRelService.getOrgRelTree(id,orgRootId,orgTreeId,refCode,isOpen, isAsync,isRoot);
+
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout = currentLoginUser.getAccout();
+        return orgRelService.getOrgRelTree(id,orgRootId,orgTreeId,refCode,isOpen, isAsync,isRoot,userId,accout);
     }
 
 

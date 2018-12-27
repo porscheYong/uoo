@@ -47,7 +47,10 @@ public interface OrgService{
                                                      @RequestParam(value = "sortField",required = false)String sortField,
                                                      @RequestParam(value = "sortOrder",required = false)String sortOrder,
                                                      @RequestParam(value = "pageSize",required = false)Integer pageSize,
-                                                     @RequestParam(value = "pageNo",required = false)Integer pageNo);
+                                                     @RequestParam(value = "pageNo",required = false)Integer pageNo,
+                                                     @RequestParam(value = "userId",required = false)Long userId,
+                                                     @RequestParam(value = "accout",required = false)String accout
+                                                     );
 
     @RequestMapping(value="/org/getOrgPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
     public ResponseResult<Page<OrgVo>> getOrgPage(@RequestParam(value = "search",required = false)String search,

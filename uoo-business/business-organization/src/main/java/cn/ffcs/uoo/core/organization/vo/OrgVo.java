@@ -114,7 +114,26 @@ public class OrgVo extends BaseVo{
     //排序方式
     private String sortOrder;
 
+    //tb_org 权限参数
+    private String tabOrgParams;
+    //tb_org_rel权限参数
+    private String tabOrgRelParams;
 
+    public String getTabOrgRelParams() {
+        return tabOrgRelParams;
+    }
+
+    public void setTabOrgRelParams(String tabOrgRelParams) {
+        this.tabOrgRelParams = tabOrgRelParams;
+    }
+
+    public String getTabOrgParams() {
+        return tabOrgParams;
+    }
+
+    public void setTabOrgParams(String tabOrgParams) {
+        this.tabOrgParams = tabOrgParams;
+    }
 
     public String getSortField() {
         return sortField;

@@ -134,7 +134,6 @@ public class TbAcctController extends BaseController {
         tbAccountOrgRelService.removeAcctOrg(null, acctId, null, null);
 
         TbAcct tbAcct = tbAcctService.selectById(acctId);
-        rabbitMqService.sendMqMsg("person", "delete", "personnelId", tbAcct.getPersonnelId());
 
         //从账号关联信息
         Map<String, Object> map = new HashMap<String, Object>();
@@ -146,6 +145,7 @@ public class TbAcctController extends BaseController {
                 tbSlaveAcctService.delAllTbSlaveAcct(tbSlaveAcct.getSlaveAcctId());
             }
         }
+        rabbitMqService.sendMqMsg("person", "delete", "personnelId", tbAcct.getPersonnelId());
 
         return ResultUtils.successfulTip(EumUserResponeCode.ACCT_IS_DELETE);
     }

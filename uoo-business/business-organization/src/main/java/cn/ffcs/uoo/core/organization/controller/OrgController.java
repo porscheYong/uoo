@@ -114,9 +114,11 @@ public class OrgController extends BaseController {
     @Autowired
     private AmqpTemplate template;
 
-
     @Autowired
     private ExpandovalueService expandovalueService;
+
+    @Autowired
+    private CommonSystemService commonSystemService;
 
 
     @ApiOperation(value = "新增组织信息-web", notes = "新增组织信息")
@@ -1378,7 +1380,9 @@ public class OrgController extends BaseController {
                                                      String sortField,
                                                      String sortOrder,
                                                      Integer pageSize,
-                                                     Integer pageNo){
+                                                     Integer pageNo,
+                                                     Long userId,
+                                                     String accout){
         ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
 
         if(StrUtil.isNullOrEmpty(orgTreeId)){
@@ -1407,16 +1411,30 @@ public class OrgController extends BaseController {
                 return ret;
             }
         }
-
-//        if(StrUtil.isNullOrEmpty(orgRootId)){
-//            ret.setState(ResponseResult.PARAMETER_ERROR);
-//            ret.setMessage("组织根节点不能为空");
-//            return ret;
-//        }
         if(StrUtil.isNullOrEmpty(orgId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织标识不能为空");
             return ret;
+        }
+
+
+        OrgVo orgVo = new OrgVo();
+        //获取权限
+        if(!StrUtil.isNullOrEmpty(accout)) {
+            List<String> tabNames = new ArrayList<String>();
+            tabNames.add("TB_ORG_TREE");
+            tabNames.add("TB_ORG");
+            tabNames.add("TB_ORG_REL");
+            List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
+            if(sdrList!=null && sdrList.size()>0){
+                if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
+                    ret.setState(ResponseResult.PARAMETER_ERROR);
+                    ret.setMessage("无权限");
+                    return ret;
+                }
+                String orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
+                orgVo.setTabOrgParams(orgParams);
+            }
         }
         Wrapper orgTreeConfWrapper = Condition.create()
                 .eq("ORG_TREE_ID",orgTreeId)
@@ -1428,7 +1446,6 @@ public class OrgController extends BaseController {
             return ret;
         }
 
-        OrgVo orgVo = new OrgVo();
 
         orgVo.setOrgRootId(orgTree.getOrgId());
         orgVo.setOrgId(new Long(orgId));
@@ -1441,6 +1458,7 @@ public class OrgController extends BaseController {
         if(!StrUtil.isNullOrEmpty(pageSize)){
             orgVo.setPageSize(pageSize);
         }
+
         Page<OrgVo> page = orgService.selectOrgRelPage(orgVo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("查询成功");
