@@ -2,12 +2,10 @@ package cn.ffcs.uoo.web.maindata.personnel.controller;
 
 import cn.ffcs.uoo.web.maindata.personnel.service.PersonnelImageService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -29,7 +27,14 @@ public class PersonnelImageController {
 
     @ApiOperation(value="图片上传",notes="图片上传")
     @RequestMapping(value="/uploadImg", method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Object uploadImg(@RequestParam("multipartFile") MultipartFile multipartFile, @RequestParam(value="psnImageId",defaultValue = "0")Long psnImageId ){
+    public Object uploadImg(@RequestPart("multipartFile") MultipartFile multipartFile, @RequestParam(value="psnImageId",defaultValue = "0")Long psnImageId ){
         return personnelImageService.uploadImg(multipartFile, psnImageId);
+    }
+
+    @ApiOperation(value = "图片查看", notes = "图片查看")
+    @ApiImplicitParam(name = "personnelId", value = "人员标识", dataType = "Long",paramType="path")
+    @RequestMapping(value = "/getPsnImage",method = RequestMethod.GET)
+    public Object getTbPsnImageByPsnId(Long personnelId){
+        return personnelImageService.getTbPsnImageByPsnId(personnelId);
     }
 }

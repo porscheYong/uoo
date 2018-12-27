@@ -1,7 +1,11 @@
 package cn.ffcs.uoo.system.dao;
 
-import cn.ffcs.uoo.system.entity.SysDataRule;
+import java.util.HashMap;
+import java.util.List;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import cn.ffcs.uoo.system.entity.SysDataRule;
 
 /**
  * <p>
@@ -13,5 +17,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @since 2018-12-21
  */
 public interface SysDataRuleMapper extends BaseMapper<SysDataRule> {
-
+    List<SysDataRule> listByAccout(HashMap<String, Object> map);
 }

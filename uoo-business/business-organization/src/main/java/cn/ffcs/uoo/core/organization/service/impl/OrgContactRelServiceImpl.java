@@ -4,6 +4,7 @@ import cn.ffcs.uoo.core.organization.entity.OrgContactRel;
 import cn.ffcs.uoo.core.organization.dao.OrgContactRelMapper;
 import cn.ffcs.uoo.core.organization.entity.OrgLevel;
 import cn.ffcs.uoo.core.organization.service.OrgContactRelService;
+import cn.ffcs.uoo.core.organization.util.StrUtil;
 import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -40,7 +41,7 @@ public class OrgContactRelServiceImpl extends ServiceImpl<OrgContactRelMapper, O
         orgContactRel.setStatusCd("1100");
         orgContactRel.setStatusDate(new Date());
         orgContactRel.setUpdateDate(new Date());
-        orgContactRel.setUpdateUser(0L);
+        orgContactRel.setUpdateUser(StrUtil.isNullOrEmpty(orgContactRel.getUpdateUser())?0L:orgContactRel.getUpdateUser());
         updateById(orgContactRel);
     }
 
@@ -50,7 +51,7 @@ public class OrgContactRelServiceImpl extends ServiceImpl<OrgContactRelMapper, O
     @Override
     public void add(OrgContactRel orgContactRel){
         orgContactRel.setCreateDate(new Date());
-        orgContactRel.setCreateUser(0L);
+        orgContactRel.setCreateUser(StrUtil.isNullOrEmpty(orgContactRel.getCreateUser())?0L:orgContactRel.getCreateUser());
         orgContactRel.setStatusCd("1000");
         orgContactRel.setStatusDate(new Date());
         insert(orgContactRel);
@@ -62,7 +63,7 @@ public class OrgContactRelServiceImpl extends ServiceImpl<OrgContactRelMapper, O
     @Override
     public void update(OrgContactRel orgContactRel){
         orgContactRel.setUpdateDate(new Date());
-        orgContactRel.setUpdateUser(0L);
+        orgContactRel.setUpdateUser(StrUtil.isNullOrEmpty(orgContactRel.getUpdateUser())?0L:orgContactRel.getUpdateUser());
         orgContactRel.setStatusDate(new Date());
         updateById(orgContactRel);
     }

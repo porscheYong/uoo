@@ -25,19 +25,21 @@ import cn.ffcs.uoo.core.region.vo.AreaCodeVO;
  */
 @Service
 public class TbAreaCodeServiceImpl extends ServiceImpl<TbAreaCodeMapper, TbAreaCode> implements ITbAreaCodeService {
-    @Autowired
-    private TbAreaCodeMapper mapper;
     @Override
     public Long getId() {
-        return mapper.getId();
+        return baseMapper.getId();
     }
     @Override
     public List<AreaCodeVO> selectListAreaCode(HashMap<String, Object> map) {
-        return mapper.selectListAreaCode(map);
+        return baseMapper.selectListAreaCode(map);
     }
     @Override
     public Long countListAreaCode(HashMap<String,Object> map) {
-        return mapper.countListAreaCode(map);
+        return baseMapper.countListAreaCode(map);
+    }
+    @Override
+    public List<TbAreaCode> getAreaCodeByPollocId(Long id) {
+        return baseMapper.getAreaCodeByPollocId(id);
     }
     
 

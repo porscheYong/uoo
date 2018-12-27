@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.organization.controller;
 
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.organization.dto.Org;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgVo;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
@@ -10,6 +12,8 @@ import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -36,6 +40,10 @@ public class OrgController {
     })
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
     public ResponseResult addOrg(@RequestBody OrgVo org) {
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        org.setUpdateUser(userId);
         return orgService.addOrg(org);
     }
 
@@ -45,6 +53,10 @@ public class OrgController {
     })
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
     public ResponseResult updateOrg(@RequestBody OrgVo org) {
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        org.setUpdateUser(userId);
         return orgService.updateOrg(org);
     }
 
@@ -104,7 +116,10 @@ public class OrgController {
     public ResponseResult<String> deleteOrg(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                             @RequestParam(value = "orgId",required = false)String orgId,
                                             @RequestParam(value = "supOrgId",required = false)String supOrgId){
-        return orgService.deleteOrg(orgTreeId,orgId,supOrgId);
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        return orgService.deleteOrg(orgTreeId,orgId,supOrgId,userId);
     }
 
 }

@@ -38,15 +38,7 @@
 
 
     <select id="queryOrgTreeRoot" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-        <!--SELECT A.ORG_NAME NAME, B.ORG_ID ID ,B.PARENT_ORG_ID PID-->
-        <!--FROM TB_ORG A, TB_ORG_REL B-->
-        <!--WHERE A.STATUS_CD = 1000-->
-        <!--AND B.STATUS_CD = 1000-->
-        <!--AND A.ORG_ID = B.ORG_ID-->
-        <!--<if test="orgRootId != null">-->
-            <!--AND A.ORG_ID = #{orgRootId}-->
-        <!--</if>-->
-        <!--ORDER BY A.ORG_LEVEL-->
+
         SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.PARENT_ORG_ID PID
         FROM TB_ORG_REL         A,
         TB_ORG                  B,
@@ -70,15 +62,7 @@
 
 
     <select id="queryOrgTreeChilden" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-        <!--SELECT A.ORG_NAME NAME, B.ORG_ID ID ,B.SUP_ORG_ID PID-->
-        <!--FROM TB_ORG A, TB_ORG_REL B-->
-        <!--WHERE A.STATUS_CD = 1000-->
-        <!--AND B.STATUS_CD = 1000-->
-        <!--AND A.ORG_ID = B.ORG_ID-->
-        <!--<if test="pid != null">-->
-            <!--AND B.SUP_ORG_ID = #{pid}-->
-        <!--</if>-->
-        <!--ORDER BY A.ORG_LEVEL-->
+
 
 
         SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.PARENT_ORG_ID PID
@@ -105,14 +89,7 @@
 
 
     <select id="isLeaf" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-        <!--SELECT A.ORG_NAME NAME, B.ORG_ID ID ,B.SUP_ORG_ID PID-->
-        <!--FROM TB_ORG A, TB_ORG_REL B-->
-        <!--WHERE A.STATUS_CD = 1000-->
-        <!--AND B.STATUS_CD = 1000-->
-        <!--AND A.ORG_ID = B.ORG_ID-->
-        <!--<if test="pid != null">-->
-            <!--AND B.SUP_ORG_ID = #{pid}-->
-        <!--</if>-->
+
         SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.PARENT_ORG_ID PID
         FROM TB_ORG_REL         A,
         TB_ORG                  B,
@@ -261,32 +238,7 @@
     </select>
     <!--组织检索翻页-->
     <select id="selectFuzzyOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
-        <!--SELECT *-->
-        <!--FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') fullName,-->
-        <!--ORG_NAME ORGNAME,ORG_ID ORGID,CREATE_DATE ORGRELCREATDATE,ORG_CODE ORGCODE-->
-        <!--FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.PARENT_ORG_ID,to_char(B.CREATE_DATE,'YYYY-MM-DD') CREATE_DATE,A.ORG_CODE-->
-        <!--FROM TB_ORG A, TB_ORG_REL B-->
-        <!--WHERE A.ORG_ID = B.ORG_ID-->
-        <!--AND A.STATUS_CD = 1000-->
-        <!--AND B.STATUS_CD = 1000) AA-->
-        <!--START WITH ORG_ID = ${orgVo.orgRootId}-->
-        <!--CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID)-->
-        <!--WHERE 1=1-->
-        <!--<if test="orgVo.search != null and orgVo.search != ''">-->
-            <!--AND FULLNAME like '%'||#{orgVo.search}||'%'-->
-        <!--</if>-->
 
-
-        <!--SELECT E.FULL_NAME fullName,E.ORG_NAME ORGNAME,E.Org_Id orgId,D.CREATE_DATE ORGRELCREATDATE,E.ORG_CODE ORGCODE-->
-        <!--FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E-->
-        <!--WHERE A.ORG_TREE_ID = #{orgVo.orgTreeId}-->
-        <!--AND A.ORG_TREE_ID = B.ORG_TREE_ID-->
-        <!--AND A.ORG_REL_TYPE_ID = c.org_rel_type_id-->
-        <!--AND D.ORG_ID=E.ORG_ID-->
-        <!--AND C.REF_CODE=D.REF_CODE-->
-        <!--<if test="orgVo.search != null and orgVo.search != ''">-->
-           <!--AND E.FULL_NAME like '%'||#{orgVo.search}||'%'-->
-        <!--</if>-->
 
         SELECT E.ORG_NAME orgName ,E.ORG_ID orgId,D.PARENT_ORG_ID parentOrgId,E.ORG_CODE orgCode
         FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E
@@ -302,25 +254,7 @@
     </select>
     <!--检索出的组织树-->
     <select id="selectFuzzyOrgRelTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-    <!--    SELECT *
-        FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULLNAME,
-        ORG_NAME ORGNAME,LEVEL LV,ORG_ID ORGID
-        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.PARENT_ORG_ID
-        FROM TB_ORG A, TB_ORG_REL B
-        WHERE A.ORG_ID = B.ORG_ID
-        AND A.STATUS_CD = 1000
-        AND B.STATUS_CD = 1000
-        AND B.ORG_REL_TYPE_ID in (
-        select A.ORG_REL_TYPE_ID
-          from tb_org_rel_type A, tb_ogt_org_reltype_conf B, tb_org_tree C
-         where A.STATUS_CD = '1000'
-           and B.STATUS_CD = '1000'
-           and C.STATUS_CD = '1000'
-           AND A.ORG_REL_TYPE_ID = B.ORG_REL_TYPE_ID
-           AND C.ORG_TREE_ID = B.ORG_TREE_ID
-           AND C.ORG_ID =  #{orgRootId})) AA
-        START WITH ORG_ID =  #{orgleafId}
-        CONNECT BY PRIOR  AA.SUP_ORG_ID = AA.ORG_ID )-->
+
         SELECT * FROM (
         SELECT ORG_ID id,PARENT_ORG_ID pid,ORG_NAME name FROM (
         SELECT E.ORG_NAME,E.ORG_ID ,D.PARENT_ORG_ID,D.CREATE_DATE,E.ORG_CODE
@@ -335,40 +269,7 @@
     </select>
     <!--检索出完检索出完整的组织树-->
     <select id="selectFuzzyFullOrgRelTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-   <!--     SELECT * FROM (
-        WITH FUZZYORGTREE AS(
-        SELECT *
-        FROM (SELECT ORG_ID ORGID,SUP_ORG_ID supOrgId
-        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.PARENT_ORG_ID
-        FROM TB_ORG A, TB_ORG_REL B
-        WHERE A.ORG_ID = B.ORG_ID
-        AND A.STATUS_CD = 1000
-        AND B.STATUS_CD = 1000
-        AND B.ORG_REL_TYPE_ID in (
-        select A.ORG_REL_TYPE_ID
-         FROM TB_ORG_REL_TYPE A, TB_OGT_ORG_RELTYPE_CONF B, TB_ORG_TREE C
-         WHERE A.STATUS_CD = '1000'
-           AND B.STATUS_CD = '1000'
-           AND C.STATUS_CD = '1000'
-           AND A.ORG_REL_TYPE_ID = B.ORG_REL_TYPE_ID
-           AND C.ORG_TREE_ID = B.ORG_TREE_ID
-           AND C.ORG_ID =  #{orgRootId})) AA
-        START WITH ORG_ID = #{orgleafId}
-        CONNECT BY PRIOR  AA.SUP_ORG_ID = AA.ORG_ID )
-        ),
-        ROOTTREE AS (
-          SELECT *
-        FROM (SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') fullName,
-        ORG_NAME ORGNAME,ORG_ID ORGID,CREATE_DATE ORGRELCREATDATE,ORG_CODE ORGCODE,PARENT_ORG_ID supOrgId
-        FROM (SELECT A.ORG_ID, A.ORG_NAME, A.FULL_NAME, B.PARENT_ORG_ID,to_char(B.CREATE_DATE,'YYYY-MM-DD') CREATE_DATE,A.ORG_CODE
-        FROM TB_ORG A, TB_ORG_REL B
-        WHERE A.ORG_ID = B.ORG_ID
-        AND A.STATUS_CD = 1000
-        AND B.STATUS_CD = 1000) AA
-        START WITH ORG_ID = #{orgRootId}
-        CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID))
-        SELECT ROOTTREE.* FROM ROOTTREE,FUZZYORGTREE WHERE ROOTTREE.SUPORGID = FUZZYORGTREE.SUPORGID
-        )-->
+
         WITH ROOTTREE AS(
         SELECT * FROM (
         SELECT ORG_ID ID,PARENT_ORG_ID PID,ORG_NAME NAME FROM (
@@ -418,20 +319,7 @@
 
     <!-- 获取指定组织树的层级 -->
     <select id="selectTarOrgRelTreeAndLv" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-        <!--SELECT lv "level",ORG_NAME name,ORG_ID id,PARENT_ORG_ID pid,'true' checked,'false' chkDisabled FROM (-->
-        <!--SELECT-->
-        <!--REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,-->
-        <!--ORG_NAME,ORG_ID,PARENT_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD,LEVEL lv-->
-        <!--FROM (SELECT A.* ,B.PARENT_ORG_ID-->
-        <!--FROM TB_ORG A, TB_ORG_REL B-->
-        <!--WHERE A.ORG_ID = B.ORG_ID-->
-        <!--AND A.STATUS_CD = 1000-->
-        <!--AND B.STATUS_CD = 1000) AA-->
-        <!--START WITH ORG_ID = #{orgRootId}-->
-        <!--CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID) WHERE lv &lt; #{lv}-->
-        <!--<if test="curOrgId != null and curOrgId != ''">-->
-            <!--AND PID = #{curOrgId}-->
-        <!--</if>-->
+
         <choose>
         <when test="curOrgId != null and curOrgId != ''">
             SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.PARENT_ORG_ID PID,F.ORG_LEVEL "level"
@@ -485,27 +373,7 @@
     </select>
 
     <select id="selectAllTarOrgRelTreeAndLv"  resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-       <!--  SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.PARENT_ORG_ID PID,'false' chkDisabled
-            FROM TB_ORG_REL         A,
-            TB_ORG                  B,
-            TB_ORG_REL_TYPE         C,
-            TB_OGT_ORG_RELTYPE_CONF D,
-            TB_ORG_TREE             E,
-            TB_ORG_LEVEL            F
-            WHERE A.STATUS_CD = '1000'
-            AND B.STATUS_CD = '1000'
-            AND C.STATUS_CD = '1000'
-            AND D.STATUS_CD = '1000'
-            AND E.STATUS_CD = '1000'
-            AND F.STATUS_CD = '1000'
-            AND E.ORG_TREE_ID = D.ORG_TREE_ID
-            AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
-            AND A.REF_CODE = C.REF_CODE
-            AND A.ORG_ID=B.ORG_ID
-            AND F.ORG_ID = B.ORG_ID
-            AND E.ORG_TREE_ID = F.ORG_TREE_ID
-            AND E.ORG_TREE_ID = #{orgTreeId}
-            AND F.ORG_LEVEL &lt;= #{lv}-->
+
         SELECT NAME,ID,PID,CASE WHEN lv=#{lv} then 0 else DECODE(NUM,0,0,1) end ISPARENT FROM (
         SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.PARENT_ORG_ID PID,
         (SELECT COUNT(1) FROM TB_ORG_REL B WHERE B.STATUS_CD='1000' AND A.REF_CODE=C.REF_CODE AND B.PARENT_ORG_ID=A.ORG_ID) NUM,

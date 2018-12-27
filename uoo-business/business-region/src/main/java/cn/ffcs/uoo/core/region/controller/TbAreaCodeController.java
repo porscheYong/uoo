@@ -46,6 +46,15 @@ public class TbAreaCodeController extends BaseController {
     private ITbAreaCodeService areaCodeService;
     @Autowired
     private ITbCommonRegionService regionService;
+    @ApiOperation(value = "根据行政区域 ID获取单条数据", notes = "根据行政区域 ID获取单条数据")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long",paramType="path"),
+    })
+    @UooLog(value = "根据ID获取单条数据", key = "getAreaCodeByPollocId")
+    @GetMapping("getAreaCodeByPollocId/id={id}")
+    public ResponseResult getAreaCodeByPollocId(@PathVariable(value = "id") Long id){
+        return ResponseResult.createSuccessResult(areaCodeService.getAreaCodeByPollocId(id), "");
+    }
     
     @ApiOperation(value = "根据ID获取单条数据", notes = "根据ID获取单条数据")
     @ApiImplicitParams({

@@ -5,6 +5,7 @@ var orgId = getQueryString('id');
 var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
+var refCode = getQueryString('refCode');
 var table;
 var personnelTable;
 var sortFlag = 0;
@@ -235,12 +236,12 @@ function orgInfo() {
     window.location.href = url;
 }
 function orgEdit () {
-    var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&refCode=' + refCode + '&name=' + encodeURI(orgName);
     $('#editBtn').attr('href', url);
 }
 
 function orgSearch () {
-    var url = 'search.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    var url = 'search.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&refCode=' + refCode + '&name=' + encodeURI(orgName);
     // $('#searchBtn').attr('href', url);
     window.location.href = url;
 }

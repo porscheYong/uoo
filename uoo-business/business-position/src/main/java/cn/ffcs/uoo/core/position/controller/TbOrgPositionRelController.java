@@ -54,7 +54,7 @@ public class TbOrgPositionRelController extends BaseController {
     })
     @UooLog(value = "删除岗位组织关系", key = "removeTbOrgPositionRel")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbOrgPositionRel> removeTbOrgPositionRel(@RequestBody Long orgPositionId, @RequestBody Long updateUser) {
+    public ResponseResult<TbOrgPositionRel> removeTbOrgPositionRel(Long orgPositionId, Long updateUser) {
         ResponseResult<TbOrgPositionRel> responseResult = new ResponseResult<TbOrgPositionRel>();
 
         // 校验必填项

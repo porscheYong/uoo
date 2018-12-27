@@ -1,5 +1,8 @@
 package cn.ffcs.uoo.system.service.impl;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -19,5 +22,10 @@ import cn.ffcs.uoo.system.service.ISysDataRuleService;
  */
 @Service
 public class SysDataRuleServiceImpl extends ServiceImpl<SysDataRuleMapper, SysDataRule> implements ISysDataRuleService {
+
+    @Override
+    public List<SysDataRule> listByAccout(HashMap<String, Object> map) {
+        return baseMapper.listByAccout(map);
+    }
 
 }

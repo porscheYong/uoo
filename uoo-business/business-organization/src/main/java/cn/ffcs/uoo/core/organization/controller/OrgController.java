@@ -241,6 +241,7 @@ public class OrgController extends BaseController {
         newOrg.setOrgDesc(StrUtil.strnull(org.getOrgDesc()));
         newOrg.setAddress(StrUtil.strnull(org.getAddress()));
         newOrg.setUuid(StrUtil.getUUID());
+        newOrg.setCreateUser(org.getUpdateUser());
         //新增组织类别
         if(orgTypeList!=null){
             for(OrgType orgType : orgTypeList) {
@@ -250,6 +251,7 @@ public class OrgController extends BaseController {
                 orgTypeRef.setOrgId(newOrg.getOrgId());
                 orgTypeRef.setOrgTypeId(orgType.getOrgTypeId());
                 orgTypeRef.setStatusCd("1000");
+                orgTypeRef.setCreateUser(org.getUpdateUser());
                 orgTypeRefService.add(orgTypeRef);
             }
         }
@@ -263,6 +265,7 @@ public class OrgController extends BaseController {
                 orgPostRel.setOrgId(newOrg.getOrgId());
                 orgPostRel.setPostId(post.getPostId());
                 orgPostRel.setStatusCd("1000");
+                orgPostRel.setCreateUser(org.getUpdateUser());
                 orgPostRelService.add(orgPostRel);
             }
         }
@@ -281,6 +284,7 @@ public class OrgController extends BaseController {
                     orgPosition.setOrgTreeId(orgOrgRel.getOrgTreeId());
                     orgPosition.setPositionId(position.getPositionId());
                     orgPosition.setStatusCd("1000");
+                    orgPosition.setCreateUser(org.getUpdateUser());
                     orgPositionRelService.add(orgPosition);
                 }
             }
@@ -300,6 +304,7 @@ public class OrgController extends BaseController {
             orgRef.setParentOrgId(org.getSupOrgId());
             orgRef.setRefCode(ort.getRefCode());
             orgRef.setStatusCd("1000");
+            orgRef.setCreateUser(org.getUpdateUser());
             orgRelService.add(orgRef);
 
 
@@ -322,6 +327,7 @@ public class OrgController extends BaseController {
             orgOrgtreeRef.setOrgBizName(StrUtil.isNullOrEmpty(org.getOrgBizName())?org.getOrgName():StrUtil.strnull(org.getOrgBizName()));
             orgOrgtreeRef.setOrgBizFullName(fullBizName);
             orgOrgtreeRef.setStatusCd("1000");
+            orgOrgtreeRef.setCreateUser(org.getUpdateUser());
             orgOrgtreeRelService.add(orgOrgtreeRef);
 
 
@@ -342,31 +348,13 @@ public class OrgController extends BaseController {
                 orgLevel.setOrgLevel(lv);
                 orgLevel.setOrgTreeId(orgOrgRel.getOrgTreeId());
                 orgLevel.setStatusCd("1000");
+                orgLevel.setCreateUser(org.getUpdateUser());
                 orgLevelService.add(orgLevel);
             }
-
-
-            //solr
-//            SolrInputDocument input = new SolrInputDocument();
-//            input.addField("id", orgRefId);
-//            input.addField("orgId", org.getOrgId());
-//            input.addField("orgCode", org.getOrgCode());
-//            input.addField("orgRelTypeId", orgOrgRel.getOrgRelTypeId());
-//            input.addField("orgName", org.getOrgName());
-//            //获取系统路径
-//            String sysfullName = orgService.getSysFullName(org.getOrgRootId().toString(),org.getSupOrgId().toString());
-//            sysfullName = sysfullName+"/"+org.getOrgName();
-//            input.addField("fullName",sysfullName);
-//            solrService.addDataIntoSolr("org",input);
         }
 
         //新增组织证件
-//        Wrapper orgCertWrapper = Condition.create()
-//                .eq("ORG_ID",newOrg.getOrgId())
-//                .eq("STATUS_CD","1000");
-//        List<OrgCertRel> orgCertRelcurList = orgCertRelService.selectList(orgCertWrapper);
         List<String> cerList = org.getCertIdList();
-//        if(orgCertRelcurList == null){
         if(cerList!=null && cerList.size()>0){
             for(String certId : cerList){
                 OrgCertRel orgCertRel = new OrgCertRel();
@@ -374,8 +362,8 @@ public class OrgController extends BaseController {
                 orgCertRel.setOrgCertId(orgCertRelId);
                 orgCertRel.setOrgId(newOrg.getOrgId());
                 orgCertRel.setCertId(Integer.valueOf(certId));
+                orgCertRel.setCreateUser(org.getUpdateUser());
                 orgCertRelService.add(orgCertRel);
-                //orgCertRel.insert();
             }
         }
         //新增组织联系人
@@ -386,6 +374,7 @@ public class OrgController extends BaseController {
                 orgConRel.setPersonnelId(vo.getPersonnelId());
                 orgConRel.setOrgId(newOrg.getOrgId());
                 orgConRel.setOrgContactRelId(orgConRelId);
+                orgConRel.setCreateUser(org.getUpdateUser());
                 orgContactRelService.add(orgConRel);
             }
         }
@@ -535,6 +524,7 @@ public class OrgController extends BaseController {
         }
         Org newOrg = new Org();
         newOrg.setOrgId(org.getOrgId());
+        newOrg.setUpdateUser(org.getUpdateUser());
         if(!StrUtil.isNullOrEmpty(pl.getLocId())){
             newOrg.setLocId(pl.getLocId());
         }
@@ -615,6 +605,7 @@ public class OrgController extends BaseController {
                     orgTypeRef.setOrgTypeId(ot.getOrgTypeId());
                     orgTypeRef.setStatusCd("1000");
                     orgTypeRef.setOrgTypeRelId(orgTypeRelId);
+                    orgTypeRef.setCreateUser(org.getUpdateUser());
                     orgTypeRefService.add(orgTypeRef);
                 }
             }
@@ -630,12 +621,14 @@ public class OrgController extends BaseController {
                     }
                 }
                 if(!isExists){
+                    otf.setUpdateUser(org.getUpdateUser());
                     orgTypeRefService.delete(otf);
                 }
             }
         }else{
             if(orgTypeRefCurList!=null && orgTypeRefCurList.size()>0){
                 for(OrgOrgtypeRel otf : orgTypeRefCurList){
+                    otf.setUpdateUser(org.getUpdateUser());
                     orgTypeRefService.delete(otf);
                 }
             }
@@ -659,6 +652,7 @@ public class OrgController extends BaseController {
                     orgPosition.setOrgTreeId(orgTree.getOrgTreeId());
                     orgPosition.setPositionId(p.getPositionId());
                     orgPosition.setStatusCd("1000");
+                    orgPosition.setCreateUser(org.getUpdateUser());
                     orgPositionRelService.add(orgPosition);
                 }
             }
@@ -673,12 +667,14 @@ public class OrgController extends BaseController {
                     }
                 }
                 if(!isExists){
+                    op.setUpdateUser(org.getUpdateUser());
                     orgPositionRelService.delete(op);
                 }
             }
         }else{
             if(orgPositionCurList!=null && orgPositionCurList.size()>0){
                 for(OrgPositionRel op:orgPositionCurList){
+                    op.setUpdateUser(org.getUpdateUser());
                     orgPositionRelService.delete(op);
                 }
             }
@@ -701,6 +697,7 @@ public class OrgController extends BaseController {
                     orgPost.setPostId(p.getPostId());
                     orgPost.setOrgPostId(orgPostId);
                     orgPost.setStatusCd("1000");
+                    orgPost.setCreateUser(org.getUpdateUser());
                     orgPostRelService.add(orgPost);
                 }
             }
@@ -714,12 +711,14 @@ public class OrgController extends BaseController {
                     }
                 }
                 if(!isExists){
+                    op.setUpdateUser(org.getUpdateUser());
                     orgPostRelService.delete(op);
                 }
             }
         }else{
             if(orgPostCurList!=null && orgPostCurList.size()>0){
                 for(OrgPostRel op : orgPostCurList){
+                    op.setUpdateUser(org.getUpdateUser());
                     orgPostRelService.delete(op);
                 }
             }
@@ -747,6 +746,7 @@ public class OrgController extends BaseController {
                     orgCertRel.setOrgCertId(orgCertRelId);
                     orgCertRel.setOrgId(org.getOrgId());
                     orgCertRel.setCertId(certVo.getCertId().intValue());
+                    orgCertRel.setCreateUser(org.getUpdateUser());
                     orgCertRelService.add(orgCertRel);
                 }
             }
@@ -760,12 +760,14 @@ public class OrgController extends BaseController {
                     }
                 }
                 if(!isExists){
+                    ocr.setUpdateUser(org.getUpdateUser());
                     orgCertRelService.delete(ocr);
                 }
             }
         }else{
             if(orgCertRelcurList!=null && orgCertRelcurList.size()>0){
                 for(OrgCertRel ocr : orgCertRelcurList){
+                    ocr.setUpdateUser(org.getUpdateUser());
                     orgCertRelService.delete(ocr);
                 }
             }
@@ -791,6 +793,7 @@ public class OrgController extends BaseController {
                     orgConRel.setPersonnelId(vo.getPersonnelId());
                     orgConRel.setOrgId(newOrg.getOrgId());
                     orgConRel.setOrgContactRelId(orgConRelId);
+                    orgConRel.setCreateUser(org.getUpdateUser());
                     orgContactRelService.add(orgConRel);
                 }
             }
@@ -804,12 +807,14 @@ public class OrgController extends BaseController {
                     }
                 }
                 if(!isExists){
+                    oct.setUpdateUser(org.getUpdateUser());
                     orgContactRelService.delete(oct);
                 }
             }
         }else{
             if(orgContactRelCurList!=null && orgContactRelCurList.size()>0){
                 for(OrgContactRel oct : orgContactRelCurList){
+                    oct.setUpdateUser(org.getUpdateUser());
                     orgContactRelService.delete(oct);
                 }
             }
@@ -961,7 +966,6 @@ public class OrgController extends BaseController {
         if(orgOrgtreeRelOne!=null){
             if(!StrUtil.isNullOrEmpty(org.getOrgBizName())) {
                 orgOrgtreeRelOne.setOrgBizName(org.getOrgBizName());
-                //orgOrgtreeRelService.update(orgOrgtreeRelOne);
             }
 
             List<OrgOrgtreeRel> ootrList = orgOrgtreeRelService.getFullBizOrgList(orgTree.getOrgTreeId().toString(),org.getOrgId().toString());
@@ -977,6 +981,7 @@ public class OrgController extends BaseController {
                     orgOrgtreeRelOne.setOrgBizFullName(fullName);
                 }
             }
+            orgOrgtreeRelOne.setUpdateUser(org.getUpdateUser());
             orgOrgtreeRelService.update(orgOrgtreeRelOne);
         }
 
@@ -1030,6 +1035,7 @@ public class OrgController extends BaseController {
                         .eq("ORG_TREE_ID",orgTree.getOrgTreeId());
                 List<OrgOrgtreeRel> orgOrgtreeRelList = orgOrgtreeRelService.selectList(orgTreeRelWrapper);
                 for(OrgOrgtreeRel ootr : orgOrgtreeRelList){
+                    ootr.setUpdateUser(org.getUpdateUser());
                     orgOrgtreeRelService.delete(ootr);
                 }
 
@@ -1039,6 +1045,7 @@ public class OrgController extends BaseController {
                         .eq("ORG_ID",org.getOrgId());
                 List<OrgLevel> orgLevelList = orgLevelService.selectList(orgLevelWrapper);
                 for(OrgLevel ol : orgLevelList){
+                    ol.setUpdateUser(org.getUpdateUser());
                     orgLevelService.delete(ol);
                 }
 
@@ -1049,6 +1056,7 @@ public class OrgController extends BaseController {
 
                 List<OrgPositionRel> orgPositionRelList = orgPositionRelService.selectList(orgPositionWrapper);
                 for(OrgPositionRel opr : orgPositionRelList){
+                    opr.setUpdateUser(org.getUpdateUser());
                     orgPositionRelService.delete(opr);
                 }
 
@@ -1058,6 +1066,7 @@ public class OrgController extends BaseController {
                         .eq("ORG_ID",org.getOrgId());
                 List<OrgCertRel> orgCertRelList = orgCertRelService.selectList(orgCertListWrapper);
                 for(OrgCertRel vo:orgCertRelList){
+                    vo.setUpdateUser(org.getUpdateUser());
                     orgCertRelService.delete(vo);
                 }
                 //删除组织联系人关系
@@ -1066,11 +1075,13 @@ public class OrgController extends BaseController {
                         .eq("ORG_ID",org.getOrgId());
                 List<OrgContactRel> orgContactRelList = orgContactRelService.selectList(orgContactListWrapper);
                 for(OrgContactRel vo:orgContactRelList){
+                    vo.setUpdateUser(org.getUpdateUser());
                     orgContactRelService.delete(vo);
                 }
+                or.setUpdateUser(org.getUpdateUser());
                 orgRelService.delete(or);
-                //solrService.deleteDataIntoSolr("org",or.getOrgRelId().toString());
                 newOrg.setStatusCd("1000");
+                newOrg.setUpdateUser(org.getUpdateUser());
                 orgService.update(newOrg);
                 String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+newOrg.getOrgId()+"}}" ;
                 template.convertAndSend("message_sharing_center_queue",mqmsg);
@@ -1098,7 +1109,8 @@ public class OrgController extends BaseController {
     @RequestMapping(value = "/deleteOrg", method = RequestMethod.GET)
     public ResponseResult<String> deleteOrg(String orgTreeId,
                                             String orgId,
-                                            String supOrgId){
+                                            String supOrgId,
+                                            Long userId){
         ResponseResult<String> ret = new ResponseResult<String>();
         if (StrUtil.isNullOrEmpty(orgTreeId)) {
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -1161,6 +1173,7 @@ public class OrgController extends BaseController {
         Org org = orgService.selectOne(orgWrapper);
         List<OrgRel> orgRelList = orgRelService.getOrgRel(orgTreeId,orgId);
         for(OrgRel orgRel : orgRelList){
+            orgRel.setUpdateUser(userId);
             orgRelService.delete(orgRel);
             Wrapper orgTreeRelWrapper = Condition.create()
                     .eq("ORG_ID",org.getOrgId())
@@ -1168,6 +1181,7 @@ public class OrgController extends BaseController {
                     .eq("ORG_TREE_ID",orgTree.getOrgTreeId());
             List<OrgOrgtreeRel> orgOrgtreeRelList = orgOrgtreeRelService.selectList(orgTreeRelWrapper);
             for(OrgOrgtreeRel ootr : orgOrgtreeRelList){
+                ootr.setUpdateUser(userId);
                 orgOrgtreeRelService.delete(ootr);
             }
 
@@ -1177,6 +1191,7 @@ public class OrgController extends BaseController {
                     .eq("ORG_ID",org.getOrgId());
             List<OrgLevel> orgLevelList = orgLevelService.selectList(orgLevelWrapper);
             for(OrgLevel ol : orgLevelList){
+                ol.setUpdateUser(userId);
                 orgLevelService.delete(ol);
             }
 
@@ -1187,6 +1202,7 @@ public class OrgController extends BaseController {
 
             List<OrgPositionRel> orgPositionRelList = orgPositionRelService.selectList(orgPositionWrapper);
             for(OrgPositionRel opr : orgPositionRelList){
+                opr.setUpdateUser(userId);
                 orgPositionRelService.delete(opr);
             }
         }
@@ -1196,6 +1212,7 @@ public class OrgController extends BaseController {
                 .eq("ORG_ID",org.getOrgId());
         List<OrgCertRel> orgCertRelList = orgCertRelService.selectList(orgCertListWrapper);
         for(OrgCertRel vo:orgCertRelList){
+            vo.setUpdateUser(userId);
             orgCertRelService.delete(vo);
         }
         //删除组织联系人关系
@@ -1204,6 +1221,7 @@ public class OrgController extends BaseController {
                 .eq("ORG_ID",org.getOrgId());
         List<OrgContactRel> orgContactRelList = orgContactRelService.selectList(orgContactListWrapper);
         for(OrgContactRel vo:orgContactRelList){
+            vo.setUpdateUser(userId);
             orgContactRelService.delete(vo);
         }
 

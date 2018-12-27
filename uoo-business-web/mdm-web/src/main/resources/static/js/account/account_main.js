@@ -99,7 +99,7 @@ function initBusinessList () {
             var select = i === 0? 'selected' : '';
             option += "<option value='" + data[i].orgTreeId + "' " + select + ">" + data[i].orgTreeName +"</option>";
         }
-        $('#businessOrg').append(option);
+        $('#businessOrg').html(option);
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
             $('#businessOrg').selectMatch();
         });

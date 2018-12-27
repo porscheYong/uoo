@@ -53,14 +53,14 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         org.setStatusCd("1100");
         org.setStatusDate(new Date());
         org.setUpdateDate(new Date());
-        org.setUpdateUser(0L);
+        org.setUpdateUser(StrUtil.isNullOrEmpty(org.getUpdateUser())?0L:org.getUpdateUser());
         updateById(org);
     }
 
     @Override
     public void add(Org org){
         org.setCreateDate(new Date());
-        org.setCreateUser(0L);
+        org.setCreateUser(StrUtil.isNullOrEmpty(org.getCreateUser())?0L:org.getCreateUser());
         org.setStatusCd("1000");
         org.setStatusDate(new Date());
         insert(org);
@@ -70,7 +70,7 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
     @Override
     public void update(Org org){
         org.setUpdateDate(new Date());
-        org.setUpdateUser(0L);
+        org.setUpdateUser(StrUtil.isNullOrEmpty(org.getUpdateUser())?0L:org.getUpdateUser());
         org.setStatusDate(new Date());
         updateById(org);
     }

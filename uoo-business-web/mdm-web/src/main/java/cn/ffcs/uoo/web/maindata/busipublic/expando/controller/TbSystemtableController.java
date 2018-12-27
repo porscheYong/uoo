@@ -50,7 +50,7 @@ public class TbSystemtableController {
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
     @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public ResponseResult<TbSystemtable> removeTbSystemtable(@RequestBody Long tableId, @RequestBody Long updateUser) {
+    public ResponseResult<TbSystemtable> removeTbSystemtable(Long tableId, Long updateUser) {
         return tbSystemtableClient.removeTbSystemtable(tableId, updateUser);
     }
 }

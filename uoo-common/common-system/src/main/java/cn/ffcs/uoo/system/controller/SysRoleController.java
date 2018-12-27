@@ -107,8 +107,8 @@ public class SysRoleController {
     }
     @ApiOperation(value = "获取分页列表", notes = "获取分页列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
-            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ),
     })
     @UooLog(key="listPage",value="获取分页列表")
     @GetMapping("/listPage")
