@@ -92,7 +92,7 @@ mybatis-plus:
   mapper-locations: classpath:mapper/**Mapper.xml
   typeAliasesPackage: cn.ffcs.uoo
   global-config:
-    id-type: 0
+    id-type: 1
     key-generator: com.baomidou.mybatisplus.incrementer.OracleKeyGenerator
     field-strategy: 2
     db-column-underline: true

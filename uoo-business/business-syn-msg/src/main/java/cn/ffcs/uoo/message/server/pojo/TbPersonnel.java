@@ -1,55 +1,82 @@
 package cn.ffcs.uoo.message.server.pojo;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
 
+@TableName("Tb_Personnel")
 public class TbPersonnel extends Model<TbPersonnel> {
+    @TableId("personnel_Id")
 	private Long personnelId;
 
+    @TableField("psn_Name")
     private String psnName;
 
+    @TableField("psn_Code")
     private String psnCode;
 
+    @TableField("nc_Code")
     private String ncCode;
 
+    @TableField("psn_Nbr")
     private String psnNbr;
 
+    @TableField("nationality")
     private String nationality;
 
+    @TableField("gender")
     private String gender;
 
+    @TableField("nation")
     private String nation;
 
+    @TableField("marriage")
     private String marriage;
 
+    @TableField("plitical_Status")
     private String pliticalStatus;
 
+    @TableField("image")
     private String image;
 
+    @TableField("reason")
     private String reason;
 
+    @TableField("to_Work_Time")
     private Date toWorkTime;
 
+    @TableField("serving_Age")
     private Short servingAge;
 
+    @TableField("length_Service")
     private Short lengthService;
 
+    @TableField("status_Cd")
     private String statusCd;
 
+    @TableField("create_Date")
     private Date createDate;
 
+    @TableField("create_User")
     private Long createUser;
 
+    @TableField("update_Date")
     private Date updateDate;
 
+    @TableField("update_User")
     private Long updateUser;
 
+    @TableField("status_Date")
     private Date statusDate;
 
+    @TableField("uuid")
     private String uuid;
 
+    @TableField("notes")
     private String notes;
 
     public Long getPersonnelId() {

@@ -82,10 +82,13 @@ public class UooRealm extends AuthorizingRealm {
         usertoken.setPassword(md5Encoding.toCharArray());
         AuthenticationInfo info = new SimpleAuthenticationInfo(usertoken.getUsername(), r.getData().getPasswd(),
                 this.getName());
-        if(info!=null){
+        if(info!=null && md5Encoding.equals(r.getData().getPasswd())){
             clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
             Subject subject = SecurityUtils.getSubject();
-            subject.getSession().setAttribute(LoginConsts.LOGIN_KEY, r.getData());
+            SysUser data = r.getData();
+            data.setPasswd(null);
+            data.setSalt(null);
+            subject.getSession().setAttribute(LoginConsts.LOGIN_KEY, data);
         }
         return info;
     }
@@ -118,6 +121,7 @@ public class UooRealm extends AuthorizingRealm {
                 }
             }
         }
+       // simpleAuthorizationInfo.addStringPermission("sad");
         return simpleAuthorizationInfo;
     }
     /**

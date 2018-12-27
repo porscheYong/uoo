@@ -46,7 +46,12 @@
         AND u.ACCOUT = #{accout}
         AND m.TAB_NAME in 
         <foreach collection="tableNames" index="index" item="item" open="(" separator="," close=")">
+<<<<<<< HEAD
 4                #{item}
 5        </foreach>
+=======
+                 #{item}       
+         </foreach>
+>>>>>>> ad6c019759fbd83c46a25657060d657b8222575c
     </select>
 </mapper>
