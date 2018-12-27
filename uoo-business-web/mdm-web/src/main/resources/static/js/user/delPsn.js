@@ -3,6 +3,7 @@ var personnelId = getQueryString('personnelId');
 var orgName = getQueryString('name');
 var orgTreeId = getQueryString('orgTreeId');
 var orgNum;
+var toastr = window.top.toastr;
 
 
 //删除人员组织关系
@@ -20,40 +21,28 @@ function deleteOrgPsn(){
         data: JSON.stringify(psnInfo),
         dataType:"JSON",
         success: function (data) { //返回json结果
-          alert('删除成功');
-          window.location.href = "list.html?id="+orgId+"&name="+orgName+"&orgTreeId="+orgTreeId;
+          if(data.state == 1000){
+            toastr.success('删除成功');
+            window.location.href = "list.html?id="+orgId+"&name="+orgName+"&orgTreeId="+orgTreeId;
+          }else{
+            toastr.error('删除失败');
+          }
         },
         error:function(err){
-          alert('删除失败');
+          toastr.error('删除失败');
         }
     });
 }
 
-//判断人员组织数量
-// function getOrgNum(){
-//     $http.get('/orgPersonRel/getPerOrgRelList', {  
-//         personnelId: personnelId
-//     }, function (data) {
-//         orgNum = data.length;
-//     }, function (err) {
-//         console.log(err)
-//     })
-// }
-
-function isDelete(){    //询问是否删除
-    var r=confirm("是否删除人员");
-    if(r == true){
-        deleteOrgPsn();   //确定，删除
-    }
+function deleteTbAcct(){    //删除人员
+    parent.layer.confirm('此操作将删除该用户, 是否继续?', {
+      icon: 0,
+      title: '提示',
+      btn: ['确定','取消']
+  }, function(index, layero){
+      deleteOrgPsn();
+      parent.layer.close(index);
+    }, function(){
+  
+    });
   }
-
-// //点击删除按钮
-// function delClick(){
-//     if(orgNum == 1){
-//         alert("不能删除所有组织下的人员");
-//     }else{
-//         isDelete();
-//     }
-// }
-
-// getOrgNum();

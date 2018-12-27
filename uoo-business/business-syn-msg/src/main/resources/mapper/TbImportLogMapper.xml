@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.message.server.dao.TbImportLogMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.uoo.message.server.pojo.TbImportLog">
+    <id column="IMPORT_LOG_ID" jdbcType="DECIMAL" property="importLogId" />
+    <result column="IMPORT_ID" jdbcType="DECIMAL" property="importId" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="FAIL_REASON" jdbcType="VARCHAR" property="failReason" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    IMPORT_LOG_ID, IMPORT_ID, STATUS_CD, FAIL_REASON
+  </sql>
+</mapper>

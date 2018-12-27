@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>主账号列表</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- jquery datatable -->
+    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+    <!-- jquery tagsinput -->
+    <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
+    <link href="/vendors/typeahead/typeahead.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="../../../static/js/core/html5shiv.js"></script>
+    <script src="../../../static/js/core/respond.js"></script>
+    <script src="../../../static/js/core/excanvas.js"></script>
+    <![endif]-->
+    <style type="text/css">
+
+        table.dataTable 
+        {
+            table-layout: fixed;
+        }
+        th 
+        {
+            text-align: center;
+            white-space: nowrap;
+        }
+        table.dataTable tbody td 
+        {
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .breadcrumb{
+            margin-bottom: 15px !important;
+        }
+        .perTab{
+            background: rgb(223,225,229);
+            border-radius: 5px;
+            margin-right: 8px;
+            padding: 2px 8px;
+        }
+        .row-num{
+            width: 10%;
+        }
+        .row-area{
+            width: 20%;
+        }
+        .row-role,
+        .row-perm{
+            width: 35%;
+        }
+    </style>
+  </head>
+
+  <body style="background: #fff;">
+        <div class="board-title">
+            <span class="name ft18" id="orgName">标准组织树维护</span>   <!--杭州分公司 -->
+        </div>
+        <div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;">标准组织树维护</div>   <!-- 完整路径-->
+        <div style="margin-bottom:20px">
+            <span class="permission" style="padding: 10px 15px 0; background: #fff;">所含权限</span>   
+            <span class="perTab">创建组织</span>
+            <span class="perTab">修改组织基础信息</span>
+            <span class="perTab">修改组织关系信息</span>
+            <span class="perTab">删除组织</span>
+            <span class="perTab">查看组织</span>
+        </div>
+        <div class="pos-relative" style="margin-top: 7px;margin-left:5px;overflow: hidden;">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="form-item" style="width: 100%">
+                    <div class="typeahead col-md-8 col-sm-8 col-xs-8" style="padding: 0;">
+                        <div>
+                            <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
+                            <input class="ui-input typeahead-input tt-input" id="roleSearch" type="text" name="q" placeholder="搜索角色" autocomplete="off" spellcheck="false" dir="auto">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="board-title">
+            <span class="name ft18">下级角色</span>
+            <div class="fright">
+                <a class="button-add" id="addBtn"><span class="fa fa-plus-circle icon-add"></span>创建角色</a>
+            </div>
+        </div>
+
+        <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
+            <table id="roleTable" class="stripe" width="100%"></table>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- handlebars -->
+    <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
+    <!-- typeahead -->
+    <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
+    <!-- Placeholder -->
+    <!-- <script type="text/javascript" src="/vendors/lulu/js/common/ui/Placeholder.js"></script> -->
+    <!-- jquery tagsinput -->
+    <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
+    <!-- init -->
+    <script src="/js/init.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+    <script type="text/javascript" src="/js/manage/user.js"></script>
+    <script type="text/javascript" src="/js/manage/role/list.js"></script>
+
+    <!-- <script>
+        $('input').placeholder();
+    </script> -->
+  </body>
+</html>
