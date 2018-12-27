@@ -30,7 +30,7 @@ function initUserInfo(){  //初始化首页人员信息
     function (data) {
         account = data.accout;
         $("#psnName").text(data.userName);
-        getPsnId();
+        // getPsnId();
     }, function (err) {
     })
 }
@@ -179,7 +179,7 @@ function getDictionaryData () {
 function getPsnId(){
     $http.get('/acct/getCurrentAcct', {}, 
     function (data) {
-        $("#psnInfo").attr("lay-href","/inaction/psnInfo/index.html?personnelId=" + data.personnelId+"&psnInfoHtml="+1);
+        $("#psnInfo").attr("lay-href","/inaction/psnInfo/index.html?personnelId=" + data.personnelId+"&acctId=" + data.acctId);
     }, function (err) {
     })
 }

@@ -117,7 +117,44 @@
         a {
             transition: 0.2s
             }
-        
+        .board-title .icon,
+        #icon .Icon{
+            margin: 3px 3px !important;
+            margin-bottom: -6px !important;
+            margin-left: -5px !important;
+        }
+        .Tag{
+            background: rgb(193, 237, 255) !important;
+            color:#959da9 !important;
+        }
+        .row-id{
+            width: 15%;
+        }
+        .row-orgTree{
+            width: 20%;
+        }
+        .row-fullName{
+            width: 65%;
+        }
+        .row-orgId{
+            display: none;
+        }
+        .row-org{
+            width: 18%;
+        }
+        .row-system{
+            width: 14%;
+        }
+        .row-acc{
+            width: 14%;
+        }
+        .row-acctype{
+            width: 18%;
+        }
+        .row-number,
+        .row-state{
+            width: 11%;
+        }
     </style>
 </head>
 
@@ -181,54 +218,16 @@
             <div class="BoardContent TableStyle tcenter" >
                 <a href="javascript:void(0)" onclick="showLess()" id="showLess" style="display: none;" class="Lesss">收起</a>
             </div>
-            
-            <!-- <div   class="BoardContent TableStyle tcenter">
-                
-            <input class="Btn BtnRedWhite" id="delPsn" type="button" onclick="deleteTbAcct()" value="删除人员" style="margin-top:20px;" />
-            </div> -->
         </div>
         <div class="tab-pane" id="user">
                 
            <div class="base-info"> 
                 <div class="board-title">
-              <span class="name">基本信息</span>
+              <span class="name">主账号信息</span>
                 </div>
                 <div class="board-content TableStyle tcenter" id="baseInfo"  >
                 </div>
             </div> 
-            <!-- <div class="board-title">
-                <span class="name">归属组织</span>
-                <a class="fleft Icon icon-edit" href="my_edit.html"></a>
-            </div>
-
-            <div id="orgInfoTable2" class="board-content TableStyle tcenter">
-                 
-            </div>
-
-            <div class="board-title">
-                <span class="name">工作经历</span>
-                <a class="fleft Icon IconEdit" href="my_edit.html"></a>
-            </div>
-            <div id="jobInfoTable2" class="board-content TableStyle tcenter">
-                
-            </div>
-
-            <div class="board-title">
-                <span class="name">教育经历</span>
-                <a class="fleft Icon IconEdit" href="my_edit.html"></a>
-            </div>
-
-            <div id="eduInfoTable2" class="board-content TableStyle tcenter">
-                 
-            </div>
-
-            <div class="board-title">
-                <span class="name">家庭成员</span>
-                <a class="fleft Icon IconEdit" href="my_edit.html"></a>
-            </div>
-            <div id="familyInfoTable2" class="board-content TableStyle tcenter">
-                
-            </div> -->
         </div>
         </div>
         </div>
@@ -309,9 +308,7 @@
         <div class="fleft Col1 " style="width: 10%;">
                     <img class="BigFace" id="psnImg" src="{{personalData.personalData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null" />
                     <div class="KeyWords tcenter">
-                       <!-- <span><a href="#" onclick="openChoseImg()">编辑</a></span>-->
                          <a href="#" onclick="openChoseImg()">编辑</a> 
-                        <!-- <a href="#" onclick="deleteImg()">删除</a>-->
                     </div>
                 </div>
        
@@ -411,39 +408,49 @@
     </div>
 </script>
 <script id="baseInfoTemplate" type="text/x-handlebars-template">
-<div class="col-md-2 fleft tcenter">
-    <img class="avatar" id="psnimg1" src="{{personalData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null"/>
-</div>    
-                    
-<div class="col-md-10 fleft Col8">
-    <div style="padding-top: 10px">
-        <table>
-                    <tr class="Title">
-                        <td width="50px">序号</td>
-                        <td>账号类型</td>
-                        <td>用户名</td>
-                        <td>状态</td>
-                        <td>创建时间</td>
-                         
-                    </tr>
-                  {{#if userList.records}} {{#each userList.records}}
-                    <tr>
-                        <td>{{#seq @index}}{{/seq}}</td>
-                        <td><a href="javascript:void(0)" onclick="gotoAccout('{{@index}}')">{{name}}</a></td>
-                        <td><a href="javascript:void(0)" onclick="gotoAccout('{{@index}}')">{{acct}}</a></td>
-                        <td>{{#eq statusCd 1000}}生效{{/eq}}</td>
-                        <td></td>
-                    </tr>
-                    {{/each}}
-                   {{else}}
-                     <tr>
-                        <td colspan="5">暂无用户信息</td>
-                    </tr>
-                    {{/if}}
-                </table>
+    <div class="tab-content" style="margin-left:5%;margin-top: 2%">
+        <div class="tab-pane active" id="tab_content1">
+            <div class="col-md-2 fleft tcenter">
+                <img class="avatar" id="psnImg" src="/images/avatar.png" alt="头像" />
+            </div>
+        </div>
+
+        <div style="width: auto;">
+            <div id="nameAndRole">
+                <strong class="Font24 Black" id="psnNameLable"></strong>
+            </div>   
+            <div style="padding-top: 10px;">
+                <div style="margin-bottom:15px;" id="icon">
+                    <span>
+                        <label class="Icon fleft IconMobile"></label><label id="mobileLable"></label>
+                    </span>
+                    <span style="margin-left:20px;">
+                        <label class="Icon fleft IconEmail"></label><label id="emailLable"></label>
+                    </span>
+                </div>
+                
+                <div>
+                    <div style="margin-bottom:10px">
+                        <span style="color:#959da9;">账号：</span>
+                        <span class="Font24 Black" id="acctLable"></span>
+                        <span class="Tag BgBlue">主账号</span>
+                    </div>
+                    <div style="margin-bottom:10px;color:#959da9;">
+                        <span>人员编码：</span><span id="psnNumLable"></span>
+                    </div>
+                    <div style="margin-bottom:10px;color:#959da9;">
+                        <span>身份证号码：</span><span id="cerNoLable"></span>
+                    </div>
+                    <div style="margin-bottom:10px;color:#959da9;">
+                        <span>生效日期：</span><span id="effectDateLable"></span>
+                    </div>
+                    <div style="margin-bottom:10px;color:#959da9;">
+                        <span>失效日期：</span><span id="invalidDateLable"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-<div class="clearfix"></div>
 
                          
 </script>
@@ -864,17 +871,6 @@
                             <input id="school" class="ui-input col-md-4 col-sm-4 col-xs-12"  required value="{{currentEditEduInfo.school}}"   >
                         </div>
                     </div>
-                    <!--<div class="row" style="margin-bottom: 10px;">
-                        <div class="form-item " style="width: 100%">
-                            <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">学校类型</label>
-                            <select style="border:1px solid #d0d0d5;" id="schoolType" class="col-md-4 col-sm-4 col-xs-12">
-                                {{#each schoolType}}
-                                <option value="{{itemValue}}"  {{#eq ../currentEditEduInfo.schoolType itemValue}}selected='selected'{{/eq}}  >{{itemCnname}}</option>
-                                {{/each}}
-                            </select>
-                        </div>
-                    </div>-->
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
@@ -882,13 +878,6 @@
                             <input id="major" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" value='{{currentEditEduInfo.major}}' required>
                         </div>
                     </div>
-                    <!--<div class="row" style="margin-bottom: 10px;">
-                        <div class="form-item" style="width: 100%">
-                            <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">专业类型</label>
-                            <input id="majortype" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" value='{{currentEditEduInfo.majortype}}'required >
-                        </div>
-                    </div>-->
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
@@ -896,13 +885,6 @@
                             <input id="education" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40"    value='{{currentEditEduInfo.education}}'  required>
                         </div>
                     </div>
-                    <!--<div class="row" style="margin-bottom: 10px;">
-                        <div class="form-item" style="width: 100%">
-                            <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">学制</label>
-                            <input id="edusystem" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" value='{{currentEditEduInfo.edusystem}}' required>
-                        </div>
-                    </div>-->
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
@@ -910,23 +892,6 @@
                             <input id="degree" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40"  value='{{currentEditEduInfo.degree}}' required>
                         </div>
                     </div>
-                   <!-- <div class="row" style="margin-bottom: 10px;">
-                        <div class="form-item" style="width: 100%">
-                            <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">证书编号</label>
-                            <input id="certifcode" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40"  value='{{currentEditEduInfo.certifcode}}' required>
-                        </div>
-                    </div>-->
-                    <!--<div class="row" style="margin-bottom: 10px;">
-                        <div class="form-item" style="width: 100%">
-                            <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
-                                   style="padding-right: 20px;line-height: 40px;text-align: right;">是否第一学历</label>
-                             <select style="border:1px solid #d0d0d5;" id="firstEducation" class="col-md-4 col-sm-4 col-xs-12">
-                                <option value="1" {{#eq '1' currentEditEduInfo.firstEducation}} selected='selected' {{/eq}}>是</option>
-                                <option value="0" {{#eq '0' currentEditEduInfo.firstEducation}} selected='selected' {{/eq}}>否</option>
-                            </select>
-                        </div>
-                    </div>-->
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
@@ -1054,6 +1019,7 @@
 <!-- init -->
 <script type="text/javascript" src="/js/init.js"></script>
 <script type="text/javascript" src="/js/psnInfo/index.js"></script>
+<script type="text/javascript" src="/js/psnInfo/acctInfo.js"></script>
 <script type="text/javascript" src="/js/IDCardUtils.js"></script>
 <script type="text/javascript" src="/js/jquery.form.js"></script>
 <script>
