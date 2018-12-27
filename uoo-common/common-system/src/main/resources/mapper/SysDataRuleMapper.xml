@@ -46,7 +46,7 @@
         AND u.ACCOUT = #{accout}
         AND m.TAB_NAME in 
         <foreach collection="tableNames" index="index" item="item" open="(" separator="," close=")">
-4                #{item}       
+4                #{item}
 5        </foreach>
     </select>
 </mapper>

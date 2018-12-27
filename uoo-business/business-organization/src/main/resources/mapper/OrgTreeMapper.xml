@@ -58,7 +58,13 @@
         A.STATUS_CD     statusCd,
         A.SORT          sort,
         B.Ref_Code refCode
-        FROM TB_ORG_TREE A, TB_ORG_REL_TYPE B, TB_OGT_ORG_RELTYPE_CONF C
+        FROM (select * from TB_ORG_TREE where STATUS_CD = '1000'
+        <if test="orgTree.tabOrgTreeParams != '' and orgTree.tabOrgTreeParams !=null ">
+            AND ${orgTree.tabOrgTreeParams}
+        </if>
+         ) A,
+             TB_ORG_REL_TYPE B,
+             TB_OGT_ORG_RELTYPE_CONF C
         WHERE A.STATUS_CD = '1000'
         AND B.STATUS_CD = '1000'
         AND C.STATUS_CD = '1000'
@@ -73,6 +79,7 @@
         <if test="orgTree.orgId != '' and orgTree.orgId!=null">
             AND A.ORG_ID = #{orgTree.orgId}
         </if>
+
     </select>
 
 </mapper>

@@ -118,6 +118,29 @@ public class OrgTree extends Model<OrgTree> {
     @TableField(exist=false)
     private String tarOrgTreeId;
 
+
+    @TableField(exist=false)
+    private String accout;
+
+    @TableField(exist=false)
+    private String tabOrgTreeParams;
+
+    public String getTabOrgTreeParams() {
+        return tabOrgTreeParams;
+    }
+
+    public void setTabOrgTreeParams(String tabOrgTreeParams) {
+        this.tabOrgTreeParams = tabOrgTreeParams;
+    }
+
+    public String getAccout() {
+        return accout;
+    }
+
+    public void setAccout(String accout) {
+        this.accout = accout;
+    }
+
     public String getRefCode() {
         return refCode;
     }
