@@ -252,7 +252,7 @@ function setSysChart(){
             }
         ]
     };
-        myChart.setOption(option); 
+        myChart.setOption(option);
         var currentIndex = -1;
 
         setInterval(function () {
