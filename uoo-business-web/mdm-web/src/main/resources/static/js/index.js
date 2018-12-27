@@ -177,9 +177,7 @@ function getDictionaryData () {
 }
 
 function getPsnId(){
-    $http.get('/acct/getTbAcct', { 
-        acct: account 
-    }, 
+    $http.get('/acct/getCurrentAcct', {}, 
     function (data) {
         $("#psnInfo").attr("lay-href","/inaction/psnInfo/index.html?personnelId=" + data.personnelId+"&psnInfoHtml="+1);
     }, function (err) {
