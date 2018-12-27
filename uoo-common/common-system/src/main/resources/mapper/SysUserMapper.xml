@@ -33,6 +33,6 @@
     </sql>
 
   <select id="getId" resultType="Long">
-    select SEQ_TB_SYS_USER.NEXTVAL from dual
+    select SEQ_SYS_USER_ID.NEXTVAL from dual
   </select>
 </mapper>
