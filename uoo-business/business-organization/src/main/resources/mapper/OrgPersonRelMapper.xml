@@ -44,52 +44,6 @@
 
 
     <select id="getPerOrgRelList" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
-        <!--SELECT * FROM (-->
-        <!--WITH ORGTREE AS(-->
-        <!--SELECT REPLACE(REPLACE(SYS_CONNECT_BY_PATH(ORG_NAME, '->'), '->', '//'),'//', '/') FULL_NAME,-->
-        <!--ORG_NAME,ORG_ID,PARENT_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD-->
-        <!--FROM (SELECT A.* ,B.PARENT_ORG_ID-->
-        <!--FROM TB_ORG A, TB_ORG_REL B-->
-        <!--WHERE A.ORG_ID = B.ORG_ID-->
-        <!--AND A.STATUS_CD = 1000-->
-        <!--AND B.STATUS_CD = 1000) AA-->
-        <!--START WITH ORG_ID = #{psonOrgVo.orgRootId}-->
-        <!--CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID-->
-        <!--)-->
-        <!--SELECT * FROM (-->
-        <!--SELECT AA.ORG_ID orgId,-->
-        <!--AA.PERSONNEL_ID personnelId,-->
-        <!--AA.POST_ID postId,-->
-        <!--AA.REF_TYPE refType,-->
-        <!--AA.PROPERTY property,-->
-        <!--AA.DOUBLE_NAME doubleName,-->
-        <!--ORG.ORG_NAME orgName,-->
-        <!--(SELECT B.FULL_NAME FROM ORGTREE B WHERE B.ORG_ID=AA.ORG_ID) FULLNAME,-->
-        <!--PER.PSN_NAME PsnName,-->
-        <!--PER.PSN_CODE psnCode,-->
-        <!--PER.PSN_NBR psnNbr,-->
-        <!--PER.NC_CODE ncCode,-->
-        <!--POST.POST_NAME postName-->
-        <!--FROM (SELECT A.* FROM TB_ORG_PERSON_REL A, TB_ORGTREE_ORGPERSON_REL B ,TB_ORG_TREE C-->
-        <!--WHERE A.STATUS_CD = '1000' AND B.STATUS_CD='1000' AND C.STATUS_CD='1000'-->
-        <!--AND A.ORG_PERSON_ID=B.ORG_PERSON_ID AND B.ORG_TREE_ID=C.ORG_TREE_ID-->
-        <!--AND C.ORG_ID = #{psonOrgVo.orgRootId}-->
-        <!--<if test="psonOrgVo.personerId != null and psonOrgVo.personerId != ''">-->
-            <!--AND A.PERSONNEL_ID = #{psonOrgVo.personnelId}-->
-        <!--</if>-->
-        <!--<if test="psonOrgVo.orgId != null and psonOrgVo.orgId != ''">-->
-            <!--AND A.ORG_ID = #{psonOrgVo.orgId}-->
-        <!--</if>-->
-        <!--) AA-->
-        <!--LEFT JOIN TB_ORG ORG ON ORG.ORG_ID = AA.ORG_ID AND ORG.Status_Cd=AA.Status_Cd-->
-        <!--LEFT JOIN TB_PERSONNEL PER ON PER.PERSONNEL_ID = AA.PERSONNEL_ID AND ORG.STATUS_CD=AA.STATUS_CD-->
-        <!--LEFT JOIN TB_POST POST ON POST.POST_ID = AA.POST_ID AND ORG.STATUS_CD=AA.STATUS_CD-->
-        <!--) AB where 1=1-->
-        <!--<if test="psonOrgVo.search != null and psonOrgVo.search != ''">-->
-            <!--AND PsnName like '%'||#{psonOrgVo.search}||'%'-->
-        <!--</if>-->
-        <!--)-->
-
         SELECT * FROM (
         SELECT * FROM (
         SELECT AA.ORG_ID orgId,
@@ -194,17 +148,13 @@
                 <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
                     AND ${psonOrgVo.tabOrgParams}
                 </if>
+                <if test="psonOrgVo.tabOrgPerRelParams!='' and psonOrgVo.tabOrgPerRelParams!=null">
+                    AND ${psonOrgVo.tabOrgPerRelParams}
+                </if>
                             AND B.ORG_PERSON_ID=C.ORG_PERSON_ID
                             AND E.ORG_TREE_ID = C.ORG_TREE_ID
                             AND E.ORG_TREE_ID = F.ORG_TREE_ID
-                            AND E.ORG_TREE_ID = #{psonOrgVo.orgTreeId}) AA
-                  <!-- LEFT JOIN TB_POST POST ON POST.STATUS_CD = '1000'
-                                         AND POST.POST_ID = AA.POST_ID -->
-                  <!-- LEFT JOIN TB_CONTACT CTA ON CTA.STATUS_CD = '1000'
-                                           AND CTA.PERSONNEL_ID =
-                                               AA.PERSONNEL_ID
-                                           AND CTA.FIRST_FLAG = 1
-                                           AND CTA.CONTACT_TYPE = 1-->) AB WHERE 1=1
+                            AND E.ORG_TREE_ID = #{psonOrgVo.orgTreeId}) AA) AB WHERE 1=1
         <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
             AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR PSNCODE LIKE '%'||#{psonOrgVo.search}||'%' OR ORGNAME LIKE '%'||#{psonOrgVo.search}||'%')
         </if>
@@ -293,6 +243,9 @@
             B.ORG_TREE_ID,D.ORG_TREE_NAME,D.ORG_NAME,D.Full_Name FROM TB_ORG_PERSON_REL A, TB_ORGTREE_ORGPERSON_REL B ,ORGFULL D
             WHERE A.STATUS_CD = '1000' AND B.STATUS_CD='1000' AND D.STATUS_CD='1000'
             AND A.ORG_PERSON_ID=B.ORG_PERSON_ID  AND A.ORG_ID=D.ORG_ID
+            <if test="psonOrgVo.tabOrgPerRelParams!='' and psonOrgVo.tabOrgPerRelParams!=null">
+                AND ${psonOrgVo.tabOrgPerRelParams}
+            </if>
             AND B.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
             <if test="psonOrgVo.personnelId != null and psonOrgVo.personnelId != ''">
                 AND A.PERSONNEL_ID = #{psonOrgVo.personnelId}
@@ -389,6 +342,9 @@
             A.STATUS_DATE,D.ORG_TREE_NAME,D.ORG_NAME,D.Full_Name FROM TB_ORG_PERSON_REL A, TB_ORGTREE_ORGPERSON_REL B ,ORGFULL D
             WHERE A.STATUS_CD = '1000' AND B.STATUS_CD='1000'
             AND A.ORG_PERSON_ID=B.ORG_PERSON_ID AND A.ORG_ID=D.ORG_ID
+            <if test="psonOrgVo.tabOrgPerRelParams!='' and psonOrgVo.tabOrgPerRelParams!=null">
+                AND ${psonOrgVo.tabOrgPerRelParams}
+            </if>
             AND B.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
             <if test="psonOrgVo.personnelId != null and psonOrgVo.personnelId != ''">
                 AND A.PERSONNEL_ID = #{psonOrgVo.personnelId}
@@ -535,6 +491,10 @@
                 AND T1.ACCT_ID = T2.ACCT_ID
                 AND T2.ORG_ID = T4.ORG_ID
                 AND T4.ORG_ID=T3.ORG_ID
+        <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
+            AND ${psonOrgVo.tabOrgParams}
+        </if>
+                AND T2.ORG_TREE_ID = T4.ORG_TREE_ID
                 AND T4.ORG_TREE_ID=#{psonOrgVo.orgTreeId}) T
                 LEFT JOIN TB_PERSONNEL T3
                 ON T3.STATUS_CD = 1000 AND T.PERSONNEL_ID = T3.PERSONNEL_ID
@@ -605,6 +565,10 @@
                 AND D.Status_Cd = 1000
                 and E.STATUS_CD = 1000
                 AND A.ORG_ID = B.ORG_ID
+                <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
+                    AND ${psonOrgVo.tabOrgParams}
+                </if>
+
                 AND B.REF_CODE = E.REF_CODE
                 and D.ORG_REL_TYPE_ID = E.ORG_REL_TYPE_ID
                 AND C.ORG_TREE_ID = D.ORG_TREE_ID
@@ -622,26 +586,17 @@
                 t3.PSN_CODE psnCode,
                 t3.PSN_NBR psnNbr,
                 t3.NC_CODE ncCode,
-                <!--t4.cert_no certNo,-->
-                <!--t5.content mobile,-->
                 t.FULL_NAME orgName
                 from (select t1.*, t2.org_id, tt.FULL_NAME
                 from tb_acct t1, tb_account_org_rel t2, ORGFULL tt
                 where t1.status_cd = 1000
                 and t2.status_cd = 1000
                 and t1.acct_id = t2.acct_id
-                and t2.org_id = tt.org_id) t
+                and t2.org_id = tt.org_id
+                and t2.org_tree_id = #{psonOrgVo.orgTreeId}) t
                 left join tb_personnel t3
                 on t.personnel_id = t3.personnel_id
-                and t.status_cd = t3.status_cd
-                <!--left join tb_cert t4
-                on t.personnel_id = t4.personnel_id
-                and t.status_cd = t4.status_cd-->
-                <!--left join tb_contact t5
-                on t.personnel_id = t5.personnel_id
-                and t.status_cd = t5.status_cd
-                and t5.contact_type = '1'
-                and t5.first_flag = '1'-->)
+                and t.status_cd = t3.status_cd)
                 select *
                 from (select *
                 from acctTab
@@ -656,8 +611,6 @@
                 t.psnCode,
                 t.psnNbr,
                 t.ncCode,
-               <!-- t.certNo,
-                t.mobile,-->
                 t.orgName
                 from (select t1.*,
                 t2.personnelId,
@@ -665,8 +618,6 @@
                 t2.psnCode,
                 t2.psnNbr,
                 t2.ncCode,
-                <!--t2.certNo,
-                t2.mobile,-->
                 t2.orgName
                 from tb_slave_acct t1, acctTab t2
                 where t1.status_cd = 1000
@@ -708,6 +659,9 @@
                 AND D.Status_Cd = 1000
                 and E.STATUS_CD = 1000
                 AND A.ORG_ID = B.ORG_ID
+                <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
+                    AND ${psonOrgVo.tabOrgParams}
+                </if>
                 AND B.REF_CODE = E.REF_CODE
                 and D.ORG_REL_TYPE_ID = E.ORG_REL_TYPE_ID
                 AND C.ORG_TREE_ID = D.ORG_TREE_ID
@@ -726,26 +680,17 @@
                 t3.PSN_CODE psnCode,
                 t3.PSN_NBR psnNbr,
                 t3.NC_CODE ncCode,
-               <!-- t4.cert_no certNo,
-                t5.content mobile,-->
                 t.FULL_NAME orgName
                 from (select t1.*, t2.org_id, tt.FULL_NAME
                 from tb_acct t1, tb_account_org_rel t2, ORGFULL tt
                 where t1.status_cd = 1000
                 and t2.status_cd = 1000
                 and t1.acct_id = t2.acct_id
-                and t2.org_id = tt.org_id) t
+                and t2.org_id = tt.org_id
+                and t2.org_tree_id = #{psonOrgVo.orgTreeId}) t
                 left join tb_personnel t3
                 on t.personnel_id = t3.personnel_id
-                and t.status_cd = t3.status_cd
-              <!--  left join tb_cert t4
-                on t.personnel_id = t4.personnel_id
-                and t.status_cd = t4.status_cd
-                left join tb_contact t5
-                on t.personnel_id = t5.personnel_id
-                and t.status_cd = t5.status_cd
-                and t5.contact_type = '1'
-                and t5.first_flag = '1'-->)
+                and t.status_cd = t3.status_cd )
                 select *
                 from (select *
                 from acctTab
@@ -760,8 +705,6 @@
                 t.psnCode,
                 t.psnNbr,
                 t.ncCode,
-               <!-- t.certNo,
-                t.mobile,-->
                 t.orgName
                 from (select t1.*,
                 t2.personnelId,
@@ -769,8 +712,6 @@
                 t2.psnCode,
                 t2.psnNbr,
                 t2.ncCode,
-               <!-- t2.certNo,
-                t2.mobile,-->
                 t2.orgName
                 from tb_slave_acct t1, acctTab t2
                 where t1.status_cd = 1000

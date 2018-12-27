@@ -99,6 +99,7 @@ public class CommonSystemServiceImpl implements CommonSystemService {
         requestVo.setTableNames(listNames);
         ResponseResult<List<SysDataRule>> sysDataRulelist = systemService.getDataRuleByAccout(requestVo);
         List<SysDataRule> sdrList = new ArrayList<>();
+        sdrList = sysDataRulelist.getData();
         String params = "";
         if(sdrList!=null && sdrList.size()>0){
             for(SysDataRule sysDataRule : sdrList){

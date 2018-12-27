@@ -15,6 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.Xml;
 import io.swagger.models.auth.In;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,7 +122,6 @@ public class OrgRelController extends BaseController {
                 orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
             }
         }
-
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
         treeNodeVos = orgRelService.queryOrgTree(orgTree.getOrgTreeId().toString(),orgTree.getOrgId(),refCode,id,isRoot,orgParams);
         ret.setState(ResponseResult.STATE_OK);

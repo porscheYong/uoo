@@ -611,6 +611,7 @@ public class OrgPersonRelController extends BaseController {
                 psonOrgVo.setTabOrgParams(orgParams);
                 String orgPerParams =  commonSystemService.getSysDataRuleSql("TB_ORG_PERSON_REL",sdrList);
                 psonOrgVo.setTabOrgPerRelParams(orgPerParams);
+
             }
         }
 
