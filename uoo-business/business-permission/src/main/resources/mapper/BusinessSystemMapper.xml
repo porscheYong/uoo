@@ -25,5 +25,17 @@
     <sql id="Base_Column_List">
         BUSINESS_SYSTEM_ID, SYSTEM_CODE, SYSTEM_NAME, SYSTEM_DESC, SYSTEM_URL, INTF_TYPE, UUID, EFF_DATE, EXP_DATE, STATUS_CD, STATUS_DATE, CREATE_USER, CREATE_DATE, UPDATE_USER, UPDATE_DATE
     </sql>
+    <select id="selectListByTreeId" parameterType="Long" resultType="cn.ffcs.uoo.core.permission.entity.BusinessSystem">
+        SELECT
+    * 
+FROM
+    TB_BUSINESS_SYSTEM bs
+    LEFT JOIN TB_SYSTEM_ORG_TREE sot ON sot.BUSINESS_SYSTEM_ID = bs.BUSINESS_SYSTEM_ID 
+WHERE
+    bs.STATUS_CD = '1000' 
+    AND sot.STATUS_CD = '1000' 
+    AND ORG_TREE_ID = #{treeId}
 
+        
+    </select>
 </mapper>
