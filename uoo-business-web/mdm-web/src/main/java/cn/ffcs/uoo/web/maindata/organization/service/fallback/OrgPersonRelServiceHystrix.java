@@ -66,7 +66,8 @@ public class OrgPersonRelServiceHystrix implements OrgPersonRelService {
     }
 
     @Override
-    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(String orgTreeId,String personnelId){
+    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(String orgTreeId,String personnelId,
+                                                            Long userId,String accout){
         ResponseResult<List<PsonOrgVo>> responseResult = new ResponseResult<List<PsonOrgVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

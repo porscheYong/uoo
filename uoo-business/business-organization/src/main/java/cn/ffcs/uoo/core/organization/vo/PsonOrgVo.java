@@ -171,7 +171,7 @@ public class PsonOrgVo extends BaseVo {
 
     /** 账号权限**/
     private String accout;
-    private String sysUserId;
+    private Long sysUserId;
 
     public String getAccout() {
         return accout;
@@ -181,11 +181,11 @@ public class PsonOrgVo extends BaseVo {
         this.accout = accout;
     }
 
-    public String getSysUserId() {
+    public Long getSysUserId() {
         return sysUserId;
     }
 
-    public void setSysUserId(String sysUserId) {
+    public void setSysUserId(Long sysUserId) {
         this.sysUserId = sysUserId;
     }
 

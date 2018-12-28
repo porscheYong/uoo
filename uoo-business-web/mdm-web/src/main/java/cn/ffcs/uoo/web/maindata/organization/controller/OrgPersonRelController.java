@@ -43,6 +43,16 @@ public class OrgPersonRelController {
     })
     @RequestMapping(value = "/addOrgPsn", method = RequestMethod.POST)
     public ResponseResult addOrgPsn(@RequestBody List<PsonOrgVo> psonOrgVo){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout = currentLoginUser.getAccout();
+        if(psonOrgVo!=null && psonOrgVo.size()>0){
+            for(PsonOrgVo vo: psonOrgVo){
+                vo.setSysUserId(userId);
+                vo.setAccout(accout);
+            }
+        }
         return orgPersonRelService.addOrgPsn(psonOrgVo);
     }
 
@@ -51,6 +61,16 @@ public class OrgPersonRelController {
     })
     @RequestMapping(value = "/addOrgPsn2", method = RequestMethod.POST)
     public ResponseResult addOrgPsn2(@RequestBody List<PsonOrgVo> psonOrgVo){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout = currentLoginUser.getAccout();
+        if(psonOrgVo!=null && psonOrgVo.size()>0){
+            for(PsonOrgVo vo: psonOrgVo){
+                vo.setSysUserId(userId);
+                vo.setAccout(accout);
+            }
+        }
         return orgPersonRelService.addOrgPsn2(psonOrgVo);
     }
 
@@ -59,6 +79,12 @@ public class OrgPersonRelController {
     })
     @RequestMapping(value = "/updateOrgPsn", method = RequestMethod.POST)
     public ResponseResult<String> updateOrgPsn(@RequestBody PsonOrgVo psonOrgVo){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout = currentLoginUser.getAccout();
+        psonOrgVo.setSysUserId(userId);
+        psonOrgVo.setAccout(accout);
         return orgPersonRelService.updateOrgPsn(psonOrgVo);
     }
 
@@ -67,6 +93,12 @@ public class OrgPersonRelController {
     })
     @RequestMapping(value = "/deleteOrgPsn", method = RequestMethod.POST)
     public ResponseResult<String> deleteOrgPsn(@RequestBody PsonOrgVo psonOrgVo){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout = currentLoginUser.getAccout();
+        psonOrgVo.setSysUserId(userId);
+        psonOrgVo.setAccout(accout);
         return orgPersonRelService.deleteOrgPsn(psonOrgVo);
     }
 
@@ -75,6 +107,12 @@ public class OrgPersonRelController {
     })
     @RequestMapping(value = "/deletePsnRel", method = RequestMethod.POST)
     public ResponseResult<String> deletePsnRel(@RequestBody PsonOrgVo psonOrgVo){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout = currentLoginUser.getAccout();
+        psonOrgVo.setSysUserId(userId);
+        psonOrgVo.setAccout(accout);
         return orgPersonRelService.deletePsnRel(psonOrgVo);
     }
 
@@ -86,7 +124,11 @@ public class OrgPersonRelController {
     public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(
             @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
             @RequestParam(value = "personnelId",required = false)String personnelId){
-        return orgPersonRelService.getPerOrgRelList(orgTreeId,personnelId);
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout = currentLoginUser.getAccout();
+        return orgPersonRelService.getPerOrgRelList(orgTreeId,personnelId,userId,accout);
     }
 
     @ApiOperation(value = "获取组织人员关系翻页", notes = "获取组织人员关系翻页")

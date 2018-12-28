@@ -91,6 +91,7 @@ public class OrgPersonRelController extends BaseController {
                 Long orgPsndocRefId = orgPersonRelService.getId();
                 orgPersonRel.setOrgPersonId(orgPsndocRefId);
                 orgPersonRel.setOrgTreeId(psonOrgVo.getOrgTreeId().toString());
+                orgPersonRel.setCreateUser(psonOrgVo.getSysUserId());
                 orgPersonRelService.add(orgPersonRel);
 
                 Long orgTreePerId = orgtreeOrgpersonRelService.getId();
@@ -99,6 +100,7 @@ public class OrgPersonRelController extends BaseController {
                 orgtreeOrgpersonRel.setOrgPersonId(orgPsndocRefId);
                 orgtreeOrgpersonRel.setOrgtreeOrgpersonId(orgTreePerId);
                 orgtreeOrgpersonRel.setStatusCd("1000");
+                orgtreeOrgpersonRel.setCreateUser(psonOrgVo.getSysUserId());
                 orgtreeOrgpersonRelService.add(orgtreeOrgpersonRel);
             }
         }
@@ -131,6 +133,7 @@ public class OrgPersonRelController extends BaseController {
                 Long orgPsndocRefId = orgPersonRelService.getId();
                 orgPersonRel.setOrgPersonId(orgPsndocRefId);
                 orgPersonRel.setOrgTreeId(psonOrgVo.getOrgTreeId().toString());
+                orgPersonRel.setCreateUser(psonOrgVo.getSysUserId());
                 orgPersonRelService.add(orgPersonRel);
 
                 Long orgTreePerId = orgtreeOrgpersonRelService.getId();
@@ -139,6 +142,7 @@ public class OrgPersonRelController extends BaseController {
                 orgtreeOrgpersonRel.setOrgPersonId(orgPsndocRefId);
                 orgtreeOrgpersonRel.setOrgtreeOrgpersonId(orgTreePerId);
                 orgtreeOrgpersonRel.setStatusCd("1000");
+                orgtreeOrgpersonRel.setCreateUser(psonOrgVo.getSysUserId());
                 orgtreeOrgpersonRelService.add(orgtreeOrgpersonRel);
             }
             String mqmsg = "{\"type\":\"person\",\"handle\":\"update\",\"context\":{\"column\":\"personnelId\",\"value\":"+psonOrgList.get(0).getPersonnelId()+"}}" ;
@@ -187,6 +191,7 @@ public class OrgPersonRelController extends BaseController {
             if(!StrUtil.isNullOrEmpty(psonOrgVo.getSort())){
                 orgPersonRel.setSort(new Double(psonOrgVo.getSort()));
             }
+            orgPersonRel.setUpdateUser(psonOrgVo.getSysUserId());
             orgPersonRelService.update(orgPersonRel);
 
         }
@@ -270,7 +275,9 @@ public class OrgPersonRelController extends BaseController {
                         .eq("ORG_TREE_ID",orgtree.getOrgTreeId());
                 OrgtreeOrgpersonRel orgtreeOrgpersonRel = orgtreeOrgpersonRelService.selectOne(orgTreePerConfWrapper);
                 if(orgtreeOrgpersonRel!=null){
+                    orgtreeOrgpersonRel.setUpdateUser(psonOrgVo.getSysUserId());
                     orgtreeOrgpersonRelService.delete(orgtreeOrgpersonRel);
+                    opr.setUpdateUser(psonOrgVo.getSysUserId());
                     orgPersonRelService.delete(opr);
                     break;
                 }
@@ -310,8 +317,10 @@ public class OrgPersonRelController extends BaseController {
                         .eq("STATUS_CD","1000");
                 OrgtreeOrgpersonRel orgtreeOrgpersonRel = orgtreeOrgpersonRelService.selectOne(orgTreePerConfWrapper);
                 if(orgtreeOrgpersonRel!=null){
+                    orgtreeOrgpersonRel.setUpdateUser(psonOrgVo.getSysUserId());
                     orgtreeOrgpersonRelService.delete(orgtreeOrgpersonRel);
                 }
+                opr.setUpdateUser(psonOrgVo.getSysUserId());
                 orgPersonRelService.delete(opr);
             }
         }
@@ -355,7 +364,8 @@ public class OrgPersonRelController extends BaseController {
     @UooLog(value = "查询人员组织信息列表",key = "getPerOrgRelList")
     @RequestMapping(value = "/getPerOrgRelList",method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(String orgTreeId,String personnelId){
+    public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(String orgTreeId,String personnelId,
+                                                            Long userId,String accout){
         ResponseResult<List<PsonOrgVo>> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(personnelId)){
             ret.setMessage("人员标识不能为空");
