@@ -103,7 +103,11 @@ function initOrgPersonnelTable (isSearchlower) {
         "scrollY": "395px",
         'scrollCollapse': true,
         'columns': [
-            { 'data': null, 'title': '序号', 'className': 'row-no' },
+            { 'data': null, 'title': '序号', 'className': 'row-no',
+              'render': function (data, type, row, meta) {
+                return meta.row + 1 + meta.settings._iDisplayStart;
+              }
+            },
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
                     return '<a href="/inaction/user/edit.html?id='+ row.orgId +'&orgTreeId=' + orgTreeId + '&name=' + row.orgName + '&personnelId=' + row.personnelId + '">'+ row.psnName +'</a>';
@@ -146,11 +150,6 @@ function initOrgPersonnelTable (isSearchlower) {
         "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
         'pagingType': 'simple_numbers',
         'dom': '<"top"f>t<"bottom"ipl>',
-        'drawCallback': function(){
-            this.api().column(0).nodes().each(function(cell, i) {
-                cell.innerHTML =  i + 1;
-            });
-        },
         'serverSide': true,  // 服务端分页
         'ajax': function (data, callback, settings) {
             var param = {};
