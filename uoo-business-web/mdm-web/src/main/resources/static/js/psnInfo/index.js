@@ -857,6 +857,9 @@ function convertToFile(base64Codes){
         contentType : false,        // 告诉jQuery不要去设置Content-Type请求头
         success:function(data){
             toastr.success(data.message);
+            if(psnImageId != null){
+                psnImageId = data.data.psnImageId.toString();
+            }
             psnImageId = data.data.psnImageId;
         },
         error:function(data){
@@ -934,7 +937,7 @@ function updatePersonnel(){
     updates.tbMobileVoList=tbMobileVoList;
     updates.tbEamilVoList=tbEamilVoList;
 
-    updates.image = psnImageId.toString();
+    updates.image = psnImageId;
 
     $.ajax({
         url:'/personnel/updatePersonnel',
