@@ -306,7 +306,7 @@ public class TbPersonnelController extends BaseController {
 //        if(tbPersonnelService.isExistsAcct(editFormPersonnelVo.getPersonnelId())){
 //            return ResultUtils.success(editFormPersonnelVo.getPersonnelId());
 //        }
-        return ResultUtils.success(null);
+        return ResultUtils.success(editFormPersonnelVo.getPersonnelId());
     }
 
 
