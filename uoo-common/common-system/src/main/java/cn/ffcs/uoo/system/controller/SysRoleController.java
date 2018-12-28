@@ -84,12 +84,12 @@ public class SysRoleController {
     @UooLog(key="treeRole",value="treeRole")
     @GetMapping("/treeRole")
     public ResponseResult<List<TreeNodeVo>> treeRole( String parentRoleCode){
-        Wrapper<SysRole> wrapper=Condition.create();
-        if("null".equals(parentRoleCode)||StringUtils.isBlank(parentRoleCode)){
+        Wrapper<SysRole> wrapper=Condition.create().eq("STATUS_CD", StatusCD.VALID);
+        /*if("null".equals(parentRoleCode)||StringUtils.isBlank(parentRoleCode)){
             wrapper.eq("STATUS_CD", StatusCD.VALID).isNull("PARENT_ROLE_CODE");
         }else{
             wrapper.eq("STATUS_CD", StatusCD.VALID).eq("PARENT_ROLE_CODE", parentRoleCode);
-        }
+        }*/
         List<SysRole> selectList = sysRoleService.selectList(wrapper);
         List<TreeNodeVo> list=new ArrayList<>();
         if(selectList!=null)
@@ -99,8 +99,12 @@ public class SysRoleController {
             vo.setId(sysRole.getRoleCode());
             vo.setName(sysRole.getRoleName());
             vo.setPid(sysRole.getParentRoleCode());
-            int i=sysRoleService.selectCount(Condition.create().eq("PARENT_ROLE_CODE", sysRole.getRoleCode()).eq("STATUS_CD", StatusCD.VALID));
-            vo.setParent(i>0);
+            for (SysRole sr : selectList) {
+                if(sysRole.getRoleCode().equals(sr.getParentRoleCode())){
+                    vo.setParent(true);
+                    break;
+                }
+            }
             list.add(vo);
         }
         return ResponseResult.createSuccessResult(list, "");
