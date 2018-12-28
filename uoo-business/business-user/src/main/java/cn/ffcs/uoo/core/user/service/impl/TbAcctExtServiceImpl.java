@@ -54,10 +54,11 @@ public class TbAcctExtServiceImpl extends ServiceImpl<TbAcctExtMapper, TbAcctExt
     }
 
     @Override
-    public Object delTbAcctExt(Long slaveAcctId){
+    public Object delTbAcctExt(Long slaveAcctId, Long userId){
         TbAcctExt tbAcctExt = new TbAcctExt();
         tbAcctExt.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbAcctExt.setStatusDate(new Date());
+        tbAcctExt.setUpdateUser(userId);
         EntityWrapper<TbAcctExt> wrapper = new EntityWrapper<TbAcctExt>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TABLE_SLAVE_ACCT_ID, slaveAcctId);

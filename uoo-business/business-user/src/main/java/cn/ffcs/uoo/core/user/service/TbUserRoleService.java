@@ -23,25 +23,28 @@ public interface TbUserRoleService extends IService<TbUserRole> {
      * @param tbRolesList
      * @param acctId
      * @param acctType
+     * @param userId
      * @return
      */
-    public Object saveUserRole(List<TbRoles> tbRolesList, Long acctId, Long acctType);
+    public Object saveUserRole(List<TbRoles> tbRolesList, Long acctId, Long acctType, Long userId);
 
     /**
      * 删除 主账号 和 从账号角色
      * @param acctId
      * @param acctType
+     * @param userId
      * @return
      */
-    public Object removeUserRole(Long acctId, Long acctType);
+    public Object removeUserRole(Long acctId, Long acctType, Long userId);
 
     /**
      * 更新 主账号 和 从账号角色
      * @param tbRolesList
      * @param acctId
      * @param acctType
+     * @param userId
      * @return
      */
-    public Object updateUserRole(List<TbRoles> tbRolesList,List<TbRoles> oldTbRolesList,Long acctId, Long acctType);
+    public Object updateUserRole(List<TbRoles> tbRolesList,List<TbRoles> oldTbRolesList,Long acctId, Long acctType, Long userId);
 
 }

@@ -50,12 +50,15 @@ public class TbPsnjobController extends BaseController {
     }
 
     @ApiOperation(value="删除工作履历",notes="删除工作履历")
-    @ApiImplicitParam(name = "psnjobId", value = "工作履历标识", required = true, dataType = "Long",paramType="path")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "psnjobId", value = "工作履历标识", required = true, dataType = "Long",paramType="path"),
+            @ApiImplicitParam(name = "userId", value = "操作人标识", required = true, dataType = "Long",paramType="path")
+    })
     @UooLog(value = "删除工作履历",key = "delTbPsnjob")
     @SendMqMsg(type = "person", handle ="update", column ="personnelId")
     @RequestMapping(value="/delTbPsnjob",method = RequestMethod.DELETE)
-    public Object delTbPsnjob(Long psnjobId ){
-        return  tbPsnjobService.delTbPsnjob(psnjobId);
+    public Object delTbPsnjob(Long psnjobId, Long userId ){
+        return  tbPsnjobService.delTbPsnjob(psnjobId, userId);
     }
 
     @ApiOperation(value="工作履历查看",notes="工作履历")

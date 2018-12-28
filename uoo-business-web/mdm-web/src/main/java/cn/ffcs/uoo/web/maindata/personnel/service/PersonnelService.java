@@ -35,19 +35,20 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @date 2018/9/8 21:49
  * @Version 1.0.0
 */
-@FeignClient(value = "business-personnel",configuration = {PersonnelServiceConfiguration.class},fallback = PersonnelServiceHystrix.class)
+@FeignClient(name = "business-personnel", url = "http://192.168.58.146:11200",configuration = {PersonnelServiceConfiguration.class},fallback = PersonnelServiceHystrix.class)
 public interface PersonnelService {
 
     @RequestMapping(value="/personnel/getFormPersonnel", method = RequestMethod.GET, headers={"Content-Type=application/json"})
     public Object getFormPersonnel(@RequestParam("personnelId") Long personnelId,
                                     @RequestParam("orgTreeId") Long orgTreeId,
-                                    @RequestParam("orgId") Long orgId);
+                                    @RequestParam("orgId") Long orgId,
+                                    @RequestParam("accout") String accout);
 
     @RequestMapping(value = "/personnel/savePersonnel", method = RequestMethod.POST , headers={"Content-Type=application/json"} )
     public Object savePersonnel(@RequestBody EditFormPersonnelVo editFormPersonnelVo);
 
     @RequestMapping(value="/personnel/deletePersonnel",method = RequestMethod.DELETE, headers={"Content-Type=application/json"} )
-    public Object deletePersonnel(@RequestParam("personnelId") Long personnelId);
+    public Object deletePersonnel(@RequestParam("personnelId") Long personnelId, @RequestParam("userId") Long userId);
 
     @RequestMapping(value = "/personnel/updatePersonnel",method = RequestMethod.PUT, headers={"Content-Type=application/json"} )
     public Object upPersonnel(@RequestBody PersonnelVo personnelVo);

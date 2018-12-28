@@ -29,6 +29,8 @@ public class EditFormAcctVo {
 
     private Date disableDate;
 
+    private Long userId;
+
     /**
      * 角色
      */

@@ -121,13 +121,15 @@ public class TbPersonnelController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long",paramType="path"),
             @ApiImplicitParam(name = "orgTreeId", value = "业务树标识", required = true, dataType = "Long",paramType="path"),
-            @ApiImplicitParam(name = "orgId", value = "组织标识", required = true, dataType = "Long",paramType="path")
+            @ApiImplicitParam(name = "orgId", value = "组织标识", required = true, dataType = "Long",paramType="path"),
+            @ApiImplicitParam(name = "accout", value = "账号标识", required = true, dataType = "String",paramType="path")
     })
     @UooLog(value = "查看人员信息", key = "getFormPersonnel")
     @RequestMapping(value = "/getFormPersonnel",method = RequestMethod.GET)
     public Object getFormPersonnel(Long personnelId,
                                    Long orgTreeId,
-                                   Long orgId){
+                                   Long orgId,
+                                   String accout){
         FormPersonnelVo formPersonnelVo = new FormPersonnelVo();
         /**  1、基本信息    */
         TbPersonnel tbPersonnel = tbPersonnelService.selectById(personnelId);
@@ -150,7 +152,7 @@ public class TbPersonnelController extends BaseController {
 
         /**  3、归属组织信息 */
 
-        ResponseResult<Page<PsonOrgVo>> obj = orgPersonRelClient.getPerOrgRelPage(orgId.intValue(), orgTreeId, personnelId.intValue(), "", null, null);
+        ResponseResult<Page<PsonOrgVo>> obj = orgPersonRelClient.getPerOrgRelPage(orgId.intValue(), orgTreeId, personnelId.intValue(), "", null, null, accout);
 
         if(BaseUnitConstants.ENTT_STATE_ACTIVE.equals(String.valueOf(obj.getState()))
                 && !StrUtil.isNullOrEmpty(obj.getData())){
@@ -184,26 +186,30 @@ public class TbPersonnelController extends BaseController {
             return reObj;
         }
         TbPersonnel tbPersonnel = new TbPersonnel();
+        Long userId = editFormPersonnelVo.getUserId();
         BeanUtils.copyProperties(editFormPersonnelVo, tbPersonnel);
 
         Long personnelId = tbPersonnelService.getId();
         tbPersonnel.setPersonnelId(personnelId);
+        tbPersonnel.setCreateUser(userId);
+        tbPersonnel.setUpdateUser(userId);
         tbPersonnel.setGender(IDCardUtil.getGender(editFormPersonnelVo.getCertNo()));
         tbPersonnelService.insertOrUpdateTbPsn(tbPersonnel);
 
         if(!StrUtil.isNullOrEmpty(editFormPersonnelVo.getImage())){
-            tbPersonnelImageService.updatePsnId(personnelId, Long.valueOf(editFormPersonnelVo.getImage()));
+            tbPersonnelImageService.updatePsnId(personnelId, Long.valueOf(editFormPersonnelVo.getImage()), userId);
         }
 
         /**  2、证件           */
         tbCertService.insertOrUpdateTbCert(personnelId, editFormPersonnelVo.getCertType(),editFormPersonnelVo.getCertNo(),
-                editFormPersonnelVo.getPsnName(), editFormPersonnelVo.getAddress());
+                editFormPersonnelVo.getPsnName(), editFormPersonnelVo.getAddress(), userId);
 
         /**  2、组织信息           */
         List<PsonOrgVo> psonOrgVoList = editFormPersonnelVo.getPsonOrgVoList();
         List<PsonOrgVo> psonOrgVos = new ArrayList<PsonOrgVo>();
         for(PsonOrgVo psonOrgVo : psonOrgVoList){
             psonOrgVo.setPersonnelId(personnelId);
+            psonOrgVo.setUserId(String.valueOf(userId));
             psonOrgVos.add(psonOrgVo);
         }
         if(psonOrgVos != null && psonOrgVos.size() > 0){
@@ -217,6 +223,8 @@ public class TbPersonnelController extends BaseController {
             for(TbContact tbContact : tbContactList){
                 tbContact.setContactId(tbContactService.getId());
                 tbContact.setPersonnelId(personnelId);
+                tbContact.setCreateUser(userId);
+                tbContact.setUpdateUser(userId);
                 tbContactService.insert(tbContact);
             }
         }
@@ -227,6 +235,8 @@ public class TbPersonnelController extends BaseController {
             for(TbPsnjob tbPsnjob : tbPsnjobList){
                 tbPsnjob.setPsnjobId(tbPsnjobService.getId());
                 tbPsnjob.setPersonnelId(personnelId);
+                tbPsnjob.setCreateUser(userId);
+                tbPsnjob.setUpdateUser(userId);
                 tbPsnjobService.insert(tbPsnjob);
             }
         }
@@ -237,6 +247,8 @@ public class TbPersonnelController extends BaseController {
             for(TbEdu tbEdu : tbEduList){
                 tbEdu.setEduId(tbEduService.getId());
                 tbEdu.setPersonnelId(personnelId);
+                tbEdu.setCreateUser(userId);
+                tbEdu.setUpdateUser(userId);
                 tbEduService.insert(tbEdu);
             }
         }
@@ -247,6 +259,8 @@ public class TbPersonnelController extends BaseController {
             for(TbFamily tbFamily : tbFamilyList){
                 tbFamily.setFamilyId(tbFamilyService.getId());
                 tbFamily.setPersonnelId(personnelId);
+                tbFamily.setCreateUser(userId);
+                tbFamily.setUpdateUser(userId);
                 tbFamilyService.insert(tbFamily);
             }
         }
@@ -270,22 +284,24 @@ public class TbPersonnelController extends BaseController {
         }
 
         TbPersonnel tbPersonnel = new TbPersonnel();
+        Long userId = personnelVo.getUserId();
         BeanUtils.copyProperties(personnelVo, tbPersonnel);
+        tbPersonnel.setUpdateUser(userId);
         tbPersonnel.setGender(IDCardUtil.getGender(editFormPersonnelVo.getCertNo()));
 
         if(!StrUtil.isNullOrEmpty(personnelVo.getImage())){
-            tbPersonnelImageService.updatePsnId(personnelVo.getPersonnelId(), Long.valueOf(personnelVo.getImage()));
+            tbPersonnelImageService.updatePsnId(personnelVo.getPersonnelId(), Long.valueOf(personnelVo.getImage()), userId);
         }
 
         tbPersonnelService.insertOrUpdateTbPsn(tbPersonnel);
 
         /**  2、证件           */
         tbCertService.insertOrUpdateTbCert(personnelVo.getPersonnelId(), personnelVo.getCertType(),personnelVo.getCertNo(),
-                personnelVo.getPsnName(), personnelVo.getAddress());
+                personnelVo.getPsnName(), personnelVo.getAddress(), userId);
 
         /**  3、联系方式           */
-        tbContactService.addOrUpdateTbContact(personnelVo.getTbMobileVoList(), editFormPersonnelVo.getPersonnelId(), "1");
-        tbContactService.addOrUpdateTbContact(personnelVo.getTbEamilVoList(), editFormPersonnelVo.getPersonnelId(), "2");
+        tbContactService.addOrUpdateTbContact(personnelVo.getTbMobileVoList(), editFormPersonnelVo.getPersonnelId(), "1", userId);
+        tbContactService.addOrUpdateTbContact(personnelVo.getTbEamilVoList(), editFormPersonnelVo.getPersonnelId(), "2", userId);
 
 //        if(tbPersonnelService.isExistsAcct(editFormPersonnelVo.getPersonnelId())){
 //            return ResultUtils.success(editFormPersonnelVo.getPersonnelId());
@@ -306,8 +322,6 @@ public class TbPersonnelController extends BaseController {
         if(!StrUtil.isNullOrEmpty(reObj)){
             return reObj;
         }
-
-
 
         TbPersonnel tbPersonnel = new TbPersonnel();
         BeanUtils.copyProperties(editFormPersonnelVo, tbPersonnel);
@@ -385,38 +399,42 @@ public class TbPersonnelController extends BaseController {
     }
 
     @ApiOperation(value="删除人员信息",notes="人员信息删除")
-    @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long",paramType="path")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long",paramType="path"),
+            @ApiImplicitParam(name = "userId", value = "操作人标识", required = true, dataType = "Long",paramType="path")
+    })
     @UooLog(value = "删除人员信息",key = "deletePersonnel")
     @SendMqMsg(type = "person", handle ="delete", column ="personnelId")
     @RequestMapping(value="/deletePersonnel",method = RequestMethod.DELETE)
-    public Object deletePersonnel(Long personnelId) {
-        tbPersonnelService.delTbPersonnelByPsnId(personnelId);
+    public Object deletePersonnel(Long personnelId, Long userId) {
+        tbPersonnelService.delTbPersonnelByPsnId(personnelId, userId);
 
         // 根据personnelId 删除tbCert
-        tbCertService.delTbCertByPsnId(personnelId);
+        tbCertService.delTbCertByPsnId(personnelId, userId);
 
         /**  3、联系方式           */
         // 根据id删除tbContact
-        tbContactService.delTbContactByPsnId(personnelId);
+        tbContactService.delTbContactByPsnId(personnelId, userId);
 
         /**  4、工作履历信息       */
-        tbPsnjobService.delTbPsnjobByPsnId(personnelId);
+        tbPsnjobService.delTbPsnjobByPsnId(personnelId, userId);
 
         /**  5、教育信息           */
-        tbEduService.delTbEduByPsnId(personnelId);
+        tbEduService.delTbEduByPsnId(personnelId, userId);
 
         /**  6、家庭成员信息      */
-        tbFamilyService.delTbFamilyByPsnId(personnelId);
+        tbFamilyService.delTbFamilyByPsnId(personnelId, userId);
 
         /**  7、图片信息      */
-        tbPersonnelImageService.delTbPersonnelImageByPsnId(personnelId);
+        tbPersonnelImageService.delTbPersonnelImageByPsnId(personnelId, userId);
 
         /**  8、删除人员组织关系      */
         PsonOrgVo psonOrgVo = new PsonOrgVo();
         psonOrgVo.setPersonnelId(personnelId);
+        psonOrgVo.setSysUserId(userId);
         orgPersonRelClient.deletePsnRel(psonOrgVo);
         /**  9、删除账号相关信息      */
-        userClient.removeAcct(personnelId);
+        userClient.removeAcct(personnelId, userId);
         return ResultUtils.success(personnelId);
     }
 

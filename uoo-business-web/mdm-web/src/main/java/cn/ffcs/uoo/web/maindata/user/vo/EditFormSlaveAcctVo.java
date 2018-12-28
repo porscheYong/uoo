@@ -41,6 +41,8 @@ public class EditFormSlaveAcctVo {
 
     private Date disableDate;
 
+    private Long userId;
+
     private List<TbRoles> rolesList;
 
     private TbAcctExt tbAcctExt;

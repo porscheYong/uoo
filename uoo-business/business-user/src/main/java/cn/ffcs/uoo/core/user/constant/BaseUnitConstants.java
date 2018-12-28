@@ -61,6 +61,8 @@ public class BaseUnitConstants {
 
 	public static final String TB_ORG_TREE_ID = "ORG_TREE_ID";
 
+	public static final String TB_ACCOUNT_ORG_REL = "TB_ACCOUNT_ORG_REL";
+
 
 
 	/**

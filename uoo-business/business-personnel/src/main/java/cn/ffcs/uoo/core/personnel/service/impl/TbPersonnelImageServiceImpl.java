@@ -37,10 +37,11 @@ public class TbPersonnelImageServiceImpl extends ServiceImpl<TbPersonnelImageMap
     }
 
     @Override
-    public Object delTbPersonnelImageByPsnId(Long personnelId){
+    public Object delTbPersonnelImageByPsnId(Long personnelId, Long userId){
         TbPersonnelImage tbPersonnelImage = new TbPersonnelImage();
         tbPersonnelImage.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbPersonnelImage.setStatusDate(new Date());
+        tbPersonnelImage.setUpdateUser(userId);
         EntityWrapper<TbPersonnelImage> wrapper = new EntityWrapper<TbPersonnelImage>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
@@ -59,9 +60,10 @@ public class TbPersonnelImageServiceImpl extends ServiceImpl<TbPersonnelImageMap
     }
 
     @Override
-    public Object updatePsnId(Long personnelId, Long psnImageId){
+    public Object updatePsnId(Long personnelId, Long psnImageId, Long userId){
         TbPersonnelImage tbPersonnelImage = new TbPersonnelImage();
         tbPersonnelImage.setPersonnelId(personnelId);
+        tbPersonnelImage.setUpdateUser(userId);
         //tbPersonnelImage.setPsnImageId(psnImageId);
         EntityWrapper<TbPersonnelImage> wrapper = new EntityWrapper<TbPersonnelImage>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);

@@ -32,6 +32,6 @@ public interface TbSlaveAcctMapper extends BaseMapper<TbSlaveAcct> {
 
     // todo -----新版本--------------------------------------------------------
 
-    public List<ListSlaveAcctOrgVo> getSlaveAcctOrg(Pagination page,@Param("slaveAcctOrgVo") ListSlaveAcctOrgVo slaveAcctOrgVo);
+    public List<ListSlaveAcctOrgVo> getSlaveAcctOrg(Pagination page,@Param("slaveAcctOrgVo") ListSlaveAcctOrgVo slaveAcctOrgVo, @Param("inSql") String inSql);
 
 }

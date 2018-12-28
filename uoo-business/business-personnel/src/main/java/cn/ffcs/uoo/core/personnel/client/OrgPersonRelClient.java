@@ -34,7 +34,8 @@ public interface OrgPersonRelClient {
     @RequestMapping(value = "/orgPersonRel/getPerOrgRelPage", method = RequestMethod.GET, headers = {"Content-Type=application/json"})
     public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(@RequestParam("orgId") Integer orgId, @RequestParam("orgTreeId") Long orgTreeId,
                                                             @RequestParam("personnelId") Integer personnelId, @RequestParam("search") String search,
-                                                            @RequestParam("pageSize") Integer pageSize, @RequestParam("pageNo") Integer pageNo);
+                                                            @RequestParam("pageSize") Integer pageSize, @RequestParam("pageNo") Integer pageNo,
+                                                            @RequestParam("accout") String accout);
 
     /**
      * 删除 人员组织关系

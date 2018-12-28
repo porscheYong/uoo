@@ -38,9 +38,10 @@ public interface TbPsnjobService extends IService<TbPsnjob> {
     /**
      * 删除工作履历
      * @param psnjobId
+     * @param userId
      * @return
      */
-    public Object delTbPsnjob(Long psnjobId);
+    public Object delTbPsnjob(Long psnjobId, Long userId);
 
     /**
      * 根据ID获取工作履历信息
@@ -61,9 +62,10 @@ public interface TbPsnjobService extends IService<TbPsnjob> {
     /**
      * 根据personnelId 删除 工作履历信息
      * @param personnelId
+     * @param userId
      * @return
      */
-    public Object delTbPsnjobByPsnId(Long personnelId);
+    public Object delTbPsnjobByPsnId(Long personnelId, Long userId);
 
     /**
      * 根据personnelId 查询 工作履历信息

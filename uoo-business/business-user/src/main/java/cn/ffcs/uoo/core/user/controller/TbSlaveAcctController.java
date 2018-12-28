@@ -12,6 +12,7 @@ import cn.ffcs.uoo.core.user.vo.EditFormSlaveAcctVo;
 import cn.ffcs.uoo.core.user.vo.ResourceSlaveAcctVo;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,6 +120,7 @@ public class TbSlaveAcctController extends BaseController {
 //        tbSlaveAcct.setSymmetryPassword(symmetryPassword);
 //        tbSlaveAcct.setAcctId(tbAcct.getAcctId());
         Long slaveAcctId = tbSlaveAcctService.getId();
+        Long userId = editFormSlaveAcctVo.getUserId();
 //        tbSlaveAcct.setSlaveAcctId(slaveAcctId);
 //        tbSlaveAcctService.addTbSlaveAcct(tbSlaveAcct);
         obj =  tbSlaveAcctService.insertOrUpdateTbSlaveAcct(editFormSlaveAcctVo, slaveAcctId);
@@ -127,12 +129,14 @@ public class TbSlaveAcctController extends BaseController {
         }
 
         //角色
-        tbUserRoleService.saveUserRole(editFormSlaveAcctVo.getRolesList(), slaveAcctId, 2L);
+        tbUserRoleService.saveUserRole(editFormSlaveAcctVo.getRolesList(), slaveAcctId, 2L, userId);
 
         //扩展属性
         if(!StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getTbAcctExt())){
             TbAcctExt tbAcctExt = editFormSlaveAcctVo.getTbAcctExt();
             tbAcctExt.setSlaveAcctId(slaveAcctId);
+            tbAcctExt.setCreateUser(userId);
+            tbAcctExt.setUpdateUser(userId);
             tbAcctExtService.saveTbAcctExt(tbAcctExt);
         }
 
@@ -143,12 +147,15 @@ public class TbSlaveAcctController extends BaseController {
     }
 
     @ApiOperation(value = "删除从账号信息", notes = "删除从账号信息")
-    @ApiImplicitParam(name = "slaveAcctId", value = "从账号账号标识", required = true, dataType = "Long", paramType = "path")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "slaveAcctId", value = "从账号账号标识", required = true, dataType = "Long", paramType = "path"),
+            @ApiImplicitParam(name = "user", value = "操作人标识", required = true, dataType = "Long", paramType = "path")
+    })
     @UooLog(value = "删除从账号信息", key = "delTbSlaveAcct")
     @RequestMapping(value = "/delTbSlaveAcct", method = RequestMethod.DELETE)
     @Transactional(rollbackFor = Exception.class)
-    public Object delTbSlaveAcct(Long slaveAcctId){
-        tbSlaveAcctService.delAllTbSlaveAcct(slaveAcctId);
+    public Object delTbSlaveAcct(Long slaveAcctId, Long userId){
+        tbSlaveAcctService.delAllTbSlaveAcct(slaveAcctId, userId);
         return ResultUtils.success(null);
     }
 
@@ -183,18 +190,20 @@ public class TbSlaveAcctController extends BaseController {
         if(!StrUtil.isNullOrEmpty(obj)){
             return obj;
         }
+        Long userId = editFormSlaveAcctVo.getUserId();
 
         //角色
         List<TbRoles> oldTbRolesList = tbAcctService.getTbRoles(2L, editFormSlaveAcctVo.getSlaveAcctId());
-        tbUserRoleService.updateUserRole(editFormSlaveAcctVo.getRolesList(), oldTbRolesList, editFormSlaveAcctVo.getSlaveAcctId(), 2L);
+        tbUserRoleService.updateUserRole(editFormSlaveAcctVo.getRolesList(), oldTbRolesList, editFormSlaveAcctVo.getSlaveAcctId(), 2L, userId);
 
         //扩展属性
         if(!StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getTbAcctExt())){
             TbAcctExt tbAcctExt = editFormSlaveAcctVo.getTbAcctExt();
             tbAcctExt.setSlaveAcctId(editFormSlaveAcctVo.getSlaveAcctId());
+            tbAcctExt.setUpdateUser(userId);
             tbAcctExtService.saveTbAcctExt(tbAcctExt);
         }else{
-            tbAcctExtService.delTbAcctExt(editFormSlaveAcctVo.getSlaveAcctId());
+            tbAcctExtService.delTbAcctExt(editFormSlaveAcctVo.getSlaveAcctId(), userId);
         }
 
         rabbitMqService.sendMqMsg("person", "update", "slaveAcctId", editFormSlaveAcctVo.getSlaveAcctId());

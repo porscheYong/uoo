@@ -17,7 +17,7 @@ public class AcctServiceHystrix implements AcctService {
     }
 
     @Override
-    public Object removeAcct(Long acctId) {
+    public Object removeAcct(Long acctId, Long userId) {
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
@@ -33,7 +33,7 @@ public class AcctServiceHystrix implements AcctService {
     }
 
     @Override
-    public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId, Long orgTreeId) {
+    public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId, Long orgTreeId, Long userId) {
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
@@ -49,7 +49,7 @@ public class AcctServiceHystrix implements AcctService {
     }
 
     @Override
-    public Object getAcctOrgRelPage(Long acctId, Integer pageNo, Integer pageSize) {
+    public Object getAcctOrgRelPage(Long acctId, Integer pageNo, Integer pageSize, String account) {
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

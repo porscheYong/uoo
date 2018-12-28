@@ -46,7 +46,7 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
     public Long getId(){return baseMapper.getId(); }
 
     @Override
-    public Object saveAcctOrg(List<ListAcctOrgVo> acctOrgVoList, Long acctId){
+    public Object saveAcctOrg(List<ListAcctOrgVo> acctOrgVoList, Long acctId, Long userId){
         List<TbAccountOrgRel> tbAccountOrgRels = new ArrayList<TbAccountOrgRel>();
         TbAccountOrgRel tbAccountOrgRel = null;
         if(acctOrgVoList != null && acctOrgVoList.size() > 0){
@@ -56,6 +56,8 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
                 tbAccountOrgRel.setAcctOrgRelId(this.getId());
                 tbAccountOrgRel.setAcctId(acctId);
                 tbAccountOrgRel.setOrgTreeId(acctOrg.getOrgTreeId());
+                tbAccountOrgRel.setCreateUser(userId);
+                tbAccountOrgRel.setUpdateUser(userId);
                 tbAccountOrgRels.add(tbAccountOrgRel);
             }
         }
@@ -66,16 +68,17 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
     }
 
     @Override
-    public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId, Long orgTreeId){
+    public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId, Long orgTreeId, Long userId){
         List<TbSlaveAcct> tbSlaveAcctList = baseMapper.findSlaveAcct(orgId, acctId, orgTreeId);
         if(tbSlaveAcctList != null && tbSlaveAcctList.size() > 0 ){
             for(TbSlaveAcct tbSlaveAcct : tbSlaveAcctList){
-                tbSlaveAcctService.delAllTbSlaveAcct(tbSlaveAcct.getSlaveAcctId());
+                tbSlaveAcctService.delAllTbSlaveAcct(tbSlaveAcct.getSlaveAcctId(), userId);
             }
         }
         TbAccountOrgRel tbAccountOrgRel = new TbAccountOrgRel();
         tbAccountOrgRel.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbAccountOrgRel.setStatusDate(new Date());
+        tbAccountOrgRel.setUpdateUser(userId);
         EntityWrapper<TbAccountOrgRel> wrapper = new EntityWrapper<TbAccountOrgRel>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TABLE_ACCT_ID, acctId);

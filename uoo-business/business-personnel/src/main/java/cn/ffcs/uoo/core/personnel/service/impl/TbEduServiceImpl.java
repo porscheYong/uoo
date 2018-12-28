@@ -58,9 +58,10 @@ public class TbEduServiceImpl extends ServiceImpl<TbEduMapper, TbEdu> implements
     }
 
     @Override
-    public Object delTbEdu(Long eduId){
+    public Object delTbEdu(Long eduId, Long userId){
         TbEdu tbEdu = new TbEdu();
         tbEdu.setEduId(eduId);
+        tbEdu.setUpdateUser(userId);
         tbEdu.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbEdu.setStatusDate(new Date());
         if(retBool(baseMapper.updateById(tbEdu))){
@@ -83,10 +84,11 @@ public class TbEduServiceImpl extends ServiceImpl<TbEduMapper, TbEdu> implements
     }
 
     @Override
-    public Object delTbEduByPsnId(Long personnelId){
+    public Object delTbEduByPsnId(Long personnelId, Long userId){
         TbEdu tbEdu = new TbEdu();
         tbEdu.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbEdu.setStatusDate(new Date());
+        tbEdu.setUpdateUser(userId);
         EntityWrapper<TbEdu> wrapper = new EntityWrapper<TbEdu>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);

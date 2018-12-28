@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.web.maindata.user.controller;
 
+import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
 import cn.ffcs.uoo.web.maindata.user.dto.TbAccountOrgRel;
 import cn.ffcs.uoo.web.maindata.user.service.AcctService;
 import cn.ffcs.uoo.web.maindata.user.vo.EditFormAcctVo;
@@ -33,6 +34,7 @@ public class AcctController {
     @ApiImplicitParam(name = "editFormAcctVo", value = "主账号信息", required = true, dataType = "EditFormAcctVo")
     @RequestMapping(value = "/addTbAcct", method = RequestMethod.POST)
     public Object saveAcct(@RequestBody EditFormAcctVo editFormAcctVo){
+        editFormAcctVo.setUserId(SysUserInfo.getUserId());
         return acctService.saveAcct(editFormAcctVo);
     }
 
@@ -40,13 +42,14 @@ public class AcctController {
     @ApiImplicitParam(name = "acctID", value = "主账号标识", required = true, dataType = "Long", paramType = "path")
     @RequestMapping(value = "/deleteTbAcct", method = RequestMethod.DELETE)
     public Object removeAcct(Long acctId) {
-        return acctService.removeAcct(acctId);
+        return acctService.removeAcct(acctId, SysUserInfo.getUserId());
     }
 
     @ApiOperation(value = "修改主账号",notes = "主账号修改")
     @ApiImplicitParam(name = "editFormAcctVo", value = "主账号信息", required = true, dataType = "EditFormAcctVo")
     @RequestMapping(value = "/updateAcct", method = RequestMethod.PUT)
     public Object updateAcct(@RequestBody EditFormAcctVo editFormAcctVo) {
+        editFormAcctVo.setUserId(SysUserInfo.getUserId());
         return acctService.updateAcct(editFormAcctVo);
     }
 
@@ -59,13 +62,15 @@ public class AcctController {
     })
     @RequestMapping(value = "/removeAcctOrg", method = RequestMethod.DELETE)
     public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId, Long orgTreeId) {
-        return acctService.removeAcctOrg(personnelId, acctId, orgId, orgTreeId);
+        return acctService.removeAcctOrg(personnelId, acctId, orgId, orgTreeId, SysUserInfo.getUserId());
     }
 
     @ApiOperation(value = "新增主账号与组织关系", notes = "新增主账号与组织关系")
     @ApiImplicitParam(name = "tbAccountOrgRel", value = "主账号与组织关系信息", required = true, dataType = "TbAccountOrgRel")
     @RequestMapping(value = "/addAcctOrg", method = RequestMethod.POST)
     public Object addAcctOrg(@RequestBody TbAccountOrgRel tbAccountOrgRel) {
+        tbAccountOrgRel.setCreateUser(SysUserInfo.getUserId());
+        tbAccountOrgRel.setUpdateUser(SysUserInfo.getUserId());
         return acctService.addAcctOrg(tbAccountOrgRel);
     }
 
@@ -77,7 +82,7 @@ public class AcctController {
     })
     @RequestMapping(value="/getAcctOrgRelPage",method = RequestMethod.GET )
     public Object getAcctOrgRelPage(Long acctId, Integer pageNo, Integer pageSize){
-        return acctService.getAcctOrgRelPage(acctId, pageNo, pageSize);
+        return acctService.getAcctOrgRelPage(acctId, pageNo, pageSize, SysUserInfo.getAccount());
     }
 
     @ApiOperation(value = "主账号信息",notes = "主账号信息")

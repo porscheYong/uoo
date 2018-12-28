@@ -28,9 +28,10 @@ public interface TbContactService extends IService<TbContact> {
     /**
      * 根据personnelId 删除 联系信息
      * @param personnelId
+     * @param userId
      * @return
      */
-    public Object delTbContactByPsnId(Long personnelId);
+    public Object delTbContactByPsnId(Long personnelId, Long userId);
 
     /**
      * 联系方式 新增或修改
@@ -39,6 +40,6 @@ public interface TbContactService extends IService<TbContact> {
      * @param contactType
      * @return
      */
-    public Object addOrUpdateTbContact(List<TbContact> tbContactList, Long personnelId, String contactType);
+    public Object addOrUpdateTbContact(List<TbContact> tbContactList, Long personnelId, String contactType, Long userId);
 
 }
