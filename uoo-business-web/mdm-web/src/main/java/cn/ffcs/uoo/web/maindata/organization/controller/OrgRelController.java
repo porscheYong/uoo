@@ -107,7 +107,11 @@ public class OrgRelController {
                                                           @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                           @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                           @RequestParam(value = "pageNo",required = false)Integer pageNo){
-        return orgRelService.getFuzzyOrgRelPage(search,orgRootId,orgTreeId,pageSize,pageNo);
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout = currentLoginUser.getAccout();
+        return orgRelService.getFuzzyOrgRelPage(search,orgRootId,orgTreeId,pageSize,pageNo,userId,accout);
     }
 
 
