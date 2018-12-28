@@ -38,4 +38,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         return baseMapper.getId();
     }
 
+    @Override
+    public SysPermissionDTO selectOne(Long id) {
+        return baseMapper.selectOne(id);
+    }
+
 }
