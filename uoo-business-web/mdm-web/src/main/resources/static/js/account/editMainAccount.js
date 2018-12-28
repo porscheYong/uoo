@@ -387,7 +387,7 @@ function addSlaveBtnClick(acctOrgRelId,id,orgTreeId){      //点击新增从账�
     var sFullName = orgTable.row(id-1).data().fullName;
     var url = 'addSubAccount.html?orgTreeId=' + orgTreeId + '&hType=th&personnelId=' + personnelId + '&orgTreeId=' + orgTreeId +
                       '&mainAcctId='+ acctId +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&toMainType=' + hType +
-                      '&fullName=' + encodeURI(sFullName) + '&acctOrgRelId=' + acctOrgRelId + '&orgTreeName=' + treeNameList[id-1];
+                      '&fullName=' + encodeURI(sFullName) + '&acctOrgRelId=' + acctOrgRelId + '&orgTreeName=' + encodeURI(treeNameList[id-1]);
     window.location.href = url;
 }
 

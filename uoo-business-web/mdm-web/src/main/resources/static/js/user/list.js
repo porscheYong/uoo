@@ -9,7 +9,6 @@ var orgTreeName = getQueryString('orgTreeName');
 var table;
 var checked = false;
 
-
 $('#orgName').html(orgName);
 parent.getOrgExtInfo();
 
@@ -28,11 +27,15 @@ function initOrgPersonnelTable (isSearchlower,search) {
         "scrollY": "375px",
         'scrollCollapse': true,
         'columns': [
-            { 'data': null, 'title': '序号', 'className': 'row-no'},
+            { 'data': null, 'title': '序号', 'className': 'row-no',
+              'render': function (data, type, row, meta) {
+                return meta.row + 1 + meta.settings._iDisplayStart;
+              }
+            },
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
                     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + 
-                                        "&name="+ orgName +"&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
+                                        "&name="+ encodeURI(orgName) +"&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
                 }
             },
             { 'data': "doubleName", 'title': '重名称谓', 'className': 'row-mobile' },
@@ -73,11 +76,6 @@ function initOrgPersonnelTable (isSearchlower,search) {
         "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
         'pagingType': 'simple_numbers',
         'dom': '<"top"f>t<"bottom"ipl>',
-        'drawCallback': function(){
-            this.api().column(0).nodes().each(function(cell, i) {
-                cell.innerHTML =  i + 1;
-            });
-        },
         'serverSide': true,  //启用服务器端分页
         'ajax': function (data, callback, settings) {
             var param = {};
@@ -116,11 +114,15 @@ function initFreePersonnelTable () {
         "scrollY": "375px",
         'scrollCollapse': true,
         'columns': [
-            { 'data': null, 'title': '序号', 'className': 'row-no'},
+            { 'data': null, 'title': '序号', 'className': 'row-no',
+              'render': function (data, type, row, meta) {
+                return meta.row + 1 + meta.settings._iDisplayStart;
+              }
+            },
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
                     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId +
-                        "&name="+ orgName +"&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
+                        "&name="+ encodeURI(orgName) +"&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
                 }
             },
             { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
@@ -157,11 +159,6 @@ function initFreePersonnelTable () {
         "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
         'pagingType': 'simple_numbers',
         'dom': '<"top"f>t<"bottom"ipl>',
-        'drawCallback': function(){
-            this.api().column(0).nodes().each(function(cell, i) {
-                cell.innerHTML =  i + 1;
-            });
-        },
         'serverSide': true,  //启用服务器端分页
         'ajax': function (data, callback, settings) {
             var param = {};

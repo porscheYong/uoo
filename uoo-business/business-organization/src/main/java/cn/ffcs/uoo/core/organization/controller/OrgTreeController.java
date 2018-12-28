@@ -127,6 +127,9 @@ public class OrgTreeController extends BaseController {
         org.setCreateUser(orgTree.getUpdateUser());
         orgService.add(org);
 
+
+
+
         OrgRel orgRelRoot = new OrgRel();
         Long orgRelIdRoot = orgRelService.getId();
         orgRelRoot.setOrgRelId(orgRelIdRoot);
@@ -137,6 +140,18 @@ public class OrgTreeController extends BaseController {
         orgRelService.add(orgRelRoot);
 
         Long orgTreeId = orgTreeService.getId();
+
+        //根节点组织树层级
+        Long  orgLevelIdv1 = orgLevelService.getId();
+        OrgLevel orgLevelv1 = new OrgLevel();
+        orgLevelv1.setOrgLevelId(orgLevelIdv1);
+        orgLevelv1.setOrgId(orgId);
+        orgLevelv1.setOrgLevel(Integer.valueOf(1));
+        orgLevelv1.setOrgTreeId(orgTreeId);
+        orgLevelv1.setStatusCd("1000");
+        orgLevelv1.setCreateUser(orgTree.getUpdateUser());
+        orgLevelService.add(orgLevelv1);
+
         orgTree.setOrgTreeName(orgTree.getOrgTreeName());
         orgTree.setOrgTreeId(orgTreeId);
         orgTree.setOrgId(String.valueOf(orgId));
@@ -144,6 +159,16 @@ public class OrgTreeController extends BaseController {
         orgTree.setSort(orgTree.getSort());
         orgTree.setCreateUser(orgTree.getUpdateUser());
         orgTreeService.add(orgTree);
+
+        //组织组织树关系
+        Long orgOrgtreeRefIdv1 = orgOrgtreeRelService.getId();
+        OrgOrgtreeRel orgOrgtreeRefv1 = new OrgOrgtreeRel();
+        orgOrgtreeRefv1.setOrgOrgtreeId(orgOrgtreeRefIdv1);
+        orgOrgtreeRefv1.setOrgId(new Long(orgId));
+        orgOrgtreeRefv1.setOrgTreeId(orgTreeId);
+        orgOrgtreeRefv1.setStatusCd("1000");
+        orgOrgtreeRefv1.setCreateUser(orgTree.getUpdateUser());
+        orgOrgtreeRelService.add(orgOrgtreeRefv1);
 
 
         OgtOrgReltypeConf ogtOrgReftypeConf = new OgtOrgReltypeConf();
@@ -201,7 +226,7 @@ public class OrgTreeController extends BaseController {
                 OrgLevel orgLevel = new OrgLevel();
                 orgLevel.setOrgLevelId(orgLevelId);
                 orgLevel.setOrgId(new Long(vo.getId()));
-                orgLevel.setOrgLevel(Integer.valueOf(vo.getLevel()));
+                orgLevel.setOrgLevel(Integer.valueOf(vo.getLevel())+2);
                 orgLevel.setOrgTreeId(orgTreeId);
                 orgLevel.setStatusCd("1000");
                 orgLevel.setCreateUser(orgTree.getUpdateUser());
