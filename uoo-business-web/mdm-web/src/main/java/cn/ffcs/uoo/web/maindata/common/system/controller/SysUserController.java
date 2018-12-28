@@ -82,35 +82,24 @@ public class SysUserController {
                 sysUser.getAccout(),
                 sysUser.getPasswd());
         //进行验证，这里可以捕获异常，然后返回对应信息
-        try {
-            subject.login(usernamePasswordToken);
-            rr.setMessage("登陆成功");
-            rr.setState(1000);
-            //ResponseResult<SysUser> r = sysuserClient.getSysUserByAccout(t);
-        } catch (ServiceException e) {
-            rr.setMessage("登陆服务异常，请稍后重试");
-            rr.setState(1100);
-        } catch (AuthenticationException e) {
-            rr.setMessage("用户密码错误");
-            rr.setState(1100);
-        }
         Map<String, String> filterChainDefinitionMap = shiroFilterFactoryBean.getFilterChainDefinitionMap();
         if(filterChainDefinitionMap.isEmpty()){
             rr.setMessage("系统权限未初始化完成，请稍后");
             rr.setState(1100);
-        }/*else{
-            if(ResponseResult.STATE_OK==rr.getState()){
-                Object tbAcct2 = acctService.getTbAcct(sysUser.getAccout());
-                JSONObject json=JSONObject.parseObject(JSONObject.toJSONString(tbAcct2));
-                if(json.getInteger("state")  ==1000){
-                    request.getSession().setAttribute(LoginConsts.LOGIN_KEY,tbAcct2);
-                }else{
-                    rr.setState(ResponseResult.STATE_ERROR);
-                    rr.setMessage(json.getString("message"));
-                }`
+        }else{
+            try {
+                subject.login(usernamePasswordToken);
+                rr.setMessage("登陆成功");
+                rr.setState(1000);
+                //ResponseResult<SysUser> r = sysuserClient.getSysUserByAccout(t);
+            } catch (ServiceException e) {
+                rr.setMessage("登陆服务异常，请稍后重试");
+                rr.setState(1100);
+            } catch (AuthenticationException e) {
+                rr.setMessage("用户密码错误");
+                rr.setState(1100);
             }
-            
-        }*/
+        }
         SysLoginLog sysLoginLog=new SysLoginLog();
         sysLoginLog.setLogName("用户登录");
         sysLoginLog.setIp(IPUtils.string2Long(subject.getSession().getHost()));

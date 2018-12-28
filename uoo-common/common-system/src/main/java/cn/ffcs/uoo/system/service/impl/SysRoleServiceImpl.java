@@ -7,6 +7,7 @@ import cn.ffcs.uoo.system.entity.SysRole;
 import cn.ffcs.uoo.system.service.SysMenuService;
 import cn.ffcs.uoo.system.service.SysRoleService;
 import cn.ffcs.uoo.system.vo.SysRoleDTO;
+import cn.ffcs.uoo.system.vo.TreeNodeVo;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
@@ -43,6 +44,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public SysRoleDTO selectOne(Long ROLE_ID) {
         return baseMapper.selectOne(ROLE_ID);
+    }
+
+    @Override
+    public List<TreeNodeVo> treeRole() {
+        return baseMapper.treeRole();
     }
  
 }
