@@ -94,6 +94,17 @@ public class PersonnelVo {
      */
     private String certNo;
 
+    /**
+     * 证件地址
+     * TB_CERT
+     */
+    private String address;
+
+    /**
+     * 操作人
+     */
+    private Long userId;
+
     /**  2.1、联系信息(手机)    */
 
     private List<TbContact> tbMobileVoList;

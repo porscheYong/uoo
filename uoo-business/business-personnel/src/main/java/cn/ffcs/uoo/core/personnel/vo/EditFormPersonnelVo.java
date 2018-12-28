@@ -102,6 +102,11 @@ public class EditFormPersonnelVo {
      */
     private String address;
 
+    /**
+     * 操作人
+     */
+    private Long userId;
+
     /**  2.1、联系信息(手机)    */
 
     private List<TbContact> tbMobileVoList;

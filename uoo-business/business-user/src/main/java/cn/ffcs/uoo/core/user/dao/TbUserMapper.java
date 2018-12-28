@@ -28,15 +28,15 @@ public interface TbUserMapper extends BaseMapper<TbUser> {
     public List<ListUserOrgVo> getUserOrg(Pagination page, PsonOrgVo psonOrgVo);
 
     // todo ----新版本------------------------------------------------------------------------
-    public List<ListUserVo> getUserList(Pagination page, @Param("personnelId") Long personnelId);
+    public List<ListUserVo> getUserList(Pagination page, @Param("personnelId") Long personnelId, @Param("inSql") String inSql);
 
     public PersonnelInfoVo getPersonnelInfo(@Param("personnelId") Long personnelId);
 
-    public List<ListAcctOrgVo> getAcctOrg(Pagination page, @Param("acctId") Long acctId);
+    public List<ListAcctOrgVo> getAcctOrg(Pagination page, @Param("acctId") Long acctId, @Param("inSql") String inSql);
 
     public List<ListAcctOrgVo> getSlaveAcctOrg(@Param("acctOrgVo") ListAcctOrgVo acctOrgVo);
 
-    public List<ListAcctOrgVo> getAcctOrgByPsnId(@Param("personnelId") Long personnelId, @Param("resourceObjId") Long resourceObjId);
+    public List<ListAcctOrgVo> getAcctOrgByPsnId(@Param("personnelId") Long personnelId, @Param("resourceObjId") Long resourceObjId, @Param("inSql") String inSql);
 
 
 }

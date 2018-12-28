@@ -40,6 +40,8 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
     private TbAcctService tbAcctService;
     @Autowired
     private RabbitMqService rabbitMqService;
+    @Autowired
+    private CommonSystemService commonSystemService;
     @Override
     public Long getId(){
         return baseMapper.getId();
@@ -57,11 +59,11 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
     public List<TbAcct> getAcct(Long slaveAcctId){ return  baseMapper.getAcct(slaveAcctId); }
 
     @Override
-    public Page<ListSlaveAcctOrgVo> getSlaveAcctOrg(ListSlaveAcctOrgVo slaveAcctOrgVo){
-
+    public Page<ListSlaveAcctOrgVo> getSlaveAcctOrg(ListSlaveAcctOrgVo slaveAcctOrgVo, String account){
+        String inSql = commonSystemService.getSysDataRuleSql("t2", BaseUnitConstants.TB_ACCOUNT_ORG_REL, account);
         int pageSize = slaveAcctOrgVo.getPageSize() == 0 ? 5 : slaveAcctOrgVo.getPageSize();
         Page<ListSlaveAcctOrgVo> page = new Page<ListSlaveAcctOrgVo>(slaveAcctOrgVo.getPageNo(),pageSize);
-        List<ListSlaveAcctOrgVo> list = baseMapper.getSlaveAcctOrg(page, slaveAcctOrgVo);
+        List<ListSlaveAcctOrgVo> list = baseMapper.getSlaveAcctOrg(page, slaveAcctOrgVo, inSql);
         page.setRecords(list);
         return page;
     }
@@ -98,10 +100,11 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
     }
 
     @Override
-    public Object delTbSlaveAcct(Long slaveAcctId){
+    public Object delTbSlaveAcct(Long slaveAcctId, Long userId){
         TbSlaveAcct tbSlaveAcct = new TbSlaveAcct();
         tbSlaveAcct.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbSlaveAcct.setStatusDate(new Date());
+        tbSlaveAcct.setUpdateUser(userId);
         EntityWrapper<TbSlaveAcct> wrapper = new EntityWrapper<TbSlaveAcct>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TABLE_SLAVE_ACCT_ID, slaveAcctId);
@@ -120,15 +123,15 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
     }
 
     @Override
-    public Object delAllTbSlaveAcct(Long slaveAcctId){
+    public Object delAllTbSlaveAcct(Long slaveAcctId, Long userId){
         //从账号
-        this.delTbSlaveAcct(slaveAcctId);
+        this.delTbSlaveAcct(slaveAcctId, userId);
 
         //2、删除角色
-        tbUserRoleService.removeUserRole(slaveAcctId, 2L);
+        tbUserRoleService.removeUserRole(slaveAcctId, 2L, userId);
 
         //扩展信息
-        tbAcctExtService.delTbAcctExt(slaveAcctId);
+        tbAcctExtService.delTbAcctExt(slaveAcctId, userId);
 
         rabbitMqService.sendMqMsg("person", "delete", "slaveAcctId", slaveAcctId);
 
@@ -167,9 +170,12 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
             TbAcct tbAcct = (TbAcct) tbAcctService.getTbAcctByPsnId(editFormSlaveAcctVo.getPersonnelId());
             tbSlaveAcct.setAcctId(tbAcct.getAcctId());
             tbSlaveAcct.setSlaveAcctId(slaveAcctId);
+            tbSlaveAcct.setCreateUser(editFormSlaveAcctVo.getUserId());
+            tbSlaveAcct.setUpdateUser(editFormSlaveAcctVo.getUserId());
             baseMapper.insert(tbSlaveAcct);
         }
         if("update".equals(type)){
+            tbSlaveAcct.setUpdateUser(editFormSlaveAcctVo.getUserId());
             baseMapper.updateById(tbSlaveAcct);
         }
         return null;

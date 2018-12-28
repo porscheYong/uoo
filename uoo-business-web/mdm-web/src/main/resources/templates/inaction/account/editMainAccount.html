@@ -73,7 +73,10 @@
         }
         #roleTel_tagsinput .tag{
             padding: 2px !important;
-            margin-bottom: 0px !important;
+            /* margin-bottom: 0px !important; */
+        }
+        #roleTel_tagsinput{
+            width: 75.5% !important;
         }
         #toast-container{
            margin-top: 20% !important;
@@ -122,7 +125,8 @@
                     <div style="width: auto;margin-left: 120px;margin-top: -20%;">
                         <div id="nameAndRole">
                             <strong class="Font24 Black" id="psnNameLable"></strong>
-                        </div>   
+                        </div>  
+                        <div id="roleTab" style="margin-top:2%;"></div>
                         <div style="padding-top: 10px;">
                             <div style="margin-bottom:15px;" id="icon">
                                 <span>
@@ -230,19 +234,11 @@
                     </div>
 
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="form-item" style="width: 100%">
-                                <label for="roleTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
-                                       style="padding-right: 20px;line-height: 40px;text-align: right;">角色</label>
-                                <input id="roleTel" class="ui-input col-md-8 col-sm-8 col-xs-8"  onclick="openTypeDialog()" required readonly></input>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                            <div class="form-item" style="width: 100%">
-                                <label for="defaultPswTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
-                                       style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
-                                <input type="password" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-8" required autocomplete="off">
+                                <label for="roleTel" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" 
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;width:14%;">角色</label>
+                                <input id="roleTel" class="ui-input col-md-8 col-sm-8 col-xs-12" style="width:72%;" onclick="openTypeDialog()" required readonly></input>
                             </div>
                         </div>
                     </div>
@@ -250,7 +246,7 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="effectDate" class="form-item-label col-md-4 col-sm-4 col-xs-4" 
+                                <label for="effectDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
                                 <input id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-8" readonly autocomplete="off">
                             </div>
@@ -258,9 +254,19 @@
 
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="invalidDate" class="form-item-label col-md-4 col-sm-4 col-xs-4" 
+                                <label for="invalidDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
                                 <input id="invalidDate" class="ui-input col-md-8 col-sm-8 col-xs-8" readonly autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="form-item" style="width: 100%">
+                                <label for="defaultPswTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
+                                <input type="password" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-8" required autocomplete="off">
                             </div>
                         </div>
                     </div>

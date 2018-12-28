@@ -43,9 +43,10 @@ public interface TbFamilyService extends IService<TbFamily> {
     /**
      * 删除家庭成员信息
      * @param familyId
+     * @param userId
      * @return
      */
-    public Object delTbFamily(Long familyId);
+    public Object delTbFamily(Long familyId, Long userId);
 
     /**
      * 根据ID获取家庭成员信息
@@ -57,9 +58,10 @@ public interface TbFamilyService extends IService<TbFamily> {
     /**
      * 根据personnelId 删除 家庭成员信息
      * @param personnelId
+     * @param userId
      * @return
      */
-    public Object delTbFamilyByPsnId(Long personnelId);
+    public Object delTbFamilyByPsnId(Long personnelId, Long userId);
 
     /**
      * 家庭成员分页查询

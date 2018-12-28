@@ -3,26 +3,6 @@ var orgFrame = parent.window['standardOrg'] || parent.window['business'];
 var orgTypeList = orgFrame.orgTypeList;
 var checkNode = []; //选中类别显示label标签
 
-//添加数组IndexOf方法
-if (!Array.prototype.indexOf){
-    Array.prototype.indexOf = function(elt /*, from*/){
-      var len = this.length >>> 0;
-  
-      var from = Number(arguments[1]) || 0;
-      from = (from < 0)
-           ? Math.ceil(from)
-           : Math.floor(from);
-      if (from < 0)
-        from += len;
-  
-      for (; from < len; from++){
-        if (from in this && this[from] === elt)
-          return from;
-      }
-      return -1;
-    };
-}
-
 // 组织类别树初始化
 function initOrgTypeTree () {
     var treeSetting = {
@@ -49,9 +29,10 @@ function initOrgTypeTree () {
           chkboxType: { "Y": "", "N": "" }
       }
     };
-    $http.get('/orgType/getFullOrgTypeTree', {
-      orgId: orgId
-    }, function (data) {
+    var params = {};
+    if (orgId)
+        params = {orgId: orgId};
+    $http.get('/orgType/getFullOrgTypeTree', params, function (data) {
         $.fn.zTree.init($("#orgTypeTree"), treeSetting, data);
         autoCheck();
     }, function (err) {
@@ -66,19 +47,14 @@ function orgTypeBeforeClick (treeId, treeNode, clickFlag) {
 function onOrgTypeCheck (e, treeId, treeNode) {
     var zTree = $.fn.zTree.getZTreeObj("orgTypeTree");
     var node = zTree.getNodeByTId(treeNode.tId);
-    if (checkNode.indexOf(node) === -1) {
+    if ($.inArray(node, checkNode) === -1) {
         checkNode.push(node);
         renderTag()
     } else {
-        var idx = checkNode.findIndex(
-            // (v) => {
-            // return v.tId == node.tId;
-            // }
-            function(v){
-                return v.tId == node.tId;
-            }
-        );
-        checkNode.splice(idx, 1);
+        for (var i = 0; i < checkNode.length; i++){
+            if (checkNode[i].tId == node.tId)
+                checkNode.splice(i, 1);
+        }
         renderTag();
     }
 }
@@ -105,17 +81,10 @@ function removeNode (e) {
     var zTree = $.fn.zTree.getZTreeObj("orgTypeTree");
     var node = zTree.getNodeByTId($(e.target).parent().attr('treeId'));
     zTree.checkNode(node, false);
-    
-    var tId = $(e.target).parent().attr('treeId');
-    var idx = checkNode.findIndex(
-        // (v) => {
-        // return v.tId == tId;
-        // }
-        function(v){
-            return v.tId == tId;
-        }
-    );
-    checkNode.splice(idx, 1);
+    for (var i = 0; i < checkNode.length; i++){
+        if (checkNode[i].tId == node.tId)
+            checkNode.splice(i, 1);
+    }
 }
 
 function autoCheck () {

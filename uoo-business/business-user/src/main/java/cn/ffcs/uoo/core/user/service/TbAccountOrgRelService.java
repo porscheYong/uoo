@@ -21,9 +21,11 @@ public interface TbAccountOrgRelService extends IService<TbAccountOrgRel> {
     /**
      * 保存
      * @param acctOrgVoList
+     * @param acctId
+     * @param userId
      * @return
      */
-    public Object saveAcctOrg(List<ListAcctOrgVo> acctOrgVoList, Long acctId);
+    public Object saveAcctOrg(List<ListAcctOrgVo> acctOrgVoList, Long acctId, Long userId);
 
     /**
      * 删除 主账号和组织关系
@@ -31,9 +33,10 @@ public interface TbAccountOrgRelService extends IService<TbAccountOrgRel> {
      * @param acctId
      * @param orgId
      * @param orgTreeId
+     * @param userId
      * @return
      */
-    public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId, Long orgTreeId);
+    public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId, Long orgTreeId, Long userId);
 
     /**
      * 新增 主账号和组织关系

@@ -58,12 +58,15 @@ public class TbFamilyController extends BaseController {
     }
 
     @ApiOperation(value="删除家庭成员信息",notes="删除家庭成员信息")
-    @ApiImplicitParam(name = "familyId", value = "家庭成员信息标识", required = true, dataType = "Long",paramType="path")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "familyId", value = "家庭成员信息标识", required = true, dataType = "Long",paramType="path"),
+            @ApiImplicitParam(name = "userId", value = "操作人标识", required = true, dataType = "Long",paramType="path")
+    })
     @UooLog(value = "删除教育信息标识",key = "delTbFamily")
     @SendMqMsg(type = "person", handle ="update", column ="personnelId")
     @RequestMapping(value="/delTbFamily",method = RequestMethod.DELETE)
-    public Object delTbFamily(Long familyId ){
-        return  tbFamilyService.delTbFamily(familyId);
+    public Object delTbFamily(Long familyId, Long userId ){
+        return  tbFamilyService.delTbFamily(familyId, userId);
     }
 
     @ApiOperation(value="查看家庭成员信息",notes="查看家庭成员信息")

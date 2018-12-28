@@ -66,10 +66,11 @@ public class TbPersonnelServiceImpl extends ServiceImpl<TbPersonnelMapper, TbPer
     }
 
     @Override
-    public Object delTbPersonnelByPsnId(Long personnelId){
+    public Object delTbPersonnelByPsnId(Long personnelId, Long userId){
         TbPersonnel tbPersonnel = new TbPersonnel();
         tbPersonnel.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbPersonnel.setStatusDate(new Date());
+        tbPersonnel.setUpdateUser(userId);
         EntityWrapper<TbPersonnel> wrapper = new EntityWrapper<TbPersonnel>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);

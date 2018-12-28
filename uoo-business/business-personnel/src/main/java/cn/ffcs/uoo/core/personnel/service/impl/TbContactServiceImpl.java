@@ -50,10 +50,11 @@ public class TbContactServiceImpl extends ServiceImpl<TbContactMapper, TbContact
     }
 
     @Override
-    public Object delTbContactByPsnId(Long personnelId){
+    public Object delTbContactByPsnId(Long personnelId, Long userId){
         TbContact tbContact = new TbContact();
         tbContact.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbContact.setStatusDate(new Date());
+        tbContact.setUpdateUser(userId);
         EntityWrapper<TbContact> wrapper = new EntityWrapper<TbContact>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
@@ -64,16 +65,19 @@ public class TbContactServiceImpl extends ServiceImpl<TbContactMapper, TbContact
     }
 
     @Override
-    public Object addOrUpdateTbContact(List<TbContact> tbContactList, Long personnelId, String contactType){
+    public Object addOrUpdateTbContact(List<TbContact> tbContactList, Long personnelId, String contactType, Long userId){
         if(tbContactList != null && tbContactList.size() > 0){
             for(TbContact tbContact : tbContactList){
                 if(!StrUtil.isNullOrEmpty(tbContact.getContactId())){
                     tbContact.setContactType(contactType);
+                    tbContact.setUpdateUser(userId);
                     baseMapper.updateById(tbContact);
                 }else{
                     tbContact.setContactId(this.getId());
                     tbContact.setContactType(contactType);
                     tbContact.setPersonnelId(personnelId);
+                    tbContact.setCreateUser(userId);
+                    tbContact.setUpdateUser(userId);
                     baseMapper.insert(tbContact);
                 }
             }

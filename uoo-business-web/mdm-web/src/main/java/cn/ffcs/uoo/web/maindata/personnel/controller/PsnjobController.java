@@ -3,6 +3,7 @@ package cn.ffcs.uoo.web.maindata.personnel.controller;
 
 import cn.ffcs.uoo.web.maindata.personnel.dto.TbPsnjob;
 import cn.ffcs.uoo.web.maindata.personnel.service.PsnjobService;
+import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -33,6 +34,8 @@ public class PsnjobController {
     @ApiImplicitParam(name = "tbPsnjob",value = "工作履历",required = true,dataType = "TbPsnjob")
     @RequestMapping(value="/saveTbPsnjob",method = RequestMethod.POST)
     public Object saveTbPsnjob(@RequestBody TbPsnjob tbPsnjob){
+        tbPsnjob.setCreateUser(SysUserInfo.getUserId());
+        tbPsnjob.setUpdateUser(SysUserInfo.getUserId());
         return psnjobService.saveTbPsnjob(tbPsnjob);
     }
 
@@ -40,6 +43,7 @@ public class PsnjobController {
     @ApiImplicitParam(name = "tbPsnjob",value = "工作履历",required = true,dataType = "TbPsnjob")
     @RequestMapping(value="/updateTbPsnjob",method = RequestMethod.PUT)
     public Object updateTbPsnjob(@RequestBody TbPsnjob tbPsnjob){
+        tbPsnjob.setUpdateUser(SysUserInfo.getUserId());
         return  psnjobService.updateTbPsnjob(tbPsnjob);
     }
 
@@ -47,7 +51,7 @@ public class PsnjobController {
     @ApiImplicitParam(name = "psnjobId", value = "工作履历标识", required = true, dataType = "Long",paramType="path")
     @RequestMapping(value="/delTbPsnjob",method = RequestMethod.DELETE)
     public Object delTbPsnjob(Long psnjobId ){
-        return  psnjobService.delTbPsnjob(psnjobId);
+        return  psnjobService.delTbPsnjob(psnjobId, SysUserInfo.getUserId());
     }
 
     @ApiOperation(value="工作履历查看",notes="工作履历")

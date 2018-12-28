@@ -135,26 +135,28 @@ public class TbUserController extends BaseController {
     @ApiImplicitParams ({
             @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long", paramType = "path"),
             @ApiImplicitParam(name = "pageNo", value = "当前页数", required = true, dataType = "Integer",paramType="path"),
-            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path")
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path"),
+            @ApiImplicitParam(name = "account", value = "账号", required = true, dataType = "String", paramType = "path")
     })
     @UooLog(value = "人员查看用户查询", key = "getUserList")
     @RequestMapping(value = "/getUserList", method = RequestMethod.GET)
-    public Object getUserList(Long personnelId, Integer pageNo, Integer pageSize){
-        return ResultUtils.success(tbUserService.getUserList(personnelId, pageNo, pageSize));
+    public Object getUserList(Long personnelId, Integer pageNo, Integer pageSize, String account){
+        return ResultUtils.success(tbUserService.getUserList(personnelId, pageNo, pageSize, account));
     }
 
     @ApiOperation(value = "新增人员(主从账号)用户", notes = "新增人员(主从账号)用户")
     @ApiImplicitParams ({
             @ApiImplicitParam(name = "userType", value = "用户类型", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long", paramType = "path")
+            @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long", paramType = "path"),
+            @ApiImplicitParam(name = "account", value = "人员标识", required = true, dataType = "String", paramType = "path")
     })
     @UooLog(value = "新增人员(主从账号)用户", key = "addPsnUser")
     @RequestMapping(value = "/getPsnUser", method = RequestMethod.GET)
-    public Object addUser(String userType, Long personnelId){
+    public Object addUser(String userType, Long personnelId, String account){
         TbAcct tbAcct = (TbAcct) tbAcctService.getTbAcctByPsnId(personnelId);
         if("1".equals(userType)){
             if(!StrUtil.isNullOrEmpty(tbAcct)){
-                return getFormAcct(tbAcct.getAcctId());
+                return getFormAcct(tbAcct.getAcctId(), account);
             }
             FormAcctVo formAcctVo = new FormAcctVo();
             formAcctVo.setUserType("1");
@@ -180,10 +182,13 @@ public class TbUserController extends BaseController {
     }
 
     @ApiOperation(value = "主账号查询",notes = "主账号查询")
-    @ApiImplicitParam(name = "acctId", value = "主账号标识", required = true, dataType = "Long", paramType = "path")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "acctId", value = "主账号标识", required = true, dataType = "Long", paramType = "path"),
+            @ApiImplicitParam(name = "account", value = "人员标识", required = true, dataType = "String", paramType = "path")
+    })
     @UooLog(value = "主账号查询",key = "getFormAcct")
     @RequestMapping(value = "/getFormAcct", method = RequestMethod.GET)
-    public Object getFormAcct(Long acctId){
+    public Object getFormAcct(Long acctId, String account){
         FormAcctVo formAcctVo = new FormAcctVo();
         formAcctVo.setUserType("1");
         //主账号
@@ -206,13 +211,13 @@ public class TbUserController extends BaseController {
         formAcctVo.setTbRolesList(tbRolesList);
 
         //归属组织信息
-        Page<ListAcctOrgVo> acctOrgVoPage = tbUserService.getAcctOrg(tbAcct.getAcctId(), 0, 0);
+        Page<ListAcctOrgVo> acctOrgVoPage = tbUserService.getAcctOrg(tbAcct.getAcctId(), 0, 0, account);
         formAcctVo.setAcctOrgVoPage(acctOrgVoPage);
 
         //从账号
         ListSlaveAcctOrgVo slaveAcctOrgVo = new ListSlaveAcctOrgVo();
         slaveAcctOrgVo.setAcctId(tbAcct.getAcctId());
-        Page<ListSlaveAcctOrgVo> slaveAcctOrgVoPage = tbSlaveAcctService.getSlaveAcctOrg(slaveAcctOrgVo);
+        Page<ListSlaveAcctOrgVo> slaveAcctOrgVoPage = tbSlaveAcctService.getSlaveAcctOrg(slaveAcctOrgVo, account);
         formAcctVo.setSlaveAcctOrgVoPage(slaveAcctOrgVoPage);
 
         return ResultUtils.success(formAcctVo);
@@ -264,18 +269,19 @@ public class TbUserController extends BaseController {
     @ApiOperation(value = "主账号组织关系",notes = "主账号组织关系")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long", paramType = "path"),
-            @ApiImplicitParam(name = "resourceObjId", value = "应用系统标识", required = true, dataType = "Long", paramType = "path")
+            @ApiImplicitParam(name = "resourceObjId", value = "应用系统标识", required = true, dataType = "Long", paramType = "path"),
+            @ApiImplicitParam(name = "account", value = "账号", required = true, dataType = "String", paramType = "path")
     })
     @UooLog(value = "主账号组织关系",key = "getAcctOrgByPsnId")
     @RequestMapping(value = "/getAcctOrgByPsnId", method = RequestMethod.GET)
-    public Object getAcctOrgByPsnId(Long personnelId, Long resourceObjId){
+    public Object getAcctOrgByPsnId(Long personnelId, Long resourceObjId, String account){
         if(StrUtil.isNullOrEmpty(personnelId)){
             return ResultUtils.error(EumUserResponeCode.PSN_ID_NO_NULL);
         }
         if(StrUtil.isNullOrEmpty(resourceObjId)){
             return ResultUtils.error(EumUserResponeCode.SYS_ID_NO_NULL);
         }
-        return ResultUtils.success(tbUserService.getAcctOrgByPsnId(personnelId, resourceObjId));
+        return ResultUtils.success(tbUserService.getAcctOrgByPsnId(personnelId, resourceObjId, account));
     }
 
 }

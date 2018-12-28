@@ -249,7 +249,7 @@ function openTypeDialog() {
       title: '选择角色',
       shadeClose: true,
       shade: 0.8,
-      area: ['50%', '65%'],
+      area: ['70%', '85%'],
       maxmin: true,
       content: 'roleDialog.html',
       btn: ['确认', '取消'],

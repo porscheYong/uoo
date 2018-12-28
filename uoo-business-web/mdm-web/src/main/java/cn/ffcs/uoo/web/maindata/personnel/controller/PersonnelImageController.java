@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.web.maindata.personnel.controller;
 
 import cn.ffcs.uoo.web.maindata.personnel.service.PersonnelImageService;
+import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +29,7 @@ public class PersonnelImageController {
     @ApiOperation(value="图片上传",notes="图片上传")
     @RequestMapping(value="/uploadImg", method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Object uploadImg(@RequestPart("multipartFile") MultipartFile multipartFile, @RequestParam(value="psnImageId",defaultValue = "0")Long psnImageId ){
-        return personnelImageService.uploadImg(multipartFile, psnImageId);
+        return personnelImageService.uploadImg(multipartFile, psnImageId, SysUserInfo.getUserId());
     }
 
     @ApiOperation(value = "图片查看", notes = "图片查看")

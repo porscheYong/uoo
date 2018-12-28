@@ -55,7 +55,7 @@ public class TbPersonnelImageController extends BaseController {
     @ApiOperation(value="图片上传",notes="图片上传")
     @UooLog(value = "图片上传",key = "uploadImg")
     @RequestMapping(value="/uploadImg", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Object uploadImg(@RequestPart("multipartFile") MultipartFile multipartFile, @RequestParam("psnImageId") Long psnImageId ) {
+    public Object uploadImg(@RequestPart("multipartFile") MultipartFile multipartFile, @RequestParam("psnImageId") Long psnImageId, @RequestParam("userId") Long userId ) {
     //public Object uploadImg(PsnImageVo psnImageVo){
         //MultipartFile multipartFile = psnImageVo.getMultipartFile();
 
@@ -79,6 +79,8 @@ public class TbPersonnelImageController extends BaseController {
                 tbPersonnelImage.setPsnImageId(psnImageId);
             }
             tbPersonnelImage.setImage(data);
+            tbPersonnelImage.setCreateUser(userId);
+            tbPersonnelImage.setUpdateUser(userId);
             tbPersonnelImageService.insertOrUpdate(tbPersonnelImage);
 
             TbPersonnelImageVo tbPersonnelImageVo = new TbPersonnelImageVo();

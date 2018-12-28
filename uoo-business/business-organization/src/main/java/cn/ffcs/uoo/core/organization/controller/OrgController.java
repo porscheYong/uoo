@@ -1036,50 +1036,61 @@ public class OrgController extends BaseController {
                         .eq("STATUS_CD","1000")
                         .eq("ORG_TREE_ID",orgTree.getOrgTreeId());
                 List<OrgOrgtreeRel> orgOrgtreeRelList = orgOrgtreeRelService.selectList(orgTreeRelWrapper);
-                for(OrgOrgtreeRel ootr : orgOrgtreeRelList){
-                    ootr.setUpdateUser(org.getUpdateUser());
-                    orgOrgtreeRelService.delete(ootr);
+                if(orgOrgtreeRelList!=null && orgOrgtreeRelList.size()>0){
+                    for(OrgOrgtreeRel ootr : orgOrgtreeRelList){
+                        ootr.setUpdateUser(org.getUpdateUser());
+                        orgOrgtreeRelService.delete(ootr);
+                    }
                 }
-
                 Wrapper orgLevelWrapper = Condition.create()
                         .eq("ORG_TREE_ID",orgTree.getOrgTreeId())
                         .eq("STATUS_CD","1000")
                         .eq("ORG_ID",org.getOrgId());
                 List<OrgLevel> orgLevelList = orgLevelService.selectList(orgLevelWrapper);
-                for(OrgLevel ol : orgLevelList){
-                    ol.setUpdateUser(org.getUpdateUser());
-                    orgLevelService.delete(ol);
+                if(orgLevelList!=null && orgLevelList.size()>0){
+                    for(OrgLevel ol : orgLevelList){
+                        ol.setUpdateUser(org.getUpdateUser());
+                        orgLevelService.delete(ol);
+                    }
                 }
-
                 Wrapper orgPositionWrapper = Condition.create()
                         .eq("ORG_TREE_ID",orgTree.getOrgTreeId())
                         .eq("STATUS_CD","1000")
                         .eq("ORG_ID",org.getOrgId());
-
                 List<OrgPositionRel> orgPositionRelList = orgPositionRelService.selectList(orgPositionWrapper);
-                for(OrgPositionRel opr : orgPositionRelList){
-                    opr.setUpdateUser(org.getUpdateUser());
-                    orgPositionRelService.delete(opr);
+                if(orgPositionRelList!=null && orgPositionRelList.size()>0){
+                    for(OrgPositionRel opr : orgPositionRelList){
+                        opr.setUpdateUser(org.getUpdateUser());
+                        orgPositionRelService.delete(opr);
+                    }
                 }
+
 
                 //删除证件组织关系
                 Wrapper orgCertListWrapper = Condition.create()
                         .eq("STATUS_CD","1000")
                         .eq("ORG_ID",org.getOrgId());
                 List<OrgCertRel> orgCertRelList = orgCertRelService.selectList(orgCertListWrapper);
-                for(OrgCertRel vo:orgCertRelList){
-                    vo.setUpdateUser(org.getUpdateUser());
-                    orgCertRelService.delete(vo);
+                if(orgCertRelList!=null && orgCertRelList.size()>0){
+                    for(OrgCertRel vo:orgCertRelList){
+                        vo.setUpdateUser(org.getUpdateUser());
+                        orgCertRelService.delete(vo);
+                    }
                 }
+
                 //删除组织联系人关系
                 Wrapper orgContactListWrapper = Condition.create()
                         .eq("STATUS_CD","1000")
                         .eq("ORG_ID",org.getOrgId());
                 List<OrgContactRel> orgContactRelList = orgContactRelService.selectList(orgContactListWrapper);
-                for(OrgContactRel vo:orgContactRelList){
-                    vo.setUpdateUser(org.getUpdateUser());
-                    orgContactRelService.delete(vo);
+                if(orgContactRelList!=null && orgContactRelList.size()>0){
+
+                    for(OrgContactRel vo:orgContactRelList){
+                        vo.setUpdateUser(org.getUpdateUser());
+                        orgContactRelService.delete(vo);
+                    }
                 }
+
                 or.setUpdateUser(org.getUpdateUser());
                 orgRelService.delete(or);
                 newOrg.setStatusCd("1000");

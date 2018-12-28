@@ -29,7 +29,7 @@ public class TbUserRoleServiceImpl<main> extends ServiceImpl<TbUserRoleMapper, T
     public Long getId(){ return baseMapper.getId(); }
 
     @Override
-    public Object saveUserRole(List<TbRoles> tbRolesList, Long acctId, Long acctType){
+    public Object saveUserRole(List<TbRoles> tbRolesList, Long acctId, Long acctType, Long userId){
         List<TbUserRole> tbUserRoles = new ArrayList<TbUserRole>();
         TbUserRole tbUserRole = null;
         if(tbRolesList != null && tbRolesList.size() > 0 ){
@@ -39,6 +39,8 @@ public class TbUserRoleServiceImpl<main> extends ServiceImpl<TbUserRoleMapper, T
                 tbUserRole.setUserRoleId(baseMapper.getId());
                 tbUserRole.setAcctId(acctId);
                 tbUserRole.setAcctType(acctType);
+                tbUserRole.setCreateUser(userId);
+                tbUserRole.setUpdateUser(userId);
                 tbUserRoles.add(tbUserRole);
             }
         }
@@ -49,10 +51,11 @@ public class TbUserRoleServiceImpl<main> extends ServiceImpl<TbUserRoleMapper, T
     }
 
     @Override
-    public Object removeUserRole(Long acctId, Long acctType){
+    public Object removeUserRole(Long acctId, Long acctType, Long userId){
         TbUserRole tbUserRole = new TbUserRole();
         tbUserRole.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbUserRole.setStatusDate(new Date());
+        tbUserRole.setUpdateUser(userId);
         EntityWrapper<TbUserRole> wrapper = new EntityWrapper<TbUserRole>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TABLE_ACCT_ID, acctId);
@@ -66,7 +69,7 @@ public class TbUserRoleServiceImpl<main> extends ServiceImpl<TbUserRoleMapper, T
     }
 
     @Override
-    public Object updateUserRole(List<TbRoles> tbRolesList, List<TbRoles> oldTbRolesList, Long acctId, Long acctType){
+    public Object updateUserRole(List<TbRoles> tbRolesList, List<TbRoles> oldTbRolesList, Long acctId, Long acctType, Long userId){
         List<Long> newRoleList = getRoleIdList(tbRolesList);
         List<Long> newRoleListBak =  getRoleIdList(tbRolesList);
         List<Long> oldRoleList = getRoleIdList(oldTbRolesList);
@@ -76,7 +79,7 @@ public class TbUserRoleServiceImpl<main> extends ServiceImpl<TbUserRoleMapper, T
        //删除 新选角色中没有 的角色
         oldRoleList.removeAll(newRoleList);
         if(oldRoleList != null && oldRoleList.size() > 0){
-            this.updateTbRolesList(oldRoleList, "del", acctId, acctType);
+            this.updateTbRolesList(oldRoleList, "del", acctId, acctType, userId);
         }
 
         //获取 相同角色
@@ -84,17 +87,19 @@ public class TbUserRoleServiceImpl<main> extends ServiceImpl<TbUserRoleMapper, T
         //新建 新选的角色
         newRoleListBak.removeAll(oldRoleListBak);
         if(newRoleListBak != null && newRoleListBak.size() > 0) {
-            this.updateTbRolesList(newRoleListBak, "insert", acctId, acctType);
+            this.updateTbRolesList(newRoleListBak, "insert", acctId, acctType, userId);
         }
         return null;
     }
 
-    public void updateTbRolesList(List<Long> tbRolesList, String type ,Long acctId, Long acctType){
+    public void updateTbRolesList(List<Long> tbRolesList, String type ,Long acctId, Long acctType, Long userId){
         if(tbRolesList != null && tbRolesList.size() > 0){
             for(Long roleId : tbRolesList){
                 if("del".equals(type)){
                     TbUserRole tbUserRole = new TbUserRole();
                     tbUserRole.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+                    tbUserRole.setStatusDate(new Date());
+                    tbUserRole.setUpdateUser(userId);
                     Map<String, Object> map = new HashMap<String, Object>();
                     map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
                     map.put(BaseUnitConstants.TBALE_ROLE_ID, roleId);
@@ -108,6 +113,8 @@ public class TbUserRoleServiceImpl<main> extends ServiceImpl<TbUserRoleMapper, T
                     tbUserRole.setRoleId(roleId);
                     tbUserRole.setAcctId(acctId);
                     tbUserRole.setAcctType(acctType);
+                    tbUserRole.setCreateUser(userId);
+                    tbUserRole.setUpdateUser(userId);
                     this.insert(tbUserRole);
                 }
             }

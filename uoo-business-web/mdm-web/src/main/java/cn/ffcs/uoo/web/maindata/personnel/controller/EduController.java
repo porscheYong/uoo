@@ -1,11 +1,16 @@
 package cn.ffcs.uoo.web.maindata.personnel.controller;
 
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.personnel.dto.TbEdu;
 import cn.ffcs.uoo.web.maindata.personnel.service.EduService;
+import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +37,8 @@ public class EduController {
     @ApiImplicitParam(name = "tbEdu", value = "教育信息", required = true, dataType = "TbEdu")
     @RequestMapping(value = "/saveTbEdu", method = RequestMethod.POST)
     public Object saveTbEdu(@RequestBody TbEdu tbEdu) {
+        tbEdu.setUpdateUser(SysUserInfo.getUserId());
+        tbEdu.setCreateUser(SysUserInfo.getUserId());
         return eduService.saveTbEdu(tbEdu);
     }
 
@@ -39,6 +46,7 @@ public class EduController {
     @ApiImplicitParam(name = "tbEdu", value = "教育信息", required = true, dataType = "TbEdu")
     @RequestMapping(value="/updateTbEdu",method = RequestMethod.PUT)
     public Object updateTbEdu(@RequestBody TbEdu tbEdu){
+        tbEdu.setUpdateUser(SysUserInfo.getUserId());
         return  eduService.updateTbEdu(tbEdu);
     }
 
@@ -46,7 +54,7 @@ public class EduController {
     @ApiImplicitParam(name = "eduId", value = "教育信息标识", required = true, dataType = "Long",paramType="path")
     @RequestMapping(value="/delTbEdu",method = RequestMethod.DELETE)
     public Object delTbEdu(Long eduId ){
-        return  eduService.delTbEdu(eduId);
+        return  eduService.delTbEdu(eduId, SysUserInfo.getUserId());
     }
 
     @ApiOperation(value="教育信息查看",notes="教育信息")
@@ -64,7 +72,6 @@ public class EduController {
     })
     @RequestMapping(value="/getTbEduPage",method = RequestMethod.GET)
     public Object getTbEduPage( Long personnelId, Integer pageNo, Integer pageSize){
-
         return eduService.getTbEduPage(personnelId, pageNo, pageSize);
     }
 }

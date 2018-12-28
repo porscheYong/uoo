@@ -44,7 +44,9 @@ public class MyMetaObjectHandler extends MetaObjectHandler {
     public void updateFill(MetaObject metaObject) {
 
         setFieldValByName("updateDate", new Date(), metaObject);
-        setFieldValByName("updateUser", -2L, metaObject);
+        if(null == getFieldValByName("updateUser", metaObject)){
+           setFieldValByName("updateUser", -1L, metaObject);
+       }
 
     }
 

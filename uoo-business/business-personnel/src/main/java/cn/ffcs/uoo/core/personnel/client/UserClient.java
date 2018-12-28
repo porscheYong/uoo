@@ -13,5 +13,5 @@ public interface UserClient {
      * @return
      */
     @RequestMapping(value = "/tbAcct/delTbAcctByPsnId", method = RequestMethod.DELETE, headers = {"Content-Type=application/json"})
-    public Object removeAcct(@RequestParam("personnelId") Long personnelId);
+    public Object removeAcct(@RequestParam("personnelId") Long personnelId, @RequestParam("userId") Long userId);
 }

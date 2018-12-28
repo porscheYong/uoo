@@ -29,7 +29,8 @@ public interface TbAcctExtService extends IService<TbAcctExt> {
     /**
      * 根据slaveAcctId 删除 扩展属性
      * @param slaveAcctId
+     * @param userId
      * @return
      */
-    public Object delTbAcctExt(Long slaveAcctId);
+    public Object delTbAcctExt(Long slaveAcctId, Long userId);
 }

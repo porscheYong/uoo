@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.web.maindata.user.controller;
 
+import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
 import cn.ffcs.uoo.web.maindata.user.service.SlaveAcctService;
 import cn.ffcs.uoo.web.maindata.user.vo.EditFormSlaveAcctVo;
 import io.swagger.annotations.Api;
@@ -30,6 +31,7 @@ public class SlaveAcctController {
     @ApiImplicitParam(name = "editFormSlaveAcctVo", value = "从账号信息", required = true, dataType = "EditFormSlaveAcctVo")
     @RequestMapping(value = "/addTbSlaveAcct", method = RequestMethod.POST)
     public Object saveSlaveAcct(@RequestBody EditFormSlaveAcctVo editFormSlaveAcctVo){
+        editFormSlaveAcctVo.setUserId(SysUserInfo.getUserId());
         return slaveAcctService.saveSlaveAcct(editFormSlaveAcctVo);
     }
 
@@ -37,13 +39,14 @@ public class SlaveAcctController {
     @ApiImplicitParam(name = "slaveAcctId", value = "从账号账号标识", required = true, dataType = "Long", paramType = "path")
     @RequestMapping(value = "/delTbSlaveAcct", method = RequestMethod.DELETE)
     public Object delTbSlaveAcct(Long slaveAcctId){
-        return slaveAcctService.delTbSlaveAcct(slaveAcctId);
+        return slaveAcctService.delTbSlaveAcct(slaveAcctId, SysUserInfo.getUserId());
     }
 
     @ApiOperation(value = "更新从账号信息", notes = "更新从账号信息")
     @ApiImplicitParam(name = "editFormSlaveAcctVo", value = "从账号信息", required = true, dataType = "EditFormSlaveAcctVo")
     @RequestMapping(value = "/updateTbSlaveAcct", method = RequestMethod.POST)
     public Object updateTbSlaveAcct(@RequestBody EditFormSlaveAcctVo editFormSlaveAcctVo){
+        editFormSlaveAcctVo.setUserId(SysUserInfo.getUserId());
         return slaveAcctService.updateTbSlaveAcct(editFormSlaveAcctVo);
     }
 }
