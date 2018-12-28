@@ -30,7 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface PersonnelImageService {
 
     @RequestMapping(value="/tbPersonnelImage/uploadImg", method = RequestMethod.POST,produces = {MediaType.APPLICATION_JSON_UTF8_VALUE}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Object uploadImg(@RequestPart("multipartFile") MultipartFile multipartFile, @RequestParam("psnImageId") Long psnImageId );
+    public Object uploadImg(@RequestPart("multipartFile") MultipartFile multipartFile, @RequestParam("psnImageId") Long psnImageId, @RequestParam("userId") Long userId );
 
     @RequestMapping(value = "/tbPersonnelImage/getTbPsnImageByPsnId",method = RequestMethod.GET, headers={"Content-Type=application/json"})
     public Object getTbPsnImageByPsnId(@RequestParam("personnelId") Long personnelId);

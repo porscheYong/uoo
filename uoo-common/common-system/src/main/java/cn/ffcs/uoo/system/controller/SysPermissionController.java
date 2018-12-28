@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,8 +73,16 @@ public class SysPermissionController {
     })
     @UooLog(key="getSysPermission",value="获取单个数据")
     @GetMapping("/get/{id}")
-    public ResponseResult<SysPermission> get(@PathVariable(value="id" ,required=true) Long id){
-        return ResponseResult.createSuccessResult(permSvc.selectById(id), "");
+    public ResponseResult<SysPermissionEditDTO> get(@PathVariable(value="id" ,required=true) Long id){
+        SysPermissionEditDTO dto=new SysPermissionEditDTO();
+        SysPermissionDTO sp = permSvc.selectOne(id);
+        BeanUtils.copyProperties(sp, dto);
+        dto.setDataRuleRels(permDataRulesRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode())));
+        dto.setElementRels(permEleRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode())));
+        dto.setFileRels(permFileRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode())));
+        dto.setFuncRels(permFuncRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode())));
+        dto.setMenuRels(permMenuRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode())));
+        return ResponseResult.createSuccessResult(dto, "");
     }
     
     @ApiOperation(value = "获取分页列表", notes = "获取分页列表")
@@ -349,7 +358,7 @@ public class SysPermissionController {
                 entity.setStatusCd(StatusCD.VALID);
                 entity.setPermissionCode(sysPermissionEditDTO.getPermissionCode());
                 if(entity.getPrivDataRelId()==null){
-                    entity.setPrivDataRelId(permFileRelSvc.getId());
+                    entity.setPrivDataRelId(permDataRulesRelSvc.getId());
                     entity.setCreateDate(new Date());
                     entity.setCreateUser(sysPermissionEditDTO.getUpdateUser());
                     permDataRulesRelSvc.insert(entity);

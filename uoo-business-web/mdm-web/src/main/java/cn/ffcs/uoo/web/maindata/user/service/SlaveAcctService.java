@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @date 2018/11/14 14:28
  * @Version 1.0.0
  */
-@FeignClient(value = "business-user",configuration = {PersonnelServiceConfiguration.class},fallback = SlaveAcctServiceHystrix.class)
+@FeignClient(value = "business-user", configuration = {PersonnelServiceConfiguration.class},fallback = SlaveAcctServiceHystrix.class)
 public interface SlaveAcctService {
 
     @RequestMapping(value = "/tbSlaveAcct/addTbSlaveAcct", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     public Object saveSlaveAcct(@RequestBody EditFormSlaveAcctVo editFormSlaveAcctVo);
 
     @RequestMapping(value = "/tbSlaveAcct/delTbSlaveAcct", method = RequestMethod.DELETE, headers={"Content-Type=application/json"})
-    public Object delTbSlaveAcct(@RequestParam("slaveAcctId") Long slaveAcctId);
+    public Object delTbSlaveAcct(@RequestParam("slaveAcctId") Long slaveAcctId, @RequestParam("userId") Long userId);
 
     @RequestMapping(value = "/tbSlaveAcct/updateTbSlaveAcct", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     public Object updateTbSlaveAcct(@RequestBody EditFormSlaveAcctVo editFormSlaveAcctVo);

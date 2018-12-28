@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Component
 public class PersonnelImageHystrix implements PersonnelImageService {
     @Override
-    public Object uploadImg(MultipartFile multipartFile, Long psnImageId) {
+    public Object uploadImg(MultipartFile multipartFile, Long psnImageId, Long userId) {
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

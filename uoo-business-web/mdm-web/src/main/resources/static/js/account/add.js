@@ -7,9 +7,6 @@ var Regx = /^[A-Za-z0-9]*$/;
 var table;
 var engine;
 var empty;
-var hasAcct = 0;
-var sortFlag = 0;
-var currentPage = 0;
 
 $('#userType').get(0).selectedIndex=1;
 
@@ -41,6 +38,7 @@ function initPsnTable(keyWord) {
         'searching': false,
         'autoWidth': false,
         'ordering': true,
+        'lSort': true,
         'info': true,
         'lengthChange':true,
         // "scrollY": "185px",
@@ -95,10 +93,6 @@ function initPsnTable(keyWord) {
             })
         }
     });
-
-    initPsnNameSort();
-    initContentSort();
-    initPsnNbrSort();
 }
 
 function engineWithDefaults(q, sync, async) {
@@ -197,107 +191,4 @@ function getPsnUser(personnelId){       //主账号跳转
       }, function (err) {
     
       })
-}
-
-function arrSort (arr, dataLeven) { // 参数：arr 排序的数组; dataLeven 数组内的需要比较的元素属性 
-    /* 获取数组元素内需要比较的值 */
-    function getValue (option) { // 参数： option 数组元素
-      if (!dataLeven) return option
-      var data = option
-      dataLeven.split('.').filter(function (item) {
-        data = data[item]
-      })
-      return data + ''
-    }
-    arr.sort(function (item1, item2) {
-      return getValue(item1).localeCompare(getValue(item2), 'zh-CN');
-    })
-  }
-
-  function descSort(asc,desc){      //desc排序
-    for(var i=asc.length-1;i>=0;i--){
-        desc.push(asc[i]);
-    }
-    return desc;
-  }
-
-  function sortToTable(arr){   //将排完序的数据写入表格
-    for(var i =0;i<arr.length;i++){
-        sortFlag = 1;
-        table
-            .row(i)
-            .data({
-                "psnName":arr[i].psnName,
-                "content":arr[i].content,
-                "psnNbr":arr[i].psnNbr,
-                "personnelId":arr[i].personnelId
-            })
-            .draw();
-    }
-  }
-
-function initPsnNameSort(){        //初始化用户姓名排序
-    $('.row-psnName').on('click', function () {
-        var tableLength = table.data().length;
-        var arr = [];
-        var descArr = [];
-    
-        for(var i = 0;i < tableLength;i++){
-            arr.push(table.row(i).data());
-        }
-        
-        arrSort(arr,'psnName');
-        
-        if($(this).hasClass("sorting_desc")){
-            descArr = descSort(arr,descArr);
-            sortToTable(descArr);
-        }else{
-            sortToTable(arr);
-        }
-        table.page(currentPage).draw( false );
-    });
-}
-
-function initContentSort(){        //初始化联系方式排序
-    $('.row-content').on('click', function () {
-        var tableLength = table.data().length;
-        var arr = [];
-        var descArr = [];
-    
-        for(var i = 0;i < tableLength;i++){
-            arr.push(table.row(i).data());
-        }
-        
-        arrSort(arr,'content');
-        
-        if($(this).hasClass("sorting_desc")){
-            descArr = descSort(arr,descArr);
-            sortToTable(descArr);
-        }else{
-            sortToTable(arr);
-        }
-        table.page(currentPage).draw( false );
-    });
-}
-
-function initPsnNbrSort(){        //初始化人员编码排序
-    $('.row-psnNbr').on('click', function () {
-        var tableLength = table.data().length;
-        var arr = [];
-        var descArr = [];
-    
-        for(var i = 0;i < tableLength;i++){
-            arr.push(table.row(i).data());
-        }
-        
-        arrSort(arr,'psnNbr');
-        
-        if($(this).hasClass("sorting_desc")){
-            descArr = descSort(arr,descArr);
-            sortToTable(descArr);
-        }else{
-            sortToTable(arr);
-        }
-        table.page(currentPage).draw( false );
-    });
 }

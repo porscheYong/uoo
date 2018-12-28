@@ -5,49 +5,49 @@ var account;
 var personnelId;
 // toastr
 toastr.options = {
-  "closeButton": false,
-  "debug": false,
-  "newestOnTop": false,
-  "progressBar": false,
-  "positionClass": "toast-top-center", //弹出的位置
-  "preventDuplicates": false,
-  "onclick": null, //点击消息框自定义事件 
-  "showDuration": "300", //显示动作时间 
-  "hideDuration": "1000", //隐藏动作时间 
-  "timeOut": "2000", //自动关闭超时时间
-  "extendedTimeOut": "1000", //控制时间
-  "showEasing": "swing",
-  "hideEasing": "linear",
-  "showMethod": "fadeIn", //显示的方式，和jquery相同 
-  "hideMethod": "fadeOut" //隐藏的方式，和jquery相同
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-top-center", //弹出的位置
+    "preventDuplicates": false,
+    "onclick": null, //点击消息框自定义事件
+    "showDuration": "300", //显示动作时间
+    "hideDuration": "1000", //隐藏动作时间
+    "timeOut": "2000", //自动关闭超时时间
+    "extendedTimeOut": "1000", //控制时间
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn", //显示的方式，和jquery相同
+    "hideMethod": "fadeOut" //隐藏的方式，和jquery相同
 };
 
 loading.screenMaskEnable('container');
 loadingHome.screenMaskEnable('LAY_app_body');
 
-function initUserInfo(){  //初始化首页人员信息          
-    $http.get('/system/getCurrentLoginUserInfo', { }, 
-    function (data) {
-        account = data.accout;
-        $("#psnName").text(data.userName);
-        // getPsnId();
-    }, function (err) {
-    })
+function initUserInfo(){  //初始化首页人员信息
+    $http.get('/system/getCurrentLoginUserInfo', { },
+        function (data) {
+            account = data.accout;
+            $("#psnName").text(data.userName);
+            // getPsnId();
+        }, function (err) {
+        })
 }
 
 function initUserPermission(){    //初始化人员权限
-    $http.get('/system/getAccoutMenu', { }, 
-    function (data) {
-        initSideBar(data);
-        // layui admin
-        layui.config({
-            base: '/vendors/layuiadmin/' //静态资源所在路径
+    $http.get('/system/getAccoutMenu', { },
+        function (data) {
+            initSideBar(data);
+            // layui admin
+            layui.config({
+                base: '/vendors/layuiadmin/' //静态资源所在路径
             }).extend({
-            index: 'lib/index' //主入口模块
+                index: 'lib/index' //主入口模块
             }).use('index');
-    }, function (err) {
-        loading.screenMaskDisable('container');
-    })
+        }, function (err) {
+            loading.screenMaskDisable('container');
+        })
 }
 
 function initSideBar(results){     //初始化侧边菜单
@@ -66,7 +66,7 @@ function initSideBar(results){     //初始化侧边菜单
     for(var i = 0;i<parList.length;i++){
         var icon = setIcon(parList[i].menuName);
         var dd = "<dl class='layui-nav-child'>";
-        
+
         for(var j=0;j<childList.length;j++){
             if(childList[j].parentMenuCode == parList[i].menuCode){
                 flag = 1;
@@ -75,13 +75,13 @@ function initSideBar(results){     //初始化侧边菜单
         }
         if(flag == 1){
             pemList += "<li class='layui-nav-item'><a href='javascript:;' lay-tips='" + parList[i].menuName + "'>" +
-                icon + "</i><cite>" + parList[i].menuName + 
+                icon + "</i><cite>" + parList[i].menuName +
                 "</cite><span class='layui-nav-more'></span></a>" + dd + "</dl></li>";
         }else{
             pemList += "<li class='layui-nav-item'><a lay-href='" + parList[i].menuUrl + "' lay-tips='" + parList[i].menuName + "'>" +
                 icon + "</i><cite>" + parList[i].menuName + "</cite></a></li>";
         }
-        
+
         flag = 0;
     }
     $("#LAY-system-side-menu").append(pemList);
@@ -91,7 +91,7 @@ function initSideBar(results){     //初始化侧边菜单
 function setIcon(menuName){         //设置菜单icon
     var icon;
     switch(menuName){
-        case '组织管理': 
+        case '组织管理':
             icon = "<i class='layui-icon layui-icon-component'>";
             break;
 
@@ -177,11 +177,11 @@ function getDictionaryData () {
 }
 
 function getPsnId(){
-    $http.get('/acct/getCurrentAcct', {}, 
-    function (data) {
-        $("#psnInfo").attr("lay-href","/inaction/psnInfo/index.html?personnelId=" + data.personnelId+"&acctId=" + data.acctId);
-    }, function (err) {
-    })
+    $http.get('/acct/getCurrentAcct', {},
+        function (data) {
+            $("#psnInfo").attr("lay-href","/inaction/psnInfo/index.html?personnelId=" + data.personnelId+"&acctId=" + data.acctId);
+        }, function (err) {
+        })
 }
 
 function logOut(){  //退出登录
@@ -192,8 +192,8 @@ function logOut(){  //退出登录
     }, function(index, layero){
         parent.layer.close(index);
         window.location.href = "/logout";
-      }, function(){
-    
+    }, function(){
+
     });
 }
 

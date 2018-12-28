@@ -65,7 +65,7 @@ public class TbAccountOrgRel extends Model<TbAccountOrgRel> {
     /**
      * 创建人
      */
-    @JsonIgnore
+    //@JsonIgnore
     @TableField(value = "CREATE_USER", fill = FieldFill.INSERT)
     private Long createUser;
     /**
@@ -77,7 +77,7 @@ public class TbAccountOrgRel extends Model<TbAccountOrgRel> {
     /**
      * 修改人
      */
-    @JsonIgnore
+    //@JsonIgnore
     @TableField(value = "UPDATE_USER", fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
     /**

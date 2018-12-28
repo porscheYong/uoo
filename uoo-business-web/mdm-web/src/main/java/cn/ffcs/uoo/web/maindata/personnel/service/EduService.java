@@ -26,7 +26,7 @@ public interface EduService {
     public Object updateTbEdu(@RequestBody TbEdu tbEdu);
 
     @RequestMapping(value="/tbEdu/delTbEdu", method = RequestMethod.DELETE, headers={"Content-Type=application/json"})
-    public Object delTbEdu(@RequestParam("eduId") Long eduId );
+    public Object delTbEdu(@RequestParam("eduId") Long eduId,  @RequestParam("userId") Long userId);
 
     @RequestMapping(value="/tbEdu/getTbEdu", method = RequestMethod.GET, headers={"Content-Type=application/json"})
     public Object getTbEdu(@RequestParam("eduId") Long eduId);

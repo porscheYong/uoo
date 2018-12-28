@@ -82,6 +82,9 @@
         and t2.status_cd = 1000
         and t1.acct_org_rel_id = t2.acct_org_rel_id
         and t1.slave_acct_type = 1
+        <if test="inSql != null and inSql != '' " >
+            and ${inSql}
+        </if>
         <if test="slaveAcctOrgVo.acctId != null and slaveAcctOrgVo.acctId != '' " >
             and t1.acct_id = #{slaveAcctOrgVo.acctId}
         </if>

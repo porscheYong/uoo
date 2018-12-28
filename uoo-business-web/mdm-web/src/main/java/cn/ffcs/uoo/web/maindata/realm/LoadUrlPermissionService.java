@@ -34,6 +34,8 @@ import cn.ffcs.uoo.web.maindata.permission.service.FuncCompService;
 import cn.ffcs.uoo.web.maindata.permission.service.FuncMenuService;
 import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
 
+import javax.annotation.Resource;
+
 @Service
 public class LoadUrlPermissionService {
     private static Logger log = LoggerFactory.getLogger(LoadUrlPermissionService.class);
@@ -45,15 +47,15 @@ public class LoadUrlPermissionService {
     FuncMenuService funcMenuSvc;*/
     @Autowired
     private DiscoveryClient discoveryClient;
-    @Autowired
+    @Resource
     private SysMenuClient sysMenuClient;
     @Value("${spring.application.name}")
     private String appName;
     @Autowired
     RestTemplate restTemplate;
-    @Autowired
+    @Resource
     SysFunctionClient sysFunctionClient;
-    
+
     private ConcurrentLinkedQueue<String> retryUrls = new ConcurrentLinkedQueue<>();
 
     @Async
@@ -118,7 +120,7 @@ public class LoadUrlPermissionService {
             filterChainDefinitionMap.put("/js/**", "anon"); //
             filterChainDefinitionMap.put("/vendors/**", "anon"); //
             filterChainDefinitionMap.put("/system/sysUserLogin", "anon"); // 登陆接口必须开放
-            filterChainDefinitionMap.put("/reloadUrlPermission", "anon"); // 
+            filterChainDefinitionMap.put("/reloadUrlPermission", "anon"); //
             filterChainDefinitionMap.put("/swagger-ui.html", "anon");
             filterChainDefinitionMap.put("/swagger-resources", "anon");
             filterChainDefinitionMap.put("/v2/api-docs", "anon");
@@ -178,7 +180,7 @@ public class LoadUrlPermissionService {
                     }
                 }
             }
-            
+
             // 表示需要认证才可以访问
             filterChainDefinitionMap.put("/**", "authc");// 表示需要认证才可以访问
 
@@ -195,7 +197,7 @@ public class LoadUrlPermissionService {
 
     }
     public static void main(String[] args) {
-        String str="asd {fff}asdas{fffsss}asd{}"; 
+        String str="asd {fff}asdas{fffsss}asd{}";
         int indexOf = str.indexOf("{");
         while(indexOf>=0){
             int end=str.indexOf("}");

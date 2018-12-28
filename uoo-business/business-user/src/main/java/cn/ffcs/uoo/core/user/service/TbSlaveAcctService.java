@@ -36,9 +36,10 @@ public interface TbSlaveAcctService extends IService<TbSlaveAcct> {
     /**
      * 从账号关联 主账号组织关系
      * @param slaveAcctOrgVo
+     * @param account
      * @return
      */
-    public Page<ListSlaveAcctOrgVo> getSlaveAcctOrg(ListSlaveAcctOrgVo slaveAcctOrgVo);
+    public Page<ListSlaveAcctOrgVo> getSlaveAcctOrg(ListSlaveAcctOrgVo slaveAcctOrgVo, String account);
 
     /**
      * 保存 从账号
@@ -61,9 +62,10 @@ public interface TbSlaveAcctService extends IService<TbSlaveAcct> {
     /**
      * 删除 从账号
      * @param slaveAcctId
+     * @param userId
      * @return
      */
-    public Object delTbSlaveAcct(Long slaveAcctId);
+    public Object delTbSlaveAcct(Long slaveAcctId, Long userId);
 
     /**
      * 更新 从账号
@@ -75,9 +77,10 @@ public interface TbSlaveAcctService extends IService<TbSlaveAcct> {
     /**
      * 删除 从账号关联新
      * @param slaveAcctId
+     * @param userId
      * @return
      */
-    public Object delAllTbSlaveAcct(Long slaveAcctId);
+    public Object delAllTbSlaveAcct(Long slaveAcctId, Long userId);
 
     /**
      * 新增 更新 从账号

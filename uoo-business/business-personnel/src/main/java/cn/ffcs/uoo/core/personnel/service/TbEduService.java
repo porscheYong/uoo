@@ -35,9 +35,10 @@ public interface TbEduService extends IService<TbEdu> {
     /**
      * 删除教育信息
      * @param eduId
+     * @param userId
      * @return
      */
-    public Object delTbEdu(Long eduId);
+    public Object delTbEdu(Long eduId, Long userId);
 
     /**
      * 根据ID获取教育信息
@@ -49,9 +50,10 @@ public interface TbEduService extends IService<TbEdu> {
     /**
      * 根据personnelId 删除 教育信息
      * @param personnelId
+     * @param userId
      * @return
      */
-    public Object delTbEduByPsnId(Long personnelId);
+    public Object delTbEduByPsnId(Long personnelId, Long userId);
 
     /**
      * 工作履历分页查询

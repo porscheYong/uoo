@@ -26,9 +26,10 @@ public interface TbCertService extends IService<TbCert> {
     /**
      * 根据personnelId 删除 证件信息
      * @param personnelId
+     * @param userId
      * @return
      */
-    public Object delTbCertByPsnId(Long personnelId);
+    public Object delTbCertByPsnId(Long personnelId, Long userId);
 
     /**
      * 证件查询
@@ -55,5 +56,5 @@ public interface TbCertService extends IService<TbCert> {
      * @param address
      * @return
      */
-    public Object insertOrUpdateTbCert(Long personnelId, String certType, String certNo, String certName, String address);
+    public Object insertOrUpdateTbCert(Long personnelId, String certType, String certNo, String certName, String address, Long userId);
 }

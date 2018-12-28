@@ -122,6 +122,8 @@ public class PsonOrgVo extends BaseVo {
      */
     private String userId;
 
+    private Long sysUserId;
+
     /**
      * 账号或者从账号
      */
@@ -146,6 +148,10 @@ public class PsonOrgVo extends BaseVo {
      * 关键字检索
      */
     private String search;
+
+    public Long getSysUserId(){ return sysUserId; }
+
+     public void setSysUserId(Long sysUserId) { this.sysUserId = sysUserId; }
 
     public Long getOrgTreeId() {
         return orgTreeId;

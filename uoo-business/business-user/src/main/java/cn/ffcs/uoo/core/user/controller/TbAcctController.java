@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,52 +87,59 @@ public class TbAcctController extends BaseController {
 //        tbAcct.setSalt(salt);
 //        tbAcct.setPassword(password);
 //        tbAcct.setSymmetryPassword(symmetryPassword);
-        Object obj = tbAcctService.insertOrUpdateTbAcct(editFormAcctVo, null, acctId);
+        Long userId = editFormAcctVo.getUserId();
+        Object obj = tbAcctService.insertOrUpdateTbAcct(editFormAcctVo, null, acctId, userId);
         if(!StrUtil.isNullOrEmpty(obj)){
             return obj;
         }
 
         //角色
-        tbUserRoleService.saveUserRole(editFormAcctVo.getTbRolesList(), acctId, 1L);
+        tbUserRoleService.saveUserRole(editFormAcctVo.getTbRolesList(), acctId, 1L, userId);
 
         //组织
-        tbAccountOrgRelService.saveAcctOrg(editFormAcctVo.getAcctOrgVoList(), acctId);
+        tbAccountOrgRelService.saveAcctOrg(editFormAcctVo.getAcctOrgVoList(), acctId, userId);
 
         rabbitMqService.sendMqMsg("person", "insert", "personnelId", editFormAcctVo.getPersonnelId());
         return ResultUtils.success(null);
     }
 
     @ApiOperation(value = "删除主账号信息", notes = "主账号相关信息删除")
-    @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long", paramType = "path")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long", paramType = "path"),
+            @ApiImplicitParam(name = "userId", value = "操作人标识", required = true, dataType = "Long", paramType = "path")
+    })
     @UooLog(value = "删除主账号信息", key = "deleteTbAcct")
     @RequestMapping(value = "/delTbAcctByPsnId", method = RequestMethod.DELETE)
     @Transactional(rollbackFor = Exception.class)
-    public Object delTbAcctByPsnId(Long personnelId){
+    public Object delTbAcctByPsnId(Long personnelId, Long userId){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         map.put(BaseUnitConstants.TABLE_PERSONNEL_ID, personnelId);
         TbAcct tbAcct = tbAcctService.selectOne(new EntityWrapper<TbAcct>().allEq(map));
         if(!StrUtil.isNullOrEmpty(tbAcct)){
-            removeAcct(tbAcct.getAcctId());
+            removeAcct(tbAcct.getAcctId(), userId);
         }
         return null;
     }
 
     @ApiOperation(value = "删除主账号信息", notes = "主账号相关信息删除")
-    @ApiImplicitParam(name = "acctID", value = "主账号标识", required = true, dataType = "Long", paramType = "path")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "acctID", value = "主账号标识", required = true, dataType = "Long", paramType = "path"),
+            @ApiImplicitParam(name = "userId", value = "操作人标识", required = true, dataType = "Long", paramType = "path")
+    })
     @UooLog(value = "删除主账号信息", key = "deleteTbAcct")
     @RequestMapping(value = "/deleteTbAcct", method = RequestMethod.DELETE)
     @Transactional(rollbackFor = Exception.class)
-    public Object removeAcct(Long acctId) {
+    public Object removeAcct(Long acctId, Long userId) {
 
         // 1.删除主账号
-        tbAcctService.removeTbAcct(acctId);
+        tbAcctService.removeTbAcct(acctId, userId);
 
         //2、删除角色
-        tbUserRoleService.removeUserRole(acctId, 1L);
+        tbUserRoleService.removeUserRole(acctId, 1L, userId);
 
         //3、删除组织
-        tbAccountOrgRelService.removeAcctOrg(null, acctId, null, null);
+        tbAccountOrgRelService.removeAcctOrg(null, acctId, null, null, userId);
 
         TbAcct tbAcct = tbAcctService.selectById(acctId);
 
@@ -142,7 +150,7 @@ public class TbAcctController extends BaseController {
         List<TbSlaveAcct> tbSlaveAccts = tbSlaveAcctService.selectByMap(map);
         if(tbSlaveAccts != null && tbSlaveAccts.size() > 0 ){
             for(TbSlaveAcct tbSlaveAcct : tbSlaveAccts){
-                tbSlaveAcctService.delAllTbSlaveAcct(tbSlaveAcct.getSlaveAcctId());
+                tbSlaveAcctService.delAllTbSlaveAcct(tbSlaveAcct.getSlaveAcctId(), userId);
             }
         }
         rabbitMqService.sendMqMsg("person", "delete", "personnelId", tbAcct.getPersonnelId());
@@ -184,14 +192,15 @@ public class TbAcctController extends BaseController {
 //        tbAcct.setEnableDate(editFormAcctVo.getEnableDate());
 //        tbAcct.setDisableDate(editFormAcctVo.getDisableDate());
 //        tbAcct.updateById();
-        Object obj = tbAcctService.insertOrUpdateTbAcct(editFormAcctVo, tbAcct, tbAcct.getAcctId());
+        Long userId = editFormAcctVo.getUserId();
+        Object obj = tbAcctService.insertOrUpdateTbAcct(editFormAcctVo, tbAcct, tbAcct.getAcctId(), userId);
         if(!StrUtil.isNullOrEmpty(obj)){
             return obj;
         }
 
         //角色
         List<TbRoles> oldTbRolesList = tbAcctService.getTbRoles(1L,tbAcct.getAcctId());
-        tbUserRoleService.updateUserRole(editFormAcctVo.getTbRolesList(), oldTbRolesList, tbAcct.getAcctId(), 1L);
+        tbUserRoleService.updateUserRole(editFormAcctVo.getTbRolesList(), oldTbRolesList, tbAcct.getAcctId(), 1L, userId);
 
 
         rabbitMqService.sendMqMsg("person", "update", "personnelId", tbAcct.getPersonnelId());

@@ -28,9 +28,10 @@ public interface TbPersonnelImageService extends IService<TbPersonnelImage> {
     /**
      * 根据personnelId 删除 图片信息
      * @param personnelId
+     * @param userId
      * @return
      */
-    public Object delTbPersonnelImageByPsnId(Long personnelId);
+    public Object delTbPersonnelImageByPsnId(Long personnelId, Long userId);
 
     /**
      * 根据 personnelId 获取图片细信息
@@ -45,6 +46,6 @@ public interface TbPersonnelImageService extends IService<TbPersonnelImage> {
      * @param psnImageId
      * @return
      */
-    public Object updatePsnId(Long personnelId, Long psnImageId);
+    public Object updatePsnId(Long personnelId, Long psnImageId, Long userId);
 
 }

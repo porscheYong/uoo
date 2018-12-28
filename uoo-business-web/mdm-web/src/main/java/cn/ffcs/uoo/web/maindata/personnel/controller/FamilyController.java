@@ -2,6 +2,7 @@ package cn.ffcs.uoo.web.maindata.personnel.controller;
 
 import cn.ffcs.uoo.web.maindata.personnel.dto.TbFamily;
 import cn.ffcs.uoo.web.maindata.personnel.service.FamilyService;
+import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -45,7 +46,7 @@ public class FamilyController {
     @ApiImplicitParam(name = "familyId", value = "家庭成员信息标识", required = true, dataType = "Long",paramType="path")
     @RequestMapping(value="/delTbFamily",method = RequestMethod.DELETE)
     public Object delTbFamily(Long familyId ){
-        return  familyService.delTbFamily(familyId);
+        return  familyService.delTbFamily(familyId, SysUserInfo.getUserId());
     }
 
     @ApiOperation(value="查看家庭成员信息",notes="查看家庭成员信息")

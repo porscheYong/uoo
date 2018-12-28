@@ -55,9 +55,10 @@ public interface TbUserService extends IService<TbUser> {
      * @param personnelId
      * @param pageNo
      * @param pageSize
+     * @param account
      * @return
      */
-    public Page<ListUserVo> getUserList( Long personnelId, Integer pageNo, Integer pageSize);
+    public Page<ListUserVo> getUserList( Long personnelId, Integer pageNo, Integer pageSize, String account);
 
     /**
      * 人员信息
@@ -71,9 +72,10 @@ public interface TbUserService extends IService<TbUser> {
      * @param acctId
      * @param pageNo
      * @param pageSize
+     * @param account
      * @return
      */
-    public Page<ListAcctOrgVo> getAcctOrg(Long acctId, Integer pageNo, Integer pageSize);
+    public Page<ListAcctOrgVo> getAcctOrg(Long acctId, Integer pageNo, Integer pageSize, String account);
 
     /**
      * 从账号 关联 主账号组织
@@ -86,8 +88,9 @@ public interface TbUserService extends IService<TbUser> {
      *  主账号 组织关系
      * @param personnelId
      * @param resourceObjId
+     * @param account
      * @return
      */
-    public List<ListAcctOrgVo> getAcctOrgByPsnId(Long personnelId, Long resourceObjId);
+    public List<ListAcctOrgVo> getAcctOrgByPsnId(Long personnelId, Long resourceObjId, String account);
 
 }

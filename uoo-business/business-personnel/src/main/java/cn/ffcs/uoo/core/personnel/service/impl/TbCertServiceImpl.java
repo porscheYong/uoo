@@ -49,10 +49,11 @@ public class TbCertServiceImpl extends ServiceImpl<TbCertMapper, TbCert> impleme
     }
 
     @Override
-    public Object delTbCertByPsnId(Long personnelId){
+    public Object delTbCertByPsnId(Long personnelId, Long userId){
         TbCert tbCert = new TbCert();
         tbCert.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbCert.setStatusDate(new Date());
+        tbCert.setUpdateUser(userId);
         EntityWrapper<TbCert> wrapper = new EntityWrapper<TbCert>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
@@ -84,7 +85,7 @@ public class TbCertServiceImpl extends ServiceImpl<TbCertMapper, TbCert> impleme
     }
 
     @Override
-    public Object insertOrUpdateTbCert(Long personnelId, String certType, String certNo, String certName, String address){
+    public Object insertOrUpdateTbCert(Long personnelId, String certType, String certNo, String certName, String address, Long userId){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         map.put(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
@@ -92,8 +93,9 @@ public class TbCertServiceImpl extends ServiceImpl<TbCertMapper, TbCert> impleme
         if(StrUtil.isNullOrEmpty(tbCert)){
             tbCert = new TbCert();
             tbCert.setPersonnelId(personnelId);
-
+            tbCert.setCreateUser(userId);
         }
+        tbCert.setUpdateUser(userId);
         tbCert.setCertType(certType);
         tbCert.setCertNo(certNo);
         tbCert.setCertName(certName);

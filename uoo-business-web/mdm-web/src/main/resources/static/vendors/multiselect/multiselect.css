@@ -70,7 +70,7 @@ div[xm-hg] .xm-select-label{white-space: nowrap; overflow: hidden; position: abs
 
 /* 颜色相关 */
 div[xm-select-skin] .xm-select-title div.xm-select-label>span {border: 1px solid #00a4ff}
-.xm-select-parent .xm-select-title div.xm-select-label>span {padding: 5px;background-color: rgba(0,164,255,.2);border-radius: 2px;padding: 5px;display: inline-block;line-height: 18px;height: 18px;margin: 2px 5px 2px 0;cursor: initial;user-select: none;font-size: 14px;-webkit-user-select: none;}
+.xm-select-parent .xm-select-title div.xm-select-label>span {padding: 5px;background-color: rgb(204,237,255);border-radius: 2px;padding: 5px;display: inline-block;line-height: 18px;height: 18px;margin: 2px 5px 2px 0;cursor: initial;user-select: none;font-size: 14px;-webkit-user-select: none;}
 div[xm-select-skin] .xm-select-title div.xm-select-label>span i:hover {opacity: .8;filter: alpha(opacity=80);cursor: pointer}
 div[xm-select-skin=default] .xm-select-title div.xm-select-label>span {background-color: #F0F2F5;color: #909399;border: 1px solid #F0F2F5}
 div[xm-select-skin=default] .xm-select-title div.xm-select-label>span i {color: #C0C4CC}

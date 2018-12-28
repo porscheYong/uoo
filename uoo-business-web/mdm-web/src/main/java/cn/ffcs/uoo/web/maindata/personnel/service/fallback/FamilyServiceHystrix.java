@@ -24,7 +24,7 @@ public class FamilyServiceHystrix implements FamilyService {
     }
 
     @Override
-    public Object delTbFamily(Long familyId) {
+    public Object delTbFamily(Long familyId, Long userId) {
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

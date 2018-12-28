@@ -126,8 +126,8 @@ public class TbEdu extends Model<TbEdu> {
     /**
      * 创建人
      */
-    @JsonIgnore
-    @TableField(value = "CREATE_USER", fill = FieldFill.INSERT)
+    //@JsonIgnore
+    //@TableField(value = "CREATE_USER", fill = FieldFill.INSERT)
     private Long createUser;
     /**
      * 修改时间
@@ -138,8 +138,8 @@ public class TbEdu extends Model<TbEdu> {
     /**
      * 修改人
      */
-    @JsonIgnore
-    @TableField(value = "UPDATE_USER", fill = FieldFill.INSERT_UPDATE)
+    //@JsonIgnore
+    //@TableField(value = "UPDATE_USER", fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
     /**
      * 状态变更的时间

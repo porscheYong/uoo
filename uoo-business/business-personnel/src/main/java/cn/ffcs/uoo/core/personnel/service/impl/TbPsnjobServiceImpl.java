@@ -62,9 +62,10 @@ public class TbPsnjobServiceImpl extends ServiceImpl<TbPsnjobMapper, TbPsnjob> i
     }
 
     @Override
-    public Object delTbPsnjob(Long psnjobId){
+    public Object delTbPsnjob(Long psnjobId, Long userId){
         TbPsnjob tbPsnjob = new TbPsnjob();
         tbPsnjob.setPsnjobId(psnjobId);
+        tbPsnjob.setUpdateUser(userId);
         tbPsnjob.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbPsnjob.setStatusDate(new Date());
         if(retBool(baseMapper.updateById(tbPsnjob))){
@@ -97,10 +98,11 @@ public class TbPsnjobServiceImpl extends ServiceImpl<TbPsnjobMapper, TbPsnjob> i
     }
 
     @Override
-    public Object delTbPsnjobByPsnId(Long personnelId){
+    public Object delTbPsnjobByPsnId(Long personnelId, Long userId){
         TbPsnjob tbPsnjob = new TbPsnjob();
         tbPsnjob.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbPsnjob.setStatusDate(new Date());
+        tbPsnjob.setUpdateUser(userId);
         EntityWrapper<TbPsnjob> wrapper = new EntityWrapper<TbPsnjob>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);

@@ -44,7 +44,7 @@ public interface TbPersonnelService extends IService<TbPersonnel> {
      * @param personnelId
      * @return
      */
-    public Object delTbPersonnelByPsnId(Long personnelId);
+    public Object delTbPersonnelByPsnId(Long personnelId, Long userId);
 
     /**
      * 选择人员

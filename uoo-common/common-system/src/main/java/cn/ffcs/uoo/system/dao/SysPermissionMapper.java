@@ -18,6 +18,7 @@ import cn.ffcs.uoo.system.vo.SysPermissionDTO;
  */
 public interface SysPermissionMapper extends BaseMapper<SysPermission> {
     List<SysPermissionDTO> findList(HashMap<String, Object> map);
+    SysPermissionDTO selectOne(Long id);
     Long countList(HashMap<String, Object> map);
     Long getId();
 }
