@@ -24,7 +24,7 @@ if (!Array.prototype.indexOf){
     };
 }
 
-// 组织类别树初始化
+// 角色树初始化
 function initRoleTree () {
     var roleTetting = {
       view: {
@@ -35,9 +35,9 @@ function initRoleTree () {
       data: {
           simpleData: {
               enable:true,
-            //   idKey: "roleId",
-            //   pIdKey: "pid",
-              rootPId: ""
+              idKey: "id",
+              pIdKey: "pid",
+              rootPId: null
           }
       },
       callback: {
@@ -50,12 +50,12 @@ function initRoleTree () {
           chkboxType: { "Y": "", "N": "" }
       }
     };
-    $http.get('/system/sysRole/listPage/pageNo=1&pageSize=10000', {}, 
+    $http.get('/system/sysRole/treeRole', {}, 
     function (data) {
-        for(var i=0;i < data.length;i++){
-            allRoles.push({"name":data[i].roleName,"id":data[i].roleId});
-        }
-        $.fn.zTree.init($("#roleTree"), roleTetting, allRoles);
+        // for(var i=0;i < data.length;i++){
+        //     allRoles.push({"id":data[i].id,"pid":data[i].pid,"name":data[i].name});
+        // }
+        $.fn.zTree.init($("#roleTree"), roleTetting, data);
         autoCheck();
     }, function (err) {
 
@@ -134,14 +134,17 @@ function removeNode (e) {
 
 function autoCheck () {
   var zTree = $.fn.zTree.getZTreeObj("roleTree");
+  var nodes = [];
   for (var i = 0; i < userRoleList.length; i++) {
-        var id = userRoleList[i].roleId;
-        var node = zTree.getNodeByTId("roleTree_" + id);
-        zTree.checkNode(node, true);
-        checkNode.push(node);
-        checkRole.push({"roleId":node.id,"roleName":""});
-        renderTag();
-    }
+    var id = userRoleList[i].roleId;
+    var node = zTree.getNodeByTId("roleTree_" + id);
+    nodes.push(node);
+    zTree.checkNode(node, true);
+    checkNode.push(node);
+    checkRole.push({"roleId":node.id,"roleName":""});
+    renderTag();
+  }
+  zTree.expandAll(true);  
 }
 
 initRoleTree();

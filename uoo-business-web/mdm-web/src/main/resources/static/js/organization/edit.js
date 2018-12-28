@@ -95,7 +95,7 @@ function openTypeDialog() {
         shade: 0.8,
         area: ['70%', '85%'],
         maxmin: true,
-        content: 'typeDialog.html?id=' + orgId,
+        content: 'typeDialog.html',
         btn: ['确认', '取消'],
         yes: function(index, layero){
             //获取layer iframe对象
@@ -105,39 +105,6 @@ function openTypeDialog() {
             $('.ui-tips-error').css('display', 'none');
             parent.layer.close(index);
             orgTypeList = checkNode;
-            // //选择组织类别为营销组织类型
-            // if (orgTypeList.length == 0 && editSmallField) {
-            //     editSmallField = false;
-            // }
-            // else {
-            //     for (var i = 0; i < orgTypeList.length; i++) {
-            //         var isSmallFieldExit = false;
-            //         if (((orgTypeList[i].orgTypeCode && orgTypeList[i].orgTypeCode.substr(0, 3) == 'N11') ||
-            //             (orgTypeList[i].extField1 && orgTypeList[i].extField1.substr(0, 3) == 'N11'))) {
-            //             if (!editSmallField) {
-            //                 var smallTemplate = Handlebars.compile($("#smallTemplate").html());
-            //                 var smallHtml = smallTemplate();
-            //                 $('#small').html(smallHtml);
-            //                 $('#orgMartCode ').val(orgMartCode);
-            //                 editSmallField = true;
-            //                 getNodeType();
-            //                 getAreaType();
-            //                 getCountType();
-            //                 getContractType();
-            //                 formValidate.isAllPass();
-            //                 return
-            //             }
-            //             else {
-            //                 isSmallFieldExit = true;
-            //                 return
-            //             }
-            //         }
-            //         if (i == orgTypeList.length - 1 && !isSmallFieldExit )
-            //             editSmallField = false;
-            //     }
-            // }
-            // if (!editSmallField)
-            //     $('#small').html('');
         },
         btn2: function(index, layero){},
         cancel: function(){}
