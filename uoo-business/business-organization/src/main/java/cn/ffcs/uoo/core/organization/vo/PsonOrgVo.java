@@ -166,6 +166,37 @@ public class PsonOrgVo extends BaseVo {
 
     private String tabOrgPerRelParams;
 
+    private String tabOrgOrgTypeParams;
+
+
+    /** 账号权限**/
+    private String accout;
+    private Long sysUserId;
+
+    public String getAccout() {
+        return accout;
+    }
+
+    public void setAccout(String accout) {
+        this.accout = accout;
+    }
+
+    public Long getSysUserId() {
+        return sysUserId;
+    }
+
+    public void setSysUserId(Long sysUserId) {
+        this.sysUserId = sysUserId;
+    }
+
+    public String getTabOrgOrgTypeParams() {
+        return tabOrgOrgTypeParams;
+    }
+
+    public void setTabOrgOrgTypeParams(String tabOrgOrgTypeParams) {
+        this.tabOrgOrgTypeParams = tabOrgOrgTypeParams;
+    }
+
     public String getTabOrgPerRelParams() {
         return tabOrgPerRelParams;
     }

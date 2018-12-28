@@ -22,7 +22,7 @@ function initOrgTable (results) {
         'searching': false,
         'autoWidth': false,
         'ordering': true,
-        "scrollY": "375px",
+        "scrollY": "395px",
         'scrollCollapse': true,
         'columns': [
             { 'data': "orgName", 'title': '部门', 'className': 'row-name',
@@ -105,7 +105,7 @@ function initOrgPersonnelTable (isSearchlower) {
         'destroy': true,
         'autoWidth': false,
         'ordering': true,
-        "scrollY": "375px",
+        "scrollY": "395px",
         'scrollCollapse': true,
         'columns': [
             { 'data': null, 'title': '序号', 'className': 'row-no' },

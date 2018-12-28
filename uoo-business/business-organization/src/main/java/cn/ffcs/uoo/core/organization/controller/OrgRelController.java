@@ -15,6 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.Xml;
 import io.swagger.models.auth.In;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,11 +107,13 @@ public class OrgRelController extends BaseController {
         }
         //获取权限
         String orgParams = "";
+        String orgOrgTypeParams = "";
         if(!StrUtil.isNullOrEmpty(accout)) {
             List<String> tabNames = new ArrayList<String>();
             tabNames.add("TB_ORG_TREE");
             tabNames.add("TB_ORG");
             tabNames.add("TB_ORG_REL");
+            tabNames.add("TB_ORG_ORGTYPE_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
@@ -119,11 +122,12 @@ public class OrgRelController extends BaseController {
                     return ret;
                 }
                 orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
+                orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
             }
         }
-
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
-        treeNodeVos = orgRelService.queryOrgTree(orgTree.getOrgTreeId().toString(),orgTree.getOrgId(),refCode,id,isRoot,orgParams);
+        treeNodeVos = orgRelService.queryOrgTree(orgTree.getOrgTreeId().toString(),orgTree.getOrgId(),refCode,
+                id,isRoot,orgParams,orgOrgTypeParams);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("组织树查询成功");
         ret.setData(treeNodeVos);
@@ -385,7 +389,8 @@ public class OrgRelController extends BaseController {
                                                           String orgRootId,
                                                           String orgTreeId,
                                                           Integer pageSize,
-                                                          Integer pageNo) throws IOException {
+                                                          Integer pageNo,
+                                                          Long userId,String accout) throws IOException {
         ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
 //        if(StrUtil.isNullOrEmpty(search)){
 //            ret.setMessage("检索信息不能为空");
@@ -406,6 +411,32 @@ public class OrgRelController extends BaseController {
             return ret;
         }
         OrgVo orgVo = new OrgVo();
+
+
+        String orgParams = "";
+        String orgOrgTypeParams = "";
+        if(!StrUtil.isNullOrEmpty(accout)) {
+            List<String> tabNames = new ArrayList<String>();
+            tabNames.add("TB_ORG_TREE");
+            tabNames.add("TB_ORG");
+            tabNames.add("TB_ORG_REL");
+            tabNames.add("TB_ORG_ORGTYPE_REL");
+            List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
+            if(sdrList!=null && sdrList.size()>0){
+                if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
+                    ret.setState(ResponseResult.PARAMETER_ERROR);
+                    ret.setMessage("无权限");
+                    return ret;
+                }
+                orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
+                orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
+                orgVo.setTabOrgParams(orgParams);
+                orgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
+            }
+        }
+
+
+
         orgVo.setOrgTreeId(new Long(orgTreeId));
       //  orgVo.setOrgId(new Long(orgTree.getOrgId()));
         if(!StrUtil.isNullOrEmpty(search)){

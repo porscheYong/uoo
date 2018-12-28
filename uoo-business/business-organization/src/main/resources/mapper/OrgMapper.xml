@@ -113,9 +113,10 @@
         AND A.ORG_TYPE_ID = B.ORG_TYPE_ID
         AND A.ORG_ID = D.ORG_ID) ORGTYPESPLIT
         FROM (
-        SELECT B.*
+        SELECT distinct B.*
         FROM TB_ORG_REL A,
         TB_ORG B,
+        TB_ORG_ORGTYPE_REL  F,
         TB_ORG_REL_TYPE C,
         TB_OGT_ORG_RELTYPE_CONF D,
         TB_ORG_TREE E
@@ -124,9 +125,15 @@
         AND C.STATUS_CD = '1000'
         AND D.STATUS_CD = '1000'
         AND E.STATUS_CD = '1000'
+        AND F.STATUS_CD = '1000'
+        <if test="orgVo.tabOrgOrgTypeParams!='' and orgVo.tabOrgOrgTypeParams!=null">
+            AND ${orgVo.tabOrgOrgTypeParams}
+        </if>
+
         <if test="orgVo.tabOrgParams!='' and orgVo.tabOrgParams!=null">
             AND ${orgVo.tabOrgParams}
         </if>
+        AND F.ORG_ID = B.ORG_ID
         AND E.ORG_TREE_ID = D.ORG_TREE_ID
         AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
         AND A.REF_CODE = C.REF_CODE

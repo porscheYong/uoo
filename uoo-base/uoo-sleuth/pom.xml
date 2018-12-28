@@ -5,7 +5,7 @@
 
     <groupId>cn.ffcs.uoo.base</groupId>
     <artifactId>uoo-sleuth</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1.RELEASE</version>
     <packaging>jar</packaging>
 
     <name>uoo-sleuth</name>

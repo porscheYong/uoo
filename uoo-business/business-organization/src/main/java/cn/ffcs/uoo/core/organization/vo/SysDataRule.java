@@ -17,65 +17,65 @@ import java.util.Date;
  * @author zengxsh
  * @since 2018-12-21
  */
-@TableName("SYS_DATA_RULE")
-public class SysDataRule extends Model<SysDataRule> {
+
+public class SysDataRule {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 权限规则标识,主键
      */
-    @TableId("DATA_RULE_ID")
+
     private Long dataRuleId;
     /**
      * 表的名称
      */
-    @TableField("TAB_NAME")
+
     private String tabName;
     /**
      * 记录字段名称
      */
-    @TableField("COL_NAME")
+
     private String colName;
     /**
      * 规则操作符,包含、等于、大于、大于等于、小于、小于等于
      */
-    @TableField("RULE_OPERATOR")
+
     private String ruleOperator;
     /**
      * 字段值,同一权限的同一业务对象属性标识的多个取值,可用逗号间隔
      */
-    @TableField("COL_VALUE")
+
     private String colValue;
     /**
      * 状态
      */
-    @TableField("STATUS_CD")
+
     private String statusCd;
     /**
      * 状态时间
      */
-    @TableField("STATUS_DATE")
+
     private Date statusDate;
     /**
      * 创建时间
      */
-    @TableField("CREATE_DATE")
+
     private Date createDate;
     /**
      * 创建人
      */
-    @TableField("CREATE_USER")
+
     private Long createUser;
     /**
      * 修改时间
      */
-    @TableField("UPDATE_DATE")
+
     private Date updateDate;
     /**
      * 修改人
      */
-    @TableField("UPDATE_USER")
+
     private Long updateUser;
 
 
@@ -167,25 +167,5 @@ public class SysDataRule extends Model<SysDataRule> {
         this.updateUser = updateUser;
     }
 
-    @Override
-    protected Serializable pkVal() {
-        return this.dataRuleId;
-    }
 
-    @Override
-    public String toString() {
-        return "SysDataRule{" +
-        ", dataRuleId=" + dataRuleId +
-        ", tabName=" + tabName +
-        ", colName=" + colName +
-        ", ruleOperator=" + ruleOperator +
-        ", colValue=" + colValue +
-        ", statusCd=" + statusCd +
-        ", statusDate=" + statusDate +
-        ", createDate=" + createDate +
-        ", createUser=" + createUser +
-        ", updateDate=" + updateDate +
-        ", updateUser=" + updateUser +
-        "}";
-    }
 }

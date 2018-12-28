@@ -1,3 +1,5 @@
+import cn.ffcs.uoo.core.organization.util.StrUtil;
+
 //package cn.ffcs.uoo.core.organization.Api.service;/**
 // * @description:
 // * @author: ffcs-gzb
@@ -30,7 +32,7 @@
 // * @author ffcs-gzb
 // * @since 2018/12/21
 // */
-//public class test {
+public class test {
 //    public static String addModifyHistory(Object oldObj,Object newObj) {
 //        try {
 //            String operType = "";
@@ -146,7 +148,12 @@
 ////        Class c = obj.getClass();
 ////        System.out.println("类的名称是:" + c.getName());
 //    }
-//    public static void main(String[] args) {
+    public static void main(String[] args) {
+String params = "AND";
+        params = params.substring(0,params.length()-3);
+        if(StrUtil.isNullOrEmpty(params)){
+            System.out.println(params);
+        }
 //        Org orgVo1 = new Org();
 //        //orgVo1.setOrgId(1L);
 //        orgVo1.setFullName("11111");
@@ -156,7 +163,7 @@
 //        orgVo2.setFullName("222221111");
 //        orgVo2.setStatusCd("12001111");
 //        addModifyHistory(orgVo1,orgVo2);
-//
-//
-//    }
-//}
+
+
+    }
+}
