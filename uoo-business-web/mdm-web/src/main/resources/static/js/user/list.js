@@ -8,8 +8,7 @@ var orgName = getQueryString('name');
 var orgTreeName = getQueryString('orgTreeName');
 var table;
 var checked = false;
-var sortFlag = 0;
-var currentPage = 0;
+
 
 $('#orgName').html(orgName);
 parent.getOrgExtInfo();
@@ -25,6 +24,7 @@ function initOrgPersonnelTable (isSearchlower,search) {
         'destroy': true,
         'autoWidth': false,
         'ordering': true,
+        'lSort': true,
         "scrollY": "375px",
         'scrollCollapse': true,
         'columns': [
@@ -101,32 +101,22 @@ function initOrgPersonnelTable (isSearchlower,search) {
             })
         }
     });
-
-    initSort(".row-name","psnName");
-    initSort(".row-mobile","doubleName");
-    initSort(".cert-no","psnNbr");
-    initSort(".post-name","postName");
-    initSort(".org-name","orgName");
     
     var loading = parent.loading;
     loading.screenMaskDisable('container');
 }
 
 function initFreePersonnelTable () {
-    var num = 1;
     table = $("#personnelTable").DataTable({
         'searching': false,
         'destroy': true,
         'autoWidth': false,
         'ordering': true,
+        'lSort': true,
         "scrollY": "375px",
         'scrollCollapse': true,
         'columns': [
-            { 'data': "psnName", 'title': '序号', 'className': 'row-no' ,
-                'render': function (data, type, row, meta) {
-                    return num++;
-                }
-            },
+            { 'data': null, 'title': '序号', 'className': 'row-no'},
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
                     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId +
@@ -190,9 +180,6 @@ function initFreePersonnelTable () {
         }
     });
 
-    initSortFree(".row-name","psnName");
-    initSortFree(".cert-no","psnNbr");
-
     var loading = parent.loading;
     loading.screenMaskDisable('container');
 }
@@ -227,107 +214,3 @@ $('#addBtn').on('click', function () {
    var url = "add.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&orgTreeName=" + encodeURI(orgTreeName) + "&name=" + encodeURI(orgName);
    $(this).attr('href', url);
 })
-
-function arrSort (arr, dataLeven) { // 参数：arr 排序的数组; dataLeven 数组内的需要比较的元素属性 
-    /* 获取数组元素内需要比较的值 */
-    function getValue (option) { // 参数： option 数组元素
-      if (!dataLeven) return option
-      var data = option
-      dataLeven.split('.').filter(function (item) {
-        data = data[item]
-      })
-      return data + ''
-    }
-    arr.sort(function (item1, item2) {
-      return getValue(item1).localeCompare(getValue(item2), 'zh-CN');
-    })
-  }
-
-  function descSort(asc,desc){      //desc排序
-    for(var i=asc.length-1;i>=0;i--){
-        desc.push(asc[i]);
-    }
-    return desc;
-  }
-
-  function sortToTable(arr){   //将排完序的数据写入表格
-    for(var i =0;i<arr.length;i++){
-        sortFlag = 1;
-        table
-            .row(i)
-            .data({
-                "psnName":arr[i].psnName,
-                "doubleName":arr[i].doubleName,
-                "psnNbr":arr[i].psnNbr,
-                "postName":arr[i].postName,
-                "orgName":arr[i].orgName,
-                "statusCd":arr[i].statusCd,
-                "orgId":arr[i].orgId,
-                "orgRootId":arr[i].orgRootId,
-                "personnelId":arr[i].personnelId
-
-            })
-            .draw();
-    }
-  }
-
-  function sortToTableFree(arr){   //将排完序的数据写入表格(游离人员)
-    for(var i =0;i<arr.length;i++){
-        sortFlag = 1;
-        table
-            .row(i)
-            .data({
-                "psnName":arr[i].psnName,
-                "psnNbr":arr[i].psnNbr,
-                "personnelId":arr[i].personnelId
-            })
-            .draw();
-    }
-  }
-
-    //初始化排序
-  function initSort(thClass,param){       
-    $(thClass).on('click', function () {
-        var tableLength = table.data().length;
-        var arr = [];
-        var descArr = [];
-    
-        for(var i = 0;i < tableLength;i++){
-            arr.push(table.row(i).data());
-        }
-        
-        arrSort(arr,param);
-        
-        if($(this).hasClass("sorting_desc")){
-            descArr = descSort(arr,descArr);
-            sortToTable(descArr);
-        }else{
-            sortToTable(arr);
-        }
-        table.page(currentPage).draw( false );
-    });
-}
-
-
- //初始化排序(游离人员)
-function initSortFree(thClass,param){       
-    $(thClass).on('click', function () {
-        var tableLength = table.data().length;
-        var arr = [];
-        var descArr = [];
-    
-        for(var i = 0;i < tableLength;i++){
-            arr.push(table.row(i).data());
-        }
-        
-        arrSort(arr,param);
-        
-        if($(this).hasClass("sorting_desc")){
-            descArr = descSort(arr,descArr);
-            sortToTableFree(descArr);
-        }else{
-            sortToTableFree(arr);
-        }
-        table.page(currentPage).draw( false );
-    });
-}
