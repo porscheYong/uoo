@@ -84,30 +84,23 @@ public class SysRoleController {
     @UooLog(key="treeRole",value="treeRole")
     @GetMapping("/treeRole")
     public ResponseResult<List<TreeNodeVo>> treeRole( String parentRoleCode){
-        Wrapper<SysRole> wrapper=Condition.create().eq("STATUS_CD", StatusCD.VALID);
+        //Wrapper<SysRole> wrapper=Condition.create().eq("STATUS_CD", StatusCD.VALID);
         /*if("null".equals(parentRoleCode)||StringUtils.isBlank(parentRoleCode)){
             wrapper.eq("STATUS_CD", StatusCD.VALID).isNull("PARENT_ROLE_CODE");
         }else{
             wrapper.eq("STATUS_CD", StatusCD.VALID).eq("PARENT_ROLE_CODE", parentRoleCode);
         }*/
-        List<SysRole> selectList = sysRoleService.selectList(wrapper);
-        List<TreeNodeVo> list=new ArrayList<>();
+        List<TreeNodeVo> selectList = sysRoleService.treeRole();
         if(selectList!=null)
-        for (SysRole sysRole : selectList) {
-            TreeNodeVo vo=new TreeNodeVo();
-            vo.setExtField1(sysRole.getRoleId().toString());
-            vo.setId(sysRole.getRoleCode());
-            vo.setName(sysRole.getRoleName());
-            vo.setPid(sysRole.getParentRoleCode());
-            for (SysRole sr : selectList) {
-                if(sysRole.getRoleCode().equals(sr.getParentRoleCode())){
-                    vo.setParent(true);
+        for (TreeNodeVo sysRole : selectList) {
+            for (TreeNodeVo sr : selectList) {
+                if(sysRole.getId().equals(sr.getPid())){
+                    sysRole.setParent(true);
                     break;
                 }
             }
-            list.add(vo);
         }
-        return ResponseResult.createSuccessResult(list, "");
+        return ResponseResult.createSuccessResult(selectList, "");
     }
     @ApiOperation(value = "获取分页列表", notes = "获取分页列表")
     @ApiImplicitParams({
