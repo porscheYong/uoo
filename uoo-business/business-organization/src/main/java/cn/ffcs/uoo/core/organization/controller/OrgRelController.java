@@ -389,7 +389,8 @@ public class OrgRelController extends BaseController {
                                                           String orgRootId,
                                                           String orgTreeId,
                                                           Integer pageSize,
-                                                          Integer pageNo) throws IOException {
+                                                          Integer pageNo,
+                                                          Long userId,String accout) throws IOException {
         ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
 //        if(StrUtil.isNullOrEmpty(search)){
 //            ret.setMessage("检索信息不能为空");
@@ -410,6 +411,32 @@ public class OrgRelController extends BaseController {
             return ret;
         }
         OrgVo orgVo = new OrgVo();
+
+
+        String orgParams = "";
+        String orgOrgTypeParams = "";
+        if(!StrUtil.isNullOrEmpty(accout)) {
+            List<String> tabNames = new ArrayList<String>();
+            tabNames.add("TB_ORG_TREE");
+            tabNames.add("TB_ORG");
+            tabNames.add("TB_ORG_REL");
+            tabNames.add("TB_ORG_ORGTYPE_REL");
+            List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
+            if(sdrList!=null && sdrList.size()>0){
+                if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
+                    ret.setState(ResponseResult.PARAMETER_ERROR);
+                    ret.setMessage("无权限");
+                    return ret;
+                }
+                orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
+                orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
+                orgVo.setTabOrgParams(orgParams);
+                orgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
+            }
+        }
+
+
+
         orgVo.setOrgTreeId(new Long(orgTreeId));
       //  orgVo.setOrgId(new Long(orgTree.getOrgId()));
         if(!StrUtil.isNullOrEmpty(search)){

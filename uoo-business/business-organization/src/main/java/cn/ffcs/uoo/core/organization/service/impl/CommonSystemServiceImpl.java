@@ -129,11 +129,8 @@ public class CommonSystemServiceImpl implements CommonSystemService {
                 }
             }
             if(!StrUtil.isNullOrEmpty(params)){
-                params = "";
-            }else{
                 params = params.substring(0,params.length()-3);
             }
-//            params = params.substring(0,params.length()-3);
         }
         return params;
     }
