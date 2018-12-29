@@ -4,6 +4,7 @@
 var $http = {
   // baseUri: base,
   get: function (path, data, successCallback, errorCallback) {
+    data._ = new Date().getTime();
     this.ajax('get', path, data, successCallback, errorCallback)
   },
   post: function (path, data, successCallback, errorCallback) {
