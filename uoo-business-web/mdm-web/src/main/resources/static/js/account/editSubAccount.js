@@ -28,15 +28,13 @@ var roleList = [];      //需要上传的角色列表
 var userRoleList = [];      //用户已有角色列表
 var toastr = window.top.toastr;
 var resourceObjId = null;
-
+var cerTypeList = window.top.dictionaryData.certType();
 
 if(hostId != null){
     acctOrgRelId = hostId;
 }
 
-$('#cerType').get(0).selectedIndex=0;  //判断证件类型
-$('#accTypeTel').get(0).selectedIndex=0;  //判断账号类型
-
+$('#accType').get(0).selectedIndex=0;  //判断账号类型
 
 if(statusCd == "1000"){                //判断状态
     $('#statusCd').get(0).selectedIndex=0;
@@ -52,7 +50,7 @@ if(statusCd == "1000"){                //判断状态
 
   // lulu ui tips插件
 seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
-    $('#defaultPswTel').tips({
+    $('#defaultPsw').tips({
         align: 'right'
     });
 });
@@ -141,12 +139,12 @@ function getAcctOrg(){          //获取从账号可选组织列表(添加组织
 }
 
 function noSelectUserInfo(){     //控制人员信息不可选
-    $("#psnNameTel").attr("disabled","disabled");
-    $("#psnNumTel").attr("disabled","disabled");
-    $("#mobileTel").attr("disabled","disabled");
-    $("#emailTel").attr("disabled","disabled");
+    $("#psnName").attr("disabled","disabled");
+    $("#psnNum").attr("disabled","disabled");
+    $("#mobile").attr("disabled","disabled");
+    $("#email").attr("disabled","disabled");
     $("#cerType").attr("disabled","disabled");
-    $("#cerNoTel").attr("disabled","disabled");
+    $("#cerNo").attr("disabled","disabled");
  }
 
 function initOrgTable(results){
@@ -231,17 +229,32 @@ function initOrgTable(results){
   }
 
 function initSubInfo(results){  //编辑时初始化信息
-    $('#psnNameTel').val(results.psnName);
-    $('#psnNumTel').val(results.psnCode);
-    $('#mobileTel').val(results.mobilePhone);
-    $('#emailTel').val(results.eamil);
-    $('#cerNoTel').val(results.certNo);
-    $('#acctTel').val(results.tbSlaveAcct.slaveAcct);
-    $('#defaultPswTel').val(results.tbSlaveAcct.password);
+    $('#psnName').val(results.psnName);
+    $('#psnNum').val(results.psnCode);
+    $('#mobile').val(results.mobilePhone);
+    $('#email').val(results.eamil);
+    $('#cerNo').val(results.certNo);
+    $('#acct').val(results.tbSlaveAcct.slaveAcct);
+    $('#defaultPsw').val(results.tbSlaveAcct.password);
     setDate(results.tbSlaveAcct.enableDate,results.tbSlaveAcct.disableDate);
     $('#statusCd').val("生效");
 
-    $('#roleTel').addTag(results.tbRolesList);
+    $('#role').addTag(results.tbRolesList);
+
+    for(var i=0;i<cerTypeList.length;i++){
+        var select = "";
+        if(results.certType === cerTypeList[i].itemValue){
+          $("#cerType").append("<option value='" + cerTypeList[i].itemValue + "' selected>" + cerTypeList[i].itemCnname +"</option>");
+        }
+        if(results.tbAcctExt != null && results.tbAcctExt.certType === cerTypeList[i].itemValue){
+            select = "selected";
+        }
+        $("#extCerType").append("<option value='" + cerTypeList[i].itemValue + "' " + select + ">" + cerTypeList[i].itemCnname +"</option>");     
+    }
+    seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $("#cerType").selectMatch();
+        $("#extCerType").selectMatch();
+    });
 
     resourceObjId = results.tbSlaveAcct.resourceObjId;
     psw = results.tbSlaveAcct.password;
@@ -253,11 +266,11 @@ function initSubInfo(results){  //编辑时初始化信息
         $("#extCheckBox").attr("value","1");
         isChecked = 1;
 
-        $('#extCerNoTel').val(results.tbAcctExt.certNo);
-        $('#extCerTel').get(0).selectedIndex = parseInt(results.tbAcctExt.certType) - 1;
-        $('#extMobileTel').val(results.tbAcctExt.contactWay);
-        $('#extNameTel').val(results.tbAcctExt.name);
-        $('#extEmailTel').val(results.tbAcctExt.workEmail);
+        $('#extCerNo').val(results.tbAcctExt.certNo);
+        $('#extCerType').get(0).selectedIndex = parseInt(results.tbAcctExt.certType) - 1;
+        $('#extMobile').val(results.tbAcctExt.contactWay);
+        $('#extName').val(results.tbAcctExt.name);
+        $('#extEmail').val(results.tbAcctExt.workEmail);
     }
 }
 
@@ -271,6 +284,13 @@ function initSubAcctInfoCheck(results){       //初始化从账号信息(查看)
     isNull("#cerNoLable",results.certNo);
     isNull("#effectDateLable",results.tbSlaveAcct.enableDate);
     isNull("#invalidDateLable",results.tbSlaveAcct.disableDate);
+
+    for(var i=0;i<cerTypeList.length;i++){
+        if(results.certType === cerTypeList[i].itemValue){
+          $("#cerNoTxt").text(cerTypeList[i].itemCnname+"号码：");
+          break;
+        }
+    }
 
     for(var i = 0; i <results.tbRolesList.length; i++){
         if(i != 0 && i%3 == 0){
@@ -292,10 +312,9 @@ function updateTbSlaveAcct(){       //更新从账号信息
         $('#acctEditButton').css("display","none");
         return;
     }
-    var slaveAcctType = $('#accTypeTel').get(0).selectedIndex + 1;
-    //resourceObjId = $('#systemTel').get(0).selectedIndex + 1;
+    var slaveAcctType = $('#accType').get(0).selectedIndex + 1;
     var subStatusCd = $('#statusCd').get(0).selectedIndex*100 + 1000;
-    var certType = $('#extCerTel').get(0).selectedIndex + 1;
+    var certType = $('#extCerType').get(0).selectedIndex + 1;
     var tbAcctExt = hasExtInfo(certType);
 
     if(roleList.length == 0){
@@ -306,11 +325,11 @@ function updateTbSlaveAcct(){       //更新从账号信息
         "acctOrgRelId": acctOrgRelId,
         "disableDate": $('#invalidDate').val(),
         "enableDate": $('#effectDate').val(),
-        "password": $('#defaultPswTel').val(),
+        "password": $('#defaultPsw').val(),
         "personnelId": parseInt(personnelId),
         "resourceObjId": resourceObjId,
         "rolesList": roleList,
-        "slaveAcct": $('#acctTel').val(),
+        "slaveAcct": $('#acct').val(),
         "slaveAcctId": slaveAcctId,
         "slaveAcctType": slaveAcctType.toString(),
         "statusCd": subStatusCd.toString(),
@@ -383,11 +402,11 @@ function getSysSelect(){   //获取应用系统下拉列表
                 }
             }     
         }
-        $('#systemTel').append(option);
+        $('#system').append(option);
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-            $('#systemTel').selectMatch();
+            $('#system').selectMatch();
         });
-        $('#systemTel').unbind('change').bind('change', function (event) {
+        $('#system').unbind('change').bind('change', function (event) {
             resourceObjId = event.target.options[event.target.options.selectedIndex].value;
             console.log(resourceObjId);
         })
@@ -402,11 +421,11 @@ function  hasExtInfo(certType){  //判断是否需要扩展信息
     }else{
         tbAcctExt = {
             "acctExtId":acctExtId,
-            "certNo": $('#extCerNoTel').val(),
+            "certNo": $('#extCerNo').val(),
             "certType": certType.toString(),
-            "contactWay": $('#extMobileTel').val(),
-            "name": $('#extNameTel').val(),
-            "workEmail": $('#extEmailTel').val()
+            "contactWay": $('#extMobile').val(),
+            "name": $('#extName').val(),
+            "workEmail": $('#extEmail').val()
           };
     }
     return tbAcctExt;
@@ -429,7 +448,7 @@ function deleteOrg(){
 
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
-    $('#roleTel').tagsInput();
+    $('#role').tagsInput();
   }
   
 // //角色选择
@@ -448,7 +467,7 @@ parent.layer.open({
         var iframeWin = parent.window[layero.find('iframe')[0].name];
         var checkRole = iframeWin.checkRole;
         var checkNode = iframeWin.checkNode;
-        $('#roleTel').importTags(checkNode);
+        $('#role').importTags(checkNode);
         $('.ui-tips-error').css('display', 'none');
         window.localStorage.setItem('userRoleList',JSON.stringify(checkRole));
         roleList = checkRole;
@@ -512,7 +531,7 @@ function submitToOther(){   //提交或者取消跳转
     if(hType == "th"){
         url = "editMainAccount.html?orgTreeId=" + orgTreeId + "&hType="+ toMainType +"&opBtn=0&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&acctId=" + mainAcctId;   //跳转主账号编辑界面
     }else if(hType == "mh"){
-        url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;       //跳转主界面
+        url = "list.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;       //跳转主界面
     }else if(hType == "ah"){
         url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;       //跳转添加界面
     }else{
@@ -522,18 +541,18 @@ function submitToOther(){   //提交或者取消跳转
     window.location.href = url;
 }
 
-$("#defaultPswTel").focus(function (){    //默认密码输入框获得焦点
-    if($("#defaultPswTel").attr("type") == "password"){
-      $("#defaultPswTel").val('');
-      $("#defaultPswTel").attr("type","text");
+$("#defaultPsw").focus(function (){    //默认密码输入框获得焦点
+    if($("#defaultPsw").attr("type") == "password"){
+      $("#defaultPsw").val('');
+      $("#defaultPsw").attr("type","text");
     }
   })
   
-$("#defaultPswTel").blur(function (){     //默认密码输入框失去焦点
-    if($("#defaultPswTel").val() == ''){
-      $("#defaultPswTel").val(psw);
-      $("#defaultPswTel").attr("type","password");
-      formValidate.isAllPass($('#defaultPswTel'));
+$("#defaultPsw").blur(function (){     //默认密码输入框失去焦点
+    if($("#defaultPsw").val() == ''){
+      $("#defaultPsw").val(psw);
+      $("#defaultPsw").attr("type","password");
+      formValidate.isAllPass($('#defaultPsw'));
     }
   })
 

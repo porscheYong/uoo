@@ -71,11 +71,11 @@
             color: #ee4063 !important;
             background: #FFF !important;
         }
-        #roleTel_tagsinput .tag{
+        #role_tagsinput .tag{
             padding: 2px !important;
             /* margin-bottom: 0px !important; */
         }
-        #roleTel_tagsinput{
+        #role_tagsinput{
             width: 75.5% !important;
         }
         #slaveType{
@@ -103,15 +103,15 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="psnNameTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">人员姓名</label>
-                                <input id="psnNameTel" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" autocomplete="off">
+                                <label for="psnName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">人员姓名</label>
+                                <input id="psnName" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" autocomplete="off">
                             </div>
                         </div>
 
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="psnNumTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
-                                <input id="psnNumTel" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" required value="" autocomplete="off">
+                                <label for="psnNum" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
+                                <input id="psnNum" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" required value="" autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -119,15 +119,15 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="mobileTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">联系电话</label>
-                                <input id="mobileTel" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" required value="" autocomplete="off">
+                                <label for="mobile" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">联系电话</label>
+                                <input id="mobile" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" required value="" autocomplete="off">
                             </div>
                         </div>
 
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="emailTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
-                                <input id="emailTel" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" required value="" autocomplete="off">
+                                <label for="email" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
+                                <input id="email" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" required value="" autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -137,15 +137,15 @@
                             <div class="form-item" style="width: 100%">
                                 <label for="cerType" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
                                 <select  class="col-md-8 col-sm-8 col-xs-8" id="cerType">
-                                    <option>身份证</option>
+                                    <!-- <option>身份证</option> -->
                                 </select>
                             </div>
                         </div>
 
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="cerNoTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                                <input id="cerNoTel" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" required value="" autocomplete="off"> 
+                                <label for="cerNo" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                                <input id="cerNo" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" required value="" autocomplete="off"> 
                             </div>
                         </div>
                     </div>
@@ -153,8 +153,8 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="accTypeTel" id="slaveType" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">从账号类型</label>
-                                <select  class="col-md-8 col-sm-8 col-xs-8" id='accTypeTel'>
+                                <label for="accType" id="slaveType" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">从账号类型</label>
+                                <select  class="col-md-8 col-sm-8 col-xs-8" id='accType'>
                                     <option>应用</option>
                                 </select>
                             </div>
@@ -162,8 +162,8 @@
 
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="accTypeTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">应用系统</label>
-                                <select  class="col-md-8 col-sm-8 col-xs-8" id='systemTel'>
+                                <label for="system" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">应用系统</label>
+                                <select  class="col-md-8 col-sm-8 col-xs-8" id='system'>
                                 </select>
                             </div>
                         </div>
@@ -172,8 +172,8 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="acctTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">账号</label>
-                                <input id="acctTel" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" required value="" autocomplete="off"> 
+                                <label for="acct" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">账号</label>
+                                <input id="acct" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" required value="" autocomplete="off"> 
                             </div>
                         </div>
 
@@ -191,8 +191,8 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="form-item" style="width: 100%">
-                                <label for="roleTel" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width:14%;">角色</label>
-                                <input id="roleTel" class="ui-input col-md-8 col-sm-8 col-xs-12" style="width:72%;" onclick="openTypeDialog()" required readonly></input>
+                                <label for="role" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width:14%;">角色</label>
+                                <input id="role" class="ui-input col-md-8 col-sm-8 col-xs-12" style="width:72%;" onclick="openTypeDialog()" required readonly></input>
                             </div>
                         </div>
                     </div>
@@ -200,15 +200,15 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="effectDate" class="form-item-label col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
-                                <input id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off"> 
+                                <label for="effectDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
+                                <input id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" readonly autocomplete="off"> 
                             </div>
                         </div>
 
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="invalidDate" class="form-item-label col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
-                                <input id="invalidDate" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off"> 
+                                <label for="invalidDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
+                                <input id="invalidDate" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" readonly autocomplete="off"> 
                             </div>
                         </div>
                     </div>
@@ -216,8 +216,8 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%" id='default_psw'>
-                                <label for="defaultPswTel" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
-                                <input type="text" id="defaultPswTel" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" required value="" autocomplete="off"> 
+                                <label for="defaultPsw" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
+                                <input type="text" id="defaultPsw" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" required value="" autocomplete="off"> 
                             </div>
                         </div>
                     </div>
@@ -252,8 +252,8 @@
                     <div class="row" style="margin-bottom: 10px;margin-left:25px;margin-top:25px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="extNameTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">姓名</label>
-                                <input id="extNameTel" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
+                                <label for="extName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">姓名</label>
+                                <input id="extName" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -261,15 +261,15 @@
                     <div class="row" style="margin-bottom: 10px;margin-left:25px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="extEmailTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">工作邮箱</label>
-                                <input id="extEmailTel" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
+                                <label for="extEmail" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">工作邮箱</label>
+                                <input id="extEmail" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
                             </div>
                         </div>
     
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="extMobileTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;" id="mobileLable">接收短信手机号码</label>
-                                <input id="extMobileTel" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
+                                <label for="extMobile" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;" id="mobileLable">接收短信手机号码</label>
+                                <input id="extMobile" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -277,17 +277,17 @@
                     <div class="row" style="margin-bottom: 10px;margin-left:25px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="extCerTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align:right;">证件类型</label>
-                                <select  class="col-md-8 col-sm-8 col-xs-8" id='extCerTel'>
-                                    <option>身份证</option>
+                                <label for="extCerType" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align:right;">证件类型</label>
+                                <select  class="col-md-8 col-sm-8 col-xs-8" id='extCerType'>
+                                    <!-- <option>身份证</option> -->
                                 </select>
                             </div>
                         </div>
     
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="extCerNoTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                                <input id="extCerNoTel" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
+                                <label for="extCerNo" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                                <input id="extCerNo" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -354,7 +354,7 @@
           $('select').selectMatch();
         })
 
-        $("#defaultPswTel").attr("title","1、登录密码必须包含数字、大写字母、小写字母、特殊符号中的3种，且长度大于8位；"+
+        $("#defaultPsw").attr("title","1、登录密码必须包含数字、大写字母、小写字母、特殊符号中的3种，且长度大于8位；"+
                                     "2、登录密码中连续的或相同的数据或字母（包括倒序）不能超过3位。"+
                                     "如：fz12348，abcd12格式不正确；ACabc123、Ab111aaa正确；"+
                                     "3、登录密码中不能包含员工账号、中文标点符号以及反斜杠\ ；"+
