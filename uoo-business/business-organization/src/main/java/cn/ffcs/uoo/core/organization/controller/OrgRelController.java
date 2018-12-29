@@ -73,6 +73,7 @@ public class OrgRelController extends BaseController {
     @Autowired
     private AmqpTemplate template;
 
+
     @ApiOperation(value = "查询组织树信息-web", notes = "查询组织树信息")
     @ApiImplicitParams({
     })
@@ -134,7 +135,6 @@ public class OrgRelController extends BaseController {
         System.out.println(new Date());
         return ret;
     }
-
     @ApiOperation(value = "重构组织树获取-web", notes = "重构组织树获取")
     @ApiImplicitParams({
     })
@@ -466,14 +466,10 @@ public class OrgRelController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<Page<OrgRefTypeVo>> getOrgRelTypePage(String orgId,
                                                                 Integer pageSize,
-                                                                Integer pageNo
+                                                                Integer pageNo,
+                                                                Long userId,String accout
                                                                 ){
         ResponseResult<Page<OrgRefTypeVo>> ret = new ResponseResult<>();
-//        if(StrUtil.isNullOrEmpty(orgRefTypeVo)){
-//            ret.setMessage("参数不能为空");
-//            ret.setState(ResponseResult.PARAMETER_ERROR);
-//            return ret;
-//        }
         if(StrUtil.isNullOrEmpty(orgId)){
             ret.setMessage("组织标识不能为空");
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -487,7 +483,26 @@ public class OrgRelController extends BaseController {
         if(!StrUtil.isNullOrEmpty(pageSize)){
             orgRefTypeVo.setPageSize(pageSize);
         }
-
+        //获取权限
+        String orgParams = "";
+        String orgOrgTypeParams = "";
+        String orgRelParams = "";
+        if(!StrUtil.isNullOrEmpty(accout)) {
+            List<String> tabNames = new ArrayList<String>();
+            tabNames.add("TB_ORG_TREE");
+            tabNames.add("TB_ORG");
+            tabNames.add("TB_ORG_REL");
+            tabNames.add("TB_ORG_ORGTYPE_REL");
+            List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
+            if(sdrList!=null && sdrList.size()>0){
+                orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
+                orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
+                orgRelParams = commonSystemService.getSysDataRuleSql("TB_ORG_REL",sdrList);
+                orgRefTypeVo.setTabOrgParams(orgParams);
+                orgRefTypeVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
+                orgRefTypeVo.setTabOrgRelParams(orgRelParams);
+            }
+        }
         Page<OrgRefTypeVo> page = orgRelService.selectOrgRelTypePage(orgRefTypeVo);
         ret.setMessage("成功");
         ret.setState(ResponseResult.STATE_OK);

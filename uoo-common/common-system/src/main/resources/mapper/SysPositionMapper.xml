@@ -25,7 +25,7 @@
     </sql>
 
     <select id="getId" resultType="java.lang.Long">
-		select SEQ_POSITION_ID.NEXTVAL from dual
+		select SEQ_SYS_POSITION_ID.NEXTVAL from dual
 	</select>
 
     <select id="getPositionTree" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
