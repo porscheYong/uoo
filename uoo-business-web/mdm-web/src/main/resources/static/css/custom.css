@@ -562,6 +562,9 @@ label.left, span.left {
 input.ui-input, .ui-input > input {
     height: auto;
 }
+input.ellipsis {
+    text-overflow: ellipsis;
+}
 
 .msg-title {
     width: 100%;
