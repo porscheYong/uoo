@@ -16,7 +16,7 @@ public class SlaveAcctServiceHystrix implements SlaveAcctService {
     }
 
     @Override
-    public Object delTbSlaveAcct(Long slaveAcctId) {
+    public Object delTbSlaveAcct(Long slaveAcctId, Long userId) {
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

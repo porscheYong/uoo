@@ -247,12 +247,12 @@ function setSysChart(){
                     itemStyle:{
                             normal:{color:'#ffc870',borderWidth: 2,borderColor: '#FFF'}
                         }
-                    },
+                    }
                 ]
             }
         ]
     };
-        myChart.setOption(option); 
+        myChart.setOption(option);
         var currentIndex = -1;
 
         setInterval(function () {

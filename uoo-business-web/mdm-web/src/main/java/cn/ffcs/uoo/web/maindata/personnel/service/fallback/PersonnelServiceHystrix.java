@@ -35,7 +35,7 @@ public class PersonnelServiceHystrix implements PersonnelService {
 
 
     @Override
-    public Object getFormPersonnel(Long personnelId, Long orgTreeId, Long orgId) {
+    public Object getFormPersonnel(Long personnelId, Long orgTreeId, Long orgId, String accout) {
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
@@ -51,7 +51,7 @@ public class PersonnelServiceHystrix implements PersonnelService {
     }
 
     @Override
-    public Object deletePersonnel(Long personnelId) {
+    public Object deletePersonnel(Long personnelId, Long userId) {
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

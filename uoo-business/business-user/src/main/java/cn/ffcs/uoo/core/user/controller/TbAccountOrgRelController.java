@@ -4,7 +4,6 @@ package cn.ffcs.uoo.core.user.controller;
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.core.user.entity.TbAccountOrgRel;
-import cn.ffcs.uoo.core.user.entity.TbUser;
 import cn.ffcs.uoo.core.user.service.TbAccountOrgRelService;
 import cn.ffcs.uoo.core.user.service.TbUserService;
 import cn.ffcs.uoo.core.user.util.ResultUtils;
@@ -41,13 +40,14 @@ public class TbAccountOrgRelController extends BaseController {
             @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long", paramType = "path"),
             @ApiImplicitParam(name = "acctId", value = "主账号标识", required = true, dataType = "Long", paramType = "path"),
             @ApiImplicitParam(name = "orgId", value = "组织标识", required = true, dataType = "Long", paramType = "path"),
-            @ApiImplicitParam(name = "orgTreeId", value = "业务树标识", required = true, dataType = "Long", paramType = "path")
+            @ApiImplicitParam(name = "orgTreeId", value = "业务树标识", required = true, dataType = "Long", paramType = "path"),
+            @ApiImplicitParam(name = "userId", value = "操作人标识", required = true, dataType = "Long", paramType = "path")
     })
     @UooLog(value = "删除主账号与组织关系", key = "removeAcctOrg")
     @RequestMapping(value = "/removeAcctOrg", method = RequestMethod.DELETE)
     @Transactional(rollbackFor = Exception.class)
-    public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId, Long orgTreeId) {
-        return tbAccountOrgRelService.removeAcctOrg(personnelId, acctId, orgId, orgTreeId);
+    public Object removeAcctOrg(Long personnelId, Long acctId, Long orgId, Long orgTreeId, Long userId) {
+        return tbAccountOrgRelService.removeAcctOrg(personnelId, acctId, orgId, orgTreeId, userId);
     }
 
     @ApiOperation(value = "新增主账号与组织关系", notes = "新增主账号与组织关系")
@@ -63,12 +63,13 @@ public class TbAccountOrgRelController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "acctId", value = "主账号标识", required = true, dataType = "Long",paramType="path"),
             @ApiImplicitParam(name = "pageNo", value = "当前页数", required = true, dataType = "Integer",paramType="path"),
-            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path")
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path"),
+            @ApiImplicitParam(name = "account", value = "账号", required = true, dataType = "String",paramType="path")
     })
     @UooLog(value = "主账号归属组织查询",key = "getAcctOrgRelPage")
     @RequestMapping(value="/getAcctOrgRelPage",method = RequestMethod.GET)
-    public Object getAcctOrgRelPage(Long acctId, Integer pageNo, Integer pageSize){
-        return ResultUtils.success(tbUserService.getAcctOrg(acctId, pageNo, pageSize));
+    public Object getAcctOrgRelPage(Long acctId, Integer pageNo, Integer pageSize, String account){
+        return ResultUtils.success(tbUserService.getAcctOrg(acctId, pageNo, pageSize, account));
     }
 
 

@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.web.maindata.user.controller;
 
+import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
 import cn.ffcs.uoo.web.maindata.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -34,7 +35,7 @@ public class UserController {
     })
     @RequestMapping(value = "/getUserList", method = RequestMethod.GET)
     public Object getUserList(Long personnelId, Integer pageNo, Integer pageSize){
-        return userService.getUserList(personnelId , pageNo, pageSize);
+        return userService.getUserList(personnelId , pageNo, pageSize, SysUserInfo.getAccount());
     }
 
     @ApiOperation(value = "用户信息", notes = "用户信息")
@@ -45,8 +46,9 @@ public class UserController {
     })
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)
     public Object getFormAcct(Long acctId, String userType, String slaveAcctType){
+
         if("1".equals(userType)){
-            return userService.getFormAcct(acctId);
+            return userService.getFormAcct(acctId, SysUserInfo.getAccount());
         }
         if("2".equals(userType)){
             return userService.getFormSlaveAcct(acctId);
@@ -61,7 +63,7 @@ public class UserController {
     })
     @RequestMapping(value = "/getPsnUser", method = RequestMethod.GET)
     public Object addUser(String userType, Long personnelId){
-        return userService.addUser(userType, personnelId);
+        return userService.addUser(userType, personnelId, SysUserInfo.getAccount());
     }
 
 
@@ -72,6 +74,6 @@ public class UserController {
     })
     @RequestMapping(value = "/getAcctOrgByPsnId", method = RequestMethod.GET)
     public Object getAcctOrgByPsnId(Long personnelId, Long resourceObjId){
-        return userService.getAcctOrgByPsnId(personnelId, resourceObjId);
+        return userService.getAcctOrgByPsnId(personnelId, resourceObjId, SysUserInfo.getAccount());
     }
 }

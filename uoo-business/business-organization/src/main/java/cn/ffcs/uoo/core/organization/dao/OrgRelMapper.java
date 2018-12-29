@@ -44,7 +44,9 @@ public interface OrgRelMapper extends BaseMapper<OrgRel> {
 
     public List<TreeNodeVo> queryOrgTreeRoot(@Param("orgTreeId")String orgTreeId,@Param("orgRootId")String orgRootId);
 
-    public List<TreeNodeVo> queryOrgTreeChilden(@Param("orgTreeId")String orgTreeId,@Param("pid")String pid,@Param("orgParams")String orgParams);
+    public List<TreeNodeVo> queryOrgTreeChilden(@Param("orgTreeId")String orgTreeId,@Param("pid")String pid,
+                                                @Param("orgParams")String orgParams,
+                                                @Param("orgOrgTypeParams")String orgOrgTypeParams);
 
     public List<TreeNodeVo> isLeaf(@Param("orgTreeId")String orgTreeId,@Param("pid")String pid);
 

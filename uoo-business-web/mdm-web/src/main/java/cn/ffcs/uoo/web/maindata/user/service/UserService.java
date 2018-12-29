@@ -19,17 +19,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface UserService {
 
     @RequestMapping(value = "/tbUser/getUserList", method = RequestMethod.GET, headers={"Content-Type=application/json"})
-    public Object getUserList(@RequestParam("personnelId") Long personnelId, @RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
+    public Object getUserList(@RequestParam("personnelId") Long personnelId, @RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize, @RequestParam("account") String account);
 
     @RequestMapping(value = "/tbUser/getFormAcct", method = RequestMethod.GET, headers={"Content-Type=application/json"})
-    public Object getFormAcct(@RequestParam("acctId") Long acctId);
+    public Object getFormAcct(@RequestParam("acctId") Long acctId, @RequestParam("account") String account);
 
     @RequestMapping(value = "/tbUser/getFormSlaveAcct", method = RequestMethod.GET, headers={"Content-Type=application/json"})
     public Object getFormSlaveAcct(@RequestParam("acctId") Long acctId);
 
     @RequestMapping(value = "/tbUser/getPsnUser", method = RequestMethod.GET, headers={"Content-Type=application/json"})
-    public Object addUser(@RequestParam("userType") String userType, @RequestParam("personnelId") Long personnelId);
+    public Object addUser(@RequestParam("userType") String userType, @RequestParam("personnelId") Long personnelId, @RequestParam("account") String account);
 
     @RequestMapping(value = "/tbUser/getAcctOrgByPsnId", method = RequestMethod.GET, headers={"Content-Type=application/json"})
-    public Object getAcctOrgByPsnId(@RequestParam("personnelId") Long personnelId, @RequestParam("resourceObjId") Long resourceObjId);
+    public Object getAcctOrgByPsnId(@RequestParam("personnelId") Long personnelId, @RequestParam("resourceObjId") Long resourceObjId, @RequestParam("account") String account);
 }

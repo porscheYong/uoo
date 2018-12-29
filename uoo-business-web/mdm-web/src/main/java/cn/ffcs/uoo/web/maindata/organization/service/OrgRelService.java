@@ -58,7 +58,9 @@ public interface OrgRelService {
                                                          @RequestParam(value = "orgRootId",required = false)String orgRootId,
                                                          @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                          @RequestParam(value = "pageSize",required = false)Integer pageSize,
-                                                         @RequestParam(value = "pageNo",required = false)Integer pageNo);
+                                                         @RequestParam(value = "pageNo",required = false)Integer pageNo,
+                                                         @RequestParam(value = "userId",required = false)Long userId,
+                                                         @RequestParam(value = "accout",required = false)String accout);
 
 
    @RequestMapping(value="/orgRel/getOrgRelTypePage",method = RequestMethod.GET,headers={"Content-Type=application/json"})

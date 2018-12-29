@@ -2,6 +2,7 @@ package cn.ffcs.uoo.web.maindata.personnel.controller;
 
 
 import cn.ffcs.uoo.web.maindata.personnel.service.PersonnelService;
+import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
 import cn.ffcs.uoo.web.maindata.personnel.vo.EditFormPersonnelVo;
 import cn.ffcs.uoo.web.maindata.personnel.vo.PersonnelVo;
 import io.swagger.annotations.Api;
@@ -58,13 +59,14 @@ public class PersonnelController {
     public Object getFormPersonnel( Long personnelId,
                                     Long orgTreeId,
                                     Long orgId){
-        return  personnelService.getFormPersonnel(personnelId, orgTreeId, orgId);
+        return  personnelService.getFormPersonnel(personnelId, orgTreeId, orgId, SysUserInfo.getAccount());
     }
 
     @ApiOperation(value = "新增人员信息",notes = "人员信息新增")
     @ApiImplicitParam(name = "editFormPersonnelVo",value = "人员信息",required = true,dataType = "EditFormPersonnelVo")
     @RequestMapping(value = "/savePersonnel",method = RequestMethod.POST)
     public Object savePersonnel(@RequestBody EditFormPersonnelVo editFormPersonnelVo) {
+        editFormPersonnelVo.setUserId(SysUserInfo.getUserId());
         return personnelService.savePersonnel(editFormPersonnelVo);
     }
 
@@ -72,13 +74,14 @@ public class PersonnelController {
     @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long",paramType="path")
     @RequestMapping(value="/deletePersonnel",method = RequestMethod.DELETE)
     public Object deletePersonnel(Long personnelId) {
-        return personnelService.deletePersonnel(personnelId);
+        return personnelService.deletePersonnel(personnelId, SysUserInfo.getUserId());
     }
 
     @ApiOperation(value = "修改人员基本信息",notes = "人员基本信息修改")
     @ApiImplicitParam(name = "personnelVo",value = "人员基本信息",required = true,dataType = "PersonnelVo")
     @RequestMapping(value = "/updatePersonnel",method = RequestMethod.PUT)
     public Object upPersonnel(@RequestBody PersonnelVo personnelVo){
+        personnelVo.setUserId(SysUserInfo.getUserId());
         return personnelService.upPersonnel(personnelVo);
     }
 

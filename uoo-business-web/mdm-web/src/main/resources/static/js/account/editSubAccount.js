@@ -273,8 +273,14 @@ function initSubAcctInfoCheck(results){       //初始化从账号信息(查看)
     isNull("#invalidDateLable",results.tbSlaveAcct.disableDate);
 
     for(var i = 0; i <results.tbRolesList.length; i++){
-        $("#nameAndRole").append($("<span class='roleTag'>"+results.tbRolesList[i].roleName+"</span>"));
-    }
+        if(i != 0 && i%3 == 0){
+          $("#roleTab").append($("<br><span class='roleTag'>"+results.tbRolesList[i].roleName+"</span>"));
+        }else if(i != 0 && i%3 != 0){
+          $("#roleTab").append($("<span class='roleTag'>"+results.tbRolesList[i].roleName+"</span>"));
+        }else{
+          $("#roleTab").append($("<span class='roleTag'>"+results.tbRolesList[i].roleName+"</span>"));
+        }
+      }
     userRoleList = results.tbRolesList;
     window.localStorage.setItem('userRoleList',JSON.stringify(userRoleList));
 }
@@ -433,7 +439,7 @@ parent.layer.open({
     title: '选择角色',
     shadeClose: true,
     shade: 0.8,
-    area: ['50%', '65%'],
+    area: ['70%', '85%'],
     maxmin: true,
     content: 'roleDialog.html',
     btn: ['确认', '取消'],

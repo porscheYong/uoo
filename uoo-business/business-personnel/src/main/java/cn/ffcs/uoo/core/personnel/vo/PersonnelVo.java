@@ -101,6 +101,11 @@ public class PersonnelVo {
      */
     private String address;
 
+    /**
+     * 操作人
+     */
+    private Long userId;
+
     /**  2、联系信息    */
 
     //private List<TbContactVo> tbContactVoList;

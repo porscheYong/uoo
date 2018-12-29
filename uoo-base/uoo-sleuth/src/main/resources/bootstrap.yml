@@ -1,9 +1,32 @@
 spring:
   application:
     name: uoo-sleuth
-#  datasource:
-#    druid:
-#      driver-class-name: oracle.jdbc.OracleDriver
-#      url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
-#      username: octopus
-#      password: octopus
+server:
+  port: 8600
+logging:
+  level:
+    root: INFO
+    org.springframework.web.servlet.DispatcherServlet: warn
+    org.springframework.cloud.sleuth: warn
+
+---
+spring:
+  profiles: dev
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://134.96.253.222:8751/eureka/,http://134.96.253.223:8751/eureka/
+
+---
+spring:
+  profiles: pro
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://134.96.217.231:8751/eureka/,http://134.96.217.232:8751/eureka/

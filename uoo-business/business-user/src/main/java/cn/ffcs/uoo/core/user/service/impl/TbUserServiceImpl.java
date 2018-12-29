@@ -1,13 +1,16 @@
 package cn.ffcs.uoo.core.user.service.impl;
 
+import cn.ffcs.uoo.core.user.constant.BaseUnitConstants;
 import cn.ffcs.uoo.core.user.dao.TbUserMapper;
 import cn.ffcs.uoo.core.user.entity.TbRoles;
 import cn.ffcs.uoo.core.user.entity.TbUser;
+import cn.ffcs.uoo.core.user.service.CommonSystemService;
 import cn.ffcs.uoo.core.user.service.TbUserService;
 import cn.ffcs.uoo.core.user.util.StrUtil;
 import cn.ffcs.uoo.core.user.vo.*;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +25,9 @@ import java.util.List;
  */
 @Service
 public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> implements TbUserService {
+
+    @Autowired
+    private CommonSystemService commonSystemService;
 
     @Override
     public Long getId(){
@@ -49,9 +55,10 @@ public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> impleme
 
 
     @Override
-    public Page<ListUserVo> getUserList( Long personnelId, Integer pageNo, Integer pageSize){
+    public Page<ListUserVo> getUserList( Long personnelId, Integer pageNo, Integer pageSize, String account){
+        String inSql = commonSystemService.getSysDataRuleSql("t3",BaseUnitConstants.TB_ACCOUNT_ORG_REL, account);
         Page<ListUserVo> page = new Page<ListUserVo>(StrUtil.intiPageNo(pageNo), StrUtil.intiPageSize(pageSize));
-        page.setRecords(baseMapper.getUserList(page, personnelId));
+        page.setRecords(baseMapper.getUserList(page, personnelId, inSql));
         return  page;
     }
 
@@ -61,10 +68,11 @@ public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> impleme
     }
 
     @Override
-    public Page<ListAcctOrgVo> getAcctOrg(Long acctId, Integer pageNo, Integer pageSize){
+    public Page<ListAcctOrgVo> getAcctOrg(Long acctId, Integer pageNo, Integer pageSize, String account){
+        String inSql = commonSystemService.getSysDataRuleSql("t2", BaseUnitConstants.TB_ACCOUNT_ORG_REL, account);
         Page<ListAcctOrgVo> page = new Page<ListAcctOrgVo>(StrUtil.intiPageNo(pageNo)
             , StrUtil.intiPageSize(pageSize));
-        page.setRecords(baseMapper.getAcctOrg(page, acctId));
+        page.setRecords(baseMapper.getAcctOrg(page, acctId, inSql));
         return  page;
     }
 
@@ -74,8 +82,9 @@ public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> impleme
     }
 
     @Override
-    public List<ListAcctOrgVo> getAcctOrgByPsnId(Long personnelId, Long resourceObjId){
-        return baseMapper.getAcctOrgByPsnId(personnelId, resourceObjId);
+    public List<ListAcctOrgVo> getAcctOrgByPsnId(Long personnelId, Long resourceObjId, String account){
+        String inSql = commonSystemService.getSysDataRuleSql("t2", BaseUnitConstants.TB_ACCOUNT_ORG_REL, account);
+        return baseMapper.getAcctOrgByPsnId(personnelId, resourceObjId, inSql);
     }
 
 }

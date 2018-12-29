@@ -16,7 +16,8 @@ public enum EnumRuleOperator {
     IN("IN","in"),
     NOIN("NOT IN","notin"),
     ISNULL("IS NULL","isnull"),
-    ISNOTNULL("IS NOT NULL","isnotnull");
+    ISNOTNULL("IS NOT NULL","isnotnull"),
+    LIKE("like","like");
 
     private String sqlOper;
 

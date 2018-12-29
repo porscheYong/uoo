@@ -107,7 +107,7 @@
                         AA.ORG_TREE_ID   orgTreeId,
                         AA.ORG_PERSON_ID orgPersonId,
                         AA.SORT          sort
-                   FROM (SELECT B.ORG_PERSON_ID,
+                   FROM (SELECT distinct B.ORG_PERSON_ID,
                                 B.ORG_ID,
                                 B.PERSONNEL_ID,
                                 B.POST_ID,
@@ -135,16 +135,22 @@
                                 TB_ORGTREE_ORGPERSON_REL C,
                                 TB_ORG  D,
                                 TB_ORG_TREE             E,
-                                TB_ORG_LEVEL            F
+                                TB_ORG_LEVEL            F,
+                                TB_ORG_ORGTYPE_REL  G
                           WHERE A.STATUS_CD = '1000'
                             AND B.STATUS_CD = '1000'
                             AND C.STATUS_CD = '1000'
                             AND D.STATUS_CD = '1000'
                             AND E.STATUS_CD = '1000'
                             AND F.STATUS_CD = '1000'
+                            AND G.STATUS_CD = '1000'
                             AND A.PERSONNEL_ID = B.PERSONNEL_ID
+                            AND G.ORG_ID = D.ORG_ID
                             AND F.ORG_ID = D.ORG_ID
                             AND D.ORG_ID = B.ORG_ID
+                <if test="psonOrgVo.tabOrgOrgTypeParams!='' and psonOrgVo.tabOrgOrgTypeParams!=null">
+                    AND ${psonOrgVo.tabOrgOrgTypeParams}
+                </if>
                 <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
                     AND ${psonOrgVo.tabOrgParams}
                 </if>
@@ -175,7 +181,7 @@
             ORG_CODE,
             STATUS_CD,
             ORG_TREE_NAME
-            FROM (SELECT A.ORG_ID,
+            FROM (SELECT distinct A.ORG_ID,
             A.SORT,
             A.ORG_NAME,
             A.LOC_ID,
@@ -189,13 +195,19 @@
             TB_ORG_REL              B,
             TB_ORG_TREE             C,
             TB_OGT_ORG_RELTYPE_CONF D,
-            TB_ORG_REL_TYPE         E
+            TB_ORG_REL_TYPE         E,
+            TB_ORG_ORGTYPE_REL  G
             WHERE A.STATUS_CD = 1000
             AND B.STATUS_CD = 1000
             AND C.STATUS_CD = 1000
             AND D.Status_Cd = 1000
-            and E.STATUS_CD = 1000
+            AND E.STATUS_CD = 1000
+            AND G.STATUS_CD = 1000
+            AND G.ORG_ID = A.ORG_ID
             AND A.ORG_ID = B.ORG_ID
+            <if test="psonOrgVo.tabOrgOrgTypeParams!='' and psonOrgVo.tabOrgOrgTypeParams!=null">
+                AND ${psonOrgVo.tabOrgOrgTypeParams}
+            </if>
             AND B.REF_CODE = E.REF_CODE
             and D.ORG_REL_TYPE_ID = E.ORG_REL_TYPE_ID
             AND C.ORG_TREE_ID = D.ORG_TREE_ID
@@ -218,9 +230,7 @@
             PER.PSN_CODE psnCode,
             PER.PSN_NBR psnNbr,
             PER.NC_CODE ncCode,
-            <!--POST.POST_NAME postName,-->
             ORG_TREE_NAME orgTreeName,
-            <!--CTA.CONTENT mobile,-->
             AA.STATUS_CD statusCd,
             AA.ORG_TREE_ID orgTreeId,
             AA.ORG_PERSON_ID orgPersonId,
@@ -252,9 +262,6 @@
             </if>
             ) AA
             LEFT JOIN TB_PERSONNEL PER ON PER.STATUS_CD='1000' AND PER.PERSONNEL_ID = AA.PERSONNEL_ID
-            <!--LEFT JOIN TB_POST POST ON POST.STATUS_CD='1000' AND POST.POST_ID = AA.POST_ID
-            LEFT JOIN TB_CONTACT CTA ON  CTA.STATUS_CD='1000' AND CTA.PERSONNEL_ID = AA.PERSONNEL_ID
-            AND CTA.FIRST_FLAG=1 AND CTA.CONTACT_TYPE=1 -->
             ) AB where 1=1
             <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
                 AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR PSNCODE LIKE '%'||#{psonOrgVo.search}||'%' OR ORGNAME LIKE '%'||#{psonOrgVo.search}||'%')
@@ -275,7 +282,7 @@
             AREA_CODE_ID,
             ORG_CODE,
             ORG_TREE_NAME
-            FROM (SELECT A.ORG_ID,
+            FROM (SELECT distinct A.ORG_ID,
             A.SORT,
             A.ORG_NAME,
             A.LOC_ID,
@@ -288,18 +295,24 @@
             TB_ORG_REL              B,
             TB_ORG_TREE             C,
             TB_OGT_ORG_RELTYPE_CONF D,
-            TB_ORG_REL_TYPE         E
+            TB_ORG_REL_TYPE         E,
+            TB_ORG_ORGTYPE_REL  G
             WHERE A.STATUS_CD = 1000
             AND B.STATUS_CD = 1000
             AND C.STATUS_CD = 1000
             AND D.Status_Cd = 1000
-            and E.STATUS_CD = 1000
+            AND E.STATUS_CD = 1000
+            AND G.STATUS_CD = 1000
+            AND G.ORG_ID = A.ORG_ID
             AND A.ORG_ID = B.ORG_ID
+            <if test="psonOrgVo.tabOrgOrgTypeParams!='' and psonOrgVo.tabOrgOrgTypeParams!=null">
+                AND ${psonOrgVo.tabOrgOrgTypeParams}
+            </if>
             <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
                 AND ${psonOrgVo.tabOrgParams}
             </if>
             AND B.REF_CODE = E.REF_CODE
-            and D.ORG_REL_TYPE_ID = E.ORG_REL_TYPE_ID
+            AND D.ORG_REL_TYPE_ID = E.ORG_REL_TYPE_ID
             AND C.ORG_TREE_ID = D.ORG_TREE_ID
             AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
             ) AA
@@ -482,15 +495,21 @@
                 T3.PSN_NBR PSNNBR,
                 T3.NC_CODE NCCODE,
                 T.FULL_NAME ORGNAME
-                FROM (SELECT T1.*, T2.ORG_ID, T3.FULL_NAME
-                FROM TB_ACCT T1, TB_ACCOUNT_ORG_REL T2, TB_ORG T3,TB_ORG_LEVEL T4
+                FROM (SELECT distinct T1.*, T2.ORG_ID, T3.FULL_NAME
+                FROM TB_ACCT T1, TB_ACCOUNT_ORG_REL T2, TB_ORG T3,TB_ORG_LEVEL T4,
+                    TB_ORG_ORGTYPE_REL T5
                 WHERE T1.STATUS_CD = 1000
                 AND T2.STATUS_CD = 1000
                 AND T3.STATUS_CD = 1000
                 AND T4.STATUS_CD = 1000
+                AND T5.STATUS_CD = 1000
                 AND T1.ACCT_ID = T2.ACCT_ID
+                AND T5.ORG_ID = T3.ORG_ID
                 AND T2.ORG_ID = T4.ORG_ID
                 AND T4.ORG_ID=T3.ORG_ID
+        <if test="psonOrgVo.tabOrgOrgTypeParams!='' and psonOrgVo.tabOrgOrgTypeParams!=null">
+            AND ${psonOrgVo.tabOrgOrgTypeParams}
+        </if>
         <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
             AND ${psonOrgVo.tabOrgParams}
         </if>
@@ -545,7 +564,7 @@
                 AREA_CODE_ID,
                 ORG_CODE,
                 STATUS_CD
-                FROM (SELECT A.ORG_ID,
+                FROM (SELECT distinct A.ORG_ID,
                 A.SORT,
                 A.ORG_NAME,
                 A.LOC_ID,
@@ -558,13 +577,19 @@
                 TB_ORG_REL              B,
                 TB_ORG_TREE             C,
                 TB_OGT_ORG_RELTYPE_CONF D,
-                TB_ORG_REL_TYPE         E
+                TB_ORG_REL_TYPE         E,
+                TB_ORG_ORGTYPE_REL F
                 WHERE A.STATUS_CD = 1000
                 AND B.STATUS_CD = 1000
                 AND C.STATUS_CD = 1000
                 AND D.Status_Cd = 1000
-                and E.STATUS_CD = 1000
+                AND E.STATUS_CD = 1000
+                AND F.STATUS_CD = 1000
+                AND F.ORG_ID = A.ORG_ID
                 AND A.ORG_ID = B.ORG_ID
+                <if test="psonOrgVo.tabOrgOrgTypeParams!='' and psonOrgVo.tabOrgOrgTypeParams!=null">
+                    AND ${psonOrgVo.tabOrgOrgTypeParams}
+                </if>
                 <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
                     AND ${psonOrgVo.tabOrgParams}
                 </if>
@@ -639,7 +664,7 @@
                 AREA_CODE_ID,
                 ORG_CODE,
                 STATUS_CD
-                FROM (SELECT A.ORG_ID,
+                FROM (SELECT distinct A.ORG_ID,
                 A.SORT,
                 A.ORG_NAME,
                 A.LOC_ID,
@@ -652,13 +677,19 @@
                 TB_ORG_REL              B,
                 TB_ORG_TREE             C,
                 TB_OGT_ORG_RELTYPE_CONF D,
-                TB_ORG_REL_TYPE         E
+                TB_ORG_REL_TYPE         E,
+                TB_ORG_ORGTYPE_REL F
                 WHERE A.STATUS_CD = 1000
                 AND B.STATUS_CD = 1000
                 AND C.STATUS_CD = 1000
                 AND D.Status_Cd = 1000
                 and E.STATUS_CD = 1000
+                and F.STATUS_CD = 1000
+                AND F.ORG_ID = A.ORG_ID
                 AND A.ORG_ID = B.ORG_ID
+                <if test="psonOrgVo.tabOrgOrgTypeParams!='' and psonOrgVo.tabOrgOrgTypeParams!=null">
+                    AND ${psonOrgVo.tabOrgOrgTypeParams}
+                </if>
                 <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
                     AND ${psonOrgVo.tabOrgParams}
                 </if>

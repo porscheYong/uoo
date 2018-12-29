@@ -64,19 +64,14 @@ function orgTypeBeforeClick (treeId, treeNode, clickFlag) {
 function onOrgTypeCheck (e, treeId, treeNode) {
     var zTree = $.fn.zTree.getZTreeObj("orgTypeTree");
     var node = zTree.getNodeByTId(treeNode.tId);
-    if (checkNode.indexOf(node) === -1) {
+    if ($.inArray(node, checkNode) === -1) {
         checkNode.push(node);
         renderTag()
     } else {
-        var idx = checkNode.findIndex(
-        //     (v) => {
-        //     return v.tId == node.tId;
-        // }
-            function(v){
-                return v.tId == node.tId;
-            }
-        );
-        checkNode.splice(idx, 1);
+        for (var i = 0; i < checkNode.length; i++){
+            if (checkNode[i].tId == node.tId)
+                checkNode.splice(i, 1);
+        }
         renderTag();
     }
 }
@@ -103,17 +98,10 @@ function removeNode (e) {
     var zTree = $.fn.zTree.getZTreeObj("orgTypeTree");
     var node = zTree.getNodeByTId($(e.target).parent().attr('treeId'));
     zTree.checkNode(node, false);
-    
-    var tId = $(e.target).parent().attr('treeId');
-    var idx = checkNode.findIndex(
-    //     (v) => {
-    //     return v.tId == tId;
-    // }
-        function(v){
-            return v.tId == tId;
-        }
-    );
-    checkNode.splice(idx, 1);
+    for (var i = 0; i < checkNode.length; i++){
+        if (checkNode[i].tId == node.tId)
+            checkNode.splice(i, 1);
+    }
 }
 
 function autoCheck () {

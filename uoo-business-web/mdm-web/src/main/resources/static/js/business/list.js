@@ -8,8 +8,6 @@ var orgName = getQueryString('name');
 var refCode = getQueryString('refCode');
 var table;
 var personnelTable;
-var sortFlag = 0;
-var currentPage = 0;
 
 if (!window.addEventListener) {
     seajs.use('/vendors/lulu/js/common/ui/Radio');
@@ -22,7 +20,8 @@ function initOrgTable (results) {
         'searching': false,
         'autoWidth': false,
         'ordering': true,
-        "scrollY": "375px",
+        'lSort': true,
+        "scrollY": "395px",
         'scrollCollapse': true,
         'columns': [
             { 'data': "orgName", 'title': '部门', 'className': 'row-name',
@@ -89,11 +88,6 @@ function initOrgTable (results) {
             })
         }
     });
-
-    initSort(".row-name","orgName");
-    initSort(".row-sex","orgTypeSplit");
-    initSort(".user-account","orgCode");
-    initSort(".user-type","locName");
     
     var loading = parent.loading;
     loading.screenMaskDisable('container');
@@ -105,10 +99,15 @@ function initOrgPersonnelTable (isSearchlower) {
         'destroy': true,
         'autoWidth': false,
         'ordering': true,
-        "scrollY": "375px",
+        'lSort': true,
+        "scrollY": "395px",
         'scrollCollapse': true,
         'columns': [
-            { 'data': null, 'title': '序号', 'className': 'row-no' },
+            { 'data': null, 'title': '序号', 'className': 'row-no',
+              'render': function (data, type, row, meta) {
+                return meta.row + 1 + meta.settings._iDisplayStart;
+              }
+            },
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
                     return '<a href="/inaction/user/edit.html?id='+ row.orgId +'&orgTreeId=' + orgTreeId + '&name=' + row.orgName + '&personnelId=' + row.personnelId + '">'+ row.psnName +'</a>';
@@ -151,11 +150,6 @@ function initOrgPersonnelTable (isSearchlower) {
         "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
         'pagingType': 'simple_numbers',
         'dom': '<"top"f>t<"bottom"ipl>',
-        'drawCallback': function(){
-            this.api().column(0).nodes().each(function(cell, i) {
-                cell.innerHTML =  i + 1;
-            });
-        },
         'serverSide': true,  // 服务端分页
         'ajax': function (data, callback, settings) {
             var param = {};
@@ -178,12 +172,6 @@ function initOrgPersonnelTable (isSearchlower) {
             })
         }
     });
-
-    initSortPsn(".row-name","psnName");
-    initSortPsn(".row-mobile","mobile");
-    initSortPsn(".cert-no","psnNbr");
-    initSortPsn(".post-name","postName");
-    initSortPsn(".org-name","orgName");
 }
 
 //勾选显示下级组织人员
@@ -250,108 +238,3 @@ function orgSearch () {
 //     var url = 'orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
 //     window.location.href = url;
 // });
-
-function arrSort (arr, dataLeven) { // 参数：arr 排序的数组; dataLeven 数组内的需要比较的元素属性 
-    /* 获取数组元素内需要比较的值 */
-    function getValue (option) { // 参数： option 数组元素
-      if (!dataLeven) return option
-      var data = option
-      dataLeven.split('.').filter(function (item) {
-        data = data[item]
-      })
-      return data + ''
-    }
-    arr.sort(function (item1, item2) {
-      return getValue(item1).localeCompare(getValue(item2), 'zh-CN');
-    })
-  }
-
-  function descSort(asc,desc){      //desc排序
-    for(var i=asc.length-1;i>=0;i--){
-        desc.push(asc[i]);
-    }
-    return desc;
-  }
-
-  function sortToTable(arr){   //将排完序的数据写入表格
-    for(var i =0;i<arr.length;i++){
-        sortFlag = 1;
-        table
-            .row(i)
-            .data({
-                "orgName":arr[i].orgName,
-                "orgTypeSplit":arr[i].orgTypeSplit,
-                "orgCode":arr[i].orgCode,
-                "locName":arr[i].locName,
-                "statusCd":arr[i].statusCd,
-                "orgId":arr[i].orgId
-            })
-            .draw();
-    }
-  }
-
-  function sortToTablePsn(arr){   //将排完序的数据写入表格(组织人员)
-    for(var i =0;i<arr.length;i++){
-        sortFlag = 1;
-        personnelTable
-            .row(i)
-            .data({
-                "psnName":arr[i].psnName,
-                "mobile":arr[i].mobile,
-                "psnNbr":arr[i].psnNbr,
-                "postName":arr[i].postName,
-                "orgName":arr[i].orgName,
-                "statusCd":arr[i].statusCd,
-                "orgId":arr[i].orgId,
-                "personnelId":arr[i].personnelId
-            })
-            .draw();
-    }
-  }
-
-  //初始化排序
-  function initSort(thClass,param){       
-    $(thClass).on('click', function () {
-        var tableLength = table.data().length;
-        var arr = [];
-        var descArr = [];
-    
-        for(var i = 0;i < tableLength;i++){
-            arr.push(table.row(i).data());
-        }
-        
-        arrSort(arr,param);
-        
-        if($(this).hasClass("sorting_desc")){
-            descArr = descSort(arr,descArr);
-            sortToTable(descArr);
-        }else{
-            sortToTable(arr);
-        }
-        table.page(currentPage).draw( false );
-    });
-}
-
-
- //初始化排序(组织人员)
-function initSortPsn(thClass,param){       
-    $(thClass).on('click', function () {
-        var tableLength = personnelTable.data().length;
-        var arr = [];
-        var descArr = [];
-    
-        for(var i = 0;i < tableLength;i++){
-            arr.push(personnelTable.row(i).data());
-        }
-        
-        arrSort(arr,param);
-        
-        if($(this).hasClass("sorting_desc")){
-            descArr = descSort(arr,descArr);
-            sortToTablePsn(descArr);
-        }else{
-            sortToTablePsn(arr);
-        }
-        personnelTable.page(currentPage).draw( false );
-    });
-}

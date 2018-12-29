@@ -238,7 +238,13 @@ function initAcctInfoCheck(results){     //初始化用户信息(查看)
   isNull("#invalidDateLable",results.tbAcct.disableDate);
 
   for(var i = 0; i <results.tbRolesList.length; i++){
-    $("#nameAndRole").append($("<span class='roleTag'>"+results.tbRolesList[i].roleName+"</span>"));
+    if(i != 0 && i%3 == 0){
+      $("#roleTab").append($("<br><span class='roleTag'>"+results.tbRolesList[i].roleName+"</span>"));
+    }else if(i != 0 && i%3 != 0){
+      $("#roleTab").append($("<span class='roleTag'>"+results.tbRolesList[i].roleName+"</span>"));
+    }else{
+      $("#roleTab").append($("<span class='roleTag'>"+results.tbRolesList[i].roleName+"</span>"));
+    }
   }
   userRoleList = results.tbRolesList;
   
@@ -381,7 +387,7 @@ function addSlaveBtnClick(acctOrgRelId,id,orgTreeId){      //点击新增从账�
     var sFullName = orgTable.row(id-1).data().fullName;
     var url = 'addSubAccount.html?orgTreeId=' + orgTreeId + '&hType=th&personnelId=' + personnelId + '&orgTreeId=' + orgTreeId +
                       '&mainAcctId='+ acctId +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&toMainType=' + hType +
-                      '&fullName=' + encodeURI(sFullName) + '&acctOrgRelId=' + acctOrgRelId + '&orgTreeName=' + treeNameList[id-1];
+                      '&fullName=' + encodeURI(sFullName) + '&acctOrgRelId=' + acctOrgRelId + '&orgTreeName=' + encodeURI(treeNameList[id-1]);
     window.location.href = url;
 }
 
@@ -491,7 +497,7 @@ function openTypeDialog() {
       title: '选择角色',
       shadeClose: true,
       shade: 0.8,
-      area: ['50%', '65%'],
+      area: ['70%', '85%'],
       maxmin: true,
       content: 'roleDialog.html',
       btn: ['确认', '取消'],

@@ -934,7 +934,7 @@ function updatePersonnel(){
     updates.tbMobileVoList=tbMobileVoList;
     updates.tbEamilVoList=tbEamilVoList;
 
-    updates.image = psnImageId.toString();
+    updates.image = psnImageId;
 
     $.ajax({
         url:'/personnel/updatePersonnel',

@@ -24,19 +24,19 @@ public interface AcctService {
     public Object saveAcct(@RequestBody EditFormAcctVo editFormAcctVo);
 
     @RequestMapping(value = "/tbAcct/deleteTbAcct", method = RequestMethod.DELETE, headers={"Content-Type=application/json"})
-    public Object removeAcct(@RequestParam("acctId") Long acctId);
+    public Object removeAcct(@RequestParam("acctId") Long acctId, @RequestParam("userId") Long userId);
 
     @RequestMapping(value = "/tbAcct/updateAcct", method = RequestMethod.PUT, headers={"Content-Type=application/json"})
     public Object updateAcct(@RequestBody EditFormAcctVo editFormAcctVo);
 
     @RequestMapping(value = "/tbAccountOrgRel/removeAcctOrg", method = RequestMethod.DELETE, headers={"Content-Type=application/json"})
-    public Object removeAcctOrg(@RequestParam("personnelId") Long personnelId, @RequestParam("acctId") Long acctId, @RequestParam("orgId") Long orgId, @RequestParam("orgTreeId") Long orgTreeId);
+    public Object removeAcctOrg(@RequestParam("personnelId") Long personnelId, @RequestParam("acctId") Long acctId, @RequestParam("orgId") Long orgId, @RequestParam("orgTreeId") Long orgTreeId, @RequestParam("userId") Long userId);
 
     @RequestMapping(value = "/tbAccountOrgRel/addAcctOrg", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     public Object addAcctOrg(@RequestBody TbAccountOrgRel tbAccountOrgRel);
 
     @RequestMapping(value= "/tbAccountOrgRel/getAcctOrgRelPage", method = RequestMethod.GET, headers={"Content-Type=application/json"} )
-    public Object getAcctOrgRelPage(@RequestParam("acctId") Long acctId, @RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
+    public Object getAcctOrgRelPage(@RequestParam("acctId") Long acctId, @RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize, @RequestParam("account") String account);
 
     @RequestMapping(value = "/tbAcct/getTbAcct", method = RequestMethod.GET, headers={"Content-Type=application/json"})
     public Object getTbAcct(@RequestParam("acct") String acct);

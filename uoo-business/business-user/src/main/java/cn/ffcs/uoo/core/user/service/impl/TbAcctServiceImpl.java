@@ -68,11 +68,12 @@ public class TbAcctServiceImpl extends ServiceImpl<TbAcctMapper, TbAcct> impleme
     }
 
     @Override
-    public Object removeTbAcct(Long acctId){
+    public Object removeTbAcct(Long acctId, Long userId){
         TbAcct tbAcct = new TbAcct();
         tbAcct.setAcctId(acctId);
         tbAcct.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbAcct.setStatusDate(new Date());
+        tbAcct.setUpdateUser(userId);
         if(this.updateById(tbAcct)){
             return ResultUtils.success(null);
         }
@@ -88,11 +89,12 @@ public class TbAcctServiceImpl extends ServiceImpl<TbAcctMapper, TbAcct> impleme
     }
 
     @Override
-    public Object insertOrUpdateTbAcct(EditFormAcctVo editFormAcctVo, TbAcct tbAcct, Long acctId){
+    public Object insertOrUpdateTbAcct(EditFormAcctVo editFormAcctVo, TbAcct tbAcct, Long acctId, Long userId){
         String type = "update";
         if(StrUtil.isNullOrEmpty(tbAcct)){
             tbAcct = new TbAcct();
             tbAcct.setAcctId(acctId);
+            tbAcct.setCreateUser(userId);
             type = "insert";
         }
         if("insert".equals(type) || !editFormAcctVo.getPassword().equals(tbAcct.getPassword())){
@@ -114,6 +116,7 @@ public class TbAcctServiceImpl extends ServiceImpl<TbAcctMapper, TbAcct> impleme
         tbAcct.setStatusCd(editFormAcctVo.getStatusCd());
         tbAcct.setEnableDate(editFormAcctVo.getEnableDate());
         tbAcct.setDisableDate(editFormAcctVo.getDisableDate());
+        tbAcct.setUpdateUser(userId);
 
         if("insert".equals(type)){
             baseMapper.insert(tbAcct);

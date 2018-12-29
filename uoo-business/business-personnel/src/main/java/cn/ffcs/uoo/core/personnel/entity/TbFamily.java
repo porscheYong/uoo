@@ -73,7 +73,7 @@ public class TbFamily extends Model<TbFamily> {
     /**
      * 创建人
      */
-    @JsonIgnore
+    //@JsonIgnore
     @TableField(value = "CREATE_USER", fill = FieldFill.INSERT)
     private Long createUser;
     /**
@@ -85,7 +85,7 @@ public class TbFamily extends Model<TbFamily> {
     /**
      * 修改人
      */
-    @JsonIgnore
+    //@JsonIgnore
     @TableField(value = "UPDATE_USER", fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
     /**

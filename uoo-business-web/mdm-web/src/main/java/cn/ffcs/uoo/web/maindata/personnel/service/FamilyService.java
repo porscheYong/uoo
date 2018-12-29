@@ -26,7 +26,7 @@ public interface FamilyService {
     public Object updateTbFamily(@RequestBody TbFamily tbFamily);
 
     @RequestMapping(value="/family/delTbFamily",method = RequestMethod.DELETE, headers={"Content-Type=application/json"})
-    public Object delTbFamily(@RequestParam("familyId") Long familyId );
+    public Object delTbFamily(@RequestParam("familyId") Long familyId, @RequestParam("userId") Long userId);
 
     @RequestMapping(value="/family/getTbFamily",method = RequestMethod.GET, headers={"Content-Type=application/json"})
     public Object getTbFamily(@RequestParam("familyId") Long familyId );

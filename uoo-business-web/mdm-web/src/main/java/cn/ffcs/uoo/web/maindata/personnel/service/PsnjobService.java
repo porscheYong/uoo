@@ -26,7 +26,7 @@ public interface PsnjobService {
     public Object updateTbPsnjob(@RequestBody TbPsnjob tbPsnjob);
 
     @RequestMapping(value="/tbPsnjob/delTbPsnjob", method = RequestMethod.DELETE, headers={"Content-Type=application/json"})
-    public Object delTbPsnjob(@RequestParam("psnjobId") Long psnjobId );
+    public Object delTbPsnjob(@RequestParam("psnjobId") Long psnjobId, @RequestParam("userId") Long userId );
 
     @RequestMapping(value="/tbPsnjob/getTbPsnjob", method = RequestMethod.GET, headers={"Content-Type=application/json"})
     public Object getTbPsnjob(@RequestParam("psnjobId") Long psnjobId);

@@ -48,9 +48,10 @@ public interface TbAcctService extends IService<TbAcct> {
     /**
      * 根据Id删除账号
      * @param acctId
+     * @param userId
      * @return
      */
-    public Object removeTbAcct(Long acctId);
+    public Object removeTbAcct(Long acctId, Long userId);
 
     /**
      * 根据 personelId 获取主账号信息
@@ -64,9 +65,10 @@ public interface TbAcctService extends IService<TbAcct> {
      * @param editFormAcctVo
      * @param tbAcct
      * @param acctId
+     * @param userId
      * @return
      */
-    public Object insertOrUpdateTbAcct(EditFormAcctVo editFormAcctVo, TbAcct tbAcct, Long acctId);
+    public Object insertOrUpdateTbAcct(EditFormAcctVo editFormAcctVo, TbAcct tbAcct, Long acctId, Long userId);
 
     /**
      * 根据账号获取 账号信息

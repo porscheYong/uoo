@@ -62,9 +62,10 @@ public class TbFamilyServiceImpl extends ServiceImpl<TbFamilyMapper, TbFamily> i
     }
 
     @Override
-    public Object delTbFamily(Long familyId) {
+    public Object delTbFamily(Long familyId, Long userId) {
         TbFamily tbFamily = new TbFamily();
         tbFamily.setFamilyId(familyId);
+        tbFamily.setUpdateUser(userId);
         tbFamily.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbFamily.setStatusDate(new Date());
         if(retBool(baseMapper.updateById(tbFamily))){
@@ -87,10 +88,11 @@ public class TbFamilyServiceImpl extends ServiceImpl<TbFamilyMapper, TbFamily> i
     }
 
     @Override
-    public Object delTbFamilyByPsnId(Long personnelId){
+    public Object delTbFamilyByPsnId(Long personnelId, Long userId){
         TbFamily tbFamily = new TbFamily();
         tbFamily.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbFamily.setStatusDate(new Date());
+        tbFamily.setUpdateUser(userId);
         EntityWrapper<TbFamily> wrapper = new EntityWrapper<TbFamily>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);

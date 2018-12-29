@@ -45,7 +45,9 @@ public interface OrgPersonRelService{
 
     @RequestMapping(value="/orgPersonRel/getPerOrgRelList",method = RequestMethod.GET)
     public ResponseResult<List<PsonOrgVo>> getPerOrgRelList(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
-                                                            @RequestParam(value = "personnelId",required = false)String personnelId);
+                                                            @RequestParam(value = "personnelId",required = false)String personnelId,
+                                                            @RequestParam(value = "userId",required = false)Long userId,
+                                                            @RequestParam(value = "accout",required = false)String accout);
 
     @RequestMapping(value="/orgPersonRel/getPerOrgRelPage",method = RequestMethod.GET)
     public ResponseResult<Page<PsonOrgVo>> getPerOrgRelPage(@RequestParam(value = "orgId",required = false)String orgId,

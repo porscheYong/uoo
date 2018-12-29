@@ -153,6 +153,27 @@ public class PsonOrgVo extends BaseVo {
 
     private String isSearchlower;
 
+
+    /** 账号权限**/
+    private String accout;
+    private Long sysUserId;
+
+    public String getAccout() {
+        return accout;
+    }
+
+    public void setAccout(String accout) {
+        this.accout = accout;
+    }
+
+    public Long getSysUserId() {
+        return sysUserId;
+    }
+
+    public void setSysUserId(Long sysUserId) {
+        this.sysUserId = sysUserId;
+    }
+
     public String getIsSearchlower() {
         return isSearchlower;
     }
