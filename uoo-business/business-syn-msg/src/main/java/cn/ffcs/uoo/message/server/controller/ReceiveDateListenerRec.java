@@ -364,7 +364,7 @@ public class ReceiveDateListenerRec {
                 TbAcctVo tbAcctVo = tbSlaveAcctMapper.insertOrUpdateSalveAcct(slaveAcctId);//获取下发的报文
 
                 if (tbAcctVo == null) {
-                    logger.warn("json:{},systemId:{} 账号信息不是有效数据不存在", json, null);
+                    logger.warn("json:{},systemId:{} 账号信息不是有效数据不存在", json, vo.getBusinessSystemId());
                     return null;
                 }
 
