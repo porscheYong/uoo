@@ -25,4 +25,9 @@ public class SysFunctionServiceImpl extends ServiceImpl<SysFunctionMapper, SysFu
         return baseMapper.getFunctionByAccout(accout);
     }
 
+    @Override
+    public Long getId() {
+        return baseMapper.getId();
+    }
+
 }

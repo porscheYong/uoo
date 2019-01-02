@@ -16,4 +16,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface SysFunctionMapper extends BaseMapper<SysFunction> {
     List<SysFunction> getFunctionByAccout(String accout);
+    Long getId();
 }

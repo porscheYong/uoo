@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
@@ -55,7 +56,7 @@ public class SysOperationLogController {
     })
     @UooLog(key="getOperationLog",value="获取单个数据")
     @GetMapping("/get")
-    public ResponseResult<Object> get( Long id,String logEnum){
+    public ResponseResult<Object> get(@RequestParam("id") Long id,@RequestParam("logEnum")String logEnum){
         if(id<=0){
             return ResponseResult.createErrorResult("请输入ID");
         }
@@ -71,12 +72,12 @@ public class SysOperationLogController {
 
     @ApiOperation(value = "获取分页列表", notes = "获取分页列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
-            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long"  ),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long"  ),
     })
     @UooLog(key="listPage",value="获取分页列表")
     @GetMapping("/listPage")
-    public ResponseResult<List<LogDTO>> listPage( Integer pageNo,  Integer pageSize){
+    public ResponseResult<List<LogDTO>> listPage(@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         HashMap<String,Object> map=new HashMap<>();

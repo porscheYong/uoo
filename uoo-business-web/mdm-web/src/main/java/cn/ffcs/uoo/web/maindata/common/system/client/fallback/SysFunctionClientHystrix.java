@@ -26,4 +26,24 @@ public class SysFunctionClientHystrix implements SysFunctionClient {
         return rr;
     }
 
+    @Override
+    public ResponseResult<SysFunction> get(Long id) {
+        return ResponseResult.createErrorResult("服务不可用");
+    }
+
+    @Override
+    public ResponseResult<Void> add(SysFunction fun) {
+        return ResponseResult.createErrorResult("服务不可用");
+    }
+
+    @Override
+    public ResponseResult<Void> update(SysFunction fun) {
+        return ResponseResult.createErrorResult("服务不可用");
+    }
+
+    @Override
+    public ResponseResult<Void> delete(SysFunction fun) {
+        return ResponseResult.createErrorResult("服务不可用");
+    }
+
 }

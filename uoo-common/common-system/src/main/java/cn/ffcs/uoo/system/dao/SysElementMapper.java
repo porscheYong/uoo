@@ -1,7 +1,10 @@
 package cn.ffcs.uoo.system.dao;
 
-import cn.ffcs.uoo.system.entity.SysElement;
+import java.util.List;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import cn.ffcs.uoo.system.entity.SysElement;
 
 /**
  * <p>
@@ -12,5 +15,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @since 2018-12-24
  */
 public interface SysElementMapper extends BaseMapper<SysElement> {
-
+    List<SysElement> getElementByAccout(String accout);
+    Integer getId();
 }

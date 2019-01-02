@@ -1,6 +1,9 @@
 package cn.ffcs.uoo.system.service;
 
 import cn.ffcs.uoo.system.entity.SysElement;
+
+import java.util.List;
+
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -12,5 +15,6 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-12-24
  */
 public interface ISysElementService extends IService<SysElement> {
-
+    List<SysElement> getElementByAccout(String accout);
+    Integer getId();
 }

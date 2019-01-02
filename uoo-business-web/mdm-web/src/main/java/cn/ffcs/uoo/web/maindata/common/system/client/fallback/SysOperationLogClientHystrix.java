@@ -6,25 +6,10 @@ import org.springframework.stereotype.Component;
 
 import cn.ffcs.uoo.web.maindata.common.system.client.SysOperationLogClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysOperationLog;
+import cn.ffcs.uoo.web.maindata.common.system.vo.LogDTO;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 @Component
 public class SysOperationLogClientHystrix implements SysOperationLogClient {
-
-    @Override
-    public ResponseResult<SysOperationLog> get(Long id) {
-        ResponseResult<SysOperationLog> rr=new ResponseResult<>();
-        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
-        rr.setMessage("服务不可用");
-        return rr;
-    }
-
-    @Override
-    public ResponseResult<List<SysOperationLog>> listPage(Integer pageNo, Integer pageSize) {
-        ResponseResult<List<SysOperationLog>> rr=new ResponseResult<>();
-        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
-        rr.setMessage("服务不可用");
-        return rr;
-    }
 
     @Override
     public ResponseResult<Void> add(SysOperationLog sysOperationLog) {
@@ -32,6 +17,24 @@ public class SysOperationLogClientHystrix implements SysOperationLogClient {
         rr.setState(ResponseResult.STATE_SERVICE_ERROR);
         rr.setMessage("服务不可用");
         return rr;
+    }
+
+    @Override
+    public ResponseResult<Object> get(Long id, String logEnum) {
+        ResponseResult<Object> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    }
+
+    @Override
+    public ResponseResult<List<LogDTO>> listPage(Integer pageNo, Integer pageSize, String keyWord) {
+
+        ResponseResult<List<LogDTO>> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    
     }
 
 }

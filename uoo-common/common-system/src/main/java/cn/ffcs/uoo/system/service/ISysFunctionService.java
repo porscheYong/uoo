@@ -15,7 +15,7 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-12-24
  */
 public interface ISysFunctionService extends IService<SysFunction> {
-
+    Long getId();
     List<SysFunction> getFunctionByAccout(String accout);
 
 }
