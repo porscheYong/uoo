@@ -83,11 +83,11 @@
             <!--<artifactId>spring-cloud-sleuth-zipkin</artifactId>-->
         <!--</dependency>-->
 
-        <!--<dependency>-->
-            <!--<groupId>de.danielbechler</groupId>-->
-            <!--<artifactId>java-object-diff</artifactId>-->
-            <!--<version>0.95</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>de.danielbechler</groupId>
+            <artifactId>java-object-diff</artifactId>
+            <version>0.95</version>
+        </dependency>
         <!--<dependency>-->
             <!--<groupId>org.hibernate.javax.persistence</groupId>-->
             <!--<artifactId>hibernate-jpa-2.1-api</artifactId>-->

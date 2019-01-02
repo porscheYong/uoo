@@ -73,6 +73,9 @@ public class OrgRelController extends BaseController {
     @Autowired
     private AmqpTemplate template;
 
+    @Autowired
+    private ModifyHistoryService modifyHistoryService;
+
 
     @ApiOperation(value = "查询组织树信息-web", notes = "查询组织树信息")
     @ApiImplicitParams({
@@ -278,6 +281,9 @@ public class OrgRelController extends BaseController {
             ret.setMessage("组织关系类型不存在");
             return ret;
         }
+
+        String batchNumber = modifyHistoryService.getBatchNumber();
+
         //新增组织关系
         OrgRel orgRel = new OrgRel();
         Long orgRefId = orgRelService.getId();
@@ -288,6 +294,8 @@ public class OrgRelController extends BaseController {
         orgRel.setStatusCd("1000");
         orgRel.setCreateUser(org.getUpdateUser());
         orgRelService.add(orgRel);
+        modifyHistoryService.addModifyHistory(null,orgRel,org.getUpdateUser(),batchNumber);
+
 
 
         //新增组织层级
@@ -307,6 +315,7 @@ public class OrgRelController extends BaseController {
             orgLevel.setStatusCd("1000");
             orgLevel.setCreateUser(org.getUpdateUser());
             orgLevelService.add(orgLevel);
+            modifyHistoryService.addModifyHistory(null,orgLevel,org.getUpdateUser(),batchNumber);
         }
 
         //组织组织树关系
@@ -318,7 +327,7 @@ public class OrgRelController extends BaseController {
         orgOrgtreeRef.setStatusCd("1000");
         orgOrgtreeRef.setCreateUser(org.getUpdateUser());
         orgOrgtreeRelService.add(orgOrgtreeRef);
-        //orgOrgtreeRef.insert();
+        modifyHistoryService.addModifyHistory(null,orgOrgtreeRef,org.getUpdateUser(),batchNumber);
 
         TreeNodeVo vo = new TreeNodeVo();
         vo.setId(org.getOrgId().toString());
