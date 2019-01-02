@@ -10,8 +10,10 @@ import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 @Component
 public class SysMenuClientHystrix implements SysMenuClient{
 
+    
+
     @Override
-    public ResponseResult<List<SysMenu>> listPage(Integer pageNo, Integer pageSize) {
+    public ResponseResult<List<SysMenu>> getMenuByAccout(String accout) {
         ResponseResult<List<SysMenu>> rr=new ResponseResult<>();
         rr.setState(ResponseResult.STATE_SERVICE_ERROR);
         rr.setMessage("服务不可用");
@@ -19,7 +21,7 @@ public class SysMenuClientHystrix implements SysMenuClient{
     }
 
     @Override
-    public ResponseResult<List<SysMenu>> getMenuByAccout(String accout) {
+    public ResponseResult<List<SysMenu>> listPage(Integer pageNo, Integer pageSize, String keyWord) {
         ResponseResult<List<SysMenu>> rr=new ResponseResult<>();
         rr.setState(ResponseResult.STATE_SERVICE_ERROR);
         rr.setMessage("服务不可用");

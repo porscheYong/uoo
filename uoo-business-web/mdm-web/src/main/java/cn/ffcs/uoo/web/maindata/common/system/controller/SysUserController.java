@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -78,8 +79,17 @@ public class SysUserController {
     public ResponseResult<String> login(SysUser sysUser,HttpServletRequest request,HttpServletResponse response) {
         ResponseResult<String> rr=new ResponseResult<>();
         Subject subject = SecurityUtils.getSubject();
+        String accout = sysUser.getAccout();
+        String mobile = sysUser.getMobile();
+        String email = sysUser.getEmail();
+        if(StringUtils.isNotBlank(email)){
+            accout=email;
+        }
+        if(StringUtils.isNotBlank(mobile)){
+            accout=mobile;
+        }
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(
-                sysUser.getAccout(),
+                accout,
                 sysUser.getPasswd());
         //进行验证，这里可以捕获异常，然后返回对应信息
         Map<String, String> filterChainDefinitionMap = shiroFilterFactoryBean.getFilterChainDefinitionMap();
