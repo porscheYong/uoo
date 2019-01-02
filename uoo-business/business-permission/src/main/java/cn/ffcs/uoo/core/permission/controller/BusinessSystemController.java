@@ -37,7 +37,7 @@ public class BusinessSystemController {
     @UooLog(key="listBusinessSystemByOrgTree",value="接入系统列表")
     @RequestMapping(value = "/listBusinessSystem/{treeId}", method = RequestMethod.GET)
     public ResponseResult<List<BusinessSystem>> listBusinessSystemByOrgTree(@PathVariable(value = "treeId")  Long treeId){
-        return ResponseResult.createErrorResult(bsSvc.selectListByTreeId(treeId), "");
+        return ResponseResult.createSuccessResult(bsSvc.selectListByTreeId(treeId), "");
     }
 }
 
