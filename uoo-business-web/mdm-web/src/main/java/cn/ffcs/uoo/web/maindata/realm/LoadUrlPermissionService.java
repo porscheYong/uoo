@@ -152,7 +152,7 @@ public class LoadUrlPermissionService {
 //            filterChainDefinitionMap.put("/bb/ff=*", "perms[sad]");//
 //            filterChainDefinitionMap.put("/cc/*/ff", "perms[sad]");//
 
-            cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<List<SysMenu>> listPage = sysMenuClient.listPage(1, Integer.MAX_VALUE);
+            cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<List<SysMenu>> listPage = sysMenuClient.listPage(1, Integer.MAX_VALUE,null);
             if(listPage.getState()==cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult.STATE_OK){
                 List<SysMenu> data = listPage.getData();
                 if(data!=null){

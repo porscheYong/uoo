@@ -150,7 +150,7 @@ Handlebars.registerHelper("addOne", function (index) {
 });
 
 function cancel() {
-    var url = "mainList.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;
+    var url = "list.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;
     window.location.href = url;
 }
 
