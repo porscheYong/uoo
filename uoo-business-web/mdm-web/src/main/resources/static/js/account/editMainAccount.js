@@ -19,13 +19,20 @@ var formValidate;
 var treeNameList = [];
 var toastr = window.top.toastr;
 var cerTypeList = window.top.dictionaryData.certType();
-
-$('#statusCd').get(0).selectedIndex=0; //判断状态，默认生效
+var statusCdList = window.top.dictionaryData.statusCd();
 
 seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
   var addAcctForm = $('#addAcctForm');
   formValidate = new Validate(addAcctForm);
   formValidate.immediate();
+  addAcctForm.find(':input').each(function () {
+    $(this).bind({
+        paste : function(){
+            formValidate.isPass($(this));
+            $(this).removeClass('error');
+        }
+    });
+});
 });
 
 // lulu ui tips插件
@@ -205,24 +212,32 @@ function initEditUserInfo(results){     //初始化用户信息(编辑)
   $('#email').val(results.eamil);
   $('#cerNo').val(results.certNo);
   $('#acct').val(results.tbAcct.acct);
-  $('#statusCd').get(0).selectedIndex=0;
   $('#defaultPsw').val(results.tbAcct.password);
   setDate(results.tbAcct.enableDate,results.tbAcct.disableDate);
 
   psw = results.tbAcct.password;
 
-  isEnableStatus(results.tbAcct.statusCd);  //判断状态
+  // isEnableStatus(results.tbAcct.statusCd);  //判断状态
 
   $('#role').addTag(results.tbRolesList);
 
+  for(var i=0;i<statusCdList.length;i++){
+    if(results.tbAcct.statusCd === statusCdList.itemValue){
+        $("#statusCd").append("<option value='" + statusCdList[i].itemValue + "' selected>" + statusCdList[i].itemCnname +"</option>");
+    }else{
+        $("#statusCd").append("<option value='" + statusCdList[i].itemValue + "'>" + statusCdList[i].itemCnname +"</option>");
+    }
+  }
+
   for(var i=0;i<cerTypeList.length;i++){
     if(results.certType === cerTypeList[i].itemValue){
-      $("#cerType").append("<option value='" + cerTypeList[i].itemValue + "' selected>" + cerTypeList[i].itemCnname +"</option>");
-      break;
+        $("#cerType").append("<option value='" + cerTypeList[i].itemValue + "' selected>" + cerTypeList[i].itemCnname +"</option>");
+        break;
     }
   }
   seajs.use('/vendors/lulu/js/common/ui/Select', function () {
     $('#cerType').selectMatch();
+    $("#statusCd").selectMatch();
   });
 
   for(var i = 0;i < slaveOrg.length;i++){
@@ -267,15 +282,11 @@ function initAcctInfoCheck(results){     //初始化用户信息(查看)
 function updateAcct(){      //编辑主账号
     if(!formValidate.isAllPass())
         return;
-    var statusCd;
+
     if(roleList.length == 0){
       roleList = userRoleList;
     }
-    if($('#statusCd').get(0).selectedIndex == 0){
-      statusCd = "1000";
-    }else{
-      statusCd = "1100";
-    }
+
     var editFormAcctVo = {
       "acct": $('#acct').val(),
       "acctId": acctId,
@@ -283,7 +294,7 @@ function updateAcct(){      //编辑主账号
       "enableDate": $('#effectDate').val(),
       "password": $('#defaultPsw').val(),
       "personnelId": personnelId,
-      "statusCd": statusCd, 
+      "statusCd": $("#statusCd").val(), 
       "tbRolesList":roleList,
       "userType": "1"
     };
@@ -445,14 +456,6 @@ function setDate(eDate,bDate){    //设置时间
       elem: '#invalidDate', //指定元素
       value: toDate
     }); 
-}
-
-function isEnableStatus(statusCd){    //判断状态
-  if(statusCd == "1000"){                
-    $('#statusCd').get(0).selectedIndex=0;
-  }else if(statusCd == "1100"){
-    $('#statusCd').get(0).selectedIndex=1;
-  }
 }
 
 function isNull(s,r){    //判断是否为null

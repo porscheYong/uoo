@@ -29,24 +29,26 @@ var userRoleList = [];      //用户已有角色列表
 var toastr = window.top.toastr;
 var resourceObjId = null;
 var cerTypeList = window.top.dictionaryData.certType();
+var acctTypeList = window.top.dictionaryData.acctType();
+var statusCdList = window.top.dictionaryData.statusCd();
 
 if(hostId != null){
     acctOrgRelId = hostId;
 }
 
-$('#accType').get(0).selectedIndex=0;  //判断账号类型
-
-if(statusCd == "1000"){                //判断状态
-    $('#statusCd').get(0).selectedIndex=0;
-  }else{
-    $('#statusCd').get(0).selectedIndex=1;
-  }
-
-  seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
     var addAcctForm = $('#addAcctForm');
     formValidate = new Validate(addAcctForm);
     formValidate.immediate();
-  });
+    addAcctForm.find(':input').each(function () {
+        $(this).bind({
+            paste : function(){
+                formValidate.isPass($(this));
+                $(this).removeClass('error');
+            }
+        });
+    });
+});
 
   // lulu ui tips插件
 seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
@@ -237,9 +239,16 @@ function initSubInfo(results){  //编辑时初始化信息
     $('#acct').val(results.tbSlaveAcct.slaveAcct);
     $('#defaultPsw').val(results.tbSlaveAcct.password);
     setDate(results.tbSlaveAcct.enableDate,results.tbSlaveAcct.disableDate);
-    $('#statusCd').val("生效");
 
     $('#role').addTag(results.tbRolesList);
+
+    for(var i=0;i<statusCdList.length;i++){
+        if(results.tbSlaveAcct.statusCd === statusCdList[i].itemValue){
+            $("#statusCd").append("<option value='" + statusCdList[i].itemValue + "' selected>" + statusCdList[i].itemCnname +"</option>");
+        }else{
+            $("#statusCd").append("<option value='" + statusCdList[i].itemValue + "'>" + statusCdList[i].itemCnname +"</option>");
+        }
+    }
 
     for(var i=0;i<cerTypeList.length;i++){
         var select = "";
@@ -253,6 +262,7 @@ function initSubInfo(results){  //编辑时初始化信息
     }
     seajs.use('/vendors/lulu/js/common/ui/Select', function () {
         $("#cerType").selectMatch();
+        $("#statusCd").selectMatch();
         $("#extCerType").selectMatch();
     });
 
@@ -267,7 +277,6 @@ function initSubInfo(results){  //编辑时初始化信息
         isChecked = 1;
 
         $('#extCerNo').val(results.tbAcctExt.certNo);
-        $('#extCerType').get(0).selectedIndex = parseInt(results.tbAcctExt.certType) - 1;
         $('#extMobile').val(results.tbAcctExt.contactWay);
         $('#extName').val(results.tbAcctExt.name);
         $('#extEmail').val(results.tbAcctExt.workEmail);
@@ -287,10 +296,23 @@ function initSubAcctInfoCheck(results){       //初始化从账号信息(查看)
 
     for(var i=0;i<cerTypeList.length;i++){
         if(results.certType === cerTypeList[i].itemValue){
-          $("#cerNoTxt").text(cerTypeList[i].itemCnname+"号码：");
-          break;
+            $("#cerNoTxt").text(cerTypeList[i].itemCnname+"号码：");
+            break;
         }
     }
+
+    for(var i=0;i<acctTypeList.length;i++){
+        if(results.slaveAcctType === acctTypeList[i].itemValue){
+            $("#slaveTypeTxt").text("从账号类型：" + acctTypeList[i].itemCnname);
+            $("#accType").append("<option value='" + acctTypeList[i].itemValue + "' selected>" + acctTypeList[i].itemCnname +"</option>");
+        }else{
+            $("#accType").append("<option value='" + acctTypeList[i].itemValue + "'>" + acctTypeList[i].itemCnname +"</option>");
+        }
+    }
+
+    seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $("#accType").selectMatch();
+    });
 
     for(var i = 0; i <results.tbRolesList.length; i++){
         if(i != 0 && i%3 == 0){
@@ -312,9 +334,10 @@ function updateTbSlaveAcct(){       //更新从账号信息
         $('#acctEditButton').css("display","none");
         return;
     }
-    var slaveAcctType = $('#accType').get(0).selectedIndex + 1;
-    var subStatusCd = $('#statusCd').get(0).selectedIndex*100 + 1000;
-    var certType = $('#extCerType').get(0).selectedIndex + 1;
+
+    var slaveAcctType = $('#accType').val();
+    var subStatusCd = $('#statusCd').val();
+    var certType = $('#extCerType').val();
     var tbAcctExt = hasExtInfo(certType);
 
     if(roleList.length == 0){
