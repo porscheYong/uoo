@@ -127,7 +127,7 @@ public class LoadUrlPermissionService {
             filterChainDefinitionMap.put("/login", "anon");
             filterChainDefinitionMap.put("/loginPage.html", "anon");
             // filterChainDefinitionMap.put("/**", "anon");
-            // filterChainDefinitionMap.put("/aa/aa", "perms[asasd]");
+            filterChainDefinitionMap.put("/aa/aa", "perms[asasd]");
             // filterChainDefinitionMap.put("/inaction/**", "perms[inaction]");
 
             /*ResponseResult<List<FuncComp>> listFuncComp = funcCompSvc.listFuncComp(1, Integer.MAX_VALUE);

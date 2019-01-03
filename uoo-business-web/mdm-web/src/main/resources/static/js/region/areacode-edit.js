@@ -70,15 +70,7 @@ function initData(){
 				$('#areaCode').val(data.data.areaCode);
 				$('#areaNbr').val(data.data.areaNbr);
 			}else{
-				parent.layer.confirm('加载区号信息失败，请重试' , {
-			        icon: 0,
-			        title: '提示',
-			        btn: ['确定' ]
-			    }, function(index, layero){
-			        parent.layer.close(index);
-			    }, function(){
-			    });
-				 
+				toastr.error('加载区号信息失败，请重试');
 			}
 		}
 	});

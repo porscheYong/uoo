@@ -1,6 +1,9 @@
 package cn.ffcs.uoo.web.maindata.realm;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.servlet.Filter;
 
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -31,6 +34,8 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setLoginUrl("/login");
         shiroFilterFactoryBean.setSuccessUrl("/index");
         shiroFilterFactoryBean.setUnauthorizedUrl("/403.html");
+        Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();
+        filters.put("perms", new ShiroPermissionsFilter());
         // 配置访问权限
         shiroFilterFactoryBean.setFilterChainDefinitionMap(new LinkedHashMap<>());
         return shiroFilterFactoryBean;
