@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysOperationLogClientHystrix;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysOperationLog;
 import cn.ffcs.uoo.web.maindata.common.system.vo.LogDTO;
@@ -32,7 +34,7 @@ public interface SysOperationLogClient {
     public ResponseResult<Object> get(@RequestParam("id") Long id,@RequestParam("logEnum")String logEnum);
 
     @GetMapping("/system/sysOperationLog/listPage")
-    public ResponseResult<List<LogDTO>> listPage(@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord);
+    public ResponseResult<Page<LogDTO>> listPage(@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord);
 
     @RequestMapping(value = "/system/sysOperationLog/add", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<Void> add(@RequestBody SysOperationLog sysOperationLog);

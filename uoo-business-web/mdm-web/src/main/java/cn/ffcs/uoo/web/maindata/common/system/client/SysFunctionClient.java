@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysFunctionClientHystrix;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysFunction;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
@@ -18,7 +20,7 @@ import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 public interface SysFunctionClient {
     
     @GetMapping("/system/sysFunction/listAll")
-    public ResponseResult<List<SysFunction>> list(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize")Integer pageSize,@RequestParam("keyWord")String keyWord);
+    public ResponseResult<Page<SysFunction>> list(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize")Integer pageSize,@RequestParam("keyWord")String keyWord);
     @RequestMapping(value = "/system/sysFunction/getFunctionByAccout", method = RequestMethod.GET)
     public ResponseResult<List<SysFunction>> getFunctionByAccout(@RequestParam("accout")String accout);
     @RequestMapping("/system/sysFunction/get")

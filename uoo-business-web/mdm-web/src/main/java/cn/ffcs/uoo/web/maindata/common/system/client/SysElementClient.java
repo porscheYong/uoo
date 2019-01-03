@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysElementClientHystrix;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysElement;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
@@ -17,7 +19,7 @@ import cn.ffcs.uoo.web.maindata.common.system.vo.SysElementVO;
 public interface SysElementClient {
      
     @RequestMapping("/system/SysElement/list")
-    public ResponseResult<List<SysElement>> list(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize")Integer pageSize,@RequestParam("keyWord")String keyWord);
+    public ResponseResult<Page<SysElement>> list(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize")Integer pageSize,@RequestParam("keyWord")String keyWord);
      
     @RequestMapping("/system/SysElement/getElementByAccout")
     public ResponseResult<List<SysElement>> getElementByAccout(String accout);

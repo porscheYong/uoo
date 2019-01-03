@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.system.consts.StatusCD;
@@ -94,7 +95,7 @@ public class SysPermissionController {
     })
     @UooLog(key="listPage",value="获取分页列表")
     @GetMapping("/listPage")
-    public ResponseResult<List<SysPermissionDTO>> listPage(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord")String keyWord){
+    public ResponseResult<Page<SysPermissionDTO>> listPage(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord")String keyWord){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         HashMap<String,Object> map=new HashMap<>();
@@ -105,9 +106,12 @@ public class SysPermissionController {
         map.put("end", pageNo * pageSize);
         List<SysPermissionDTO> list=permSvc.findList(map);
         Long count = permSvc.countList(map);
-        
-        ResponseResult<List<SysPermissionDTO>> createSuccessResult = ResponseResult.createSuccessResult(list, "");
+        Page<SysPermissionDTO> page=new Page<>(pageNo,pageSize);
+        page.setTotal(count);
+        page.setRecords(list);
+        ResponseResult<Page<SysPermissionDTO>> createSuccessResult = ResponseResult.createSuccessResult("");
         createSuccessResult.setTotalRecords(count);
+        createSuccessResult.setData(page);
         return createSuccessResult;
     }
     

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.web.maindata.common.system.client.SysOperationLogClient;
 import cn.ffcs.uoo.web.maindata.common.system.vo.LogDTO;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
@@ -55,7 +57,7 @@ public class SysOperationLogController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long"  ),
     })
     @GetMapping("/listPage")
-    public ResponseResult<List<LogDTO>> listPage(@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord){
+    public ResponseResult<Page<LogDTO>> listPage(@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord){
         return logClient.listPage(pageNo, pageSize, keyWord);
     }
 }

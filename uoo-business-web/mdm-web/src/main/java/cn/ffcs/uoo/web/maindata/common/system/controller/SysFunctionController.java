@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.web.maindata.common.system.client.SysFunctionClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysFunction;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
@@ -30,7 +32,7 @@ public class SysFunctionController {
     })
     @OperateLog(type=OperateType.SELECT,module="平台系统功能模块",methods="分页查询",desc="")
     @RequestMapping("/listAll")
-    public ResponseResult<List<SysFunction>> list(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize")Integer pageSize,@RequestParam("keyWord")String keyWord){
+    public ResponseResult<Page<SysFunction>> list(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize")Integer pageSize,@RequestParam("keyWord")String keyWord){
         return funcClient.list(pageNo, pageSize, keyWord);
     }
     @ApiOperation(value = "查询当前账号的功能", notes = "查询当前账号的功能")

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.web.maindata.common.system.client.SysElementClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysElement;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
@@ -12,7 +14,7 @@ import cn.ffcs.uoo.web.maindata.common.system.vo.SysElementVO;
 public class SysElementClientHystrix implements SysElementClient {
 
     @Override
-    public ResponseResult<List<SysElement>> list(Integer pageNo, Integer pageSize, String keyWord) {
+    public ResponseResult<Page<SysElement>> list(Integer pageNo, Integer pageSize, String keyWord) {
         return ResponseResult.createErrorResult("服务不可用");
     }
 

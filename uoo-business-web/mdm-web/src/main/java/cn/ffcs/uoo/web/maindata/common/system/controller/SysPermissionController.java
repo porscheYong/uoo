@@ -1,8 +1,6 @@
 package cn.ffcs.uoo.web.maindata.common.system.controller;
 
 
-import java.util.List;
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.web.maindata.common.system.client.SysPermissionClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionDTO;
@@ -56,7 +56,7 @@ public class SysPermissionController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
     @GetMapping("/listPage")
-    public ResponseResult<List<SysPermissionDTO>> listPage(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord")String keyWord){
+    public ResponseResult<Page<SysPermissionDTO>> listPage(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord")String keyWord){
         return permSvc.listPage(pageNo, pageSize, keyWord);
     }
     @OperateLog(type=OperateType.ADD,module="平台系统权限模块",methods="新增权限",desc="")

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysMenuClientHystrix;
 import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysUserClientHystrix;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysMenu;
@@ -23,7 +25,7 @@ import io.swagger.annotations.ApiOperation;
 @FeignClient(value = "common-system",configuration = {FeignClientConfiguration.class},fallback = SysMenuClientHystrix.class)
 public interface SysMenuClient {
     @GetMapping("/system/sysMenu/listPage")
-    public ResponseResult<List<SysMenu>> listPage(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord);
+    public ResponseResult<Page<SysMenu>> listPage(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord);
     @RequestMapping(value = "/system/sysMenu/getMenuByAccout/{accout}", method = RequestMethod.GET)
     public ResponseResult<List<SysMenu>> getMenuByAccout(@PathVariable(value = "accout") String accout);
     @GetMapping("/system/sysMenu/get/{id}")
