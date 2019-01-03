@@ -170,7 +170,7 @@ function initSlaveOrgTable(results){    //从账号组织数据
                                   '&acctId='+ row.slaveAcctId + '&statusCd='+ row.statusCd +'">'+ row.slaveAcct +'</a>';
         }
       },
-        { 'data': "slaveAcctType", 'title': '从账号类型', 'className': 'row-acctype' },
+        { 'data': "slaveAcctType", 'title': '类型', 'className': 'row-acctype' },
         { 'data': "orgTreeName", 'title': '组织树', 'className': 'row-orgtree' },
         { 'data': "systemName", 'title': '系统', 'className': 'row-system'
           // 'render': function (data, type, row, meta) {
@@ -449,12 +449,22 @@ function setDate(eDate,bDate){    //设置时间
     
     laydate.render({
       elem: '#effectDate', //指定元素
-      value: nowDate
+      value: nowDate,
+      done: function(value, date, endDate){
+          if(value != ""){
+            $("#effectDate").removeClass('error');
+          }
+      }
     }); 
 
     laydate.render({
       elem: '#invalidDate', //指定元素
-      value: toDate
+      value: toDate,
+      done: function(value, date, endDate){
+        if(value != ""){
+          $("#invalidDate").removeClass('error');
+        }
+      }
     }); 
 }
 
@@ -468,23 +478,19 @@ function isNull(s,r){    //判断是否为null
 
 //删除组织
 function deleteOrg(orgId,orgTreeId){
-    // var oId = slaveOrgIdList.indexOf(orgId);
     if(orgNum == 1){
       toastr.warning("无法删除所有组织");
-    // }else if(oId != -1){        //如果该组织下有从账号，则提示
-    //   parent.layer.confirm('组织下有从账号,删除组织将删除该从账号！', {
-    //     icon: 0,
-    //     title: '提示',
-    //     btn: ['确定','取消']
-    //   }, function(index, layero){
-    //     removeAcctOrg(orgId,orgTreeId);
-    //     slaveOrgIdList.splice(oId,1);
-    //     parent.layer.close(index);
-    //   }, function(){
-    
-    //   });
     }else{
-      removeAcctOrg(orgId,orgTreeId);
+        parent.layer.confirm('是否删除该组织？', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+        }, function(index, layero){
+          removeAcctOrg(orgId,orgTreeId);
+          parent.layer.close(index);
+        }, function(){
+      
+        });
     }
 }
 

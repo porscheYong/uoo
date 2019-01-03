@@ -48,3 +48,90 @@ var posData = [
     userNum: '23'
   }
 ]
+
+var funResData = [
+  {
+    num: '1',
+    funName: '人员综合信息查询',
+    funNum: '122112',
+    state: '有效'
+  },
+  {
+    num: '2',
+    funName: '身份证对应人力编码',
+    funNum: '122114',
+    state: '有效'
+  }
+]
+
+var menuResData = [
+  {
+    num: '1',
+    menuName: '组织管理',
+    menuNum: '122112',
+    menuLevel:'一级',
+    state: '有效'
+  },
+  {
+    num: '2',
+    menuName: '标准组织树',
+    menuNum: '122114',
+    menuLevel:'二级',
+    state: '有效'
+  }
+]
+
+var elemResData = [
+  {
+    num: '1',
+    elemName: '组织搜索框',
+    menuName: '标准组织树',
+    elemNum:'122112',
+    elemType:'搜索',
+    state: '有效'
+  },
+  {
+    num: '2',
+    elemName: '人员查询按钮',
+    menuName: '人员管理',
+    elemNum:'122114',
+    elemType:'按钮',
+    state: '有效'
+  }
+]
+
+var fileResData = [
+  {
+    num: '1',
+    fileName: '头像',
+    fileType: 'jpg',
+    fileSize:'3M',
+    state: '有效'
+  },
+  {
+    num: '2',
+    fileName: '证件照片',
+    fileType: 'png',
+    fileSize:'3M',
+    state: '有效'
+  }
+]
+
+var dataResData = [
+  {
+    num: '1',
+    tableName: '人员基础表',
+    fieldName: '区域',
+    rule:'=',
+    fieldVal:'杭州',
+    state: '有效'
+  },
+  {
+    num: '2',
+    tableName: '组织基础表',
+    fieldName: '区域',
+    rule:'=',
+    fieldVal:'杭州',
+    state: '有效'
+  }
+]
