@@ -1,8 +1,6 @@
 package cn.ffcs.uoo.web.maindata.common.system.client;
 
 
-import java.util.List;
-
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.cloud.netflix.feign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysPermissionClientHystrix;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionDTO;
@@ -32,7 +32,7 @@ public interface SysPermissionClient {
     public ResponseResult<SysPermissionEditDTO> get(@PathVariable(value="id" ,required=true) Long id);
     
     @GetMapping("/system/sysPermission/listPage")
-    public ResponseResult<List<SysPermissionDTO>> listPage(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord")String keyWord);
+    public ResponseResult<Page<SysPermissionDTO>> listPage(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord")String keyWord);
     
      
     @RequestMapping(value = "/system/sysPermission/add", method = RequestMethod.POST,headers={"Content-Type=application/json"})

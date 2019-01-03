@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.system.consts.StatusCD;
@@ -106,7 +107,7 @@ public class SysRoleController {
     })
     @UooLog(key="listPage",value="获取分页列表")
     @GetMapping("/listPage")
-    public ResponseResult<List<SysRoleDTO>> listPage(@RequestParam("pageNo") Integer pageNo,@RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord,@RequestParam("parentRoleCode")String parentRoleCode,@RequestParam("includChild")Integer includChild){
+    public ResponseResult<Page<SysRoleDTO>> listPage(@RequestParam("pageNo") Integer pageNo,@RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord,@RequestParam("parentRoleCode")String parentRoleCode,@RequestParam("includChild")Integer includChild){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         HashMap<String,Object> map=new HashMap<>();
@@ -124,8 +125,11 @@ public class SysRoleController {
         } 
         List<SysRoleDTO> Roles=sysRoleService.findList(map);
         Long count = sysRoleService.countList(map);
-        
-        ResponseResult<List<SysRoleDTO>> createSuccessResult = ResponseResult.createSuccessResult(Roles, "");
+        Page<SysRoleDTO> page=new Page<>(pageNo,pageSize);
+        page.setRecords(Roles);
+        page.setTotal(count);
+        ResponseResult<Page<SysRoleDTO>> createSuccessResult = ResponseResult.createSuccessResult( "");
+        createSuccessResult.setData(page);
         createSuccessResult.setTotalRecords(count);
         return createSuccessResult;
     }

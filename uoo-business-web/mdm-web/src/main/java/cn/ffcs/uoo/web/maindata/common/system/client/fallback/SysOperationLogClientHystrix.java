@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.web.maindata.common.system.client.SysOperationLogClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysOperationLog;
 import cn.ffcs.uoo.web.maindata.common.system.vo.LogDTO;
@@ -28,9 +30,9 @@ public class SysOperationLogClientHystrix implements SysOperationLogClient {
     }
 
     @Override
-    public ResponseResult<List<LogDTO>> listPage(Integer pageNo, Integer pageSize, String keyWord) {
+    public ResponseResult<Page<LogDTO>> listPage(Integer pageNo, Integer pageSize, String keyWord) {
 
-        ResponseResult<List<LogDTO>> rr=new ResponseResult<>();
+        ResponseResult<Page<LogDTO>> rr=new ResponseResult<>();
         rr.setState(ResponseResult.STATE_SERVICE_ERROR);
         rr.setMessage("服务不可用");
         return rr;

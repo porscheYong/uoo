@@ -1,8 +1,8 @@
 package cn.ffcs.uoo.web.maindata.common.system.client.fallback;
 
-import java.util.List;
-
 import org.springframework.stereotype.Component;
+
+import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.web.maindata.common.system.client.SysPermissionClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionDTO;
@@ -17,7 +17,7 @@ public class SysPermissionClientHystrix implements SysPermissionClient {
     }
 
     @Override
-    public ResponseResult<List<SysPermissionDTO>> listPage(Integer pageNo, Integer pageSize, String keyWord) {
+    public ResponseResult<Page<SysPermissionDTO>> listPage(Integer pageNo, Integer pageSize, String keyWord) {
         return ResponseResult.createErrorResult("服务不可用");
     }
 

@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysRoleClientHystrix;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysRole;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
@@ -50,7 +52,7 @@ public interface SysRoleClient {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ),
     })
     @GetMapping("/system/sysRole/listPage")
-    public ResponseResult<List<SysRoleDTO>> listPage(@RequestParam("pageNo") Integer pageNo,@RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord,@RequestParam("parentRoleCode")String parentRoleCode,@RequestParam("includChild")Integer includChild);
+    public ResponseResult<Page<SysRoleDTO>> listPage(@RequestParam("pageNo") Integer pageNo,@RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord,@RequestParam("parentRoleCode")String parentRoleCode,@RequestParam("includChild")Integer includChild);
 
     @RequestMapping(value = "/system/sysRole/update", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<Void> update(@RequestBody SysRoleDTO sysRole) ;

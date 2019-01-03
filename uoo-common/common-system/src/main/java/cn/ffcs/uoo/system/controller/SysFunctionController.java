@@ -36,12 +36,14 @@ public class SysFunctionController {
     @UooLog(key="listAll",value="分页查询api")
     @SuppressWarnings("unchecked")
     @RequestMapping("/listAll")
-    public ResponseResult<List<SysFunction>> list(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize")Integer pageSize,@RequestParam("keyWord")String keyWord){
+    public ResponseResult<Page<SysFunction>> list(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize")Integer pageSize,@RequestParam("keyWord")String keyWord){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         Wrapper<SysFunction> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID);
         Page<SysFunction> page = funcSvc.selectPage(new Page<SysFunction>(pageNo, pageSize), wrapper);
-        return ResponseResult.createSuccessResult(page , "");
+        ResponseResult<Page<SysFunction>> rr = ResponseResult.createSuccessResult("");
+        rr.setData(page);
+        return rr;
     }
     @ApiOperation(value = "查询账号下的api", notes = "查询账号下的api")
     @ApiImplicitParams({

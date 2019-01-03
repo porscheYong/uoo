@@ -43,12 +43,14 @@ public class SysElementController {
     @UooLog(key="listAll",value="分页查询元素")
     @SuppressWarnings("unchecked")
     @RequestMapping("/list")
-    public ResponseResult<List<SysElement>> list(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize")Integer pageSize,@RequestParam("keyWord")String keyWord){
+    public ResponseResult<Page<SysElement>> list(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize")Integer pageSize,@RequestParam("keyWord")String keyWord){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         Wrapper<SysElement> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID);
         Page<SysElement> page = eleSvc.selectPage(new Page<SysElement>(pageNo, pageSize), wrapper);
-        return ResponseResult.createSuccessResult(page , "");
+        ResponseResult<Page<SysElement>> rr = ResponseResult.createSuccessResult( "");
+        rr.setData(page);
+        return rr;
     }
     @ApiOperation(value = "查询账号下的元素", notes = "查询账号下的元素")
     @ApiImplicitParams({

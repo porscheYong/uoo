@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.web.maindata.common.system.client.SysRoleClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysRole;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
@@ -23,7 +25,7 @@ public class SysRoleClientHystrix implements SysRoleClient{
     }
 
     @Override
-    public ResponseResult<List<SysRoleDTO>> listPage(Integer pageNo, Integer pageSize, String keyWord,
+    public ResponseResult<Page<SysRoleDTO>> listPage(Integer pageNo, Integer pageSize, String keyWord,
             String parentRoleCode, Integer includChild) {
         return ResponseResult.createErrorResult("服务不可用");
     }

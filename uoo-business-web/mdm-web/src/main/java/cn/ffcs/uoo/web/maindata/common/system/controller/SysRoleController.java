@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.web.maindata.common.system.client.SysRoleClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysRole;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
@@ -64,7 +66,7 @@ public class SysRoleController {
     @ApiImplicitParams({
     })
     @GetMapping("/listPage")
-    public ResponseResult<List<SysRoleDTO>> listPage(@RequestParam("pageNo") Integer pageNo,@RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord,@RequestParam("parentRoleCode")String parentRoleCode,@RequestParam("includChild")Integer includChild){
+    public ResponseResult<Page<SysRoleDTO>> listPage(@RequestParam("pageNo") Integer pageNo,@RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord,@RequestParam("parentRoleCode")String parentRoleCode,@RequestParam("includChild")Integer includChild){
         return sysRoleClient.listPage(pageNo, pageSize, keyWord, parentRoleCode, includChild);
     }
     @OperateLog(type=OperateType.UPDATE,module="平台系统角色模块",methods="更新",desc="")

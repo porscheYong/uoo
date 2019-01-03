@@ -12,6 +12,7 @@ package cn.ffcs.uoo.system.controller;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.system.consts.StatusCD;
+import cn.ffcs.uoo.system.entity.SysElement;
 import cn.ffcs.uoo.system.entity.SysMenu;
 import cn.ffcs.uoo.system.entity.SysPermission;
 import cn.ffcs.uoo.system.service.ISysPermissionMenuRelService;
@@ -83,7 +84,7 @@ public class SysMenuController {
     })
     @UooLog(key="listPage",value="获取分页列表")
     @GetMapping("/listPage")
-    public ResponseResult<List<SysMenu>> listPage(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord){
+    public ResponseResult<Page<SysMenu>> listPage(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
 
@@ -92,8 +93,9 @@ public class SysMenuController {
             wrapper.like("MENU_NAME", keyWord);
         }
         Page<SysMenu> page = sysMenuService.selectPage(new Page<SysMenu>(pageNo, pageSize), wrapper);
-
-        return ResponseResult.createSuccessResult(page , "");
+        ResponseResult<Page<SysMenu>> rr = ResponseResult.createSuccessResult("");
+        rr.setData(page);
+        return rr;
     }
 
     @ApiOperation(value = "修改",notes = "修改")

@@ -24,8 +24,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.system.consts.StatusCD;
+import cn.ffcs.uoo.system.entity.SysMenu;
 import cn.ffcs.uoo.system.entity.SysOperationLog;
 import cn.ffcs.uoo.system.service.SysLoginLogService;
 import cn.ffcs.uoo.system.service.SysOperationLogService;
@@ -77,7 +80,7 @@ public class SysOperationLogController {
     })
     @UooLog(key="listPage",value="获取分页列表")
     @GetMapping("/listPage")
-    public ResponseResult<List<LogDTO>> listPage(@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord){
+    public ResponseResult<Page<LogDTO>> listPage(@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         HashMap<String,Object> map=new HashMap<>();
@@ -91,8 +94,12 @@ public class SysOperationLogController {
         map.put("end", pageNo * pageSize);
         Long countLog = sysOperationLogService.countLog(map);
         List<LogDTO> listLog = sysOperationLogService.listLog(map);
-        ResponseResult<List<LogDTO>> createSuccessResult = ResponseResult.createSuccessResult(listLog , "");
+        Page<LogDTO> page=new Page<>(pageNo, pageSize);
+        page.setTotal(countLog);
+        page.setRecords(listLog);
+        ResponseResult<Page<LogDTO>> createSuccessResult = ResponseResult.createSuccessResult( "");
         createSuccessResult.setTotalRecords(countLog);
+        createSuccessResult.setData(page);
         return createSuccessResult;
     }
 

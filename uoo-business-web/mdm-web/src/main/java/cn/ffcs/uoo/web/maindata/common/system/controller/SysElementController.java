@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.web.maindata.common.system.client.SysElementClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysElement;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
@@ -31,7 +33,7 @@ public class SysElementController {
     })
     @OperateLog(type=OperateType.SELECT,module="平台系统元素模块",methods="分页查询",desc="")
     @RequestMapping("/list")
-    public ResponseResult<List<SysElement>> list(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize")Integer pageSize,@RequestParam("keyWord")String keyWord){
+    public ResponseResult<Page<SysElement>> list(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize")Integer pageSize,@RequestParam("keyWord")String keyWord){
         return eleClient.list(pageNo, pageSize, keyWord);
     }
     @OperateLog(type=OperateType.SELECT,module="平台系统元素模块",methods="查询账号下的元素",desc="")
