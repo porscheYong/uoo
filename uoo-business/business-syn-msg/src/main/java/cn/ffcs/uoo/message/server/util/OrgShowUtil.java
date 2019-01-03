@@ -67,7 +67,6 @@ public class OrgShowUtil {
             vo.getOrgLevels().setUpdateUser(null);
             vo.getOrgLevels().setStatusDate(null);
             if(vo.getOrgLevels().getOrgTreeInfo() != null){
-                vo.getOrgLevels().getOrgTreeInfo();
                 vo.getOrgLevels().getOrgTreeInfo().setOrgTreeId(null);
                 vo.getOrgLevels().getOrgTreeInfo().setStatusCd(null);
                 vo.getOrgLevels().getOrgTreeInfo().setCreateDate(null);
@@ -134,6 +133,17 @@ public class OrgShowUtil {
               temp.setUpdateUser(null);
               temp.setStatusDate(null);
           });
+        }
+
+        if(vo.getOrgOrgTreeRel() != null){
+            vo.getOrgOrgTreeRel().forEach((temp)->{
+                temp.setStatusCd(null);
+                temp.setCreateDate(null);
+                temp.setCreateUser(null);
+                temp.setUpdateDate(null);
+                temp.setUpdateUser(null);
+                temp.setStatusDate(null);
+            });
         }
 
         if(vo.getOrgCerts() != null){
