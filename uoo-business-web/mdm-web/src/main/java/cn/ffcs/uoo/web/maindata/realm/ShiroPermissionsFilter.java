@@ -35,7 +35,7 @@ public class ShiroPermissionsFilter extends PermissionsAuthorizationFilter{
         } else {//如果是普通请求进行重定向
             logger.info("----------普通请求拒绝-------------");
             logger.info("url:{}",httpServletRequest.getRequestURI());
-            httpServletResponse.sendRedirect("/403");
+            httpServletResponse.sendRedirect("/403.html");
         }
         return false;
     }
