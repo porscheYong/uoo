@@ -80,7 +80,7 @@ public class UooRealm extends AuthorizingRealm {
         }
         String md5Encoding = MD5Util.md5Encoding(new String(usertoken.getPassword()), r.getData().getSalt());
         usertoken.setPassword(md5Encoding.toCharArray());
-        AuthenticationInfo info = new SimpleAuthenticationInfo(usertoken.getUsername(), r.getData().getPasswd(),
+        AuthenticationInfo info = new SimpleAuthenticationInfo(r.getData().getAccout(), r.getData().getPasswd(),
                 this.getName());
         if(info!=null && md5Encoding.equals(r.getData().getPasswd())){
             clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());

@@ -10,8 +10,24 @@
  */
 package cn.ffcs.uoo.web.maindata.common.system.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.baomidou.mybatisplus.plugins.Page;
+
+import cn.ffcs.uoo.web.maindata.common.system.client.SysOperationLogClient;
+import cn.ffcs.uoo.web.maindata.common.system.vo.LogDTO;
+import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -24,55 +40,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/system/sysOperationLog")
 public class SysOperationLogController {
-    /*@Autowired
-    SysOperationLogService sysOperationLogService;
-
+    @Autowired
+    SysOperationLogClient logClient;
+    @OperateLog(type=OperateType.SELECT,module="平台系统日志模块",methods="查看日志",desc="")
     @ApiOperation(value = "获取单个数据", notes = "获取单个数据")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long" ,paramType="path"),
     })
-    @UooLog(key="getOperationLog",value="获取单个数据")
-    @GetMapping("/get/{id}")
-    public ResponseResult get(@PathVariable(value="id" ,required=true) Long id){
-        SysOperationLog OperationLog = sysOperationLogService.selectById(id);
-        if(OperationLog== null ){
-            return ResponseResult.createErrorResult("无效数据");
-        }
-        return ResponseResult.createSuccessResult(OperationLog, "success");
+    @GetMapping("/get")
+    public ResponseResult<Object> get(@RequestParam("id") Long id,@RequestParam("logEnum")String logEnum){
+        return logClient.get(id, logEnum);
     }
-
+    @OperateLog(type=OperateType.SELECT,module="平台系统日志模块",methods="分页查看日志",desc="")
     @ApiOperation(value = "获取分页列表", notes = "获取分页列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
-            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long"  ),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long"  ),
     })
-    @UooLog(key="listPage",value="获取分页列表")
-    @GetMapping("/listPage/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
-        pageNo = pageNo==null?0:pageNo;
-        pageSize = pageSize==null?20:pageSize;
-
-        Wrapper<SysOperationLog> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID).orderBy("UPDATE_DATE", false);
-        Page<SysOperationLog> page = sysOperationLogService.selectPage(new Page<SysOperationLog>(pageNo, pageSize), wrapper);
-
-        return ResponseResult.createSuccessResult(page , "");
+    @GetMapping("/listPage")
+    public ResponseResult<Page<LogDTO>> listPage(@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord){
+        return logClient.listPage(pageNo, pageSize, keyWord);
     }
-
-    @ApiOperation(value = "新增",notes = "新增")
-    @ApiImplicitParam(name = "sysOperationLog", value = "新增", required = true, dataType = "SysOperationLog")
-    @UooLog(value = "新增", key = "add")
-    @Transactional
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<Void> add(@RequestBody SysOperationLog sysOperationLog) {
-        ResponseResult<Void> responseResult = new ResponseResult<Void>();
-
-        sysOperationLog.setCreateDate(new Date());
-        sysOperationLog.setOperationLogId((sysOperationLogService.getId()));
-        sysOperationLog.setStatusCd(StatusCD.VALID);
-        sysOperationLog.setStatusDate(new Date());
-        sysOperationLogService.insert(sysOperationLog);
-        responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("新增成功");
-        return responseResult;
-    }*/
 }

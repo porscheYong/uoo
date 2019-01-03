@@ -73,6 +73,10 @@ public class OrgRelController extends BaseController {
     @Autowired
     private AmqpTemplate template;
 
+    @Autowired
+    private ModifyHistoryService modifyHistoryService;
+
+
     @ApiOperation(value = "查询组织树信息-web", notes = "查询组织树信息")
     @ApiImplicitParams({
     })
@@ -134,7 +138,6 @@ public class OrgRelController extends BaseController {
         System.out.println(new Date());
         return ret;
     }
-
     @ApiOperation(value = "重构组织树获取-web", notes = "重构组织树获取")
     @ApiImplicitParams({
     })
@@ -278,6 +281,9 @@ public class OrgRelController extends BaseController {
             ret.setMessage("组织关系类型不存在");
             return ret;
         }
+
+        String batchNumber = modifyHistoryService.getBatchNumber();
+
         //新增组织关系
         OrgRel orgRel = new OrgRel();
         Long orgRefId = orgRelService.getId();
@@ -288,6 +294,8 @@ public class OrgRelController extends BaseController {
         orgRel.setStatusCd("1000");
         orgRel.setCreateUser(org.getUpdateUser());
         orgRelService.add(orgRel);
+        modifyHistoryService.addModifyHistory(null,orgRel,org.getUpdateUser(),batchNumber);
+
 
 
         //新增组织层级
@@ -307,6 +315,7 @@ public class OrgRelController extends BaseController {
             orgLevel.setStatusCd("1000");
             orgLevel.setCreateUser(org.getUpdateUser());
             orgLevelService.add(orgLevel);
+            modifyHistoryService.addModifyHistory(null,orgLevel,org.getUpdateUser(),batchNumber);
         }
 
         //组织组织树关系
@@ -318,7 +327,7 @@ public class OrgRelController extends BaseController {
         orgOrgtreeRef.setStatusCd("1000");
         orgOrgtreeRef.setCreateUser(org.getUpdateUser());
         orgOrgtreeRelService.add(orgOrgtreeRef);
-        //orgOrgtreeRef.insert();
+        modifyHistoryService.addModifyHistory(null,orgOrgtreeRef,org.getUpdateUser(),batchNumber);
 
         TreeNodeVo vo = new TreeNodeVo();
         vo.setId(org.getOrgId().toString());
@@ -466,14 +475,10 @@ public class OrgRelController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<Page<OrgRefTypeVo>> getOrgRelTypePage(String orgId,
                                                                 Integer pageSize,
-                                                                Integer pageNo
+                                                                Integer pageNo,
+                                                                Long userId,String accout
                                                                 ){
         ResponseResult<Page<OrgRefTypeVo>> ret = new ResponseResult<>();
-//        if(StrUtil.isNullOrEmpty(orgRefTypeVo)){
-//            ret.setMessage("参数不能为空");
-//            ret.setState(ResponseResult.PARAMETER_ERROR);
-//            return ret;
-//        }
         if(StrUtil.isNullOrEmpty(orgId)){
             ret.setMessage("组织标识不能为空");
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -487,7 +492,26 @@ public class OrgRelController extends BaseController {
         if(!StrUtil.isNullOrEmpty(pageSize)){
             orgRefTypeVo.setPageSize(pageSize);
         }
-
+        //获取权限
+        String orgParams = "";
+        String orgOrgTypeParams = "";
+        String orgRelParams = "";
+        if(!StrUtil.isNullOrEmpty(accout)) {
+            List<String> tabNames = new ArrayList<String>();
+            tabNames.add("TB_ORG_TREE");
+            tabNames.add("TB_ORG");
+            tabNames.add("TB_ORG_REL");
+            tabNames.add("TB_ORG_ORGTYPE_REL");
+            List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
+            if(sdrList!=null && sdrList.size()>0){
+                orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
+                orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
+                orgRelParams = commonSystemService.getSysDataRuleSql("TB_ORG_REL",sdrList);
+                orgRefTypeVo.setTabOrgParams(orgParams);
+                orgRefTypeVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
+                orgRefTypeVo.setTabOrgRelParams(orgRelParams);
+            }
+        }
         Page<OrgRefTypeVo> page = orgRelService.selectOrgRelTypePage(orgRefTypeVo);
         ret.setMessage("成功");
         ret.setState(ResponseResult.STATE_OK);

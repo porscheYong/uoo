@@ -122,7 +122,12 @@ public class OrgRelController {
     public ResponseResult<Page<OrgRefTypeVo>> getOrgRelTypePage(@RequestParam(value = "orgId",required = false)String orgId,
                                                                 @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                                 @RequestParam(value = "pageNo",required = false)Integer pageNo){
-        return orgRelService.getOrgRelTypePage(orgId,pageSize,pageNo);
+
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout = currentLoginUser.getAccout();
+        return orgRelService.getOrgRelTypePage(orgId,pageSize,pageNo,userId,accout);
     }
 
 }

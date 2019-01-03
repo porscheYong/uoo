@@ -2,6 +2,7 @@ package cn.ffcs.uoo.core.organization.dao;
 
 import cn.ffcs.uoo.core.organization.entity.ModifyHistory;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -15,7 +16,7 @@ public interface ModifyHistoryMapper extends BaseMapper<ModifyHistory> {
 
     public Long getId();
 
-    public Long getCommonTableId(String tableName);
+    public Long getCommonTableId(@Param("tableName") String tableName);
 
-    public String getSeqBatchNumber();
+    public Long getSeqBatchNumber();
 }

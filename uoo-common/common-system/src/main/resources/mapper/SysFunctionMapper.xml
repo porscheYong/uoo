@@ -20,6 +20,9 @@
     <sql id="Base_Column_List">
         FUNC_ID, FUNC_NAME, FUNC_CODE, FUNC_API, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
+    <select id="getId" resultType="Long">
+        select SEQ_SYS_FUNCTION.NEXTVAL from dual
+    </select>
     <select id="getFunctionByAccout" resultType="cn.ffcs.uoo.system.entity.SysFunction" parameterType="String">
         SELECT
         DISTINCT(m.FUNC_ID) ,m.*

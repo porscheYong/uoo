@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>数据资源</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- jquery datatable -->
+    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+    <!-- jquery tagsinput -->
+    <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
+    <link href="/vendors/typeahead/typeahead.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="../../../static/js/core/html5shiv.js"></script>
+    <script src="../../../static/js/core/respond.js"></script>
+    <script src="../../../static/js/core/excanvas.js"></script>
+    <![endif]-->
+    <style type="text/css">
+
+        table.dataTable 
+        {
+            table-layout: fixed;
+        }
+        th 
+        {
+            text-align: center;
+            white-space: nowrap;
+        }
+        table.dataTable tbody td 
+        {
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .row-num{
+            width: 10%;
+        }
+        .row-state{
+            width: 10%;
+        }
+        .row-tName{
+            width: 30%;
+        }
+        .row-fName{
+            width: 15%;
+        }
+        .row-rule{
+            width: 20%;
+        }
+        .row-fVal{
+            width: 15%;
+        }
+    </style>
+  </head>
+
+  <body style="background: #fff;height: auto;">
+        <div class="pos-relative" style="margin-top: 7px;margin-left:5px;overflow: hidden;">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="form-item" style="width: 100%">
+                    <div class="typeahead col-md-8 col-sm-8 col-xs-8" style="padding: 0;">
+                        <div>
+                            <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
+                            <input class="ui-input typeahead-input tt-input" id="menuResSearch" type="text" name="q" placeholder="搜索资源" autocomplete="off" spellcheck="false" dir="auto">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="board-title">
+            <span class="name ft18">数据资源</span>
+            <div class="fright">
+                <a class="button-add" id="addBtn"><span class="fa fa-plus-circle icon-add"></span>创建资源</a>
+            </div>
+        </div>
+
+        <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
+            <table id="dataResTable" class="stripe" width="100%"></table>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- handlebars -->
+    <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
+    <!-- typeahead -->
+    <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
+    <!-- Placeholder -->
+    <!-- <script type="text/javascript" src="/vendors/lulu/js/common/ui/Placeholder.js"></script> -->
+    <!-- jquery tagsinput -->
+    <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
+    <!-- init -->
+    <script src="/js/init.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+    <script type="text/javascript" src="/js/manage/user.js"></script>
+    <script type="text/javascript" src="/js/manage/resource/dataResList.js"></script>
+
+    <!-- <script>
+        $('input').placeholder();
+    </script> -->
+  </body>
+</html>

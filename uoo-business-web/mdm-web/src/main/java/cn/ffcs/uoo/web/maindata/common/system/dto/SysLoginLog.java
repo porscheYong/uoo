@@ -44,7 +44,7 @@ public class SysLoginLog extends Model<SysLoginLog> {
      * IP
      */
     @TableField("IP")
-    private Long ip;
+    private String ip;
     /**
      * 具体消息
      */
@@ -119,11 +119,11 @@ public class SysLoginLog extends Model<SysLoginLog> {
         this.succeed = succeed;
     }
 
-    public Long getIp() {
+    public String getIp() {
         return ip;
     }
 
-    public void setIp(Long ip) {
+    public void setIp(String ip) {
         this.ip = ip;
     }
 

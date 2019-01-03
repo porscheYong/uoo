@@ -1,3 +1,4 @@
+var toastr = window.top.toastr;
 var nodes = parent.getCurrentSelectedNode();
 var node = nodes[0];
 var upid = node.id;
@@ -18,37 +19,23 @@ function saveRegion(){
 		data:$('#regionForm').serialize(),
 		success:function(data){
 			if(data.state==1000){
-				parent.layer.confirm('操作成功', {
-			        icon: 0,
-			        title: '提示',
-			        btn: ['确定' ]
-			    }, function(index, layero){
-			        parent.layer.close(index);
-			      //在父节点增加数据啊
-					var treeObj =parent.getTree();
-					var upId=$('#parentRegionId').val();
-					var myNodes=treeObj.getNodesByParam("id",upId,null);
-					var newNodes = [{name:$('#regionName').val(),id:data.data.commonRegionId,parent:false,open:false,pId:upId.id}];
-					if(myNodes.length<=0){
-						//插入到根目录
-						newNodes = treeObj.addNodes(null,-1, newNodes);
-						parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
-					}else{
-						newNodes = treeObj.addNodes(myNodes[0],-1, newNodes);
-						parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
-					}
-			    }, function(){
-			    });
+				toastr.success('操作成功');
+				//在父节点增加数据啊
+				var treeObj =parent.getTree();
+				var upId=$('#parentRegionId').val();
+				var myNodes=treeObj.getNodesByParam("id",upId,null);
+				var newNodes = [{name:$('#regionName').val(),id:data.data.commonRegionId,parent:false,open:false,pId:upId.id}];
+				if(myNodes.length<=0){
+					//插入到根目录
+					newNodes = treeObj.addNodes(null,-1, newNodes);
+					parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
+				}else{
+					newNodes = treeObj.addNodes(myNodes[0],-1, newNodes);
+					parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
+				}
 				
 			}else{
-				parent.layer.confirm('操作失败，'+data.message, {
-			        icon: 0,
-			        title: '提示',
-			        btn: ['确定' ]
-			    }, function(index, layero){
-			        parent.layer.close(index);
-			    }, function(){
-			    });
+				toastr.error('操作失败'+data.message);
 			}
 		}
 			
@@ -67,11 +54,11 @@ function validFormData(){
 	}
 	var reg =/^\d{1,}$/;
 	var regionNbr=$('#regionNbr').val();
-	if (!reg.test(regionNbr)){
+	/*if (!reg.test(regionNbr)){
 		$('#regionNbr').focus();
 		$('#regionNbr').parent().addClass("has-error");
 		return false;
-	}
+	}*/
 	return true;
 	
 	//$('#regionNbrTooltip').tooltip('toggle')

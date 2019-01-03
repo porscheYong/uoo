@@ -13,8 +13,7 @@ var eduFlag = 0;
 var familyFlag = 0;
 var orgFlag = 0;
 var doubleNameFlag = 0;
-var certType,
-    eduList = [],
+var eduList = [],
     emailList = [],
     psonOrgVoList = [],
     orgList = [],
@@ -34,6 +33,14 @@ var currentPage = 0;
 var psnImageId;
 
 var toastr = window.top.toastr;
+
+//字典数据
+var certTypeData = window.top.dictionaryData.certType();
+var nationData = window.top.dictionaryData.nation();
+var pliticalStatusData = window.top.dictionaryData.pliticalStatus();
+var marriageData = window.top.dictionaryData.marriage();
+var propertyData = window.top.dictionaryData.property();
+var refTypeData = window.top.dictionaryData.refType();
 
 $('#orgName').html(orgName);
 parent.getOrgExtInfo();
@@ -108,88 +115,58 @@ laydate.render({
 
 // 获取证件类型字典数据
 function getCertType () {
-    $http.get('/tbDictionaryItem/getList/CERT_TYPE', {}, function (data) {
-        var option = '<option></option>';
-        for (var i = 0; i < data.length; i++) {
-            option += "<option value='" + data[i].itemValue + "'>" + data[i].itemCnname +"</option>";
-        }
-        $('#certType').append(option);
-        $('#certType').selectMatch();
-    }, function (err) {
-
-    })
+    var option = '';
+    for (var i = 0; i < certTypeData.length; i++) {
+        option += "<option value='" + certTypeData[i].itemValue + "'>" + certTypeData[i].itemCnname +"</option>";
+    }
+    $('#certType').append(option);
 }
 
 // 获取民族字典数据
 function getNation () {
-    $http.get('/tbDictionaryItem/getList/NATION', {}, function (data) {
-        var option = '<option></option>';
-        for (var i = 0; i < data.length; i++) {
-            option += "<option value='" + data[i].itemValue + "'>" + data[i].itemCnname +"</option>";
-        }
-        $('#nation').append(option);
-        $('#nation').selectMatch();
-    }, function (err) {
-
-    })
+    var option = '';
+    for (var i = 0; i < nationData.length; i++) {
+        option += "<option value='" + nationData[i].itemValue + "'>" + nationData[i].itemCnname +"</option>";
+    }
+    $('#nation').append(option);
 }
 
 // 获取政治面貌字典数据
 function getPliticalStatus () {
-    $http.get('/tbDictionaryItem/getList/PLITICAL_STATUS', {}, function (data) {
-        var option = '<option></option>';
-        for (var i = 0; i < data.length; i++) {
-            option += "<option value='" + data[i].itemValue + "'>" + data[i].itemCnname +"</option>";
-        }
-        $('#pliticalStatus').append(option);
-        $('#pliticalStatus').selectMatch();
-    }, function (err) {
-
-    })
+    var option = '';
+    for (var i = 0; i < pliticalStatusData.length; i++) {
+        option += "<option value='" + pliticalStatusData[i].itemValue + "'>" + pliticalStatusData[i].itemCnname +"</option>";
+    }
+    $('#pliticalStatus').append(option);
 }
 
 // 获取婚姻状况字典数据
 function getMarriage () {
-    $http.get('/tbDictionaryItem/getList/MARRIAGE', {}, function (data) {
-        var option = '<option></option>';
-        for (var i = 0; i < data.length; i++) {
-            option += "<option value='" + data[i].itemValue + "'>" + data[i].itemCnname +"</option>";
-        }
-        $('#marriage').append(option);
-        $('#marriage').selectMatch();
-    }, function (err) {
-
-    })
+    var option = '';
+    for (var i = 0; i < marriageData.length; i++) {
+        option += "<option value='" + marriageData[i].itemValue + "'>" + marriageData[i].itemCnname +"</option>";
+    }
+    $('#marriage').append(option);
 }
 
 // 获取用工性质字典数据
 function getProperty (val) {
-    $http.get('/tbDictionaryItem/getList/PROPERTY', {}, function (data) {
-        var option = '<option></option>';
-        for (var i = 0; i < data.length; i++) {
-            var select = val === data[i].itemValue? 'selected' : '';
-            option += "<option value='" + data[i].itemValue + "'" + select +  ">" + data[i].itemCnname +"</option>";
-        }
-        $('#property').append(option);
-        $('#property').selectMatch();
-    }, function (err) {
-
-    })
+    var option = '';
+    for (var i = 0; i < propertyData.length; i++) {
+        var select = val === propertyData[i].itemValue? 'selected' : '';
+        option += "<option value='" + propertyData[i].itemValue + "'" + select +  ">" + propertyData[i].itemCnname +"</option>";
+    }
+    $('#property').append(option);
 }
 
 // 获取专兼职字典数据
 function getRefType (val) {
-    $http.get('/tbDictionaryItem/getList/REF_TYPE', {}, function (data) {
-        var option = '<option></option>';
-        for (var i = 0; i < data.length; i++) {
-            var select = val === data[i].itemValue? 'selected' : '';
-            option += "<option value='" + data[i].itemValue + "'" + select +  ">" + data[i].itemCnname +"</option>";
-        }
-        $('#refType').append(option);
-        $('#refType').selectMatch();
-    }, function (err) {
-
-    })
+    var option = '';
+    for (var i = 0; i < refTypeData.length; i++) {
+        var select = val === refTypeData[i].itemValue? 'selected' : '';
+        option += "<option value='" + refTypeData[i].itemValue + "'" + select +  ">" + refTypeData[i].itemCnname +"</option>";
+    }
+    $('#refType').append(option);
 }
 
 // 获取组织树列表
@@ -259,14 +236,14 @@ function getPostName () {
 
 //选择证件类型
 function getSelectedCert () {
-    certType = $('#certType option:selected') .val();
     getIdCardInfo();
-    return certType;
+    return;
 }
 
 //正则身份证信息
 function getIdCardInfo () {
     var certNo = $('#certNo').val();
+    var certType = $('#certType option:selected') .val();
     if(certType == '1' && validCardByCard(certNo)){
         var sex;
         sex = getGenderByCard(certNo);
@@ -300,6 +277,17 @@ function getIdCardNcCode (id) {
     }, function (err) {
 
     })
+}
+
+//邮箱自动填充
+function autoFillMail() {
+    var phoneNo = $('#mobile').val();
+    var emailNo = $('#email').val();
+    var reg = /^1[34578]\d{9}$/;
+    if (!emailNo && reg.test(phoneNo)) {
+        $('#email').val(phoneNo + '@189.cn');
+        $('#email').focus();
+    }
 }
 
 // 点击电话新增btn

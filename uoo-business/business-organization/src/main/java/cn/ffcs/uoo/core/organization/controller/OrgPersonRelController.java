@@ -17,6 +17,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -67,6 +68,9 @@ public class OrgPersonRelController extends BaseController {
     @Autowired
     private CommonSystemService commonSystemService;
 
+    @Autowired
+    private ModifyHistoryService modifyHistoryService;
+
     @ApiOperation(value = "新增组织人员关系-web" , notes = "新增组织人员")
     @ApiImplicitParams({
     })
@@ -75,7 +79,9 @@ public class OrgPersonRelController extends BaseController {
     public ResponseResult<String> addOrgPsn(@RequestBody List<PsonOrgVo> psonOrgList){
         System.out.println(new Date());
         ResponseResult<String> ret = new ResponseResult<String>();
+
         if(psonOrgList!=null){
+            String batchNumber = modifyHistoryService.getBatchNumber();
             for(PsonOrgVo psonOrgVo : psonOrgList){
                 Wrapper orgTreeConfWrapper = Condition.create()
                         .eq("ORG_TREE_ID",psonOrgVo.getOrgTreeId())
@@ -93,6 +99,8 @@ public class OrgPersonRelController extends BaseController {
                 orgPersonRel.setOrgTreeId(psonOrgVo.getOrgTreeId().toString());
                 orgPersonRel.setCreateUser(psonOrgVo.getSysUserId());
                 orgPersonRelService.add(orgPersonRel);
+                modifyHistoryService.addModifyHistory(null,orgPersonRel,psonOrgVo.getSysUserId(),batchNumber);
+
 
                 Long orgTreePerId = orgtreeOrgpersonRelService.getId();
                 OrgtreeOrgpersonRel orgtreeOrgpersonRel = new OrgtreeOrgpersonRel();
@@ -102,6 +110,8 @@ public class OrgPersonRelController extends BaseController {
                 orgtreeOrgpersonRel.setStatusCd("1000");
                 orgtreeOrgpersonRel.setCreateUser(psonOrgVo.getSysUserId());
                 orgtreeOrgpersonRelService.add(orgtreeOrgpersonRel);
+                modifyHistoryService.addModifyHistory(null,orgtreeOrgpersonRel,psonOrgVo.getSysUserId(),batchNumber);
+
             }
         }
         ret.setState(ResponseResult.STATE_OK);
@@ -118,6 +128,7 @@ public class OrgPersonRelController extends BaseController {
         System.out.println(new Date());
         ResponseResult<String> ret = new ResponseResult<String>();
         if(psonOrgList!=null){
+            String batchNumber = modifyHistoryService.getBatchNumber();
             for(PsonOrgVo psonOrgVo : psonOrgList){
                 Wrapper orgTreeConfWrapper = Condition.create()
                         .eq("ORG_TREE_ID",psonOrgVo.getOrgTreeId())
@@ -135,6 +146,8 @@ public class OrgPersonRelController extends BaseController {
                 orgPersonRel.setOrgTreeId(psonOrgVo.getOrgTreeId().toString());
                 orgPersonRel.setCreateUser(psonOrgVo.getSysUserId());
                 orgPersonRelService.add(orgPersonRel);
+                modifyHistoryService.addModifyHistory(null,orgPersonRel,psonOrgVo.getSysUserId(),batchNumber);
+
 
                 Long orgTreePerId = orgtreeOrgpersonRelService.getId();
                 OrgtreeOrgpersonRel orgtreeOrgpersonRel = new OrgtreeOrgpersonRel();
@@ -144,6 +157,7 @@ public class OrgPersonRelController extends BaseController {
                 orgtreeOrgpersonRel.setStatusCd("1000");
                 orgtreeOrgpersonRel.setCreateUser(psonOrgVo.getSysUserId());
                 orgtreeOrgpersonRelService.add(orgtreeOrgpersonRel);
+                modifyHistoryService.addModifyHistory(null,orgtreeOrgpersonRel,psonOrgVo.getSysUserId(),batchNumber);
             }
             String mqmsg = "{\"type\":\"person\",\"handle\":\"update\",\"context\":{\"column\":\"personnelId\",\"value\":"+psonOrgList.get(0).getPersonnelId()+"}}" ;
             template.convertAndSend("message_sharing_center_queue",mqmsg);
@@ -177,12 +191,16 @@ public class OrgPersonRelController extends BaseController {
             ret.setMessage("组织树不存在");
             return ret;
         }
+
         List<OrgPersonRel> orgPersonRelList = orgPersonRelService.getOrgPsnByOrgAndPsnId(
                                                     psonOrgVo.getOrgTreeId().toString(),
                                                     personnelId.toString(),
                                                     psonOrgVo.getOrgId().toString());
         if(orgPersonRelList!=null && orgPersonRelList.size()>0){
+            String batchNumber = modifyHistoryService.getBatchNumber();
             OrgPersonRel orgPersonRel = orgPersonRelList.get(0);
+            OrgPersonRel orgPersonRelOLd = new OrgPersonRel();
+            BeanUtils.copyProperties(orgPersonRel,orgPersonRelOLd);
             orgPersonRel.setDoubleName(StrUtil.strnull(psonOrgVo.getDoubleName()));
             orgPersonRel.setProperty(StrUtil.strnull(psonOrgVo.getProperty()));
             if(!StrUtil.isNullOrEmpty(psonOrgVo.getPostId())){
@@ -193,35 +211,11 @@ public class OrgPersonRelController extends BaseController {
             }
             orgPersonRel.setUpdateUser(psonOrgVo.getSysUserId());
             orgPersonRelService.update(orgPersonRel);
-
+            modifyHistoryService.addModifyHistory(orgPersonRelOLd,orgPersonRel,psonOrgVo.getSysUserId(),batchNumber);
         }
         String mqmsg = "{\"type\":\"person\",\"handle\":\"update\",\"context\":{\"column\":\"personnelId\",\"value\":"+personnelId+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);
-//        if(orgPersonRel == null){
-//            ret.setState(ResponseResult.STATE_ERROR);
-//            ret.setMessage("人员组织关系不存在");
-//            return ret;
-//        }
-//        orgPersonRelService.delete(orgPersonRel);
-        //solrService.deleteDataIntoSolr("pson",orgPersonRel.getOrgPersonId().toString());
 
-//        Long orgPsndocRefIdnew = orgPersonRelService.getId();
-//        OrgPersonRel orgPersonRelT = orgPersonRelService.convertObj(psonOrgVo);
-//        orgPersonRelT.setOrgPersonId(orgPsndocRefIdnew);
-//        orgPersonRelService.add(orgPersonRelT);
-
-
-//        SolrInputDocument input = new SolrInputDocument();
-//        input.addField("psnName", psonOrgVo.getPsnName());
-//        input.addField("certNo", psonOrgVo.getCertNo());
-//        input.addField("orgRootId", psonOrgVo.getOrgRootId());
-//        input.addField("userId", psonOrgVo.getUserId());
-//        input.addField("id", orgPsndocRefIdnew);
-//        String sysfullName = orgService.getSysFullName(orgtree.getOrgId(),orgPersonRel.getOrgId().toString());
-//        input.addField("psnFullName", sysfullName);
-//        input.addField("acct", psonOrgVo.getAcct());
-//        input.addField("mobile", psonOrgVo.getMobile());
-//        solrService.addDataIntoSolr("pson",input);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("更新成功");
         return ret;
@@ -268,6 +262,7 @@ public class OrgPersonRelController extends BaseController {
                 .eq("STATUS_CD","1000");
         List<OrgPersonRel> orgPersonRelList = orgPersonRelService.selectList(orgPerConfWrapper);
         if(orgPersonRelList != null && orgPersonRelList.size()>0){
+            String batchNumber = modifyHistoryService.getBatchNumber();
             for(OrgPersonRel opr : orgPersonRelList){
                 Wrapper orgTreePerConfWrapper = Condition.create()
                         .eq("ORG_PERSON_ID",opr.getOrgPersonId())
@@ -277,8 +272,10 @@ public class OrgPersonRelController extends BaseController {
                 if(orgtreeOrgpersonRel!=null){
                     orgtreeOrgpersonRel.setUpdateUser(psonOrgVo.getSysUserId());
                     orgtreeOrgpersonRelService.delete(orgtreeOrgpersonRel);
+                    modifyHistoryService.addModifyHistory(orgtreeOrgpersonRel,null,psonOrgVo.getSysUserId(),batchNumber);
                     opr.setUpdateUser(psonOrgVo.getSysUserId());
                     orgPersonRelService.delete(opr);
+                    modifyHistoryService.addModifyHistory(opr,null,psonOrgVo.getSysUserId(),batchNumber);
                     break;
                 }
             }
@@ -306,6 +303,7 @@ public class OrgPersonRelController extends BaseController {
             ret.setMessage("组织人员标识不能为空");
             return ret;
         }
+        String batchNumber = modifyHistoryService.getBatchNumber();
         Wrapper orgPerConfWrapper = Condition.create()
                 .eq("PERSONNEL_ID",orgPsndocRefId)
                 .eq("STATUS_CD","1000");
@@ -319,9 +317,11 @@ public class OrgPersonRelController extends BaseController {
                 if(orgtreeOrgpersonRel!=null){
                     orgtreeOrgpersonRel.setUpdateUser(psonOrgVo.getSysUserId());
                     orgtreeOrgpersonRelService.delete(orgtreeOrgpersonRel);
+                    modifyHistoryService.addModifyHistory(orgtreeOrgpersonRel,null,psonOrgVo.getSysUserId(),batchNumber);
                 }
                 opr.setUpdateUser(psonOrgVo.getSysUserId());
                 orgPersonRelService.delete(opr);
+                modifyHistoryService.addModifyHistory(opr,null,psonOrgVo.getSysUserId(),batchNumber);
             }
         }
 
@@ -331,6 +331,7 @@ public class OrgPersonRelController extends BaseController {
         List<OrgContactRel> orgContactRels = orgContactRelService.selectList(orgContRelWrapper);
         for(OrgContactRel ocr : orgContactRels){
             orgContactRelService.delete(ocr);
+            modifyHistoryService.addModifyHistory(ocr,null,psonOrgVo.getSysUserId(),batchNumber);
         }
         String mqmsg = "{\"type\":\"person\",\"handle\":\"update\",\"context\":{\"column\":\"personnelId\",\"value\":"+orgPsndocRefId+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);

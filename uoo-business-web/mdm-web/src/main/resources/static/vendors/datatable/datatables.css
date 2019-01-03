@@ -98,7 +98,7 @@ table.dataTable.stripe tbody tr.odd:hover {
   background-color: rgb(217,242,255);
 }
 table.dataTable tbody tr.selected {
-  background-color: rgba(0,168,255,.15);
+  background-color: rgb(217,242,255);
 }
 table.dataTable tbody th,
 table.dataTable tbody td {
