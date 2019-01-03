@@ -112,9 +112,11 @@ public class SysUserController {
         }
         SysLoginLog sysLoginLog=new SysLoginLog();
         sysLoginLog.setLogName("用户登录");
-        sysLoginLog.setIp(IPUtils.string2Long(subject.getSession().getHost()));
+        sysLoginLog.setIp(subject.getSession().getHost());
         sysLoginLog.setSucceed(rr.getState()==ResponseResult.STATE_OK?1L:0L);
-        sysLoginLog.setAccout(sysUser.getAccout());
+        sysLoginLog.setAccout(accout);
+        String jsonString = JSONObject.toJSONString(rr);
+        sysLoginLog.setNotes(jsonString!=null?jsonString.length()>=200?jsonString.substring(0, 200):jsonString:"");
         sysLoginLog.setMessage(JSONObject.toJSONString(sysUser));
         loginLogClient.add(sysLoginLog);
         return rr;

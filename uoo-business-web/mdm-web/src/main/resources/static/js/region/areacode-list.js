@@ -1,3 +1,4 @@
+var toastr = window.top.toastr;
 var i=0,showCheck=getQueryString('showCheck');
 //var loading = new Loading();
 //loading.screenMaskEnable('container0');
@@ -189,49 +190,42 @@ function goDel(){
 			dataType:'json',
 			type:'post',
 			success:function(data){
-				parent.layer.confirm(data.state==1000?'操作成功':'操作失败，'+data.message, {
-			        icon: 0,
-			        title: '提示',
-			        btn: ['确定' ]
-			    }, function(index, layero){
-			        parent.layer.close(index);
-			        if(data.state==1000){
-			        	//
-			        	var selectNode=parent.getCurrentSelectedNode()[0];
-			        	var zTree=parent.getTree();
-			        	if(selectNode.pId==0||selectNode.pId==null){
-			        		parent.changeIframe('/inaction/region/none.html');
-			        	}
-			        	zTree.removeNode(selectNode, null, "prev");
-			        	var nodes= selectNode.getParentNode();
-			        	zTree.selectNode(nodes);
-			        	$('#regionStrCurrent').text(nodes.name);
-			        	var treeNode=nodes;
-			        	var str=treeNode.name;
-			        	var parentNode=treeNode.getParentNode();
-			        	while(parentNode!=null){
-			        		str=parentNode.name+">"+str;
-			        		parentNode=parentNode.getParentNode();
-			        	}
-			        	$('#regionStrFull').text(str);
-			        	$('#regionStrCurrent').attr('cid',nodes.id);
-			        	
-			        	$.ajax({
-			        		url:'/region/politicalLocation/getChildPoliticalLocationInfo/'+nodes.id,
-			        		success:function(data){
-			        			if(data.state==1000){
-			        				initTable(data.data)
-			        			}else{
-			        				
-			        			}
-			        		},
-			        		dataType:'json',
-			        		type:'get'
-			        	});
-			        }else{
-			        }
-			    }, function(){
-			    });
+				if(data.state==1000){
+					toastr.success('操作成功');
+					var selectNode=parent.getCurrentSelectedNode()[0];
+		        	var zTree=parent.getTree();
+		        	if(selectNode.pId==0||selectNode.pId==null){
+		        		parent.changeIframe('/inaction/region/none.html');
+		        	}
+		        	zTree.removeNode(selectNode, null, "prev");
+		        	var nodes= selectNode.getParentNode();
+		        	zTree.selectNode(nodes);
+		        	$('#regionStrCurrent').text(nodes.name);
+		        	var treeNode=nodes;
+		        	var str=treeNode.name;
+		        	var parentNode=treeNode.getParentNode();
+		        	while(parentNode!=null){
+		        		str=parentNode.name+">"+str;
+		        		parentNode=parentNode.getParentNode();
+		        	}
+		        	$('#regionStrFull').text(str);
+		        	$('#regionStrCurrent').attr('cid',nodes.id);
+		        	
+		        	$.ajax({
+		        		url:'/region/politicalLocation/getChildPoliticalLocationInfo/'+nodes.id,
+		        		success:function(data){
+		        			if(data.state==1000){
+		        				initTable(data.data)
+		        			}else{
+		        				
+		        			}
+		        		},
+		        		dataType:'json',
+		        		type:'get'
+		        	});
+				}else{
+					toastr.error('操作失败'+data.message);
+				}
 				
 			}
 		});
