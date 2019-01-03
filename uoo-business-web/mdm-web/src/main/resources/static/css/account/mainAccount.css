@@ -8,9 +8,6 @@
 .row-id{
     width: 15% !important;
 }
-.row-orgTree{
-    width: 15% !important;
-}
 .row-fullName{
     width: 60% !important;
 }
@@ -23,16 +20,21 @@ td,th{
 .row-org{
     width: 18% !important;
 }
+.row-orgTree{
+    width: 13% !important;
+}
 .row-system{
     width: 14% !important;
 }
 .row-acc{
-    width: 14% !important;
+    width: 22% !important;
 }
 .row-acctype{
-    width: 18% !important;
+    width: 11% !important;
 }
-.row-number,
+.row-number{
+    width: 11% !important;
+}
 .row-state{
     width: 11% !important;
 }

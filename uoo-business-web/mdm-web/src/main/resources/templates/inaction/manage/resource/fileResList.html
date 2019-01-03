@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>角色</title>
+    <title>文件资源</title>
 
     <!-- Bootstrap -->
     <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -47,48 +47,32 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .breadcrumb{
-            margin-bottom: 15px !important;
-        }
-        .perTab{
-            background: rgb(223,225,229);
-            border-radius: 5px;
-            margin-right: 8px;
-            padding: 2px 8px;
-        }
         .row-num{
             width: 10%;
         }
-        .row-area{
+        .row-state{
+            width: 15%;
+        }
+        .row-fName{
+            width: 35%;
+        }
+        .row-fType{
             width: 20%;
         }
-        .row-role,
-        .row-perm{
-            width: 35%;
+        .row-fSize{
+            width: 20%;
         }
     </style>
   </head>
 
-  <body style="background: #fff;">
-        <div class="board-title">
-            <span class="name ft18" id="orgName">标准组织树维护</span>   <!--杭州分公司 -->
-        </div>
-        <div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;">标准组织树维护</div>   <!-- 完整路径-->
-        <div style="margin-bottom:20px">
-            <span class="permission" style="padding: 10px 15px 0; background: #fff;">所含权限</span>   
-            <span class="perTab">创建组织</span>
-            <span class="perTab">修改组织基础信息</span>
-            <span class="perTab">修改组织关系信息</span>
-            <span class="perTab">删除组织</span>
-            <span class="perTab">查看组织</span>
-        </div>
+  <body style="background: #fff;height: auto;">
         <div class="pos-relative" style="margin-top: 7px;margin-left:5px;overflow: hidden;">
             <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-item" style="width: 100%">
                     <div class="typeahead col-md-8 col-sm-8 col-xs-8" style="padding: 0;">
                         <div>
                             <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
-                            <input class="ui-input typeahead-input tt-input" id="roleSearch" type="text" name="q" placeholder="搜索角色" autocomplete="off" spellcheck="false" dir="auto">
+                            <input class="ui-input typeahead-input tt-input" id="menuResSearch" type="text" name="q" placeholder="搜索资源" autocomplete="off" spellcheck="false" dir="auto">
                         </div>
                     </div>
                 </div>
@@ -96,14 +80,14 @@
         </div>
 
         <div class="board-title">
-            <span class="name ft18">下级角色</span>
+            <span class="name ft18">文件资源</span>
             <div class="fright">
-                <a class="button-add" id="addBtn"><span class="fa fa-plus-circle icon-add"></span>创建角色</a>
+                <a class="button-add" id="addBtn"><span class="fa fa-plus-circle icon-add"></span>创建资源</a>
             </div>
         </div>
 
         <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
-            <table id="roleTable" class="stripe" width="100%"></table>
+            <table id="fileResTable" class="stripe" width="100%"></table>
         </div>
     </div>
 
@@ -124,7 +108,7 @@
     <!-- jquery datatable -->
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
     <script type="text/javascript" src="/js/manage/user.js"></script>
-    <script type="text/javascript" src="/js/manage/role/list.js"></script>
+    <script type="text/javascript" src="/js/manage/resource/fileResList.js"></script>
 
     <!-- <script>
         $('input').placeholder();

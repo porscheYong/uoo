@@ -41,6 +41,32 @@
           overflow: hidden;
           text-overflow: ellipsis;
       }
+      .resA{
+        display: block;
+        width: auto;
+        margin: 0 0.5em 0.5em;
+        padding: 0.8em 1em;
+        /* background: #9dc8e2;  */
+        text-decoration: none;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border:1px solid #9dc8e2; 
+        border-radius: 5px;
+        font-size: 16px !important;
+      }
+      .resA:hover{
+        color: #fff;
+        background: #9dc8e2;
+      }
+      .resMenu .current a{
+        color: #fff;
+        background: #1890ff;
+        border:1px solid #1890ff; 
+      }
+      .resLi{
+        text-align: center;
+        cursor: pointer;
+      }
     </style>
   </head>
 
@@ -50,11 +76,27 @@
         <div class="content-left">
           <!-- <iframe name="standardTree" class="layadmin-iframe" src="../views/standardTree.html" frameborder="0" width="250px"></iframe> -->
           <div style="display: inline-block;width: 100%;padding-top: 10px;">
-              <ul id="posTree" class="ztree"></ul>
+              <ul class="resMenu">
+                  <li class="resLi current" id="funRes">
+                      <a class="resA">功能资源</a>
+                  </li>
+                  <li class="resLi" id="menuRes">
+                      <a class="resA">菜单资源</a>
+                  </li>
+                  <li class="resLi" id="elemRes">
+                      <a class="resA">元素资源</a>
+                  </li>
+                  <li class="resLi" id="fileRes">
+                      <a class="resA">文件资源</a>
+                  </li>
+                  <li class="resLi" id="dataRes">
+                      <a class="resA">数据资源</a>
+                  </li>
+              </ul>
           </div>
         </div>
         <div class="content-right">
-          <iframe id="posFrame" name="posManage" class="layadmin-iframe" src="list.html" frameborder="0" width="100%" height="99%"></iframe>
+          <iframe id="resFrame" name="resManage" class="layadmin-iframe" frameborder="0" width="100%" height="99%"></iframe>
         </div>
       </div>
     </div>
@@ -74,8 +116,7 @@
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
     <!-- Custom Theme Scripts -->
-    <script type="text/javascript" src="/js/manage/tree_init.js"></script>
-    <script type="text/javascript" src="/js/manage/position/index.js"></script>
+    <script type="text/javascript" src="/js/manage/resource/index.js"></script>
 
   </body>
 </html>
