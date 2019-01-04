@@ -63,6 +63,8 @@ public class BaseUnitConstants {
 
 	public static final String TB_ACCOUNT_ORG_REL = "TB_ACCOUNT_ORG_REL";
 
+	public static final String TB_ORG = "TB_ORG";
+
 
 
 	/**

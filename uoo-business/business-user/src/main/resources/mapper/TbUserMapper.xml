@@ -141,29 +141,47 @@
     </select>
 
     <select id="getUserList" resultType="cn.ffcs.uoo.core.user.vo.ListUserVo">
-        select ROWNUM id, at.*
-        from (select  distinct '1' type, t.acct_id, '主账号' name, t.acct,t.status_cd,to_char(t.create_date, 'yyyy-MM-dd') as create_date
-        from TB_ACCT t, TB_ACCOUNT_ORG_REL t3
-        where t.status_cd = 1000
-          and t3.status_cd = 1000
-          and t.acct_id = t3.acct_id
+    select ROWNUM id, at.*
+      from (with acctOrgRel as (select t1.acct_id,
+                                 t1.personnel_id,
+                                 t1.acct,
+                                 t1.status_cd,
+                                 t1.create_date,
+                                 t2.org_id
+                          from TB_ACCT t1, TB_ACCOUNT_ORG_REL t2
+                          where t1.status_cd = 1000
+                            and t2.status_cd = 1000
+                            and t1.acct_id = t2.acct_id
+
+)
         <if test="inSql != null and inSql != '' " >
             and ${inSql}
         </if>
         <if test="personnelId != null and personnelId != '' " >
-            and t.personnel_id = #{personnelId}
+            and t1.personnel_id = #{personnelId}
         </if>
+        select distinct '1' type,
+               aor.acct_id,
+               '主账号' name,
+               aor.acct,
+               aor.status_cd,
+               to_char(aor.create_date, 'yyyy-MM-dd') as create_date
+         from acctOrgRel aor
         union
-        select distinct '2' type,t1.slave_acct_id acct_id, '从账号' name, t1.slave_acct as acct, t1.status_cd, to_char(t1.create_date, 'yyyy-MM-dd') as create_date
-        from TB_SLAVE_ACCT t1, TB_ACCT t2, TB_ACCOUNT_ORG_REL t3
-        where t1.status_cd = 1000
-        and t2.status_cd = 1000
-        and t3.status_cd = 1000
-        and t1.slave_acct_type = '1'
-        and t1.acct_id = t2.acct_id
-        and t1.acct_id = t3.acct_id
-        <if test="inSql != null and inSql != '' " >
-            and ${inSql}
+       select distinct '2' type,
+               t1.slave_acct_id acct_id,
+               '从账号' name,
+               t1.slave_acct as acct,
+               t1.status_cd,
+               to_char(t1.create_date, 'yyyy-MM-dd') as create_date
+          from TB_SLAVE_ACCT t1, acctOrgRel t2, TB_ORG t3
+         where t1.status_cd = 1000
+           and t3.status_cd = 1000
+           and t3.org_id = t2.org_id
+           and t1.slave_acct_type = '1'
+           and t1.acct_id = t2.acct_id
+        <if test="inSActSql != null and inSActSql != '' " >
+            and ${inSActSql}
         </if>
         <if test="personnelId != null and personnelId != '' " >
             and t2.personnel_id = #{personnelId}
