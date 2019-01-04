@@ -1,3 +1,4 @@
+var toastr = window.top.toastr;
 function gotoAdd(){
 	parent.changeIframe('/inaction/region/commonregion-add.html?upRegionId='+parent.getCurrentSelectedNode()[0].id+'&upRegionName='+parent.getCurrentSelectedNode()[0].name)
 }
@@ -142,15 +143,9 @@ function goDel(){
 			dataType:'json',
 			type:'post',
 			success:function(data){
-				parent.layer.confirm(data.state==1000?'操作成功':'操作失败，'+data.message, {
-			        icon: 0,
-			        title: '提示',
-			        btn: ['确定' ]
-			    }, function(index, layero){
-			        parent.layer.close(index);
-			    }, function(){
-			    });
 				if(data.state==1000){
+					toastr.success('操作成功');
+
 					//
 					var selectNode=parent.getCurrentSelectedNode()[0];
 					var zTree=parent.getTree();
@@ -183,7 +178,9 @@ function goDel(){
 						dataType:'json',
 						type:'get'
 					});
+				
 				}else{
+					toastr.error('操作失败'+data.message);
 				}
 				
 			}
@@ -198,14 +195,11 @@ function deleteRegion(id){
 			dataType:'json',
 			type:'post',
 			success:function(data){
-				parent.layer.confirm(data.state==1000?'操作成功':'操作失败，'+data.message, {
-			        icon: 0,
-			        title: '提示',
-			        btn: ['确定' ]
-			    }, function(index, layero){
-			        parent.layer.close(index);
-			    }, function(){
-			    });
+				if(data.state==1000){
+					toastr.success('操作成功');
+				}else{
+					toastr.error('操作失败'+data.message);
+				}
 				getRegionList(listId);
 				if(data.state==1000){
 					var zTree=parent.getTree();

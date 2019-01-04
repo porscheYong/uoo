@@ -65,7 +65,8 @@ public class OrgRelServiceHystrix implements OrgRelService {
     }
 
     @Override
-    public ResponseResult<Page<OrgRefTypeVo>> getOrgRelTypePage(String orgId,Integer pageSize,Integer pageNo){
+    public ResponseResult<Page<OrgRefTypeVo>> getOrgRelTypePage(String orgId,Integer pageSize,Integer pageNo,
+                                                                Long userId,String accout){
         ResponseResult<Page<OrgRefTypeVo>> responseResult = new ResponseResult<Page<OrgRefTypeVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

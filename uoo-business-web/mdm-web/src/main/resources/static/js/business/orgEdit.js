@@ -659,7 +659,8 @@ function getOrg (orgId) {
         $('#orgCode').val(data.orgCode);
         $('#shortName').val(data.shortName);
         $('#orgBizName').val(data.orgBizName);
-        $('#fullName').val(data.fullName);
+        $('#orgBizFullName').val(data.orgBizFullName);
+        $('#orgBizFullName').attr('title', data.orgBizFullName);
         $('#orgNameEn').val(data.orgNameEn);
         orgMartCode = data.orgMartCode;
         laydate.render({
@@ -806,6 +807,7 @@ function updateOrg () {
   var orgScale = $('#orgScale option:selected') .val();
   var shortName = $('#shortName').val();
   var orgBizName = $('#orgBizName').val();
+  var orgBizFullName = $('#orgBizFullName').val();
   var orgNameEn = $('#orgNameEn').val();
   var cityTown = $('#cityTown option:selected') .val();
   var foundDate = $('#foundingTime').val();
@@ -847,6 +849,7 @@ function updateOrg () {
       orgName: orgName,
       shortName: shortName,
       orgBizName: orgBizName,
+      orgBizFullName: orgBizFullName,
       cityTown: cityTown,
       orgScale: orgScale,
       foundingTime: foundDate,

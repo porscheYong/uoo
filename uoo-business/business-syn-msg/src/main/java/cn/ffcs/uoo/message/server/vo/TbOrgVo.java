@@ -99,6 +99,17 @@ public class TbOrgVo {
     //区域编码
     private TbAreaCode areaCodeInfo;
 
+    //组织所在树
+    private List<TbOrgTree> orgOrgTreeRel;
+
+    public List<TbOrgTree> getOrgOrgTreeRel() {
+        return orgOrgTreeRel;
+    }
+
+    public void setOrgOrgTreeRel(List<TbOrgTree> orgOrgTreeRel) {
+        this.orgOrgTreeRel = orgOrgTreeRel;
+    }
+
     public Long getOrgId() {
         return orgId;
     }

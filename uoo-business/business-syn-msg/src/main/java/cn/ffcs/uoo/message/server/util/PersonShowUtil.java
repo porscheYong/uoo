@@ -132,7 +132,7 @@ public class PersonShowUtil {
             //vo.getTbPersonnel().setPersonnelId(null);//vo.getTbPersonnel().setPsnName(null);//vo.getTbPersonnel().setPsnCode(null);
             //vo.getTbPersonnel().setNcCode(null);//vo.getTbPersonnel().setPsnNbr(null);//vo.getTbPersonnel().setNationality(null);
             //vo.getTbPersonnel().setGender(null);//vo.getTbPersonnel().setNation(null);//vo.getTbPersonnel().setMarriage(null);
-            //vo.getTbPersonnel().setPliticalStatus(null);//vo.getTbPersonnel().setImage(null);//vo.getTbPersonnel().setReason(null);
+            //vo.getTbPersonnel().setPliticalStatus(null);//vo.getTbPersonnel().setReason(null);
             //vo.getTbPersonnel().setToWorkTime(null);//vo.getTbPersonnel().setServingAge(null);//vo.getTbPersonnel().setLengthService(null);
             //vo.getTbPersonnel().setUuid(null);//vo.getTbPersonnel().setNotes(null);
             vo.getTbPersonnel().setStatusCd(null);
@@ -141,6 +141,7 @@ public class PersonShowUtil {
             vo.getTbPersonnel().setUpdateDate(null);
             vo.getTbPersonnel().setUpdateUser(null);
             vo.getTbPersonnel().setStatusDate(null);
+            vo.getTbPersonnel().setImage(null);
         }
 
         if (vo.getTbPsnjob() != null) {

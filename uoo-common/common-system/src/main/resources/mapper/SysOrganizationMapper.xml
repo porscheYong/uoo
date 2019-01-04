@@ -23,4 +23,17 @@
         ORG_ID, ORG_NAME, ORG_CODE, PARENT_ORG_CODE, REGION_NBR, SORT, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
+
+    <select id="getId" resultType="java.lang.Long">
+		select SEQ_SYS_ORGANIZATION_ID.NEXTVAL from dual
+	</select>
+
+    <select id="getTreeRoot" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
+
+    </select>
+
+    <select id="getTreeChild" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
+
+    </select>
+
 </mapper>

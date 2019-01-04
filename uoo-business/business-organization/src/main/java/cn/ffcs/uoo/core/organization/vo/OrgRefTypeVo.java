@@ -28,6 +28,35 @@ public class OrgRefTypeVo extends BaseVo {
     private String orgBizName;
     private String orgTreeId;
 
+    /****************/
+    private String tabOrgParams;
+    private String tabOrgOrgTypeParams;
+    private String tabOrgRelParams;
+
+    public String getTabOrgRelParams() {
+        return tabOrgRelParams;
+    }
+
+    public void setTabOrgRelParams(String tabOrgRelParams) {
+        this.tabOrgRelParams = tabOrgRelParams;
+    }
+
+    public String getTabOrgParams() {
+        return tabOrgParams;
+    }
+
+    public void setTabOrgParams(String tabOrgParams) {
+        this.tabOrgParams = tabOrgParams;
+    }
+
+    public String getTabOrgOrgTypeParams() {
+        return tabOrgOrgTypeParams;
+    }
+
+    public void setTabOrgOrgTypeParams(String tabOrgOrgTypeParams) {
+        this.tabOrgOrgTypeParams = tabOrgOrgTypeParams;
+    }
+
     public String getOrgTreeId() {
         return orgTreeId;
     }

@@ -68,6 +68,9 @@
     <collection property="extendInfo2" ofType="cn.ffcs.uoo.message.server.vo.ExpandVo"
                 select="getExtendInfo" column="{orgId=ORG_ID,orgTreeId=ORG_TREE_ID,systemId=BUSINESS_SYSTEM_ID}"></collection>
 
+    <collection property="orgOrgTreeRel" ofType="cn.ffcs.uoo.message.server.pojo.TbOrgTree"
+                select="getOrgOrgTreeRel" column="ORG_ID"></collection>
+
   </resultMap>
 
   <resultMap id="OrgLevelMap" type="cn.ffcs.uoo.message.server.vo.OrgLevelVo">
@@ -318,6 +321,11 @@
   <select id="getExtendInfo" resultType="cn.ffcs.uoo.message.server.vo.ExpandVo">
     SELECT C.COLUMN_NAME columnName,V.DATA_ value FROM TB_SYSTEMTABLE S, TB_EXPANDOCOLUMN C, TB_EXPANDOVALUE V WHERE S.TABLE_ID = C.TABLE_ID AND V.TABLE_ID = S.TABLE_ID
     AND V.COLUMN_ID = C.COLUMN_ID AND S.TABLE_NAME = 'TB_ORG' AND S.STATUS_CD = 1000  AND C.STATUS_CD = 1000 AND V.STATUS_CD = 1000 AND S.RESOURCE_ID = #{systemId}  AND V.RECORD_ID = #{orgId}
+  </select>
+
+  <!-- 组织的所有的树-->
+  <select id="getOrgOrgTreeRel"  resultMap="OrgTreeMap">
+    select b.* from tb_org_orgtree_rel a,tb_org_tree b where a.org_id = #{ORG_ID} and a.org_tree_id = b.org_tree_id and a.status_cd = 1000 and b.status_cd = 1000
   </select>
 
 </mapper>

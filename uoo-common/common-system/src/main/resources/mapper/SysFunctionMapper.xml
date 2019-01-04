@@ -4,7 +4,7 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysFunction">
-        <result column="FUNC_ID" property="funcId" />
+        <id column="FUNC_ID" property="funcId" />
         <result column="FUNC_NAME" property="funcName" />
         <result column="FUNC_CODE" property="funcCode" />
         <result column="FUNC_API" property="funcApi" />
@@ -20,6 +20,9 @@
     <sql id="Base_Column_List">
         FUNC_ID, FUNC_NAME, FUNC_CODE, FUNC_API, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
+    <select id="getId" resultType="Long">
+        select SEQ_SYS_FUNCTION.NEXTVAL from dual
+    </select>
     <select id="getFunctionByAccout" resultType="cn.ffcs.uoo.system.entity.SysFunction" parameterType="String">
         SELECT
         DISTINCT(m.FUNC_ID) ,m.*

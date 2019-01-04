@@ -1,4 +1,5 @@
 var formValid;
+var toastr = window.top.toastr;
 function deleteData(){
 	var id=$('#areaCodeId').val();
 	
@@ -14,18 +15,12 @@ function deleteData(){
 			dataType:'json',
 			type:'post',
 			success:function(data){
-				parent.layer.confirm(data.state==1000?'操作成功':'操作失败，'+data.message, {
-			        icon: 0,
-			        title: '提示',
-			        btn: ['确定' ]
-			    }, function(index, layero){
-			        parent.layer.close(index);
-			        if(data.state==1000){
-			        	location.href="/inaction/region/areacode-list.html";
-			        }
-			    }, function(){
-			    });
-				
+				if(data.state==1000){
+					toastr.success('操作成功');
+					location.href="/inaction/region/areacode-list.html";
+				}else{
+					toastr.error('操作失败'+data.message);
+				}
 			}
 		});
     }, function(){
@@ -45,18 +40,12 @@ function saveRegion(){
 		url:'/region/areaCode/updateAreaCode',
 		data:$('#regionForm').serialize(),
 		success:function(data){
-			parent.layer.confirm(data.state==1000?'操作成功':'操作失败，'+data.message, {
-		        icon: 0,
-		        title: '提示',
-		        btn: ['确定' ]
-		    }, function(index, layero){
-		        parent.layer.close(index);
-		        if(data.state==1000){
-		        	location.href="/inaction/region/areacode-list.html";
-		        }else{
-		        }
-		    }, function(){
-		    });
+			if(data.state==1000){
+				toastr.success('操作成功');
+				location.href="/inaction/region/areacode-list.html";
+			}else{
+				toastr.error('操作失败'+data.message);
+			}
 		}
 			
 	});
@@ -81,15 +70,7 @@ function initData(){
 				$('#areaCode').val(data.data.areaCode);
 				$('#areaNbr').val(data.data.areaNbr);
 			}else{
-				parent.layer.confirm('加载区号信息失败，请重试' , {
-			        icon: 0,
-			        title: '提示',
-			        btn: ['确定' ]
-			    }, function(index, layero){
-			        parent.layer.close(index);
-			    }, function(){
-			    });
-				 
+				toastr.error('加载区号信息失败，请重试');
 			}
 		}
 	});

@@ -2,7 +2,10 @@ spring:
   application:
     name: business-syn-msg
   zipkin:
+    #测试
     base-url: http://134.96.253.223:8600
+    #生产
+    #base-url: http://134.96.217.244:8600
   sleuth:
     sampler:
       percentage: 0.1

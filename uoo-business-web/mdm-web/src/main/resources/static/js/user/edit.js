@@ -1,3 +1,4 @@
+var toastr = window.top.toastr;
 var orgId = getQueryString('id');
 var orgRootId = getQueryString('orgRootId');
 var tabPage = getQueryString('tabPage');
@@ -643,25 +644,11 @@ function addPsonOrg(){
         dataType:'json',
         success:function(data){
             if(data.state==1000){
-                parent.layer.confirm('操作成功', {
-                    icon: 0,
-                    title: '提示',
-                    btn: ['确定' ]
-                }, function(index, layero){
-                    parent.layer.close(index);
-                }, function(){
-                });
+            	toastr.success('操作成功');
                 personalData.currentEditOrgInfo={};
                 getOrgPersonnerList();
             }else{
-                parent.layer.confirm('操作失败'+data.message, {
-                    icon: 0,
-                    title: '提示',
-                    btn: ['确定' ]
-                }, function(index, layero){
-                    parent.layer.close(index);
-                }, function(){
-                });
+            	toastr.error('操作失败,'+data.message);
             }
         }
     });
@@ -686,26 +673,12 @@ function addPsonJob(){
         dataType:'json',
         success:function(data){
             if(data.state==1000){
-                parent.layer.confirm('操作成功', {
-                    icon: 0,
-                    title: '提示',
-                    btn: ['确定' ]
-                }, function(index, layero){
-                    parent.layer.close(index);
-                }, function(){
-                });
+            	toastr.success('操作成功');
                 personalData.currentEditJobInfo={};
 
                 getJobInfo();
             }else{
-                parent.layer.confirm('操作失败'+data.message, {
-                    icon: 0,
-                    title: '提示',
-                    btn: ['确定' ]
-                }, function(index, layero){
-                    parent.layer.close(index);
-                }, function(){
-                });
+            	toastr.error('操作失败,'+data.message);
             }
         }
     });
@@ -742,25 +715,11 @@ function addPsonEdu(){
         dataType:'json',
         success:function(data){
             if(data.state==1000){
-                parent.layer.confirm('操作成功', {
-                    icon: 0,
-                    title: '提示',
-                    btn: ['确定' ]
-                }, function(index, layero){
-                    parent.layer.close(index);
-                }, function(){
-                });
+            	toastr.success('操作成功');
                 personalData.currentEditEduInfo={};
                 getEduInfo();
             }else{
-                parent.layer.confirm('操作失败'+data.message, {
-                    icon: 0,
-                    title: '提示',
-                    btn: ['确定' ]
-                }, function(index, layero){
-                    parent.layer.close(index);
-                }, function(){
-                });
+            	toastr.error('操作失败,'+data.message);
             }
         }
     });
@@ -787,25 +746,11 @@ function addFamily(){
         dataType:'json',
         success:function(data){
             if(data.state==1000){
-                parent.layer.confirm('操作成功', {
-                    icon: 0,
-                    title: '提示',
-                    btn: ['确定' ]
-                }, function(index, layero){
-                    parent.layer.close(index);
-                }, function(){
-                });
+            	toastr.success('操作成功');
                 personalData.currentEditFamilyInfo={};
                 getFamilyInfo();
             }else{
-                parent.layer.confirm('操作失败'+data.message, {
-                    icon: 0,
-                    title: '提示',
-                    btn: ['确定' ]
-                }, function(index, layero){
-                    parent.layer.close(index);
-                }, function(){
-                });
+            	toastr.error('操作失败,'+data.message);
             }
         }
     });
@@ -945,24 +890,10 @@ function updatePersonnel(){
         dataType:'json',
         success:function(data){
             if(data.state==1000){
-                parent.layer.confirm('操作成功', {
-                    icon: 0,
-                    title: '提示',
-                    btn: ['确定' ]
-                }, function(index, layero){
-                    parent.layer.close(index);
-                }, function(){
-                });
+            	toastr.success('操作成功');
                 getOrgPersonnerList();
             }else{
-                parent.layer.confirm('操作失败'+data.message, {
-                    icon: 0,
-                    title: '提示',
-                    btn: ['确定' ]
-                }, function(index, layero){
-                    parent.layer.close(index);
-                }, function(){
-                });
+            	toastr.error('操作失败,'+data.message);
             }
         }
     });
@@ -1002,28 +933,10 @@ function deleteJob(id){
             dataType:'json',
             success:function(data){
                 if(data.state==1000){
-                    parent.layer.confirm('操作成功', {
-                        icon: 0,
-                        title: '提示',
-                        btn: ['确定' ]
-                    }, function(index, layero){
-                        parent.layer.close(index);
-
-                    }, function(){
-
-                    });
+                	toastr.success('操作成功');
                     getJobInfo();
                 }else{
-                    parent.layer.confirm('操作失败,'+data.message, {
-                        icon: 0,
-                        title: '提示',
-                        btn: ['确定' ]
-                    }, function(index, layero){
-                        parent.layer.close(index);
-
-                    }, function(){
-
-                    });
+                	toastr.error('操作失败,'+data.message);
                 }
             }
         });
@@ -1086,24 +999,10 @@ function deleteEdu(id){
             dataType:'json',
             success:function(data){
                 if(data.state==1000){
-                    parent.layer.confirm('操作成功', {
-                        icon: 0,
-                        title: '提示',
-                        btn: ['确定' ]
-                    }, function(index, layero){
-                        parent.layer.close(index);
-                    }, function(){
-                    });
+                	toastr.success('操作成功');
                     getEduInfo();
                 }else{
-                    parent.layer.confirm('操作失败'+data.message, {
-                        icon: 0,
-                        title: '提示',
-                        btn: ['确定' ]
-                    }, function(index, layero){
-                        parent.layer.close(index);
-                    }, function(){
-                    });
+                	toastr.error('操作失败'+data.message);
                 }
             }
         });
@@ -1125,24 +1024,10 @@ function deleteFamily(id){
             dataType:'json',
             success:function(data){
                 if(data.state==1000){
-                    parent.layer.confirm('操作成功', {
-                        icon: 0,
-                        title: '提示',
-                        btn: ['确定' ]
-                    }, function(index, layero){
-                        parent.layer.close(index);
-                    }, function(){
-                    });
+                	toastr.success('操作成功');
                     getFamilyInfo();
                 }else{
-                    parent.layer.confirm('操作失败'+data.message, {
-                        icon: 0,
-                        title: '提示',
-                        btn: ['确定' ]
-                    }, function(index, layero){
-                        parent.layer.close(index);
-                    }, function(){
-                    });
+                	toastr.error('操作失败,'+data.message);
                 }
             }
         });

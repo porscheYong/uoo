@@ -4,6 +4,9 @@ import cn.ffcs.uoo.system.entity.SysElement;
 import cn.ffcs.uoo.system.dao.SysElementMapper;
 import cn.ffcs.uoo.system.service.ISysElementService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,5 +19,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysElementServiceImpl extends ServiceImpl<SysElementMapper, SysElement> implements ISysElementService {
+
+    @Override
+    public List<SysElement> getElementByAccout(String accout) {
+        return baseMapper.getElementByAccout(accout);
+    }
+
+    @Override
+    public Integer getId() {
+        return baseMapper.getId();
+    }
 
 }

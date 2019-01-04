@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import cn.ffcs.uoo.web.maindata.common.system.client.SysFunctionClient;
@@ -127,7 +128,7 @@ public class LoadUrlPermissionService {
             filterChainDefinitionMap.put("/login", "anon");
             filterChainDefinitionMap.put("/loginPage.html", "anon");
             // filterChainDefinitionMap.put("/**", "anon");
-            // filterChainDefinitionMap.put("/aa/aa", "perms[asasd]");
+            //filterChainDefinitionMap.put("/aa/aa", "perms[asasd]");
             // filterChainDefinitionMap.put("/inaction/**", "perms[inaction]");
 
             /*ResponseResult<List<FuncComp>> listFuncComp = funcCompSvc.listFuncComp(1, Integer.MAX_VALUE);
@@ -152,9 +153,9 @@ public class LoadUrlPermissionService {
 //            filterChainDefinitionMap.put("/bb/ff=*", "perms[sad]");//
 //            filterChainDefinitionMap.put("/cc/*/ff", "perms[sad]");//
 
-            cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<List<SysMenu>> listPage = sysMenuClient.listPage(1, Integer.MAX_VALUE);
+            cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<Page<SysMenu>> listPage = sysMenuClient.listPage(1, Integer.MAX_VALUE,"");
             if(listPage.getState()==cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult.STATE_OK){
-                List<SysMenu> data = listPage.getData();
+                List<SysMenu> data = listPage.getData().getRecords();
                 if(data!=null){
                     log.info("菜单权限数量："+data.size());
                     for (SysMenu sysMenu : data) {
@@ -162,9 +163,9 @@ public class LoadUrlPermissionService {
                     }
                 }
             }
-            cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<List<SysFunction>> fs = sysFunctionClient.list(1, Integer.MAX_VALUE,"");
+            cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<Page<SysFunction>> fs = sysFunctionClient.list(1, Integer.MAX_VALUE,"");
             if(fs.getState()==cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult.STATE_OK){
-                List<SysFunction> data = fs.getData();
+                List<SysFunction> data = fs.getData().getRecords();
                 if(data!=null){
                     log.info("功能权限数量："+data.size());
                     for (SysFunction sysMenu : data) {

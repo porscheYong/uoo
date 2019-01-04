@@ -10,12 +10,10 @@
  */
 package cn.ffcs.uoo.system.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +22,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.Condition;
-import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.system.consts.StatusCD;
+import cn.ffcs.uoo.system.entity.SysMenu;
 import cn.ffcs.uoo.system.entity.SysRole;
 import cn.ffcs.uoo.system.entity.SysRolePermissionRef;
 import cn.ffcs.uoo.system.service.ISysDeptRoleRefService;
@@ -104,12 +104,10 @@ public class SysRoleController {
     }
     @ApiOperation(value = "获取分页列表", notes = "获取分页列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ),
-            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ),
     })
     @UooLog(key="listPage",value="获取分页列表")
     @GetMapping("/listPage")
-    public ResponseResult<List<SysRoleDTO>> listPage(Integer pageNo, Integer pageSize,String keyWord,String parentRoleCode,Integer includChild){
+    public ResponseResult<Page<SysRoleDTO>> listPage(@RequestParam("pageNo") Integer pageNo,@RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord,@RequestParam("parentRoleCode")String parentRoleCode,@RequestParam("includChild")Integer includChild){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         HashMap<String,Object> map=new HashMap<>();
@@ -127,8 +125,11 @@ public class SysRoleController {
         } 
         List<SysRoleDTO> Roles=sysRoleService.findList(map);
         Long count = sysRoleService.countList(map);
-        
-        ResponseResult<List<SysRoleDTO>> createSuccessResult = ResponseResult.createSuccessResult(Roles, "");
+        Page<SysRoleDTO> page=new Page<>(pageNo,pageSize);
+        page.setRecords(Roles);
+        page.setTotal(count);
+        ResponseResult<Page<SysRoleDTO>> createSuccessResult = ResponseResult.createSuccessResult( "");
+        createSuccessResult.setData(page);
         createSuccessResult.setTotalRecords(count);
         return createSuccessResult;
     }
@@ -146,10 +147,35 @@ public class SysRoleController {
             responseResult.setMessage("请输入id");
             return responseResult;
         }
+        String roleCode = sysRole.getRoleCode();
+        SysRole one = sysRoleService.selectById(sysRole.getRoleId());
+        if(one==null){
+            return ResponseResult.createErrorResult("ID不存在");
+        }
+        List<SysMenu> tmp = sysRoleService.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", roleCode));
+        if(tmp!=null&&!tmp.isEmpty()){
+            if(tmp.size()>1){
+                return ResponseResult.createErrorResult("编码已存在");
+            }else{
+                SysMenu obj = tmp.get(0);
+                if(!obj.getMenuId().equals(sysRole.getRoleId())){
+                    return ResponseResult.createErrorResult("编码已存在");
+                }
+            }
+        }
+        
         sysRole.setUpdateDate(new Date());
         SysRole obj=new SysRole();
         BeanUtils.copyProperties(sysRole, obj);
         sysRoleService.updateById(obj);
+        //把各个关系调整
+        if(!one.getRoleCode().equals(roleCode)){
+            deptRoleRefSvc.updateForSet("ROLE_CODE="+roleCode, Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", one.getRoleCode()));
+            posiRoleRefSvc.updateForSet("ROLE_CODE="+roleCode, Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", one.getRoleCode()));
+            rolePermRefSvc.updateForSet("ROLE_CODE="+roleCode, Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", one.getRoleCode()));
+            userRoleRefSvc.updateForSet("ROLE_CODE="+roleCode, Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", one.getRoleCode()));
+        }
+        
         rolePermRefSvc.delete(Condition.create().eq("ROLE_CODE", sysRole.getRoleCode()));
         String permissionCodes = sysRole.getPermissionCodes();
         if(permissionCodes!=null&&!permissionCodes.trim().isEmpty()){
@@ -175,6 +201,11 @@ public class SysRoleController {
     @Transactional
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseResult<Void> add(@RequestBody SysRoleDTO sysRole) {
+        String roleCode = sysRole.getRoleCode();
+        long c=sysRoleService.selectCount(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", roleCode));
+        if(c>0){
+            return ResponseResult.createErrorResult("编码已存在");
+        }
         ResponseResult<Void> responseResult = new ResponseResult<Void>();
         sysRole.setCreateDate(new Date());
         sysRole.setRoleId((sysRoleService.getId()));
