@@ -30,6 +30,7 @@ import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
 import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
+import cn.ffcs.uoo.web.maindata.realm.exception.AccoutLockedException;
 import cn.ffcs.uoo.web.maindata.realm.exception.ServiceException;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -104,6 +105,9 @@ public class SysUserController {
                 //ResponseResult<SysUser> r = sysuserClient.getSysUserByAccout(t);
             } catch (ServiceException e) {
                 rr.setMessage("登陆服务异常，请稍后重试");
+                rr.setState(1100);
+            } catch (AccoutLockedException e) {
+                rr.setMessage("账号被锁定，请稍后重试");
                 rr.setState(1100);
             } catch (AuthenticationException e) {
                 rr.setMessage("用户密码错误");

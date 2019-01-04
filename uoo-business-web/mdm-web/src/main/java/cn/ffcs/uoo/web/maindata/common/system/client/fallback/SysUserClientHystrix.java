@@ -33,4 +33,12 @@ public class SysUserClientHystrix implements SysUserClient {
         return rr;
     }
 
+    @Override
+    public ResponseResult<Void> updateLoginInfo(SysUser sysUser) {
+        ResponseResult<Void> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    }
+
 }

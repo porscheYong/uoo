@@ -1,9 +1,7 @@
 package cn.ffcs.uoo.web.maindata.realm;
 
+import java.util.Date;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -18,11 +16,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import com.alibaba.fastjson.JSONObject;
 
 import cn.ffcs.uoo.web.maindata.common.system.client.SysFunctionClient;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysMenuClient;
@@ -32,11 +27,9 @@ import cn.ffcs.uoo.web.maindata.common.system.dto.SysMenu;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
-import cn.ffcs.uoo.web.maindata.permission.dto.FuncComp;
-import cn.ffcs.uoo.web.maindata.permission.dto.FuncMenu;
 import cn.ffcs.uoo.web.maindata.permission.service.PrivilegeService;
 import cn.ffcs.uoo.web.maindata.permission.service.RolesService;
-import cn.ffcs.uoo.web.maindata.permission.vo.AccoutPermissionVO;
+import cn.ffcs.uoo.web.maindata.realm.exception.AccoutLockedException;
 import cn.ffcs.uoo.web.maindata.realm.exception.ServiceException;
 
 public class UooRealm extends AuthorizingRealm {
@@ -57,6 +50,8 @@ public class UooRealm extends AuthorizingRealm {
     SysMenuClient sysMenuClient;
     @Autowired
     SysFunctionClient sysFuncClient;
+    Integer lockedCount=6;
+    Long lockedTime=600L;//秒
     /**
      * 验证当前登录的用户
      * 
@@ -78,17 +73,46 @@ public class UooRealm extends AuthorizingRealm {
         if(r.getState()!=ResponseResult.STATE_OK){
             return null;
         }
-        String md5Encoding = MD5Util.md5Encoding(new String(usertoken.getPassword()), r.getData().getSalt());
+        SysUser user = r.getData();
+        Subject subject = SecurityUtils.getSubject();
+        if(user.getLocked()!=null&&user.getLocked()==1){
+            //查看是否可用解锁
+            Date lastLogin = user.getLastLogin();
+            if(lastLogin!=null){
+                Integer i=(Integer) subject.getSession().getAttribute(LoginConsts.LOCKED_COUNT_KEY);
+                if(System.currentTimeMillis() - lastLogin.getTime() < lockedTime*1000 && i!=null && i>=6){
+                    throw new AccoutLockedException();
+                }else{
+                    subject.getSession().setAttribute(LoginConsts.LOCKED_COUNT_KEY, 0);
+                    user.setLocked(0);
+                }
+            }
+        } 
+        String md5Encoding = MD5Util.md5Encoding(new String(usertoken.getPassword()), user.getSalt());
         usertoken.setPassword(md5Encoding.toCharArray());
-        AuthenticationInfo info = new SimpleAuthenticationInfo(r.getData().getAccout(), r.getData().getPasswd(),
+        AuthenticationInfo info = new SimpleAuthenticationInfo(user.getAccout(), user.getPasswd(),
                 this.getName());
-        if(info!=null && md5Encoding.equals(r.getData().getPasswd())){
+        
+        if(!md5Encoding.equals(user.getPasswd())){
+            Integer i=(Integer) subject.getSession().getAttribute(LoginConsts.LOCKED_COUNT_KEY);
+            i=i==null?1:i+1;
+            subject.getSession().setAttribute(LoginConsts.LOCKED_COUNT_KEY, i);
+            //log.info("出错次数：{}",i);
+            if(i==lockedCount){
+                user.setLocked(1);
+            }
+        }
+        user.setLastIp(subject.getSession().getHost());
+        user.setLastLogin(new Date());
+        client.updateLoginInfo(user);
+        if(info!=null && md5Encoding.equals(user.getPasswd())){
             clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
-            Subject subject = SecurityUtils.getSubject();
-            SysUser data = r.getData();
-            data.setPasswd(null);
-            data.setSalt(null);
-            subject.getSession().setAttribute(LoginConsts.LOGIN_KEY, data);
+            SysUser sysuser=new SysUser();
+            BeanUtils.copyProperties(user, sysuser);
+            sysuser.setPasswd(null);
+            sysuser.setSalt(null);
+            subject.getSession().setAttribute(LoginConsts.LOGIN_KEY, sysuser);
+            subject.getSession().setAttribute(LoginConsts.LOCKED_COUNT_KEY, 0);
         }
         return info;
     }
