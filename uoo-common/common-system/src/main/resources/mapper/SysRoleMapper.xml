@@ -27,7 +27,7 @@
 	</sql>
 
 	<select id="getId" resultType="Long">
-		select SEQ_TB_SYS_ROLE.NEXTVAL
+		select SEQ_SYS_ROLE_ID.NEXTVAL
 		from dual
 	</select>
 	<select id="selectOne" resultType="cn.ffcs.uoo.system.vo.SysRoleDTO"

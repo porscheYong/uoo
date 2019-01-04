@@ -4,7 +4,7 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysFunction">
-        <result column="FUNC_ID" property="funcId" />
+        <id column="FUNC_ID" property="funcId" />
         <result column="FUNC_NAME" property="funcName" />
         <result column="FUNC_CODE" property="funcCode" />
         <result column="FUNC_API" property="funcApi" />
