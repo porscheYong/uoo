@@ -103,7 +103,7 @@ public class SysFunctionController {
             }
         }
         if(!fun.getFuncCode().equals(one.getFuncCode())){
-            permFuncSvc.updateForSet("FUNC_CODE="+funcCode, Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("FUNC_CODE", one.getFuncCode()));
+            permFuncSvc.updateForSet("FUNC_CODE='"+funcCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("FUNC_CODE", one.getFuncCode()));
         }
         fun.setUpdateDate(new Date());
         funcSvc.updateById(fun);

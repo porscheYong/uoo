@@ -128,7 +128,7 @@ public class SysMenuController {
             }
         }
         if(!menuCode.equals(one.getMenuCode())){
-            permMenuSvc.updateForSet("MENU_CODE="+menuCode, Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("MENU_CODE", one.getMenuCode()));
+            permMenuSvc.updateForSet("MENU_CODE='"+menuCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("MENU_CODE", one.getMenuCode()));
         }
         sysMenu.setUpdateDate(new Date());
         sysMenuService.updateById(sysMenu);
