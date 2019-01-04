@@ -13,7 +13,9 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -56,9 +58,11 @@ public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> impleme
 
     @Override
     public Page<ListUserVo> getUserList( Long personnelId, Integer pageNo, Integer pageSize, String account){
-        String inSql = commonSystemService.getSysDataRuleSql("t3",BaseUnitConstants.TB_ACCOUNT_ORG_REL, account);
+
+        String inSActSql = commonSystemService.getSysDataRuleSql("t3",BaseUnitConstants.TB_ORG, account);
+        String inSql = commonSystemService.getSysDataRuleSql("t2",BaseUnitConstants.TB_ACCOUNT_ORG_REL, account);
         Page<ListUserVo> page = new Page<ListUserVo>(StrUtil.intiPageNo(pageNo), StrUtil.intiPageSize(pageSize));
-        page.setRecords(baseMapper.getUserList(page, personnelId, inSql));
+        page.setRecords(baseMapper.getUserList(page, personnelId, inSql, inSActSql));
         return  page;
     }
 
@@ -69,7 +73,10 @@ public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> impleme
 
     @Override
     public Page<ListAcctOrgVo> getAcctOrg(Long acctId, Integer pageNo, Integer pageSize, String account){
-        String inSql = commonSystemService.getSysDataRuleSql("t2", BaseUnitConstants.TB_ACCOUNT_ORG_REL, account);
+        Map<String, String> map = new HashMap<>(16);
+        map.put(BaseUnitConstants.TB_ORG, "t1");
+        map.put(BaseUnitConstants.TB_ACCOUNT_ORG_REL, "t2");
+        String inSql = commonSystemService.getSqlJointList(map, account);
         Page<ListAcctOrgVo> page = new Page<ListAcctOrgVo>(StrUtil.intiPageNo(pageNo)
             , StrUtil.intiPageSize(pageSize));
         page.setRecords(baseMapper.getAcctOrg(page, acctId, inSql));
@@ -83,7 +90,10 @@ public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> impleme
 
     @Override
     public List<ListAcctOrgVo> getAcctOrgByPsnId(Long personnelId, Long resourceObjId, String account){
-        String inSql = commonSystemService.getSysDataRuleSql("t2", BaseUnitConstants.TB_ACCOUNT_ORG_REL, account);
+        Map<String, String> map = new HashMap<>(16);
+        map.put(BaseUnitConstants.TB_ORG, "t1");
+        map.put(BaseUnitConstants.TB_ACCOUNT_ORG_REL, "t2");
+        String inSql = commonSystemService.getSqlJointList(map, account);
         return baseMapper.getAcctOrgByPsnId(personnelId, resourceObjId, inSql);
     }
 

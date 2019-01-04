@@ -75,11 +75,13 @@
     </select>
 
     <select id="getSlaveAcctOrg" resultType="cn.ffcs.uoo.core.user.vo.ListSlaveAcctOrgVo">
-        select ROWNUM id, t3.*,'应用' slave_acct_type, t7.org_tree_name, t4.full_name, t6.system_name
+        select ROWNUM id, t.*,'应用' slave_acct_type, t7.org_tree_name, t4.full_name, t6.system_name
         from (select t1.slave_acct_id, t1.slave_acct, t1.status_cd, t2.org_id, t1.resource_obj_id, t2.org_tree_id
-        from tb_slave_acct t1, tb_account_org_rel t2
+        from tb_slave_acct t1, tb_account_org_rel t2, tb_org t3
         where t1.status_cd = 1000
         and t2.status_cd = 1000
+        and t3.status_cd = 1000
+        and t2.org_id = t3.org_id
         and t1.acct_org_rel_id = t2.acct_org_rel_id
         and t1.slave_acct_type = 1
         <if test="inSql != null and inSql != '' " >
@@ -88,14 +90,14 @@
         <if test="slaveAcctOrgVo.acctId != null and slaveAcctOrgVo.acctId != '' " >
             and t1.acct_id = #{slaveAcctOrgVo.acctId}
         </if>
-        ) t3
+        ) t
         left join tb_org t4
-        on t3.org_id = t4.org_id
+        on t.org_id = t4.org_id
         and t4.status_cd = 1000
         left join tb_business_system t6
-        on t3.resource_obj_id = t6.business_system_id
+        on t.resource_obj_id = t6.business_system_id
         and t6.status_cd = 1000
-        left join tb_org_tree t7 on t3.org_tree_id = t7.org_tree_id and t7.status_cd = 1000
+        left join tb_org_tree t7 on t.org_tree_id = t7.org_tree_id and t7.status_cd = 1000
     </select>
 
 </mapper>
