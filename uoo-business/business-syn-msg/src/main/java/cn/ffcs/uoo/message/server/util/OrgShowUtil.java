@@ -143,6 +143,8 @@ public class OrgShowUtil {
                 temp.setUpdateDate(null);
                 temp.setUpdateUser(null);
                 temp.setStatusDate(null);
+                temp.setOrgId(null);
+                temp.setOrgTreeType(null);
             });
         }
 
