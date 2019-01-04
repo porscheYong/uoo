@@ -2,6 +2,7 @@ package cn.ffcs.uoo.system.entity;
 
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
@@ -22,7 +23,7 @@ public class SysMenu extends Model<SysMenu> {
     /**
      * 菜单标识
      */
-    @TableField("MENU_ID")
+    @TableId("MENU_ID")
     private Long menuId;
     @TableField("MENU_NAME")
     private String menuName;
