@@ -508,7 +508,7 @@ function addOrg () {
     }), function (data) {
         parent.addNodeById(orgId, data);
         parent.openTreeById(orgId, data.id);
-        window.location.replace("list.html?id=" + data.id + '&orgTreeId=' + orgTreeId + '&pid=' + data.pid + "&name=" + encodeURI(data.name));
+        window.location.replace("list.html?id=" + data.id + '&orgTreeId=' + orgTreeId + "&refCode=" + refCode + '&pid=' + data.pid + "&name=" + encodeURI(data.name));
         loading.screenMaskDisable('container');
         toastr.success('新增成功！');
     }, function (err) {

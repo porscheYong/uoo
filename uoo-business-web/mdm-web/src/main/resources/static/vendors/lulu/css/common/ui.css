@@ -826,6 +826,14 @@ div.ui-input > input {
   top: 1px;
   z-index: 1; }
 
+.ui-input-search {
+  background-image: url(/images/ico_zoomer.png);
+  background: url(/images/ico_zoomer.svg),none;
+  background-repeat: no-repeat;
+  background-position: 7px 7px;
+  background-size: 24px 24px;
+  padding: 9px 32px !important; }
+
 .ui-input-x:hover > .ui-input {
   border-color: #ababaf; }
 

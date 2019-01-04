@@ -7,7 +7,7 @@ var areaCodeId = ''; //区号ID
 var locationList = [];
 var orgTypeList;
 var orgMartCode; //划小组织编码
-var expandovalueVoList; //划小扩展字段
+var expandovalueVoList = []; //划小扩展字段
 var nodeTypeList = [];
 var countTypeList = [];
 var nodeTypeId;
@@ -823,18 +823,22 @@ function updateOrg () {
   var orgContent = $('#orgContent').val();
   var orgDesc = $('#orgDesc').val();
   //划小扩展字段
-  var nodeType = $('#nodeTypes option:selected') .val();
+  var nodeType = formSelects.value('nodeTypes');
   var areaType = $('#areaType option:selected') .val();
-  var countType = $('#countType option:selected') .val();
+  var countType = formSelects.value('countType');
   var contractType = $('#contractType option:selected') .val();
   var orgMart; //传给后台的划小组织编码
   if (editSmallField) {
-      expandovalueVoList = [
-          {columnName: 'nodeType', data: nodeType, valueId: nodeTypeId},
-          {columnName: 'areaType', data: areaType, valueId: areaTypeId},
-          {columnName: 'countType', data: countType, valueId: countTypeId},
-          {columnName: 'contractType', data: contractType, valueId: contractTypeId}
-      ];
+      if (areaType)
+          expandovalueVoList.push({columnName: 'areaType', data: areaType});
+      if (contractType)
+          expandovalueVoList.push({columnName: 'contractType', data: contractType})
+      for (var i = 0; i < nodeType.length; i++){
+          expandovalueVoList.push({columnName: 'nodeType', data: nodeType[i].value})
+      }
+      for (var i = 0; i < countType.length; i++){
+          expandovalueVoList.push({columnName: 'countType', data: countType[i].value})
+      }
       orgMart = orgMartCode;
   }
   else  {
@@ -871,7 +875,7 @@ function updateOrg () {
       orgMartCode: orgMart
   }), function () {
       parent.changeNodeName(orgId, orgName);
-      window.location.replace("list.html?id=" + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + "&name=" + encodeURI(orgName));
+      window.location.replace("list.html?id=" + orgId + '&orgTreeId=' + orgTreeId + "&refCode=" + refCode + '&pid=' + pid + "&name=" + encodeURI(orgName));
       loading.screenMaskDisable('container');
       toastr.success('更新成功！');
   }, function () {
