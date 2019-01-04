@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: uoo-monitor
+server:
+  port: 8900
+logging:
+  level:
+    root: INFO
+    org.springframework.web.servlet.DispatcherServlet: warn
+    org.springframework.cloud.sleuth: warn
