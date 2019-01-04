@@ -23,6 +23,17 @@ public class TreeNodeVo {
     private String chkDisabled;
     private String extField1;
 
+    //标准组织标识
+    private String standardFlag;
+
+    public String getStandardFlag() {
+        return standardFlag;
+    }
+
+    public void setStandardFlag(String standardFlag) {
+        this.standardFlag = standardFlag;
+    }
+
     public String getChkDisabled() {
         return chkDisabled;
     }

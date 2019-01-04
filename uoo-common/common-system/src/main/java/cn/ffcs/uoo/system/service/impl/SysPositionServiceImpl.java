@@ -86,4 +86,9 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
     public String getRolesByPositionId(String positionId){
         return baseMapper.getRolesByPositionId(positionId);
     }
+    @Override
+    public List<SysPositionVo> getSysOrgPosition(String orgCode){
+        return baseMapper.getSysOrgPosition(orgCode);
+    }
+
 }

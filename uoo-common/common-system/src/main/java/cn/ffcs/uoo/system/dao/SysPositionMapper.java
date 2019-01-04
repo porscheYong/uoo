@@ -27,4 +27,6 @@ public interface SysPositionMapper extends BaseMapper<SysPosition> {
 
     public String getRolesByPositionId(@Param("positionId")String positionId);
 
+    public List<SysPositionVo> getSysOrgPosition(@Param("orgCode")String orgCode);
+
 }

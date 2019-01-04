@@ -86,4 +86,14 @@
             WHERE A.STATUS_CD = '1000'
             AND A.P_POSITION_ID = #{positionId}
     </select>
+
+
+    <select id="getSysOrgPosition" resultType="cn.ffcs.uoo.system.vo.SysPositionVo">
+        SELECT B.POSITION_ID positionId,B.POSITION_NAME positionName,B.POSITION_CODE positionCode,B.P_POSITION_ID pPositionId
+        FROM SYS_POSITION B, SYS_DEPT_POSITION_REF A
+        WHERE A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000
+        AND A.POSITION_CODE = B.POSITION_CODE
+        AND A.ORG_CODE = #{ORGCODE}
+    </select>
 </mapper>

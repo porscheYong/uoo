@@ -179,6 +179,51 @@ public class CommonSystemServiceImpl implements CommonSystemService {
         return params;
     }
 
+
+    /**
+     * 获取指定表权限sql（表别名）
+     * @param tabAliasName
+     * @param tabName
+     * @param sysDataRuleList
+     * @return
+     */
+    @Override
+    public String getSysDataRuleSql(String tabAliasName,String tabName, List<SysDataRule> sysDataRuleList){
+        String params = "";
+        if(sysDataRuleList!=null && sysDataRuleList.size()>0){
+            for(SysDataRule sysDataRule : sysDataRuleList){
+                if(sysDataRule.getTabName().equals(tabName)){
+                    String oper = EnumRuleOperator.getSqlRuleOper(sysDataRule.getRuleOperator());
+                    if(sysDataRule.getRuleOperator().equals("eq") ||
+                            sysDataRule.getRuleOperator().equals("gt") ||
+                            sysDataRule.getRuleOperator().equals("lt") ||
+                            sysDataRule.getRuleOperator().equals("lte") ||
+                            sysDataRule.getRuleOperator().equals("gte") ||
+                            sysDataRule.getRuleOperator().equals("ne")
+                            ){
+                        params+=" "+tabAliasName+"."+sysDataRule.getColName()+" "+oper+" "+sysDataRule.getColValue()+" ";
+                    }
+                    if(sysDataRule.getRuleOperator().equals("in") ||
+                            sysDataRule.getRuleOperator().equals("notin")){
+                        params+=" "+tabAliasName+"."+sysDataRule.getColName()+" "+oper+" ("+sysDataRule.getColValue()+") ";
+                    }
+                    if(sysDataRule.getRuleOperator().equals("isnull") ||
+                            sysDataRule.getRuleOperator().equals("isnotnull")){
+                        params+=" "+tabAliasName+"."+sysDataRule.getColName()+" "+oper+" ";
+                    }
+                    if(sysDataRule.getRuleOperator().equals("like")){
+                        params+=" "+tabAliasName+"."+sysDataRule.getColName()+" "+oper+" '%"+sysDataRule.getColValue()+"%' ";
+                    }
+                    params+="AND";
+                }
+            }
+            if(!StrUtil.isNullOrEmpty(params)){
+                params = params.substring(0,params.length()-3);
+            }
+        }
+        return params;
+    }
+
     /**
      * 获取系统权限SysDataRule
      * @param tabName

@@ -486,7 +486,7 @@ public class OrgPersonRelController extends BaseController {
                 }
                 String orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
                 psonOrgVo.setTabOrgParams(orgParams);
-                String orgPerParams =  commonSystemService.getSysDataRuleSql("TB_ORG_PERSON_REL",sdrList);
+                String orgPerParams =  commonSystemService.getSysDataRuleSql("tbOrgPersonRel","TB_ORG_PERSON_REL",sdrList);
                 psonOrgVo.setTabOrgPerRelParams(orgPerParams);
                 String orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
                 psonOrgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
@@ -631,6 +631,8 @@ public class OrgPersonRelController extends BaseController {
                 psonOrgVo.setTabOrgPerRelParams(orgPerParams);
                 String orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
                 psonOrgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
+                String orgAccountRelParams = commonSystemService.getSysDataRuleSql("tbAccountOrgRel","TB_ACCOUNT_ORG_REL",sdrList);
+                psonOrgVo.setTabAccountOrgRelParams(orgAccountRelParams);
             }
         }
 

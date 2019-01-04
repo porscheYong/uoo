@@ -46,4 +46,6 @@ public interface SysPositionService extends IService<SysPosition> {
     public List<SysPositionVo> getPositionRel(String positionId,String isSearchlower);
 
     public String getRolesByPositionId(String positionId);
+
+    public List<SysPositionVo> getSysOrgPosition(String orgCode);
 }

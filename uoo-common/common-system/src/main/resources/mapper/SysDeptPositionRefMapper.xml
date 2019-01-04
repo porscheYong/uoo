@@ -21,4 +21,8 @@
         DEPT_POSITION_REF_ID, ORG_CODE, POSITION_CODE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, NOTES
     </sql>
 
+    <select id="getId" resultType="java.lang.Long">
+		select SEQ_SYS_DEPT_POSITION_REF_ID.NEXTVAL from dual
+	</select>
+
 </mapper>

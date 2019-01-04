@@ -29,11 +29,88 @@
 	</select>
 
     <select id="getTreeRoot" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
-
+        SELECT A.ORG_CODE ID,A.PARENT_ORG_CODE PID,A.ORG_NAME NAME,(select wm_concat(C.POSITION_NAME)
+                  from SYS_DEPT_POSITION_REF B, Sys_Position C
+                 where C.STATUS_CD = '1000'
+                   AND B.STATUS_CD = '1000'
+                   AND B.POSITION_CODE = C.POSITION_CODE
+                   AND A.ORG_CODE = B.ORG_CODE) EXTFIELD1 FROM SYS_ORGANIZATION A WHERE A.STATUS_CD='1000' AND A.PARENT_ORG_CODE IS NULL
     </select>
 
     <select id="getTreeChild" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
-
+        SELECT A.ORG_CODE ID,A.PARENT_ORG_CODE PID,A.ORG_NAME NAME, (select wm_concat(C.POSITION_NAME)
+                  from SYS_DEPT_POSITION_REF B, Sys_Position C
+                 where C.STATUS_CD = '1000'
+                   AND B.STATUS_CD = '1000'
+                   AND B.POSITION_CODE = C.POSITION_CODE
+                   AND A.ORG_CODE = B.ORG_CODE) EXTFIELD1 FROM SYS_ORGANIZATION A WHERE A.STATUS_CD='1000' AND A.PARENT_ORG_CODE=#{id}
     </select>
 
+    <select id="selectOrgTree" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
+        SELECT A.ORG_CODE ID,A.PARENT_ORG_CODE PID,A.ORG_NAME NAME,(select wm_concat(C.POSITION_NAME)
+                  from SYS_DEPT_POSITION_REF B, Sys_Position C
+                 where C.STATUS_CD = '1000'
+                   AND B.STATUS_CD = '1000'
+                   AND B.POSITION_CODE = C.POSITION_CODE
+                   AND A.ORG_CODE = B.ORG_CODE) EXTFIELD1 FROM SYS_ORGANIZATION A WHERE A.STATUS_CD='1000'
+    </select>
+
+    <select id="isleaf"  resultType="java.lang.Integer">
+            SELECT COUNT(1) FROM SYS_ORGANIZATION A WHERE A.STATUS_CD=1000 AND A.PARENT_ORG_CODE=#{id}
+    </select>
+
+    <select id="selectFuzzyOrgRelPage" resultType="cn.ffcs.uoo.system.vo.SysOrganizationVo">
+         Select A.* from SYS_ORGANIZATION A where 1=1
+         <if test="vo.search != null and vo.search != ''">
+            AND  A.ORG_NAME like '%'||#{vo.search}||'%'
+         </if>
+    </select>
+
+    <select id="getRestructOrgRelTree"  resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
+               SELECT A.ORG_CODE ID,
+               A.PARENT_ORG_CODE PID,
+               A.ORG_NAME,
+               (select wm_concat(C.POSITION_NAME)
+                  from SYS_DEPT_POSITION_REF B, Sys_Position C
+                 where C.STATUS_CD = '1000'
+                   AND B.STATUS_CD = '1000'
+                   AND B.POSITION_CODE = C.POSITION_CODE
+                   AND A.ORG_CODE = B.ORG_CODE) EXTFIELD1
+          FROM (SELECT * FROM SYS_ORGANIZATION A WHERE A.STATUS_CD = '1000') A
+         START WITH A.PARENT_ORG_CODE = #{vo.orgCode}
+        CONNECT BY A.ORG_CODE = PRIOR A.PARENT_ORG_CODE
+    </select>
+    
+    <select id="getOrgRelPage" resultType="cn.ffcs.uoo.system.vo.SysOrganizationVo">
+       SELECT A.ORG_CODE orgCode,
+               A.PARENT_ORG_CODE parentOrgCode,
+               A.ORG_NAME orgName,
+               (select d.region_name
+                  from tb_area_code b, tb_common_region d
+                 where b.status_cd = '1000'
+                   and d.status_cd = '1000'
+                   and b.common_region_id = d.common_region_id
+                   and b.area_nbr=A.REGION_NBR) regionName,
+               (select wm_concat(C.POSITION_NAME)
+                  from SYS_DEPT_POSITION_REF B, Sys_Position C
+                 where C.STATUS_CD = '1000'
+                   AND B.STATUS_CD = '1000'
+                   AND B.POSITION_CODE = C.POSITION_CODE
+                   AND A.ORG_CODE = B.ORG_CODE) POSITIONS,
+                   A.STATUS_CD statusCd,
+                   ( select count(1) from SYS_USER_DEPT_REF f where f.status_cd='1000' and f.org_code=A.ORG_CODE) userNum
+          FROM (SELECT * FROM SYS_ORGANIZATION A WHERE A.STATUS_CD = '1000' AND A.PARENT_ORG_CODE=#{vo.orgCode}) A
+    </select>
+
+
+    <select id="getOrg" resultType="cn.ffcs.uoo.system.vo.SysOrganizationVo">
+        select A.Org_Id          orgId,
+        A.Org_Name        orgName,
+        A.Org_Code        orgCode,
+        A.Parent_Org_Code parentOrgCode,
+        A.REGION_NBR      regionNbr,
+        A.SORT            sort,
+        A.STATUS_CD       statusCd
+        from SYS_ORGANIZATION A where A.STATUS_CD=1000 AND A.Org_Code = #{orgCode}
+    </select>
 </mapper>
