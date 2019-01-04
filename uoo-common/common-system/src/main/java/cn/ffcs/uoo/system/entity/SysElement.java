@@ -2,6 +2,7 @@ package cn.ffcs.uoo.system.entity;
 
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
@@ -22,7 +23,7 @@ public class SysElement extends Model<SysElement> {
     /**
      * 元素标识，主键
      */
-    @TableField("ELEMENT_ID")
+    @TableId("ELEMENT_ID")
     private Integer elementId;
     /**
      * 元素名称

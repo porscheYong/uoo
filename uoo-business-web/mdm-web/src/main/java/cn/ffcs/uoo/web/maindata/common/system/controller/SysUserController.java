@@ -30,6 +30,7 @@ import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
 import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
+import cn.ffcs.uoo.web.maindata.realm.exception.AccoutLockedException;
 import cn.ffcs.uoo.web.maindata.realm.exception.ServiceException;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -105,6 +106,9 @@ public class SysUserController {
             } catch (ServiceException e) {
                 rr.setMessage("登陆服务异常，请稍后重试");
                 rr.setState(1100);
+            } catch (AccoutLockedException e) {
+                rr.setMessage("账号被锁定，请稍后重试");
+                rr.setState(1100);
             } catch (AuthenticationException e) {
                 rr.setMessage("用户密码错误");
                 rr.setState(1100);
@@ -112,9 +116,11 @@ public class SysUserController {
         }
         SysLoginLog sysLoginLog=new SysLoginLog();
         sysLoginLog.setLogName("用户登录");
-        sysLoginLog.setIp(IPUtils.string2Long(subject.getSession().getHost()));
+        sysLoginLog.setIp(subject.getSession().getHost());
         sysLoginLog.setSucceed(rr.getState()==ResponseResult.STATE_OK?1L:0L);
-        sysLoginLog.setAccout(sysUser.getAccout());
+        sysLoginLog.setAccout(accout);
+        String jsonString = JSONObject.toJSONString(rr);
+        sysLoginLog.setNotes(jsonString!=null?jsonString.length()>=200?jsonString.substring(0, 200):jsonString:"");
         sysLoginLog.setMessage(JSONObject.toJSONString(sysUser));
         loginLogClient.add(sysLoginLog);
         return rr;

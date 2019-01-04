@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.system.consts.StatusCD;
@@ -92,7 +95,7 @@ public class SysPermissionController {
     })
     @UooLog(key="listPage",value="获取分页列表")
     @GetMapping("/listPage")
-    public ResponseResult<List<SysPermissionDTO>> listPage(Integer pageNo, Integer pageSize,String keyWord){
+    public ResponseResult<Page<SysPermissionDTO>> listPage(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord")String keyWord){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         HashMap<String,Object> map=new HashMap<>();
@@ -103,9 +106,12 @@ public class SysPermissionController {
         map.put("end", pageNo * pageSize);
         List<SysPermissionDTO> list=permSvc.findList(map);
         Long count = permSvc.countList(map);
-        
-        ResponseResult<List<SysPermissionDTO>> createSuccessResult = ResponseResult.createSuccessResult(list, "");
+        Page<SysPermissionDTO> page=new Page<>(pageNo,pageSize);
+        page.setTotal(count);
+        page.setRecords(list);
+        ResponseResult<Page<SysPermissionDTO>> createSuccessResult = ResponseResult.createSuccessResult("");
         createSuccessResult.setTotalRecords(count);
+        createSuccessResult.setData(page);
         return createSuccessResult;
     }
     
@@ -131,59 +137,59 @@ public class SysPermissionController {
         permSvc.insert(sysPermissionEditDTO);
         List<SysPermissionFuncRel> funcRels = sysPermissionEditDTO.getFuncRels();
         if(funcRels!=null&&!funcRels.isEmpty()){
-            for (SysPermissionFuncRel entity : funcRels) {
+            funcRels.forEach(entity->{
                 entity.setPrivFuncId(permFuncRelSvc.getId());
                 entity.setCreateDate(new Date());
                 entity.setCreateUser(sysPermissionEditDTO.getCreateUser());
                 entity.setStatusCd(StatusCD.VALID);
                 entity.setPermissionCode(sysPermissionEditDTO.getPermissionCode());
                 permFuncRelSvc.insert(entity);
-            }
+            });
         }
         List<SysPermissionMenuRel> menuRels = sysPermissionEditDTO.getMenuRels();
         if(menuRels!=null&&!menuRels.isEmpty()){
-            for (SysPermissionMenuRel entity : menuRels) {
+            menuRels.forEach(entity->{
                 entity.setPrivMenuId(permMenuRelSvc.getId());
                 entity.setCreateDate(new Date());
                 entity.setCreateUser(sysPermissionEditDTO.getCreateUser());
                 entity.setStatusCd(StatusCD.VALID);
                 entity.setPermissionCode(sysPermissionEditDTO.getPermissionCode());
                 permMenuRelSvc.insert(entity);
-            }
+            });
         }
         List<SysPermissionElementRel> elementRels = sysPermissionEditDTO.getElementRels();
         if(elementRels!=null&&!elementRels.isEmpty()){
-            for (SysPermissionElementRel entity : elementRels) {
+            elementRels.forEach(entity->{
                 entity.setPrivElementId(permEleRelSvc.getId());
                 entity.setCreateDate(new Date());
                 entity.setCreateUser(sysPermissionEditDTO.getCreateUser());
                 entity.setStatusCd(StatusCD.VALID);
                 entity.setPermissionCode(sysPermissionEditDTO.getPermissionCode());
                 permEleRelSvc.insert(entity);
-            }
+            });
         }
         
         List<SysPrivFileRel> fileRels = sysPermissionEditDTO.getFileRels();
         if(fileRels!=null&&!fileRels.isEmpty()){
-            for (SysPrivFileRel entity : fileRels) {
+            fileRels.forEach(entity->{
                 entity.setPrivFileId(permFileRelSvc.getId());
                 entity.setCreateDate(new Date());
                 entity.setCreateUser(sysPermissionEditDTO.getCreateUser());
                 entity.setStatusCd(StatusCD.VALID);
                 entity.setPermissionCode(sysPermissionEditDTO.getPermissionCode());
                 permFileRelSvc.insert(entity );
-            }
+            });
         }
         List<SysPermissionDataRulesRel> dataRuleRels = sysPermissionEditDTO.getDataRuleRels();
         if(dataRuleRels!=null&&!dataRuleRels.isEmpty()){
-            for (SysPermissionDataRulesRel entity : dataRuleRels) {
+            dataRuleRels.forEach(entity->{
                 entity.setPrivDataRelId(permDataRulesRelSvc.getId());
                 entity.setCreateDate(new Date());
                 entity.setCreateUser(sysPermissionEditDTO.getCreateUser());
                 entity.setStatusCd(StatusCD.VALID);
                 entity.setPermissionCode(sysPermissionEditDTO.getPermissionCode());
                 permDataRulesRelSvc.insert(entity);
-            }
+            });
         }
         
         responseResult.setState(ResponseResult.STATE_OK);
@@ -251,12 +257,16 @@ public class SysPermissionController {
             }
         }
         if(exitFuncRels!=null&&!exitFuncRels.isEmpty()){
-            for(SysPermissionFuncRel obj : exitFuncRels){
+            List<Long> collect = exitFuncRels.stream().filter(obj->!updateIds.contains(obj.getPrivFuncId())).map(SysPermissionFuncRel::getPrivFuncId).collect(Collectors.toList());
+           /* for(SysPermissionFuncRel obj : exitFuncRels){
                 if(!updateIds.contains(obj.getPrivFuncId())){
                     deleteIds.add(obj.getPrivFuncId());
                 }
+            }*/
+            if(collect!=null){
+                deleteIds.addAll(collect);
+                permFuncRelSvc.deleteBatchIds(deleteIds);
             }
-            permFuncRelSvc.deleteBatchIds(deleteIds);
         }
         
         updateIds.clear();

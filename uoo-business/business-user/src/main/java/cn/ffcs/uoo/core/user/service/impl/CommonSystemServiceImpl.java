@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -98,28 +99,7 @@ public class CommonSystemServiceImpl implements CommonSystemService {
         String params = "";
         if(sdrList!=null && sdrList.size()>0){
             for(SysDataRule sysDataRule : sdrList){
-                String oper = EnumRuleOperator.getSqlRuleOper(sysDataRule.getRuleOperator());
-                if(sysDataRule.getRuleOperator().equals("eq") ||
-                        sysDataRule.getRuleOperator().equals("gt") ||
-                        sysDataRule.getRuleOperator().equals("lt") ||
-                        sysDataRule.getRuleOperator().equals("lte") ||
-                        sysDataRule.getRuleOperator().equals("gte") ||
-                        sysDataRule.getRuleOperator().equals("ne")
-                        ){
-                    params+=" " +sName + "." + sysDataRule.getColName()+" "+oper+" "+sysDataRule.getColValue()+" ";
-                }
-                if(sysDataRule.getRuleOperator().equals("in") ||
-                        sysDataRule.getRuleOperator().equals("notin")){
-                    params+=" " +sName + "." + sysDataRule.getColName()+" "+oper+" ("+sysDataRule.getColValue()+") ";
-                }
-                if(sysDataRule.getRuleOperator().equals("isnull") ||
-                        sysDataRule.getRuleOperator().equals("isnotnull")){
-                    params+=" " +sName + "." + sysDataRule.getColName()+" "+oper+" ";
-                }
-                if(sysDataRule.getRuleOperator().equals("like")){
-                    params+=" " +sName + "." + sysDataRule.getColName()+" "+oper+" '%"+sysDataRule.getColValue()+"%' ";
-                }
-                params+="AND";
+                params = getCommonJointSql(sName, sysDataRule);
             }
             if(!StrUtil.isNullOrEmpty(params)){
                 params = params.substring(0,params.length()-3);
@@ -131,43 +111,51 @@ public class CommonSystemServiceImpl implements CommonSystemService {
 
     /**
      * 获取指定表权限sql
-     * @param tabName
+     * @param map
      * @param sysDataRuleList
      * @return
      */
     @Override
-    public String getSysDataRuleSql(String tabName, List<SysDataRule> sysDataRuleList){
+    public String getSysDataRuleSql(Map<String, String> map, List<SysDataRule> sysDataRuleList){
         String params = "";
         if(sysDataRuleList!=null && sysDataRuleList.size()>0){
             for(SysDataRule sysDataRule : sysDataRuleList){
-                String oper = EnumRuleOperator.getSqlRuleOper(sysDataRule.getRuleOperator());
-                if(sysDataRule.getRuleOperator().equals("eq") ||
-                        sysDataRule.getRuleOperator().equals("gt") ||
-                        sysDataRule.getRuleOperator().equals("lt") ||
-                        sysDataRule.getRuleOperator().equals("lte") ||
-                        sysDataRule.getRuleOperator().equals("gte") ||
-                        sysDataRule.getRuleOperator().equals("ne")
-                        ){
-                    params+=" "+sysDataRule.getColName()+" "+oper+" "+sysDataRule.getColValue()+" ";
+                if(!StrUtil.isNullOrEmpty(map.get(sysDataRule.getTabName()))){
+                    params = params + getCommonJointSql(map.get(sysDataRule.getTabName()), sysDataRule);
                 }
-                if(sysDataRule.getRuleOperator().equals("in") ||
-                        sysDataRule.getRuleOperator().equals("notin")){
-                    params+=" "+sysDataRule.getColName()+" "+oper+" ("+sysDataRule.getColValue()+") ";
-                }
-                if(sysDataRule.getRuleOperator().equals("isnull") ||
-                        sysDataRule.getRuleOperator().equals("isnotnull")){
-                    params+=" "+sysDataRule.getColName()+" "+oper+" ";
-                }
-                if(sysDataRule.getRuleOperator().equals("like")){
-                    params+=" "+sysDataRule.getColName()+" "+oper+" '%"+sysDataRule.getColValue()+"%' ";
-                }
-                params+="AND";
             }
             if(!StrUtil.isNullOrEmpty(params)){
                 params = params.substring(0,params.length()-3);
             }
         }
         return params;
+    }
+
+    public String getCommonJointSql(String sName, SysDataRule sysDataRule){
+        StringBuffer params = new StringBuffer();
+        String oper = EnumRuleOperator.getSqlRuleOper(sysDataRule.getRuleOperator());
+        if(sysDataRule.getRuleOperator().equals("eq") ||
+                sysDataRule.getRuleOperator().equals("gt") ||
+                sysDataRule.getRuleOperator().equals("lt") ||
+                sysDataRule.getRuleOperator().equals("lte") ||
+                sysDataRule.getRuleOperator().equals("gte") ||
+                sysDataRule.getRuleOperator().equals("ne")
+        ){
+            params.append(" ").append(sName).append(".").append(sysDataRule.getColName()).append(" ").append(oper).append(" ").append(sysDataRule.getColValue()).append(" ");
+        }
+        if(sysDataRule.getRuleOperator().equals("in") ||
+                sysDataRule.getRuleOperator().equals("notin")){
+            params.append(" ").append(sName).append(".").append(sysDataRule.getColName()).append(" ").append(oper).append(" (").append(sysDataRule.getColValue()).append(") ");
+        }
+        if(sysDataRule.getRuleOperator().equals("isnull") ||
+                sysDataRule.getRuleOperator().equals("isnotnull")){
+            params.append(" ").append(sName).append(".").append(sysDataRule.getColName()).append(" ").append(oper).append(" ");
+        }
+        if(sysDataRule.getRuleOperator().equals("like")){
+            params.append(" ").append(sName).append(".").append(sysDataRule.getColName()).append(" ").append(oper).append(" ").append("'%").append(sysDataRule.getColValue()).append("'% ");
+        }
+        params.append("AND");
+        return params.toString();
     }
 
     /**
@@ -203,6 +191,21 @@ public class CommonSystemServiceImpl implements CommonSystemService {
         List<SysDataRule> sdrList = new ArrayList<>();
         sdrList = sysDataRulelist.getData();
         return sdrList;
+    }
+    /**
+     * 获取拼接后sql
+     * @param map
+     * @param account
+     * @return
+     */
+    @Override
+    public String getSqlJointList(Map<String, String> map, String account){
+        List<String> tabNames = new ArrayList<>();
+        for (String key : map.keySet()) {
+            tabNames.add(key);
+        }
+        List<SysDataRule> sdrList = getSysDataRuleList(tabNames, account);
+        return getSysDataRuleSql(map, sdrList);
     }
 
 

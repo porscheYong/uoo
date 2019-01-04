@@ -234,12 +234,22 @@ function setDate(){    //设置时间
 
   laydate.render({
     elem: '#effectDate', //指定元素
-    value: nowDate
+    value: nowDate,
+    done: function(value, date, endDate){
+      if(value != ""){
+        $("#effectDate").removeClass('error');
+      }
+    }
   }); 
 
   laydate.render({
     elem: '#invalidDate', //指定元素
-    value: toDate
+    value: toDate,
+    done: function(value, date, endDate){
+      if(value != ""){
+        $("#invalidDate").removeClass('error');
+      }
+    }
   }); 
 }
 

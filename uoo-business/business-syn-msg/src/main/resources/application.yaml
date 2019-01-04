@@ -3,18 +3,18 @@ spring:
     name: business-syn-msg
   zipkin:
     #测试
-    #base-url: http://134.96.253.223:8600
+    base-url: http://134.96.253.223:8600
     #生产
-    base-url: http://134.96.217.244:8600
+    #base-url: http://134.96.217.244:8600
   sleuth:
     sampler:
       percentage: 0.1
   datasource:
       druid:
         #测试环境
-        #url: jdbc:oracle:thin:@134.96.167.19:1521/uomdb1
+        url: jdbc:oracle:thin:@134.96.167.19:1521/uomdb1
         #生产环境
-        url: jdbc:oracle:thin:@134.96.248.48:3436/ZJ4APRD
+        #url: jdbc:oracle:thin:@134.96.248.48:3436/ZJ4APRD
         driver-class-name:  oracle.jdbc.OracleDriver
         username: octopus
         password: octopus
@@ -97,9 +97,9 @@ spring:
     username: root
     password: 123
     #测试
-    #host: 134.96.253.221,134.96.253.222,134.96.253.223
+    host: 134.96.253.221,134.96.253.222,134.96.253.223
     #生产
-    host: 134.96.249.38
+    #host: 134.96.249.38
     port: 5672
     listener:
       direct:
@@ -137,9 +137,9 @@ eureka:
   client:
     service-url:
       #测试环境
-      #defaultZone:  http://134.96.253.221:8751/eureka/,http://134.96.253.222:8751/eureka/,http://134.96.253.223:8751/eureka/
+      defaultZone:  http://134.96.253.221:8751/eureka/,http://134.96.253.222:8751/eureka/,http://134.96.253.223:8751/eureka/
       #生产环境
-      defaultZone: http://134.96.217.231:8751/eureka/,http://134.96.217.232:8751/eureka/,http://134.96.217.233:8751/eureka/,http://134.96.217.231:8761/eureka/,http://134.96.217.232:8761/eureka/,http://134.96.217.233:8761/eureka/
+      #defaultZone: http://134.96.217.231:8751/eureka/,http://134.96.217.232:8751/eureka/,http://134.96.217.233:8751/eureka/,http://134.96.217.231:8761/eureka/,http://134.96.217.232:8761/eureka/,http://134.96.217.233:8761/eureka/
 
 feign:
   hystrix:

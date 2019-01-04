@@ -39,7 +39,7 @@
 		UPDATE_DATE, UPDATE_USER, STATUS_DATE </sql>
 
 	<select id="getId" resultType="Long">
-		select SEQ_TB_SYS_MENU.NEXTVAL
+		select SEQ_SYS_MENU_ID.NEXTVAL
 		from dual
 	</select>
 	<select id="getMenuByAccout" resultType="cn.ffcs.uoo.system.entity.SysMenu"

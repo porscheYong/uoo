@@ -4,7 +4,7 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysElement">
-        <result column="ELEMENT_ID" property="elementId" />
+        <id column="ELEMENT_ID" property="elementId" />
         <result column="ELEMENT_NAME" property="elementName" />
         <result column="MENU_CODE" property="menuCode" />
         <result column="ELEMENT_CODE" property="elementCode" />
@@ -24,5 +24,33 @@
     <sql id="Base_Column_List">
         ELEMENT_ID, ELEMENT_NAME, MENU_CODE, ELEMENT_CODE, ELEMENT_TYPE, READONLY_FLAG, URL_ADDR, ELEMENT_DESC, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
-
+    <select id="getId" resultType="Integer">
+        select SEQ_SYS_ELEMENT.NEXTVAL from dual
+    </select>
+    
+    <select id="getElementByAccout" resultType="cn.ffcs.uoo.system.entity.SysElement" parameterType="String">
+        SELECT
+        DISTINCT(m.ELEMENT_ID) ,m.*
+        FROM
+        SYS_ELEMENT m
+        LEFT JOIN SYS_PERMISSION_ELEMENT_REL pmr ON pmr.ELEMENT_CODE = m.ELEMENT_CODE
+        LEFT JOIN SYS_PERMISSION p ON p.PERMISSION_CODE = pmr.PERMISSION_CODE
+        LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON rpr.PERMISSION_CODE =
+        p.PERMISSION_CODE
+        LEFT JOIN SYS_ROLE r ON r.ROLE_CODE = rpr.ROLE_CODE
+        left join SYS_POSITIONT_ROLE_REF prr on prr.ROLE_CODE=r.ROLE_CODE
+        left join SYS_USER_POSITION_REF upr on upr.POSITION_CODE=prr.POSITION_CODE
+        LEFT JOIN SYS_USER u ON u.USER_CODE = upr.USER_CODE
+        WHERE
+        m.STATUS_CD = '1000'
+        AND pmr.STATUS_CD = '1000'
+        AND p.STATUS_CD = '1000'
+        AND rpr.STATUS_CD = '1000'
+        AND r.STATUS_CD = '1000'
+        AND prr.STATUS_CD = '1000'
+        AND upr.STATUS_CD = '1000'
+        AND u.STATUS_CD = '1000'
+        AND u.ACCOUT = #{accout}
+    </select>
+    
 </mapper>

@@ -1,3 +1,4 @@
+var toastr = window.top.toastr;
 var typeArray=null;
 var loading = new Loading();
 loading.screenMaskEnable('container');
@@ -35,14 +36,8 @@ $(document).ready(function() {
 					zTreeOnClick(null,null,rots[0]);
 				}
 			} else {
-				parent.layer.confirm(data.state==1000?'操作成功':'加载行政区域树失败，请重试', {
-			        icon: 0,
-			        title: '提示',
-			        btn: ['确定' ]
-			    }, function(index, layero){
-			        parent.layer.close(index);
-			    }, function(){
-			    });
+				 
+				toastr.error('加载行政区域树失败，请重试');
 				
 			}
 		}
@@ -65,14 +60,7 @@ function loadTypeArr(){
 			if(data.state==1000){
 				typeArray=data.data;
 			}else{
-				parent.layer.confirm(data.state==1000?'操作成功':'加载区域类型失败，请重试', {
-			        icon: 0,
-			        title: '提示',
-			        btn: ['确定' ]
-			    }, function(index, layero){
-			        parent.layer.close(index);
-			    }, function(){
-			    });
+				toastr.error('加载区域类型失败，请重试');
 			}
 			
 		}

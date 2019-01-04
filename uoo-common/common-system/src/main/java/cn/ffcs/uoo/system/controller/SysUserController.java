@@ -1,32 +1,40 @@
 package cn.ffcs.uoo.system.controller;
 
+import java.util.Date;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.StringUtils;
+import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.system.consts.StatusCD;
 import cn.ffcs.uoo.system.entity.SysUser;
 import cn.ffcs.uoo.system.service.SysUserService;
 import cn.ffcs.uoo.system.service.impl.SysUserServiceImpl;
 import cn.ffcs.uoo.system.util.MD5Util;
+import cn.ffcs.uoo.system.util.ResponseResultBean;
 import cn.ffcs.uoo.system.vo.AlterPasswdVo;
-import com.baomidou.mybatisplus.mapper.Condition;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+import cn.ffcs.uoo.system.vo.ResponseResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-
-import cn.ffcs.uoo.base.common.tool.util.StringUtils;
-import cn.ffcs.uoo.base.controller.BaseController;
-import cn.ffcs.uoo.system.util.ResponseResultBean;
-
-import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * 系统域用户前端控制器
@@ -38,7 +46,11 @@ public class SysUserController extends BaseController {
 
     @Autowired
     private SysUserService sysUserService;
-
+    @RequestMapping(value = "/updateLoginInfo", method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    public ResponseResult<Void> updateLoginInfo(@RequestBody SysUser sysUser){
+        sysUserService.updateById(sysUser);
+        return ResponseResult.createSuccessResult("");
+    }
     /**
      * 用户登录
      *
@@ -122,7 +134,11 @@ public class SysUserController extends BaseController {
         return result;
 
     }
-
+    /**
+     * 方法只可用来做登陆  不可用作他途
+     * @param sysUser
+     * @return
+     */
     @RequestMapping(value = "/getSysUserByAccout", method = RequestMethod.POST)
     public ResponseResultBean<SysUser> getSysUserByAccout(@RequestBody SysUser sysUser) {
         ResponseResultBean<SysUser> result = new ResponseResultBean<>();
