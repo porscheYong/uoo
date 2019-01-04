@@ -71,7 +71,7 @@ public class SysMenuController {
     }
     @OperateLog(type=OperateType.UPDATE,module="平台系统菜单模块",methods="更新菜单",desc="更新菜单")
     @ApiOperation(value = "修改",notes = "修改")
-    @ApiImplicitParam(name = "sysMenu", value = "修改", required = true, dataType = "Roles")
+    @ApiImplicitParam(name = "sysMenu", value = "修改", required = true, dataType = "SysMenu")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseResult<Void> update(@RequestBody SysMenu sysMenu) {
         Subject subject=SecurityUtils.getSubject();
