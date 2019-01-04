@@ -86,7 +86,7 @@ public class RedisWriteController {
             @ApiImplicitParam(name = "key", value = "键", required = true, dataType = "String", paramType = "path")
     })
     @RequestMapping(method = RequestMethod.POST,value = "/del")
-    public void del(String... key){
+    public void del(String[] key){
         if (key != null && key.length > 0) {
             if (key.length == 1) {
                 redisTemplate.delete(key[0]);
@@ -109,10 +109,10 @@ public class RedisWriteController {
     @ApiOperation(value = "普通缓存放入", notes = "存储键值对，成功True,失败False")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "key", value = "键", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "value", value = "内容", required = true, dataType = "java.lang.Object", paramType = "path")
+            @ApiImplicitParam(name = "value", value = "JSON序列化后内容", required = true, dataType = "String", paramType = "path")
     })
     @RequestMapping(method = RequestMethod.POST,value = "/set")
-    public boolean set(String key, Object value){
+    public boolean set(String key, String value){
         return set(key,value,0);
     }
 
@@ -130,11 +130,11 @@ public class RedisWriteController {
     @ApiOperation(value = "普通缓存放入，并设置时间", notes = "设置的时间单位秒，可是大于或者小于0，成功True,失败False，返回：true 成功 false失败")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "key", value = "键", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "value", value = "内容", required = true, dataType = "Object", paramType = "path") ,
-            @ApiImplicitParam(name = "time", value = "时间 秒", required = true, dataType = "long", paramType = "path")
+            @ApiImplicitParam(name = "value", value = "JSON序列化后内容", required = true, dataType = "String", paramType = "path") ,
+            @ApiImplicitParam(name = "time", value = "时间 秒", required = true, dataType = "Long", paramType = "path")
     })
     @RequestMapping(method = RequestMethod.POST,value = "/setAndTime")
-    public boolean set(String key, Object value, long time){
+    public boolean set(String key, String value, long time){
         try {
             if(time>0){
                 redisTemplate.opsForValue().set(key, value,time);
@@ -210,10 +210,10 @@ public class RedisWriteController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "key", value = "键", required = true, dataType = "String", paramType = "path"),
             @ApiImplicitParam(name = "item", value = "项", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "value", value = "内容", required = true, dataType = "Object", paramType = "path")
+            @ApiImplicitParam(name = "value", value = "JSON序列化后内容", required = true, dataType = "String", paramType = "path")
     })
     @RequestMapping(method = RequestMethod.POST,value = "/hset")
-    public boolean hset(String key, String item, Object value){
+    public boolean hset(String key, String item, String value){
         try {
             redisTemplate.opsForHash().put(key, item, value);
             return true;
@@ -302,10 +302,10 @@ public class RedisWriteController {
     @ApiOperation(value = "数据set缓存", notes = "数据放入set缓存，内容格式为数组，返回的是成功的数量（Long）")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "key", value = "键", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "values", value = "内容", required = true, dataType = "Object", paramType = "path")
+            @ApiImplicitParam(name = "values", value = "JSON序列化后内容", required = true, allowMultiple=true, dataType = "String", paramType = "path")
     })
     @RequestMapping(method = RequestMethod.POST,value = "/sSet")
-    public long sSet(String key, Object... values){
+    public long sSet(String key, String[] values){
         try {
             return redisTemplate.opsForSet().add(key, values);
         } catch (Exception e) {
@@ -329,10 +329,10 @@ public class RedisWriteController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "key", value = "键", required = true, dataType = "String", paramType = "path"),
             @ApiImplicitParam(name = "time", value = "时间 秒", required = true, dataType = "long", paramType = "path"),
-            @ApiImplicitParam(name = "values", value = "内容", required = true, dataType = "Object", paramType = "path")
+            @ApiImplicitParam(name = "values", value = "JSON序列化后内容组成的数组", required = true, allowMultiple=true, dataType = "String", paramType = "path")
     })
     @RequestMapping(method = RequestMethod.POST,value = "/sSetAndTime")
-    public long sSetAndTime(String key, long time, Object... values){
+    public long sSetAndTime(String key, long time, String[] values){
         Long count = null;
         try {
             count = sSet(key,values);
@@ -359,10 +359,10 @@ public class RedisWriteController {
     @ApiOperation(value = "根据KEY VALUE移除", notes = "根据KEY VALUE移除，返回：移除的个数")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "key", value = "键", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "values", value = "内容", required = true, dataType = "Object", paramType = "path")
+            @ApiImplicitParam(name = "values", value = "JSON序列化后内容组成的数组", required = true, allowMultiple=true, dataType = "String", paramType = "path")
     })
     @RequestMapping(method = RequestMethod.POST,value = "/setRemove")
-    public long setRemove(String key, Object... values){
+    public long setRemove(String key, String[] values){
         try {
             Long count = redisTemplate.opsForSet().remove(key, values);
             return count;
@@ -385,10 +385,10 @@ public class RedisWriteController {
     @ApiOperation(value = "将list放入缓存", notes = "lSet，返回：成功True，失败False")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "key", value = "键", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "value", value = "内容", required = true, dataType = "Object", paramType = "path")
+            @ApiImplicitParam(name = "value", value = "JSON序列化后内容", required = true, dataType = "String", paramType = "path")
     })
     @RequestMapping(method = RequestMethod.POST,value = "/lSet")
-    public boolean lSet(String key, Object value){
+    public boolean lSet(String key, String value){
         try {
             redisTemplate.opsForList().rightPush(key, value);
             return true;
@@ -412,11 +412,11 @@ public class RedisWriteController {
     @ApiOperation(value = "将list放入缓存", notes = "将list放入缓存;时间 秒;返回：成功True，失败False")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "key", value = "键", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "value", value = "内容", required = true, dataType = "Object", paramType = "path"),
+            @ApiImplicitParam(name = "value", value = "JSON序列化后内容", required = true, dataType = "String", paramType = "path"),
             @ApiImplicitParam(name = "time", value = "时间 秒", required = true, dataType = "long", paramType = "path")
     })
     @RequestMapping(method = RequestMethod.POST,value = "/lSetAndTime")
-    public boolean lSet(String key, Object value, long time){
+    public boolean lSet(String key, String value, long time){
         try {
             redisTemplate.opsForList().rightPush(key, value);
             if(time>0){
@@ -502,10 +502,10 @@ public class RedisWriteController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "key", value = "键", required = true, dataType = "String", paramType = "path"),
             @ApiImplicitParam(name = "index", value = "索引", required = true, dataType = "long", paramType = "path"),
-            @ApiImplicitParam(name = "value", value = "值", required = true, dataType = "Object", paramType = "path")
+            @ApiImplicitParam(name = "value", value = "值", required = true, dataType = "String", paramType = "path")
     })
     @RequestMapping(method = RequestMethod.POST,value = "/lUpdateIndex")
-    public boolean lUpdateIndex(String key, long index, Object value) {
+    public boolean lUpdateIndex(String key, long index, String value) {
 
         try {
             redisTemplate.opsForList().set(key,index,value);
@@ -531,10 +531,10 @@ public class RedisWriteController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "key", value = "键", required = true, dataType = "String", paramType = "path"),
             @ApiImplicitParam(name = "count", value = "移除多少个", required = true, dataType = "long", paramType = "path"),
-            @ApiImplicitParam(name = "value", value = "值", required = true, dataType = "Object", paramType = "path")
+            @ApiImplicitParam(name = "value", value = "值", required = true, dataType = "String", paramType = "path")
     })
     @RequestMapping(method = RequestMethod.POST,value = "/lRemove")
-    public long lRemove(String key, long count, Object value){
+    public long lRemove(String key, long count, String value){
         try {
             Long remove = redisTemplate.opsForList().remove(key, count, value);
             return remove;
