@@ -324,7 +324,7 @@
   </select>
 
   <!-- 组织的所有的树-->
-  <select id="orgOrgTreeRel"  resultMap="OrgTreeMap">
+  <select id="getOrgOrgTreeRel"  resultMap="OrgTreeMap">
     select b.* from tb_org_orgtree_rel a,tb_org_tree b where a.org_id = #{ORG_ID} and a.org_tree_id = b.org_tree_id and a.status_cd = 1000 and b.status_cd = 1000
   </select>
 
