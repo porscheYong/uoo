@@ -1286,3 +1286,15 @@ getPliticalStatus();
 getMarriage();
 
 
+function showMoreInfo(){
+	$('#showMoreInfoDiv').hide();
+	$('#jobTitleDiv').show();
+	$('#workExperience').show();
+	$('#workEdit').show();
+	$('#eduTitleDiv').show();
+	$('#eduExperience').show();
+	$('#eduEdit').show();
+	$('#famliyTitleDiv').show();
+	$('#familyMember').show();
+	$('#familyEdit').show();
+}
