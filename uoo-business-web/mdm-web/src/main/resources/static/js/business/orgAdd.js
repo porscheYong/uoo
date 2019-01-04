@@ -324,7 +324,7 @@ function getOrgPostLevel () {
 }
 
 // 获取状态数据
-function getStatusCd () {
+function getStatusCd (statusCd) {
     var option = '';
     for (var i = 0; i < statusCdData.length; i++) {
         var select = statusCd === statusCdData[i].itemValue? 'selected' : '';
