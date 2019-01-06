@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>平台组织</title>
+
+        <!-- Bootstrap -->
+        <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Font Awesome -->
+        <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <!-- jquery datatable -->
+        <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+        <!-- lulu ui -->
+        <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+        <!-- Custom Theme Style -->
+        <link href="/css/reset.css" rel="stylesheet">
+        <link href="/css/custom.css" rel="stylesheet">
+
+        <!--[if lt IE 9]>
+        <script src="/js/core/html5shiv.js"></script>
+        <script src="/js/core/respond.js"></script>
+        <script src="/js/core/excanvas.js"></script>
+        <script>document.documentElement.focus();</script>
+        <![endif]-->
+        <style type="text/css">
+            table.dataTable {
+                table-layout: fixed;
+            }
+
+            th {
+                text-align: center;
+                white-space: nowrap;
+            }
+            table.dataTable tbody td {
+                text-align: center;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .org-name {
+                cursor: pointer;
+            }
+        </style>
+    </head>
+
+    <body style="background: #fff;">
+        <div>
+            <div class="board-title">
+                <span class="name ft18 org-name" id="orgName"></span
+                ><a class="icon icon-info" id="infoBtn" style="vertical-align: top; margin-right: 10px;" title="组织详情" href="javascript:void(0);" onclick="getOrgInfo()"></a
+            ><a class="icon icon-edit" id="editBtn" style="vertical-align: top;" title="组织编辑" href="javascript:void(0);" onclick="orgEdit()"></a>
+                <div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;"></div>
+                <div class="org-ext">
+                    <div class="follow-org">
+                        <span class="title">引用在：</span>
+                        <div id="followOrg"></div>
+                    </div>
+                    <div class="org-type-info">
+                        <span class="title">组织类别：</span>
+                        <div id="orgTypeInfo"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="board-title">
+                <span class="name ft18">下级组织</span>
+                <input type="checkbox" id="isShowLower" name="checkbox" onclick="showLower()">
+                <label for="isShowLower" class="ui-checkbox"></label><label for="isShowLower">显示多层下级组织</label>
+                <div class="fright">
+                    <a class="button-add" href="javascript:void(0);" onclick="addOrg()"><span class="fa fa-plus-circle icon-add"></span>创建组织</a>
+                </div>
+            </div>
+            <div style="overflow: hidden;">
+                <input class="ui-input ui-input-search col-md-4 col-sm-4 col-xs-4" type="text" placeholder="组织搜索"  oninput="search(event)" onpropertychange="search(event)" />
+            </div>
+            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
+                <table id="orgTable" class="stripe" width="100%"></table>
+            </div>
+        </div>
+        <!-- jQuery -->
+        <script src="/js/core/jquery.js"></script>
+        <!-- jquery datatable -->
+        <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+        <!-- init -->
+        <script src="/js/init.js"></script>
+        <script type="text/javascript" src="/js/manage/organization/list.js"></script>
+    </body>
+</html>
