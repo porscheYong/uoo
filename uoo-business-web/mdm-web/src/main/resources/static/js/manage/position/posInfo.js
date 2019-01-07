@@ -1,3 +1,9 @@
+var id = getQueryString('id');
+var positionId = getQueryString('positionId');
+var posFullName = getQueryString('posFullName');
+var posName = getQueryString('posName');
+var roleList = [];
+
 function editInfo(){
     $("#posInfo").css("display","none");
     $("#editInfo").css("display","block");
@@ -6,6 +12,56 @@ function editInfo(){
 function cancel(){
     $("#posInfo").css("display","block");
     $("#editInfo").css("display","none");
+}
+
+//获取职位信息
+function getPosition(){
+    $http.get('/sysPosition/getPosition', {
+        id: id
+    }, function (data) {
+        initPosInfo(data);
+    }, function (err) {
+
+    })
+}
+
+//初始化职位信息
+function initPosInfo(result){
+    isNull("posCodeLable",result.positionCode);
+    isNull("supPosLable",result.pPositionName);
+    isNull("areaLable",result.regionName);
+    isNull("sortLable",result.sortNum);
+    isNull("notesLable",result.notes);
+    $("#stateLable").text("有效");
+    roleList = result.sysRoleDTOList;
+    for(var i=0;i<roleList.length;i++){ 
+        $("#perms").append("<span class='perTab'>"+roleList[i].roleName+"</span>");
+    }
+
+    isInputNull("posNameInput",result.positionName);
+    isInputNull("posNum",result.positionCode);
+    isInputNull("supPos",result.pPositionName);
+    isInputNull("sort",result.sortNum);
+    isInputNull("notes",result.notes);
+
+    $('#role').addTag(roleList);
+    if(result.regionName){
+        $('#location').addTag(result.regionName);
+    }
+}
+
+//判断返回值是否为null
+function isNull(el,str){
+    if(str != null){
+        $("#"+el).text(str);
+    }
+}
+
+//判断填入input中的值是否为null
+function isInputNull(el,str){
+    if(str != null){
+        $("#"+el).val(str);
+    }
 }
 
 var logTable = $("#logTable").DataTable({
@@ -54,3 +110,80 @@ $('#myTabs a').click(function (e) {
     $(this).tab('show');
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
 })
+
+//返回
+function backToList(){
+    window.location.href = "list.html?positionId="+positionId+"&posName="+posName;
+}
+
+// tags init
+if(typeof $.fn.tagsInput !== 'undefined'){
+    $('#role').tagsInput();
+    $('#location').tagsInput();
+  }
+
+//角色选择
+function openTypeDialog() {
+    parent.layer.open({
+        type: 2,
+        title: '选择角色',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['70%', '85%'],
+        maxmin: true,
+        content: 'roleDialog.html',
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            // var checkRole = iframeWin.checkRole;
+            var checkNode = iframeWin.checkNode;
+            $('#role').importTags(checkNode);
+            // $('#role',window.parent.document).importTags(checkNode);
+            $('.ui-tips-error').css('display', 'none');
+            // window.localStorage.setItem('userRoleList',JSON.stringify(checkRole));
+            roleList = checkNode;
+            parent.layer.close(index);
+        },
+        btn2: function(index, layero){},
+        cancel: function(){}
+    });
+}
+
+//管理区域选择
+function openLocationDialog() {
+    parent.layer.open({
+        type: 2,
+        title: '管理区域',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['50%', '80%'],
+        maxmin: true,
+        content: 'locationDialog.html',
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            checkNode = iframeWin.checkNode;
+            $('#location').importTags(checkNode, {unique: true});
+            $('.ui-tips-error').css('display', 'none');
+            locationList = checkNode;
+            parent.layer.close(index);
+        },
+        btn2: function(index, layero){},
+        cancel: function(){}
+    });
+}
+
+//更新职位
+function updatePosition(){
+    var roleIdList = [];
+
+    for(var i=0;i<roleIdList.length;i++){
+        roleIdList.push({"roleId":roleIdList[i].roleId});
+    }
+}
+
+$("#posName").html(posName);
+$(".breadcrumb").html(posFullName);
+getPosition();
