@@ -142,7 +142,8 @@
 
 
     <select id="getPosition" resultType="cn.ffcs.uoo.system.vo.SysPositionVo">
-      SELECT A.POSITION_ID positionId,A.POSITION_NAME positionName,A.POSITION_CODE positionCode,A.P_POSITION_ID pPositionId,A.REGION_NBR regionNbr,A.SORT_NUM sortNum,A.NOTES notes
+      SELECT A.POSITION_ID positionId,A.POSITION_NAME positionName,A.POSITION_CODE positionCode,A.P_POSITION_ID pPositionId,A.REGION_NBR regionNbr,A.SORT_NUM sortNum,A.NOTES notes,
+      (select B.POSITION_NAME from SYS_POSITION B where B.STATUS_CD = 1000 AND B.POSITION_ID = A.P_POSITION_ID) pPositionName
             FROM SYS_POSITION A
             WHERE A.STATUS_CD = '1000'
             AND A.POSITION_ID = #{positionId}

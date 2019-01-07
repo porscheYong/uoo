@@ -25,4 +25,17 @@
 		select SEQ_SYS_DEPT_POSITION_REF_ID.NEXTVAL from dual
 	</select>
 
+    <select id="getDeptPositionRelList"  resultType="cn.ffcs.uoo.system.entity.SysDeptPositionRef">
+select a.dept_position_ref_id deptPositionRefId,
+       a.org_code orgCode,
+       a.position_code positionCode,
+       a.status_cd statusCd,
+       a.notes,
+       b.position_id positionId
+  from SYS_DEPT_POSITION_REF a, Sys_Position b
+ where a.status_cd = 1000
+   and b.status_cd = 1000
+   and a.position_code = b.position_code and a.org_code=#{orgCode}
+    </select>
+
 </mapper>

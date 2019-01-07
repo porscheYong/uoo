@@ -3,6 +3,8 @@ package cn.ffcs.uoo.system.service;
 import cn.ffcs.uoo.system.entity.SysDeptPositionRef;
 import com.baomidou.mybatisplus.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 对部门可选岗位的限定 服务类
@@ -35,6 +37,9 @@ public interface SysDeptPositionRefService extends IService<SysDeptPositionRef> 
      * @param sysDeptPositionRef
      */
     public void update(SysDeptPositionRef sysDeptPositionRef);
+
+
+    public List<SysDeptPositionRef> getDeptPositionRelList(String orgCode);
 
 
 }
