@@ -119,10 +119,34 @@ public class SysOrganizationController {
     @UooLog(value = "获取组织关系翻页信息", key = "getOrgRelPage")
     @RequestMapping(value = "/getOrgRelPage", method = RequestMethod.GET)
     public ResponseResult<Page<SysOrganizationVo>> getOrgRelPage(String id,
-                                                                  Long userId, String accout) throws IOException {
+                                                                 String search,
+                                                                 Integer pageSize,
+                                                                 Integer pageNo,
+                                                                 String isSearchlower,
+                                                                 Long userId, String accout) throws IOException {
         ResponseResult<Page<SysOrganizationVo>> ret = new ResponseResult<Page<SysOrganizationVo>>();
+        if(StrUtil.isNullOrEmpty(id)){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("组织标识不能为空");
+            return ret;
+        }
+
         SysOrganizationVo vo = new SysOrganizationVo();
+        if(StrUtil.isNullOrEmpty(isSearchlower)){
+            vo.setIsSearchlower("0");
+        }else{
+            vo.setIsSearchlower("1");
+        }
         vo.setOrgCode(id);
+        if(!StrUtil.isNullOrEmpty(pageNo)){
+            vo.setPageNo(pageNo);
+        }
+        if(!StrUtil.isNullOrEmpty(pageSize)){
+            vo.setPageSize(pageSize);
+        }
+        if(!StrUtil.isNullOrEmpty(search)){
+            vo.setSearch(search);
+        }
         Page<SysOrganizationVo> page = sysOrganizationService.getOrgRelPage(vo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setData(page);
@@ -135,8 +159,8 @@ public class SysOrganizationController {
     })
     @UooLog(value = "新增组织", key = "addOrg")
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
-    public ResponseResult<String> addOrg(SysOrganizationVo vo) throws IOException {
-        ResponseResult<String> ret = new ResponseResult<String>();
+    public ResponseResult<TreeNodeVo> addOrg(SysOrganizationVo vo) throws IOException {
+        ResponseResult<TreeNodeVo> ret = new ResponseResult<TreeNodeVo>();
         SysOrganization sysvo = new SysOrganization();
         BeanUtils.copyProperties(vo,sysvo);
         Long id = sysOrganizationService.getId();
@@ -155,8 +179,12 @@ public class SysOrganizationController {
                 sysDeptPositionRefService.add(sysDeptPositionRef);
             }
         }
-
+        TreeNodeVo vo1 = new TreeNodeVo();
+        vo1.setId(sysvo.getOrgCode());
+        vo1.setPid(sysvo.getParentOrgCode());
+        vo1.setName(sysvo.getOrgName());
         ret.setState(ResponseResult.STATE_OK);
+        ret.setData(vo1);
         return ret;
     }
 
@@ -235,8 +263,8 @@ public class SysOrganizationController {
     @RequestMapping(value = "/getOrg", method = RequestMethod.GET)
     public ResponseResult<SysOrganizationVo> getOrg(String id) throws IOException {
         ResponseResult<SysOrganizationVo> ret = new ResponseResult<SysOrganizationVo>();
-        sysOrganizationService.getOrg(id);
-
+        SysOrganizationVo vo = sysOrganizationService.getOrg(id);
+        ret.setData(vo);
         ret.setState(ResponseResult.STATE_OK);
         return ret;
     }

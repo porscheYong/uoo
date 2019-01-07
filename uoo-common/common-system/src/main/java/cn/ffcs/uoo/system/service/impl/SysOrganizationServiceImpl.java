@@ -90,13 +90,13 @@ public class SysOrganizationServiceImpl extends ServiceImpl<SysOrganizationMappe
             vos = baseMapper.getTreeRoot();
         }else{
             vos = baseMapper.getTreeChild(id);
-            if(vos!=null && vos.size()>0){
-                for(TreeNodeVo vo : vos){
-                    if(isLeaf(vo.getId())){
-                        vo.setParent(true);
-                    }else{
-                        vo.setParent(false);
-                    }
+        }
+        if(vos!=null && vos.size()>0){
+            for(TreeNodeVo vo : vos){
+                if(isLeaf(vo.getId())){
+                    vo.setParent(true);
+                }else{
+                    vo.setParent(false);
                 }
             }
         }

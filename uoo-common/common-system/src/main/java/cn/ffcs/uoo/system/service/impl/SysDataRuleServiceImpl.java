@@ -1,8 +1,13 @@
 package cn.ffcs.uoo.system.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.ffcs.uoo.system.vo.SysDataRuleVo;
+import cn.ffcs.uoo.system.vo.SysFileVo;
+import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -26,6 +31,63 @@ public class SysDataRuleServiceImpl extends ServiceImpl<SysDataRuleMapper, SysDa
     @Override
     public List<SysDataRule> listByAccout(HashMap<String, Object> map) {
         return baseMapper.listByAccout(map);
+    }
+    @Override
+    public Page<SysDataRuleVo> getDataRulePage(String search, Integer pageSize, Integer pageNo){
+        Page<SysDataRuleVo> page = new Page<SysDataRuleVo>(pageNo==0?1:pageNo,
+                pageSize==0?10:pageSize);
+        List<SysDataRuleVo> list = new ArrayList<>();
+        list = baseMapper.getDataRulePage(page,search);
+        page.setRecords(list);
+        return page;
+    }
+
+
+    /**
+     * 获取seq
+     * @return
+     */
+    @Override
+    public Long getId(){
+        return baseMapper.getId();
+    }
+
+    /**
+     * 失效状态
+     * @param sysDataRule
+     */
+    @Override
+    public void delete(SysDataRule sysDataRule){
+        sysDataRule.setStatusCd("1100");
+        sysDataRule.setStatusDate(new Date());
+        sysDataRule.setUpdateDate(new Date());
+        sysDataRule.setUpdateUser(0L);
+        updateById(sysDataRule);
+    }
+
+
+
+    /**
+     * 新增
+     */
+    @Override
+    public void add(SysDataRule sysDataRule){
+        sysDataRule.setCreateDate(new Date());
+        sysDataRule.setCreateUser(0L);
+        sysDataRule.setStatusCd("1000");
+        sysDataRule.setStatusDate(new Date());
+        insert(sysDataRule);
+    }
+
+    /**
+     * 更新
+     */
+    @Override
+    public void update(SysDataRule sysDataRule){
+        sysDataRule.setUpdateDate(new Date());
+        sysDataRule.setUpdateUser(0L);
+        sysDataRule.setStatusDate(new Date());
+        updateById(sysDataRule);
     }
 
 }
