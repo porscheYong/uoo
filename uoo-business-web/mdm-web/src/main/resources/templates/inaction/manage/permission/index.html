@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>功能资源</title>
+    <title>平台权限</title>
 
     <!-- Bootstrap -->
     <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -47,26 +47,25 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .row-num{
-            width: 10%;
+        .row-num,
+        row-area{
+            width: 15% !important;
         }
-        .row-state{
-            width: 15%;
+        .row-pName,
+        .row-pCode{
+            width: 25% !important;
         }
-        .row-fName{
-            width: 50%;
-        }
-        .row-fNum{
-            width: 25%;
+        .row-statusCd{
+            width: 20% !important;
         }
     </style>
   </head>
 
   <body style="background: #fff;height: auto;">
-        <div class="board-title">
-            <span class="name ft18">功能资源</span>
+        <div class="board-title" style="margin-top:1%">
+            <span class="name ft18" style="margin-left:1%">平台权限</span>
             <div class="fright">
-                <a class="button-add" id="addBtn"><span class="fa fa-plus-circle icon-add"></span>创建资源</a>
+                <a class="button-add" id="addBtn"><span class="fa fa-plus-circle icon-add"></span>创建权限</a>
             </div>
         </div>
 
@@ -76,7 +75,7 @@
                     <div class="typeahead col-md-8 col-sm-8 col-xs-8" style="padding: 0;">
                         <div>
                             <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
-                            <input class="ui-input typeahead-input tt-input" id="roleSearch" type="text" name="q" placeholder="搜索资源" autocomplete="off" spellcheck="false" dir="auto">
+                            <input class="ui-input typeahead-input tt-input" id="roleSearch" type="text" name="q" placeholder="搜索权限" autocomplete="off" spellcheck="false" dir="auto">
                         </div>
                     </div>
                 </div>
@@ -84,7 +83,7 @@
         </div>
         
         <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
-            <table id="funResTable" class="stripe" width="100%"></table>
+            <table id="permTable" class="stripe" width="100%"></table>
         </div>
     </div>
 
@@ -104,7 +103,8 @@
     <script src="/js/init.js"></script>
     <!-- jquery datatable -->
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
-    <script type="text/javascript" src="/js/manage/resource/funResList.js"></script>
+    <script type="text/javascript" src="/js/manage/user.js"></script>
+    <script type="text/javascript" src="/js/manage/permission/index.js"></script>
 
     <!-- <script>
         $('input').placeholder();

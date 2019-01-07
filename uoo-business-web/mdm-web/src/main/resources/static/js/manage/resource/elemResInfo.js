@@ -1,4 +1,67 @@
-function cancel(){
+var id = getQueryString('id');
+var toastr = window.top.toastr;
+
+function getResInfo(){  
+    $http.get('/system/SysElement/get', {  
+        id : id
+    }, function (data) {
+        initElemInfo(data);
+    }, function (err) {
+        toastr.error("获取信息失败！");
+    })
+}  
+
+ //初始化元素资源信息
+ function initElemInfo(result){     
+    $("#elementName").val(result.funcName);
+    $("#elementCode").val(result.funcCode);
+    $("#elementType").val(result.funcApi);
+    $("#menuName").val(result.funcCode);
+    $("#urlAddr").val(result.urlAddr);
+    $("#statusCd").val(result.statusCd);
+}
+
+//更新元素资源信息
+function updateRes(){
+    $http.post('/system/SysElement/update', JSON.stringify({  
+        elementName : $("#elementName").val(),
+        elementCode : $("#elementCode").val(),
+        elementType : $("#elementType").val(),
+        menuCode : $("#menuName").val(),
+        urlAddr : $("#urlAddr").val(),
+        statusCd : $("#statusCd").val(),
+        elementId : id
+    }), function (message) {
+        backToList();
+        toastr.success("保存成功！");
+    }, function (err) {
+        // toastr.error("保存失败！");
+    })
+}
+
+//删除元素资源信息
+function deleteRes(){
+    parent.layer.confirm('是否删除该功能资源？', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+        }, function(index, layero){
+            $http.post('/system/SysElement/delete', JSON.stringify({  
+                elementId : id
+            }), function (message) {
+                parent.layer.close(index);
+                backToList();
+                toastr.success("删除成功！");
+            }, function (err) {
+                parent.layer.close(index);
+                toastr.error("删除失败！");
+            })
+        }, function(){
+      
+        });
+}
+
+function backToList(){
     window.location.href = "elemResList.html";
 }
 

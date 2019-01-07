@@ -1,5 +1,4 @@
 var table = $("#elemResTable").DataTable({
-    'data': elemResData,
     'searching': false,
     'autoWidth': false,
     'ordering': true,
@@ -9,16 +8,28 @@ var table = $("#elemResTable").DataTable({
     "scrollY": "375px",
     'scrollCollapse': true,
     'columns': [
-        { 'data': "num", 'title': '序号', 'className': 'row-num' },
-        { 'data': "elemName", 'title': '元素名称', 'className': 'row-eName',
+        { 'data': null, 'title': '序号', 'className': 'row-num' ,
             'render': function (data, type, row, meta) {
-                return "<a href='javascript:void(0);' onclick='setMenuResInfo()'>"+row.elemName+"</span>";
+                return meta.row + 1 + meta.settings._iDisplayStart;
             }
         },
-        { 'data': "menuName", 'title': '菜单名称', 'className': 'row-mName'},
-        { 'data': "elemNum", 'title': '元素编码', 'className': 'row-eNum'},
-        { 'data': "elemType", 'title': '元素类型', 'className': 'row-eType'},
-        { 'data': "state", 'title': '状态', 'className': 'row-state' }
+        { 'data': "elementName", 'title': '元素名称', 'className': 'row-eName',
+            'render': function (data, type, row, meta) {
+                return "<a href='javascript:void(0);' onclick='setElemResInfo("+row.elementId+")'>"+row.elementName+"</span>";
+            }
+        },
+        { 'data': "elementType", 'title': '菜单名称', 'className': 'row-mName'},
+        { 'data': "elementCode", 'title': '元素编码', 'className': 'row-eNum'},
+        { 'data': "elementType", 'title': '元素类型', 'className': 'row-eType'},
+        { 'data': "statusCd", 'title': '状态', 'className': 'row-state' ,
+            'render': function (data, type, row, meta) {
+                if (row.statusCd == '1000') {
+                    return '有效';
+                } else {
+                    return '无效';
+                }
+            }
+        }
     ],
     'language': {
         'emptyTable': '没有数据',  
@@ -38,11 +49,29 @@ var table = $("#elemResTable").DataTable({
     },
     "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
     'pagingType': 'simple_numbers',
-    'dom': '<"top"f>t<"bottom"ipl>'
+    'dom': '<"top"f>t<"bottom"ipl>',
+    'serverSide': true,  //启用服务器端分页
+    'ajax': function (data, callback, settings) {
+        var param = {};
+        param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
+        param.pageNo = (data.start / data.length) + 1;//当前页码
+        param.keyWord = "";
+        $http.get('/system/SysElement/list', param, function (result) {  
+            var returnData = {};
+            // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
+            returnData.recordsTotal = result.total;//返回数据全部记录
+            returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
+            returnData.data = result.records;//返回的数据列表
+            //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+            //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+            callback(returnData);
+        }, function (err) {
+        })
+    }
 });
 
-function setMenuResInfo(){
-    window.location.href = "elemResInfo.html";
+function setElemResInfo(id){
+    window.location.href = "elemResInfo.html?id="+id;
 }
 
 $("#addBtn").on('click',function(){

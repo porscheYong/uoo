@@ -49,57 +49,6 @@ var posData = [
   }
 ]
 
-var funResData = [
-  {
-    num: '1',
-    funName: '人员综合信息查询',
-    funNum: '122112',
-    state: '有效'
-  },
-  {
-    num: '2',
-    funName: '身份证对应人力编码',
-    funNum: '122114',
-    state: '有效'
-  }
-]
-
-var menuResData = [
-  {
-    num: '1',
-    menuName: '组织管理',
-    menuNum: '122112',
-    menuLevel:'一级',
-    state: '有效'
-  },
-  {
-    num: '2',
-    menuName: '标准组织树',
-    menuNum: '122114',
-    menuLevel:'二级',
-    state: '有效'
-  }
-]
-
-var elemResData = [
-  {
-    num: '1',
-    elemName: '组织搜索框',
-    menuName: '标准组织树',
-    elemNum:'122112',
-    elemType:'搜索',
-    state: '有效'
-  },
-  {
-    num: '2',
-    elemName: '人员查询按钮',
-    menuName: '人员管理',
-    elemNum:'122114',
-    elemType:'按钮',
-    state: '有效'
-  }
-]
-
 var fileResData = [
   {
     num: '1',
@@ -133,5 +82,58 @@ var dataResData = [
     rule:'=',
     fieldVal:'杭州',
     state: '有效'
+  }
+]
+
+var plLogData = [
+  {
+    acct: '18898302221',
+    logName: '组织管理菜单',
+    logtype: '进入菜单',
+    isSuc:'是',
+    IpAddr: '192.168.122.122',
+    date: '2018-12-12 12:00:00'
+  },
+  {
+    acct: '18898313451',
+    logName: '查看组织详情',
+    logtype: '调用功能',
+    isSuc:'是',
+    IpAddr: '192.168.122.122',
+    date: '2018-12-12 12:00:02'
+  }
+]
+
+var permData = [
+  {
+    permName: '修改组织基础信息',
+    area: '杭州',
+    permCode: '23211',
+    statusCd:'有效'
+  },
+  {
+    permName: '修改组织关系信息',
+    area: '杭州',
+    permCode: '23222',
+    statusCd:'有效'
+  }
+]
+
+var resInfoData = [
+  {
+    funcName: '添加组织',
+    funcCode:'2322'
+  },
+  {
+    funcName: '修改组织',
+    funcCode:'2323'
+  },
+  {
+    funcName: '删除组织',
+    funcCode:'2324'
+  },
+  {
+    funcName: '查看',
+    funcCode:'2325'
   }
 ]
