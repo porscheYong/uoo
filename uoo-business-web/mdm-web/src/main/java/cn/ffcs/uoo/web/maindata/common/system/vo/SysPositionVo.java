@@ -1,13 +1,7 @@
-package cn.ffcs.uoo.system.vo;
+package cn.ffcs.uoo.web.maindata.common.system.vo;
 
-import cn.ffcs.uoo.base.common.vo.BaseVo;
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
+import cn.ffcs.uoo.web.maindata.organization.dto.BaseVo;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 

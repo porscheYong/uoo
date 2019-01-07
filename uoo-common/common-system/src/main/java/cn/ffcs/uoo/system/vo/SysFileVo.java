@@ -1,76 +1,52 @@
-package cn.ffcs.uoo.system.entity;
+package cn.ffcs.uoo.system.vo;
 
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
+import cn.ffcs.uoo.base.common.vo.BaseVo;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-import java.io.Serializable;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author zengxsh
- * @since 2018-12-24
- */
-@TableName("SYS_FILE")
-public class SysFile extends Model<SysFile> {
+import java.io.Serializable;
+import java.util.Date;
+
+
+public class SysFileVo extends BaseVo {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId("FILE_ID")
-    private Long fileId;
-    @TableField("FILE_NAME")
+
+    private Integer fileId;
+
     private String fileName;
-    @TableField("FILE_TYPE")
+
     private String fileType;
-    @TableField("FILE_SIZE")
+
     private Double fileSize;
-    @TableField("FILE_DESC")
+
     private String fileDesc;
-    @TableField("FILE_VERSION")
+
     private String fileVersion;
-    @TableField("FILE_ADDR")
+
     private String fileAddr;
-    /**
-     * 状态
-     */
-    @TableField("STATUS_CD")
+
     private String statusCd;
-    /**
-     * 创建时间
-     */
-    @TableField("CREATE_DATE")
+
     private Date createDate;
-    /**
-     * 创建人
-     */
-    @TableField("CREATE_USER")
+
     private Long createUser;
-    /**
-     * 修改时间
-     */
-    @TableField("UPDATE_DATE")
+
     private Date updateDate;
-    /**
-     * 修改人
-     */
-    @TableField("UPDATE_USER")
+
     private Long updateUser;
-    /**
-     * 状态变更的时间
-     */
-    @TableField("STATUS_DATE")
+
     private Date statusDate;
 
 
-    public Long getFileId() {
+    public Integer getFileId() {
         return fileId;
     }
 
-    public void setFileId(Long fileId) {
+    public void setFileId(Integer fileId) {
         this.fileId = fileId;
     }
 
@@ -170,27 +146,5 @@ public class SysFile extends Model<SysFile> {
         this.statusDate = statusDate;
     }
 
-    @Override
-    protected Serializable pkVal() {
-        return this.fileId;
-    }
 
-    @Override
-    public String toString() {
-        return "SysFile{" +
-        ", fileId=" + fileId +
-        ", fileName=" + fileName +
-        ", fileType=" + fileType +
-        ", fileSize=" + fileSize +
-        ", fileDesc=" + fileDesc +
-        ", fileVersion=" + fileVersion +
-        ", fileAddr=" + fileAddr +
-        ", statusCd=" + statusCd +
-        ", createDate=" + createDate +
-        ", createUser=" + createUser +
-        ", updateDate=" + updateDate +
-        ", updateUser=" + updateUser +
-        ", statusDate=" + statusDate +
-        "}";
-    }
 }

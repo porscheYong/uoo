@@ -3,6 +3,7 @@ package cn.ffcs.uoo.system.service;
 import cn.ffcs.uoo.system.entity.SysPosition;
 import cn.ffcs.uoo.system.vo.SysPositionVo;
 import cn.ffcs.uoo.system.vo.TreeNodeVo;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.List;
@@ -41,11 +42,18 @@ public interface SysPositionService extends IService<SysPosition> {
 
 
 
-    public List<TreeNodeVo> getPositionTree(String positionId);
+    public List<TreeNodeVo> selectPositionTree(String positionId);
 
-    public List<SysPositionVo> getPositionRel(String positionId,String isSearchlower);
+    public List<TreeNodeVo> selectPositionTree();
+
+
+    public Page<SysPositionVo> getPositionRelPage(SysPositionVo vo);
 
     public String getRolesByPositionId(String positionId);
 
+    public SysPositionVo getPosition(String positionId);
+
     public List<SysPositionVo> getSysOrgPosition(String orgCode);
+
+//    public Page<SysPositionVo> selectFuzzyPositionPage(SysPositionVo vo);
 }

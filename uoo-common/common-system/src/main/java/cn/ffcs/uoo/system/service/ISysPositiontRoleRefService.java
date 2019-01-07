@@ -12,5 +12,26 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-12-20
  */
 public interface ISysPositiontRoleRefService extends IService<SysPositiontRoleRef> {
+    /**
+     * 获取seq
+     * @return
+     */
+    public Long getId();
+
+    /**
+     * 失效状态
+     * @param sysPositiontRoleRef
+     */
+    public void delete(SysPositiontRoleRef sysPositiontRoleRef);
+
+    /**
+     * 新增
+     */
+    public void add(SysPositiontRoleRef sysPositiontRoleRef);
+
+    /**
+     * 更新
+     */
+    public void update(SysPositiontRoleRef sysPositiontRoleRef);
 
 }
