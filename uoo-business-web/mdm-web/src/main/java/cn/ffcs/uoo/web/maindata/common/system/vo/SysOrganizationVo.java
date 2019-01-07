@@ -35,6 +35,17 @@ public class SysOrganizationVo extends BaseVo {
      * 上级组织标识
      */
     private String parentOrgCode;
+
+    private String parentOrgName;
+
+    public String getParentOrgName() {
+        return parentOrgName;
+    }
+
+    public void setParentOrgName(String parentOrgName) {
+        this.parentOrgName = parentOrgName;
+    }
+
     /**
      * 引用电信管理区域
      */

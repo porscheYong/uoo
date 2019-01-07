@@ -4,8 +4,10 @@ package cn.ffcs.uoo.system.controller;
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.system.entity.SysDeptPositionRef;
 import cn.ffcs.uoo.system.entity.SysOrganization;
+import cn.ffcs.uoo.system.entity.SysPosition;
 import cn.ffcs.uoo.system.service.SysDeptPositionRefService;
 import cn.ffcs.uoo.system.service.SysOrganizationService;
+import cn.ffcs.uoo.system.service.SysPositionService;
 import cn.ffcs.uoo.system.util.StrUtil;
 import cn.ffcs.uoo.system.vo.ResponseResult;
 import cn.ffcs.uoo.system.vo.SysOrganizationVo;
@@ -46,6 +48,8 @@ public class SysOrganizationController {
     private SysOrganizationService sysOrganizationService;
     @Autowired
     private SysDeptPositionRefService sysDeptPositionRefService;
+    @Autowired
+    private SysPositionService sysPositionService;
 
 
     @ApiOperation(value = "查询组织树信息-web", notes = "查询组织树信息")
@@ -173,11 +177,16 @@ public class SysOrganizationController {
         List<SysPositionVo> vos = vo.getSysPositionVos();
         if(vos!=null && vos.size()>0){
             for(SysPositionVo sysvo1 : vos){
+
+                Wrapper orgPosWrapper = Condition.create()
+                        .eq("POSITION_ID",sysvo1.getPositionId())
+                        .eq("STATUS_CD","1000");
+                SysPosition v = sysPositionService.selectOne(orgPosWrapper);
                 Long orgPosRelId = sysDeptPositionRefService.getId();
                 SysDeptPositionRef sysDeptPositionRef = new SysDeptPositionRef();
                 sysDeptPositionRef.setDeptPositionRefId(orgPosRelId);
-                sysDeptPositionRef.setOrgCode(vo.getOrgCode());
-                sysDeptPositionRef.setPositionCode(sysvo1.getPositionCode());
+                sysDeptPositionRef.setOrgCode(id.toString());
+                sysDeptPositionRef.setPositionCode(v.getPositionCode());
                 sysDeptPositionRef.setCreateUser(vo.getUserId());
                 sysDeptPositionRefService.add(sysDeptPositionRef);
             }
@@ -215,10 +224,11 @@ public class SysOrganizationController {
 
 
         List<SysPositionVo> sysPositionList = vo.getSysPositionVos();
-        Wrapper orgPosWrapper = Condition.create()
-                .eq("ORG_CODE",vo.getOrgCode())
-                .eq("STATUS_CD","1000");
-        List<SysDeptPositionRef> sysDeptPositionRefCur = sysDeptPositionRefService.selectList(orgPosWrapper);
+//        Wrapper orgPosWrapper = Condition.create()
+//                .eq("ORG_CODE",vo.getOrgCode())
+//                .eq("STATUS_CD","1000");
+//        List<SysDeptPositionRef> sysDeptPositionRefCur = sysDeptPositionRefService.selectList(orgPosWrapper);
+        List<SysDeptPositionRef> sysDeptPositionRefCur = sysDeptPositionRefService.getDeptPositionRelList(vo.getOrgCode());
         boolean isExists = false;
         if(sysPositionList!=null && sysPositionList.size()>0){
             for(SysPositionVo ot : sysPositionList){
@@ -286,7 +296,7 @@ public class SysOrganizationController {
     @ApiOperation(value = "删除组织", notes = "删除组织")
     @ApiImplicitParams({
     })
-    @UooLog(value = "查询组织", key = "deleteOrg")
+    @UooLog(value = "删除组织", key = "deleteOrg")
     @RequestMapping(value = "/deleteOrg", method = RequestMethod.GET)
     public ResponseResult<String> deleteOrg(String id) throws IOException {
         ResponseResult<String> ret = new ResponseResult<String>();

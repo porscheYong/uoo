@@ -145,7 +145,8 @@
         A.Parent_Org_Code parentOrgCode,
         A.REGION_NBR      regionNbr,
         A.SORT            sort,
-        A.STATUS_CD       statusCd
+        A.STATUS_CD       statusCd,
+        (Select B.Org_Name from SYS_ORGANIZATION B where B.STATUS_CD=1000 AND B.Org_Code=A.PARENT_ORG_CODE) parentOrgName
         from SYS_ORGANIZATION A where A.STATUS_CD=1000 AND A.Org_Code = #{orgCode}
     </select>
 

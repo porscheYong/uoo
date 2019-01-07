@@ -33,6 +33,20 @@ public class SysPositionVo extends BaseVo {
      * 上级职位
      */
     private Long pPositionId;
+
+    /**
+     * 上级职位名称
+     */
+    private String pPositionName;
+
+    public String getpPositionName() {
+        return pPositionName;
+    }
+
+    public void setpPositionName(String pPositionName) {
+        this.pPositionName = pPositionName;
+    }
+
     /**
      * 引用电信管理区域
      */

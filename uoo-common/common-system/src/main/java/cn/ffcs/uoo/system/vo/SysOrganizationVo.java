@@ -42,6 +42,8 @@ public class SysOrganizationVo extends BaseVo {
      * 上级组织标识
      */
     private String parentOrgCode;
+
+    private String parentOrgName;
     /**
      * 引用电信管理区域
      */
@@ -98,6 +100,15 @@ public class SysOrganizationVo extends BaseVo {
     private String accout;
 
     private String isSearchlower;
+
+
+    public String getParentOrgName() {
+        return parentOrgName;
+    }
+
+    public void setParentOrgName(String parentOrgName) {
+        this.parentOrgName = parentOrgName;
+    }
 
     public String getIsSearchlower() {
         return isSearchlower;
