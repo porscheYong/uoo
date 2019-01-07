@@ -269,7 +269,7 @@ function  editUser() {
     var userHtml = userTemplate(personalData);
     //输入模板
     $('#userInfo').html(userHtml);
-
+     
     //手动插入吧
     var mobileHtml="";
     if(personalData.personalData.tbMobileVoList.length>0){
@@ -284,15 +284,15 @@ function  editUser() {
             mobileHtml+="<li>";
             if(i==0){
                 mobileHtml+="<span class='Label'><span class='Red'>* </span>联系电话</span>";
-                mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' class='Col5 ui-input' required type='text' value='"+d.content+"'/>";
+                mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' style='width:50%' class='ui-input' required type='text' value='"+d.content+"'/>";
             }else{
                 mobileHtml+="<span class='Label'><span class='Red'> </span> </span>";
-                mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' class='Col5' type='text' value='"+d.content+"'/>";
-                mobileHtml+="&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a>";
+                mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' style='width:50%' type='text' value='"+d.content+"'/>";
+                mobileHtml+="&nbsp;<a class='icon-del Wp1'><span class='fa fa-minus-circle'></span></a>";
 
             }
             if(i==0){
-                mobileHtml+="&nbsp;<a id='' href='javascript:void(0)' onclick='addMobileInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
+                mobileHtml+="&nbsp;<a id='' class='Wp1'  href='javascript:void(0)' onclick='addMobileInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
             }else{
                 //mobileHtml+="&nbsp;<a id='' href='javascript:void(0)' onclick='addMobileInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
 
@@ -302,11 +302,11 @@ function  editUser() {
     }else{
         mobileHtml+="<li>";
         mobileHtml+="<span class='Label'><span class='Red'>* </span>联系电话</span>";
-        mobileHtml+="<input name='mobiles' contactid='' class='Col5 ui-input' required type='text' value=''/>";
-        mobileHtml+="&nbsp;<a id='' href='javascript:void(0)' onclick='addMobileInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
+        mobileHtml+="<input name='mobiles' contactid='' style='width:50%' class='ui-input' required type='text' value=''/>";
+        mobileHtml+="&nbsp;<a id='' href='javascript:void(0)' class='Wp1' onclick='addMobileInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
         mobileHtml+="</li>";
     }
-    $('#userEditUL0').append(mobileHtml);
+    
     var emailHtml="";
     if(personalData.personalData.tbEamilVoList.length>0){
         for(var i=0;i<personalData.personalData.tbEamilVoList.length;i++){
@@ -317,28 +317,29 @@ function  editUser() {
         }
         for(var i=0;i<personalData.personalData.tbEamilVoList.length;i++){
             var d=personalData.personalData.tbEamilVoList[i];
-            emailHtml+="<li>";
+            emailHtml+="<li id='emailLi'>";
             if(i==0){
                 emailHtml+="<span class='Label'><span class='Red'>* </span>邮箱</span>";
-                emailHtml+="<input name='emails' contactid='"+d.contactId+"' class='Col5 ui-input' required type='text' value='"+d.content+"'/>";
+                emailHtml+="<input name='emails' contactid='"+d.contactId+"' style='width:50%' class='ui-input' required type='text' value='"+d.content+"'/>";
             }else{
                 emailHtml+="<span class='Label'><span class='Red'> </span> </span>";
-                emailHtml+="<input name='emails' contactid='"+d.contactId+"' class='Col5' type='text' value='"+d.content+"'/>";
-                emailHtml+="&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a>";
+                emailHtml+="<input name='emails' contactid='"+d.contactId+"' style='width:50%' type='text' value='"+d.content+"'/>";
+                emailHtml+="&nbsp;<a class='icon-del Wp1'><span class='fa fa-minus-circle '></span></a>";
             }
             if(i==0){
-                emailHtml+="&nbsp;<a id='' href='javascript:void(0)' onclick='addEmailInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
+                emailHtml+="&nbsp;<a id='' class='Wp1' href='javascript:void(0)' onclick='addEmailInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
             }
             emailHtml+="</li>";
         }
     }else{
-        emailHtml+="<li>";
+        emailHtml+="<li id='emailLi'>";
         emailHtml+="<span class='Label'><span class='Red'>* </span>邮箱</span>";
-        emailHtml+="<input name='emails' contactid='' class='Col5 ui-input' required type='text' value=''/>";
-        emailHtml+="&nbsp;<a id='' href='javascript:void(0)' onclick='addEmailInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
+        emailHtml+="<input name='emails' contactid='' style='width:50%' class='ui-input' required type='text' value=''/>";
+        emailHtml+="&nbsp;<a id='' class='Wp1' href='javascript:void(0)' onclick='addEmailInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
         emailHtml+="</li>";
     }
-    $('#userEditUL1').append(emailHtml);
+    $('#sexLi').after(emailHtml);
+    $('#sexLi').after(mobileHtml);
     laydate.render({
         elem:  'input[isTime="yes"]'
     });
@@ -901,21 +902,21 @@ function updatePersonnel(){
 function addEmailInput(){
     var mh="<li>";
     mh+="<span class='Label'></span>"
-    mh+="<input class='Col6' contactid='' name='emails' type='text'  />&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a>";
+    mh+="<input style='width:50%' contactid='' name='emails' type='text'  />&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a>";
     mh+="</li>";
-    $('#userEditUL1').append(mh);
+    $('#firstJobLi').before(mh);
     $('.icon-del').on('click', function () {
         $(this).parent().remove();
     });
 }
 function addMobileInput(){
-    var mh="<li class=''>";
+    var mh="<li>";
     mh+="<span class='Label'></span>"
     //mh+=" <input required class='Col6'> <a class='icon-del'><span class='fa fa-minus-circle'></span></a>  ";
 
-    mh+="<input class='Col6' type='text'  contactid='' name='mobiles' type='text' />&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a> ";
+    mh+="<input  style='width:50%' type='text'  contactid='' name='mobiles' type='text' />&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a> ";
     mh+="</li>";
-    $('#userEditUL0').append(mh);
+    $('#emailLi').before(mh);
     $('.icon-del').on('click', function () {
         $(this).parent().remove();
     });
