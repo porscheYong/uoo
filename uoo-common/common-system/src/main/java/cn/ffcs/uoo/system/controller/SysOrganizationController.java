@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
@@ -45,6 +46,7 @@ public class SysOrganizationController {
     private SysOrganizationService sysOrganizationService;
     @Autowired
     private SysDeptPositionRefService sysDeptPositionRefService;
+
 
     @ApiOperation(value = "查询组织树信息-web", notes = "查询组织树信息")
     @ApiImplicitParams({
@@ -159,12 +161,13 @@ public class SysOrganizationController {
     })
     @UooLog(value = "新增组织", key = "addOrg")
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
-    public ResponseResult<TreeNodeVo> addOrg(SysOrganizationVo vo) throws IOException {
+    public ResponseResult<TreeNodeVo> addOrg(@RequestBody SysOrganizationVo vo) throws IOException {
         ResponseResult<TreeNodeVo> ret = new ResponseResult<TreeNodeVo>();
         SysOrganization sysvo = new SysOrganization();
         BeanUtils.copyProperties(vo,sysvo);
         Long id = sysOrganizationService.getId();
         sysvo.setOrgId(id);
+        sysvo.setOrgCode(id.toString());
         sysvo.setCreateUser(vo.getUserId());
         sysOrganizationService.add(sysvo);
         List<SysPositionVo> vos = vo.getSysPositionVos();
@@ -194,8 +197,18 @@ public class SysOrganizationController {
     })
     @UooLog(value = "编辑组织", key = "addOrg")
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
-    public ResponseResult<String> updateOrg(SysOrganizationVo vo) throws IOException {
+    public ResponseResult<String> updateOrg(@RequestBody SysOrganizationVo vo) throws IOException {
         ResponseResult<String> ret = new ResponseResult<String>();
+        if(StrUtil.isNullOrEmpty(vo.getOrgId())){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("组织标识不能为空");
+            return ret;
+        }
+        if(StrUtil.isNullOrEmpty(vo.getOrgCode())){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("组织编码不能为空");
+            return ret;
+        }
         SysOrganization sysvo = new SysOrganization();
         BeanUtils.copyProperties(vo,sysvo);
         sysOrganizationService.update(sysvo);
@@ -269,6 +282,47 @@ public class SysOrganizationController {
         return ret;
     }
 
+
+    @ApiOperation(value = "删除组织", notes = "删除组织")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "查询组织", key = "deleteOrg")
+    @RequestMapping(value = "/deleteOrg", method = RequestMethod.GET)
+    public ResponseResult<String> deleteOrg(String id) throws IOException {
+        ResponseResult<String> ret = new ResponseResult<String>();
+        if(StrUtil.isNullOrEmpty(id)){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("组织标识不能为空");
+            return ret;
+        }
+
+        Wrapper userWrapper = Condition.create()
+                .eq("ORG_CODE",id)
+                .eq("STATUS_CD","1000");
+
+        int num = sysOrganizationService.getOrgUserCount(id);
+        if(num>0){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("组织下存在用户");
+            return ret;
+        }
+        num = sysOrganizationService.getOrgRoleCount(id);
+        if(num>0){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("组织下存在角色");
+            return ret;
+        }
+        Wrapper orgWrapper = Condition.create()
+                .eq("ORG_CODE",id)
+                .eq("STATUS_CD","1000");
+        SysOrganization sysOrganization = sysOrganizationService.selectOne(orgWrapper);
+        if(sysOrganization!=null){
+            sysOrganizationService.delete(sysOrganization);
+        }
+        ret.setData("删除成功");
+        ret.setState(ResponseResult.STATE_OK);
+        return ret;
+    }
 
 
 }

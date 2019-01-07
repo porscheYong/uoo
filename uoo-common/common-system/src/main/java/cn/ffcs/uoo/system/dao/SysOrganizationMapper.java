@@ -2,6 +2,7 @@ package cn.ffcs.uoo.system.dao;
 
 
 import cn.ffcs.uoo.system.entity.SysOrganization;
+import cn.ffcs.uoo.system.entity.SysUser;
 import cn.ffcs.uoo.system.vo.SysOrganizationVo;
 import cn.ffcs.uoo.system.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
@@ -67,4 +68,8 @@ public interface SysOrganizationMapper extends BaseMapper<SysOrganization> {
     public List<SysOrganizationVo> getOrgRelPage(Pagination page,@Param("vo")SysOrganizationVo vo);
 
     public SysOrganizationVo getOrg(@Param("orgCode")String orgCode);
+
+    public int getOrgUserCount(@Param("orgCode")String orgCode);
+
+    public int getOrgRoleCount(@Param("orgCode")String orgCode);
 }

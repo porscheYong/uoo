@@ -36,9 +36,9 @@
           AND B.STATUS_CD = '1000'
           AND A.ROLE_CODE = B.ROLE_CODE AND A.POSITION_CODE=C.POSITION_CODE) EXTFIELD1
         FROM SYS_POSITION C
-        WHERE C.STATUS_CD = '1000'
-        START WITH C.POSITION_ID = #{positionId}
-        CONNECT BY PRIOR C.POSITION_ID = C.P_POSITION_ID
+        WHERE C.STATUS_CD = '1000' and C.P_POSITION_ID = #{positionId}
+<!--         START WITH C.POSITION_ID = #{positionId}
+         CONNECT BY PRIOR C.POSITION_ID = C.P_POSITION_ID -->
     </select>
 
     <select id="isleaf" resultType="java.lang.Integer">

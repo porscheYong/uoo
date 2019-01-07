@@ -148,4 +148,14 @@
         A.STATUS_CD       statusCd
         from SYS_ORGANIZATION A where A.STATUS_CD=1000 AND A.Org_Code = #{orgCode}
     </select>
+
+
+    <select id="getOrgUserCount" resultType="java.lang.Integer">
+        select count(1) from SYS_USER_DEPT_REF a where a.status_cd='1000' and a.org_code=#{orgCode}
+    </select>
+
+
+    <select id="getOrgRoleCount" resultType="java.lang.Integer">
+        select count(1) from SYS_DEPT_ROLE_REF a where a.status_cd='1000' and a.org_code=#{orgCode}
+    </select>
 </mapper>

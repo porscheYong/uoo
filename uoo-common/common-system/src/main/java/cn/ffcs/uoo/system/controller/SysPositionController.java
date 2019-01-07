@@ -19,6 +19,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
@@ -184,7 +185,7 @@ public class SysPositionController {
     @UooLog(value = "编辑职位", key = "updatePosition")
     @RequestMapping(value = "/updatePosition", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<String> updatePosition(SysPositionVo sysPositionVo){
+    public ResponseResult<String> updatePosition(@RequestBody SysPositionVo sysPositionVo){
         ResponseResult<String> ret = new ResponseResult<String>();
 
         Wrapper positionWrapper = Condition.create()
@@ -277,7 +278,7 @@ public class SysPositionController {
     @UooLog(value = "新增职位", key = "addPosition")
     @RequestMapping(value = "/addPosition", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<TreeNodeVo> addPosition(SysPositionVo pos){
+    public ResponseResult<TreeNodeVo> addPosition(@RequestBody SysPositionVo pos){
         ResponseResult<TreeNodeVo> ret = new ResponseResult<TreeNodeVo>();
         Long positionId = sysPositionService.getId();
         SysPosition sysPosition = new SysPosition();

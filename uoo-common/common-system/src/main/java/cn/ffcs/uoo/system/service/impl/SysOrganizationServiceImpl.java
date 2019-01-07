@@ -3,6 +3,7 @@ package cn.ffcs.uoo.system.service.impl;
 
 import cn.ffcs.uoo.system.dao.SysOrganizationMapper;
 import cn.ffcs.uoo.system.entity.SysOrganization;
+import cn.ffcs.uoo.system.entity.SysUser;
 import cn.ffcs.uoo.system.service.SysOrganizationService;
 import cn.ffcs.uoo.system.service.SysPositionService;
 import cn.ffcs.uoo.system.util.StrUtil;
@@ -166,5 +167,14 @@ public class SysOrganizationServiceImpl extends ServiceImpl<SysOrganizationMappe
             vo.setSysPositionVos(list);
         }
         return vo;
+    }
+
+    @Override
+    public int getOrgUserCount(String orgCode){
+        return baseMapper.getOrgUserCount(orgCode);
+    }
+    @Override
+    public int getOrgRoleCount(String orgCode){
+        return baseMapper.getOrgRoleCount(orgCode);
     }
 }
