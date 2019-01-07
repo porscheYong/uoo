@@ -76,4 +76,12 @@ public class SysOrganizationClientHystrix implements SysOrganizationClient {
         return rr;
     }
 
+    @Override
+    public ResponseResult<String> deleteOrg(String id){
+        ResponseResult<String> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    }
+
 }

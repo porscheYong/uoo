@@ -118,7 +118,12 @@ public class SysOrganizationController {
         return sysOrganizationClient.getOrg(id);
     }
 
-
-
+    @ApiOperation(value = "删除组织", notes = "删除组织")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/deleteOrg", method = RequestMethod.GET)
+    public ResponseResult<String> deleteOrg(@RequestParam(value = "id",required = false)String id){
+        return sysOrganizationClient.deleteOrg(id);
+    }
 }
 

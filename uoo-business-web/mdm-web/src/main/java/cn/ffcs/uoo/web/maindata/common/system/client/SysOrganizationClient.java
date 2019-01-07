@@ -74,7 +74,7 @@ public interface SysOrganizationClient {
     @RequestMapping(value = "/sysOrganization/getOrg", method = RequestMethod.GET)
     public ResponseResult<SysOrganizationVo> getOrg(@RequestParam(value = "id",required = false)String id);
 
-
-
+    @RequestMapping(value = "/sysOrganization/deleteOrg", method = RequestMethod.GET)
+    public ResponseResult<String> deleteOrg(@RequestParam(value = "id",required = false)String id);
 }
 
