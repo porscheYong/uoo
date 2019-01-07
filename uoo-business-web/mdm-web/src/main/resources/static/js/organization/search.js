@@ -1,6 +1,7 @@
 var orgId = getQueryString('id');
 var orgName = getQueryString('name');
 var engine, template, empty, selectNode;
+var toastr = window.top.toastr;
 
   template = Handlebars.compile($("#result-template").html());
   empty = Handlebars.compile($("#empty-template").html());
@@ -91,9 +92,12 @@ var engine, template, empty, selectNode;
         var newNode = {
             name: selectNode.orgName,
             id: selectNode.orgId
-        }
+        };
         parent.addNodeById(orgId, newNode);
+        parent.openTreeById(orgId, data.id);
+        window.location.replace("list.html?id=" + selectNode.orgId + '&pid=' + orgId + "&name=" + encodeURI(selectNode.orgName));
         loading.screenMaskDisable('container');
+        toastr.success('新增成功！');
       }, function (err) {
           console.log(err);
           loading.screenMaskDisable('container');

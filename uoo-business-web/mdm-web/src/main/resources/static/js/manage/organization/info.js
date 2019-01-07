@@ -158,29 +158,12 @@ function getStatusCd (statusCd) {
 
 // 获取组织基础信息
 function getOrg (orgId) {
-    $http.get('/org/getOrg', {
-        orgTreeId: '1',
-        orgId: orgId
+    $http.get('/sysOrganization/getOrg', {
+        id: orgId
     }, function (data) {
         $('#orgName').html(data.orgName);
         $('#orgCode').html(data.orgCode);
-        $('#shortName').html(data.shortName);
-        $('#fullName').html(data.fullName);
-        $('#orgMartCode ').html(data.orgMartCode);
-        $('#createDate ').html(data.createDate);
-        $('#orgNameEn').html(data.orgNameEn);
-        $('#officePhone').html(data.officePhone);
         $('#sort').html(data.sort);
-        $('#address').html(data.address);
-        if (data.orgContent) {
-            var content = "<p>"+ data.orgContent + "</p>";
-            $('#orgContent').html(content);
-        }
-        $('#orgDesc').html(data.orgDesc);
-
-        getScale(data.orgScale);
-        getCityVillage(data.cityTown);
-        getOrgPostLevel(data.orgPositionLevel);
         getStatusCd(data.statusCd);
         locationList = data.politicalLocationList;
         orgTypeList = data.orgTypeList;

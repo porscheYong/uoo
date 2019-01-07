@@ -63,7 +63,7 @@ function initOrgRelTree () {
     var setting = {
         async: {
             enable: true,
-            url: '/orgRel/getOrgRelTree?orgRootId=1&orgTreeId=1',
+            url: '/sysOrganization/getOrgRelTree',
             autoParam: ['id'],
             type: 'get',
             dataFilter: filter
@@ -88,10 +88,7 @@ function initOrgRelTree () {
             onClick: onNodeClick
         }
     };
-    $http.get('/orgRel/getOrgRelTree', {
-        orgRootId: '1',
-        orgTreeId: '1'
-    }, function (data) {
+    $http.get('/sysOrganization/getOrgRelTree', {}, function (data) {
         $.fn.zTree.init($("#platformOrgTree"), setting, data);
         var tree = $.fn.zTree.getZTreeObj("platformOrgTree");
         var nodes = tree.getNodes();
@@ -115,7 +112,7 @@ function openTreeById (sId, id) {
 
 // 添加子节点
 function addNodeById (sId, newNode) {
-    var zTree = $.fn.zTree.getZTreeObj("standardTree");
+    var zTree = $.fn.zTree.getZTreeObj("platformOrgTree");
     var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
     if (selectNode)
         var newNode = zTree.addNodes(selectNode, newNode);
@@ -123,17 +120,17 @@ function addNodeById (sId, newNode) {
 
 // 修改节点名称
 function changeNodeName(orgId, name) {
-    var tId = 'standardTree_' + orgId;
-    var zTree = $.fn.zTree.getZTreeObj("standardTree");
+    var tId = 'platformOrgTree_' + orgId;
+    var zTree = $.fn.zTree.getZTreeObj("platformOrgTree");
     var treeNode = zTree.getNodeByTId(tId);
     treeNode.name = name;
-    $('#standardTree_' + orgId + '_span').html(name);
+    $('#platformOrgTree_' + orgId + '_span').html(name);
 }
 
 // 删除节点
 function deleteNode(orgId) {
-    var tId = 'standardTree_' + orgId;
-    var zTree = $.fn.zTree.getZTreeObj("standardTree");
+    var tId = 'platformOrgTree_' + orgId;
+    var zTree = $.fn.zTree.getZTreeObj("platformOrgTree");
     var selectNode = zTree.getNodeByTId(tId); //获取当前选中的节点并取消选择状态
     zTree.removeNode(selectNode);
 }

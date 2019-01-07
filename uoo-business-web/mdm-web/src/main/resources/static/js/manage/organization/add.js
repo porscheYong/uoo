@@ -1,7 +1,7 @@
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
-var superiorOrgList = [];
+var parentOrgList = [];
 var locationList = [];
 var orgPostList = [];
 var formValidate;
@@ -31,9 +31,9 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
     //默认显示上级组织
-    superiorOrgList.push({id: orgId, pid: pid, name: orgName});
-    $('#superiorOrg').tagsInput({unique: true});
-    $('#superiorOrg').importTags(superiorOrgList, {unique: true});
+    parentOrgList.push({id: orgId, pid: pid, name: orgName});
+    $('#parentOrg').tagsInput({unique: true});
+    $('#parentOrg').importTags(parentOrgList, {unique: true});
 
     $('#location').tagsInput({unique: true});
     $('#post').tagsInput({unique: true});
@@ -54,8 +54,8 @@ function openOrgDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            $('#superiorOrg').importTags(checkNode, {unique: true});
-            superiorOrgList = checkNode;
+            $('#parentOrg').importTags(checkNode, {unique: true});
+            parentOrgList = checkNode;
             parent.layer.close(index);
         }
     });
@@ -92,7 +92,7 @@ function openPostDialog() {
         shade: 0.8,
         area: ['50%', '80%'],
         maxmin: true,
-        content: '/inaction/organization/postDialog.html',
+        content: '/inaction/modal/postDialog.html',
         btn: ['确认', '取消'],
         yes: function(index, layero){
             //获取layer iframe对象
@@ -120,53 +120,27 @@ function addOrg () {
     if (!formValidate.isAllPass())
         return;
     loading.screenMaskEnable('container');
-    var orgType = [];
-    var orgRelType = [];
-    var copyList = [];
-    // 组织关系类型类别
-    for (var i = 0; i < orgRelTypeList.length; i++) {
-        var id = orgRelTypeList[i].id;
-        orgRelType.push({refCode: id});
-    }
-    //组织类别
-    for (var i = 0; i < orgTypeList.length; i++) {
-        var orgTypeId = orgTypeList[i].orgTypeId || orgTypeList[i].id;
-        orgType.push({orgTypeId: orgTypeId});
-    }
-    //拷贝组织节点
-    for (var i = 0; i < orgCopyList.length; i++) {
-        var id = orgCopyList[i].id;
-        var pid = orgCopyList[i].pid;
-        var name = orgCopyList[i].name;
-        var level = orgCopyList[i].level;
-        var checked = orgCopyList[i].checked;
-        copyList.push({
-            id: id,
-            pid: pid,
-            name: name,
-            level: level,
-            checked: checked
-        });
-    }
-    var orgTreeName = $('#orgTreeName').val();
-    var orgTreeType = $('#orgTreeType option:selected') .val();
-    var sort = $('#sort').val();
-    // var userType = $('#userType option:selected') .val();
 
-    $http.post('/orgTree/addOrgTree', JSON.stringify({
-        orgTreeName: orgTreeName,
-        orgTreeType: orgTreeType,
-        orgRelTypeList: orgRelType,
+    var orgName = $('#orgName').val();
+    var sort = $('#sort').val();
+    var statusCd = $('#statusCd option:selected') .val();
+    //组织职位
+    var sysPositionVos = [];
+    for (var i = 0; i < orgPostList.length; i++) {
+        sysPositionVos.push({positionId: orgPostList[i].id});
+    }
+
+    $http.post('/sysOrganization/addOrg', JSON.stringify({
+        orgName: orgName,
+        parentOrgCode: parentOrgList[0].id,
+        regionNbr: locationList[0].id,
+        sysPositionVos: sysPositionVos,
         sort: sort,
-        // userTypeId: userType,
-        orgTypeList: orgType,
-        treeNodeList: copyList,
-        tarOrgTreeId: tarOrgTreeId
+        statusCd: statusCd
     }), function () {
-        parent.initBusinessList();
         loading.screenMaskDisable('container');
         toastr.success('新增成功！');
-    }, function (err) {
+    }, function () {
         loading.screenMaskDisable('container');
     })
 }
