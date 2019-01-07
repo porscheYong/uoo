@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import cn.ffcs.uoo.system.entity.SysFile;
+import cn.ffcs.uoo.system.entity.SysTable;
+import cn.ffcs.uoo.system.entity.SysTableColumn;
+import cn.ffcs.uoo.system.service.ISysTableColumnService;
+import cn.ffcs.uoo.system.service.ISysTableService;
+import cn.ffcs.uoo.system.util.StrUtil;
 import cn.ffcs.uoo.system.vo.SysDataRuleVo;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -27,6 +32,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
+import javax.annotation.Resource;
+
 /**
  * <p>
  * 记录权限下相关联的规则，包括横向、纵向的数据维度。
@@ -39,8 +46,14 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/system/sysDataRule")
 public class SysDataRuleController {
-    @Autowired
+    @Resource
     ISysDataRuleService dataRuleSvc;
+
+    @Resource
+    private ISysTableService iSysTableService;
+
+    @Resource
+    private ISysTableColumnService iSysTableColumnService;
     
     @ApiOperation(value = "获取单个用户的数据权限", notes = "获取单个用户的数据权限")
     @ApiImplicitParams({
@@ -134,6 +147,47 @@ public class SysDataRuleController {
         BeanUtils.copyProperties(sysDataRuleVo, vo);
         dataRuleSvc.update(vo);
         ret.setMessage("编辑成功");
+        ret.setState(ResponseResult.STATE_OK);
+        return ret;
+    }
+
+
+
+    @ApiOperation(value = " ", notes = "获取表名")
+    @ApiImplicitParams({
+    })
+    @UooLog(key="getTabName",value="获取表名")
+    @Transactional
+    @RequestMapping(value = "/getTab", method = RequestMethod.GET)
+    public ResponseResult<List<SysTable>> getTab(){
+        ResponseResult<List<SysTable>> ret = new ResponseResult<List<SysTable>>();
+        Wrapper sysTabWrapper = Condition.create().eq("STATUS_CD","1000");
+        List<SysTable> systabList = iSysTableService.selectList(sysTabWrapper);
+        ret.setData(systabList);
+        ret.setMessage("查询成功");
+        ret.setState(ResponseResult.STATE_OK);
+        return ret;
+    }
+
+    @ApiOperation(value = " ", notes = "获取列名")
+    @ApiImplicitParams({
+    })
+    @UooLog(key="getTabColumn",value="获取列名")
+    @Transactional
+    @RequestMapping(value = "/getTabColumn", method = RequestMethod.GET)
+    public ResponseResult<List<SysTableColumn>> getTabColumn(String tabId){
+        ResponseResult<List<SysTableColumn>> ret = new ResponseResult<List<SysTableColumn>>();
+        if(StrUtil.isNullOrEmpty(tabId)){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("表标识不能为空");
+            return ret;
+        }
+        Wrapper sysTabCulWrapper = Condition.create()
+                .eq("TAB_ID",tabId)
+                .eq("STATUS_CD","1000");
+        List<SysTableColumn> systabculList = iSysTableColumnService.selectList(sysTabCulWrapper);
+        ret.setData(systabculList);
+        ret.setMessage("查询成功");
         ret.setState(ResponseResult.STATE_OK);
         return ret;
     }
