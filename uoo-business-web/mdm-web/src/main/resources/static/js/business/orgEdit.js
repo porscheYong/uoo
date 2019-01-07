@@ -779,6 +779,7 @@ function updateOrg () {
   var position = [];
   var post = [];
   var orgType = [];
+  expandovalueVoList = [];
   //联系人
   if (selectUser && selectUser.length > 0) {
     for (var i = 0; i < selectUser.length; i++) {
@@ -827,7 +828,7 @@ function updateOrg () {
   var areaType = $('#areaType option:selected') .val();
   var countType = formSelects.value('countType');
   var contractType = $('#contractType option:selected') .val();
-  var orgMart; //传给后台的划小组织编码
+  var orgMart = orgMartCode; //传给后台的划小组织编码
   if (editSmallField) {
       if (areaType)
           expandovalueVoList.push({columnName: 'areaType', data: areaType});
@@ -839,11 +840,6 @@ function updateOrg () {
       for (var i = 0; i < countType.length; i++){
           expandovalueVoList.push({columnName: 'countType', data: countType[i].value})
       }
-      orgMart = orgMartCode;
-  }
-  else  {
-      expandovalueVoList = [];
-      orgMart = '';
   }
   $http.post('/org/updateOrg', JSON.stringify({
       orgRootId: '1',
