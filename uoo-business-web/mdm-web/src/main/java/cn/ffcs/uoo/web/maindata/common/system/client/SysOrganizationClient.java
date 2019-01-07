@@ -6,6 +6,7 @@ import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysOperationLogCli
 import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysOrganizationClientHystrix;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.common.system.vo.SysOrganizationVo;
+import cn.ffcs.uoo.web.maindata.common.system.vo.SysPositionVo;
 import cn.ffcs.uoo.web.maindata.common.system.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.ApiImplicitParams;
@@ -76,5 +77,8 @@ public interface SysOrganizationClient {
 
     @RequestMapping(value = "/sysOrganization/deleteOrg", method = RequestMethod.GET)
     public ResponseResult<String> deleteOrg(@RequestParam(value = "id",required = false)String id);
+
+    @RequestMapping(value = "/sysOrganization/getOrgPositionList", method = RequestMethod.GET)
+    public ResponseResult<List<SysPositionVo>> getOrgPositionList(@RequestParam(value = "id",required = false)String id);
 }
 

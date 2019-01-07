@@ -52,7 +52,9 @@
                  where C.STATUS_CD = '1000'
                    AND B.STATUS_CD = '1000'
                    AND B.POSITION_CODE = C.POSITION_CODE
-                   AND A.ORG_CODE = B.ORG_CODE) EXTFIELD1 FROM SYS_ORGANIZATION A WHERE A.STATUS_CD='1000'
+                   AND A.ORG_CODE = B.ORG_CODE) EXTFIELD1,
+                  (SELECT DECODE(COUNT(1),0,0,1) FROM SYS_ORGANIZATION B WHERE A.STATUS_CD='1000' AND B.PARENT_ORG_CODE=A.ORG_CODE ) isParent
+                    FROM SYS_ORGANIZATION A WHERE A.STATUS_CD='1000'
     </select>
 
     <select id="isleaf"  resultType="java.lang.Integer">

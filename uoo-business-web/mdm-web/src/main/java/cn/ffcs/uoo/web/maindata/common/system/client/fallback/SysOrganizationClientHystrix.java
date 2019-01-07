@@ -3,12 +3,10 @@ package cn.ffcs.uoo.web.maindata.common.system.client.fallback;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysMenuClient;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysOrganizationClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysMenu;
-import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
-import cn.ffcs.uoo.web.maindata.common.system.vo.SysMenuVO;
-import cn.ffcs.uoo.web.maindata.common.system.vo.SysOrganizationVo;
-import cn.ffcs.uoo.web.maindata.common.system.vo.TreeNodeVo;
+import cn.ffcs.uoo.web.maindata.common.system.vo.*;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -79,6 +77,13 @@ public class SysOrganizationClientHystrix implements SysOrganizationClient {
     @Override
     public ResponseResult<String> deleteOrg(String id){
         ResponseResult<String> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    }
+    @Override
+    public ResponseResult<List<SysPositionVo>> getOrgPositionList(String id){
+        ResponseResult<List<SysPositionVo>> rr=new ResponseResult<>();
         rr.setState(ResponseResult.STATE_SERVICE_ERROR);
         rr.setMessage("服务不可用");
         return rr;
