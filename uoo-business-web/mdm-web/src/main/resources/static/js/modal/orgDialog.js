@@ -28,7 +28,7 @@ function initOrgTree() {
     var treeSetting = {
         async: {
             enable: true,
-            url: '/orgRel/getOrgRelTree?orgRootId=1&orgTreeId=1',
+            url: '/sysOrganization/getOrgRelTree',
             autoParam: ['id'],
             type: 'get',
             dataFilter: filter
@@ -59,9 +59,7 @@ function initOrgTree() {
             radioType: 'all'
         }
     };
-    $http.get('/orgRel/getOrgRelTree', {
-        orgTreeId: '1'
-    }, function (data) {
+    $http.get('/sysOrganization/getOrgRelTree', {}, function (data) {
         $.fn.zTree.init($("#orgTree"), treeSetting, data);
         autoCheck();
     }, function (err) {

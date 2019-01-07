@@ -220,8 +220,36 @@
 
                 <form id="userEditForm" class="pull-left" style="width: 90%;">
                     <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="psnName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">姓名</label>
+                        <label for="psnName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户姓名</label>
                         <input class="ui-input col-md-8 col-sm-8 col-xs-12" type="text" id="psnName" value="{{personalData.psnName}}" required/>
+                    </div>
+                    <div class="col-md-6" style="margin-bottom: 10px;">
+                        <label for="certType" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
+                        <select class="col-md-8 col-sm-8 col-xs-12" id="certType">
+                            {{#each certTypeData}}
+                            <option value="{{itemValue}}" {{#eq itemValue ../personalData.certType}}selected="selected"{{/eq}} >{{itemCnname}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="col-md-6" style="margin-bottom: 10px;">
+                        <label for="account" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号</label>
+                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" type="text" id="account" value="{{personalData.psnName}}" required/>
+                    </div>
+                    <div class="col-md-6" style="margin-bottom: 10px;">
+                        <label for="certNo" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" id="certNo" onkeyup="autoWriteForm()" required type="text" value="{{personalData.certNo}}"/>
+                    </div>
+                    <div class="col-md-6" style="margin-bottom: 10px;">
+                        <label for="password" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">密码</label>
+                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" id="password" onkeyup="autoWriteForm()" required type="text" value="{{personalData.certNo}}"/>
+                    </div>
+                    <div class="col-md-6" style="margin-bottom: 10px;">
+                        <label for="gender" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号状态</label>
+                        <select class="col-md-8 col-sm-8 col-xs-12" id="gender">
+                            {{#each genderData}}
+                            <option value="{{itemValue}}" {{#eq itemValue ../personalData.gender}}selected="selected"{{/eq}} >{{itemCnname}}</option>
+                            {{/each}}
+                        </select>
                     </div>
                     <div class="col-md-6" style="margin-bottom: 10px;">
                         <label for="gender" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">性别</label>
@@ -230,18 +258,6 @@
                                 <option value="{{itemValue}}" {{#eq itemValue ../personalData.gender}}selected="selected"{{/eq}} >{{itemCnname}}</option>
                             {{/each}}
                         </select>
-                    </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="certType" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
-                        <select class="col-md-8 col-sm-8 col-xs-12" id="certType">
-                            {{#each certTypeData}}
-                                <option value="{{itemValue}}" {{#eq itemValue ../personalData.certType}}selected="selected"{{/eq}} >{{itemCnname}}</option>
-                            {{/each}}
-                        </select>
-                    </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="certNo" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" id="certNo" onkeyup="autoWriteForm()" required type="text" value="{{personalData.certNo}}"/>
                     </div>
                     <div class="col-md-6" style="margin-bottom: 10px;">
                         <label for="nationality" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">籍贯</label>

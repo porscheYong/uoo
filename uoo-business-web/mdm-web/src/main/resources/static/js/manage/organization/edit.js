@@ -1,7 +1,7 @@
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
-var superiorOrgList = [];
+var parentOrgList = [];
 var locationList = [];
 var orgPostList = [];
 var formValidate;
@@ -63,7 +63,7 @@ function openPostDialog() {
         shade: 0.8,
         area: ['50%', '80%'],
         maxmin: true,
-        content: '/inaction/organization/postDialog.html',
+        content: '/inaction/modal/postDialog.html',
         btn: ['确认', '取消'],
         yes: function(index, layero){
             //获取layer iframe对象
@@ -88,20 +88,24 @@ function getStatusCd (statusCd) {
 
 // 获取组织基础信息
 function getOrg (orgId) {
-    $http.get('/org/getOrg', {
-        orgTreeId: '1',
-        orgId: orgId
+    $http.get('/sysOrganization/getOrg', {
+        id: orgId
     }, function (data) {
         $('#orgName').val(data.orgName).focus();
         $('#sort').val(data.sort);
         getStatusCd(data.statusCd);
 
-        superiorOrgList = data.politicalLocationList;
-        locationList = data.politicalLocationList;
-        orgPostList = data.postList;
-        $('#superiorOrg').addTag(superiorOrgList);
+        parentOrgList.push({id: pid, name: orgName});
+        locationList.push({id: data.regionNbr, name: data.regionName});
+        orgPostList = data.sysPositionVos;
+        $('#parentOrg').addTag(parentOrgList);
         $('#location').addTag(locationList);
         $('#post').addTag(orgPostList);
+        seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+            var orgEditForm = $('#orgEditForm');
+            var formValidate = new Validate(orgEditForm);
+            formValidate.isAllPass();
+        });
     }, function (err) {
 
     })
@@ -231,7 +235,6 @@ function cancel () {
 }
 
 $('.orgName').html(orgName);
-
 // lulu ui select插件
 seajs.use('/vendors/lulu/js/common/ui/Select', function () {
     $('select').selectMatch();
@@ -250,9 +253,9 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
-    $('#superiorOrg').tagsInput({unique: true});
-    $('#location').tagsInput({unique: true});
-    $('#post').tagsInput({unique: true});
+    $('#superiorOrg').tagsInput();
+    $('#location').tagsInput();
+    $('#post').tagsInput();
 };
 
 getOrg(orgId);
