@@ -164,9 +164,14 @@ public class SysPositionController {
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<String> updatePosition(@RequestBody SysPositionVo sysPositionVo){
         ResponseResult<String> ret = new ResponseResult<String>();
+        if(StrUtil.isNullOrEmpty(sysPositionVo.getPositionId())){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("职位标识不存在");
+            return ret;
+        }
 
         Wrapper positionWrapper = Condition.create()
-                .eq("POSITION_ID",sysPositionVo.getpPositionId())
+                .eq("POSITION_ID",sysPositionVo.getPositionId())
                 .eq("STATUS_CD","1000");
         SysPosition sysPosition = sysPositionService.selectOne(positionWrapper);
         if(sysPosition==null){
@@ -186,7 +191,7 @@ public class SysPositionController {
             sysPosition.setSortNum(sysPositionVo.getSortNum());
         }
         sysPosition.setPositionName(sysPositionVo.getPositionName());
-        sysPosition.setPositionCode(sysPositionVo.getPositionCode());
+        //sysPosition.setPositionCode(sysPositionVo.getPositionCode());
         sysPosition.setUpdateUser(sysPositionVo.getUserId());
         List<SysRoleDTO> sysRoleDTOList = sysPositionVo.getSysRoleDTOList();
         List<SysRole> sysRoles = new ArrayList<SysRole>();
@@ -196,12 +201,8 @@ public class SysPositionController {
             SysRole sr = sysRoleService.selectOne(sysRolesWrapper);
             sysRoles.add(sr);
         }
-//        Wrapper positionRolesWrapper = Condition.create()
-//                .eq("POSITION_CODE",sysPositionVo.getPositionCode())
-//                .eq("STATUS_CD","1000");
-//        List<SysPositiontRoleRef> curPosRoleList = iSysPositiontRoleRefService.selectList(positionRolesWrapper);
 
-        List<SysPositiontRoleRef> curPosRoleList = iSysPositiontRoleRefService.getCurRoleList(sysPositionVo.getPositionCode());
+        List<SysPositiontRoleRef> curPosRoleList = iSysPositiontRoleRefService.getCurRoleList(sysPosition.getPositionCode());
         boolean isExists = false;
 
         //职位角色
@@ -220,7 +221,7 @@ public class SysPositionController {
                     SysPositiontRoleRef sysPositiontRoleRef = new SysPositiontRoleRef();
                     sysPositiontRoleRef.setPositiontRoleRefId(posRoleRelId);
                     sysPositiontRoleRef.setRoleCode(ot.getRoleCode());
-                    sysPositiontRoleRef.setPositionCode(sysPositionVo.getPositionCode());
+                    sysPositiontRoleRef.setPositionCode(sysPosition.getPositionCode());
                     sysPositiontRoleRef.setCreateUser(sysPositionVo.getUserId());
                     sysPositiontRoleRef.setNotes(sysPositionVo.getNotes());
                     iSysPositiontRoleRefService.add(sysPositiontRoleRef);
@@ -279,9 +280,15 @@ public class SysPositionController {
         sysPositionService.add(sysPosition);
 
         List<SysRoleDTO> sysRoleDTOList = pos.getSysRoleDTOList();
+        List<SysRole> sysRoles = new ArrayList<>();
+        for(SysRoleDTO v:sysRoleDTOList){
+            Wrapper sysRolesWrapper = Condition.create()
+                    .eq("ROLE_ID",v.getRoleId()).eq("STATUS_CD","1000");
+            SysRole sr = sysRoleService.selectOne(sysRolesWrapper);
+            sysRoles.add(sr);
+        }
 
-
-        for(SysRoleDTO vo: sysRoleDTOList){
+        for(SysRole vo: sysRoles){
             Long posRoleRelId = iSysPositiontRoleRefService.getId();
             SysPositiontRoleRef sysPositiontRoleRef = new SysPositiontRoleRef();
             sysPositiontRoleRef.setPositiontRoleRefId(posRoleRelId);
