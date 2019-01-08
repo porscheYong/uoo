@@ -955,7 +955,7 @@ public class OrgController extends BaseController {
                     }
                 });
             }
-            if(expList!=null && expList.size()==0 && !StrUtil.isNullOrEmpty(o.getOrgMartCode())){
+            if((expList==null || expList.size()==0) && !StrUtil.isNullOrEmpty(o.getOrgMartCode())){
                 //删除营销属性
                 String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
                     @Override

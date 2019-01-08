@@ -6,21 +6,24 @@ var isCheckedOrg = 0;
 
 var settingA = {
     data: {
-    key: {
-        isParent: "parent",
+        key: {
+            isParent: "parent",
+        },
+        simpleData: {
+            enable:true,
+            idKey: "id",
+            pIdKey: "pid",
+            rootPId: ""
+        }
     },
-    simpleData: {
-        enable:true,
-        idKey: "id",
-        pIdKey: "pid",
-        rootPId: ""
-    }
-},
     view: {
         selectedMulti: false,
         showLine: false,
         showIcon: false,
         dblClickExpand: false
+    },
+    callback: {
+        onClick: onNodeClick
     }
 };
 
@@ -178,7 +181,7 @@ function initRestructOrgRelTree (orgId) {        //初始化树
         var url = "list.html?id=" + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + data[0].pid + "&name=" + encodeURI(data[0].name);
         zTree.expandAll(true);
         zTree.selectNode(node);
-        $('#businessFrame').attr("src",url);
+        $('.curSelectedNode').trigger('click');
     }, function (err) {
 
     })

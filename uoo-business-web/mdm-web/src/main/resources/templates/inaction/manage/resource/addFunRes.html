@@ -16,6 +16,8 @@
     <link href="/vendors/datatable/datatables.css" rel="stylesheet">
     <!-- lulu ui -->
     <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+    <!-- toastr -->
+    <link href="/vendors/toastr/toastr.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
@@ -48,8 +50,9 @@
             <div class="row" style="margin-bottom: 10px;margin-left: 25%;">
                 <div class="col-md-8 col-sm-8 col-xs-8">
                     <div class="form-item" style="width: 100%">
-                        <label for="funName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">功能名称</label>
-                        <input id="funName" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                        <label for="funcName" class="col-md-6 col-sm-6 col-xs-6" style="padding-right: 20px;
+                                line-height: 40px;text-align: right;width: 24%;margin-left: -1%;">功能名称</label>
+                        <input id="funcName" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
                                 size="40" value="" autocomplete="off">
                     </div>
                 </div>
@@ -58,9 +61,10 @@
             <div class="row" style="margin-bottom: 10px;margin-left: 25%;">
                 <div class="col-md-8 col-sm-8 col-xs-8">
                     <div class="form-item" style="width: 100%">
-                        <label for="funNum" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">功能编码</label>
-                        <input id="funNum" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" value="122112" autocomplete="off" disabled>
+                        <label for="funcCode" class="col-md-6 col-sm-6 col-xs-6" style="padding-right: 20px;
+                                line-height: 40px;text-align: right;width: 24%;margin-left: -1%;">功能编码</label>
+                        <input id="funcCode" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                size="40" value="" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -68,9 +72,10 @@
             <div class="row" style="margin-bottom: 10px;margin-left: 25%;">
                 <div class="col-md-8 col-sm-8 col-xs-8">
                     <div class="form-item" style="width: 100%">
-                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">功能API</label>
-                        <input type="tel" id="psnTel" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" name="tel" value="" autocomplete="off">
+                        <label for="funcApi" class="col-md-6 col-sm-6 col-xs-6" style="padding-right: 20px;
+                                line-height: 40px;text-align: right;width: 24%;margin-left: -1%;">功能API</label>
+                        <input id="funcApi" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                size="40" value="" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -78,11 +83,11 @@
             <div class="row" style="margin-bottom: 10px;margin-left: 25%;">
                 <div class="col-md-8 col-sm-8 col-xs-8">
                     <div class="form-item" style="width: 100%">
-                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
-                        <select  class="col-md-8 col-sm-8 col-xs-8" id="select">
-                            <option></option>
-                            <option>有效</option>
-                            <option>无效</option>
+                        <label for="statusCd" class="col-md-6 col-sm-6 col-xs-6" style="padding-right: 20px;
+                                line-height: 40px;text-align: right;width: 24%;margin-left: -1%;">状态</label>
+                        <select  class="col-md-8 col-sm-8 col-xs-8" id="statusCd">
+                            <option value="1000">有效</option>
+                            <option value="1100">无效</option>
                         </select>
                     </div>
                 </div>
@@ -90,8 +95,8 @@
 
             <div class="row" style="margin-bottom: 10px;">
                 <div style="margin-left:39%;margin-top:4%;">
-                    <button class="ui-button ui-button-primary">保存</button>
-                    <button class="ui-button ui-button-cancel" onclick="cancel()" style="margin-left: 10px;">取消</button>
+                    <button class="ui-button ui-button-primary" onclick="addRes()">保存</button>
+                    <button class="ui-button ui-button-cancel" onclick="backToList()" style="margin-left: 10px;">取消</button>
                 </div>
             </div>
         </div>
@@ -104,6 +109,8 @@
     <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
     <!-- layer -->
     <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+    <!-- toastr -->
+    <script type="text/javascript" src="/vendors/toastr/toastr.js"></script>
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
     <!-- jquery datatable -->

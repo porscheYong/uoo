@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -64,5 +65,10 @@ public class SysDeptPositionRefServiceImpl extends ServiceImpl<SysDeptPositionRe
         sysDeptPositionRef.setUpdateUser(StrUtil.isNullOrEmpty(sysDeptPositionRef.getUpdateUser())?0L:sysDeptPositionRef.getUpdateUser());
         sysDeptPositionRef.setStatusDate(new Date());
         updateById(sysDeptPositionRef);
+    }
+
+    @Override
+    public List<SysDeptPositionRef> getDeptPositionRelList(String orgCode){
+        return baseMapper.getDeptPositionRelList(orgCode);
     }
 }

@@ -3,6 +3,7 @@ package cn.ffcs.uoo.system.service;
 import cn.ffcs.uoo.system.entity.SysOrganization;
 import cn.ffcs.uoo.system.entity.SysOrganization;
 import cn.ffcs.uoo.system.entity.SysPosition;
+import cn.ffcs.uoo.system.entity.SysUser;
 import cn.ffcs.uoo.system.vo.SysOrganizationVo;
 import cn.ffcs.uoo.system.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -78,5 +79,10 @@ public interface SysOrganizationService extends IService<SysOrganization> {
 
 
     public SysOrganizationVo getOrg(String orgCode);
+
+
+    public int getOrgUserCount(String orgCode);
+
+    public int getOrgRoleCount(String orgCode);
 
 }

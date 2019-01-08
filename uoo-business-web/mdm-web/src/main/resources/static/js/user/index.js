@@ -125,10 +125,6 @@ function openTreeById (sId, id) {
     var tId = 'userTree_' + id;
     var sId = 'userTree_' + sId;
     var orgTree = $.fn.zTree.getZTreeObj("userTree");
-    var selectNode = orgTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-    if (!selectNode.open) {
-        orgTree.expandNode(selectNode, true);
-    }
     var node = orgTree.getNodeByTId(tId);
     orgTree.selectNode(node);
     $('.curSelectedNode').trigger('click');

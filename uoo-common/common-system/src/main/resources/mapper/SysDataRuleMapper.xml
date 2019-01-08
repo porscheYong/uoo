@@ -49,4 +49,20 @@
                  #{item}       
          </foreach>
     </select>
+
+
+
+    <select id="getDataRulePage" resultType="cn.ffcs.uoo.system.vo.SysDataRuleVo">
+        select a.data_rule_id dataRuleId,
+       a.tab_name tabName,
+       a.col_name colName,
+       a.rule_operator ruleOperator,
+       a.col_value colValue,
+       a.status_cd statusCd
+  from sys_data_rule a
+ where a.status_cd = '1000'
+        <if test="search!=null and search!=''">
+            and fileName like '%'||#{search}||'%'
+        </if>
+    </select>
 </mapper>

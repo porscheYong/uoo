@@ -37,6 +37,9 @@
             margin-left: 0px !important;
             margin-right: 0px !important;
         }
+        #parentMenuName{
+            max-height: 230px !important;
+        }
     </style>
   </head>
 
@@ -49,17 +52,17 @@
             <div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单名称</label>
-                        <input type="tel" id="psnTel" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                        <label for="menuName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单名称</label>
+                        <input id="menuName" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
                                 size="40" name="tel" value="" autocomplete="off">
                     </div>
                 </div>
 
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单编码</label>
-                        <input type="tel" id="psnTel" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" name="tel" value="112122" autocomplete="off" disabled>
+                        <label for="menuCode" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单编码</label>
+                        <input id="menuCode" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                size="40" name="tel" value="" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -67,20 +70,19 @@
             <div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单级别</label>
-                        <select class="col-md-8 col-sm-8 col-xs-8" id="select">
-                            <option></option>
-                            <option>一级</option>
-                            <option>二级</option>
+                        <label for="menuLevel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单级别</label>
+                        <select class="col-md-8 col-sm-8 col-xs-8" id="menuLevel">
+                            <!-- <option value="1">1</option>
+                            <option value="2">2</option> -->
                         </select>
                     </div>
                 </div>
 
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">上级菜单名称</label>
-                        <select  class="col-md-8 col-sm-8 col-xs-8" id="select">
-                            <option></option>
+                        <label for="parentMenuName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">上级菜单名称</label>
+                        <select  class="col-md-8 col-sm-8 col-xs-8" id="parentMenuName">
+                            <!-- <option></option> -->
                         </select>
                     </div>
                 </div>
@@ -89,19 +91,18 @@
             <div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单排序</label>
-                        <input type="tel" id="psnTel" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                        <label for="menuSort" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单排序</label>
+                        <input id="menuSort" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
                                 size="40" name="tel" value="" autocomplete="off">
                     </div>
                 </div>
 
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
-                        <select  class="col-md-8 col-sm-8 col-xs-8" id="select">
-                            <option></option>
-                            <option>有效</option>
-                            <option>无效</option>
+                        <label for="statusCd" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
+                        <select class="col-md-8 col-sm-8 col-xs-8" id="statusCd">
+                            <option value="1000">有效</option>
+                            <option value="1100">无效</option>
                         </select>
                     </div>
                 </div>
@@ -110,8 +111,8 @@
             <div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单URL</label>
-                        <input type="tel" id="psnTel" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                        <label for="menuUrl" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单URL</label>
+                        <input id="menuUrl" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
                                 size="40" name="tel" value="" autocomplete="off">
                     </div>
                 </div>
@@ -119,8 +120,8 @@
 
             <div class="row" style="margin-bottom: 10px;">
                 <div style="margin-left:38%;margin-top:4%;">
-                    <button class="ui-button ui-button-primary">保存</button>
-                    <button class="ui-button ui-button-cancel" onclick="cancel()" style="margin-left: 10px;">取消</button>
+                    <button class="ui-button ui-button-primary" onclick="addRes()">保存</button>
+                    <button class="ui-button ui-button-cancel" onclick="backToList()" style="margin-left: 10px;">取消</button>
                 </div>
             </div>
         </div>
@@ -141,7 +142,7 @@
     <script type="text/javascript" src="/js/manage/resource/addMenuRes.js"></script>
     <script type="text/javascript">
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-            $('select').selectMatch();
+            $('#statusCd').selectMatch();
         })
     </script>
   </body>

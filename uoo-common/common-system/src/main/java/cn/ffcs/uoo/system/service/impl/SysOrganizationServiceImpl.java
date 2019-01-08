@@ -3,6 +3,7 @@ package cn.ffcs.uoo.system.service.impl;
 
 import cn.ffcs.uoo.system.dao.SysOrganizationMapper;
 import cn.ffcs.uoo.system.entity.SysOrganization;
+import cn.ffcs.uoo.system.entity.SysUser;
 import cn.ffcs.uoo.system.service.SysOrganizationService;
 import cn.ffcs.uoo.system.service.SysPositionService;
 import cn.ffcs.uoo.system.util.StrUtil;
@@ -90,13 +91,13 @@ public class SysOrganizationServiceImpl extends ServiceImpl<SysOrganizationMappe
             vos = baseMapper.getTreeRoot();
         }else{
             vos = baseMapper.getTreeChild(id);
-            if(vos!=null && vos.size()>0){
-                for(TreeNodeVo vo : vos){
-                    if(isLeaf(vo.getId())){
-                        vo.setParent(true);
-                    }else{
-                        vo.setParent(false);
-                    }
+        }
+        if(vos!=null && vos.size()>0){
+            for(TreeNodeVo vo : vos){
+                if(isLeaf(vo.getId())){
+                    vo.setParent(true);
+                }else{
+                    vo.setParent(false);
                 }
             }
         }
@@ -119,6 +120,15 @@ public class SysOrganizationServiceImpl extends ServiceImpl<SysOrganizationMappe
     public List<TreeNodeVo> selectOrgTree(){
         List<TreeNodeVo> vos = new ArrayList<>();
         vos = baseMapper.selectOrgTree();
+        if(vos!=null && vos.size()>0){
+            for(TreeNodeVo vo : vos){
+                if(isLeaf(vo.getId())){
+                    vo.setParent(true);
+                }else{
+                    vo.setParent(false);
+                }
+            }
+        }
         return vos;
     }
 
@@ -166,5 +176,14 @@ public class SysOrganizationServiceImpl extends ServiceImpl<SysOrganizationMappe
             vo.setSysPositionVos(list);
         }
         return vo;
+    }
+
+    @Override
+    public int getOrgUserCount(String orgCode){
+        return baseMapper.getOrgUserCount(orgCode);
+    }
+    @Override
+    public int getOrgRoleCount(String orgCode){
+        return baseMapper.getOrgRoleCount(orgCode);
     }
 }

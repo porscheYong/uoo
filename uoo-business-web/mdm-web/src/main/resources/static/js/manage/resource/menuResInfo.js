@@ -1,4 +1,144 @@
-function cancel(){
+var id = getQueryString('id');
+var levelCount = getQueryString('levelCount');
+var toastr = window.top.toastr;
+var menuData;
+var levelId;
+var curParMenu; //当前上级菜单
+var curMenuLevel; //当前菜单级别
+
+//获取选择的菜单资源信息
+function getResInfo(){
+    $http.get('/system/sysMenu/get/'+id, {  
+    }, function (data) {
+        initMenuInfo(data);
+    }, function (err) {
+        toastr.error("获取信息失败！");
+    })
+}
+
+//获取所有菜单资源信息
+function getParentMenu(){
+    $http.get('/system/sysMenu/listPage', {  
+        pageNo : 1,
+        pageSize : 100,
+        keyWord : ""
+    }, function (data) {
+        menuData = data.records;
+        getResInfo();
+    }, function (err) {
+        toastr.error("获取信息失败！");
+    })
+}
+
+function initMenuInfo(result){
+    $("#menuName").val(result.menuName);
+    $("#menuCode").val(result.menuCode);
+    $("#menuSort").val(result.menuSort);
+    $("#menuUrl").val(result.menuUrl);
+    curParMenu = result.parentMenuName;
+    curMenuLevel = result.menuLevel;
+    initParentMenu(menuData,curMenuLevel);
+    initMenuLevel();
+    // $("#menuLevel").append("<option value='" + result.menuLevel + "' selected>" + result.menuLevel +"</option>");
+    // if(result.parentMenuName != null){
+    //     $("#parentMenuName").append("<option value='" + result.parentMenuName + "' selected>" + result.parentMenuName +"</option>");
+    // }else{
+    //     $("#parentMenuName").append("<option value='' selected>无上级菜单</option>");
+    // }
+    // seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+    //     $('#menuLevel').selectMatch();
+    //     $('#parentMenuName').selectMatch();
+    //     $('#statusCd').selectMatch();
+    // })
+}
+
+//初始化上级菜单
+function initParentMenu(result,level){
+    var selected = "";
+    $("#parentMenuName").empty();
+    level -= 1;
+    for(var i=0;i<result.length;i++){
+        if(level != 0){
+            if(result[i].menuLevel === level){
+                if(result[i].menuName == curParMenu){
+                    selected = "selected";
+                }
+                $("#parentMenuName").append("<option value='" + result[i].menuCode + "'"+ selected +">" + result[i].menuName +"</option>");
+            }
+        }else{
+            $("#parentMenuName").append("<option value='' selected>无上级菜单</option>");
+            break;
+        }
+        selected = "";
+    }
+    seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $('#parentMenuName').selectMatch();
+    })
+}
+
+//初始化菜单级别
+function initMenuLevel(){
+    var selected = "";
+    for(var i=1;i<=levelCount;i++){
+        if(curMenuLevel === i){
+            selected = "selected";
+        }
+        $("#menuLevel").append("<option value='" + i + "'"+selected+">" + i +"</option>");
+        selected = "";
+    }
+    seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $('#menuLevel').selectMatch();
+    })
+}
+
+$('#menuLevel').unbind('change').bind('change', function (event) {
+    levelId = event.target.options[event.target.options.selectedIndex].value;
+    initParentMenu(menuData,levelId);
+})
+
+//更新
+function updateRes(){
+    $http.post('/system/update', JSON.stringify({   
+        menuName : $("#menuName").val(),
+        menuCode : $("#menuCode").val(),
+        menuUrl : $("#menuUrl").val(),
+        menuLevel : $("#menuLevel").val(),
+        parentMenuCode : $("#parentMenuName").val(),
+        statusCd : $("#statusCd").val(),
+        menuSort : $("#menuSort").val(),
+        menuId : id
+    }), function (message) {
+        backToList();
+        toastr.success("保存成功！");
+    }, function (err) {
+        // toastr.error("保存失败！");
+    })
+}
+
+//删除
+function deleteRes(){
+    parent.layer.confirm('是否删除该菜单资源？', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+        }, function(index, layero){
+            $http.post('/system/sysMenu/delete', JSON.stringify({  
+                menuId : id
+            }), function (message) {
+                parent.layer.close(index);
+                backToList();
+                toastr.success("删除成功！");
+            }, function (err) {
+                parent.layer.close(index);
+                toastr.error("删除失败！");
+            })
+        }, function(){
+      
+        });
+}
+
+//返回
+function backToList(){
     window.location.href = "menuResList.html";
 }
 
@@ -48,3 +188,6 @@ $('#myTabs a').click(function (e) {
     $(this).tab('show');
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
 })
+
+getParentMenu();
+// getResInfo();

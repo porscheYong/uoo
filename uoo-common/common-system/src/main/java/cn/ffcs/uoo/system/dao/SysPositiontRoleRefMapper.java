@@ -2,6 +2,7 @@ package cn.ffcs.uoo.system.dao;
 
 import cn.ffcs.uoo.system.entity.SysPositiontRoleRef;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -12,5 +13,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @since 2018-12-20
  */
 public interface SysPositiontRoleRefMapper extends BaseMapper<SysPositiontRoleRef> {
-    
+    public Long getId();
 }

@@ -3,8 +3,10 @@ package cn.ffcs.uoo.system.dao;
 import cn.ffcs.uoo.system.entity.SysPosition;
 import cn.ffcs.uoo.system.entity.SysPosition;
 import cn.ffcs.uoo.system.vo.SysPositionVo;
+import cn.ffcs.uoo.system.vo.SysRoleDTO;
 import cn.ffcs.uoo.system.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -21,12 +23,28 @@ public interface SysPositionMapper extends BaseMapper<SysPosition> {
 
     public Long getId();
 
-    public List<TreeNodeVo> getPositionTree(@Param("positionId") String positionId);
+    public int isleaf(@Param("id")String id);
 
-    public List<SysPositionVo> getPositionRel(@Param("positionId")String positionId,@Param("isSearchlower") String isSearchlower);
+    public List<TreeNodeVo> getTreeRoot();
+
+    public List<TreeNodeVo> getTreeChild(@Param("positionId") String positionId);
+
+    public List<TreeNodeVo> selectPositionTree();
+
+    public List<SysPositionVo> getPositionRelPage(Pagination page, @Param("vo")SysPositionVo vo);
 
     public String getRolesByPositionId(@Param("positionId")String positionId);
 
+    public List<SysRoleDTO> getPositionRoles(@Param("positionCode")String positionCode);
+
+    public SysPositionVo getPosition(@Param("positionId")String positionId);
+
     public List<SysPositionVo> getSysOrgPosition(@Param("orgCode")String orgCode);
+
+    public int getPositionUserRefCount(@Param("positionCode") String positionCode);
+
+    public int getPositionDepRefCount(@Param("positionCode")String positionCode);
+
+    public int getPositionRoleRefCount(@Param("positionCode")String positionCode);
 
 }

@@ -1,11 +1,63 @@
-// function editInfo(){
-//     $("#funResInfo").css("display","none");
-//     $("#editInfo").css("display","block");
-// }
+var id = getQueryString('id');
+var toastr = window.top.toastr;
 
-function cancel(){
-    // $("#funResInfo").css("display","block");
-    // $("#editInfo").css("display","none");
+function getResInfo(){  
+    $http.get('/system/sysFunction/get', {  
+        id : id
+    }, function (data) {
+        initFuncInfo(data);
+    }, function (err) {
+        toastr.error("获取信息失败！");
+    })
+}
+
+ //初始化功能资源信息
+function initFuncInfo(result){     
+    $("#funcName").val(result.funcName);
+    $("#funcCode").val(result.funcCode);
+    $("#funcApi").val(result.funcApi);
+    $("#statusCd").val(result.statusCd);
+}
+
+//更新功能资源信息
+function updateRes(){
+    $http.post('/system/sysFunction/update', JSON.stringify({  
+        funcName : $("#funcName").val(),
+        funcCode : $("#funcCode").val(),
+        funcApi : $("#funcApi").val(),
+        statusCd : $("#statusCd").val(),
+        funcId : id
+    }), function (message) {
+        backToList();
+        toastr.success("保存成功！");
+    }, function (err) {
+        // toastr.error("保存失败！");
+    })
+}
+
+//删除功能资源信息
+function deleteRes(){
+    parent.layer.confirm('是否删除该功能资源？', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+        }, function(index, layero){
+            $http.post('/system/sysFunction/delete', JSON.stringify({  
+                funcId : id
+            }), function (message) {
+                parent.layer.close(index);
+                backToList();
+                toastr.success("删除成功！");
+            }, function (err) {
+                parent.layer.close(index);
+                toastr.error("删除失败！");
+            })
+        }, function(){
+      
+        });
+}
+
+function backToList(){
     window.location.href = "funResList.html";
 }
 
@@ -55,3 +107,6 @@ $('#myTabs a').click(function (e) {
     $(this).tab('show');
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
 })
+
+getResInfo();
+

@@ -44,12 +44,12 @@ public class SysOperationLog extends Model<SysOperationLog> {
      * 菜单
      */
     @TableField("MENU_CODE")
-    private Long menuCode;
+    private String menuCode;
     /**
      * 功能
      */
     @TableField("FUNC_CODE")
-    private Long funcCode;
+    private String funcCode;
     /**
      * 表单数据
      */
@@ -109,19 +109,19 @@ public class SysOperationLog extends Model<SysOperationLog> {
         this.userCode = userCode;
     }
 
-    public Long getMenuCode() {
+    public String getMenuCode() {
         return menuCode;
     }
 
-    public void setMenuCode(Long menuCode) {
+    public void setMenuCode(String menuCode) {
         this.menuCode = menuCode;
     }
 
-    public Long getFuncCode() {
+    public String getFuncCode() {
         return funcCode;
     }
 
-    public void setFuncCode(Long funcCode) {
+    public void setFuncCode(String funcCode) {
         this.funcCode = funcCode;
     }
 

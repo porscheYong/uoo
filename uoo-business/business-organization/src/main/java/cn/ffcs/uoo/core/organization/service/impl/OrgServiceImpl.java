@@ -155,6 +155,9 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         if(org.getOrgTypeList() == null || org.getOrgTypeList().size() < 0){
             return "组织类别不能为空";
         }
+        if(StrUtil.isNullOrEmpty(org.getAreaCodeId())){
+            return "组织区号不能为空";
+        }
 //        if(org.getPositionList() == null || org.getPositionList().size() <0){
 //            return "组织岗位不能为空";
 //        }

@@ -41,7 +41,9 @@ public class SysOrganizationVo extends BaseVo {
     /**
      * 上级组织标识
      */
-    private Long parentOrgCode;
+    private String parentOrgCode;
+
+    private String parentOrgName;
     /**
      * 引用电信管理区域
      */
@@ -96,6 +98,25 @@ public class SysOrganizationVo extends BaseVo {
     private Long userId;
 
     private String accout;
+
+    private String isSearchlower;
+
+
+    public String getParentOrgName() {
+        return parentOrgName;
+    }
+
+    public void setParentOrgName(String parentOrgName) {
+        this.parentOrgName = parentOrgName;
+    }
+
+    public String getIsSearchlower() {
+        return isSearchlower;
+    }
+
+    public void setIsSearchlower(String isSearchlower) {
+        this.isSearchlower = isSearchlower;
+    }
 
     private List<SysPositionVo> sysPositionVos;
 
@@ -171,11 +192,11 @@ public class SysOrganizationVo extends BaseVo {
         this.orgCode = orgCode;
     }
 
-    public Long getParentOrgCode() {
+    public String getParentOrgCode() {
         return parentOrgCode;
     }
 
-    public void setParentOrgCode(Long parentOrgCode) {
+    public void setParentOrgCode(String parentOrgCode) {
         this.parentOrgCode = parentOrgCode;
     }
 

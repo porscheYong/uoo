@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>编辑</title>
+
+        <!-- Bootstrap -->
+        <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Font Awesome -->
+        <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <!-- jquery datatable -->
+        <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+        <!-- lulu ui -->
+        <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+        <!-- Custom Theme Style -->
+        <link href="/css/reset.css" rel="stylesheet">
+        <link href="/css/custom.css" rel="stylesheet">
+
+        <!--[if lt IE 9]>
+        <script src="/js/core/html5shiv.js"></script>
+        <script src="/js/core/respond.js"></script>
+        <script src="/js/core/excanvas.js"></script>
+        <![endif]-->
+        <style type="text/css">
+            table.dataTable {
+                table-layout: fixed;
+            }
+
+            th {
+                text-align: center;
+                white-space: nowrap;
+            }
+            table.dataTable tbody td {
+                text-align: center;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .row {
+                margin-bottom: 10px;
+            }
+            .row .item {
+                display: inline-block;
+                padding-right: 25px;
+                width: 100%;
+            }
+            .row .item .item-label {
+                line-height: 20px;
+                text-align: right;
+            }
+            .row .item span {
+                line-height: 20px;
+            }
+        </style>
+    </head>
+
+    <body style="background: #fff;">
+        <div>
+            <div>
+                <a class="BoardTitle Back" href="javascript:history.go(-1);"  >返回</a>
+            </div>
+            <div class="board-title">
+                    <span class="name ft18 orgName"></span
+                    ><div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;"></div>
+            </div>
+            <div class="nav-tabs-brief" style="overflow-x: hidden;">
+                <ul class="nav nav-tabs tab-title" role="tablist" id="myTabs">
+                    <li role="presentation" class="active col-md-2 col-sm-2 col-xs-6"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">组织信息</a>
+                    </li>
+                    <li role="presentation" class="col-md-2 col-sm-2 col-xs-6"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">更新记录</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_content1">
+                        <div style="padding: 10px;" id="orgEditForm">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <div class="item">
+                                        <label class="item-label col-md-4 col-sm-4 col-xs-4">组织名称:</label>
+                                        <span id="orgName" class="col-md-8 col-sm-8 col-xs-8"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <div class="item">
+                                        <label class="item-label col-md-4 col-sm-4 col-xs-4">组织编码:</label>
+                                        <span id="orgCode" class="col-md-8 col-sm-8 col-xs-8"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <div class="item">
+                                        <label class="item-label col-md-4 col-sm-4 col-xs-4">状态:</label>
+                                        <span id="statusCd"  class="col-md-8 col-sm-8 col-xs-8"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <div class="item">
+                                        <label class="item-label col-md-4 col-sm-4 col-xs-4">排序:</label>
+                                        <span id="sort" class="col-md-8 col-sm-8 col-xs-8"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item">
+                                        <label class="item-label col-md-2 col-sm-2 col-sm-2" style="width: 16%; line-height: 40px;">上级组织:</label>
+                                        <div id="parentOrg" class="col-md-10 col-sm-10 col-xs-10" style="width: 84%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item">
+                                        <label class="item-label col-md-2 col-sm-2 col-sm-2" style="width: 16%; line-height: 40px;">管理区域:</label>
+                                        <div id="location" class="col-md-10 col-sm-10 col-xs-10" style="width: 84%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item">
+                                        <label class="item-label col-md-2 col-sm-2 col-sm-2" style="line-height: 40px; width: 16%;">组织职位;</label>
+                                        <div id="post" class="col-md-10 col-sm-10 col-xs-10" style="width: 84%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab_content2">
+                        <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden;">
+                            <table id="orgRelTable" class="stripe" width="100%"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- jQuery -->
+        <script type="text/javascript" src="/js/core/jquery.js"></script>
+        <!-- Bootstrap -->
+        <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+        <!-- jquery datatable -->
+        <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+        <!-- init -->
+        <script type="text/javascript" src="/js/init.js"></script>
+        <script type="text/javascript" src="/js/manage/organization/info.js"></script>
+    </body>
+</html>
