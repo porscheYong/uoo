@@ -55,5 +55,10 @@ public interface SysPositionService extends IService<SysPosition> {
 
     public List<SysPositionVo> getSysOrgPosition(String orgCode);
 
-//    public Page<SysPositionVo> selectFuzzyPositionPage(SysPositionVo vo);
+
+    public int getPositionUserRefCount(String positionCode);
+
+    public int getPositionDepRefCount(String positionCode);
+
+    public int getPositionRoleRefCount(String positionCode);
 }

@@ -66,4 +66,6 @@ public class SysPositiontRoleRefServiceImpl extends ServiceImpl<SysPositiontRole
         sysPositiontRoleRef.setStatusDate(new Date());
         updateById(sysPositiontRoleRef);
     }
+
+
 }

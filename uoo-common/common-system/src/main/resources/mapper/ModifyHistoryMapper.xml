@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.system.dao.ModifyHistoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.organization.entity.ModifyHistory">
+        <id column="MODIFY_ID" property="modifyId" />
+        <result column="TAB_ID" property="tabId" />
+        <result column="RECORD_ID" property="recordId" />
+        <result column="OPERATE_TYPE" property="operateType" />
+        <result column="BATCH_NUMBER" property="batchNumber" />
+        <result column="NOTE" property="note" />
+        <result column="FIELD_NAME" property="fieldName" />
+        <result column="FIELD_VALUE" property="fieldValue" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        MODIFY_ID, TAB_ID, RECORD_ID, OPERATE_TYPE, BATCH_NUMBER, NOTE, FIELD_NAME, FIELD_VALUE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+    <select id="getId" resultType="java.lang.Long">
+        SELECT SEQ_MODIFY_HISTORY_ID.nextval FROM dual
+    </select>
+
+    <select id="getCommonTableId"  resultType="java.lang.Long">
+        select a.tab_id from SYS_TABLE a where a.status_cd='1000' and a.tab_name=#{tableName}
+    </select>
+
+    <select id="getSeqBatchNumber" resultType="java.lang.Long">
+        SELECT SEQ_BATCH_NUMBER.NEXTVAL FROM DUAL
+    </select>
+
+</mapper>

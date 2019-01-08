@@ -314,6 +314,49 @@ public class SysPositionController {
         return ret;
     }
 
+    @ApiOperation(value = "删除职位", notes = "删除职位")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "删除职位", key = "deletePosition")
+    @RequestMapping(value = "/deletePosition", method = RequestMethod.POST)
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<String> deletePosition(@RequestBody SysPositionVo pos){
+        ResponseResult<String> ret = new ResponseResult<String>();
+        if(StrUtil.isNullOrEmpty(pos.getPositionId())){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("职位标识不能为空");
+            return ret;
+        }
+        Wrapper positionRolesWrapper = Condition.create()
+                .eq("POSITION_ID",pos.getPositionId())
+                .eq("STATUS_CD","1000");
+        SysPosition vo = sysPositionService.selectOne(positionRolesWrapper);
+        if(vo!=null){
+            int num = 0;
+            num = sysPositionService.getPositionUserRefCount(vo.getPositionCode());
+            if(num>0){
+                ret.setState(ResponseResult.STATE_ERROR);
+                ret.setMessage("职位人员关系存在，不能删除");
+                return ret;
+            }
+            num = sysPositionService.getPositionDepRefCount(vo.getPositionCode());
+            if(num>0){
+                ret.setState(ResponseResult.STATE_ERROR);
+                ret.setMessage("职位组织关系存在，不能删除");
+                return ret;
+            }
+            num = sysPositionService.getPositionRoleRefCount(vo.getPositionCode());
+            if(num>0){
+                ret.setState(ResponseResult.STATE_ERROR);
+                ret.setMessage("职位角色关系存在，不能删除");
+                return ret;
+            }
+        }
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setMessage("成功");
+        return ret;
+    }
+
 
 }
 

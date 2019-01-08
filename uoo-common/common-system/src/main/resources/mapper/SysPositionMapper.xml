@@ -175,6 +175,16 @@
     </select>
 
 
+    <select id="getPositionUserRefCount" resultType="java.lang.Integer">
+        select count(1) from SYS_USER_POSITION_REF a where a.status_cd='1000' and a.position_code=#{positionCode}
+    </select>
 
+    <select id="getPositionDepRefCount" resultType="java.lang.Integer">
+        select count(1) from SYS_DEPT_POSITION_REF a where a.status_cd='1000' and a.position_code=#{positionCode}
+    </select>
+
+    <select id="getPositionRoleRefCount" resultType="java.lang.Integer">
+        select count(1) from SYS_POSITIONT_ROLE_REF a where a.status_cd='1000' and a.position_code=#{positionCode}
+    </select>
 
 </mapper>
