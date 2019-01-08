@@ -129,7 +129,7 @@ function boxClick(){            //点击复选框
 }
 
 $("#addBtn").on('click',function(){
-    window.location.href = "add.html";
+    window.location.href = "add.html?posName=" + posName + "&posFullName=" + posFullName + "&positionId=" + positionId;
 })
 
 $("#infoBtn").on('click',function(){

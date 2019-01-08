@@ -1,5 +1,5 @@
 var posFrame = parent.window['posManage'];
-var locationList = posFrame.locationList;
+var pPosList = posFrame.pPosList;
 var checkNode = []; //选中区域
 
 function locationBeforeClick (treeId, treeNode, clickFlag) {
@@ -31,7 +31,9 @@ function getLocation() {
             radioType: 'all'
         }
     };
-    $http.get('/region/politicalLocation/getTreePoliticalLocation', {}, function (data) {
+    $http.get('/sysPosition/getPositionTree', {
+        isSync:true
+    }, function (data) {
         $.fn.zTree.init($("#locationTree"), treeSetting, data);
         autoCheck();
     }, function (err) {
@@ -52,9 +54,9 @@ function onlocationCheck (e, treeId, treeNode) {
 
 function autoCheck () {
     var zTree = $.fn.zTree.getZTreeObj("locationTree");
-    if(locationList[0].id){
-        for (var i = 0; i < locationList.length; i++) {
-            var id = locationList[i].id || locationList[i].locId;
+    if(pPosList[0].id){
+        for (var i = 0; i < pPosList.length; i++) {
+            var id = pPosList[i].id || pPosList[i].locId;
             var node = zTree.getNodeByTId("orgPostTree_" + id);
             zTree.checkNode(node, true);
             zTree.expandNode(node, true, true, true);
