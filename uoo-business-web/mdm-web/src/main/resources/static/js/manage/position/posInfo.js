@@ -46,14 +46,13 @@ function initPosInfo(result){
     isInputNull("supPos",result.pPositionName);
     isInputNull("sort",result.sortNum);
     isInputNull("notes",result.notes);
-    locationList = [{"id":result.regionNbr,"name":result.regionName}];
-    pPosList = [{"id":result.pPositionId,"name":result.pPositionName}];
-
     $('#role').addTag(roleList);
     if(result.regionName){
+        locationList = [{"id":result.regionNbr,"name":result.regionName}];
         $('#location').addTag(locationList);
     }
     if(result.pPositionId){
+        pPosList = [{"id":result.pPositionId,"name":result.pPositionName}];
         $('#supPos').addTag(pPosList);
     }
 }
@@ -173,7 +172,7 @@ function openLocationDialog() {
         yes: function(index, layero){
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
-            checkNode = iframeWin.checkNode;
+            var checkNode = iframeWin.checkNode;
             $('#location').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
             locationList = checkNode;
@@ -198,7 +197,7 @@ function openParPosDialog() {
         yes: function(index, layero){
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
-            checkNode = iframeWin.checkNode;
+            var checkNode = iframeWin.checkNode;
             if(checkNode[0].id == id){
                 toastr.error("不能选择当前职位为上级职位!");
             }else{
@@ -216,15 +215,21 @@ function openParPosDialog() {
 //更新职位
 function updatePosition(){
     var roleIdList = [];
+    if(locationList.length != 0){
+        var lc = locationList[0].id;
+    }
+    if(pPosList.length != 0){
+        var pPos = pPosList[0].id;
+    }
 
     for(var i=0;i<roleList.length;i++){
-        roleIdList.push({"roleId":roleList[i].roleId});
+        roleIdList.push({"roleId":roleList[i].roleId || roleList[i].id});
     }
     $http.post('/sysPosition/updatePosition', JSON.stringify({  
         notes : $("#notes").val(),
-        pPositionId : pPosList[0].id,
+        pPositionId : pPos,
         positionId : id,
-        regionNbr : locationList[0].id,
+        regionNbr : lc,
         statusCd : $("#state").val(),
         sortNum : $("#sort").val(),
         sysRoleDTOList : roleIdList,
@@ -232,10 +237,34 @@ function updatePosition(){
         positionCode : $("#posNum").val()
     }), function (message) {
         backToList();
+        parent.initPosRelTree();
         toastr.success("保存成功！");
     }, function (err) {
         // toastr.error("保存失败！");
     })
+}
+
+//删除职位
+function deletePosition(){ 
+    parent.layer.confirm('是否删除该职位？', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+        }, function(index, layero){
+            $http.post('/sysPosition/deletePosition', JSON.stringify({  
+                positionId : id
+            }), function (message) {
+                backToList();
+                parent.initPosRelTree();
+                toastr.success("删除成功！");
+                parent.layer.close(index);
+            }, function (err) {
+                toastr.error("删除失败！");
+                parent.layer.close(index);
+            })
+        }, function(){
+      
+        });
 }
 
 $("#role_tagsinput").on('click',function(){

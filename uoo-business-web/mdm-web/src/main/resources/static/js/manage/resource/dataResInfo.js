@@ -1,4 +1,71 @@
-function cancel(){
+var id = getQueryString('id');
+var toastr = window.top.toastr;
+
+function getResInfo(){
+    $http.get('/system/sysDataRule/getDataRule', {  
+        id : id
+    }, function (data) {
+        initDataInfo(data);
+    }, function (err) {
+        toastr.error("获取信息失败！");
+    })
+}  
+
+//初始化数据资源
+function initDataInfo(result){
+    isNull("tabName",result.tabName);
+    isNull("colName",result.colName);
+    isNull("ruleOperator",result.ruleOperator);
+    isNull("colValue",result.colValue);
+}
+
+//判断是否为null
+function isNull(el,str){
+    if(str != null){
+        $("#"+el).val(str);
+    }
+}
+
+//更新文件资源信息
+function updateRes(){
+    $http.post('/system/sysDataRule/updateDataRule', JSON.stringify({  
+        tabName : $("#tabName").val(),
+        colName : $("#colName").val(),
+        ruleOperator : $("#ruleOperator").val(),
+        colValue : $("#colValue").val(),
+        statusCd : $("#statusCd").val(),
+        dataRuleId : id
+    }), function (message) {
+        backToList();
+        toastr.success("保存成功！");
+    }, function (err) {
+        // toastr.error("保存失败！");
+    })
+}
+
+//删除文件资源信息
+function deleteRes(){
+    parent.layer.confirm('是否删除该数据资源？', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+        }, function(index, layero){
+            $http.post('/system/sysDataRule/deleteDataRule', JSON.stringify({  
+                dataRuleId : id
+            }), function (message) {
+                backToList();
+                toastr.success("删除成功！");
+                parent.layer.close(index);
+            }, function (err) {
+                toastr.error("删除失败！");
+                parent.layer.close(index);
+            })
+        }, function(){
+      
+        });
+}
+
+function backToList(){
     window.location.href = "dataResList.html";
 }
 
@@ -48,3 +115,5 @@ $('#myTabs a').click(function (e) {
     $(this).tab('show');
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
 })
+
+getResInfo();
