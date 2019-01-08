@@ -16,8 +16,8 @@ import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 
 @FeignClient(value = "common-system",configuration = {FeignClientConfiguration.class},fallback = SysLoginLogClientHystrix.class)
 public interface SysLoginLogClient {
-    @GetMapping("/system/sysLoginLog/listPage")
-    public ResponseResult<Page<SysLoginLog>> listPage(@RequestParam(value = "pageNo") Integer pageNo, @RequestParam(value = "pageSize") Integer pageSize,
+    @GetMapping("/system/sysLoginLog/listAccoutLog")
+    public ResponseResult<Page<SysLoginLog>> listAccoutLog(@RequestParam(value = "pageNo") Integer pageNo, @RequestParam(value = "pageSize") Integer pageSize,
             @RequestParam(value="accout")String accout);
     @RequestMapping(value = "/system/sysLoginLog/add", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<Void> add(@RequestBody SysLoginLog sysLoginLog);

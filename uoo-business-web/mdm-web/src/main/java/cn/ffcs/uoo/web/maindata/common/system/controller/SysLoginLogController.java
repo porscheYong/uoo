@@ -45,10 +45,10 @@ public class SysLoginLogController {
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
-    @GetMapping("/listPage")
-    public ResponseResult<Page<SysLoginLog>> listPage(@RequestParam(value = "pageNo") Integer pageNo, @RequestParam(value = "pageSize") Integer pageSize,
+    @GetMapping("/listAccoutLog")
+    public ResponseResult<Page<SysLoginLog>> listAccoutLog(@RequestParam(value = "pageNo") Integer pageNo, @RequestParam(value = "pageSize") Integer pageSize,
             @RequestParam(value="accout")String accout){
-        return sysLoginLogClient.listPage(pageNo, pageSize, accout);
+        return sysLoginLogClient.listAccoutLog(pageNo, pageSize, accout);
     }
 
 }

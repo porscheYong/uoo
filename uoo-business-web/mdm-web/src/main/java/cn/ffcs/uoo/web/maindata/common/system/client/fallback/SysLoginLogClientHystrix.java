@@ -20,7 +20,7 @@ public class SysLoginLogClientHystrix implements SysLoginLogClient {
     }
 
     @Override
-    public ResponseResult<Page<SysLoginLog>> listPage(Integer pageNo, Integer pageSize, String accout) {
+    public ResponseResult<Page<SysLoginLog>> listAccoutLog(Integer pageNo, Integer pageSize, String accout) {
         return ResponseResult.createErrorResult("服务不可用");
     }
 

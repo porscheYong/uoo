@@ -58,12 +58,10 @@ public class SysLoginLogController {
 
     @ApiOperation(value = "获取分页列表", notes = "获取分页列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
-            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
-    @UooLog(key="listPage",value="获取分页列表")
-    @GetMapping("/listPage")
-    public ResponseResult<Page<SysLoginLog>> listPage(@RequestParam(value = "pageNo") Integer pageNo, @RequestParam(value = "pageSize") Integer pageSize,
+    @UooLog(key="listAccoutLog",value="获取分页列表")
+    @GetMapping("/listAccoutLog")
+    public ResponseResult<Page<SysLoginLog>> listAccoutLog(@RequestParam(value = "pageNo") Integer pageNo, @RequestParam(value = "pageSize") Integer pageSize,
             @RequestParam(value="accout")String accout){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
