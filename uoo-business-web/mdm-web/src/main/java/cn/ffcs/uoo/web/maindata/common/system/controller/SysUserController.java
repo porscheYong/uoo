@@ -4,9 +4,13 @@ package cn.ffcs.uoo.web.maindata.common.system.controller;
 import java.util.Date;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.ffcs.uoo.web.maindata.common.system.vo.EditSysUserDeptRefVo;
+import cn.ffcs.uoo.web.maindata.common.system.vo.SysUserDeptRefVo;
+import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -14,6 +18,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,9 +44,9 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping(value = "/system")
 public class SysUserController {
-    @Autowired
+    @Resource
     SysUserClient sysuserClient;
-    @Autowired
+    @Resource
     private SysLoginLogClient loginLogClient;
     @Autowired
     ShiroFilterFactoryBean shiroFilterFactoryBean;
@@ -124,5 +129,41 @@ public class SysUserController {
         sysLoginLog.setMessage(JSONObject.toJSONString(sysUser));
         loginLogClient.add(sysLoginLog);
         return rr;
+    }
+
+    @ApiOperation(value = "新增用户组织", notes = "新增用户组织")
+    @ApiImplicitParam(name = "sysUserDeptRefVo", value = "用户组织信息", required = true, dataType = "EditSysUserDeptRefVo")
+    @RequestMapping(value = "/addsysUserDeptRef", method = RequestMethod.POST)
+    public Object addsysUserDeptRef(@RequestBody EditSysUserDeptRefVo sysUserDeptRefVo){
+        sysUserDeptRefVo.setCreateUser(SysUserInfo.getUserId());
+        sysUserDeptRefVo.setUpdateUser(SysUserInfo.getUserId());
+        return sysuserClient.addsysUserDeptRef(sysUserDeptRefVo);
+    }
+
+    @ApiOperation(value = "更新用户信息", notes = "更新用户信息")
+    @ApiImplicitParam(name = "sysUser", value = "用户信息", required = true, dataType = "SysUser")
+    @RequestMapping(value = "/updateSysUser", method = RequestMethod.POST)
+    public Object updateSysUser(@RequestBody SysUser sysUser){
+        sysUser.setUpdateUser(SysUserInfo.getUserId());
+        return sysuserClient.updateSysUser(sysUser);
+    }
+
+    @ApiOperation(value = "用户信息查询", notes = "用户信息查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户标识", required = true, dataType = "Long"),
+            @ApiImplicitParam(name = "pageNo", value = "当前页数", required = true, dataType = "Integer",paramType="path"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path"),
+    })
+    @RequestMapping(value = "/getSysUserDeptPosition", method = RequestMethod.GET)
+    public ResponseResult<SysUserDeptRefVo> getSysUserDeptPosition(Long userId, Integer pageNo, Integer pageSize){
+        return sysuserClient.getSysUserDeptPosition(userId, pageNo, pageSize);
+    }
+
+    @ApiOperation(value = "删除", notes = "删除")
+    @ApiImplicitParam(name = "sysUser", value = "sysUser", required = true, dataType = "sysUser")
+    @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
+    public Object deletePrivilege(@RequestBody SysUser sysUser){
+        sysUser.setUpdateUser(SysUserInfo.getUserId());
+        return sysuserClient.deletePrivilege(sysUser);
     }
 }
