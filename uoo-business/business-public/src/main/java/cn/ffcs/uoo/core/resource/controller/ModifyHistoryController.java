@@ -1,6 +1,15 @@
 package cn.ffcs.uoo.core.resource.controller;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.core.resource.entity.ModifyHistory;
 import cn.ffcs.uoo.core.resource.service.ModifyHistoryService;
@@ -9,11 +18,6 @@ import cn.ffcs.uoo.core.resource.vo.ModifyHistoryVo;
 import cn.ffcs.uoo.core.vo.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -26,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(value = "modifyHistory", description = "日志")
 @RestController
-@RequestMapping("/modifyHistory")
+@RequestMapping("/public/modifyHistory")
 public class ModifyHistoryController {
 
     @Autowired
@@ -75,6 +79,20 @@ public class ModifyHistoryController {
         ret.setState(ResponseResult.STATE_ERROR);
         return ret;
     }
-
+    @SuppressWarnings("unchecked")
+    @ApiOperation(value = "分页", notes = "分页")
+    @UooLog(value = "分页", key = "listByRecord")
+    @RequestMapping(value = "/listByRecord", method = RequestMethod.GET)
+    public ResponseResult<Page<ModifyHistory>> listByRecord(@RequestParam(value = "pageNo") Integer pageNo, @RequestParam(value = "pageSize") Integer pageSize,
+            @RequestParam(value="tableName")String tableName,@RequestParam(value="recordId")String recordId) {
+        ResponseResult<Page<ModifyHistory>> ret = new ResponseResult<>();
+        Long commonTableId = modifyHistoryService.getCommonTableId(tableName);
+        if(commonTableId!=null){
+            Page<ModifyHistory> page = modifyHistoryService.selectPage(new Page<ModifyHistory>(pageNo,pageSize), Condition.create().eq("STATUS_CD", "1000").eq("TAB_ID", commonTableId).eq("RECORD_ID", recordId).orderBy("CREATE_DATE", false));
+            ret.setState(1000);
+            ret.setData(page);
+        }
+        return ret;
+    }
 }
 
