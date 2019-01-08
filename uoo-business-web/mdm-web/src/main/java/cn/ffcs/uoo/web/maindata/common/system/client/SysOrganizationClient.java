@@ -73,12 +73,18 @@ public interface SysOrganizationClient {
 
 
     @RequestMapping(value = "/sysOrganization/getOrg", method = RequestMethod.GET)
-    public ResponseResult<SysOrganizationVo> getOrg(@RequestParam(value = "id",required = false)String id);
+    public ResponseResult<SysOrganizationVo> getOrg(@RequestParam(value = "id",required = false)String id,
+                                                    @RequestParam(value = "userId",required = false)Long userId,
+                                                    @RequestParam(value = "accout",required = false)String accout);
 
     @RequestMapping(value = "/sysOrganization/deleteOrg", method = RequestMethod.GET)
-    public ResponseResult<String> deleteOrg(@RequestParam(value = "id",required = false)String id);
+    public ResponseResult<String> deleteOrg(@RequestParam(value = "id",required = false)String id,
+                                            @RequestParam(value = "userId",required = false)Long userId,
+                                            @RequestParam(value = "accout",required = false)String accout);
 
     @RequestMapping(value = "/sysOrganization/getOrgPositionList", method = RequestMethod.GET)
-    public ResponseResult<List<SysPositionVo>> getOrgPositionList(@RequestParam(value = "id",required = false)String id);
+    public ResponseResult<List<SysPositionVo>> getOrgPositionList(@RequestParam(value = "id",required = false)String id,
+                                                                  @RequestParam(value = "userId",required = false)Long userId,
+                                                                  @RequestParam(value = "accout",required = false)String accout);
 }
 

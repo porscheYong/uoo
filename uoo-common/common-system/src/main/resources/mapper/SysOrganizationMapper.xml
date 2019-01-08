@@ -148,6 +148,7 @@
         A.REGION_NBR      regionNbr,
         A.SORT            sort,
         A.STATUS_CD       statusCd,
+        (select b.region_name from TB_COMMON_REGION b where b.common_region_id=A.Region_Nbr) regionName,
         (Select B.Org_Name from SYS_ORGANIZATION B where B.STATUS_CD=1000 AND B.Org_Code=A.PARENT_ORG_CODE) parentOrgName
         from SYS_ORGANIZATION A where A.STATUS_CD=1000 AND A.Org_Code = #{orgCode}
     </select>

@@ -62,5 +62,14 @@ public class SysFileController {
     public ResponseResult<String> updateSysFile(@RequestBody SysFileVo sysFileVo){
         return sysFileClient.updateSysFile(sysFileVo);
     }
+
+
+    @ApiOperation(value = "删除系统文件", notes = "删除系统文件")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/deleteSysFile", method = RequestMethod.POST)
+    public ResponseResult<String> deleteSysFile(@RequestBody SysFileVo sysFileVo){
+        return sysFileClient.deleteSysFile(sysFileVo);
+    }
 }
 

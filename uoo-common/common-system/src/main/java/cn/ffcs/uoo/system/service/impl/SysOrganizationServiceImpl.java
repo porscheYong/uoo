@@ -50,7 +50,7 @@ public class SysOrganizationServiceImpl extends ServiceImpl<SysOrganizationMappe
         sysOrganization.setStatusCd("1100");
         sysOrganization.setStatusDate(new Date());
         sysOrganization.setUpdateDate(new Date());
-        sysOrganization.setUpdateUser(0L);
+        sysOrganization.setUpdateUser(StrUtil.isNullOrEmpty(sysOrganization.getUpdateUser())?0L:sysOrganization.getUpdateUser());
         updateById(sysOrganization);
     }
 
@@ -62,7 +62,7 @@ public class SysOrganizationServiceImpl extends ServiceImpl<SysOrganizationMappe
     @Override
     public void add(SysOrganization sysOrganization){
         sysOrganization.setCreateDate(new Date());
-        sysOrganization.setCreateUser(0L);
+        sysOrganization.setCreateUser(StrUtil.isNullOrEmpty(sysOrganization.getCreateUser())?0L:sysOrganization.getCreateUser());
         sysOrganization.setStatusCd("1000");
         sysOrganization.setStatusDate(new Date());
         insert(sysOrganization);
@@ -74,7 +74,7 @@ public class SysOrganizationServiceImpl extends ServiceImpl<SysOrganizationMappe
     @Override
     public void update(SysOrganization sysOrganization){
         sysOrganization.setUpdateDate(new Date());
-        sysOrganization.setUpdateUser(0L);
+        sysOrganization.setUpdateUser(StrUtil.isNullOrEmpty(sysOrganization.getUpdateUser())?0L:sysOrganization.getUpdateUser());
         sysOrganization.setStatusDate(new Date());
         updateById(sysOrganization);
     }

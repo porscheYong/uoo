@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.ffcs.uoo.system.util.StrUtil;
 import cn.ffcs.uoo.system.vo.SysDataRuleVo;
 import cn.ffcs.uoo.system.vo.SysFileVo;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -34,8 +35,8 @@ public class SysDataRuleServiceImpl extends ServiceImpl<SysDataRuleMapper, SysDa
     }
     @Override
     public Page<SysDataRuleVo> getDataRulePage(String search, Integer pageSize, Integer pageNo){
-        Page<SysDataRuleVo> page = new Page<SysDataRuleVo>(pageNo==0?1:pageNo,
-                pageSize==0?10:pageSize);
+        Page<SysDataRuleVo> page = new Page<SysDataRuleVo>(StrUtil.isNullOrEmpty(pageNo)?1:pageNo,
+                StrUtil.isNullOrEmpty(pageSize)?10:pageSize);
         List<SysDataRuleVo> list = new ArrayList<>();
         list = baseMapper.getDataRulePage(page,search);
         page.setRecords(list);

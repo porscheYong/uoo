@@ -99,6 +99,13 @@ public class SysDataRuleController {
         return sysDataRuleClient.getTab();
     }
 
+    @ApiOperation(value = "删除数据权限", notes = "删除数据权限")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/deleteDataRule", method = RequestMethod.POST)
+    public ResponseResult<String> deleteDataRule(@RequestBody SysDataRuleVo sysDataRuleVo){
+        return sysDataRuleClient.deleteDataRule(sysDataRuleVo);
+    }
 
 }
 

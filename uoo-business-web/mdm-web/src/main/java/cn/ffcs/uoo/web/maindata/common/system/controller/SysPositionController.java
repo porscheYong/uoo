@@ -2,14 +2,18 @@ package cn.ffcs.uoo.web.maindata.common.system.controller;
 
 
 import cn.ffcs.uoo.web.maindata.common.system.client.SysPositionClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.common.system.vo.SysPositionVo;
 import cn.ffcs.uoo.web.maindata.common.system.vo.TreeNodeVo;
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +45,11 @@ public class SysPositionController {
                                                             @RequestParam(value = "isSync",required = false)boolean isSync,
                                                             @RequestParam(value = "userId",required = false)Long userId,
                                                             @RequestParam(value = "accout",required = false)String accout){
+
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        userId = currentLoginUser.getUserId();
+        accout = currentLoginUser.getAccout();
         return sysPositionClient.getPositionTree(id,isSync,userId,accout);
     }
 
@@ -55,6 +64,10 @@ public class SysPositionController {
                                                                   @RequestParam(value = "isSearchlower",required = false)String isSearchlower,
                                                                   @RequestParam(value = "userId",required = false)Long userId,
                                                                   @RequestParam(value = "accout",required = false)String accout){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        userId = currentLoginUser.getUserId();
+        accout = currentLoginUser.getAccout();
         return sysPositionClient.getPositionRelPage(positionId,search,pageSize,pageNo,isSearchlower,
                                                    userId,accout);
     }
@@ -64,6 +77,7 @@ public class SysPositionController {
     })
     @RequestMapping(value = "/getRolesByPositionId", method = RequestMethod.GET)
     public ResponseResult<HashMap<String,String>> getRolesByPositionId(@RequestParam(value = "positionId",required = false)String positionId){
+
         return sysPositionClient.getRolesByPositionId(positionId);
     }
 
@@ -72,6 +86,7 @@ public class SysPositionController {
     })
     @RequestMapping(value = "/getPosition", method = RequestMethod.GET)
     public ResponseResult<SysPositionVo> getPosition(@RequestParam(value = "id",required = false)String id){
+
         return sysPositionClient.getPosition(id);
     }
 
@@ -80,6 +95,12 @@ public class SysPositionController {
     })
     @RequestMapping(value = "/updatePosition", method = RequestMethod.POST)
     public ResponseResult<String> updatePosition(@RequestBody  SysPositionVo sysPositionVo){
+
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        sysPositionVo.setUserId(currentLoginUser.getUserId());
+        sysPositionVo.setAccout(currentLoginUser.getAccout());
+
         return sysPositionClient.updatePosition(sysPositionVo);
     }
 
@@ -89,6 +110,10 @@ public class SysPositionController {
     })
     @RequestMapping(value = "/addPosition", method = RequestMethod.POST)
     public ResponseResult<TreeNodeVo> addPosition(@RequestBody SysPositionVo pos){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        pos.setUserId(currentLoginUser.getUserId());
+        pos.setAccout(currentLoginUser.getAccout());
         return sysPositionClient.addPosition(pos);
     }
 
@@ -98,6 +123,10 @@ public class SysPositionController {
     })
     @RequestMapping(value = "/deletePosition", method = RequestMethod.POST)
     public ResponseResult<String> deletePosition(@RequestBody SysPositionVo pos){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        pos.setUserId(currentLoginUser.getUserId());
+        pos.setAccout(currentLoginUser.getAccout());
         return sysPositionClient.deletePosition(pos);
     }
 

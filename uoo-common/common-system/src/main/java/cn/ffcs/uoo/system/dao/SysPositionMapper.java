@@ -4,8 +4,10 @@ import cn.ffcs.uoo.system.entity.SysPosition;
 import cn.ffcs.uoo.system.entity.SysPosition;
 import cn.ffcs.uoo.system.vo.SysPositionVo;
 import cn.ffcs.uoo.system.vo.SysRoleDTO;
+import cn.ffcs.uoo.system.vo.SysUserVo;
 import cn.ffcs.uoo.system.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import org.apache.ibatis.annotations.Param;
 
@@ -46,5 +48,8 @@ public interface SysPositionMapper extends BaseMapper<SysPosition> {
     public int getPositionDepRefCount(@Param("positionCode")String positionCode);
 
     public int getPositionRoleRefCount(@Param("positionCode")String positionCode);
+
+    public List<SysUserVo> getOrgUserPage(Pagination page, @Param("id")String id, @Param("search")String search, @Param("isSearchlower")String isSearchlower);
+
 
 }

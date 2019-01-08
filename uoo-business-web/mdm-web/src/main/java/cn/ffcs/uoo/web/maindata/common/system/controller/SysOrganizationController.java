@@ -3,15 +3,19 @@ package cn.ffcs.uoo.web.maindata.common.system.controller;
 
 
 import cn.ffcs.uoo.web.maindata.common.system.client.SysOrganizationClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.common.system.vo.SysOrganizationVo;
 import cn.ffcs.uoo.web.maindata.common.system.vo.SysPositionVo;
 import cn.ffcs.uoo.web.maindata.common.system.vo.TreeNodeVo;
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +49,10 @@ public class SysOrganizationController {
                                                           @RequestParam(value = "isSync",required = false)boolean isSync,
                                                           @RequestParam(value = "userId",required = false)Long userId,
                                                           @RequestParam(value = "accout",required = false)String accout){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        userId = currentLoginUser.getUserId();
+        accout = currentLoginUser.getAccout();
 
         return sysOrganizationClient.getOrgRelTree(id,isSync,userId,accout);
     }
@@ -59,7 +67,10 @@ public class SysOrganizationController {
                                                                       @RequestParam(value = "pageNo",required = false)Integer pageNo,
                                                                       @RequestParam(value = "userId",required = false)Long userId,
                                                                       @RequestParam(value = "accout",required = false)String accout){
-
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        userId = currentLoginUser.getUserId();
+        accout = currentLoginUser.getAccout();
         return sysOrganizationClient.getFuzzyOrgRelPage(search,pageSize,pageNo,userId,accout);
     }
 
@@ -71,7 +82,10 @@ public class SysOrganizationController {
     public ResponseResult<List<TreeNodeVo>> getRestructOrgRelTree(@RequestParam(value = "id",required = false)String id,
                                                                   @RequestParam(value = "userId",required = false)Long userId,
                                                                   @RequestParam(value = "accout",required = false)String accout){
-
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        userId = currentLoginUser.getUserId();
+        accout = currentLoginUser.getAccout();
         return sysOrganizationClient.getRestructOrgRelTree(id,userId,accout);
     }
 
@@ -86,7 +100,10 @@ public class SysOrganizationController {
                                                                  @RequestParam(value = "isSearchlower",required = false)String isSearchlower,
                                                                  @RequestParam(value = "userId",required = false)Long userId,
                                                                  @RequestParam(value = "accout",required = false)String accout){
-
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        userId = currentLoginUser.getUserId();
+        accout = currentLoginUser.getAccout();
         return sysOrganizationClient.getOrgRelPage(id,search,pageSize,pageNo,isSearchlower,userId,accout);
     }
 
@@ -96,7 +113,10 @@ public class SysOrganizationController {
     })
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
     public ResponseResult<TreeNodeVo> addOrg(@RequestBody SysOrganizationVo vo){
-
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        vo.setUserId(currentLoginUser.getUserId());
+        vo.setAccout(currentLoginUser.getAccout());
         return sysOrganizationClient.addOrg(vo);
     }
 
@@ -106,7 +126,10 @@ public class SysOrganizationController {
     })
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
     public ResponseResult<String> updateOrg(@RequestBody SysOrganizationVo vo){
-
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        vo.setUserId(currentLoginUser.getUserId());
+        vo.setAccout(currentLoginUser.getAccout());
         return sysOrganizationClient.updateOrg(vo);
     }
 
@@ -115,16 +138,28 @@ public class SysOrganizationController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getOrg", method = RequestMethod.GET)
-    public ResponseResult<SysOrganizationVo> getOrg(@RequestParam(value = "id",required = false)String id){
-        return sysOrganizationClient.getOrg(id);
+    public ResponseResult<SysOrganizationVo> getOrg(@RequestParam(value = "id",required = false)String id,
+                                                    @RequestParam(value = "userId",required = false)Long userId,
+                                                    @RequestParam(value = "accout",required = false)String accout){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        userId = currentLoginUser.getUserId();
+        accout = currentLoginUser.getAccout();
+        return sysOrganizationClient.getOrg(id,userId,accout);
     }
 
     @ApiOperation(value = "删除组织", notes = "删除组织")
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/deleteOrg", method = RequestMethod.GET)
-    public ResponseResult<String> deleteOrg(@RequestParam(value = "id",required = false)String id){
-        return sysOrganizationClient.deleteOrg(id);
+    public ResponseResult<String> deleteOrg(@RequestParam(value = "id",required = false)String id,
+                                            @RequestParam(value = "userId",required = false)Long userId,
+                                            @RequestParam(value = "accout",required = false)String accout){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        userId = currentLoginUser.getUserId();
+        accout = currentLoginUser.getAccout();
+        return sysOrganizationClient.deleteOrg(id,userId,accout);
     }
 
 
@@ -132,8 +167,14 @@ public class SysOrganizationController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getOrgPositionList", method = RequestMethod.GET)
-    public ResponseResult<List<SysPositionVo>> getOrgPositionList(@RequestParam(value = "id",required = false)String id) throws IOException {
-        return sysOrganizationClient.getOrgPositionList(id);
+    public ResponseResult<List<SysPositionVo>> getOrgPositionList(@RequestParam(value = "id",required = false)String id,
+                                                                  @RequestParam(value = "userId",required = false)Long userId,
+                                                                  @RequestParam(value = "accout",required = false)String accout) throws IOException {
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        userId = currentLoginUser.getUserId();
+        accout = currentLoginUser.getAccout();
+        return sysOrganizationClient.getOrgPositionList(id,userId,accout);
     }
 }
 

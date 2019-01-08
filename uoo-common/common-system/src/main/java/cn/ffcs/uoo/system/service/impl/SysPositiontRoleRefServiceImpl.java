@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.system.service.impl;
 
+import cn.ffcs.uoo.system.util.StrUtil;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -39,7 +40,7 @@ public class SysPositiontRoleRefServiceImpl extends ServiceImpl<SysPositiontRole
         sysPositiontRoleRef.setStatusCd("1100");
         sysPositiontRoleRef.setStatusDate(new Date());
         sysPositiontRoleRef.setUpdateDate(new Date());
-        sysPositiontRoleRef.setUpdateUser(0L);
+        sysPositiontRoleRef.setUpdateUser(StrUtil.isNullOrEmpty(sysPositiontRoleRef.getUpdateUser())?0L:sysPositiontRoleRef.getUpdateUser());
         updateById(sysPositiontRoleRef);
     }
 
@@ -51,7 +52,7 @@ public class SysPositiontRoleRefServiceImpl extends ServiceImpl<SysPositiontRole
     @Override
     public void add(SysPositiontRoleRef sysPositiontRoleRef){
         sysPositiontRoleRef.setCreateDate(new Date());
-        sysPositiontRoleRef.setCreateUser(0L);
+        sysPositiontRoleRef.setCreateUser(StrUtil.isNullOrEmpty(sysPositiontRoleRef.getCreateUser())?0L:sysPositiontRoleRef.getCreateUser());
         sysPositiontRoleRef.setStatusCd("1000");
         sysPositiontRoleRef.setStatusDate(new Date());
         insert(sysPositiontRoleRef);
@@ -63,7 +64,7 @@ public class SysPositiontRoleRefServiceImpl extends ServiceImpl<SysPositiontRole
     @Override
     public void update(SysPositiontRoleRef sysPositiontRoleRef){
         sysPositiontRoleRef.setUpdateDate(new Date());
-        sysPositiontRoleRef.setUpdateUser(0L);
+        sysPositiontRoleRef.setUpdateUser(StrUtil.isNullOrEmpty(sysPositiontRoleRef.getUpdateUser())?0L:sysPositiontRoleRef.getUpdateUser());
         sysPositiontRoleRef.setStatusDate(new Date());
         updateById(sysPositiontRoleRef);
     }

@@ -70,5 +70,12 @@ public class SysDataRuleClientHystrix implements SysDataRuleClient {
         rr.setMessage("服务不可用");
         return rr;
     }
+    @Override
+    public ResponseResult<String> deleteDataRule(@RequestBody SysDataRuleVo sysDataRuleVo){
+        ResponseResult<String> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    }
 
 }

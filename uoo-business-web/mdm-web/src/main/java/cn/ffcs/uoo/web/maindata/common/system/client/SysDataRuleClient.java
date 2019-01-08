@@ -46,4 +46,6 @@ public interface SysDataRuleClient {
     @RequestMapping(value = "/system/sysDataRule/getTabColumn", method = RequestMethod.GET)
     public ResponseResult<List<SysTableColumn>> getTabColumn(@RequestParam(value = "tabId",required = false)String tabId);
 
+    @RequestMapping(value = "/system/sysDataRule/deleteDataRule", method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    public ResponseResult<String> deleteDataRule(@RequestBody SysDataRuleVo sysDataRuleVo);
 }

@@ -37,7 +37,7 @@ public class SysFileClientHystrix implements SysFileClient {
     }
 
     @Override
-    public ResponseResult<String> addSysFile(@RequestBody SysFileVo sysFileVo){
+    public ResponseResult<String> addSysFile(SysFileVo sysFileVo){
         ResponseResult<String> rr=new ResponseResult<>();
         rr.setState(ResponseResult.STATE_SERVICE_ERROR);
         rr.setMessage("服务不可用");
@@ -45,7 +45,14 @@ public class SysFileClientHystrix implements SysFileClient {
     }
 
     @Override
-    public ResponseResult<String> updateSysFile(@RequestBody SysFileVo sysFileVo){
+    public ResponseResult<String> updateSysFile(SysFileVo sysFileVo){
+        ResponseResult<String> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    }
+    @Override
+    public ResponseResult<String> deleteSysFile(SysFileVo sysFileVo){
         ResponseResult<String> rr=new ResponseResult<>();
         rr.setState(ResponseResult.STATE_SERVICE_ERROR);
         rr.setMessage("服务不可用");

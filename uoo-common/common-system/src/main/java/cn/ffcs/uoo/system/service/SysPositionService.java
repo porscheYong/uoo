@@ -2,6 +2,7 @@ package cn.ffcs.uoo.system.service;
 
 import cn.ffcs.uoo.system.entity.SysPosition;
 import cn.ffcs.uoo.system.vo.SysPositionVo;
+import cn.ffcs.uoo.system.vo.SysUserVo;
 import cn.ffcs.uoo.system.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
@@ -61,4 +62,11 @@ public interface SysPositionService extends IService<SysPosition> {
     public int getPositionDepRefCount(String positionCode);
 
     public int getPositionRoleRefCount(String positionCode);
+
+
+    public Page<SysUserVo> getOrgUserPage(String id,
+                                          String search,
+                                          Integer pageSize,
+                                          Integer pageNo,
+                                          String isSearchlower);
 }

@@ -67,7 +67,7 @@ public class SysOrganizationClientHystrix implements SysOrganizationClient {
     }
 
     @Override
-    public ResponseResult<SysOrganizationVo> getOrg(String id){
+    public ResponseResult<SysOrganizationVo> getOrg(String id,Long userId,String accout){
         ResponseResult<SysOrganizationVo> rr=new ResponseResult<>();
         rr.setState(ResponseResult.STATE_SERVICE_ERROR);
         rr.setMessage("服务不可用");
@@ -75,14 +75,14 @@ public class SysOrganizationClientHystrix implements SysOrganizationClient {
     }
 
     @Override
-    public ResponseResult<String> deleteOrg(String id){
+    public ResponseResult<String> deleteOrg(String id,Long userId,String accout){
         ResponseResult<String> rr=new ResponseResult<>();
         rr.setState(ResponseResult.STATE_SERVICE_ERROR);
         rr.setMessage("服务不可用");
         return rr;
     }
     @Override
-    public ResponseResult<List<SysPositionVo>> getOrgPositionList(String id){
+    public ResponseResult<List<SysPositionVo>> getOrgPositionList(String id,Long userId,String accout){
         ResponseResult<List<SysPositionVo>> rr=new ResponseResult<>();
         rr.setState(ResponseResult.STATE_SERVICE_ERROR);
         rr.setMessage("服务不可用");

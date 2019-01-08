@@ -56,5 +56,8 @@ public interface SysFileClient {
     @RequestMapping(value = "/sysFile/updateSysFile", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<String> updateSysFile(@RequestBody SysFileVo sysFileVo);
 
+    @RequestMapping(value = "/sysFile/deleteSysFile", method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    public ResponseResult<String> deleteSysFile(@RequestBody SysFileVo sysFileVo);
+
 }
 

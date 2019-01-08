@@ -120,7 +120,7 @@ public class SysDataRuleController {
     @UooLog(key="addDataRule",value="新增数据权限")
     @Transactional
     @RequestMapping(value = "/addDataRule", method = RequestMethod.POST)
-    public ResponseResult<String> addDataRule(SysDataRuleVo sysDataRuleVo){
+    public ResponseResult<String> addDataRule(@RequestBody SysDataRuleVo sysDataRuleVo){
         ResponseResult<String> ret = new ResponseResult<String>();
 
         SysDataRule vo = new SysDataRule();
@@ -140,12 +140,16 @@ public class SysDataRuleController {
     @UooLog(key="updateDataRule",value="编辑数据权限")
     @Transactional
     @RequestMapping(value = "/updateDataRule", method = RequestMethod.POST)
-    public ResponseResult<String> updateDataRule(SysDataRuleVo sysDataRuleVo){
+    public ResponseResult<String> updateDataRule(@RequestBody SysDataRuleVo sysDataRuleVo){
         ResponseResult<String> ret = new ResponseResult<String>();
-
-        SysDataRule vo = new SysDataRule();
-        BeanUtils.copyProperties(sysDataRuleVo, vo);
-        dataRuleSvc.update(vo);
+        Wrapper sysdataWrapper = Condition.create()
+                .eq("DATA_RULE_ID",sysDataRuleVo.getDataRuleId())
+                .eq("STATUS_CD","1000");
+        SysDataRule sysDataRule = dataRuleSvc.selectOne(sysdataWrapper);
+        if(sysDataRule!=null){
+            BeanUtils.copyProperties(sysDataRuleVo, sysDataRule);
+            dataRuleSvc.update(sysDataRule);
+        }
         ret.setMessage("编辑成功");
         ret.setState(ResponseResult.STATE_OK);
         return ret;
@@ -153,7 +157,29 @@ public class SysDataRuleController {
 
 
 
-    @ApiOperation(value = " ", notes = "获取表名")
+    @ApiOperation(value = "删除数据权限", notes = "删除数据权限")
+    @ApiImplicitParams({
+    })
+    @UooLog(key="deleteDataRule",value="删除数据权限")
+    @Transactional
+    @RequestMapping(value = "/deleteDataRule", method = RequestMethod.POST)
+    public ResponseResult<String> deleteDataRule(@RequestBody SysDataRuleVo sysDataRuleVo){
+        ResponseResult<String> ret = new ResponseResult<String>();
+        Wrapper sysdataWrapper = Condition.create()
+                .eq("DATA_RULE_ID",sysDataRuleVo.getDataRuleId())
+                .eq("STATUS_CD","1000");
+        SysDataRule sysDataRule = dataRuleSvc.selectOne(sysdataWrapper);
+        if(sysDataRule!=null){
+            dataRuleSvc.delete(sysDataRule);
+        }
+        ret.setMessage("删除成功");
+        ret.setState(ResponseResult.STATE_OK);
+        return ret;
+    }
+
+
+
+    @ApiOperation(value = "获取表名", notes = "获取表名")
     @ApiImplicitParams({
     })
     @UooLog(key="getTabName",value="获取表名")

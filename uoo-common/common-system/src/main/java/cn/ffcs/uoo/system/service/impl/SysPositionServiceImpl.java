@@ -9,6 +9,7 @@ import cn.ffcs.uoo.system.service.SysPositionService;
 import cn.ffcs.uoo.system.util.StrUtil;
 import cn.ffcs.uoo.system.vo.SysPositionVo;
 import cn.ffcs.uoo.system.vo.SysRoleDTO;
+import cn.ffcs.uoo.system.vo.SysUserVo;
 import cn.ffcs.uoo.system.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -47,7 +48,7 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
         sysPosition.setStatusCd("1100");
         sysPosition.setStatusDate(new Date());
         sysPosition.setUpdateDate(new Date());
-        sysPosition.setUpdateUser(0L);
+        sysPosition.setUpdateUser(StrUtil.isNullOrEmpty(sysPosition.getUpdateUser())?0L:sysPosition.getUpdateUser());
         updateById(sysPosition);
     }
 
@@ -59,7 +60,7 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
     @Override
     public void add(SysPosition sysPosition){
         sysPosition.setCreateDate(new Date());
-        sysPosition.setCreateUser(0L);
+        sysPosition.setCreateUser(StrUtil.isNullOrEmpty(sysPosition.getCreateUser())?0L:sysPosition.getCreateUser());
         sysPosition.setStatusCd("1000");
         sysPosition.setStatusDate(new Date());
         insert(sysPosition);
@@ -71,7 +72,7 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
     @Override
     public void update(SysPosition sysPosition){
         sysPosition.setUpdateDate(new Date());
-        sysPosition.setUpdateUser(0L);
+        sysPosition.setUpdateUser(StrUtil.isNullOrEmpty(sysPosition.getUpdateUser())?0L:sysPosition.getUpdateUser());
         sysPosition.setStatusDate(new Date());
         updateById(sysPosition);
     }
@@ -162,5 +163,18 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
     @Override
     public int getPositionRoleRefCount(String positionCode){
         return baseMapper.getPositionRoleRefCount(positionCode);
+    }
+
+    @Override
+    public Page<SysUserVo> getOrgUserPage(String id,
+                                              String search,
+                                              Integer pageSize,
+                                              Integer pageNo,
+                                              String isSearchlower){
+        Page<SysUserVo> page = new Page<SysUserVo>(StrUtil.isNullOrEmpty(pageNo)?1:pageNo,
+                StrUtil.isNullOrEmpty(pageSize)?10:pageSize);
+        List<SysUserVo> list = baseMapper.getOrgUserPage(page,id,search,isSearchlower);
+        page.setRecords(list);
+        return page;
     }
 }

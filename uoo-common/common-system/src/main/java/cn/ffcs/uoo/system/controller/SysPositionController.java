@@ -224,6 +224,7 @@ public class SysPositionController {
                     sysPositiontRoleRef.setPositionCode(sysPosition.getPositionCode());
                     sysPositiontRoleRef.setCreateUser(sysPositionVo.getUserId());
                     sysPositiontRoleRef.setNotes(sysPositionVo.getNotes());
+                    sysPositiontRoleRef.setCreateUser(sysPositionVo.getUserId());
                     iSysPositiontRoleRefService.add(sysPositiontRoleRef);
                 }
             }
@@ -251,6 +252,7 @@ public class SysPositionController {
                 }
             }
         }
+        sysPosition.setUpdateUser(sysPositionVo.getUserId());
         sysPositionService.update(sysPosition);
 
         ret.setState(ResponseResult.STATE_OK);
@@ -277,6 +279,7 @@ public class SysPositionController {
         sysPosition.setNotes(pos.getNotes());
         sysPosition.setpPositionId(pos.getpPositionId());
         sysPosition.setRegionNbr(pos.getRegionNbr());
+        sysPosition.setCreateUser(pos.getUserId());
         sysPositionService.add(sysPosition);
 
         List<SysRoleDTO> sysRoleDTOList = pos.getSysRoleDTOList();

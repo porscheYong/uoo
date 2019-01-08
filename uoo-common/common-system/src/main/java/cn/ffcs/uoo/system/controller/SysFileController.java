@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
@@ -70,7 +71,7 @@ public class SysFileController {
     })
     @UooLog(value = "新增系统文件", key = "addSysFile")
     @RequestMapping(value = "/addSysFile", method = RequestMethod.POST)
-    public ResponseResult<String> addSysFile(SysFileVo sysFileVo){
+    public ResponseResult<String> addSysFile(@RequestBody SysFileVo sysFileVo){
         ResponseResult<String> ret = new ResponseResult<>();
 
         SysFile sysFile = new SysFile();
@@ -88,13 +89,39 @@ public class SysFileController {
     })
     @UooLog(value = "更新系统文件", key = "updateSysFile")
     @RequestMapping(value = "/updateSysFile", method = RequestMethod.POST)
-    public ResponseResult<String> updateSysFile(SysFileVo sysFileVo){
+    public ResponseResult<String> updateSysFile(@RequestBody SysFileVo sysFileVo){
         ResponseResult<String> ret = new ResponseResult<>();
-        SysFile sysFile = new SysFile();
-        BeanUtils.copyProperties(sysFileVo, sysFile);
-        iSysFileService.update(sysFile);
+        Wrapper sysFileWrapper = Condition.create()
+                .eq("FILE_ID",sysFileVo.getFileId())
+                .eq("STATUS_CD","1000");
+        SysFile sysFile = iSysFileService.selectOne(sysFileWrapper);
+        if(sysFile!=null){
+            BeanUtils.copyProperties(sysFileVo, sysFile);
+            iSysFileService.update(sysFile);
+        }
+
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("新增系统文件成功");
+        return ret;
+    }
+
+
+    @ApiOperation(value = "删除系统文件", notes = "删除系统文件")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "删除系统文件", key = "deleteSysFile")
+    @RequestMapping(value = "/deleteSysFile", method = RequestMethod.POST)
+    public ResponseResult<String> deleteSysFile(@RequestBody SysFileVo sysFileVo){
+        ResponseResult<String> ret = new ResponseResult<>();
+        Wrapper sysFileWrapper = Condition.create()
+                .eq("FILE_ID",sysFileVo.getFileId())
+                .eq("STATUS_CD","1000");
+        SysFile sysFile = iSysFileService.selectOne(sysFileWrapper);
+        if(sysFile!=null){
+            iSysFileService.delete(sysFile);
+        }
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setMessage("删除系统文件成功");
         return ret;
     }
 }

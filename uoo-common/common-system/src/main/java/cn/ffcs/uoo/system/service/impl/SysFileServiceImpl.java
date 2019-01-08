@@ -3,6 +3,7 @@ package cn.ffcs.uoo.system.service.impl;
 import cn.ffcs.uoo.system.entity.SysFile;
 import cn.ffcs.uoo.system.dao.SysFileMapper;
 import cn.ffcs.uoo.system.service.ISysFileService;
+import cn.ffcs.uoo.system.util.StrUtil;
 import cn.ffcs.uoo.system.vo.SysFileVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -72,8 +73,8 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
     }
     @Override
     public Page<SysFileVo> getSysFilePage(String search,Integer pageSize, Integer pageNo){
-        Page<SysFileVo> page = new Page<SysFileVo>(pageNo==0?1:pageNo,
-                pageSize==0?10:pageSize);
+        Page<SysFileVo> page = new Page<SysFileVo>(StrUtil.isNullOrEmpty(pageNo)?1:pageNo,
+                StrUtil.isNullOrEmpty(pageSize)?10:pageSize);
         List<SysFileVo> list = new ArrayList<>();
         list = baseMapper.getSysFilePage(page,search);
         page.setRecords(list);

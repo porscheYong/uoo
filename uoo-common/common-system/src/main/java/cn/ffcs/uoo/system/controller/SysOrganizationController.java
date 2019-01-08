@@ -9,10 +9,7 @@ import cn.ffcs.uoo.system.service.SysDeptPositionRefService;
 import cn.ffcs.uoo.system.service.SysOrganizationService;
 import cn.ffcs.uoo.system.service.SysPositionService;
 import cn.ffcs.uoo.system.util.StrUtil;
-import cn.ffcs.uoo.system.vo.ResponseResult;
-import cn.ffcs.uoo.system.vo.SysOrganizationVo;
-import cn.ffcs.uoo.system.vo.SysPositionVo;
-import cn.ffcs.uoo.system.vo.TreeNodeVo;
+import cn.ffcs.uoo.system.vo.*;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -220,6 +217,7 @@ public class SysOrganizationController {
         }
         SysOrganization sysvo = new SysOrganization();
         BeanUtils.copyProperties(vo,sysvo);
+        sysvo.setUpdateUser(vo.getUserId());
         sysOrganizationService.update(sysvo);
 
 
@@ -289,7 +287,7 @@ public class SysOrganizationController {
     })
     @UooLog(value = "查询组织", key = "getOrg")
     @RequestMapping(value = "/getOrg", method = RequestMethod.GET)
-    public ResponseResult<SysOrganizationVo> getOrg(String id) throws IOException {
+    public ResponseResult<SysOrganizationVo> getOrg(String id,Long userId,String accout) throws IOException {
         ResponseResult<SysOrganizationVo> ret = new ResponseResult<SysOrganizationVo>();
         SysOrganizationVo vo = sysOrganizationService.getOrg(id);
         ret.setData(vo);
@@ -303,7 +301,7 @@ public class SysOrganizationController {
     })
     @UooLog(value = "删除组织", key = "deleteOrg")
     @RequestMapping(value = "/deleteOrg", method = RequestMethod.GET)
-    public ResponseResult<String> deleteOrg(String id) throws IOException {
+    public ResponseResult<String> deleteOrg(String id,Long userId,String accout) throws IOException {
         ResponseResult<String> ret = new ResponseResult<String>();
         if(StrUtil.isNullOrEmpty(id)){
             ret.setState(ResponseResult.STATE_ERROR);
@@ -332,6 +330,7 @@ public class SysOrganizationController {
             ret.setMessage("组织下存在角色");
             return ret;
         }
+        sysOrganization.setUpdateUser(userId);
         sysOrganizationService.delete(sysOrganization);
         ret.setData("删除成功");
         ret.setState(ResponseResult.STATE_OK);
@@ -343,7 +342,7 @@ public class SysOrganizationController {
     })
     @UooLog(value = "查询组织职位", key = "getOrgPositionList")
     @RequestMapping(value = "/getOrgPositionList", method = RequestMethod.GET)
-    public ResponseResult<List<SysPositionVo>> getOrgPositionList(String id) throws IOException {
+    public ResponseResult<List<SysPositionVo>> getOrgPositionList(String id,Long userId,String accout) throws IOException {
         ResponseResult<List<SysPositionVo>> ret = new ResponseResult<List<SysPositionVo>>();
         List<SysPositionVo> list = sysPositionService.getSysOrgPosition(id);
         ret.setData(list);
@@ -351,5 +350,25 @@ public class SysOrganizationController {
         ret.setMessage("查询成功");
         return ret;
     }
+
+    @ApiOperation(value = "查询组织人员", notes = "查询组织人员")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "查询组织人员", key = "getOrgUserPage")
+    @RequestMapping(value = "/getOrgUserPage", method = RequestMethod.GET)
+    public ResponseResult<Page<SysUserVo>> getOrgUserPage(String id,
+                                                                  String search,
+                                                                  Integer pageSize,
+                                                                  Integer pageNo,
+                                                                  String isSearchlower,
+                                                                  Long userId, String accout) throws IOException {
+        ResponseResult<Page<SysUserVo>> ret = new ResponseResult<Page<SysUserVo>>();
+        Page<SysUserVo> page = sysPositionService.getOrgUserPage(id,search,pageSize,pageNo,isSearchlower);
+        ret.setData(page);
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setMessage("查询成功");
+        return ret;
+    }
+
 }
 
