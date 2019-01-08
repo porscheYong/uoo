@@ -69,7 +69,7 @@ public class PrivFuncRelController {
     })
     @UooLog(key="listPrivFuncRel",value="获取权限和功能菜单组件关系列表")
     @GetMapping("/listPrivFuncRel/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult<List<PrivFuncRel>> listPrivFuncRel(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    public ResponseResult<Page<PrivFuncRel>> listPrivFuncRel(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         
