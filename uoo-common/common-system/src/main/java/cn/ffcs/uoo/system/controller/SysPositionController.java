@@ -154,31 +154,6 @@ public class SysPositionController {
         return ret;
     }
 
-//    @ApiOperation(value = "检索职位信息-web", notes = "检索职位信息")
-//    @ApiImplicitParams({
-//    })
-//    @UooLog(value = "检索职位信息", key = "getFuzzyPositionPage")
-//    @RequestMapping(value = "/getFuzzyPositionPage", method = RequestMethod.GET)
-//    public ResponseResult<Page<SysPositionVo>> getFuzzyPositionPage(String search,
-//                                                                      Integer pageSize,
-//                                                                      Integer pageNo,
-//                                                                      Long userId, String accout){
-//        ResponseResult<Page<SysPositionVo>> ret = new ResponseResult<Page<SysPositionVo>>();
-//        SysPositionVo vo = new SysPositionVo();
-//        if(!StrUtil.isNullOrEmpty(pageNo)){
-//            vo.setPageNo(pageNo);
-//        }
-//        if(!StrUtil.isNullOrEmpty(pageSize)){
-//            vo.setPageSize(pageSize);
-//        }
-//        if(!StrUtil.isNullOrEmpty(search)){
-//            vo.setSearch(search);
-//        }
-//        Page<SysPositionVo> page = sysPositionService.selectFuzzyPositionPage(vo);
-//        ret.setState(ResponseResult.STATE_OK);
-//        ret.setData(page);
-//        return ret;
-//    }
 
     @ApiOperation(value = "编辑职位", notes = "编辑职位")
     @ApiImplicitParams({
