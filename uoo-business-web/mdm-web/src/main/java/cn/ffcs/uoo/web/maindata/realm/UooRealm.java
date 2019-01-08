@@ -133,7 +133,7 @@ public class UooRealm extends AuthorizingRealm {
         if(ResponseResult.STATE_OK==ms.getState()){
             if(ms.getData()!=null){
                 for (SysMenu m : ms.getData()) {
-                    simpleAuthorizationInfo.addStringPermission("M"+m.getMenuId());
+                    simpleAuthorizationInfo.addStringPermission(m.getMenuCode());
                 }
             }
         }
@@ -141,7 +141,7 @@ public class UooRealm extends AuthorizingRealm {
         if(ResponseResult.STATE_OK==fs.getState()){
             if(fs.getData()!=null){
                 for (SysFunction f : fs.getData()) {
-                    simpleAuthorizationInfo.addStringPermission("F"+f.getFuncId());
+                    simpleAuthorizationInfo.addStringPermission(f.getFuncCode());
                 }
             }
         }

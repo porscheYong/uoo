@@ -132,6 +132,15 @@ $(document).ready(function(){
 		 
 		 checkTableRow($(this));
 	    });
+	/* console.log( $("#LAY_app_tabsheader", parent.document).find('.layui-this').first().text());
+	 var allCode=[],allName=[];
+	 $("#LAY-system-side-menu", parent.document).find('[mcode]').each(function(){
+		 allCode.push($(this).attr('mcode'));
+		 allName.push($(this).text());
+	 });
+	 for(var i=0;i<){
+		 
+	 }*/
 });
 
 function goEdit(){
