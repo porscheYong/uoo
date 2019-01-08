@@ -2,6 +2,8 @@ package cn.ffcs.uoo.web.maindata.common.system.client;
 
 import java.util.List;
 
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysTable;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysTableColumn;
 import cn.ffcs.uoo.web.maindata.common.system.vo.SysDataRuleVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -37,4 +39,11 @@ public interface SysDataRuleClient {
 
     @RequestMapping(value = "/system/sysDataRule/updateDataRule", method = RequestMethod.POST)
     public ResponseResult<String> updateDataRule(@RequestBody SysDataRuleVo sysDataRuleVo);
+
+    @RequestMapping(value = "/system/sysDataRule/getTab", method = RequestMethod.GET)
+    public ResponseResult<List<SysTable>> getTab();
+
+    @RequestMapping(value = "/system/sysDataRule/getTabColumn", method = RequestMethod.GET)
+    public ResponseResult<List<SysTableColumn>> getTabColumn(@RequestParam(value = "tabId",required = false)String tabId);
+
 }

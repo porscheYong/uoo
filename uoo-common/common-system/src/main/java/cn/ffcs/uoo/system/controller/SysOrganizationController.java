@@ -334,6 +334,18 @@ public class SysOrganizationController {
         return ret;
     }
 
-
+    @ApiOperation(value = "查询组织职位", notes = "查询组织职位")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "查询组织职位", key = "getOrgPositionList")
+    @RequestMapping(value = "/getOrgPositionList", method = RequestMethod.GET)
+    public ResponseResult<List<SysPositionVo>> getOrgPositionList(String id) throws IOException {
+        ResponseResult<List<SysPositionVo>> ret = new ResponseResult<List<SysPositionVo>>();
+        List<SysPositionVo> list = sysPositionService.getSysOrgPosition(id);
+        ret.setData(list);
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setMessage("查询成功");
+        return ret;
+    }
 }
 

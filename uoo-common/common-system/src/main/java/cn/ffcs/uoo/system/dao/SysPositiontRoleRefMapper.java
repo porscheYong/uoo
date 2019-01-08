@@ -2,6 +2,7 @@ package cn.ffcs.uoo.system.dao;
 
 import cn.ffcs.uoo.system.entity.SysPositiontRoleRef;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>

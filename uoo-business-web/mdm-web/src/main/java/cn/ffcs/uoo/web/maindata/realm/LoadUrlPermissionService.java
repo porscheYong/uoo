@@ -159,7 +159,7 @@ public class LoadUrlPermissionService {
                 if(data!=null){
                     log.info("菜单权限数量："+data.size());
                     for (SysMenu sysMenu : data) {
-                        filterChainDefinitionMap.put(sysMenu.getMenuUrl(), "perms[M" + sysMenu.getMenuId() + "]");
+                        filterChainDefinitionMap.put(sysMenu.getMenuUrl(), "perms[" + sysMenu.getMenuCode() + "]");
                     }
                 }
             }
@@ -177,7 +177,7 @@ public class LoadUrlPermissionService {
                             funcApi=funcApi.replace(tmp, "*");
                             indexOf= funcApi.indexOf("{");
                         }
-                        filterChainDefinitionMap.put(funcApi, "perms[F" + sysMenu.getFuncId() + "]");
+                        filterChainDefinitionMap.put(funcApi, "perms[" + sysMenu.getFuncCode() + "]");
                     }
                 }
             }

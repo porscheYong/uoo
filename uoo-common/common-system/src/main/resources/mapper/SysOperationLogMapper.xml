@@ -49,7 +49,7 @@
 		LOG_NAME AS logName,
 		t.ACCOUT AS opUser,
 		SUCCEED AS succeed,
-		0 AS ip,
+		'' AS ip,
 		ol.STATUS_CD AS statusCd,
 		ol.CREATE_DATE AS createDate,
 		'OPT' as logEnum

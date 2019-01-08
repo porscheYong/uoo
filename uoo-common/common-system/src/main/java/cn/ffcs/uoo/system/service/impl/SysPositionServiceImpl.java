@@ -149,4 +149,18 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
 //        page.setRecords(list);
 //        return page;
 //    }
+
+
+    @Override
+    public int getPositionUserRefCount(String positionCode){
+        return baseMapper.getPositionUserRefCount(positionCode);
+    }
+    @Override
+    public int getPositionDepRefCount(String positionCode){
+        return baseMapper.getPositionDepRefCount(positionCode);
+    }
+    @Override
+    public int getPositionRoleRefCount(String positionCode){
+        return baseMapper.getPositionRoleRefCount(positionCode);
+    }
 }

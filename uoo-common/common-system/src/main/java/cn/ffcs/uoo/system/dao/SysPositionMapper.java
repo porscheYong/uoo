@@ -41,6 +41,10 @@ public interface SysPositionMapper extends BaseMapper<SysPosition> {
 
     public List<SysPositionVo> getSysOrgPosition(@Param("orgCode")String orgCode);
 
-//    public List<SysPositionVo> selectFuzzyPositionPage(Pagination page, @Param("vo")SysPositionVo vo);
+    public int getPositionUserRefCount(@Param("positionCode") String positionCode);
+
+    public int getPositionDepRefCount(@Param("positionCode")String positionCode);
+
+    public int getPositionRoleRefCount(@Param("positionCode")String positionCode);
 
 }

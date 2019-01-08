@@ -5,6 +5,7 @@ package cn.ffcs.uoo.web.maindata.common.system.controller;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysOrganizationClient;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.common.system.vo.SysOrganizationVo;
+import cn.ffcs.uoo.web.maindata.common.system.vo.SysPositionVo;
 import cn.ffcs.uoo.web.maindata.common.system.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -124,6 +125,15 @@ public class SysOrganizationController {
     @RequestMapping(value = "/deleteOrg", method = RequestMethod.GET)
     public ResponseResult<String> deleteOrg(@RequestParam(value = "id",required = false)String id){
         return sysOrganizationClient.deleteOrg(id);
+    }
+
+
+    @ApiOperation(value = "查询组织职位", notes = "查询组织职位")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/getOrgPositionList", method = RequestMethod.GET)
+    public ResponseResult<List<SysPositionVo>> getOrgPositionList(@RequestParam(value = "id",required = false)String id) throws IOException {
+        return sysOrganizationClient.getOrgPositionList(id);
     }
 }
 

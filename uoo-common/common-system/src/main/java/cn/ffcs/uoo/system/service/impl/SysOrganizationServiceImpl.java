@@ -120,6 +120,15 @@ public class SysOrganizationServiceImpl extends ServiceImpl<SysOrganizationMappe
     public List<TreeNodeVo> selectOrgTree(){
         List<TreeNodeVo> vos = new ArrayList<>();
         vos = baseMapper.selectOrgTree();
+        if(vos!=null && vos.size()>0){
+            for(TreeNodeVo vo : vos){
+                if(isLeaf(vo.getId())){
+                    vo.setParent(true);
+                }else{
+                    vo.setParent(false);
+                }
+            }
+        }
         return vos;
     }
 

@@ -2,6 +2,8 @@ package cn.ffcs.uoo.web.maindata.common.system.controller;
 
 import cn.ffcs.uoo.web.maindata.common.system.client.SysDataRuleClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysDataRule;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysTable;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysTableColumn;
 import cn.ffcs.uoo.web.maindata.common.system.vo.DataRuleRequestVO;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.common.system.vo.SysDataRuleVo;
@@ -80,6 +82,23 @@ public class SysDataRuleController {
     public ResponseResult<String> updateDataRule(@RequestBody SysDataRuleVo sysDataRuleVo){
         return sysDataRuleClient.updateDataRule(sysDataRuleVo);
     }
+
+
+    @ApiOperation(value = " ", notes = "获取列名")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/getTabColumn", method = RequestMethod.GET)
+    public ResponseResult<List<SysTableColumn>> getTabColumn(@RequestParam(value = "tabId",required = false)String tabId){
+        return sysDataRuleClient.getTabColumn(tabId);
+    }
+    @ApiOperation(value = " ", notes = "获取表名")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/getTab", method = RequestMethod.GET)
+    public ResponseResult<List<SysTable>> getTab(){
+        return sysDataRuleClient.getTab();
+    }
+
 
 }
 
