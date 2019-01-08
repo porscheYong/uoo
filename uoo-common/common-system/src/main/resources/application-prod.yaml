@@ -8,7 +8,7 @@ spring:
       percentage: 1.0
   datasource:
       druid:
-        url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
+        url: jdbc:oracle:thin:@134.96.248.48:3436/ZJ4APRD
         driver-class-name:  oracle.jdbc.OracleDriver
         username: octopus
         password: octopus
@@ -116,7 +116,7 @@ eureka:
     port: 8751
   client:
     service-url:
-      defaultZone:  http://134.96.253.221:8751/eureka/,http://134.96.253.222:8751/eureka/,http://134.96.253.223:8751/eureka/
+      defaultZone: http://134.96.217.231:8751/eureka/,http://134.96.217.232:8751/eureka/,http://134.96.217.233:8751/eureka/
 
 logging:
   level:

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: common-system1
+    name: common-system
   zipkin:
     base-url: http://134.96.253.223:8600
   sleuth:
