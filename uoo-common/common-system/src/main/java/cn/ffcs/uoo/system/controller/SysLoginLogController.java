@@ -62,14 +62,13 @@ public class SysLoginLogController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
     @UooLog(key="listPage",value="获取分页列表")
-    @GetMapping("/listPage/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    @GetMapping("/listPage")
+    public ResponseResult<Page<SysLoginLog>> listPage(@RequestParam(value = "pageNo") Integer pageNo, @RequestParam(value = "pageSize") Integer pageSize,
+            @RequestParam(value="accout")String accout){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
-
-        Wrapper<SysLoginLog> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID).orderBy("UPDATE_DATE", false);
+        Wrapper<SysLoginLog> wrapper = Condition.create().eq("ACCOUT", accout).eq("STATUS_CD", StatusCD.VALID).orderBy("UPDATE_DATE", false);
         Page<SysLoginLog> page = sysLoginLogService.selectPage(new Page<SysLoginLog>(pageNo, pageSize), wrapper);
-
         return ResponseResult.createSuccessResult(page, "");
     }
 

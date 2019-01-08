@@ -10,18 +10,19 @@
  */
 package cn.ffcs.uoo.web.maindata.common.system.controller;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.web.maindata.common.system.client.SysLoginLogClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysLoginLog;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 /**
@@ -39,44 +40,15 @@ public class SysLoginLogController {
     @Autowired
     SysLoginLogClient sysLoginLogClient;
 
-    /*@ApiOperation(value = "获取单个数据", notes = "获取单个数据")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long" ,paramType="path"),
-    })
-    @UooLog(key="getLoginLog",value="获取单个数据")
-    @GetMapping("/get/{id}")
-    public ResponseResult get(@PathVariable(value="id" ,required=true) Long id){
-        SysLoginLog LoginLog = sysLoginLogService.selectById(id);
-        if(LoginLog== null ){
-            return ResponseResult.createErrorResult("无效数据");
-        }
-        return ResponseResult.createSuccessResult(LoginLog, "success");
-    }
-
     @ApiOperation(value = "获取分页列表", notes = "获取分页列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
-    @UooLog(key="listPage",value="获取分页列表")
-    @GetMapping("/listPage/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult listPage(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
-        pageNo = pageNo==null?0:pageNo;
-        pageSize = pageSize==null?20:pageSize;
-
-        Wrapper<SysLoginLog> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID).orderBy("UPDATE_DATE", false);
-        Page<SysLoginLog> page = sysLoginLogService.selectPage(new Page<SysLoginLog>(pageNo, pageSize), wrapper);
-
-        return ResponseResult.createSuccessResult(page, "");
-    }*/
-
-    @ApiOperation(value = "新增",notes = "新增")
-    @ApiImplicitParam(name = "sysLoginLog", value = "新增", required = true, dataType = "SysLoginLog")
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<Void> add(@RequestBody SysLoginLog sysLoginLog) {
-        ResponseResult<Void> responseResult = new ResponseResult<Void>();
- 
-        return responseResult;
+    @GetMapping("/listPage")
+    public ResponseResult<Page<SysLoginLog>> listPage(@RequestParam(value = "pageNo") Integer pageNo, @RequestParam(value = "pageSize") Integer pageSize,
+            @RequestParam(value="accout")String accout){
+        return sysLoginLogClient.listPage(pageNo, pageSize, accout);
     }
 
 }
