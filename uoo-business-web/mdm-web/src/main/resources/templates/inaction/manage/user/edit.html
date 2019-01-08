@@ -252,6 +252,10 @@
                         </select>
                     </div>
                     <div class="col-md-6" style="margin-bottom: 10px;">
+                        <label for="psnName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户编码</label>
+                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" type="text" value="{{personalData.psnCode}}" disabled/>
+                    </div>
+                    <div class="col-md-6" style="margin-bottom: 10px;">
                         <label for="gender" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">性别</label>
                         <select class="col-md-8 col-sm-8 col-xs-12" id="gender">
                             {{#each genderData}}
@@ -260,48 +264,36 @@
                         </select>
                     </div>
                     <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="nationality" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">籍贯</label>
-                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" required type="text" id="nationality" value="{{personalData.nationality}}"/>
-                    </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="nation" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">民族</label>
+                        <label for="nation" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号等级</label>
                         <select id="nation" class="col-md-8 col-sm-8 col-xs-12">
                             {{#each nationData}}
-                                <option value="{{itemValue}}" {{#eq itemValue ../personalData.nation}}selected="selected"{{/eq}} >{{itemCnname}}</option>
+                            <option value="{{itemValue}}" {{#eq itemValue ../personalData.nation}}selected="selected"{{/eq}} >{{itemCnname}}</option>
                             {{/each}}
                         </select>
                     </div>
                     <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="psnName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">员工工号</label>
-                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" type="text" value="{{personalData.psnNbr}}" disabled/>
-                    </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="psnName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
-                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" type="text" value="{{personalData.psnCode}}" disabled/>
-                    </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="psnName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">人力编码</label>
-                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" type="text" value="{{personalData.ncCode}}" disabled/>
-                    </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="psnName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">首次工作时间</label>
+                        <label for="psnName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">出生年月</label>
                         <input onclick="openDate()" readonly="readonly" isTime="yes" class="ui-input col-md-8 col-sm-8 col-xs-12" type="text" id="toWorkTime" value="{{#format personalData.toWorkTime}}{{/format}}"/>
                     </div>
                     <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="marriage" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">婚姻状况</label>
-                         <select id="marriage" class="col-md-8 col-sm-8 col-xs-12">
-                            {{#each marriageData}}
-                                <option value="{{itemValue}}" {{#eq itemValue ../personalData.marriage}}selected="selected"{{/eq}} >{{itemCnname}}</option>
-                            {{/each}}
-                        </select>
+                        <label for="mobile" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                               style="padding-right: 20px;line-height: 40px;text-align: right;">手机号码</label>
+                        <div id="tbMobileVoList" class="ui-input col-md-8 col-sm-8 col-xs-12">
+                            <input id="mobile" required onkeyup="autoFillMail()" onpaste="autoFillMail()">
+                        </div>
+                        <div class="fright" style="position: absolute; right: 0; line-height: 40px;" onclick="addMobile()">
+                            <a id="mobileAdd" href="javascript:void(0)"><span class="fa fa-plus-circle icon-add" style="padding-right: 0; font-size: 23px;"></span></a>
+                        </div>
                     </div>
                     <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="pliticalStatus" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">政治面貌</label>
-                        <select id="pliticalStatus" class="col-md-8 col-sm-8 col-xs-12">
-                            {{#each pliticalStatusData}}
-                                <option value="{{itemValue}}" {{#eq itemValue ../personalData.pliticalStatus}}selected="selected"{{/eq}} >{{itemCnname}}</option>
-                            {{/each}}
-                        </select>
+                        <label for="tbEamilVoList" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                               style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
+                        <div id="tbEamilVoList" class="ui-input col-md-8 col-sm-8 col-xs-12">
+                            <input id="email" required>
+                        </div>
+                        <div class="fright" style="position: absolute; right: 0; line-height: 40px;" onclick="addEmail()">
+                            <a id="emailAdd" href="javascript:void(0)"><span class="fa fa-plus-circle icon-add" style="padding-right: 0; font-size: 23px;"></span></a>
+                        </div>
                     </div>
                     <div class="BotBtn bdTop">
                         <input class="Btn BtnBlue" type="button" value="保存" onclick="updatePersonnel()"/>
@@ -310,43 +302,7 @@
                 </form>
             </div>
         </script>
-        <script id="baseInfoTemplate" type="text/x-handlebars-template">
-        <div class="col-md-2 fleft tcenter">
-            <img class="avatar" id="psnimg1" src="{{personalData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null"/>
-        </div>
 
-        <div class="col-md-10 fleft Col8">
-            <div style="padding-top: 10px">
-                <table>
-                            <tr class="Title">
-                                <td width="50px">序号</td>
-                                <td>账号类型</td>
-                                <td>用户名</td>
-                                <td>状态</td>
-                                <td>创建时间</td>
-
-                            </tr>
-                          {{#if userList.records}} {{#each userList.records}}
-                            <tr>
-                                <td>{{#seq @index}}{{/seq}}</td>
-                                <td><a href="javascript:void(0)" onclick="gotoAccout('{{@index}}')">{{name}}</a></td>
-                                <td><a href="javascript:void(0)" onclick="gotoAccout('{{@index}}')">{{acct}}</a></td>
-                                <td>{{#eq statusCd 1000}}生效{{/eq}}</td>
-                                <td></td>
-                            </tr>
-                            {{/each}}
-                           {{else}}
-                             <tr>
-                                <td colspan="5">暂无用户信息</td>
-                            </tr>
-                            {{/if}}
-                        </table>
-            </div>
-        </div>
-        <div class="clearfix"></div>
-
-
-        </script>
         <script id="orgInfoTemplate1" type="text/x-handlebars-template">
         <table>
                             <tr class="Title">
