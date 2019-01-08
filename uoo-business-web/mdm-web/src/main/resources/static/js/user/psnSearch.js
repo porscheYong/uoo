@@ -5,31 +5,6 @@ var empty;
 
 empty = Handlebars.compile($(".typeahead-menu").html());
 
-engine = new Bloodhound({
-    identify: function(o) { return o.id_str; },
-    queryTokenizer: Bloodhound.tokenizers.whitespace,
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name', 'orgName'),
-    dupDetector: function(a, b) { return a.id_str === b.id_str; },
-    remote: {
-        url: '/orgPersonRel/getPerOrgRelPage?search=%QUERY&pageNo=1&pageSize=10&orgId='+orgId+'&orgTreeId='+orgTreeId,
-        wildcard: '%QUERY',
-        filter: function (response) {
-            if (response.data && response.data.records.length == 0)
-                return;
-            
-        }
-    }
-});
-
-function engineWithDefaults(q, sync, async) {
-    if (q === '') {
-        sortFlag = 0;
-    }
-    else {
-        engine.search(q, sync, async);
-    }
-}
-
 $('#psnName').typeahead({
     hint: $('.typeahead-hint'),
     menu: $('.user-table'),
@@ -43,20 +18,18 @@ $('#psnName').typeahead({
         selectable: 'Typeahead-selectable'
     }
 }, {
-    source: engineWithDefaults,
+    source: function(){
+        // console.log(a,b,c,d)
+        // initOrgPersonnelTable(checked,$("#psnName").val());
+    },
     displayKey: 'orgName',
     templates: {
         suggestion: empty
     }
 })
-  .on('typeahead:asyncrequest', function() {
-        $('.Typeahead-spinner').show();
-        sortFlag = 0;
-        if($("#psnName").val() != ''){
-            initOrgPersonnelTable(checked,$("#psnName").val());
-        }else{
-            initOrgPersonnelTable(checked,'');
-        }
+  .on('typeahead:change', function(event) {
+      $('.Typeahead-spinner').show();
+      initOrgPersonnelTable(checked,$("#psnName").val());
     })
   .on('typeahead:asynccancel', function() {
         $('.Typeahead-spinner').hide();

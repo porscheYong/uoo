@@ -1,8 +1,11 @@
-var id = getQueryString('id');
+var id = getQueryString('id');  //当前职位id
 var positionId = getQueryString('positionId');
 var posFullName = getQueryString('posFullName');
 var posName = getQueryString('posName');
 var roleList = [];
+var locationList = [];
+var pPosList = [];
+var toastr = window.top.toastr;
 
 function editInfo(){
     $("#posInfo").css("display","none");
@@ -43,10 +46,15 @@ function initPosInfo(result){
     isInputNull("supPos",result.pPositionName);
     isInputNull("sort",result.sortNum);
     isInputNull("notes",result.notes);
+    locationList = [{"id":result.regionNbr,"name":result.regionName}];
+    pPosList = [{"id":result.pPositionId,"name":result.pPositionName}];
 
     $('#role').addTag(roleList);
     if(result.regionName){
-        $('#location').addTag(result.regionName);
+        $('#location').addTag(locationList);
+    }
+    if(result.pPositionId){
+        $('#supPos').addTag(pPosList);
     }
 }
 
@@ -120,6 +128,7 @@ function backToList(){
 if(typeof $.fn.tagsInput !== 'undefined'){
     $('#role').tagsInput();
     $('#location').tagsInput();
+    $('#supPos').tagsInput();
   }
 
 //角色选择
@@ -175,15 +184,63 @@ function openLocationDialog() {
     });
 }
 
+//上级职位选择
+function openParPosDialog() {
+    parent.layer.open({
+        type: 2,
+        title: '上级职位选择',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['50%', '80%'],
+        maxmin: true,
+        content: 'parPosDialog.html',
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            checkNode = iframeWin.checkNode;
+            if(checkNode[0].id == id){
+                toastr.error("不能选择当前职位为上级职位!");
+            }else{
+                $('#supPos').importTags(checkNode, {unique: true});
+                $('.ui-tips-error').css('display', 'none');
+                pPosList = checkNode;
+            }
+            parent.layer.close(index);
+        },
+        btn2: function(index, layero){},
+        cancel: function(){}
+    });
+}
+
 //更新职位
 function updatePosition(){
     var roleIdList = [];
 
-    for(var i=0;i<roleIdList.length;i++){
-        roleIdList.push({"roleId":roleIdList[i].roleId});
+    for(var i=0;i<roleList.length;i++){
+        roleIdList.push({"roleId":roleList[i].roleId});
     }
+    $http.post('/sysPosition/updatePosition', JSON.stringify({  
+        notes : $("#notes").val(),
+        pPositionId : pPosList[0].id,
+        positionId : id,
+        regionNbr : locationList[0].id,
+        statusCd : $("#state").val(),
+        sortNum : $("#sort").val(),
+        sysRoleDTOList : roleIdList,
+        positionName : $("#posNameInput").val(),
+        positionCode : $("#posNum").val()
+    }), function (message) {
+        backToList();
+        toastr.success("保存成功！");
+    }, function (err) {
+        // toastr.error("保存失败！");
+    })
 }
 
+$("#role_tagsinput").on('click',function(){
+    openTypeDialog();
+})
 $("#posName").html(posName);
 $(".breadcrumb").html(posFullName);
 getPosition();
