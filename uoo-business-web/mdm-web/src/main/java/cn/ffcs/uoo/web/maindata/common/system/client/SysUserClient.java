@@ -10,7 +10,7 @@ import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysUserClientHystr
 import cn.ffcs.uoo.web.maindata.common.system.dto.AlterPwdDTO;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
-@FeignClient(value = "common-system1",configuration = {FeignClientConfiguration.class},fallback = SysUserClientHystrix.class)
+@FeignClient(value = "common-system",configuration = {FeignClientConfiguration.class},fallback = SysUserClientHystrix.class)
 public interface SysUserClient {
     @RequestMapping(value = "/system/sysUserLogin", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<SysUser> login(SysUser sysUser) ;
