@@ -64,6 +64,7 @@ public interface SysPositionClient {
     @RequestMapping(value = "/sysPosition/addPosition", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<TreeNodeVo> addPosition(@RequestBody SysPositionVo pos);
 
-
+    @RequestMapping(value = "/sysPosition/deletePosition", method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    public ResponseResult<String> deletePosition(@RequestBody SysPositionVo pos);
 }
 

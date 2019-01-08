@@ -17,6 +17,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -352,6 +353,7 @@ public class SysPositionController {
                 return ret;
             }
         }
+        sysPositionService.delete(vo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
         return ret;
