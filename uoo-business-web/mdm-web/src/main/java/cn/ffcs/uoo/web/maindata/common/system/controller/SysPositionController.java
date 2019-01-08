@@ -93,5 +93,13 @@ public class SysPositionController {
     }
 
 
+    @ApiOperation(value = "删除职位", notes = "删除职位")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/deletePosition", method = RequestMethod.POST)
+    public ResponseResult<String> deletePosition(@RequestBody SysPositionVo pos){
+        return sysPositionClient.deletePosition(pos);
+    }
+
 }
 

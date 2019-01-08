@@ -8,6 +8,7 @@ import cn.ffcs.uoo.web.maindata.common.system.vo.SysPositionVo;
 import cn.ffcs.uoo.web.maindata.common.system.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +65,14 @@ public class SysPositionClientHystrix implements SysPositionClient {
     @Override
     public ResponseResult<TreeNodeVo> addPosition(SysPositionVo pos){
         ResponseResult<TreeNodeVo> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    }
+
+    @Override
+    public ResponseResult<String> deletePosition(@RequestBody SysPositionVo pos){
+        ResponseResult<String> rr=new ResponseResult<>();
         rr.setState(ResponseResult.STATE_SERVICE_ERROR);
         rr.setMessage("服务不可用");
         return rr;

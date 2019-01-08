@@ -105,5 +105,11 @@ table.dataTable tbody td {
     background: rgb(193, 237, 255) !important;
     color:#959da9 !important;
 }
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 60px;
+    border: 1px solid #dce1e6
+}
 
 

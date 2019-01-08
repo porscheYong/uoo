@@ -2,20 +2,32 @@ package cn.ffcs.uoo.system.service.impl;
 
 import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
+import cn.ffcs.uoo.system.consts.BaseUnitConstants;
 import cn.ffcs.uoo.system.dao.SysUserMapper;
 import cn.ffcs.uoo.system.entity.SysUser;
+import cn.ffcs.uoo.system.entity.SysUserDeptRef;
+import cn.ffcs.uoo.system.service.SysUserDeptRefService;
+import cn.ffcs.uoo.system.service.SysUserPositionRefService;
 import cn.ffcs.uoo.system.service.SysUserService;
-import cn.ffcs.uoo.system.util.AESUtil;
+import cn.ffcs.uoo.system.util.IdCardVerification;
 import cn.ffcs.uoo.system.util.MD5Util;
+import cn.ffcs.uoo.system.util.StrUtil;
+import cn.ffcs.uoo.system.vo.SysUserDeptPositionVo;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 
@@ -36,8 +48,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      */
     public static final String REGEX_EMAIL = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
 
-    @Autowired
+    @Resource
     SysUserMapper sysUserMapper;
+
+    @Autowired
+    private SysUserDeptRefService sysUserDeptRefService;
+    @Autowired
+    private SysUserPositionRefService sysUserPositionRefService;
 
     @Override
     public Long getId() {
@@ -149,4 +166,107 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         sysUser.setUpdateUser(1L);
         sysUser.setStatusDate(DateUtils.parseDate(DateUtils.getDate()));
     }
+
+    @Override
+    public String checkAllRegister(SysUser sysUser){
+        String msg = checkRegister(sysUser);
+        if(!StrUtil.isNullOrEmpty(msg)){
+            return msg;
+        }
+        if (StringUtils.isEmpty(sysUser.getGender())) {
+            return "性别为空！";
+        }
+        if (StringUtils.isEmpty(sysUser.getCertType())) {
+            return "证件类型为空！";
+        }
+        if (StringUtils.isEmpty(sysUser.getCertId())) {
+            return "证件号为空！";
+        }
+        if (StringUtils.isEmpty(sysUser.getEmail())) {
+            return "邮箱为空！";
+        }
+        if(!IdCardVerification.idCardValidate(sysUser.getCertId())){
+            return "证件号格式有误";
+        }
+        if(!StrUtil.checkTelephoneNumber(sysUser.getMobile())){
+            return "手机号格式有误";
+        }
+        if(!StrUtil.checkEmail(sysUser.getEmail())){
+            return "邮箱格式有误";
+        }
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TB_SYS_USER_ACCOUT, sysUser.getAccout());
+        SysUser user = this.selectOne(new EntityWrapper<SysUser>().allEq(map));
+        if(!StrUtil.isNullOrEmpty(user)){
+            if(!StrUtil.isNullOrEmpty(sysUser.getUserId()) && !user.getUserId().equals(sysUser.getUserId())){
+                return "账号已经被占用";
+            }
+        }
+
+
+        // 手机号，证件号、邮箱等 重复验证
+
+        return null;
+    }
+
+    @Override
+    public Object addOrUpdateUser(SysUser sysUser){
+        String type = BaseUnitConstants.TYPE_UPDATE;
+        SysUser user = this.getSysUserById(sysUser.getUserId());
+        if(StrUtil.isNullOrEmpty(user)){
+            type = BaseUnitConstants.TYPE_INSERT;
+        }
+        if(type.equals(BaseUnitConstants.TYPE_INSERT) || !sysUser.getPasswd().equals(user.getPasswd())){
+            String salt = MD5Util.getSalt();
+            String md5Content = DigestUtils.md5Hex(sysUser.getPasswd());
+            sysUser.setSalt(salt);
+            sysUser.setPasswd(MD5Util.md5Encoding(md5Content, salt));
+            sysUser.setUserId(getId());
+        }
+        if(type.equals(BaseUnitConstants.TYPE_INSERT)){
+            baseMapper.insert(sysUser);
+        }
+        if(type.equals(BaseUnitConstants.TYPE_UPDATE)){
+            baseMapper.updateById(sysUser);
+        }
+
+        return null;
+    }
+
+    @Override
+    public SysUser getSysUserById(Long userId){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TB_SYS_USER_ID, userId);
+        SysUser user = this.selectOne(new EntityWrapper<SysUser>().allEq(map));
+        if(StrUtil.isNullOrEmpty(user)){
+            return null;
+        }
+        return user;
+    }
+
+    @Override
+    public Page<SysUserDeptPositionVo> getUserDeptPosition(String userCode, Integer pageNo, Integer pageSize){
+        List<SysUserDeptPositionVo> sysUserDeptPositionVoList = new ArrayList<>();
+        Page<SysUserDeptRef> userDeptRefPage = sysUserDeptRefService.getUserDeptRefByUserCode(userCode, pageNo, pageSize);
+        List<SysUserDeptRef> sysUserDeptRefs = userDeptRefPage.getRecords();
+        if(sysUserDeptRefs != null && sysUserDeptRefs.size() > 0){
+            for(SysUserDeptRef userDeptRef : sysUserDeptRefs){
+                SysUserDeptPositionVo userDeptPositionVo = new SysUserDeptPositionVo();
+                BeanUtils.copyProperties(userDeptRef, userDeptPositionVo);
+                userDeptPositionVo.setUserPositionRefList(sysUserPositionRefService.getUserPositionRef(userCode, userDeptRef.getOrgCode()));
+                sysUserDeptPositionVoList.add(userDeptPositionVo);
+            }
+        }
+       Page<SysUserDeptPositionVo> page = new Page<SysUserDeptPositionVo>(StrUtil.intiPageNo(pageNo), StrUtil.intiPageSize(pageSize));
+//        List<SysUserDeptPositionVo> list = baseMapper.getUserDeptPosition(page, userCode);
+        page.setTotal(userDeptRefPage.getTotal());
+        page.setRecords(sysUserDeptPositionVoList);
+        return page;
+    }
+
+
+
+
 }

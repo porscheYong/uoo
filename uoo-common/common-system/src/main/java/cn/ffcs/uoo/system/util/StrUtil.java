@@ -1,10 +1,13 @@
 package cn.ffcs.uoo.system.util;
 
+import cn.ffcs.uoo.system.consts.BaseUnitConstants;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 import java.util.Vector;
@@ -33,8 +36,9 @@ public class StrUtil {
 	 * @return
 	 */
 	public static String toString(String str) {
-		if (str == null)
+		if (str == null) {
 			return "";
+		}
 		return str;
 	}
 
@@ -43,8 +47,8 @@ public class StrUtil {
 	 * @param str
 	 * @return
 	 */
-	public static boolean isNumeric(String str){ 
-		   Pattern pattern = Pattern.compile("[0-9]*"); 
+	private static Pattern pattern = Pattern.compile("[0-9]*");
+	public static boolean isNumeric(String str){
 		   Matcher isNum = pattern.matcher(str);
 		   if( !isNum.matches() ){
 		       return false; 
@@ -274,8 +278,8 @@ public class StrUtil {
 	 * 按长度分割字符串
 	 * 
 	 * @date 2013-2-2
-	 * @param str
-	 * @param len
+	 * @param msg
+	 * @param num
 	 * @return
 	 */
 	public static String[] split(String msg, int num) {
@@ -333,7 +337,7 @@ public class StrUtil {
 	 * 过滤HTML标签
 	 * 
 	 * @date 2013-2-2
-	 * @param html
+	 * @param htmlStr
 	 * @return
 	 */
 	public static String html2text(String htmlStr) {
@@ -555,12 +559,13 @@ public class StrUtil {
 	 * 电信:2G号段(CDMA网络)有133,153 3G号段(CDMA网络)有189,181,180
 	 * 虚拟运营商有17开头的手机号码段，具体是哪几个部分还未确定。
 	 */
+	private static Pattern p = Pattern.compile("^1\\d{10}$");
 	public static boolean checkTelephoneNumber(String telephoneNumber) {
 		/*Pattern p = Pattern
 				.compile("^((13[0-9])|147|(15[^4,\\D])|(18[0,1,2,3,5-9]))\\d{8}$");
 		Matcher m = p.matcher(telephoneNumber);
 		return m.matches();*/
-		Pattern p = Pattern.compile("^1\\d{10}$");
+
 		Matcher m = p.matcher(telephoneNumber);
 		if(m.matches()){
 			/*List<NumberSegment> list = numberSegmentManager.findAllByActive();
@@ -646,4 +651,69 @@ public class StrUtil {
         
         return outStr;
     }
+
+	/**
+	 * 邮箱的正则表达式验证
+	 * @param email
+	 * @return
+	 */
+	public static boolean checkEmail(String email) {
+		boolean flag = false;
+		try {
+			String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+			Pattern regex = Pattern.compile(check);
+			Matcher matcher = regex.matcher(email);
+			flag = matcher.matches();
+		} catch (Exception e) {
+			flag = false;
+		}
+		return flag;
+	}
+
+	/**
+	 * @param str
+	 *            字符串
+	 * @param format
+	 *            "yyyy-MM-dd HH:mm:ss"
+	 * @return date
+	 * @author: zfz
+	 * @修改记录： ==============================================================<br>
+	 *        日期:Aug 30, 2008 zfz 创建方法，并实现其功能
+	 *        ==============================================================<br>
+	 */
+	public static java.util.Date str2date(final String str, final String format) {
+		java.util.Date ret = null;
+		final SimpleDateFormat sdf = new SimpleDateFormat(format);
+		try {
+			ret = sdf.parse(str);
+		} catch (final ParseException e) {
+			e.printStackTrace();
+			ret = null;
+		}
+		return ret;
+	}
+
+	/**
+	 * 初始页面
+	 * @param pageNo
+	 * @return
+	 */
+	public static Integer intiPageNo(Integer pageNo){
+		if(pageNo == null || pageNo <= 0){
+			return BaseUnitConstants.PAGE_NO;
+		}
+		return pageNo;
+	}
+
+	/**
+	 * 初始页面数量
+	 * @param pageSize
+	 * @return
+	 */
+	public static Integer intiPageSize(Integer pageSize){
+		if(pageSize == null || pageSize <= 0){
+			return BaseUnitConstants.PAGE_SIZE;
+		}
+		return pageSize;
+	}
 }

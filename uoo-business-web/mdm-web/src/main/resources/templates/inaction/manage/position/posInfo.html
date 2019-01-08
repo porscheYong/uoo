@@ -53,11 +53,6 @@
             margin-right: 5px;
             margin-bottom:4px;
         }
-        .icon{
-            margin: 14px 3px !important;
-            margin-bottom: -6px !important;
-            margin-left: -8px !important;
-        }
         .col-sm-8 {
             width: 64% !important;
         }
@@ -79,10 +74,15 @@
         #role_tagsinput{
             width: 83% !important;
         }
-        #location_tagsinput{
+        #location_tagsinput,
+        #supPos_tagsinput{
             width: 64% !important;
         }
-        #role,#location{
+        #location_tagsinput .tag,
+        #supPos_tagsinput .tag{
+            margin-bottom: 0px !important;
+        }
+        #role,#location,#supPos{
             opacity: 0;
             filter: alpha(opacity=0);
             position: absolute;
@@ -192,9 +192,7 @@
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
                                     <label for="supPos" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">上级职位</label>
-                                    <select class="col-md-8 col-sm-8 col-xs-8" id="supPos">
-                                        <!-- <option>杭州市单位管理员</option> -->
-                                    </select>
+                                    <input id="supPos" class="ui-input col-md-8 col-sm-8 col-xs-8" onclick="openParPosDialog()" required readonly>
                                 </div>
                             </div>
 
@@ -239,7 +237,7 @@
                         <div class="row" style="margin-bottom: 10px;">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="role" class="col-md-2 col-sm-2 col-xs-2" style="padding-right: 20px;line-height: 40px;text-align: right;width: 14%">所含角色</label>
+                                    <label for="role" class="col-md-2 col-sm-2 col-xs-2" style="padding-right: 20px;line-height: 40px;text-align: right;width: 14.3%">所含角色</label>
                                     <input id="role" class="ui-input col-md-10 col-sm-10 col-xs-10" style="width:83%;" onclick="openTypeDialog()" required readonly></input>
                                 </div>
                             </div>
@@ -247,7 +245,7 @@
 
                         <div class="row" style="margin-bottom: 10px;">
                             <div style="margin-left:34%;margin-top:4%;">
-                                <button class="ui-button ui-button-primary">保存</button>
+                                <button class="ui-button ui-button-primary" onclick="updatePosition()">保存</button>
                                 <button class="Btn BtnRed2" id="delAcct" onclick="deleteTbAcct()" style="margin-left: 10px;">删除</button>
                                 <button class="ui-button ui-button-cancel" onclick="cancel()" style="margin-left: 10px;">取消</button>
                             </div>
@@ -282,7 +280,6 @@
     <script type="text/javascript" src="/js/manage/position/posInfo.js"></script>
     <script type="text/javascript">
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-            $('#supPos').selectMatch();
             $('#state').selectMatch();
         })
     </script>
