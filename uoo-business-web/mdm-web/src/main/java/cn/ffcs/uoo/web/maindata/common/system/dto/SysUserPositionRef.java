@@ -1,70 +1,82 @@
-package cn.ffcs.uoo.system.entity;
+package cn.ffcs.uoo.web.maindata.common.system.dto;
 
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.FieldFill;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
- * 对一定职位可以默认具备一些角色
+ * 平台用户职位关系
  * </p>
  *
- * @author zengxsh
- * @since 2018-12-20
+ * @author wudj
+ * @since 2019-01-05
  */
-@TableName("SYS_POSITIONT_ROLE_REF")
-public class SysPositiontRoleRef extends Model<SysPositiontRoleRef> {
+@TableName("SYS_USER_POSITION_REF")
+public class SysUserPositionRef extends Model<SysUserPositionRef> {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 职位角色关系标识
+     * 系统用户职位关系标识
      */
-    @TableId("POSITIONT_ROLE_REF_ID")
-    private Long positiontRoleRefId;
+    @TableId("USER_POSITION_REF_ID")
+    private Long userPositionRefId;
+    /**
+     * 人员编码
+     */
+    @TableField("USER_CODE")
+    private String userCode;
     /**
      * 职位编码
      */
     @TableField("POSITION_CODE")
     private String positionCode;
     /**
-     * 角色编码
+     * 排序号
      */
-    @TableField("ROLE_CODE")
-    private String roleCode;
-
+    @TableField("SORT")
+    private Integer sort;
     /**
      * 状态
      */
-    @TableField("STATUS_CD")
+    @TableField(value = "STATUS_CD", fill = FieldFill.INSERT)
     private String statusCd;
     /**
      * 创建时间
      */
-    @TableField("CREATE_DATE")
+    @JsonIgnore
+    @TableField(value = "CREATE_DATE", fill = FieldFill.INSERT)
     private Date createDate;
     /**
      * 创建人
      */
-    @TableField("CREATE_USER")
+    //@JsonIgnore
+    @TableField(value = "CREATE_USER", fill = FieldFill.INSERT)
     private Long createUser;
     /**
      * 修改时间
      */
-    @TableField("UPDATE_DATE")
+    @JsonIgnore
+    @TableField(value = "UPDATE_DATE", fill = FieldFill.INSERT_UPDATE)
     private Date updateDate;
     /**
      * 修改人
      */
-    @TableField("UPDATE_USER")
+    //@JsonIgnore
+    @TableField(value = "UPDATE_USER", fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
     /**
      * 状态变更的时间
      */
-    @TableField("STATUS_DATE")
+    @JsonIgnore
+    @TableField(value = "STATUS_DATE", fill = FieldFill.INSERT)
     private Date statusDate;
     /**
      * 备注
@@ -73,24 +85,20 @@ public class SysPositiontRoleRef extends Model<SysPositiontRoleRef> {
     private String notes;
 
 
-    @TableField(exist=false)
-    private String roleId;
-
-
-    public String getRoleId() {
-        return roleId;
+    public Long getUserPositionRefId() {
+        return userPositionRefId;
     }
 
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
+    public void setUserPositionRefId(Long userPositionRefId) {
+        this.userPositionRefId = userPositionRefId;
     }
 
-    public Long getPositiontRoleRefId() {
-        return positiontRoleRefId;
+    public String getUserCode() {
+        return userCode;
     }
 
-    public void setPositiontRoleRefId(Long positiontRoleRefId) {
-        this.positiontRoleRefId = positiontRoleRefId;
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
     }
 
     public String getPositionCode() {
@@ -101,12 +109,12 @@ public class SysPositiontRoleRef extends Model<SysPositiontRoleRef> {
         this.positionCode = positionCode;
     }
 
-    public String getRoleCode() {
-        return roleCode;
+    public Integer getSort() {
+        return sort;
     }
 
-    public void setRoleCode(String roleCode) {
-        this.roleCode = roleCode;
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 
     public String getStatusCd() {
@@ -167,15 +175,16 @@ public class SysPositiontRoleRef extends Model<SysPositiontRoleRef> {
 
     @Override
     protected Serializable pkVal() {
-        return this.positiontRoleRefId;
+        return this.userPositionRefId;
     }
 
     @Override
     public String toString() {
-        return "SysPositiontRoleRef{" +
-        ", positiontRoleRefId=" + positiontRoleRefId +
+        return "SysUserPositionRef{" +
+        ", userPositionRefId=" + userPositionRefId +
+        ", userCode=" + userCode +
         ", positionCode=" + positionCode +
-        ", roleCode=" + roleCode +
+        ", sort=" + sort +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
         ", createUser=" + createUser +

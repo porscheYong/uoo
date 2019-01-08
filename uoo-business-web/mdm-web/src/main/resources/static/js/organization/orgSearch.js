@@ -138,7 +138,7 @@ $('#orgName').typeahead({
         suggestion: empty
     }
 })
-  .on('typeahead:asyncrequest', function() {
+  .on('typeahead:asyncrequest', function(e) {
         $('.Typeahead-spinner').show();
         if($("#orgName").val() != '' && !Regx.test($("#orgName").val())){
             initOrgSearchTable($("#orgName").val());

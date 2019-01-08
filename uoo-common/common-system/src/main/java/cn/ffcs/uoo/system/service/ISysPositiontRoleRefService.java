@@ -3,6 +3,8 @@ package cn.ffcs.uoo.system.service;
 import cn.ffcs.uoo.system.entity.SysPositiontRoleRef;
 import com.baomidou.mybatisplus.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 对一定职位可以默认具备一些角色 服务类
@@ -33,5 +35,8 @@ public interface ISysPositiontRoleRefService extends IService<SysPositiontRoleRe
      * 更新
      */
     public void update(SysPositiontRoleRef sysPositiontRoleRef);
+
+
+    public List<SysPositiontRoleRef> getCurRoleList(String positionCode);
 
 }
