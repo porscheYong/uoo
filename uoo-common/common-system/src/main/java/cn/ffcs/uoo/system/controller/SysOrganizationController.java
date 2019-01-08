@@ -224,14 +224,23 @@ public class SysOrganizationController {
 
 
         List<SysPositionVo> sysPositionList = vo.getSysPositionVos();
+
+        List<SysPosition> sysPositions = new ArrayList<>();
+        for(SysPositionVo vo1 : sysPositionList){
+              Wrapper sysPositionWrapper = Condition.create()
+                .eq("POSITION_ID",vo1.getpPositionId())
+                .eq("STATUS_CD","1000");
+            SysPosition sp = sysPositionService.selectOne(sysPositionWrapper);
+            sysPositions.add(sp);
+        }
 //        Wrapper orgPosWrapper = Condition.create()
 //                .eq("ORG_CODE",vo.getOrgCode())
 //                .eq("STATUS_CD","1000");
 //        List<SysDeptPositionRef> sysDeptPositionRefCur = sysDeptPositionRefService.selectList(orgPosWrapper);
         List<SysDeptPositionRef> sysDeptPositionRefCur = sysDeptPositionRefService.getDeptPositionRelList(vo.getOrgCode());
         boolean isExists = false;
-        if(sysPositionList!=null && sysPositionList.size()>0){
-            for(SysPositionVo ot : sysPositionList){
+        if(sysPositions!=null && sysPositions.size()>0){
+            for(SysPosition ot : sysPositions){
                 for(SysDeptPositionRef otf : sysDeptPositionRefCur){
                     if(ot.getPositionCode().equals(otf.getPositionCode())){
                         isExists = true;
@@ -252,7 +261,7 @@ public class SysOrganizationController {
             }
             isExists = false;
             for(SysDeptPositionRef otf : sysDeptPositionRefCur){
-                for(SysPositionVo ot : sysPositionList){
+                for(SysPosition ot : sysPositions){
                     isExists = false;
                     if(ot.getPositionCode().equals(otf.getPositionCode())){
                         isExists = true;

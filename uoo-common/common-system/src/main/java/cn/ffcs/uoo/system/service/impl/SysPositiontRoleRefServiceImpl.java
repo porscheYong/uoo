@@ -9,6 +9,7 @@ import cn.ffcs.uoo.system.dao.SysPositiontRoleRefMapper;
 import cn.ffcs.uoo.system.service.ISysPositiontRoleRefService;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -67,5 +68,12 @@ public class SysPositiontRoleRefServiceImpl extends ServiceImpl<SysPositiontRole
         updateById(sysPositiontRoleRef);
     }
 
+    /**
+     * 更新
+     */
+    @Override
+    public List<SysPositiontRoleRef> getCurRoleList(String positionCode){
+        return baseMapper.getCurRoleList(positionCode);
+    }
 
 }

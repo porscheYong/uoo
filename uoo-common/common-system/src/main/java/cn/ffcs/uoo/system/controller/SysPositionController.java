@@ -4,6 +4,7 @@ package cn.ffcs.uoo.system.controller;
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.system.entity.SysPosition;
 import cn.ffcs.uoo.system.entity.SysPositiontRoleRef;
+import cn.ffcs.uoo.system.entity.SysRole;
 import cn.ffcs.uoo.system.service.ISysPositiontRoleRefService;
 import cn.ffcs.uoo.system.service.SysPositionService;
 import cn.ffcs.uoo.system.service.SysRoleService;
@@ -188,15 +189,24 @@ public class SysPositionController {
         sysPosition.setPositionCode(sysPositionVo.getPositionCode());
         sysPosition.setUpdateUser(sysPositionVo.getUserId());
         List<SysRoleDTO> sysRoleDTOList = sysPositionVo.getSysRoleDTOList();
-        Wrapper positionRolesWrapper = Condition.create()
-                .eq("POSITION_CODE",sysPositionVo.getPositionCode())
-                .eq("STATUS_CD","1000");
-        List<SysPositiontRoleRef> curPosRoleList = iSysPositiontRoleRefService.selectList(positionRolesWrapper);
+        List<SysRole> sysRoles = new ArrayList<SysRole>();
+        for(SysRoleDTO v:sysRoleDTOList){
+            Wrapper sysRolesWrapper = Condition.create()
+                    .eq("ROLE_ID",v.getRoleId()).eq("STATUS_CD","1000");
+            SysRole sr = sysRoleService.selectOne(sysRolesWrapper);
+            sysRoles.add(sr);
+        }
+//        Wrapper positionRolesWrapper = Condition.create()
+//                .eq("POSITION_CODE",sysPositionVo.getPositionCode())
+//                .eq("STATUS_CD","1000");
+//        List<SysPositiontRoleRef> curPosRoleList = iSysPositiontRoleRefService.selectList(positionRolesWrapper);
+
+        List<SysPositiontRoleRef> curPosRoleList = iSysPositiontRoleRefService.getCurRoleList(sysPositionVo.getPositionCode());
         boolean isExists = false;
 
         //职位角色
-        if(sysRoleDTOList!=null && sysRoleDTOList.size()>0){
-            for(SysRoleDTO ot : sysRoleDTOList){
+        if(sysRoles!=null && sysRoles.size()>0){
+            for(SysRole ot : sysRoles){
                 for(SysPositiontRoleRef otf : curPosRoleList){
                     if(ot.getRoleCode().equals(otf.getRoleCode())){
                         isExists = true;
@@ -218,7 +228,7 @@ public class SysPositionController {
             }
             isExists = false;
             for(SysPositiontRoleRef otf : curPosRoleList){
-                for(SysRoleDTO ot : sysRoleDTOList){
+                for(SysRole ot : sysRoles){
                     isExists = false;
                     if(ot.getRoleCode().equals(otf.getRoleCode())){
                         isExists = true;
