@@ -2,6 +2,8 @@ package cn.ffcs.uoo.web.maindata.permission.service.fallback;
 
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.web.maindata.permission.dto.Roles;
 import cn.ffcs.uoo.web.maindata.permission.service.RolesService;
 import cn.ffcs.uoo.web.maindata.permission.vo.ResponseResult;
@@ -14,7 +16,7 @@ public class RolesHystrix implements RolesService {
     }
 
     @Override
-    public ResponseResult listPageRoles(Integer pageNo, Integer pageSize) {
+    public ResponseResult<Page<Roles>> listPageRoles(Integer pageNo, Integer pageSize) {
         return ResponseResult.createErrorResult("系统数据异常");
     }
 

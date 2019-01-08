@@ -1,7 +1,8 @@
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
-var parentOrgList = [];
+var pName = parent.getNodeName(pid);
+var parentOrgList = [{id: orgId, name: pName}];
 var locationList = [];
 var orgPostList = [];
 var formValidate;
@@ -84,6 +85,7 @@ function getStatusCd (statusCd) {
         option += "<option value='" + statusCdData[i].itemValue + "' " + select + ">" + statusCdData[i].itemCnname +"</option>";
     }
     $('#statusCd').append(option);
+    $('#statusCd').selectMatch();
 }
 
 // 获取组织基础信息
@@ -91,11 +93,12 @@ function getOrg (orgId) {
     $http.get('/sysOrganization/getOrg', {
         id: orgId
     }, function (data) {
+        orgCode = data.orgCode;
         $('#orgName').val(data.orgName).focus();
+        $('#orgCode').val(data.orgCode);
         $('#sort').val(data.sort);
         getStatusCd(data.statusCd);
 
-        parentOrgList.push({id: pid, name: orgName});
         locationList.push({id: data.regionNbr, name: data.regionName});
         orgPostList = data.sysPositionVos;
         $('#parentOrg').addTag(parentOrgList);
@@ -116,82 +119,26 @@ function updateOrg () {
     if (!formValidate.isAllPass())
         return;
     loading.screenMaskEnable('container');
-    var userList = [];
-    var location = [];
-    var position = [];
-    var post = [];
-    var orgType = [];
-    //联系人
-    if (selectUser && selectUser.length > 0) {
-        for (var i = 0; i < selectUser.length; i++) {
-            userList.push({personnelId: selectUser[i].personnelId});
-        }
-    }
-    //行政管理区域
-    for (var i = 0; i < locationList.length; i++) {
-        var locId = locationList[i].locId || locationList[i].id;
-        location.push({locId: locId});
-    }
-    //组织岗位
-    for (var i = 0; i < positionList.length; i++) {
-        position.push({positionId: positionList[i].positionId});
-    }
-    //组织职位
-    for (var i = 0; i < orgPostList.length; i++) {
-        post.push({postId: orgPostList[i].postId});
-    }
-    //组织类别
-    for (var i = 0; i < orgTypeList.length; i++) {
-        var orgTypeId = orgTypeList[i].orgTypeId || orgTypeList[i].id;
-        orgType.push({orgTypeId: orgTypeId});
-    }
-    var orgName = $('#orgName').val();
-    var orgScale = $('#orgScale option:selected') .val();
-    var shortName = $('#shortName').val();
-    var orgBizFullName = $('#orgBizFullName').val();
-    var orgNameEn = $('#orgNameEn').val();
-    var cityTown = $('#cityTown option:selected') .val();
-    var foundDate = $('#foundingTime').val();
-    // var foundDate;
-    // if (date) {
-    //     foundDate = new Date(date).getTime();
-    // }
-    var orgPositionLevel = $('#orgPositionLevel option:selected') .val();
-    var officePhone = $('#officePhone').val();
-    var statusCd = $('#statusCd option:selected') .val();
-    var sort = $('#sort').val();
-    var address = $('#address').val();
-    var orgContent = $('#orgContent').val();
-    var orgDesc = $('#orgDesc').val();
-    var orgMart = ''; //传给后台的划小组织编码
 
-    $http.post('/org/updateOrg', JSON.stringify({
-        orgRootId: '1',
-        orgTreeId: '1',
+    var orgName = $('#orgName').val();
+    var orgCode = $('#orgCode').val();
+    var sort = $('#sort').val();
+    var statusCd = $('#statusCd option:selected') .val();
+    //组织职位
+    var sysPositionVos = [];
+    for (var i = 0; i < orgPostList.length; i++) {
+        sysPositionVos.push({positionId: orgPostList[i].id});
+    }
+
+    $http.post('/sysOrganization/updateOrg', JSON.stringify({
         orgId: orgId,
-        supOrgId: pid,
         orgName: orgName,
-        shortName: shortName,
-        orgBizFullName: orgBizFullName,
-        cityTown: cityTown,
-        orgScale: orgScale,
-        foundingTime: foundDate,
-        psonOrgVoList: userList,
-        orgNameEn: orgNameEn,
-        orgPositionLevel: orgPositionLevel,
-        officePhone: officePhone,
-        statusCd: statusCd,
+        orgCode: orgCode,
+        parentOrgCode: parentOrgList[0].id,
+        regionNbr: locationList[0].id,
+        sysPositionVos: sysPositionVos,
         sort: sort,
-        areaCodeId: areaCodeId,
-        address: address,
-        politicalLocationList: location,
-        orgTypeList: orgType,
-        positionList: position,
-        postList: post,
-        orgContent: orgContent,
-        orgDesc: orgDesc,
-        expandovalueVoList: expandovalueVoList,
-        orgMartCode: orgMart
+        statusCd: statusCd
     }), function () {
         parent.changeNodeName(orgId, orgName);
         window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
@@ -208,19 +155,17 @@ function deleteOrg () {
         icon: 0,
         title: '提示',
         btn: ['确定','取消']
-    }, function(index, layero){
+    }, function(index){
         parent.layer.close(index);
         loading.screenMaskEnable('container');
-        $http.get('/org/deleteOrg', {
-            orgTreeId: '1',
-            orgId: orgId,
-            supOrgId: pid
+        $http.get('/sysOrganization/deleteOrg', {
+            id: orgId
         }, function () {
             parent.deleteNode(orgId);
-            parent.selectRootNode();
+            parent.selectNodeById(pid);
             loading.screenMaskDisable('container');
             toastr.success('删除成功！');
-        }, function (err) {
+        }, function () {
             loading.screenMaskDisable('container');
         })
     }, function(){
@@ -253,7 +198,7 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
-    $('#superiorOrg').tagsInput();
+    $('#parentOrg').tagsInput();
     $('#location').tagsInput();
     $('#post').tagsInput();
 };

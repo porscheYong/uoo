@@ -100,14 +100,21 @@ function initOrgRelTree () {
     })
 }
 
-// 根据组织ID展开并选中组织
-function openTreeById (sId, id) {
+// 根据组织ID选中组织
+function selectNodeById (id) {
     var tId = 'platformOrgTree_' + id;
-    var sId = 'platformOrgTree_' + sId;
     var zTree = $.fn.zTree.getZTreeObj("platformOrgTree");
     var node = zTree.getNodeByTId(tId);
     zTree.selectNode(node);
     $('.curSelectedNode').trigger('click');
+}
+
+// 根据组织ID获取组织名称
+function getNodeName (id) {
+    var tId = 'platformOrgTree_' + id;
+    var tree = $.fn.zTree.getZTreeObj("platformOrgTree");
+    var treeNode = tree.getNodeByTId(tId);
+    return treeNode.name;
 }
 
 // 添加子节点

@@ -77,7 +77,7 @@ public class PrivilegeController {
     })
     @UooLog(key="listPrivilege",value="获取权限")
     @GetMapping("/listPrivilege/{pageNo}/{pageSize}")
-    public ResponseResult<List<Privilege>> listPrivilege(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    public ResponseResult<Page<Privilege>> listPrivilege(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         Wrapper<Privilege> wrapper =Condition.create().eq("STATUS_CD", StatusCD.VALID).orderBy("UPDATE_DATE", false);
