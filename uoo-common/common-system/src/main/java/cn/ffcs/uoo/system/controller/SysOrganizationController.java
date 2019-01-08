@@ -228,15 +228,11 @@ public class SysOrganizationController {
         List<SysPosition> sysPositions = new ArrayList<>();
         for(SysPositionVo vo1 : sysPositionList){
               Wrapper sysPositionWrapper = Condition.create()
-                .eq("POSITION_ID",vo1.getpPositionId())
+                .eq("POSITION_ID",vo1.getPositionId())
                 .eq("STATUS_CD","1000");
             SysPosition sp = sysPositionService.selectOne(sysPositionWrapper);
             sysPositions.add(sp);
         }
-//        Wrapper orgPosWrapper = Condition.create()
-//                .eq("ORG_CODE",vo.getOrgCode())
-//                .eq("STATUS_CD","1000");
-//        List<SysDeptPositionRef> sysDeptPositionRefCur = sysDeptPositionRefService.selectList(orgPosWrapper);
         List<SysDeptPositionRef> sysDeptPositionRefCur = sysDeptPositionRefService.getDeptPositionRelList(vo.getOrgCode());
         boolean isExists = false;
         if(sysPositions!=null && sysPositions.size()>0){
@@ -315,29 +311,28 @@ public class SysOrganizationController {
             return ret;
         }
 
-        Wrapper userWrapper = Condition.create()
-                .eq("ORG_CODE",id)
+        Wrapper orgWrapper = Condition.create()
+                .eq("ORG_ID",id)
                 .eq("STATUS_CD","1000");
-
-        int num = sysOrganizationService.getOrgUserCount(id);
+        SysOrganization sysOrganization = sysOrganizationService.selectOne(orgWrapper);
+        if(sysOrganization==null){
+            ret.setState(ResponseResult.STATE_OK);
+            ret.setMessage("成功");
+            return ret;
+        }
+        int num = sysOrganizationService.getOrgUserCount(sysOrganization.getOrgCode());
         if(num>0){
             ret.setState(ResponseResult.STATE_ERROR);
             ret.setMessage("组织下存在用户");
             return ret;
         }
-        num = sysOrganizationService.getOrgRoleCount(id);
+        num = sysOrganizationService.getOrgRoleCount(sysOrganization.getOrgCode());
         if(num>0){
             ret.setState(ResponseResult.STATE_ERROR);
             ret.setMessage("组织下存在角色");
             return ret;
         }
-        Wrapper orgWrapper = Condition.create()
-                .eq("ORG_CODE",id)
-                .eq("STATUS_CD","1000");
-        SysOrganization sysOrganization = sysOrganizationService.selectOne(orgWrapper);
-        if(sysOrganization!=null){
-            sysOrganizationService.delete(sysOrganization);
-        }
+        sysOrganizationService.delete(sysOrganization);
         ret.setData("删除成功");
         ret.setState(ResponseResult.STATE_OK);
         return ret;
