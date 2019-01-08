@@ -62,7 +62,7 @@ public class ResourceController {
     })
     @UooLog(key="listResource",value="获取资源列表")
     @GetMapping("/listResource/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult<List<Resource>> listRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    public ResponseResult<Page<Resource>> listRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
 

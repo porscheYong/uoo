@@ -7,7 +7,7 @@ var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var orgTreeName = getQueryString('orgTreeName');
 var table;
-var checked = false;
+var checked = 0;
 
 $('#orgName').html(orgName);
 parent.getOrgExtInfo();
@@ -190,7 +190,7 @@ function showLower() {
     }else if(isIE8 && checked == 0){
         $(".ui-checkbox").css("background-position","0px 0px");
     }
-    initOrgPersonnelTable(checked, '');
+    initOrgPersonnelTable(checked, $("#psnName").val());
 }
 
 if (orgId == '88888888') {

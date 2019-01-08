@@ -1,17 +1,16 @@
 package cn.ffcs.uoo.web.maindata.common.system.client;
 
+import cn.ffcs.uoo.web.maindata.common.system.vo.EditSysUserDeptRefVo;
+import cn.ffcs.uoo.web.maindata.common.system.vo.SysUserDeptRefVo;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.cloud.netflix.feign.FeignClientProperties.FeignClientConfiguration;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysUserClientHystrix;
 import cn.ffcs.uoo.web.maindata.common.system.dto.AlterPwdDTO;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
-@FeignClient(value = "common-system",configuration = {FeignClientConfiguration.class},fallback = SysUserClientHystrix.class)
+@FeignClient(value = "common-system1",configuration = {FeignClientConfiguration.class},fallback = SysUserClientHystrix.class)
 public interface SysUserClient {
     @RequestMapping(value = "/system/sysUserLogin", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<SysUser> login(SysUser sysUser) ;
@@ -26,4 +25,16 @@ public interface SysUserClient {
     public ResponseResult<String> alterPwd(@RequestBody AlterPwdDTO alterPwdDTO);
     @RequestMapping(value = "/system/updateLoginInfo", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<Void> updateLoginInfo(@RequestBody SysUser sysUser) ;
+
+    @RequestMapping(value = "/system/addsysUserDeptRef", method = RequestMethod.POST, headers={"Content-Type=application/json"})
+    public Object addsysUserDeptRef(@RequestBody EditSysUserDeptRefVo sysUserDeptRefVo);
+
+    @RequestMapping(value = "/system/updateSysUser", method = RequestMethod.POST, headers={"Content-Type=application/json"})
+    public Object updateSysUser(@RequestBody SysUser sysUser);
+
+    @RequestMapping(value = "/system/getSysUserDeptPosition", method = RequestMethod.GET, headers={"Content-Type=application/json"})
+    public ResponseResult<SysUserDeptRefVo> getSysUserDeptPosition(@RequestParam("userId") Long userId, @RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
+
+    @RequestMapping(value = "/system/deleteUser", method = RequestMethod.POST, headers={"Content-Type=application/json"})
+    public Object deletePrivilege(@RequestBody SysUser sysUser);
 }

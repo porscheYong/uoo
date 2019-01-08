@@ -84,7 +84,7 @@ public class MyUserSQLGenerator {
                         .setXmlName("%sMapper")
                         .setServiceName("%sService")
                         .setServiceImplName("%sServiceImpl")
-                       // .setControllerName("%sController")
+                // .setControllerName("%sController")
         ).setDataSource(
                 // 数据源配置
                 new DataSourceConfig()

@@ -66,7 +66,7 @@ public class FuncCompController {
     })
     @UooLog(key="listFuncComp",value="获取功能组件列表")
     @GetMapping("/listFuncComp/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult<List<FuncComp>> listFuncComp(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    public ResponseResult<Page<FuncComp>> listFuncComp(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         

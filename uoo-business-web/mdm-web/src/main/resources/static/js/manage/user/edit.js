@@ -1,10 +1,8 @@
 var orgId = getQueryString('id');
 var orgRootId = getQueryString('orgRootId');
-var tabPage = getQueryString('tabPage');
 var personnelId = getQueryString('personnelId');
 var orgTreeId = getQueryString('orgTreeId');
 var orgName = getQueryString('name');
-var addOrg = getQueryString('addOrg');
 var personalData={},genderData,certTypeData,nationData,pliticalStatusData,marriageData,orgInfo={},
     userFormValidate,orgFormValidate;
 var toastr = window.top.toastr;
@@ -25,30 +23,7 @@ function getRefType () {
 
     })
 }
-function getYesNo () {
-    $http.get('/tbDictionaryItem/getList/YES_NO', {}, function (data) {
-        personalData.yesNo=data;
-    }, function (err) {
 
-    })
-}
-
-// 与本人关系
-function getMemRelation () {
-    $http.get('/tbDictionaryItem/getList/MEM_RELATION', {}, function (data) {
-        personalData.memRelation=data;
-    }, function (err) {
-
-    })
-}
-// SCHOOL_TYPE
-function getSchoolType () {
-    $http.get('/tbDictionaryItem/getList/SCHOOL_TYPE', {}, function (data) {
-        personalData.schoolType=data;
-    }, function (err) {
-
-    })
-}
 // 获取性别字典数据
 function getGender () {
     $http.get('/tbDictionaryItem/getList/GENDER', {}, function (data) {
@@ -141,28 +116,13 @@ function initUser(){
     $('#userEditButton').show();
     //预编译模板
     var userTemplate = Handlebars.compile($("#userTemplate").html());
-    //var baseInfoTemplate = Handlebars.compile($("#baseInfoTemplate").html());
     //匹配json内容
     var userHtml = userTemplate(personalData);
-    // var baseHtml = baseInfoTemplate(personalData);
     //输入模板
     $('#userInfo').html(userHtml);
-    // $('#baseInfo').html(baseHtml);
     getPsnImage();
 }
-function initUserList(){
-    $('#userEditButton').show();
-    //预编译模板
-    //var userTemplate = Handlebars.compile($("#userTemplate").html());
-    var baseInfoTemplate = Handlebars.compile($("#baseInfoTemplate").html());
-    //匹配json内容
-    //var userHtml = userTemplate(personalData);
-    var baseHtml = baseInfoTemplate(personalData);
-    //输入模板
-    //$('#userInfo').html(userHtml);
-    $('#baseInfo').html(baseHtml);
-    getPsnImage();
-}
+
 function initOrgInfo(){
     //预编译模板
     var orgInfoTemplate1 = Handlebars.compile($("#orgInfoTemplate1").html());
@@ -276,15 +236,6 @@ function  editUser() {
     });
     getPsnImage();
 }
-function editOrgInfo(){
-
-    //预编译模板
-    var t = Handlebars.compile($("#orgInfoEditTemplate").html());
-    //匹配json内容
-    var h = t(personalData);
-    //输入模板
-    $('#orgInfoTable1').html(h);
-}
 
 //归属组织信息编辑
 function openOrgEdit () {
@@ -303,15 +254,6 @@ function openOrgEdit () {
             });
         });*/
     });
-
-    if(addOrg=='1'){
-        //从人员新增那里过来的老铁直接赋值一些数据
-        if(personalData.currentEditOrgInfo==null ||personalData.currentEditOrgInfo.orgPersonId==null){
-            $('#orgTreeId').val(orgTreeId);
-            $('#orgFullName').val(orgName);
-            $('#orgFullName').attr('keyId',orgId);
-        }
-    }
 }
 function openOrgEditByEdit (i) {
     personalData.currentEditOrgInfo=personalData.orgInfo[i];
@@ -598,30 +540,6 @@ function addMobileInput(){
         $(this).parent().remove();
     });
 }
-function deleteJob(id){
-    parent.layer.confirm('确定删除?', {
-        icon: 0,
-        title: '提示',
-        btn: ['确定','取消']
-    }, function(index, layero){
-        parent.layer.close(index);
-        $.ajax({
-            url:'/psnjob/delTbPsnjob?psnjobId='+id,
-            type:'DELETE',
-            dataType:'json',
-            success:function(data){
-                if(data.state==1000){
-                	toastr.success('操作成功');
-                    getJobInfo();
-                }else{
-                	toastr.error('操作失败,'+data.message);
-                }
-            }
-        });
-    }, function(){
-
-    });
-}
 
 $(document).ready(function(){
     Handlebars.registerHelper('eq', function(v1, v2, opts) {
@@ -658,10 +576,6 @@ $(document).ready(function(){
     Handlebars.registerHelper('seq', function (index,options) {
         return index+1;
     });
-    if(tabPage=='acct'){
-        $('#personnel').removeClass('active');
-        $('#user').addClass('active');
-    }
 
     if(!isNum(orgId)){
         orgId=0;
@@ -671,10 +585,7 @@ $(document).ready(function(){
     }
 
     getRefType();
-    getYesNo();
     getOrgTreeList();
-    getSchoolType();
-    getMemRelation();
     getGender();
     getCertType();
     getNation();
