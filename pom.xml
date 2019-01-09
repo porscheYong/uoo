@@ -45,6 +45,7 @@
         <module>uoo-business</module>
         <module>uoo-business-api</module>
         <module>uoo-business-web</module>
+        <module>uoo-psb</module>
     </modules>
 
     <!-- 基本依赖 -->

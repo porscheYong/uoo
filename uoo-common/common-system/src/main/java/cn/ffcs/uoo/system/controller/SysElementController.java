@@ -47,6 +47,9 @@ public class SysElementController {
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         Wrapper<SysElement> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID);
+        if(StringUtils.isNotBlank(keyWord)){
+            wrapper.andNew("ELEMENT_NAME like {0}", "'%"+keyWord+"%'").or("ELEMENT_CODE like {0}","'%"+keyWord+"%'");
+        }
         Page<SysElement> page = eleSvc.selectPage(new Page<SysElement>(pageNo, pageSize), wrapper);
         ResponseResult<Page<SysElement>> rr = ResponseResult.createSuccessResult( "");
         rr.setData(page);

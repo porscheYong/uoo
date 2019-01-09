@@ -30,6 +30,7 @@ import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.system.consts.StatusCD;
 import cn.ffcs.uoo.system.entity.SysMenu;
 import cn.ffcs.uoo.system.entity.SysOperationLog;
+import cn.ffcs.uoo.system.service.ModifyHistoryService;
 import cn.ffcs.uoo.system.service.SysLoginLogService;
 import cn.ffcs.uoo.system.service.SysOperationLogService;
 import cn.ffcs.uoo.system.vo.LogDTO;
@@ -53,7 +54,8 @@ public class SysOperationLogController {
     SysOperationLogService sysOperationLogService;
     @Autowired
     SysLoginLogService sysLoginLogService;
-
+    @Autowired
+    ModifyHistoryService mhSvc;
     @ApiOperation(value = "获取单个数据", notes = "获取单个数据")
     @ApiImplicitParams({
     })
@@ -67,6 +69,8 @@ public class SysOperationLogController {
             return ResponseResult.createSuccessResult(sysLoginLogService.selectById(id), "success");
         }else if("OPT".equals(logEnum)){
             return ResponseResult.createSuccessResult(sysOperationLogService.selectById(id), "success");
+        }else if("MODF".equals(logEnum)){
+            return ResponseResult.createSuccessResult(mhSvc.selectById(id), "success");
         }else{
             return ResponseResult.createErrorResult("参数错误");
         }
@@ -84,9 +88,9 @@ public class SysOperationLogController {
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         HashMap<String,Object> map=new HashMap<>();
-        /*if(keyWord!=null&&keyWord.trim().length()>0){
+        if(keyWord!=null&&keyWord.trim().length()>0){
             map.put("keyWord", "%"+keyWord+"%");
-        }
+        }/*
         if(parentRoleCode!=null&&parentRoleCode.trim().length()>0){
             map.put("PARENT_ROLE_CODE",  parentRoleCode );
         }*/

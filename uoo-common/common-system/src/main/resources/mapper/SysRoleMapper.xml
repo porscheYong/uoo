@@ -177,8 +177,8 @@
 		<if test="ROLE_ID !=null and ROLE_ID !=''">
 			AND ROLE_ID=#{ROLE_ID}
 		</if>
-		<if test="ROLE_NAME !=null and ROLE_NAME !=''">
-			AND ROLE_NAME LIKE #{ROLE_NAME}
+		<if test="keyWord !=null and keyWord !=''">
+			AND ROLE_NAME LIKE #{keyWord}
 		</if>
 		<choose>
 			<when test="PARENT_ROLE_CODE !=null and PARENT_ROLE_CODE !=''">
@@ -249,8 +249,8 @@
 		<if test="ROLE_ID !=null and ROLE_ID !=''">
 			AND r.ROLE_ID=#{ROLE_ID}
 		</if>
-		<if test="ROLE_NAME !=null and ROLE_NAME !=''">
-			AND r.ROLE_NAME LIKE #{ROLE_NAME}
+		<if test="keyWord !=null and keyWord !=''">
+			AND r.ROLE_NAME LIKE #{keyWord}
 		</if>
 
 		<choose>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.interfaces.cpc.dao.TbOrgCrossRelMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.interfaces.cpc.pojo.TbOrgCrossRel">
+    <id column="ORG_CROSS_REL_ID" jdbcType="DECIMAL" property="orgCrossRelId" />
+    <result column="ORG_ID" jdbcType="DECIMAL" property="orgId" />
+    <result column="CROSS_TRAN" jdbcType="VARCHAR" property="crossTran" />
+    <result column="RELA_TYPE" jdbcType="VARCHAR" property="relaType" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ORG_CROSS_REL_ID, ORG_ID, CROSS_TRAN, RELA_TYPE, STATUS_CD, CREATE_DATE, CREATE_USER, 
+    UPDATE_DATE, UPDATE_USER, STATUS_DATE
+  </sql>
+</mapper>

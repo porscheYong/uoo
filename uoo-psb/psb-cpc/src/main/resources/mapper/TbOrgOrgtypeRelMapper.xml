@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.interfaces.cpc.dao.TbOrgOrgtypeRelMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.interfaces.cpc.pojo.TbOrgOrgtypeRel">
+    <id column="ORG_TYPE_REL_ID" jdbcType="DECIMAL" property="orgTypeRelId" />
+    <result column="ORG_ID" jdbcType="DECIMAL" property="orgId" />
+    <result column="ORG_TYPE_ID" jdbcType="DECIMAL" property="orgTypeId" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ORG_TYPE_REL_ID, ORG_ID, ORG_TYPE_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, 
+    UPDATE_USER, STATUS_DATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from TB_ORG_ORGTYPE_REL
+    where ORG_TYPE_REL_ID = #{orgTypeRelId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from TB_ORG_ORGTYPE_REL
+    where ORG_TYPE_REL_ID = #{orgTypeRelId,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="cn.ffcs.interfaces.cpc.pojo.TbOrgOrgtypeRel">
+    insert into TB_ORG_ORGTYPE_REL (ORG_TYPE_REL_ID, ORG_ID, ORG_TYPE_ID, 
+      STATUS_CD, CREATE_DATE, CREATE_USER, 
+      UPDATE_DATE, UPDATE_USER, STATUS_DATE
+      )
+    values (#{orgTypeRelId,jdbcType=DECIMAL}, #{orgId,jdbcType=DECIMAL}, #{orgTypeId,jdbcType=DECIMAL}, 
+      #{statusCd,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE}, #{createUser,jdbcType=DECIMAL}, 
+      #{updateDate,jdbcType=DATE}, #{updateUser,jdbcType=DECIMAL}, #{statusDate,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ffcs.interfaces.cpc.pojo.TbOrgOrgtypeRel">
+    insert into TB_ORG_ORGTYPE_REL
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orgTypeRelId != null">
+        ORG_TYPE_REL_ID,
+      </if>
+      <if test="orgId != null">
+        ORG_ID,
+      </if>
+      <if test="orgTypeId != null">
+        ORG_TYPE_ID,
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD,
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="createUser != null">
+        CREATE_USER,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="updateUser != null">
+        UPDATE_USER,
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orgTypeRelId != null">
+        #{orgTypeRelId,jdbcType=DECIMAL},
+      </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=DECIMAL},
+      </if>
+      <if test="orgTypeId != null">
+        #{orgTypeId,jdbcType=DECIMAL},
+      </if>
+      <if test="statusCd != null">
+        #{statusCd,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=DECIMAL},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=DATE},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=DECIMAL},
+      </if>
+      <if test="statusDate != null">
+        #{statusDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ffcs.interfaces.cpc.pojo.TbOrgOrgtypeRel">
+    update TB_ORG_ORGTYPE_REL
+    <set>
+      <if test="orgId != null">
+        ORG_ID = #{orgId,jdbcType=DECIMAL},
+      </if>
+      <if test="orgTypeId != null">
+        ORG_TYPE_ID = #{orgTypeId,jdbcType=DECIMAL},
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=DATE},
+      </if>
+      <if test="createUser != null">
+        CREATE_USER = #{createUser,jdbcType=DECIMAL},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=DATE},
+      </if>
+      <if test="updateUser != null">
+        UPDATE_USER = #{updateUser,jdbcType=DECIMAL},
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE = #{statusDate,jdbcType=DATE},
+      </if>
+    </set>
+    where ORG_TYPE_REL_ID = #{orgTypeRelId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ffcs.interfaces.cpc.pojo.TbOrgOrgtypeRel">
+    update TB_ORG_ORGTYPE_REL
+    set ORG_ID = #{orgId,jdbcType=DECIMAL},
+      ORG_TYPE_ID = #{orgTypeId,jdbcType=DECIMAL},
+      STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=DATE},
+      CREATE_USER = #{createUser,jdbcType=DECIMAL},
+      UPDATE_DATE = #{updateDate,jdbcType=DATE},
+      UPDATE_USER = #{updateUser,jdbcType=DECIMAL},
+      STATUS_DATE = #{statusDate,jdbcType=DATE}
+    where ORG_TYPE_REL_ID = #{orgTypeRelId,jdbcType=DECIMAL}
+  </update>
+</mapper>
