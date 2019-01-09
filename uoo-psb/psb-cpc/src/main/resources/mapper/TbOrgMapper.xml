@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.interfaces.cpc.dao.TbOrgMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.interfaces.cpc.pojo.TbOrg">
+    <id column="ORG_ID" jdbcType="DECIMAL" property="orgId" />
+    <result column="LOC_ID" jdbcType="DECIMAL" property="locId" />
+    <result column="AREA_CODE_ID" jdbcType="DECIMAL" property="areaCodeId" />
+    <result column="ORG_NAME" jdbcType="VARCHAR" property="orgName" />
+    <result column="ORG_CODE" jdbcType="VARCHAR" property="orgCode" />
+    <result column="SHORT_NAME" jdbcType="VARCHAR" property="shortName" />
+    <result column="ORG_NAME_EN" jdbcType="VARCHAR" property="orgNameEn" />
+    <result column="FULL_NAME" jdbcType="VARCHAR" property="fullName" />
+    <result column="CITY_TOWN" jdbcType="CHAR" property="cityTown" />
+    <result column="OFFICE_PHONE" jdbcType="VARCHAR" property="officePhone" />
+    <result column="FOUNDING_TIME" jdbcType="DATE" property="foundingTime" />
+    <result column="ORG_SCALE" jdbcType="VARCHAR" property="orgScale" />
+    <result column="ORG_LEVEL" jdbcType="VARCHAR" property="orgLevel" />
+    <result column="ORG_POSITION_LEVEL" jdbcType="VARCHAR" property="orgPositionLevel" />
+    <result column="SORT" jdbcType="DECIMAL" property="sort" />
+    <result column="ORG_CONTENT" jdbcType="VARCHAR" property="orgContent" />
+    <result column="ORG_DESC" jdbcType="VARCHAR" property="orgDesc" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="UUID" jdbcType="VARCHAR" property="uuid" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+    <result column="ORG_MART_CODE" jdbcType="VARCHAR" property="orgMartCode" />
+    <result column="STANDARD_FLAG" jdbcType="DECIMAL" property="standardFlag" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ORG_ID, LOC_ID, AREA_CODE_ID, ORG_NAME, ORG_CODE, SHORT_NAME, ORG_NAME_EN, FULL_NAME, 
+    CITY_TOWN, OFFICE_PHONE, FOUNDING_TIME, ORG_SCALE, ORG_LEVEL, ORG_POSITION_LEVEL, 
+    SORT, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUS_CD, CREATE_DATE, CREATE_USER, 
+    UPDATE_DATE, UPDATE_USER, STATUS_DATE, ORG_MART_CODE, STANDARD_FLAG
+  </sql>
+</mapper>

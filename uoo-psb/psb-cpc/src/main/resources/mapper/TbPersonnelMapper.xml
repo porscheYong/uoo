@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.interfaces.cpc.dao.TbPersonnelMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.interfaces.cpc.pojo.TbPersonnel">
+    <id column="PERSONNEL_ID" jdbcType="DECIMAL" property="personnelId" />
+    <result column="PSN_NAME" jdbcType="VARCHAR" property="psnName" />
+    <result column="PSN_CODE" jdbcType="VARCHAR" property="psnCode" />
+    <result column="NC_CODE" jdbcType="VARCHAR" property="ncCode" />
+    <result column="PSN_NBR" jdbcType="VARCHAR" property="psnNbr" />
+    <result column="NATIONALITY" jdbcType="VARCHAR" property="nationality" />
+    <result column="GENDER" jdbcType="CHAR" property="gender" />
+    <result column="NATION" jdbcType="VARCHAR" property="nation" />
+    <result column="MARRIAGE" jdbcType="CHAR" property="marriage" />
+    <result column="PLITICAL_STATUS" jdbcType="VARCHAR" property="pliticalStatus" />
+    <result column="IMAGE" jdbcType="VARCHAR" property="image" />
+    <result column="REASON" jdbcType="VARCHAR" property="reason" />
+    <result column="TO_WORK_TIME" jdbcType="DATE" property="toWorkTime" />
+    <result column="SERVING_AGE" jdbcType="DECIMAL" property="servingAge" />
+    <result column="LENGTH_SERVICE" jdbcType="DECIMAL" property="lengthService" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+    <result column="UUID" jdbcType="VARCHAR" property="uuid" />
+    <result column="NOTES" jdbcType="VARCHAR" property="notes" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PERSONNEL_ID, PSN_NAME, PSN_CODE, NC_CODE, PSN_NBR, NATIONALITY, GENDER, NATION, 
+    MARRIAGE, PLITICAL_STATUS, IMAGE, REASON, TO_WORK_TIME, SERVING_AGE, LENGTH_SERVICE, 
+    STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, UUID, 
+    NOTES
+  </sql>
+</mapper>

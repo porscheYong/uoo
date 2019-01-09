@@ -90,5 +90,8 @@ public class SysDataRuleServiceImpl extends ServiceImpl<SysDataRuleMapper, SysDa
         sysDataRule.setStatusDate(new Date());
         updateById(sysDataRule);
     }
-
+    @Override
+    public String getDicItem(String itemValue){
+        return baseMapper.getDicItem(itemValue);
+    }
 }

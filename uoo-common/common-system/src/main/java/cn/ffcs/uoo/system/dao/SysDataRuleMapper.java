@@ -26,4 +26,6 @@ public interface SysDataRuleMapper extends BaseMapper<SysDataRule> {
     List<SysDataRule> listByAccout(HashMap<String, Object> map);
 
     List<SysDataRuleVo> getDataRulePage(Pagination page, @Param("search")String search);
+
+    public String getDicItem(@Param("itemValue")String itemValue);
 }

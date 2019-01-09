@@ -1,7 +1,6 @@
 package cn.ffcs.uoo.web.maindata.common.system.vo;
 
 import java.util.Date;
-
 public class SysDataRuleVo {
 
     private static final long serialVersionUID = 1L;
@@ -16,16 +15,59 @@ public class SysDataRuleVo {
      */
 
     private String tabName;
+
+    private Long tabId;
+
+    public Long getTabId() {
+        return tabId;
+    }
+
+    public void setTabId(Long tabId) {
+        this.tabId = tabId;
+    }
+
     /**
      * 记录字段名称
      */
 
     private String colName;
+
+    private Long colId;
+
+    public Long getColId() {
+        return colId;
+    }
+
+    public void setColId(Long colId) {
+        this.colId = colId;
+    }
+
     /**
      * 规则操作符,包含、等于、大于、大于等于、小于、小于等于
      */
 
     private String ruleOperator;
+
+    private String ruleOperatorName;
+
+    public String getRuleOperatorName() {
+        return ruleOperatorName;
+    }
+
+    public void setRuleOperatorName(String ruleOperatorName) {
+        this.ruleOperatorName = ruleOperatorName;
+    }
+
+    private String ruleOperatorId;
+
+    public String getRuleOperatorId() {
+        return ruleOperatorId;
+    }
+
+    public void setRuleOperatorId(String ruleOperatorId) {
+        this.ruleOperatorId = ruleOperatorId;
+    }
+
     /**
      * 字段值,同一权限的同一业务对象属性标识的多个取值,可用逗号间隔
      */

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.interfaces.cpc.dao.TbSlaveAcctMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.interfaces.cpc.pojo.TbSlaveAcct">
+    <id column="SLAVE_ACCT_ID" jdbcType="DECIMAL" property="slaveAcctId" />
+    <result column="SLAVE_ACCT" jdbcType="VARCHAR" property="slaveAcct" />
+    <result column="SALT" jdbcType="VARCHAR" property="salt" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="SYMMETRY_PASSWORD" jdbcType="VARCHAR" property="symmetryPassword" />
+    <result column="SLAVE_ACCT_TYPE" jdbcType="VARCHAR" property="slaveAcctType" />
+    <result column="RESOURCE_OBJ_ID" jdbcType="DECIMAL" property="resourceObjId" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="CREATE_USER" jdbcType="DECIMAL" property="createUser" />
+    <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+    <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
+    <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+    <result column="ACCT_ORG_REL_ID" jdbcType="DECIMAL" property="acctOrgRelId" />
+    <result column="ACCT_ID" jdbcType="DECIMAL" property="acctId" />
+    <result column="ENABLE_DATE" jdbcType="DATE" property="enableDate" />
+    <result column="DISABLE_DATE" jdbcType="DATE" property="disableDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    SLAVE_ACCT_ID, SLAVE_ACCT, SALT, PASSWORD, SYMMETRY_PASSWORD, SLAVE_ACCT_TYPE, RESOURCE_OBJ_ID, 
+    STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, ACCT_ORG_REL_ID, 
+    ACCT_ID, ENABLE_DATE, DISABLE_DATE
+  </sql>
+</mapper>
