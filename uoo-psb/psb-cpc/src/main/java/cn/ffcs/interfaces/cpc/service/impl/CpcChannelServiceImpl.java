@@ -3,7 +3,12 @@ package cn.ffcs.interfaces.cpc.service.impl;
 import cn.ffcs.interfaces.cpc.service.CpcChannelService;
 import cn.ffcs.interfaces.cpc.util.Json2MapUtil;
 import com.alibaba.fastjson.JSON;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import springfox.documentation.spring.web.json.Json;
 
 import java.sql.SQLOutput;
@@ -11,12 +16,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Transactional(readOnly = false,rollbackFor = Exception.class)
 public class CpcChannelServiceImpl implements CpcChannelService {
+
     @Override
-    public String handle(String json) {
+    public String handle(String json)throws Exception {
+
         Map<String, Object> map = Json2MapUtil.handle(json);
         //1000是失败，0成功
-        String result_code = "1000";
+        String result_code = "0";
         //结果描述
         StringBuffer result_msg = new StringBuffer();
         //流水号
@@ -26,13 +34,35 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         if (map == null) {
             result_msg.append("json is null.");
         } else {
-            TransactionID = (String) map.get("TransactionID");
+            TransactionID = (String) map.get("TransactionID") == null?"":(String)map.get("TransactionID");
             result_code = "0";
+            /*渠道*/
+            Map<String,Object> CHANNEL = (Map<String,Object>)map.get("CHANNEL");
+            hand_CHANNEL(CHANNEL,rsMap);
+            /*员工*/
+            Map<String,Object> STAFF = (Map<String,Object>)map.get("STAFF");
+            hand_STAFF(STAFF,rsMap);
+            /*员工渠道关系*/
+            Map<String,Object> STAFF_CHANNEL_RELAS = (Map<String,Object>)map.get("STAFF_CHANNEL_RELAS");
+            hand_STAFF_CHANNEL_RELAS(STAFF_CHANNEL_RELAS,rsMap);
+
+            //事务回滚
+            if("1000".equals(rsMap.get("result_code"))){
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            }
         }
-        rsMap.put("result_code", result_code);
-        rsMap.put("result_msg", result_msg.toString());
-        rsMap.put("TransactionID", TransactionID);
         return JSON.toJSONString(rsMap);
+    }
+
+    private void hand_CHANNEL(Map<String,Object> channel ,Map<String, Object> rsMap){
+    }
+
+    private void hand_STAFF(Map<String,Object> staff ,Map<String, Object> rsMap){
+
+    }
+
+    private void hand_STAFF_CHANNEL_RELAS(Map<String,Object> staffChannelRel ,Map<String, Object> rsMap){
+
     }
 
     public static void main(String[] args) {
@@ -50,6 +80,10 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                 "\"CHANNEL_OPERATORS_RELAS\":{\"CHANNEL_NBR\":\"3301063199917\",\"OPERATORS_NBR\":\"J33010757714\"," +
                 "\"RELA_TYPE\":\"10\",\"DESCRIPTION\":null,\"ACTION\":\"MOD\"},\"STAFF_CHANNEL_RELAS\":{\"SALES_CODE\":" +
                 "\"Y99999999\",\"CHANNEL_NBR\":\"3301063199917\",\"RELA_TYPE\":\"10\",\"DESCRIPTION\":null,\"ACTION\":\"MOD\"}}";
-        System.out.println(new CpcChannelServiceImpl().handle(json));
+
+        System.out.println(JSON.parseObject(json,Map.class));
+        System.out.println(Json2MapUtil.handle(json));
+
+        //System.out.println(new CpcChannelServiceImpl().handle(json));
     }
 }
