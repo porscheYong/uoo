@@ -125,7 +125,7 @@ function boxClick(){            //点击复选框
             $(".ui-checkbox").css("background-position","0px 0px");
         }
     }
-    initMainTable(isCheck,'');
+    initPosTable(isCheck,'');
 }
 
 $("#addBtn").on('click',function(){
