@@ -4,18 +4,35 @@ import cn.ffcs.interfaces.cpc.service.CpcChannelService;
 import cn.ffcs.interfaces.cpc.util.Json2MapUtil;
 import com.alibaba.fastjson.JSON;
 import org.springframework.stereotype.Service;
+import springfox.documentation.spring.web.json.Json;
 
 import java.sql.SQLOutput;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class CpcChannelServiceImpl implements CpcChannelService {
     @Override
     public String handle(String json) {
-        Map<String,Object> map = Json2MapUtil.handle(json);
-
-
-        return null;
+        Map<String, Object> map = Json2MapUtil.handle(json);
+        //1000是失败，0成功
+        String result_code = "1000";
+        //结果描述
+        StringBuffer result_msg = new StringBuffer();
+        //流水号
+        String TransactionID = "";
+        //结果集
+        Map<String, Object> rsMap = new HashMap<>();
+        if (map == null) {
+            result_msg.append("json is null.");
+        } else {
+            TransactionID = (String) map.get("TransactionID");
+            result_code = "0";
+        }
+        rsMap.put("result_code", result_code);
+        rsMap.put("result_msg", result_msg.toString());
+        rsMap.put("TransactionID", TransactionID);
+        return JSON.toJSONString(rsMap);
     }
 
     public static void main(String[] args) {
