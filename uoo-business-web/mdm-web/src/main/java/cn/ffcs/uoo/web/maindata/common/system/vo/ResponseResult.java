@@ -3,6 +3,7 @@ package cn.ffcs.uoo.web.maindata.common.system.vo;
 import java.io.Serializable;
 import java.util.List;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.plugins.Page;
 
 /**
@@ -117,5 +118,10 @@ public class ResponseResult<T> implements Serializable {
         result.setPageSize(page.getSize());
         result.setTotalRecords(page.getTotal());
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
     }
 }

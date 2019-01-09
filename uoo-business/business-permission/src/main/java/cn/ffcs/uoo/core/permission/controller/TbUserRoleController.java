@@ -128,7 +128,7 @@ public class TbUserRoleController extends BaseController {
     })
     @UooLog(value = "分页查询人员用户信息", key = "getUserPersonnelVoPage")
     @RequestMapping(value = "/getPage/{pageNo}/{pageSize}/{roleId}", method = RequestMethod.GET)
-    public ResponseResult<List<UserPersonnelVo>> getUserPersonnelVoPage(@PathVariable(value = "pageNo") Integer pageNo,
+    public ResponseResult<Page<UserPersonnelVo>> getUserPersonnelVoPage(@PathVariable(value = "pageNo") Integer pageNo,
                                                         @PathVariable(value = "pageSize") Integer pageSize,
                                                         @PathVariable(value = "roleId") Long roleId) {
         pageNo = pageNo == null ? 0 : pageNo;

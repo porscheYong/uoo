@@ -170,10 +170,10 @@ public class SysRoleController {
         sysRoleService.updateById(obj);
         //把各个关系调整
         if(!one.getRoleCode().equals(roleCode)){
-            deptRoleRefSvc.updateForSet("ROLE_CODE="+roleCode, Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", one.getRoleCode()));
-            posiRoleRefSvc.updateForSet("ROLE_CODE="+roleCode, Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", one.getRoleCode()));
-            rolePermRefSvc.updateForSet("ROLE_CODE="+roleCode, Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", one.getRoleCode()));
-            userRoleRefSvc.updateForSet("ROLE_CODE="+roleCode, Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", one.getRoleCode()));
+            deptRoleRefSvc.updateForSet("ROLE_CODE='"+roleCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", one.getRoleCode()));
+            posiRoleRefSvc.updateForSet("ROLE_CODE='"+roleCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", one.getRoleCode()));
+            rolePermRefSvc.updateForSet("ROLE_CODE='"+roleCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", one.getRoleCode()));
+            userRoleRefSvc.updateForSet("ROLE_CODE='"+roleCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", one.getRoleCode()));
         }
         
         rolePermRefSvc.delete(Condition.create().eq("ROLE_CODE", sysRole.getRoleCode()));

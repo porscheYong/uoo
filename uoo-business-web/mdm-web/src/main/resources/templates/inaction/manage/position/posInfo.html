@@ -16,6 +16,8 @@
     <link href="/vendors/datatable/datatables.css" rel="stylesheet">
     <!-- lulu ui -->
     <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+    <!-- jquery tagsinput -->
+    <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
@@ -42,11 +44,14 @@
           text-overflow: ellipsis;
       }
       .perTab{
-            background: rgb(223,225,229);
-            border-radius: 5px;
-            margin-right: 8px;
-            padding: 2px 8px;
-            color: #5f6c7e;
+            background: #dfe1e5;
+            border-radius: 4px;
+            line-height: 1.5em;
+            color: rgba(0,0,0,.5);
+            padding: 3px 10px;
+            display: inline-block;
+            margin-right: 5px;
+            margin-bottom:4px;
         }
         .icon{
             margin: 14px 3px !important;
@@ -71,6 +76,22 @@
             background: #FFF !important;
             border-radius:4px;
         }
+        #role_tagsinput{
+            width: 83% !important;
+        }
+        #location_tagsinput,
+        #supPos_tagsinput{
+            width: 64% !important;
+        }
+        #location_tagsinput .tag,
+        #supPos_tagsinput .tag{
+            margin-bottom: 0px !important;
+        }
+        #role,#location,#supPos{
+            opacity: 0;
+            filter: alpha(opacity=0);
+            position: absolute;
+        }
         .row-num,
         .row-psn{
             width: 12%;
@@ -92,7 +113,7 @@
   </head>
 
   <body style="background: #fff;">
-        <a class="BoardTitle Back" href="list.html" style="color:#008aff;margin-bottom:10px;border-bottom: 0px;" onclick="">返回</a>
+        <a class="BoardTitle Back" style="color:#008aff;margin-bottom:10px;border-bottom: 0px;cursor:pointer;" onclick="backToList()">返回</a>
         <div class="board-title">
             <span class="name ft18" style="margin-top: 15px;">职位详情</span>
         </div>
@@ -108,48 +129,47 @@
                 <div class="tab-pane active" id="tab_content1">
                     <div id="posInfo" style="margin-top:15px;">
                         <div class="board-title">
-                            <span class="name ft18" style="margin-top: 15px;">杭州市单位管理员</span>
+                            <span class="name ft18" style="margin-top: 15px;" id="posName"></span>
                             <a class="icon icon-edit" id="EditButton" title="信息编辑" onclick="editInfo()" href="javascript:void(0)"></a>
                         </div>
-                        <div class="breadcrumb" style="padding: 0px 15px 0; background: #fff;margin-bottom: 30px !important;">浙江省单位管理员 > 杭州市单位管理员</div>   <!-- 完整路径-->
+                        <div class="breadcrumb" style="padding: 0px 15px 0; background: #fff;margin-bottom: 30px !important;"></div>   <!-- 完整路径-->
                         <div style="margin-left:11px">
                             <div class="row" style="margin-bottom: 10px;">
-                                <div class="col-md-4 col-sm-4 col-xs-4" style="margin-bottom:15px;color:#959da9;">
-                                    <span>组织编码：</span><span id="roleNumLable">343334</span>
+                                <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom:15px;width: 40%;">
+                                    <span>职位编码：</span><span id="posCodeLable"></span>
                                 </div>
-                                <div class="col-md-4 col-sm-4 col-xs-4" style="margin-bottom:15px;color:#959da9;">
-                                    <span>上级职位：</span><span id="supRoleLable">浙江省单位管理员</span>
-                                </div>
-                            </div>
-    
-                            <div class="row" style="margin-bottom: 10px;">
-                                <div class="col-md-4 col-sm-4 col-xs-4" style="margin-bottom:15px;color:#959da9;">
-                                    <span>管理区域：</span><span id="areaLable">杭州</span>
-                                </div>
-    
-                                <div class="col-md-4 col-sm-4 col-xs-4" style="margin-bottom:15px;color:#959da9;">
-                                    <span>状态：</span><span id="stateLable">有效</span>
+                                <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom:15px;width: 40%;">
+                                    <span>上级职位：</span><span id="supPosLable"></span>
                                 </div>
                             </div>
     
                             <div class="row" style="margin-bottom: 10px;">
-                                <div class="col-md-4 col-sm-4 col-xs-4" style="margin-bottom:15px;color:#959da9;">
-                                    <span>排序号：</span><span id="sortLable">03</span>
+                                <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom:15px;width: 40%;">
+                                    <span>管理区域：</span><span id="areaLable"></span>
                                 </div>
-                                <div class="col-md-4 col-sm-4 col-xs-4" style="margin-bottom:15px;color:#959da9;">
-                                    <span>备注：</span><span id="remarkLable">无</span>
+    
+                                <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom:15px;width: 40%;">
+                                    <span>状态：</span><span id="stateLable"></span>
                                 </div>
                             </div>
-                                    
+    
                             <div class="row" style="margin-bottom: 10px;">
-                                <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom:15px;color:#959da9;">
-                                    <span>所含权限：</span>
-                                    <span class="perTab">创建组织</span>
-                                    <span class="perTab">修改组织基础信息</span>
-                                    <span class="perTab">修改组织关系信息</span>
-                                    <span class="perTab">删除组织</span>
-                                    <span class="perTab">查看组织</span>
-                                </div>  
+                                <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom:15px;width: 40%;">
+                                    <span>排序号：</span><span id="sortLable"></span>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom:15px;width: 40%;">
+                                    <span>备注：</span><span id="notesLable"></span>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom: 10px;">
+                                <div class="col-md-2 col-sm-2 col-xs-2" style="width:9%;">
+                                    <span class="permission" style="line-height: 2em;">所含角色</span> 
+                                </div>
+                    
+                                <div class="col-md-10 col-sm-10 col-xs-10">
+                                    <span id="perms"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -158,9 +178,9 @@
                         <div class="row" style="margin-bottom: 10px;">
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="posName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">职位名称</label>
-                                    <input id="posName" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                            size="40" value="杭州市单位管理员" autocomplete="off">
+                                    <label for="posNameInput" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">职位名称</label>
+                                    <input id="posNameInput" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                            size="40" value="" autocomplete="off">
                                 </div>
                             </div>
 
@@ -168,7 +188,7 @@
                                 <div class="form-item" style="width: 100%">
                                     <label for="posNum" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">职位编码</label>
                                     <input id="posNum" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                            size="40" value="314445" autocomplete="off">
+                                            size="40" value="" autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -177,64 +197,61 @@
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
                                     <label for="supPos" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">上级职位</label>
-                                    <select class="col-md-8 col-sm-8 col-xs-8" id="select1">
-                                        <option>杭州市单位管理员</option>
-                                    </select>
+                                    <input id="supPos" class="ui-input col-md-8 col-sm-8 col-xs-8" onclick="openParPosDialog()" required readonly>
                                 </div>
                             </div>
 
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="area" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">管理区域</label>
-                                    <select  class="col-md-8 col-sm-8 col-xs-8" id="select2">
-                                        <option>杭州</option>
-                                    </select>
+                                    <label for="location" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">管理区域</label>
+                                    <input id="location" class="ui-input col-md-8 col-sm-8 col-xs-8" onclick="openLocationDialog()" required readonly>
                                 </div>
                             </div>
                         </div>
 
                         <div class="row" style="margin-bottom: 10px;">
-                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                <div class="form-item" style="width: 100%">
-                                    <label for="role" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">所含角色</label>
-                                    <input id="role" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                            size="40" value="" autocomplete="off">
-                                </div>
-                            </div>
-
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
                                     <label for="state" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
-                                    <select  class="col-md-8 col-sm-8 col-xs-8" id="select3">
-                                        <option>有效</option>
-                                        <option>无效</option>
+                                    <select  class="col-md-8 col-sm-8 col-xs-8" id="state">
+                                        <option value="1000">有效</option>
+                                        <option value="1100">无效</option>
                                     </select>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row" style="margin-bottom: 10px;">
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
                                     <label for="sort" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">排序号</label>
                                     <input id="sort" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                            size="40" value="03" autocomplete="off">
+                                            size="40" value="" autocomplete="off">
                                 </div>
                             </div>
+                        </div>
 
+                        <div class="row" style="margin-bottom: 10px;">
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="remark" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">备注</label>
-                                    <input id="remark" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                    <label for="notes" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">备注</label>
+                                    <input id="notes" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
                                             size="40" value="" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-item" style="width: 100%">
+                                    <label for="role" class="col-md-2 col-sm-2 col-xs-2" style="padding-right: 20px;line-height: 40px;text-align: right;width: 14.3%">所含角色</label>
+                                    <input id="role" class="ui-input col-md-10 col-sm-10 col-xs-10" style="width:83%;" onclick="openTypeDialog()" required readonly></input>
                                 </div>
                             </div>
                         </div>
 
                         <div class="row" style="margin-bottom: 10px;">
                             <div style="margin-left:34%;margin-top:4%;">
-                                <button class="ui-button ui-button-primary">保存</button>
-                                <button class="Btn BtnRed2" id="delAcct" onclick="deleteTbAcct()" style="margin-left: 10px;">删除</button>
+                                <button class="ui-button ui-button-primary" onclick="updatePosition()">保存</button>
+                                <button class="Btn BtnRed2" id="delAcct" onclick="deletePosition()" style="margin-left: 10px;">删除</button>
                                 <button class="ui-button ui-button-cancel" onclick="cancel()" style="margin-left: 10px;">取消</button>
                             </div>
                         </div>
@@ -261,14 +278,14 @@
     <script type="text/javascript" src="/js/init.js"></script>
     <!-- jquery datatable -->
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+    <!-- jquery tagsinput -->
+    <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- Custom Theme Scripts -->
     <script type="text/javascript" src="/js/manage/user.js"></script>
     <script type="text/javascript" src="/js/manage/position/posInfo.js"></script>
     <script type="text/javascript">
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-            $('#select1').selectMatch();
-            $('#select2').selectMatch();
-            $('#select3').selectMatch();
+            $('#state').selectMatch();
         })
     </script>
   </body>

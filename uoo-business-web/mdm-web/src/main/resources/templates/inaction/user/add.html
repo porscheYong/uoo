@@ -201,23 +201,24 @@
                 
 
                 <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="psnNbr" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                    style="padding-right: 20px;line-height: 40px;text-align: right;">员工工号</label>
-                            <input id="psnNbr" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
+                            <label for="gender" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                                    style="padding-right: 20px;line-height: 40px;text-align: right;">性别</label>
+                            <div style="line-height: 40px;" id="gender">
+                                <input type="radio" id="male" name="validateRadio" required value="1"
+                                ><label for="male" class="ui-radio"></label
+                            ><label for="male" class="gender">男</label>
+
+                                <input type="radio" id="female" name="validateRadio" required value="2"
+                                ><label for="female" class="ui-radio" style="margin-left: 30px;"></label
+                            ><label for="female" class="gender">女</label>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-item" style="width: 100%">
-                            <label for="psnCode" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                    style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
-                            <input id="psnCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" disabled>
-                        </div>
-                    </div>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
                             <label for="certType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">
@@ -226,21 +227,28 @@
                             <select id="certType" class="col-md-8 col-sm-8 col-xs-12" required onchange="getSelectedCert()"></select>
                         </div>
                     </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-item" style="width: 100%">
+                            <label for="psnCode" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                    style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
+                            <input id="psnCode" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" disabled>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="ncCode" class="form-item-label col-md-4 col-sm-4 col-xs-12"
-                                    style="padding-right: 20px;line-height: 40px;text-align: right;">人力编码</label>
-                            <input id="ncCode" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
+                            <label for="certNo" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                                    style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                            <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" required onkeyup="getIdCardInfo()" onpaste="getIdCardInfo()">
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="certNo" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                                    style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                            <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" required onkeyup="getIdCardInfo()" onpaste="getIdCardInfo()">
+                            <label for="ncCode" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                    style="padding-right: 20px;line-height: 40px;text-align: right;">人力编码</label>
+                            <input id="ncCode" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
                         </div>
                     </div>
                 </div>
@@ -255,17 +263,9 @@
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="gender" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                                    style="padding-right: 20px;line-height: 40px;text-align: right;">性别</label>
-                            <div style="line-height: 40px;" id="gender">
-                                <input type="radio" id="male" name="validateRadio" required value="1"
-                                ><label for="male" class="ui-radio"></label
-                            ><label for="male" class="gender">男</label>
-
-                                <input type="radio" id="female" name="validateRadio" required value="2"
-                                ><label for="female" class="ui-radio" style="margin-left: 30px;"></label
-                            ><label for="female" class="gender">女</label>
-                            </div>
+                            <label for="psnNbr" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                                    style="padding-right: 20px;line-height: 40px;text-align: right;">员工工号</label>
+                            <input id="psnNbr" class="ui-input col-md-8 col-sm-8 col-xs-12" disabled>
                         </div>
                     </div>
                 </div>
@@ -353,17 +353,19 @@
                     </div>
                 </div>
             </div>
-
-            <div class="board-title">
+            <div class="BoardContent TableStyle tcenter">
+                <a href="javascript:void(0)" onclick="showMoreInfo()" id="showMoreInfoDiv" class="More">完善更多信息</a>
+            </div>
+            <div id="jobTitleDiv" style="display: none;" class="board-title">
                 <span class="name ft18">工作经历</span>
             </div>
-            <div style="padding: 10px;" id="workExperience">
+            <div style="padding: 10px;display: none;" id="workExperience">
                 <table id="workTable" class="stripe" width="100%"></table>
                 <div class="fright" id="workEditBtn" style="margin-right: 20px; margin-top: 10px;">
                     <a class="button-add" href="javascript:void(0)" onclick="editWrokList()"><span class="fa fa-plus-circle icon-add"></span>新增工作经历</a>
                 </div>
             </div>
-            <div id="workEdit">
+            <div id="workEdit" style="display: none;">
                 <!--<div class="edit-title">-->
                     <!--<span>工作经历</span>-->
                 <!--</div>-->
@@ -403,27 +405,27 @@
                 <!--</div>-->
             </div>
 
-            <div class="board-title">
+            <div class="board-title" id="eduTitleDiv" style="display: none;">
                 <span class="name ft18">教育经历</span>
             </div>
-            <div style="padding: 10px;" id="eduExperience">
+            <div style="padding: 10px;display: none;" id="eduExperience">
                 <table id="eduTable" class="stripe" width="100%"></table>
                 <div class="fright" id="eduEditBtn" style="margin-right: 20px; margin-top: 10px;">
                     <a class="button-add" href="javascript:void(0)" onclick="editEduList()"><span class="fa fa-plus-circle icon-add"></span>新增教育经历</a>
                 </div>
             </div>
-            <div id="eduEdit"></div>
+            <div id="eduEdit" style="display: none;"></div>
 
-            <div class="board-title">
+            <div class="board-title" id="famliyTitleDiv" style="display: none;">
                 <span class="name ft18">家庭成员</span>
             </div>
-            <div style="padding: 10px;" id="familyMember">
+            <div style="padding: 10px;display: none;" id="familyMember">
                 <table id="familyTable" class="stripe" width="100%"></table>
                 <div class="fright" id="familyEditBtn" style="margin-right: 20px; margin-top: 10px;">
                     <a class="button-add" href="javascript:void(0)" onclick="editFamilyList()"><span class="fa fa-plus-circle icon-add"></span>新增家庭成员</a>
                 </div>
             </div>
-            <div id="familyEdit"></div>
+            <div id="familyEdit" style="display: none;"></div>
             <div class="clearfix"></div>
         </form>
         </div>

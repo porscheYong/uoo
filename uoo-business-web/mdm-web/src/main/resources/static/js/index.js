@@ -70,16 +70,16 @@ function initSideBar(results){     //初始化侧边菜单
         for(var j=0;j<childList.length;j++){
             if(childList[j].parentMenuCode == parList[i].menuCode){
                 flag = 1;
-                dd += "<dd><a lay-href='" + childList[j].menuUrl + "'>" + childList[j].menuName + "</a></dd>"
+                dd += "<dd mcode='"+childList[j].menuCode+"'><a lay-href='" + childList[j].menuUrl + "' >" + childList[j].menuName + "</a></dd>"
             }
         }
         if(flag == 1){
-            pemList += "<li class='layui-nav-item'><a href='javascript:;' lay-tips='" + parList[i].menuName + "'>" +
-                icon + "</i><cite>" + parList[i].menuName +
+            pemList += "<li mcode='"+parList[i].menuCode+"' class='layui-nav-item'><a href='javascript:;' lay-tips='" + parList[i].menuName + "'>" +
+                icon + "</i><cite >" + parList[i].menuName +
                 "</cite><span class='layui-nav-more'></span></a>" + dd + "</dl></li>";
         }else{
-            pemList += "<li class='layui-nav-item'><a lay-href='" + parList[i].menuUrl + "' lay-tips='" + parList[i].menuName + "'>" +
-                icon + "</i><cite>" + parList[i].menuName + "</cite></a></li>";
+            pemList += "<li mcode='"+parList[i].menuCode+"' class='layui-nav-item'><a lay-href='" + parList[i].menuUrl + "' lay-tips='" + parList[i].menuName + "'>" +
+                icon + "</i><cite >" + parList[i].menuName + "</cite></a></li>";
         }
 
         flag = 0;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.ffcs.uoo.system.controller.dao.SysPositionMapper">
+<mapper namespace="cn.ffcs.uoo.system.dao.SysPositionMapper">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysPosition">
@@ -28,20 +28,59 @@
 		select SEQ_SYS_POSITION_ID.NEXTVAL from dual
 	</select>
 
-    <select id="getPositionTree" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
-        SELECT A.POSITION_ID id ,A.POSITION_NAME name,A.P_POSITION_ID pid
-        FROM SYS_POSITION A
+    <select id="getTreeChild" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
+        SELECT C.POSITION_ID id ,C.POSITION_NAME name,C.P_POSITION_ID pid,
+        (SELECT WM_CONCAT(B.ROLE_NAME)
+         FROM SYS_POSITIONT_ROLE_REF A, SYS_ROLE B
         WHERE A.STATUS_CD = '1000'
-        START WITH A.POSITION_ID = #{positionId}
-        CONNECT BY PRIOR A.POSITION_ID = A.P_POSITION_ID
+          AND B.STATUS_CD = '1000'
+          AND A.ROLE_CODE = B.ROLE_CODE AND A.POSITION_CODE=C.POSITION_CODE) EXTFIELD1
+        FROM SYS_POSITION C
+        WHERE C.STATUS_CD = '1000' and C.P_POSITION_ID = #{positionId}
+<!--         START WITH C.POSITION_ID = #{positionId}
+         CONNECT BY PRIOR C.POSITION_ID = C.P_POSITION_ID -->
     </select>
 
-    <select id="getPositionRel" resultType="cn.ffcs.uoo.system.vo.SysPositionVo">
+    <select id="isleaf" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM SYS_POSITION A
+        WHERE A.STATUS_CD = '1000' AND P_POSITION_ID = #{id}
+    </select>
+
+    <select id="getTreeRoot" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
+        SELECT C.POSITION_ID id ,C.POSITION_NAME name,C.P_POSITION_ID pid,
+               (SELECT WM_CONCAT(B.ROLE_NAME)
+         FROM SYS_POSITIONT_ROLE_REF A, SYS_ROLE B
+        WHERE A.STATUS_CD = '1000'
+          AND B.STATUS_CD = '1000'
+          AND A.ROLE_CODE = B.ROLE_CODE AND A.POSITION_CODE=C.POSITION_CODE) EXTFIELD1
+        FROM SYS_POSITION C
+        WHERE C.STATUS_CD = '1000' AND C.P_POSITION_ID is null
+    </select>
+
+    <select id="selectPositionTree" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
+        SELECT C.POSITION_ID ID,
+       C.POSITION_NAME NAME,
+       C.P_POSITION_ID PID,
+       (SELECT WM_CONCAT(B.ROLE_NAME)
+         FROM SYS_POSITIONT_ROLE_REF A, SYS_ROLE B
+        WHERE A.STATUS_CD = '1000'
+          AND B.STATUS_CD = '1000'
+          AND A.ROLE_CODE = B.ROLE_CODE AND A.POSITION_CODE=C.POSITION_CODE) EXTFIELD1,
+          (SELECT DECODE(COUNT(1),0,0,1) FROM SYS_POSITION A WHERE A.STATUS_CD='1000' AND A.P_POSITION_ID=C.POSITION_ID ) isParent
+           FROM SYS_POSITION C
+        WHERE C.STATUS_CD = '1000'
+    </select>
+
+    <select id="getPositionRelPage" resultType="cn.ffcs.uoo.system.vo.SysPositionVo">
 
         <choose>
-        <when test='isSearchlower=="0"'>
-            SELECT A.POSITION_NAME,
-            A.REGION_NBR,
+        <when test='vo.isSearchlower=="0"'>
+            SELECT
+            A.POSITION_ID positionId,
+            A.P_POSITION_ID pPositionId,
+            A.POSITION_NAME positionName,
+            A.REGION_NBR regionNbr,
             (SELECT TCR.REGION_NAME FROM TB_COMMON_REGION TCR WHERE TCR.STATUS_CD='1000' AND TCR.REGION_NBR=A.REGION_NBR) REGIONNAME,
             (SELECT WM_CONCAT(SR.ROLE_NAME)
               FROM SYS_POSITIONT_ROLE_REF SPRR, SYS_ROLE SR
@@ -53,24 +92,39 @@
             (SELECT COUNT(1) FROM SYS_USER_POSITION_REF SUPR WHERE SUPR.STATUS_CD='1000' AND SUPR.POSITION_CODE=A.POSITION_CODE) ORGUSERNUM
             FROM SYS_POSITION A
             WHERE A.STATUS_CD = '1000'
-            AND A.P_POSITION_ID = #{positionId}
+            AND A.P_POSITION_ID = #{vo.positionId}
+            <if test="vo.search!=null and vo.search!=''">
+                AND A.POSITION_NAME like '%'||#{vo.search}||'%'
+            </if>
         </when>
         <otherwise>
-            SELECT A.POSITION_NAME,
-            A.REGION_NBR,
-            (SELECT TCR.REGION_NAME FROM TB_COMMON_REGION TCR WHERE TCR.STATUS_CD='1000' AND TCR.REGION_NBR=A.REGION_NBR) REGIONNAME,
+            SELECT * from (
+            SELECT
+            A.POSITION_ID positionId,
+            A.P_POSITION_ID pPositionId,
+            A.POSITION_NAME positionName,
+            A.REGION_NBR regionNbr,
+            (SELECT TCR.REGION_NAME FROM TB_COMMON_REGION TCR WHERE TCR.STATUS_CD='1000' AND
+            TCR.REGION_NBR=A.REGION_NBR) REGIONNAME,
             (SELECT WM_CONCAT(SR.ROLE_NAME)
             FROM SYS_POSITIONT_ROLE_REF SPRR, SYS_ROLE SR
             WHERE SPRR.STATUS_CD = '1000'
             AND SR.STATUS_CD = '1000'
             AND SR.ROLE_CODE = SPRR.ROLE_CODE
             AND SPRR.POSITION_CODE = A.POSITION_CODE) ROLENAMES,
-            (SELECT COUNT(1) FROM SYS_DEPT_POSITION_REF SDPR WHERE SDPR.STATUS_CD='1000' AND SDPR.POSITION_CODE=A.POSITION_CODE) ORGPOSITIONNUM,
-            (SELECT COUNT(1) FROM SYS_USER_POSITION_REF SUPR WHERE SUPR.STATUS_CD='1000' AND SUPR.POSITION_CODE=A.POSITION_CODE) ORGUSERNUM
+            (SELECT COUNT(1) FROM SYS_DEPT_POSITION_REF SDPR WHERE SDPR.STATUS_CD='1000' AND
+            SDPR.POSITION_CODE=A.POSITION_CODE) ORGPOSITIONNUM,
+            (SELECT COUNT(1) FROM SYS_USER_POSITION_REF SUPR WHERE SUPR.STATUS_CD='1000' AND
+            SUPR.POSITION_CODE=A.POSITION_CODE) ORGUSERNUM
             FROM SYS_POSITION A
             WHERE A.STATUS_CD = '1000'
-            START WITH A.POSITION_ID = #{positionId}
-            CONNECT BY  PRIOR  A.POSITION_ID =  A.P_POSITION_ID
+            START WITH A.POSITION_ID = #{vo.positionId}
+            CONNECT BY PRIOR A.POSITION_ID = A.P_POSITION_ID
+            ) where 1=1
+            <if test="vo.search!=null and vo.search!=''">
+                AND positionName like '%'||#{vo.search}||'%'
+            </if>
+
         </otherwise>
         </choose>
     </select>
@@ -86,4 +140,57 @@
             WHERE A.STATUS_CD = '1000'
             AND A.P_POSITION_ID = #{positionId}
     </select>
+
+
+
+    <select id="getPosition" resultType="cn.ffcs.uoo.system.vo.SysPositionVo">
+      SELECT A.POSITION_ID positionId,A.POSITION_NAME positionName,A.POSITION_CODE positionCode,A.P_POSITION_ID pPositionId,A.REGION_NBR regionNbr,A.SORT_NUM sortNum,A.NOTES notes,
+      (select b.region_name from TB_COMMON_REGION b where b.common_region_id=A.Region_Nbr) regionName,
+
+      (select B.POSITION_NAME from SYS_POSITION B where B.STATUS_CD = 1000 AND B.POSITION_ID = A.P_POSITION_ID) pPositionName
+            FROM SYS_POSITION A
+            WHERE A.STATUS_CD = '1000'
+            AND A.POSITION_ID = #{positionId}
+    </select>
+
+
+
+    <select id="getSysOrgPosition" resultType="cn.ffcs.uoo.system.vo.SysPositionVo">
+        SELECT B.POSITION_ID positionId,B.POSITION_NAME positionName,B.POSITION_CODE positionCode,B.P_POSITION_ID pPositionId
+        FROM SYS_POSITION B, SYS_DEPT_POSITION_REF A
+        WHERE A.STATUS_CD = 1000
+        AND B.STATUS_CD = 1000
+        AND A.POSITION_CODE = B.POSITION_CODE
+        AND A.ORG_CODE = #{orgCode}
+    </select>
+
+
+    <select id="getPositionRoles" resultType="cn.ffcs.uoo.system.vo.SysRoleDTO">
+            select b.role_id roleId,
+                   b.role_name roleName,
+                   b.role_code roleCode,
+                   b.parent_role_code parentRoleCode,
+                   b.region_nbr regionNbr
+              from SYS_POSITIONT_ROLE_REF a, SYS_ROLE b
+             where a.status_cd = 1000
+               and b.status_cd = 1000
+               and a.role_code = b.role_code
+               and a.position_code = #{positionCode}
+    </select>
+
+
+    <select id="getPositionUserRefCount" resultType="java.lang.Integer">
+        select count(1) from SYS_USER_POSITION_REF a where a.status_cd='1000' and a.position_code=#{positionCode}
+    </select>
+
+    <select id="getPositionDepRefCount" resultType="java.lang.Integer">
+        select count(1) from SYS_DEPT_POSITION_REF a where a.status_cd='1000' and a.position_code=#{positionCode}
+    </select>
+
+    <select id="getPositionRoleRefCount" resultType="java.lang.Integer">
+        select count(1) from SYS_POSITIONT_ROLE_REF a where a.status_cd='1000' and a.position_code=#{positionCode}
+    </select>
+
+
+
 </mapper>

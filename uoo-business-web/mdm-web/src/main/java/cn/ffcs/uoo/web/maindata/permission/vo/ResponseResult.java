@@ -1,7 +1,5 @@
 package cn.ffcs.uoo.web.maindata.permission.vo;
 
-import java.util.List;
-
 import com.baomidou.mybatisplus.plugins.Page;
 
 public class ResponseResult<T>  {
@@ -102,13 +100,10 @@ public class ResponseResult<T>  {
     }
 
     
-    public static <T> ResponseResult<List<T>> createSuccessResult(Page<T> page, String message) {
-        ResponseResult<List<T>> result = new ResponseResult<List<T>>();
-        result.setData(page.getRecords());
+    public static <T> ResponseResult<Page<T>> createSuccessResult(Page<T> page, String message) {
+        ResponseResult<Page<T>> result = new ResponseResult<>();
+        result.setData(page);
         result.setMessage(message);
-        result.setPageNo(page.getCurrent());
-        result.setPageSize(page.getSize());
-        result.setTotalRecords(page.getTotal());
         return result;
     }
 }

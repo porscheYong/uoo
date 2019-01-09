@@ -6,7 +6,7 @@ var orgIdList = [];
 var isCheckedOrg = 0;
 
 var settingA = {
-		data: {
+    data: {
         key: {
             isParent: "parent",
         },
@@ -17,13 +17,16 @@ var settingA = {
             rootPId: ""
         }
     },
-		view: {
-            selectedMulti: false,
-            showLine: false,
-            showIcon: false,
-            dblClickExpand: false
-		}
-	};
+    view: {
+        selectedMulti: false,
+        showLine: false,
+        showIcon: false,
+        dblClickExpand: false
+    },
+    callback: {
+        onClick: onNodeClick
+    }
+};
 
 empty = Handlebars.compile($(".typeahead-menu").html());
 
@@ -135,7 +138,7 @@ $('#orgName').typeahead({
         suggestion: empty
     }
 })
-  .on('typeahead:asyncrequest', function() {
+  .on('typeahead:asyncrequest', function(e) {
         $('.Typeahead-spinner').show();
         if($("#orgName").val() != '' && !Regx.test($("#orgName").val())){
             initOrgSearchTable($("#orgName").val());
@@ -180,7 +183,7 @@ function initRestructOrgRelTree (orgId) {        //初始化树
         var url = "list.html?id=" + orgId + '&pid=' + data[0].pid + "&name=" + encodeURI(data[0].name);
         zTree.expandAll(true);
         zTree.selectNode(node);
-        $('#orgFrame').attr("src",url);
+        $('.curSelectedNode').trigger('click');
     }, function (err) {
 
     })

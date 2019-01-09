@@ -21,4 +21,18 @@
         POSITIONT_ROLE_REF_ID, POSITION_CODE, ROLE_CODE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, NOTES
     </sql>
 
+    <select id="getId" resultType="java.lang.Long">
+		select SEQ_POSITION_ROLE_REF_ID.NEXTVAL from dual
+	</select>
+
+
+    <select id="getCurRoleList" resultType="cn.ffcs.uoo.system.entity.SysPositiontRoleRef">
+            SELECT A.POSITIONT_ROLE_REF_ID positiontRoleRefId, A.POSITION_CODE positionCode, A.ROLE_CODE roleCode,
+            B.ROLE_ID roleId
+            FROM SYS_POSITIONT_ROLE_REF A, SYS_ROLE B
+            WHERE A.STATUS_CD = 1000
+            AND B.STATUS_CD = 1000
+            AND A.ROLE_CODE = B.ROLE_CODE
+            AND A.POSITION_CODE = #{positionCode}
+    </select>
 </mapper>

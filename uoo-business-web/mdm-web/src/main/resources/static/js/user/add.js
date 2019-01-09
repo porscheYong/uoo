@@ -3,6 +3,7 @@ var orgTreeId = getQueryString('orgTreeId'); //组织树ID
 var orgName = getQueryString('name');
 var orgTreeName = getQueryString('orgTreeName');
 var engine, template, empty, selectNode;
+var certType;
 var table;
 var workTable;
 var eduTable;
@@ -243,7 +244,7 @@ function getSelectedCert () {
 //正则身份证信息
 function getIdCardInfo () {
     var certNo = $('#certNo').val();
-    var certType = $('#certType option:selected') .val();
+    certType = $('#certType option:selected') .val();
     if(certType == '1' && validCardByCard(certNo)){
         var sex;
         sex = getGenderByCard(certNo);
@@ -1285,3 +1286,15 @@ getPliticalStatus();
 getMarriage();
 
 
+function showMoreInfo(){
+	$('#showMoreInfoDiv').hide();
+	$('#jobTitleDiv').show();
+	$('#workExperience').show();
+	$('#workEdit').show();
+	$('#eduTitleDiv').show();
+	$('#eduExperience').show();
+	$('#eduEdit').show();
+	$('#famliyTitleDiv').show();
+	$('#familyMember').show();
+	$('#familyEdit').show();
+}

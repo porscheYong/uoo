@@ -1,14 +1,26 @@
-server:
-  port: 11100
 spring:
   application:
-    name: business-organization
+    name: business-user
   datasource:
     druid:
-      url: jdbc:oracle:thin:@134.96.248.48:3436/ZJ4APRD
+      #url: jdbc:oracle:thin:@134.129.68.156:1521:fjtpdb
+      #driver-class-name: oracle.jdbc.OracleDriver
+      #username: uoo137
+      #password: uoo137
+      #      url: jdbc:mysql://127.0.0.1:3306/springboot?characterEncoding=utf8&useSSL=false
+      #      driver-class-name:  com.mysql.jdbc.Driver
+      #      username: root
+      #      password: 123456
+      #=======
+      #      url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
+      #      driver-class-name:  oracle.jdbc.OracleDriver
+      #      username: uom
+      #      password: uom
       driver-class-name: oracle.jdbc.OracleDriver
+      url: jdbc:oracle:thin:@134.96.248.48:3436/ZJ4APRD
       username: octopus
       password: octopus
+
       initial-size: 10
       min-idle: 4
       max-active: 30
@@ -82,20 +94,17 @@ spring:
         url-pattern: /druid/*
         #允许清除记录
         reset-enable: false
-#      aop-patterns: cn.ffcs.uoo.**.service.*
-#  data:
-#    solr:
-#      #host: http://localhost:8888/uooSolr
-#      host: http://134.96.253.221:8762/uooSolr
-#      repositories:
-#        enabled: true
+  #      aop-patterns: cn.ffcs.uoo.**.service.*
   rabbitmq:
     host: 134.96.249.38
     port: 5672
     username: root
     password: 123
-
-
+  zipkin:
+    base-url: http://134.96.217.244:8600
+  sleuth:
+    sampler:
+      percentage: 0.5
 
 mybatis-plus:
   mapper-locations: classpath:mapper/**Mapper.xml
@@ -107,26 +116,35 @@ mybatis-plus:
     field-strategy: 2
     db-column-underline: true
     refresh-mapper: true
+    meta-object-handler: cn.ffcs.uoo.core.user.util.MyMetaObjectHandler
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
 
+server:
+  port: 11300
+
+  #路由超时，即socket超时设置
+ribbon:
+  ReadTimeout: 600000
+  ConnectTimeout: 600000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
 
 eureka:
   instance:
-#    appname: business-organization
-#    hostname: localhost
+    appname: business-user
+    hostname: localhost
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
-#    lease-expiration-duration-in-seconds: 30
-#    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
+    lease-renewal-interval-in-seconds: 10
   server:
     port: 8751
   client:
     service-url:
-      defaultZone: http://134.96.217.231:${eureka.server.port}/eureka/,http://134.96.217.232:${eureka.server.port}/eureka/,http://134.96.217.233:${eureka.server.port}/eureka/
-      #defaultZone:  http://134.96.253.221:${eureka.server.port}/eureka/
-      #defaultZone:  http://localhost:${eureka.server.port}/eureka/
+      #defaultZone:  http://134.96.253.221:${eureka.server.port}/eureka/,http://134.96.253.222:${eureka.server.port}/eureka/,http://134.96.253.223:${eureka.server.port}/eureka/
+      defaultZone: http://134.96.217.231:8751/eureka/,http://134.96.217.232:8751/eureka/,http://134.96.217.233:8751/eureka/
 logging:
   level:
     cn.ffcs.uoo: info

@@ -4,7 +4,7 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysElement">
-        <result column="ELEMENT_ID" property="elementId" />
+        <id column="ELEMENT_ID" property="elementId" />
         <result column="ELEMENT_NAME" property="elementName" />
         <result column="MENU_CODE" property="menuCode" />
         <result column="ELEMENT_CODE" property="elementCode" />

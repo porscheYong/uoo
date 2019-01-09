@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.models.Xml;
 import io.swagger.models.auth.In;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -283,6 +284,15 @@ public class OrgRelController extends BaseController {
         }
 
         String batchNumber = modifyHistoryService.getBatchNumber();
+
+
+        if("1".equals(orgTree.getOrgTreeId().toString())){
+            Org oldOrg = new Org();
+            BeanUtils.copyProperties(o,oldOrg);
+            o.setStandardFlag(1L);
+            orgService.update(o);
+            modifyHistoryService.addModifyHistory(oldOrg,0,org.getUpdateUser(),batchNumber);
+        }
 
         //新增组织关系
         OrgRel orgRel = new OrgRel();

@@ -862,7 +862,7 @@ public class OrgController extends BaseController {
             if(expList!=null && expList.size()>0){
                 for(ExpandovalueVo  vo : expList){
                     if(StrUtil.isNullOrEmpty(vo.getData())){
-                        break;
+                        continue;
                     }
                     isExists = false;
                     if(curExtList!=null && curExtList.size()>0){
@@ -922,8 +922,8 @@ public class OrgController extends BaseController {
                     }
                 }
             }
-            //更新组织 并且新增营销化小编码
-            if(curExtList.size()>0 && StrUtil.isNullOrEmpty(org.getOrgMartCode())){
+            //更新组织 并且新增营销化小编码 curExtList.size()>0 && StrUtil.isNullOrEmpty(org.getOrgMartCode())
+            if(expList!=null && expList.size()>0 && StrUtil.isNullOrEmpty(org.getOrgMartCode()) && StrUtil.isNullOrEmpty(o.getOrgMartCode())){
                 String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
                     @Override
                     public String doInConnection(Connection conn) throws SQLException, DataAccessException {
@@ -955,7 +955,7 @@ public class OrgController extends BaseController {
                     }
                 });
             }
-            if(curExtList.size()==0 && !StrUtil.isNullOrEmpty(o.getOrgMartCode())){
+            if((expList==null || expList.size()==0) && !StrUtil.isNullOrEmpty(o.getOrgMartCode())){
                 //删除营销属性
                 String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
                     @Override
@@ -1133,7 +1133,9 @@ public class OrgController extends BaseController {
                 modifyHistoryService.addModifyHistory(or,null,org.getUpdateUser(),batchNumber);
                 newOrg.setStatusCd("1000");
                 newOrg.setUpdateUser(org.getUpdateUser());
+                newOrg.setStandardFlag(0L);
                 orgService.update(newOrg);
+                modifyHistoryService.addModifyHistory(o,newOrg,org.getUpdateUser(),batchNumber);
                 String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+newOrg.getOrgId()+"}}" ;
                 template.convertAndSend("message_sharing_center_queue",mqmsg);
                 ret.setState(ResponseResult.STATE_OK);
@@ -1219,12 +1221,19 @@ public class OrgController extends BaseController {
 //            ret.setMessage("组织被其他组织树引用无法删除");
 //            return ret;
 //        }
+
+        String batchNumber = modifyHistoryService.getBatchNumber();
+
         Wrapper orgWrapper = Condition.create()
                 .eq("ORG_ID",orgId)
                 .eq("STATUS_CD","1000");
         Org org = orgService.selectOne(orgWrapper);
+        Org oldOrg = new Org();
+        BeanUtils.copyProperties(org,oldOrg);
+        org.setStandardFlag(0L);
+        orgService.update(org);
+        modifyHistoryService.addModifyHistory(oldOrg,org,userId,batchNumber);
 
-        String batchNumber = modifyHistoryService.getBatchNumber();
 
         List<OrgRel> orgRelList = orgRelService.getOrgRel(orgTreeId,orgId);
         for(OrgRel orgRel : orgRelList){
@@ -1375,6 +1384,12 @@ public class OrgController extends BaseController {
         if(StrUtil.isNullOrEmpty(org)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织不存在");
+            return ret;
+        }
+
+        if(!"1".equals(orgTreeId) && !StrUtil.isNullOrEmpty(org.getStandardFlag()) && "1".equals(org.getStandardFlag())){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("属于标准树的组织只能在标准树上操作");
             return ret;
         }
 

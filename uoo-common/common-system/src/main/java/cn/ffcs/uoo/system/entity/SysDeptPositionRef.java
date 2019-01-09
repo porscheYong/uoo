@@ -73,6 +73,16 @@ public class SysDeptPositionRef extends Model<SysDeptPositionRef> {
     @TableField("NOTES")
     private String notes;
 
+    @TableField(exist=false)
+    private Long positionId;
+
+    public Long getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(Long positionId) {
+        this.positionId = positionId;
+    }
 
     public Long getDeptPositionRefId() {
         return deptPositionRefId;

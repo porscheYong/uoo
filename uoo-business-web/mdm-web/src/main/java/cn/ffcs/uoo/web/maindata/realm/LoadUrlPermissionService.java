@@ -153,13 +153,13 @@ public class LoadUrlPermissionService {
 //            filterChainDefinitionMap.put("/bb/ff=*", "perms[sad]");//
 //            filterChainDefinitionMap.put("/cc/*/ff", "perms[sad]");//
 
-            cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<Page<SysMenu>> listPage = sysMenuClient.listPage(1, Integer.MAX_VALUE,null);
+            cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<Page<SysMenu>> listPage = sysMenuClient.listPage(1, Integer.MAX_VALUE,"");
             if(listPage.getState()==cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult.STATE_OK){
                 List<SysMenu> data = listPage.getData().getRecords();
                 if(data!=null){
                     log.info("菜单权限数量："+data.size());
                     for (SysMenu sysMenu : data) {
-                        filterChainDefinitionMap.put(sysMenu.getMenuUrl(), "perms[M" + sysMenu.getMenuId() + "]");
+                        filterChainDefinitionMap.put(sysMenu.getMenuUrl(), "perms[" + sysMenu.getMenuCode() + "]");
                     }
                 }
             }
@@ -177,7 +177,7 @@ public class LoadUrlPermissionService {
                             funcApi=funcApi.replace(tmp, "*");
                             indexOf= funcApi.indexOf("{");
                         }
-                        filterChainDefinitionMap.put(funcApi, "perms[F" + sysMenu.getFuncId() + "]");
+                        filterChainDefinitionMap.put(funcApi, "perms[" + sysMenu.getFuncCode() + "]");
                     }
                 }
             }

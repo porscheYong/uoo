@@ -269,6 +269,9 @@ public class TbDictionaryItemController extends BaseController {
         list = tbDictionaryItemService.selectDicItemListByDicName("contractType");
         dictionaryListVo.setContractType(list);
 
+        list = tbDictionaryItemService.selectDicItemListByDicName("ACCT_LEVEL");
+        dictionaryListVo.setACCT_LEVEL(list);
+
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("请求成功");
         responseResult.setData(dictionaryListVo);

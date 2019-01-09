@@ -3,9 +3,12 @@ package cn.ffcs.uoo.system.dao;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.ffcs.uoo.system.vo.SysDataRuleVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 import cn.ffcs.uoo.system.entity.SysDataRule;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -17,5 +20,12 @@ import cn.ffcs.uoo.system.entity.SysDataRule;
  * @since 2018-12-21
  */
 public interface SysDataRuleMapper extends BaseMapper<SysDataRule> {
+
+    public Long getId();
+
     List<SysDataRule> listByAccout(HashMap<String, Object> map);
+
+    List<SysDataRuleVo> getDataRulePage(Pagination page, @Param("search")String search);
+
+    public String getDicItem(@Param("itemValue")String itemValue);
 }

@@ -324,7 +324,7 @@ function getOrgPostLevel () {
 }
 
 // 获取状态数据
-function getStatusCd () {
+function getStatusCd (statusCd) {
     var option = '';
     for (var i = 0; i < statusCdData.length; i++) {
         var select = statusCd === statusCdData[i].itemValue? 'selected' : '';
@@ -508,7 +508,7 @@ function addOrg () {
     }), function (data) {
         parent.addNodeById(orgId, data);
         parent.openTreeById(orgId, data.id);
-        window.location.replace("list.html?id=" + data.id + '&orgTreeId=' + orgTreeId + '&pid=' + data.pid + "&name=" + encodeURI(data.name));
+        window.location.replace("list.html?id=" + data.id + '&orgTreeId=' + orgTreeId + "&refCode=" + refCode + '&pid=' + data.pid + "&name=" + encodeURI(data.name));
         loading.screenMaskDisable('container');
         toastr.success('新增成功！');
     }, function (err) {

@@ -5,6 +5,9 @@ import cn.ffcs.uoo.system.entity.SysDataRule;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.ffcs.uoo.system.entity.SysFile;
+import cn.ffcs.uoo.system.vo.SysDataRuleVo;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -18,4 +21,32 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ISysDataRuleService extends IService<SysDataRule> {
     List<SysDataRule> listByAccout(HashMap<String, Object> map);
+
+    Page<SysDataRuleVo> getDataRulePage(String search, Integer pageSize, Integer pageNo);
+
+    /**
+     * 获取seq
+     * @return
+     */
+    public Long getId();
+
+    /**
+     * 失效状态
+     * @param sysDataRule
+     */
+    public void delete(SysDataRule sysDataRule);
+
+    /**
+     * 新增
+     */
+    public void add(SysDataRule sysDataRule);
+
+    /**
+     * 更新
+     */
+    public void update(SysDataRule sysDataRule);
+
+
+
+    public String getDicItem(String itemValue);
 }

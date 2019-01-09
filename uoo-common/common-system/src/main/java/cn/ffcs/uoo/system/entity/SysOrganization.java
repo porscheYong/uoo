@@ -25,7 +25,7 @@ public class SysOrganization extends Model<SysOrganization> {
     /**
      * 组织标识
      */
-    @TableId(value = "ORG_ID", type = IdType.AUTO)
+    @TableId(value = "ORG_ID")
     private Long orgId;
     /**
      * 组织名称
@@ -41,7 +41,7 @@ public class SysOrganization extends Model<SysOrganization> {
      * 上级组织标识
      */
     @TableField("PARENT_ORG_CODE")
-    private Long parentOrgCode;
+    private String parentOrgCode;
     /**
      * 引用电信管理区域
      */
@@ -108,11 +108,11 @@ public class SysOrganization extends Model<SysOrganization> {
         this.orgCode = orgCode;
     }
 
-    public Long getParentOrgCode() {
+    public String getParentOrgCode() {
         return parentOrgCode;
     }
 
-    public void setParentOrgCode(Long parentOrgCode) {
+    public void setParentOrgCode(String parentOrgCode) {
         this.parentOrgCode = parentOrgCode;
     }
 

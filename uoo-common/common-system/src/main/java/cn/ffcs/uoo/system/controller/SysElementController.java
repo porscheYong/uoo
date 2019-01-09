@@ -124,7 +124,7 @@ public class SysElementController {
             return ResponseResult.createErrorResult("请选择菜单");
         }
         if(!ele.getElementCode().equals(one.getElementCode())){
-            permEleSvc.updateForSet("ELEMENT_CODE="+funcCode, Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ELEMENT_CODE", one.getElementCode()));
+            permEleSvc.updateForSet("ELEMENT_CODE='"+funcCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ELEMENT_CODE", one.getElementCode()));
         }
         ele.setUpdateDate(new Date());
         eleSvc.updateById(ele);

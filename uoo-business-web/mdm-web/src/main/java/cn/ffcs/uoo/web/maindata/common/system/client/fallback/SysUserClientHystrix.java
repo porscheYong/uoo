@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.common.system.client.fallback;
 
+import cn.ffcs.uoo.web.maindata.common.system.vo.EditSysUserDeptRefVo;
+import cn.ffcs.uoo.web.maindata.common.system.vo.SysUserDeptRefVo;
 import org.springframework.stereotype.Component;
 
 import cn.ffcs.uoo.web.maindata.common.system.client.SysUserClient;
@@ -28,6 +30,46 @@ public class SysUserClientHystrix implements SysUserClient {
     @Override
     public ResponseResult<String> alterPwd(AlterPwdDTO alterPwdDTO) {
         ResponseResult<String> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    }
+
+    @Override
+    public ResponseResult<Void> updateLoginInfo(SysUser sysUser) {
+        ResponseResult<Void> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    }
+
+    @Override
+    public Object addsysUserDeptRef(EditSysUserDeptRefVo sysUserDeptRefVo) {
+        ResponseResult<Void> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    }
+
+    @Override
+    public Object updateSysUser(SysUser sysUser) {
+        ResponseResult<Void> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    }
+
+    @Override
+    public ResponseResult<SysUserDeptRefVo> getSysUserDeptPosition(Long userId, Integer pageNo, Integer pageSize) {
+        ResponseResult<SysUserDeptRefVo> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    }
+
+    @Override
+    public Object deletePrivilege(SysUser sysUser) {
+        ResponseResult<Void> rr=new ResponseResult<>();
         rr.setState(ResponseResult.STATE_SERVICE_ERROR);
         rr.setMessage("服务不可用");
         return rr;

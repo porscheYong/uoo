@@ -21,6 +21,11 @@
     <sql id="Base_Column_List">
         DATA_RULE_ID, TAB_NAME, COL_NAME, RULE_OPERATOR, COL_VALUE, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
     </sql>
+
+    <select id="getId" resultType="java.lang.Long">
+                    SELECT SEQ_SYS_DATA_RULE_ID.NEXTVAL FROM DUAL
+    </select>
+
     <select id="listByAccout" resultType="cn.ffcs.uoo.system.entity.SysDataRule" parameterType="java.util.HashMap">
         SELECT
         DISTINCT(m.DATA_RULE_ID),m.*
@@ -48,5 +53,31 @@
         <foreach collection="tableNames" index="index" item="item" open="(" separator="," close=")">
                  #{item}       
          </foreach>
+    </select>
+
+
+
+    <select id="getDataRulePage" resultType="cn.ffcs.uoo.system.vo.SysDataRuleVo">
+        select a.data_rule_id dataRuleId,
+       a.tab_name tabName,
+       a.col_name colName,
+       a.rule_operator ruleOperator,
+       a.col_value colValue,
+       a.status_cd statusCd
+  from sys_data_rule a
+ where a.status_cd = '1000'
+        <if test="search!=null and search!=''">
+            and fileName like '%'||#{search}||'%'
+        </if>
+    </select>
+
+    <select id="getDicItem" resultType="java.lang.String">
+             SELECT A.ITEM_CNNAME
+     FROM TB_DICTIONARY_ITEM A, TB_DICTIONARY B
+    WHERE A.STATUS_CD = 1000
+      AND B.STATUS_CD = 1000
+      AND A.DICTIONARY_ID = B.DICTIONARY_ID
+      AND B.DICTIONARY_NAME='RULE_OPERATOR'
+      AND A.ITEM_VALUE=#{itemValue}
     </select>
 </mapper>

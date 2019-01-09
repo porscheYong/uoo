@@ -97,12 +97,12 @@ spring:
         reset-enable: false
   #      aop-patterns: cn.ffcs.uoo.**.service.*
   rabbitmq:
-    host: 134.96.217.231
+    host: 134.96.249.38
     port: 5672
     username: root
     password: 123
   zipkin:
-    base-url: http://134.96.253.223:8600
+    base-url: http://134.96.217.244:8600
   sleuth:
     sampler:
       percentage: 0.5
@@ -169,7 +169,7 @@ eureka:
     port: 8751
   client:
     service-url:
-      defaultZone: http://134.96.217.231:8751/eureka/
+      defaultZone: http://134.96.217.231:8751/eureka/,http://134.96.217.232:8751/eureka/,http://134.96.217.233:8751/eureka/
 logging:
   level:
     cn.ffcs.uoo: info

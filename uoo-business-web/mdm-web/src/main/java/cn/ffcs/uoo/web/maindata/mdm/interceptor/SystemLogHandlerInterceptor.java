@@ -1,12 +1,16 @@
 package cn.ffcs.uoo.web.maindata.mdm.interceptor;
 
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
+import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +32,8 @@ public class SystemLogHandlerInterceptor implements HandlerInterceptor{
     private static final Logger log=LoggerFactory.getLogger(SystemLogHandlerInterceptor.class);
     @Autowired
     SysOperationLogClient opLogClient;
+    @Autowired
+    ShiroFilterFactoryBean shiroFilterFactoryBean;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
@@ -71,9 +77,23 @@ public class SystemLogHandlerInterceptor implements HandlerInterceptor{
                         if(formData.length()>4000){
                             formData=formData.substring(0, 4000);
                         }
+                        String requestURI = request.getRequestURI();
+                        Map<String, String> filterChainDefinitionMap = shiroFilterFactoryBean.getFilterChainDefinitionMap();
+                        Set<Entry<String, String>> entrySet = filterChainDefinitionMap.entrySet();
+                        for (Entry<String, String> entry : entrySet) {
+                            String pm = entry.getValue();
+                            String url = entry.getKey();
+                            if(pm.startsWith("perms[")){
+                                String tmp = url.replaceAll("\\*", ".*");
+                                if(Pattern.matches(tmp, requestURI)){
+                                    logs.setFuncCode(pm.substring(6, pm.length()-1));
+                                    break;
+                                }
+                            }
+                        }
                         logs.setFormData(formData);
-                        logs.setFuncCode(null);
-                        logs.setMenuCode(null);
+                        
+                        logs.setMenuCode(request.getHeader("MENU_CODE"));
                         logs.setNotes(l.desc());
                         //日志落库
                         //请求参数;
@@ -89,5 +109,11 @@ public class SystemLogHandlerInterceptor implements HandlerInterceptor{
 
 
     }
-
+    public static void main(String[] args) {
+        String key="perms[345]";
+        char[] ca = key.toCharArray();
+        System.out.println(key.replaceAll("\\*", ".*"));
+        System.out.println(Pattern.matches("/sys/i=.*/aa", "/sys/6redter/aa"));
+        System.out.println(Pattern.matches("/sys/i=.*/aa", "/sys/6redter/aa"));
+    }
 }

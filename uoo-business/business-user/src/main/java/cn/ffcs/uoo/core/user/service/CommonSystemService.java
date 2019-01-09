@@ -8,6 +8,7 @@ import cn.ffcs.uoo.core.user.vo.SysDataRule;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -27,6 +28,8 @@ public interface CommonSystemService {
 
     public List<SysDataRule> getSysDataRuleList(List<String> tabNames, String accout);
 
-    public String getSysDataRuleSql(String tabName, List<SysDataRule> sysDataRuleList);
+    public String getSysDataRuleSql(Map<String, String> map, List<SysDataRule> sysDataRuleList);
+
+    public String getSqlJointList(Map<String, String> map, String account);
 
 }

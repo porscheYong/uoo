@@ -31,4 +31,6 @@ public interface CommonSystemService {
 
     public String getSysDataRuleSql(String tabName, List<SysDataRule> sysDataRuleList);
 
+    public String getSysDataRuleSql(String tabAliasName,String tabName, List<SysDataRule> sysDataRuleList);
+
 }

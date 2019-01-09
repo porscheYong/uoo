@@ -168,10 +168,22 @@ public class PsonOrgVo extends BaseVo {
 
     private String tabOrgOrgTypeParams;
 
+    private String tabAccountOrgRelParams;
+
+
 
     /** 账号权限**/
     private String accout;
     private Long sysUserId;
+
+
+    public String getTabAccountOrgRelParams() {
+        return tabAccountOrgRelParams;
+    }
+
+    public void setTabAccountOrgRelParams(String tabAccountOrgRelParams) {
+        this.tabAccountOrgRelParams = tabAccountOrgRelParams;
+    }
 
     public String getAccout() {
         return accout;

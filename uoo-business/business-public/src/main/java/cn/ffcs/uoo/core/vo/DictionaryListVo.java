@@ -43,6 +43,7 @@ public class DictionaryListVo {
     private List<TbDictionaryItem> 	areaType	;//	区域级别
     private List<TbDictionaryItem> 	countType	;//	统计属性
     private List<TbDictionaryItem> 	contractType	;//	承包类型
+    private List<TbDictionaryItem>  ACCT_LEVEL; // 账号等级
 
     public List<TbDictionaryItem> getNodeType() {
         return nodeType;
@@ -346,5 +347,13 @@ public class DictionaryListVo {
 
     public void setPOSITION_TYPE(List<TbDictionaryItem> POSITION_TYPE) {
         this.POSITION_TYPE = POSITION_TYPE;
+    }
+
+    public List<TbDictionaryItem> getACCT_LEVEL() {
+        return ACCT_LEVEL;
+    }
+
+    public void setACCT_LEVEL(List<TbDictionaryItem> ACCT_LEVEL) {
+        this.ACCT_LEVEL = ACCT_LEVEL;
     }
 }

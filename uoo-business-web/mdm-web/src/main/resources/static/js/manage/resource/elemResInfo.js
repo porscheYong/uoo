@@ -1,4 +1,91 @@
-function cancel(){
+var id = getQueryString('id');
+var toastr = window.top.toastr;
+
+function getResInfo(){  
+    $http.get('/system/SysElement/get', {  
+        id : id
+    }, function (data) {
+        initElemInfo(data);
+    }, function (err) {
+        toastr.error("获取信息失败！");
+    })
+}  
+
+ //初始化元素资源信息
+ function initElemInfo(result){     
+    isNull("elementName",result.elementName);
+    isNull("elementCode",result.elementCode);
+    isNull("elementType",result.elementType);
+    isNull("elementDesc",result.elementDesc);
+    isNull("urlAddr",result.urlAddr);
+    initMenuName(parent.menuList,result.menuCode);
+}
+
+//判断时候为null
+function isNull(el,str){
+    if(str != null){
+        $("#"+el).val(str);
+    }
+}
+
+//初始化菜单select
+function initMenuName(result,currentMenu){
+    var selected = "";
+    for(var i=0;i<result.length;i++){
+        if(currentMenu == result[i].menuCode){
+            selected = "selected";
+        }else{
+            selected = "";
+        }
+        $("#menuName").append("<option value='" + result[i].menuCode + "'"+selected+">" + result[i].menuName +"</option>");
+    }
+    seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $('#menuName').selectMatch();
+    });
+}
+
+//更新元素资源信息
+function updateRes(){
+    $http.post('/system/SysElement/update', JSON.stringify({  
+        elementName : $("#elementName").val(),
+        elementCode : $("#elementCode").val(),
+        elementType : $("#elementType").val(),
+        elementDesc : $("#elementDesc").val(),
+        menuCode : $("#menuName").val(),
+        urlAddr : $("#urlAddr").val(),
+        statusCd : $("#statusCd").val(),
+        elementId : id
+    }), function (message) {
+        backToList();
+        toastr.success("保存成功！");
+    }, function (err) {
+        // toastr.error("保存失败！");
+    })
+}
+
+//删除元素资源信息
+function deleteRes(){
+    parent.layer.confirm('是否删除该元素资源？', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+        }, function(index, layero){
+            $http.post('/system/SysElement/delete', JSON.stringify({  
+                elementId : id
+            }), function (message) {
+                backToList();
+                toastr.success("删除成功！");
+                parent.layer.close(index);
+            }, function (err) {
+                toastr.error("删除失败！");
+                parent.layer.close(index);
+            })
+        }, function(){
+      
+        });
+}
+
+function backToList(){
     window.location.href = "elemResList.html";
 }
 
@@ -48,3 +135,5 @@ $('#myTabs a').click(function (e) {
     $(this).tab('show');
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
 })
+
+getResInfo();

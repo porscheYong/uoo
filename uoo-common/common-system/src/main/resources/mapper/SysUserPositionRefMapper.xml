@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.system.dao.SysUserPositionRefMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysUserPositionRef">
+        <id column="USER_POSITION_REF_ID" property="userPositionRefId" />
+        <result column="USER_CODE" property="userCode" />
+        <result column="POSITION_CODE" property="positionCode" />
+        <result column="SORT" property="sort" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+        <result column="NOTES" property="notes" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        USER_POSITION_REF_ID, USER_CODE, POSITION_CODE, SORT, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, NOTES
+    </sql>
+
+    <select id="getId" resultType="Long">
+        select SEQ_USER_POSITION_REF_ID.NEXTVAL from dual
+    </select>
+
+    <select id="getUserPositionRef" resultType="cn.ffcs.uoo.system.entity.SysUserPositionRef">
+        select t2.*
+        from SYS_DEPT_POSITION_REF t1,
+              sys_user_position_ref t2
+        where t1.status_cd = 1000
+        and t2.status_cd = 1000
+        and t1.position_code = t2.position_code
+        <if test="orgCode != null and orgCode != '' ">
+            and t1.org_code = #{orgCode}
+        </if>
+        <if test="userCode != null and userCode != '' ">
+            and t2.user_code = #{userCode}
+        </if>
+    </select>
+
+    <update id="delUserPositionDef" parameterType="cn.ffcs.uoo.system.entity.SysUserPositionRef">
+      update SYS_USER_POSITION_REF t
+        <set>
+            <if test="updateUser != null">update_user=#{updateUser}</if>
+            ,t.status_cd = 1100
+            ,t.status_date = sysdate
+            ,t.update_date = sysdate
+        </set>
+      where t.status_cd = 1000 and t.user_code = #{userCode}
+    </update>
+
+</mapper>

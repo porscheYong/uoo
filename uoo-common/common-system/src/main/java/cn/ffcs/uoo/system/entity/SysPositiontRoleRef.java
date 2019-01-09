@@ -35,6 +35,7 @@ public class SysPositiontRoleRef extends Model<SysPositiontRoleRef> {
      */
     @TableField("ROLE_CODE")
     private String roleCode;
+
     /**
      * 状态
      */
@@ -71,6 +72,18 @@ public class SysPositiontRoleRef extends Model<SysPositiontRoleRef> {
     @TableField("NOTES")
     private String notes;
 
+
+    @TableField(exist=false)
+    private String roleId;
+
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
 
     public Long getPositiontRoleRefId() {
         return positiontRoleRefId;

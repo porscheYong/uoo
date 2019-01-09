@@ -34,7 +34,7 @@ public class SysTable extends Model<SysTable> {
      * 表主键
      */
     @TableField("TAB_PK")
-    private Long tabPk;
+    private String tabPk;
     /**
      * 备注信息
      */
@@ -93,11 +93,11 @@ public class SysTable extends Model<SysTable> {
         this.tabName = tabName;
     }
 
-    public Long getTabPk() {
+    public String getTabPk() {
         return tabPk;
     }
 
-    public void setTabPk(Long tabPk) {
+    public void setTabPk(String tabPk) {
         this.tabPk = tabPk;
     }
 

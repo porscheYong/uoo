@@ -1,32 +1,45 @@
 package cn.ffcs.uoo.system.controller;
 
+import java.util.Date;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpSession;
+
+import cn.ffcs.uoo.system.entity.SysUserDeptRef;
+import cn.ffcs.uoo.system.entity.SysUserPositionRef;
+import cn.ffcs.uoo.system.service.SysUserDeptRefService;
+import cn.ffcs.uoo.system.service.SysUserPositionRefService;
+import cn.ffcs.uoo.system.util.StrUtil;
+import cn.ffcs.uoo.system.vo.*;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.base.common.tool.util.StringUtils;
+import cn.ffcs.uoo.base.controller.BaseController;
 import cn.ffcs.uoo.system.consts.StatusCD;
 import cn.ffcs.uoo.system.entity.SysUser;
 import cn.ffcs.uoo.system.service.SysUserService;
 import cn.ffcs.uoo.system.service.impl.SysUserServiceImpl;
 import cn.ffcs.uoo.system.util.MD5Util;
-import cn.ffcs.uoo.system.vo.AlterPasswdVo;
-import com.baomidou.mybatisplus.mapper.Condition;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+import cn.ffcs.uoo.system.util.ResponseResultBean;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-
-import cn.ffcs.uoo.base.common.tool.util.StringUtils;
-import cn.ffcs.uoo.base.controller.BaseController;
-import cn.ffcs.uoo.system.util.ResponseResultBean;
-
-import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * 系统域用户前端控制器
@@ -37,8 +50,17 @@ import java.util.regex.Pattern;
 public class SysUserController extends BaseController {
 
     @Autowired
+    private SysUserPositionRefService sysUserPositionRefService;
+    @Autowired
+    private SysUserDeptRefService sysUserDeptRefService;
+    @Autowired
     private SysUserService sysUserService;
 
+    @RequestMapping(value = "/updateLoginInfo", method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    public ResponseResult<Void> updateLoginInfo(@RequestBody SysUser sysUser){
+        sysUserService.updateById(sysUser);
+        return ResponseResult.createSuccessResult("");
+    }
     /**
      * 用户登录
      *
@@ -122,7 +144,11 @@ public class SysUserController extends BaseController {
         return result;
 
     }
-
+    /**
+     * 方法只可用来做登陆  不可用作他途
+     * @param sysUser
+     * @return
+     */
     @RequestMapping(value = "/getSysUserByAccout", method = RequestMethod.POST)
     public ResponseResultBean<SysUser> getSysUserByAccout(@RequestBody SysUser sysUser) {
         ResponseResultBean<SysUser> result = new ResponseResultBean<>();
@@ -282,6 +308,96 @@ public class SysUserController extends BaseController {
         obj.setStatusDate(new Date());
         obj.setUpdateDate(new Date());
         sysUserService.updateById(obj);
+        sysUserDeptRefService.delUserDeptDefByUserCode(sysUser.getUserCode(), sysUser.getUpdateUser());
+        sysUserPositionRefService.delUserPositionDefByUserCode(sysUser.getUserCode(), sysUser.getUpdateUser());
         return cn.ffcs.uoo.system.vo.ResponseResult.createSuccessResult("success");
     }
+
+
+    @ApiOperation(value = "新增用户组织", notes = "新增用户组织")
+    @ApiImplicitParam(name = "sysUserDeptRefVo", value = "用户组织信息", required = true, dataType = "EditSysUserDeptRefVo")
+    @UooLog(value = "新增用户组织", key = "sysUserDeptRef")
+    @Transactional
+    @RequestMapping(value = "/addsysUserDeptRef", method = RequestMethod.POST)
+    public Object addsysUserDeptRef(@RequestBody EditSysUserDeptRefVo sysUserDeptRefVo){
+        SysUser sysUser = new SysUser();
+        BeanUtils.copyProperties(sysUserDeptRefVo, sysUser);
+        //校验
+        String msg = sysUserService.checkAllRegister(sysUser);
+        if(!StrUtil.isNullOrEmpty(msg)){
+            return ResponseResult.createErrorResult(msg);
+        }
+        Long userId = sysUserService.getId();
+        String userCode = "S" + StrUtil.padLeading(String.valueOf(userId), 8 , "0");
+        sysUser.setUserId(userId);
+        sysUser.setUserCode(userCode);
+        Long createUser = sysUser.getCreateUser();
+        Long updateUser = sysUser.getUpdateUser();
+        sysUserService.addOrUpdateUser(sysUser);
+
+        List<SysUserDeptPositionVo> sysUserDeptPositionVoList = sysUserDeptRefVo.getSysUserDeptPositionVos();
+        if(sysUserDeptPositionVoList != null && sysUserDeptPositionVoList.size() > 0){
+            for(SysUserDeptPositionVo positionVo: sysUserDeptPositionVoList){
+                String orgCodes = "";
+                if(orgCodes.contains(positionVo.getOrgCode())){
+                    return ResponseResult.createErrorResult("重复选择组织");
+                }
+                orgCodes = orgCodes + "," + positionVo.getOrgCode();
+            }
+            for(SysUserDeptPositionVo positionVo: sysUserDeptPositionVoList){
+                SysUserDeptRef sysUserDeptRef = new SysUserDeptRef();
+                sysUserDeptRef.setOrgCode(positionVo.getOrgCode());
+                sysUserDeptRef.setUserCode(userCode);
+                sysUserDeptRef.setCreateUser(createUser);
+                sysUserDeptRef.setUpdateUser(updateUser);
+                sysUserDeptRefService.addSysUserDeptRef(sysUserDeptRef);
+                List<SysUserPositionRef> userPositionRefs = positionVo.getUserPositionRefList();
+                for(SysUserPositionRef userPositionRef : userPositionRefs){
+                    userPositionRef.setUserCode(userCode);
+                    userPositionRef.setCreateUser(createUser);
+                    userPositionRef.setUpdateUser(updateUser);
+                    sysUserPositionRefService.addSysUserPositionRef(userPositionRef);
+                }
+            }
+        }
+
+        return ResponseResult.createSuccessResult("");
+    }
+
+    @ApiOperation(value = "更新用户信息", notes = "更新用户信息")
+    @ApiImplicitParam(name = "sysUser", value = "用户信息", required = true, dataType = "SysUser")
+    @UooLog(value = "更新用户信息", key = "updateSysUser")
+    @Transactional
+    @RequestMapping(value = "/updateSysUser", method = RequestMethod.POST)
+    public Object updateSysUser(@RequestBody SysUser sysUser){
+        //校验
+        String msg = sysUserService.checkAllRegister(sysUser);
+        if(!StrUtil.isNullOrEmpty(msg)){
+            return ResponseResult.createErrorResult(msg);
+        }
+        sysUserService.addOrUpdateUser(sysUser);
+        return ResponseResult.createSuccessResult("");
+    }
+
+    @ApiOperation(value = "用户信息查询", notes = "用户信息查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户标识", required = true, dataType = "Long"),
+            @ApiImplicitParam(name = "pageNo", value = "当前页数", required = true, dataType = "Integer",paramType="path"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path"),
+    })
+    @UooLog(value = "更新用户信息", key = "getSysUserDeptPosition")
+    @RequestMapping(value = "/getSysUserDeptPosition", method = RequestMethod.GET)
+    public Object getSysUserDeptPosition(Long userId, Integer pageNo, Integer pageSize){
+        SysUser sysUser = sysUserService.getSysUserById(userId);
+        if(StrUtil.isNullOrEmpty(sysUser)){
+            return ResponseResult.createErrorResult("用户信息不存在");
+        }
+        SysUserDeptRefVo sysUserDeptRefVo = new SysUserDeptRefVo();
+        BeanUtils.copyProperties(sysUser, sysUserDeptRefVo);
+        sysUserDeptRefVo.setSysUserDeptPositionVos(sysUserService.getUserDeptPosition(sysUser.getUserCode(), pageNo, pageSize));
+
+        return ResponseResult.createSuccessResult(sysUserDeptRefVo, "");
+    }
+
+
 }

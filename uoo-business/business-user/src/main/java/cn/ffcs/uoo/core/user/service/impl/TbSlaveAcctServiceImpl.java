@@ -60,9 +60,12 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
 
     @Override
     public Page<ListSlaveAcctOrgVo> getSlaveAcctOrg(ListSlaveAcctOrgVo slaveAcctOrgVo, String account){
-        String inSql = commonSystemService.getSysDataRuleSql("t2", BaseUnitConstants.TB_ACCOUNT_ORG_REL, account);
-        int pageSize = slaveAcctOrgVo.getPageSize() == 0 ? 5 : slaveAcctOrgVo.getPageSize();
-        Page<ListSlaveAcctOrgVo> page = new Page<ListSlaveAcctOrgVo>(slaveAcctOrgVo.getPageNo(),pageSize);
+        Map<String, String> map = new HashMap<>(16);
+        map.put(BaseUnitConstants.TB_ORG, "t3");
+        map.put(BaseUnitConstants.TB_ACCOUNT_ORG_REL, "t2");
+        String inSql = commonSystemService.getSqlJointList(map, account);
+
+        Page<ListSlaveAcctOrgVo> page = new Page<ListSlaveAcctOrgVo>(StrUtil.intiPageNo(slaveAcctOrgVo.getPageNo()), StrUtil.intiPageSize(slaveAcctOrgVo.getPageSize()));
         List<ListSlaveAcctOrgVo> list = baseMapper.getSlaveAcctOrg(page, slaveAcctOrgVo, inSql);
         page.setRecords(list);
         return page;

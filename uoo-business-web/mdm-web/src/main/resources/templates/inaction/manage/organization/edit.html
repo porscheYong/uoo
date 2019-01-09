@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>组织编辑</title>
+
+        <!-- Bootstrap -->
+        <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- jquery tagsinput -->
+        <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
+        <!-- lulu ui -->
+        <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+        <!-- Custom Theme Style -->
+        <link href="/css/reset.css" rel="stylesheet">
+        <link href="/css/custom.css" rel="stylesheet">
+
+        <!--[if lt IE 9]>
+        <script src="/js/core/html5shiv.js"></script>
+        <script src="/js/core/respond.js"></script>
+        <script src="/js/core/excanvas.js"></script>
+        <![endif]-->
+        <style type="text/css">
+            #parentOrg, #location, #post {
+                opacity: 0;
+                filter: alpha(opacity=0);
+                position: absolute;
+            }
+        </style>
+    </head>
+
+    <body style="background: #fff;">
+        <div style="overflow-x: hidden;">
+            <div>
+                <a class="BoardTitle Back" href="javascript:history.go(-1);"  >返回</a>
+            </div>
+            <div class="board-title">
+                <span class="name ft18">编辑-<span class="orgName"></span></span>
+            </div>
+            <div>
+                <form id="orgEditForm" method="post" style="padding: 10px;">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="form-item" style="width: 100%">
+                            <label for="orgName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织名称</label>
+                            <input id="orgName" class="ui-input col-md-4 col-sm-4 col-xs-12 error" required />
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="form-item" style="width: 100%">
+                            <label for="orgCode" class="form-item-label col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织编码</label>
+                            <input id="orgCode" class="ui-input col-md-4 col-sm-4 col-xs-12 error" disabled />
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="form-item" style="width: 100%">
+                            <label for="parentOrg" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">上级组织</label>
+                            <div class="col-md-4 col-sm-4 col-xs-12" style="padding: 0;">
+                                <input id="parentOrg" class="ui-input col-md-12 col-sm-12 col-xs-12 error" onclick="openOrgDialog()" required readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="form-item" style="width: 100%">
+                            <label for="location" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">管理区域</label>
+                            <div class="col-md-4 col-sm-4 col-xs-12" style="padding: 0;">
+                                <input id="location" class="ui-input col-md-12 col-sm-12 col-xs-12 error" onclick="openLocationDialog()" required readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="form-item" style="width: 100%">
+                            <label for="statusCd" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
+                            <select id="statusCd"  class="ui-input col-md-4 col-sm-4 col-xs-12" required></select>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="form-item" style="width: 100%">
+                            <label for="sort" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">排序</label>
+                            <input id="sort" class="ui-input col-md-4 col-sm-4 col-xs-12 error" type="number" required />
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="form-item" style="width: 100%">
+                            <label for="post" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织职位</label>
+                            <input id="post" class="ui-input col-md-9 col-sm-9 col-xs-12 error" onclick="openPostDialog()" readonly />
+                        </div>
+                    </div>
+                </form>
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-offset-3 col-xs-offset-3">
+                        <button id="saveBtn" class="ui-button ui-button-primary" onclick="updateOrg()">保存</button>
+                        <button id="deleteBtn" class="ui-button ui-button-delete" style="margin-left: 10px;" onclick="deleteOrg()">删除</button>
+                        <button id="cancelBtn" class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- jQuery -->
+        <script type="text/javascript" src="/js/core/jquery.js"></script>
+        <!-- sea js -->
+        <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
+        <!-- layer -->
+        <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+        <!-- jquery tagsinput -->
+        <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
+        <!-- init -->
+        <script type="text/javascript" src="/js/init.js"></script>
+        <script type="text/javascript" src="/js/manage/organization/edit.js"></script>
+    </body>
+</html>

@@ -266,7 +266,8 @@ function deleteOrg(num,orgId){
 
 
 function cancel() {   //取消按钮
-  var url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&orgFullName=" + encodeURI(orgFullName);
+  var url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + 
+                      "&orgFullName=" + encodeURI(orgFullName)+"&businessName="+encodeURI(orgTreeName);
   window.location.href = url;
 }   
 

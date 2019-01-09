@@ -4,7 +4,14 @@ package cn.ffcs.uoo.web.maindata.permission.service;
 import java.util.List;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.web.maindata.permission.dto.FuncMenu;
 import cn.ffcs.uoo.web.maindata.permission.dto.Roles;
@@ -29,7 +36,7 @@ public interface RolesService {
     
      
     @GetMapping("/permission/tbRoles/listPageRoles/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult<List<Roles>> listPageRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize);
+    public ResponseResult<Page<Roles>> listPageRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize);
 
     @GetMapping("/permission/tbRoles/listRoles")
     public ResponseResult<List<Roles>> listRoles();

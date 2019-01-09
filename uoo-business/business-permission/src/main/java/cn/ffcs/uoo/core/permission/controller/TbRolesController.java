@@ -73,13 +73,11 @@ public class TbRolesController extends BaseController {
     })
     @UooLog(key="listPageRoles",value="获取分页角色列表")
     @GetMapping("/listPageRoles/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult<List<Roles>> listPageRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    public ResponseResult<Page<Roles>> listPageRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
-        
         Wrapper<Roles> wrapper = Condition.create().eq("STATUS_CD",StatusCD.VALID).orderBy("UPDATE_DATE", false);
         Page<Roles> page = tbRolesService.selectPage(new Page<Roles>(pageNo, pageSize), wrapper);
-        
         return ResponseResult.createSuccessResult(page ,"");
     }
 

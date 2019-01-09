@@ -11,11 +11,29 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * Swagger的配置文件
- *
- * @author Lin
- * @date 2018/08/23
- */
+ *  ┏┓　　　┏┓
+ *┏┛┻━━━┛┻┓
+ *┃　　　　　　　┃ 　
+ *┃　　　━　　　┃
+ *┃　┳┛　┗┳　┃
+ *┃　　　　　　　┃
+ *┃　　　┻　　　┃
+ *┃　　　　　　　┃
+ *┗━┓　　　┏━┛
+ *　　┃　　　┃神兽保佑
+ *　　┃　　　┃代码无BUG！
+ *　　┃　　　┗━━━┓
+ *　　┃　　　　　　　┣┓
+ *　　┃　　　　　　　┏┛
+ *　　┗┓┓┏━┳┓┏┛
+ *　　　┃┫┫　┃┫┫
+ *　　　┗┻┛　┗┻┛
+ * @ClassName SwaggerConfig
+ * @Description  Swagger的配置文件
+ * @author WCNGS@QQ.COM
+ * @date 2019/1/3 20:56
+ * @Version 1.0.0
+*/
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {

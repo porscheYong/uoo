@@ -51,10 +51,14 @@
             margin-bottom: 15px !important;
         }
         .perTab{
-            background: rgb(223,225,229);
-            border-radius: 5px;
-            margin-right: 8px;
-            padding: 2px 8px;
+            background: #dfe1e5;
+            border-radius: 4px;
+            line-height: 1.5em;
+            color: rgba(0,0,0,.5);
+            padding: 3px 10px;
+            display: inline-block;
+            margin-right: 5px;
+            margin-bottom:4px;
         }
         .row-num{
             width: 10%;
@@ -72,21 +76,29 @@
         .row-userNum{
             width: 17%;
         }
+        .row{
+            margin-left: 0px !important;
+            margin-right: 0px !important;
+        }
     </style>
   </head>
 
   <body style="background: #fff;">
         <div class="board-title">
-            <span class="name ft18" id="orgName">杭州市单位管理员</span>   <!--杭州分公司 -->
+            <span class="name ft18 org-name" id="posName" style="cursor:pointer;"></span><!--杭州分公司 -->
+            <a class="icon icon-info" id="infoBtn" style="vertical-align: top; margin-top: -0.1%;" title="职位详情"></a>   
         </div>
-        <div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;">浙江省单位管理员 > 杭州市单位管理员</div>   <!-- 完整路径-->
-        <div style="margin-bottom:20px">
-            <span class="permission" style="padding: 10px 15px 0; background: #fff;">所含权限</span>   
-            <span class="perTab">管理组织</span>
-            <span class="perTab">管理人员</span>
-            <span class="perTab">标准树维护</span>
-            <span class="perTab">主账号查看</span>
+        <div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;"></div>   <!-- 完整路径-->
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-2 col-sm-2 col-xs-2" style="width:9%;margin-left:1%;">
+                <span class="permission" style="line-height: 2em;">所含角色</span> 
+            </div>
+
+            <div class="col-md-10 col-sm-10 col-xs-10" style="width:90%;">
+                <span id="perms"></span>
+            </div>
         </div>
+
         <div class="pos-relative" style="margin-top: 7px;margin-left:5px;overflow: hidden;">
             <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-item" style="width: 100%">
@@ -101,6 +113,8 @@
         </div>
         <div class="board-title">
             <span class="name ft18">下级职位</span>
+            <input type="checkbox" id="lowerCheckBox" name="checkbox" onclick="boxClick()">
+            <label for="lowerCheckBox" class="ui-checkbox"></label><label style="margin-left:4px">显示下级职位</label>
             <div class="fright">
                 <a class="button-add" id="addBtn"><span class="fa fa-plus-circle icon-add"></span>创建职位</a>
             </div>
@@ -127,7 +141,6 @@
     <script src="/js/init.js"></script>
     <!-- jquery datatable -->
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
-    <script type="text/javascript" src="/js/manage/user.js"></script>
     <script type="text/javascript" src="/js/manage/position/list.js"></script>
 
     <!-- <script>

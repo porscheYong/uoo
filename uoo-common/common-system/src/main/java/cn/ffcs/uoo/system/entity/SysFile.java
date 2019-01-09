@@ -21,7 +21,7 @@ public class SysFile extends Model<SysFile> {
     private static final long serialVersionUID = 1L;
 
     @TableId("FILE_ID")
-    private Integer fileId;
+    private Long fileId;
     @TableField("FILE_NAME")
     private String fileName;
     @TableField("FILE_TYPE")
@@ -66,11 +66,11 @@ public class SysFile extends Model<SysFile> {
     private Date statusDate;
 
 
-    public Integer getFileId() {
+    public Long getFileId() {
         return fileId;
     }
 
-    public void setFileId(Integer fileId) {
+    public void setFileId(Long fileId) {
         this.fileId = fileId;
     }
 

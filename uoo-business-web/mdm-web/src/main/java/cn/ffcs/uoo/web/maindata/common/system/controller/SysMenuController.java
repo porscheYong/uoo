@@ -55,7 +55,7 @@ public class SysMenuController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long" ,paramType="path"),
     })
-    @GetMapping("/get/{id}")
+    @GetMapping("/sysMenu/get/{id}")
     public ResponseResult<SysMenuVO> get(@PathVariable(value="id" ,required=true) Long id){
         return sysMenuClient.get(id);
     }
@@ -65,13 +65,13 @@ public class SysMenuController {
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ,paramType="path"),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
-    @GetMapping("/listPage")
+    @GetMapping("/sysMenu/listPage")
     public ResponseResult<Page<SysMenu>> listPage(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord){
         return sysMenuClient.listPage(pageNo, pageSize, keyWord);
     }
     @OperateLog(type=OperateType.UPDATE,module="平台系统菜单模块",methods="更新菜单",desc="更新菜单")
     @ApiOperation(value = "修改",notes = "修改")
-    @ApiImplicitParam(name = "sysMenu", value = "修改", required = true, dataType = "Roles")
+    @ApiImplicitParam(name = "sysMenu", value = "修改", required = true, dataType = "SysMenu")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseResult<Void> update(@RequestBody SysMenu sysMenu) {
         Subject subject=SecurityUtils.getSubject();
@@ -82,7 +82,7 @@ public class SysMenuController {
     @OperateLog(type=OperateType.ADD,module="平台系统菜单模块",methods="新增菜单",desc="新增菜单")
     @ApiOperation(value = "新增",notes = "新增")
     @ApiImplicitParam(name = "sysMenu", value = "新增", required = true, dataType = "SysMenu")
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/sysMenu/add", method = RequestMethod.POST)
     public ResponseResult<Void> add(@RequestBody SysMenu sysMenu) {
         Subject subject=SecurityUtils.getSubject();
         SysUser sysuser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
@@ -94,7 +94,7 @@ public class SysMenuController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "sysMenu", value = "sysMenu", required = true, dataType = "sysMenu"  ),
     })
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/sysMenu/delete", method = RequestMethod.POST)
     public ResponseResult<Void> deletePrivilege(@RequestBody SysMenu sysMenu) {
         return sysMenuClient.deletePrivilege(sysMenu);
     }

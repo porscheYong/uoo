@@ -1,5 +1,6 @@
 package cn.ffcs.uoo.system.vo;
 
+import cn.ffcs.uoo.base.common.vo.BaseVo;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -18,7 +19,7 @@ import java.util.List;
  * @author ffcs-gzb
  * @since 2018-12-20
  */
-public class SysPositionVo {
+public class SysPositionVo extends BaseVo {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,6 +39,12 @@ public class SysPositionVo {
      * 上级职位
      */
     private Long pPositionId;
+
+    /**
+     * 上级职位名称
+     */
+    private String pPositionName;
+
     /**
      * 引用电信管理区域
      */
@@ -86,6 +93,65 @@ public class SysPositionVo {
     private String orgUserNum;
 
     private List<String> roleCodeList;
+
+    private List<SysRoleDTO> sysRoleDTOList;
+
+    private String search;
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
+    }
+
+    private Long userId;
+    private String accout;
+
+
+    public String getpPositionName() {
+        return pPositionName;
+    }
+
+    public void setpPositionName(String pPositionName) {
+        this.pPositionName = pPositionName;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getAccout() {
+        return accout;
+    }
+
+    public void setAccout(String accout) {
+        this.accout = accout;
+    }
+
+    public List<SysRoleDTO> getSysRoleDTOList() {
+        return sysRoleDTOList;
+    }
+
+    public void setSysRoleDTOList(List<SysRoleDTO> sysRoleDTOList) {
+        this.sysRoleDTOList = sysRoleDTOList;
+    }
+
+    private String isSearchlower;
+
+
+    public String getIsSearchlower() {
+        return isSearchlower;
+    }
+
+    public void setIsSearchlower(String isSearchlower) {
+        this.isSearchlower = isSearchlower;
+    }
 
     public List<String> getRoleCodeList() {
         return roleCodeList;

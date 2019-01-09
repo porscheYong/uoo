@@ -23,5 +23,22 @@
     <sql id="Base_Column_List">
         FILE_ID, FILE_NAME, FILE_TYPE, FILE_SIZE, FILE_DESC, FILE_VERSION, FILE_ADDR, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
-
+    <select id="getId" resultType="java.lang.Long">
+		select SEQ_SYS_FILE_ID.NEXTVAL from dual
+	</select>
+    <select id="getSysFilePage" resultType="cn.ffcs.uoo.system.vo.SysFileVo">
+        select a.file_id fileId,
+       a.file_name fileName,
+       a.file_type fileType,
+       a.file_size fileSize,
+       a.file_desc fileDesc,
+       a.file_version fileVersion,
+       a.file_addr fileAddr,
+       a.status_cd statusCd
+  from sys_file a
+ where a.status_cd = '1000'
+ <if test="search!=null and search!=''">
+    and fileName like '%'||#{search}||'%'
+ </if>
+    </select>
 </mapper>

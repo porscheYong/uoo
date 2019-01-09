@@ -27,7 +27,7 @@
 	</sql>
 
 	<select id="getId" resultType="Long">
-		select SEQ_TB_SYS_ROLE.NEXTVAL
+		select SEQ_SYS_ROLE_ID.NEXTVAL
 		from dual
 	</select>
 	<select id="selectOne" resultType="cn.ffcs.uoo.system.vo.SysRoleDTO"
@@ -100,7 +100,8 @@
 		SELECT
 		r.ROLE_ID AS id,
 		r.ROLE_NAME AS name,
-		pr.ROLE_ID AS pid
+		pr.ROLE_ID AS pid,
+		r.ROLE_CODE AS extField1
 		FROM
 		sys_role r
 		LEFT JOIN sys_role pr ON pr.ROLE_CODE = r.PARENT_ROLE_CODE

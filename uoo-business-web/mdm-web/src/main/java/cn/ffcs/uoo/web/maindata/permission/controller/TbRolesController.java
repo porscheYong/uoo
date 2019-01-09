@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.web.maindata.permission.dto.FuncMenu;
 import cn.ffcs.uoo.web.maindata.permission.dto.Roles;
 import cn.ffcs.uoo.web.maindata.permission.service.RolesService;
@@ -53,7 +55,7 @@ public class TbRolesController   {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ,paramType="path"),
     })
     @GetMapping("/listPageRoles/pageNo={pageNo}&pageSize={pageSize}")
-    public ResponseResult<List<Roles>> listPageRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
+    public ResponseResult<Page<Roles>> listPageRoles(@PathVariable(value = "pageNo") Integer pageNo, @PathVariable(value = "pageSize",required = false) Integer pageSize){
         return tbRolesService.listPageRoles(pageNo,pageSize);
     }
 
