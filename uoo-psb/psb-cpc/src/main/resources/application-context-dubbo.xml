@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"   
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    
+ xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"   
+ xsi:schemaLocation="http://www.springframework.org/schema/beans  
+ http://www.springframework.org/schema/beans/spring-beans.xsd      
+ http://code.alibabatech.com/schema/dubbo        
+ http://code.alibabatech.com/schema/dubbo/dubbo.xsd         ">
+
+    <dubbo:application name="33.1407"  />
+
+    <dubbo:registry address="dubbo://134.96.159.11:8033" />
+
+    <bean id="cpcChannel" class="cn.ffcs.interfaces.cpc.service.impl.CpcChannelServiceImpl" />
+
+    <dubbo:service interface="cn.ffcs.interfaces.cpc.service.CpcChannelService"  timeout="5000" version="1.0" ref="cpcChannel">
+        <dubbo:method name="handle" servicecode="33.1407.handle" />
+    </dubbo:service>
+
+</beans>
