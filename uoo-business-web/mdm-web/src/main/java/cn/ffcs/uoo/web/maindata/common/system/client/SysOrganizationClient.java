@@ -4,10 +4,7 @@ package cn.ffcs.uoo.web.maindata.common.system.client;
 
 import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysOperationLogClientHystrix;
 import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysOrganizationClientHystrix;
-import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
-import cn.ffcs.uoo.web.maindata.common.system.vo.SysOrganizationVo;
-import cn.ffcs.uoo.web.maindata.common.system.vo.SysPositionVo;
-import cn.ffcs.uoo.web.maindata.common.system.vo.TreeNodeVo;
+import cn.ffcs.uoo.web.maindata.common.system.vo.*;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -86,5 +83,13 @@ public interface SysOrganizationClient {
     public ResponseResult<List<SysPositionVo>> getOrgPositionList(@RequestParam(value = "id",required = false)String id,
                                                                   @RequestParam(value = "userId",required = false)Long userId,
                                                                   @RequestParam(value = "accout",required = false)String accout);
+    @RequestMapping(value = "/sysOrganization/getOrgUserPage", method = RequestMethod.GET)
+    public ResponseResult<Page<SysUserVo>> getOrgUserPage(@RequestParam(value = "id",required = false)String id,
+                                                          @RequestParam(value = "search",required = false)String search,
+                                                          @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                                          @RequestParam(value = "pageNo",required = false)Integer pageNo,
+                                                          @RequestParam(value = "isSearchlower",required = false)String isSearchlower,
+                                                          @RequestParam(value = "userId",required = false)Long userId,
+                                                          @RequestParam(value = "accout",required = false)String accout);
 }
 

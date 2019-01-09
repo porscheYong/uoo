@@ -363,6 +363,11 @@ public class SysOrganizationController {
                                                                   String isSearchlower,
                                                                   Long userId, String accout) throws IOException {
         ResponseResult<Page<SysUserVo>> ret = new ResponseResult<Page<SysUserVo>>();
+        if(StrUtil.isNullOrEmpty(id)){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("组织编码不能为空");
+            return ret;
+        }
         Page<SysUserVo> page = sysPositionService.getOrgUserPage(id,search,pageSize,pageNo,isSearchlower);
         ret.setData(page);
         ret.setState(ResponseResult.STATE_OK);
