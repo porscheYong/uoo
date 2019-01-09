@@ -45,4 +45,8 @@ public interface ISysDataRuleService extends IService<SysDataRule> {
      * 更新
      */
     public void update(SysDataRule sysDataRule);
+
+
+
+    public String getDicItem(String itemValue);
 }

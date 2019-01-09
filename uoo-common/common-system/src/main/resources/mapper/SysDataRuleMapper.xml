@@ -21,6 +21,11 @@
     <sql id="Base_Column_List">
         DATA_RULE_ID, TAB_NAME, COL_NAME, RULE_OPERATOR, COL_VALUE, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
     </sql>
+
+    <select id="getId" resultType="java.lang.Long">
+                    SELECT SEQ_SYS_DATA_RULE_ID.NEXTVAL FROM DUAL
+    </select>
+
     <select id="listByAccout" resultType="cn.ffcs.uoo.system.entity.SysDataRule" parameterType="java.util.HashMap">
         SELECT
         DISTINCT(m.DATA_RULE_ID),m.*
@@ -64,5 +69,15 @@
         <if test="search!=null and search!=''">
             and fileName like '%'||#{search}||'%'
         </if>
+    </select>
+
+    <select id="getDicItem" resultType="java.lang.String">
+             SELECT A.ITEM_CNNAME
+     FROM TB_DICTIONARY_ITEM A, TB_DICTIONARY B
+    WHERE A.STATUS_CD = 1000
+      AND B.STATUS_CD = 1000
+      AND A.DICTIONARY_ID = B.DICTIONARY_ID
+      AND B.DICTIONARY_NAME='RULE_OPERATOR'
+      AND A.ITEM_VALUE=#{itemValue}
     </select>
 </mapper>

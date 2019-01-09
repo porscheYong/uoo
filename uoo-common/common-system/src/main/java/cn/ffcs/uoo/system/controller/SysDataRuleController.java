@@ -106,8 +106,23 @@ public class SysDataRuleController {
                 .eq("DATA_RULE_ID",id)
                 .eq("STATUS_CD","1000");
         SysDataRule sysDataRule = dataRuleSvc.selectOne(sysDataWrapper);
+        Wrapper systabWrapper = Condition.create()
+                .eq("TAB_NAME",sysDataRule.getTabName())
+                .eq("STATUS_CD","1000");
+        SysTable tab = iSysTableService.selectOne(systabWrapper);
+
+        Wrapper systabcolWrapper = Condition.create()
+                .eq("TAB_ID",tab.getTabId())
+                .eq("COL_NAME",sysDataRule.getColName())
+                .eq("STATUS_CD","1000");
+        SysTableColumn tabcol = iSysTableColumnService.selectOne(systabcolWrapper);
+
+        String operName = dataRuleSvc.getDicItem(sysDataRule.getRuleOperator());
         SysDataRuleVo vo = new SysDataRuleVo();
         BeanUtils.copyProperties(sysDataRule, vo);
+        vo.setTabId(tab.getTabId());
+        vo.setColId(tabcol.getColId());
+        vo.setRuleOperatorName(operName);
         ret.setMessage("系统文件查询成功");
         ret.setData(vo);
         ret.setState(ResponseResult.STATE_OK);
@@ -125,8 +140,48 @@ public class SysDataRuleController {
 
         SysDataRule vo = new SysDataRule();
         BeanUtils.copyProperties(sysDataRuleVo, vo);
+
+        if(StrUtil.isNullOrEmpty(sysDataRuleVo.getColId())){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("列标识不能为空");
+            return ret;
+        }
+
+        if(StrUtil.isNullOrEmpty(sysDataRuleVo.getTabId())){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("表标识不能为空");
+            return ret;
+        }
+
+        if(StrUtil.isNullOrEmpty(sysDataRuleVo.getRuleOperator())){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("操作符不能为空");
+            return ret;
+        }
+        Wrapper systabWrapper = Condition.create()
+                .eq("TAB_ID",sysDataRuleVo.getTabId())
+                .eq("STATUS_CD","1000");
+        SysTable tab = iSysTableService.selectOne(systabWrapper);
+        if (tab==null){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("表不存在");
+            return ret;
+        }
+        Wrapper systabcolWrapper = Condition.create()
+                .eq("COL_ID",sysDataRuleVo.getTabId())
+                .eq("STATUS_CD","1000");
+        SysTableColumn tabcol = iSysTableColumnService.selectOne(systabcolWrapper);
+        if (tabcol==null){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("列不存在");
+            return ret;
+        }
+
+
         Long id = dataRuleSvc.getId();
         vo.setDataRuleId(id);
+        vo.setTabName(tab.getTabName());
+        vo.setColValue(tabcol.getColName());
         dataRuleSvc.add(vo);
         ret.setMessage("新增成功");
         ret.setState(ResponseResult.STATE_OK);
@@ -142,14 +197,55 @@ public class SysDataRuleController {
     @RequestMapping(value = "/updateDataRule", method = RequestMethod.POST)
     public ResponseResult<String> updateDataRule(@RequestBody SysDataRuleVo sysDataRuleVo){
         ResponseResult<String> ret = new ResponseResult<String>();
+
+        if(StrUtil.isNullOrEmpty(sysDataRuleVo.getColId())){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("列标识不能为空");
+            return ret;
+        }
+
+        if(StrUtil.isNullOrEmpty(sysDataRuleVo.getTabId())){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("表标识不能为空");
+            return ret;
+        }
+
+        if(StrUtil.isNullOrEmpty(sysDataRuleVo.getRuleOperator())){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("操作符不能为空");
+            return ret;
+        }
+        Wrapper systabWrapper = Condition.create()
+                .eq("TAB_ID",sysDataRuleVo.getTabId())
+                .eq("STATUS_CD","1000");
+        SysTable tab = iSysTableService.selectOne(systabWrapper);
+        if (tab==null){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("表不存在");
+            return ret;
+        }
+        Wrapper systabcolWrapper = Condition.create()
+                .eq("COL_ID",sysDataRuleVo.getTabId())
+                .eq("STATUS_CD","1000");
+        SysTableColumn tabcol = iSysTableColumnService.selectOne(systabcolWrapper);
+        if (tabcol==null){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("列不存在");
+            return ret;
+        }
+
+
         Wrapper sysdataWrapper = Condition.create()
                 .eq("DATA_RULE_ID",sysDataRuleVo.getDataRuleId())
                 .eq("STATUS_CD","1000");
         SysDataRule sysDataRule = dataRuleSvc.selectOne(sysdataWrapper);
-        if(sysDataRule!=null){
-            BeanUtils.copyProperties(sysDataRuleVo, sysDataRule);
-            dataRuleSvc.update(sysDataRule);
+        if(sysDataRule==null){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("规则数据不存在");
+            return ret;
         }
+        BeanUtils.copyProperties(sysDataRuleVo, sysDataRule);
+        dataRuleSvc.update(sysDataRule);
         ret.setMessage("编辑成功");
         ret.setState(ResponseResult.STATE_OK);
         return ret;
@@ -195,7 +291,7 @@ public class SysDataRuleController {
         return ret;
     }
 
-    @ApiOperation(value = " ", notes = "获取列名")
+    @ApiOperation(value = "获取列名", notes = "获取列名")
     @ApiImplicitParams({
     })
     @UooLog(key="getTabColumn",value="获取列名")
