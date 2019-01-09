@@ -74,6 +74,21 @@ function setElemResInfo(id){
     window.location.href = "elemResInfo.html?id="+id;
 }
 
+//获取菜单列表
+function getMenuList(){
+    $http.get('/system/sysMenu/listPage', {
+        pageSize: 100,
+        pageNo:1,
+        keyWord:""
+    }, function (data) {
+        parent.menuList = data.records;
+    }, function (err) {
+  
+    })
+}
+
 $("#addBtn").on('click',function(){
     window.location.href = "addElemRes.html";
 })
+
+getMenuList();

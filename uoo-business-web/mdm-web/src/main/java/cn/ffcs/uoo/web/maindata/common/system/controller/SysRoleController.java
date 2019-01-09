@@ -71,7 +71,7 @@ public class SysRoleController {
     }
     @OperateLog(type=OperateType.UPDATE,module="平台系统角色模块",methods="更新",desc="")
     @ApiOperation(value = "修改",notes = "修改")
-    @ApiImplicitParam(name = "sysRole", value = "修改", required = true, dataType = "Roles")
+    @ApiImplicitParam(name = "sysRole", value = "修改", required = true, dataType = "SysRoleDTO")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseResult<Void> update(@RequestBody SysRoleDTO sysRole) {
         Subject subject=SecurityUtils.getSubject();
@@ -81,7 +81,7 @@ public class SysRoleController {
     }
     @OperateLog(type=OperateType.ADD,module="平台系统角色模块",methods="新增",desc="")
     @ApiOperation(value = "新增",notes = "新增")
-    @ApiImplicitParam(name = "sysRole", value = "新增", required = true, dataType = "SysRole")
+    @ApiImplicitParam(name = "sysRole", value = "新增", required = true, dataType = "SysRoleDTO")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseResult<Void> add(@RequestBody SysRoleDTO sysRole) {
         Subject subject=SecurityUtils.getSubject();
@@ -92,7 +92,7 @@ public class SysRoleController {
     @OperateLog(type=OperateType.DELETE,module="平台系统角色模块",methods="删除",desc="")
     @ApiOperation(value = "删除", notes = "删除")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "sysRole", value = "sysRole", required = true, dataType = "sysRole"  ),
+            @ApiImplicitParam(name = "sysRole", value = "sysRole", required = true, dataType = "SysRole"  ),
     })
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ResponseResult<Void> deleteRole(@RequestBody SysRole sysRole) {

@@ -1,4 +1,75 @@
-function cancel(){
+var id = getQueryString('id');
+var toastr = window.top.toastr;
+
+function getResInfo(){  
+    $http.get('/sysFile/getSysFile', {  
+        id : id
+    }, function (data) {
+        initFileInfo(data);
+    }, function (err) {
+        toastr.error("获取信息失败！");
+    })
+}  
+
+//初始化文件资源
+function initFileInfo(result){
+    isNull("fileName",result.fileName);
+    isNull("fileType",result.fileType);
+    isNull("fileAddr",result.fileAddr);
+    isNull("fileSize",result.fileSize);
+    isNull("fileVersion",result.fileVersion);
+    isNull("fileDesc",result.fileDesc);
+}
+
+//判断是否为null
+function isNull(el,str){
+    if(str != null){
+        $("#"+el).val(str);
+    }
+}
+
+//更新文件资源信息
+function updateRes(){
+    $http.post('/sysFile/updateSysFile', JSON.stringify({  
+        fileName : $("#fileName").val(),
+        fileType : $("#fileType").val(),
+        fileAddr : $("#fileAddr").val(),
+        fileSize : $("#fileSize").val(),
+        fileVersion : $("#fileVersion").val(),
+        fileDesc : $("#fileDesc").val(),
+        statusCd : $("#statusCd").val(),
+        fileId : id
+    }), function (message) {
+        backToList();
+        toastr.success("保存成功！");
+    }, function (err) {
+        // toastr.error("保存失败！");
+    })
+}
+
+//删除文件资源信息
+function deleteRes(){
+    parent.layer.confirm('是否删除该文件资源？', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+        }, function(index, layero){
+            $http.post('/sysFile/deleteSysFile', JSON.stringify({  
+                fileId : id
+            }), function (message) {
+                backToList();
+                toastr.success("删除成功！");
+                parent.layer.close(index);
+            }, function (err) {
+                toastr.error("删除失败！");
+                parent.layer.close(index);
+            })
+        }, function(){
+      
+        });
+}
+
+function backToList(){
     window.location.href = "fileResList.html";
 }
 
@@ -48,3 +119,5 @@ $('#myTabs a').click(function (e) {
     $(this).tab('show');
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
 })
+
+getResInfo();

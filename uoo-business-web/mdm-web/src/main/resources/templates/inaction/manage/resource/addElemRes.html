@@ -37,6 +37,9 @@
             margin-left: 0px !important;
             margin-right: 0px !important;
         }
+        #menuName{
+            max-height: 250px;
+        }
     </style>
   </head>
 
@@ -51,7 +54,7 @@
                     <div class="form-item" style="width: 100%">
                         <label for="elementName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素名称</label>
                         <input id="elementName" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" name="tel" value="" autocomplete="off">
+                                size="40" value="" autocomplete="off">
                     </div>
                 </div>
 
@@ -59,7 +62,7 @@
                     <div class="form-item" style="width: 100%">
                         <label for="elementCode" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素编码</label>
                         <input id="elementCode" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" name="tel" value="112122" autocomplete="off">
+                                size="40" value="" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -67,11 +70,9 @@
             <div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="elementDesc" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素类型</label>
-                        <select class="col-md-8 col-sm-8 col-xs-8" id="elementDesc">
-                            <option>一级</option>
-                            <option>二级</option>
-                        </select>
+                        <label for="elementType" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素类型</label>
+                        <input id="elementType" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                size="40" value="" autocomplete="off">
                     </div>
                 </div>
 
@@ -79,7 +80,6 @@
                     <div class="form-item" style="width: 100%">
                         <label for="menuName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">所属菜单名称</label>
                         <select  class="col-md-8 col-sm-8 col-xs-8" id="menuName">
-                            <option></option>
                         </select>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                     <div class="form-item" style="width: 100%">
                         <label for="urlAddr" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素URL</label>
                         <input id="urlAddr" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" name="tel" value="" autocomplete="off">
+                                size="40" value="" autocomplete="off">
                     </div>
                 </div>
 
@@ -98,8 +98,8 @@
                     <div class="form-item" style="width: 100%">
                         <label for="statusCd" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
                         <select  class="col-md-8 col-sm-8 col-xs-8" id="statusCd">
-                            <option>有效</option>
-                            <option>无效</option>
+                            <option value="1000">有效</option>
+                            <option value="1100">无效</option>
                         </select>
                     </div>
                 </div>
@@ -108,16 +108,16 @@
             <div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="psnTel" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素描述</label>
-                        <input type="tel" id="psnTel" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" name="tel" value="" autocomplete="off">
+                        <label for="elementDesc" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素描述</label>
+                        <input id="elementDesc" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                size="40" value="" autocomplete="off">
                     </div>
                 </div>
             </div>
 
             <div class="row" style="margin-bottom: 10px;">
                 <div style="margin-left:38%;margin-top:4%;">
-                    <button class="ui-button ui-button-primary">保存</button>
+                    <button class="ui-button ui-button-primary" onclick="addRes()">保存</button>
                     <button class="ui-button ui-button-cancel" onclick="backToList()" style="margin-left: 10px;">取消</button>
                 </div>
             </div>
@@ -139,8 +139,6 @@
     <script type="text/javascript" src="/js/manage/resource/addElemRes.js"></script>
     <script type="text/javascript">
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-            $('#elementDesc').selectMatch();
-            $('#menuName').selectMatch();
             $('#statusCd').selectMatch();
         })
     </script>

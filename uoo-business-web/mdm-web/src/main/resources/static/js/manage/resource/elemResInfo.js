@@ -13,12 +13,35 @@ function getResInfo(){
 
  //初始化元素资源信息
  function initElemInfo(result){     
-    $("#elementName").val(result.funcName);
-    $("#elementCode").val(result.funcCode);
-    $("#elementType").val(result.funcApi);
-    $("#menuName").val(result.funcCode);
-    $("#urlAddr").val(result.urlAddr);
-    $("#statusCd").val(result.statusCd);
+    isNull("elementName",result.elementName);
+    isNull("elementCode",result.elementCode);
+    isNull("elementType",result.elementType);
+    isNull("elementDesc",result.elementDesc);
+    isNull("urlAddr",result.urlAddr);
+    initMenuName(parent.menuList,result.menuCode);
+}
+
+//判断时候为null
+function isNull(el,str){
+    if(str != null){
+        $("#"+el).val(str);
+    }
+}
+
+//初始化菜单select
+function initMenuName(result,currentMenu){
+    var selected = "";
+    for(var i=0;i<result.length;i++){
+        if(currentMenu == result[i].menuCode){
+            selected = "selected";
+        }else{
+            selected = "";
+        }
+        $("#menuName").append("<option value='" + result[i].menuCode + "'"+selected+">" + result[i].menuName +"</option>");
+    }
+    seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $('#menuName').selectMatch();
+    });
 }
 
 //更新元素资源信息
@@ -27,6 +50,7 @@ function updateRes(){
         elementName : $("#elementName").val(),
         elementCode : $("#elementCode").val(),
         elementType : $("#elementType").val(),
+        elementDesc : $("#elementDesc").val(),
         menuCode : $("#menuName").val(),
         urlAddr : $("#urlAddr").val(),
         statusCd : $("#statusCd").val(),
@@ -41,7 +65,7 @@ function updateRes(){
 
 //删除元素资源信息
 function deleteRes(){
-    parent.layer.confirm('是否删除该功能资源？', {
+    parent.layer.confirm('是否删除该元素资源？', {
         icon: 0,
         title: '提示',
         btn: ['确定','取消']
@@ -49,12 +73,12 @@ function deleteRes(){
             $http.post('/system/SysElement/delete', JSON.stringify({  
                 elementId : id
             }), function (message) {
-                parent.layer.close(index);
                 backToList();
                 toastr.success("删除成功！");
-            }, function (err) {
                 parent.layer.close(index);
+            }, function (err) {
                 toastr.error("删除失败！");
+                parent.layer.close(index);
             })
         }, function(){
       
@@ -111,3 +135,5 @@ $('#myTabs a').click(function (e) {
     $(this).tab('show');
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
 })
+
+getResInfo();

@@ -14,10 +14,13 @@ function getLocation() {
             dblClickExpand: false
         },
         data: {
+            key: {
+                isParent: "parent"
+            },
             simpleData: {
                 enable:true,
                 idKey: "id",
-                pIdKey: "pId",
+                pIdKey: "pid",
                 rootPId: ""
             }
         },
@@ -54,14 +57,12 @@ function onlocationCheck (e, treeId, treeNode) {
 
 function autoCheck () {
     var zTree = $.fn.zTree.getZTreeObj("locationTree");
-    if(pPosList[0].id){
-        for (var i = 0; i < pPosList.length; i++) {
-            var id = pPosList[i].id || pPosList[i].locId;
-            var node = zTree.getNodeByTId("orgPostTree_" + id);
-            zTree.checkNode(node, true);
-            zTree.expandNode(node, true, true, true);
-            checkNode.push(node);
-        }
+    for (var i = 0; i < pPosList.length; i++) {
+        var id = pPosList[i].id || pPosList[i].locId;
+        var node = zTree.getNodeByTId("locationTree_" + id);
+        zTree.checkNode(node, true);
+        zTree.expandNode(node, true, true, true);
+        checkNode.push(node);
     }
 }
 
