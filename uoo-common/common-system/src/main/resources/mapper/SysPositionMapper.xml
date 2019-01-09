@@ -191,6 +191,52 @@
         select count(1) from SYS_POSITIONT_ROLE_REF a where a.status_cd='1000' and a.position_code=#{positionCode}
     </select>
 
+    <select id="getOrgUserPage" resultType="cn.ffcs.uoo.system.vo.SysUserVo">
+        <choose>
+        <when test='isSearchlower=="0"'>
+            SELECT B.ORG_ID orgId, B.ORG_CODE orgCode,B.ORG_NAME orgName,A.USER_CODE userCode,C.USER_NAME userName,C.ACCOUT accout,C.USER_ID userId
+            FROM SYS_USER_DEPT_REF A, SYS_ORGANIZATION B, SYS_USER C
+            WHERE A.STATUS_CD = 1000
+            AND B.STATUS_CD = 1000
+            AND C.STATUS_CD = 1000
+            AND A.ORG_CODE = B.ORG_CODE
+            AND A.USER_CODE = C.USER_CODE
+            AND B.ORG_CODE = #{id}
+            <if test="search!=null and search!=''">
+                AND ( B.ORG_NAME like '%'||#{search}||'%' or B.USER_NAME like '%'||#{search}||'%')
+            </if>
+        </when>
+        <otherwise>
+            WITH SYSORGTREE AS (
+            SELECT * FROM SYS_ORGANIZATION V WHERE V.STATUS_CD='1000'
+            START WITH V.ORG_CODE=#{id}
+            CONNECT BY PRIOR V.ORG_CODE =  V.PARENT_ORG_CODE)
 
+            SELECT B.ORG_ID orgId, B.ORG_CODE orgCode,B.ORG_NAME orgName,A.USER_CODE userCode,C.USER_NAME userName,C.ACCOUT accout,C.USER_ID userId
+            FROM SYS_USER_DEPT_REF A, SYS_ORGANIZATION B, SYS_USER C
+            WHERE A.STATUS_CD = 1000
+            AND B.STATUS_CD = 1000
+            AND C.STATUS_CD = 1000
+            AND A.ORG_CODE = B.ORG_CODE
+            AND A.USER_CODE = C.USER_CODE
+            AND B.ORG_CODE in (select ORG_CODE from SYSORGTREE)
+            <if test="search!=null and search!=''">
+                AND ( B.ORG_NAME like '%'||#{search}||'%' or B.USER_NAME like '%'||#{search}||'%')
+            </if>
+        </otherwise>
+        </choose>
+
+
+
+    </select>
+
+    <select id="getUserOrgPosition" resultType="java.lang.String">
+
+        SELECT WM_CONCAT(POSITION_NAME) FROM (
+        SELECT F.POSITION_NAME FROM SYS_DEPT_POSITION_REF D,SYS_POSITION F WHERE D.STATUS_CD=1000 AND F.STATUS_CD=1000 AND D.POSITION_CODE=F.POSITION_CODE AND D.ORG_CODE=#{orgCode}
+        INTERSECT
+        SELECT F.POSITION_NAME FROM SYS_USER_POSITION_REF E,SYS_POSITION F WHERE E.STATUS_CD=1000 AND F.STATUS_CD=1000 AND E.POSITION_CODE=F.POSITION_CODE AND E.USER_CODE=#{userCode}
+        )
+    </select>
 
 </mapper>

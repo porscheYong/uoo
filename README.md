@@ -1,30 +1,13 @@
 
 # 使用前参考文档
-- Spring Cloud[参考资料](https://github.com/rothschil/static/tree/master/doc/Description/spring-cloud.md)
-- Spring Cloud[学习源码](https://github.com/rothschil/spring-cloud.git)
-- 关于微服务模块的[技术选型](https://github.com/rothschil/static/tree/master/doc/Description/Selection.md)
-- 关于[人员编码规则说明](https://github.com/rothschil/static/tree/master/doc/Description/Rule.md)
+- [Spring Cloud参考资料](https://github.com/rothschil/static/tree/master/doc/Description/spring-cloud.md)
+- [Spring Cloud学习源码](https://github.com/rothschil/spring-cloud.git)
+- [关于微服务模块的技术选型](https://github.com/rothschil/static/tree/master/doc/Description/Selection.md)
+- [关于人员编码规则说明](https://github.com/rothschil/static/tree/master/doc/Description/Rule.md)
 
 # 用户组织运营平台 UOO
 ## 项目简介
 uoo是采用Spring Cloud微服务化开发平台，具有统一授权、认证后台管理系统，也可以作为后端服务的开发脚手架。代码要求简洁、架构清晰，适合对微服务学习和直接项目中使用。核心技术采用Spring Boot 1.5.15.RELEASE以及Spring Cloud (1.4.5.RELEASE)相关核心组件，当下前端采用Thymeleaf的HTML来开发的，后续准备采用VUE进行二次改造。
-
-## 架构概述
-### 服务注册发现
-基于Eureka来实现的服务注册与调用，在Spring Cloud中使用Feign, 我们可以做到使用HTTP请求远程服务时能与调用本地方法一样的编码体验，开发者完全感知不到这是远程方法，更感知不到这是个HTTP请求。
-
-### 服务鉴权
-通过JWT的方式来加强服务之间调度的权限验证，保证内部服务的安全性
-
-### 监控
-利用Zipkin对服务链路的监控和分析
-
-### 熔断机制
-因为采取了服务的分布，为了避免服务之间的调用“雪崩”，采用了Hystrix的作为熔断器，避免了服务之间的“雪崩”。
-
-### 负载均衡
-将服务保留的Rest API进行代理和网关控制，除了平常经常使用的node.js、nginx外，Spring Cloud系列的zuul和ribbon，可以帮我们进行正常的网关管控和负载均衡。
-其中扩展基于JWT的Zuul限流插件，方面进行限流。
 
 ## 模块职责划分
 ### uoo-base 基类
@@ -53,6 +36,12 @@ uoo是采用Spring Cloud微服务化开发平台，具有统一授权、认证�
 ## uoo-common通用部分
 ### common-system
 详细内容请参考[common-system说明](https://github.com/rothschil/static/tree/master/doc/Description/common-system.md)
+
+### uoo-gateway
+参考[uoo-gateway说明](https://github.com/rothschil/static/tree/master/doc/Description/uoo-gateway.md)
+
+### uoo-psb
+目标是支持中间件技术与XML、Web服务等技术结合的产物，提供了网络中最基本的连接中枢，实现跨系统跨协议的服务能力互通
 
 ## 开发必读
 - 环境准备： JDK1.8、Maven3+、IDEA
@@ -103,5 +92,10 @@ uoo是采用Spring Cloud微服务化开发平台，具有统一授权、认证�
 |   |——uoo-business-web-----------------------------------UOO WEB端
 |   |   |——mdm-web----------------------------------------主数据中心维护支撑WEB
 |   |   |——auth-web---------------------------------------认证中心维护支撑WEB
+|   |——uoo-psb--------------------------------------------平台服务总线，platform Service Bus
+|   |   |——psb-cpc----------------------------------------CPC服务，同步智慧BSS信息
 
 ~~~~
+
+## 部署发布
+- [机器部署列表](https://github.com/rothschil/static/tree/master/doc/Description/deploy.md)

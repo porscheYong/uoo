@@ -174,6 +174,10 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
         Page<SysUserVo> page = new Page<SysUserVo>(StrUtil.isNullOrEmpty(pageNo)?1:pageNo,
                 StrUtil.isNullOrEmpty(pageSize)?10:pageSize);
         List<SysUserVo> list = baseMapper.getOrgUserPage(page,id,search,isSearchlower);
+        for(SysUserVo vo : list){
+            String positions = baseMapper.getUserOrgPosition(vo.getUserCode(),vo.getOrgCode());
+            vo.setUserPositions(positions);
+        }
         page.setRecords(list);
         return page;
     }

@@ -51,5 +51,5 @@ public interface SysPositionMapper extends BaseMapper<SysPosition> {
 
     public List<SysUserVo> getOrgUserPage(Pagination page, @Param("id")String id, @Param("search")String search, @Param("isSearchlower")String isSearchlower);
 
-
+    public String getUserOrgPosition(@Param("userCode")String userCode,@Param("orgCode")String orgCode);
 }

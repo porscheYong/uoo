@@ -4,10 +4,7 @@ package cn.ffcs.uoo.web.maindata.common.system.controller;
 
 import cn.ffcs.uoo.web.maindata.common.system.client.SysOrganizationClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
-import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
-import cn.ffcs.uoo.web.maindata.common.system.vo.SysOrganizationVo;
-import cn.ffcs.uoo.web.maindata.common.system.vo.SysPositionVo;
-import cn.ffcs.uoo.web.maindata.common.system.vo.TreeNodeVo;
+import cn.ffcs.uoo.web.maindata.common.system.vo.*;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -175,6 +172,25 @@ public class SysOrganizationController {
         userId = currentLoginUser.getUserId();
         accout = currentLoginUser.getAccout();
         return sysOrganizationClient.getOrgPositionList(id,userId,accout);
+    }
+
+
+
+    @ApiOperation(value = "查询组织人员", notes = "查询组织人员")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/getOrgUserPage", method = RequestMethod.GET)
+    public ResponseResult<Page<SysUserVo>> getOrgUserPage(String id,
+                                                          String search,
+                                                          Integer pageSize,
+                                                          Integer pageNo,
+                                                          String isSearchlower,
+                                                          Long userId, String accout){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        userId = currentLoginUser.getUserId();
+        accout = currentLoginUser.getAccout();
+        return sysOrganizationClient.getOrgUserPage(id,search,pageSize,pageNo,isSearchlower,userId,accout);
     }
 }
 
