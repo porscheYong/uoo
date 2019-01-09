@@ -53,7 +53,7 @@
 		WHERE cr.STATUS_CD = '1000' ) t1 ON t1.REGION_NBR = p.REGION_NBR
 		<where>
 		<if test="keyWord != null and keyWord != ''">
-		  AND p.PERMISSION_NAME like #{keyWord}
+		  AND (p.PERMISSION_NAME like #{keyWord} OR p.PERMISSION_CODE like #{keyWord})
 		</if>
 		</where>
 		)TB WHERE ROWNUM &lt;= #{end}
@@ -70,7 +70,7 @@
         WHERE cr.STATUS_CD = '1000' ) t1 ON t1.REGION_NBR = p.REGION_NBR
         <where>
         <if test="keyWord != null and keyWord != ''">
-          AND p.PERMISSION_NAME like #{keyWord}
+         AND (p.PERMISSION_NAME like #{keyWord} OR p.PERMISSION_CODE like #{keyWord})
         </if>
         </where>
     </select>
