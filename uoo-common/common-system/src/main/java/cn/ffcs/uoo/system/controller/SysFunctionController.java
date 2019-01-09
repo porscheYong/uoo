@@ -3,6 +3,7 @@ package cn.ffcs.uoo.system.controller;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,6 +41,9 @@ public class SysFunctionController {
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         Wrapper<SysFunction> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID);
+        if(StringUtils.isNotBlank(keyWord)){
+            wrapper.andNew("FUNC_NAME like {0}", "'%"+keyWord+"%'").or("FUNC_CODE like {0}","'%"+keyWord+"%'");
+        }
         Page<SysFunction> page = funcSvc.selectPage(new Page<SysFunction>(pageNo, pageSize), wrapper);
         ResponseResult<Page<SysFunction>> rr = ResponseResult.createSuccessResult("");
         rr.setData(page);
