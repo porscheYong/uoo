@@ -7,6 +7,7 @@ var mainAcctId = getQueryString('mainAcctId');
 var hType = getQueryString('hType');
 var toMainType = getQueryString('toMainType');
 var orgTreeId = getQueryString('orgTreeId');
+var slaveOrgTreeId = getQueryString('slaveOrgTreeId');
 var orgRootId = getQueryString('orgRootId');
 var hostId = getQueryString('acctOrgRelId');
 var fullName = getQueryString('fullName');
@@ -283,7 +284,7 @@ function addTbSlaveAcct(){      //从账号新增
         success: function (data) { //返回json结果
           if(data.state === 1000){
             toastr.success(data.message);
-            submitToOther();
+            submitToSuccess();
           }else{
             toastr.error(data.message);
           }
@@ -303,7 +304,7 @@ function btnSubmit(){       //提交
 }
 
 function getSysSelect(){   //获取应用系统下拉列表
-    $http.get('/permission/businessSystem/listBusinessSystem/'+orgTreeId, 
+    $http.get('/permission/businessSystem/listBusinessSystem/'+slaveOrgTreeId, 
     {}, function (data) {
         var option = '';
         for (var i = 0; i < data.length; i++) {
@@ -412,19 +413,51 @@ function isNull(s,r){    //判断是否为null
     }
 }
 
+// function submitToOther(){   //提交或者取消跳转
+//     var url = "";
+//     if(hType == "th"){      //返回主账号编辑页面
+//         url = "editMainAccount.html?orgTreeId=" + orgTreeId + "&hType="+ toMainType +"&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&acctId=" + mainAcctId;   
+//     }else if(hType == "mh"){       //返回主界面
+//         url = "list.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;      
+//     }else if(hType == "ah"){       //返回新增界面
+//         url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;      
+//     }else{
+//         url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName) + "&id=" + orgId + 
+//                                       "&personnelId=" + personnelId + "&orgRootId=" + orgRootId + "&tabPage=" + tabPage;
+//     }
+//     window.location.href = url;
+// }
+
 function submitToOther(){   //提交或者取消跳转
     var url = "";
     if(hType == "th"){      //返回主账号编辑页面
         url = "editMainAccount.html?orgTreeId=" + orgTreeId + "&hType="+ toMainType +"&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&acctId=" + mainAcctId;   
-    }else if(hType == "mh"){       //返回主界面
-        url = "list.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;      
-    }else if(hType == "ah"){       //返回新增界面
-        url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;      
     }else{
         url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName) + "&id=" + orgId + 
                                       "&personnelId=" + personnelId + "&orgRootId=" + orgRootId + "&tabPage=" + tabPage;
     }
     window.location.href = url;
+}
+
+function submitToSuccess(){ //保存成功跳转编辑从账号页面
+    $http.get('/user/getPsnUser', {    
+        personnelId: personnelId,
+        userType: "1"
+      }, function (data) {
+            var slaveAcctId;
+            var url = "";
+            for(var i=0;i<data.slaveAcctOrgVoPage.records.length;i++){
+                if($('#acct').val() == data.slaveAcctOrgVoPage.records[i].slaveAcct){
+                    slaveAcctId = data.slaveAcctOrgVoPage.records[i].slaveAcctId;
+                }
+            }
+            url = 'editSubAccount.html?orgTreeId=' + orgTreeId + '&toMainType=' + hType +
+                    '&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&hType=th&mainAcctId='+ mainAcctId +
+                    '&acctId='+ slaveAcctId;
+            window.location.href = url;
+      }, function (err) {
+    
+      })
 }
 
 noSelectUserInfo();
