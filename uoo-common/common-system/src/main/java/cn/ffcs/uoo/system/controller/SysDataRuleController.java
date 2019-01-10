@@ -182,6 +182,7 @@ public class SysDataRuleController {
         vo.setDataRuleId(id);
         vo.setTabName(tab.getTabName());
         vo.setColValue(tabcol.getColName());
+        vo.setCreateUser(sysDataRuleVo.getUserId());
         dataRuleSvc.add(vo);
         ret.setMessage("新增成功");
         ret.setState(ResponseResult.STATE_OK);
@@ -245,7 +246,9 @@ public class SysDataRuleController {
             return ret;
         }
         BeanUtils.copyProperties(sysDataRuleVo, sysDataRule);
+        sysDataRule.setUpdateUser(sysDataRuleVo.getUserId());
         dataRuleSvc.update(sysDataRule);
+
         ret.setMessage("编辑成功");
         ret.setState(ResponseResult.STATE_OK);
         return ret;
@@ -266,6 +269,7 @@ public class SysDataRuleController {
                 .eq("STATUS_CD","1000");
         SysDataRule sysDataRule = dataRuleSvc.selectOne(sysdataWrapper);
         if(sysDataRule!=null){
+            sysDataRule.setUpdateUser(sysDataRuleVo.getUserId());
             dataRuleSvc.delete(sysDataRule);
         }
         ret.setMessage("删除成功");
