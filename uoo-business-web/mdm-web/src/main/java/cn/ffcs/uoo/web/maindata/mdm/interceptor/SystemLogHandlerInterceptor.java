@@ -97,6 +97,7 @@ public class SystemLogHandlerInterceptor implements HandlerInterceptor{
                         logs.setNotes(l.desc());
                         //日志落库
                         //请求参数;
+                        //TODO 系统暂时没做单点，多处登陆会混乱
                         ResponseResult<Void> responseResult = opLogClient.add(logs);
                         if(responseResult.getState()!=ResponseResult.STATE_OK){
                             log.info("记录操作日志异常：{}", responseResult.getMessage());
