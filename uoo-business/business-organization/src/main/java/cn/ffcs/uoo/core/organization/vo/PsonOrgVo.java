@@ -143,15 +143,26 @@ public class PsonOrgVo extends BaseVo {
     /**
      * 从账号
      */
-    private String slaceAcct;
+    private String slaveAcct;
 
-    public String getSlaceAcct() {
-        return slaceAcct;
+    public String getSlaveAcct() {
+        return slaveAcct;
     }
 
-    public void setSlaceAcct(String slaceAcct) {
-        this.slaceAcct = slaceAcct;
+    public void setSlaveAcct(String slaveAcct) {
+        this.slaveAcct = slaveAcct;
     }
+
+    private Long slaveAcctId;
+
+    public Long getSlaveAcctId() {
+        return slaveAcctId;
+    }
+
+    public void setSlaveAcctId(Long slaveAcctId) {
+        this.slaveAcctId = slaveAcctId;
+    }
+
     /********************人员相关********************/
     /**
      * 组织账号或者从账号标识
