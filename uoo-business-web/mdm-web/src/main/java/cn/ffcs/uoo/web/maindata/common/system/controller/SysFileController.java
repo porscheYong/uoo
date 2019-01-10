@@ -2,13 +2,17 @@ package cn.ffcs.uoo.web.maindata.common.system.controller;
 
 
 import cn.ffcs.uoo.web.maindata.common.system.client.SysFileClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.common.system.vo.SysFileVo;
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +56,10 @@ public class SysFileController {
     })
     @RequestMapping(value = "/addSysFile", method = RequestMethod.POST)
     public ResponseResult<String> addSysFile(@RequestBody SysFileVo sysFileVo){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        sysFileVo.setUserId(currentLoginUser.getUserId());
+        sysFileVo.setAccout(currentLoginUser.getAccout());
         return sysFileClient.addSysFile(sysFileVo);
     }
 
@@ -60,6 +68,10 @@ public class SysFileController {
     })
     @RequestMapping(value = "/updateSysFile", method = RequestMethod.POST)
     public ResponseResult<String> updateSysFile(@RequestBody SysFileVo sysFileVo){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        sysFileVo.setUserId(currentLoginUser.getUserId());
+        sysFileVo.setAccout(currentLoginUser.getAccout());
         return sysFileClient.updateSysFile(sysFileVo);
     }
 
@@ -69,6 +81,10 @@ public class SysFileController {
     })
     @RequestMapping(value = "/deleteSysFile", method = RequestMethod.POST)
     public ResponseResult<String> deleteSysFile(@RequestBody SysFileVo sysFileVo){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        sysFileVo.setUserId(currentLoginUser.getUserId());
+        sysFileVo.setAccout(currentLoginUser.getAccout());
         return sysFileClient.deleteSysFile(sysFileVo);
     }
 }

@@ -39,17 +39,6 @@ function initMenuInfo(result){
     curMenuLevel = result.menuLevel;
     initParentMenu(menuData,curMenuLevel);
     initMenuLevel();
-    // $("#menuLevel").append("<option value='" + result.menuLevel + "' selected>" + result.menuLevel +"</option>");
-    // if(result.parentMenuName != null){
-    //     $("#parentMenuName").append("<option value='" + result.parentMenuName + "' selected>" + result.parentMenuName +"</option>");
-    // }else{
-    //     $("#parentMenuName").append("<option value='' selected>无上级菜单</option>");
-    // }
-    // seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-    //     $('#menuLevel').selectMatch();
-    //     $('#parentMenuName').selectMatch();
-    //     $('#statusCd').selectMatch();
-    // })
 }
 
 //初始化上级菜单

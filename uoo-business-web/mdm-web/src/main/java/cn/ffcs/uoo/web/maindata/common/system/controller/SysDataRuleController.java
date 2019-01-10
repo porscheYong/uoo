@@ -4,9 +4,11 @@ import cn.ffcs.uoo.web.maindata.common.system.client.SysDataRuleClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysDataRule;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysTable;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysTableColumn;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.common.system.vo.DataRuleRequestVO;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.common.system.vo.SysDataRuleVo;
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -14,6 +16,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -71,6 +75,10 @@ public class SysDataRuleController {
     })
     @RequestMapping(value = "/addDataRule", method = RequestMethod.POST)
     public ResponseResult<String> addDataRule(@RequestBody SysDataRuleVo sysDataRuleVo){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        sysDataRuleVo.setUserId(currentLoginUser.getUserId());
+        sysDataRuleVo.setAccout(currentLoginUser.getAccout());
        return sysDataRuleClient.addDataRule(sysDataRuleVo);
     }
 
@@ -80,6 +88,10 @@ public class SysDataRuleController {
     })
     @RequestMapping(value = "/updateDataRule", method = RequestMethod.POST)
     public ResponseResult<String> updateDataRule(@RequestBody SysDataRuleVo sysDataRuleVo){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        sysDataRuleVo.setUserId(currentLoginUser.getUserId());
+        sysDataRuleVo.setAccout(currentLoginUser.getAccout());
         return sysDataRuleClient.updateDataRule(sysDataRuleVo);
     }
 
@@ -104,6 +116,10 @@ public class SysDataRuleController {
     })
     @RequestMapping(value = "/deleteDataRule", method = RequestMethod.POST)
     public ResponseResult<String> deleteDataRule(@RequestBody SysDataRuleVo sysDataRuleVo){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        sysDataRuleVo.setUserId(currentLoginUser.getUserId());
+        sysDataRuleVo.setAccout(currentLoginUser.getAccout());
         return sysDataRuleClient.deleteDataRule(sysDataRuleVo);
     }
 

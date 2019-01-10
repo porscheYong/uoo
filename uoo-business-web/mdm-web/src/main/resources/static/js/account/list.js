@@ -118,11 +118,11 @@ getOrgExtInfo();
 initMainTable(isCheck,'');
 
 
-$('#addBtn').on('click', function () {
-    var url = 'add.html?&orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&orgTreeId=' + orgTreeId + 
-                "&orgFullName=" + encodeURI(orgFullName)+"&businessName="+encodeURI(parent.businessName);
-    $(this).attr('href', url);
-})
+// $('#addBtn').on('click', function () {
+//     var url = 'add.html?orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&orgTreeId=' + orgTreeId + 
+//                 "&orgFullName=" + encodeURI(orgFullName)+"&businessName="+encodeURI(parent.businessName);
+//     $(this).attr('href', url);
+// })
 
 function boxClick(){            //点击复选框
     sortFlag = 0;
@@ -138,4 +138,51 @@ function boxClick(){            //点击复选框
         }
     }
     initMainTable(isCheck,'');
+}
+
+//新增账号
+function openAddDialog() {
+    parent.layer.open({
+        type: 2,
+        title: '新增账号',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['70%', '85%'],
+        maxmin: true,
+        content: 'addDialog.html?orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&orgTreeId=' + orgTreeId + 
+                    "&orgFullName=" + encodeURI(orgFullName)+"&businessName="+encodeURI(parent.businessName),
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            var selectObj = iframeWin.getSelectUser();
+            if (selectObj.length > 0) {
+                // console.log(selectObj[0].personnelId);
+                getPsnUser(selectObj[0].personnelId);
+            }
+            parent.layer.close(index);
+        },
+        btn2: function(index, layero){},
+        cancel: function(){}
+    });
+}
+
+//主账号跳转
+function getPsnUser(personnelId){       
+    var url = "";
+    $http.get('/user/getPsnUser', {    
+        personnelId: personnelId,
+        userType: "1"
+      }, function (data) {
+        if(data.tbAcct != null){
+            url = "editMainAccount.html?acctId="+ data.tbAcct.acctId +"&orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + 
+                    "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=mh" + "&orgTreeName="+encodeURI(parent.businessName);
+        }else{
+            url = "addMainAccount.html?orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) +
+                    "&orgId=" + orgId + "&personnelId=" + personnelId + "&hType=mh" + "&orgTreeName="+encodeURI(parent.businessName);
+        }
+        window.location.href = url;
+      }, function (err) {
+    
+      })
 }
