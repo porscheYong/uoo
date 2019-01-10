@@ -14,13 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysMenuClientHystrix;
-import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysUserClientHystrix;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysMenu;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.common.system.vo.SysMenuVO;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 
 @FeignClient(value = "common-system",configuration = {FeignClientConfiguration.class},fallback = SysMenuClientHystrix.class)
 public interface SysMenuClient {
