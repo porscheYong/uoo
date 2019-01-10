@@ -57,7 +57,7 @@
     <collection property="tbAcctCrossRel" ofType="cn.ffcs.uoo.message.server.pojo.TbAcctCrossRel"
                 select="getTbAcctCrossRel" column="ACCT_ID"></collection>
 
-    <collection property="tbAcctOrgRel" ofType="cn.ffcs.uoo.message.server.pojo.TbOrg"
+    <collection property="tbAcctOrgRel" ofType="cn.ffcs.uoo.message.server.vo.TbAcctOrgVo"
                 select="getTbAcctOrgRel" column="SLAVE_ACCT_ID"></collection>
 
     <collection property="tbContact" ofType="cn.ffcs.uoo.message.server.pojo.TbContact"
@@ -105,7 +105,7 @@
     <collection property="tbAcctCrossRel" ofType="cn.ffcs.uoo.message.server.pojo.TbAcctCrossRel"
                 select="getTbAcctCrossRel" column="ACCT_ID"></collection>
 
-    <collection property="tbAcctOrgRel" ofType="cn.ffcs.uoo.message.server.pojo.TbOrg"
+    <collection property="tbAcctOrgRel" ofType="cn.ffcs.uoo.message.server.vo.TbAcctOrgVo"
                 select="getTbAcctOrgRel2" column="{acctId=ACCT_ID,orgTreeId=ORG_TREE_ID}"></collection>
 
     <collection property="tbContact" ofType="cn.ffcs.uoo.message.server.pojo.TbContact"
@@ -140,7 +140,7 @@
   </resultMap>
 
   <!--组织-->
-  <resultMap id="TbOrgMap" type="cn.ffcs.uoo.message.server.pojo.TbOrg">
+  <resultMap id="TbOrgMap" type="cn.ffcs.uoo.message.server.vo.TbAcctOrgVo">
     <id column="ORG_ID" jdbcType="DECIMAL" property="orgId" />
     <result column="LOC_ID" jdbcType="DECIMAL" property="locId" />
     <result column="AREA_CODE_ID" jdbcType="DECIMAL" property="areaCodeId" />
@@ -166,6 +166,7 @@
     <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
     <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+    <result column="REL_TYPE" jdbcType="VARCHAR" property="relType" />
   </resultMap>
 
   <!--从账号-->
@@ -384,15 +385,16 @@
   </select>
 
   <select id="getTbAcctOrgRel" parameterType="Long" resultMap="TbOrgMap">
-    select * from  tb_org where status_cd = 1000 and org_id = (select org_id from TB_account_ORG_REL where ACCT_ORG_REL_ID =
-    (select ACCT_ORG_REL_ID from tb_slave_acct where slave_acct_id = #{SLAVE_ACCT_ID}) and STATUS_CD= 1000)
+    select a.*,b.REL_TYPE from tb_org a ,tb_account_org_rel b where a.status_cd =1000 and b.status_cd = 1000 and a.org_id = b.org_id and b.acct_org_rel_id = (
+    select acct_org_rel_id from tb_slave_acct where slave_acct_id = #{SLAVE_ACCT_ID} and STATUS_CD= 1000)
   </select>
 
   <select id="getTbAcctOrgRel2" resultMap="TbOrgMap">
-    select a.* from  tb_org a left join tb_org_orgtree_rel b on a.org_id = b.org_id and b.status_cd = 1000
-    left join tb_org_tree c on c.org_tree_id = b.org_tree_id and c.status_cd = 1000 where a.status_cd = 1000 and
-    (a.org_id,#{orgTreeId}) in (select org_id,org_tree_id from TB_account_ORG_REL where acct_id = #{acctId} and STATUS_CD= 1000) and c.org_tree_id = #{orgTreeId}
-  </select>
+    select a.*,d.rel_type from  tb_org a left join tb_org_orgtree_rel b on a.org_id = b.org_id and b.status_cd = 1000
+    left join tb_org_tree c on c.org_tree_id = b.org_tree_id and c.status_cd = 1000
+    left join tb_account_org_rel d on a.org_id = d.org_id and b.org_tree_id = d.org_tree_id and d.status_cd = 1000
+    where d.acct_id = #{acctId} and a.STATUS_CD= 1000 and c.org_tree_id = #{orgTreeId}
+</select>
 
   <select id="getTbSlaveAcctVo" resultMap="TbSlaveAcctVoMap" parameterType="Long">
      select a.*,case when b.map_acct_id is not null then b.map_acct_id else to_char(a.slave_acct_id) end MAPP_STAFF_ID from tb_slave_acct a
