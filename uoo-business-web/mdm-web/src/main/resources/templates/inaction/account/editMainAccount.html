@@ -40,16 +40,17 @@
     <![endif]-->
 
     <style>
-        .row-delete{
-            width: 34px !important;
-        }
         .fleft{
             float: none !important;
         }
-        .board-title .icon,
-        #icon .Icon{
+        .board-title .icon{
             margin: 3px 3px !important;
             margin-bottom: -6px !important;
+            margin-left: -5px !important;
+        }
+        #icon .Icon{
+            margin: 3px 3px !important;
+            margin-bottom: 1% !important;
             margin-left: -5px !important;
         }
         .BtnRed2 {
@@ -81,6 +82,46 @@
             width: 98% !important;
             margin-left: 1% !important;
             margin-top: 5% !important;
+        }
+        .infoLable{
+            display: inline-block;
+            margin-left: 1%;
+            background: #e0e0e0;
+            border-radius: 5px;
+            padding: 3px 5px;
+            color: #5f5959;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .currentOrgLable{
+            display: inline-block;
+            margin-left: 1%;
+            background: rgb(63,151,247);
+            border-radius: 5px;
+            padding: 3px 5px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .infoBtn{
+            display: inline-block;
+            margin-left: 2%;
+            background: #fff;
+            border-radius: 5px;
+            border: 1px solid rgb(63,151,247);
+            color: rgb(63,151,247);
+            padding: 2px 7px;
+            cursor: pointer;
+        }
+        .delBtn{
+            display: inline-block;
+            margin-left: 2%;
+            background: #fff;
+            border-radius: 5px;
+            border: 1px solid red;
+            color: red;
+            padding: 2px 7px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -261,29 +302,37 @@
 
                 <div style="margin-top:7%">
                     <div class="board-title" style="margin-left:-6.7%;">
-                        <span class="name ft18">归属组织</span>
+                        <span class="name ft18">关联从账号信息</span>
                     </div>
     
                     <div class="fright" style="margin-right: 36px;margin-top:-4.5%;"> 
                         <a class="button-add" id="addBtn" onclick="openOrgDialog()"><span class="fa fa-plus-circle icon-add"></span>新增归属组织</a>
                     </div>
-                </div>
-                
-                <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
-                    <table id="orgTable" class="stripe" width="100%"></table>
+
+                    <div id="acctOrgDiv"></div>
+
+                    <!-- <div id="acctInfoDiv" style="margin-top: 20px;margin-left:-3.3%;">
+                        <span style="font-size:16px;font-weight:600;">(1)归属组织信息</span>
+                        <span class="infoLable">营销专业树</span>
+                        <span class="infoLable">杭州分公司市场部</span>
+                        <span class="infoBtn">创建从账号</span>
+                        <span class="infoBtn">修改归属组织信息</span>
+                    </div> -->
+
+                    <!-- <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
+                        <table id="orgTable" class="stripe" width="100%"></table>
+                    </div> -->
                 </div>
 
-                <div style="margin-top:1%" id="conSubInfo">
+                <!-- <div style="margin-top:1%" id="conSubInfo">
                     <div class="board-title" style="margin-left:-6.7%;">
                         <span class="name ft18">关联从账号信息</span>
                     </div>
-
                 </div>
-
             
                 <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
                     <table id="subInfoTable" class="stripe" width="100%"></table>
-                </div>
+                </div> -->
                 <input class="Btn BtnRed2" id="delAcct" type="button" onclick="deleteTbAcct()" value="删除用户" style="margin-top:20px;" />
             </form>
         </div>

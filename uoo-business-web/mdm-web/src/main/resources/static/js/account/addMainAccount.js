@@ -162,7 +162,7 @@ function addTbAcct(){         //新增
     success: function (data) { //返回json结果
       if(data.state === 1000){
         toastr.success(data.message);
-        submitSuccess();
+        submitSuccess(personnelId);
       }else{
         toastr.error(data.message);
       }
@@ -266,8 +266,8 @@ function deleteOrg(num,orgId){
 
 
 function cancel() {   //取消按钮
-  var url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + 
-                      "&orgFullName=" + encodeURI(orgFullName)+"&businessName="+encodeURI(orgTreeName);
+  var url = "list.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + 
+                      "&orgFullName=" + encodeURI(orgFullName);
   window.location.href = url;
 }   
 
@@ -304,9 +304,28 @@ function openTypeDialog() {
 }
 
 
-function submitSuccess(){     //提交成功
-    var url = "list.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;
-    window.location.href = url;
+// function submitSuccess(){     //提交成功
+//     var url = "";
+
+
+
+//     url = "list.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;
+//     window.location.href = url;
+// }
+
+//提交成功
+function submitSuccess(personnelId){       
+  var url = "";
+  $http.get('/user/getPsnUser', {    
+      personnelId: personnelId,
+      userType: "1"
+    }, function (data) {
+      url = "editMainAccount.html?acctId="+ data.tbAcct.acctId +"&orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + 
+              "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=mh" + "&orgTreeName="+encodeURI(orgTreeName);
+      window.location.href = url;
+    }, function (err) {
+  
+    })
 }
 
 getAcctUser(personnelId);

@@ -1,11 +1,16 @@
 var id = getQueryString('id');
+var tabId;
+var colId;
 var toastr = window.top.toastr;
+var ruleOperatorData = window.top.dictionaryData.ruleOperator();
 
 function getResInfo(){
     $http.get('/system/sysDataRule/getDataRule', {  
         id : id
     }, function (data) {
         initDataInfo(data);
+        tabId = data.tabId;
+        colId = data.colId;
     }, function (err) {
         toastr.error("获取信息失败！");
     })
@@ -15,8 +20,8 @@ function getResInfo(){
 function initDataInfo(result){
     isNull("tabName",result.tabName);
     isNull("colName",result.colName);
-    isNull("ruleOperator",result.ruleOperator);
     isNull("colValue",result.colValue);
+    initRuleOprator(ruleOperatorData,result.ruleOperator);
 }
 
 //判断是否为null
@@ -26,11 +31,26 @@ function isNull(el,str){
     }
 }
 
+//初始化规则操作符
+function initRuleOprator(result,curROVal){
+    var selected = "";
+    for(var i=0;i<result.length;i++){
+        if(result[i].itemValue == curROVal){
+            selected = "selected";
+        }
+        $("#ruleOperator").append("<option value='" + result[i].itemValue + "'"+selected+">" + result[i].itemCnname +"</option>");
+        selected = "";
+    }
+    seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $('#ruleOperator').selectMatch();
+    })
+}
+
 //更新文件资源信息
 function updateRes(){
     $http.post('/system/sysDataRule/updateDataRule', JSON.stringify({  
-        tabName : $("#tabName").val(),
-        colName : $("#colName").val(),
+        tabId : tabId,
+        colId : colId,
         ruleOperator : $("#ruleOperator").val(),
         colValue : $("#colValue").val(),
         statusCd : $("#statusCd").val(),

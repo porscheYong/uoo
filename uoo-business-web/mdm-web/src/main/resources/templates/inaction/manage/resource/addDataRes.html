@@ -36,6 +36,12 @@
         .row{
             margin-right: 0px !important;
         }
+        #colName{
+            max-height: 275px;
+        }
+        #ruleOperator{
+            max-height: 225px;
+        }
     </style>
   </head>
 
@@ -49,8 +55,8 @@
                 <div class="col-md-8 col-sm-8 col-xs-8">
                     <div class="form-item" style="width: 100%">
                         <label for="tabName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">表名称</label>
-                        <input id="tabName" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" value="" autocomplete="off">
+                        <select class="col-md-8 col-sm-8 col-xs-8" id="tabName">
+                        </select>
                     </div>
                 </div>
             </div>
@@ -60,8 +66,8 @@
                     <div class="form-item" style="width: 100%">
                         <label for="colName" class="col-md-6 col-sm-6 col-xs-6" style="padding-right: 20px;
                                 line-height: 40px;text-align: right;width: 24%;margin-left: -1%;">字段名称</label>
-                        <input id="colName" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" value="122112" autocomplete="off">
+                        <select class="col-md-8 col-sm-8 col-xs-8" id="colName">
+                        </select>
                     </div>
                 </div>
             </div>
@@ -71,8 +77,8 @@
                     <div class="form-item" style="width: 100%">
                         <label for="ruleOperator" class="col-md-6 col-sm-6 col-xs-6" style="padding-right: 20px;
                                 line-height: 40px;text-align: right;width:27%;margin-left: -4%;">规则操作符</label>
-                        <input id="ruleOperator" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" value="" autocomplete="off">
+                        <select class="col-md-8 col-sm-8 col-xs-8" id="ruleOperator">
+                        </select>
                     </div>
                 </div>
             </div>

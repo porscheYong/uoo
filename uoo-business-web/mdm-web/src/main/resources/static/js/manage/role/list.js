@@ -1,3 +1,7 @@
+var roleId = getQueryString('roleId');
+var roleName = getQueryString('roleName');
+var lChBox =document.getElementById("lowerCheckBox"); 
+
 var table = $("#roleTable").DataTable({
     'data': results,
     'searching': false,

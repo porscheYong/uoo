@@ -15,6 +15,7 @@ public class Json2MapUtil {
 		HashMap<String,Object> initMap = JSON.parseObject(json, HashMap.class);
 		
 		Map<String,Object> map = new HashMap<>();
+
 		initMap.forEach((str,obj)->{
 			map.put(str, recursion(obj));
 		});
