@@ -67,6 +67,7 @@ public class OrgServiceHystrix implements OrgService {
 
     @Override
     public ResponseResult<Page<OrgVo>> getOrgPage(String search,
+                                                  String orgTreeId,
                                                   Integer pageSize,
                                                   Integer pageNo){
         ResponseResult<Page<OrgVo>> responseResult = new ResponseResult<Page<OrgVo>>();
