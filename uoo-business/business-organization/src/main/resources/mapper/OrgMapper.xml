@@ -158,13 +158,12 @@
         WHERE 1=1
         <if test="orgVo.search != null and orgVo.search != ''">
             AND (A.ORG_NAME like '%'||#{orgVo.search}||'%'
-                or A.FULL_NAME like '%'||#{orgVo.search}||'%'
                 or A.ORG_CODE like '%'||#{orgVo.search}||'%')
         </if>
         <if test="orgVo.statusCd != null and orgVo.statusCd != ''">
             AND A.STATUS_CD = #{orgVo.statusCd}
         </if>
-        ORDER BY A.SORT
+        <!--ORDER BY A.SORT-->
     </select>
 
     <select id="getSysFullName" resultType="java.lang.String">
@@ -256,6 +255,15 @@
         AND B.STATUS_CD = '1000'
         AND B.AREA_CODE_ID = A.AREA_CODE_ID
         AND B.ORG_ID =  #{orgId}
+    </select>
+
+
+    <select id="getAppOrgTrees" resultType="java.lang.String">
+         select wm_concat(b.org_tree_name)
+          from tb_org_orgtree_rel c,tb_org_tree b
+         where c.status_cd = 1000 and b.status_cd=1000
+           and b.org_tree_id = c.org_tree_id
+           and c.org_id = #{orgId}
     </select>
 
 </mapper>

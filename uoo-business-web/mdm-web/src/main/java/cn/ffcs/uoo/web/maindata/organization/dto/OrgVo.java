@@ -42,6 +42,28 @@ public class OrgVo extends BaseVo{
     private Long standardFlag;
     private String orgBizFullName;
 
+
+    //组织树信息
+    private String orgTreeInfos;
+    //组织存在组织树标识
+    private int flag;
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
+    public String getOrgTreeInfos() {
+        return orgTreeInfos;
+    }
+
+    public void setOrgTreeInfos(String orgTreeInfos) {
+        this.orgTreeInfos = orgTreeInfos;
+    }
+
     public String getOrgBizFullName() {
         return orgBizFullName;
     }
