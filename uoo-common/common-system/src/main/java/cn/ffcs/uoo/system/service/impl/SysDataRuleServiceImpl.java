@@ -62,7 +62,7 @@ public class SysDataRuleServiceImpl extends ServiceImpl<SysDataRuleMapper, SysDa
         sysDataRule.setStatusCd("1100");
         sysDataRule.setStatusDate(new Date());
         sysDataRule.setUpdateDate(new Date());
-        sysDataRule.setUpdateUser(0L);
+        sysDataRule.setUpdateUser(StrUtil.isNullOrEmpty(sysDataRule.getUpdateUser())?0L:sysDataRule.getUpdateUser());
         updateById(sysDataRule);
     }
 
@@ -74,7 +74,7 @@ public class SysDataRuleServiceImpl extends ServiceImpl<SysDataRuleMapper, SysDa
     @Override
     public void add(SysDataRule sysDataRule){
         sysDataRule.setCreateDate(new Date());
-        sysDataRule.setCreateUser(0L);
+        sysDataRule.setCreateUser(StrUtil.isNullOrEmpty(sysDataRule.getCreateUser())?0L:sysDataRule.getCreateUser());
         sysDataRule.setStatusCd("1000");
         sysDataRule.setStatusDate(new Date());
         insert(sysDataRule);
@@ -86,7 +86,7 @@ public class SysDataRuleServiceImpl extends ServiceImpl<SysDataRuleMapper, SysDa
     @Override
     public void update(SysDataRule sysDataRule){
         sysDataRule.setUpdateDate(new Date());
-        sysDataRule.setUpdateUser(0L);
+        sysDataRule.setUpdateUser(StrUtil.isNullOrEmpty(sysDataRule.getUpdateUser())?0L:sysDataRule.getUpdateUser());
         sysDataRule.setStatusDate(new Date());
         updateById(sysDataRule);
     }

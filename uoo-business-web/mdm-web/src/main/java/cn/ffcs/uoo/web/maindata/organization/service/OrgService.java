@@ -54,6 +54,7 @@ public interface OrgService{
 
     @RequestMapping(value="/org/getOrgPage",method = RequestMethod.GET,headers={"Content-Type=application/json"})
     public ResponseResult<Page<OrgVo>> getOrgPage(@RequestParam(value = "search",required = false)String search,
+                                                  @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                                   @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                   @RequestParam(value = "pageNo",required = false)Integer pageNo);
 

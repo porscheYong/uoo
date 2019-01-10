@@ -78,6 +78,7 @@ public class SysFileController {
         BeanUtils.copyProperties(sysFileVo, sysFile);
         Long id = iSysFileService.getId();
         sysFile.setFileId(id);
+        sysFile.setCreateUser(sysFileVo.getUserId());
         iSysFileService.add(sysFile);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("新增系统文件成功");
@@ -97,6 +98,7 @@ public class SysFileController {
         SysFile sysFile = iSysFileService.selectOne(sysFileWrapper);
         if(sysFile!=null){
             BeanUtils.copyProperties(sysFileVo, sysFile);
+            sysFile.setUpdateUser(sysFileVo.getUserId());
             iSysFileService.update(sysFile);
         }
 
@@ -118,6 +120,7 @@ public class SysFileController {
                 .eq("STATUS_CD","1000");
         SysFile sysFile = iSysFileService.selectOne(sysFileWrapper);
         if(sysFile!=null){
+            sysFile.setUpdateUser(sysFileVo.getUserId());
             iSysFileService.delete(sysFile);
         }
         ret.setState(ResponseResult.STATE_OK);

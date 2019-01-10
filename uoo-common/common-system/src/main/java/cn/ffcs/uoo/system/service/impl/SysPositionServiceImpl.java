@@ -106,9 +106,14 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
     }
 
     @Override
-    public List<TreeNodeVo> selectPositionTree(){
+    public List<TreeNodeVo> selectTarAllPositionTree(String positionId){
         List<TreeNodeVo> vo = new ArrayList<>();
-        vo = baseMapper.selectPositionTree();
+        if(StrUtil.isNullOrEmpty(positionId)){
+            vo = baseMapper.selectPositionTree();
+        }else{
+            vo = baseMapper.selectTarAllPositionTree(positionId);
+        }
+
         return vo;
     }
 

@@ -33,6 +33,8 @@ public interface SysPositionMapper extends BaseMapper<SysPosition> {
 
     public List<TreeNodeVo> selectPositionTree();
 
+    public List<TreeNodeVo> selectTarAllPositionTree(@Param("positionId")String positionId);
+
     public List<SysPositionVo> getPositionRelPage(Pagination page, @Param("vo")SysPositionVo vo);
 
     public String getRolesByPositionId(@Param("positionId")String positionId);

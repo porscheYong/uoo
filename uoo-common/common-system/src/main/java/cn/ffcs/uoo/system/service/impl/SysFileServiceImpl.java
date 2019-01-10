@@ -43,7 +43,7 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
         sysFile.setStatusCd("1100");
         sysFile.setStatusDate(new Date());
         sysFile.setUpdateDate(new Date());
-        sysFile.setUpdateUser(0L);
+        sysFile.setUpdateUser(StrUtil.isNullOrEmpty(sysFile.getUpdateUser())?0L:sysFile.getUpdateUser());
         updateById(sysFile);
     }
 
@@ -55,7 +55,7 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
     @Override
     public void add(SysFile sysFile){
         sysFile.setCreateDate(new Date());
-        sysFile.setCreateUser(0L);
+        sysFile.setCreateUser(StrUtil.isNullOrEmpty(sysFile.getCreateUser())?0L:sysFile.getCreateUser());
         sysFile.setStatusCd("1000");
         sysFile.setStatusDate(new Date());
         insert(sysFile);
@@ -67,7 +67,7 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
     @Override
     public void update(SysFile sysFile){
         sysFile.setUpdateDate(new Date());
-        sysFile.setUpdateUser(0L);
+        sysFile.setUpdateUser(StrUtil.isNullOrEmpty(sysFile.getUpdateUser())?0L:sysFile.getUpdateUser());
         sysFile.setStatusDate(new Date());
         updateById(sysFile);
     }

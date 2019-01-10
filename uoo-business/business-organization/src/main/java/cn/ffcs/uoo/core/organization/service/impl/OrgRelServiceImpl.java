@@ -222,10 +222,14 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
             for(OrgVo vo : orgVolist){
                 List<OrgVo> orgListVo = orgMapper.getFullOrgList(orgVo.getOrgTreeId().toString(),vo.getOrgId().toString());
                 String fullName = "";
-                for(OrgVo vo1 : orgListVo){
-                    fullName += vo1.getOrgName()+"->";
+                if(orgListVo!=null && orgListVo.size()>0){
+                    for(OrgVo vo1 : orgListVo){
+                        fullName += vo1.getOrgName()+"->";
+                    }
                 }
-                vo.setFullName(fullName.substring(0,fullName.length()-2));
+                if(!StrUtil.isNullOrEmpty(fullName)){
+                    vo.setFullName(fullName.substring(0,fullName.length()-2));
+                }
             }
         }
         page.setRecords(orgVolist);

@@ -1,10 +1,8 @@
 package cn.ffcs.uoo.core.organization.service.impl;
 
-import cn.ffcs.uoo.core.organization.entity.Org;
+import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.dao.OrgMapper;
-import cn.ffcs.uoo.core.organization.entity.OrgRelType;
-import cn.ffcs.uoo.core.organization.entity.OrgType;
-import cn.ffcs.uoo.core.organization.entity.PoliticalLocation;
+import cn.ffcs.uoo.core.organization.service.OrgOrgtreeRelService;
 import cn.ffcs.uoo.core.organization.service.OrgService;
 import cn.ffcs.uoo.core.organization.service.OrgOrgtypeRelService;
 import cn.ffcs.uoo.core.organization.service.OrgTypeService;
@@ -13,6 +11,7 @@ import cn.ffcs.uoo.core.organization.util.StrUtil;
 import cn.ffcs.uoo.core.organization.vo.AreaCodeVo;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
 import cn.ffcs.uoo.core.organization.vo.PageVo;
+import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -20,6 +19,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Wrapper;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +39,9 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
 
     @Autowired
     private OrgTypeService orgTypeService;
+
+    @Autowired
+    private OrgOrgtreeRelService orgOrgtreeRelService;
 
 
 
@@ -129,18 +132,33 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         Page<OrgVo> page = new Page<OrgVo>(orgVo.getPageNo()==0?1:orgVo.getPageNo(),
                 orgVo.getPageSize()==0?10:orgVo.getPageSize());
         List<OrgVo> orgVolist = baseMapper.selectOrgPage(page,orgVo);
-//        for(OrgVo o : orgVolist){
-//            List<OrgType> orgTypeList = orgTypeService.getOrgTypeByOrgId(o.getOrgId());
-//            String orgTypeSplit = "";
-//            if(orgTypeList!=null && orgTypeList.size()>0){
-//                for(OrgType ot:orgTypeList){
-//                    orgTypeSplit +=ot.getOrgTypeName()+",";
-//                }
-//            }
-//            orgTypeSplit = orgTypeSplit.substring(0,orgTypeSplit.length()-1);
-//            o.setOrgTypeSplit(orgTypeSplit);
-//            //o.setOrgTypeList(orgTypeList);
-//        }
+        if(orgVolist!=null && orgVolist.size()>0){
+            for(OrgVo vo : orgVolist){
+                List<OrgVo> orgListVo = baseMapper.getFullOrgList("1",vo.getOrgId().toString());
+                String fullName = "";
+                if(orgListVo!=null && orgListVo.size()>0){
+                    for(OrgVo vo1 : orgListVo){
+                        fullName += vo1.getOrgName()+"->";
+                    }
+                }
+                if(!StrUtil.isNullOrEmpty(fullName)){
+                    vo.setFullName(fullName.substring(0,fullName.length()-2));
+                }
+                String trees = baseMapper.getAppOrgTrees(vo.getOrgId().toString());
+                vo.setOrgTreeInfos(trees);
+                if(!StrUtil.isNullOrEmpty(orgVo.getOrgTreeId())){
+                    com.baomidou.mybatisplus.mapper.Wrapper orgOrgTreeWrapper = Condition.create()
+                            .eq("ORG_TREE_ID",orgVo.getOrgTreeId())
+                            .eq("ORG_ID",vo.getOrgId())
+                            .eq("STATUS_CD","1000");
+                    List<OrgOrgtreeRel> orgOrgtreeList = orgOrgtreeRelService.selectList(orgOrgTreeWrapper);
+                    if(orgOrgtreeList!=null && orgOrgtreeList.size()>0){
+                        vo.setFlag(1);
+                    }
+                }
+
+            }
+        }
         page.setRecords(orgVolist);
         return page;
     }
