@@ -171,6 +171,7 @@ function getDictionaryData () {
         dictionaryData.areaType(data.areaType);
         dictionaryData.countType(data.countType);
         dictionaryData.contractType(data.contractType);
+        dictionaryData.acctLevel(data.acct_LEVEL);
     }, function (err) {
 
     })

@@ -1,6 +1,6 @@
 var orgId = getQueryString('id');
-var orgFrame = parent.window['standardOrg'];
-var superiorOrgList = orgFrame.superiorOrgList;
+var orgFrame = parent.window['standardOrg'] || parent.window['platformUser'];
+var orgList = orgFrame.orgList;
 var checkNode = [];
 
 function filter (treeId, parentNode, childNodes) {
@@ -26,13 +26,6 @@ function onOrgTreeCheck (e, treeId, treeNode) {
 
 function initOrgTree() {
     var treeSetting = {
-        async: {
-            enable: true,
-            url: '/sysOrganization/getOrgRelTree',
-            autoParam: ['id'],
-            type: 'get',
-            dataFilter: filter
-        },
         view: {
             showLine: false,
             showIcon: false,
@@ -59,7 +52,9 @@ function initOrgTree() {
             radioType: 'all'
         }
     };
-    $http.get('/sysOrganization/getOrgRelTree', {}, function (data) {
+    $http.get('/sysOrganization/getOrgRelTree', {
+        isSync: true
+    }, function (data) {
         $.fn.zTree.init($("#orgTree"), treeSetting, data);
         autoCheck();
     }, function (err) {
@@ -69,8 +64,8 @@ function initOrgTree() {
 
 function autoCheck () {
     var tree = $.fn.zTree.getZTreeObj("orgTree");
-    for (var i = 0; i < superiorOrgList.length; i++) {
-        var id = superiorOrgList[i].id;
+    for (var i = 0; i < orgList.length; i++) {
+        var id = orgList[i].id;
         var node = tree.getNodeByTId("orgTree_" + id);
         tree.checkNode(node, true);
         checkNode.push(node);

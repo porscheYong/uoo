@@ -42,7 +42,7 @@ function getOrgExtInfo () {
             if (pathArry[i].current) {
                 pathStr +=  '<span class="breadcrumb-item">' + node.name + '</span>';
             } else {
-                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+orgId+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.selectNodeById('+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
             }
         }
         $('#platformOrgFrame').contents().find('.breadcrumb').html(pathStr);

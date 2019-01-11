@@ -37,6 +37,7 @@ function Dictionary() {
   this._areaType = []; //区域级别
   this._countType = []; //统计属性
   this._contractType = []; //承包类型
+  this._acctLevel = []; //账号等级
 }
 
 Dictionary.prototype.cityVillage = function () {
@@ -379,4 +380,13 @@ Dictionary.prototype.contractType = function () {
   else {
       return this._contractType;
   }
+}
+
+Dictionary.prototype.acctLevel = function () {
+    if (arguments.length === 1) {
+        this._acctLevel = arguments[0];
+    }
+    else {
+        return this._acctLevel;
+    }
 }

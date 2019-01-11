@@ -1,53 +1,14 @@
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
-var locationList;
-var orgTypeList;
-var positionList;
-var orgPostList;
-var checkNode;
-var selectUser = [];
-var formValidate;
+var pName = parent.getNodeName(pid);
+var parentOrgList = [{id: orgId, name: pName}];
+var locationList = [];
+var orgPostList = [];
 var loading = parent.loading;
 var toastr = parent.parent.toastr;
-
-$('.orgName').html(orgName);
-// 显示组织路径
-parent.getOrgExtInfo();
-
-// tags init
-if(typeof $.fn.tagsInput !== 'undefined'){
-    $('#locationList').tagsInput();
-    $('#orgTypeList').tagsInput();
-    $('#positionList').tagsInput();
-    $('#postList').tagsInput();
-}
-
-
-//组织类别选择
-function openTypeDialog() {
-    parent.layer.open({
-        type: 2,
-        title: '选中组织类别',
-        shadeClose: true,
-        shade: 0.8,
-        area: ['70%', '85%'],
-        maxmin: true,
-        content: 'typeDialog.html?id=' + orgId,
-        btn: ['确认', '取消'],
-        yes: function(index, layero){
-            //获取layer iframe对象
-            var iframeWin = parent.window[layero.find('iframe')[0].name];
-            checkNode = iframeWin.checkNode;
-            parent.layer.close(index);
-            $('#orgTypeList').importTags(checkNode);
-            $('.ui-tips-error').css('display', 'none');
-            orgTypeList = checkNode;
-        },
-        btn2: function(index, layero){},
-        cancel: function(){}
-    });
-}
+//字典数据
+var statusCdData = window.top.dictionaryData.statusCd();
 
 // 组织关系信息初始化
 function initOrgRelTable (results) {
@@ -96,64 +57,15 @@ function initOrgRelTable (results) {
     });
 }
 
-// 获取规模字典数据
-function getScale (orgScale) {
-    $http.get('/tbDictionaryItem/getList/SCALE', {}, function (data) {
-        var value = '';
-        for (var i = 0; i < data.length; i++) {
-            if (orgScale === data[i].itemValue) {
-                value = data[i].itemCnname
-            }
-        }
-        $('#orgScale').html(value);
-    }, function (err) {
-
-    })
-}
-
-// 获取城乡字典数据
-function getCityVillage (cityTown) {
-    $http.get('/tbDictionaryItem/getList/CITY_VILLAGE', {}, function (data) {
-        var value = '';
-        for (var i = 0; i < data.length; i++) {
-            if (cityTown === data[i].itemValue) {
-                value = data[i].itemCnname
-            }
-        }
-        $('#cityTown').html(value);
-    }, function (err) {
-
-    })
-}
-
-// 获取组织最高岗位级别字典数据
-function getOrgPostLevel (orgPositionLevel) {
-    $http.get('/tbDictionaryItem/getList/ORG_POST_LEVEL', {}, function (data) {
-        var value = '';
-        for (var i = 0; i < data.length; i++) {
-            if (orgPositionLevel === data[i].itemValue) {
-                value = data[i].itemCnname
-            }
-        }
-        $('#orgPositionLevel').html(value);
-    }, function (err) {
-
-    })
-}
-
 // 获取状态数据
 function getStatusCd (statusCd) {
-    $http.get('/tbDictionaryItem/getList/STATUS_CD', {}, function (data) {
-        var value = '';
-        for (var i = 0; i < data.length; i++) {
-            if (statusCd === data[i].itemValue) {
-                value = data[i].itemCnname
-            }
+    var value = '';
+    for (var i = 0; i < statusCdData.length; i++) {
+        if (statusCd === statusCdData[i].itemValue) {
+            value = statusCdData[i].itemCnname
         }
-        $('#statusCd').html(value);
-    }, function (err) {
-
-    })
+    }
+    $('#statusCd').html(value);
 }
 
 // 获取组织基础信息
@@ -165,14 +77,12 @@ function getOrg (orgId) {
         $('#orgCode').html(data.orgCode);
         $('#sort').html(data.sort);
         getStatusCd(data.statusCd);
-        locationList = data.politicalLocationList;
-        orgTypeList = data.orgTypeList;
-        positionList = data.positionList;
-        orgPostList = data.postList;
-        $('#locationList').addTag(locationList);
-        $('#orgTypeList').addTag(orgTypeList);
-        $('#positionList').addTag(positionList);
-        $('#postList').addTag(orgPostList);
+
+        locationList.push({id: data.regionNbr, name: data.regionName});
+        orgPostList = data.sysPositionVos;
+        $('#parentOrg').addTag(parentOrgList);
+        $('#location').addTag(locationList);
+        $('#post').addTag(orgPostList);
     }, function (err) {
 
     })
@@ -192,5 +102,14 @@ function getOrgRel (orgId) {
     })
 }
 
+$('.orgName').html(orgName);
+// 显示组织路径
+parent.getOrgExtInfo();
+// tags init
+if(typeof $.fn.tagsInput !== 'undefined'){
+    $('#parentOrg').tagsInput();
+    $('#location').tagsInput();
+    $('#post').tagsInput();
+}
 getOrg(orgId);
 getOrgRel(orgId);

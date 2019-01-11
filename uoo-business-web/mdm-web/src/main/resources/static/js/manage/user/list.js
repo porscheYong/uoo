@@ -18,32 +18,15 @@ function initUserTable (isSearchlower,search) {
         "scrollY": "375px",
         'scrollCollapse': true,
         'columns': [
-            { 'data': null, 'title': '序号', 'className': 'row-no',
+            { 'data': "userName", 'title': '用户姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return meta.row + 1 + meta.settings._iDisplayStart;
+                    return "<a href='edit.html?id=" + row.orgId + "&userId=" + row.userId +
+                        "&name="+ encodeURI(orgName) + "'>" + row.userName + "</a>";
                 }
             },
-            { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
-                'render': function (data, type, row, meta) {
-                    return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId +
-                        "&name="+ encodeURI(orgName) +"&orgTreeId="+15961+"'>" + row.psnName + "</a>";
-                }
-            },
-            { 'data': "doubleName", 'title': '重名称谓', 'className': 'row-mobile' },
-            { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
-            { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
-            { 'data': "orgName", 'title': '所属组织', 'className': '' },
-            { 'data': "statusCd", 'title': '状态', 'className': 'status-code',
-                'render': function (data, type, row, meta) {
-                    var statusStr = '';
-                    if (row.statusCd == '1000') {
-                        statusStr = '<span>有效</span>';
-                    } else {
-                        statusStr = '<span>无效</span>';
-                    }
-                    return statusStr
-                }
-            }
+            { 'data': "accout", 'title': '账号', 'className': 'row-accout' },
+            { 'data': "userPositions", 'title': '平台职位', 'className': 'cert-no' },
+            { 'data': "orgName", 'title': '归属组织', 'className': '' }
         ],
         'language': {
             'emptyTable': '没有数据',
@@ -71,17 +54,14 @@ function initUserTable (isSearchlower,search) {
             param.pageNo = (data.start / data.length) + 1;//当前页码
             param.isSearchlower = isSearchlower;//是否显示下级组织人员
             param.search = search;
-            param.orgTreeId = 15961;
-            param.orgId = orgId;
-            $http.get('/orgPersonRel/getPerOrgRelPage', param, function (result) {
+            param.id = orgId;
+            $http.get('/sysOrganization/getOrgUserPage', param, function (result) {
                 var returnData = {};
                 // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
                 returnData.recordsTotal = result.total;//返回数据全部记录
                 returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
                 returnData.data = result.records;//返回的数据列表
                 callback(returnData);
-            }, function (err) {
-
             })
         }
     });
