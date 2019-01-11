@@ -7,6 +7,8 @@ var orgRootId = getQueryString('orgRootId');
 var tabPage = getQueryString('tabPage');
 var acctId = getQueryString('acctId');
 var orgTreeName = getQueryString('orgTreeName');
+var curOrgId = getQueryString('curOrgId');
+var curOrgTreeId = getQueryString('curOrgTreeId');
 
 var personnelId;
 var orgTable;
@@ -111,7 +113,7 @@ function initAcctInfo(results){
    acctInfoList = [];
    for(var i=0;i<acct.length;i++){
       if(acct[i].orgTreeId == orgTreeId || orgTreeId == 1){
-          if(acct[i].orgTreeId == orgTreeId && acct[i].orgId == orgId){ //当前选择的组织放到数组最前面（高亮）
+          if(acct[i].orgTreeId == curOrgTreeId && acct[i].orgId == curOrgId){ //当前选择的组织放到数组最前面（高亮）
               acctInfoList.unshift({"acct":acct[i],"slaveAcct":[]});
           }else{
               acctInfoList.push({"acct":acct[i],"slaveAcct":[]});
@@ -142,7 +144,7 @@ function setAcctInfoTables(){
                         "<span class='infoBtn' onclick='addSlaveBtnClick("+acctInfoList[i].acct.acctOrgRelId+","+i+","+acctInfoList[i].acct.orgTreeId+")'>创建从账号</span></div>"+ 
                     "<div id='table-container' style='width: 100%; font-size: 14px; overflow: hidden;margin-left:-3.3%;'>"+
                         "<table id='orgTable_"+i+"' class='stripe' width='100%'></table></div>"; 
-        if(acctInfoList[i].acct.orgTreeId == orgTreeId && acctInfoList[i].acct.orgId == orgId){
+        if(acctInfoList[i].acct.orgTreeId == curOrgTreeId && acctInfoList[i].acct.orgId == curOrgId){
             currentId = i;
         }
     }
@@ -170,9 +172,9 @@ function setAcctInfoTables(){
                   },
                   { 'data': "slaveAcct", 'title': '从账号', 'className': 'row-acc' ,
                   'render': function (data, type, row, meta) {
-                      return '<a title="'+ row.slaveAcct +'" href="editSubAccount.html?orgTreeId=' + orgTreeId + '&toMainType=' + hType +
-                                            '&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&hType=th&mainAcctId='+ acctId +
-                                            '&acctId='+ row.slaveAcctId + '&statusCd='+ row.statusCd +'">'+ row.slaveAcct +'</a>';
+                      return '<a title="'+ row.slaveAcct +'" href="editSubAccount.html?curOrgId='+curOrgId+'&curOrgTreeId='+curOrgTreeId+
+                              '&orgTreeId=' + orgTreeId + '&toMainType=' + hType +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +
+                              '&hType=th&mainAcctId='+acctId+'&acctId='+row.slaveAcctId+'&statusCd='+row.statusCd+'">'+row.slaveAcct+'</a>';
                   }
                 },
                   { 'data': "slaveAcctType", 'title': '类型', 'className': 'row-acctype' },
@@ -437,7 +439,7 @@ function refreshTb(acctId) {           //新增组织后刷新组织表格
 function addSlaveBtnClick(acctOrgRelId,id,slaveOrgTreeId){      //点击新增从账号
     var sFullName = $("#orgName_"+id).attr("title");
     var treeName = $("#orgTreeName_"+id).text();
-    var url = 'addSubAccount.html?orgTreeId=' + orgTreeId + '&hType=th&personnelId=' + personnelId + '&slaveOrgTreeId=' + slaveOrgTreeId +
+    var url = 'addSubAccount.html?curOrgId='+curOrgId+'&curOrgTreeId='+curOrgTreeId+'&orgTreeId='+orgTreeId+'&hType=th&personnelId='+personnelId + '&slaveOrgTreeId=' + slaveOrgTreeId +
                       '&mainAcctId='+ acctId +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&toMainType=' + hType +
                       '&fullName=' + encodeURI(sFullName) + '&acctOrgRelId=' + acctOrgRelId + '&orgTreeName=' + encodeURI(treeName);
     window.location.href = url;
@@ -524,9 +526,9 @@ function deleteOrg(orgId,orgTreeId){
 
 function cancel() {   //取消按钮
   var url = '';
-  if(hType == "mh"){  //返回list.html
+  if(hType != "uh"){  //返回list.html
     url = "list.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;
-  }else if(hType == "uh"){
+  }else{
     url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName) + "&id=" + orgId + 
     "&personnelId=" + personnelId + "&orgRootId=" + orgRootId + "&tabPage=" + tabPage;
   }
