@@ -11,4 +11,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TbAcctServiceImpl extends ServiceImpl<TbAcctMapper, TbAcct> implements TbAcctService {
+    @Override
+    public TbAcct selectByPersonnelId(Long personnelId) {
+        return baseMapper.selectByPersonnelId(personnelId);
+    }
 }

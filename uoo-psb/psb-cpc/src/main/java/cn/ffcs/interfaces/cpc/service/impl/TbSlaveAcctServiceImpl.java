@@ -11,4 +11,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSlaveAcct> implements TbSlaveAcctService {
+    @Override
+    public int selectBySlaveAcctAndAcctId(String account, Long acctId) {
+        return baseMapper.selectBySlaveAcctAndAcctId(account,acctId);
+    }
+
+    @Override
+    public boolean deleteByAcctId(Long acctId) {
+        return baseMapper.deleteByAcctId(acctId);
+    }
 }

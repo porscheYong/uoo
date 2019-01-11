@@ -12,5 +12,7 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2019-01-10
  */
 public interface AcctCrossRelService extends IService<AcctCrossRel> {
+    boolean deleteByAcctIdAndRelaType(Long acctId, String relType);
 
+    Long checkExistCrossRelTypeAndSalesCode(String s, String sales_code);
 }

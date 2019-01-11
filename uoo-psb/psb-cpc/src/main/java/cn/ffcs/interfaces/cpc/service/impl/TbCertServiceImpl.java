@@ -11,4 +11,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TbCertServiceImpl extends ServiceImpl<TbCertMapper, TbCert> implements TbCertService {
+    @Override
+    public Long checkExistCertTypeAndCertNumber(String certType, String certNumber) {
+        return baseMapper.checkExistCertTypeAndCertNumber(certType,certNumber);
+    }
+
+    @Override
+    public boolean deleteByPersonnelId(Long personnelId) {
+        baseMapper.deleteByPersonnelId(personnelId);
+        return true;
+    }
 }

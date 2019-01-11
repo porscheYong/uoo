@@ -17,4 +17,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class AcctCrossRelServiceImpl extends ServiceImpl<AcctCrossRelMapper, AcctCrossRel> implements AcctCrossRelService {
 
+    @Override
+    public boolean deleteByAcctIdAndRelaType(Long acctId, String relaType) {
+        return baseMapper.deleteByPersonnelIdAndRelaType(acctId,relaType);
+    }
+
+    @Override
+    public Long checkExistCrossRelTypeAndSalesCode(String type, String code) {
+        return baseMapper.checkExistCrossRelTypeAndSalesCode(type,code);
+    }
 }
