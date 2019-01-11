@@ -1,9 +1,9 @@
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
-var parentOrgList = [];
+var orgList = [];
 var locationList = [];
-var orgPostList = [];
+var postList = [];
 var formValidate;
 var loading = parent.loading;
 var toastr = window.top.toastr;
@@ -31,9 +31,9 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
     //默认显示上级组织
-    parentOrgList.push({id: orgId, pid: pid, name: orgName});
+    orgList.push({id: orgId, pid: pid, name: orgName});
     $('#parentOrg').tagsInput({unique: true});
-    $('#parentOrg').importTags(parentOrgList, {unique: true});
+    $('#parentOrg').importTags(orgList, {unique: true});
 
     $('#location').tagsInput({unique: true});
     $('#post').tagsInput({unique: true});
@@ -55,7 +55,7 @@ function openOrgDialog() {
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
             $('#parentOrg').importTags(checkNode, {unique: true});
-            parentOrgList = checkNode;
+            orgList = checkNode;
             parent.layer.close(index);
         }
     });
@@ -99,7 +99,7 @@ function openPostDialog() {
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
             $('#post').importTags(checkNode);
-            orgPostList = checkNode;
+            postList = checkNode;
             parent.layer.close(index);
         }
     });
@@ -126,13 +126,13 @@ function addOrg () {
     var statusCd = $('#statusCd option:selected') .val();
     //组织职位
     var sysPositionVos = [];
-    for (var i = 0; i < orgPostList.length; i++) {
-        sysPositionVos.push({positionId: orgPostList[i].id});
+    for (var i = 0; i < postList.length; i++) {
+        sysPositionVos.push({positionId: postList[i].id});
     }
 
     $http.post('/sysOrganization/addOrg', JSON.stringify({
         orgName: orgName,
-        parentOrgCode: parentOrgList[0].id,
+        parentOrgCode: orgList[0].id,
         regionNbr: locationList[0].id,
         sysPositionVos: sysPositionVos,
         sort: sort,

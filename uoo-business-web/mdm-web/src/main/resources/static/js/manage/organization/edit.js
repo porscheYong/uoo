@@ -2,9 +2,9 @@ var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var pName = parent.getNodeName(pid);
-var parentOrgList = [{id: orgId, name: pName}];
+var orgList = [{id: orgId, name: pName}];
 var locationList = [];
-var orgPostList = [];
+var postList = [];
 var formValidate;
 var loading = parent.loading;
 var toastr = window.top.toastr;
@@ -71,7 +71,7 @@ function openPostDialog() {
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
             $('#post').importTags(checkNode);
-            orgPostList = checkNode;
+            postList = checkNode;
             parent.layer.close(index);
         }
     });
@@ -100,10 +100,10 @@ function getOrg (orgId) {
         getStatusCd(data.statusCd);
 
         locationList.push({id: data.regionNbr, name: data.regionName});
-        orgPostList = data.sysPositionVos;
-        $('#parentOrg').addTag(parentOrgList);
+        postList = data.sysPositionVos;
+        $('#parentOrg').addTag(orgList);
         $('#location').addTag(locationList);
-        $('#post').addTag(orgPostList);
+        $('#post').addTag(postList);
         seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
             var orgEditForm = $('#orgEditForm');
             var formValidate = new Validate(orgEditForm);
@@ -126,15 +126,15 @@ function updateOrg () {
     var statusCd = $('#statusCd option:selected') .val();
     //组织职位
     var sysPositionVos = [];
-    for (var i = 0; i < orgPostList.length; i++) {
-        sysPositionVos.push({positionId: orgPostList[i].id});
+    for (var i = 0; i < postList.length; i++) {
+        sysPositionVos.push({positionId: postList[i].id});
     }
 
     $http.post('/sysOrganization/updateOrg', JSON.stringify({
         orgId: orgId,
         orgName: orgName,
         orgCode: orgCode,
-        parentOrgCode: parentOrgList[0].id,
+        parentOrgCode: orgList[0].id,
         regionNbr: locationList[0].id,
         sysPositionVos: sysPositionVos,
         sort: sort,

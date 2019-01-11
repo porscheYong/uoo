@@ -1,6 +1,6 @@
 var orgId = getQueryString('id');
-var orgFrame = parent.window['standardOrg'];
-var orgPostList = orgFrame.orgPostList;
+var orgFrame = parent.window['standardOrg'] || parent.window['platformUser'];
+var postList = orgFrame.postList;
 var checkNode = [];
 
 function orgPostBeforeClick (treeId, treeNode, clickFlag) {
@@ -27,8 +27,8 @@ function onOrgPostCheck (e, treeId, treeNode) {
 
 function autoCheck () {
     var zTree = $.fn.zTree.getZTreeObj("orgPostTree");
-    for (var i = 0; i < orgPostList.length; i++) {
-        var id = orgPostList[i].postId || orgPostList[i].id;
+    for (var i = 0; i < postList.length; i++) {
+        var id = postList[i].postId || postList[i].id;
         var node = zTree.getNodeByTId("orgPostTree_" + id);
         zTree.checkNode(node, true);
         zTree.expandNode(node, true, true, true);
@@ -50,7 +50,7 @@ function getOrgPostTree () {
             simpleData: {
                 enable:true,
                 idKey: "id",
-                pIdKey: "pId",
+                pIdKey: "pid",
                 rootPId: ""
             }
         },
@@ -65,6 +65,7 @@ function getOrgPostTree () {
         }
     };
     $http.get('/sysPosition/getPositionTree', {
+        id: orgId,
         isSync: true
     }, function (data) {
         $.fn.zTree.init($("#orgPostTree"), treeSetting, data);

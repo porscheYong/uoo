@@ -42,51 +42,38 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
-
-            .FormList input {
-                width: 60%;
+            .Label {
+                color: #5f6c7e;
+                width: 80px;
+                text-align: right;
+                vertical-align: top;
+                display: inline-block;
             }
-
-            .FormList select {
-                width: 60%;
+            .org-edit {
+                color: rgb(0,164,255);
             }
-
-            #personnel .board-content {
-                position: relative;
-                margin-right: 10px;
-                border: 1px solid transparent;
-            }
-
-            #personnel .board-content:hover {
-                border: 1px solid #ff7800;
-                border-radius: 4px
-            }
-
-            .board-content {
-                padding: 30px 30px 20px 10px;
-            }
-            .ui-input-del {
-                position: relative;
-                margin-top: 10px;
-            }
-            .ui-input-del:hover .icon-del, .ui-input-del:focus .icon-del {
-                display: block;
-            }
-            .icon-del {
-               /*  display: none; */
-                position: absolute;
-                z-index: 2;
-                line-height: 40px;
-                /* top: 0; */
-                /* right: 5px; */
+            .org-delte {
                 color: #f26d7e;
-                font-size: 23px;
+                padding-left: 10px;
+            }
+            .dataTable a {
                 cursor: pointer;
             }
-            .icon-del:hover {
-                color: #f26d7e;
+            .edit-form {
+                margin: 10px;
+                margin-top: 20px;
+                position: relative;
+                border-top: 1px solid #c6cbd2;
             }
-
+            .edit-title {
+                position: absolute;
+                text-align: center;
+                top: -10px;
+                left: 50%;
+                margin-left: -50px;
+                padding: 0 1em;
+                background: #fff;
+            }
         </style>
     </head>
 
@@ -96,350 +83,207 @@
                 <a class="BoardTitle Back" href="javascript:history.go(-1);">返回</a>
             </div>
             <div class="nav-tabs-custom" >
-                <ul class="nav nav-tabs" style="width: 420px; margin: 10px auto;">
-                    <li class="active"><a href="#personnel" role="tab" data-toggle="tab">用户信息</a></li>
-                    <li><a href="#user" role="tab" data-toggle="tab">登陆信息</a></li>
-                    <li><a href="#user2" role="tab" data-toggle="tab">更新记录</a></li>
+                <ul class="nav nav-tabs" style="width: 420px; margin: 10px auto;" id="navTabs">
+                    <li class="active"><a href="#user" role="tab" data-toggle="tab">用户信息</a></li>
+                    <li><a href="#login" role="tab" data-toggle="tab">登陆信息</a></li>
+                    <li><a href="#update" role="tab" data-toggle="tab">更新记录</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="personnel">
+                    <div class="tab-pane active" id="user">
                         <div class="base-info">
                             <div class="board-title">
-                                <span class="name">基础信息</span
-                                ><a class="icon icon-edit" id="userEditButton" style="vertical-align: top; margin-right: 10px;" title="基础信息编辑" href="javascript:void(0);" onclick="editUser()"></a>
+                                <span class="name">基本信息</span
+                                ><a class="icon icon-edit" id="userEditButton" style="vertical-align: top; margin-right: 10px;" title="基本信息编辑" href="javascript:void(0);" onclick="editUser()"></a>
                             </div>
-                            <div class="BoardContent" id="userInfo" style="overflow-x: hidden">
-                            </div>
+                            <div class="BoardContent" id="userInfo" style="overflow-x: hidden"></div>
                         </div>
 
                         <div class="board-title">
-                            <span class="name">归属组织</span>
-                            <a class="button-add" href="javascript:void(0)" style="float:right" onclick="openOrgEdit()"><span class="fa fa-plus-circle icon-add"></span>新增归属组织</a>
-
+                            <span class="name">归属组织职位信息</span>
+                            <a class="button-add" id="orgPostEditBtn" href="javascript:void(0)" style="float:right" onclick="editOrgPost()"><span class="fa fa-plus-circle icon-add"></span>新增</a>
                         </div>
-
-                        <div id="orgInfoTable1" class="BoardContent TableStyle tcenter">
-
+                        <div style="padding: 10px;">
+                            <table id="orgTable" class="stripe" width="100%"></table>
                         </div>
-
-                        <div   class="BoardContent TableStyle tcenter">
-                            <input class="Btn BtnRedWhite" id="delPsn" type="button" onclick="deleteTbAcct()" value="删除人员" style="margin-top:20px;" />
+                        <div id="orgEdit"></div>
+                        <div  class="tcenter">
+                            <button id="delBtn" class="ui-button ui-button-delete" onclick="deleteUser()">删除人员</button>
                         </div>
                     </div>
-                    <div class="tab-pane" id="user">
-                       <div class="base-info">
-                            <div class="board-title">
-                          <span class="name">基本信息</span>
-                            </div>
-                            <div class="board-content TableStyle tcenter" id="baseInfo"  >
-                            </div>
-                        </div>
+                    <div class="tab-pane" id="login">
+                        <table id="loginTable" class="stripe" width="100%"></table>
+                    </div>
+                    <div class="tab-pane" id="update">
+                        <table id="updateTable" class="stripe" width="100%"></table>
                     </div>
                 </div>
             </div>
         </div>
 
-
         <!--用户信息-->
         <script id="userTemplate" type="text/x-handlebars-template">
                 <div class="col-md-2 fleft tcenter">
-                    <img class="avatar" id="psnimg2" src="{{personalData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null" />
+                    <img class="avatar" id="psnimg2" src="{{userData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null" />
                 </div>
                 <div class="col-md-10 fleft Col8">
-                    <strong class="Font24 Black">{{personalData.psnName}}</strong>
+                    <strong class="Font24 Black">{{userData.userName}}</strong>
                     <span class="key-words">
-                                <span> {{#each genderData}} {{#eq ../personalData.gender itemValue}}{{itemCnname}}{{/eq}}{{/each}}</span
-                                ><span id="marriage">{{#each marriageData}} {{#eq ../personalData.marriage itemValue}}{{itemCnname}}{{/eq}}{{/each}} </span
-                    ><span>{{#each pliticalStatusData}} {{#eq ../personalData.pliticalStatus itemValue}}{{itemCnname}}{{/eq}}{{/each}}  </span
-                    ><span id="nation">{{#each nationData}} {{#eq ../personalData.nation itemValue}}{{itemCnname}}{{/eq}}{{/each}}  </span
-                    ><span>   {{personalData.nationality}}</span>
-                            </span>
+                        <span> {{#each genderData}} {{#eq ../userData.gender itemValue}}{{itemCnname}}{{/eq}}{{/each}}</span>
+                        <span id="birthday">{{userData.birthday}}</span>
+                    </span>
                     <div style="padding-top: 10px">
                         <ul class="col-md-6 line_30">
-                            <li><span class="Icon fleft IconMobile"></span>
-                                {{#if personalData.tbMobileVoList}}
-                                {{#each personalData.tbMobileVoList}}
-                                {{content}}&nbsp;
-                                {{/each}}
-                                {{else}}&nbsp;{{/if}}
+                            <li>
+                                <span class="Label">账号：</span>
+                                <span>{{userData.accout}}</span>
                             </li>
-                            <li><span class="Icon fleft IconEmail"></span>
-                                {{#if personalData.tbEamilVoList}}
-                                {{#each personalData.tbEamilVoList}}
-                                <a href="mailto:{{content}}">{{content}}</a>
-                                {{/each}}{{else}}&nbsp;{{/if}}
+                            <li>
+                                <span class="Label">用户编码：</span>
+                                <span>{{userData.userCode}}</span>
                             </li>
-                            <li><span class="Icon fleft IconLocation"></span>浙江省杭州市余杭区育士路50号</li>
+                            <li>
+                                <span class="Label">证件类型：</span>
+                                <span>{{userData.certType}}</span>
+                            </li>
+                            <li>
+                                <span class="Label">手机号码：</span>
+                                <span>{{userData.mobile}}</span>
+                            </li>
                         </ul>
                         <ul class="col-md-6 line_30">
                             <li>
-                                <span class="Label">员工工号：</span>
-                                <span id="psnNbr">{{personalData.psnNbr}}</span>
+                                <span class="Label">账号等级：</span>
+                                <span>{{userData.acctLevel}}</span>
                             </li>
                             <li>
-                                <span class="Label">人员编码：</span>
-                                {{personalData.psnCode}}
+                                <span class="Label">密码：</span>
+                                <span>{{userData.passwd}}</span>
                             </li>
                             <li>
-                                <span class="Label">人力编码：</span>
-                                {{personalData.ncCode}}
+                                <span class="Label">证件号码：</span>
+                                <span>{{userData.certNo}}</span>
                             </li>
                             <li>
-                                <span class="Label">
-                                    {{#each certTypeData}}
-                                    {{#eq ../personalData.certType itemValue}} {{itemCnname}} {{/eq}}
-                                    {{/each}}
-                                                                                ：</span>
-                                {{personalData.certNo}}
-                            </li>
-                            <li>
-                                <span class="Label">首次工作时间：</span>
-                                {{#format personalData.toWorkTime}}{{/format}}
+                                <span class="Label">邮箱：</span>
+                                <span>{{userData.email}}</span>
                             </li>
                         </ul>
                         <div class="clearfix"></div>
                     </div>
                 </div>
-                <div class="clearfix"></div>
-                <a class="icon icon-edit" style="vertical-align: top;" onclick="editUser()"></a>
         </script>
         <script id="userEditTemplate" type="text/x-handlebars-template">
             <div style="display: none">
                 <form id="imgForm" enctype='multipart/form-data'>
                     <input type="file" id="choseFileImg" name="editormd-image-file" style="display: none;" accept="image/jpeg,image/gif,image/png" />
-                    <input type="hidden" id="psnImageId" value="{{personalData.personalData.image}}" name="psnImageId"/>
+                    <input type="hidden" id="psnImageId" value="{{userData.image}}" name="psnImageId"/>
                 </form>
             </div>
             <div>
                 <div class="pull-left" style="width: 10%;">
-                    <img class="avatar" id="psnImg" src="{{personalData.personalData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null" />
+                    <img class="avatar" id="psnImg" src="{{userData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null" onclick="openChoseImg()" />
                     <div class="KeyWords tcenter">
                          <a href="#" onclick="openChoseImg()">编辑</a>
                     </div>
                 </div>
 
-                <form id="userEditForm" class="pull-left" style="width: 90%;">
+                <form id="userEditForm" class="pull-left" style="width: 90%; padding-right: 20px;">
                     <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="psnName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户姓名</label>
-                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" type="text" id="psnName" value="{{personalData.psnName}}" required/>
+                        <label for="userName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户姓名</label>
+                        <input id="userName" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.userName}}" required/>
+                    </div>
+                    <div class="col-md-6" style="margin-bottom: 10px;">
+                        <label for="passwd" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">密码</label>
+                        <input id="passwd" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.passwd}}" required />
                     </div>
                     <div class="col-md-6" style="margin-bottom: 10px;">
                         <label for="certType" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
-                        <select class="col-md-8 col-sm-8 col-xs-12" id="certType">
-                            {{#each certTypeData}}
-                            <option value="{{itemValue}}" {{#eq itemValue ../personalData.certType}}selected="selected"{{/eq}} >{{itemCnname}}</option>
+                        <select id="certType" class="col-md-8 col-sm-8 col-xs-12">
+                            {{#each userData.certTypeData}}
+                                <option value="{{itemValue}}" {{#eq itemValue ../userData.certType}} selected="selected" {{/eq}} >{{itemCnname}}</option>
                             {{/each}}
                         </select>
-                    </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="account" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号</label>
-                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" type="text" id="account" value="{{personalData.psnName}}" required/>
                     </div>
                     <div class="col-md-6" style="margin-bottom: 10px;">
                         <label for="certNo" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" id="certNo" onkeyup="autoWriteForm()" required type="text" value="{{personalData.certNo}}"/>
+                        <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" onkeyup="autoWriteForm()" value="{{userData.certNo}}" onkeyup="getIdCardInfo()" onpaste="getIdCardInfo()" required />
                     </div>
                     <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="password" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">密码</label>
-                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" id="password" onkeyup="autoWriteForm()" required type="text" value="{{personalData.certNo}}"/>
+                        <label for="accout" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号</label>
+                        <input id="accout" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.accout}}" required />
                     </div>
                     <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="gender" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号状态</label>
-                        <select class="col-md-8 col-sm-8 col-xs-12" id="gender">
-                            {{#each genderData}}
-                            <option value="{{itemValue}}" {{#eq itemValue ../personalData.gender}}selected="selected"{{/eq}} >{{itemCnname}}</option>
+                        <label for="acctLevel" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号等级</label>
+                        <select id="acctLevel" class="col-md-8 col-sm-8 col-xs-12">
+                            {{#each userData.acctLevelData}}
+                                <option value="{{itemValue}}" {{#eq itemValue ../userData.acctLevel}}selected="selected"{{/eq}} >{{itemCnname}}</option>
                             {{/each}}
                         </select>
                     </div>
                     <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="psnName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户编码</label>
-                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" type="text" value="{{personalData.psnCode}}" disabled/>
+                        <label for="birthday" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">出生年月</label>
+                        <input id="birthday" class="ui-input col-md-8 col-sm-8 col-xs-12" readonly="readonly" value="{{userData.birthday}}" isTime="yes" />
                     </div>
                     <div class="col-md-6" style="margin-bottom: 10px;">
                         <label for="gender" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">性别</label>
-                        <select class="col-md-8 col-sm-8 col-xs-12" id="gender">
-                            {{#each genderData}}
-                                <option value="{{itemValue}}" {{#eq itemValue ../personalData.gender}}selected="selected"{{/eq}} >{{itemCnname}}</option>
+                        <select id="gender" class="col-md-8 col-sm-8 col-xs-12">
+                            {{#each userData.genderData}}
+                                <option value="{{itemValue}}" name="{{userData.gender}}" {{#eq itemValue ../userData.gender}}selected="selected"{{/eq}} >{{itemCnname}}</option>
                             {{/each}}
                         </select>
                     </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="nation" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号等级</label>
-                        <select id="nation" class="col-md-8 col-sm-8 col-xs-12">
-                            {{#each nationData}}
-                            <option value="{{itemValue}}" {{#eq itemValue ../personalData.nation}}selected="selected"{{/eq}} >{{itemCnname}}</option>
-                            {{/each}}
-                        </select>
-                    </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="psnName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">出生年月</label>
-                        <input onclick="openDate()" readonly="readonly" isTime="yes" class="ui-input col-md-8 col-sm-8 col-xs-12" type="text" id="toWorkTime" value="{{#format personalData.toWorkTime}}{{/format}}"/>
-                    </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
+                    <div class="col-md-6" style="margin-bottom: 10px; position: relative;">
                         <label for="mobile" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
                                style="padding-right: 20px;line-height: 40px;text-align: right;">手机号码</label>
-                        <div id="tbMobileVoList" class="ui-input col-md-8 col-sm-8 col-xs-12">
-                            <input id="mobile" required onkeyup="autoFillMail()" onpaste="autoFillMail()">
-                        </div>
-                        <div class="fright" style="position: absolute; right: 0; line-height: 40px;" onclick="addMobile()">
-                            <a id="mobileAdd" href="javascript:void(0)"><span class="fa fa-plus-circle icon-add" style="padding-right: 0; font-size: 23px;"></span></a>
-                        </div>
+                        <input id="mobile" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.mobile}}" onkeyup="autoFillMail()" onpaste="autoFillMail()" required />
+                    </div>
+                    <div class="col-md-6" style="margin-bottom: 10px; position: relative;">
+                        <label for="email" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                               style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
+                        <input id="email" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.email}}" required />
                     </div>
                     <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="tbEamilVoList" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                               style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
-                        <div id="tbEamilVoList" class="ui-input col-md-8 col-sm-8 col-xs-12">
-                            <input id="email" required>
-                        </div>
-                        <div class="fright" style="position: absolute; right: 0; line-height: 40px;" onclick="addEmail()">
-                            <a id="emailAdd" href="javascript:void(0)"><span class="fa fa-plus-circle icon-add" style="padding-right: 0; font-size: 23px;"></span></a>
-                        </div>
-                    </div>
-                    <div class="BotBtn bdTop">
-                        <input class="Btn BtnBlue" type="button" value="保存" onclick="updatePersonnel()"/>
-                        <input class="Btn" type="button" value="取消" onClick="cancelUserEdit()"/>
+                        <label for="userCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户编码</label>
+                        <input id="userCode" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.userCode}}" disabled/>
                     </div>
                 </form>
+                <div class="BotBtn bdTop">
+                    <input class="Btn BtnBlue" type="button" value="保存" onclick="updatePersonnel()"/>
+                    <input class="Btn" type="button" value="取消" onClick="initUser()"/>
+                </div>
             </div>
         </script>
-
-        <script id="orgInfoTemplate1" type="text/x-handlebars-template">
-        <table>
-                            <tr class="Title">
-                                <td width="50px">序号</td>
-                               <!-- <td>组织树名称</td>-->
-                                <td>组织名称</td>
-                                <td>重名称谓</td>
-                                <td>专兼职</td>
-                                <td>职位</td>
-                                <td width="50px">编辑 </td>
-                            </tr>
-                           {{#each orgInfo}}
-                            <tr>
-                                <td>{{#seq @index}}{{/seq}}</td>
-                                <!-- <td>{{orgTreeName}}</td>-->
-                                <td title="{{fullName}}">{{orgName}}</td>
-                                <td>{{doubleName}}</td>
-                                <td>{{#each ../refType}} {{#eq ../property itemValue}} {{itemCnname}} {{/eq}} {{/each}} </td>
-                                <td>{{postName}}</td>
-                                <td> <a class="Icon IconEdit" href="javascript:void(0);" onclick="openOrgEditByEdit('{{@index}}')"></a></td>
-                            </tr>
-                            {{/each}}
-                        </table>
-
-
-        </script>
-        <script id="orgInfoTemplate2" type="text/x-handlebars-template">
-        <table>
-                            <tr class="Title">
-                                <td>序号</td>
-                                <td>组织树名称</td>
-                                <td>组织名称</td>
-                                <td>重名称谓</td>
-                                <td>专兼职</td>
-                                <td>职位</td>
-                                <td>编辑</td>
-                            </tr>
-                           {{#each orgInfo}}
-                            <tr>
-                                <td>{{#seq @index}}{{/seq}}</td>
-                                <td>{{orgTreeName}}</td>
-                                <td>{{orgName}}</td>
-                                <td>{{doubleName}}</td>
-                                <td>{{#each ../refType}} {{#eq ../property itemValue}} {{itemCnname}} {{/eq}} {{/each}} </td>
-                                <td>{{postName}}</td>
-                                <td><a class="Icon IconEdit" href="javascript:void(0);" onclick="openJobEditByEdit('{{@index}}')"></a></td>
-                            </tr>
-                            {{/each}}
-                        </table>
-        </script>
-        <script id="orgInfoEditTemplate" type="text/x-handlebars-template">
-         <a class="button-add" href="javascript:void(0)" style="float:right" onclick="openOrgEdit()"><span class="fa fa-plus-circle icon-add"></span>添加</a>
-        <table>
-                            <tr class="Title">
-                                <td>序号</td>
-                                <td>组织树名称</td>
-                                <td>组织名称</td>
-                                <td>重名称谓</td>
-                                <td>专兼职</td>
-                                <td>职位</td>
-                            </tr>
-                           {{#each orgInfo}}
-                            <tr>
-                                <td>{{#seq @index}}{{/seq}}</td>
-                                <td><a href="javascript:void(0)" onclick="openOrgEditByEdit('{{@index}}')"> {{orgTreeName}}</a></td>
-                                <td><a href="javascript:void(0)" onclick="openOrgEditByEdit('{{@index}}')"> {{orgName}}</a></td>
-                                <td>{{doubleName}}</td>
-                                <td>{{#each ../refType}} {{#eq ../property itemValue}} {{itemCnname}} {{/eq}} {{/each}} </td>
-                                <td>{{postName}}</td>
-                            </tr>
-                            {{/each}}
-
-                        </table>
-        </script>
-        <script id="orgTemplate" type="text/x-handlebars-template">
-            <div class="nav-tabs-brief" style="padding-top: 35px;">
-
-                <div class="tab-content">
-                    <div class="tab-pane active " id="tab_content1">
-                        <form class="" id="orgEditForm" action="/submit" method="post" style="padding: 10px;">
-                            <input value="{{currentEditOrgInfo.orgPersonId}}" type="hidden" id="orgPersonId">
-                            <div class="row" style="margin-bottom: 10px;">
-                                <div class="form-item" style="width: 100%">
-                                    <label for="idTel" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
-                                           style="padding-right: 20px;line-height: 40px;text-align: right;">组织树名称</label>
-                                    <select disabled="disabled" style="border:1px solid #d0d0d5;" id="orgTreeId" class="col-md-4 col-sm-4 col-xs-12">
-                                        {{#each orgTreeList}}
-                                        <option value='{{orgTreeId}}'
-                                          {{#eq '0411' refCode}}  selected='selected'{{/eq}}
-                                            >{{orgTreeName}}</option>
-                                        {{/each}}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row" style="margin-bottom: 10px;">
-                                <div class="form-item" style="width: 100%">
-                                    <label for="orgFullName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
-                                           style="padding-right: 20px;line-height: 40px;text-align: right;">组织全称</label>
-                                    <input id="orgFullName" keyId="{{currentEditOrgInfo.orgId}}" value="{{currentEditOrgInfo.orgName}}" class="ui-input col-md-4 col-sm-4 col-xs-12"  required readonly onclick="getOrgFullName()">
-                                </div>
-                            </div>
-                            <div class="row" style="margin-bottom: 10px;">
-                                <div class="form-item" style="width: 100%">
-                                    <label for="sort" class="col-md-3 col-sm-3 col-xs-12"
-                                           style="padding-right: 20px;line-height: 40px;text-align: right;">重名称谓</label>
-                                    <input id="doubleName" value="{{currentEditOrgInfo.doubleName}}" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="code">
-                                </div>
-                            </div>
-                            <div class="row" style="margin-bottom: 10px;">
-                                <div class="form-item" style="width: 100%">
-                                    <label for="idTel" class="form-item-label-required col-md-3 col-sm-3 col-xs-12"
-                                           style="padding-right: 20px;line-height: 40px;text-align: right;">专兼职</label>
-                                    <select style="border:1px solid #d0d0d5;" id="property" class="col-md-4 col-sm-4 col-xs-12">
-                                        {{#each refType}}<option {{#eq itemValue ../property}}selected='selected'{{/eq}}  value='{{itemValue}}'>{{itemCnname}}</option>{{/each}}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row" style="margin-bottom: 10px;">
-                                <div class="form-item" style="width: 100%">
-                                    <label for="sort" class="col-md-3 col-sm-3 col-xs-12"
-                                           style="padding-right: 20px;line-height: 40px;text-align: right;">职位</label>
-                                    <input onclick="getPostName()" id="postId" keyId="{{currentEditOrgInfo.postId}}" class="ui-input col-md-4 col-sm-4 col-xs-12" size="40" name="code" readonly value="{{currentEditOrgInfo.postName}}">
-                                </div>
-                            </div>
-                        </form>
-                        <div class="row" style="margin-bottom: 10px;">
-                            <div class="">
-                                <button onclick="addPsonOrg()" class="Btn BtnBlue">保存</button>
-
-                                <button class="Btn" style="margin-left: 10px;" onclick="cancelOrgEdit()">取消</button>
-                            </div>
+        <!--组织编辑-->
+        <script id="orgEditTemplate" type="text/x-handlebars-template">
+            <div class="edit-title">
+                <span>归属组织职位信息</span>
+            </div>
+            <div style="padding-top: 35px;">
+                <form id="orgEditForm" style="padding: 10px;">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="form-item" style="width: 100%">
+                            <label for="orgName" class="form-item-label-required col-md-2 col-sm-2 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">组织名称</label>
+                            <input id="orgName" class="ui-input col-md-9 col-sm-9 col-xs-12" required readonly value="{{orgPostData.orgName}}" onclick="getOrg()" />
                         </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="form-item" style="width: 100%">
+                            <label for="postName" class="form-item-label-required col-md-2 col-sm-2 col-xs-12"
+                                   style="padding-right: 20px;line-height: 40px;text-align: right;">职位</label>
+                            <input id="postName" class="ui-input col-md-9 col-sm-9 col-xs-12" required readonly onclick="getPost()" />
+                        </div>
+                    </div>
+                </form>
+                <div class="row" style="margin-top: 10px;width: 100%;">
+                    <div style="width: 180px;margin: 0 auto;">
+                        <button class="ui-button ui-button-primary" onclick="addOrgList()">保存</button>
+                        <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancelOrgEdit()">取消</button>
                     </div>
                 </div>
             </div>
-
         </script>
+
         <!-- jQuery -->
         <script type="text/javascript" src="/js/core/jquery.js"></script>
         <!-- Bootstrap -->
@@ -455,7 +299,7 @@
         <!-- init -->
         <script type="text/javascript" src="/js/init.js"></script>
         <script type="text/javascript" src="/js/user/delPsn.js"></script>
-        <script type="text/javascript" src="/js/user/edit.js"></script>
+        <script type="text/javascript" src="/js/manage/user/edit.js"></script>
         <script type="text/javascript" src="/js/IDCardUtils.js"></script>
         <script type="text/javascript" src="/js/jquery.form.js"></script>
     </body>
