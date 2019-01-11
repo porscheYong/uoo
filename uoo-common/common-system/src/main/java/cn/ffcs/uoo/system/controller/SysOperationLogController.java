@@ -85,14 +85,17 @@ public class SysOperationLogController {
     @UooLog(key="getOperatModifyHistory",value="获取单个数据")
     @GetMapping("/getOperatModifyHistory")
     public ResponseResult<List<ModifyHistory>> getOperatModifyHistory(@RequestParam("id") Long id,@RequestParam("userCode")String userCode,@RequestParam("userId")Long userId){
-        Page<SysOperationLog> page=new Page<>(1,2);
-        page = sysOperationLogService.selectPage(page,Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("USER_CODE", userCode).orderBy("CREATE_DATE", false));
-        if(page.getRecords()==null||page.getRecords().size()!=2){
+        SysOperationLog log = sysOperationLogService.selectById(id);
+        Date createDate = log.getCreateDate();
+        Page<SysOperationLog> page=new Page<>(1,1);
+        Wrapper<SysOperationLog> wp=Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("USER_CODE", userCode).lt("CREATE_DATE", createDate);
+        
+        page = sysOperationLogService.selectPage(page,wp);
+        if(page.getRecords()==null||page.getRecords().size()!=1){
             return ResponseResult.createSuccessResult(new ArrayList<ModifyHistory>(),"");
         }
-        SysOperationLog after = page.getRecords().get(0);//操作之后的时间
-        SysOperationLog before = page.getRecords().get(1);//
-        Date afterDate=after.getCreateDate();
+        SysOperationLog before = page.getRecords().get(0);//操作之后的时间
+        Date afterDate=createDate;
         Date beforeDate=before.getCreateDate();
         Wrapper<ModifyHistory> wrapper=Condition.create().eq("STATUS_CD", StatusCD.VALID);
         wrapper.ge("CREATE_DATE", beforeDate).le("CREATE_DATE", afterDate);
