@@ -141,25 +141,24 @@
     </select>
 
     <select id="getUserList" resultType="cn.ffcs.uoo.core.user.vo.ListUserVo">
-    select ROWNUM id, at.*
-      from (with acctOrgRel as (select t1.acct_id,
-                                 t1.personnel_id,
-                                 t1.acct,
-                                 t1.status_cd,
-                                 t1.create_date,
-                                 t2.org_id
-                          from TB_ACCT t1, TB_ACCOUNT_ORG_REL t2
-                          where t1.status_cd = 1000
-                            and t2.status_cd = 1000
-                            and t1.acct_id = t2.acct_id
-
-)
-        <if test="inSql != null and inSql != '' " >
+        select ROWNUM id, at.*
+        from (with acctOrgRel as (select t1.acct_id,
+        t1.personnel_id,
+        t1.acct,
+        t1.status_cd,
+        t1.create_date,
+        t2.org_id
+        from TB_ACCT t1, TB_ACCOUNT_ORG_REL t2
+        where t1.status_cd = 1000
+        and t2.status_cd = 1000
+        and t1.acct_id = t2.acct_id
+        <if test="inSql != null and inSql != '' ">
             and ${inSql}
         </if>
-        <if test="personnelId != null and personnelId != '' " >
+        <if test="personnelId != null and personnelId != '' ">
             and t1.personnel_id = #{personnelId}
         </if>
+        )
         select distinct '1' type,
                aor.acct_id,
                '主账号' name,
