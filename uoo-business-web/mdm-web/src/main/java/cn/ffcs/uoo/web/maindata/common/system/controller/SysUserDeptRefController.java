@@ -20,7 +20,7 @@ public class SysUserDeptRefController {
     private SysUserDeptRefClient sysUserDeptRefClient;
 
     @ApiOperation(value = "新增用户组织职位", notes = "新增用户组织职位")
-    @ApiImplicitParam(name = "sysUserDeptPositionVo", value = "新增用户组织职位", required = true, dataType = "SysUserDeptPositionVo")
+    @ApiImplicitParam(name = "userDeptPositionVo", value = "新增用户组织职位", required = true, dataType = "SysUserDeptPositionVo")
     @RequestMapping(value = "/addUserDeptPositionDef", method = RequestMethod.POST)
     public Object addUserDeptPositionDef(@RequestBody SysUserDeptPositionVo userDeptPositionVo){
         userDeptPositionVo.setCreateUser(SysUserInfo.getUserId());
@@ -29,7 +29,7 @@ public class SysUserDeptRefController {
     }
 
     @ApiOperation(value = "更新用户组织职位", notes = "更新用户组织职位")
-    @ApiImplicitParam(name = "sysUserDeptPositionVo", value = "更新用户组织职位", required = true, dataType = "SysUserDeptPositionVo")
+    @ApiImplicitParam(name = "userDeptPositionVo", value = "更新用户组织职位", required = true, dataType = "SysUserDeptPositionVo")
     @RequestMapping(value = "/updateUserDeptPositionDef", method = RequestMethod.POST)
     public Object updateUserDeptPositionDef(@RequestBody SysUserDeptPositionVo userDeptPositionVo){
         userDeptPositionVo.setUpdateUser(SysUserInfo.getUserId());
@@ -37,7 +37,7 @@ public class SysUserDeptRefController {
     }
 
     @ApiOperation(value = "删除用户组织职位", notes = "删除用户组织职位")
-    @ApiImplicitParam(name = "sysUserDeptPositionVo", value = "删除用户组织职位", required = true, dataType = "SysUserDeptPositionVo")
+    @ApiImplicitParam(name = "userDeptPositionVo", value = "删除用户组织职位", required = true, dataType = "SysUserDeptPositionVo")
     @RequestMapping(value = "/delUserDeptPositionDef", method = RequestMethod.DELETE)
     public Object delUserDeptPositionDef(@RequestBody SysUserDeptPositionVo userDeptPositionVo){
         userDeptPositionVo.setUpdateUser(SysUserInfo.getUserId());

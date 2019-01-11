@@ -351,8 +351,10 @@ public class SysUserController extends BaseController {
                 sysUserDeptRef.setCreateUser(createUser);
                 sysUserDeptRef.setUpdateUser(updateUser);
                 sysUserDeptRefService.addSysUserDeptRef(sysUserDeptRef);
-                List<SysUserPositionRef> userPositionRefs = positionVo.getUserPositionRefList();
-                for(SysUserPositionRef userPositionRef : userPositionRefs){
+                List<SysUserPositionRefVo> userPositionRefs = positionVo.getUserPositionRefList();
+                for(SysUserPositionRefVo userPositionRefVo : userPositionRefs){
+                    SysUserPositionRef userPositionRef = new SysUserPositionRef();
+                    BeanUtils.copyProperties(userPositionRefVo, userPositionRef);
                     userPositionRef.setUserCode(userCode);
                     userPositionRef.setCreateUser(createUser);
                     userPositionRef.setUpdateUser(updateUser);
