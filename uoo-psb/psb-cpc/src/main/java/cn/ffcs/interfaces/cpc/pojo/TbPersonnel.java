@@ -79,6 +79,16 @@ public class TbPersonnel extends Model<TbPersonnel> {
     @TableField("notes")
     private String notes;
 
+    public TbPersonnel() {
+    }
+
+    public TbPersonnel(String psnName, String psnCode, String psnNbr, String notes) {
+        this.psnName = psnName;
+        this.psnCode = psnCode;
+        this.psnNbr = psnNbr;
+        this.notes = notes;
+    }
+
     public Long getPersonnelId() {
         return personnelId;
     }

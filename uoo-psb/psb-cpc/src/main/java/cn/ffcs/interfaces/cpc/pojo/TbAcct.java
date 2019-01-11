@@ -61,6 +61,22 @@ public class TbAcct extends Model<TbAcct> {
     @TableField("acct_Type")
     private String acctType;
 
+    public TbAcct() {
+    }
+
+    public TbAcct(String personnelId, String acct, String salt, String password, String statusCd, Date createDate, String userHostType, Date enableDate, Date disableDate, String acctType) {
+        this.personnelId = personnelId;
+        this.acct = acct;
+        this.salt = salt;
+        this.password = password;
+        this.statusCd = statusCd;
+        this.createDate = createDate;
+        this.userHostType = userHostType;
+        this.enableDate = enableDate;
+        this.disableDate = disableDate;
+        this.acctType = acctType;
+    }
+
     public Long getAcctId() {
         return acctId;
     }

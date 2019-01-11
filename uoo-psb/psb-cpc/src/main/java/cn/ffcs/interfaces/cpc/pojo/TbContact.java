@@ -47,6 +47,19 @@ public class TbContact extends Model<TbContact> {
     @TableField("first_Flag")
     private Short firstFlag;
 
+    public TbContact() {
+    }
+
+    public TbContact(Long personnelId, String contactType, String content, String uuid, String statusCd, Date createDate, Short firstFlag) {
+        this.personnelId = personnelId;
+        this.contactType = contactType;
+        this.content = content;
+        this.uuid = uuid;
+        this.statusCd = statusCd;
+        this.createDate = createDate;
+        this.firstFlag = firstFlag;
+    }
+
     public Long getContactId() {
         return contactId;
     }

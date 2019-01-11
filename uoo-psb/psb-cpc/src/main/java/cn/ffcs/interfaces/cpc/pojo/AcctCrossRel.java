@@ -1,44 +1,88 @@
 package cn.ffcs.interfaces.cpc.pojo;
 
-import com.baomidou.mybatisplus.activerecord.Model;
+import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
-
 import java.io.Serializable;
-import java.util.Date;
 
-@TableName("Tb_Acct_Cross_Rel")
-public class TbAcctCrossRel  extends Model<TbAcctCrossRel> {
-    @TableId("acct_Cross_Id")
+/**
+ * <p>
+ * 
+ * </p>
+ *
+ * @author lxd
+ * @since 2019-01-10
+ */
+@TableName("TB_ACCT_CROSS_REL")
+public class AcctCrossRel extends Model<AcctCrossRel> {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 账号跨域关系标识
+     */
+    @TableId(value = "ACCT_CROSS_ID", type = IdType.AUTO)
     private Long acctCrossId;
-
-    @TableField("acct_Id")
+    /**
+     * 主账号标识
+     */
+    @TableField("ACCT_ID")
     private Long acctId;
-
-    @TableField("cross_Tran")
+    /**
+     * 跨域账号标识
+     */
+    @TableField("CROSS_TRAN")
     private String crossTran;
-
-    @TableField("rela_Type")
+    /**
+     * 关系类型
+     */
+    @TableField("RELA_TYPE")
     private String relaType;
-
-    @TableField("status_Cd")
+    /**
+     * 状态
+     */
+    @TableField("STATUS_CD")
     private String statusCd;
-
-    @TableField("create_Date")
+    /**
+     * 创建时间
+     */
+    @TableField("CREATE_DATE")
     private Date createDate;
-
-    @TableField("create_User")
+    /**
+     * 创建人
+     */
+    @TableField("CREATE_USER")
     private Long createUser;
-
-    @TableField("update_Date")
+    /**
+     * 修改时间
+     */
+    @TableField("UPDATE_DATE")
     private Date updateDate;
-
-    @TableField("update_User")
+    /**
+     * 修改人
+     */
+    @TableField("UPDATE_USER")
     private Long updateUser;
-
-    @TableField("status_Date")
+    /**
+     * 状态变更的时间
+     */
+    @TableField("STATUS_DATE")
     private Date statusDate;
+
+    public AcctCrossRel() {
+    }
+
+    public AcctCrossRel(Long acctId, String crossTran, String relaType, String statusCd, Date createDate) {
+        this.acctId = acctId;
+        this.crossTran = crossTran;
+        this.relaType = relaType;
+        this.statusCd = statusCd;
+        this.createDate = createDate;
+    }
 
     public Long getAcctCrossId() {
         return acctCrossId;
@@ -123,5 +167,21 @@ public class TbAcctCrossRel  extends Model<TbAcctCrossRel> {
     @Override
     protected Serializable pkVal() {
         return this.acctCrossId;
+    }
+
+    @Override
+    public String toString() {
+        return "AcctCrossRel{" +
+        ", acctCrossId=" + acctCrossId +
+        ", acctId=" + acctId +
+        ", crossTran=" + crossTran +
+        ", relaType=" + relaType +
+        ", statusCd=" + statusCd +
+        ", createDate=" + createDate +
+        ", createUser=" + createUser +
+        ", updateDate=" + updateDate +
+        ", updateUser=" + updateUser +
+        ", statusDate=" + statusDate +
+        "}";
     }
 }
