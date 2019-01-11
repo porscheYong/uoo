@@ -485,81 +485,354 @@
         )
     </select>
 
+    <!--<select id="selectAllUserOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">-->
+        <!--SELECT *-->
+                <!--FROM (WITH-->
+                <!--ACCTTAB AS (-->
+                <!--SELECT T.ACCT_ID ACCID,-->
+                <!--T.ACCT ACCT,-->
+                <!--T.STATUS_CD STATUSCD,-->
+                <!--'1' TYPE,-->
+                <!--'主账号' TYPENAME,-->
+                <!--T.PERSONNEL_ID PERSONNELID,-->
+                <!--T3.PSN_NAME PSNNAME,-->
+                <!--T3.PSN_CODE PSNCODE,-->
+                <!--T3.PSN_NBR PSNNBR,-->
+                <!--T3.NC_CODE NCCODE,-->
+                <!--T.FULL_NAME ORGNAME,-->
+                <!--T.acct_org_rel_id acctOrgRelId-->
+                <!--FROM (SELECT distinct T1.*, tbAccountOrgRel.ORG_ID,tbAccountOrgRel.acct_org_rel_id, T3.FULL_NAME-->
+                <!--FROM TB_ACCT T1, TB_ACCOUNT_ORG_REL tbAccountOrgRel, TB_ORG T3,TB_ORG_LEVEL T4,-->
+                    <!--TB_ORG_ORGTYPE_REL T5-->
+                <!--WHERE T1.STATUS_CD = 1000-->
+                <!--AND tbAccountOrgRel.STATUS_CD = 1000-->
+                <!--AND T3.STATUS_CD = 1000-->
+                <!--AND T4.STATUS_CD = 1000-->
+                <!--AND T5.STATUS_CD = 1000-->
+                <!--AND T1.ACCT_ID = tbAccountOrgRel.ACCT_ID-->
+        <!--<if test="psonOrgVo.tabAccountOrgRelParams!='' and psonOrgVo.tabAccountOrgRelParams!=null">-->
+            <!--AND ${psonOrgVo.tabAccountOrgRelParams}-->
+        <!--</if>-->
+                <!--AND T5.ORG_ID = T3.ORG_ID-->
+                <!--AND tbAccountOrgRel.ORG_ID = T4.ORG_ID-->
+                <!--AND T4.ORG_ID=T3.ORG_ID-->
+        <!--<if test="psonOrgVo.tabOrgOrgTypeParams!='' and psonOrgVo.tabOrgOrgTypeParams!=null">-->
+            <!--AND ${psonOrgVo.tabOrgOrgTypeParams}-->
+        <!--</if>-->
+        <!--<if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">-->
+            <!--AND ${psonOrgVo.tabOrgParams}-->
+        <!--</if>-->
+                <!--AND tbAccountOrgRel.ORG_TREE_ID = T4.ORG_TREE_ID-->
+                <!--AND T4.ORG_TREE_ID=#{psonOrgVo.orgTreeId}) T-->
+                <!--LEFT JOIN TB_PERSONNEL T3-->
+                <!--ON T3.STATUS_CD = 1000 AND T.PERSONNEL_ID = T3.PERSONNEL_ID-->
+                <!--)-->
+                <!--SELECT *-->
+                <!--FROM (SELECT *-->
+                <!--FROM ACCTTAB-->
+                <!--UNION ALL-->
+                <!--SELECT T.SLAVE_ACCT_ID ACCID,-->
+                <!--T.SLAVE_ACCT ACCT,-->
+                <!--T.STATUS_CD STATUSCD,-->
+                <!--'2' TYPE,-->
+                <!--'从账号' TYPENAME,-->
+                <!--T.PERSONNELID,-->
+                <!--T.PSNNAME,-->
+                <!--T.PSNCODE,-->
+                <!--T.PSNNBR,-->
+                <!--T.NCCODE,-->
+                <!--T.ORGNAME,-->
+                <!--T.acct_org_rel_id acctOrgRelId-->
+                <!--FROM (SELECT T1.*,-->
+                <!--T2.PERSONNELID,-->
+                <!--T2.PSNNAME,-->
+                <!--T2.PSNCODE,-->
+                <!--T2.PSNNBR,-->
+                <!--T2.NCCODE,-->
+                <!--T2.ORGNAME-->
+                <!--FROM TB_SLAVE_ACCT T1, ACCTTAB T2-->
+                <!--WHERE T1.STATUS_CD = 1000-->
+                <!--AND T1.ACCT_ID = T2.ACCID-->
+                 <!--and T1.acct_org_rel_id = T2.acctOrgRelId) T) A-->
+                <!--WHERE 1 = 1-->
+        <!--<if test="psonOrgVo.search != null and psonOrgVo.search != ''">-->
+            <!--AND (PsnName like '%'||#{psonOrgVo.search}||'%' or acct like '%'||#{psonOrgVo.search}||'%')-->
+        <!--</if>-->
+                <!--)-->
+    <!--</select>-->
+
+
+
     <select id="selectAllUserOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
         SELECT *
-                FROM (WITH
-                ACCTTAB AS (
-                SELECT T.ACCT_ID ACCID,
-                T.ACCT ACCT,
-                T.STATUS_CD STATUSCD,
-                '1' TYPE,
-                '主账号' TYPENAME,
-                T.PERSONNEL_ID PERSONNELID,
-                T3.PSN_NAME PSNNAME,
-                T3.PSN_CODE PSNCODE,
-                T3.PSN_NBR PSNNBR,
-                T3.NC_CODE NCCODE,
-                T.FULL_NAME ORGNAME,
-                T.acct_org_rel_id acctOrgRelId
-                FROM (SELECT distinct T1.*, tbAccountOrgRel.ORG_ID,tbAccountOrgRel.acct_org_rel_id, T3.FULL_NAME
-                FROM TB_ACCT T1, TB_ACCOUNT_ORG_REL tbAccountOrgRel, TB_ORG T3,TB_ORG_LEVEL T4,
-                    TB_ORG_ORGTYPE_REL T5
-                WHERE T1.STATUS_CD = 1000
-                AND tbAccountOrgRel.STATUS_CD = 1000
-                AND T3.STATUS_CD = 1000
-                AND T4.STATUS_CD = 1000
-                AND T5.STATUS_CD = 1000
-                AND T1.ACCT_ID = tbAccountOrgRel.ACCT_ID
+        FROM (
+        SELECT T.ACCT_ID ACCID,
+        T.ACCT ACCT,
+        T.STATUS_CD STATUSCD,
+        T.PERSONNEL_ID PERSONNELID,
+        T.PSN_NAME PSNNAME,
+        T.PSN_CODE PSNCODE,
+        T.PSN_NBR PSNNBR,
+        T.NC_CODE NCCODE,
+        T.FULL_NAME ORGNAME,
+        T.acct_org_rel_id acctOrgRelId,
+        cc.slave_acct slaveAcct,
+        cc.slave_acct_id slaveAcctId
+        FROM (SELECT distinct T1.*, tbAccountOrgRel.ORG_ID,tbAccountOrgRel.acct_org_rel_id, T3.FULL_NAME,
+        T6.PSN_NAME ,T6.PSN_CODE ,T6.PSN_NBR ,T6.NC_CODE
+        FROM TB_ACCT T1, TB_ACCOUNT_ORG_REL tbAccountOrgRel, TB_ORG T3,TB_ORG_LEVEL T4,TB_PERSONNEL T6,
+        TB_ORG_ORGTYPE_REL T5
+        WHERE T1.STATUS_CD = 1000
+        AND tbAccountOrgRel.STATUS_CD = 1000
+        AND T3.STATUS_CD = 1000
+        AND T4.STATUS_CD = 1000
+        AND T5.STATUS_CD = 1000
+        AND T6.STATUS_CD = 1000
+        AND T1.PERSONNEL_ID = T6.PERSONNEL_ID
+        AND T1.ACCT_ID = tbAccountOrgRel.ACCT_ID
         <if test="psonOrgVo.tabAccountOrgRelParams!='' and psonOrgVo.tabAccountOrgRelParams!=null">
             AND ${psonOrgVo.tabAccountOrgRelParams}
         </if>
-                AND T5.ORG_ID = T3.ORG_ID
-                AND tbAccountOrgRel.ORG_ID = T4.ORG_ID
-                AND T4.ORG_ID=T3.ORG_ID
+        AND T5.ORG_ID = T3.ORG_ID
+        AND tbAccountOrgRel.ORG_ID = T4.ORG_ID
+        AND T4.ORG_ID=T3.ORG_ID
         <if test="psonOrgVo.tabOrgOrgTypeParams!='' and psonOrgVo.tabOrgOrgTypeParams!=null">
             AND ${psonOrgVo.tabOrgOrgTypeParams}
         </if>
         <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
             AND ${psonOrgVo.tabOrgParams}
         </if>
-                AND tbAccountOrgRel.ORG_TREE_ID = T4.ORG_TREE_ID
-                AND T4.ORG_TREE_ID=#{psonOrgVo.orgTreeId}) T
-                LEFT JOIN TB_PERSONNEL T3
-                ON T3.STATUS_CD = 1000 AND T.PERSONNEL_ID = T3.PERSONNEL_ID
-                )
-                SELECT *
-                FROM (SELECT *
-                FROM ACCTTAB
-                UNION ALL
-                SELECT T.SLAVE_ACCT_ID ACCID,
-                T.SLAVE_ACCT ACCT,
-                T.STATUS_CD STATUSCD,
-                '2' TYPE,
-                '从账号' TYPENAME,
-                T.PERSONNELID,
-                T.PSNNAME,
-                T.PSNCODE,
-                T.PSNNBR,
-                T.NCCODE,
-                T.ORGNAME,
-                T.acct_org_rel_id acctOrgRelId
-                FROM (SELECT T1.*,
-                T2.PERSONNELID,
-                T2.PSNNAME,
-                T2.PSNCODE,
-                T2.PSNNBR,
-                T2.NCCODE,
-                T2.ORGNAME
-                FROM TB_SLAVE_ACCT T1, ACCTTAB T2
-                WHERE T1.STATUS_CD = 1000
-                AND T1.ACCT_ID = T2.ACCID
-                 and T1.acct_org_rel_id = T2.acctOrgRelId) T) A
-                WHERE 1 = 1
+        AND tbAccountOrgRel.ORG_TREE_ID = T4.ORG_TREE_ID
+        AND T4.ORG_TREE_ID=#{psonOrgVo.orgTreeId}) T
+        left join TB_SLAVE_ACCT cc on cc.STATUS_CD = 1000 AND cc.ACCT_ID = T.ACCT_ID and cc.acct_org_rel_id = T.acct_org_rel_id
+        ) A
+        WHERE 1 = 1
         <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
             AND (PsnName like '%'||#{psonOrgVo.search}||'%' or acct like '%'||#{psonOrgVo.search}||'%')
         </if>
-                )
+
     </select>
+
+    <!--<select id="selectUserOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">-->
+
+        <!--<choose>-->
+            <!--<when test='psonOrgVo.isSearchlower=="0"'>-->
+                <!--SELECT *-->
+                <!--FROM (WITH ORGFULL AS (SELECT FULL_NAME,-->
+                <!--ORG_NAME,-->
+                <!--ORG_ID,-->
+                <!--PARENT_ORG_ID,-->
+                <!--SORT,-->
+                <!--LOC_ID,-->
+                <!--AREA_CODE_ID,-->
+                <!--ORG_CODE,-->
+                <!--STATUS_CD-->
+                <!--FROM (SELECT distinct A.ORG_ID,-->
+                <!--A.SORT,-->
+                <!--A.ORG_NAME,-->
+                <!--A.LOC_ID,-->
+                <!--A.AREA_CODE_ID,-->
+                <!--A.ORG_CODE,-->
+                <!--A.STATUS_CD,-->
+                <!--A.FULL_NAME,-->
+                <!--B.PARENT_ORG_ID-->
+                <!--FROM TB_ORG                  A,-->
+                <!--TB_ORG_REL              B,-->
+                <!--TB_ORG_TREE             C,-->
+                <!--TB_OGT_ORG_RELTYPE_CONF D,-->
+                <!--TB_ORG_REL_TYPE         E,-->
+                <!--TB_ORG_ORGTYPE_REL F-->
+                <!--WHERE A.STATUS_CD = 1000-->
+                <!--AND B.STATUS_CD = 1000-->
+                <!--AND C.STATUS_CD = 1000-->
+                <!--AND D.Status_Cd = 1000-->
+                <!--AND E.STATUS_CD = 1000-->
+                <!--AND F.STATUS_CD = 1000-->
+                <!--AND F.ORG_ID = A.ORG_ID-->
+                <!--AND A.ORG_ID = B.ORG_ID-->
+                <!--<if test="psonOrgVo.tabOrgOrgTypeParams!='' and psonOrgVo.tabOrgOrgTypeParams!=null">-->
+                    <!--AND ${psonOrgVo.tabOrgOrgTypeParams}-->
+                <!--</if>-->
+                <!--<if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">-->
+                    <!--AND ${psonOrgVo.tabOrgParams}-->
+                <!--</if>-->
+
+                <!--AND B.REF_CODE = E.REF_CODE-->
+                <!--AND D.ORG_REL_TYPE_ID = E.ORG_REL_TYPE_ID-->
+                <!--AND C.ORG_TREE_ID = D.ORG_TREE_ID-->
+                <!--AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}-->
+                <!--AND B.ORG_ID = #{psonOrgVo.orgId}-->
+                <!--) AA),-->
+                <!--acctTab as (-->
+                <!--select t.acct_id accId,-->
+                <!--t.acct acct,-->
+                <!--t.status_cd statusCd,-->
+                <!--'1' type,-->
+                <!--'主账号' typeName,-->
+                <!--t.personnel_id personnelId,-->
+                <!--t3.psn_name psnName,-->
+                <!--t3.PSN_CODE psnCode,-->
+                <!--t3.PSN_NBR psnNbr,-->
+                <!--t3.NC_CODE ncCode,-->
+                <!--t.FULL_NAME orgName,-->
+                <!--t.acct_org_rel_id acctOrgRelId-->
+                <!--from (select t1.*, tbAccountOrgRel.org_id,tbAccountOrgRel.acct_org_rel_id, tt.FULL_NAME-->
+                <!--from tb_acct t1, tb_account_org_rel tbAccountOrgRel, ORGFULL tt-->
+                <!--where t1.status_cd = 1000-->
+                <!--and tbAccountOrgRel.status_cd = 1000-->
+                <!--and t1.acct_id = tbAccountOrgRel.acct_id-->
+                <!--<if test="psonOrgVo.tabAccountOrgRelParams!='' and psonOrgVo.tabAccountOrgRelParams!=null">-->
+                    <!--AND ${psonOrgVo.tabAccountOrgRelParams}-->
+                <!--</if>-->
+                <!--and tbAccountOrgRel.org_id = tt.org_id-->
+                <!--and tbAccountOrgRel.org_tree_id = #{psonOrgVo.orgTreeId}) t-->
+                <!--left join tb_personnel t3-->
+                <!--on t.personnel_id = t3.personnel_id-->
+                <!--and t.status_cd = t3.status_cd)-->
+                <!--select *-->
+                <!--from (select *-->
+                <!--from acctTab-->
+                <!--union all-->
+                <!--select t.slave_acct_id accId,-->
+                <!--t.slave_acct acct,-->
+                <!--t.status_cd statusCd,-->
+                <!--'2' type,-->
+                <!--'从账号' typeName,-->
+                <!--t.personnelId,-->
+                <!--t.psnName,-->
+                <!--t.psnCode,-->
+                <!--t.psnNbr,-->
+                <!--t.ncCode,-->
+                <!--t.orgName,-->
+                <!--t.acct_org_rel_id acctOrgRelId-->
+                <!--from (select t1.*,-->
+                <!--t2.personnelId,-->
+                <!--t2.psnName,-->
+                <!--t2.psnCode,-->
+                <!--t2.psnNbr,-->
+                <!--t2.ncCode,-->
+                <!--t2.orgName-->
+                <!--from tb_slave_acct t1, acctTab t2-->
+                <!--where t1.status_cd = 1000-->
+                <!--and t1.acct_id = t2.accId-->
+                <!--and t1.acct_org_rel_id = t2.acctOrgRelId) t) a-->
+                <!--where 1 = 1-->
+                <!--<if test="psonOrgVo.search != null and psonOrgVo.search != ''">-->
+                    <!--AND (PsnName like '%'||#{psonOrgVo.search}||'%'   or acct like '%'||#{psonOrgVo.search}||'%')-->
+                <!--</if>-->
+                <!--)-->
+            <!--</when>-->
+            <!--<otherwise>-->
+                <!--SELECT *-->
+                <!--FROM (WITH ORGFULL AS (SELECT FULL_NAME,-->
+                <!--ORG_NAME,-->
+                <!--ORG_ID,-->
+                <!--PARENT_ORG_ID,-->
+                <!--SORT,-->
+                <!--LOC_ID,-->
+                <!--AREA_CODE_ID,-->
+                <!--ORG_CODE,-->
+                <!--STATUS_CD-->
+                <!--FROM (SELECT distinct A.ORG_ID,-->
+                <!--A.SORT,-->
+                <!--A.ORG_NAME,-->
+                <!--A.LOC_ID,-->
+                <!--A.AREA_CODE_ID,-->
+                <!--A.ORG_CODE,-->
+                <!--A.STATUS_CD,-->
+                <!--A.FULL_NAME,-->
+                <!--B.PARENT_ORG_ID-->
+                <!--FROM TB_ORG                  A,-->
+                <!--TB_ORG_REL              B,-->
+                <!--TB_ORG_TREE             C,-->
+                <!--TB_OGT_ORG_RELTYPE_CONF D,-->
+                <!--TB_ORG_REL_TYPE         E,-->
+                <!--TB_ORG_ORGTYPE_REL F-->
+                <!--WHERE A.STATUS_CD = 1000-->
+                <!--AND B.STATUS_CD = 1000-->
+                <!--AND C.STATUS_CD = 1000-->
+                <!--AND D.Status_Cd = 1000-->
+                <!--and E.STATUS_CD = 1000-->
+                <!--and F.STATUS_CD = 1000-->
+                <!--AND F.ORG_ID = A.ORG_ID-->
+                <!--AND A.ORG_ID = B.ORG_ID-->
+                <!--<if test="psonOrgVo.tabOrgOrgTypeParams!='' and psonOrgVo.tabOrgOrgTypeParams!=null">-->
+                    <!--AND ${psonOrgVo.tabOrgOrgTypeParams}-->
+                <!--</if>-->
+                <!--<if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">-->
+                    <!--AND ${psonOrgVo.tabOrgParams}-->
+                <!--</if>-->
+                <!--AND B.REF_CODE = E.REF_CODE-->
+                <!--and D.ORG_REL_TYPE_ID = E.ORG_REL_TYPE_ID-->
+                <!--AND C.ORG_TREE_ID = D.ORG_TREE_ID-->
+                <!--AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}-->
+                <!--) AA-->
+                <!--START WITH ORG_ID = #{psonOrgVo.orgId}-->
+                <!--CONNECT BY  PRIOR AA.ORG_ID =  AA.PARENT_ORG_ID),-->
+                <!--acctTab as (-->
+                <!--select t.acct_id accId,-->
+                <!--t.acct acct,-->
+                <!--t.status_cd statusCd,-->
+                <!--'1' type,-->
+                <!--'主账号' typeName,-->
+                <!--t.personnel_id personnelId,-->
+                <!--t3.psn_name psnName,-->
+                <!--t3.PSN_CODE psnCode,-->
+                <!--t3.PSN_NBR psnNbr,-->
+                <!--t3.NC_CODE ncCode,-->
+                <!--t.FULL_NAME orgName,-->
+                <!--t.acct_org_rel_id acctOrgRelId-->
+                <!--from (select t1.*, tbAccountOrgRel.org_id,tbAccountOrgRel.acct_org_rel_id, tt.FULL_NAME-->
+                <!--from tb_acct t1, tb_account_org_rel tbAccountOrgRel, ORGFULL tt-->
+                <!--where t1.status_cd = 1000-->
+                <!--and tbAccountOrgRel.status_cd = 1000-->
+                <!--and t1.acct_id = tbAccountOrgRel.acct_id-->
+                <!--<if test="psonOrgVo.tabAccountOrgRelParams!='' and psonOrgVo.tabAccountOrgRelParams!=null">-->
+                    <!--AND ${psonOrgVo.tabAccountOrgRelParams}-->
+                <!--</if>-->
+                <!--and tbAccountOrgRel.org_id = tt.org_id-->
+                <!--and tbAccountOrgRel.org_tree_id = #{psonOrgVo.orgTreeId}) t-->
+                <!--left join tb_personnel t3-->
+                <!--on t.personnel_id = t3.personnel_id-->
+                <!--and t.status_cd = t3.status_cd )-->
+                <!--select *-->
+                <!--from (select *-->
+                <!--from acctTab-->
+                <!--union all-->
+                <!--select t.slave_acct_id accId,-->
+                <!--t.slave_acct acct,-->
+                <!--t.status_cd statusCd,-->
+                <!--'2' type,-->
+                <!--'从账号' typeName,-->
+                <!--t.personnelId,-->
+                <!--t.psnName,-->
+                <!--t.psnCode,-->
+                <!--t.psnNbr,-->
+                <!--t.ncCode,-->
+                <!--t.orgName,-->
+                <!--t.acct_org_rel_id acctOrgRelId-->
+                <!--from (select t1.*,-->
+                <!--t2.personnelId,-->
+                <!--t2.psnName,-->
+                <!--t2.psnCode,-->
+                <!--t2.psnNbr,-->
+                <!--t2.ncCode,-->
+                <!--t2.orgName-->
+                <!--from tb_slave_acct t1, acctTab t2-->
+                <!--where t1.status_cd = 1000-->
+                <!--and t1.acct_id = t2.accId-->
+                <!--and t1.acct_org_rel_id = t2.acctOrgRelId) t) a-->
+                <!--where 1 = 1-->
+                <!--<if test="psonOrgVo.search != null and psonOrgVo.search != ''">-->
+                    <!--AND (PsnName like '%'||#{psonOrgVo.search}||'%' or acct like '%'||#{psonOrgVo.search}||'%')-->
+                <!--</if>-->
+                <!--)-->
+            <!--</otherwise>-->
+        <!--</choose>-->
+
+
+    <!--</select>-->
+
 
     <select id="selectUserOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
 
@@ -610,63 +883,36 @@
                 AND C.ORG_TREE_ID = D.ORG_TREE_ID
                 AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
                 AND B.ORG_ID = #{psonOrgVo.orgId}
-                ) AA),
-                acctTab as (
+                ) AA)
+                select * from (
                 select t.acct_id accId,
                 t.acct acct,
                 t.status_cd statusCd,
-                '1' type,
-                '主账号' typeName,
                 t.personnel_id personnelId,
-                t3.psn_name psnName,
-                t3.PSN_CODE psnCode,
-                t3.PSN_NBR psnNbr,
-                t3.NC_CODE ncCode,
+                t.psn_name psnName,
+                t.PSN_CODE psnCode,
+                t.PSN_NBR psnNbr,
+                t.NC_CODE ncCode,
                 t.FULL_NAME orgName,
-                t.acct_org_rel_id acctOrgRelId
-                from (select t1.*, tbAccountOrgRel.org_id,tbAccountOrgRel.acct_org_rel_id, tt.FULL_NAME
-                from tb_acct t1, tb_account_org_rel tbAccountOrgRel, ORGFULL tt
-                where t1.status_cd = 1000
+                t.acct_org_rel_id acctOrgRelId,
+                v.slave_acct slaveAcct,
+                v.slave_acct_id slaveAcctId
+                from (select t1.*, tbAccountOrgRel.org_id,tbAccountOrgRel.acct_org_rel_id, tt.FULL_NAME,
+                t3.psn_name,t3.PSN_CODE,t3.PSN_NBR,t3.NC_CODE
+                from tb_acct t1, tb_account_org_rel tbAccountOrgRel, ORGFULL tt,tb_personnel t3
+                where t1.status_cd = 1000 and t3.status_cd=1000
                 and tbAccountOrgRel.status_cd = 1000
+                and t3.personnel_id=t1.personnel_id
                 and t1.acct_id = tbAccountOrgRel.acct_id
                 <if test="psonOrgVo.tabAccountOrgRelParams!='' and psonOrgVo.tabAccountOrgRelParams!=null">
                     AND ${psonOrgVo.tabAccountOrgRelParams}
                 </if>
                 and tbAccountOrgRel.org_id = tt.org_id
                 and tbAccountOrgRel.org_tree_id = #{psonOrgVo.orgTreeId}) t
-                left join tb_personnel t3
-                on t.personnel_id = t3.personnel_id
-                and t.status_cd = t3.status_cd)
-                select *
-                from (select *
-                from acctTab
-                union all
-                select t.slave_acct_id accId,
-                t.slave_acct acct,
-                t.status_cd statusCd,
-                '2' type,
-                '从账号' typeName,
-                t.personnelId,
-                t.psnName,
-                t.psnCode,
-                t.psnNbr,
-                t.ncCode,
-                t.orgName,
-                t.acct_org_rel_id acctOrgRelId
-                from (select t1.*,
-                t2.personnelId,
-                t2.psnName,
-                t2.psnCode,
-                t2.psnNbr,
-                t2.ncCode,
-                t2.orgName
-                from tb_slave_acct t1, acctTab t2
-                where t1.status_cd = 1000
-                and t1.acct_id = t2.accId
-                and t1.acct_org_rel_id = t2.acctOrgRelId) t) a
-                where 1 = 1
+                left join tb_slave_acct v on v.status_cd=1000 and v.acct_id=t.acct_id and t.acct_org_rel_id=v.acct_org_rel_id
+                             ) where 1=1
                 <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
-                    AND (PsnName like '%'||#{psonOrgVo.search}||'%'   or acct like '%'||#{psonOrgVo.search}||'%')
+                    AND (PsnName like '%'||#{psonOrgVo.search}||'%' or acct like '%'||#{psonOrgVo.search}||'%')
                 </if>
                 )
             </when>
@@ -716,63 +962,36 @@
                 AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
                 ) AA
                 START WITH ORG_ID = #{psonOrgVo.orgId}
-                CONNECT BY  PRIOR AA.ORG_ID =  AA.PARENT_ORG_ID),
-                acctTab as (
+                CONNECT BY  PRIOR AA.ORG_ID =  AA.PARENT_ORG_ID)
+                select * from (
                 select t.acct_id accId,
                 t.acct acct,
                 t.status_cd statusCd,
-                '1' type,
-                '主账号' typeName,
                 t.personnel_id personnelId,
-                t3.psn_name psnName,
-                t3.PSN_CODE psnCode,
-                t3.PSN_NBR psnNbr,
-                t3.NC_CODE ncCode,
+                t.psn_name psnName,
+                t.PSN_CODE psnCode,
+                t.PSN_NBR psnNbr,
+                t.NC_CODE ncCode,
                 t.FULL_NAME orgName,
-                t.acct_org_rel_id acctOrgRelId
-                from (select t1.*, tbAccountOrgRel.org_id,tbAccountOrgRel.acct_org_rel_id, tt.FULL_NAME
-                from tb_acct t1, tb_account_org_rel tbAccountOrgRel, ORGFULL tt
-                where t1.status_cd = 1000
+                t.acct_org_rel_id acctOrgRelId,
+                v.slave_acct slaveAcct,
+                v.slave_acct_id slaveAcctId
+                from (select t1.*, tbAccountOrgRel.org_id,tbAccountOrgRel.acct_org_rel_id, tt.FULL_NAME,
+                t3.psn_name,t3.PSN_CODE,t3.PSN_NBR,t3.NC_CODE
+                from tb_acct t1, tb_account_org_rel tbAccountOrgRel, ORGFULL tt,tb_personnel t3
+                where t1.status_cd = 1000 and t3.status_cd=1000
                 and tbAccountOrgRel.status_cd = 1000
+                and t3.personnel_id=t1.personnel_id
                 and t1.acct_id = tbAccountOrgRel.acct_id
                 <if test="psonOrgVo.tabAccountOrgRelParams!='' and psonOrgVo.tabAccountOrgRelParams!=null">
                     AND ${psonOrgVo.tabAccountOrgRelParams}
                 </if>
                 and tbAccountOrgRel.org_id = tt.org_id
                 and tbAccountOrgRel.org_tree_id = #{psonOrgVo.orgTreeId}) t
-                left join tb_personnel t3
-                on t.personnel_id = t3.personnel_id
-                and t.status_cd = t3.status_cd )
-                select *
-                from (select *
-                from acctTab
-                union all
-                select t.slave_acct_id accId,
-                t.slave_acct acct,
-                t.status_cd statusCd,
-                '2' type,
-                '从账号' typeName,
-                t.personnelId,
-                t.psnName,
-                t.psnCode,
-                t.psnNbr,
-                t.ncCode,
-                t.orgName,
-                t.acct_org_rel_id acctOrgRelId
-                from (select t1.*,
-                t2.personnelId,
-                t2.psnName,
-                t2.psnCode,
-                t2.psnNbr,
-                t2.ncCode,
-                t2.orgName
-                from tb_slave_acct t1, acctTab t2
-                where t1.status_cd = 1000
-                and t1.acct_id = t2.accId
-                and t1.acct_org_rel_id = t2.acctOrgRelId) t) a
-                where 1 = 1
+                left join tb_slave_acct v on v.status_cd=1000 and v.acct_id=t.acct_id and t.acct_org_rel_id=v.acct_org_rel_id
+                ) where 1=1
                 <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
-                    AND (PsnName like '%'||#{psonOrgVo.search}||'%' or acct like '%'||#{psonOrgVo.search}||'%')
+                    AND (PsnName like '%'||#{psonOrgVo.search}||'%'   or acct like '%'||#{psonOrgVo.search}||'%')
                 </if>
                 )
             </otherwise>
@@ -780,6 +999,10 @@
 
 
     </select>
+
+
+
+
 
     <select id="getOrgPsnByOrgTreeAndPsnId" resultType="cn.ffcs.uoo.core.organization.entity.OrgPersonRel">
         SELECT A.*

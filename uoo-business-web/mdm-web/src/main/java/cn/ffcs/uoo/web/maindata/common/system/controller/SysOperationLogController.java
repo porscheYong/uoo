@@ -12,6 +12,8 @@ package cn.ffcs.uoo.web.maindata.common.system.controller;
 
 import java.util.List;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.plugins.Page;
 
+import cn.ffcs.uoo.web.maindata.busipublic.resource.dto.ModifyHistory;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysOperationLogClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.common.system.vo.LogDTO;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
+import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
 import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import io.swagger.annotations.ApiImplicitParam;
@@ -49,6 +54,15 @@ public class SysOperationLogController {
     @GetMapping("/get")
     public ResponseResult<Object> get(@RequestParam("id") Long id,@RequestParam("logEnum")String logEnum){
         return logClient.get(id, logEnum);
+    }
+    @ApiOperation(value = "关联本次操作日志的变更履历", notes = "获取单个数据")
+    @ApiImplicitParams({
+    })
+    @GetMapping("/getOperatModifyHistory")
+    public ResponseResult<List<ModifyHistory>> getOperatModifyHistory(@RequestParam("id") Long id){
+        Subject sub=SecurityUtils.getSubject();
+        SysUser sysuser = (SysUser) sub.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        return logClient.getOperatModifyHistory(id, sysuser.getUserCode(), sysuser.getUserId());
     }
     @OperateLog(type=OperateType.SELECT,module="平台系统日志模块",methods="分页查看日志",desc="")
     @ApiOperation(value = "获取分页列表", notes = "获取分页列表")

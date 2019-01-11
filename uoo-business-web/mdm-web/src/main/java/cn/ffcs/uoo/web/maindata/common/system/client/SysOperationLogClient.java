@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.baomidou.mybatisplus.plugins.Page;
 
+import cn.ffcs.uoo.web.maindata.busipublic.resource.dto.ModifyHistory;
 import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysOperationLogClientHystrix;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysOperationLog;
 import cn.ffcs.uoo.web.maindata.common.system.vo.LogDTO;
@@ -32,7 +33,8 @@ import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 public interface SysOperationLogClient {
     @GetMapping("/system/sysOperationLog/get")
     public ResponseResult<Object> get(@RequestParam("id") Long id,@RequestParam("logEnum")String logEnum);
-
+    @GetMapping("/system/sysOperationLog/getOperatModifyHistory")
+    public ResponseResult<List<ModifyHistory>> getOperatModifyHistory(@RequestParam("id") Long id,@RequestParam("userCode")String userCode,@RequestParam("userId")Long userId);
     @GetMapping("/system/sysOperationLog/listPage")
     public ResponseResult<Page<LogDTO>> listPage(@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord);
 

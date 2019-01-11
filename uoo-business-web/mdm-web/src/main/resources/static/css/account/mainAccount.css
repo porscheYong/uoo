@@ -17,26 +17,29 @@
 td,th{
     text-align: center;
 }
-.row-org{
+/* .row-org{
     width: 18% !important;
 }
 .row-orgTree{
     width: 13% !important;
-}
+} */
 .row-system{
-    width: 14% !important;
+    width: 15% !important;
 }
 .row-acc{
-    width: 22% !important;
+    width: 27% !important;
 }
 .row-acctype{
-    width: 11% !important;
+    width: 15% !important;
 }
 .row-number{
-    width: 11% !important;
+    width: 13% !important;
 }
 .row-state{
-    width: 11% !important;
+    width: 15% !important;
+}
+.row-delete{
+    width: 15% !important;
 }
 table.dataTable {
     table-layout: fixed;
@@ -98,18 +101,33 @@ table.dataTable tbody td {
     margin-left: -55px !important;
 }
 #delAcct{
-    margin-top: 20px !important;
+    margin-top: 10% !important;
     margin-left: 37%;
 }
-.Tag{
-    background: rgb(193, 237, 255) !important;
-    color:#959da9 !important;
+.acctTypeSpan{
+    display: inline-block;
+    background: rgb(252, 211, 217);
+    color:#636363;
+    font-weight: 550;
+    border-radius: 4px;
+    margin: 5px 1px;
+    padding: 0 10px;
 }
 .avatar {
     width: 120px;
     height: 120px;
     border-radius: 60px;
     border: 1px solid #dce1e6
+}
+.lableStyle{
+    margin-bottom:10px;
+    color:rgb(74,74,74);
+    font-size: 15px;
+}
+.infoSpan{
+    display:inline-block;
+    width:18%;
+    text-align:right;
 }
 
 

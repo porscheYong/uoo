@@ -63,7 +63,7 @@ public class SysPositionController {
 
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
         if(isSync){
-            treeNodeVos = sysPositionService.selectPositionTree();
+            treeNodeVos = sysPositionService.selectTarAllPositionTree(id);
         }else{
             treeNodeVos = sysPositionService.selectPositionTree(id);
         }

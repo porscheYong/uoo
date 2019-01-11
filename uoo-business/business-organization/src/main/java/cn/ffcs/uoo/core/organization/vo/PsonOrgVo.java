@@ -116,6 +116,16 @@ public class PsonOrgVo extends BaseVo {
      */
     private String mobile;
 
+    private String content;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     /**
      * 身份证
      */
@@ -127,9 +137,32 @@ public class PsonOrgVo extends BaseVo {
     private String userId;
 
     /**
-     * 账号或者从账号
+     * 账号或者
      */
     private String acct;
+    /**
+     * 从账号
+     */
+    private String slaveAcct;
+
+    public String getSlaveAcct() {
+        return slaveAcct;
+    }
+
+    public void setSlaveAcct(String slaveAcct) {
+        this.slaveAcct = slaveAcct;
+    }
+
+    private Long slaveAcctId;
+
+    public Long getSlaveAcctId() {
+        return slaveAcctId;
+    }
+
+    public void setSlaveAcctId(Long slaveAcctId) {
+        this.slaveAcctId = slaveAcctId;
+    }
+
     /********************人员相关********************/
     /**
      * 组织账号或者从账号标识

@@ -50,7 +50,7 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
     @TableField("STATUS_DATE")
     private Date statusDate;
 
-    @TableField("ACCT_HOST_ID")
+    @TableField("acct_org_rel_id")
     private Long acctHostId;
 
     @TableField("ACCT_ID")

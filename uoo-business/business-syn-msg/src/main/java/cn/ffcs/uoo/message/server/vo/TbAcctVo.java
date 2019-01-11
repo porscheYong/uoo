@@ -48,7 +48,7 @@ public class TbAcctVo {
 
     //账号组织信息
     //private List<TbSalveAcctOrgRelVo> tbAcctOrgRel;
-    private List<TbOrg> tbAcctOrgRel;
+    private List<TbAcctOrgVo> tbAcctOrgRel;
 
     //从账号信息
     private TbSlaveAcctVo tbSlaveAcct;
@@ -215,11 +215,11 @@ public class TbAcctVo {
         this.tbAcctCrossRel = tbAcctCrossRel;
     }
 
-    public List<TbOrg> getTbAcctOrgRel() {
+    public List<TbAcctOrgVo> getTbAcctOrgRel() {
         return tbAcctOrgRel;
     }
 
-    public void setTbAcctOrgRel(List<TbOrg> tbAcctOrgRel) {
+    public void setTbAcctOrgRel(List<TbAcctOrgVo> tbAcctOrgRel) {
         this.tbAcctOrgRel = tbAcctOrgRel;
     }
 

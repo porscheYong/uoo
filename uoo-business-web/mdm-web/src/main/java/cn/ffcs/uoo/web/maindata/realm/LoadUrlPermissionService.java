@@ -6,7 +6,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;
@@ -39,6 +41,7 @@ import javax.annotation.Resource;
 
 @Service
 public class LoadUrlPermissionService {
+    private static AtomicBoolean isLoadedPermission=new AtomicBoolean(false);
     private static Logger log = LoggerFactory.getLogger(LoadUrlPermissionService.class);
     @Autowired
     ShiroFilterFactoryBean shiroFilterFactoryBean;
@@ -109,6 +112,18 @@ public class LoadUrlPermissionService {
             PathMatchingFilterChainResolver filterChainResolver = (PathMatchingFilterChainResolver) shiroFilter
                     .getFilterChainResolver();
             DefaultFilterChainManager manager = (DefaultFilterChainManager) filterChainResolver.getFilterChainManager();
+            
+            cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<Page<SysMenu>> listPage = sysMenuClient.listPage(1, Integer.MAX_VALUE,"");
+            cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<Page<SysFunction>> fs = sysFunctionClient.list(1, Integer.MAX_VALUE,"");
+            if(fs.getState()!=cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult.STATE_OK||
+                    listPage.getState()!=cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult.STATE_OK  ){
+                log.error("权限未加载成功，请重新启动加载");
+                if(isLoadedPermission.compareAndSet(false, true)){
+                    System.exit(1);
+                }
+                return;
+            }
+            
             manager.getFilterChains().clear();
 
             shiroFilterFactoryBean.getFilterChainDefinitionMap().clear();
@@ -127,33 +142,8 @@ public class LoadUrlPermissionService {
             filterChainDefinitionMap.put("/v2/api-docs", "anon");
             filterChainDefinitionMap.put("/login", "anon");
             filterChainDefinitionMap.put("/loginPage.html", "anon");
-            // filterChainDefinitionMap.put("/**", "anon");
-            //filterChainDefinitionMap.put("/aa/aa", "perms[asasd]");
-            // filterChainDefinitionMap.put("/inaction/**", "perms[inaction]");
-
-            /*ResponseResult<List<FuncComp>> listFuncComp = funcCompSvc.listFuncComp(1, Integer.MAX_VALUE);
-            ResponseResult<List<FuncMenu>> listMenuComp = funcMenuSvc.getFuncMenuPage();
-
-            if (listFuncComp.getData() != null && !listFuncComp.getData().isEmpty()) {
-                List<FuncComp> comps = listFuncComp.getData();
-                for (FuncComp funcComp : comps) {
-                    filterChainDefinitionMap.put(funcComp.getUrlAddr(), "perms[C" + funcComp.getCompId() + "]");
-                }
-            }
-            if (listMenuComp.getData() != null && !listMenuComp.getData().isEmpty()) {
-                List<FuncMenu> comps = listMenuComp.getData();
-                for (FuncMenu funcComp : comps) {
-                    filterChainDefinitionMap.put(funcComp.getUrlAddr(), "perms[M" + funcComp.getMenuId() + "]");
-                }
-            }*/
-
-
-
-//            filterChainDefinitionMap.put("/ff*/ff", "perms[sad]");//
-//            filterChainDefinitionMap.put("/bb/ff=*", "perms[sad]");//
-//            filterChainDefinitionMap.put("/cc/*/ff", "perms[sad]");//
-
-            cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<Page<SysMenu>> listPage = sysMenuClient.listPage(1, Integer.MAX_VALUE,"");
+             
+            
             if(listPage.getState()==cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult.STATE_OK){
                 List<SysMenu> data = listPage.getData().getRecords();
                 if(data!=null){
@@ -163,7 +153,6 @@ public class LoadUrlPermissionService {
                     }
                 }
             }
-            cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult<Page<SysFunction>> fs = sysFunctionClient.list(1, Integer.MAX_VALUE,"");
             if(fs.getState()==cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult.STATE_OK){
                 List<SysFunction> data = fs.getData().getRecords();
                 if(data!=null){
@@ -190,6 +179,9 @@ public class LoadUrlPermissionService {
             Map<String, String> chains = shiroFilterFactoryBean.getFilterChainDefinitionMap();
             for (Map.Entry<String, String> entry : chains.entrySet()) {
                 String url = entry.getKey();
+                if(StringUtils.isBlank(url)){
+                    continue;
+                }
                 String chainDefinition = entry.getValue().trim().replace(" ", "");
                 manager.createChain(url, chainDefinition);
             }

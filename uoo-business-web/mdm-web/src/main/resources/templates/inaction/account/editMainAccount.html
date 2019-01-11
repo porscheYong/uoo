@@ -40,16 +40,17 @@
     <![endif]-->
 
     <style>
-        .row-delete{
-            width: 34px !important;
-        }
         .fleft{
             float: none !important;
         }
-        .board-title .icon,
-        #icon .Icon{
+        .board-title .icon{
             margin: 3px 3px !important;
             margin-bottom: -6px !important;
+            margin-left: -5px !important;
+        }
+        #icon .Icon{
+            margin: 3px 3px !important;
+            margin-bottom: 1% !important;
             margin-left: -5px !important;
         }
         .BtnRed2 {
@@ -82,6 +83,46 @@
             margin-left: 1% !important;
             margin-top: 5% !important;
         }
+        .infoLable{
+            display: inline-block;
+            margin-left: 1%;
+            background: #e0e0e0;
+            border-radius: 5px;
+            padding: 3px 5px;
+            color: #5f5959;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .currentOrgLable{
+            display: inline-block;
+            margin-left: 1%;
+            background: rgb(63,151,247);
+            border-radius: 5px;
+            padding: 3px 5px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .infoBtn{
+            display: inline-block;
+            margin-left: 2%;
+            background: #fff;
+            border-radius: 5px;
+            border: 1px solid rgb(63,151,247);
+            color: rgb(63,151,247);
+            padding: 2px 7px;
+            cursor: pointer;
+        }
+        .delBtn{
+            display: inline-block;
+            margin-left: 2%;
+            background: #fff;
+            border-radius: 5px;
+            border: 1px solid red;
+            color: red;
+            padding: 2px 7px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -104,10 +145,14 @@
                         <img class="avatar" id="psnImg" src="/images/avatar.png" alt="头像" />
                     </div>
                     <div style="width: auto;margin-left: 120px;margin-top: -20%;">
-                        <div id="nameAndRole">
-                            <strong class="Font24 Black" id="psnNameLable"></strong>
-                        </div>  
-                        <div id="roleTab" style="margin-top:2%;"></div>
+                        <!-- <div id="nameAndRole"> -->
+                            <div style="margin-bottom:10px">
+                                <span class="acctTypeSpan">主账号</span>
+                                <span class="Font24 Black" id="acctLable" style="position:absolute;line-height:1.2em;margin-left:1%;"></span>
+                            </div>
+                            <!-- <strong class="Font24 Black" id="psnNameLable"></strong> -->
+                        <!-- </div>   -->
+                        <div id="roleTab" style="margin-top:2%;margin-left:-0.5%;"></div>
                         <div style="padding-top: 10px;">
                             <div style="margin-bottom:15px;" id="icon">
                                 <span>
@@ -119,21 +164,19 @@
                             </div>
                             
                             <div>
-                                <div style="margin-bottom:10px">
-                                    <span style="color:#959da9;">账号：</span>
-                                    <span class="Font24 Black" id="acctLable"></span>
-                                    <span class="Tag BgBlue">主账号</span>
+                                <div class="lableStyle">
+                                    <span>姓名：</span><span id="psnNameLable"></span>
                                 </div>
-                                <div style="margin-bottom:10px;color:#959da9;">
+                                <div class="lableStyle">
                                     <span>人员编码：</span><span id="psnNumLable"></span>
                                 </div>
-                                <div style="margin-bottom:10px;color:#959da9;">
+                                <div class="lableStyle">
                                     <span id="cerNoTxt"></span><span id="cerNoLable"></span>
                                 </div>
-                                <div style="margin-bottom:10px;color:#959da9;">
+                                <div class="lableStyle">
                                     <span>生效日期：</span><span id="effectDateLable"></span>
                                 </div>
-                                <div style="margin-bottom:10px;color:#959da9;">
+                                <div class="lableStyle">
                                     <span>失效日期：</span><span id="invalidDateLable"></span>
                                 </div>
                             </div>
@@ -214,16 +257,14 @@
                     </div>
 
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
-                                <label for="role" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" 
-                                       style="padding-right: 20px;line-height: 40px;text-align: right;width:14%;">角色</label>
-                                <input id="role" class="ui-input col-md-8 col-sm-8 col-xs-12" style="width:72%;" onclick="openTypeDialog()" required readonly></input>
+                                <label for="defaultPsw" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
+                                <input type="password" id="defaultPsw" class="ui-input col-md-8 col-sm-8 col-xs-8" required autocomplete="off">
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
                                 <label for="effectDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
@@ -231,7 +272,9 @@
                                 <input id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-8" required readonly autocomplete="off" onfocus="this.blur()">
                             </div>
                         </div>
+                    </div>
 
+                    <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
                                 <label for="invalidDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
@@ -242,14 +285,15 @@
                     </div>
 
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="form-item" style="width: 100%">
-                                <label for="defaultPsw" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
-                                       style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
-                                <input type="password" id="defaultPsw" class="ui-input col-md-8 col-sm-8 col-xs-8" required autocomplete="off">
+                                <label for="role" class="form-item-label col-md-2 col-sm-2 col-xs-12" 
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;width:14%;">角色</label>
+                                <input id="role" class="ui-input col-md-8 col-sm-8 col-xs-12" style="width:72%;" onclick="openTypeDialog()" readonly></input>
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div style="margin-left: 29%;margin-top: 5%;" id="editBtnDiv">
                             <button class="ui-button ui-button-primary" id="editBtn" onclick="updateAcct()">保存</button>
@@ -261,29 +305,37 @@
 
                 <div style="margin-top:7%">
                     <div class="board-title" style="margin-left:-6.7%;">
-                        <span class="name ft18">归属组织</span>
+                        <span class="name ft18">关联从账号信息</span>
                     </div>
     
                     <div class="fright" style="margin-right: 36px;margin-top:-4.5%;"> 
                         <a class="button-add" id="addBtn" onclick="openOrgDialog()"><span class="fa fa-plus-circle icon-add"></span>新增归属组织</a>
                     </div>
-                </div>
-                
-                <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
-                    <table id="orgTable" class="stripe" width="100%"></table>
+
+                    <div id="acctOrgDiv"></div>
+
+                    <!-- <div id="acctInfoDiv" style="margin-top: 20px;margin-left:-3.3%;">
+                        <span style="font-size:16px;font-weight:600;">(1)归属组织信息</span>
+                        <span class="infoLable">营销专业树</span>
+                        <span class="infoLable">杭州分公司市场部</span>
+                        <span class="infoBtn">创建从账号</span>
+                        <span class="infoBtn">修改归属组织信息</span>
+                    </div> -->
+
+                    <!-- <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
+                        <table id="orgTable" class="stripe" width="100%"></table>
+                    </div> -->
                 </div>
 
-                <div style="margin-top:1%" id="conSubInfo">
+                <!-- <div style="margin-top:1%" id="conSubInfo">
                     <div class="board-title" style="margin-left:-6.7%;">
                         <span class="name ft18">关联从账号信息</span>
                     </div>
-
                 </div>
-
             
                 <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
                     <table id="subInfoTable" class="stripe" width="100%"></table>
-                </div>
+                </div> -->
                 <input class="Btn BtnRed2" id="delAcct" type="button" onclick="deleteTbAcct()" value="删除用户" style="margin-top:20px;" />
             </form>
         </div>

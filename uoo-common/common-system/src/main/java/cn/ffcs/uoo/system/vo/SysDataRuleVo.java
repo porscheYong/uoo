@@ -57,6 +57,28 @@ public class SysDataRuleVo {
 
     private String ruleOperatorName;
 
+
+    private Long userId;
+
+    private String accout;
+
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getAccout() {
+        return accout;
+    }
+
+    public void setAccout(String accout) {
+        this.accout = accout;
+    }
+
     public String getRuleOperatorName() {
         return ruleOperatorName;
     }
