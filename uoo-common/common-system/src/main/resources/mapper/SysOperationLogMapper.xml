@@ -58,7 +58,7 @@
 		SYS_USER t
 		WHERE
 		t.USER_CODE = ol.USER_CODE
-		UNION 
+		<!-- UNION 
         SELECT
         mh.MODIFY_ID AS logId,
         mh.OPERATE_TYPE AS logName,
@@ -71,7 +71,7 @@
         FROM
         TB_MODIFY_HISTORY mh ,SYS_USER t
         WHERE
-        t.USER_ID= mh.CREATE_USER
+        t.USER_ID= mh.CREATE_USER -->
 		)
 		<where>
 		  <if test="keyWord != null and keyWord != ''">
@@ -115,7 +115,7 @@
         SYS_USER t
         WHERE
         t.USER_CODE = ol.USER_CODE
-        UNION 
+        <!-- UNION 
         SELECT
         mh.MODIFY_ID AS logId,
         mh.OPERATE_TYPE AS logName,
@@ -128,7 +128,7 @@
         FROM
         TB_MODIFY_HISTORY mh ,SYS_USER t
         WHERE
-        t.USER_ID= mh.CREATE_USER
+        t.USER_ID= mh.CREATE_USER -->
         )
         <where>
           <if test="keyWord != null and keyWord != ''">

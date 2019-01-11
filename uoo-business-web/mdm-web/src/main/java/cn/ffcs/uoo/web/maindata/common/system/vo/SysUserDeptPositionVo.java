@@ -1,6 +1,5 @@
 package cn.ffcs.uoo.web.maindata.common.system.vo;
 
-import cn.ffcs.uoo.web.maindata.common.system.dto.SysUserPositionRef;
 import lombok.Data;
 
 import java.util.List;
@@ -37,6 +36,6 @@ public class SysUserDeptPositionVo {
      */
     private Long updateUser;
 
-    private List<SysUserPositionRef> userPositionRefList;
+    private List<SysUserPositionRefVo> userPositionRefList;
 
 }

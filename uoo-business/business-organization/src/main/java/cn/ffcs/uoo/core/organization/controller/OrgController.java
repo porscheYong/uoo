@@ -1551,6 +1551,7 @@ public class OrgController extends BaseController {
     @RequestMapping(value = "/getOrgPage", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<Page<OrgVo>> getOrgPage(String search,
+                                                  String orgTreeId,
                                                   Integer pageSize,
                                                   Integer pageNo){
         OrgVo orgVo = new OrgVo();
@@ -1564,6 +1565,9 @@ public class OrgController extends BaseController {
         }
         if(!StrUtil.isNullOrEmpty(pageNo)){
             orgVo.setPageNo(pageNo);
+        }
+        if(!StrUtil.isNullOrEmpty(orgTreeId)){
+            orgVo.setOrgTreeId(new Long(orgTreeId));
         }
         Page<OrgVo> page = orgService.selectOrgPage(orgVo);
         ret.setState(ResponseResult.STATE_OK);

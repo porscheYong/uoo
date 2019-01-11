@@ -113,4 +113,13 @@ public interface OrgMapper extends BaseMapper<Org> {
      * @return
      */
     public List<AreaCodeVo> getOrgAreaCode(@Param("orgId")String orgId);
+
+
+    /**
+     * 组织归属哪些组织树
+     * @param orgId
+     * @return
+     */
+    public String getAppOrgTrees(@Param("orgId")String orgId);
+
 }

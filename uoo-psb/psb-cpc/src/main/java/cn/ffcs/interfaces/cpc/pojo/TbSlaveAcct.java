@@ -50,8 +50,8 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
     @TableField("STATUS_DATE")
     private Date statusDate;
 
-    @TableField("ACCT_HOST_ID")
-    private Long acctHostId;
+    @TableField("ACCT_ORG_REL_ID")
+    private Long acctOrgRelId;
 
     @TableField("ACCT_ID")
     private Long acctId;
@@ -61,6 +61,23 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
 
     @TableField("DISABLE_DATE")
     private Date disableDate;
+
+    public TbSlaveAcct() {
+    }
+
+    public TbSlaveAcct(String slaveAcct, String salt, String password, String slaveAcctType, Long resourceObjId, String statusCd, Date createDate, Long acctOrgRelId, Long acctId, Date enableDate, Date disableDate) {
+        this.slaveAcct = slaveAcct;
+        this.salt = salt;
+        this.password = password;
+        this.slaveAcctType = slaveAcctType;
+        this.resourceObjId = resourceObjId;
+        this.statusCd = statusCd;
+        this.createDate = createDate;
+        this.acctOrgRelId = acctOrgRelId;
+        this.acctId = acctId;
+        this.enableDate = enableDate;
+        this.disableDate = disableDate;
+    }
 
     public Long getSlaveAcctId() {
         return slaveAcctId;
@@ -166,14 +183,6 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
         this.statusDate = statusDate;
     }
 
-    public Long getAcctHostId() {
-        return acctHostId;
-    }
-
-    public void setAcctHostId(Long acctHostId) {
-        this.acctHostId = acctHostId;
-    }
-
     public Long getAcctId() {
         return acctId;
     }
@@ -196,6 +205,14 @@ public class TbSlaveAcct extends Model<TbSlaveAcct> {
 
     public void setDisableDate(Date disableDate) {
         this.disableDate = disableDate;
+    }
+
+    public Long getAcctOrgRelId() {
+        return acctOrgRelId;
+    }
+
+    public void setAcctOrgRelId(Long acctOrgRelId) {
+        this.acctOrgRelId = acctOrgRelId;
     }
 
     @Override

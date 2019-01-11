@@ -96,9 +96,10 @@ public class OrgController {
     })
     @RequestMapping(value = "/getOrgPage", method = RequestMethod.GET)
     public ResponseResult getOrgPage(@RequestParam(value = "search",required = false)String search,
+                                     @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                      @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                      @RequestParam(value = "pageNo",required = false)Integer pageNo) {
-        return orgService.getOrgPage(search,pageSize,pageNo);
+        return orgService.getOrgPage(search,orgTreeId,pageSize,pageNo);
     }
 
 

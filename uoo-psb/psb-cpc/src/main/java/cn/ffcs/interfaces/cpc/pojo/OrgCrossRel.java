@@ -1,44 +1,78 @@
 package cn.ffcs.interfaces.cpc.pojo;
-import com.baomidou.mybatisplus.activerecord.Model;
+
+import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
-
 import java.io.Serializable;
-import java.util.Date;
 
-@TableName("Tb_Org_Cross_Rel")
-public class TbOrgCrossRel extends Model<TbOrgCrossRel>{
+/**
+ * <p>
+ * 
+ * </p>
+ *
+ * @author lxd
+ * @since 2019-01-10
+ */
+@TableName("TB_ORG_CROSS_REL")
+public class OrgCrossRel extends Model<OrgCrossRel> {
 
-    @TableId("org_Cross_Rel_Id")
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 组织跨域关系标识
+     */
+    @TableId(value = "ORG_CROSS_REL_ID", type = IdType.AUTO)
     private Long orgCrossRelId;
-
-    @TableField("org_Id")
+    /**
+     * 组织标识
+     */
+    @TableField("ORG_ID")
     private Long orgId;
-
-    @TableField("cross_Tran")
+    /**
+     * 跨域关系组织
+     */
+    @TableField("CROSS_TRAN")
     private String crossTran;
-
-    @TableField("rela_Type")
+    /**
+     * 关系类型
+     */
+    @TableField("RELA_TYPE")
     private String relaType;
-
-    @TableField("status_Cd")
+    /**
+     * 状态
+     */
+    @TableField("STATUS_CD")
     private String statusCd;
-
-    @TableField("create_Date")
+    /**
+     * 创建时间
+     */
+    @TableField("CREATE_DATE")
     private Date createDate;
-
-    @TableField("create_User")
+    /**
+     * 创建人
+     */
+    @TableField("CREATE_USER")
     private Long createUser;
-
-    @TableField("update_Date")
+    /**
+     * 修改时间
+     */
+    @TableField("UPDATE_DATE")
     private Date updateDate;
-
-    @TableField("update_User")
+    /**
+     * 修改人
+     */
+    @TableField("UPDATE_USER")
     private Long updateUser;
-
-    @TableField("status_Date")
+    /**
+     * 状态变更的时间
+     */
+    @TableField("STATUS_DATE")
     private Date statusDate;
+
 
     public Long getOrgCrossRelId() {
         return orgCrossRelId;
@@ -123,5 +157,21 @@ public class TbOrgCrossRel extends Model<TbOrgCrossRel>{
     @Override
     protected Serializable pkVal() {
         return this.orgCrossRelId;
+    }
+
+    @Override
+    public String toString() {
+        return "OrgCrossRel{" +
+        ", orgCrossRelId=" + orgCrossRelId +
+        ", orgId=" + orgId +
+        ", crossTran=" + crossTran +
+        ", relaType=" + relaType +
+        ", statusCd=" + statusCd +
+        ", createDate=" + createDate +
+        ", createUser=" + createUser +
+        ", updateDate=" + updateDate +
+        ", updateUser=" + updateUser +
+        ", statusDate=" + statusDate +
+        "}";
     }
 }

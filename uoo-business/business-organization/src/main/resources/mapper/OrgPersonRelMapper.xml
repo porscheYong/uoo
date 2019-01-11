@@ -576,7 +576,8 @@
         T.NC_CODE NCCODE,
         T.FULL_NAME ORGNAME,
         T.acct_org_rel_id acctOrgRelId,
-        cc.slave_acct slaceAcct
+        cc.slave_acct slaveAcct,
+        cc.slave_acct_id slaveAcctId
         FROM (SELECT distinct T1.*, tbAccountOrgRel.ORG_ID,tbAccountOrgRel.acct_org_rel_id, T3.FULL_NAME,
         T6.PSN_NAME ,T6.PSN_CODE ,T6.PSN_NBR ,T6.NC_CODE
         FROM TB_ACCT T1, TB_ACCOUNT_ORG_REL tbAccountOrgRel, TB_ORG T3,TB_ORG_LEVEL T4,TB_PERSONNEL T6,
@@ -894,7 +895,8 @@
                 t.NC_CODE ncCode,
                 t.FULL_NAME orgName,
                 t.acct_org_rel_id acctOrgRelId,
-                v.slave_acct slaceAcct
+                v.slave_acct slaveAcct,
+                v.slave_acct_id slaveAcctId
                 from (select t1.*, tbAccountOrgRel.org_id,tbAccountOrgRel.acct_org_rel_id, tt.FULL_NAME,
                 t3.psn_name,t3.PSN_CODE,t3.PSN_NBR,t3.NC_CODE
                 from tb_acct t1, tb_account_org_rel tbAccountOrgRel, ORGFULL tt,tb_personnel t3
@@ -972,7 +974,8 @@
                 t.NC_CODE ncCode,
                 t.FULL_NAME orgName,
                 t.acct_org_rel_id acctOrgRelId,
-                v.slave_acct slaceAcct
+                v.slave_acct slaveAcct,
+                v.slave_acct_id slaveAcctId
                 from (select t1.*, tbAccountOrgRel.org_id,tbAccountOrgRel.acct_org_rel_id, tt.FULL_NAME,
                 t3.psn_name,t3.PSN_CODE,t3.PSN_NBR,t3.NC_CODE
                 from tb_acct t1, tb_account_org_rel tbAccountOrgRel, ORGFULL tt,tb_personnel t3

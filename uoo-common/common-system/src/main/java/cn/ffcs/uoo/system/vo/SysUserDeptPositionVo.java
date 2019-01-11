@@ -1,7 +1,5 @@
 package cn.ffcs.uoo.system.vo;
 
-import cn.ffcs.uoo.system.entity.SysUserPositionRef;
-import com.baomidou.mybatisplus.plugins.Page;
 import lombok.Data;
 
 import java.util.List;
@@ -38,6 +36,6 @@ public class SysUserDeptPositionVo {
      */
     private Long updateUser;
 
-    private List<SysUserPositionRef> userPositionRefList;
+    private List<SysUserPositionRefVo> userPositionRefList;
 
 }

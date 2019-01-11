@@ -41,32 +41,37 @@ function initMainTable(isCheck,search){
         'scrollCollapse': true,
         'columns': [
             { 'data': "psnNbr", 'title': '人员编码', 'className': 'row-psnNbr' },
-            { 'data': "psnName", 'title': '姓名', 'className': 'row-psnName' ,
+            { 'data': "psnName", 'title': '姓名', 'className': 'row-psnName'},
+            { 'data': "acct", 'title': '主账号', 'className': 'row-typeName' ,
                 'render': function (data, type, row, meta) {
-                    if(row.typeName == '主账号'){
-                        return '<a href="editMainAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&acctId='+ row.accId + '&hType=mh">'+ row.psnName +'</a>'
-                    }else{
-                        return '<a href="editSubAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&acctId='+ row.accId +'&statusCd='+row.statusCd+'&hType=mh">'+ row.psnName +'</a>'
-                    } 
+                    return '<a href="editMainAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +
+                            '&orgId=' + orgId + '&acctId='+ row.accId + '&hType=mh">'+ row.acct +'</a>';
                 }
             },
-            { 'data': "typeName", 'title': '账号类型', 'className': 'row-typeName' },
-            { 'data': "acct", 'title': '账号', 'className': 'row-acc' },
+            { 'data': "slaveAcct", 'title': '从账号', 'className': 'row-acc' ,
+                'render': function (data, type, row, meta) {
+                   if(row.slaveAcct == null){
+                        return "-";
+                   }else{
+                        return '<a href="editSubAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +
+                                '&orgId=' + orgId + '&mainAcctId='+ row.accId +'&acctId='+ row.slaveAcctId +'&statusCd='+row.statusCd+'&hType=mh">'+ row.slaveAcct +'</a>';
+                   }
+                }
+            },
             { 'data': "orgName", 'title': '归属组织', 'className': 'row-org' ,
                 'render': function (data, type, row, meta) {
                     return '<span title="'+ row.orgName +'" class="orgNamePoint">'+row.orgName+'</span>';
                 }
             },
             { 'data': "statusCd", 'title': '状态', 'className': 'row-statusCd' ,
-            'render': function (data, type, row, meta) {
-                if(row.statusCd == 1000){
-                    return '正常';
-                }else{
-                    return '锁定';
+                'render': function (data, type, row, meta) {
+                    if(row.statusCd == 1000){
+                        return '正常';
+                    }else{
+                        return '锁定';
+                    }
                 }
             }
-            },
-            { 'data': "accId", 'title': '用户类型', 'className': 'row-acctId' }
         ],
         'language': {
             'emptyTable': '没有数据',  

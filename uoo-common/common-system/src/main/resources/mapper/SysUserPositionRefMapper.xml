@@ -26,8 +26,9 @@
         select SEQ_USER_POSITION_REF_ID.NEXTVAL from dual
     </select>
 
-    <select id="getUserPositionRef" resultType="cn.ffcs.uoo.system.entity.SysUserPositionRef">
-        select t2.*
+    <select id="getUserPositionRef" resultType="cn.ffcs.uoo.system.vo.SysUserPositionRefVo">
+        select t.*, t3.POSITION_NAME from
+        (select t2.*
         from SYS_DEPT_POSITION_REF t1,
               sys_user_position_ref t2
         where t1.status_cd = 1000
@@ -39,6 +40,7 @@
         <if test="userCode != null and userCode != '' ">
             and t2.user_code = #{userCode}
         </if>
+        ) t left join SYS_POSITION t3 on t.position_code = t3.position_code and t3.status_cd = 1000
     </select>
 
     <update id="delUserPositionDef" parameterType="cn.ffcs.uoo.system.entity.SysUserPositionRef">
