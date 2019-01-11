@@ -9,6 +9,7 @@ import cn.ffcs.uoo.system.service.SysUserPositionRefService;
 import cn.ffcs.uoo.system.util.StrUtil;
 import cn.ffcs.uoo.system.vo.ResponseResult;
 import cn.ffcs.uoo.system.vo.SysUserDeptPositionVo;
+import cn.ffcs.uoo.system.vo.SysUserPositionRefVo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -50,7 +51,9 @@ public class SysUserDeptRefController extends BaseController {
             return ResponseResult.createErrorResult(msg);
         }
         sysUserDeptRefService.addSysUserDeptRef(sysUserDeptRef);
-        for(SysUserPositionRef userPositionRef : userDeptPositionVo.getUserPositionRefList()){
+        for(SysUserPositionRefVo userPositionRefVo : userDeptPositionVo.getUserPositionRefList()){
+            SysUserPositionRef userPositionRef = new SysUserPositionRef();
+            BeanUtils.copyProperties(userPositionRefVo, userPositionRef);
             userPositionRef.setUserCode(sysUserDeptRef.getUserCode());
             userPositionRef.setCreateUser(sysUserDeptRef.getCreateUser());
             userPositionRef.setUpdateUser(sysUserDeptRef.getUpdateUser());

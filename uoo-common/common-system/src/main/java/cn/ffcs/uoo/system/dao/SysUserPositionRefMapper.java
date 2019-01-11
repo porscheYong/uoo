@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.system.dao;
 
 import cn.ffcs.uoo.system.entity.SysUserPositionRef;
+import cn.ffcs.uoo.system.vo.SysUserPositionRefVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,7 +19,7 @@ public interface SysUserPositionRefMapper extends BaseMapper<SysUserPositionRef>
 
     Long getId();
 
-    List<SysUserPositionRef> getUserPositionRef(@Param("userCode") String userCode, @Param("orgCode") String orgCode);
+    List<SysUserPositionRefVo> getUserPositionRef(@Param("userCode") String userCode, @Param("orgCode") String orgCode);
 
     void delUserPositionDef(@Param("userCode") String userCode, @Param("updateUser") Long updateUser);
 }

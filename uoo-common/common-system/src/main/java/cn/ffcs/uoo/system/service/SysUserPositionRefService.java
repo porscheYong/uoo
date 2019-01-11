@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.system.service;
 
 import cn.ffcs.uoo.system.entity.SysUserPositionRef;
+import cn.ffcs.uoo.system.vo.SysUserPositionRefVo;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public interface SysUserPositionRefService extends IService<SysUserPositionRef> 
      * @param updateUser
      * @return
      */
-    public Object updateSysUserPositionRef(List<SysUserPositionRef> sysUserPositionRef, String userCode, String orgCode, Long updateUser);
+    public Object updateSysUserPositionRef(List<SysUserPositionRefVo> sysUserPositionRef, String userCode, String orgCode, Long updateUser);
 
     /**
      * 删除
@@ -49,7 +50,7 @@ public interface SysUserPositionRefService extends IService<SysUserPositionRef> 
      * @param orgCode
      * @return
      */
-    public List<SysUserPositionRef> getUserPositionRef(String userCode, String orgCode);
+    public List<SysUserPositionRefVo> getUserPositionRef(String userCode, String orgCode);
 
     /**
      * 删除
