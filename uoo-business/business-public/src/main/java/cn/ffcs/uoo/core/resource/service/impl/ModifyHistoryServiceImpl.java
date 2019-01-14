@@ -1,22 +1,25 @@
 package cn.ffcs.uoo.core.resource.service.impl;
 
-import cn.ffcs.uoo.core.resource.entity.ModifyHistory;
-import cn.ffcs.uoo.core.resource.dao.ModifyHistoryMapper;
-import cn.ffcs.uoo.core.resource.service.ModifyHistoryService;
-import cn.ffcs.uoo.core.resource.util.StrUtil;
-import cn.ffcs.uoo.core.resource.vo.ModifyHistoryVo;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import de.danielbechler.diff.ObjectDifferBuilder;
-import de.danielbechler.diff.node.DiffNode;
-import de.danielbechler.diff.node.Visit;
-import org.springframework.stereotype.Service;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Date;
+
+import org.springframework.stereotype.Service;
+
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+
+import cn.ffcs.uoo.core.resource.dao.ModifyHistoryMapper;
+import cn.ffcs.uoo.core.resource.entity.ModifyHistory;
+import cn.ffcs.uoo.core.resource.service.ModifyHistoryService;
+import cn.ffcs.uoo.core.resource.util.StrUtil;
+import cn.ffcs.uoo.core.resource.vo.ModifyHistoryDTO;
+import de.danielbechler.diff.ObjectDifferBuilder;
+import de.danielbechler.diff.node.DiffNode;
+import de.danielbechler.diff.node.Visit;
 
 /**
  * <p>
@@ -225,6 +228,12 @@ public class ModifyHistoryServiceImpl extends ServiceImpl<ModifyHistoryMapper, M
             f.setAccessible(flag);
         }
         return objId;
+    }
+
+
+    @Override
+    public Page<ModifyHistoryDTO> selectPageDTO(Page<ModifyHistoryDTO> page, long tableId, long recordId) {
+        return baseMapper.selectPageDTO(page, tableId, recordId);
     }
 
 }

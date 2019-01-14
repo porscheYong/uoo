@@ -14,6 +14,7 @@ import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.core.resource.entity.ModifyHistory;
 import cn.ffcs.uoo.core.resource.service.ModifyHistoryService;
 import cn.ffcs.uoo.core.resource.util.StrUtil;
+import cn.ffcs.uoo.core.resource.vo.ModifyHistoryDTO;
 import cn.ffcs.uoo.core.resource.vo.ModifyHistoryVo;
 import cn.ffcs.uoo.core.vo.ResponseResult;
 import io.swagger.annotations.Api;
@@ -79,16 +80,15 @@ public class ModifyHistoryController {
         ret.setState(ResponseResult.STATE_ERROR);
         return ret;
     }
-    @SuppressWarnings("unchecked")
     @ApiOperation(value = "分页", notes = "分页")
     @UooLog(value = "分页", key = "listByRecord")
     @RequestMapping(value = "/listByRecord", method = RequestMethod.GET)
-    public ResponseResult<Page<ModifyHistory>> listByRecord(@RequestParam(value = "pageNo") Integer pageNo, @RequestParam(value = "pageSize") Integer pageSize,
+    public ResponseResult<Page<ModifyHistoryDTO>> listByRecord(@RequestParam(value = "pageNo") Integer pageNo, @RequestParam(value = "pageSize") Integer pageSize,
             @RequestParam(value="tableName")String tableName,@RequestParam(value="recordId")String recordId) {
-        ResponseResult<Page<ModifyHistory>> ret = new ResponseResult<>();
+        ResponseResult<Page<ModifyHistoryDTO>> ret = new ResponseResult<>();
         Long commonTableId = modifyHistoryService.getCommonTableId(tableName);
         if(commonTableId!=null){
-            Page<ModifyHistory> page = modifyHistoryService.selectPage(new Page<ModifyHistory>(pageNo,pageSize), Condition.create().eq("STATUS_CD", "1000").eq("TAB_ID", commonTableId).eq("RECORD_ID", recordId).orderBy("CREATE_DATE", false));
+            Page<ModifyHistoryDTO> page = modifyHistoryService.selectPageDTO(new Page<ModifyHistoryDTO>(pageNo,pageSize),  commonTableId.longValue() , Long.valueOf(recordId).longValue() );
             ret.setState(1000);
             ret.setData(page);
         }

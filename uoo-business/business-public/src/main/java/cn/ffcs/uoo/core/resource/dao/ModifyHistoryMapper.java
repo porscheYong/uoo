@@ -1,7 +1,12 @@
 package cn.ffcs.uoo.core.resource.dao;
 
-import cn.ffcs.uoo.core.resource.entity.ModifyHistory;
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.Page;
+
+import cn.ffcs.uoo.core.resource.entity.ModifyHistory;
+import cn.ffcs.uoo.core.resource.vo.ModifyHistoryDTO;
 
 /**
  * <p>
@@ -18,4 +23,5 @@ public interface ModifyHistoryMapper extends BaseMapper<ModifyHistory> {
     public Long getCommonTableId(String tableName);
 
     public String getSeqBatchNumber();
+    public Page<ModifyHistoryDTO> selectPageDTO(Page<ModifyHistoryDTO> page,@Param("tableId")long tableId,@Param("recordId")long recordId);
 }

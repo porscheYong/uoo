@@ -81,6 +81,9 @@ public class SysElementController {
     })
     @RequestMapping(value="/delete",method=RequestMethod.POST)
     public ResponseResult<Void> delete(@RequestBody SysElement fun){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser sysuser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        fun.setUpdateUser(sysuser.getUserId());
         return eleClient.delete(fun);
     }
 }
