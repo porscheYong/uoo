@@ -57,7 +57,7 @@ public class SysPositionController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getPositionRelPage", method = RequestMethod.GET)
-    public ResponseResult<Page<SysPositionVo>> getPositionRelPage(@RequestParam(value = "positionId",required = false)String positionId,
+    public ResponseResult<Page<SysPositionVo>> getPositionRelPage(@RequestParam(value = "positionCode",required = false)String positionCode,
                                                                   @RequestParam(value = "search",required = false)String search,
                                                                   @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                                   @RequestParam(value = "pageNo",required = false)Integer pageNo,
@@ -68,7 +68,7 @@ public class SysPositionController {
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         userId = currentLoginUser.getUserId();
         accout = currentLoginUser.getAccout();
-        return sysPositionClient.getPositionRelPage(positionId,search,pageSize,pageNo,isSearchlower,
+        return sysPositionClient.getPositionRelPage(positionCode,search,pageSize,pageNo,isSearchlower,
                                                    userId,accout);
     }
 

@@ -43,10 +43,9 @@ public interface SysPositionService extends IService<SysPosition> {
 
 
 
-    public List<TreeNodeVo> selectPositionTree(String positionId);
+    public List<TreeNodeVo> selectPositionTree(String positionCode);
 
-    public List<TreeNodeVo> selectTarAllPositionTree(String positionId);
-
+    public List<TreeNodeVo> selectTarAllPositionTree(String positionCode);
 
     public Page<SysPositionVo> getPositionRelPage(SysPositionVo vo);
 

@@ -90,60 +90,27 @@
     <!--全量组织人员关系查询-->
     <select id="selectAllPerOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
         SELECT *
-           FROM (SELECT AA.ORG_ID        orgId,
-                        AA.PERSONNEL_ID  personnelId,
-                        AA.POST_ID       postId,
-                        AA.REF_TYPE      refType,
-                        AA.PROPERTY      property,
-                        AA.DOUBLE_NAME   doubleName,
-                        AA.ORG_NAME      orgName,
-                        AA.Full_Name     fullName,
-                        AA.PSN_NAME     PsnName,
-                        AA.PSN_CODE     psnCode,
-                        AA.PSN_NBR      psnNbr,
-                        AA.NC_CODE      ncCode,
-                        ORG_TREE_NAME    orgTreeName,
-                        AA.STATUS_CD     statusCd,
-                        AA.ORG_TREE_ID   orgTreeId,
-                        AA.ORG_PERSON_ID orgPersonId,
-                        AA.SORT          sort
+           FROM (SELECT AA.ORG_ID orgId,AA.PERSONNEL_ID  personnelId,
+                        AA.POST_ID postId,AA.REF_TYPE refType,AA.PROPERTY property,
+                        AA.DOUBLE_NAME  doubleName,AA.ORG_NAME orgName,AA.Full_Name fullName,
+                        AA.PSN_NAME PsnName,AA.PSN_CODE psnCode,AA.PSN_NBR psnNbr,
+                        AA.NC_CODE ncCode,ORG_TREE_NAME orgTreeName,AA.STATUS_CD statusCd,
+                        AA.ORG_TREE_ID orgTreeId,AA.ORG_PERSON_ID orgPersonId,
+                        AA.SORT sort,pct.content mobile,pc.cert_no certNo
                    FROM (SELECT distinct tbOrgPersonRel.ORG_PERSON_ID,
-                                tbOrgPersonRel.ORG_ID,
-                                tbOrgPersonRel.PERSONNEL_ID,
-                                tbOrgPersonRel.POST_ID,
-                                tbOrgPersonRel.REF_TYPE,
-                                tbOrgPersonRel.PROPERTY,
-                                tbOrgPersonRel.DOUBLE_NAME,
-                                tbOrgPersonRel.SORT,
-                                tbOrgPersonRel.STATUS_CD,
-                                tbOrgPersonRel.CREATE_DATE,
-                                tbOrgPersonRel.CREATE_USER,
-                                tbOrgPersonRel.UPDATE_DATE,
-                                tbOrgPersonRel.UPDATE_USER,
-                                tbOrgPersonRel.STATUS_DATE,
-                                E.ORG_TREE_NAME,
-                                E.ORG_TREE_ID,
-                                D.ORG_NAME,
-                                D.Full_Name,
-                                A.NC_CODE,
-                                A.PSN_NBR,
-                                A.PSN_CODE,
-                                A.PSN_NAME
+                                tbOrgPersonRel.ORG_ID,tbOrgPersonRel.PERSONNEL_ID,tbOrgPersonRel.POST_ID,
+                                tbOrgPersonRel.REF_TYPE,tbOrgPersonRel.PROPERTY,tbOrgPersonRel.DOUBLE_NAME,
+                                tbOrgPersonRel.SORT,tbOrgPersonRel.STATUS_CD,tbOrgPersonRel.CREATE_DATE,
+                                tbOrgPersonRel.CREATE_USER,tbOrgPersonRel.UPDATE_DATE,tbOrgPersonRel.UPDATE_USER,
+                                tbOrgPersonRel.STATUS_DATE,E.ORG_TREE_NAME,
+                                E.ORG_TREE_ID,D.ORG_NAME,
+                                D.Full_Name,A.NC_CODE,A.PSN_NBR,A.PSN_CODE,A.PSN_NAME
                            FROM
-                                TB_PERSONNEL        A,
-                                TB_ORG_PERSON_REL        tbOrgPersonRel,
-                                TB_ORGTREE_ORGPERSON_REL C,
-                                TB_ORG  D,
-                                TB_ORG_TREE             E,
-                                TB_ORG_LEVEL            F,
-                                TB_ORG_ORGTYPE_REL  G
-                          WHERE A.STATUS_CD = '1000'
-                            AND tbOrgPersonRel.STATUS_CD = '1000'
-                            AND C.STATUS_CD = '1000'
-                            AND D.STATUS_CD = '1000'
-                            AND E.STATUS_CD = '1000'
-                            AND F.STATUS_CD = '1000'
-                            AND G.STATUS_CD = '1000'
+                                TB_PERSONNEL  A,TB_ORG_PERSON_REL tbOrgPersonRel,TB_ORGTREE_ORGPERSON_REL C,
+                                TB_ORG  D,TB_ORG_TREE E,TB_ORG_LEVEL F,TB_ORG_ORGTYPE_REL  G
+                          WHERE A.STATUS_CD = '1000'　AND tbOrgPersonRel.STATUS_CD = '1000'
+                            AND C.STATUS_CD = '1000'　AND D.STATUS_CD = '1000'　AND E.STATUS_CD = '1000'
+                            AND F.STATUS_CD = '1000'　AND G.STATUS_CD = '1000'
                             AND A.PERSONNEL_ID = tbOrgPersonRel.PERSONNEL_ID
                 <if test="psonOrgVo.tabOrgPerRelParams!='' and psonOrgVo.tabOrgPerRelParams!=null">
                     AND ${psonOrgVo.tabOrgPerRelParams}
@@ -160,9 +127,17 @@
                             AND tbOrgPersonRel.ORG_PERSON_ID=C.ORG_PERSON_ID
                             AND E.ORG_TREE_ID = C.ORG_TREE_ID
                             AND E.ORG_TREE_ID = F.ORG_TREE_ID
-                            AND E.ORG_TREE_ID = #{psonOrgVo.orgTreeId}) AA) AB WHERE 1=1
+                            AND E.ORG_TREE_ID = #{psonOrgVo.orgTreeId}) AA
+
+                    LEFT JOIN TB_CONTACT PCT ON PCT.STATUS_CD='1000' AND PCT.CONTACT_TYPE=1 AND PCT.PERSONNEL_ID=AA.PERSONNEL_ID
+                    LEft join TB_CERT pc on pc.STATUS_CD='1000' and pc.cert_type=1 and pc.personnel_id=AA.PERSONNEL_ID
+
+                    ) AB WHERE 1=1
         <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
-            AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR PSNCODE LIKE '%'||#{psonOrgVo.search}||'%' OR ORGNAME LIKE '%'||#{psonOrgVo.search}||'%')
+            AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR
+                MOBILE  LIKE '%'||#{psonOrgVo.search}||'%' OR
+                CERTNO LIKE '%'||#{psonOrgVo.search}||'%'
+                 )
         </if>
     </select>
     <!--组织人员关系查询-->
@@ -171,46 +146,20 @@
         <choose>
         <when test='psonOrgVo.isSearchlower=="0"'>
             SELECT * FROM (
-            WITH ORGFULL AS (SELECT FULL_NAME,
-            ORG_NAME,
-            ORG_ID,
-            PARENT_ORG_ID,
-            SORT,
-            LOC_ID,
-            AREA_CODE_ID,
-            ORG_CODE,
-            STATUS_CD,
-            ORG_TREE_NAME
-            FROM (SELECT distinct A.ORG_ID,
-            A.SORT,
-            A.ORG_NAME,
-            A.LOC_ID,
-            A.AREA_CODE_ID,
-            A.ORG_CODE,
-            A.STATUS_CD,
-            A.FULL_NAME,
-            B.PARENT_ORG_ID,
-            C.ORG_TREE_NAME
-            FROM TB_ORG                  A,
-            TB_ORG_REL              B,
-            TB_ORG_TREE             C,
-            TB_OGT_ORG_RELTYPE_CONF D,
-            TB_ORG_REL_TYPE         E,
-            TB_ORG_ORGTYPE_REL  G
-            WHERE A.STATUS_CD = 1000
-            AND B.STATUS_CD = 1000
-            AND C.STATUS_CD = 1000
-            AND D.Status_Cd = 1000
-            AND E.STATUS_CD = 1000
-            AND G.STATUS_CD = 1000
-            AND G.ORG_ID = A.ORG_ID
-            AND A.ORG_ID = B.ORG_ID
+            WITH ORGFULL AS (SELECT FULL_NAME,ORG_NAME,ORG_ID,PARENT_ORG_ID,
+            SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,STATUS_CD,ORG_TREE_NAME
+            FROM (SELECT distinct A.ORG_ID,A.SORT,A.ORG_NAME,
+            A.LOC_ID,A.AREA_CODE_ID,A.ORG_CODE,A.STATUS_CD,A.FULL_NAME,
+            B.PARENT_ORG_ID,C.ORG_TREE_NAME
+            FROM TB_ORG A,TB_ORG_REL B,TB_ORG_TREE C,TB_OGT_ORG_RELTYPE_CONF D,
+            TB_ORG_REL_TYPE E,TB_ORG_ORGTYPE_REL G
+            WHERE A.STATUS_CD = 1000 AND B.STATUS_CD = 1000 AND C.STATUS_CD = 1000
+            AND D.Status_Cd = 1000 AND E.STATUS_CD = 1000 AND G.STATUS_CD = 1000
+            AND G.ORG_ID = A.ORG_ID AND A.ORG_ID = B.ORG_ID
             <if test="psonOrgVo.tabOrgOrgTypeParams!='' and psonOrgVo.tabOrgOrgTypeParams!=null">
                 AND ${psonOrgVo.tabOrgOrgTypeParams}
             </if>
-            AND B.REF_CODE = E.REF_CODE
-            and D.ORG_REL_TYPE_ID = E.ORG_REL_TYPE_ID
-            AND C.ORG_TREE_ID = D.ORG_TREE_ID
+            AND B.REF_CODE = E.REF_CODE and D.ORG_REL_TYPE_ID = E.ORG_REL_TYPE_ID AND C.ORG_TREE_ID = D.ORG_TREE_ID
             AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
             AND B.ORG_ID = #{psonOrgVo.orgId}
             <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
@@ -218,39 +167,19 @@
             </if>
             ) AA)
             SELECT * FROM (
-            SELECT AA.ORG_ID orgId,
-            AA.PERSONNEL_ID personnelId,
-            AA.POST_ID postId,
-            AA.REF_TYPE refType,
-            AA.PROPERTY property,
-            AA.DOUBLE_NAME doubleName,
-            AA.ORG_NAME orgName,
-            AA.Full_Name fullName,
-            PER.PSN_NAME PsnName,
-            PER.PSN_CODE psnCode,
-            PER.PSN_NBR psnNbr,
-            PER.NC_CODE ncCode,
-            ORG_TREE_NAME orgTreeName,
-            AA.STATUS_CD statusCd,
-            AA.ORG_TREE_ID orgTreeId,
-            AA.ORG_PERSON_ID orgPersonId,
-            AA.SORT sort
+            SELECT AA.ORG_ID orgId,AA.PERSONNEL_ID personnelId,AA.POST_ID postId,AA.REF_TYPE refType,
+            AA.PROPERTY property,AA.DOUBLE_NAME doubleName,AA.ORG_NAME orgName,AA.Full_Name fullName,
+            PER.PSN_NAME PsnName,PER.PSN_CODE psnCode,PER.PSN_NBR psnNbr,PER.NC_CODE ncCode,
+            ORG_TREE_NAME orgTreeName,AA.STATUS_CD statusCd,AA.ORG_TREE_ID orgTreeId,
+            AA.ORG_PERSON_ID orgPersonId,AA.SORT sort,pct.content mobile,pc.cert_no certNo
             FROM (SELECT
-            tbOrgPersonRel.ORG_PERSON_ID,
-            tbOrgPersonRel.ORG_ID,
-            tbOrgPersonRel.PERSONNEL_ID,
-            tbOrgPersonRel.POST_ID,
-            tbOrgPersonRel.REF_TYPE,
-            tbOrgPersonRel.PROPERTY,
-            tbOrgPersonRel.DOUBLE_NAME,
-            tbOrgPersonRel.SORT,
-            tbOrgPersonRel.STATUS_CD,
-            tbOrgPersonRel.CREATE_DATE,
-            tbOrgPersonRel.CREATE_USER,
-            tbOrgPersonRel.UPDATE_DATE,
-            tbOrgPersonRel.UPDATE_USER,
-            tbOrgPersonRel.STATUS_DATE,
-            B.ORG_TREE_ID,D.ORG_TREE_NAME,D.ORG_NAME,D.Full_Name FROM TB_ORG_PERSON_REL tbOrgPersonRel, TB_ORGTREE_ORGPERSON_REL B ,ORGFULL D
+            tbOrgPersonRel.ORG_PERSON_ID,tbOrgPersonRel.ORG_ID,tbOrgPersonRel.PERSONNEL_ID,
+            tbOrgPersonRel.POST_ID,tbOrgPersonRel.REF_TYPE,tbOrgPersonRel.PROPERTY,
+            tbOrgPersonRel.DOUBLE_NAME,tbOrgPersonRel.SORT,tbOrgPersonRel.STATUS_CD,
+            tbOrgPersonRel.CREATE_DATE,tbOrgPersonRel.CREATE_USER,tbOrgPersonRel.UPDATE_DATE,
+            tbOrgPersonRel.UPDATE_USER,tbOrgPersonRel.STATUS_DATE,
+            B.ORG_TREE_ID,D.ORG_TREE_NAME,D.ORG_NAME,D.Full_Name
+            FROM TB_ORG_PERSON_REL tbOrgPersonRel, TB_ORGTREE_ORGPERSON_REL B ,ORGFULL D
             WHERE tbOrgPersonRel.STATUS_CD = '1000' AND B.STATUS_CD='1000' AND D.STATUS_CD='1000'
             AND tbOrgPersonRel.ORG_PERSON_ID=B.ORG_PERSON_ID
             <if test="psonOrgVo.tabOrgPerRelParams!='' and psonOrgVo.tabOrgPerRelParams!=null">
@@ -263,9 +192,14 @@
             </if>
             ) AA
             LEFT JOIN TB_PERSONNEL PER ON PER.STATUS_CD='1000' AND PER.PERSONNEL_ID = AA.PERSONNEL_ID
+            LEFT JOIN TB_CONTACT PCT ON PCT.STATUS_CD='1000' AND PCT.CONTACT_TYPE=1 AND PCT.PERSONNEL_ID=AA.PERSONNEL_ID
+            LEft join TB_CERT pc on pc.STATUS_CD='1000' and pc.cert_type=1 and pc.personnel_id=AA.PERSONNEL_ID
             ) AB where 1=1
             <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
-                AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR PSNCODE LIKE '%'||#{psonOrgVo.search}||'%' OR ORGNAME LIKE '%'||#{psonOrgVo.search}||'%')
+                AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR
+                     MOBILE  LIKE '%'||#{psonOrgVo.search}||'%' OR
+                     CERTNO LIKE '%'||#{psonOrgVo.search}||'%'
+                )
             </if>
             )
             <if test="psonOrgVo.sortField!=null and psonOrgVo.sortField!='' and psonOrgVo.sortOrder!=null and psonOrgVo.sortOrder!='' ">
@@ -274,85 +208,39 @@
         </when>
         <otherwise>
             SELECT * FROM (
-            WITH ORGFULL AS (SELECT FULL_NAME,
-            ORG_NAME,
-            ORG_ID,
-            PARENT_ORG_ID,
-            SORT,
-            LOC_ID,
-            AREA_CODE_ID,
-            ORG_CODE,
-            ORG_TREE_NAME
-            FROM (SELECT distinct A.ORG_ID,
-            A.SORT,
-            A.ORG_NAME,
-            A.LOC_ID,
-            A.AREA_CODE_ID,
-            A.ORG_CODE,
-            A.FULL_NAME,
-            B.PARENT_ORG_ID,
-            C.ORG_TREE_NAME
-            FROM TB_ORG  A,
-            TB_ORG_REL              B,
-            TB_ORG_TREE             C,
-            TB_OGT_ORG_RELTYPE_CONF D,
-            TB_ORG_REL_TYPE         E,
-            TB_ORG_ORGTYPE_REL  G
-            WHERE A.STATUS_CD = 1000
-            AND B.STATUS_CD = 1000
-            AND C.STATUS_CD = 1000
-            AND D.Status_Cd = 1000
-            AND E.STATUS_CD = 1000
-            AND G.STATUS_CD = 1000
-            AND G.ORG_ID = A.ORG_ID
-            AND A.ORG_ID = B.ORG_ID
+            WITH ORGFULL AS (SELECT FULL_NAME,ORG_NAME,ORG_ID,
+            PARENT_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE,ORG_TREE_NAME
+            FROM (SELECT distinct A.ORG_ID,A.SORT,A.ORG_NAME,A.LOC_ID,
+            A.AREA_CODE_ID,A.ORG_CODE,A.FULL_NAME,B.PARENT_ORG_ID,C.ORG_TREE_NAME
+            FROM TB_ORG  A,TB_ORG_REL B,TB_ORG_TREE C,TB_OGT_ORG_RELTYPE_CONF D,
+            TB_ORG_REL_TYPE E,TB_ORG_ORGTYPE_REL G
+            WHERE A.STATUS_CD = 1000 AND B.STATUS_CD = 1000 AND C.STATUS_CD = 1000
+            AND D.Status_Cd = 1000 AND E.STATUS_CD = 1000 AND G.STATUS_CD = 1000
+            AND G.ORG_ID = A.ORG_ID AND A.ORG_ID = B.ORG_ID
             <if test="psonOrgVo.tabOrgOrgTypeParams!='' and psonOrgVo.tabOrgOrgTypeParams!=null">
                 AND ${psonOrgVo.tabOrgOrgTypeParams}
             </if>
             <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
                 AND ${psonOrgVo.tabOrgParams}
             </if>
-            AND B.REF_CODE = E.REF_CODE
-            AND D.ORG_REL_TYPE_ID = E.ORG_REL_TYPE_ID
+            AND B.REF_CODE = E.REF_CODE AND D.ORG_REL_TYPE_ID = E.ORG_REL_TYPE_ID
             AND C.ORG_TREE_ID = D.ORG_TREE_ID
             AND C.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
             ) AA
             START WITH ORG_ID = #{psonOrgVo.orgId}
             CONNECT BY  PRIOR AA.ORG_ID =  AA.PARENT_ORG_ID)
             SELECT * FROM (
-            SELECT AA.ORG_ID orgId,
-            AA.PERSONNEL_ID personnelId,
-            AA.POST_ID postId,
-            AA.REF_TYPE refType,
-            AA.PROPERTY property,
-            AA.DOUBLE_NAME doubleName,
-            AA.ORG_NAME orgName,
-            AA.Full_Name fullName,
-            PER.PSN_NAME PsnName,
-            PER.PSN_CODE psnCode,
-            PER.PSN_NBR psnNbr,
-            PER.NC_CODE ncCode,
-            <!--POST.POST_NAME postName,-->
-            ORG_TREE_NAME orgTreeName,
-            <!--CTA.CONTENT mobile,-->
-            AA.STATUS_CD statusCd,
-            AA.ORG_TREE_ID orgTreeId,
-            AA.ORG_PERSON_ID orgPersonId,
-            AA.SORT sort
-            FROM (SELECT  tbOrgPersonRel.ORG_PERSON_ID,
-            tbOrgPersonRel.ORG_ID,
-            tbOrgPersonRel.PERSONNEL_ID,
-            tbOrgPersonRel.POST_ID,
-            tbOrgPersonRel.REF_TYPE,
-            tbOrgPersonRel.PROPERTY,
-            tbOrgPersonRel.DOUBLE_NAME,
-            tbOrgPersonRel.SORT,
-            tbOrgPersonRel.STATUS_CD,
-            tbOrgPersonRel.CREATE_DATE,
-            tbOrgPersonRel.CREATE_USER,
-            tbOrgPersonRel.UPDATE_DATE,
-            tbOrgPersonRel.UPDATE_USER,
-            B.ORG_TREE_ID,
+            SELECT AA.ORG_ID orgId,AA.PERSONNEL_ID personnelId,
+            AA.POST_ID postId,AA.REF_TYPE refType,AA.PROPERTY property,AA.DOUBLE_NAME doubleName,
+            AA.ORG_NAME orgName,AA.Full_Name fullName,PER.PSN_NAME PsnName,PER.PSN_CODE psnCode,
+            PER.PSN_NBR psnNbr,PER.NC_CODE ncCode,ORG_TREE_NAME orgTreeName,AA.STATUS_CD statusCd,
+            AA.ORG_TREE_ID orgTreeId,AA.ORG_PERSON_ID orgPersonId,AA.SORT sort,
+            pct.content mobile,pc.cert_no certNo
+            FROM (SELECT  tbOrgPersonRel.ORG_PERSON_ID,tbOrgPersonRel.ORG_ID,
+            tbOrgPersonRel.PERSONNEL_ID,tbOrgPersonRel.POST_ID,tbOrgPersonRel.REF_TYPE,
+            tbOrgPersonRel.PROPERTY,tbOrgPersonRel.DOUBLE_NAME,tbOrgPersonRel.SORT,
+            tbOrgPersonRel.STATUS_CD,tbOrgPersonRel.CREATE_DATE,tbOrgPersonRel.CREATE_USER,
+            tbOrgPersonRel.UPDATE_DATE,tbOrgPersonRel.UPDATE_USER,B.ORG_TREE_ID,
             tbOrgPersonRel.STATUS_DATE,D.ORG_TREE_NAME,D.ORG_NAME,D.Full_Name FROM TB_ORG_PERSON_REL tbOrgPersonRel, TB_ORGTREE_ORGPERSON_REL B ,ORGFULL D
             WHERE tbOrgPersonRel.STATUS_CD = '1000' AND B.STATUS_CD='1000'
             AND tbOrgPersonRel.ORG_PERSON_ID=B.ORG_PERSON_ID
@@ -369,12 +257,13 @@
             </if>
             ) AA
             LEFT JOIN TB_PERSONNEL PER ON PER.STATUS_CD='1000' AND PER.PERSONNEL_ID = AA.PERSONNEL_ID
-           <!-- LEFT JOIN TB_POST POST ON POST.STATUS_CD='1000' AND POST.POST_ID = AA.POST_ID
-            LEFT JOIN TB_CONTACT CTA ON  CTA.STATUS_CD='1000' AND CTA.PERSONNEL_ID = AA.PERSONNEL_ID
-            AND CTA.FIRST_FLAG=1 AND CTA.CONTACT_TYPE=1-->
+            LEFT JOIN TB_CONTACT PCT ON PCT.STATUS_CD='1000' AND PCT.CONTACT_TYPE=1 AND PCT.PERSONNEL_ID=AA.PERSONNEL_ID
+            LEft join TB_CERT pc on pc.STATUS_CD='1000' and pc.cert_type=1 and pc.personnel_id=AA.PERSONNEL_ID
             ) AB where 1=1
             <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
-                AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR PSNCODE LIKE '%'||#{psonOrgVo.search}||'%' OR ORGNAME LIKE '%'||#{psonOrgVo.search}||'%')
+                AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR
+                     MOBILE  LIKE '%'||#{psonOrgVo.search}||'%' OR
+                     CERTNO LIKE '%'||#{psonOrgVo.search}||'%')
             </if>
             )
             <if test="psonOrgVo.sortField!=null and psonOrgVo.sortField!='' and psonOrgVo.sortOrder!=null and psonOrgVo.sortOrder!='' ">
@@ -577,9 +466,11 @@
         T.FULL_NAME ORGNAME,
         T.acct_org_rel_id acctOrgRelId,
         cc.slave_acct slaveAcct,
-        cc.slave_acct_id slaveAcctId
+        cc.slave_acct_id slaveAcctId,
+        T.ORG_ID orgId,
+        T.ORG_TREE_ID orgTreeId
         FROM (SELECT distinct T1.*, tbAccountOrgRel.ORG_ID,tbAccountOrgRel.acct_org_rel_id, T3.FULL_NAME,
-        T6.PSN_NAME ,T6.PSN_CODE ,T6.PSN_NBR ,T6.NC_CODE
+        T6.PSN_NAME ,T6.PSN_CODE ,T6.PSN_NBR ,T6.NC_CODE,T4.ORG_TREE_ID
         FROM TB_ACCT T1, TB_ACCOUNT_ORG_REL tbAccountOrgRel, TB_ORG T3,TB_ORG_LEVEL T4,TB_PERSONNEL T6,
         TB_ORG_ORGTYPE_REL T5
         WHERE T1.STATUS_CD = 1000
@@ -896,9 +787,11 @@
                 t.FULL_NAME orgName,
                 t.acct_org_rel_id acctOrgRelId,
                 v.slave_acct slaveAcct,
-                v.slave_acct_id slaveAcctId
+                v.slave_acct_id slaveAcctId,
+                t.org_Id orgId,
+                t.org_tree_id orgTreeId
                 from (select t1.*, tbAccountOrgRel.org_id,tbAccountOrgRel.acct_org_rel_id, tt.FULL_NAME,
-                t3.psn_name,t3.PSN_CODE,t3.PSN_NBR,t3.NC_CODE
+                t3.psn_name,t3.PSN_CODE,t3.PSN_NBR,t3.NC_CODE,tbAccountOrgRel.org_tree_id
                 from tb_acct t1, tb_account_org_rel tbAccountOrgRel, ORGFULL tt,tb_personnel t3
                 where t1.status_cd = 1000 and t3.status_cd=1000
                 and tbAccountOrgRel.status_cd = 1000
@@ -975,9 +868,11 @@
                 t.FULL_NAME orgName,
                 t.acct_org_rel_id acctOrgRelId,
                 v.slave_acct slaveAcct,
-                v.slave_acct_id slaveAcctId
+                v.slave_acct_id slaveAcctId,
+                t.org_Id orgId,
+                t.org_tree_id orgTreeId
                 from (select t1.*, tbAccountOrgRel.org_id,tbAccountOrgRel.acct_org_rel_id, tt.FULL_NAME,
-                t3.psn_name,t3.PSN_CODE,t3.PSN_NBR,t3.NC_CODE
+                t3.psn_name,t3.PSN_CODE,t3.PSN_NBR,t3.NC_CODE,tbAccountOrgRel.org_tree_id
                 from tb_acct t1, tb_account_org_rel tbAccountOrgRel, ORGFULL tt,tb_personnel t3
                 where t1.status_cd = 1000 and t3.status_cd=1000
                 and tbAccountOrgRel.status_cd = 1000

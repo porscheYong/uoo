@@ -36,5 +36,15 @@
     <select id="getSeqBatchNumber" resultType="java.lang.Long">
         SELECT SEQ_BATCH_NUMBER.NEXTVAL FROM DUAL
     </select>
-
+    
+    <select id="selectPageDTO" resultType="cn.ffcs.uoo.core.resource.vo.ModifyHistoryDTO">
+        select m.*,u.ACCOUNT as userAccount,u.USER_NAME as userName,o.ORG_NAME as userOrgName from TB_MODIFY_HISTORY m 
+        left join SYS_USER u on u.USER_ID=m.CREATE_USER
+        left join SYS_USER_DEPT_REF udr on udr.USER_CODE=u.USER_CODE
+        left join SYS_ORGANIZATION o on o.ORG_CODE= udr.ORG_CODE
+        where u.STATUS_CD='1000' and udr.STATUS_CD='1000' and o.STATUS_CD='1000'
+        and m.TAB_ID=#{tableId} and m.RECORD_ID=#{recordId}
+        order by m.CREATE_DATE desc
+    </select>
+    
 </mapper>

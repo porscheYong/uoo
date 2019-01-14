@@ -201,7 +201,7 @@ public class SysOrganizationController {
     @ApiOperation(value = "编辑组织", notes = "编辑组织")
     @ApiImplicitParams({
     })
-    @UooLog(value = "编辑组织", key = "addOrg")
+    @UooLog(value = "编辑组织", key = "updateOrg")
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
     public ResponseResult<String> updateOrg(@RequestBody SysOrganizationVo vo) throws IOException {
         ResponseResult<String> ret = new ResponseResult<String>();

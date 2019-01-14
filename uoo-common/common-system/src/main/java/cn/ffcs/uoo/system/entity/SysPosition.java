@@ -40,8 +40,8 @@ public class SysPosition extends Model<SysPosition> {
     /**
      * 上级职位
      */
-    @TableField("P_POSITION_ID")
-    private Long pPositionId;
+    @TableField("PARENT_POSITION_CODE")
+    private String parentPositionCode;
     /**
      * 引用电信管理区域
      */
@@ -113,12 +113,12 @@ public class SysPosition extends Model<SysPosition> {
         this.positionCode = positionCode;
     }
 
-    public Long getpPositionId() {
-        return pPositionId;
+    public String getParentPositionCode() {
+        return parentPositionCode;
     }
 
-    public void setpPositionId(Long pPositionId) {
-        this.pPositionId = pPositionId;
+    public void setParentPositionCode(String parentPositionCode) {
+        this.parentPositionCode = parentPositionCode;
     }
 
     public String getRegionNbr() {
@@ -204,7 +204,7 @@ public class SysPosition extends Model<SysPosition> {
         ", positionId=" + positionId +
         ", positionName=" + positionName +
         ", positionCode=" + positionCode +
-        ", pPositionId=" + pPositionId +
+        ", parentPositionCode=" + parentPositionCode +
         ", regionNbr=" + regionNbr +
         ", sortNum=" + sortNum +
         ", notes=" + notes +

@@ -25,7 +25,7 @@ public class SysPositionClientHystrix implements SysPositionClient {
     }
 
     @Override
-    public ResponseResult<Page<SysPositionVo>> getPositionRelPage(String positionId,
+    public ResponseResult<Page<SysPositionVo>> getPositionRelPage(String positionCode,
                                                                   String search,
                                                                   Integer pageSize,
                                                                   Integer pageNo,
