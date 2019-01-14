@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.position.controller;
 
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.position.dto.TbPostLocation;
 import cn.ffcs.uoo.web.maindata.position.service.TbPostLocationClient;
 import cn.ffcs.uoo.web.maindata.position.vo.ResponseResult;
@@ -31,6 +33,7 @@ public class TbPostLocationController {
 
     @ApiOperation(value = "新增职位行政区域", notes = "新增职位行政区域")
     @ApiImplicitParam(name = "tbPostLocation", value = "职位行政区域", required = true, dataType = "TbPostLocation")
+    @OperateLog(type= OperateType.ADD,module="岗位职位模块",methods="新增职位行政区域",desc="新增职位行政区域")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseResult<TbPostLocation> addTbPostLocation(@RequestBody TbPostLocation tbPostLocation) {
         return tbPostLocationClient.addTbPostLocation(tbPostLocation);
@@ -41,6 +44,7 @@ public class TbPostLocationController {
             @ApiImplicitParam(name = "postLocationId", value = "职位行政区域标识", required = true, dataType = "Long"),
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
+    @OperateLog(type= OperateType.SELECT,module="岗位职位模块",methods="删除职位行政区域",desc="删除职位行政区域")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
     public ResponseResult<TbPostLocation> removeTbPostLocation(Long postLocationId, Long updateUser) {
         return tbPostLocationClient.removeTbPostLocation(postLocationId, updateUser);
