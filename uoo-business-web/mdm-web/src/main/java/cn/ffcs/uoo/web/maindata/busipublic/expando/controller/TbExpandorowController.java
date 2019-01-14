@@ -2,6 +2,8 @@ package cn.ffcs.uoo.web.maindata.busipublic.expando.controller;
 
 import cn.ffcs.uoo.web.maindata.busipublic.expando.dto.TbExpandorow;
 import cn.ffcs.uoo.web.maindata.busipublic.expando.service.TbExpandorowClient;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -27,12 +29,13 @@ public class TbExpandorowController {
     @Resource
     private TbExpandorowClient tbExpandorowClient;
 
-    @ApiOperation(value = "查询扩展行列表", notes = "根据表标识资源标识查询扩展字段列表")
+    @ApiOperation(value = "查询扩展行列表", notes = "查询扩展行列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "tableId", value = "系统表标识",required = true, dataType = "Long", paramType = "path"),
             @ApiImplicitParam(name = "resourceId", value = "资源标识",required = true, dataType = "String", paramType = "path"),
             @ApiImplicitParam(name = "recordId", value = "业务记录标识",required = true, dataType = "String", paramType = "path")
     })
+    @OperateLog(type= OperateType.SELECT,module="扩展模块",methods="查询扩展行列表",desc="查询扩展行列表")
     @RequestMapping(value = "/getList/{tableId}/{resourceId}/{recordId}", method = RequestMethod.GET)
     public List<TbExpandorow> queryRowList(@PathVariable Long tableId, @PathVariable String resourceId, @PathVariable String recordId) {
         return tbExpandorowClient.queryRowList(tableId, resourceId, recordId);

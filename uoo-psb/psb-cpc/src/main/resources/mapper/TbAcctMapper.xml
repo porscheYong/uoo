@@ -25,4 +25,9 @@
     CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, USER_HOST_TYPE, 
     ENABLE_DATE, DISABLE_DATE, ACCT_TYPE
   </sql>
+
+  <select id="selectByPersonnelId" resultMap="BaseResultMap">
+    select * from tb_acct where personnel_id = #{personnelId} and status_cd = '1000'
+  </select>
+
 </mapper>

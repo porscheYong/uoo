@@ -15,6 +15,8 @@ var acctId = getQueryString('acctId');
 var statusCd = getQueryString('statusCd');
 var personnelId = getQueryString('personnelId');
 var orgTreeName = getQueryString('orgTreeName');
+var curOrgId = getQueryString('curOrgId');
+var curOrgTreeId = getQueryString('curOrgTreeId');
 
 var table;
 var slaveTable;
@@ -180,7 +182,7 @@ function initOrgTable(results){
           { 'data': "fullName", 'title': '组织名称', 'className': 'row-fullName' ,
           'render': function (data, type, row, meta) {
             if(row.fullName != null){
-                return row.fullName;
+                return '<span title="'+ row.fullName +'" style="cursor:pointer;">'+row.fullName+'</span>';
               }else{
                 return "";
             }
@@ -303,6 +305,7 @@ function initSubAcctInfoCheck(results){       //初始化从账号信息(查看)
     isNull("#cerNoLable",results.certNo);
     isNull("#effectDateLable",results.tbSlaveAcct.enableDate);
     isNull("#invalidDateLable",results.tbSlaveAcct.disableDate);
+    setAcctHref();
 
     for(var i=0;i<cerTypeList.length;i++){
         if(results.certType === cerTypeList[i].itemValue){
@@ -335,6 +338,20 @@ function initSubAcctInfoCheck(results){       //初始化从账号信息(查看)
       }
     userRoleList = results.tbRolesList;
     window.localStorage.setItem('userRoleList',JSON.stringify(userRoleList));
+}
+
+//设置主账号点击跳转
+function setAcctHref(){
+    $http.get('/user/getUser', {   
+        acctId: mainAcctId,
+        userType: "1"
+    }, function (data) {
+        $("#acctLink").text(data.tbAcct.acct);
+        $("#acctLink").attr("href","editMainAccount.html?curOrgId="+curOrgId+"&curOrgTreeId="+curOrgTreeId+"&orgTreeId=" + orgTreeId + 
+                                    "&hType=mh" +"&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&acctId=" + mainAcctId);
+    }, function (err) {
+
+    })
 }
 
 function updateTbSlaveAcct(){       //更新从账号信息
@@ -379,7 +396,7 @@ function updateTbSlaveAcct(){       //更新从账号信息
         success: function (data) { //返回json结果
             if(data.state === 1000){
                 toastr.success(data.message);
-                submitToOther();
+                submitToSuccess();
             }else{
                 toastr.error(data.message);
             }
@@ -562,15 +579,21 @@ function isNull(s,r){    //判断是否为null
 function submitToOther(){   //提交或者取消跳转
     var url = "";
     if(hType == "th"){
-        url = "editMainAccount.html?orgTreeId=" + orgTreeId + "&hType="+ toMainType +"&opBtn=0&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&acctId=" + mainAcctId;   //跳转主账号编辑界面
+        url = "editMainAccount.html?curOrgId="+curOrgId+"&curOrgTreeId="+curOrgTreeId+"&orgTreeId=" + orgTreeId + "&hType="+ toMainType +"&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&acctId=" + mainAcctId;   //跳转主账号编辑界面
     }else if(hType == "mh"){
         url = "list.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;       //跳转主界面
-    }else if(hType == "ah"){
-        url = "add.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;       //跳转添加界面
     }else{
         url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName) + "&id=" + orgId + 
                                       "&personnelId=" + personnelId + "&orgRootId=" + orgRootId + "&tabPage=" + tabPage;
     }
+    window.location.href = url;
+}
+
+//更新成功跳转从账号编辑页
+function submitToSuccess(){
+    var url = 'editSubAccount.html?curOrgId='+curOrgId+'&curOrgTreeId='+curOrgTreeId+'&orgTreeId=' + orgTreeId + '&toMainType=' + hType +
+                    '&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&hType='+hType+'&mainAcctId='+ mainAcctId +
+                    '&acctId='+ acctId;
     window.location.href = url;
 }
 

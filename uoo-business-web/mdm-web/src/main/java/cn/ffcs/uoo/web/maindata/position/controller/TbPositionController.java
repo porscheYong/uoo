@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.position.controller;
 
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.position.dto.TbOrgPositionRel;
 import cn.ffcs.uoo.web.maindata.position.dto.TbPosition;
 import cn.ffcs.uoo.web.maindata.position.service.TbPositionClient;
@@ -34,6 +36,7 @@ public class TbPositionController {
 
     @ApiOperation(value = "新增岗位", notes = "新增岗位")
     @ApiImplicitParam(name = "tbPosition", value = "岗位", required = true, dataType = "TbPosition")
+    @OperateLog(type= OperateType.ADD,module="岗位职位模块",methods="新增岗位",desc="新增岗位")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseResult<TbPosition> addTbPosition(@RequestBody TbPosition tbPosition) {
         return tbPositionClient.addTbPosition(tbPosition);
@@ -41,6 +44,7 @@ public class TbPositionController {
 
     @ApiOperation(value = "修改岗位", notes = "修改岗位")
     @ApiImplicitParam(name = "tbPosition", value = "岗位", required = true, dataType = "TbPosition")
+    @OperateLog(type= OperateType.UPDATE,module="岗位职位模块",methods="修改岗位",desc="修改岗位")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseResult<TbPosition> updateTbPosition(@RequestBody TbPosition tbPosition) {
         return tbPositionClient.updateTbPosition(tbPosition);
@@ -51,6 +55,7 @@ public class TbPositionController {
             @ApiImplicitParam(name = "positionId", value = "岗位标识", required = true, dataType = "Long"),
             @ApiImplicitParam(name = "updateUser", value = "修改人", required = true, dataType = "Long")
     })
+    @OperateLog(type= OperateType.DELETE,module="岗位职位模块",methods="删除岗位",desc="删除岗位")
     @RequestMapping(value = "/del", method = RequestMethod.POST)
     public ResponseResult<TbPosition> removeTbPosition(Long positionId, Long updateUser) {
         return tbPositionClient.removeTbPosition(positionId, updateUser);
@@ -58,6 +63,7 @@ public class TbPositionController {
 
     @ApiOperation(value = "查询组织岗位信息列表", notes = "查询组织岗位信息列表")
     @ApiImplicitParam(name = "orgId", value = "组织标识", required = true, dataType = "Long")
+    @OperateLog(type= OperateType.SELECT,module="岗位职位模块",methods="查询组织岗位信息列表",desc="查询组织岗位信息列表")
     @RequestMapping(value = "/getOrgPositionInfoList/{orgId}", method = RequestMethod.GET)
     public List<OrgPositionInfoVo> queryOrgPositionInfoList(@PathVariable Long orgId) {
         return tbPositionClient.queryOrgPositionInfoList(orgId);

@@ -4,7 +4,9 @@ import cn.ffcs.uoo.system.consts.BaseUnitConstants;
 import cn.ffcs.uoo.system.entity.SysUserPositionRef;
 import cn.ffcs.uoo.system.dao.SysUserPositionRefMapper;
 import cn.ffcs.uoo.system.service.SysUserPositionRefService;
+import cn.ffcs.uoo.system.vo.SysUserPositionRefVo;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,8 +45,8 @@ public class SysUserPositionRefServiceImpl extends ServiceImpl<SysUserPositionRe
     }
 
     @Override
-    public Object updateSysUserPositionRef(List<SysUserPositionRef> sysUserPositionRef, String userCode, String orgCode, Long updateUser){
-        List<SysUserPositionRef> userPositionRefList = this.getUserPositionRef(userCode, orgCode);
+    public Object updateSysUserPositionRef(List<SysUserPositionRefVo> sysUserPositionRef, String userCode, String orgCode, Long updateUser){
+        List<SysUserPositionRefVo> userPositionRefList = this.getUserPositionRef(userCode, orgCode);
         List<String> newList = getReList(sysUserPositionRef);
         List<String> newListBak = getReList(sysUserPositionRef);
         List<String> oldList = getReList(userPositionRefList);
@@ -54,9 +56,11 @@ public class SysUserPositionRefServiceImpl extends ServiceImpl<SysUserPositionRe
         oldList.removeAll(newList);
         if(oldList != null && oldList.size() > 0){
             List<SysUserPositionRef> delUserPosition = new ArrayList<>();
-            for(SysUserPositionRef userPositionRef :userPositionRefList){
+            for(SysUserPositionRefVo userPositionRefVo :userPositionRefList){
                 for(String code : oldList){
-                    if(code.equals(userPositionRef.getPositionCode())){
+                    if(code.equals(userPositionRefVo.getPositionCode())){
+                        SysUserPositionRef userPositionRef = new SysUserPositionRef();
+                        BeanUtils.copyProperties(userPositionRefVo, userPositionRef);
                         userPositionRef.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
                         userPositionRef.setStatusDate(new Date());
                         userPositionRef.setUpdateUser(updateUser);
@@ -89,9 +93,11 @@ public class SysUserPositionRefServiceImpl extends ServiceImpl<SysUserPositionRe
 
     @Override
     public Object delSysUserPositionRef(String userCode, String orgCode, Long updateuser){
-        List<SysUserPositionRef> userPositionRefList = this.getUserPositionRef(userCode, orgCode);
+        List<SysUserPositionRefVo> userPositionRefList = this.getUserPositionRef(userCode, orgCode);
         if(userPositionRefList != null && userPositionRefList.size() > 0){
-            for(SysUserPositionRef userPositionRef : userPositionRefList){
+            for(SysUserPositionRefVo userPositionRefVo : userPositionRefList){
+                SysUserPositionRef userPositionRef = new SysUserPositionRef();
+                BeanUtils.copyProperties(userPositionRefVo, userPositionRef);
                 userPositionRef.setUpdateUser(updateuser);
                 userPositionRef.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
                 userPositionRef.setStatusDate(new Date());
@@ -102,7 +108,7 @@ public class SysUserPositionRefServiceImpl extends ServiceImpl<SysUserPositionRe
     }
 
     @Override
-    public List<SysUserPositionRef> getUserPositionRef(String userCode, String orgCode){
+    public List<SysUserPositionRefVo> getUserPositionRef(String userCode, String orgCode){
         return sysUserPositionRefMapper.getUserPositionRef(userCode, orgCode);
     }
 
@@ -111,10 +117,10 @@ public class SysUserPositionRefServiceImpl extends ServiceImpl<SysUserPositionRe
         sysUserPositionRefMapper.delUserPositionDef(userCode, updateUser);
     }
 
-    public List<String> getReList(List<SysUserPositionRef> userPositionRefList){
+    public List<String> getReList(List<SysUserPositionRefVo> userPositionRefList){
         List<String> list = new ArrayList<String>();
         if(userPositionRefList != null && userPositionRefList.size() > 0){
-            for(SysUserPositionRef ref : userPositionRefList){
+            for(SysUserPositionRefVo ref : userPositionRefList){
                 list.add(ref.getPositionCode());
             }
             HashSet h = new HashSet(list);

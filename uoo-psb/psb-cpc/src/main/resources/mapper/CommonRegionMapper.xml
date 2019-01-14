@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.interfaces.cpc.dao.CommonRegionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.interfaces.cpc.entity.CommonRegion">
+        <id column="COMMON_REGION_ID" property="commonRegionId" />
+        <result column="PARENT_REGION_ID" property="parentRegionId" />
+        <result column="REGION_NAME" property="regionName" />
+        <result column="REGION_PY_NAME" property="regionPyName" />
+        <result column="REGION_NBR" property="regionNbr" />
+        <result column="REGION_TYPE" property="regionType" />
+        <result column="REGION_DESC" property="regionDesc" />
+        <result column="REGION_LEVEL" property="regionLevel" />
+        <result column="REGION_SORT" property="regionSort" />
+        <result column="PROVINCE_NBR" property="provinceNbr" />
+        <result column="CITY_FLAG" property="cityFlag" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+        <result column="AREA_CODE_ID" property="areaCodeId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        COMMON_REGION_ID, PARENT_REGION_ID, REGION_NAME, REGION_PY_NAME, REGION_NBR, REGION_TYPE, REGION_DESC, REGION_LEVEL, REGION_SORT, PROVINCE_NBR, CITY_FLAG, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, AREA_CODE_ID
+    </sql>
+
+</mapper>

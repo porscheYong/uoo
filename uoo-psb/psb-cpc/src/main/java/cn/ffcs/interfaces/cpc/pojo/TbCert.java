@@ -58,6 +58,20 @@ public class TbCert extends Model<TbCert> {
     @TableField("status_Date")
     private Date statusDate;
 
+    public TbCert() {
+    }
+
+    public TbCert(Long personnelId, String certName, String certType, String certNo, String uuid, String isReal, String statusCd, Date createDate) {
+        this.personnelId = personnelId;
+        this.certName = certName;
+        this.certType = certType;
+        this.certNo = certNo;
+        this.uuid = uuid;
+        this.isReal = isReal;
+        this.statusCd = statusCd;
+        this.createDate = createDate;
+    }
+
     public Long getCertId() {
         return certId;
     }

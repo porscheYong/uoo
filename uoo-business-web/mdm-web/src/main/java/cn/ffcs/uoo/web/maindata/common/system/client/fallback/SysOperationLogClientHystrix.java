@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.plugins.Page;
 
+import cn.ffcs.uoo.web.maindata.busipublic.resource.dto.ModifyHistory;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysOperationLogClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysOperationLog;
 import cn.ffcs.uoo.web.maindata.common.system.vo.LogDTO;
@@ -37,6 +38,14 @@ public class SysOperationLogClientHystrix implements SysOperationLogClient {
         rr.setMessage("服务不可用");
         return rr;
     
+    }
+
+    @Override
+    public ResponseResult<List<ModifyHistory>> getOperatModifyHistory(Long id, String userCode, Long userId) {
+        ResponseResult<List<ModifyHistory>> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
     }
 
 }

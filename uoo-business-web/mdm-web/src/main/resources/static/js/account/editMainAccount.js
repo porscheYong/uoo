@@ -7,6 +7,8 @@ var orgRootId = getQueryString('orgRootId');
 var tabPage = getQueryString('tabPage');
 var acctId = getQueryString('acctId');
 var orgTreeName = getQueryString('orgTreeName');
+var curOrgId = getQueryString('curOrgId');
+var curOrgTreeId = getQueryString('curOrgTreeId');
 
 var personnelId;
 var orgTable;
@@ -16,7 +18,6 @@ var psw;
 var roleList = [];      //需要上传的角色列表
 var userRoleList = [];      //用户已有角色列表
 var formValidate;
-var treeNameList = [];
 var acctInfoList = [];
 var toastr = window.top.toastr;
 var cerTypeList = window.top.dictionaryData.certType();
@@ -81,8 +82,7 @@ function getUser(acctId) {           //查看并编辑主账号
     var date = new Date();
     $http.get('/user/getUser', {   
         acctId: acctId,
-        userType: "1",
-        _:date.getTime()
+        userType: "1"
     }, function (data) {
         personnelId = data.personnelId;
         orgNum = data.acctOrgVoPage.records.length;
@@ -112,7 +112,13 @@ function initAcctInfo(results){
    var slave = results.slaveAcctOrgVoPage.records;
    acctInfoList = [];
    for(var i=0;i<acct.length;i++){
-      acctInfoList.push({"acct":acct[i],"slaveAcct":[]});
+      if(acct[i].orgTreeId == orgTreeId || orgTreeId == 1){
+          if(acct[i].orgTreeId == curOrgTreeId && acct[i].orgId == curOrgId){ //当前选择的组织放到数组最前面（高亮）
+              acctInfoList.unshift({"acct":acct[i],"slaveAcct":[]});
+          }else{
+              acctInfoList.push({"acct":acct[i],"slaveAcct":[]});
+          }
+      }
    }
    for(var i=0;i<acctInfoList.length;i++){
       for(var j=0;j<slave.length;j++){
@@ -135,16 +141,16 @@ function setAcctInfoTables(){
                         "<span class='infoLable' id='orgTreeName_"+i+"'>"+acctInfoList[i].acct.orgTreeName+"</span>"+
                         "<span class='infoLable' title='"+acctInfoList[i].acct.fullName+"' id='orgName_"+i+"'>"+acctInfoList[i].acct.orgName+"</span>"+
                         "<span class='infoBtn' onclick='' id='editBtn_"+i+"'>修改归属组织信息</span>"+
-                        "<span class='infoBtn' onclick=''>创建从账号</span></div>"+ 
+                        "<span class='infoBtn' onclick='addSlaveBtnClick("+acctInfoList[i].acct.acctOrgRelId+","+i+","+acctInfoList[i].acct.orgTreeId+")'>创建从账号</span></div>"+ 
                     "<div id='table-container' style='width: 100%; font-size: 14px; overflow: hidden;margin-left:-3.3%;'>"+
                         "<table id='orgTable_"+i+"' class='stripe' width='100%'></table></div>"; 
-        if(acctInfoList[i].acct.orgTreeId == orgTreeId && acctInfoList[i].acct.orgId == orgId){
+        if(acctInfoList[i].acct.orgTreeId == curOrgTreeId && acctInfoList[i].acct.orgId == curOrgId){
             currentId = i;
-            $("#orgTreeName_"+currentId).attr("class","currentOrgLable");
-            $("#orgName_"+currentId).attr("class","currentOrgLable");
         }
     }
     $("#acctOrgDiv").append(acctHtml);
+    $("#orgTreeName_"+currentId).attr("class","currentOrgLable");
+    $("#orgName_"+currentId).attr("class","currentOrgLable");
 
     for(var i=0;i<acctInfoList.length;i++){
         if(acctInfoList[i].slaveAcct.length != 0){
@@ -166,8 +172,9 @@ function setAcctInfoTables(){
                   },
                   { 'data': "slaveAcct", 'title': '从账号', 'className': 'row-acc' ,
                   'render': function (data, type, row, meta) {
-                      return '<a title="'+ row.slaveAcct +'" href="editSubAccount.html?orgTreeId=' + orgTreeId + '&toMainType=' + hType +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&hType=th&mainAcctId='+ acctId +
-                                            '&acctId='+ row.slaveAcctId + '&statusCd='+ row.statusCd +'">'+ row.slaveAcct +'</a>';
+                      return '<a title="'+ row.slaveAcct +'" href="editSubAccount.html?curOrgId='+curOrgId+'&curOrgTreeId='+curOrgTreeId+
+                              '&orgTreeId=' + orgTreeId + '&toMainType=' + hType +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +
+                              '&hType=th&mainAcctId='+acctId+'&acctId='+row.slaveAcctId+'&statusCd='+row.statusCd+'">'+row.slaveAcct+'</a>';
                   }
                 },
                   { 'data': "slaveAcctType", 'title': '类型', 'className': 'row-acctype' },
@@ -179,7 +186,7 @@ function setAcctInfoTables(){
                   },
                   {'data': "orgId", 'title': '操作', 'className': 'row-delete' ,
                     'render': function (data, type, row, meta) {
-                        return "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' title='删除' onclick=''></a>"; 
+                        return "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' title='删除' onclick='deleteTbSubAcct("+row.slaveAcctId+")'></a>"; 
                     }
                   }
               ],
@@ -199,6 +206,34 @@ function setAcctInfoTables(){
             $("#editBtn_"+i).text("删除组织关系");
         }
     }
+}
+
+function deleteTbSubAcct(slaveAcctId){     //删除从账号
+  parent.layer.confirm('此操作将删除从账号, 是否继续?', {
+      icon: 0,
+      title: '提示',
+      btn: ['确定','取消']
+  }, function(index, layero){
+      parent.layer.close(index);
+      $.ajax({
+          url: '/slaveAcct/delTbSlaveAcct?&slaveAcctId='+parseInt(slaveAcctId),
+          type: 'DELETE',
+          contentType: "application/json",
+          dataType:"json",
+          success: function (data) { //返回json结果
+              if(data.state === 1000){
+                  toastr.success(data.message);
+                  refreshTb(acctId);
+              }else{
+                  toastr.error(data.message);
+              }
+          },
+          error:function(err){
+            toastr.error('删除失败');
+          }
+        });
+    }, function(){
+  }); 
 }
 
 function initEditUserInfo(results){     //初始化用户信息(编辑)
@@ -375,7 +410,6 @@ function addAcctOrg(orgId,orgTreeId){ //编辑时新增组织
     success: function (data) { //返回json结果
       if(data.state == 1000){
         toastr.success(data.message);
-        treeNameList = [];
         refreshTb(acctId);
         orgNum += 1;
       }else{
@@ -402,11 +436,12 @@ function refreshTb(acctId) {           //新增组织后刷新组织表格
   })
 }
 
-function addSlaveBtnClick(acctOrgRelId,id,orgTreeId){      //点击新增从账号
-    var sFullName = orgTable.row(id-1).data().fullName;
-    var url = 'addSubAccount.html?orgTreeId=' + orgTreeId + '&hType=th&personnelId=' + personnelId +
+function addSlaveBtnClick(acctOrgRelId,id,slaveOrgTreeId){      //点击新增从账号
+    var sFullName = $("#orgName_"+id).attr("title");
+    var treeName = $("#orgTreeName_"+id).text();
+    var url = 'addSubAccount.html?curOrgId='+curOrgId+'&curOrgTreeId='+curOrgTreeId+'&orgTreeId='+orgTreeId+'&hType=th&personnelId='+personnelId + '&slaveOrgTreeId=' + slaveOrgTreeId +
                       '&mainAcctId='+ acctId +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&toMainType=' + hType +
-                      '&fullName=' + encodeURI(sFullName) + '&acctOrgRelId=' + acctOrgRelId + '&orgTreeName=' + encodeURI(treeNameList[id-1]);
+                      '&fullName=' + encodeURI(sFullName) + '&acctOrgRelId=' + acctOrgRelId + '&orgTreeName=' + encodeURI(treeName);
     window.location.href = url;
 }
 
@@ -491,9 +526,9 @@ function deleteOrg(orgId,orgTreeId){
 
 function cancel() {   //取消按钮
   var url = '';
-  if(hType == "mh"){  //返回list.html
+  if(hType != "uh"){  //返回list.html
     url = "list.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;
-  }else if(hType == "uh"){
+  }else{
     url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName) + "&id=" + orgId + 
     "&personnelId=" + personnelId + "&orgRootId=" + orgRootId + "&tabPage=" + tabPage;
   }

@@ -26,6 +26,15 @@
         <script src="/js/core/excanvas.js"></script>
         <script>document.documentElement.focus();</script>
         <![endif]-->
+        <style type="text/css">
+            .content-left .nav-tabs-custom a {
+                padding: 8px 28px !important;
+                cursor: pointer;
+            }
+            .content-left .nav-tabs-custom .active a {
+                cursor: default;
+            }
+        </style>
     </head>
 
     <body class="nav-md">
@@ -33,18 +42,24 @@
             <div class="main-container">
                 <div class="content-left" style="overflow-y: auto;">
                     <div style="display: inline-block;width: 100%;padding-top: 10px;">
-                        <div style="padding-left: 30px;">
-                            <select id="orgSelect" class="col-md-9 col-sm-9 col-xs-11">
-                                <option value="">平台组织</option>
-                                <option value="">平台用户</option>
-                            </select>
-                            <div class="clearfix"></div>
+                        <!--<div style="padding-left: 30px;">-->
+                            <!--<select id="orgSelect" class="col-md-9 col-sm-9 col-xs-11">-->
+                                <!--<option value="">平台组织</option>-->
+                                <!--<option value="">平台用户</option>-->
+                            <!--</select>-->
+                            <!--<div class="clearfix"></div>-->
+                        <!--</div>-->
+                        <div class="nav-tabs-custom" >
+                            <ul class="nav nav-tabs" style="width: 100%; padding: 0 10px;">
+                                <li class="active" onclick="initOrgTree(this)"><a role="tab" data-toggle="tab">平台组织</a></li>
+                                <li onclick="initOrgPostTree(this)"><a role="tab" data-toggle="tab">平台职位</a></li>
+                            </ul>
                         </div>
-                        <ul id="platformUserTree" class="ztree"></ul>
+                        <ul id="tree" class="ztree"></ul>
                     </div>
                 </div>
                 <div class="content-right">
-                    <iframe id="platformUserFrame" class="layadmin-iframe" frameborder="0" width="100%" height="99%"></iframe>
+                    <iframe id="platformUserFrame" name="platformUser" class="layadmin-iframe" frameborder="0" width="100%" height="99%"></iframe>
                 </div>
             </div>
         </div>

@@ -48,7 +48,7 @@ function getAcctUser(personnelId){     //获取人员信息(新增)
   }, function (data) {
       //新增
       initAddUserInfo(data);
-      addAcctAutoSelectOrg(orgId,orgFullName,orgTreeId,orgTreeName);
+      addAcctAutoSelectOrg(orgId,orgFullName);
   }, function (err) {
 
   })
@@ -173,7 +173,7 @@ function addTbAcct(){         //新增
   });
 }
 
-function addAcctAutoSelectOrg(orgId,orgFullName,orgTreeId,orgTreeName){    //新增主账号时自动选择组织
+function addAcctAutoSelectOrg(orgId,orgFullName){    //新增主账号时自动选择组织
     orgNum++;
     addOrgList.push({'orgId':orgId,'fullName':orgFullName,'orgTreeId':orgTreeId,'orgTreeName':orgTreeName});
     initOrgTable(addOrgList);
@@ -189,15 +189,15 @@ function openOrgDialog() {
       shade: 0.8,
       area: ['27%', '80%'],
       maxmin: true,
-      content: 'orgDialog.html',
+      content: 'orgDialog.html?orgTreeId='+orgTreeId,
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象
           var iframeWin = parent.window[layero.find('iframe')[0].name];
           var orgIdSelect = iframeWin.orgIdSelect;
           var orgFullName = iframeWin.orgFullName;
-          var orgTreeId = iframeWin.orgTreeId;
-          var businessName = iframeWin.businessName;
+          // var orgTreeId = iframeWin.orgTreeId;
+          // var businessName = iframeWin.businessName;
           parent.layer.close(index);
 
           for(var i=0;i<addOrgList.length;i++){
@@ -209,7 +209,7 @@ function openOrgDialog() {
           if(flag == 1){
               toastr.error("已选择该组织");
           }else{
-              addAcctAutoSelectOrg(orgIdSelect,orgFullName,orgTreeId,businessName);
+              addAcctAutoSelectOrg(orgIdSelect,orgFullName);
           }
       },
       btn2: function(index, layero){},

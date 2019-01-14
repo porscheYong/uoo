@@ -36,4 +36,34 @@
     SORT, ORG_CONTENT, ORG_DESC, ADDRESS, UUID, STATUS_CD, CREATE_DATE, CREATE_USER, 
     UPDATE_DATE, UPDATE_USER, STATUS_DATE, ORG_MART_CODE, STANDARD_FLAG
   </sql>
+
+  <insert id="insertChannel" parameterType="cn.ffcs.interfaces.cpc.pojo.TbOrg">
+    INSERT INTO TB_ORG
+  (ORG_ID,
+   LOC_ID,
+   AREA_CODE_ID,
+   ORG_NAME,
+   ORG_CODE,
+   SHORT_NAME,
+   FULL_NAME,
+   CITY_TOWN,
+   UUID,
+   STATUS_CD,
+   CREATE_DATE,
+   STATUS_DATE)
+VALUES
+  (SEQ_TB_ORG_ID.NEXTVAL,
+   '8330000',
+   #{AREACODEID},
+   #{ORGNAME},
+   1000000000 + SEQ_ORG_CODE.NEXTVAL,
+   #{ORGNAME},
+   #{ORGNAME},
+   '2',
+   SYS_GUID(),
+   '1000',
+   SYSDATE,
+   SYSDATE);
+  </insert>
+
 </mapper>
