@@ -39,7 +39,7 @@ public interface SysPositionClient {
                                                             @RequestParam(value = "accout",required = false)String accout);
 
     @RequestMapping(value = "/sysPosition/getPositionRelPage", method = RequestMethod.GET)
-    public ResponseResult<Page<SysPositionVo>> getPositionRelPage(@RequestParam(value = "positionId",required = false)String positionId,
+    public ResponseResult<Page<SysPositionVo>> getPositionRelPage(@RequestParam(value = "positionCode",required = false)String positionCode,
                                                                   @RequestParam(value = "search",required = false)String search,
                                                                   @RequestParam(value = "pageSize",required = false)Integer pageSize,
                                                                   @RequestParam(value = "pageNo",required = false)Integer pageNo,

@@ -248,6 +248,11 @@ public class OrgController extends BaseController {
         newOrg.setAddress(StrUtil.strnull(org.getAddress()));
         newOrg.setUuid(StrUtil.getUUID());
         newOrg.setCreateUser(org.getUpdateUser());
+        if("1".equals(orgTree.getOrgTreeId().toString())){
+            newOrg.setStandardFlag(1L);
+        }else{
+            newOrg.setStandardFlag(0L);
+        }
         //新增组织类别
         if(orgTypeList!=null){
             for(OrgType orgType : orgTypeList) {
@@ -1360,39 +1365,55 @@ public class OrgController extends BaseController {
             ret.setMessage("组织标识不能为空");
             return ret;
         }
-        if(StrUtil.isNullOrEmpty(orgTreeId)){
-            ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织树标识不能为空");
-            return ret;
-        }
-        //查看组织树是否存在
-        Wrapper orgTreeConfWrapper = Condition.create()
-                .eq("ORG_TREE_ID",orgTreeId)
-                .eq("STATUS_CD","1000");
-        OrgTree orgTree  = orgTreeService.selectOne(orgTreeConfWrapper);
-        if(orgTree == null){
-            ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织树不存在");
-            return ret;
+
+//        if(StrUtil.isNullOrEmpty(orgTreeId)){
+//            ret.setState(ResponseResult.PARAMETER_ERROR);
+//            ret.setMessage("组织树标识不能为空");
+//            return ret;
+//        }
+        OrgVo org = new OrgVo();
+        if(!StrUtil.isNullOrEmpty(orgTreeId)){
+            //查看组织树是否存在
+            Wrapper orgTreeConfWrapper = Condition.create()
+                    .eq("ORG_TREE_ID",orgTreeId)
+                    .eq("STATUS_CD","1000");
+            OrgTree orgTree  = orgTreeService.selectOne(orgTreeConfWrapper);
+            if(orgTree == null){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("组织树不存在");
+                return ret;
+            }
+            org = orgService.selectOrgByOrgId(orgId,orgTreeId);
+            if(StrUtil.isNullOrEmpty(org)){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("组织不存在");
+                return ret;
+            }
+
+            if(!"1".equals(orgTreeId) &&
+                    !StrUtil.isNullOrEmpty(org.getStandardFlag()) &&
+                    "1".equals(org.getStandardFlag())){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("属于标准树的组织只能在标准树上操作");
+                return ret;
+            }
+        }else{
+
+            Wrapper orgWrapper = Condition.create()
+                    .eq("STATUS_CD","1000")
+                    .eq("ORG_ID",orgId);
+            Org org1 = new Org();
+            org1 = orgService.selectOne(orgWrapper);
+            if(org1==null){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("组织不存在");
+                return ret;
+            }
+            BeanUtils.copyProperties(org1, org);
         }
 
-//        Wrapper orgWrapper = Condition.create()
-//                .eq("ORG_ID",orgId)
-//                .eq("STATUS_CD","1000");
-        OrgVo org = orgService.selectOrgByOrgId(orgId,orgTree.getOrgTreeId().toString());
-        //Org org = orgService.selectById(orgId);
-        if(StrUtil.isNullOrEmpty(org)){
-            ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织不存在");
-            return ret;
-        }
 
-        if(!"1".equals(orgTreeId) && !StrUtil.isNullOrEmpty(org.getStandardFlag()) && "1".equals(org.getStandardFlag())){
-            ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("属于标准树的组织只能在标准树上操作");
-            return ret;
-        }
-
+        //组织类别
         List<OrgType> orgTypeList = orgTypeService.getOrgTypeByOrgId(new Long(orgId));
         org.setOrgTypeList(orgTypeList);
         //组织岗位
