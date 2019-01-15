@@ -3,6 +3,7 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.Date;
 @TableName("Tb_Org_Orgtype_Rel")
 public class TbOrgOrgtypeRel extends Model<TbOrgOrgtypeRel>{
 
-    @TableId("org_Type_Rel_Id")
+    @TableId(value = "org_Type_Rel_Id",type = IdType.INPUT)
     private Long orgTypeRelId;
 
     @TableField("org_Id")

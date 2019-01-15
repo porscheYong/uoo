@@ -25,7 +25,7 @@ public class OrgCrossRel extends Model<OrgCrossRel> {
     /**
      * 组织跨域关系标识
      */
-    @TableId(value = "ORG_CROSS_REL_ID", type = IdType.AUTO)
+    @TableId(value = "ORG_CROSS_REL_ID", type = IdType.INPUT)
     private Long orgCrossRelId;
     /**
      * 组织标识

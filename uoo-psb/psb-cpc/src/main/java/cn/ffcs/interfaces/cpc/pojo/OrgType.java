@@ -25,7 +25,7 @@ public class OrgType extends Model<OrgType> {
     /**
      * 组织类别标识
      */
-    @TableId(value = "ORG_TYPE_ID", type = IdType.AUTO)
+    @TableId(value = "ORG_TYPE_ID", type = IdType.INPUT)
     private Long orgTypeId;
     /**
      * 组织类别编码

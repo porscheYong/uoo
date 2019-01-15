@@ -25,7 +25,7 @@ public class Expandovalue extends Model<Expandovalue> {
     /**
      * 值标识
      */
-    @TableId(value = "VALUE_ID", type = IdType.AUTO)
+    @TableId(value = "VALUE_ID", type = IdType.INPUT)
     private Long valueId;
     /**
      * 资源标识

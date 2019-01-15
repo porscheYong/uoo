@@ -25,7 +25,7 @@ public class CommonRegion extends Model<CommonRegion> {
     /**
      * 公共管理区域标识
      */
-    @TableId(value = "COMMON_REGION_ID", type = IdType.AUTO)
+    @TableId(value = "COMMON_REGION_ID", type = IdType.INPUT)
     private Long commonRegionId;
     /**
      * 上级区域标识

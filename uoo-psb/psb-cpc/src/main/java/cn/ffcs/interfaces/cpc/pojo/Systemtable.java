@@ -25,7 +25,7 @@ public class Systemtable extends Model<Systemtable> {
     /**
      * 系统表标识
      */
-    @TableId(value = "TABLE_ID", type = IdType.AUTO)
+    @TableId(value = "TABLE_ID", type = IdType.INPUT)
     private Long tableId;
     /**
      * 资源标识

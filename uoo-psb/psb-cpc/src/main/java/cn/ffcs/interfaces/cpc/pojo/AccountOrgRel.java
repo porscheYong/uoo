@@ -24,7 +24,7 @@ public class AccountOrgRel extends Model<AccountOrgRel> {
     /**
      * 主账号组织关系标识
      */
-    @TableField("ACCT_ORG_REL_ID")
+    @TableId(value ="ACCT_ORG_REL_ID",type = IdType.INPUT)
     private Long acctOrgRelId;
     /**
      * 组织标识

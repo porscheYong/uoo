@@ -25,7 +25,7 @@ public class Expandorow extends Model<Expandorow> {
     /**
      * 行标识
      */
-    @TableId(value = "ROW_ID", type = IdType.AUTO)
+    @TableId(value = "ROW_ID", type = IdType.INPUT)
     private Long rowId;
     /**
      * 系统表标识

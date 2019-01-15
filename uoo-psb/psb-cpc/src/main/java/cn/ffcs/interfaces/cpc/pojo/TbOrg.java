@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -12,7 +13,7 @@ import java.util.Date;
 @TableName("TB_ORG")
 public class TbOrg extends Model<TbOrg> {
 
-    @TableId("ORG_ID")
+    @TableId(value = "ORG_ID",type = IdType.INPUT)
     private Long orgId;
 
     @TableField("LOC_ID")

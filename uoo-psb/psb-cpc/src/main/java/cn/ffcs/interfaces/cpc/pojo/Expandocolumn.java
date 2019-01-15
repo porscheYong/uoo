@@ -25,7 +25,7 @@ public class Expandocolumn extends Model<Expandocolumn> {
     /**
      * 扩展列标识
      */
-    @TableId(value = "COLUMN_ID", type = IdType.AUTO)
+    @TableId(value = "COLUMN_ID", type = IdType.INPUT)
     private Long columnId;
     /**
      * 系统表标识

@@ -4,13 +4,14 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 
 import java.io.Serializable;
 import java.util.Date;
 @TableName("Tb_Cert")
 public class TbCert extends Model<TbCert> {
 
-    @TableId("cert_Id")
+    @TableId(value="cert_Id",type = IdType.INPUT)
     private Long certId;
 
     @TableField("personnel_Id")

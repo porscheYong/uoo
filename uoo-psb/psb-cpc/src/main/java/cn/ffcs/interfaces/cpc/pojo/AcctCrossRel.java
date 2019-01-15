@@ -25,7 +25,7 @@ public class AcctCrossRel extends Model<AcctCrossRel> {
     /**
      * 账号跨域关系标识
      */
-    @TableId(value = "ACCT_CROSS_ID", type = IdType.AUTO)
+    @TableId(value = "ACCT_CROSS_ID", type = IdType.INPUT)
     private Long acctCrossId;
     /**
      * 主账号标识
