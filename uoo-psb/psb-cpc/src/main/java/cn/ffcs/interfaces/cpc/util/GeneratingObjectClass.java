@@ -43,7 +43,7 @@ public class GeneratingObjectClass {
 
 //    public static String[] tabeNamesList={"TB_POSITION200","TB_POST","TB_POST_LOCATION","TB_POSITION","TB_ORG_POSITION_REL"
 //    ,"TB_POST2","TB_ORG_POST_REL"};
-    public static String[] tabeNamesList = {"TB_ACCT_CROSS_REL"};
+    public static String[] tabeNamesList = {"TB_ORG_TYPE"};
 public static String modelName="uoo-psb";
     public static void main(String[] args) {
         File f = new File(modelName);

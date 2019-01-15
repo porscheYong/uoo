@@ -1,6 +1,8 @@
 package cn.ffcs.interfaces.cpc.service.impl;
 
+import cn.ffcs.interfaces.cpc.constant.HandleChannelConstant;
 import cn.ffcs.interfaces.cpc.constant.SystemConstant;
+import cn.ffcs.interfaces.cpc.dao.*;
 import cn.ffcs.interfaces.cpc.pojo.*;
 import cn.ffcs.interfaces.cpc.service.*;
 import cn.ffcs.interfaces.cpc.util.Json2MapUtil;
@@ -19,41 +21,38 @@ import java.util.*;
 @Transactional(readOnly = false, rollbackFor = Exception.class)
 public class CpcChannelServiceImpl implements CpcChannelService {
 
-    /**
-     * 正则表达式：验证手机号
-     */
-    public static final String REGEX_MOBILE = "^((17[0-9])|(14[0-9])|(13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
+    @Resource
+    private TbOrgMapper tbOrgMapper;
+    @Resource
+    private CommonRegionMapper commonRegionMapper;
+    @Resource
+    private SystemtableMapper systemtableMapper;
+    @Resource
+    private ExpandocolumnMapper expandocolumnMapper;
+    @Resource
+    private ExpandorowMapper expandorowMapper;
+    @Resource
+    private ExpandovalueMapper expandovalueMapper;
+    @Resource
+    private AccountOrgRelMapper accountOrgRelMapper;
+    @Resource
+    private OrgTypeMapper orgTypeMapper;
+    @Resource
+    private TbOrgOrgtypeRelMapper tbOrgOrgtypeRelMapper;
 
-    /**
-     * 正则表达式：验证邮箱
-     */
-    public static final String REGEX_EMAIL = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
-
-    @Resource
-    private TbOrgService tbOrgService;
-    @Resource
-    private CommonRegionService commonRegionService;
-    @Resource
-    private SystemtableService systemtableService;
-    @Resource
-    private ExpandocolumnService expandocolumnService;
-    @Resource
-    private ExpandorowService expandorowService;
-    @Resource
-    private ExpandovalueService expandovalueService;
-    @Resource
-    private AcctCrossRelService acctCrossRelService;
 
     @Resource
-    private TbPersonnelService tbPersonnelService;
+    private TbPersonnelMapper tbPersonnelMapper;
     @Resource
-    private TbCertService tbCertService;
+    private TbCertMapper tbCertMapper;
     @Resource
-    private TbAcctService tbAcctService;
+    private TbContactMapper tbContactMapper;
     @Resource
-    private TbContactService tbContactService;
+    private TbAcctMapper tbAcctMapper;
     @Resource
-    private TbSlaveAcctService tbSlaveAcctService;
+    private TbSlaveAcctMapper tbSlaveAcctMapper;
+    @Resource
+    private AcctCrossRelMapper acctCrossRelMapper;
 
     @Override
     public String handle(String json) throws Exception {
@@ -79,11 +78,17 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             /*员工*/
             Map<String, Object> STAFF = (Map<String, Object>) map.get("STAFF");
             /*员工渠道关系*/
-            Map<String, Object> STAFF_CHANNEL_RELAS = (Map<String, Object>) map.get("STAFF_CHANNEL_RELAS");
+            List<Map<String, Object>> STAFF_CHANNEL_RELAS = (List<Map<String, Object>>) map.get("STAFF_CHANNEL_RELAS");
 
             hand_CHANNEL(CHANNEL, rsMap);
             hand_STAFF(STAFF, rsMap);
-            hand_STAFF_CHANNEL_RELAS(STAFF_CHANNEL_RELAS, rsMap);
+
+            /*if(STAFF_CHANNEL_RELAS != null && STAFF_CHANNEL_RELAS.size() >0){
+                STAFF_CHANNEL_RELAS.forEach((temp)->{
+                    hand_STAFF_CHANNEL_RELAS(temp,rsMap);
+                });
+            }*/
+
 
             //事务回滚
             if ("1000".equals(rsMap.get("result_code"))) {
@@ -105,51 +110,28 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         }
         String commoinRegionId = String.valueOf(channel.get("COMMON_REGION_ID"));
         String orgName = String.valueOf(channel.get("CHANNEL_NAME"));
-        if (StringUtils.isNotEmpty(commoinRegionId) && StringUtils.isNotEmpty(orgName)) {
-            try {
-                // 插入组织表
-                TbOrg tbOrg = new TbOrg();
-                CommonRegion region = commonRegionService.selectOne(new EntityWrapper<CommonRegion>().
-                        eq("COMMON_REGION_ID", commoinRegionId.substring(0, 5) + "00")
-                        .eq("STATUS_CD", "1000"));
-                tbOrg.setAreaCodeId(region.getAreaCodeId());
-                tbOrg.setOrgName(orgName);
-                tbOrgService.insertChannel(tbOrg);
-
-                // 插入扩展行
-                Systemtable systemtable = systemtableService.selectOne(new EntityWrapper<Systemtable>().
-                        eq("TABLE_NAME", "TB_ORG")
-                        .eq("STATUS_CD", "1000"));
-                Expandorow expandorow = new Expandorow(systemtable.getTableId(), "1",
-                        tbOrg.getOrgId().toString(), "1000", DateUtils.parseDate(DateUtils.getDateTime()));
-                expandorowService.insert(expandorow);
-
-                Expandocolumn columnOfIsChannel = expandocolumnService.selectOne(new EntityWrapper<Expandocolumn>().
-                        eq("COLUMN_NAME", "IsChannel").eq("STATUS_CD", "1000"));
-                Expandocolumn columnOfChannelNBR = expandocolumnService.selectOne(new EntityWrapper<Expandocolumn>().
-                        eq("COLUMN_NAME", "channelNBR").eq("STATUS_CD", "1000"));
-
-                // 插入扩展值
-                Expandovalue valueOfIsChannel = new Expandovalue("1", systemtable.getTableId(),
-                        columnOfIsChannel.getColumnId(), expandorow.getRowId(), tbOrg.getOrgId().toString(),
-                        "Y", "1000", DateUtils.parseDate(DateUtils.getDateTime()));
-                Expandovalue valueOfChannelNBR = new Expandovalue("1", systemtable.getTableId(),
-                        columnOfChannelNBR.getColumnId(), expandorow.getRowId(), tbOrg.getOrgId().toString(),
-                        String.valueOf(channel.get("CHANNEL_NBR")),
-                        "1000", DateUtils.parseDate(DateUtils.getDateTime()));
-                expandovalueService.insert(valueOfIsChannel);
-                expandovalueService.insert(valueOfChannelNBR);
-            } catch (Exception e) {
-                rsMap.put("result_code", "1000");
-                e.printStackTrace();
-                rsMap.put("message",e.getStackTrace());
-//                throw new Exception("执行失败，请查看日志");
-            }
-        } else {
+        String action = String.valueOf(channel.get("ACTION"));
+        String channelNbr = String.valueOf(channel.get("CHANNEL_NBR"));
+        if (StringUtils.isEmpty(commoinRegionId) || StringUtils.isEmpty(orgName) || StringUtils.isEmpty(action) || StringUtils.isEmpty(channelNbr)) {
             rsMap.put("result_code", "1000");
-            rsMap.put("message","必要信息为空");
+            rsMap.put("message", "必要信息为空");
+            return;
         }
-
+        try {
+            switch (action) {
+                case "ADD":
+                    addChannel(channel);
+                case "MOD":
+                    modChannel(channel);
+                case "DEL":
+                    delChannel(channel);
+            }
+        } catch (Exception e) {
+            rsMap.put("result_code", "1000");
+            e.printStackTrace();
+            rsMap.put("message", e.getStackTrace());
+//                throw new Exception("执行失败，请查看日志");
+        }
 
     }
 
@@ -174,49 +156,49 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                     case "ADD" :
                     case "MOD" :{
                         //根据CERT_TYPE 和 CERT_NUMBER 判断 该人是否已经存在
-                        Long personnelId = tbCertService.checkExistCertTypeAndCertNumber(String.valueOf(staff.get("CERT_TYPE")), String.valueOf(staff.get("CERT_NUMBER")));
+                        Long personnelId = tbCertMapper.checkExistCertTypeAndCertNumber(String.valueOf(staff.get("CERT_TYPE")), String.valueOf(staff.get("CERT_NUMBER")));
                         if(personnelId == null){
                             //新增
                             // 插入TB_PERSONNEL表
                             String uuid = UUID.randomUUID().toString();
                             TbPersonnel tbPersonnel = new TbPersonnel(staffName, psnCode, psnCode, idCard);
-                            tbPersonnelService.insertValueOfPersonnel(tbPersonnel);
+                            tbPersonnelMapper.insertValueOfPersonnel(tbPersonnel);
                             // 插入TB_CERT
                             TbCert tbCert = new TbCert(tbPersonnel.getPersonnelId(), staffName,
                                     String.valueOf(staff.get("CERT_TYPE")), String.valueOf(staff.get("CERT_NUMBER")),
                                     UUID.randomUUID().toString(), "1", "1000",
                                     DateUtils.parseDate(DateUtils.getDateTime()));
-                            tbCertService.insert(tbCert);
+                            tbCertMapper.insert(tbCert);
                             // 插入TB_ACCT
                             TbAcct tbAcct = new TbAcct(String.valueOf(tbPersonnel.getPersonnelId()), psnCode, "1314",
                                     "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1000",
                                     DateUtils.parseDate(DateUtils.getDateTime()), "2",
                                     DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"), "2");
-                            tbAcctService.insert(tbAcct);
+                            tbAcctMapper.insert(tbAcct);
                             // 插入TB_CONTACT
                             if (StringUtils.isNotEmpty(String.valueOf(staff.get("MOBILE_PHONE")))) {
                                 TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
                                         String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString(),
                                         "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
-                                tbContactService.insert(tbContact);
+                                tbContactMapper.insert(tbContact);
                             }
                             if (StringUtils.isNotEmpty(String.valueOf(staff.get("E_MAIL")))) {
                                 TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "2",
                                         String.valueOf(staff.get("E_MAIL")), UUID.randomUUID().toString(),
                                         "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
-                                tbContactService.insert(tbContact);
+                                tbContactMapper.insert(tbContact);
                             }
                             //插入TB_ACCT_CROSS_REL
                             AcctCrossRel acctCrossRel = new AcctCrossRel(tbAcct.getAcctId(),
                                     String.valueOf(staff.get("SALES_CODE")), "100100102", "1000",
                                     DateUtils.parseDate(DateUtils.getDateTime()));
-                            acctCrossRelService.insert(acctCrossRel);
+                            acctCrossRelMapper.insert(acctCrossRel);
                             //插入TB_SLAVE_ACCT
                             TbSlaveAcct tbSlaveAcct = new TbSlaveAcct(String.valueOf(staff.get("ACCOUNT")), "1314",
                                     "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", SystemConstant.CPC_SYSTEM_ID,
                                     "1000", DateUtils.parseDate(DateUtils.getDateTime()), null,
                                     tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
-                            tbSlaveAcctService.insert(tbSlaveAcct);
+                            tbSlaveAcctMapper.insert(tbSlaveAcct);
                         }else {
                             //修改人
                             TbPersonnel tbPersonnel = new TbPersonnel();
@@ -225,51 +207,51 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                             tbPersonnel.setUpdateDate(new Date());
                             tbPersonnel.setStatusDate(new Date());
                             tbPersonnel.setPsnName(staffName);
-                            tbPersonnelService.updateById(tbPersonnel);
+                            tbPersonnelMapper.updateById(tbPersonnel);
                             //修改 TB_CERT（不用修改）
                             //修改 TB_ACCT（有则不用修改，没有则需要生成）
                             //获取主账号
-                            TbAcct tbAcct = tbAcctService.selectByPersonnelId(personnelId);
+                            TbAcct tbAcct = tbAcctMapper.selectByPersonnelId(personnelId);
                             if(tbAcct == null){
                                 // 插入TB_ACCT
                                  tbAcct = new TbAcct(String.valueOf(tbPersonnel.getPersonnelId()), psnCode, "1314",
                                         "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1000",
                                         DateUtils.parseDate(DateUtils.getDateTime()), "2",
                                         DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"), "2");
-                                tbAcctService.insert(tbAcct);
+                                tbAcctMapper.insert(tbAcct);
                             }
                             //修改 TB_CONTACT 1.删除该人的所有的联系方式 2.插入新的联系方式
-                            tbContactService.deleteByPersonnelId(personnelId);
+                            tbContactMapper.deleteByPersonnelId(personnelId);
                             if (StringUtils.isNotEmpty(String.valueOf(staff.get("MOBILE_PHONE")))) {
                                 TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
                                         String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString(),
                                         "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
-                                tbContactService.insert(tbContact);
+                                tbContactMapper.insert(tbContact);
                             }
                             if (StringUtils.isNotEmpty(String.valueOf(staff.get("E_MAIL")))) {
                                 TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "2",
                                         String.valueOf(staff.get("E_MAIL")), UUID.randomUUID().toString(),
                                         "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
-                                tbContactService.insert(tbContact);
+                                tbContactMapper.insert(tbContact);
                             }
                             //修改TB_ACCT_CROSS_REL1.删除该人的关系类型为'100100102'跨域账号 2.插入新的TB_ACCT_CROSS_REL1
-                            acctCrossRelService.deleteByAcctIdAndRelaType(tbAcct.getAcctId(),"100100102");
+                            acctCrossRelMapper.deleteByAcctIdAndRelaType(tbAcct.getAcctId(),"100100102");
                             AcctCrossRel acctCrossRel = new AcctCrossRel(tbAcct.getAcctId(),
                                     String.valueOf(staff.get("SALES_CODE")), "100100102", "1000",
                                     DateUtils.parseDate(DateUtils.getDateTime()));
-                            acctCrossRelService.insert(acctCrossRel);
+                            acctCrossRelMapper.insert(acctCrossRel);
                             //插入TB_SLAVE_ACCT。判断该账号是否存在。
-                            if(tbSlaveAcctService.selectBySlaveAcctAndAcctId(String.valueOf(staff.get("ACCOUNT")),tbAcct.getAcctId()) < 1){
+                            if(tbSlaveAcctMapper.selectBySlaveAcctAndAcctId(String.valueOf(staff.get("ACCOUNT")),tbAcct.getAcctId()) < 1){
                                 TbSlaveAcct tbSlaveAcct = new TbSlaveAcct(String.valueOf(staff.get("ACCOUNT")), "1314",
                                         "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", SystemConstant.CPC_SYSTEM_ID,
                                         "1000", DateUtils.parseDate(DateUtils.getDateTime()), null,
                                         tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
-                                tbSlaveAcctService.insert(tbSlaveAcct);
+                                tbSlaveAcctMapper.insert(tbSlaveAcct);
                             }
                         }
                     };break;
                     case "DEL" :{
-                        Long personnelId = acctCrossRelService.checkExistCrossRelTypeAndSalesCode("100100102", String.valueOf(staff.get("SALES_CODE")));
+                        Long personnelId = acctCrossRelMapper.checkExistCrossRelTypeAndSalesCode("100100102", String.valueOf(staff.get("SALES_CODE")));
                         if(personnelId == null){
                             rsMap.put("result_code","1000");
                             rsMap.put("message","人员标识不存在。");
@@ -282,24 +264,24 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                             tbPersonnel.setUpdateDate(new Date());
                             tbPersonnel.setStatusDate(new Date());
                             tbPersonnel.setPsnName(staffName);
-                            tbPersonnelService.updateById(tbPersonnel);
+                            tbPersonnelMapper.updateById(tbPersonnel);
                             //修改 TB_CERT
-                            tbCertService.deleteByPersonnelId(personnelId);
+                            tbCertMapper.deleteByPersonnelId(personnelId);
                             //修改TB_ACCT
-                            TbAcct tbAcct = tbAcctService.selectByPersonnelId(personnelId);
+                            TbAcct tbAcct = tbAcctMapper.selectByPersonnelId(personnelId);
                             if(tbAcct == null){
                                 rsMap.put("result_code","1000");
                                 rsMap.put("message","主账号标识不存在。");
                                 return ;
                             }
                             tbAcct.setStatusCd("1100");
-                            tbAcctService.updateById(tbAcct);
+                            tbAcctMapper.updateById(tbAcct);
                             //删除TB_ACCT_CROSS_REL
-                            acctCrossRelService.deleteByAcctIdAndRelaType(tbAcct.getAcctId(),"100100102");
+                            acctCrossRelMapper.deleteByAcctIdAndRelaType(tbAcct.getAcctId(),"100100102");
                             //删除联系方式
-                            tbContactService.deleteByPersonnelId(personnelId);
+                            tbContactMapper.deleteByPersonnelId(personnelId);
                             //删除从账号
-                            tbSlaveAcctService.deleteByAcctId(tbAcct.getAcctId());
+                            tbSlaveAcctMapper.deleteByAcctId(tbAcct.getAcctId());
                         }
                     };break;
                 }
@@ -320,48 +302,333 @@ public class CpcChannelServiceImpl implements CpcChannelService {
      * @param rsMap
      */
     private void hand_STAFF_CHANNEL_RELAS(Map<String, Object> staffChannelRel, Map<String, Object> rsMap) {
-        if (!rsMap.get("result_code").toString().equals("1000")) {
-            String salesCode = String.valueOf(staffChannelRel.get("SALES_CODE"));
-            String channelNBR = String.valueOf(staffChannelRel.get("CHANNEL_NBR"));
-            if (StringUtils.isNotEmpty(salesCode) && StringUtils.isNotEmpty(channelNBR)) {
-                try {
-                    // 获取orgId
-                    List<Expandovalue> expandovalues = expandovalueService.selectList(new EntityWrapper<Expandovalue>().
-                            eq("DATA_", staffChannelRel.get("CHANNEL_NBR")).eq("STATUS_CD", "1000"));
-                    String recordId = expandovalues.get(0).getRecordId();
+        if (null == staffChannelRel || "1000".equals(rsMap.get("result_code"))) {
+            return;
+        }
+        // 检查必要信息
+        String salesCode = String.valueOf(staffChannelRel.get("SALES_CODE"));
+        String channelNBR = String.valueOf(staffChannelRel.get("CHANNEL_NBR"));
+        String action = String.valueOf(staffChannelRel.get("ACTION"));
+        if (StringUtils.isEmpty(salesCode) || StringUtils.isEmpty(channelNBR) || StringUtils.isEmpty(action)) {
+            rsMap.put("result_code", "1000");
+            rsMap.put("message", "必要信息为空");
+            return;
+        }
+        try {
+            switch (action) {
+                case "ADD":
+                    addStaffChannelRelas(staffChannelRel);
+                case "MOD":
+                    modStaffChannelRelas(staffChannelRel);
+                case "DEL":
+                    delStaffChannelRelas(staffChannelRel);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            rsMap.put("result_code", "1000");
+            rsMap.put("message", e.getStackTrace());
+        }
+    }
 
-                    // 获取主账号
-                    AcctCrossRel acctCrossRel = acctCrossRelService.selectOne(new EntityWrapper<AcctCrossRel>().
-                            eq("CROSS_TRAN", staffChannelRel.get("SALES_CODE")).
-                            eq("STATUS_CD", "1000"));
-                    if (null == acctCrossRel) {
-                        rsMap.put("result_code", "1000");
-                        return;
-                    }
+    /**
+     * 新增组织
+     */
+    private void addChannel(Map<String, Object> channel) throws Exception {
 
-                    AccountOrgRel accountOrgRel = new AccountOrgRel(Long.valueOf(recordId), acctCrossRel.getAcctId(),
-                            "1000", DateUtils.parseDate(DateUtils.getDateTime()), 1L, "30");
-                    acctCrossRelService.insert(acctCrossRel);
+        Expandovalue expandovalue = checkChannelNbr(channel);
+        if (null != expandovalue) {
+            return;
+        }
+        // 插入组织表
+        TbOrg tbOrg = new TbOrg();
+        String commoinRegionId = channel.get("COMMON_REGION_ID").toString();
+        List<CommonRegion> commonRegions = commonRegionMapper.selectList(new EntityWrapper<CommonRegion>().
+                eq("COMMON_REGION_ID", commoinRegionId.substring(0, 5) + "00")
+                .eq("STATUS_CD", "1000"));
+        tbOrg.setAreaCodeId(commonRegions.get(0).getAreaCodeId());
+        tbOrg.setOrgName(channel.get("CHANNEL_NAME").toString());
+        tbOrgMapper.insertChannel(tbOrg);
 
-                    // 更新从账号
-                    TbSlaveAcct tbSlaveAcct = tbSlaveAcctService.selectOne(new EntityWrapper<TbSlaveAcct>().
-                            eq("ACCT_ORG_REL_ID",accountOrgRel.getAcctOrgRelId())
-                            .eq("ACCT_ID",acctCrossRel.getAcctId())
-                            .eq("STATUS_CD","1000"));
-                    tbSlaveAcct.setAcctOrgRelId(accountOrgRel.getAcctOrgRelId());
-                    tbSlaveAcctService.updateById(tbSlaveAcct);
+        // 插入扩展行
+        Systemtable systemtable = new Systemtable();
+        systemtable.setTableName(HandleChannelConstant.ORG_TABLE_NAME);
+        systemtable.setStatusCd(HandleChannelConstant.VALID_STATE);
+        Systemtable systemtableSelected = systemtableMapper.selectOne(systemtable);
+        Expandorow expandorow = new Expandorow();
+        expandorow.setTableId(systemtableSelected.getTableId());
+        expandorow.setResourceId(HandleChannelConstant.RESOURCE_ID);
+        expandorow.setRecordId(String.valueOf(tbOrg.getOrgId()));
+        expandorow.setStatusCd(HandleChannelConstant.VALID_STATE);
+        expandorow.setCreateDate(new Date());
+        expandorowMapper.insert(expandorow);
 
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    rsMap.put("result_code", "1000");
-                    rsMap.put("message",e.getStackTrace());
-//                    throw new Exception("执行失败，请查看日志");
-                }
-            } else {
-                rsMap.put("result_code", "1000");
+
+        Expandocolumn columnOfIsChannel = new Expandocolumn();
+        columnOfIsChannel.setColumnName("IsChannel");
+        columnOfIsChannel.setStatusCd(HandleChannelConstant.VALID_STATE);
+        columnOfIsChannel = expandocolumnMapper.selectOne(columnOfIsChannel);
+        Expandocolumn columnOfChannelNBR = new Expandocolumn();
+        columnOfChannelNBR.setColumnName("channelNBR");
+        columnOfChannelNBR.setStatusCd(HandleChannelConstant.VALID_STATE);
+        columnOfChannelNBR = expandocolumnMapper.selectOne(columnOfChannelNBR);
+
+        // 插入扩展值
+        Expandovalue valueOfIsChannel = new Expandovalue();
+        valueOfIsChannel.setResourceId(HandleChannelConstant.RESOURCE_ID);
+        valueOfIsChannel.setTableId(systemtable.getTableId());
+        valueOfIsChannel.setColumnId(columnOfIsChannel.getColumnId());
+        valueOfIsChannel.setRowId(expandorow.getRowId());
+        valueOfIsChannel.setRecordId(String.valueOf(tbOrg.getOrgId()));
+        valueOfIsChannel.setData("Y");
+        valueOfIsChannel.setStatusCd(HandleChannelConstant.VALID_STATE);
+        valueOfIsChannel.setCreateDate(new Date());
+
+        Expandovalue valueOfChannelNBR = new Expandovalue();
+        valueOfChannelNBR.setResourceId(HandleChannelConstant.RESOURCE_ID);
+        valueOfChannelNBR.setTableId(systemtable.getTableId());
+        valueOfChannelNBR.setColumnId(columnOfChannelNBR.getColumnId());
+        valueOfChannelNBR.setRowId(expandorow.getRowId());
+        valueOfChannelNBR.setRecordId(String.valueOf(tbOrg.getOrgId()));
+        valueOfChannelNBR.setData(channel.get("CHANNEL_NBR").toString());
+        valueOfChannelNBR.setStatusCd(HandleChannelConstant.VALID_STATE);
+        valueOfChannelNBR.setCreateDate(new Date());
+        expandovalueMapper.insert(valueOfIsChannel);
+        expandovalueMapper.insert(valueOfChannelNBR);
+
+        // 插入组织类别
+        String chnTypeCd = String.valueOf(channel.get("CHN_TYPE_CD"));
+        TbOrgOrgtypeRel tbOrgOrgtypeRel = checkTbOrgOrgTypeRel(chnTypeCd, tbOrg.getOrgId());
+        if (null == tbOrgOrgtypeRel) {
+            return;
+        }
+        tbOrgOrgtypeRel.setStatusCd(HandleChannelConstant.VALID_STATE);
+        tbOrgOrgtypeRel.setCreateDate(new Date());
+        tbOrgOrgtypeRelMapper.insert(tbOrgOrgtypeRel);
+
+    }
+
+
+    /**
+     * 修改渠道对应信息
+     *
+     * @param channel
+     */
+    private void modChannel(Map<String, Object> channel) throws Exception {
+
+        Expandovalue expandovalue = checkChannelNbr(channel);
+        if (null == expandovalue) {
+            addChannel(channel);
+            return;
+        }
+
+        // 修改组织表
+        TbOrg tbOrg = tbOrgMapper.selectById(expandovalue.getRecordId());
+        tbOrg.setOrgName(String.valueOf(channel.get("CHANNEL_NAME")));
+        tbOrg.setShortName(String.valueOf(channel.get("CHANNEL_NAME")));
+        String commonRegionId = String.valueOf(channel.get("COMMON_REGION_ID"));
+        List<CommonRegion> commonRegions = commonRegionMapper.selectList(new EntityWrapper<CommonRegion>().
+                eq("COMMON_REGION_ID", commonRegionId.substring(0, 5) + "00")
+                .eq("STATUS_CD", "1000"));
+        tbOrg.setAreaCodeId(commonRegions.get(0).getAreaCodeId());
+        tbOrg.setUpdateDate(new Date());
+        tbOrg.setStatusDate(new Date());
+        tbOrgMapper.updateById(tbOrg);
+
+        // 修改组织类别
+        String chnTypeCd = String.valueOf(channel.get("CHN_TYPE_CD"));
+        TbOrgOrgtypeRel tbOrgOrgtypeRel = checkTbOrgOrgTypeRel(chnTypeCd, tbOrg.getOrgId());
+        if (null == tbOrgOrgtypeRel) {
+            return;
+        }
+        tbOrgOrgtypeRel.setStatusCd(HandleChannelConstant.VALID_STATE);
+        tbOrgOrgtypeRel = tbOrgOrgtypeRelMapper.selectOne(tbOrgOrgtypeRel);
+        if (null == tbOrgOrgtypeRel) {
+            TbOrgOrgtypeRel rel = checkTbOrgOrgTypeRel(chnTypeCd, tbOrg.getOrgId());
+            rel.setStatusCd(HandleChannelConstant.VALID_STATE);
+            rel.setCreateDate(new Date());
+            tbOrgOrgtypeRelMapper.insert(rel);
+        }
+
+
+    }
+
+    /**
+     * 删除组织
+     *
+     * @param channel
+     * @throws Exception
+     */
+    private void delChannel(Map<String, Object> channel) throws Exception {
+        Expandovalue expandovalue = checkChannelNbr(channel);
+        if (null != expandovalue) {
+
+            // 删除扩展行
+            Expandorow expandorow = new Expandorow();
+            expandorow.setResourceId(HandleChannelConstant.RESOURCE_ID);
+            expandorow.setTableId(expandovalue.getTableId());
+            expandorow.setRecordId(expandovalue.getRecordId());
+            expandorow.setStatusCd(HandleChannelConstant.VALID_STATE);
+            expandorow = expandorowMapper.selectOne(expandorow);
+            if (null != expandorow) {
+                expandorow.setStatusCd(HandleChannelConstant.INVALID_STATE);
+                expandorowMapper.updateById(expandorow);
+            }
+
+            // 删除扩展值
+            expandovalue.setStatusCd(HandleChannelConstant.INVALID_STATE);
+            expandovalueMapper.updateById(expandovalue);
+
+            // 删除组织
+            TbOrg tbOrg = tbOrgMapper.selectById(Long.valueOf(expandovalue.getRecordId()));
+            tbOrg.setStatusCd(HandleChannelConstant.INVALID_STATE);
+            tbOrgMapper.updateById(tbOrg);
+
+            // 删除组织类别
+            String chnTypeCd = String.valueOf(channel.get("CHN_TYPE_CD"));
+            TbOrgOrgtypeRel tbOrgOrgtypeRel = checkTbOrgOrgTypeRel(chnTypeCd, tbOrg.getOrgId());
+            if (null == tbOrgOrgtypeRel) {
+                return;
+            }
+            tbOrgOrgtypeRel.setStatusCd(HandleChannelConstant.VALID_STATE);
+            tbOrgOrgtypeRel = tbOrgOrgtypeRelMapper.selectOne(tbOrgOrgtypeRel);
+            if (null != tbOrgOrgtypeRel) {
+                tbOrgOrgtypeRel.setStatusCd(HandleChannelConstant.INVALID_STATE);
+                tbOrgOrgtypeRelMapper.updateById(tbOrgOrgtypeRel);
             }
 
         }
+
+
+    }
+
+    /**
+     * 渠道操作前，检查渠道是否存在
+     *
+     * @param channel
+     * @return expandovalue.get(recordId)
+     */
+    private Expandovalue checkChannelNbr(Map<String, Object> channel) {
+        Systemtable systemtable = new Systemtable();
+        systemtable.setStatusCd(HandleChannelConstant.VALID_STATE);
+        systemtable.setTableName(HandleChannelConstant.ORG_TABLE_NAME);
+        systemtable = systemtableMapper.selectOne(systemtable);
+        Expandovalue expandovalue = new Expandovalue();
+        expandovalue.setResourceId(HandleChannelConstant.RESOURCE_ID);
+        expandovalue.setTableId(systemtable.getTableId());
+        expandovalue.setData(String.valueOf(channel.get("CHANNEL_NBR")));
+        expandovalue.setStatusCd(HandleChannelConstant.VALID_STATE);
+        expandovalue = expandovalueMapper.selectOne(expandovalue);
+        return expandovalue;
+    }
+
+    /**
+     * 新增渠道人员关系
+     *
+     * @param staffChannelRel
+     */
+    private void addStaffChannelRelas(Map<String, Object> staffChannelRel) throws Exception {
+
+        // 检查主账号组织关系
+        AccountOrgRel accountOrgRel = checkAccoutOrgRel(staffChannelRel);
+        AccountOrgRel rel = accountOrgRelMapper.selectOne(accountOrgRel);
+        if (null != rel) {
+            throw new RuntimeException("主账号组织关系已存在");
+        }
+        accountOrgRel.setCreateDate(new Date());
+        accountOrgRelMapper.insert(accountOrgRel);
+
+        // 更新从账号
+        TbSlaveAcct tbSlaveAcct = new TbSlaveAcct();
+        tbSlaveAcct.setResourceObjId(Long.valueOf(HandleChannelConstant.RESOURCE_ID));
+        tbSlaveAcct.setAcctId(accountOrgRel.getAcctId());
+        tbSlaveAcct.setStatusCd(HandleChannelConstant.VALID_STATE);
+        tbSlaveAcct = tbSlaveAcctMapper.selectOne(tbSlaveAcct);
+        tbSlaveAcct.setAcctOrgRelId(accountOrgRel.getAcctOrgRelId());
+        tbSlaveAcctMapper.updateById(tbSlaveAcct);
+    }
+
+    /**
+     * 修改渠道人员关系
+     *
+     * @param staffChannelRel
+     */
+    private void modStaffChannelRelas(Map<String, Object> staffChannelRel) throws Exception {
+        //
+        AccountOrgRel accountOrgRel = checkAccoutOrgRel(staffChannelRel);
+
+        // 删除原来的关系，新增现有关系
+        if (null != accountOrgRel) {
+            accountOrgRel.setStatusCd(HandleChannelConstant.INVALID_STATE);
+            accountOrgRel.setUpdateDate(new Date());
+            accountOrgRel.setStatusDate(new Date());
+            accountOrgRelMapper.updateById(accountOrgRel);
+        }
+
+        addStaffChannelRelas(staffChannelRel);
+    }
+
+    /**
+     * 删除渠道人员关系
+     *
+     * @param staffChannelRel
+     */
+    private void delStaffChannelRelas(Map<String, Object> staffChannelRel) {
+        AccountOrgRel accountOrgRel = checkAccoutOrgRel(staffChannelRel);
+        if (null == accountOrgRel) {
+            throw new RuntimeException("主账号组织关系不存在");
+        }
+        accountOrgRel.setStatusCd(HandleChannelConstant.INVALID_STATE);
+        accountOrgRel.setUpdateDate(new Date());
+        accountOrgRel.setStatusDate(new Date());
+        accountOrgRelMapper.updateById(accountOrgRel);
+
+    }
+
+    /**
+     * 检查主账号组织关系
+     *
+     * @param staffChannelRel
+     * @return
+     */
+    private AccountOrgRel checkAccoutOrgRel(Map<String, Object> staffChannelRel) {
+        Expandovalue expandovalue = checkChannelNbr(staffChannelRel);
+        if (null == expandovalue || StringUtils.isEmpty(expandovalue.getRecordId())) {
+            throw new RuntimeException("组织不存在");
+        }
+
+        // 获取主账号
+        AcctCrossRel acctCrossRel = new AcctCrossRel();
+        acctCrossRel.setCrossTran(staffChannelRel.get("SALES_CODE").toString());
+        acctCrossRel.setRelaType(HandleChannelConstant.RELA_TYPE);
+        acctCrossRel.setStatusCd(HandleChannelConstant.VALID_STATE);
+        acctCrossRel = acctCrossRelMapper.selectOne(acctCrossRel);
+        if (null == acctCrossRel || StringUtils.isEmpty(String.valueOf(acctCrossRel.getAcctId()))) {
+            throw new RuntimeException("主账号不存在");
+        }
+
+        AccountOrgRel accountOrgRel = new AccountOrgRel();
+        accountOrgRel.setAcctId(acctCrossRel.getAcctId());
+        accountOrgRel.setOrgId(Long.valueOf(expandovalue.getRecordId()));
+        accountOrgRel.setStatusCd(HandleChannelConstant.VALID_STATE);
+        accountOrgRel.setOrgTreeId(HandleChannelConstant.ORG_TREE_ID);
+        accountOrgRel.setRelType(HandleChannelConstant.REL_TYPE);
+        return accountOrgRel;
+    }
+
+    private TbOrgOrgtypeRel checkTbOrgOrgTypeRel(String chnTypeCd, Long orgId) {
+        if (StringUtils.isEmpty(chnTypeCd)) {
+            return null;
+        }
+        String orgTypeCode = HandleChannelConstant.ORG_TYPE_REL.get(chnTypeCd).toString();
+        OrgType orgType = new OrgType();
+        orgType.setOrgTypeCode(orgTypeCode);
+        orgType.setStatusCd(HandleChannelConstant.VALID_STATE);
+        orgType = orgTypeMapper.selectOne(orgType);
+
+        TbOrgOrgtypeRel tbOrgOrgtypeRel = new TbOrgOrgtypeRel();
+        tbOrgOrgtypeRel.setOrgId(orgId);
+        tbOrgOrgtypeRel.setOrgTypeId(orgType.getOrgTypeId());
+        return tbOrgOrgtypeRel;
     }
 
     public static void main(String[] args) {

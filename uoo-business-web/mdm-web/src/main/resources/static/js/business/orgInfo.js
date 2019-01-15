@@ -1,6 +1,7 @@
 var orgId = getQueryString('id');
 var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
+var standardFlag = ~~getQueryString('standardFlag');
 var orgName = getQueryString('name');
 var locationList;
 var orgTypeList;
@@ -13,6 +14,9 @@ var loading = parent.loading;
 var toastr = parent.parent.toastr;
 
 $('.orgName').html(orgName);
+//不可编辑
+if (standardFlag)
+    $('#editBtn').remove();
 // 显示组织路径
 parent.getOrgExtInfo();
 

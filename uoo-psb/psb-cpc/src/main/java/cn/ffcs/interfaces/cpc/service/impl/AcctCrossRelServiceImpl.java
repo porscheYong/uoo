@@ -19,7 +19,7 @@ public class AcctCrossRelServiceImpl extends ServiceImpl<AcctCrossRelMapper, Acc
 
     @Override
     public boolean deleteByAcctIdAndRelaType(Long acctId, String relaType) {
-        return baseMapper.deleteByPersonnelIdAndRelaType(acctId,relaType);
+        return baseMapper.deleteByAcctIdAndRelaType(acctId,relaType);
     }
 
     @Override

@@ -37,7 +37,7 @@ public class SysMenuController {
     @Autowired
     ShiroFilterFactoryBean shiroFilterFactoryBean;
     //type 必填，module必填，methods必填，desc选填
-    @OperateLog(type=OperateType.SELECT,module="平台系统菜单模块",methods="查询账号所有菜单",desc="获取当前所有菜单")
+    //@OperateLog(type=OperateType.SELECT,module="平台系统菜单模块",methods="查询账号所有菜单",desc="获取当前所有菜单")
     @ApiOperation(value = "查询账号所有菜单", notes = "查询账号所有菜单")
     @ApiImplicitParams({
     })
