@@ -87,9 +87,9 @@ function initSideBar(results){     //初始化侧边菜单
     }
     $("#LAY-system-side-menu").append(pemList);
     //MENU_CODE
-    $('#LAY-system-side-menu .layui-nav-item > a').each(function () {
+    $('#LAY-system-side-menu .layui-nav-item  a').each(function () {
         $(this).click(function () {
-            menuCode = $(this).parent('li').attr('mcode');
+            menuCode = $(this).parent().attr('mcode');
         });
     });
     loading.screenMaskDisable('container');

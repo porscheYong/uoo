@@ -27,17 +27,8 @@ function getRegionList (id) {
 	}
 	$('#regionStrFull').html(str);
 	$('#regionStrCurrent').attr('cid',nodes[0].id);
-	$.ajax({
-		url:'/region/commonRegion/getChildCommonRegionInfo/'+id,
-		success:function(data){
-			if(data.state==1000){
-				initTable(data.data)
-			}else{
-				
-			}
-		},
-		dataType:'json',
-		type:'get'
+	$http.get('/region/commonRegion/getChildCommonRegionInfo/'+id,{},function(data){
+		initTable(data);
 	});
 }
 
@@ -134,7 +125,7 @@ function initTable (results) {
 
 var listId = getQueryString('id');
 getRegionList(listId);
-
+/*
 function goDel(){
 	if(confirm('确定删除这条数据？')){
 		$.ajax({
@@ -212,4 +203,4 @@ function deleteRegion(id){
 			}
 		});
 	}
-}
+}*/

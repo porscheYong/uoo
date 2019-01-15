@@ -83,12 +83,16 @@ public class SystemLogHandlerInterceptor implements HandlerInterceptor{
                         for (Entry<String, String> entry : entrySet) {
                             String pm = entry.getValue();
                             String url = entry.getKey();
-                            if(pm.startsWith("perms[")){
-                                String tmp = url.replaceAll("\\*", ".*");
-                                if(Pattern.matches(tmp, requestURI)){
-                                    logs.setFuncCode(pm.substring(6, pm.length()-1));
-                                    break;
+                            try {
+                                if(pm.startsWith("perms[")){
+                                    String tmp = url.replaceAll("\\*", ".*");
+                                    if(Pattern.matches(tmp, requestURI)){
+                                        logs.setFuncCode(pm.substring(6, pm.length()-1));
+                                        break;
+                                    }
                                 }
+                            } catch (Exception e) {
+                                System.err.println(url);
                             }
                         }
                         logs.setFormData(formData);

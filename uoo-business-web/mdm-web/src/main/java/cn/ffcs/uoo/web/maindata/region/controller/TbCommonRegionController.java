@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -78,7 +79,7 @@ public class TbCommonRegionController {
     //@UooLog(value = "新增公共管理区域", key = "addCommonRegion")
     @PostMapping("addCommonRegion")
     //@Transactional
-    public ResponseResult addCommonRegion(CommonRegionDTO commonRegion) {
+    public ResponseResult addCommonRegion(@RequestBody CommonRegionDTO commonRegion) {
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         commonRegion.setOperateUser(currentLoginUser.getUserId());
@@ -91,7 +92,7 @@ public class TbCommonRegionController {
     //@UooLog(value = "修改公共管理区域", key = "updateCommonRegion")
     @PostMapping("updateCommonRegion")
     //@Transactional
-    public ResponseResult updateCommonRegion(CommonRegionDTO commonRegion) {
+    public ResponseResult updateCommonRegion(@RequestBody CommonRegionDTO commonRegion) {
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         commonRegion.setOperateUser(currentLoginUser.getUserId());
@@ -104,7 +105,7 @@ public class TbCommonRegionController {
     //@UooLog(value = "删除公共管理区域", key = "deleteCommonRegion")
     @PostMapping("deleteCommonRegion")
     //@Transactional(rollbackFor=Exception.class)
-    public ResponseResult deleteCommonRegion(TbCommonRegion commonRegion) {
+    public ResponseResult deleteCommonRegion(@RequestBody TbCommonRegion commonRegion) {
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         commonRegion.setUpdateUser(currentLoginUser.getUserId());

@@ -12,33 +12,21 @@ function saveRegion(){
 	if(!validFormData()){
 		return;
 	}
-	$.ajax({
-		type:'POST',
-		dataType:'json',
-		url:'/region/commonRegion/addCommonRegion',
-		data:$('#regionForm').serialize(),
-		success:function(data){
-			if(data.state==1000){
-				toastr.success('操作成功');
-				//在父节点增加数据啊
-				var treeObj =parent.getTree();
-				var upId=$('#parentRegionId').val();
-				var myNodes=treeObj.getNodesByParam("id",upId,null);
-				var newNodes = [{name:$('#regionName').val(),id:data.data.commonRegionId,parent:false,open:false,pId:upId.id}];
-				if(myNodes.length<=0){
-					//插入到根目录
-					newNodes = treeObj.addNodes(null,-1, newNodes);
-					parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
-				}else{
-					newNodes = treeObj.addNodes(myNodes[0],-1, newNodes);
-					parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
-				}
-				
-			}else{
-				toastr.error('操作失败'+data.message);
-			}
+	$http.post('/region/commonRegion/addCommonRegion',JSON.stringify(serializeObject($('#regionForm'))),function(data){
+		toastr.success('操作成功');
+		//在父节点增加数据啊
+		var treeObj =parent.getTree();
+		var upId=$('#parentRegionId').val();
+		var myNodes=treeObj.getNodesByParam("id",upId,null);
+		var newNodes = [{name:$('#regionName').val(),id:data.commonRegionId,parent:false,open:false,pId:upId.id}];
+		if(myNodes.length<=0){
+			//插入到根目录
+			newNodes = treeObj.addNodes(null,-1, newNodes);
+			parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
+		}else{
+			newNodes = treeObj.addNodes(myNodes[0],-1, newNodes);
+			parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
 		}
-			
 	});
 	 
 }

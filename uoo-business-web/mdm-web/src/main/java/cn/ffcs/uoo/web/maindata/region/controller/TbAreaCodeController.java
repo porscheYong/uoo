@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -78,7 +79,7 @@ public class TbAreaCodeController  {
     //@UooLog(value = "新增区号", key = "addAreaCode")
     @PostMapping("addAreaCode")
     //@Transactional
-    public ResponseResult addAreaCode(TbAreaCode areaCode) {
+    public ResponseResult addAreaCode(@RequestBody TbAreaCode areaCode) {
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         areaCode.setCreateUser(currentLoginUser.getUserId());
@@ -91,7 +92,7 @@ public class TbAreaCodeController  {
     //@UooLog(value = "修改区号", key = "updateAreaCode")
     @PostMapping("updateAreaCode")
     //@Transactional
-    public ResponseResult updateAreaCode(TbAreaCode areaCode) {
+    public ResponseResult updateAreaCode(@RequestBody TbAreaCode areaCode) {
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         areaCode.setUpdateUser(currentLoginUser.getUserId());
@@ -104,7 +105,7 @@ public class TbAreaCodeController  {
     //@UooLog(value = "删除区号", key = "deleteAreaCode")
     @PostMapping("deleteAreaCode")
     //@Transactional
-    public ResponseResult deleteAreaCode(TbAreaCode areaCode) {
+    public ResponseResult deleteAreaCode(@RequestBody TbAreaCode areaCode) {
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         areaCode.setUpdateUser(currentLoginUser.getUserId());

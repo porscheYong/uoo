@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.ffcs.interfaces.cpc.dao.TbOrgCrossRelMapper">
-  <resultMap id="BaseResultMap" type="cn.ffcs.interfaces.cpc.pojo.TbOrgCrossRel">
+<mapper namespace="cn.ffcs.interfaces.cpc.dao.OrgCrossRelMapper">
+  <resultMap id="BaseResultMap" type="cn.ffcs.interfaces.cpc.pojo.OrgCrossRel">
     <id column="ORG_CROSS_REL_ID" jdbcType="DECIMAL" property="orgCrossRelId" />
     <result column="ORG_ID" jdbcType="DECIMAL" property="orgId" />
     <result column="CROSS_TRAN" jdbcType="VARCHAR" property="crossTran" />

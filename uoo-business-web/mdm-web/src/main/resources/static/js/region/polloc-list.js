@@ -26,18 +26,9 @@ function getRegionList (id) {
 	}
 	$('#regionStrFull').html(str);
 	$('#regionStrCurrent').attr('cid',nodes[0].id);
-	$.ajax({
-		url:'/region/politicalLocation/getChildPoliticalLocationInfo/'+id,
-		success:function(data){
-			if(data.state==1000){
-				initTable(data.data)
-			}else{
-				
-			}
-		},
-		dataType:'json',
-		type:'get'
-	});
+	$http.get('/region/politicalLocation/getChildPoliticalLocationInfo/'+id,{},function(data){
+		initTable(data);
+	})
 }
 
 function getDetail(id){
@@ -135,7 +126,7 @@ function initTable (results) {
 var listId = getQueryString('id');
 getRegionList(listId);
 
-function goDel(){
+/*function goDel(){
 	if(confirm('确定删除这条数据？')){
 		$.ajax({
 			url:'/region/politicalLocation/deletePoliticalLocation',
@@ -220,4 +211,4 @@ function deleteRegion(id){
 			}
 		});
 	}
-}
+}*/

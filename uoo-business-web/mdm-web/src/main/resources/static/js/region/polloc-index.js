@@ -21,25 +21,13 @@ var setting = {
 	}
 };
 $(document).ready(function() {
-
-	$.ajax({
-		url : '/region/politicalLocation/getTreePoliticalLocation',
-		dataType : 'json',
-		type : 'get',
-		success : function(data) {
-			if (data.state == 1000) {
-				loading.screenMaskDisable('container');
-				var ztree=$.fn.zTree.init($("#standardTree"), setting, data.data);
-				var rots=ztree.getNodes();
-				if(rots.length>0){
-					ztree.selectNode(rots[0]);
-					zTreeOnClick(null,null,rots[0]);
-				}
-			} else {
-				 
-				toastr.error('加载行政区域树失败，请重试');
-				
-			}
+	$http.get('/region/politicalLocation/getTreePoliticalLocation',{},function(data){
+		loading.screenMaskDisable('container');
+		var ztree=$.fn.zTree.init($("#standardTree"), setting, data);
+		var rots=ztree.getNodes();
+		if(rots.length>0){
+			ztree.selectNode(rots[0]);
+			zTreeOnClick(null,null,rots[0]);
 		}
 	});
 	/*$('#editBtn').bind('click', editPolLoc);
@@ -52,19 +40,9 @@ $(document).ready(function() {
 	loadTypeArr();
 });
 function loadTypeArr(){
-	$.ajax({
-		url:'/tbDictionaryItem/getList/LOC_TYPE',
-		dataType:"json",
-		type:'get',
-		success:function(data){
-			if(data.state==1000){
-				typeArray=data.data;
-			}else{
-				toastr.error('加载区域类型失败，请重试');
-			}
-			
-		}
-	});
+	$http.get('/tbDictionaryItem/getList/LOC_TYPE',{},function(data){
+		typeArray=data;
+	})
 }
 function getFontCss(treeId, treeNode) {
 	return (!!treeNode.highlight) ? {color:"#A60000", "font-weight":"bold"} : {color:"#333", "font-weight":"normal"};
