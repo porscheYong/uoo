@@ -81,7 +81,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             List<Map<String, Object>> STAFF_CHANNEL_RELAS = (List<Map<String, Object>>) map.get("STAFF_CHANNEL_RELAS");
 
             hand_CHANNEL(CHANNEL, rsMap);
-//            hand_STAFF(STAFF, rsMap);
+            hand_STAFF(STAFF, rsMap);
 
             /*if(STAFF_CHANNEL_RELAS != null && STAFF_CHANNEL_RELAS.size() >0){
                 STAFF_CHANNEL_RELAS.forEach((temp)->{
@@ -450,11 +450,15 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         }
         tbOrgOrgtypeRel.setStatusCd(HandleChannelConstant.VALID_STATE);
         tbOrgOrgtypeRel = tbOrgOrgtypeRelMapper.selectOne(tbOrgOrgtypeRel);
+        TbOrgOrgtypeRel rel = checkTbOrgOrgTypeRel(chnTypeCd, tbOrg.getOrgId());
         if (null == tbOrgOrgtypeRel) {
-            TbOrgOrgtypeRel rel = checkTbOrgOrgTypeRel(chnTypeCd, tbOrg.getOrgId());
             rel.setStatusCd(HandleChannelConstant.VALID_STATE);
             rel.setCreateDate(new Date());
             tbOrgOrgtypeRelMapper.insert(rel);
+        } else {
+            tbOrgOrgtypeRel.setOrgTypeId(rel.getOrgTypeId());
+            tbOrgOrgtypeRel.setUpdateDate(new Date());
+            tbOrgOrgtypeRelMapper.updateById(tbOrgOrgtypeRel);
         }
 
 
@@ -476,19 +480,26 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             expandorow.setTableId(expandovalue.getTableId());
             expandorow.setRecordId(expandovalue.getRecordId());
             expandorow.setStatusCd(HandleChannelConstant.VALID_STATE);
-            expandorow = expandorowMapper.selectOne(expandorow);
+            expandorow = expandorowMapper.selectOneExpandRow(expandorow);
             if (null != expandorow) {
                 expandorow.setStatusCd(HandleChannelConstant.INVALID_STATE);
+                expandorow.setUpdateDate(new Date());
+                expandorow.setStatusDate(new Date());
                 expandorowMapper.updateById(expandorow);
             }
 
             // 删除扩展值
-            expandovalue.setStatusCd(HandleChannelConstant.INVALID_STATE);
-            expandovalueMapper.updateById(expandovalue);
+            List<Expandovalue> expandovalues = expandovalueMapper.selectExpandovalueList(expandovalue);
+            for (Expandovalue value : expandovalues) {
+                value.setStatusCd(HandleChannelConstant.INVALID_STATE);
+                expandovalueMapper.updateById(value);
+            }
 
             // 删除组织
             TbOrg tbOrg = tbOrgMapper.selectById(Long.valueOf(expandovalue.getRecordId()));
             tbOrg.setStatusCd(HandleChannelConstant.INVALID_STATE);
+            tbOrg.setUpdateDate(new Date());
+            tbOrg.setStatusDate(new Date());
             tbOrgMapper.updateById(tbOrg);
 
             // 删除组织类别
@@ -501,6 +512,8 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             tbOrgOrgtypeRel = tbOrgOrgtypeRelMapper.selectOne(tbOrgOrgtypeRel);
             if (null != tbOrgOrgtypeRel) {
                 tbOrgOrgtypeRel.setStatusCd(HandleChannelConstant.INVALID_STATE);
+                tbOrgOrgtypeRel.setUpdateDate(new Date());
+                tbOrgOrgtypeRel.setStatusDate(new Date());
                 tbOrgOrgtypeRelMapper.updateById(tbOrgOrgtypeRel);
             }
 
