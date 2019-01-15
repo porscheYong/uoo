@@ -13,7 +13,7 @@
     <!--生产地址 -->
     <!--<dubbo:registry protocol="dubbo" address="dubbo://134.96.249.149:8001" check="false"/> -->
     <bean id="cpcChannel" class="cn.ffcs.interfaces.cpc.service.impl.CpcChannelServiceImpl" />
-    <dubbo:service interface="cn.ffcs.interfaces.cpc.service.CpcChannelService"  timeout="5000" version="1.0" ref="cpcChannel">
+    <dubbo:service interface="cn.ffcs.interfaces.cpc.service.CpcChannelService"  timeout="60000" version="1.0" ref="cpcChannel">
         <dubbo:method name="handle" servicecode="33.1089.handle" />
     </dubbo:service>
 
