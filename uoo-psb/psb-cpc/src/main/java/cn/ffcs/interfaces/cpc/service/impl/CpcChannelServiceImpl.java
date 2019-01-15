@@ -78,11 +78,17 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             /*员工*/
             Map<String, Object> STAFF = (Map<String, Object>) map.get("STAFF");
             /*员工渠道关系*/
-            Map<String, Object> STAFF_CHANNEL_RELAS = (Map<String, Object>) map.get("STAFF_CHANNEL_RELAS");
+            List<Map<String, Object>> STAFF_CHANNEL_RELAS = (List<Map<String, Object>>) map.get("STAFF_CHANNEL_RELAS");
 
             hand_CHANNEL(CHANNEL, rsMap);
             hand_STAFF(STAFF, rsMap);
-            //hand_STAFF_CHANNEL_RELAS(STAFF_CHANNEL_RELAS, rsMap);
+
+            /*if(STAFF_CHANNEL_RELAS != null && STAFF_CHANNEL_RELAS.size() >0){
+                STAFF_CHANNEL_RELAS.forEach((temp)->{
+                    hand_STAFF_CHANNEL_RELAS(temp,rsMap);
+                });
+            }*/
+
 
             //事务回滚
             if ("1000".equals(rsMap.get("result_code"))) {
