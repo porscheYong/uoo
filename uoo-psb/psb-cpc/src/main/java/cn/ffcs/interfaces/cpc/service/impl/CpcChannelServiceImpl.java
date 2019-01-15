@@ -155,7 +155,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         if (StringUtils.isNotEmpty(staffName) && StringUtils.isNotEmpty(psnCode) && StringUtils.isNotEmpty(idCard)) {
             try {
                 //ADD|MOD|DEL
-                switch((String)rsMap.get("ACTION")){
+                switch((String)staff.get("ACTION")){
                     case "ADD" :
                     case "MOD" :{
                         //根据CERT_TYPE 和 CERT_NUMBER 判断 该人是否已经存在
