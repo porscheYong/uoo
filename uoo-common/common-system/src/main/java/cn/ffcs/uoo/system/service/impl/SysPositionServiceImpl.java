@@ -186,4 +186,20 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
         page.setRecords(list);
         return page;
     }
+
+    @Override
+    public Page<SysUserVo> getPositionUserPage(String id,
+                                               String search,
+                                               Integer pageSize,
+                                               Integer pageNo,
+                                               String isSearchlower){
+        Page<SysUserVo> page = new Page<SysUserVo>(StrUtil.isNullOrEmpty(pageNo)?1:pageNo,
+                StrUtil.isNullOrEmpty(pageSize)?10:pageSize);
+        List<SysUserVo> list = baseMapper.getPositionUserPage(page,id,search,isSearchlower);
+        page.setRecords(list);
+        return page;
+    }
+
+
+
 }

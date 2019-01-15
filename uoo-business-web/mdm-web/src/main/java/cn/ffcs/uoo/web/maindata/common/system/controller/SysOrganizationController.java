@@ -192,5 +192,22 @@ public class SysOrganizationController {
         accout = currentLoginUser.getAccout();
         return sysOrganizationClient.getOrgUserPage(id,search,pageSize,pageNo,isSearchlower,userId,accout);
     }
+
+    @ApiOperation(value = "查询组织人员", notes = "查询组织人员")
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/getPositionUserPage", method = RequestMethod.GET)
+    public ResponseResult<Page<SysUserVo>> getPositionUserPage(String id,
+                                                               String search,
+                                                               Integer pageSize,
+                                                               Integer pageNo,
+                                                               String isSearchlower,
+                                                               Long userId, String accout){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        userId = currentLoginUser.getUserId();
+        accout = currentLoginUser.getAccout();
+        return sysOrganizationClient.getPositionUserPage(id,search,pageSize,pageNo,isSearchlower,userId,accout);
+    }
 }
 

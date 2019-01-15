@@ -330,6 +330,16 @@ public class SysPositionController {
         SysPosition vo = sysPositionService.selectOne(positionRolesWrapper);
         if(vo!=null){
             int num = 0;
+
+            Wrapper positionRelWrapper = Condition.create()
+                    .eq("PARENT_POSITION_CODE",vo.getPositionCode())
+                    .eq("STATUS_CD","1000");
+            num = sysPositionService.selectCount(positionRelWrapper);
+            if(num>0){
+                ret.setState(ResponseResult.STATE_ERROR);
+                ret.setMessage("职位存在下级 不能删除");
+                return ret;
+            }
             num = sysPositionService.getPositionUserRefCount(vo.getPositionCode());
             if(num>0){
                 ret.setState(ResponseResult.STATE_ERROR);
@@ -349,6 +359,7 @@ public class SysPositionController {
                 return ret;
             }
         }
+        vo.setUpdateUser(pos.getUserId());
         sysPositionService.delete(vo);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
