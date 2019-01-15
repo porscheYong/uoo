@@ -3,7 +3,7 @@
 <mapper namespace="cn.ffcs.interfaces.cpc.dao.CommonRegionMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="cn.ffcs.interfaces.cpc.entity.CommonRegion">
+    <resultMap id="BaseResultMap" type="cn.ffcs.interfaces.cpc.pojo.CommonRegion">
         <id column="COMMON_REGION_ID" property="commonRegionId" />
         <result column="PARENT_REGION_ID" property="parentRegionId" />
         <result column="REGION_NAME" property="regionName" />

@@ -1,17 +1,20 @@
 package cn.ffcs.interfaces.cpc.pojo;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.KeySequence;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @TableName("TB_SLAVE_ACCT")
+@KeySequence(value = "SEQ_TB_SLAVE_ACCT_ID", clazz = Long.class)
 public class TbSlaveAcct extends Model<TbSlaveAcct> {
 
-    @TableId("SLAVE_ACCT_ID")
+    @TableId(value = "SLAVE_ACCT_ID",type = IdType.INPUT)
     private Long slaveAcctId;
 
     @TableField("SLAVE_ACCT")

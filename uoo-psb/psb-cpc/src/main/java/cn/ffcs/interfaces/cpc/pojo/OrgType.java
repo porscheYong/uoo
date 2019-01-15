@@ -1,12 +1,12 @@
 package cn.ffcs.interfaces.cpc.pojo;
 
 import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
+
+import com.baomidou.mybatisplus.annotations.*;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
 
 /**
@@ -17,7 +17,8 @@ import java.io.Serializable;
  * @author lxd
  * @since 2019-01-14
  */
-@TableName("TB_ORG_TYPE")
+    @TableName("TB_ORG_TYPE")
+@KeySequence(value = "SEQ_TB_ORG_TYPE_ID", clazz = Long.class)
 public class OrgType extends Model<OrgType> {
 
     private static final long serialVersionUID = 1L;
@@ -25,7 +26,7 @@ public class OrgType extends Model<OrgType> {
     /**
      * 组织类别标识
      */
-    @TableId(value = "ORG_TYPE_ID", type = IdType.AUTO)
+    @TableId(value = "ORG_TYPE_ID", type = IdType.INPUT)
     private Long orgTypeId;
     /**
      * 组织类别编码

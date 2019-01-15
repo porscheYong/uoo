@@ -1,12 +1,12 @@
 package cn.ffcs.interfaces.cpc.pojo;
 
 import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
+
+import com.baomidou.mybatisplus.annotations.*;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
 
 /**
@@ -18,6 +18,7 @@ import java.io.Serializable;
  * @since 2019-01-10
  */
 @TableName("TB_EXPANDOCOLUMN")
+@KeySequence(value = "SEQ_COLUMN_ID", clazz = Long.class)
 public class Expandocolumn extends Model<Expandocolumn> {
 
     private static final long serialVersionUID = 1L;
@@ -25,7 +26,7 @@ public class Expandocolumn extends Model<Expandocolumn> {
     /**
      * 扩展列标识
      */
-    @TableId(value = "COLUMN_ID", type = IdType.AUTO)
+    @TableId(value = "COLUMN_ID", type = IdType.INPUT)
     private Long columnId;
     /**
      * 系统表标识
