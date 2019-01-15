@@ -169,7 +169,7 @@
                             </li>
                             <li>
                                 <span class="Label">证件号码：</span>
-                                <span>{{userData.certNo}}</span>
+                                <span>{{userData.certId}}</span>
                             </li>
                             <li>
                                 <span class="Label">邮箱：</span>
@@ -214,7 +214,7 @@
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
                         <label for="certNo" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                        <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.certNo}}" onkeyup="getIdCardInfo()" onpaste="getIdCardInfo()" required />
+                        <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.certId}}" onkeyup="getIdCardInfo()" onpaste="getIdCardInfo()" required />
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
                         <label for="accout" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号</label>
@@ -241,9 +241,9 @@
                         </select>
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
-                        <label for="mobile" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                        <label for="mobile" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
                                style="padding-right: 20px;line-height: 40px;text-align: right;">手机号码</label>
-                        <input id="mobile" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.mobile}}" onkeyup="autoFillMail()" onpaste="autoFillMail()" />
+                        <input id="mobile" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.mobile}}" onkeyup="autoFillMail()" onpaste="autoFillMail()" required />
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
                         <label for="email" class="form-item-label col-md-4 col-sm-4 col-xs-12"
@@ -310,9 +310,7 @@
         <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
         <!-- init -->
         <script type="text/javascript" src="/js/init.js"></script>
-        <script type="text/javascript" src="/js/user/delPsn.js"></script>
         <script type="text/javascript" src="/js/manage/user/edit.js"></script>
         <script type="text/javascript" src="/js/IDCardUtils.js"></script>
-        <script type="text/javascript" src="/js/jquery.form.js"></script>
     </body>
 </html>
