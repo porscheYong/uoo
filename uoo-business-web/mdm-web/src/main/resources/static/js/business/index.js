@@ -4,6 +4,7 @@ var orgRootId; //业务组织ID
 var orgTreeId; //业务组织ID
 var businessName; //业务名
 var refCode; //唯一标识
+var standardFlag; //编辑标识
 var orgId, //组织ID
     pid,
     orgName, //组织名
@@ -22,6 +23,7 @@ function onNodeClick(e,treeId, treeNode) {
     orgId = treeNode.id;
     pid = treeNode.pid;
     orgName = treeNode.name;
+    standardFlag = treeNode.standardFlag;
     var currentNode = {node: treeNode, current: true};//获取当前选中节点
     var parentNode = treeNode.getParentNode();
     nodeArr = [];
@@ -64,7 +66,7 @@ function filter (treeId, parentNode, childNodes) {
 }
 
 function refreshResult () {
-    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + '&pid=' + pid + "&refCode=" + refCode + "&name=" + encodeURI(orgName);
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + '&pid=' + pid + "&refCode=" + refCode + "&standardFlag=" + standardFlag + "&name=" + encodeURI(orgName);
     $('#businessFrame').attr("src",url);
 }
 

@@ -6,6 +6,7 @@ var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var refCode = getQueryString('refCode');
+var standardFlag = ~~getQueryString('standardFlag');
 var table;
 var personnelTable;
 
@@ -26,7 +27,7 @@ function initOrgTable (results) {
         'columns': [
             { 'data': "orgName", 'title': '部门', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return '<a href="orgInfo.html?id=' + row.orgId + '&pid=' + orgId + '&orgTreeId=' + orgTreeId + '&name=' + encodeURI(row.orgName) + '">'+ row.orgName +'</a>'
+                    return '<a href="orgInfo.html?id=' + row.orgId + '&pid=' + orgId + '&orgTreeId=' + orgTreeId + '&standardFlag=' + standardFlag + '&name=' + encodeURI(row.orgName) + '">'+ row.orgName +'</a>'
                 }
             },
             { 'data': "orgTypeSplit",
@@ -214,13 +215,16 @@ function getOrgExt() {
 }
 
 $('#orgName').html(orgName);
+//不可编辑
+if (standardFlag)
+    $('#editBtn').remove();
 parent.getOrgExtInfo();
 getOrgExt();
 initOrgTable();
 initOrgPersonnelTable(0);
 
 function orgInfo() {
-    var url = 'orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    var url = 'orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&standardFlag=' + standardFlag + '&name=' + encodeURI(orgName);
     window.location.href = url;
 }
 function orgEdit () {

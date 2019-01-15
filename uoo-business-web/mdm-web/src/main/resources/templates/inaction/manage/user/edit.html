@@ -107,7 +107,7 @@
                         </div>
                         <div id="orgEdit"></div>
                         <div  class="tcenter">
-                            <button id="delBtn" class="ui-button ui-button-delete" onclick="deleteUser()">删除人员</button>
+                            <button id="delBtn" class="ui-button ui-button-delete" onclick="deleteSysUser()">删除人员</button>
                         </div>
                     </div>
                     <div class="tab-pane" id="login">
@@ -248,7 +248,7 @@
                     </div>
                 </form>
                 <div class="BotBtn bdTop">
-                    <input class="Btn BtnBlue" type="button" value="保存" onclick="updatePersonnel()"/>
+                    <input class="Btn BtnBlue" type="button" value="保存" onclick="updateSysUser()"/>
                     <input class="Btn" type="button" value="取消" onClick="initUser()"/>
                 </div>
             </div>
@@ -293,7 +293,10 @@
         <!-- jquery datatable -->
         <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
         <!-- sea js -->
-        <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
+        <!--<script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>-->
+        <script type="text/javascript" src="/vendors/lulu/js/common/ui/Follow.js"></script>
+        <script type="text/javascript" src="/vendors/lulu/js/common/ui/ErrorTip.js"></script>
+        <script type="text/javascript" src="/vendors/lulu/js/common/ui/Validate.js"></script>
         <!-- laydate -->
         <script type="text/javascript" src="/vendors/laydate/laydate.js"></script>
         <!-- init -->
