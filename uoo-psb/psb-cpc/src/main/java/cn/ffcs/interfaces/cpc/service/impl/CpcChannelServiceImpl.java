@@ -81,7 +81,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             List<Map<String, Object>> STAFF_CHANNEL_RELAS = (List<Map<String, Object>>) map.get("STAFF_CHANNEL_RELAS");
 
             hand_CHANNEL(CHANNEL, rsMap);
-            hand_STAFF(STAFF, rsMap);
+//            hand_STAFF(STAFF, rsMap);
 
             /*if(STAFF_CHANNEL_RELAS != null && STAFF_CHANNEL_RELAS.size() >0){
                 STAFF_CHANNEL_RELAS.forEach((temp)->{
@@ -121,10 +121,13 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             switch (action) {
                 case "ADD":
                     addChannel(channel);
+                    break;
                 case "MOD":
                     modChannel(channel);
+                    break;
                 case "DEL":
                     delChannel(channel);
+                    break;
             }
         } catch (Exception e) {
             rsMap.put("result_code", "1000");
@@ -318,10 +321,13 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             switch (action) {
                 case "ADD":
                     addStaffChannelRelas(staffChannelRel);
+                    break;
                 case "MOD":
                     modStaffChannelRelas(staffChannelRel);
+                    break;
                 case "DEL":
                     delStaffChannelRelas(staffChannelRel);
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -349,6 +355,8 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         tbOrg.setOrgName(channel.get("CHANNEL_NAME").toString());
         tbOrgMapper.insertChannel(tbOrg);
 
+        System.out.println("组织id--------" + tbOrg.getOrgId());
+
         // 插入扩展行
         Systemtable systemtable = new Systemtable();
         systemtable.setTableName(HandleChannelConstant.ORG_TABLE_NAME);
@@ -375,7 +383,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         // 插入扩展值
         Expandovalue valueOfIsChannel = new Expandovalue();
         valueOfIsChannel.setResourceId(HandleChannelConstant.RESOURCE_ID);
-        valueOfIsChannel.setTableId(systemtable.getTableId());
+        valueOfIsChannel.setTableId(systemtableSelected.getTableId());
         valueOfIsChannel.setColumnId(columnOfIsChannel.getColumnId());
         valueOfIsChannel.setRowId(expandorow.getRowId());
         valueOfIsChannel.setRecordId(String.valueOf(tbOrg.getOrgId()));
@@ -385,7 +393,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
 
         Expandovalue valueOfChannelNBR = new Expandovalue();
         valueOfChannelNBR.setResourceId(HandleChannelConstant.RESOURCE_ID);
-        valueOfChannelNBR.setTableId(systemtable.getTableId());
+        valueOfChannelNBR.setTableId(systemtableSelected.getTableId());
         valueOfChannelNBR.setColumnId(columnOfChannelNBR.getColumnId());
         valueOfChannelNBR.setRowId(expandorow.getRowId());
         valueOfChannelNBR.setRecordId(String.valueOf(tbOrg.getOrgId()));
@@ -517,7 +525,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         expandovalue.setTableId(systemtable.getTableId());
         expandovalue.setData(String.valueOf(channel.get("CHANNEL_NBR")));
         expandovalue.setStatusCd(HandleChannelConstant.VALID_STATE);
-        expandovalue = expandovalueMapper.selectOne(expandovalue);
+        expandovalue = expandovalueMapper.selectValueByData(expandovalue);
         return expandovalue;
     }
 

@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface ExpandovalueMapper extends BaseMapper<Expandovalue> {
 
+    Expandovalue selectValueByData(Expandovalue expandovalue);
 }
