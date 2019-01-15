@@ -85,9 +85,9 @@ public class SysPositionController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/getPosition", method = RequestMethod.GET)
-    public ResponseResult<SysPositionVo> getPosition(@RequestParam(value = "id",required = false)String id){
+    public ResponseResult<SysPositionVo> getPosition(@RequestParam(value = "positionCode",required = false)String positionCode){
 
-        return sysPositionClient.getPosition(id);
+        return sysPositionClient.getPosition(positionCode);
     }
 
     @ApiOperation(value = "编辑职位", notes = "编辑职位")
