@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.system.service;
 
 import cn.ffcs.uoo.system.entity.SysUserDeptRef;
+import cn.ffcs.uoo.system.vo.SysUserDeptVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 
@@ -57,6 +58,15 @@ public interface SysUserDeptRefService extends IService<SysUserDeptRef> {
      * @param updateUser
      */
     public void delUserDeptDefByUserCode(String userCode, Long updateUser);
+
+    /**
+     * 用户 归属组织
+     * @param userCode
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    Page<SysUserDeptVo> getUserDeptByUserCode(String userCode, int pageNo, int pageSize);
 
 
 }

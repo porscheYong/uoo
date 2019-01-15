@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.user.controller;
 
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
 import cn.ffcs.uoo.web.maindata.user.service.SlaveAcctService;
 import cn.ffcs.uoo.web.maindata.user.vo.EditFormSlaveAcctVo;
@@ -30,6 +32,7 @@ public class SlaveAcctController {
     @ApiOperation(value = "新增从账号信息", notes = "从账号信息新增")
     @ApiImplicitParam(name = "editFormSlaveAcctVo", value = "从账号信息", required = true, dataType = "EditFormSlaveAcctVo")
     @RequestMapping(value = "/addTbSlaveAcct", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.ADD, module="账号管理",methods="addTbSlaveAcct",desc="新增从账号信息")
     public Object saveSlaveAcct(@RequestBody EditFormSlaveAcctVo editFormSlaveAcctVo){
         editFormSlaveAcctVo.setUserId(SysUserInfo.getUserId());
         return slaveAcctService.saveSlaveAcct(editFormSlaveAcctVo);
@@ -38,6 +41,7 @@ public class SlaveAcctController {
     @ApiOperation(value = "删除从账号信息", notes = "删除从账号信息")
     @ApiImplicitParam(name = "slaveAcctId", value = "从账号账号标识", required = true, dataType = "Long", paramType = "path")
     @RequestMapping(value = "/delTbSlaveAcct", method = RequestMethod.DELETE)
+    @OperateLog(type= OperateType.DELETE, module="账号管理",methods="delTbSlaveAcct",desc="删除从账号信息")
     public Object delTbSlaveAcct(Long slaveAcctId){
         return slaveAcctService.delTbSlaveAcct(slaveAcctId, SysUserInfo.getUserId());
     }
@@ -45,6 +49,7 @@ public class SlaveAcctController {
     @ApiOperation(value = "更新从账号信息", notes = "更新从账号信息")
     @ApiImplicitParam(name = "editFormSlaveAcctVo", value = "从账号信息", required = true, dataType = "EditFormSlaveAcctVo")
     @RequestMapping(value = "/updateTbSlaveAcct", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.UPDATE, module="账号管理",methods="updateTbSlaveAcct",desc="更新从账号信息")
     public Object updateTbSlaveAcct(@RequestBody EditFormSlaveAcctVo editFormSlaveAcctVo){
         editFormSlaveAcctVo.setUserId(SysUserInfo.getUserId());
         return slaveAcctService.updateTbSlaveAcct(editFormSlaveAcctVo);

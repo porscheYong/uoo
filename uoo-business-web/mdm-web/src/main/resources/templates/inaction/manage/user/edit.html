@@ -122,17 +122,17 @@
 
         <!--用户信息-->
         <script id="userTemplate" type="text/x-handlebars-template">
-                <div class="col-md-2 fleft tcenter">
+                <div class="col-md-2 col-sm-2 col-xs-2 fleft tcenter">
                     <img class="avatar" id="psnimg2" src="{{userData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null" />
                 </div>
                 <div class="col-md-10 fleft Col8">
                     <strong class="Font24 Black">{{userData.userName}}</strong>
                     <span class="key-words">
-                        <span> {{#each genderData}} {{#eq ../userData.gender itemValue}}{{itemCnname}}{{/eq}}{{/each}}</span>
-                        <span id="birthday">{{userData.birthday}}</span>
+                        <span> {{#each userData.genderData}} {{#eq ../userData.gender itemValue}}{{itemCnname}}{{/eq}}{{/each}}</span>
+                        <span id="birthday">{{#format userData.birthday}}{{/format}}</span>
                     </span>
                     <div style="padding-top: 10px">
-                        <ul class="col-md-6 line_30">
+                        <ul class="col-md-6 col-sm-6 col-xs-6 line_30">
                             <li>
                                 <span class="Label">账号：</span>
                                 <span>{{userData.accout}}</span>
@@ -143,17 +143,25 @@
                             </li>
                             <li>
                                 <span class="Label">证件类型：</span>
-                                <span>{{userData.certType}}</span>
+                                <span>
+                                    {{#each userData.certTypeData}}
+                                        {{#eq ../userData.certType itemValue}} {{itemCnname}} {{/eq}}
+                                    {{/each}}
+                                </span>
                             </li>
                             <li>
                                 <span class="Label">手机号码：</span>
                                 <span>{{userData.mobile}}</span>
                             </li>
                         </ul>
-                        <ul class="col-md-6 line_30">
+                        <ul class="col-md-6 col-sm-6 col-xs-6 line_30">
                             <li>
                                 <span class="Label">账号等级：</span>
-                                <span>{{userData.acctLevel}}</span>
+                                <span>
+                                    {{#each userData.acctLevelData}}
+                                        {{#eq ../userData.acctLevel itemValue}} {{itemCnname}} {{/eq}}
+                                    {{/each}}
+                                </span>
                             </li>
                             <li>
                                 <span class="Label">密码：</span>
@@ -180,51 +188,51 @@
                 </form>
             </div>
             <div>
-                <div class="pull-left" style="width: 10%;">
+                <div class="col-md-2 col-sm-2 col-xs-2">
                     <img class="avatar" id="psnImg" src="{{userData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null" onclick="openChoseImg()" />
                     <div class="KeyWords tcenter">
                          <a href="#" onclick="openChoseImg()">编辑</a>
                     </div>
                 </div>
 
-                <form id="userEditForm" class="pull-left" style="width: 90%; padding-right: 20px;">
-                    <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="userName" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户姓名</label>
+                <form id="userEditForm" class="col-md-10 col-sm-10 col-xs-10">
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                        <label for="userName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户姓名</label>
                         <input id="userName" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.userName}}" required/>
                     </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="passwd" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">密码</label>
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                        <label for="passwd" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">密码</label>
                         <input id="passwd" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.passwd}}" required />
                     </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="certType" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
-                        <select id="certType" class="col-md-8 col-sm-8 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                        <label for="certType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
+                        <select id="certType" class="col-md-8 col-sm-8 col-xs-12" onchange="getSelectedCert()" required>
                             {{#each userData.certTypeData}}
                                 <option value="{{itemValue}}" {{#eq itemValue ../userData.certType}} selected="selected" {{/eq}} >{{itemCnname}}</option>
                             {{/each}}
                         </select>
                     </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="certNo" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                        <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" onkeyup="autoWriteForm()" value="{{userData.certNo}}" onkeyup="getIdCardInfo()" onpaste="getIdCardInfo()" required />
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                        <label for="certNo" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                        <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.certNo}}" onkeyup="getIdCardInfo()" onpaste="getIdCardInfo()" required />
                     </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="accout" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号</label>
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                        <label for="accout" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号</label>
                         <input id="accout" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.accout}}" required />
                     </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
-                        <label for="acctLevel" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号等级</label>
-                        <select id="acctLevel" class="col-md-8 col-sm-8 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                        <label for="acctLevel" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">账号等级</label>
+                        <select id="acctLevel" class="col-md-8 col-sm-8 col-xs-12" required>
                             {{#each userData.acctLevelData}}
                                 <option value="{{itemValue}}" {{#eq itemValue ../userData.acctLevel}}selected="selected"{{/eq}} >{{itemCnname}}</option>
                             {{/each}}
                         </select>
                     </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
                         <label for="birthday" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">出生年月</label>
-                        <input id="birthday" class="ui-input col-md-8 col-sm-8 col-xs-12" readonly="readonly" value="{{userData.birthday}}" isTime="yes" />
+                        <input id="birthday" class="ui-input col-md-8 col-sm-8 col-xs-12" readonly="readonly" value="{{#format userData.birthday}}{{/format}}" isTime="yes" />
                     </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
                         <label for="gender" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">性别</label>
                         <select id="gender" class="col-md-8 col-sm-8 col-xs-12">
                             {{#each userData.genderData}}
@@ -232,17 +240,17 @@
                             {{/each}}
                         </select>
                     </div>
-                    <div class="col-md-6" style="margin-bottom: 10px; position: relative;">
-                        <label for="mobile" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
+                        <label for="mobile" class="form-item-label col-md-4 col-sm-4 col-xs-12"
                                style="padding-right: 20px;line-height: 40px;text-align: right;">手机号码</label>
-                        <input id="mobile" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.mobile}}" onkeyup="autoFillMail()" onpaste="autoFillMail()" required />
+                        <input id="mobile" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.mobile}}" onkeyup="autoFillMail()" onpaste="autoFillMail()" />
                     </div>
-                    <div class="col-md-6" style="margin-bottom: 10px; position: relative;">
-                        <label for="email" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
+                        <label for="email" class="form-item-label col-md-4 col-sm-4 col-xs-12"
                                style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
-                        <input id="email" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.email}}" required />
+                        <input id="email" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.email}}" />
                     </div>
-                    <div class="col-md-6" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
                         <label for="userCode" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">用户编码</label>
                         <input id="userCode" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.userCode}}" disabled/>
                     </div>
@@ -294,6 +302,7 @@
         <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
         <!-- sea js -->
         <!--<script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>-->
+        <script type="text/javascript" src="/vendors/lulu/js/common/ui/Select.js"></script>
         <script type="text/javascript" src="/vendors/lulu/js/common/ui/Follow.js"></script>
         <script type="text/javascript" src="/vendors/lulu/js/common/ui/ErrorTip.js"></script>
         <script type="text/javascript" src="/vendors/lulu/js/common/ui/Validate.js"></script>

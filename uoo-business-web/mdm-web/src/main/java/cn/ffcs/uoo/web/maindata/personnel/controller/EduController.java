@@ -2,6 +2,8 @@ package cn.ffcs.uoo.web.maindata.personnel.controller;
 
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.personnel.dto.TbEdu;
 import cn.ffcs.uoo.web.maindata.personnel.service.EduService;
 import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
@@ -36,6 +38,7 @@ public class EduController {
     @ApiOperation(value = "新增教育信息", notes = "新增教育信息")
     @ApiImplicitParam(name = "tbEdu", value = "教育信息", required = true, dataType = "TbEdu")
     @RequestMapping(value = "/saveTbEdu", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.ADD, module="人员管理",methods="saveTbEdu",desc="新增教育信息")
     public Object saveTbEdu(@RequestBody TbEdu tbEdu) {
         tbEdu.setUpdateUser(SysUserInfo.getUserId());
         tbEdu.setCreateUser(SysUserInfo.getUserId());
@@ -45,6 +48,7 @@ public class EduController {
     @ApiOperation(value="更新教育信息",notes="更新教育信息")
     @ApiImplicitParam(name = "tbEdu", value = "教育信息", required = true, dataType = "TbEdu")
     @RequestMapping(value="/updateTbEdu",method = RequestMethod.PUT)
+    @OperateLog(type= OperateType.UPDATE, module="人员管理",methods="updateTbEdu",desc="更新教育信息")
     public Object updateTbEdu(@RequestBody TbEdu tbEdu){
         tbEdu.setUpdateUser(SysUserInfo.getUserId());
         return  eduService.updateTbEdu(tbEdu);
@@ -53,6 +57,7 @@ public class EduController {
     @ApiOperation(value="删除教育信息",notes="删除教育信息")
     @ApiImplicitParam(name = "eduId", value = "教育信息标识", required = true, dataType = "Long",paramType="path")
     @RequestMapping(value="/delTbEdu",method = RequestMethod.DELETE)
+    @OperateLog(type= OperateType.DELETE, module="人员管理",methods="delTbEdu",desc="删除教育信息")
     public Object delTbEdu(Long eduId ){
         return  eduService.delTbEdu(eduId, SysUserInfo.getUserId());
     }
@@ -60,6 +65,7 @@ public class EduController {
     @ApiOperation(value="教育信息查看",notes="教育信息")
     @ApiImplicitParam(name = "eduId", value = "教育信息标识", required = true, dataType = "Long",paramType="path")
     @RequestMapping(value="/getTbEdu",method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="人员管理",methods="getTbEdu",desc="教育信息查看")
     public Object getTbEdu(Long eduId){
         return eduService.getTbEdu(eduId);
     }
@@ -71,6 +77,7 @@ public class EduController {
             @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path"),
     })
     @RequestMapping(value="/getTbEduPage",method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="人员管理",methods="getTbEduPage",desc="教育信息分页查询")
     public Object getTbEduPage( Long personnelId, Integer pageNo, Integer pageSize){
         return eduService.getTbEduPage(personnelId, pageNo, pageSize);
     }

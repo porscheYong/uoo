@@ -7,6 +7,7 @@ import cn.ffcs.uoo.core.user.entity.TbAccountOrgRel;
 import cn.ffcs.uoo.core.user.service.TbAccountOrgRelService;
 import cn.ffcs.uoo.core.user.service.TbUserService;
 import cn.ffcs.uoo.core.user.util.ResultUtils;
+import cn.ffcs.uoo.core.user.vo.AccountOrgRelVo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -70,6 +71,15 @@ public class TbAccountOrgRelController extends BaseController {
     @RequestMapping(value="/getAcctOrgRelPage",method = RequestMethod.GET)
     public Object getAcctOrgRelPage(Long acctId, Integer pageNo, Integer pageSize, String account){
         return ResultUtils.success(tbUserService.getAcctOrg(acctId, pageNo, pageSize, account));
+    }
+
+    @ApiOperation(value = "修改主账号与组织关系", notes = "修改主账号与组织关系")
+    @ApiImplicitParam(name = "tbAccountOrgRel", value = "主账号与组织关系信息", required = true, dataType = "AccountOrgRelVo")
+    @UooLog(value = "修改主账号与组织关系", key = "updateAcctOrg")
+    @RequestMapping(value = "/updateAcctOrg", method = RequestMethod.PUT)
+    @Transactional(rollbackFor = Exception.class)
+    public Object updateAcctOrg(@RequestBody AccountOrgRelVo tbAccountOrgRel) {
+        return tbAccountOrgRelService.updateAcctOrg(tbAccountOrgRel);
     }
 
 

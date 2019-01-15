@@ -51,13 +51,11 @@ public interface TbSlaveAcctService extends IService<TbSlaveAcct> {
     /**
      * 验证 从账号是否已存在
      * @param slaveAcct
-     * @param acctHostId
      * @param resourceObjId
      * @param slaveAcctId
-     * @param acctId
      * @return
      */
-    public boolean checkSlaveAcct(String slaveAcct, Long acctHostId , Long resourceObjId, Long slaveAcctId, Long acctId);
+    public boolean checkSlaveAcct(String slaveAcct, Long resourceObjId, Long slaveAcctId);
 
     /**
      * 删除 从账号

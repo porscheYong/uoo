@@ -8,6 +8,7 @@ import cn.ffcs.uoo.system.entity.SysUserDeptRef;
 import cn.ffcs.uoo.system.dao.SysUserDeptRefMapper;
 import cn.ffcs.uoo.system.service.SysUserDeptRefService;
 import cn.ffcs.uoo.system.util.StrUtil;
+import cn.ffcs.uoo.system.vo.SysUserDeptVo;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -95,5 +96,12 @@ public class SysUserDeptRefServiceImpl extends ServiceImpl<SysUserDeptRefMapper,
     @Override
     public void delUserDeptDefByUserCode(String userCode, Long updateUser){
         sysUserDeptRefMapper.delUserDeptDef(userCode, updateUser);
+    }
+
+    @Override
+    public Page<SysUserDeptVo> getUserDeptByUserCode(String userCode, int pageNo, int pageSize){
+        Page<SysUserDeptVo> page = new Page<>(StrUtil.intiPageNo(pageNo), StrUtil.intiPageSize(pageSize));
+        page.setRecords(sysUserDeptRefMapper.getUserDeptByUserCode(page, userCode));
+        return page;
     }
 }
