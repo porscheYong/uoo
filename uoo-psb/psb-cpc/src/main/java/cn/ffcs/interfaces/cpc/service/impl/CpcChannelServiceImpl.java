@@ -118,6 +118,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             rsMap.put("result_code", "1000");
             rsMap.put("message", "必要信息为空");
             return;
+
         }
 
         try {
