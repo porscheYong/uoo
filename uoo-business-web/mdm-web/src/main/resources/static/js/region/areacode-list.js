@@ -21,27 +21,19 @@ function retrieveData(data, callback, settings) {
  }*/
  pageNo= data.start/pageSize+1;
  i=(pageNo-1)*pageSize;
- $.ajax({
-     url : '/region/areaCode/listAreaCode',//这个就是请求地址对应sAjaxSource
-     data : {'pageNo':pageNo,'pageSize':pageSize,keyWord:$('#keyword').val()},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
-     type : 'get',
-     dataType : 'json',
-     success : function(result) {
-		var returnData = {};
+ $http.get('/region/areaCode/listAreaCode',{'pageNo':pageNo,'pageSize':pageSize,keyWord:$('#keyword').val()},function(result){
+	 var returnData = {};
 		//loading.screenMaskDisable('container');
-		if(result.state==1000){
-			returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
-	       	returnData.recordsTotal = result.totalRecords;//总记录数
-	       	returnData.recordsFiltered = result.totalRecords;//后台不实现过滤功能，每次查询均视作全部结果
-	       	returnData.data = result.data;
-	       	//调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
-	       	//此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
-	      	callback(returnData);
-		} 
-     },
-     error : function(msg) {
-     }
- });
+	 returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
+	 returnData.recordsTotal = result.total;//总记录数
+	 returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
+	 returnData.data = result.records;
+	 //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+	 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+	 callback(returnData);
+		  
+ });
+ 
 }
 function checkTableRow(obj){
 	if(showCheck=='1'){
@@ -147,7 +139,7 @@ function goEdit(){
 	var cid=$('#regionStrCurrent').attr('cid');
 	parent.changeIframe('/inaction/region/polloc-edit.html?id='+cid);
 }
-function getRegionList (id) {
+/*function getRegionList (id) {
 	//初始化页面显示
 	var nodes= parent.getCurrentSelectedNode();
 	$('#regionStrCurrent').text(nodes[0].name);
@@ -172,7 +164,7 @@ function getRegionList (id) {
 		dataType:'json',
 		type:'get'
 	});
-}
+}*/
 
 function getDetail(id){
 	changeIframe('/inaction/region/polloc-edit.html?id='+id);
@@ -190,7 +182,7 @@ function initTable (results) {
 
 
 
- 
+ /*
 function goDel(){
 	if(confirm('确定删除这条数据？')){
 		$.ajax({
@@ -268,4 +260,4 @@ function deleteRegion(id){
 			}
 		});
 	}
-}
+}*/

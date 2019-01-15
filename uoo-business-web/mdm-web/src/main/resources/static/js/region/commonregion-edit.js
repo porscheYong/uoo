@@ -15,67 +15,42 @@ function deleteData(){
         btn: ['确定','取消']
     }, function(index, layero){
         parent.layer.close(index);
-		$.ajax({
-			url:'/region/commonRegion/deleteCommonRegion',
-			data:{"commonRegionId":id},
-			dataType:'json',
-			type:'post',
-			success:function(data){
-				if(data.state==1000){
-					toastr.success('操作成功');
-					var zTree=parent.getTree();
-					var snodes= parent.getCurrentSelectedNode()[0];
-					var nodes=snodes.children;
-					if(nodes!=null&&nodes.length>0)
-					for(var i=0;i<nodes.length;i++){
-						if(nodes[i].id==id)zTree.removeNode(nodes[i], parent.getCurrentSelectedNode()[0], "prev");
-					}
-					//如果选中的id=当前id  那么调到上一级id 如果不等于就不管  如果上一级id=0 那么。。。
-					if(parentRegionId==0||parentRegionId=='0'){
-						zTree.removeNode(snodes);
-						parent.changeIframe('/inaction/region/none.html');
-						return;
-					}
-					if(snodes.id==id){
-						zTree.removeNode(snodes);
-						zTree.selectNode(zTree.getNodeByParam("id", parentRegionId, null));
-						parent.changeIframe('/inaction/region/commonregion-list.html?id=' + parentRegionId);
-					}else{
-						zTree.removeNode(zTree.getNodeByParam("id", id, null));
-						//不等于。。。
-						parent.changeIframe('/inaction/region/commonregion-list.html?id=' + snodes.id);
-					}
-					
-				
-				}else{
-					toastr.error('操作失败'+data.message);
-				}
-				
-				 
-				
+        $http.post('/region/commonRegion/deleteCommonRegion',JSON.stringify({"commonRegionId":id}),function(data){
+        	toastr.success('操作成功');
+			var zTree=parent.getTree();
+			var snodes= parent.getCurrentSelectedNode()[0];
+			var nodes=snodes.children;
+			if(nodes!=null&&nodes.length>0)
+			for(var i=0;i<nodes.length;i++){
+				if(nodes[i].id==id)zTree.removeNode(nodes[i], parent.getCurrentSelectedNode()[0], "prev");
 			}
-		});
+			//如果选中的id=当前id  那么调到上一级id 如果不等于就不管  如果上一级id=0 那么。。。
+			if(parentRegionId==0||parentRegionId=='0'){
+				zTree.removeNode(snodes);
+				parent.changeIframe('/inaction/region/none.html');
+				return;
+			}
+			if(snodes.id==id){
+				zTree.removeNode(snodes);
+				zTree.selectNode(zTree.getNodeByParam("id", parentRegionId, null));
+				parent.changeIframe('/inaction/region/commonregion-list.html?id=' + parentRegionId);
+			}else{
+				zTree.removeNode(zTree.getNodeByParam("id", id, null));
+				//不等于。。。
+				parent.changeIframe('/inaction/region/commonregion-list.html?id=' + snodes.id);
+			}
+        });
     }, function(){
 
     });
 	
 }
 function get(id){
-	$.ajax({
-		url:'/region/commonRegion/getCommonRegion/id='+id,
-		dataType:'json',
-		type:'get',
-		success:function(data){
-			
-			if(data.state==1000){
-				curUpId=data.data.PARENT_REGION_ID
-				initData(data.data);
-				//loadUpRegionList(curUpId);
-			}else{
-				toastr.error('加载区域信息失败，请重试');
-			}
-		}
+	$http.get('/region/commonRegion/getCommonRegion/id='+id,{},function(data){
+		curUpId=data.PARENT_REGION_ID
+		initData(data);
 	});
+	 
 }
 function initData(data){
 	$('#regionId').val(data.commonRegionId);
@@ -121,52 +96,44 @@ function saveRegion(){
 	if(!validFormData()){
 		return;
 	}
-	 
-	$.ajax({
-		type:'POST',
-		dataType:'json',
-		url:'/region/commonRegion/updateCommonRegion',
-		data:$('#regionForm').serialize(),
-		success:function(data){
-			if(data.state==1000){
-				toastr.success('操作成功');
-				//1 从列表进去的  2 从顶部进去的 如果移到别的up去了 那么就要两部操作 1 删除当前父节点的数据 2增加新节点的数据
-				//列表进去的开var treeObj =parent.getTree();始！
-				var treeObj =parent.getTree();
-				/*var selectedUpId=$('#parentRegionId').val();
-				var selected=treeObj.getSelectedNodes()[0];
-				var newUpNodes=treeObj.getNodesByParam("id",selectedUpId,null);
-				var oldUpNodes=treeObj.getNodesByParam("id",parseInt(curUpId),null);
-				//查一下 有没有子节点，子节点也要移走
-				var newNodes = [{name:$('#regionName').val(),id:$('#regionId').val(),parent:false,open:false,pId:selectedUpId}];
-				treeObj.removeNode(treeObj.getNodesByParam("id",$('#regionId').val(),null));
-				if(newUpNodes.length<=0){
-					//插入到根目录
-					newNodes = treeObj.addNodes(null,-1, newNodes);
-				}else{
-					newNodes = treeObj.addNodes(newUpNodes[0],-1, newNodes);
-					parent.changeIframe('/inaction/region/commonregion-list.html?id='+upId);
-				}
-				
-				if(parseInt(selectedUpId)==parseInt(curUpId)){
-					
-				}*/
-				var updateNode=treeObj.getNodesByParam("id",$('#regionId').val())[0];
-				updateNode.name=$('#regionName').val();
-				treeObj.updateNode(updateNode);
-				//parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
-				parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
-			
-			}else{
-				toastr.error('操作失败'+data.message);
-			}
-			
-			 
-			
+	var obj=serializeObject($('#regionForm'));
+	var tmp=obj.polLocIds;
+	obj.polLocIds=[];
+	if(tmp){
+		var tmps=tmp.split(",");
+		for(var i=0;i<tmps.length;i++){
+			obj.polLocIds.push(parseInt(tmps[i]));
 		}
+	}
+	$http.post('/region/commonRegion/updateCommonRegion',JSON.stringify(obj),function(data){
+		toastr.success('操作成功');
+		//1 从列表进去的  2 从顶部进去的 如果移到别的up去了 那么就要两部操作 1 删除当前父节点的数据 2增加新节点的数据
+		//列表进去的开var treeObj =parent.getTree();始！
+		var treeObj =parent.getTree();
+		/*var selectedUpId=$('#parentRegionId').val();
+		var selected=treeObj.getSelectedNodes()[0];
+		var newUpNodes=treeObj.getNodesByParam("id",selectedUpId,null);
+		var oldUpNodes=treeObj.getNodesByParam("id",parseInt(curUpId),null);
+		//查一下 有没有子节点，子节点也要移走
+		var newNodes = [{name:$('#regionName').val(),id:$('#regionId').val(),parent:false,open:false,pId:selectedUpId}];
+		treeObj.removeNode(treeObj.getNodesByParam("id",$('#regionId').val(),null));
+		if(newUpNodes.length<=0){
+			//插入到根目录
+			newNodes = treeObj.addNodes(null,-1, newNodes);
+		}else{
+			newNodes = treeObj.addNodes(newUpNodes[0],-1, newNodes);
+			parent.changeIframe('/inaction/region/commonregion-list.html?id='+upId);
+		}
+		
+		if(parseInt(selectedUpId)==parseInt(curUpId)){
 			
+		}*/
+		var updateNode=treeObj.getNodesByParam("id",$('#regionId').val())[0];
+		updateNode.name=$('#regionName').val();
+		treeObj.updateNode(updateNode);
+		//parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
+		parent.changeIframe('/inaction/region/commonregion-list.html?id='+upid);
 	});
-	 
 }
 function validFormData(){
 	if (!formValid.isAllPass())
