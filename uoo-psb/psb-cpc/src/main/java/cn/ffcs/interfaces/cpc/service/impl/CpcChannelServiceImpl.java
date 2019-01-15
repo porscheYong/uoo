@@ -538,7 +538,6 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                 }
             }
 
-
         }
 
     }
