@@ -27,7 +27,7 @@
     </select>
 
     <select id="getUserPositionRef" resultType="cn.ffcs.uoo.system.vo.SysUserPositionRefVo">
-        select t.*, t3.POSITION_NAME from
+        select t.*, t3.POSITION_NAME, t3.position_id from
         (select t2.*
         from SYS_DEPT_POSITION_REF t1,
               sys_user_position_ref t2
@@ -46,10 +46,10 @@
     <update id="delUserPositionDef" parameterType="cn.ffcs.uoo.system.entity.SysUserPositionRef">
       update SYS_USER_POSITION_REF t
         <set>
-            <if test="updateUser != null">update_user=#{updateUser}</if>
-            ,t.status_cd = 1100
-            ,t.status_date = sysdate
-            ,t.update_date = sysdate
+            <if test="updateUser != null">update_user=#{updateUser},</if>
+            t.status_cd = 1100,
+            t.status_date = sysdate,
+            t.update_date = sysdate
         </set>
       where t.status_cd = 1000 and t.user_code = #{userCode}
     </update>

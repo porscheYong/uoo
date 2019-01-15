@@ -94,7 +94,7 @@ spring:
   #      aop-patterns: cn.ffcs.uoo.**.service.*
 mybatis-plus:
   mapper-locations: classpath:mapper/**Mapper.xml
-  typeAliasesPackage: cn.ffcs.uoo
+  typeAliasesPackage: cn.ffcs.interfaces
   global-config:
     id-type: 1
     key-generator: com.baomidou.mybatisplus.incrementer.OracleKeyGenerator
@@ -132,6 +132,6 @@ feign:
 
 logging:
   level:
-    cn.ffcs.uoo: info
+    cn.ffcs.interfaces: info
   config: classpath:log.xml
   path: ./rock/cpc-channel/log

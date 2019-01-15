@@ -10,6 +10,7 @@ var editFlag = 0; //编辑新增标志
 var orgTable;
 var psnImageId;
 var imgUrl = "";
+var userFormValidate;
 var orgValidate;
 var loading = parent.loading;
 var toastr = window.top.toastr;
@@ -237,17 +238,24 @@ function  editUser() {
     laydate.render({
         elem: 'input[isTime="yes"]'
     });
-    seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-        $('select').selectMatch();
-    })
+
     $('.icon-del').on('click', function () {
         $(this).parent().remove();
     });
     $("#choseFileImg").change( function() {
         addPsonImg();
     });
-
     getPsnImage();
+    $('select').selectMatch();
+    var userEditForm = $('#userEditForm');
+    userFormValidate = new Validate(userEditForm);
+    userFormValidate.immediate();
+    userFormValidate.isAllPass();
+    userEditForm.find(':input').each(function () {
+        $(this).hover(function () {
+            userFormValidate.isPass($(this));
+        });
+    });
 }
 
 //选择证件类型
@@ -266,9 +274,7 @@ function getIdCardInfo () {
             $("#gender").val('1');
         else
             $("#gender").val('2');
-        seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-            $('#gender').selectMatch();
-        });
+        $('#gender').selectMatch();
         $('#birthday').val(getBirthdayByCard(certNo));
     }
 }
@@ -404,7 +410,7 @@ function addOrgList () {
 }
 // 删除一条归属组织信息
 function deleteOrgList (index) {
-    parent.layer.confirm('此操作将删除该用户, 是否继续?', {
+    parent.layer.confirm('此操作将删除该归属组织职位信息, 是否继续?', {
         icon: 0,
         title: '提示',
         btn: ['确定','取消']
@@ -565,8 +571,8 @@ function convertBase64UrlToBlob(urlData){
 
 // 更新用户信息
 function updateSysUser(){
-    // if (!userFormValidate.isAllPass())
-    //     return;
+    if (!userFormValidate.isAllPass())
+        return;
     var userName = $('#userName').val();
     var passwd = $('#passwd').val();
     var certType = $('#certType option:selected') .val();
@@ -683,3 +689,5 @@ Handlebars.registerHelper('eq', function(v1, v2, opts) {
     else
         return opts.inverse(this);
 });
+
+Handlebars.registerHelper('format', getDate);

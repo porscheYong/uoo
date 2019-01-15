@@ -26,13 +26,25 @@
         select SEQ_DEPT_POSITION_REF_ID.NEXTVAL from dual
     </select>
 
+    <select id="getUserDeptByUserCode" resultType="cn.ffcs.uoo.system.vo.SysUserDeptVo">
+        select t1.*, t2.org_name
+        from sys_user_dept_ref t1
+                 left join sys_organization t2
+                     on t1.org_code = t2.org_code
+                            and t2.status_cd = 1000
+        where t1.status_cd = 1000
+        <if test="userCode != null and userCode != '' ">
+          and t1.user_code = #{userCode}
+        </if>
+    </select>
+
     <update id="delUserDeptDef" parameterType="cn.ffcs.uoo.system.entity.SysUserDeptRef">
         update SYS_USER_DEPT_REF t
         <set>
-            <if test="updateUser != null">update_user=#{updateUser}</if>
-            ,t.status_cd = 1100
-            ,t.status_date = sysdate
-            ,t.update_date = sysdate
+            <if test="updateUser != null">update_user=#{updateUser},</if>
+            t.status_cd = 1100,
+            t.status_date = sysdate,
+            t.update_date = sysdate
         </set>
         where t.status_cd = 1000 and t.user_code = #{userCode}
     </update>

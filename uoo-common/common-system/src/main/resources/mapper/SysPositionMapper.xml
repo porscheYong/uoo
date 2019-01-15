@@ -29,7 +29,9 @@
 	</select>
 
     <select id="getTreeChild" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
-        SELECT C.POSITION_CODE id ,C.POSITION_NAME name,C.PARENT_POSITION_CODE pid,
+        SELECT C.POSITION_CODE id ,
+               C.POSITION_NAME name,
+               C.PARENT_POSITION_CODE pid,
         (SELECT WM_CONCAT(B.ROLE_NAME)
          FROM SYS_POSITIONT_ROLE_REF A, SYS_ROLE B
         WHERE A.STATUS_CD = '1000'
@@ -69,7 +71,7 @@
           AND A.ROLE_CODE = B.ROLE_CODE AND A.POSITION_CODE=C.POSITION_CODE) EXTFIELD1,
           (SELECT DECODE(COUNT(1),0,0,1) FROM SYS_POSITION A WHERE A.STATUS_CD='1000' AND A.PARENT_POSITION_CODE=C.POSITION_CODE ) isParent
            FROM SYS_POSITION C
-        WHERE C.STATUS_CD = '1000'
+        WHERE C.STATUS_CD = '1000' start with C.POSITION_CODE is null connect  by C.POSITION_CODE = c.PARENT_POSITION_CODE
     </select>
 
     <select id="getPositionRelPage" resultType="cn.ffcs.uoo.system.vo.SysPositionVo">
@@ -149,7 +151,7 @@
       SELECT A.POSITION_ID positionId,A.POSITION_NAME positionName,A.POSITION_CODE positionCode,A.PARENT_POSITION_CODE parentPositionCode,A.REGION_NBR regionNbr,A.SORT_NUM sortNum,A.NOTES notes,
       (select b.region_name from TB_COMMON_REGION b where b.common_region_id=A.Region_Nbr) regionName,
 
-      (select B.POSITION_NAME from SYS_POSITION B where B.STATUS_CD = 1000 AND B.POSITION_ID = A.P_POSITION_ID) pPositionName
+      (select B.POSITION_NAME from SYS_POSITION B where B.STATUS_CD = 1000 AND B.POSITION_CODE = A.PARENT_POSITION_CODE) pPositionName
             FROM SYS_POSITION A
             WHERE A.STATUS_CD = '1000'
             AND A.POSITION_ID = #{positionId}
@@ -231,6 +233,54 @@
 
 
     </select>
+
+
+    <select id="getPositionUserPage" resultType="cn.ffcs.uoo.system.vo.SysUserVo">
+        <choose>
+            <when test='isSearchlower=="0"'>
+                select * from (
+                select a.user_code userCode,a.position_code positionCode,b.user_id userId,b.accout accout,b.user_name
+                userName,e.position_name positionName,
+                (select wm_concat(d.org_name) from SYS_USER_DEPT_REF c ,Sys_Organization d where c.status_cd=1000 and
+                d.status_cd=1000 and c.org_code=d.org_code
+                and c.user_code= a.user_code ) orgName
+                from (
+                select * from SYS_USER_POSITION_REF a where a.status_cd=1000 and a.position_code = #{positionCode} ) a
+                left join sys_user b on b.status_cd=1000 and b.user_code=a.user_code
+                left join sys_position e on e.status_cd=1000 and e.position_code=a.position_code
+                ) where 1=1
+                <if test="search!=null and search!=''">
+                    AND (userName like '%'||#{search}||'%' or accout like '%'||#{search}||'%')
+                </if>
+            </when>
+            <otherwise>
+                select * from (
+                with pos as (
+                select * from sys_position a where a.status_cd=1000 start with a.position_code = #{positionCode} connect
+                by a.position_code = a.parent_position_code
+                )
+                select a.user_code userCode,a.position_code positionCode,b.user_id userId,b.accout accout,b.user_name
+                userName,e.position_name positionName,
+                (select wm_concat(d.org_name) from SYS_USER_DEPT_REF c ,Sys_Organization d where c.status_cd=1000 and
+                d.status_cd=1000 and c.org_code=d.org_code
+                and c.user_code= a.user_code ) orgName
+                from (
+                select * from SYS_USER_POSITION_REF a where a.status_cd=1000 and a.position_code in (select
+                position_code from pos) ) a
+                left join sys_user b on b.status_cd=1000 and b.user_code=a.user_code
+                left join sys_position e on e.status_cd=1000 and e.position_code=a.position_code
+                ) where 1=1
+                <if test="search!=null and search!=''">
+                    AND  (userName like '%'||#{search}||'%' or accout like '%'||#{search}||'%')
+                </if>
+
+            </otherwise>
+        </choose>
+
+
+
+    </select>
+
 
     <select id="getUserOrgPosition" resultType="java.lang.String">
 

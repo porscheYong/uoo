@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.personnel.controller;
 
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.personnel.dto.TbFamily;
 import cn.ffcs.uoo.web.maindata.personnel.service.FamilyService;
 import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
@@ -31,6 +33,7 @@ public class FamilyController {
     @ApiOperation(value = "新增家庭成员信息", notes = "新增家庭成员信息")
     @ApiImplicitParam(name = "tbFamily", value = "家庭成员信息", required = true, dataType = "TbFamily")
     @RequestMapping(value = "/saveTbFamily", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.ADD, module="人员管理",methods="saveTbFamily",desc="新增家庭成员信息")
     public Object saveTbFamily(@RequestBody TbFamily tbFamily) {
         return familyService.saveTbFamily(tbFamily);
     }
@@ -38,6 +41,7 @@ public class FamilyController {
     @ApiOperation(value = "更新家庭成员信息", notes = "更新家庭成员信息")
     @ApiImplicitParam(name = "tbFamily", value = "家庭成员信息", required = true, dataType = "TbFamily")
     @RequestMapping(value = "/updateTbFamily", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.UPDATE, module="人员管理",methods="updateTbFamily",desc="更新家庭成员信息")
     public Object updateTbFamily(@RequestBody TbFamily tbFamily){
         return familyService.updateTbFamily(tbFamily);
     }
@@ -45,6 +49,7 @@ public class FamilyController {
     @ApiOperation(value="删除家庭成员信息",notes="删除家庭成员信息")
     @ApiImplicitParam(name = "familyId", value = "家庭成员信息标识", required = true, dataType = "Long",paramType="path")
     @RequestMapping(value="/delTbFamily",method = RequestMethod.DELETE)
+    @OperateLog(type= OperateType.DELETE, module="人员管理",methods="delTbFamily",desc="删除家庭成员信息")
     public Object delTbFamily(Long familyId ){
         return  familyService.delTbFamily(familyId, SysUserInfo.getUserId());
     }
@@ -52,6 +57,7 @@ public class FamilyController {
     @ApiOperation(value="查看家庭成员信息",notes="查看家庭成员信息")
     @ApiImplicitParam(name = "familyId", value = "家庭成员信息标识", required = true, dataType = "Long",paramType="path")
     @RequestMapping(value="/getTbFamily",method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="人员管理",methods="getTbFamily",desc="查看家庭成员信息")
     public Object getTbFamily(Long familyId ){
         return  familyService.getTbFamily(familyId);
     }
@@ -63,6 +69,7 @@ public class FamilyController {
             @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path"),
     })
     @RequestMapping(value="/getTbFamilyPage",method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="人员管理",methods="getTbFamilyPage",desc="家庭成员信息分页查询")
     public Object getTbFamilyPage( Long personnelId, Integer pageNo, Integer pageSize){
         return familyService.getTbFamilyPage(personnelId, pageNo, pageSize);
     }

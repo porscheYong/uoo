@@ -1,12 +1,12 @@
 package cn.ffcs.interfaces.cpc.pojo;
 
 import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
+
+import com.baomidou.mybatisplus.annotations.*;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
 
 /**
@@ -18,6 +18,7 @@ import java.io.Serializable;
  * @since 2019-01-10
  */
 @TableName("TB_SYSTEMTABLE")
+@KeySequence(value = "SEQ_TABLE_ID", clazz = Long.class)
 public class Systemtable extends Model<Systemtable> {
 
     private static final long serialVersionUID = 1L;
@@ -25,7 +26,7 @@ public class Systemtable extends Model<Systemtable> {
     /**
      * 系统表标识
      */
-    @TableId(value = "TABLE_ID", type = IdType.AUTO)
+    @TableId(value = "TABLE_ID", type = IdType.INPUT)
     private Long tableId;
     /**
      * 资源标识

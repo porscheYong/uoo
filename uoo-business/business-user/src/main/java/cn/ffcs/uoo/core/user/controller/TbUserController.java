@@ -60,6 +60,10 @@ public class TbUserController extends BaseController {
     @Autowired
     private AmqpTemplate template;
 
+    private String acctType = "1";
+
+    private String slaveAcctType = "2";
+
 
 
     @ApiOperation(value = "用户组织条件查询", notes = "条件分页查询")
@@ -154,7 +158,7 @@ public class TbUserController extends BaseController {
     @RequestMapping(value = "/getPsnUser", method = RequestMethod.GET)
     public Object addUser(String userType, Long personnelId, String account){
         TbAcct tbAcct = (TbAcct) tbAcctService.getTbAcctByPsnId(personnelId);
-        if("1".equals(userType)){
+        if(acctType.equals(userType)){
             if(!StrUtil.isNullOrEmpty(tbAcct)){
                 return getFormAcct(tbAcct.getAcctId(), account);
             }
@@ -165,13 +169,15 @@ public class TbUserController extends BaseController {
             BeanUtils.copyProperties(tbPersonnel, formAcctVo);
             return ResultUtils.success(formAcctVo);
         }
-        if("2".equals(userType)){
+        if(slaveAcctType.equals(userType)){
             if(StrUtil.isNullOrEmpty(tbAcct)){
                 return ResultUtils.error(EumUserResponeCode.ACCT_NO_EXIST_RE);
             }
             FormSlaveAcctVo formSlaveAcctVo = new FormSlaveAcctVo();
-            formSlaveAcctVo.setUserType("2");//从账号
-            formSlaveAcctVo.setSlaveAcctType("1");//应用
+            //从账号
+            formSlaveAcctVo.setUserType("2");
+            //应用
+            formSlaveAcctVo.setSlaveAcctType("1");
             formSlaveAcctVo.setPersonnelId(personnelId);
             PersonnelInfoVo tbPersonnel = tbUserService.getPersonnelInfo(personnelId);
             BeanUtils.copyProperties(tbPersonnel, formSlaveAcctVo);
@@ -192,7 +198,7 @@ public class TbUserController extends BaseController {
         FormAcctVo formAcctVo = new FormAcctVo();
         formAcctVo.setUserType("1");
         //主账号
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>(16);
         map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         map.put(BaseUnitConstants.TABLE_ACCT_ID, acctId);
         TbAcct tbAcct = tbAcctService.selectOne(new EntityWrapper<TbAcct>().allEq(map));
@@ -229,8 +235,10 @@ public class TbUserController extends BaseController {
     @RequestMapping(value = "/getFormSlaveAcct", method = RequestMethod.GET)
     public Object getFormSlaveAcct(Long acctId){
         FormSlaveAcctVo formSlaveAcctVo = new FormSlaveAcctVo();
-        formSlaveAcctVo.setUserType("2");//从账号
-        formSlaveAcctVo.setSlaveAcctType("1");//应用
+        //从账号
+        formSlaveAcctVo.setUserType("2");
+        //应用
+        formSlaveAcctVo.setSlaveAcctType("1");
 
         //从账号
         Map<String, Object> map = new HashMap<String, Object>();

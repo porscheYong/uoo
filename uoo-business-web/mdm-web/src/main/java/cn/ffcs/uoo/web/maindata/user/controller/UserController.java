@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.user.controller;
 
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
 import cn.ffcs.uoo.web.maindata.user.service.UserService;
 import io.swagger.annotations.Api;
@@ -34,6 +36,7 @@ public class UserController {
             @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path")
     })
     @RequestMapping(value = "/getUserList", method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="账号管理",methods="getUserList",desc="选择用户信息")
     public Object getUserList(Long personnelId, Integer pageNo, Integer pageSize){
         return userService.getUserList(personnelId , pageNo, pageSize, SysUserInfo.getAccount());
     }
@@ -45,12 +48,13 @@ public class UserController {
             @ApiImplicitParam(name = "slaveAcctType", value = "应用类型", required = true, dataType = "String",paramType="path")
     })
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="账号管理",methods="getUser",desc="用户信息")
     public Object getFormAcct(Long acctId, String userType, String slaveAcctType){
-
-        if("1".equals(userType)){
+        String acctType = "1";String sAcctType = "2";
+        if(acctType.equals(userType)){
             return userService.getFormAcct(acctId, SysUserInfo.getAccount());
         }
-        if("2".equals(userType)){
+        if(sAcctType.equals(userType)){
             return userService.getFormSlaveAcct(acctId);
         }
         return null;
@@ -62,6 +66,7 @@ public class UserController {
             @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long", paramType = "path")
     })
     @RequestMapping(value = "/getPsnUser", method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="账号管理",methods="getPsnUser",desc="创建用户")
     public Object addUser(String userType, Long personnelId){
         return userService.addUser(userType, personnelId, SysUserInfo.getAccount());
     }
@@ -73,6 +78,7 @@ public class UserController {
             @ApiImplicitParam(name = "resourceObjId", value = "应用系统标识", required = true, dataType = "Long", paramType = "path")
     })
     @RequestMapping(value = "/getAcctOrgByPsnId", method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="账号管理",methods="getAcctOrgByPsnId",desc="主账号组织关系")
     public Object getAcctOrgByPsnId(Long personnelId, Long resourceObjId){
         return userService.getAcctOrgByPsnId(personnelId, resourceObjId, SysUserInfo.getAccount());
     }

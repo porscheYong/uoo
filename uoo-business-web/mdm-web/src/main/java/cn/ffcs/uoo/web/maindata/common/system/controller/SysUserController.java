@@ -134,6 +134,7 @@ public class SysUserController {
     @ApiOperation(value = "新增用户组织", notes = "新增用户组织")
     @ApiImplicitParam(name = "sysUserDeptRefVo", value = "用户组织信息", required = true, dataType = "EditSysUserDeptRefVo")
     @RequestMapping(value = "/addsysUserDeptRef", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.ADD, module="平台用户",methods="addsysUserDeptRef",desc="新增用户组织")
     public Object addsysUserDeptRef(@RequestBody EditSysUserDeptRefVo sysUserDeptRefVo){
         sysUserDeptRefVo.setCreateUser(SysUserInfo.getUserId());
         sysUserDeptRefVo.setUpdateUser(SysUserInfo.getUserId());
@@ -143,6 +144,7 @@ public class SysUserController {
     @ApiOperation(value = "更新用户信息", notes = "更新用户信息")
     @ApiImplicitParam(name = "sysUser", value = "用户信息", required = true, dataType = "SysUser")
     @RequestMapping(value = "/updateSysUser", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.UPDATE, module="平台用户",methods="updateSysUser",desc="更新用户信息")
     public Object updateSysUser(@RequestBody SysUser sysUser){
         sysUser.setUpdateUser(SysUserInfo.getUserId());
         return sysuserClient.updateSysUser(sysUser);
@@ -155,13 +157,15 @@ public class SysUserController {
             @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path"),
     })
     @RequestMapping(value = "/getSysUserDeptPosition", method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="平台用户",methods="getSysUserDeptPosition",desc="用户信息查询")
     public ResponseResult<SysUserDeptRefVo> getSysUserDeptPosition(Long userId, Integer pageNo, Integer pageSize){
         return sysuserClient.getSysUserDeptPosition(userId, pageNo, pageSize);
     }
 
-    @ApiOperation(value = "删除", notes = "删除")
+    @ApiOperation(value = "删除用户", notes = "删除用户")
     @ApiImplicitParam(name = "sysUser", value = "sysUser", required = true, dataType = "sysUser")
     @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.DELETE, module="平台用户",methods="deleteUser",desc="删除用户")
     public Object deletePrivilege(@RequestBody SysUser sysUser){
         sysUser.setUpdateUser(SysUserInfo.getUserId());
         return sysuserClient.deletePrivilege(sysUser);

@@ -13,6 +13,7 @@ import cn.ffcs.uoo.system.util.IdCardVerification;
 import cn.ffcs.uoo.system.util.MD5Util;
 import cn.ffcs.uoo.system.util.StrUtil;
 import cn.ffcs.uoo.system.vo.SysUserDeptPositionVo;
+import cn.ffcs.uoo.system.vo.SysUserDeptVo;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -249,10 +250,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public Page<SysUserDeptPositionVo> getUserDeptPosition(String userCode, Integer pageNo, Integer pageSize){
         List<SysUserDeptPositionVo> sysUserDeptPositionVoList = new ArrayList<>();
-        Page<SysUserDeptRef> userDeptRefPage = sysUserDeptRefService.getUserDeptRefByUserCode(userCode, pageNo, pageSize);
-        List<SysUserDeptRef> sysUserDeptRefs = userDeptRefPage.getRecords();
+        Page<SysUserDeptVo> userDeptRefPage = sysUserDeptRefService.getUserDeptByUserCode(userCode, pageNo, pageSize);
+        List<SysUserDeptVo> sysUserDeptRefs = userDeptRefPage.getRecords();
         if(sysUserDeptRefs != null && sysUserDeptRefs.size() > 0){
-            for(SysUserDeptRef userDeptRef : sysUserDeptRefs){
+            for(SysUserDeptVo userDeptRef : sysUserDeptRefs){
                 SysUserDeptPositionVo userDeptPositionVo = new SysUserDeptPositionVo();
                 BeanUtils.copyProperties(userDeptRef, userDeptPositionVo);
                 userDeptPositionVo.setUserPositionRefList(sysUserPositionRefService.getUserPositionRef(userCode, userDeptRef.getOrgCode()));

@@ -78,11 +78,17 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             /*员工*/
             Map<String, Object> STAFF = (Map<String, Object>) map.get("STAFF");
             /*员工渠道关系*/
-            Map<String, Object> STAFF_CHANNEL_RELAS = (Map<String, Object>) map.get("STAFF_CHANNEL_RELAS");
+            List<Map<String, Object>> STAFF_CHANNEL_RELAS = (List<Map<String, Object>>) map.get("STAFF_CHANNEL_RELAS");
 
             hand_CHANNEL(CHANNEL, rsMap);
             hand_STAFF(STAFF, rsMap);
-            //hand_STAFF_CHANNEL_RELAS(STAFF_CHANNEL_RELAS, rsMap);
+
+            /*if(STAFF_CHANNEL_RELAS != null && STAFF_CHANNEL_RELAS.size() >0){
+                STAFF_CHANNEL_RELAS.forEach((temp)->{
+                    hand_STAFF_CHANNEL_RELAS(temp,rsMap);
+                });
+            }*/
+
 
             //事务回滚
             if ("1000".equals(rsMap.get("result_code"))) {
@@ -623,28 +629,5 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         tbOrgOrgtypeRel.setOrgId(orgId);
         tbOrgOrgtypeRel.setOrgTypeId(orgType.getOrgTypeId());
         return tbOrgOrgtypeRel;
-    }
-
-    public static void main(String[] args) {
-        String json = "{\"TransactionID\":\"1000000045201901078888457736\",\"CHANNEL\":{\"CHANNEL_NBR\":" +
-                "\"3301063199917\",\"CHANNEL_NAME\":\"西湖梦途丰谭路专柜\",\"CHANNEL_CLASS\":\"10\"," +
-                "\"CHN_TYPE_CD\":\"100202\",\"CHANNEL_TYPE_CD\":\"100000\",\"COMMON_REGION_ID\":\"8330106\"," +
-                "\"STATUS_CD\":\"1000\",\"STATUS_DATE\":\"20190109151622\",\"DESCRIPTION\":null,\"ACTION\":" +
-                "\"MOD\"},\"OPERATORS\":{\"OPERATORS_NBR\":\"J33010757714\",\"OPERATORS_NAME\":\"余婷\"," +
-                "\"OPERATORS_TYPE_CD\":\"20\",\"OPERATORS_AREA_GRADE\":\"1000\",\"PARENT_OPER_NBR\":null," +
-                "\"COMMON_REGION_ID\":\"8330106\",\"STATUS_CD\":\"1000\",\"STATUS_DATE\":null,\"DESCRIPTION\":null," +
-                "\"ACTION\":\"MOD\"},\"STAFF\":{\"SALES_CODE\":\"Y99999999\",\"STAFF_CODE\":\"Y99999999\",\"ACCOUNT\":" +
-                "\"999999\",\"STAFF_NAME\":\"测试yxg123\",\"CERT_TYPE\":\"1\",\"CERT_NUMBER\":\"330702197911041225\"," +
-                "\"MOBILE_PHONE\":\"15372128883\",\"E_MAIL\":null,\"COMMON_REGION_ID\":\"8330106\",\"STAFF_DESC\":null," +
-                "\"STATUS_CD\":\"1000\",\"STATUS_DATE\":null,\"CREATE_DATE\":null,\"ACTION\":\"MOD\"}," +
-                "\"CHANNEL_OPERATORS_RELAS\":{\"CHANNEL_NBR\":\"3301063199917\",\"OPERATORS_NBR\":\"J33010757714\"," +
-                "\"RELA_TYPE\":\"10\",\"DESCRIPTION\":null,\"ACTION\":\"MOD\"},\"STAFF_CHANNEL_RELAS\":{\"SALES_CODE\":" +
-                "\"Y99999999\",\"CHANNEL_NBR\":\"3301063199917\",\"RELA_TYPE\":\"10\",\"DESCRIPTION\":null,\"ACTION\":\"MOD\"}}";
-
-        System.out.println(JSON.parseObject(json, Map.class));
-        System.out.println(Json2MapUtil.handle(json));
-
-
-        //System.out.println(new CpcChannelServiceImpl().handle(json));
     }
 }

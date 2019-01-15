@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.core.user.service;
 
 import cn.ffcs.uoo.core.user.entity.TbAccountOrgRel;
+import cn.ffcs.uoo.core.user.vo.AccountOrgRelVo;
 import cn.ffcs.uoo.core.user.vo.ListAcctOrgVo;
 import com.baomidou.mybatisplus.service.IService;
 
@@ -44,5 +45,12 @@ public interface TbAccountOrgRelService extends IService<TbAccountOrgRel> {
      * @return
      */
     public Object addAcctOrg(TbAccountOrgRel tbAccountOrgRel);
+
+    /**
+     * 更新 主账号和组织关系
+     * @param tbAccountOrgRel
+     * @return
+     */
+    public Object updateAcctOrg(AccountOrgRelVo tbAccountOrgRel);
 
 }

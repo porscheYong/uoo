@@ -12,6 +12,7 @@ import cn.ffcs.uoo.core.user.service.TbAcctService;
 import cn.ffcs.uoo.core.user.service.TbSlaveAcctService;
 import cn.ffcs.uoo.core.user.util.ResultUtils;
 import cn.ffcs.uoo.core.user.util.StrUtil;
+import cn.ffcs.uoo.core.user.vo.AccountOrgRelVo;
 import cn.ffcs.uoo.core.user.vo.ListAcctOrgVo;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -116,5 +117,54 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
             return ResultUtils.error(EumUserResponeCode.ACCT_ORG_REL_IS_EXIST);
         }
         return null;
+    }
+
+    @Override
+    public Object updateAcctOrg(AccountOrgRelVo tbAccountOrgRel){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TABLE_ORG_ID, tbAccountOrgRel.getOrgId());
+        map.put(BaseUnitConstants.TABLE_ACCT_ID, tbAccountOrgRel.getAcctId());
+        map.put(BaseUnitConstants.TB_ORG_TREE_ID, tbAccountOrgRel.getOrgTreeId());
+        TbAccountOrgRel accountOrgRel = this.selectOne(new EntityWrapper<TbAccountOrgRel>().allEq(map));
+        //从账号 组织变更
+        if(!StrUtil.isNullOrEmpty(tbAccountOrgRel.getSlaveAcctId())){
+            Long acctOrgRelId = 0L;
+            if(StrUtil.isNullOrEmpty(accountOrgRel)){
+                acctOrgRelId = this.getId();
+                TbAccountOrgRel accountOrgRel1 = new TbAccountOrgRel();
+                BeanUtils.copyProperties(tbAccountOrgRel, accountOrgRel1);
+                accountOrgRel1.setCreateUser(tbAccountOrgRel.getUserId());
+                accountOrgRel1.setUpdateUser(tbAccountOrgRel.getUserId());
+                accountOrgRel1.setAcctOrgRelId(acctOrgRelId);
+                baseMapper.insert(accountOrgRel1);
+            }else{
+                acctOrgRelId = accountOrgRel.getAcctOrgRelId();
+            }
+            TbSlaveAcct tbSlaveAcct = new TbSlaveAcct();
+            tbSlaveAcct.setSlaveAcctId(tbAccountOrgRel.getSlaveAcctId());
+            tbSlaveAcct.setUpdateUser(tbAccountOrgRel.getUserId());
+            tbSlaveAcct.setAcctOrgRelId(acctOrgRelId);
+            tbSlaveAcctService.updateTbSlaveAcct(tbSlaveAcct);
+        }else{
+            //主账号 组织变更
+            if(!StrUtil.isNullOrEmpty(accountOrgRel)){
+                if(!accountOrgRel.getAcctOrgRelId().equals(tbAccountOrgRel.getAcctOrgRelId())){
+                    return ResultUtils.error(EumUserResponeCode.ACCT_ORG_REL_IS_EXIST);
+                }
+            }
+            TbAccountOrgRel orgRel = new TbAccountOrgRel();
+            orgRel.setAcctOrgRelId(tbAccountOrgRel.getAcctOrgRelId());
+            orgRel.setAcctId(tbAccountOrgRel.getAcctId());
+            orgRel.setOrgId(tbAccountOrgRel.getOrgId());
+            orgRel.setOrgTreeId(tbAccountOrgRel.getOrgTreeId());
+            orgRel.setUpdateUser(tbAccountOrgRel.getUserId());
+            baseMapper.updateById(orgRel);
+        }
+        TbAcct tbAcct = tbAcctService.getTbAcctById(tbAccountOrgRel.getAcctId());
+        if(!StrUtil.isNullOrEmpty(tbAcct)){
+            rabbitMqService.sendMqMsg("person", "update", "personnelId", tbAcct.getPersonnelId());
+        }
+        return ResultUtils.success(null);
     }
 }

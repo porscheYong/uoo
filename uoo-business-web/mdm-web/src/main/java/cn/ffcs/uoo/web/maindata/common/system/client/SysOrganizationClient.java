@@ -91,5 +91,14 @@ public interface SysOrganizationClient {
                                                           @RequestParam(value = "isSearchlower",required = false)String isSearchlower,
                                                           @RequestParam(value = "userId",required = false)Long userId,
                                                           @RequestParam(value = "accout",required = false)String accout);
+    @RequestMapping(value = "/sysOrganization/getPositionUserPage", method = RequestMethod.GET)
+    public ResponseResult<Page<SysUserVo>> getPositionUserPage(@RequestParam(value = "id",required = false)String id,
+                                                               @RequestParam(value = "search",required = false)String search,
+                                                               @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                                               @RequestParam(value = "pageNo",required = false)Integer pageNo,
+                                                               @RequestParam(value = "isSearchlower",required = false)String isSearchlower,
+                                                               @RequestParam(value = "userId",required = false)Long userId,
+                                                               @RequestParam(value = "accout",required = false)String accout);
+
 }
 

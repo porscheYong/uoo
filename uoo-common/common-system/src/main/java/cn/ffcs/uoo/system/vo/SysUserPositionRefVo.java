@@ -14,6 +14,10 @@ public class SysUserPositionRefVo {
      */
     private String userCode;
     /**
+     * 职位标识
+     */
+    private Long positionId;
+    /**
      * 职位编码
      */
     private String positionCode;
