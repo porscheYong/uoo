@@ -89,7 +89,6 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                 });
             }*/
 
-
             //事务回滚
             if ("1000".equals(rsMap.get("result_code"))) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
