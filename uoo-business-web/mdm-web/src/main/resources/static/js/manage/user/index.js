@@ -6,7 +6,8 @@ var orgId,
     pid,
     orgName,
     parent,
-    nodeArr;
+    nodeArr,
+    orgFlag; //是否选中平台组织
 
 function onNodeClick(e,treeId, treeNode) {
     orgId = treeNode.id;
@@ -55,7 +56,7 @@ function filter (treeId, parentNode, childNodes) {
 }
 
 function refreshResult () {
-    var url = "list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName);
+    var url = "list.html?id=" + orgId + '&pid=' + pid + '&orgFlag=' + orgFlag + "&name=" + encodeURI(orgName);
     $('#platformUserFrame').attr("src",url);
 }
 
@@ -102,6 +103,7 @@ function initOrgTree (obj) {
         var nodes = tree.getNodes();
         tree.expandNode(nodes[0], true);
         tree.selectNode(nodes[0], true);
+        orgFlag = 1;
         onNodeClick(null, null, nodes[0]);
     }, function (err) {
 
@@ -148,6 +150,7 @@ function initOrgPostTree (obj) {
         var nodes = tree.getNodes();
         tree.expandNode(nodes[0], true);
         tree.selectNode(nodes[0], true);
+        orgFlag = 0;
         onNodeClick(null, null, nodes[0]);
     }, function (err) {
 

@@ -3,6 +3,7 @@ var userId = getQueryString('userId');
 var orgName = getQueryString('name');
 var userData = {}; //用户详情
 var sysUserDeptPositionVos = [];
+var sysOrgPostObj = {};
 var psonOrgVoList = [],
     orgList = [],
     postList = [];
@@ -181,41 +182,6 @@ function initUpdateTable () {
     });
 }
 
-// 获取更新信息
-function getSysUpdateInfo () {
-    $http.get('/system/getSysUserDeptPosition', {
-        userId: userId,
-        pageNo: '1',
-        pageSize: 100
-    }, function (data) {
-        userData = data;
-        userData.certTypeData = certTypeData;
-        userData.acctLevelData = acctLevelData;
-        userData.genderData = genderData;
-        initUser();
-        sysUserDeptPositionVos = data.sysUserDeptPositionVos.records;
-        initOrgTable(sysUserDeptPositionVos);
-        orgList.push({id: sysUserDeptPositionVos.orgCode, sysUserDeptPositionVos: data.orgName});
-        postList = sysUserDeptPositionVos.userPositionRefList;
-    })
-}
-
-//获取人员头像
-function getPsnImage(){
-    $http.get('/psnImage/getPsnImage', {
-        personnelId: personnelId
-    }, function (data) {
-        if(data != null){
-            imgUrl =  "data:image/png;base64," + data.image;
-            $('#psnImg').attr("src",imgUrl);
-            $('#psnimg2').attr("src",imgUrl);
-            $('#psnimg1').attr("src",imgUrl);
-        }
-    }, function (err) {
-
-    })
-}
-
 function initUser(){
     $('#userEditButton').show();
     //预编译模板
@@ -224,7 +190,6 @@ function initUser(){
     var userHtml = userTemplate({userData: userData});
     //输入模板
     $('#userInfo').html(userHtml);
-    getPsnImage();
 }
 
 function  editUser() {
@@ -245,7 +210,6 @@ function  editUser() {
     $("#choseFileImg").change( function() {
         addPsonImg();
     });
-    getPsnImage();
     $('select').selectMatch();
     var userEditForm = $('#userEditForm');
     userFormValidate = new Validate(userEditForm);
@@ -296,6 +260,7 @@ function autoFillMail() {
 function  initOrgTable (results) {
     orgTable = $("#orgTable").DataTable({
         'data': results,
+        'destroy':true,
         'searching': false,
         'autoWidth': false,
         'ordering': false,
@@ -388,28 +353,55 @@ function addOrgList () {
         return;
     if (editFlag) {
         //修改归属组织职位信息
-        var sysOrgPostObj = sysUserDeptPositionVos[editFlag-1];
+        sysOrgPostObj = sysUserDeptPositionVos[editFlag-1];
         sysOrgPostObj.orgCode = orgList[0].id;
         sysOrgPostObj.orgName = orgList[0].name;
-        sysOrgPostObj.userPositionRefList = postList;
-        orgTable.row(editFlag-1).data(sysOrgPostObj).draw();
+        sysOrgPostObj.userCode = userData.userCode;
+        sysOrgPostObj.userPositionRefList = [];
+        for (var i = 0; i < postList.length; i++) {
+            sysOrgPostObj.userPositionRefList.push({positionCode: postList[i].positionCode})
+        }
+        $http.post('/sysUserDeptRef/updateUserDeptPositionDef', JSON.stringify(sysOrgPostObj), function () {
+            $('#orgPostEditBtn').show();
+            $('#delBtn').show();
+            $('#orgEdit').removeClass( 'edit-form');
+            $('#orgEdit').html('');
+            loading.screenMaskDisable('container');
+            toastr.success('删除成功！');
+            getSysUerInfo();
+        }, function () {
+            loading.screenMaskDisable('container');
+        })
     }
     else {
         //新增归属组织职位信息
-        var sysOrgPostObj  = {};
+        sysOrgPostObj  = {};
         sysOrgPostObj.orgCode = orgList[0].id;
         sysOrgPostObj.orgName = orgList[0].name;
-        sysOrgPostObj.userPositionRefList = postList;
-        sysUserDeptPositionVos.push(sysOrgPostObj);
-        orgTable.row.add(sysOrgPostObj).draw();
+        sysOrgPostObj.userCode = userData.userCode;
+        sysOrgPostObj.userPositionRefList = [];
+        for (var i = 0; i < postList.length; i++) {
+            sysOrgPostObj.userPositionRefList.push({positionCode: postList[i].positionCode})
+        }
+        $http.post('/sysUserDeptRef/addUserDeptPositionDef', JSON.stringify(sysOrgPostObj), function () {
+            $('#orgPostEditBtn').show();
+            $('#delBtn').show();
+            $('#orgEdit').removeClass( 'edit-form');
+            $('#orgEdit').html('');
+            loading.screenMaskDisable('container');
+            toastr.success('删除成功！');
+            getSysUerInfo();
+        }, function () {
+            loading.screenMaskDisable('container');
+        })
     }
-    $('#orgPostEditBtn').show();
-    $('#delBtn').show();
-    $('#orgEdit').removeClass( 'edit-form');
-    $('#orgEdit').html('');
+    // $('#orgPostEditBtn').show();
+    // $('#delBtn').show();
+    // $('#orgEdit').removeClass( 'edit-form');
+    // $('#orgEdit').html('');
 }
 // 删除一条归属组织信息
-function deleteOrgList (index) {
+function deleteOrgList (row) {
     parent.layer.confirm('此操作将删除该归属组织职位信息, 是否继续?', {
         icon: 0,
         title: '提示',
@@ -417,7 +409,7 @@ function deleteOrgList (index) {
     }, function(index){
         parent.layer.close(index);
         loading.screenMaskEnable('container');
-        $http.delete('/sysUserDeptRef/delUserDeptPositionDef', JSON.stringify(sysUserDeptPositionVos[index]), function () {
+        $http.delet('/sysUserDeptRef/delUserDeptPositionDef', JSON.stringify(sysUserDeptPositionVos[row]), function () {
             loading.screenMaskDisable('container');
             toastr.success('删除成功！');
             getSysUerInfo();
@@ -552,9 +544,6 @@ function convertToFile(base64Codes){
         success:function(data){
             toastr.success(data.message);
             psnImageId = data.data.psnImageId;
-        },
-        error:function(data){
-            console.log(data);
         }
     });
 }
@@ -619,56 +608,16 @@ function deleteSysUser(){
         parent.layer.close(index);
         loading.screenMaskEnable('container');
         $http.post('/system/deleteUser', JSON.stringify({
-            sysUser: userData
+            userId: userData.userId,
+            userCode: userData.userCode
         }), function () {
+            window.location.replace("list.html?id=" + orgId + "&name=" + encodeURI(orgName));
             loading.screenMaskDisable('container');
             toastr.success('删除成功！');
         }, function () {
             loading.screenMaskDisable('container');
         })
     });
-}
-
-// 新增组织职位
-function addUserOrgPost() {
-    // if (!formValidate.isAllPass())
-    //     return;
-    loading.screenMaskEnable('container');
-
-    var userName = $('#userName').val();
-    var passwd = $('#passwd').val();
-    var certType = $('#certType option:selected') .val();
-    var certNo = $('#certNo').val();
-    var accout = $('#accout').val();
-    var acctLevel = $('#acctLevel option:selected') .val();
-    var birthday;
-    if ($('#birthday').val()) {
-        birthday = new Date($('#birthday').val()).getTime();
-    }
-    var gender = $('#gender option:selected') .val();
-    var mobile = $('#mobile').val();
-    var email = $('#email').val();
-
-    var sysUserDeptPositionList = [];
-    for (var i = 0; i < sysUserDeptPositionVos.length; i++) {
-        var userPositionRefList = [];
-        for (var j = 0; j < sysUserDeptPositionVos[i].userPositionRefList.length; j++) {
-            userPositionRefList.push({positionCode: sysUserDeptPositionVos[i].userPositionRefList[j].positionCode})
-        }
-        sysUserDeptPositionList.push({orgCode: sysUserDeptPositionVos[i].orgCode, orgName: sysUserDeptPositionVos[i].orgName, userPositionRefList: userPositionRefList})
-    }
-    $http.post('/sysUserDeptRef/addUserDeptPositionDef', JSON.stringify({
-        userCode: userId,
-        orgCode: passwd,
-        orgName: certType,
-        userPositionRefList: certNo
-    }), function () {
-        window.location.replace("list.html?id=" + orgId + "&name=" + encodeURI(orgName));
-        loading.screenMaskDisable('container');
-        toastr.success('更新成功！');
-    }, function () {
-        loading.screenMaskDisable('container');
-    })
 }
 
 getSysUerInfo();

@@ -880,7 +880,7 @@ function deleteJob(id){
         btn: ['确定','取消']
     }, function(index, layero){
         parent.layer.close(index);
-        $http.delete('/psnjob/delTbPsnjob?psnjobId='+id,{},function(data){
+        $http.delet('/psnjob/delTbPsnjob?psnjobId='+id,{},function(data){
         	toastr.success('操作成功');
             getJobInfo();
         });
@@ -937,7 +937,7 @@ function deleteEdu(id){
         btn: ['确定','取消']
     }, function(index, layero){
         parent.layer.close(index);
-        $http.delete('/edu/delTbEdu',{'eduId':id},function(data){
+        $http.delet('/edu/delTbEdu',{'eduId':id},function(data){
         	toastr.success('操作成功');
         	getEduInfo();
         });
@@ -953,7 +953,7 @@ function deleteFamily(id){
         btn: ['确定','取消']
     }, function(index, layero){
         parent.layer.close(index);
-        $http.delete('/family/delTbFamily?familyId='+id,{},function(data){
+        $http.delet('/family/delTbFamily?familyId='+id,{},function(data){
         	toastr.success('操作成功');
         	getFamilyInfo();
         });
