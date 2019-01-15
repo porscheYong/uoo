@@ -50,7 +50,7 @@ public class SysUserController {
     private SysLoginLogClient loginLogClient;
     @Autowired
     ShiroFilterFactoryBean shiroFilterFactoryBean;
-    @OperateLog(type=OperateType.SELECT,module="平台系统用户模块",methods="获取当前登陆用户信息",desc="")
+    //@OperateLog(type=OperateType.SELECT,module="平台系统用户模块",methods="获取当前登陆用户信息",desc="")
     @ApiOperation(value = " 接口", notes = " 接口")
     @ApiImplicitParams({
     })
@@ -64,7 +64,7 @@ public class SysUserController {
         return r;
     }
     @OperateLog(type=OperateType.UPDATE,module="平台系统用户模块",methods="修改用户密码",desc="")
-    @ApiOperation(value = "登陆接口", notes = "登陆接口")
+    @ApiOperation(value = "修改用户密码", notes = "修改用户密码")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "sysUser", value = "sysUser", required = true, dataType = "SysUser" ),
     })
