@@ -175,15 +175,15 @@ public class SysOrganizationController {
         if(vos!=null && vos.size()>0){
             for(SysPositionVo sysvo1 : vos){
 
-                Wrapper orgPosWrapper = Condition.create()
-                        .eq("POSITION_ID",sysvo1.getPositionId())
-                        .eq("STATUS_CD","1000");
-                SysPosition v = sysPositionService.selectOne(orgPosWrapper);
+//                Wrapper orgPosWrapper = Condition.create()
+//                        .eq("POSITION_CODE",sysvo1.getPositionCode())
+//                        .eq("STATUS_CD","1000");
+//                SysPosition v = sysPositionService.selectOne(orgPosWrapper);
                 Long orgPosRelId = sysDeptPositionRefService.getId();
                 SysDeptPositionRef sysDeptPositionRef = new SysDeptPositionRef();
                 sysDeptPositionRef.setDeptPositionRefId(orgPosRelId);
                 sysDeptPositionRef.setOrgCode(id.toString());
-                sysDeptPositionRef.setPositionCode(v.getPositionCode());
+                sysDeptPositionRef.setPositionCode(sysvo1.getPositionCode());
                 sysDeptPositionRef.setCreateUser(vo.getUserId());
                 sysDeptPositionRefService.add(sysDeptPositionRef);
             }
@@ -226,7 +226,7 @@ public class SysOrganizationController {
         List<SysPosition> sysPositions = new ArrayList<>();
         for(SysPositionVo vo1 : sysPositionList){
               Wrapper sysPositionWrapper = Condition.create()
-                .eq("POSITION_ID",vo1.getPositionId())
+                .eq("POSITION_CODE",vo1.getPositionCode())
                 .eq("STATUS_CD","1000");
             SysPosition sp = sysPositionService.selectOne(sysPositionWrapper);
             sysPositions.add(sp);
@@ -309,6 +309,7 @@ public class SysOrganizationController {
             return ret;
         }
 
+
         Wrapper orgWrapper = Condition.create()
                 .eq("ORG_ID",id)
                 .eq("STATUS_CD","1000");
@@ -318,6 +319,17 @@ public class SysOrganizationController {
             ret.setMessage("成功");
             return ret;
         }
+
+        Wrapper orgRelWrapper = Condition.create()
+                .eq("PARENT_ORG_CODE",id)
+                .eq("STATUS_CD","1000");
+        int orgRelNum = sysOrganizationService.selectCount(orgWrapper);
+        if(orgRelNum>0){
+            ret.setState(ResponseResult.STATE_OK);
+            ret.setMessage("存在上级组织");
+            return ret;
+        }
+
         int num = sysOrganizationService.getOrgUserCount(sysOrganization.getOrgCode());
         if(num>0){
             ret.setState(ResponseResult.STATE_ERROR);
@@ -369,6 +381,31 @@ public class SysOrganizationController {
             return ret;
         }
         Page<SysUserVo> page = sysPositionService.getOrgUserPage(id,search,pageSize,pageNo,isSearchlower);
+        ret.setData(page);
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setMessage("查询成功");
+        return ret;
+    }
+
+
+    @ApiOperation(value = "查询职位人员", notes = "查询职位人员")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "查询职位人员", key = "getPositionUserPage")
+    @RequestMapping(value = "/getPositionUserPage", method = RequestMethod.GET)
+    public ResponseResult<Page<SysUserVo>> getPositionUserPage(String id,
+                                                          String search,
+                                                          Integer pageSize,
+                                                          Integer pageNo,
+                                                          String isSearchlower,
+                                                          Long userId, String accout) throws IOException {
+        ResponseResult<Page<SysUserVo>> ret = new ResponseResult<Page<SysUserVo>>();
+        if(StrUtil.isNullOrEmpty(id)){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("职位编码不能为空");
+            return ret;
+        }
+        Page<SysUserVo> page = sysPositionService.getPositionUserPage(id,search,pageSize,pageNo,isSearchlower);
         ret.setData(page);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("查询成功");

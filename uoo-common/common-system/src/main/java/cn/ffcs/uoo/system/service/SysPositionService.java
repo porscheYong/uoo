@@ -68,4 +68,10 @@ public interface SysPositionService extends IService<SysPosition> {
                                           Integer pageSize,
                                           Integer pageNo,
                                           String isSearchlower);
+
+    public Page<SysUserVo> getPositionUserPage(String id,
+                                               String search,
+                                               Integer pageSize,
+                                               Integer pageNo,
+                                               String isSearchlower);
 }

@@ -97,5 +97,13 @@ public class SysOrganizationClientHystrix implements SysOrganizationClient {
         rr.setMessage("服务不可用");
         return rr;
     }
+    @Override
+    public ResponseResult<Page<SysUserVo>> getPositionUserPage(String id,String search,Integer pageSize,Integer pageNo,String isSearchlower,
+                                                               Long userId,String accout){
+        ResponseResult<Page<SysUserVo>> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    }
 
 }
