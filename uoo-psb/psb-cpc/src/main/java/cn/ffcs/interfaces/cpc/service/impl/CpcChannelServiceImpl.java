@@ -60,7 +60,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
 
     @Override
     public String handle(String json) throws Exception {
-        logger.info("json:{}",json);
+        logger.info("json:{}，date:{}",json,new Date());
 
         Map<String, Object> map = Json2MapUtil.handle(json);
         //1000是失败，0成功
@@ -75,23 +75,28 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         if (map == null) {
             result_msg.append("json is null.");
         } else {
-            TransactionID = (String) map.get("TransactionID") == null ? "" : (String) map.get("TransactionID");
-            rsMap.put("TransactionID", TransactionID);
-            /*渠道*/
-            Map<String, Object> CHANNEL = (Map<String, Object>) map.get("CHANNEL");
-            /*员工*/
-            Map<String, Object> STAFF = (Map<String, Object>) map.get("STAFF");
-            /*员工渠道关系*/
-            List<Map<String, Object>> STAFF_CHANNEL_RELAS = (List<Map<String, Object>>) map.get("STAFF_CHANNEL_RELAS");
+            try {
+                TransactionID = (String) map.get("TransactionID") == null ? "" : (String) map.get("TransactionID");
+                rsMap.put("TransactionID", TransactionID);
+                /*渠道*/
+                Map<String, Object> CHANNEL = (Map<String, Object>) map.get("CHANNEL");
+                /*员工*/
+                Map<String, Object> STAFF = (Map<String, Object>) map.get("STAFF");
+                /*员工渠道关系*/
+                List<Map<String, Object>> STAFF_CHANNEL_RELAS = (List<Map<String, Object>>) map.get("STAFF_CHANNEL_RELAS");
 
-            hand_CHANNEL(CHANNEL, rsMap);
-            hand_STAFF(STAFF, rsMap);
+                hand_CHANNEL(CHANNEL, rsMap);
+                hand_STAFF(STAFF, rsMap);
 
             /*if(STAFF_CHANNEL_RELAS != null && STAFF_CHANNEL_RELAS.size() >0){
                 STAFF_CHANNEL_RELAS.forEach((temp)->{
                     hand_STAFF_CHANNEL_RELAS(temp,rsMap);
                 });
             }*/
+            }catch (Exception e){
+                rsMap.put("result_code","1000");
+                rsMap.put("message", "处理时异常！");
+            }
 
             //事务回滚
             if ("1000".equals(rsMap.get("result_code"))) {
