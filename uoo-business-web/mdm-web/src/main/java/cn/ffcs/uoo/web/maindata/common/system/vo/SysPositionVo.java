@@ -32,20 +32,12 @@ public class SysPositionVo extends BaseVo {
     /**
      * 上级职位
      */
-    private Long pPositionId;
+    private String parentPositionCode;
 
     /**
      * 上级职位名称
      */
     private String pPositionName;
-
-    public String getpPositionName() {
-        return pPositionName;
-    }
-
-    public void setpPositionName(String pPositionName) {
-        this.pPositionName = pPositionName;
-    }
 
     /**
      * 引用电信管理区域
@@ -110,6 +102,22 @@ public class SysPositionVo extends BaseVo {
 
     private Long userId;
     private String accout;
+
+    public String getParentPositionCode() {
+        return parentPositionCode;
+    }
+
+    public void setParentPositionCode(String parentPositionCode) {
+        this.parentPositionCode = parentPositionCode;
+    }
+
+    public String getpPositionName() {
+        return pPositionName;
+    }
+
+    public void setpPositionName(String pPositionName) {
+        this.pPositionName = pPositionName;
+    }
 
     public Long getUserId() {
         return userId;
@@ -210,13 +218,6 @@ public class SysPositionVo extends BaseVo {
         this.positionCode = positionCode;
     }
 
-    public Long getpPositionId() {
-        return pPositionId;
-    }
-
-    public void setpPositionId(Long pPositionId) {
-        this.pPositionId = pPositionId;
-    }
 
     public String getRegionNbr() {
         return regionNbr;
