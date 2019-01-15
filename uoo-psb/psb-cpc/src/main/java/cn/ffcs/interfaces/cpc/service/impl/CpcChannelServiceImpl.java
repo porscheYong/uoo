@@ -77,8 +77,6 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         } else {
             TransactionID = (String) map.get("TransactionID") == null ? "" : (String) map.get("TransactionID");
             rsMap.put("TransactionID", TransactionID);
-
-
             /*渠道*/
             Map<String, Object> CHANNEL = (Map<String, Object>) map.get("CHANNEL");
             /*员工*/
