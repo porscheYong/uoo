@@ -10,6 +10,8 @@ import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -54,8 +56,11 @@ public class CpcChannelServiceImpl implements CpcChannelService {
     @Resource
     private AcctCrossRelMapper acctCrossRelMapper;
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Override
     public String handle(String json) throws Exception {
+        logger.info("json:{}",json);
 
         Map<String, Object> map = Json2MapUtil.handle(json);
         //1000是失败，0成功
