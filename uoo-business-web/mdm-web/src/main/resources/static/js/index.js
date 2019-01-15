@@ -2,8 +2,7 @@ var loading = new Loading();
 var loadingHome = new Loading();
 var dictionaryData = new Dictionary();
 var account;
-var personnelId;
-var menuCode = ''; //菜单code
+var userId;
 // toastr
 toastr.options = {
     "closeButton": false,
@@ -30,8 +29,9 @@ function initUserInfo(){  //初始化首页人员信息
     $http.get('/system/getCurrentLoginUserInfo', { },
         function (data) {
             account = data.accout;
+            userId = data.userId;
             $("#psnName").text(data.userName);
-            // getPsnId();
+            getPsnId();
         }, function (err) {
         })
 }
@@ -86,12 +86,6 @@ function initSideBar(results){     //初始化侧边菜单
         flag = 0;
     }
     $("#LAY-system-side-menu").append(pemList);
-    //MENU_CODE
-    $('#LAY-system-side-menu .layui-nav-item  a').each(function () {
-        $(this).click(function () {
-            menuCode = $(this).parent().attr('mcode');
-        });
-    });
     loading.screenMaskDisable('container');
 }
 
@@ -178,16 +172,16 @@ function getDictionaryData () {
         dictionaryData.areaType(data.areaType);
         dictionaryData.countType(data.countType);
         dictionaryData.contractType(data.contractType);
-        dictionaryData.acctLevel(data.acct_LEVEL);
     }, function (err) {
 
     })
 }
 
+//跳转至个人信息界面
 function getPsnId(){
     $http.get('/acct/getCurrentAcct', {},
         function (data) {
-            $("#psnInfo").attr("lay-href","/inaction/psnInfo/index.html?personnelId=" + data.personnelId+"&acctId=" + data.acctId);
+            $("#psnInfo").attr("lay-href","/inaction/psnInfo/index.html?personnelId=" + data.personnelId+"&acctId=" + data.acctId+"&userId="+userId);
         }, function (err) {
         })
 }

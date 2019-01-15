@@ -1,7 +1,8 @@
 var isIE=!!window.ActiveXObject;
 var isIE8=isIE&&document.documentMode<9;
 
-var positionId = getQueryString('positionId');
+var positionCodeCur = getQueryString('positionCode');
+// var positionId = getQueryString('positionId');
 var posName = getQueryString('posName');
 var lChBox =document.getElementById("lowerCheckBox");   //是否显示下级职位
 var posTable;
@@ -9,6 +10,7 @@ var isCheck = 0;
 var roleList = [];
 var posRole = parent.posRole;
 var posFullName = "";
+var positionCodeList = [];
 
 // 获取组织完整路径
 function getPosExtInfo () {
@@ -20,7 +22,7 @@ function getPosExtInfo () {
             if (pathArry[i].current) {
                 pathStr +=  '<span class="breadcrumb-item"><a href="javascript:void(0);">' + node.name + '</a></span>';
             } else {
-                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+positionId+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+positionCodeCur+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
             }
             posFullName += node.name + ' / '; 
         }
@@ -31,6 +33,7 @@ function getPosExtInfo () {
 
 //初始化职位表格
 function initPosTable(isCheck,search){
+    positionCodeList = [];
     posTable = $("#posTable").DataTable({
         'destroy':true,
         'searching': false,
@@ -48,7 +51,8 @@ function initPosTable(isCheck,search){
             },
             { 'data': "positionName", 'title': '职位名称', 'className': 'row-pos',
                 'render': function (data, type, row, meta) {
-                    return "<a href='javascript:void(0);' title='"+row.positionName+"' onclick='setPosInfo("+row.positionId+")'>"+row.positionName+"</span>";
+                    positionCodeList.push(row.positionCode);
+                    return "<a href='javascript:void(0);' title='"+row.positionName+"' onclick='setPosInfo("+meta.row+")'>"+row.positionName+"</span>";
                 }
             },
             { 'data': "roleNames", 'title': '所含角色', 'className': 'row-role' ,
@@ -84,7 +88,7 @@ function initPosTable(isCheck,search){
             var param = {};
             param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
             param.pageNo = (data.start / data.length) + 1;//当前页码
-            param.positionCode = positionId;
+            param.positionCode = positionCodeCur;
             param.isSearchlower = isCheck;
             param.search = search;
             $http.get('/sysPosition/getPositionRelPage', param, function (result) {
@@ -110,7 +114,8 @@ function initPosTable(isCheck,search){
 }
 
 function setPosInfo(id){
-    window.location.href = "posInfo.html?id=" + id + "&posName=" + posName + "&posFullName="+posFullName+"&positionId="+positionId;
+    var positionCode = positionCodeList[id];
+    window.location.href = "posInfo.html?positionCode=" + positionCode + "&posName=" + posName + "&posFullName="+posFullName+"&positionCodeCur="+positionCodeCur;
 }
 
 function boxClick(){            //点击复选框
@@ -129,15 +134,15 @@ function boxClick(){            //点击复选框
 }
 
 $("#addBtn").on('click',function(){
-    window.location.href = "add.html?posName=" + posName + "&posFullName=" + posFullName + "&positionId=" + positionId;
+    window.location.href = "add.html?posName=" + posName + "&posFullName=" + posFullName + "&positionCode=" + positionCodeCur;
 })
 
 $("#infoBtn").on('click',function(){
-    setPosInfo(positionId);
+    window.location.href = "posInfo.html?positionCode=" + positionCodeCur + "&posName=" + posName + "&posFullName="+posFullName+"&positionCodeCur="+positionCodeCur;
 })
 
 $("#posName").on('click',function(){
-    setPosInfo(positionId);
+    window.location.href = "posInfo.html?positionCode=" + positionCodeCur + "&posName=" + posName + "&posFullName="+posFullName+"&positionCodeCur="+positionCodeCur;
 })
 
 $("#posName").html(posName);
