@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.interfaces.cpc.dao.ExpandovalueMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.interfaces.cpc.pojo.Expandovalue">
+        <id column="VALUE_ID" property="valueId" />
+        <result column="RESOURCE_ID" property="resourceId" />
+        <result column="TABLE_ID" property="tableId" />
+        <result column="COLUMN_ID" property="columnId" />
+        <result column="ROW_ID" property="rowId" />
+        <result column="RECORD_ID" property="recordId" />
+        <result column="DATA_" property="data" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        VALUE_ID, RESOURCE_ID, TABLE_ID, COLUMN_ID, ROW_ID, RECORD_ID, DATA_, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+    <select id="selectValueByData" parameterType="cn.ffcs.interfaces.cpc.pojo.Expandovalue" resultType="cn.ffcs.interfaces.cpc.pojo.Expandovalue">
+        SELECT VALUE_ID ,RESOURCE_ID ,TABLE_ID ,COLUMN_ID ,ROW_ID ,RECORD_ID ,DATA_ ,STATUS_CD ,CREATE_DATE ,CREATE_USER ,UPDATE_DATE,UPDATE_USER ,STATUS_DATE
+         FROM TB_EXPANDOVALUE
+        WHERE  RESOURCE_ID= #{resourceId}
+	 AND TABLE_ID= #{tableId}
+	 AND DATA_= #{data}
+	 AND STATUS_CD= #{statusCd}
+    </select>
+
+    <select id="selectExpandovalueList" parameterType="cn.ffcs.interfaces.cpc.pojo.Expandovalue" resultType="cn.ffcs.interfaces.cpc.pojo.Expandovalue">
+        SELECT  VALUE_ID ,RESOURCE_ID ,TABLE_ID ,COLUMN_ID ,ROW_ID ,RECORD_ID ,DATA_ ,STATUS_CD ,CREATE_DATE ,
+	 CREATE_USER ,UPDATE_DATE ,UPDATE_USER ,STATUS_DATE  FROM TB_EXPANDOVALUE
+ WHERE  (RECORD_ID = #{recordId} AND STATUS_CD = #{statusCd})
+    </select>
+</mapper>

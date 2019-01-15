@@ -3,6 +3,8 @@ package cn.ffcs.interfaces.cpc.dao;
 import cn.ffcs.interfaces.cpc.pojo.Expandovalue;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  * 扩展值 Mapper 接口
@@ -14,4 +16,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 public interface ExpandovalueMapper extends BaseMapper<Expandovalue> {
 
     Expandovalue selectValueByData(Expandovalue expandovalue);
+
+    List<Expandovalue> selectExpandovalueList(Expandovalue expandovalue);
 }

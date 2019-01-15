@@ -53,7 +53,7 @@ public interface SysPositionClient {
 
 
     @RequestMapping(value = "/sysPosition/getPosition", method = RequestMethod.GET)
-    public ResponseResult<SysPositionVo> getPosition(@RequestParam(value = "id",required = false)String id);
+    public ResponseResult<SysPositionVo> getPosition(@RequestParam(value = "positionCode",required = false)String positionCode);
 
 
 

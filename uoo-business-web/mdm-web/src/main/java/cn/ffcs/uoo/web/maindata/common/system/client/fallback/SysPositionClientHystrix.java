@@ -47,7 +47,7 @@ public class SysPositionClientHystrix implements SysPositionClient {
     }
 
     @Override
-    public ResponseResult<SysPositionVo> getPosition(String id){
+    public ResponseResult<SysPositionVo> getPosition(String positionCode){
         ResponseResult<SysPositionVo> rr=new ResponseResult<>();
         rr.setState(ResponseResult.STATE_SERVICE_ERROR);
         rr.setMessage("服务不可用");
