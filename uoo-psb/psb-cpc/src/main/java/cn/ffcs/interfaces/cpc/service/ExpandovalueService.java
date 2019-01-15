@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ExpandovalueService extends IService<Expandovalue> {
 
+    Expandovalue selectValueByData(Expandovalue expandovalue);
 }

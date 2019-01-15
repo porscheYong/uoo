@@ -143,14 +143,18 @@ public class SysPositionController {
     @UooLog(value = "查询职位", key = "getPosition")
     @RequestMapping(value = "/getPosition", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<SysPositionVo> getPosition(String id){
+    public ResponseResult<SysPositionVo> getPosition(String positionCode){
         ResponseResult<SysPositionVo> ret = new ResponseResult<SysPositionVo>();
-        if(StrUtil.isNullOrEmpty(id)){
+        if(StrUtil.isNullOrEmpty(positionCode)){
             ret.setState(ResponseResult.STATE_ERROR);
             ret.setMessage("职位标识不能为空");
             return ret;
         }
-        SysPositionVo vo = sysPositionService.getPosition(id);
+        Wrapper positionWrapper = Condition.create()
+                .eq("POSITION_CODE",positionCode)
+                .eq("STATUS_CD","1000");
+        SysPosition sysPosition = sysPositionService.selectOne(positionWrapper);
+        SysPositionVo vo = sysPositionService.getPosition(sysPosition.getPositionId().toString());
         ret.setState(ResponseResult.STATE_OK);
         ret.setData(vo);
         return ret;

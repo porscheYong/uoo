@@ -10,6 +10,10 @@ var $http = {
   post: function (path, data, successCallback, errorCallback) {
     this.ajax('POST', path, data, successCallback, errorCallback)
   },
+  put: function (path, data, successCallback, errorCallback) {
+	  data._ = new Date().getTime();
+	  this.ajax('put', path, data, successCallback, errorCallback)
+  },
   delete: function (path, data, successCallback, errorCallback) {
     this.ajax('DELETE', path, data, successCallback, errorCallback)
   },

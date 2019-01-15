@@ -9,20 +9,11 @@ function deleteData(){
         btn: ['确定','取消']
     }, function(index, layero){
         parent.layer.close(index);
-        $.ajax({
-			url:'/region/areaCode/deleteAreaCode',
-			data:{"areaCodeId":id},
-			dataType:'json',
-			type:'post',
-			success:function(data){
-				if(data.state==1000){
-					toastr.success('操作成功');
-					location.href="/inaction/region/areacode-list.html";
-				}else{
-					toastr.error('操作失败'+data.message);
-				}
-			}
-		});
+        $http.post('/region/areaCode/deleteAreaCode',JSON.stringify({"areaCodeId":id}),function(data){
+        	toastr.success('操作成功');
+			location.href="/inaction/region/areacode-list.html";
+        })
+         
     }, function(){
 
     });
@@ -34,22 +25,10 @@ function saveRegion(){
 	if(!validFormData()){
 		return;
 	}
-	$.ajax({
-		type:'POST',
-		dataType:'json',
-		url:'/region/areaCode/updateAreaCode',
-		data:$('#regionForm').serialize(),
-		success:function(data){
-			if(data.state==1000){
-				toastr.success('操作成功');
-				location.href="/inaction/region/areacode-list.html";
-			}else{
-				toastr.error('操作失败'+data.message);
-			}
-		}
-			
-	});
-	 
+	 $http.post('/region/areaCode/updateAreaCode',JSON.stringify(serializeObject($('#regionForm'))),function(data){
+     	toastr.success('操作成功');
+			location.href="/inaction/region/areacode-list.html";
+     })
 }
 function validFormData(){
 	if (!formValid.isAllPass())
@@ -60,20 +39,11 @@ function validFormData(){
 }
 function initData(){
 	var id=getQueryString('id');
-	$.ajax({
-		url:'/region/areaCode/getAreaCode/id='+id,
-		dataType:'json',
-		type:'get',
-		success:function(data){
-			if(data.state==1000){
-				$('#areaCodeId').val(data.data.areaCodeId);
-				$('#areaCode').val(data.data.areaCode);
-				$('#areaNbr').val(data.data.areaNbr);
-			}else{
-				toastr.error('加载区号信息失败，请重试');
-			}
-		}
-	});
+	$http.get('/region/areaCode/getAreaCode/id='+id,{},function(data){
+		$('#areaCodeId').val(data.areaCodeId);
+		$('#areaCode').val(data.areaCode);
+		$('#areaNbr').val(data.areaNbr);
+     })
 }
  
 $(document).ready(function(){

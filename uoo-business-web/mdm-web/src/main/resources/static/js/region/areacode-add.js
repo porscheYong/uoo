@@ -4,22 +4,10 @@ function saveRegion(){
 	if(!validFormData()){
 		return;
 	}
-	$.ajax({
-		type:'POST',
-		dataType:'json',
-		url:'/region/areaCode/addAreaCode',
-		data:$('#regionForm').serialize(),
-		success:function(data){
-			if(data.state==1000){
-				toastr.success('操作成功');
-				location.href="/inaction/region/areacode-list.html";
-			}else{
-				toastr.error('操作失败'+data.message);
-			}
-		}
-			
+	$http.post('/region/areaCode/addAreaCode',JSON.stringify(serializeObject($('#regionForm'))),function(data){
+		toastr.success('操作成功');
+		location.href="/inaction/region/areacode-list.html";
 	});
-	 
 }
 function validFormData(){
 	if (!formValid.isAllPass())
