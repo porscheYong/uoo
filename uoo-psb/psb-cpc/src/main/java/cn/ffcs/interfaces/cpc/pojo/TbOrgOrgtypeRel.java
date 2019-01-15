@@ -1,5 +1,6 @@
 package cn.ffcs.interfaces.cpc.pojo;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.KeySequence;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @TableName("Tb_Org_Orgtype_Rel")
+@KeySequence(value = "SEQ_tb_org_ORGTYPE_REL_ID", clazz = Long.class)
 public class TbOrgOrgtypeRel extends Model<TbOrgOrgtypeRel>{
 
     @TableId(value = "org_Type_Rel_Id",type = IdType.INPUT)

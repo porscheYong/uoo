@@ -1,6 +1,7 @@
 package cn.ffcs.interfaces.cpc.pojo;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.KeySequence;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -10,6 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @TableName("Tb_Acct")
+@KeySequence(value = "SEQ_TB_ACCT_ID", clazz = Long.class)
 public class TbAcct extends Model<TbAcct> {
     @TableId(value="acct_Id",type = IdType.INPUT)
     private Long acctId;

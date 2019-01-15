@@ -1,6 +1,7 @@
 package cn.ffcs.interfaces.cpc.pojo;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.KeySequence;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @TableName("TB_ORG")
+@KeySequence(value = "SEQ_TB_ORG_ID", clazz = Long.class)
 public class TbOrg extends Model<TbOrg> {
 
     @TableId(value = "ORG_ID",type = IdType.INPUT)

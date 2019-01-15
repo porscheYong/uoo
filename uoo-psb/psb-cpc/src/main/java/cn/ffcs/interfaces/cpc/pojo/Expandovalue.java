@@ -1,12 +1,12 @@
 package cn.ffcs.interfaces.cpc.pojo;
 
 import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
+
+import com.baomidou.mybatisplus.annotations.*;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
 
 /**
@@ -18,6 +18,7 @@ import java.io.Serializable;
  * @since 2019-01-10
  */
 @TableName("TB_EXPANDOVALUE")
+@KeySequence(value = "SEQ_VALUE_ID", clazz = Long.class)
 public class Expandovalue extends Model<Expandovalue> {
 
     private static final long serialVersionUID = 1L;
@@ -46,7 +47,7 @@ public class Expandovalue extends Model<Expandovalue> {
      * 行标识
      */
     @TableField("ROW_ID")
-    private Long rowId;
+    private Long _rowId;
     /**
      * 业务记录标识
      */
@@ -91,11 +92,11 @@ public class Expandovalue extends Model<Expandovalue> {
     public Expandovalue() {
     }
 
-    public Expandovalue(String resourceId, Long tableId, Long columnId, Long rowId, String recordId, String data, String statusCd, Date createDate) {
+    public Expandovalue(String resourceId, Long tableId, Long columnId, Long _rowId, String recordId, String data, String statusCd, Date createDate) {
         this.resourceId = resourceId;
         this.tableId = tableId;
         this.columnId = columnId;
-        this.rowId = rowId;
+        this._rowId = _rowId;
         this.recordId = recordId;
         this.data = data;
         this.statusCd = statusCd;
@@ -135,11 +136,11 @@ public class Expandovalue extends Model<Expandovalue> {
     }
 
     public Long getRowId() {
-        return rowId;
+        return _rowId;
     }
 
     public void setRowId(Long rowId) {
-        this.rowId = rowId;
+        this._rowId = rowId;
     }
 
     public String getRecordId() {
@@ -218,7 +219,7 @@ public class Expandovalue extends Model<Expandovalue> {
         ", resourceId=" + resourceId +
         ", tableId=" + tableId +
         ", columnId=" + columnId +
-        ", rowId=" + rowId +
+        ", rowId=" + _rowId +
         ", recordId=" + recordId +
         ", data=" + data +
         ", statusCd=" + statusCd +

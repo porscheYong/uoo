@@ -1,6 +1,8 @@
 package cn.ffcs.interfaces.cpc.pojo;
 
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotations.KeySequence;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
@@ -17,6 +19,7 @@ import java.io.Serializable;
  * @since 2019-01-10
  */
 @TableName("TB_ACCOUNT_ORG_REL")
+@KeySequence(value = "SEQ_ACCT_HOST_ID", clazz = Long.class)
 public class AccountOrgRel extends Model<AccountOrgRel> {
 
     private static final long serialVersionUID = 1L;
