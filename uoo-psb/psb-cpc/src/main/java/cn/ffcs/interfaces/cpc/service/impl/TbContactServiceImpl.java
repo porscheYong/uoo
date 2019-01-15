@@ -11,4 +11,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TbContactServiceImpl extends ServiceImpl<TbContactMapper, TbContact> implements TbContactService {
+    @Override
+    public boolean deleteByPersonnelId(Long personnelId) {
+        baseMapper.deleteByPersonnelId(personnelId);
+        return true;
+    }
 }

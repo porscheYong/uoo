@@ -84,7 +84,7 @@ function initPosTable(isCheck,search){
             var param = {};
             param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
             param.pageNo = (data.start / data.length) + 1;//当前页码
-            param.positionId = positionId;
+            param.positionCode = positionId;
             param.isSearchlower = isCheck;
             param.search = search;
             $http.get('/sysPosition/getPositionRelPage', param, function (result) {

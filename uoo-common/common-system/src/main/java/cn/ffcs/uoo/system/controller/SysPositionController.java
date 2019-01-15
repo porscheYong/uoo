@@ -81,7 +81,7 @@ public class SysPositionController {
     @UooLog(value = "查询职位下级", key = "getPositionRelPage")
     @RequestMapping(value = "/getPositionRelPage", method = RequestMethod.GET)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Page<SysPositionVo>> getPositionRelPage(String positionId,
+    public ResponseResult<Page<SysPositionVo>> getPositionRelPage(String positionCode,
                                                                   String search,
                                                                   Integer pageSize,
                                                                   Integer pageNo,
@@ -89,9 +89,9 @@ public class SysPositionController {
                                                                   Long userId,
                                                                   String accout){
         ResponseResult<Page<SysPositionVo>> ret = new ResponseResult<>();
-        if(StrUtil.isNullOrEmpty(positionId)){
+        if(StrUtil.isNullOrEmpty(positionCode)){
             ret.setState(ResponseResult.STATE_ERROR);
-            ret.setMessage("职位标识不能为空");
+            ret.setMessage("职位编码不能为空");
             return ret;
         }
         if(StrUtil.isNullOrEmpty(isSearchlower)){
@@ -105,7 +105,8 @@ public class SysPositionController {
             vo.setPageSize(pageSize);
         }
         vo.setIsSearchlower(isSearchlower);
-        vo.setPositionId(new Long(positionId));
+        //vo.setPositionId(new Long(positionId));
+        vo.setPositionCode(positionCode);
         if(!StrUtil.isNullOrEmpty(search)){
             vo.setSearch(search);
         }
@@ -183,8 +184,8 @@ public class SysPositionController {
         if(!StrUtil.isNullOrEmpty(sysPositionVo.getRegionNbr())) {
             sysPosition.setRegionNbr(sysPositionVo.getRegionNbr());
         }
-        if(!StrUtil.isNullOrEmpty(sysPositionVo.getpPositionId())) {
-            sysPosition.setpPositionId(sysPositionVo.getpPositionId());
+        if(!StrUtil.isNullOrEmpty(sysPositionVo.getParentPositionCode())) {
+            sysPosition.setParentPositionCode(sysPositionVo.getParentPositionCode());
         }
         sysPosition.setNotes(sysPositionVo.getNotes());
         if(!StrUtil.isNullOrEmpty(sysPositionVo.getSortNum())){
@@ -277,7 +278,7 @@ public class SysPositionController {
         sysPosition.setSortNum(pos.getSortNum());
         sysPosition.setStatusCd("1000");
         sysPosition.setNotes(pos.getNotes());
-        sysPosition.setpPositionId(pos.getpPositionId());
+        sysPosition.setParentPositionCode(pos.getParentPositionCode());
         sysPosition.setRegionNbr(pos.getRegionNbr());
         sysPosition.setCreateUser(pos.getUserId());
         sysPositionService.add(sysPosition);
@@ -303,7 +304,7 @@ public class SysPositionController {
         }
         TreeNodeVo vo = new TreeNodeVo();
         vo.setId(positionId.toString());
-        vo.setPid(pos.getpPositionId().toString());
+        vo.setPid(pos.getParentPositionCode().toString());
         vo.setName(pos.getPositionName());
         ret.setState(ResponseResult.STATE_OK);
         ret.setData(vo);

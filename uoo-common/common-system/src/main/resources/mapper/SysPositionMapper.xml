@@ -7,7 +7,7 @@
         <id column="POSITION_ID" property="positionId" />
         <result column="POSITION_NAME" property="positionName" />
         <result column="POSITION_CODE" property="positionCode" />
-        <result column="P_POSITION_ID" property="pPositionId" />
+        <result column="PARENT_POSITION_CODE" property="parentPositionId" />
         <result column="REGION_NBR" property="regionNbr" />
         <result column="SORT_NUM" property="sortNum" />
         <result column="NOTES" property="notes" />
@@ -21,7 +21,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        POSITION_ID, POSITION_NAME, POSITION_CODE, P_POSITION_ID, REGION_NBR, SORT_NUM, NOTES, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        POSITION_ID, POSITION_NAME, POSITION_CODE, PARENT_POSITION_CODE, REGION_NBR, SORT_NUM, NOTES, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
     <select id="getId" resultType="java.lang.Long">
@@ -29,14 +29,14 @@
 	</select>
 
     <select id="getTreeChild" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
-        SELECT C.POSITION_ID id ,C.POSITION_NAME name,C.P_POSITION_ID pid,
+        SELECT C.POSITION_CODE id ,C.POSITION_NAME name,C.PARENT_POSITION_CODE pid,
         (SELECT WM_CONCAT(B.ROLE_NAME)
          FROM SYS_POSITIONT_ROLE_REF A, SYS_ROLE B
         WHERE A.STATUS_CD = '1000'
           AND B.STATUS_CD = '1000'
           AND A.ROLE_CODE = B.ROLE_CODE AND A.POSITION_CODE=C.POSITION_CODE) EXTFIELD1
         FROM SYS_POSITION C
-        WHERE C.STATUS_CD = '1000' and C.P_POSITION_ID = #{positionId}
+        WHERE C.STATUS_CD = '1000' and C.PARENT_POSITION_CODE = #{positionCode}
 <!--         START WITH C.POSITION_ID = #{positionId}
          CONNECT BY PRIOR C.POSITION_ID = C.P_POSITION_ID -->
     </select>
@@ -44,30 +44,30 @@
     <select id="isleaf" resultType="java.lang.Integer">
         SELECT count(1)
         FROM SYS_POSITION A
-        WHERE A.STATUS_CD = '1000' AND P_POSITION_ID = #{id}
+        WHERE A.STATUS_CD = '1000' AND PARENT_POSITION_CODE = #{id}
     </select>
 
     <select id="getTreeRoot" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
-        SELECT C.POSITION_ID id ,C.POSITION_NAME name,C.P_POSITION_ID pid,
+        SELECT C.POSITION_CODE id ,C.POSITION_NAME name,C.PARENT_POSITION_CODE pid,
                (SELECT WM_CONCAT(B.ROLE_NAME)
          FROM SYS_POSITIONT_ROLE_REF A, SYS_ROLE B
         WHERE A.STATUS_CD = '1000'
           AND B.STATUS_CD = '1000'
           AND A.ROLE_CODE = B.ROLE_CODE AND A.POSITION_CODE=C.POSITION_CODE) EXTFIELD1
         FROM SYS_POSITION C
-        WHERE C.STATUS_CD = '1000' AND C.P_POSITION_ID is null
+        WHERE C.STATUS_CD = '1000' AND C.PARENT_POSITION_CODE is null
     </select>
 
     <select id="selectPositionTree" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
-        SELECT C.POSITION_ID ID,
+        SELECT C.POSITION_CODE ID,
        C.POSITION_NAME NAME,
-       C.P_POSITION_ID PID,
+       C.PARENT_POSITION_CODE PID,
        (SELECT WM_CONCAT(B.ROLE_NAME)
          FROM SYS_POSITIONT_ROLE_REF A, SYS_ROLE B
         WHERE A.STATUS_CD = '1000'
           AND B.STATUS_CD = '1000'
           AND A.ROLE_CODE = B.ROLE_CODE AND A.POSITION_CODE=C.POSITION_CODE) EXTFIELD1,
-          (SELECT DECODE(COUNT(1),0,0,1) FROM SYS_POSITION A WHERE A.STATUS_CD='1000' AND A.P_POSITION_ID=C.POSITION_ID ) isParent
+          (SELECT DECODE(COUNT(1),0,0,1) FROM SYS_POSITION A WHERE A.STATUS_CD='1000' AND A.PARENT_POSITION_CODE=C.POSITION_CODE ) isParent
            FROM SYS_POSITION C
         WHERE C.STATUS_CD = '1000'
     </select>
@@ -78,7 +78,8 @@
         <when test='vo.isSearchlower=="0"'>
             SELECT
             A.POSITION_ID positionId,
-            A.P_POSITION_ID pPositionId,
+            A.PARENT_POSITION_CODE parentPositionCode,
+            A.POSITION_CODE positionCode,
             A.POSITION_NAME positionName,
             A.REGION_NBR regionNbr,
             (SELECT TCR.REGION_NAME FROM TB_COMMON_REGION TCR WHERE TCR.STATUS_CD='1000' AND TCR.REGION_NBR=A.REGION_NBR) REGIONNAME,
@@ -92,7 +93,7 @@
             (SELECT COUNT(1) FROM SYS_USER_POSITION_REF SUPR WHERE SUPR.STATUS_CD='1000' AND SUPR.POSITION_CODE=A.POSITION_CODE) ORGUSERNUM
             FROM SYS_POSITION A
             WHERE A.STATUS_CD = '1000'
-            AND A.P_POSITION_ID = #{vo.positionId}
+            AND A.PARENT_POSITION_CODE = #{vo.positionCode}
             <if test="vo.search!=null and vo.search!=''">
                 AND A.POSITION_NAME like '%'||#{vo.search}||'%'
             </if>
@@ -101,7 +102,8 @@
             SELECT * from (
             SELECT
             A.POSITION_ID positionId,
-            A.P_POSITION_ID pPositionId,
+            A.PARENT_POSITION_CODE parentPositionCode,
+            A.POSITION_CODE positionCode,
             A.POSITION_NAME positionName,
             A.REGION_NBR regionNbr,
             (SELECT TCR.REGION_NAME FROM TB_COMMON_REGION TCR WHERE TCR.STATUS_CD='1000' AND
@@ -118,8 +120,8 @@
             SUPR.POSITION_CODE=A.POSITION_CODE) ORGUSERNUM
             FROM SYS_POSITION A
             WHERE A.STATUS_CD = '1000'
-            START WITH A.POSITION_ID = #{vo.positionId}
-            CONNECT BY PRIOR A.POSITION_ID = A.P_POSITION_ID
+            START WITH A.POSITION_CODE = #{vo.positionCode}
+            CONNECT BY PRIOR A.POSITION_CODE = A.PARENT_POSITION_CODE
             ) where 1=1
             <if test="vo.search!=null and vo.search!=''">
                 AND positionName like '%'||#{vo.search}||'%'
@@ -138,13 +140,13 @@
             AND SPRR.POSITION_CODE = A.POSITION_CODE) ROLENAMES
             FROM SYS_POSITION A
             WHERE A.STATUS_CD = '1000'
-            AND A.P_POSITION_ID = #{positionId}
+            AND A.PARENT_POSITION_CODE = #{positionCode}
     </select>
 
 
 
     <select id="getPosition" resultType="cn.ffcs.uoo.system.vo.SysPositionVo">
-      SELECT A.POSITION_ID positionId,A.POSITION_NAME positionName,A.POSITION_CODE positionCode,A.P_POSITION_ID pPositionId,A.REGION_NBR regionNbr,A.SORT_NUM sortNum,A.NOTES notes,
+      SELECT A.POSITION_ID positionId,A.POSITION_NAME positionName,A.POSITION_CODE positionCode,A.PARENT_POSITION_CODE parentPositionCode,A.REGION_NBR regionNbr,A.SORT_NUM sortNum,A.NOTES notes,
       (select b.region_name from TB_COMMON_REGION b where b.common_region_id=A.Region_Nbr) regionName,
 
       (select B.POSITION_NAME from SYS_POSITION B where B.STATUS_CD = 1000 AND B.POSITION_ID = A.P_POSITION_ID) pPositionName
@@ -156,7 +158,7 @@
 
 
     <select id="getSysOrgPosition" resultType="cn.ffcs.uoo.system.vo.SysPositionVo">
-        SELECT B.POSITION_ID positionId,B.POSITION_NAME positionName,B.POSITION_CODE positionCode,B.P_POSITION_ID pPositionId
+        SELECT B.POSITION_ID positionId,B.POSITION_NAME positionName,B.POSITION_CODE positionCode,B.PARENT_POSITION_CODE parentPositionCode
         FROM SYS_POSITION B, SYS_DEPT_POSITION_REF A
         WHERE A.STATUS_CD = 1000
         AND B.STATUS_CD = 1000
@@ -241,18 +243,18 @@
 
 
     <select id="selectTarAllPositionTree" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
-        SELECT C.POSITION_ID ID,
+        SELECT C.POSITION_CODE ID,
         C.POSITION_NAME NAME,
-        C.P_POSITION_ID PID,
+        C.PARENT_POSITION_CODE PID,
         (SELECT WM_CONCAT(B.ROLE_NAME)
         FROM SYS_POSITIONT_ROLE_REF A, SYS_ROLE B
         WHERE A.STATUS_CD = '1000'
         AND B.STATUS_CD = '1000'
         AND A.ROLE_CODE = B.ROLE_CODE AND A.POSITION_CODE=C.POSITION_CODE) EXTFIELD1,
-        (SELECT DECODE(COUNT(1),0,0,1) FROM SYS_POSITION A WHERE A.STATUS_CD='1000' AND A.P_POSITION_ID=C.POSITION_ID ) isParent
+        (SELECT DECODE(COUNT(1),0,0,1) FROM SYS_POSITION A WHERE A.STATUS_CD='1000' AND A.PARENT_POSITION_CODE=C.POSITION_CODE ) isParent
         FROM SYS_POSITION C
         WHERE C.STATUS_CD = '1000'
-                AND C.POSITION_ID in (SELECT A.POSITION_ID FROM SYS_POSITION A WHERE A.STATUS_CD=1000 START WITH A.POSITION_ID=#{positionId} CONNECT BY PRIOR A.POSITION_ID=A.P_POSITION_ID)
+                AND C.POSITION_CODE in (SELECT A.POSITION_CODE FROM SYS_POSITION A WHERE A.STATUS_CD=1000 START WITH A.POSITION_CODE=#{positionCode} CONNECT BY PRIOR A.POSITION_CODE=A.PARENT_POSITION_CODE)
     </select>
 
 </mapper>

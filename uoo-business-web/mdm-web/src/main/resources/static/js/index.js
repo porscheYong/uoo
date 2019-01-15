@@ -3,6 +3,7 @@ var loadingHome = new Loading();
 var dictionaryData = new Dictionary();
 var account;
 var personnelId;
+var menuCode = ''; //菜单code
 // toastr
 toastr.options = {
     "closeButton": false,
@@ -85,6 +86,12 @@ function initSideBar(results){     //初始化侧边菜单
         flag = 0;
     }
     $("#LAY-system-side-menu").append(pemList);
+    //MENU_CODE
+    $('#LAY-system-side-menu .layui-nav-item > a').each(function () {
+        $(this).click(function () {
+            menuCode = $(this).parent('li').attr('mcode');
+        });
+    });
     loading.screenMaskDisable('container');
 }
 
@@ -171,6 +178,7 @@ function getDictionaryData () {
         dictionaryData.areaType(data.areaType);
         dictionaryData.countType(data.countType);
         dictionaryData.contractType(data.contractType);
+        dictionaryData.acctLevel(data.acct_LEVEL);
     }, function (err) {
 
     })

@@ -44,8 +44,8 @@ function initMainTable(isCheck,search){
             { 'data': "psnName", 'title': '姓名', 'className': 'row-psnName'},
             { 'data': "acct", 'title': '主账号', 'className': 'row-typeName' ,
                 'render': function (data, type, row, meta) {
-                    return '<a href="editMainAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +
-                            '&orgId=' + orgId + '&acctId='+ row.accId + '&hType=mh">'+ row.acct +'</a>';
+                    return '<a href="editMainAccount.html?curOrgId='+row.orgId+'&curOrgTreeId='+row.orgTreeId+'&orgTreeId=' + orgTreeId + 
+                            '&orgName=' + encodeURI(orgName) + '&orgId=' + orgId + '&acctId='+ row.accId + '&hType=mh">'+ row.acct +'</a>';
                 }
             },
             { 'data': "slaveAcct", 'title': '从账号', 'className': 'row-acc' ,
@@ -121,13 +121,6 @@ function initMainTable(isCheck,search){
 $('#orgName').html(orgName);
 getOrgExtInfo();
 initMainTable(isCheck,'');
-
-
-// $('#addBtn').on('click', function () {
-//     var url = 'add.html?orgName=' + encodeURI(orgName) +'&orgId=' + orgId + '&orgTreeId=' + orgTreeId + 
-//                 "&orgFullName=" + encodeURI(orgFullName)+"&businessName="+encodeURI(parent.businessName);
-//     $(this).attr('href', url);
-// })
 
 function boxClick(){            //点击复选框
     sortFlag = 0;

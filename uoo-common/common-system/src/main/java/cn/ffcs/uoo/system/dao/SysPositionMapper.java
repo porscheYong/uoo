@@ -29,11 +29,11 @@ public interface SysPositionMapper extends BaseMapper<SysPosition> {
 
     public List<TreeNodeVo> getTreeRoot();
 
-    public List<TreeNodeVo> getTreeChild(@Param("positionId") String positionId);
+    public List<TreeNodeVo> getTreeChild(@Param("positionCode") String positionCode);
 
     public List<TreeNodeVo> selectPositionTree();
 
-    public List<TreeNodeVo> selectTarAllPositionTree(@Param("positionId")String positionId);
+    public List<TreeNodeVo> selectTarAllPositionTree(@Param("positionCode")String positionCode);
 
     public List<SysPositionVo> getPositionRelPage(Pagination page, @Param("vo")SysPositionVo vo);
 

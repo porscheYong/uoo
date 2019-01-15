@@ -37,7 +37,7 @@ public class SysMenuController {
     @Autowired
     ShiroFilterFactoryBean shiroFilterFactoryBean;
     //type 必填，module必填，methods必填，desc选填
-    @OperateLog(type=OperateType.SELECT,module="平台系统菜单模块",methods="查询账号所有菜单",desc="获取当前所有菜单")
+    //@OperateLog(type=OperateType.SELECT,module="平台系统菜单模块",methods="查询账号所有菜单",desc="获取当前所有菜单")
     @ApiOperation(value = "查询账号所有菜单", notes = "查询账号所有菜单")
     @ApiImplicitParams({
     })
@@ -89,13 +89,16 @@ public class SysMenuController {
         sysMenu.setCreateUser(sysuser.getUserId());
         return sysMenuClient.add(sysMenu);
     }
-    @OperateLog(type=OperateType.UPDATE,module="平台系统菜单模块",methods="删除菜单",desc="删除菜单")
+    @OperateLog(type=OperateType.DELETE,module="平台系统菜单模块",methods="删除菜单",desc="删除菜单")
     @ApiOperation(value = "删除", notes = "删除")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "sysMenu", value = "sysMenu", required = true, dataType = "sysMenu"  ),
     })
     @RequestMapping(value = "/sysMenu/delete", method = RequestMethod.POST)
     public ResponseResult<Void> deletePrivilege(@RequestBody SysMenu sysMenu) {
+        Subject subject=SecurityUtils.getSubject();
+        SysUser sysuser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        sysMenu.setUpdateUser(sysuser.getUserId());
         return sysMenuClient.deletePrivilege(sysMenu);
     }
 }

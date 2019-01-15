@@ -42,7 +42,7 @@ function getOrgExtInfo () {
             if (pathArry[i].current) {
                 pathStr +=  '<span class="breadcrumb-item">' + node.name + '</span>';
             } else {
-                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+orgId+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.selectNodeById(\''+node.id+'\')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
             }
         }
         $('#platformUserFrame').contents().find('.breadcrumb').html(pathStr);
@@ -59,11 +59,16 @@ function refreshResult () {
     $('#platformUserFrame').attr("src",url);
 }
 
-function initPlatFormOrgTree () {
+// 初始化平台组织树
+function initOrgTree (obj) {
+    if ($(obj) && $(obj).hasClass('active'))
+        return;
+    $(obj).next().removeClass('active');
+    $(obj).addClass('active');
     var setting = {
         async: {
             enable: true,
-            url: '/orgRel/getOrgRelTree?orgRootId=1&orgTreeId=1',
+            url: '/sysOrganization/getOrgRelTree',
             autoParam: ['id'],
             type: 'get',
             dataFilter: filter
@@ -88,12 +93,58 @@ function initPlatFormOrgTree () {
             onClick: onNodeClick
         }
     };
-    $http.get('/orgRel/getOrgRelTree', {
+    $http.get('/sysOrganization/getOrgRelTree', {
         orgRootId: '1',
         orgTreeId: '1'
     }, function (data) {
-        $.fn.zTree.init($("#platformUserTree"), setting, data);
-        var tree = $.fn.zTree.getZTreeObj("platformUserTree");
+        $.fn.zTree.init($("#tree"), setting, data);
+        var tree = $.fn.zTree.getZTreeObj("tree");
+        var nodes = tree.getNodes();
+        tree.expandNode(nodes[0], true);
+        tree.selectNode(nodes[0], true);
+        onNodeClick(null, null, nodes[0]);
+    }, function (err) {
+
+    })
+}
+
+// 初始化平台职位树
+function initOrgPostTree (obj) {
+    if ($(obj) && $(obj).hasClass('active'))
+        return;
+    $(obj).prev().removeClass('active');
+    $(obj).addClass('active');
+    var setting = {
+        async: {
+            enable: true,
+            url: '/sysPosition/getPositionTree',
+            autoParam: ['id'],
+            type: 'get',
+            dataFilter: filter
+        },
+        view: {
+            showLine: false,
+            showIcon: false,
+            dblClickExpand: false
+        },
+        data: {
+            key: {
+                isParent: 'parent'
+            },
+            simpleData: {
+                enable:true,
+                idKey: 'id',
+                pIdKey: 'pid',
+                rootPId: ''
+            }
+        },
+        callback: {
+            onClick: onNodeClick
+        }
+    };
+    $http.get('/sysPosition/getPositionTree', {}, function (data) {
+        $.fn.zTree.init($("#tree"), setting, data);
+        var tree = $.fn.zTree.getZTreeObj("tree");
         var nodes = tree.getNodes();
         tree.expandNode(nodes[0], true);
         tree.selectNode(nodes[0], true);
@@ -104,16 +155,15 @@ function initPlatFormOrgTree () {
 }
 
 // 根据组织ID选中组织
-function openTreeById (sId, id) {
-    var tId = 'platformUserTree_' + id;
-    var sId = 'platformUserTree_' + sId;
-    var zTree = $.fn.zTree.getZTreeObj("platformUserTree");
-    var node = zTree.getNodeByTId(tId);
-    zTree.selectNode(node);
+function selectNodeById (id) {
+    var tId = 'tree_' + id;
+    var tree = $.fn.zTree.getZTreeObj("tree");
+    var node = tree.getNodeByTId(tId);
+    tree.selectNode(node);
     $('.curSelectedNode').trigger('click');
 }
 
 seajs.use('/vendors/lulu/js/common/ui/Select', function () {
     $('#orgSelect').selectMatch();
 });
-initPlatFormOrgTree();
+initOrgTree();

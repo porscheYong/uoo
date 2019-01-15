@@ -78,12 +78,12 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
     }
 
     @Override
-    public List<TreeNodeVo> selectPositionTree(String positionId){
+    public List<TreeNodeVo> selectPositionTree(String positionCode){
         List<TreeNodeVo> vos = new ArrayList<>();
-        if(StrUtil.isNullOrEmpty(positionId)){
+        if(StrUtil.isNullOrEmpty(positionCode)){
             vos = baseMapper.getTreeRoot();
         }else{
-            vos = baseMapper.getTreeChild(positionId);
+            vos = baseMapper.getTreeChild(positionCode);
         }
         if(vos!=null && vos.size()>0){
             for(TreeNodeVo vo : vos){
@@ -106,12 +106,12 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
     }
 
     @Override
-    public List<TreeNodeVo> selectTarAllPositionTree(String positionId){
+    public List<TreeNodeVo> selectTarAllPositionTree(String positionCode){
         List<TreeNodeVo> vo = new ArrayList<>();
-        if(StrUtil.isNullOrEmpty(positionId)){
+        if(StrUtil.isNullOrEmpty(positionCode)){
             vo = baseMapper.selectPositionTree();
         }else{
-            vo = baseMapper.selectTarAllPositionTree(positionId);
+            vo = baseMapper.selectTarAllPositionTree(positionCode);
         }
 
         return vo;

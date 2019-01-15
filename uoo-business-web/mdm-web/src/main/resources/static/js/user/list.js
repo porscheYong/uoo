@@ -52,10 +52,7 @@ function initOrgPersonnelTable (isSearchlower,search) {
                     }
                     return statusStr
                 }
-            },
-            { 'data': "orgId", 'title': '', 'className': 'row-orgId'},
-            { 'data': "orgRootId", 'title': '', 'className': 'row-orgRootId'},
-            { 'data': "personnelId", 'title': '', 'className': 'row-personnelId'}
+            }
         ],
         'language': {
             'emptyTable': '没有数据',  

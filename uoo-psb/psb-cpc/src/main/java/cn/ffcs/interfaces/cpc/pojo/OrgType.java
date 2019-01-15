@@ -1,4 +1,4 @@
-package cn.ffcs.uoo.system.entity;
+package cn.ffcs.interfaces.cpc.pojo;
 
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -11,52 +11,42 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 根据不同部门的工作性质、责任轻重、难易程度和所需资格条件等进行分类，在平台上，不对职位进行过细的区分
+ * 
  * </p>
  *
- * @author ffcs-gzb
- * @since 2018-12-20
+ * @author lxd
+ * @since 2019-01-14
  */
-@TableName("SYS_POSITION")
-public class SysPosition extends Model<SysPosition> {
+@TableName("TB_ORG_TYPE")
+public class OrgType extends Model<OrgType> {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 职位标识
+     * 组织类别标识
      */
-    @TableId(value = "POSITION_ID")
-    private Long positionId;
+    @TableId(value = "ORG_TYPE_ID", type = IdType.AUTO)
+    private Long orgTypeId;
     /**
-     * 职位名称
+     * 组织类别编码
      */
-    @TableField("POSITION_NAME")
-    private String positionName;
+    @TableField("ORG_TYPE_CODE")
+    private String orgTypeCode;
     /**
-     * 职位编码
+     * 组织类别名称
      */
-    @TableField("POSITION_CODE")
-    private String positionCode;
+    @TableField("ORG_TYPE_NAME")
+    private String orgTypeName;
     /**
-     * 上级职位
+     * 组织类别描述
      */
-    @TableField("PARENT_POSITION_CODE")
-    private String parentPositionCode;
+    @TableField("ORG_TYPE_DESC")
+    private String orgTypeDesc;
     /**
-     * 引用电信管理区域
+     * 上级组织类别标识
      */
-    @TableField("REGION_NBR")
-    private String regionNbr;
-    /**
-     * 职位优先级排序
-     */
-    @TableField("SORT_NUM")
-    private Integer sortNum;
-    /**
-     * 备注
-     */
-    @TableField("NOTES")
-    private String notes;
+    @TableField("PARENT_ORG_TYPE_ID")
+    private Long parentOrgTypeId;
     /**
      * 状态
      */
@@ -89,60 +79,44 @@ public class SysPosition extends Model<SysPosition> {
     private Date statusDate;
 
 
-    public Long getPositionId() {
-        return positionId;
+    public Long getOrgTypeId() {
+        return orgTypeId;
     }
 
-    public void setPositionId(Long positionId) {
-        this.positionId = positionId;
+    public void setOrgTypeId(Long orgTypeId) {
+        this.orgTypeId = orgTypeId;
     }
 
-    public String getPositionName() {
-        return positionName;
+    public String getOrgTypeCode() {
+        return orgTypeCode;
     }
 
-    public void setPositionName(String positionName) {
-        this.positionName = positionName;
+    public void setOrgTypeCode(String orgTypeCode) {
+        this.orgTypeCode = orgTypeCode;
     }
 
-    public String getPositionCode() {
-        return positionCode;
+    public String getOrgTypeName() {
+        return orgTypeName;
     }
 
-    public void setPositionCode(String positionCode) {
-        this.positionCode = positionCode;
+    public void setOrgTypeName(String orgTypeName) {
+        this.orgTypeName = orgTypeName;
     }
 
-    public String getParentPositionCode() {
-        return parentPositionCode;
+    public String getOrgTypeDesc() {
+        return orgTypeDesc;
     }
 
-    public void setParentPositionCode(String parentPositionCode) {
-        this.parentPositionCode = parentPositionCode;
+    public void setOrgTypeDesc(String orgTypeDesc) {
+        this.orgTypeDesc = orgTypeDesc;
     }
 
-    public String getRegionNbr() {
-        return regionNbr;
+    public Long getParentOrgTypeId() {
+        return parentOrgTypeId;
     }
 
-    public void setRegionNbr(String regionNbr) {
-        this.regionNbr = regionNbr;
-    }
-
-    public Integer getSortNum() {
-        return sortNum;
-    }
-
-    public void setSortNum(Integer sortNum) {
-        this.sortNum = sortNum;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setParentOrgTypeId(Long parentOrgTypeId) {
+        this.parentOrgTypeId = parentOrgTypeId;
     }
 
     public String getStatusCd() {
@@ -195,19 +169,17 @@ public class SysPosition extends Model<SysPosition> {
 
     @Override
     protected Serializable pkVal() {
-        return this.positionId;
+        return this.orgTypeId;
     }
 
     @Override
     public String toString() {
-        return "SysPosition{" +
-        ", positionId=" + positionId +
-        ", positionName=" + positionName +
-        ", positionCode=" + positionCode +
-        ", parentPositionCode=" + parentPositionCode +
-        ", regionNbr=" + regionNbr +
-        ", sortNum=" + sortNum +
-        ", notes=" + notes +
+        return "OrgType{" +
+        ", orgTypeId=" + orgTypeId +
+        ", orgTypeCode=" + orgTypeCode +
+        ", orgTypeName=" + orgTypeName +
+        ", orgTypeDesc=" + orgTypeDesc +
+        ", parentOrgTypeId=" + parentOrgTypeId +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
         ", createUser=" + createUser +
