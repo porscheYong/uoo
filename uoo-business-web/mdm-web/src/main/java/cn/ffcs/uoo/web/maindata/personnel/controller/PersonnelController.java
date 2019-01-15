@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.web.maindata.personnel.controller;
 
 
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.personnel.service.PersonnelService;
 import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
 import cn.ffcs.uoo.web.maindata.personnel.vo.EditFormPersonnelVo;
@@ -56,6 +58,7 @@ public class PersonnelController {
             @ApiImplicitParam(name = "orgId", value = "组织标识", required = true, dataType = "Long",paramType="path")
     })
     @RequestMapping(value = "/getFormPersonnel",method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="人员管理",methods="getFormPersonnel",desc="查看人员信息")
     public Object getFormPersonnel( Long personnelId,
                                     Long orgTreeId,
                                     Long orgId){
@@ -65,6 +68,7 @@ public class PersonnelController {
     @ApiOperation(value = "新增人员信息",notes = "人员信息新增")
     @ApiImplicitParam(name = "editFormPersonnelVo",value = "人员信息",required = true,dataType = "EditFormPersonnelVo")
     @RequestMapping(value = "/savePersonnel",method = RequestMethod.POST)
+    @OperateLog(type= OperateType.ADD, module="人员管理",methods="savePersonnel",desc="新增人员信息")
     public Object savePersonnel(@RequestBody EditFormPersonnelVo editFormPersonnelVo) {
         editFormPersonnelVo.setUserId(SysUserInfo.getUserId());
         return personnelService.savePersonnel(editFormPersonnelVo);
@@ -73,6 +77,7 @@ public class PersonnelController {
     @ApiOperation(value="删除人员信息",notes="人员信息删除")
     @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long",paramType="path")
     @RequestMapping(value="/deletePersonnel",method = RequestMethod.DELETE)
+    @OperateLog(type= OperateType.DELETE, module="人员管理",methods="deletePersonnel",desc="删除人员信息")
     public Object deletePersonnel(Long personnelId) {
         return personnelService.deletePersonnel(personnelId, SysUserInfo.getUserId());
     }
@@ -80,6 +85,7 @@ public class PersonnelController {
     @ApiOperation(value = "修改人员基本信息",notes = "人员基本信息修改")
     @ApiImplicitParam(name = "personnelVo",value = "人员基本信息",required = true,dataType = "PersonnelVo")
     @RequestMapping(value = "/updatePersonnel",method = RequestMethod.PUT)
+    @OperateLog(type= OperateType.UPDATE, module="人员管理",methods="updatePersonnel",desc="修改人员基本信息")
     public Object upPersonnel(@RequestBody PersonnelVo personnelVo){
         personnelVo.setUserId(SysUserInfo.getUserId());
         return personnelService.upPersonnel(personnelVo);
@@ -92,6 +98,7 @@ public class PersonnelController {
             @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path")
     })
     @RequestMapping(value="/getPsnBasicInfo",method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="人员管理",methods="getPsnBasicInfo",desc="人员选择查询")
     public Object getPsnBasicInfo(String keyWord, Integer pageNo, Integer pageSize){
         return personnelService.getPsnBasicInfo(keyWord, pageNo, pageSize);
     }
@@ -99,6 +106,7 @@ public class PersonnelController {
     @ApiOperation(value = "身份证对应信息", notes = "身份证对应信息")
     @ApiImplicitParam(name = "certNo", value = "身份证号", required = true, dataType = "String",paramType="path")
     @RequestMapping(value = "/getIdCardInfo",method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="人员管理",methods="getIdCardInfo",desc="身份证对应信息")
     public Object getIdCardInfo(String certNo){
         return personnelService.getIdCardInfo(certNo);
     }
@@ -110,6 +118,7 @@ public class PersonnelController {
             @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path")
     })
     @RequestMapping(value="/getFreePsnInfo",method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="人员管理",methods="getFreePsnInfo",desc="游离人员选择查询")
     public Object getFreePsnInfo(String keyWord, Integer pageNo, Integer pageSize){
         return personnelService.getFreePsnInfo(keyWord, pageNo, pageSize);
     }
@@ -117,6 +126,7 @@ public class PersonnelController {
     @ApiOperation(value = "身份证对应人力编码", notes = "身份证对应人力编码")
     @ApiImplicitParam(name = "certNo", value = "身份证号", required = true, dataType = "String",paramType="path")
     @RequestMapping(value = "/getIdCardNcCode",method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="人员管理",methods="getIdCardNcCode",desc="身份证对应人力编码")
     public Object getIdCardNcCode(String certNo){
         return personnelService.getIdCardNcCode(certNo);
     }

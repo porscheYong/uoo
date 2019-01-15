@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.personnel.controller;
 
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.personnel.service.CertService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -26,6 +28,7 @@ public class CertController {
             @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path")
     })
     @RequestMapping(value="/getCertInfo",method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="人员管理",methods="getCertInfo",desc="证件查询")
     public Object getCertInfo(String keyWord, Integer pageNo, Integer pageSize){
         return certService.getCertInfo(keyWord, pageNo, pageSize);
     }

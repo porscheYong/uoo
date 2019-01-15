@@ -387,7 +387,7 @@ public class SysUserController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "当前页数", required = true, dataType = "Integer",paramType="path"),
             @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path"),
     })
-    @UooLog(value = "更新用户信息", key = "getSysUserDeptPosition")
+    @UooLog(value = "用户信息查询", key = "getSysUserDeptPosition")
     @RequestMapping(value = "/getSysUserDeptPosition", method = RequestMethod.GET)
     public Object getSysUserDeptPosition(Long userId, Integer pageNo, Integer pageSize){
         SysUser sysUser = sysUserService.getSysUserById(userId);

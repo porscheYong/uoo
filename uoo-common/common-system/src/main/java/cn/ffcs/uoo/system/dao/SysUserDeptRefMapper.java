@@ -1,8 +1,12 @@
 package cn.ffcs.uoo.system.dao;
 
 import cn.ffcs.uoo.system.entity.SysUserDeptRef;
+import cn.ffcs.uoo.system.vo.SysUserDeptVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,5 +21,7 @@ public interface SysUserDeptRefMapper extends BaseMapper<SysUserDeptRef> {
     Long getId();
 
     void delUserDeptDef(@Param("userCode") String userCode, @Param("updateUser") Long updateUser);
+
+    List<SysUserDeptVo> getUserDeptByUserCode(Pagination page, @Param("userCode") String userCode);
 
 }

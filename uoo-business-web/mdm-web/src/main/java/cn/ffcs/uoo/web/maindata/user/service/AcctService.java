@@ -2,7 +2,9 @@ package cn.ffcs.uoo.web.maindata.user.service;
 
 import cn.ffcs.uoo.web.maindata.user.dto.TbAccountOrgRel;
 import cn.ffcs.uoo.web.maindata.user.service.fallback.AcctServiceHystrix;
+import cn.ffcs.uoo.web.maindata.user.vo.AcctOrgVo;
 import cn.ffcs.uoo.web.maindata.user.vo.EditFormAcctVo;
+import cn.ffcs.uoo.web.maindata.user.vo.SlaveAcctOrgVo;
 import common.config.PersonnelServiceConfiguration;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +39,12 @@ public interface AcctService {
 
     @RequestMapping(value= "/tbAccountOrgRel/getAcctOrgRelPage", method = RequestMethod.GET, headers={"Content-Type=application/json"} )
     public Object getAcctOrgRelPage(@RequestParam("acctId") Long acctId, @RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize, @RequestParam("account") String account);
+
+    @RequestMapping(value = "/tbAccountOrgRel/updateAcctOrg", method = RequestMethod.PUT, headers={"Content-Type=application/json"} )
+    public Object updateAcctOrg(@RequestBody AcctOrgVo acctOrgVo);
+
+    @RequestMapping(value = "/tbAccountOrgRel/updateAcctOrg", method = RequestMethod.PUT, headers={"Content-Type=application/json"} )
+    public Object updateSlaveAcctOrg(@RequestBody SlaveAcctOrgVo acctOrgVo);
 
     @RequestMapping(value = "/tbAcct/getTbAcct", method = RequestMethod.GET, headers={"Content-Type=application/json"})
     public Object getTbAcct(@RequestParam("acct") String acct);

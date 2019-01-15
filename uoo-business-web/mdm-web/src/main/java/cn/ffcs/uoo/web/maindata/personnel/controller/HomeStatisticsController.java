@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.personnel.controller;
 
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.personnel.service.HomeStatisticsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -45,6 +47,7 @@ public class HomeStatisticsController {
     @ApiOperation(value = "首页统计", notes = "首页统计")
     @ApiImplicitParam(name = "labelType", value = "标签类型", required = true, dataType = "String",paramType="path")
     @RequestMapping(value = "/getHomeStatistics",method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="人员管理",methods="getHomeStatistics",desc="首页统计")
     public Object getHomeStatistics(String labelType){
         return homeStatisticsService.getHomeStatistics(labelType);
     }

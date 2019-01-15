@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.web.maindata.personnel.controller;
 
 
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.personnel.dto.TbPsnjob;
 import cn.ffcs.uoo.web.maindata.personnel.service.PsnjobService;
 import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
@@ -33,6 +35,7 @@ public class PsnjobController {
     @ApiOperation(value="新增工作履历",notes="新增工作履历")
     @ApiImplicitParam(name = "tbPsnjob",value = "工作履历",required = true,dataType = "TbPsnjob")
     @RequestMapping(value="/saveTbPsnjob",method = RequestMethod.POST)
+    @OperateLog(type= OperateType.ADD, module="人员管理",methods="saveTbPsnjob",desc="新增工作履历")
     public Object saveTbPsnjob(@RequestBody TbPsnjob tbPsnjob){
         tbPsnjob.setCreateUser(SysUserInfo.getUserId());
         tbPsnjob.setUpdateUser(SysUserInfo.getUserId());
@@ -42,6 +45,7 @@ public class PsnjobController {
     @ApiOperation(value="更新工作履历",notes="更新工作履历")
     @ApiImplicitParam(name = "tbPsnjob",value = "工作履历",required = true,dataType = "TbPsnjob")
     @RequestMapping(value="/updateTbPsnjob",method = RequestMethod.PUT)
+    @OperateLog(type= OperateType.UPDATE, module="人员管理",methods="updateTbPsnjob",desc="更新工作履历")
     public Object updateTbPsnjob(@RequestBody TbPsnjob tbPsnjob){
         tbPsnjob.setUpdateUser(SysUserInfo.getUserId());
         return  psnjobService.updateTbPsnjob(tbPsnjob);
@@ -50,6 +54,7 @@ public class PsnjobController {
     @ApiOperation(value="删除工作履历",notes="删除工作履历")
     @ApiImplicitParam(name = "psnjobId", value = "工作履历标识", required = true, dataType = "Long",paramType="path")
     @RequestMapping(value="/delTbPsnjob",method = RequestMethod.DELETE)
+    @OperateLog(type= OperateType.DELETE, module="人员管理",methods="delTbPsnjob",desc="删除工作履历")
     public Object delTbPsnjob(Long psnjobId ){
         return  psnjobService.delTbPsnjob(psnjobId, SysUserInfo.getUserId());
     }
@@ -57,6 +62,7 @@ public class PsnjobController {
     @ApiOperation(value="工作履历查看",notes="工作履历")
     @ApiImplicitParam(name = "psnjobId", value = "工作履历标识", required = true, dataType = "Long",paramType="path")
     @RequestMapping(value="/getTbPsnjob",method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="人员管理",methods="getTbPsnjob",desc="工作履历查看")
     public Object getTbPsnjob(Long psnjobId){
         return psnjobService.getTbPsnjob(psnjobId);
     }
@@ -68,6 +74,7 @@ public class PsnjobController {
             @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer",paramType="path"),
     })
     @RequestMapping(value="/getTbPsnjobPage",method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="人员管理",methods="getTbPsnjobPage",desc="工作履历分页查询")
     public Object getTbPsnjobPage( Long personnelId, Integer pageNo, Integer pageSize){
         return psnjobService.getTbPsnjobPage(personnelId, pageNo, pageSize);
     }

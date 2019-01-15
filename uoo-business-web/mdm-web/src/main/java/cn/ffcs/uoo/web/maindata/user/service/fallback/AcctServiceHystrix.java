@@ -3,7 +3,9 @@ package cn.ffcs.uoo.web.maindata.user.service.fallback;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.user.dto.TbAccountOrgRel;
 import cn.ffcs.uoo.web.maindata.user.service.AcctService;
+import cn.ffcs.uoo.web.maindata.user.vo.AcctOrgVo;
 import cn.ffcs.uoo.web.maindata.user.vo.EditFormAcctVo;
+import cn.ffcs.uoo.web.maindata.user.vo.SlaveAcctOrgVo;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -55,6 +57,23 @@ public class AcctServiceHystrix implements AcctService {
         responseResult.setMessage("系统暂时不可用");
         return responseResult;
     }
+
+    @Override
+    public Object updateAcctOrg(AcctOrgVo acctOrgVo) {
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
+
+    @Override
+    public Object updateSlaveAcctOrg(SlaveAcctOrgVo acctOrgVo) {
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
+
 
     @Override
     public Object getTbAcct(String acct) {

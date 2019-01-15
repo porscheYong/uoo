@@ -79,17 +79,14 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
     }
 
     @Override
-    public boolean checkSlaveAcct(String slaveAcct, Long acctOrgRelId , Long resourceObjId, Long slaveAcctId, Long acctId){
+    public boolean checkSlaveAcct(String slaveAcct, Long resourceObjId, Long slaveAcctId){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
-        if(!StrUtil.isNullOrEmpty(slaveAcct)){
-            map.put(BaseUnitConstants.TABLE_SLAVE_ACCT, slaveAcct);
-        }
-        if(!StrUtil.isNullOrEmpty(acctId)){
-            map.put(BaseUnitConstants.TABLE_ACCT_ID, acctId);
-        }
-        map.put(BaseUnitConstants.TB_ACCT_ORG_REL_ID, acctOrgRelId);
         map.put(BaseUnitConstants.TB_RESOURCE_OBJ_ID, resourceObjId);
+        map.put(BaseUnitConstants.TABLE_SLAVE_ACCT, slaveAcct);
+        if(!StrUtil.isNullOrEmpty(slaveAcctId)){
+            map.put(BaseUnitConstants.TABLE_SLAVE_ACCT_ID, slaveAcctId);
+        }
         TbSlaveAcct tbSlaveAcct = this.selectOne(new EntityWrapper<TbSlaveAcct>().allEq(map));
         if(StrUtil.isNullOrEmpty(tbSlaveAcct)){
             return false;

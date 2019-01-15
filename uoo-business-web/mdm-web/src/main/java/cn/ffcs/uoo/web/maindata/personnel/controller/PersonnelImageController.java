@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.web.maindata.personnel.controller;
 
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.personnel.service.PersonnelImageService;
 import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
 import io.swagger.annotations.Api;
@@ -28,6 +30,7 @@ public class PersonnelImageController {
 
     @ApiOperation(value="图片上传",notes="图片上传")
     @RequestMapping(value="/uploadImg", method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @OperateLog(type= OperateType.ADD, module="人员管理",methods="uploadImg",desc="图片上传")
     public Object uploadImg(@RequestPart("multipartFile") MultipartFile multipartFile, @RequestParam(value="psnImageId",defaultValue = "0")Long psnImageId ){
         return personnelImageService.uploadImg(multipartFile, psnImageId, SysUserInfo.getUserId());
     }
@@ -35,6 +38,7 @@ public class PersonnelImageController {
     @ApiOperation(value = "图片查看", notes = "图片查看")
     @ApiImplicitParam(name = "personnelId", value = "人员标识", dataType = "Long",paramType="path")
     @RequestMapping(value = "/getPsnImage",method = RequestMethod.GET)
+    @OperateLog(type= OperateType.SELECT, module="人员管理",methods="getPsnImage",desc="图片查看")
     public Object getTbPsnImageByPsnId(Long personnelId){
         return personnelImageService.getTbPsnImageByPsnId(personnelId);
     }

@@ -105,24 +105,10 @@ public class TbSlaveAcctController extends BaseController {
         if(!StrUtil.isNullOrEmpty(obj)){
             return obj;
         }
-//
-//        TbAcct tbAcct = (TbAcct) tbAcctService.getTbAcctByPsnId(editFormSlaveAcctVo.getPersonnelId());
-//        TbSlaveAcct tbSlaveAcct = new TbSlaveAcct();
-//        BeanUtils.copyProperties(editFormSlaveAcctVo, tbSlaveAcct);
-//        // 获取盐
-//        String salt = MD5Tool.getSalt();
-//        // 非对称密码
-//        String password = MD5Tool.md5Encoding(tbSlaveAcct.getPassword(), salt);
-//        // 对称密码
-//        String symmetryPassword = AESTool.AESEncode(tbSlaveAcct.getPassword());
-//        tbSlaveAcct.setSalt(salt);
-//        tbSlaveAcct.setPassword(password);
-//        tbSlaveAcct.setSymmetryPassword(symmetryPassword);
-//        tbSlaveAcct.setAcctId(tbAcct.getAcctId());
+
         Long slaveAcctId = tbSlaveAcctService.getId();
         Long userId = editFormSlaveAcctVo.getUserId();
-//        tbSlaveAcct.setSlaveAcctId(slaveAcctId);
-//        tbSlaveAcctService.addTbSlaveAcct(tbSlaveAcct);
+
         obj =  tbSlaveAcctService.insertOrUpdateTbSlaveAcct(editFormSlaveAcctVo, slaveAcctId);
         if(!StrUtil.isNullOrEmpty(obj)){
             return obj;
@@ -170,22 +156,6 @@ public class TbSlaveAcctController extends BaseController {
             return obj;
         }
 
-//        //从账号
-//        TbSlaveAcct tbSlaveAcct = tbSlaveAcctService.selectById(editFormSlaveAcctVo.getSlaveAcctId());
-//        BeanUtils.copyProperties(editFormSlaveAcctVo, tbSlaveAcct);
-//        if(editFormSlaveAcctVo.getPassword().equals(tbSlaveAcct.getPassword())){
-//            // 获取盐
-//            String salt = MD5Tool.getSalt();
-//            // 非对称密码
-//            String password = MD5Tool.md5Encoding(tbSlaveAcct.getPassword(), salt);
-//            // 对称密码
-//            String symmetryPassword = AESTool.AESEncode(tbSlaveAcct.getPassword());
-//            tbSlaveAcct.setSalt(salt);
-//            tbSlaveAcct.setPassword(password);
-//            tbSlaveAcct.setSymmetryPassword(symmetryPassword);
-//        }
-//
-//        tbSlaveAcctService.updateTbSlaveAcct(tbSlaveAcct);
         obj =  tbSlaveAcctService.insertOrUpdateTbSlaveAcct(editFormSlaveAcctVo, editFormSlaveAcctVo.getSlaveAcctId());
         if(!StrUtil.isNullOrEmpty(obj)){
             return obj;
@@ -264,14 +234,9 @@ public class TbSlaveAcctController extends BaseController {
         }
 
         //从账号是否已存在
-        if(tbSlaveAcctService.checkSlaveAcct(editFormSlaveAcctVo.getSlaveAcct(), editFormSlaveAcctVo.getAcctOrgRelId(), editFormSlaveAcctVo.getResourceObjId(), editFormSlaveAcctVo.getSlaveAcctId(), null)){
+        if(tbSlaveAcctService.checkSlaveAcct(editFormSlaveAcctVo.getSlaveAcct(), editFormSlaveAcctVo.getResourceObjId(), editFormSlaveAcctVo.getSlaveAcctId())){
             return ResultUtils.error(EumUserResponeCode.SLAVE_ACCT_IS_EXIST);
         }
-
-        if(tbSlaveAcctService.checkSlaveAcct(null, editFormSlaveAcctVo.getAcctOrgRelId(), editFormSlaveAcctVo.getResourceObjId(), editFormSlaveAcctVo.getSlaveAcctId(), tbAcct.getAcctId())){
-            return ResultUtils.error(EumUserResponeCode.SLAVE_ACCT_ORGREL_EXIST);
-        }
-
         return null;
     }
 
