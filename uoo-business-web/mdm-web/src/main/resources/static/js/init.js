@@ -10,6 +10,9 @@ var $http = {
   post: function (path, data, successCallback, errorCallback) {
     this.ajax('POST', path, data, successCallback, errorCallback)
   },
+  delete: function (path, data, successCallback, errorCallback) {
+    this.ajax('DELETE', path, data, successCallback, errorCallback)
+  },
   ajax: function (type, path, data, successCallback, errorCallback) {
     errorCallback = errorCallback || function () {}
     var httpSuccess = function (response) {
@@ -79,7 +82,7 @@ var $http = {
       errorCallback(httpStatus, state, message)
     }
     $.ajax({
-       headers: {'MENU_CODE': 'ORG_UPDATE'},
+       headers: {'MENU_CODE': window.top.menuCode},
        contentType: "application/json",
        type: type,
        url: path,

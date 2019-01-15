@@ -10,9 +10,11 @@ var editFlag = 0; //编辑新增标志
 var orgTable;
 var psnImageId;
 var imgUrl = "";
-var account = window.top.account;
+var orgValidate;
+var loading = parent.loading;
 var toastr = window.top.toastr;
 
+var account = window.top.account;
 //字典数据
 var certTypeData = window.top.dictionaryData.certType();
 var acctLevelData = window.top.dictionaryData.acctLevel();
@@ -248,6 +250,40 @@ function  editUser() {
     getPsnImage();
 }
 
+//选择证件类型
+function getSelectedCert () {
+    getIdCardInfo();
+    return;
+}
+
+//正则身份证信息
+function getIdCardInfo () {
+    var certNo = $('#certNo').val();
+    certType = $('#certType option:selected') .val();
+    if(certType == '1' && validCardByCard(certNo)){
+        var sex = getGenderByCard(certNo);
+        if (sex)
+            $("#gender").val('1');
+        else
+            $("#gender").val('2');
+        seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+            $('#gender').selectMatch();
+        });
+        $('#birthday').val(getBirthdayByCard(certNo));
+    }
+}
+
+//邮箱自动填充
+function autoFillMail() {
+    var phoneNo = $('#mobile').val();
+    var emailNo = $('#email').val();
+    var reg = /^1[34578]\d{9}$/;
+    if (!emailNo && reg.test(phoneNo)) {
+        $('#email').val(phoneNo + '@189.cn');
+        $('#email').focus();
+    }
+}
+
 /***
  * 归属组织职位信息
  */
@@ -269,7 +305,7 @@ function  initOrgTable (results) {
                         else
                             positionStr = positionStr + row.userPositionRefList[i].positionName + ', ';
                     }
-                    return positionStr
+                    return '<span title="' + positionStr + '">' + positionStr + '</span>'
                 }
             },
             { 'data': null, 'title': '操作', 'className': 'status-code',
@@ -319,9 +355,9 @@ function editOrgPost (index) {
         var postStr = '';
         for (var i = 0; i < postList.length; i++) {
             if (i == postList.length - 1)
-                postStr = postStr + postList[i].name;
+                postStr = postStr + postList[i].positionName;
             else
-                postStr = postStr + postList[i].name + ', ';
+                postStr = postStr + postList[i].positionName + ', ';
         }
         $('#postName').val(postStr);
     }
@@ -330,24 +366,18 @@ function editOrgPost (index) {
         var orgEditHtml = orgEditTemplate({orgPostData: {}});
         $('#orgEdit').html(orgEditHtml);
     }
-    seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
-        var orgEditForm = $('#orgEdit');
-        orgValidate = new Validate(orgEditForm);
-        orgValidate.immediate();
-        orgValidate.isAllPass();
-        orgEditForm.find(':input').each(function () {
-            $(this).hover(function () {
-                orgValidate.isPass($(this));
-            });
+    var orgEditForm = $('#orgEdit');
+    orgValidate = new Validate(orgEditForm);
+    orgValidate.immediate();
+    orgValidate.isAllPass();
+    orgEditForm.find(':input').each(function () {
+        $(this).hover(function () {
+            orgValidate.isPass($(this));
         });
     });
 }
 //新增/修改 归属组织职位信息
 function addOrgList () {
-    seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
-        var orgEditForm = $('#orgEdit');
-        orgValidate = new Validate(orgEditForm);
-    });
     if (!orgValidate.isAllPass())
         return;
     if (editFlag) {
@@ -374,8 +404,25 @@ function addOrgList () {
 }
 // 删除一条归属组织信息
 function deleteOrgList (index) {
-    orgTable.row(index).remove().draw();
-    sysUserDeptPositionVos.splice(index);
+    parent.layer.confirm('此操作将删除该用户, 是否继续?', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+    }, function(index){
+        parent.layer.close(index);
+        loading.screenMaskEnable('container');
+        $http.delete('/sysUserDeptRef/delUserDeptPositionDef', JSON.stringify(sysUserDeptPositionVos[index]), function () {
+            loading.screenMaskDisable('container');
+            toastr.success('删除成功！');
+            getSysUerInfo();
+        }, function () {
+            loading.screenMaskDisable('container');
+        })
+    });
+    // $http.delete('/sysUserDeptRef/delUserDeptPositionDef', JSON.stringify(sysUserDeptPositionVos[index]), function (data) {
+    //     orgTable.row(index).remove().draw();
+    //     sysUserDeptPositionVos.splice(index);
+    // })
 }
 // 取消归属组织信息编辑
 function cancelOrgEdit () {
@@ -400,7 +447,10 @@ function getOrg() {
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
             orgList = checkNode;
-            $('#orgName').val(orgList[0].name);
+            if (orgList.length > 0)
+                $('#orgName').val(orgList[0].name);
+            else
+                $('#orgName').val('');
             parent.layer.close(index);
         }
     });
@@ -514,81 +564,62 @@ function convertBase64UrlToBlob(urlData){
 }
 
 // 更新用户信息
-function updatePersonnel(){
-    if (!userFormValidate.isAllPass())
-        return;
-    var psnName=$('#psnName').val();
-    var gender=$('#gender').val();
-    var certType=$('#certType').val();
-    var certNo=$('#certNo').val();
-    var nationality=$('#nationality').val();
-    var nation=$('#nation').val();
-    var toWorkTime=$('#toWorkTime').val();
-    var marriage=$('#marriage').val();
-    var pliticalStatus=$('#pliticalStatus').val();
-    var updates={};
-    updates.personnelId=personalData.personalData.personnelId;
-    updates.gender=gender;
-    updates.psnName=psnName;
-    updates.certType=certType;
-    updates.certNo=certNo;
-    updates.nationality=nationality;
-    updates.nation=nation;
-    updates.toWorkTime=toWorkTime;
-    updates.marriage=marriage;
-    updates.pliticalStatus=pliticalStatus;
-    updates.image=psnImageId;
-    var tbMobileVoList =new Array();
-    var mobiles=$("input[name='mobiles']").each(function(){
-        var obj={};
-        if($(this).attr('contactid')!=null&&typeof($(this).attr('contactid')) != "undefined"&&$(this).attr('contactid').length>0){
-            obj.contactId=$(this).attr('contactid');
-        }
-        if($(this).val()==null || typeof($(this).val()) == "undefined"||$(this).val().length<=0){
-        }else{
-            obj.content=$(this).val();
-            obj.personnelId=personalData.personalData.personnelId;
-            obj.contactType=1;
-            tbMobileVoList.push(obj);
-        }
+function updateSysUser(){
+    // if (!userFormValidate.isAllPass())
+    //     return;
+    var userName = $('#userName').val();
+    var passwd = $('#passwd').val();
+    var certType = $('#certType option:selected') .val();
+    var certNo = $('#certNo').val();
+    var accout = $('#accout').val();
+    var acctLevel = $('#acctLevel option:selected') .val();
+    var birthday;
+    if ($('#birthday').val()) {
+        birthday = new Date($('#birthday').val()).getTime();
+    }
+    var gender = $('#gender option:selected') .val();
+    var mobile = $('#mobile').val();
+    var email = $('#email').val();
+    var userCode = $('#userCode').val();
 
-    }) ;
-    var tbEamilVoList =new Array();
-    var emails=$("input[name='emails']").each(function(){
-        var obj={};
-        if($(this).attr('contactid')!=null&&typeof($(this).attr('contactid')) != "undefined"&&$(this).attr('contactid').length>0){
-            obj.contactId=$(this).attr('contactid');
-        }
-        if($(this).val()==null || typeof($(this).val()) == "undefined"||$(this).val().length<=0){
-        }else{
-            obj.content=$(this).val();
-            obj.personnelId=personalData.personalData.personnelId;
-            obj.contactType=2;
-            tbEamilVoList.push(obj);
-        }
+    $http.post('/system/updateSysUser', JSON.stringify({
+        userId: userId,
+        userName: userName,
+        passwd: passwd,
+        certType: certType,
+        certId: certNo,
+        accout: accout,
+        acctLevel: acctLevel,
+        birthday: birthday,
+        gender: gender,
+        mobile: mobile,
+        email: email,
+        userCode: userCode
+    }), function () {
+        loading.screenMaskDisable('container');
+        toastr.success('更新成功！');
+    }, function () {
+        loading.screenMaskDisable('container');
+    })
+}
 
-    }) ;
-
-    updates.tbMobileVoList=tbMobileVoList;
-    updates.tbEamilVoList=tbEamilVoList;
-
-    updates.image = psnImageId;
-
-    $.ajax({
-        url:'/personnel/updatePersonnel',
-        type:'put',
-        data:JSON.stringify(updates),
-
-        contentType:'application/json',
-        dataType:'json',
-        success:function(data){
-            if(data.state==1000){
-            	toastr.success('操作成功');
-                getOrgPersonnerList();
-            }else{
-            	toastr.error('操作失败,'+data.message);
-            }
-        }
+// 删除平台用户
+function deleteSysUser(){
+    parent.layer.confirm('此操作将删除该用户, 是否继续?', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+    }, function(index){
+        parent.layer.close(index);
+        loading.screenMaskEnable('container');
+        $http.post('/system/deleteUser', JSON.stringify({
+            sysUser: userData
+        }), function () {
+            loading.screenMaskDisable('container');
+            toastr.success('删除成功！');
+        }, function () {
+            loading.screenMaskDisable('container');
+        })
     });
 }
 
