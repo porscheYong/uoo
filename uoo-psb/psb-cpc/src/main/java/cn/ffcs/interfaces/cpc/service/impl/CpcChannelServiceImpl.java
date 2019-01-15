@@ -119,6 +119,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             rsMap.put("message", "必要信息为空");
             return;
         }
+
         try {
             switch (action) {
                 case "ADD":
