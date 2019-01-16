@@ -68,6 +68,8 @@ public class TbPersonnelController extends BaseController {
     private OrgPersonRelClient orgPersonRelClient;
     @Autowired
     private UserClient userClient;
+    @Autowired
+    private ModifyHistoryService modifyHistoryService;
 
 
 
@@ -185,6 +187,7 @@ public class TbPersonnelController extends BaseController {
         if(!StrUtil.isNullOrEmpty(reObj)){
             return reObj;
         }
+        String batchNum = modifyHistoryService.getBatchNumber();
         TbPersonnel tbPersonnel = new TbPersonnel();
         Long userId = editFormPersonnelVo.getUserId();
         BeanUtils.copyProperties(editFormPersonnelVo, tbPersonnel);
@@ -194,6 +197,7 @@ public class TbPersonnelController extends BaseController {
         tbPersonnel.setCreateUser(userId);
         tbPersonnel.setUpdateUser(userId);
         tbPersonnel.setGender(IDCardUtil.getGender(editFormPersonnelVo.getCertNo()));
+        tbPersonnel.setBatchNum(batchNum);
         tbPersonnelService.insertOrUpdateTbPsn(tbPersonnel);
 
         if(!StrUtil.isNullOrEmpty(editFormPersonnelVo.getImage())){
@@ -203,6 +207,7 @@ public class TbPersonnelController extends BaseController {
         /**  2、证件           */
         tbCertService.insertOrUpdateTbCert(personnelId, editFormPersonnelVo.getCertType(),editFormPersonnelVo.getCertNo(),
                 editFormPersonnelVo.getPsnName(), editFormPersonnelVo.getAddress(), userId);
+
 
         /**  2、组织信息           */
         List<PsonOrgVo> psonOrgVoList = editFormPersonnelVo.getPsonOrgVoList();
@@ -282,11 +287,12 @@ public class TbPersonnelController extends BaseController {
         if(!StrUtil.isNullOrEmpty(reObj)){
             return reObj;
         }
-
+        String batchNum = modifyHistoryService.getBatchNumber();
         TbPersonnel tbPersonnel = new TbPersonnel();
         Long userId = personnelVo.getUserId();
         BeanUtils.copyProperties(personnelVo, tbPersonnel);
         tbPersonnel.setUpdateUser(userId);
+        tbPersonnel.setBatchNum(batchNum);
         tbPersonnel.setGender(IDCardUtil.getGender(editFormPersonnelVo.getCertNo()));
 
         if(!StrUtil.isNullOrEmpty(personnelVo.getImage())){

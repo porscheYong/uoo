@@ -7,6 +7,7 @@ import cn.ffcs.uoo.core.user.constant.EumUserResponeCode;
 import cn.ffcs.uoo.core.user.entity.*;
 import cn.ffcs.uoo.core.user.service.*;
 import cn.ffcs.uoo.core.user.util.*;
+import cn.ffcs.uoo.core.user.vo.AccountOrgRelVo;
 import cn.ffcs.uoo.core.user.vo.ApplySlaveAcctVo;
 import cn.ffcs.uoo.core.user.vo.EditFormSlaveAcctVo;
 import cn.ffcs.uoo.core.user.vo.ResourceSlaveAcctVo;
@@ -45,6 +46,8 @@ public class TbSlaveAcctController extends BaseController {
     @Autowired
     private TbUserRoleService tbUserRoleService;
     @Autowired
+    private TbAccountOrgRelService tbAccountOrgRelService;
+    @Autowired
     private RabbitMqService rabbitMqService;
 
     @ApiOperation(value = "新增从账号信息", notes = "从账号信息新增")
@@ -61,6 +64,12 @@ public class TbSlaveAcctController extends BaseController {
 
         Long slaveAcctId = tbSlaveAcctService.getId();
         Long userId = editFormSlaveAcctVo.getUserId();
+        AccountOrgRelVo accountOrgRelVo = new AccountOrgRelVo();
+        accountOrgRelVo.setAcctId(editFormSlaveAcctVo.getAcctId());
+        accountOrgRelVo.setOrgId(editFormSlaveAcctVo.getOrgId());
+        accountOrgRelVo.setOrgTreeId(editFormSlaveAcctVo.getOrgTreeId());
+        TbAccountOrgRel tbAccountOrgRel = tbAccountOrgRelService.addOrUpdateAcctOrg(accountOrgRelVo);
+        editFormSlaveAcctVo.setAcctOrgRelId(tbAccountOrgRel.getAcctOrgRelId());
 
         obj =  tbSlaveAcctService.insertOrUpdateTbSlaveAcct(editFormSlaveAcctVo, slaveAcctId);
         if(!StrUtil.isNullOrEmpty(obj)){

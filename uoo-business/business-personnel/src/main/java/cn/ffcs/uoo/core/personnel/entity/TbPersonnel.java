@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.FieldFill;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -150,6 +151,11 @@ public class TbPersonnel extends Model<TbPersonnel> {
      */
     @TableField("NOTES")
     private String notes;
+    /**
+     * 日志批次号
+     */
+    @TableField(exist=false)
+    private String batchNum;
 
 
 //    public Long getPersonnelId() {

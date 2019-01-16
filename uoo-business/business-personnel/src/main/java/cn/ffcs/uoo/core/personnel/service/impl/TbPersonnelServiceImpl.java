@@ -115,10 +115,12 @@ public class TbPersonnelServiceImpl extends ServiceImpl<TbPersonnelMapper, TbPer
         TbPersonnel personnel = this.selectOne(new EntityWrapper<TbPersonnel>().allEq(map));
 
         if(StrUtil.isNullOrEmpty(tbPersonnel.getNcCode())){
-            String psnCode = "H" + StrUtil.padLeading(String.valueOf(this.getSeqPsnCode()), 8 , "0");
-            tbPersonnel.setPsnCode(psnCode);
-            tbPersonnel.setPsnNbr(psnCode);
-            tbPersonnel.setNcCode("");
+            if(StrUtil.isNullOrEmpty(personnel)){
+                String psnCode = "H" + StrUtil.padLeading(String.valueOf(this.getSeqPsnCode()), 8 , "0");
+                tbPersonnel.setPsnCode(psnCode);
+                tbPersonnel.setPsnNbr(psnCode);
+                tbPersonnel.setNcCode("");
+            }
         }else{
             String[] arr = tbPersonnel.getNcCode().split("@");
             tbPersonnel.setPsnCode(arr[0]);
@@ -128,11 +130,12 @@ public class TbPersonnelServiceImpl extends ServiceImpl<TbPersonnelMapper, TbPer
         if(StrUtil.isNullOrEmpty(personnel)){
             tbPersonnel.setUuid(StrUtil.getUUID());
             baseMapper.insert(tbPersonnel);
-            //modifyHistoryService.insertModifyHistory(tbPersonnel, tbPersonnel.getUpdateUser());
+            modifyHistoryService.insertModifyHistory(tbPersonnel, tbPersonnel.getUpdateUser(), tbPersonnel.getBatchNum());
         }else {
             TbPersonnel oldTbPsn = baseMapper.selectById(tbPersonnel.getPersonnelId());
-            //modifyHistoryService.updateModifyHistory(oldTbPsn, tbPersonnel, tbPersonnel.getUpdateUser());
             baseMapper.updateById(tbPersonnel);
+            modifyHistoryService.updateModifyHistory(oldTbPsn, tbPersonnel, tbPersonnel.getUpdateUser(), tbPersonnel.getBatchNum());
+
         }
         return ResultUtils.success(null);
     }

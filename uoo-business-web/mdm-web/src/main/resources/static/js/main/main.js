@@ -10,7 +10,7 @@ var orgVal,
 // var loading = new Loading();
 var loading = parent.loadingHome;
 
-loading.screenMaskEnable('LAY_app_body');
+// loading.screenMaskEnable('LAY_app_body');
 
 function getHomeStatistics(){
     $http.get('/homeStatistics/getHomeStatistics', {}, 
@@ -42,9 +42,8 @@ function getHomeStatistics(){
             setPsnChart();
             setOrgChart();
             setSysChart();
-            loading.screenMaskDisable('LAY_app_body');
       }, function (err) {
-        loading.screenMaskDisable('LAY_app_body');
+            parent.loadingHome.screenMaskDisable('LAY_app_body');
       })
 }
 
@@ -277,6 +276,7 @@ function setSysChart(){
             dataIndex: currentIndex
         });
     }, 3000);
+    parent.loadingHome.screenMaskDisable('LAY_app_body');
 }
 
 //设置系统概览面板

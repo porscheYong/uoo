@@ -121,33 +121,18 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
 
     @Override
     public Object updateAcctOrg(AccountOrgRelVo tbAccountOrgRel){
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
-        map.put(BaseUnitConstants.TABLE_ORG_ID, tbAccountOrgRel.getOrgId());
-        map.put(BaseUnitConstants.TABLE_ACCT_ID, tbAccountOrgRel.getAcctId());
-        map.put(BaseUnitConstants.TB_ORG_TREE_ID, tbAccountOrgRel.getOrgTreeId());
-        TbAccountOrgRel accountOrgRel = this.selectOne(new EntityWrapper<TbAccountOrgRel>().allEq(map));
         //从账号 组织变更
         if(!StrUtil.isNullOrEmpty(tbAccountOrgRel.getSlaveAcctId())){
-            Long acctOrgRelId = 0L;
-            if(StrUtil.isNullOrEmpty(accountOrgRel)){
-                acctOrgRelId = this.getId();
-                TbAccountOrgRel accountOrgRel1 = new TbAccountOrgRel();
-                BeanUtils.copyProperties(tbAccountOrgRel, accountOrgRel1);
-                accountOrgRel1.setCreateUser(tbAccountOrgRel.getUserId());
-                accountOrgRel1.setUpdateUser(tbAccountOrgRel.getUserId());
-                accountOrgRel1.setAcctOrgRelId(acctOrgRelId);
-                baseMapper.insert(accountOrgRel1);
-            }else{
-                acctOrgRelId = accountOrgRel.getAcctOrgRelId();
-            }
+            TbAccountOrgRel acctOrg = this.addOrUpdateAcctOrg(tbAccountOrgRel);
+
             TbSlaveAcct tbSlaveAcct = new TbSlaveAcct();
             tbSlaveAcct.setSlaveAcctId(tbAccountOrgRel.getSlaveAcctId());
             tbSlaveAcct.setUpdateUser(tbAccountOrgRel.getUserId());
-            tbSlaveAcct.setAcctOrgRelId(acctOrgRelId);
+            tbSlaveAcct.setAcctOrgRelId(acctOrg.getAcctOrgRelId());
             tbSlaveAcctService.updateTbSlaveAcct(tbSlaveAcct);
         }else{
             //主账号 组织变更
+            TbAccountOrgRel accountOrgRel = this.getTbAcctOrgRel(tbAccountOrgRel);
             if(!StrUtil.isNullOrEmpty(accountOrgRel)){
                 if(!accountOrgRel.getAcctOrgRelId().equals(tbAccountOrgRel.getAcctOrgRelId())){
                     return ResultUtils.error(EumUserResponeCode.ACCT_ORG_REL_IS_EXIST);
@@ -166,5 +151,34 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
             rabbitMqService.sendMqMsg("person", "update", "personnelId", tbAcct.getPersonnelId());
         }
         return ResultUtils.success(null);
+    }
+
+    @Override
+    public TbAccountOrgRel addOrUpdateAcctOrg(AccountOrgRelVo tbAccountOrgRel){
+        TbAccountOrgRel accountOrgRel = this.getTbAcctOrgRel(tbAccountOrgRel);
+        if(StrUtil.isNullOrEmpty(accountOrgRel)){
+            TbAccountOrgRel accountOrgRel1 = new TbAccountOrgRel();
+            Long acctOrgRelId = this.getId();
+            BeanUtils.copyProperties(tbAccountOrgRel, accountOrgRel1);
+            accountOrgRel1.setCreateUser(tbAccountOrgRel.getUserId());
+            accountOrgRel1.setUpdateUser(tbAccountOrgRel.getUserId());
+            accountOrgRel1.setAcctOrgRelId(acctOrgRelId);
+            baseMapper.insert(accountOrgRel1);
+            return accountOrgRel1;
+        }
+        return accountOrgRel;
+    }
+
+    public TbAccountOrgRel getTbAcctOrgRel(AccountOrgRelVo tbAccountOrgRel){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.TABLE_ORG_ID, tbAccountOrgRel.getOrgId());
+        map.put(BaseUnitConstants.TABLE_ACCT_ID, tbAccountOrgRel.getAcctId());
+        map.put(BaseUnitConstants.TB_ORG_TREE_ID, tbAccountOrgRel.getOrgTreeId());
+        TbAccountOrgRel accountOrgRel = this.selectOne(new EntityWrapper<TbAccountOrgRel>().allEq(map));
+        if(!StrUtil.isNullOrEmpty(accountOrgRel)){
+            return accountOrgRel;
+        }
+        return null;
     }
 }

@@ -42,6 +42,7 @@ public class DictionaryListVo {
     private List<TbDictionaryItem> 	countType	;//	统计属性
     private List<TbDictionaryItem> 	contractType	;//	承包类型
     private List<TbDictionaryItem>   ACCT_LEVEL; // 账号等级
+    private List<TbDictionaryItem>   REL_TYPE; // 账号组织关系类型
 
     public List<TbDictionaryItem> getNodeType() {
         return nodeType;
@@ -353,5 +354,13 @@ public class DictionaryListVo {
 
     public void setACCT_LEVEL(List<TbDictionaryItem> ACCT_LEVEL) {
         this.ACCT_LEVEL = ACCT_LEVEL;
+    }
+
+    public List<TbDictionaryItem> getREL_TYPE() {
+        return REL_TYPE;
+    }
+
+    public void setREL_TYPE(List<TbDictionaryItem> REL_TYPE) {
+        this.REL_TYPE = REL_TYPE;
     }
 }

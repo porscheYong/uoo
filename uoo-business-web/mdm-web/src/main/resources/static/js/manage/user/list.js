@@ -21,8 +21,7 @@ function initOrgUserTable (isSearchlower,search) {
         'columns': [
             { 'data': "userName", 'title': '用户姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return "<a href='edit.html?id=" + row.orgCode + "&userId=" + row.userId +
-                        "&name="+ encodeURI(orgName) + "'>" + row.userName + "</a>";
+                    return "<a href='edit.html?id=" + row.orgCode + "&userId=" + row.userId + '&orgFlag=1' + "&name="+ encodeURI(orgName) + "'>" + row.userName + "</a>";
                 }
             },
             { 'data': "accout", 'title': '账号', 'className': 'row-accout' },
@@ -83,8 +82,7 @@ function initPositionUserTable (isSearchlower,search) {
         'columns': [
             { 'data': "userName", 'title': '用户姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return "<a href='edit.html?id=" + row.orgCode + "&userId=" + row.userId +
-                        "&name="+ encodeURI(orgName) + "'>" + row.userName + "</a>";
+                    return "<a href='edit.html?id=" + row.orgCode + "&userId=" + row.userId + '&orgFlag=0' + "&name="+ encodeURI(orgName) + "'>" + row.userName + "</a>";
                 }
             },
             { 'data': "accout", 'title': '账号', 'className': 'row-accout' },
@@ -162,7 +160,7 @@ function showLower() {
 
 //创建组织
 function addUser() {
-    var url = 'add.html?id=' + orgId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    var url = 'add.html?id=' + orgId + '&pid=' + pid + '&orgFlag=' + orgFlag + '&name=' + encodeURI(orgName);
     window.location.href = url;
 }
 
