@@ -34,26 +34,10 @@
   </sql>
 
   <insert id="insertValueOfPersonnel" parameterType="cn.ffcs.interfaces.cpc.pojo.TbPersonnel">
-    INSERT INTO TB_PERSONNEL
-  (PERSONNEL_ID,
-   PSN_NAME,
-   PSN_CODE,
-   NC_CODE,
-   PSN_NBR,
-   STATUS_CD,
-   CREATE_DATE,
-   CREATE_USER,
-   UUID,
-   NOTES)
-    VALUES
-  (SEQ_TB_PERSONNEL_ID.NEXTVAL,
-   #{psnName},
-   #{psnCode},
-   #{psnNbr},
-   '1000',
-   SYSDATE,
-   404,
-   SYS_GUID(),
-   #{notes});
+    <selectKey resultType="Long"  order="AFTER" keyProperty="personnelId">
+        SELECT SEQ_TB_PERSONNEL_ID.CURRVAL FROM DUAL
+    </selectKey>
+    INSERT INTO TB_PERSONNEL(PERSONNEL_ID,PSN_NAME,PSN_CODE,PSN_NBR,STATUS_CD,CREATE_DATE,CREATE_USER,UUID,NOTES)
+    VALUES(SEQ_TB_PERSONNEL_ID.NEXTVAL,#{psnName},#{psnCode},#{psnNbr},'1000',SYSDATE,404,SYS_GUID(),#{notes})
   </insert>
 </mapper>
