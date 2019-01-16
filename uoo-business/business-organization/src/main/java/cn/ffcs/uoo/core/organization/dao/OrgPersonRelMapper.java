@@ -27,8 +27,9 @@ public interface OrgPersonRelMapper extends BaseMapper<OrgPersonRel> {
 
     public List<PsonOrgVo> selectPerOrgRelPage(Pagination page, @Param("psonOrgVo")PsonOrgVo psonOrgVo);
 
-    public List<PsonOrgVo> selectAllPerOrgRelPage(Pagination page, @Param("psonOrgVo")PsonOrgVo psonOrgVo);
+    public List<PsonOrgVo> selectOrgRelsByPerIdPage(Pagination page, @Param("psonOrgVo")PsonOrgVo psonOrgVo);
 
+    public List<PsonOrgVo> selectAllPerOrgRelPage(Pagination page, @Param("psonOrgVo")PsonOrgVo psonOrgVo);
 
     public List<PsonOrgVo> selectAllUserOrgRelPage(Pagination page, @Param("psonOrgVo")PsonOrgVo psonOrgVo);
 

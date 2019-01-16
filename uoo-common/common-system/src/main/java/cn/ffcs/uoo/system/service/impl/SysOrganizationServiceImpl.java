@@ -4,6 +4,7 @@ package cn.ffcs.uoo.system.service.impl;
 import cn.ffcs.uoo.system.dao.SysOrganizationMapper;
 import cn.ffcs.uoo.system.entity.SysOrganization;
 import cn.ffcs.uoo.system.entity.SysUser;
+import cn.ffcs.uoo.system.service.ModifyHistoryService;
 import cn.ffcs.uoo.system.service.SysOrganizationService;
 import cn.ffcs.uoo.system.service.SysPositionService;
 import cn.ffcs.uoo.system.util.StrUtil;
@@ -32,6 +33,10 @@ public class SysOrganizationServiceImpl extends ServiceImpl<SysOrganizationMappe
 
     @Autowired
     private SysPositionService sysPositionService;
+
+
+    @Autowired
+    private ModifyHistoryService modifyHistoryService;
     /**
      * 获取seq
      * @return
@@ -52,6 +57,7 @@ public class SysOrganizationServiceImpl extends ServiceImpl<SysOrganizationMappe
         sysOrganization.setUpdateDate(new Date());
         sysOrganization.setUpdateUser(StrUtil.isNullOrEmpty(sysOrganization.getUpdateUser())?0L:sysOrganization.getUpdateUser());
         updateById(sysOrganization);
+        modifyHistoryService.addModifyHistory(sysOrganization,null,sysOrganization.getUpdateUser(),sysOrganization.getBatchNumber());
     }
 
 
@@ -66,6 +72,7 @@ public class SysOrganizationServiceImpl extends ServiceImpl<SysOrganizationMappe
         sysOrganization.setStatusCd("1000");
         sysOrganization.setStatusDate(new Date());
         insert(sysOrganization);
+        modifyHistoryService.addModifyHistory(null,sysOrganization,sysOrganization.getCreateUser(),sysOrganization.getBatchNumber());
     }
 
     /**
@@ -77,6 +84,8 @@ public class SysOrganizationServiceImpl extends ServiceImpl<SysOrganizationMappe
         sysOrganization.setUpdateUser(StrUtil.isNullOrEmpty(sysOrganization.getUpdateUser())?0L:sysOrganization.getUpdateUser());
         sysOrganization.setStatusDate(new Date());
         updateById(sysOrganization);
+        SysOrganization sysOrganizationOld = baseMapper.selectById(sysOrganization.getOrgId());
+        modifyHistoryService.addModifyHistory(sysOrganizationOld,sysOrganization,sysOrganization.getUpdateUser(),sysOrganization.getBatchNumber());
     }
 
     /**

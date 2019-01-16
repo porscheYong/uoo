@@ -83,6 +83,16 @@ public class SysOrganization extends Model<SysOrganization> {
     @TableField("STATUS_DATE")
     private Date statusDate;
 
+    @TableField(exist=false)
+    private String batchNumber;
+
+    public String getBatchNumber() {
+        return batchNumber;
+    }
+
+    public void setBatchNumber(String batchNumber) {
+        this.batchNumber = batchNumber;
+    }
 
     public Long getOrgId() {
         return orgId;
