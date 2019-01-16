@@ -1,8 +1,8 @@
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
-var pName = parent.getNodeName(pid);
-var orgList = [{id: orgId, name: pName}];
+// var pName = parent.getNodeName(pid);
+var orgList = [{id: orgId, name: orgName}];
 var locationList = [];
 var postList = [];
 var formValidate;
@@ -127,7 +127,7 @@ function updateOrg () {
     //组织职位
     var sysPositionVos = [];
     for (var i = 0; i < postList.length; i++) {
-        sysPositionVos.push({positionId: postList[i].id});
+        sysPositionVos.push({positionCode: postList[i].id});
     }
 
     $http.post('/sysOrganization/updateOrg', JSON.stringify({
