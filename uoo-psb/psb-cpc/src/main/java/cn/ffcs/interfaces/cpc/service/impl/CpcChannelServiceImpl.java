@@ -59,7 +59,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    public String handle(String json) throws Exception {
+    public String handle(String json){
         logger.info("json:{}，date:{}",json,new Date());
 
         Map<String, Object> map = Json2MapUtil.handle(json);
@@ -94,6 +94,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                 });
             }*/
             }catch (Exception e){
+                logger.error("Exception:{}",e);
                 rsMap.put("result_code","1000");
                 rsMap.put("message", "处理时异常！");
             }
@@ -103,6 +104,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
         }
+        logger.info("rsMap:{}",rsMap);
         return JSON.toJSONString(rsMap);
     }
 
@@ -161,114 +163,125 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         if (null == staff || "1000".equals(String.valueOf(rsMap.get("result_code")))) {
             return;
         }
-        String staffName = String.valueOf(staff.get("STAFF_NAME"));
-        String psnCode = String.valueOf(staff.get("STAFF_CODE"));
-        String idCard = String.valueOf(staff.get("CERT_NUMBER"));
-        if (StringUtils.isNotEmpty(staffName) && StringUtils.isNotEmpty(psnCode) && StringUtils.isNotEmpty(idCard)) {
+        String staffName = (String) staff.get("STAFF_NAME");
+        String psnCode =(String) staff.get("STAFF_CODE");
+        String idCard = (String) staff.get("CERT_NUMBER");
+        if (StringUtils.isNotEmpty(psnCode)) {
             try {
                 //ADD|MOD|DEL
                 switch ((String) staff.get("ACTION")) {
                     case "ADD":
                     case "MOD": {
-                        //根据CERT_TYPE 和 CERT_NUMBER 判断 该人是否已经存在
-                        Long personnelId = tbCertMapper.checkExistCertTypeAndCertNumber(String.valueOf(staff.get("CERT_TYPE")), String.valueOf(staff.get("CERT_NUMBER")));
-                        if (personnelId == null) {
-                            //新增
-                            // 插入TB_PERSONNEL表
-                            String uuid = UUID.randomUUID().toString();
-                            TbPersonnel tbPersonnel = new TbPersonnel(staffName, psnCode, psnCode, idCard);
-                            tbPersonnelMapper.insertValueOfPersonnel(tbPersonnel);
-                            // 插入TB_CERT
-                            TbCert tbCert = new TbCert(tbPersonnel.getPersonnelId(), staffName,
-                                    String.valueOf(staff.get("CERT_TYPE")), String.valueOf(staff.get("CERT_NUMBER")),
-                                    UUID.randomUUID().toString(), "1", "1000",
-                                    DateUtils.parseDate(DateUtils.getDateTime()));
-                            tbCertMapper.insert(tbCert);
-                            // 插入TB_ACCT
-                            TbAcct tbAcct = new TbAcct(String.valueOf(tbPersonnel.getPersonnelId()), psnCode, "1314",
-                                    "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1000",
-                                    DateUtils.parseDate(DateUtils.getDateTime()), "2",
-                                    DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"), "2");
-                            tbAcctMapper.insert(tbAcct);
-                            // 插入TB_CONTACT
-                            if (StringUtils.isNotEmpty(String.valueOf(staff.get("MOBILE_PHONE")))) {
-                                TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
-                                        String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString(),
-                                        "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
-                                tbContactMapper.insert(tbContact);
-                            }
-                            if (StringUtils.isNotEmpty(String.valueOf(staff.get("E_MAIL")))) {
-                                TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "2",
-                                        String.valueOf(staff.get("E_MAIL")), UUID.randomUUID().toString(),
-                                        "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
-                                tbContactMapper.insert(tbContact);
-                            }
-                            //插入TB_ACCT_CROSS_REL
-                            AcctCrossRel acctCrossRel = new AcctCrossRel(tbAcct.getAcctId(),
-                                    String.valueOf(staff.get("SALES_CODE")), "100100102", "1000",
-                                    DateUtils.parseDate(DateUtils.getDateTime()));
-                            acctCrossRelMapper.insert(acctCrossRel);
-                            //插入TB_SLAVE_ACCT
-                            TbSlaveAcct tbSlaveAcct = new TbSlaveAcct(String.valueOf(staff.get("ACCOUNT")), "1314",
-                                    "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", SystemConstant.CPC_SYSTEM_ID,
-                                    "1000", DateUtils.parseDate(DateUtils.getDateTime()), null,
-                                    tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
-                            tbSlaveAcctMapper.insert(tbSlaveAcct);
-                        } else {
-                            //修改人
-                            TbPersonnel tbPersonnel = new TbPersonnel();
-                            tbPersonnel.setPersonnelId(personnelId);
-                            tbPersonnel.setStatusCd("1000");
-                            tbPersonnel.setUpdateDate(new Date());
-                            tbPersonnel.setStatusDate(new Date());
-                            tbPersonnel.setPsnName(staffName);
-                            tbPersonnelMapper.updateById(tbPersonnel);
-                            //修改 TB_CERT（不用修改）
-                            //修改 TB_ACCT（有则不用修改，没有则需要生成）
-                            //获取主账号
-                            TbAcct tbAcct = tbAcctMapper.selectByPersonnelId(personnelId);
-                            if (tbAcct == null) {
+                        if (StringUtils.isNotEmpty(staffName) && StringUtils.isNotEmpty(idCard)) {
+                            //根据CERT_TYPE 和 CERT_NUMBER 判断 该人是否已经存在
+                            Long personnelId = tbCertMapper.checkExistCertTypeAndCertNumber(String.valueOf(staff.get("CERT_TYPE")), String.valueOf(staff.get("CERT_NUMBER")));
+                            if (personnelId == null) {
+                                //新增
+                                // 插入TB_PERSONNEL表
+                                String uuid = UUID.randomUUID().toString();
+                                TbPersonnel tbPersonnel = new TbPersonnel(staffName, psnCode, psnCode, idCard);
+                                tbPersonnelMapper.insertValueOfPersonnel(tbPersonnel);
+                                // 插入TB_CERT
+                                TbCert tbCert = new TbCert(tbPersonnel.getPersonnelId(), staffName,
+                                        String.valueOf(staff.get("CERT_TYPE")), String.valueOf(staff.get("CERT_NUMBER")),
+                                        UUID.randomUUID().toString(), "1", "1000",
+                                        DateUtils.parseDate(DateUtils.getDateTime()));
+                                tbCertMapper.insert(tbCert);
                                 // 插入TB_ACCT
-                                tbAcct = new TbAcct(String.valueOf(tbPersonnel.getPersonnelId()), psnCode, "1314",
+                                TbAcct tbAcct = new TbAcct(String.valueOf(tbPersonnel.getPersonnelId()), psnCode, "1314",
                                         "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1000",
                                         DateUtils.parseDate(DateUtils.getDateTime()), "2",
                                         DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"), "2");
                                 tbAcctMapper.insert(tbAcct);
-                            }
-                            //修改 TB_CONTACT 1.删除该人的所有的联系方式 2.插入新的联系方式
-                            tbContactMapper.deleteByPersonnelId(personnelId);
-                            if (StringUtils.isNotEmpty(String.valueOf(staff.get("MOBILE_PHONE")))) {
-                                TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
-                                        String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString(),
-                                        "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
-                                tbContactMapper.insert(tbContact);
-                            }
-                            if (StringUtils.isNotEmpty(String.valueOf(staff.get("E_MAIL")))) {
-                                TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "2",
-                                        String.valueOf(staff.get("E_MAIL")), UUID.randomUUID().toString(),
-                                        "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
-                                tbContactMapper.insert(tbContact);
-                            }
-                            //修改TB_ACCT_CROSS_REL1.删除该人的关系类型为'100100102'跨域账号 2.插入新的TB_ACCT_CROSS_REL1
-                            acctCrossRelMapper.deleteByAcctIdAndRelaType(tbAcct.getAcctId(), "100100102");
-                            AcctCrossRel acctCrossRel = new AcctCrossRel(tbAcct.getAcctId(),
-                                    String.valueOf(staff.get("SALES_CODE")), "100100102", "1000",
-                                    DateUtils.parseDate(DateUtils.getDateTime()));
-                            acctCrossRelMapper.insert(acctCrossRel);
-                            //插入TB_SLAVE_ACCT。判断该账号是否存在。
-                            if (tbSlaveAcctMapper.selectBySlaveAcctAndAcctId(String.valueOf(staff.get("ACCOUNT")), tbAcct.getAcctId()) < 1) {
+                                // 插入TB_CONTACT
+                                if (StringUtils.isNotEmpty(String.valueOf(staff.get("MOBILE_PHONE")))) {
+                                    TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
+                                            String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString(),
+                                            "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
+                                    tbContactMapper.insert(tbContact);
+                                }
+                                if (StringUtils.isNotEmpty(String.valueOf(staff.get("E_MAIL")))) {
+                                    TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "2",
+                                            String.valueOf(staff.get("E_MAIL")), UUID.randomUUID().toString(),
+                                            "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
+                                    tbContactMapper.insert(tbContact);
+                                }
+                                //插入TB_ACCT_CROSS_REL
+                                AcctCrossRel acctCrossRel = new AcctCrossRel(tbAcct.getAcctId(),
+                                        String.valueOf(staff.get("SALES_CODE")), "100100102", "1000",
+                                        DateUtils.parseDate(DateUtils.getDateTime()));
+                                acctCrossRelMapper.insert(acctCrossRel);
+                                //插入TB_SLAVE_ACCT
                                 TbSlaveAcct tbSlaveAcct = new TbSlaveAcct(String.valueOf(staff.get("ACCOUNT")), "1314",
                                         "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", SystemConstant.CPC_SYSTEM_ID,
                                         "1000", DateUtils.parseDate(DateUtils.getDateTime()), null,
                                         tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
                                 tbSlaveAcctMapper.insert(tbSlaveAcct);
+                            } else {
+                                //修改人
+                                TbPersonnel tbPersonnel = new TbPersonnel();
+                                tbPersonnel.setPersonnelId(personnelId);
+                                tbPersonnel.setStatusCd("1000");
+                                tbPersonnel.setPsnCode(psnCode);
+                                tbPersonnel.setPsnNbr(psnCode);
+                                tbPersonnel.setUpdateDate(new Date());
+                                tbPersonnel.setStatusDate(new Date());
+                                tbPersonnel.setPsnName(staffName);
+                                tbPersonnelMapper.updateById(tbPersonnel);
+                                //修改 TB_CERT（不用修改）
+                                //修改 TB_ACCT（有则修改，没有则需要生成）
+                                //获取主账号
+                                TbAcct tbAcct = tbAcctMapper.selectByPersonnelId(personnelId);
+                                if (tbAcct == null) {
+                                    // 插入TB_ACCT
+                                    tbAcct = new TbAcct(String.valueOf(tbPersonnel.getPersonnelId()), psnCode, "1314",
+                                            "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1000",
+                                            DateUtils.parseDate(DateUtils.getDateTime()), "2",
+                                            DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"), "2");
+                                    tbAcctMapper.insert(tbAcct);
+                                } else {
+                                    tbAcct.setAcct(psnCode);
+                                    tbAcctMapper.updateById(tbAcct);
+                                }
+                                //修改 TB_CONTACT 1.删除该人的所有的联系方式 2.插入新的联系方式
+                                tbContactMapper.deleteByPersonnelId(personnelId);
+                                if (StringUtils.isNotEmpty(String.valueOf(staff.get("MOBILE_PHONE")))) {
+                                    TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
+                                            String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString(),
+                                            "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
+                                    tbContactMapper.insert(tbContact);
+                                }
+                                if (StringUtils.isNotEmpty(String.valueOf(staff.get("E_MAIL")))) {
+                                    TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "2",
+                                            String.valueOf(staff.get("E_MAIL")), UUID.randomUUID().toString(),
+                                            "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
+                                    tbContactMapper.insert(tbContact);
+                                }
+                                //修改TB_ACCT_CROSS_REL1.删除该人的关系类型为'100100102'跨域账号 2.插入新的TB_ACCT_CROSS_REL1
+                                acctCrossRelMapper.deleteByAcctIdAndRelaType(tbAcct.getAcctId(), "100100102");
+                                AcctCrossRel acctCrossRel = new AcctCrossRel(tbAcct.getAcctId(),
+                                        String.valueOf(staff.get("SALES_CODE")), "100100102", "1000",
+                                        DateUtils.parseDate(DateUtils.getDateTime()));
+                                acctCrossRelMapper.insert(acctCrossRel);
+                                //插入TB_SLAVE_ACCT。判断该账号是否存在。
+                                if (tbSlaveAcctMapper.selectBySlaveAcctAndAcctId(String.valueOf(staff.get("ACCOUNT")), tbAcct.getAcctId()) < 1) {
+                                    TbSlaveAcct tbSlaveAcct = new TbSlaveAcct(String.valueOf(staff.get("ACCOUNT")), "1314",
+                                            "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", SystemConstant.CPC_SYSTEM_ID,
+                                            "1000", DateUtils.parseDate(DateUtils.getDateTime()), null,
+                                            tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
+                                    tbSlaveAcctMapper.insert(tbSlaveAcct);
+                                }
                             }
+                        }else{
+                            rsMap.put("result_code", "1000");
+                            rsMap.put("message", "参数丢失。");
                         }
                     }
                     ;
                     break;
                     case "DEL": {
-                        Long personnelId = acctCrossRelMapper.checkExistCrossRelTypeAndSalesCode("100100102", String.valueOf(staff.get("SALES_CODE")));
+                        //Long personnelId = acctCrossRelMapper.checkExistCrossRelTypeAndSalesCode("100100102", String.valueOf(staff.get("SALES_CODE")));
+                        Long personnelId = tbPersonnelMapper.checkExistPsnCode(psnCode);
                         if (personnelId == null) {
                             rsMap.put("result_code", "1000");
                             rsMap.put("message", "人员标识不存在。");
@@ -280,7 +293,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                             tbPersonnel.setStatusCd("1100");
                             tbPersonnel.setUpdateDate(new Date());
                             tbPersonnel.setStatusDate(new Date());
-                            tbPersonnel.setPsnName(staffName);
+                            //tbPersonnel.setPsnName(staffName);
                             tbPersonnelMapper.updateById(tbPersonnel);
                             //修改 TB_CERT
                             tbCertMapper.deleteByPersonnelId(personnelId);
@@ -311,6 +324,9 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                 rsMap.put("result_code", "1000");
                 rsMap.put("message", e.getStackTrace());
             }
+        }else{
+            rsMap.put("result_code", "1000");
+            rsMap.put("message", "参数丢失。");
         }
     }
 
