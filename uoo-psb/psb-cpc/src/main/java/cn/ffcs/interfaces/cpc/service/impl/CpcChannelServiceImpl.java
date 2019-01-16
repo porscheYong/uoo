@@ -123,21 +123,27 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         String action = (String) channel.get("ACTION");
         String channelNbr = (String) channel.get("CHANNEL_NBR");
         String chnTypeCd = (String) channel.get("CHN_TYPE_CD");
-        boolean handleFlag = StringUtils.isEmpty(commoinRegionId) || StringUtils.isEmpty(orgName)
-                || StringUtils.isEmpty(action) || StringUtils.isEmpty(channelNbr) || StringUtils.isEmpty(chnTypeCd);
-        if (handleFlag) {
+        if (StringUtils.isEmpty(action) || StringUtils.isEmpty(channelNbr)) {
             rsMap.put("result_code", "1000");
             rsMap.put("message", "渠道必要信息为空");
             return;
-
         }
-
         try {
             switch (action) {
                 case "ADD":
+                    if (StringUtils.isEmpty(commoinRegionId) || StringUtils.isEmpty(orgName) || StringUtils.isEmpty(chnTypeCd)) {
+                        rsMap.put("result_code", "1000");
+                        rsMap.put("message", "渠道必要信息为空");
+                        return;
+                    }
                     addChannel(channel);
                     break;
                 case "MOD":
+                    if (StringUtils.isEmpty(commoinRegionId) || StringUtils.isEmpty(orgName) || StringUtils.isEmpty(chnTypeCd)) {
+                        rsMap.put("result_code", "1000");
+                        rsMap.put("message", "渠道必要信息为空");
+                        return;
+                    }
                     modChannel(channel);
                     break;
                 case "DEL":
@@ -148,7 +154,6 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             rsMap.put("result_code", "1000");
             e.printStackTrace();
             rsMap.put("message", e.getStackTrace());
-//                throw new Exception("执行失败，请查看日志");
         }
 
     }
