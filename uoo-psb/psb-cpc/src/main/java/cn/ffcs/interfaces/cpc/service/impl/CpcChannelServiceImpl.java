@@ -167,31 +167,31 @@ public class CpcChannelServiceImpl implements CpcChannelService {
      */
     private void hand_STAFF(Map<String, Object> staff, Map<String, Object> rsMap) {
 
-        if (null == staff || "1000".equals(String.valueOf(rsMap.get("result_code")))) {
+        if (null == staff || "1000".equals((String) (rsMap.get("result_code")))) {
             return;
         }
         String staffName = (String) staff.get("STAFF_NAME");
         String psnCode =(String) staff.get("STAFF_CODE");
         String idCard = (String) staff.get("CERT_NUMBER");
+        String salesCode = (String) staff.get("SALES_CODE");
         if (StringUtils.isNotEmpty(psnCode)) {
             try {
                 //ADD|MOD|DEL
                 switch ((String) staff.get("ACTION")) {
                     case "ADD":
                     case "MOD": {
-                        if (StringUtils.isNotEmpty(staffName) && StringUtils.isNotEmpty(idCard)) {
+                        if (StringUtils.isNotEmpty(staffName) && StringUtils.isNotEmpty(idCard) && StringUtils.isNotEmpty(salesCode)) {
                             //根据CERT_TYPE 和 CERT_NUMBER 判断 该人是否已经存在
                             Long personnelId = tbCertMapper.checkExistCertTypeAndCertNumber(String.valueOf(staff.get("CERT_TYPE")), String.valueOf(staff.get("CERT_NUMBER")));
                             if (personnelId == null) {
                                 //新增
                                 // 插入TB_PERSONNEL表
-                                String uuid = UUID.randomUUID().toString();
                                 TbPersonnel tbPersonnel = new TbPersonnel(staffName, psnCode, psnCode, idCard);
                                 tbPersonnelMapper.insertValueOfPersonnel(tbPersonnel);
                                 // 插入TB_CERT
                                 TbCert tbCert = new TbCert(tbPersonnel.getPersonnelId(), staffName,
                                         String.valueOf(staff.get("CERT_TYPE")), String.valueOf(staff.get("CERT_NUMBER")),
-                                        UUID.randomUUID().toString(), "1", "1000",
+                                        UUID.randomUUID().toString().replaceAll("-","").toUpperCase(), "1", "1000",
                                         DateUtils.parseDate(DateUtils.getDateTime()));
                                 tbCertMapper.insert(tbCert);
                                 // 插入TB_ACCT
@@ -201,15 +201,15 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                         DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"), "2");
                                 tbAcctMapper.insert(tbAcct);
                                 // 插入TB_CONTACT
-                                if (StringUtils.isNotEmpty(String.valueOf(staff.get("MOBILE_PHONE")))) {
+                                if (StringUtils.isNotEmpty((String) staff.get("MOBILE_PHONE"))) {
                                     TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
-                                            String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString(),
+                                            String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
                                     tbContactMapper.insert(tbContact);
                                 }
-                                if (StringUtils.isNotEmpty(String.valueOf(staff.get("E_MAIL")))) {
+                                if (StringUtils.isNotEmpty((String) staff.get("E_MAIL"))) {
                                     TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "2",
-                                            String.valueOf(staff.get("E_MAIL")), UUID.randomUUID().toString(),
+                                            String.valueOf(staff.get("E_MAIL")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
                                     tbContactMapper.insert(tbContact);
                                 }
@@ -219,11 +219,13 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                         DateUtils.parseDate(DateUtils.getDateTime()));
                                 acctCrossRelMapper.insert(acctCrossRel);
                                 //插入TB_SLAVE_ACCT
-                                TbSlaveAcct tbSlaveAcct = new TbSlaveAcct(String.valueOf(staff.get("ACCOUNT")), "1314",
+                                if(StringUtils.isNotEmpty((String) staff.get("ACCOUNT"))){
+                                    TbSlaveAcct tbSlaveAcct = new TbSlaveAcct(String.valueOf(staff.get("ACCOUNT")), "1314",
                                         "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", SystemConstant.CPC_SYSTEM_ID,
                                         "1000", DateUtils.parseDate(DateUtils.getDateTime()), null,
                                         tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
-                                tbSlaveAcctMapper.insert(tbSlaveAcct);
+                                    tbSlaveAcctMapper.insert(tbSlaveAcct);
+                                }
                             } else {
                                 //修改人
                                 TbPersonnel tbPersonnel = new TbPersonnel();
@@ -252,15 +254,15 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                 }
                                 //修改 TB_CONTACT 1.删除该人的所有的联系方式 2.插入新的联系方式
                                 tbContactMapper.deleteByPersonnelId(personnelId);
-                                if (StringUtils.isNotEmpty(String.valueOf(staff.get("MOBILE_PHONE")))) {
+                                if (StringUtils.isNotEmpty((String)  (staff.get("MOBILE_PHONE")))) {
                                     TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
-                                            String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString(),
+                                            String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
                                     tbContactMapper.insert(tbContact);
                                 }
-                                if (StringUtils.isNotEmpty(String.valueOf(staff.get("E_MAIL")))) {
+                                if (StringUtils.isNotEmpty((String)(staff.get("E_MAIL")))) {
                                     TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "2",
-                                            String.valueOf(staff.get("E_MAIL")), UUID.randomUUID().toString(),
+                                            String.valueOf(staff.get("E_MAIL")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
                                     tbContactMapper.insert(tbContact);
                                 }
@@ -271,7 +273,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                         DateUtils.parseDate(DateUtils.getDateTime()));
                                 acctCrossRelMapper.insert(acctCrossRel);
                                 //插入TB_SLAVE_ACCT。判断该账号是否存在。
-                                if (tbSlaveAcctMapper.selectBySlaveAcctAndAcctId(String.valueOf(staff.get("ACCOUNT")), tbAcct.getAcctId()) < 1) {
+                                if (staff.get("ACCOUNT") != null && tbSlaveAcctMapper.selectBySlaveAcctAndAcctId(String.valueOf(staff.get("ACCOUNT")), tbAcct.getAcctId()) < 1) {
                                     TbSlaveAcct tbSlaveAcct = new TbSlaveAcct(String.valueOf(staff.get("ACCOUNT")), "1314",
                                             "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", SystemConstant.CPC_SYSTEM_ID,
                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), null,
