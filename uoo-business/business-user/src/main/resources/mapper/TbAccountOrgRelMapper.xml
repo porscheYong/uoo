@@ -9,6 +9,7 @@
         <result column="ACCT_ID" property="acctId" />
         <result column="SORT" property="sort" />
         <result column="ORG_TREE_ID" property="orgTreeId" />
+        <result column="REL_TYPE" property="relType" />
         <result column="STATUS_CD" property="statusCd" />
         <result column="CREATE_DATE" property="createDate" />
         <result column="CREATE_USER" property="createUser" />
@@ -19,7 +20,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ACCT_ORG_REL_ID, ORG_ID, ACCT_ID, SORT, ORG_TREE_ID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        ACCT_ORG_REL_ID, ORG_ID, ACCT_ID, SORT, ORG_TREE_ID, REL_TYPE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
     <select id="getId" resultType="java.lang.Long">

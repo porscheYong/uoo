@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.resource.dao.BusinessFuncMapMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.resource.entity.BusinessFuncMap">
+        <id column="MAP_ID" property="mapId" />
+        <result column="BIZ_FUNC_ID" property="bizFuncId" />
+        <result column="MAP_OBJ_TYPE" property="mapObjType" />
+        <result column="MAP_OBJ_ID" property="mapObjId" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="STATUS_DATE" property="statusDate" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        MAP_ID, BIZ_FUNC_ID, MAP_OBJ_TYPE, MAP_OBJ_ID, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
+    </sql>
+
+    <select id="getId" resultType="Integer">
+        SELECT SEQ_TB_BUSINESS_FUNC_MAP_ID.nextval FROM dual
+    </select>
+</mapper>

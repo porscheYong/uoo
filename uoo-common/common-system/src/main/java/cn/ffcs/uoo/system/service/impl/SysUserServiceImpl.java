@@ -183,9 +183,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (StringUtils.isEmpty(sysUser.getCertId())) {
             return "证件号为空！";
         }
-        if (StringUtils.isEmpty(sysUser.getEmail())) {
-            return "邮箱为空！";
-        }
+//        if (StringUtils.isEmpty(sysUser.getEmail())) {
+//            return "邮箱为空！";
+//        }
         if(!IdCardVerification.idCardValidate(sysUser.getCertId())){
             return "证件号格式有误";
         }

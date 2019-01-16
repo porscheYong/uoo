@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
 /**
  * <p>
@@ -78,7 +79,7 @@ public class MpGenerator {
     // strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
         strategy.setTablePrefix(new String[] { "TB_", "tsys_" });// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude(new String[] {"SYS_DEPT_ROLE_REF"}); // 需要生成的表
+        strategy.setInclude(new String[] {"TB_BUSINESS_FUNC","TB_BUSINESS_FUNC_MAP","TB_FUNC","TB_FILE","TB_ELEMENT"}); // 需要生成的表
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类
         // strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");
@@ -102,9 +103,10 @@ public class MpGenerator {
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent("cn.ffcs.uoo");
-        pc.setModuleName("system");
+        pc.setParent("cn.ffcs.uoo.core");
+        pc.setModuleName("resource");
         pc.setMapper("dao");
+        pc.setController("controller");
         mpg.setPackageInfo(pc);
 
         // 注入自定义配置，可以在 VM 中使用 cfg.abc 【可无】
@@ -136,26 +138,24 @@ public class MpGenerator {
                 return "D://mpgen/xml/" + tableInfo.getEntityName() + "Mapper.xml";
             }
         });
-        cfg.setFileOutConfigList(focList);
+//        cfg.setFileOutConfigList(focList);
         mpg.setCfg(cfg);
 
         // 关闭默认 xml 生成，调整生成 至 根目录
-        TemplateConfig tc = new TemplateConfig();
-        tc.setXml(null);
-        mpg.setTemplate(tc);
+         
 
         // 自定义模板配置，可以 copy 源码 mybatis-plus/src/main/resources/templates 下面内容修改，
         // 放置自己项目的 src/main/resources/templates 目录下, 默认名称一下可以不配置，也可以自定义模板名称
-        // TemplateConfig tc = new TemplateConfig();
-        // tc.setController("...");
-        // tc.setEntity("...");
-        // tc.setMapper("...");
-        // tc.setXml("...");
-        // tc.setService("...");
-        // tc.setServiceImpl("...");
-    // 如上任何一个模块如果设置 空 OR Null 将不生成该模块。
-        // mpg.setTemplate(tc);
-
+         TemplateConfig tcc = new TemplateConfig();
+         tcc.setController("templates/controller.java");
+         tcc.setEntity("templates/entity.java");
+         tcc.setMapper("templates/mapper.java");
+         tcc.setXml("templates/mapper.xml");
+         tcc.setService("templates/service.java");
+         tcc.setServiceImpl("templates/serviceImpl.java");
+     //如上任何一个模块如果设置 空 OR Null 将不生成该模块。
+         mpg.setTemplate(tcc);
+         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         // 执行生成
         mpg.execute();
 

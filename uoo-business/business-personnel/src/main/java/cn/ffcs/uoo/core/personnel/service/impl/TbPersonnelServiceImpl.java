@@ -4,6 +4,7 @@ import cn.ffcs.uoo.core.personnel.constant.BaseUnitConstants;
 import cn.ffcs.uoo.core.personnel.constant.EumPersonnelResponseCode;
 import cn.ffcs.uoo.core.personnel.dao.TbPersonnelMapper;
 import cn.ffcs.uoo.core.personnel.entity.TbPersonnel;
+import cn.ffcs.uoo.core.personnel.service.ModifyHistoryService;
 import cn.ffcs.uoo.core.personnel.service.TbPersonnelService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
 import cn.ffcs.uoo.core.personnel.util.StrUtil;
@@ -12,6 +13,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -29,6 +31,10 @@ import java.util.Map;
  */
 @Service
 public class TbPersonnelServiceImpl extends ServiceImpl<TbPersonnelMapper, TbPersonnel> implements TbPersonnelService {
+
+    @Autowired
+    private ModifyHistoryService modifyHistoryService;
+
     @Override
     public Page<PersonnelRelationInfoVo> getPersonnelRelationInfo(TbPersonnelVo tbPersonnelVo) {
         List<PersonnelRelationInfoVo> list = baseMapper.getPersonnelRelationInfo(tbPersonnelVo);
@@ -75,6 +81,7 @@ public class TbPersonnelServiceImpl extends ServiceImpl<TbPersonnelMapper, TbPer
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
         if(retBool(baseMapper.update(tbPersonnel, wrapper))){
+            //modifyHistoryService.deleteModifyHistory(tbPersonnel, userId);
             return ResultUtils.success(null);
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
@@ -121,7 +128,10 @@ public class TbPersonnelServiceImpl extends ServiceImpl<TbPersonnelMapper, TbPer
         if(StrUtil.isNullOrEmpty(personnel)){
             tbPersonnel.setUuid(StrUtil.getUUID());
             baseMapper.insert(tbPersonnel);
+            //modifyHistoryService.insertModifyHistory(tbPersonnel, tbPersonnel.getUpdateUser());
         }else {
+            TbPersonnel oldTbPsn = baseMapper.selectById(tbPersonnel.getPersonnelId());
+            //modifyHistoryService.updateModifyHistory(oldTbPsn, tbPersonnel, tbPersonnel.getUpdateUser());
             baseMapper.updateById(tbPersonnel);
         }
         return ResultUtils.success(null);

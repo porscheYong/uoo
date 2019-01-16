@@ -1,10 +1,11 @@
-var id = getQueryString('id');  //当前职位id
-var positionId = getQueryString('positionId');
+var positionCode = getQueryString('positionCode');  //当前职位id
+var positionCodeCur = getQueryString('positionCodeCur');
 var posFullName = getQueryString('posFullName');
 var posName = getQueryString('posName');
 var roleList = [];
 var locationList = [];
 var pPosList = [];
+var positionId;
 var toastr = window.top.toastr;
 
 function editInfo(){
@@ -20,8 +21,9 @@ function cancel(){
 //获取职位信息
 function getPosition(){
     $http.get('/sysPosition/getPosition', {
-        id: id
+        positionCode: positionCode
     }, function (data) {
+        positionId = data.positionId;
         initPosInfo(data);
     }, function (err) {
 
@@ -120,7 +122,7 @@ $('#myTabs a').click(function (e) {
 
 //返回
 function backToList(){
-    window.location.href = "list.html?positionId="+positionId+"&posName="+posName;
+    window.location.href = "list.html?positionCode="+positionCodeCur+"&posName="+posName;
 }
 
 // tags init
@@ -198,7 +200,7 @@ function openParPosDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             var checkNode = iframeWin.checkNode;
-            if(checkNode[0].id == id){
+            if(checkNode[0].id == positionCode){
                 toastr.error("不能选择当前职位为上级职位!");
             }else{
                 $('#supPos').importTags(checkNode, {unique: true});
@@ -227,8 +229,8 @@ function updatePosition(){
     }
     $http.post('/sysPosition/updatePosition', JSON.stringify({  
         notes : $("#notes").val(),
-        pPositionId : pPos,
-        positionId : id,
+        parentPositionCode : pPos,
+        positionId : positionId,
         regionNbr : lc,
         statusCd : $("#state").val(),
         sortNum : $("#sort").val(),
@@ -252,7 +254,7 @@ function deletePosition(){
         btn: ['确定','取消']
         }, function(index, layero){
             $http.post('/sysPosition/deletePosition', JSON.stringify({  
-                positionId : id
+                positionId : positionId
             }), function (message) {
                 backToList();
                 parent.initPosRelTree();

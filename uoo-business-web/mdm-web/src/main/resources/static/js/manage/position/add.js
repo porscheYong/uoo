@@ -1,4 +1,4 @@
-var positionId = getQueryString('positionId');
+var positionCode = getQueryString('positionCode');
 var posFullName = getQueryString('posFullName');
 var posName = getQueryString('posName');
 var roleList = [];
@@ -11,7 +11,7 @@ var toastr = window.top.toastr;
 
 //返回
 function backToList(){
-    window.location.href = "list.html?posName=" + posName + "&posFullName=" + posFullName + "&positionId=" + positionId;
+    window.location.href = "list.html?posName=" + posName + "&posFullName=" + posFullName + "&positionCode=" + positionCode;
 }
 
 // tags init
@@ -113,7 +113,7 @@ function addPosition(){
     }
     $http.post('/sysPosition/addPosition', JSON.stringify({  
         notes : $("#notes").val(),
-        pPositionId : pPos,
+        parentPositionCode : pPos,
         regionNbr : lc,
         statusCd : $("#state").val(),
         sortNum : $("#sort").val(),

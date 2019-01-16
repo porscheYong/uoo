@@ -64,77 +64,6 @@ public class TbUserController extends BaseController {
 
     private String slaveAcctType = "2";
 
-
-
-    @ApiOperation(value = "用户组织条件查询", notes = "条件分页查询")
-    @ApiImplicitParam(name = "psonOrgVo", value = "用户条件VO", required = true, dataType = "PsonOrgVo")
-    @UooLog(value = "用户组织条件查询", key = "getPageUserOrg")
-    @RequestMapping(value = "/getPageUserOrg/", method = RequestMethod.POST)
-    public Object getPageUserOrg(@RequestBody PsonOrgVo psonOrgVo){
-        Page<ListUserOrgVo> userOrgVoPage = tbUserService.selectUserOrgPage(psonOrgVo);
-        return ResultUtils.success(userOrgVoPage);
-    }
-
-
-
-    @ApiOperation(value = "用户信息", notes = "用户信息")
-    @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "String",paramType="path")
-    @UooLog(value = "用户组织条件查询", key = "getUser")
-    @RequestMapping(value = "/getUserByPersonnelId", method = RequestMethod.GET)
-    public Object getUser(String personnelId){
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
-        map.put(BaseUnitConstants.TABLE_PERSONNEL_ID, personnelId);
-        TbUser tbUser = tbUserService.selectOne(new EntityWrapper<TbUser>().allEq(map));
-        if(StrUtil.isNullOrEmpty(tbUser)){
-            return ResultUtils.error(EumUserResponeCode.USER_NOT_EXIST);
-        }
-        EditFormUserVo editFormUserVo = new EditFormUserVo();
-        editFormUserVo.setUserId(tbUser.getUserId());
-
-        /**
-         * todo
-         *  人员信息 调用personnel接口
-         */
-        //ResponseResult result = (ResponseResult) restTemplate.getForObject(
-        ResponseResult result = restTemplate.getForObject(
-                "http://PERSONNEL-SERVICE/personnel/getPsnByUser?personnelId=" + personnelId,
-                ResponseResult.class
-        );
-
-        JSONObject jsonObject= JSONObject.fromObject(result); // 将数据转成json字符串
-        ResponseResult per = (ResponseResult)JSONObject.toBean(jsonObject, ResponseResult.class); //将json转成需要的对象
-        if("0".equals(per.getState())){
-            editFormUserVo.setPsnByUserVo((PsnByUserVo) per.getData());
-        }else{
-            return  ResultUtils.error(per.getState(), per.getMessage());
-        }
-
-        /**
-         * 角色信息
-         */
-        List<TbRoles> tbRolesList = tbUserService.getRoleByUserId(Long.valueOf(tbUser.getUserId()));
-        editFormUserVo.setTbRolesList(tbRolesList);
-        /**
-         * todo
-         * 归属组织信息 调用org接口
-         */
-
-        //主账号
-        map.remove(BaseUnitConstants.TABLE_PERSONNEL_ID);
-        map.put(BaseUnitConstants.TBALE_USER_ID, tbUser.getUserId());
-        TbAcct tbAcct = tbAcctService.selectOne(new EntityWrapper<TbAcct>().allEq(map));
-        BeanUtils.copyProperties(tbAcct, editFormUserVo);
-
-        //从账号
-        List<ListSlaveAcctVo> slaveAcctVoList =  tbUserService.getSlaveAcctInfo(Long.valueOf(tbUser.getUserId()), tbAcct.getAcctId());
-        editFormUserVo.setSlaveAcctVoList(slaveAcctVoList);
-
-        return ResultUtils.success(editFormUserVo);
-    }
-
-    //-todo---新版本------------------------------------------------------------------------------------
-
     @ApiOperation(value = "选择用户信息", notes = "选择用户信息")
     @ApiImplicitParams ({
             @ApiImplicitParam(name = "personnelId", value = "人员标识", required = true, dataType = "Long", paramType = "path"),
@@ -231,7 +160,7 @@ public class TbUserController extends BaseController {
 
     @ApiOperation(value = "从账号查询",notes = "从账号查询")
     @ApiImplicitParam(name = "acctId", value = "从账号标识", required = true, dataType = "Long", paramType = "path")
-    @UooLog(value = "主账号查询",key = "getFormAcct")
+    @UooLog(value = "从账号查询",key = "getFormSlaveAcct")
     @RequestMapping(value = "/getFormSlaveAcct", method = RequestMethod.GET)
     public Object getFormSlaveAcct(Long acctId){
         FormSlaveAcctVo formSlaveAcctVo = new FormSlaveAcctVo();

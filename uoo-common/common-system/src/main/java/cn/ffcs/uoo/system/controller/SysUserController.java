@@ -1,7 +1,9 @@
 package cn.ffcs.uoo.system.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
@@ -185,12 +187,16 @@ public class SysUserController extends BaseController {
      * 测试
      */
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public ResponseResultBean<String> test(String pwd) {
-        ResponseResultBean<String> result = new ResponseResultBean<>();
-        String aesContent = DigestUtils.md5Hex(pwd);
+    public ResponseResultBean<Map<String, Object>> test(String pwd, String salt) {
+        ResponseResultBean<Map<String, Object>> result = new ResponseResultBean<>();
+        String content = DigestUtils.md5Hex(pwd);
+        String saltContent = MD5Util.md5Encoding(content, salt);
+        Map<String, Object> map = new HashMap<>();
+        map.put("content", content);
+        map.put("saltContent", saltContent);
         result.setState(ResponseResultBean.STATE_OK);
         result.setMessage("已获取md5加密密文");
-        result.setData(aesContent);
+        result.setData(map);
         return result;
     }
 

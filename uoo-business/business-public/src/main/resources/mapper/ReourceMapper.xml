@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.resource.dao.ReourceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.resource.entity.Reource">
+        <id column="RESOURCE_ID" property="resourceId" />
+        <result column="RS_NAME" property="rsName" />
+        <result column="RS_DESC" property="rsDesc" />
+        <result column="RS_ADDR" property="rsAddr" />
+        <result column="RS_PORT" property="rsPort" />
+        <result column="CONNECT_PROTOCOL" property="connectProtocol" />
+        <result column="CONNECT_TYPE" property="connectType" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="STATUS_DATE" property="statusDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        RESOURCE_ID, RS_NAME, RS_DESC, RS_ADDR, RS_PORT, CONNECT_PROTOCOL, CONNECT_TYPE, STATUS_CD, STATUS_DATE, CREATE_USER, CREATE_DATE, UPDATE_USER, UPDATE_DATE
+    </sql>
+
+    <select id="getId" resultType="Long">
+        SELECT SEQ_TB_REOURCE_ID.nextval FROM dual
+    </select>
+</mapper>

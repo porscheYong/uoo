@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.resource.dao.FuncMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.resource.entity.Func">
+        <id column="FUNC_ID" property="funcId" />
+        <result column="MENU_ID" property="menuId" />
+        <result column="FUNC_NAME" property="funcName" />
+        <result column="FUNC_CODE" property="funcCode" />
+        <result column="FUNC_TYPE" property="funcType" />
+        <result column="FUNC_DESC" property="funcDesc" />
+        <result column="REGION_ID" property="regionId" />
+        <result column="SYSTEM_INFO_ID" property="systemInfoId" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="STATUS_DATE" property="statusDate" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        FUNC_ID, MENU_ID, FUNC_NAME, FUNC_CODE, FUNC_TYPE, FUNC_DESC, REGION_ID, SYSTEM_INFO_ID, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
+    </sql>
+
+    <select id="getId" resultType="Integer">
+        SELECT SEQ_TB_FUNC_ID.nextval FROM dual
+    </select>
+</mapper>

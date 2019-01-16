@@ -54,6 +54,11 @@
             <version>2.2.3</version>
             <classifier>jdk15</classifier><!-- jdk版本 -->
         </dependency>
+        <dependency>
+            <groupId>de.danielbechler</groupId>
+            <artifactId>java-object-diff</artifactId>
+            <version>0.95</version>
+        </dependency>
 
     </dependencies>
     <build>

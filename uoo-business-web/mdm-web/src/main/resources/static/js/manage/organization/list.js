@@ -4,9 +4,9 @@ var isIE8=isIE&&document.documentMode<9;
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
+var checked = 0; //是否搜索下级
 var table;
-var lastTime,
-    minChars = 0, // 最小进行查询的数量
+var query,
     delayTime = 500;
 
 function initOrgTable (isSearchlower, search) {
@@ -83,34 +83,25 @@ function initOrgTable (isSearchlower, search) {
 }
 
 // 搜索组织
-function search (event) {
-    console.log(event, event.timeStamp)
-    lastTime = event.timeStamp;
-    var query = $('.ui-input-search').val();
-
-    if (minChars && query.length < minChars) {
-        return
-    }
-
+function search () {
+    query = $('.ui-input-search').val();
+    clearTimeout(this.timer);
     // 添加的延时
-    setTimeout(function(){
-        if (lastTime - event.timeStamp === 0) {
-            initOrgTable(query);
-            console.log(query)
-        }
-    }, delayTime)
+    this.timer = setTimeout(function(){
+        initOrgTable(checked, query);
+    }, delayTime);
 }
 
 //勾选显示下级组织人员
 function showLower() {
     sortFlag = 0;
-    var checked = $('#isShowLower').is(':checked')? 1: 0;
+    checked = $('#isShowLower').is(':checked')? 1: 0;
     if(isIE8 && checked == 1){
         $(".ui-checkbox").css("background-position","0 -40px");
     }else if(isIE8 && checked == 0){
         $(".ui-checkbox").css("background-position","0px 0px");
     }
-    initOrgTable(checked);
+    initOrgTable(checked, query);
 }
 
 //创建组织
