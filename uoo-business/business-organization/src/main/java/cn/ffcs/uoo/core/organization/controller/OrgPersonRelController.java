@@ -98,6 +98,9 @@ public class OrgPersonRelController extends BaseController {
                 orgPersonRel.setOrgPersonId(orgPsndocRefId);
                 orgPersonRel.setOrgTreeId(psonOrgVo.getOrgTreeId().toString());
                 orgPersonRel.setCreateUser(psonOrgVo.getSysUserId());
+                if(!StrUtil.isNullOrEmpty(psonOrgVo.getSort())){
+                    orgPersonRel.setSort(Double.valueOf(psonOrgVo.getSort()));
+                }
                 orgPersonRelService.add(orgPersonRel);
                 modifyHistoryService.addModifyHistory(null,orgPersonRel,psonOrgVo.getSysUserId(),batchNumber);
 
@@ -145,6 +148,9 @@ public class OrgPersonRelController extends BaseController {
                 orgPersonRel.setOrgPersonId(orgPsndocRefId);
                 orgPersonRel.setOrgTreeId(psonOrgVo.getOrgTreeId().toString());
                 orgPersonRel.setCreateUser(psonOrgVo.getSysUserId());
+                if(!StrUtil.isNullOrEmpty(psonOrgVo.getSort())){
+                    orgPersonRel.setSort(Double.valueOf(psonOrgVo.getSort()));
+                }
                 orgPersonRelService.add(orgPersonRel);
                 modifyHistoryService.addModifyHistory(null,orgPersonRel,psonOrgVo.getSysUserId(),batchNumber);
 
@@ -389,6 +395,86 @@ public class OrgPersonRelController extends BaseController {
         ret.setData(psonList);
         return ret;
     }
+
+
+    @ApiOperation(value = "查询人员组织关系", notes = "查询人员组织关系")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "查询人员组织关系",key = "getPerRelsPage")
+    @RequestMapping(value = "/getPerRelsPage",method = RequestMethod.GET)
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<Page<PsonOrgVo>> getPerRelsPage(Long orgTreeId,
+                                                             Long personnelId,
+                                                             Integer pageSize,
+                                                             Integer pageNo,
+                                                             Long userId,
+                                                             String accout){
+        ResponseResult<Page<PsonOrgVo>> ret = new ResponseResult<>();
+        if(StrUtil.isNullOrEmpty(orgTreeId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树标识不能为空");
+            return ret;
+        }
+
+        //获取组织树
+        Wrapper orgTreeConfWrapper = Condition.create()
+                .eq("ORG_TREE_ID", orgTreeId)
+                .eq("STATUS_CD", "1000");
+        OrgTree orgtree = orgTreeService.selectOne(orgTreeConfWrapper);
+        if (orgtree == null) {
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树不存在");
+            return ret;
+        }
+        if(StrUtil.isNullOrEmpty(personnelId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("人员标识不能为空");
+            return ret;
+        }
+
+        PsonOrgVo psonOrgVo = new PsonOrgVo();
+        //获取权限
+        if(!StrUtil.isNullOrEmpty(accout)) {
+            List<String> tabNames = new ArrayList<String>();
+            tabNames.add("TB_ORG_TREE");
+            tabNames.add("TB_ORG");
+            tabNames.add("TB_ACCOUNT_ORG_REL");
+            tabNames.add("TB_ORG_ORGTYPE_REL");
+            tabNames.add("TB_ORG_PERSON_REL");
+            List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
+            if(sdrList!=null && sdrList.size()>0){
+                if(!commonSystemService.isOrgTreeAutho(orgtree.getOrgTreeId().toString(),sdrList)){
+                    ret.setState(ResponseResult.PARAMETER_ERROR);
+                    ret.setMessage("树无权限");
+                    return ret;
+                }
+                String orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
+                psonOrgVo.setTabOrgParams(orgParams);
+                String orgPerParams =  commonSystemService.getSysDataRuleSql("tbOrgPersonRel","TB_ORG_PERSON_REL",sdrList);
+                psonOrgVo.setTabOrgPerRelParams(orgPerParams);
+                String orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
+                psonOrgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
+            }
+        }
+        psonOrgVo.setOrgTreeId(orgtree.getOrgTreeId());
+        if(!StrUtil.isNullOrEmpty(personnelId)){
+            psonOrgVo.setPersonnelId(new Long(personnelId));
+        }
+        if(!StrUtil.isNullOrEmpty(pageSize)){
+            psonOrgVo.setPageSize(pageSize);
+        }
+        if(!StrUtil.isNullOrEmpty(pageNo)){
+            psonOrgVo.setPageNo(pageNo);
+        }
+        Page page = orgPersonRelService.selectOrgRelsByPerIdPage(psonOrgVo);
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setMessage("成功");
+        ret.setData(page);
+        return ret;
+    }
+
+
+
 
 
     @ApiOperation(value = "查询人员组织信息翻页-web", notes = "查询人员组织信息翻页")

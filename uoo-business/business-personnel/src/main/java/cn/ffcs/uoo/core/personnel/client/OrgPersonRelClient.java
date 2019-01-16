@@ -46,4 +46,11 @@ public interface OrgPersonRelClient {
     public Object deletePsnRel(@RequestBody PsonOrgVo psonOrgVo);
 
 
+
+    @RequestMapping(value = "/orgPersonRel/getPerRelsPage", method = RequestMethod.GET, headers = {"Content-Type=application/json"})
+    public ResponseResult<Page<PsonOrgVo>> getPerRelsPage(@RequestParam("orgTreeId")Long orgTreeId,
+                                                          @RequestParam("personnelId")Long personnelId,
+                                                          @RequestParam("pageSize")Integer pageSize,
+                                                          @RequestParam("pageNo")Integer pageNo,
+                                                          @RequestParam("accout")String accout);
 }

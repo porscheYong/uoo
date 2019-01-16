@@ -18,10 +18,10 @@ $(function (){
                         "preventDuplicates": true,
                         "preventManyTimes": true,
                         "hideDuration": "1"
-                    };  
-})
-
-draw(show_num);
+                    };
+});
+$('input').placeholder();
+// draw(show_num);
 
 $("#canvas").on('click',function(){
     draw(show_num);
@@ -104,6 +104,7 @@ function check(){
                     isError = 1;
                     $(".code").show();
                     $("#canvas").show();
+                    draw(show_num);
                 }
             },
             error:function(){

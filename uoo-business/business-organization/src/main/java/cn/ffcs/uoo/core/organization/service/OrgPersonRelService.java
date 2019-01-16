@@ -57,6 +57,12 @@ public interface OrgPersonRelService extends IService<OrgPersonRel> {
      */
     public Page<PsonOrgVo> selectPerOrgRelPage(PsonOrgVo psonOrgVo);
     /**
+     * 获取人员翻页
+     * @param psonOrgVo
+     * @return
+     */
+    public Page<PsonOrgVo> selectOrgRelsByPerIdPage(PsonOrgVo psonOrgVo);
+    /**
      * 获取全量人员组织翻页
      * @param psonOrgVo
      * @return
