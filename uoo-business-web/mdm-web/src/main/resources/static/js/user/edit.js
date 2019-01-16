@@ -47,44 +47,31 @@ function getYesNo () {
     })
 }
 function getEduInfo(){
-    $.ajax({
-        url:'/edu/getTbEduPage',
-        data:{personnelId:personnelId,pageSize:11111111,pageNo:1},
-        dataType:'json',
-        type:'get',
-        success:function(data){
-            personalData.eduInfo=data.data;
-            initEduInfo();
-        }
-    });
+	$http.get('/edu/getTbEduPage', {personnelId:personnelId,pageSize:11111111,pageNo:1}, function (data) {
+		personalData.eduInfo=data;
+        initEduInfo();
+    }, function (err) {
+    	
+    })
 }
 function getJobInfo(){
-    $.ajax({
-        url:'/psnjob/getTbPsnjobPage',
-        data:{personnelId:personnelId,pageSize:11111111,pageNo:1},
-        dataType:'json',
-        type:'get',
-        success:function(data){
-            personalData.jobInfo=data.data;
-            initJobInfo();
-        }
-    });
+	$http.get('/psnjob/getTbPsnjobPage', {personnelId:personnelId,pageSize:11111111,pageNo:1}, function (data) {
+		personalData.jobInfo=data;
+        initJobInfo();
+    }, function (err) {
+
+    })
+    
 }
 
 function getFamilyInfo(){
-    $.ajax({
-        url:'/family/getTbFamilyPage',
-        data:{personnelId:personnelId,pageSize:11111111,pageNo:1},
-        dataType:'json',
-        type:'get',
-        success:function(data){
-            personalData.familyInfo=data.data;
-            initFamilyInfo();
-        },
-        error:function(data){
-            initFamilyInfo();
-        }
-    });
+	$http.get('/family/getTbFamilyPage', {personnelId:personnelId,pageSize:11111111,pageNo:1}, function (data) {
+		personalData.familyInfo=data;
+        initFamilyInfo();
+    }, function (err) {
+
+    })
+     
 
 }
 // 与本人关系
@@ -637,21 +624,10 @@ function addPsonOrg(){
         orgPersonId:$('#orgPersonId').val(),
     };
     psonOrgArr[0]=psonOrg;
-    $.ajax({
-        url:isUpdate?'/orgPersonRel/updateOrgPsn':'/orgPersonRel/addOrgPsn2',
-        type:'post',
-        data:isUpdate?JSON.stringify(psonOrg):JSON.stringify(psonOrgArr),
-        contentType:'application/json',
-        dataType:'json',
-        success:function(data){
-            if(data.state==1000){
-            	toastr.success('操作成功');
-                personalData.currentEditOrgInfo={};
-                getOrgPersonnerList();
-            }else{
-            	toastr.error('操作失败,'+data.message);
-            }
-        }
+    $http.post((isUpdate?'/orgPersonRel/updateOrgPsn':'/orgPersonRel/addOrgPsn2'),(isUpdate?JSON.stringify(psonOrg):JSON.stringify(psonOrgArr)),function(data){
+    	toastr.success('操作成功');
+        personalData.currentEditOrgInfo={};
+        getOrgPersonnerList();
     });
 }
 function addPsonJob(){
@@ -666,23 +642,24 @@ function addPsonJob(){
         personnelId:personnelId,
         psnjobId:psnjobId
     };
-    $.ajax({
-        url:psnjobId.length>0?'/psnjob/updateTbPsnjob':'/psnjob/saveTbPsnjob',
-        type:psnjobId.length>0?'put':'post',
-        data:JSON.stringify(psonJob),
-        contentType:'application/json',
-        dataType:'json',
-        success:function(data){
-            if(data.state==1000){
-            	toastr.success('操作成功');
-                personalData.currentEditJobInfo={};
-
-                getJobInfo();
-            }else{
-            	toastr.error('操作失败,'+data.message);
-            }
-        }
-    });
+    if(psnjobId.length>0){
+    	$http.put((psnjobId.length>0?'/psnjob/updateTbPsnjob':'/psnjob/saveTbPsnjob'),
+        		(JSON.stringify(psonJob)),
+        		function(data){
+        	toastr.success('操作成功');
+            personalData.currentEditJobInfo={};
+            getJobInfo();
+        });
+    }else{
+    	$http.post((psnjobId.length>0?'/psnjob/updateTbPsnjob':'/psnjob/saveTbPsnjob'),
+        		(JSON.stringify(psonJob)),
+        		function(data){
+        	toastr.success('操作成功');
+            personalData.currentEditJobInfo={};
+            getJobInfo();
+        });
+    }
+    
 }
 function addPsonEdu(){
     if(!eduFormValidate.isAllPass()){
@@ -708,22 +685,19 @@ function addPsonEdu(){
         personnelId:personnelId,
         eduId:eduId
     };
-    $.ajax({
-        url:eduId.length>0?'/edu/updateTbEdu':'/edu/saveTbEdu',
-        type:eduId.length>0?'put':'post',
-        data:JSON.stringify(obj),
-        contentType:'application/json',
-        dataType:'json',
-        success:function(data){
-            if(data.state==1000){
-            	toastr.success('操作成功');
-                personalData.currentEditEduInfo={};
-                getEduInfo();
-            }else{
-            	toastr.error('操作失败,'+data.message);
-            }
-        }
-    });
+    if(eduId.length>0){
+    	$http.put('/edu/updateTbEdu',JSON.stringify(obj),function(data){
+    		toastr.success('操作成功');
+            personalData.currentEditEduInfo={};
+            getEduInfo();
+    	});
+    }else{
+    	$http.post('/edu/saveTbEdu',JSON.stringify(obj),function(data){
+    		toastr.success('操作成功');
+            personalData.currentEditEduInfo={};
+            getEduInfo();
+    	});
+    }
 }
 function addFamily(){
     if (!familyFormValidate.isAllPass())
@@ -739,22 +713,12 @@ function addFamily(){
         personnelId:personnelId,
         familyId:familyId
     };
-    $.ajax({
-        url:familyId.length>0?'/family/updateTbFamily':'/family/saveTbFamily',
-        type:familyId.length>0?'post':'post',
-        data:JSON.stringify(obj),
-        contentType:'application/json',
-        dataType:'json',
-        success:function(data){
-            if(data.state==1000){
-            	toastr.success('操作成功');
-                personalData.currentEditFamilyInfo={};
-                getFamilyInfo();
-            }else{
-            	toastr.error('操作失败,'+data.message);
-            }
-        }
+    $http.post((familyId.length>0?'/family/updateTbFamily':'/family/saveTbFamily'),JSON.stringify(obj),function(data){
+    	toastr.success('操作成功');
+        personalData.currentEditFamilyInfo={};
+        getFamilyInfo();
     });
+     
 }
 function addPsonImg(){
     var isIE=!!window.ActiveXObject;
@@ -881,23 +845,11 @@ function updatePersonnel(){
     updates.tbEamilVoList=tbEamilVoList;
 
     updates.image = psnImageId;
-
-    $.ajax({
-        url:'/personnel/updatePersonnel',
-        type:'put',
-        data:JSON.stringify(updates),
-
-        contentType:'application/json',
-        dataType:'json',
-        success:function(data){
-            if(data.state==1000){
-            	toastr.success('操作成功');
-                getOrgPersonnerList();
-            }else{
-            	toastr.error('操作失败,'+data.message);
-            }
-        }
+    $http.put('/personnel/updatePersonnel',JSON.stringify(updates),function(data){
+    	toastr.success('操作成功');
+        getOrgPersonnerList();
     });
+     
 }
 function addEmailInput(){
     var mh="<li>";
@@ -928,18 +880,9 @@ function deleteJob(id){
         btn: ['确定','取消']
     }, function(index, layero){
         parent.layer.close(index);
-        $.ajax({
-            url:'/psnjob/delTbPsnjob?psnjobId='+id,
-            type:'DELETE',
-            dataType:'json',
-            success:function(data){
-                if(data.state==1000){
-                	toastr.success('操作成功');
-                    getJobInfo();
-                }else{
-                	toastr.error('操作失败,'+data.message);
-                }
-            }
+        $http.delet('/psnjob/delTbPsnjob?psnjobId='+id,{},function(data){
+        	toastr.success('操作成功');
+            getJobInfo();
         });
     }, function(){
 
@@ -994,18 +937,9 @@ function deleteEdu(id){
         btn: ['确定','取消']
     }, function(index, layero){
         parent.layer.close(index);
-        $.ajax({
-            url:'/edu/delTbEdu?eduId='+id,
-            type:'DELETE',
-            dataType:'json',
-            success:function(data){
-                if(data.state==1000){
-                	toastr.success('操作成功');
-                    getEduInfo();
-                }else{
-                	toastr.error('操作失败'+data.message);
-                }
-            }
+        $http.delet('/edu/delTbEdu',{'eduId':id},function(data){
+        	toastr.success('操作成功');
+        	getEduInfo();
         });
     }, function(){
 
@@ -1019,18 +953,9 @@ function deleteFamily(id){
         btn: ['确定','取消']
     }, function(index, layero){
         parent.layer.close(index);
-        $.ajax({
-            url:'/family/delTbFamily?familyId='+id,
-            type:'DELETE',
-            dataType:'json',
-            success:function(data){
-                if(data.state==1000){
-                	toastr.success('操作成功');
-                    getFamilyInfo();
-                }else{
-                	toastr.error('操作失败,'+data.message);
-                }
-            }
+        $http.delet('/family/delTbFamily?familyId='+id,{},function(data){
+        	toastr.success('操作成功');
+        	getFamilyInfo();
         });
     }, function(){
 

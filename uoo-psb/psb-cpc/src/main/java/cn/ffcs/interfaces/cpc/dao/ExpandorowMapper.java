@@ -13,4 +13,10 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface ExpandorowMapper extends BaseMapper<Expandorow> {
 
+    /**
+     * 重写selectOne方法
+     * @param expandorow
+     * @return
+     */
+    Expandorow selectOneExpandRow(Expandorow expandorow);
 }

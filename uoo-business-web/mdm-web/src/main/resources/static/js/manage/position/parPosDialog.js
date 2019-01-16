@@ -6,8 +6,19 @@ function locationBeforeClick (treeId, treeNode, clickFlag) {
   return false;
 }
 
+function filter (treeId, parentNode, childNodes) {
+    return childNodes.data
+}
+
 function getLocation() {
     var treeSetting = {
+        async: {
+            enable: true,
+            url: "/sysPosition/getPositionTree?isSync=false",
+            autoParam: ["id"],
+            type: "get",
+            dataFilter: filter
+        },
         view: {
             showLine: false,
             showIcon: false,
@@ -35,7 +46,7 @@ function getLocation() {
         }
     };
     $http.get('/sysPosition/getPositionTree', {
-        isSync:true
+        isSync:false
     }, function (data) {
         $.fn.zTree.init($("#locationTree"), treeSetting, data);
         autoCheck();

@@ -38,7 +38,10 @@
   </sql>
 
   <insert id="insertChannel" parameterType="cn.ffcs.interfaces.cpc.pojo.TbOrg">
-    INSERT INTO TB_ORG
+      <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="orgId">
+          SELECT SEQ_TB_ORG_ID.NEXTVAL as orgId from DUAL
+      </selectKey>
+      INSERT INTO TB_ORG
   (ORG_ID,
    LOC_ID,
    AREA_CODE_ID,
@@ -51,17 +54,16 @@
    CREATE_DATE,
    STATUS_DATE)
 VALUES
-  (SEQ_TB_ORG_ID.NEXTVAL,
+  (#{orgId},
    '8330000',
-   #{AREACODEID},
-   #{ORGNAME},
-   1000000000 + SEQ_ORG_CODE.NEXTVAL,
-   #{ORGNAME},
+   #{areaCodeId},
+   #{orgName},
+      (1000000000 + SEQ_ORG_CODE.NEXTVAL),
+   #{orgName},
    '2',
    SYS_GUID(),
    '1000',
    SYSDATE,
-   SYSDATE);
+   SYSDATE)
   </insert>
-
 </mapper>

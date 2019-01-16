@@ -47,7 +47,7 @@ public class Expandovalue extends Model<Expandovalue> {
      * 行标识
      */
     @TableField("ROW_ID")
-    private Long _rowId;
+    private Long rowId;
     /**
      * 业务记录标识
      */
@@ -92,11 +92,11 @@ public class Expandovalue extends Model<Expandovalue> {
     public Expandovalue() {
     }
 
-    public Expandovalue(String resourceId, Long tableId, Long columnId, Long _rowId, String recordId, String data, String statusCd, Date createDate) {
+    public Expandovalue(String resourceId, Long tableId, Long columnId, Long rowId, String recordId, String data, String statusCd, Date createDate) {
         this.resourceId = resourceId;
         this.tableId = tableId;
         this.columnId = columnId;
-        this._rowId = _rowId;
+        this.rowId = rowId;
         this.recordId = recordId;
         this.data = data;
         this.statusCd = statusCd;
@@ -136,11 +136,11 @@ public class Expandovalue extends Model<Expandovalue> {
     }
 
     public Long getRowId() {
-        return _rowId;
+        return rowId;
     }
 
     public void setRowId(Long rowId) {
-        this._rowId = rowId;
+        this.rowId = rowId;
     }
 
     public String getRecordId() {
@@ -219,7 +219,7 @@ public class Expandovalue extends Model<Expandovalue> {
         ", resourceId=" + resourceId +
         ", tableId=" + tableId +
         ", columnId=" + columnId +
-        ", rowId=" + _rowId +
+        ", rowId=" + rowId +
         ", recordId=" + recordId +
         ", data=" + data +
         ", statusCd=" + statusCd +

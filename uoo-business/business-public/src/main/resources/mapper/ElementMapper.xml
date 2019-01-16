@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.resource.dao.ElementMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.resource.entity.Element">
+        <id column="ELEMENT_ID" property="elementId" />
+        <result column="MENU_ID" property="menuId" />
+        <result column="ELEMENT_NAME" property="elementName" />
+        <result column="ELEMENT_TYPE" property="elementType" />
+        <result column="ELEMENT_DESC" property="elementDesc" />
+        <result column="CONTROL_FLAG" property="controlFlag" />
+        <result column="URL_ADDR" property="urlAddr" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="STATUS_DATE" property="statusDate" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ELEMENT_ID, MENU_ID, ELEMENT_NAME, ELEMENT_TYPE, ELEMENT_DESC, CONTROL_FLAG, URL_ADDR, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
+    </sql>
+
+    <select id="getId" resultType="Integer">
+        SELECT SEQ_TB_ELEMENT_ID.nextval FROM dual
+    </select>
+</mapper>

@@ -364,11 +364,7 @@ function convertToFile(base64Codes){
         processData : false,         // 告诉jQuery不要去处理发送的数据
         contentType : false,        // 告诉jQuery不要去设置Content-Type请求头
         success:function(data){
-            toastr.success(data.message);
-            psnImageId = data.data.psnImageId.toString();
-        },
-        error:function(data){
-            console.log(data);
+            psnImageId = data.data.psnImageId();
         }
     });
 }

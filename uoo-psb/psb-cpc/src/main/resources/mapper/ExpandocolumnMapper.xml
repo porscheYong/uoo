@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.interfaces.cpc.dao.ExpandocolumnMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.interfaces.cpc.pojo.Expandocolumn">
+        <id column="COLUMN_ID" property="columnId" />
+        <result column="TABLE_ID" property="tableId" />
+        <result column="COLUMN_NAME" property="columnName" />
+        <result column="COLUMN_CNNAME" property="columnCnname" />
+        <result column="COLUM_TYPE" property="columType" />
+        <result column="COL_LENGHT" property="colLenght" />
+        <result column="COL_NULLABLE" property="colNullable" />
+        <result column="COL_DESC" property="colDesc" />
+        <result column="VER_NUM" property="verNum" />
+        <result column="DEFAULT_VALUE" property="defaultValue" />
+        <result column="SORT" property="sort" />
+        <result column="EDITABLE" property="editable" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="LABEL" property="label" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        COLUMN_ID, TABLE_ID, COLUMN_NAME, COLUMN_CNNAME, COLUM_TYPE, COL_LENGHT, COL_NULLABLE, COL_DESC, VER_NUM, DEFAULT_VALUE, SORT, EDITABLE, STATUS_CD, CREATE_DATE, CREATE_USER, LABEL, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+</mapper>

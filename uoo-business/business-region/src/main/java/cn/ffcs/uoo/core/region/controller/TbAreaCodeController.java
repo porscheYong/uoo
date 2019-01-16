@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.controller.BaseController;
@@ -93,6 +94,10 @@ public class TbAreaCodeController extends BaseController {
         result.setTotalRecords(countListAreaCode);
         result.setPageNo(pageNo);
         result.setPageSize(pageSize);
+        Page<AreaCodeVO> pages=new Page<>(pageNo,pageSize);
+        pages.setTotal(countListAreaCode);
+        pages.setRecords(page);
+        result.setData(pages);
         return result;
     }
     

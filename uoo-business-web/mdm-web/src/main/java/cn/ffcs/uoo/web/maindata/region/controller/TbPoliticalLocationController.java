@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -86,7 +87,7 @@ public class TbPoliticalLocationController  {
     //@UooLog(value = "新增行政区域", key = "addPoliticalLocation")
     @PostMapping("addPoliticalLocation")
     //@Transactional
-    public ResponseResult addPoliticalLocation(TbPoliticalLocation polLoc) {
+    public ResponseResult addPoliticalLocation(@RequestBody TbPoliticalLocation polLoc) {
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         polLoc.setCreateUser(currentLoginUser.getUserId());
@@ -99,7 +100,7 @@ public class TbPoliticalLocationController  {
     //@UooLog(value = "修改行政区域", key = "updatePoliticalLocation")
     @PostMapping("updatePoliticalLocation")
     //@Transactional
-    public ResponseResult updatePoliticalLocation(TbPoliticalLocation polLoc) {
+    public ResponseResult updatePoliticalLocation(@RequestBody TbPoliticalLocation polLoc) {
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         polLoc.setUpdateUser(currentLoginUser.getUserId());
@@ -112,7 +113,7 @@ public class TbPoliticalLocationController  {
     //@UooLog(value = "删除行政区域", key = "deletePoliticalLocation")
     @PostMapping("deletePoliticalLocation")
     //@Transactional(rollbackFor=Exception.class)
-    public ResponseResult deletePoliticalLocation(TbPoliticalLocation polLoc) {
+    public ResponseResult deletePoliticalLocation(@RequestBody TbPoliticalLocation polLoc) {
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         polLoc.setUpdateUser(currentLoginUser.getUserId());

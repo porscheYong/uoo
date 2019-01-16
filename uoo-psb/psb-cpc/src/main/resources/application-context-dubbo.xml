@@ -7,14 +7,22 @@
  http://code.alibabatech.com/schema/dubbo        
  http://code.alibabatech.com/schema/dubbo/dubbo.xsd         ">
 
-    <dubbo:application name="33.1407"  />
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:dubbo.properties" />
+    </bean>
 
-    <dubbo:registry address="dubbo://134.96.159.11:8033" />
+    <dubbo:application name="33.1089"  />
 
+    <dubbo:protocol name="dubbo" port="${port}"></dubbo:protocol>
+
+    <!--测试地址-->
+    <dubbo:registry protocol="dubbo" address="dubbo://134.96.253.65:8001" check="false"/>
+    <!--生产地址 -->
+    <!--<dubbo:registry protocol="dubbo" address="dubbo://134.96.249.149:8001" check="false"/> -->
     <bean id="cpcChannel" class="cn.ffcs.interfaces.cpc.service.impl.CpcChannelServiceImpl" />
-
-    <dubbo:service interface="cn.ffcs.interfaces.cpc.service.CpcChannelService"  timeout="5000" version="1.0" ref="cpcChannel">
-        <dubbo:method name="handle" servicecode="33.1407.handle" />
+    <dubbo:service interface="cn.ffcs.interfaces.cpc.service.CpcChannelService"  timeout="60000" version="1.0" ref="cpcChannel">
+        <dubbo:method name="handle" servicecode="33.1089.handle" />
     </dubbo:service>
 
 </beans>

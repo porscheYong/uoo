@@ -39,7 +39,7 @@ function filter (treeId, parentNode, childNodes) {
 }
 
 function refreshResult () {
-    var url = "list.html?positionId=" + posId + "&posName=" + posName;
+    var url = "list.html?positionCode=" + posId + "&posName=" + posName;
     $('#posFrame').attr("src",url);
 }
 

@@ -21,26 +21,16 @@ var setting = {
 	}
 };
 $(document).ready(function() {
-
-	$.ajax({
-		url : '/region/commonRegion/getTreeCommonRegion',
-		dataType : 'json',
-		type : 'get',
-		success : function(data) {
-			loading.screenMaskDisable('container');
-			if (data.state == 1000) {
-				var ztree=$.fn.zTree.init($("#standardTree"), setting, data.data);
-				var rots=ztree.getNodes();
-				if(rots.length>0){
-					ztree.selectNode(rots[0]);
-					zTreeOnClick(null,null,rots[0]);
-				}
-			} else {
-				toastr.error('加载公共区域树失败，请重试');
-				 
-			}
+	$http.get('/region/commonRegion/getTreeCommonRegion',{},function(data) {
+		loading.screenMaskDisable('container');
+		var ztree=$.fn.zTree.init($("#standardTree"), setting, data);
+		var rots=ztree.getNodes();
+		if(rots.length>0){
+			ztree.selectNode(rots[0]);
+			zTreeOnClick(null,null,rots[0]);
 		}
 	});
+	 
 	loadTypeArr();
 	/*$('#editBtn').bind('click', editPolLoc);
 	$('#saveBtn').bind('click', savePolLoc);
@@ -103,17 +93,8 @@ function searchLeftTree(){
 	}
 }
 function loadTypeArr(){
-	$.ajax({
-		url:'/tbDictionaryItem/getList/REGION_TYPE',
-		dataType:"json",
-		type:'get',
-		success:function(data){
-			if(data.state==1000){
-				typeArray=data.data;
-			}else{
-				toastr.error('加载区域类型失败，请刷新重试');
-			}
-		}
+	$http.get('/tbDictionaryItem/getList/REGION_TYPE',{},function(data){
+		typeArray=data
 	});
 }
 function zTreeOnClick(event, treeId, treeNode) {

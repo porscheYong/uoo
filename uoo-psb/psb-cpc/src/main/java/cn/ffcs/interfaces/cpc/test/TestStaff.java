@@ -17,7 +17,32 @@ public class TestStaff {
 
     @Test
     public void test () throws Exception {
-        String json = "{\"TransactionID\":\"1000000045201901078888457736\",\"CHANNEL\":{\"CHANNEL_NBR\":\"3301063199917\",\"CHANNEL_NAME\":\"西湖梦途丰谭路专柜\",\"CHANNEL_CLASS\":\"10\",\"CHN_TYPE_CD\":\"100202\",\"CHANNEL_TYPE_CD\":\"100000\",\"COMMON_REGION_ID\":\"8330106\",\"STATUS_CD\":\"1000\",\"STATUS_DATE\":\"20190109151622\",\"DESCRIPTION\":null,\"ACTION\":\"MOD\"},\"STAFF\":{\"SALES_CODE\":\"Y99999999\",\"STAFF_CODE\":\"Y99999999\",\"ACCOUNT\":\"999999\",\"STAFF_NAME\":\"测试yxg123\",\"CERT_TYPE\":\"1\",\"CERT_NUMBER\":\"330702197911041225\",\"MOBILE_PHONE\":\"15372128883\",\"E_MAIL\":null,\"COMMON_REGION_ID\":\"8330106\",\"STAFF_DESC\":null,\"STATUS_CD\":\"1000\",\"STATUS_DATE\":null,\"CREATE_DATE\":null,\"ACTION\":\"MOD\"}}";
-        System.out.println(cpcChannelService.handle(json));
+        String json = "{\n" +
+                "\t\"TransactionID\": \"1000000045201901078888457736\",\n" +
+                "\t\"CHANNEL\": {\n" +
+                "\t\t\"CHANNEL_NBR\": \"3301063199917\",\n" +
+                "\t\t\"ACTION\": \"DEL\"\n" +
+                "\t},\n" +
+                "\t\"OPERATORS\": {\n" +
+                "\t\t\"OPERATORS_NBR\": \"J33010757714\",\n" +
+                "\t\t\"ACTION\": \"MOD\"\n" +
+                "\t},\n" +
+                "\t\"STAFF\": {\n" +
+                "\t\t\"STAFF_CODE\": \"Y99999999\",\n" +
+                "\t\t\"ACTION\": \"DEL\"\n" +
+                "\t},\n" +
+                "\t\"CHANNEL_OPERATORS_RELAS\": [{\n" +
+                "\t\t\"CHANNEL_NBR\": \"3301063199917\",\n" +
+                "\t\t\"OPERATORS_NBR\": \"J33010757714\",\n" +
+                "\t\t\"ACTION\": \"DEL\"\n" +
+                "\t}],\n" +
+                "\t\"STAFF_CHANNEL_RELAS\": [{\n" +
+                "\t\t\"SALES_CODE\": \"Y99999999\",\n" +
+                "\t\t\"CHANNEL_NBR\": \"3301063199917\",\n" +
+                "\t\t\"ACTION\": \"DEL\"\n" +
+                "\t}]\n" +
+                "\n" +
+                "}";
+        System.out.println("result : " + cpcChannelService.handle(json));
     }
 }
