@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.web.maindata.organization.controller;
 
 
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.organization.dto.PsonOrgVo;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgContactRelService;
@@ -39,7 +41,7 @@ public class OrgContactRelController {
 //        return orgContactRelService.getOrgContactPage(psonOrgVo);
 //    }
 
-
+    @OperateLog(type=OperateType.SELECT,module="组织联系人模块",methods="获取组织联系人",desc="")
     @ApiOperation(value = "获取组织联系人-web", notes = "获取组织联系人")
     @ApiImplicitParams({
     })

@@ -33,6 +33,7 @@ import org.springframework.stereotype.Controller;
 import sun.swing.StringUIClientPropertyKey;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -124,6 +125,8 @@ public class OrgController extends BaseController {
     @Autowired
     private ModifyHistoryService modifyHistoryService;
 
+    @Autowired
+    private OrgRelController orgRelController;
 
     @ApiOperation(value = "新增组织信息-web", notes = "新增组织信息")
     @UooLog(value = "新增组织信息", key = "addOrg")
@@ -1628,6 +1631,57 @@ public class OrgController extends BaseController {
         ret.setData(listMap);
         return ret;
     }
+
+
+    @ApiOperation(value = "新增标准树组织", notes = "新增标准树组织")
+    @UooLog(value = "新增标准树组织", key = "addBaseOrg")
+    @RequestMapping(value = "/addBaseOrg", method = RequestMethod.POST)
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<String> addBaseOrg(@RequestBody List<TreeNodeVo> treeNodeVos) throws IOException {
+        ResponseResult<String> ret = new ResponseResult<String>();
+        String errorStr = new String();
+        for(TreeNodeVo vo : treeNodeVos){
+            ResponseResult<String> delret = new ResponseResult<String>();
+            ResponseResult<TreeNodeVo> addret = new ResponseResult<TreeNodeVo>();
+            if("delete".equals(vo.getOper())){
+                delret = deleteOrg(vo.getId(),"1",null,null);
+                if(delret.getState()==ResponseResult.PARAMETER_ERROR){
+                    errorStr = "组织:"+vo.getName()+",删除失败["+delret.getMessage()+"]"+"\n";
+                }
+            }else if("add".equals(vo.getOper())){
+                Org org = new Org();
+                org.setOrgId(new Long(vo.getId()));
+                org.setSupOrgId(new Long(vo.getPid()));
+                org.setOrgTreeId(1L);
+                addret = orgRelController.addOrgRel(org);
+                if(addret.getState()==ResponseResult.PARAMETER_ERROR){
+                    if(addret.getState()==ResponseResult.PARAMETER_ERROR){
+                        errorStr = "组织:"+vo.getName()+",新增失败["+addret.getMessage()+"]"+"\n";
+                    }
+                }
+            }
+
+        }
+        if(!StrUtil.isNullOrEmpty(errorStr)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage(errorStr);
+        }else{
+            ret.setState(ResponseResult.STATE_OK);
+            ret.setMessage(errorStr);
+        }
+        return ret;
+    }
+
+//    @ApiOperation(value = "获取BSS组织", notes = "获取BSS组织")
+////    @UooLog(value = "获取BSS组织", key = "getBssOrg")
+////    @RequestMapping(value = "/getBssOrg", method = RequestMethod.GET)
+////    @Transactional(rollbackFor = Exception.class)
+////    public ResponseResult<Page<TreeNodeVo>> getBssOrg() throws IOException {
+////        ResponseResult<Page<TreeNodeVo>> ret = new ResponseResult<List<TreeNodeVo>>();
+////        orgService.getBssOrg();
+////        return ret;
+////    }
+
 
 }
 

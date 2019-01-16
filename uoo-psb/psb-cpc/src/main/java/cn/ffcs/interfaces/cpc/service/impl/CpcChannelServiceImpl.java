@@ -119,14 +119,15 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             return;
         }
         String commoinRegionId = String.valueOf(channel.get("COMMON_REGION_ID"));
-        String orgName = String.valueOf(channel.get("CHANNEL_NAME"));
-        String action = String.valueOf(channel.get("ACTION"));
-        String channelNbr = String.valueOf(channel.get("CHANNEL_NBR"));
-        String chnTypeCd = String.valueOf(channel.get("CHN_TYPE_CD"));
-        if (StringUtils.isEmpty(commoinRegionId) || StringUtils.isEmpty(orgName) || StringUtils.isEmpty(action)
-                || StringUtils.isEmpty(channelNbr) || StringUtils.isEmpty(chnTypeCd)) {
+        String orgName = (String) channel.get("CHANNEL_NAME");
+        String action = (String) channel.get("ACTION");
+        String channelNbr = (String) channel.get("CHANNEL_NBR");
+        String chnTypeCd = (String) channel.get("CHN_TYPE_CD");
+        boolean handleFlag = StringUtils.isEmpty(commoinRegionId) || StringUtils.isEmpty(orgName)
+                || StringUtils.isEmpty(action) || StringUtils.isEmpty(channelNbr) || StringUtils.isEmpty(chnTypeCd);
+        if (handleFlag) {
             rsMap.put("result_code", "1000");
-            rsMap.put("message", "必要信息为空");
+            rsMap.put("message", "渠道必要信息为空");
             return;
 
         }
@@ -341,9 +342,9 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             return;
         }
         // 检查必要信息
-        String salesCode = String.valueOf(staffChannelRel.get("SALES_CODE"));
-        String channelNBR = String.valueOf(staffChannelRel.get("CHANNEL_NBR"));
-        String action = String.valueOf(staffChannelRel.get("ACTION"));
+        String salesCode = (String) staffChannelRel.get("SALES_CODE");
+        String channelNBR = (String) staffChannelRel.get("CHANNEL_NBR");
+        String action = (String) staffChannelRel.get("ACTION");
         if (StringUtils.isEmpty(salesCode) || StringUtils.isEmpty(channelNBR) || StringUtils.isEmpty(action)) {
             rsMap.put("result_code", "1000");
             rsMap.put("message", "必要信息为空");
@@ -524,17 +525,21 @@ public class CpcChannelServiceImpl implements CpcChannelService {
 
             // 删除扩展值
             List<Expandovalue> expandovalues = expandovalueMapper.selectExpandovalueList(expandovalue);
-            for (Expandovalue value : expandovalues) {
-                value.setStatusCd(HandleChannelConstant.INVALID_STATE);
-                expandovalueMapper.updateById(value);
+            if (null != expandovalues && expandovalues.size() > 0) {
+                for (Expandovalue value : expandovalues) {
+                    value.setStatusCd(HandleChannelConstant.INVALID_STATE);
+                    expandovalueMapper.updateById(value);
+                }
             }
 
             // 删除组织
             TbOrg tbOrg = tbOrgMapper.selectById(Long.valueOf(expandovalue.getRecordId()));
-            tbOrg.setStatusCd(HandleChannelConstant.INVALID_STATE);
-            tbOrg.setUpdateDate(new Date());
-            tbOrg.setStatusDate(new Date());
-            tbOrgMapper.updateById(tbOrg);
+            if (null != tbOrg) {
+                tbOrg.setStatusCd(HandleChannelConstant.INVALID_STATE);
+                tbOrg.setUpdateDate(new Date());
+                tbOrg.setStatusDate(new Date());
+                tbOrgMapper.updateById(tbOrg);
+            }
 
             // 删除组织类别
             List<TbOrgOrgtypeRel> orgOrgtypeRels = tbOrgOrgtypeRelMapper.selectList(new EntityWrapper<TbOrgOrgtypeRel>().
@@ -548,7 +553,6 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                     tbOrgOrgtypeRelMapper.updateById(orgOrgtypeRel);
                 }
             }
-
 
         }
 

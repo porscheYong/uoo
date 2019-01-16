@@ -38,4 +38,8 @@ public class ListAcctOrgVo {
      * 组织树名称
      */
     private String orgTreeName;
+    /**
+     * 关系类型
+     */
+    private String relType;
 }

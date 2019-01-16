@@ -4,6 +4,7 @@ import cn.ffcs.uoo.core.personnel.constant.BaseUnitConstants;
 import cn.ffcs.uoo.core.personnel.constant.EumPersonnelResponseCode;
 import cn.ffcs.uoo.core.personnel.entity.TbFamily;
 import cn.ffcs.uoo.core.personnel.dao.TbFamilyMapper;
+import cn.ffcs.uoo.core.personnel.service.ModifyHistoryService;
 import cn.ffcs.uoo.core.personnel.service.TbFamilyService;
 import cn.ffcs.uoo.core.personnel.service.TbPersonnelService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
@@ -29,6 +30,9 @@ import java.util.Map;
 @Service
 public class TbFamilyServiceImpl extends ServiceImpl<TbFamilyMapper, TbFamily> implements TbFamilyService {
 
+    @Autowired
+    private ModifyHistoryService modifyHistoryService;
+
     @Override
     public void save(TbFamily tbFamily){
         baseMapper.save(tbFamily);
@@ -48,6 +52,7 @@ public class TbFamilyServiceImpl extends ServiceImpl<TbFamilyMapper, TbFamily> i
     public Object saveTbFamily(TbFamily tbFamily) {
         tbFamily.setFamilyId(this.getId());
         if(retBool(baseMapper.insert(tbFamily))){
+            //modifyHistoryService.insertModifyHistory(tbFamily, tbFamily.getUpdateUser());
             return ResultUtils.success(tbFamily.getPersonnelId());
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
@@ -56,6 +61,8 @@ public class TbFamilyServiceImpl extends ServiceImpl<TbFamilyMapper, TbFamily> i
     @Override
     public Object updateTbFamily(TbFamily tbFamily) {
         if(retBool(baseMapper.updateById(tbFamily))){
+            TbFamily oldTbFamily = this.getFamilyById(tbFamily.getFamilyId());
+            //modifyHistoryService.updateModifyHistory(oldTbFamily, tbFamily, tbFamily.getUpdateUser());
             return ResultUtils.success(tbFamily.getPersonnelId());
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
@@ -70,6 +77,7 @@ public class TbFamilyServiceImpl extends ServiceImpl<TbFamilyMapper, TbFamily> i
         tbFamily.setStatusDate(new Date());
         if(retBool(baseMapper.updateById(tbFamily))){
             TbFamily family = getFamilyById(familyId);
+            //modifyHistoryService.deleteModifyHistory(family, userId);
             return ResultUtils.success(family.getPersonnelId());
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
