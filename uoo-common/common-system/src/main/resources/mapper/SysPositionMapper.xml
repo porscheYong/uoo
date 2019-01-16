@@ -71,7 +71,8 @@
           AND A.ROLE_CODE = B.ROLE_CODE AND A.POSITION_CODE=C.POSITION_CODE) EXTFIELD1,
           (SELECT DECODE(COUNT(1),0,0,1) FROM SYS_POSITION A WHERE A.STATUS_CD='1000' AND A.PARENT_POSITION_CODE=C.POSITION_CODE ) isParent
            FROM SYS_POSITION C
-        WHERE C.STATUS_CD = '1000' start with C.POSITION_CODE is null connect  by C.POSITION_CODE = c.PARENT_POSITION_CODE
+        WHERE C.STATUS_CD = '1000'
+      <!--  start with C.POSITION_CODE is null connect  by C.POSITION_CODE = c.PARENT_POSITION_CODE -->
     </select>
 
     <select id="getPositionRelPage" resultType="cn.ffcs.uoo.system.vo.SysPositionVo">

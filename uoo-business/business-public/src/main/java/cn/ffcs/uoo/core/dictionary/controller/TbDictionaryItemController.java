@@ -173,9 +173,6 @@ public class TbDictionaryItemController extends BaseController {
         list = tbDictionaryItemService.selectDicItemListByDicName("YES_NO");
         dictionaryListVo.setYES_NO(list);
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("YES_NO");
-        dictionaryListVo.setYES_NO(list);
-
         list = tbDictionaryItemService.selectDicItemListByDicName("RULE_OPERATOR");
         dictionaryListVo.setRULE_OPERATOR(list);
 
@@ -271,6 +268,9 @@ public class TbDictionaryItemController extends BaseController {
 
         list = tbDictionaryItemService.selectDicItemListByDicName("ACCT_LEVEL");
         dictionaryListVo.setACCT_LEVEL(list);
+
+        list = tbDictionaryItemService.selectDicItemListByDicName("REL_TYPE");
+        dictionaryListVo.setREL_TYPE(list);
 
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("请求成功");
