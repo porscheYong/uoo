@@ -127,7 +127,7 @@ function addOrg () {
     //组织职位
     var sysPositionVos = [];
     for (var i = 0; i < postList.length; i++) {
-        sysPositionVos.push({positionId: postList[i].id});
+        sysPositionVos.push({positionCode: postList[i].id});
     }
 
     $http.post('/sysOrganization/addOrg', JSON.stringify({

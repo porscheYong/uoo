@@ -1,6 +1,7 @@
 var orgId = getQueryString('id');
 var userId = getQueryString('userId');
 var orgName = getQueryString('name');
+var orgFlag = ~~getQueryString('orgFlag');
 var userData = {}; //用户详情
 var sysUserDeptPositionVos = [];
 var sysOrgPostObj = {};
@@ -591,6 +592,7 @@ function updateSysUser(){
         email: email,
         userCode: userCode
     }), function () {
+        getSysUerInfo();
         loading.screenMaskDisable('container');
         toastr.success('更新成功！');
     }, function () {
@@ -611,7 +613,7 @@ function deleteSysUser(){
             userId: userData.userId,
             userCode: userData.userCode
         }), function () {
-            window.location.replace("list.html?id=" + orgId + "&name=" + encodeURI(orgName));
+            window.location.replace("list.html?id=" + orgId + '&orgFlag=' + orgFlag + "&name=" + encodeURI(orgName));
             loading.screenMaskDisable('container');
             toastr.success('删除成功！');
         }, function () {

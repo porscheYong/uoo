@@ -1,5 +1,6 @@
 var orgId = getQueryString('id'); //组织ID
 var orgName = getQueryString('name');
+var orgFlag = ~~getQueryString('orgFlag');
 var sysUserDeptPositionVos = [];
 var psonOrgVoList = [],
     orgList = [],
@@ -85,9 +86,7 @@ function getIdCardInfo () {
             $("#gender").val('1');
         else
             $("#gender").val('2');
-        seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-            $('#gender').selectMatch();
-        });
+        $('#gender').selectMatch();
         $('#birthday').val(getBirthdayByCard(certNo));
     }
 }
@@ -200,24 +199,18 @@ function editOrgPost (index) {
         var orgEditHtml = orgEditTemplate({orgPostData: {}});
         $('#orgEdit').html(orgEditHtml);
     }
-    seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
-        var orgEditForm = $('#orgEdit');
-        orgValidate = new Validate(orgEditForm);
-        orgValidate.immediate();
-        orgValidate.isAllPass();
-        orgEditForm.find(':input').each(function () {
-            $(this).hover(function () {
-                orgValidate.isPass($(this));
-            });
+    var orgEditForm = $('#orgEdit');
+    orgValidate = new Validate(orgEditForm);
+    orgValidate.immediate();
+    orgValidate.isAllPass();
+    orgEditForm.find(':input').each(function () {
+        $(this).hover(function () {
+            orgValidate.isPass($(this));
         });
     });
 }
 //新增/修改 归属组织职位信息
 function addOrgList () {
-    seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
-        var orgEditForm = $('#orgEdit');
-        orgValidate = new Validate(orgEditForm);
-    });
     if (!orgValidate.isAllPass())
         return;
     if (editFlag) {
@@ -270,8 +263,16 @@ function getOrg() {
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
             orgList = checkNode;
-            $('#orgName').val(orgList[0].name);
+            if (orgList.length > 0) {
+                $('#orgName').val(orgList[0].name);
+            }
+            else {
+                $('#orgName').val('');
+                postList = [];
+                $('#postName').val('');
+            }
             parent.layer.close(index);
+            orgValidate.isPass($('#orgName'));
         }
     });
 }
@@ -440,7 +441,7 @@ function addSysUser () {
         email: email,
         sysUserDeptPositionVos: sysUserDeptPositionList
     }), function () {
-        window.location.replace("list.html?id=" + orgId + "&name=" + encodeURI(orgName));
+        window.location.replace("list.html?id=" + orgId + '&orgFlag=' + orgFlag + "&name=" + encodeURI(orgName));
         loading.screenMaskDisable('container');
         toastr.success('更新成功！');
     }, function () {
@@ -450,7 +451,7 @@ function addSysUser () {
 
 // 取消新增
 function cancel() {
-    var url = "list.html?id=" + orgId + "&name=" + encodeURI(orgName);
+    var url = "list.html?id=" + orgId + '&orgFlag=' + orgFlag + "&name=" + encodeURI(orgName);
     window.location.href = url;
 }
 
@@ -462,28 +463,22 @@ if (orgId) {
     sysUserDeptPositionVos.push({orgCode: orgId, orgName: orgName, userPositionRefList: postList})
 }
 
-seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
-    var userAddForm = $('#userAddForm');
-    formValidate = new Validate(userAddForm);
-    formValidate.immediate();
-    formValidate.isAllPass();
-    userAddForm.find(':input').each(function () {
-        $(this).bind({
-            mouseenter : function(){
-                formValidate.isPass($(this));
-            },
-            paste : function(){
-                formValidate.isPass($(this));
-                $(this).removeClass('error');
-            }
-        });
+var userAddForm = $('#userAddForm');
+formValidate = new Validate(userAddForm);
+formValidate.immediate();
+formValidate.isAllPass();
+userAddForm.find(':input').each(function () {
+    $(this).bind({
+        mouseenter : function(){
+            formValidate.isPass($(this));
+        },
+        paste : function(){
+            formValidate.isPass($(this));
+            $(this).removeClass('error');
+        }
     });
 });
-
-seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-    $('select').selectMatch();
-});
-
+$('select').selectMatch();
 // 时间插件
 laydate.render({
     elem: '#birthday'
