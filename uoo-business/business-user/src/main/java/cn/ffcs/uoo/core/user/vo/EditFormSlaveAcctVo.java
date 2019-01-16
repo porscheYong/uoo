@@ -33,6 +33,8 @@ public class EditFormSlaveAcctVo {
 
     private Long orgTreeId;
 
+    private String relType;
+
     private String slaveAcct;
 
     private String password;
