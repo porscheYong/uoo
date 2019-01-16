@@ -27,6 +27,12 @@ public class EditFormSlaveAcctVo {
      */
     private Long acctOrgRelId;
 
+    private Long orgId;
+
+    private Long acctId;
+
+    private Long orgTreeId;
+
     private String slaveAcct;
 
     private String password;

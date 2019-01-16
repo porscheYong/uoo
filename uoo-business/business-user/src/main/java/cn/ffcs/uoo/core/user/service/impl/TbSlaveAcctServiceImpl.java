@@ -167,8 +167,8 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
         }
 
         if("insert".equals(type)){
-            TbAcct tbAcct = (TbAcct) tbAcctService.getTbAcctByPsnId(editFormSlaveAcctVo.getPersonnelId());
-            tbSlaveAcct.setAcctId(tbAcct.getAcctId());
+            //TbAcct tbAcct = (TbAcct) tbAcctService.getTbAcctByPsnId(editFormSlaveAcctVo.getPersonnelId());
+            tbSlaveAcct.setAcctId(editFormSlaveAcctVo.getAcctId());
             tbSlaveAcct.setSlaveAcctId(slaveAcctId);
             tbSlaveAcct.setCreateUser(editFormSlaveAcctVo.getUserId());
             tbSlaveAcct.setUpdateUser(editFormSlaveAcctVo.getUserId());
