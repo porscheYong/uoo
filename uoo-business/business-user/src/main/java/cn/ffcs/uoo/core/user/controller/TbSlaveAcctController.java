@@ -47,53 +47,6 @@ public class TbSlaveAcctController extends BaseController {
     @Autowired
     private RabbitMqService rabbitMqService;
 
-
-    @ApiOperation(value = "从账号信息查看", notes = "从账号信息查看")
-    @ApiImplicitParam(name = "slaveAcctId", value = "从账号标识", required = true, dataType = "Integer",paramType="path")
-    @UooLog(value = "从账号信息查看", key = "getSlaveAcct")
-    @RequestMapping(value = "/getSlaveAcct", method = RequestMethod.GET)
-    public Object saveAcct(String slaveAcctId) {
-
-        TbSlaveAcct tbSlaveAcct = tbSlaveAcctService.selectById(slaveAcctId);
-        // 账号类型 资源
-        if("1".equals(tbSlaveAcct.getSlaveAcctType())){
-            // 从账号
-            ResourceSlaveAcctVo resourceSlaveAcctVo = new ResourceSlaveAcctVo();
-            BeanUtils.copyProperties(tbSlaveAcct, resourceSlaveAcctVo);
-            //系统名称  todo
-
-            //从账号关联用户信息
-            List<ListUser> userList = tbSlaveAcctService.getUserList(tbSlaveAcct.getSlaveAcctId());
-            resourceSlaveAcctVo.setUserList(userList);
-            return ResultUtils.success(resourceSlaveAcctVo);
-
-        }else if("2".equals(tbSlaveAcct.getSlaveAcctType())){
-            // 从账号
-            ApplySlaveAcctVo applySlaveAcctVo = new ApplySlaveAcctVo();
-            BeanUtils.copyProperties(tbSlaveAcct, applySlaveAcctVo);
-            //系统名称 todo
-
-            //扩展信息
-            TbAcctExt tbAcctExt = tbAcctExtService.selectOne(new EntityWrapper<TbAcctExt>().eq("SLAVE_ACCT_ID", tbSlaveAcct.getSlaveAcctId()));
-            applySlaveAcctVo.setTbAcctExt(tbAcctExt);
-
-            //从账号关联用户信息
-            List<ListUser> userList = tbSlaveAcctService.getApplyUserList(tbSlaveAcct.getSlaveAcctId());
-            applySlaveAcctVo.setUser(userList.get(0));
-
-            //关联主账号
-            List<TbAcct> tbAcctList = tbSlaveAcctService.getAcct(tbSlaveAcct.getSlaveAcctId());
-            applySlaveAcctVo.setTbAcct(tbAcctList.get(0));
-            return ResultUtils.success(applySlaveAcctVo);
-
-            //归属组织 todo
-
-        }
-        return ResultUtils.error(EumUserResponeCode.SLAVE_ACCT_NO_EXITST);
-    }
-
-    //todo -新版本--------------------------------------------------------------------
-
     @ApiOperation(value = "新增从账号信息", notes = "从账号信息新增")
     @ApiImplicitParam(name = "editFormSlaveAcctVo", value = "从账号信息", required = true, dataType = "EditFormSlaveAcctVo")
     @UooLog(value = "新增从账号信息", key = "addTbSlaveAcct")

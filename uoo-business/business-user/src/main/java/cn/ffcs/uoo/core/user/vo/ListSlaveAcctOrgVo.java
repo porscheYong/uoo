@@ -53,6 +53,10 @@ public class ListSlaveAcctOrgVo extends BaseVo {
      * 状态
      */
     private String statusCd;
+    /**
+     * 组织人员关系类型
+     */
+    private String relType;
 
 
 

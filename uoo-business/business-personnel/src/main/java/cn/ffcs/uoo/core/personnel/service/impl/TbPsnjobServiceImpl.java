@@ -4,6 +4,7 @@ import cn.ffcs.uoo.core.personnel.constant.BaseUnitConstants;
 import cn.ffcs.uoo.core.personnel.constant.EumPersonnelResponseCode;
 import cn.ffcs.uoo.core.personnel.entity.TbPsnjob;
 import cn.ffcs.uoo.core.personnel.dao.TbPsnjobMapper;
+import cn.ffcs.uoo.core.personnel.service.ModifyHistoryService;
 import cn.ffcs.uoo.core.personnel.service.TbPersonnelService;
 import cn.ffcs.uoo.core.personnel.service.TbPsnjobService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
@@ -34,6 +35,9 @@ import java.util.Map;
 @Service
 public class TbPsnjobServiceImpl extends ServiceImpl<TbPsnjobMapper, TbPsnjob> implements TbPsnjobService {
 
+    @Autowired
+    private ModifyHistoryService modifyHistoryService;
+
     @Override
     public Long getId() {
         return baseMapper.getId();
@@ -48,6 +52,7 @@ public class TbPsnjobServiceImpl extends ServiceImpl<TbPsnjobMapper, TbPsnjob> i
     public Object saveTbPsnjob(TbPsnjob tbPsnjob){
         tbPsnjob.setPsnjobId(this.getId());
         if(retBool(baseMapper.insert(tbPsnjob))){
+            //modifyHistoryService.insertModifyHistory(tbPsnjob, tbPsnjob.getUpdateUser());
             return ResultUtils.success(tbPsnjob.getPersonnelId());
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
@@ -56,6 +61,8 @@ public class TbPsnjobServiceImpl extends ServiceImpl<TbPsnjobMapper, TbPsnjob> i
     @Override
     public Object updateTbPsnjob(TbPsnjob tbPsnjob) {
         if(retBool(baseMapper.updateById(tbPsnjob))){
+            TbPsnjob oldTbPsnjob = this.getPsnjobById(tbPsnjob.getPsnjobId());
+            //modifyHistoryService.updateModifyHistory(oldTbPsnjob, tbPsnjob, tbPsnjob.getUpdateUser());
             return ResultUtils.success(tbPsnjob.getPersonnelId());
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
@@ -70,6 +77,7 @@ public class TbPsnjobServiceImpl extends ServiceImpl<TbPsnjobMapper, TbPsnjob> i
         tbPsnjob.setStatusDate(new Date());
         if(retBool(baseMapper.updateById(tbPsnjob))){
             TbPsnjob psnjob = getPsnjobById(psnjobId);
+            //modifyHistoryService.deleteModifyHistory(psnjob, userId);
             return ResultUtils.success(psnjob.getPersonnelId());
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);

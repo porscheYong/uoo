@@ -51,6 +51,11 @@ public class TbAccountOrgRel extends Model<TbAccountOrgRel> {
     @TableField("ORG_TREE_ID")
     private Long orgTreeId;
     /**
+     * 组织人员关系类型
+     */
+    @TableField("REL_TYPE")
+    private String relType;
+    /**
      * 状态
      */
     @JsonIgnore

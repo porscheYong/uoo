@@ -4,6 +4,7 @@ import cn.ffcs.uoo.core.personnel.constant.BaseUnitConstants;
 import cn.ffcs.uoo.core.personnel.constant.EumPersonnelResponseCode;
 import cn.ffcs.uoo.core.personnel.entity.TbEdu;
 import cn.ffcs.uoo.core.personnel.dao.TbEduMapper;
+import cn.ffcs.uoo.core.personnel.service.ModifyHistoryService;
 import cn.ffcs.uoo.core.personnel.service.TbEduService;
 import cn.ffcs.uoo.core.personnel.service.TbPersonnelService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
@@ -30,6 +31,9 @@ import java.util.Map;
 @Service
 public class TbEduServiceImpl extends ServiceImpl<TbEduMapper, TbEdu> implements TbEduService {
 
+    @Autowired
+    private ModifyHistoryService modifyHistoryService;
+
     @Override
     public Long getId() {
         return baseMapper.getId();
@@ -44,6 +48,7 @@ public class TbEduServiceImpl extends ServiceImpl<TbEduMapper, TbEdu> implements
     public Object saveTbEdu(TbEdu tbEdu){
         tbEdu.setEduId(this.getId());
         if(retBool(baseMapper.insert(tbEdu))){
+            //modifyHistoryService.insertModifyHistory(tbEdu, tbEdu.getUpdateUser());
             return ResultUtils.success(tbEdu.getPersonnelId());
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
@@ -52,6 +57,8 @@ public class TbEduServiceImpl extends ServiceImpl<TbEduMapper, TbEdu> implements
     @Override
     public Object updateTbEdu(TbEdu tbEdu){
         if(retBool(baseMapper.updateById(tbEdu))){
+            TbEdu oldTbEdu = this.getEduById(tbEdu.getEduId());
+            //modifyHistoryService.updateModifyHistory(oldTbEdu, tbEdu, tbEdu.getUpdateUser());
             return ResultUtils.success(tbEdu.getPersonnelId());
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
@@ -66,6 +73,7 @@ public class TbEduServiceImpl extends ServiceImpl<TbEduMapper, TbEdu> implements
         tbEdu.setStatusDate(new Date());
         if(retBool(baseMapper.updateById(tbEdu))){
             TbEdu edu = getEduById(eduId);
+            //modifyHistoryService.deleteModifyHistory(tbEdu, userId);
             return ResultUtils.success(edu.getPersonnelId());
         }
         return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
