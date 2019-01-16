@@ -53,4 +53,11 @@ public interface TbAccountOrgRelService extends IService<TbAccountOrgRel> {
      */
     public Object updateAcctOrg(AccountOrgRelVo tbAccountOrgRel);
 
+    /**
+     * 判断是否新增 主账号和组织关系
+     * @param tbAccountOrgRel
+     * @return
+     */
+    public TbAccountOrgRel addOrUpdateAcctOrg(AccountOrgRelVo tbAccountOrgRel);
+
 }

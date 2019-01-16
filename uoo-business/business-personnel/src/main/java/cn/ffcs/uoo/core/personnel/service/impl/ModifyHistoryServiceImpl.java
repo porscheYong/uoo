@@ -61,7 +61,7 @@ public class ModifyHistoryServiceImpl extends ServiceImpl<ModifyHistoryMapper, M
 
     @Override
     public Long getCommonTableId(String tableName){
-        return baseMapper.getCommonTableId(tableName);
+        return baseMapper.getCommonTableId(tableName.toUpperCase());
     }
 
     public Long getSeqBatchNumber(){
@@ -133,21 +133,23 @@ public class ModifyHistoryServiceImpl extends ServiceImpl<ModifyHistoryMapper, M
                                     break;
                                 }
                             }
-                            Long mdyid = getId();
-                            ModifyHistory modifyHistory = new ModifyHistory();
-                            modifyHistory.setModifyId(mdyid);
-                            modifyHistory.setTabId(tabId);
-                            modifyHistory.setRecordId(oldObjId.toString());
-                            modifyHistory.setOperateType(operType);
-                            modifyHistory.setFieldName(colName);
-                            if(!StrUtil.isNullOrEmpty(date)){
-                                modifyHistory.setFieldValue(date);
-                            }else{
-                                modifyHistory.setFieldValue(StrUtil.isNullOrEmpty(oldValue)?"":oldValue.toString());
+                            if(!StrUtil.isNullOrEmpty(colName)){
+                                Long mdyid = getId();
+                                ModifyHistory modifyHistory = new ModifyHistory();
+                                modifyHistory.setModifyId(mdyid);
+                                modifyHistory.setTabId(tabId);
+                                modifyHistory.setRecordId(oldObjId.toString());
+                                modifyHistory.setOperateType(operType);
+                                modifyHistory.setFieldName(colName);
+                                if(!StrUtil.isNullOrEmpty(date)){
+                                    modifyHistory.setFieldValue(date);
+                                }else{
+                                    modifyHistory.setFieldValue(StrUtil.isNullOrEmpty(oldValue)?"":oldValue.toString());
+                                }
+                                modifyHistory.setBatchNumber(batchNum);
+                                modifyHistory.setCreateUser(userId);
+                                add(modifyHistory);
                             }
-                            modifyHistory.setBatchNumber(batchNum);
-                            modifyHistory.setCreateUser(userId);
-                            add(modifyHistory);
                         }
                     }
                 }
@@ -227,7 +229,7 @@ public class ModifyHistoryServiceImpl extends ServiceImpl<ModifyHistoryMapper, M
             ModifyHistory modifyHistory = new ModifyHistory();
             modifyHistory.setModifyId(mdyid);
             modifyHistory.setTabId(tabId);
-            modifyHistory.setRecordId(obj.toString());
+            modifyHistory.setRecordId(String.valueOf(oldObjId));
             modifyHistory.setOperateType(oper);
             modifyHistory.setBatchNumber(batchNum);
             modifyHistory.setFieldName(StrUtil.strnull(filedName));
