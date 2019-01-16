@@ -25,6 +25,15 @@ public class TreeNodeVo {
     //标准组织标识
     private String standardFlag;
     private String extField1;
+    private String oper; //delete、add
+
+    public String getOper() {
+        return oper;
+    }
+
+    public void setOper(String oper) {
+        this.oper = oper;
+    }
 
     public String getStandardFlag() {
         return standardFlag;
