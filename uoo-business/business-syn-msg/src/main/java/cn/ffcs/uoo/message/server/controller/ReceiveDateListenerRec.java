@@ -1,4 +1,5 @@
 package cn.ffcs.uoo.message.server.controller;
+import java.util.Date;
 
 import cn.ffcs.uoo.message.server.constant.QueueConstant;
 import cn.ffcs.uoo.message.server.constant.ValidateConstant;
@@ -11,6 +12,7 @@ import cn.ffcs.uoo.message.server.util.PersonShowUtil;
 import cn.ffcs.uoo.message.server.vo.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.rabbitmq.client.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +50,8 @@ public class ReceiveDateListenerRec {
     private TbAcctMapper tbAcctMapper;
     @Resource
     private TbBusinessSystemMapper tbBusinessSystemMapper;
+    @Resource
+    private TbAcctCrossRelMapper tbAcctCrossRelMapper;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");//日期
 
@@ -364,7 +368,7 @@ public class ReceiveDateListenerRec {
                 TbAcctVo tbAcctVo = tbSlaveAcctMapper.insertOrUpdateSalveAcct(slaveAcctId);//获取下发的报文
 
                 if (tbAcctVo == null) {
-                    logger.warn("json:{},systemId:{} 账号信息不是有效数据不存在", json, vo.getBusinessSystemId());
+                    logger.warn("json:{},systemId:{} 账号信息不是有效数据或不存在", json, vo.getBusinessSystemId());
                     return null;
                 }
 
@@ -413,6 +417,7 @@ public class ReceiveDateListenerRec {
                     tbSlaveAcctVo.setBusinessSystemId(system.getBusinessSystemId());//添加系统的id
                     tbSlaveAcctVo.setSystemCode(system.getSystemCode());//添加系统的编码
 
+                    tbAcctVo.setTbAcctCrossRel(getAcctCrossRel(tbAcct.getAcctId()));
                     tbAcctVo.setTbSlaveAcct(tbSlaveAcctVo);
                     //规则判断
                     if (vo.getTbSystemIndividuationRules() != null && vo.getTbSystemIndividuationRules().size() > 0) {
@@ -475,5 +480,25 @@ public class ReceiveDateListenerRec {
         index.setRabbitmqDate(msg);
         index.setQueueName(queueName);
         return index;
+    }
+
+    /*获取账号跨域*/
+    private List<TbAcctCrossRel> getAcctCrossRel(Long acctId){
+        List<TbAcctCrossRel> tbAcctCrossRel = tbAcctCrossRelMapper.selectList(
+                new EntityWrapper<TbAcctCrossRel>().eq("STATUS_CD","1000")
+                        .eq("ACCT_ID",acctId));
+        if(tbAcctCrossRel != null){
+            tbAcctCrossRel.forEach((rel)->{
+                rel.setAcctCrossId(null);
+                rel.setAcctId(null);
+                rel.setStatusCd(null);
+                rel.setCreateDate(null);
+                rel.setCreateUser(null);
+                rel.setUpdateDate(null);
+                rel.setUpdateUser(null);
+                rel.setStatusDate(null);
+            });
+        }
+        return tbAcctCrossRel;
     }
 }

@@ -150,6 +150,10 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                 case "DEL":
                     delChannel(channel);
                     break;
+                default:{
+                    rsMap.put("result_code", "1000");
+                    rsMap.put("message", "错误的处理码！ACTION:"+ channel.get("ACTION"));
+                }
             }
         } catch (Exception e) {
             rsMap.put("result_code", "1000");
@@ -325,6 +329,10 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                     }
                     ;
                     break;
+                    default:{
+                        rsMap.put("result_code", "1000");
+                        rsMap.put("message", "错误的处理码！ACTION:"+ staff.get("ACTION"));
+                    }
                 }
 
 
@@ -369,6 +377,10 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                 case "DEL":
                     delStaffChannelRelas(staffChannelRel);
                     break;
+                default:{
+                    rsMap.put("result_code", "1000");
+                    rsMap.put("message", "错误的处理码！ACTION:"+ staffChannelRel.get("ACTION"));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
