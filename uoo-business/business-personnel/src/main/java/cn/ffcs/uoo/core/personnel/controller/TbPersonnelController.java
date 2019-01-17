@@ -154,8 +154,8 @@ public class TbPersonnelController extends BaseController {
 
         /**  3、归属组织信息 */
 
-        ResponseResult<Page<PsonOrgVo>> obj = orgPersonRelClient.getPerOrgRelPage(orgId.intValue(), orgTreeId, personnelId.intValue(), "", null, null, accout);
-
+        //ResponseResult<Page<PsonOrgVo>> obj = orgPersonRelClient.getPerOrgRelPage(orgId.intValue(), orgTreeId, personnelId.intValue(), "", null, null, accout);
+        ResponseResult<Page<PsonOrgVo>> obj = orgPersonRelClient.getPerRelsPage(orgTreeId, personnelId, null, null, accout);
         if(BaseUnitConstants.ENTT_STATE_ACTIVE.equals(String.valueOf(obj.getState()))
                 && !StrUtil.isNullOrEmpty(obj.getData())){
             formPersonnelVo.setPsonOrgVoList(obj.getData());

@@ -1,14 +1,17 @@
 var orgTreeId = getQueryString('orgTreeId');
+var relTypeVal = getQueryString('relType');
 var toastr = window.top.toastr;
+var relTypeName = parent.relTypeName;
 var orgIdSelect,
     orgFullName,
+    orgName,
     nodeName,
     nodeArr,
     businessName;
 
 function onNodeClick(e,treeId, treeNode) {
     orgIdSelect = treeNode.id;
-    // orgName = treeNode.name;
+    orgName = treeNode.name;
     var currentNode = {node: treeNode, current: true};//获取当前选中节点
     var parentNode = treeNode.getParentNode();
     nodeArr = [];
@@ -79,28 +82,23 @@ function initOrgRelTree (orgTreeId) {
 }
 
 // 初始化业务组织列表
-// function initBusinessList () {
-//     $http.get('/orgTree/getOrgTreeList', {}, function (data) {
-//         var option = '';
-//         for (var i = 0; i < data.length; i++) {
-//             var select = i === 0? 'selected' : '';
-//             option += "<option value='" + data[i].orgTreeId + "' " + select + ">" + data[i].orgTreeName +"</option>";
-//         }
-//         $('#businessOrg').append(option);
-//         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-//             $('#businessOrg').selectMatch();
-//         });
-//         initOrgRelTree(data[0].orgTreeId);
-//         orgTreeId = data[0].orgTreeId;
-//         businessName = data[0].orgTreeName;
-//         $('#businessOrg').unbind('change').bind('change', function (event) {
-//             orgTreeId = event.target.options[event.target.options.selectedIndex].value;
-//             businessName = event.target.options[event.target.options.selectedIndex].innerHTML;
-//             initOrgRelTree(orgTreeId);
-//         })
-//     }, function (err) {
-//     })
-// }
+function initRelTypeName () {
+        var option = '';
+        for (var i = 0; i < relTypeName.length; i++) {
+            var select = relTypeVal === relTypeName[i].itemValue? 'selected' : '';
+            option += "<option value='" + relTypeName[i].itemValue + "' " + select + ">" + relTypeName[i].itemCnname +"</option>";
+        }
+        if(relTypeVal == "null" || relTypeVal == 0){
+            relTypeVal = relTypeName[0].itemValue;
+        }
+        $('#businessOrg').append(option);
+        seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+            $('#businessOrg').selectMatch();
+        });
+        $('#businessOrg').unbind('change').bind('change', function (event) {
+            relTypeVal = event.target.options[event.target.options.selectedIndex].value;
+        })
+}
 
 // 获取组织完整路径
 function getOrgExtInfo () {
@@ -115,3 +113,4 @@ function getOrgExtInfo () {
   }
 
   initOrgRelTree(orgTreeId);
+  initRelTypeName();

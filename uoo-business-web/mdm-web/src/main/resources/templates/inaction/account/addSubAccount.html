@@ -28,7 +28,8 @@
     <link href="/css/custom.css" rel="stylesheet">
     <link href="/css/account/style.css" rel="stylesheet">
     <link href="/css/account/style1.css" rel="stylesheet">
-    <link href="/css/account/artModal.css" rel="stylesheet">
+    <link href="/css/account/style2.css" rel="stylesheet">
+    <!-- <link href="/css/account/artModal.css" rel="stylesheet"> -->
     <link href="/css/account/subAccount.css" rel="stylesheet">
     <link href="/css/user/style.css" rel="stylesheet">
 
@@ -81,6 +82,10 @@
         #slaveType{
             width: 107px !important;
             margin-left: -7px !important;
+        }
+        .Name{
+            font: bold 16px/24px microsoft yahei,helvetia,pingfang sc,Arial,Tahoma;
+            padding: 0 10px;
         }
     </style>
 </head>
@@ -230,16 +235,17 @@
                     </div>
 
                     <div class="fright" style="margin-right: 36px;margin-top:-4.5%;"> 
-                        <a class="button-add" id="addBtn" data-toggle="modal" data-target="#slaveOrgModal" onclick="getAcctOrg()">
+                        <!-- <a class="button-add" id="addBtn" data-toggle="modal" data-target="#slaveOrgModal" onclick="getAcctOrg()">
                             <span class="fa fa-plus-circle icon-add"></span>
                             <span id="addText">新增归属组织</span>
-                        </a>
+                        </a> -->
+                        <a class="button-add" id="addBtn" onclick="openOrgDialog()"><span class="fa fa-plus-circle icon-add"></span><span id="addText">更换归属组织</span></a>
                     </div>
                 </div>
-
-                <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
+                <div id="acctOrgDiv"></div>
+                <!-- <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
                     <table id="orgTable" class="stripe" width="100%"></table>
-                </div>
+                </div> -->
 
                 <div style="display: block;margin-bottom: 30px;margin-top: 60px;">
                     <div class="board-title" style="margin-left:-6.7%;">
@@ -249,7 +255,7 @@
                     </div>
                 </div>
                 
-                <div id="extInfo" style="display:block;border-style: solid;border-radius: 8px;border-width: 1px;border-color: #b6b6b6;margin-right: 59px;">
+                <div id="extInfo" style="display:none;border-style: solid;border-radius: 8px;border-width: 1px;border-color: #b6b6b6;margin-right: 59px;">
                     <div class="row" style="margin-bottom: 10px;margin-left:25px;margin-top:25px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
@@ -295,7 +301,7 @@
                 </div>
 
                 <!-- 模态框（Modal） -->
-                <div class="modal" id="slaveOrgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <!-- <div class="modal" id="slaveOrgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header" style="border-radius:6px;">
@@ -309,9 +315,9 @@
                                 <table id="acctOrgTable" class="stripe" width="100%"></table>
                             </div>
 
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal -->
-                </div>
+                        </div>
+                    </div>
+                </div> -->
                 
                 
             </form>

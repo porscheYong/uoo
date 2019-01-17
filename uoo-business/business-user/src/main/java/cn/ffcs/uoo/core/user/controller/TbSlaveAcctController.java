@@ -65,7 +65,7 @@ public class TbSlaveAcctController extends BaseController {
         Long slaveAcctId = tbSlaveAcctService.getId();
         Long userId = editFormSlaveAcctVo.getUserId();
         AccountOrgRelVo accountOrgRelVo = new AccountOrgRelVo();
-        BeanUtils.copyProperties(editFormSlaveAcctVo, editFormSlaveAcctVo);
+        CopyUtils.copyProperties(editFormSlaveAcctVo, accountOrgRelVo);
         TbAccountOrgRel tbAccountOrgRel = tbAccountOrgRelService.addOrUpdateAcctOrg(accountOrgRelVo);
         editFormSlaveAcctVo.setAcctOrgRelId(tbAccountOrgRel.getAcctOrgRelId());
 
@@ -173,9 +173,6 @@ public class TbSlaveAcctController extends BaseController {
         }
         if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getResourceObjId())){
             return ResultUtils.error(EumUserResponeCode.RESOURCE_OBJ_NULL);
-        }
-        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getAcctOrgRelId())){
-            return ResultUtils.error(EumUserResponeCode.ACCT_HOST_NULL);
         }
         if(!StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getTbAcctExt())){
             TbAcctExt tbAcctExt = editFormSlaveAcctVo.getTbAcctExt();

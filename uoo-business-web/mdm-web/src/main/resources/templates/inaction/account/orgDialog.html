@@ -43,21 +43,27 @@
           text-decoration: none;
           color: #fff;    
       }
-      .col-md-9{
-            width: 98% !important;
-            margin-left: 1% !important;
-            margin-top: 5% !important;
-        }
-        /* #businessOrg{
+      .col-md-8{
+            width:63% !important;
+        }   
+        #businessOrg{
             max-height: 200px !important;
-        } */
+        }
     </style>
   </head>
 
   <body style="background: #fff;">
     <div class="container">
-        <div style="height: 350px;margin-top: -2%;">
+        <div style="height: 350px;margin-top: 2%;">
+            <!-- <span>关系类型：</span> -->
             <!-- <select id="businessOrg" class="col-md-9 col-sm-9 col-xs-11" style="margin-left: 10px;"></select> -->
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="form-item" style="width: 100%">
+                    <label for="accType" id="slaveType" class="form-item-label col-md-4 col-sm-4 col-xs-4" style="width:37%;padding-right: 20px;line-height: 40px;text-align: right;">关系类型</label>
+                    <select  class="col-md-8 col-sm-8 col-xs-8" id='businessOrg'>
+                    </select>
+                </div>
+            </div>
             <div style="display: inline-block;width: 100%;overflow-y: auto;">
                 <ul id="standardTree" class="ztree"></ul>
             </div>

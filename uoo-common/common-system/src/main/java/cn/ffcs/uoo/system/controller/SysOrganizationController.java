@@ -185,7 +185,6 @@ public class SysOrganizationController {
                 sysDeptPositionRef.setOrgCode(id.toString());
                 sysDeptPositionRef.setPositionCode(sysvo1.getPositionCode());
                 sysDeptPositionRef.setCreateUser(vo.getUserId());
-                sysDeptPositionRef
                 sysDeptPositionRefService.add(sysDeptPositionRef);
                 modifyHistoryService.addModifyHistory(null,sysDeptPositionRef,vo.getUserId(),batchNum);
             }
@@ -222,7 +221,7 @@ public class SysOrganizationController {
         BeanUtils.copyProperties(vo,sysvo);
         sysvo.setUpdateUser(vo.getUserId());
         sysOrganizationService.update(sysvo);
-        modifyHistoryService.addModifyHistory(null,sysvo,vo.getUserId(),batchNum);
+        //modifyHistoryService.addModifyHistory(null,sysvo,vo.getUserId(),batchNum);
 
 
         List<SysPositionVo> sysPositionList = vo.getSysPositionVos();

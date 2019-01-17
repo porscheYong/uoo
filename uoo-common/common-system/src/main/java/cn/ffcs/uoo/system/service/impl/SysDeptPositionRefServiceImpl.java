@@ -54,6 +54,7 @@ public class SysDeptPositionRefServiceImpl extends ServiceImpl<SysDeptPositionRe
         sysDeptPositionRef.setStatusCd("1000");
         sysDeptPositionRef.setStatusDate(new Date());
         insert(sysDeptPositionRef);
+
     }
 
     /**

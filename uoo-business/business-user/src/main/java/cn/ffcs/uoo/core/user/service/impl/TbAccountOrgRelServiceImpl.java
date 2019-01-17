@@ -10,6 +10,7 @@ import cn.ffcs.uoo.core.user.service.RabbitMqService;
 import cn.ffcs.uoo.core.user.service.TbAccountOrgRelService;
 import cn.ffcs.uoo.core.user.service.TbAcctService;
 import cn.ffcs.uoo.core.user.service.TbSlaveAcctService;
+import cn.ffcs.uoo.core.user.util.CopyUtils;
 import cn.ffcs.uoo.core.user.util.ResultUtils;
 import cn.ffcs.uoo.core.user.util.StrUtil;
 import cn.ffcs.uoo.core.user.vo.AccountOrgRelVo;
@@ -152,17 +153,19 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
     @Override
     public TbAccountOrgRel addOrUpdateAcctOrg(AccountOrgRelVo tbAccountOrgRel){
         TbAccountOrgRel accountOrgRel = this.getTbAcctOrgRel(tbAccountOrgRel);
-        TbAccountOrgRel accountOrgRel1 = new TbAccountOrgRel();
-        BeanUtils.copyProperties(tbAccountOrgRel, accountOrgRel1);
+        TbAccountOrgRel acctOrgRel = new TbAccountOrgRel();
+
         if(StrUtil.isNullOrEmpty(accountOrgRel)){
             Long acctOrgRelId = this.getId();
-            accountOrgRel1.setCreateUser(tbAccountOrgRel.getUserId());
-            accountOrgRel1.setUpdateUser(tbAccountOrgRel.getUserId());
-            accountOrgRel1.setAcctOrgRelId(acctOrgRelId);
-            baseMapper.insert(accountOrgRel1);
-            return accountOrgRel1;
+            CopyUtils.copyProperties(tbAccountOrgRel, acctOrgRel);
+            acctOrgRel.setCreateUser(tbAccountOrgRel.getUserId());
+            acctOrgRel.setUpdateUser(tbAccountOrgRel.getUserId());
+            acctOrgRel.setAcctOrgRelId(acctOrgRelId);
+            baseMapper.insert(acctOrgRel);
+            return acctOrgRel;
         }
-        baseMapper.updateById(accountOrgRel1);
+        CopyUtils.copyProperties(tbAccountOrgRel, accountOrgRel);
+        baseMapper.updateById(accountOrgRel);
         return accountOrgRel;
     }
 
