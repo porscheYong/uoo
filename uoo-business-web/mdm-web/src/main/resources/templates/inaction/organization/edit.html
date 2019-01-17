@@ -77,7 +77,7 @@
               <!--<div class="second-title">-->
                 <!--<span class="name ft18">基础信息</span>-->
               <!--</div>-->
-              <form action="/submit" method="post" style="padding: 10px;" id="orgEditForm">
+              <form action="/submit" method="post" style="padding: 10px; margin-bottom: 20px;" id="orgEditForm">
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
@@ -283,12 +283,10 @@
                 <!--<table id="credentialTable" class="stripe" width="100%"></table>-->
               <!--</div>-->
               <!--提交-->
-              <div class="row" style="margin-bottom: 10px;">
-                <div style="margin-left: 17%;">
-                    <button id="saveBtn" class="ui-button ui-button-primary" onclick="updateOrg()">保存</button>
-                    <button id="deleteBtn" class="ui-button ui-button-delete" style="margin-left: 10px;" onclick="deleteOrg()">删除</button>
-                    <button id="cancelBtn" class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
-                </div>
+              <div class="row btn-fixed">
+                <button id="saveBtn" class="ui-button ui-button-primary" onclick="updateOrg()">保存</button>
+                <button id="deleteBtn" class="ui-button ui-button-delete" style="margin-left: 10px;" onclick="deleteOrg()">删除</button>
+                <button id="cancelBtn" class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
               </div>
             </div>
             <div class="tab-pane" id="tab_content2">
