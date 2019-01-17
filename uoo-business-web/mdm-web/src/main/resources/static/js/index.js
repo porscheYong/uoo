@@ -10,7 +10,7 @@ toastr.options = {
     "newestOnTop": false,
     "progressBar": false,
     "positionClass": "toast-top-center", //弹出的位置
-    "preventDuplicates": false,
+    "preventDuplicates": true,//相同提示内容只显示一个
     "onclick": null, //点击消息框自定义事件
     "showDuration": "300", //显示动作时间
     "hideDuration": "1000", //隐藏动作时间
@@ -31,7 +31,7 @@ function initUserInfo(){  //初始化首页人员信息
             account = data.accout;
             userId = data.userId;
             $("#psnName").text(data.userName);
-            getPsnId();
+            // getPsnId();
         }, function (err) {
         })
 }
@@ -179,13 +179,13 @@ function getDictionaryData () {
 }
 
 //跳转至个人信息界面
-function getPsnId(){
-    $http.get('/acct/getCurrentAcct', {},
-        function (data) {
-            $("#psnInfo").attr("lay-href","/inaction/psnInfo/index.html?personnelId=" + data.personnelId+"&acctId=" + data.acctId+"&userId="+userId);
-        }, function (err) {
-        })
-}
+// function getPsnId(){
+//     $http.get('/acct/getCurrentAcct', {},
+//         function (data) {
+//             $("#psnInfo").attr("lay-href","/inaction/psnInfo/index.html?personnelId=" + data.personnelId+"&acctId=" + data.acctId+"&userId="+userId);
+//         }, function (err) {
+//         })
+// }
 
 function logOut(){  //退出登录
     parent.layer.confirm('是否退出登录?', {

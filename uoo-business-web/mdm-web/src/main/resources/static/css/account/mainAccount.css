@@ -129,5 +129,14 @@ table.dataTable tbody td {
     width:18%;
     text-align:right;
 }
+.pngDot{
+    position: absolute;
+    /* margin-left: -2%; */
+    margin-top: 0.7%;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../images/dot.png);
+}
 
 
