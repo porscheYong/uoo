@@ -34,13 +34,25 @@ function deleteOrgPsn(){
     });
 }
 
+//删除人员组织关系
+function deletePersonnel(){
+    $http.delet('/personnel/deletePersonnel?personnelId=' + personnelId,{},function(data){
+        toastr.success('操作成功');
+        window.location.href = "list.html?id="+orgId+"&name="+orgName+"&orgTreeId="+orgTreeId;
+    });
+}
+
 function deleteTbAcct(){    //删除人员
     parent.layer.confirm('此操作将删除该用户, 是否继续?', {
       icon: 0,
       title: '提示',
       btn: ['确定','取消']
   }, function(index, layero){
-      deleteOrgPsn();
+      // 未分类
+      if (orgId == '88888888')
+          deletePersonnel();
+      else
+        deleteOrgPsn();
       parent.layer.close(index);
     }, function(){
   

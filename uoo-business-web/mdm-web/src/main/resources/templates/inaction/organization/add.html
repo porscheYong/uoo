@@ -20,6 +20,7 @@
     <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
     <!-- lay multiselect -->
     <link href="/vendors/multiselect/multiselect.css" rel="stylesheet">
+    <link href="/vendors/typeahead/typeahead.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
@@ -71,6 +72,29 @@
             <div class="tab-pane active" id="tab_content1">
               <form style="padding: 10px;" id="orgAddForm">
                 <div class="row" style="margin-bottom: 10px;">
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-item" style="width: 100%">
+                      <label for="orgName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织名称</label>
+                      <!--<input id="orgName" class="ui-input col-md-8 col-sm-8 col-xs-12" required onkeyup="autoFillShortName()">-->
+                      <div class="typeahead col-md-8 col-sm-8 col-xs-12">
+                        <div class="pos-relative">
+                          <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
+                          <input class="ui-input typeahead-input tt-input" id="orgName" required />
+                        </div>
+                        <div class="typeahead-menu"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-item" style="width: 100%">
+                      <label for="statusCd" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
+                      <select id="statusCd"  class="col-md-8 col-sm-8 col-xs-12" required></select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
                   <!-- <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
                       <label for="regionId" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">电信管理区域</label>
@@ -102,21 +126,6 @@
                   </div>
                 </div>
 
-                <div class="row" style="margin-bottom: 10px;">
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="orgName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织名称</label>
-                      <input id="orgName" class="ui-input col-md-8 col-sm-8 col-xs-12" required onkeyup="autoFillShortName()">
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-item" style="width: 100%">
-                      <label for="statusCd" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
-                      <select id="statusCd"  class="col-md-8 col-sm-8 col-xs-12" required></select>
-                    </div>
-                  </div>
-                </div>
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-item" style="width: 100%">
@@ -268,7 +277,7 @@
               </form>
               <div class="row" style="margin-bottom: 10px;">
                 <div style="margin-left: 17%;">
-                    <button class="ui-button ui-button-primary" onclick="addOrg()">保存</button>
+                    <button class="ui-button ui-button-primary" onclick="add()">保存</button>
                     <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
                 </div>
               </div>
@@ -276,46 +285,25 @@
           </div>
         </div>
     </div>
-    <!--<script id="smallTemplate" type="text/x-handlebars-template">-->
-      <!--<div style="background: #F6F7F8; padding: 10px 0; margin-bottom: 10px;">-->
-        <!--<div class="row" style="margin-bottom: 10px;">-->
-          <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
-            <!--<div class="form-item" style="width: 100%">-->
-              <!--<label for="nodeTypes" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">节点类型</label>-->
-              <!--<select id="nodeTypes" class="col-md-8 col-sm-8 col-xs-12" name="nodeTypes" xm-select="nodeTypes"></select>-->
-            <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
-            <!--<div class="form-item" style="width: 100%">-->
-              <!--<label for="areaType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">区域级别</label>-->
-              <!--<select id="areaType" class="col-md-8 col-sm-8 col-xs-12" required></select>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div class="row">-->
-          <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
-            <!--<div class="form-item" style="width: 100%">-->
-              <!--<label for="countType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">统计属性</label>-->
-              <!--<select id="countType" class="col-md-8 col-sm-8 col-xs-12" name="countType" xm-select="countType"></select>-->
-            <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
-            <!--<div class="form-item" style="width: 100%">-->
-              <!--<label for="contractType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">承包类型</label>-->
-              <!--<select id="contractType" class="col-md-8 col-sm-8 col-xs-12" required></select>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</script>-->
+    <script id="result-template" type="text/x-handlebars-template">
+      <div class="ProfileCard u-cf{{#eq flag 1}}Typeahead-selectable is-active{{/eq}}">
+        <div class="ProfileCard-details">
+          <div class="ProfileCard-realName">{{orgName}}</div>
+          <div class="ProfileCard-screenName">{{orgCode}}</div>
+          <div class="ProfileCard-description">{{fullName}}</div>
+          <div class="ProfileCard-stat"><span class="ProfileCard-stat-label">{{createDate}}</span> 创建</div>
+          <div class="ProfileCard-stat">有效</div>
+        </div>
+      </div>
+    </script>
     <!-- jQuery -->
     <script type="text/javascript" src="/js/core/jquery.js"></script>
     <!-- Bootstrap -->
     <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- handlebars -->
     <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
+    <!-- typeahead -->
+    <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
     <!-- jquery datatable -->
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
     <!-- sea js -->

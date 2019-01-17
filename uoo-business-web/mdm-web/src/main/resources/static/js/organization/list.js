@@ -226,7 +226,7 @@ $('#editBtn').on('click', function () {
     $(this).attr('href', url);
 });
 $('#searchBtn').on('click', function () {
-    var url = 'search.html?id=' + orgId  + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    var url = 'add.html?id=' + orgId  + '&pid=' + pid + '&name=' + encodeURI(orgName);
    // $(this).attr('href', url);
    window.location.href = url;
     return false;
