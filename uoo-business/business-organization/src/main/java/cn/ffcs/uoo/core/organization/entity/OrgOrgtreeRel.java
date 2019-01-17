@@ -79,7 +79,7 @@ public class OrgOrgtreeRel extends Model<OrgOrgtreeRel> {
      * 排序
      */
     @TableField("SORT")
-    private Double sort;
+    private Integer sort;
 
 
     @TableField(exist=false)
@@ -102,11 +102,11 @@ public class OrgOrgtreeRel extends Model<OrgOrgtreeRel> {
         this.orgBizFullName = orgBizFullName;
     }
 
-    public Double getSort() {
+    public Integer getSort() {
         return sort;
     }
 
-    public void setSort(Double sort) {
+    public void setSort(Integer sort) {
         this.sort = sort;
     }
 

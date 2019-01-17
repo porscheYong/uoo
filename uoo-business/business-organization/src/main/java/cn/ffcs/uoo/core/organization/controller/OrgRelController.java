@@ -339,6 +339,8 @@ public class OrgRelController extends BaseController {
         orgOrgtreeRelService.add(orgOrgtreeRef);
         modifyHistoryService.addModifyHistory(null,orgOrgtreeRef,org.getUpdateUser(),batchNumber);
 
+
+        /* 新增组织类型**/
         TreeNodeVo vo = new TreeNodeVo();
         vo.setId(org.getOrgId().toString());
         vo.setPid(orgRefId.toString());

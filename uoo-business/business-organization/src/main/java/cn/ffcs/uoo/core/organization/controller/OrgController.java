@@ -347,7 +347,7 @@ public class OrgController extends BaseController {
             orgOrgtreeRef.setStatusCd("1000");
             orgOrgtreeRef.setCreateUser(org.getUpdateUser());
             if(!StrUtil.isNullOrEmpty(org.getSort())){
-                orgOrgtreeRef.setSort(Double.valueOf(org.getSort()));
+                orgOrgtreeRef.setSort(Integer.valueOf(org.getSort()));
             }
             orgOrgtreeRelService.add(orgOrgtreeRef);
             modifyHistoryService.addModifyHistory(null,orgOrgtreeRef,org.getUpdateUser(),batchNumber);
@@ -1026,7 +1026,7 @@ public class OrgController extends BaseController {
                 }
             }
             if(!StrUtil.isNullOrEmpty(org.getSort())){
-                orgOrgtreeRelOne.setSort(Double.valueOf(org.getSort()));
+                orgOrgtreeRelOne.setSort(Integer.valueOf(org.getSort()));
             }
             orgOrgtreeRelOne.setUpdateUser(org.getUpdateUser());
             orgOrgtreeRelService.update(orgOrgtreeRelOne);
