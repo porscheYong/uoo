@@ -5,6 +5,7 @@ import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.system.entity.SysDeptPositionRef;
 import cn.ffcs.uoo.system.entity.SysOrganization;
 import cn.ffcs.uoo.system.entity.SysPosition;
+import cn.ffcs.uoo.system.service.ModifyHistoryService;
 import cn.ffcs.uoo.system.service.SysDeptPositionRefService;
 import cn.ffcs.uoo.system.service.SysOrganizationService;
 import cn.ffcs.uoo.system.service.SysPositionService;
@@ -47,6 +48,8 @@ public class SysOrganizationController {
     private SysDeptPositionRefService sysDeptPositionRefService;
     @Autowired
     private SysPositionService sysPositionService;
+    @Autowired
+    private ModifyHistoryService modifyHistoryService;
 
 
     @ApiOperation(value = "查询组织树信息-web", notes = "查询组织树信息")
@@ -164,28 +167,27 @@ public class SysOrganizationController {
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
     public ResponseResult<TreeNodeVo> addOrg(@RequestBody SysOrganizationVo vo) throws IOException {
         ResponseResult<TreeNodeVo> ret = new ResponseResult<TreeNodeVo>();
+        String batchNum = modifyHistoryService.getBatchNumber();
         SysOrganization sysvo = new SysOrganization();
         BeanUtils.copyProperties(vo,sysvo);
         Long id = sysOrganizationService.getId();
         sysvo.setOrgId(id);
         sysvo.setOrgCode(id.toString());
         sysvo.setCreateUser(vo.getUserId());
+        sysvo.setBatchNumber(batchNum);
         sysOrganizationService.add(sysvo);
         List<SysPositionVo> vos = vo.getSysPositionVos();
         if(vos!=null && vos.size()>0){
             for(SysPositionVo sysvo1 : vos){
-
-//                Wrapper orgPosWrapper = Condition.create()
-//                        .eq("POSITION_CODE",sysvo1.getPositionCode())
-//                        .eq("STATUS_CD","1000");
-//                SysPosition v = sysPositionService.selectOne(orgPosWrapper);
                 Long orgPosRelId = sysDeptPositionRefService.getId();
                 SysDeptPositionRef sysDeptPositionRef = new SysDeptPositionRef();
                 sysDeptPositionRef.setDeptPositionRefId(orgPosRelId);
                 sysDeptPositionRef.setOrgCode(id.toString());
                 sysDeptPositionRef.setPositionCode(sysvo1.getPositionCode());
                 sysDeptPositionRef.setCreateUser(vo.getUserId());
+                sysDeptPositionRef
                 sysDeptPositionRefService.add(sysDeptPositionRef);
+                modifyHistoryService.addModifyHistory(null,sysDeptPositionRef,vo.getUserId(),batchNum);
             }
         }
         TreeNodeVo vo1 = new TreeNodeVo();
@@ -215,10 +217,12 @@ public class SysOrganizationController {
             ret.setMessage("组织编码不能为空");
             return ret;
         }
+        String batchNum = modifyHistoryService.getBatchNumber();
         SysOrganization sysvo = new SysOrganization();
         BeanUtils.copyProperties(vo,sysvo);
         sysvo.setUpdateUser(vo.getUserId());
         sysOrganizationService.update(sysvo);
+        modifyHistoryService.addModifyHistory(null,sysvo,vo.getUserId(),batchNum);
 
 
         List<SysPositionVo> sysPositionList = vo.getSysPositionVos();

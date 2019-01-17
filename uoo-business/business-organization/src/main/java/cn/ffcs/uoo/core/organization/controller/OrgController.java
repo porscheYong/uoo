@@ -346,6 +346,9 @@ public class OrgController extends BaseController {
             orgOrgtreeRef.setOrgBizFullName(fullBizName);
             orgOrgtreeRef.setStatusCd("1000");
             orgOrgtreeRef.setCreateUser(org.getUpdateUser());
+            if(!StrUtil.isNullOrEmpty(org.getSort())){
+                orgOrgtreeRef.setSort(Double.valueOf(org.getSort()));
+            }
             orgOrgtreeRelService.add(orgOrgtreeRef);
             modifyHistoryService.addModifyHistory(null,orgOrgtreeRef,org.getUpdateUser(),batchNumber);
 
@@ -1022,6 +1025,9 @@ public class OrgController extends BaseController {
                     orgOrgtreeRelOne.setOrgBizFullName(fullName);
                 }
             }
+            if(!StrUtil.isNullOrEmpty(org.getSort())){
+                orgOrgtreeRelOne.setSort(Double.valueOf(org.getSort()));
+            }
             orgOrgtreeRelOne.setUpdateUser(org.getUpdateUser());
             orgOrgtreeRelService.update(orgOrgtreeRelOne);
             modifyHistoryService.addModifyHistory(orgOrgtreeRelOLd,orgOrgtreeRelOne,org.getUpdateUser(),batchNumber);
@@ -1414,6 +1420,20 @@ public class OrgController extends BaseController {
             }
             BeanUtils.copyProperties(org1, org);
         }
+
+        if(!StrUtil.isNullOrEmpty(orgTreeId)){
+            Wrapper orgOrgTreeRelConfWrapper = Condition.create()
+                    .eq("ORG_TREE_ID",orgTreeId)
+                    .eq("STATUS_CD","1000")
+                    .eq("ORG_ID",orgId);
+            OrgOrgtreeRel orgOrgTreeRel = orgOrgtreeRelService.selectOne(orgOrgTreeRelConfWrapper);
+            if(orgOrgTreeRel!=null){
+                if(!StrUtil.isNullOrEmpty(orgOrgTreeRel.getSort())){
+                    org.setSort(orgOrgTreeRel.getSort().toString());
+                }
+            }
+        }
+
 
 
         //组织类别

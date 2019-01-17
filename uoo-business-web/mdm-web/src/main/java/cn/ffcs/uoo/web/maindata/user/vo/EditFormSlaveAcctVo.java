@@ -35,6 +35,8 @@ public class EditFormSlaveAcctVo {
 
     private String slaveAcct;
 
+    private String relType;
+
     private String password;
     /**
      * 资源标识

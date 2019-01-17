@@ -140,6 +140,26 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
         return page;
     }
 
+    /**
+     * 获取人员组织关系翻页
+     * @param psonOrgVo
+     * @return
+     */
+    @Override
+    public Page<PsonOrgVo> selectOrgRelsByPerIdPage(PsonOrgVo psonOrgVo){
+        Page<PsonOrgVo> page = new Page<PsonOrgVo>(psonOrgVo.getPageNo()==0?1:psonOrgVo.getPageNo()
+                ,psonOrgVo.getPageSize()==0?10:psonOrgVo.getPageSize());
+        List<PsonOrgVo> list = baseMapper.selectOrgRelsByPerIdPage(page,psonOrgVo);
+        for(PsonOrgVo psOrg : list){
+            if(!StrUtil.isNullOrEmpty(psOrg.getPostId())){
+                Post post = baseMapper.getPost(psOrg.getPostId());
+                psOrg.setPostName(StrUtil.strnull(post.getPostName()));
+            }
+        }
+        page.setRecords(list);
+        return page;
+    }
+
 
     /**
      * 获取全量人员组织关系翻页

@@ -139,11 +139,7 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
                 }
             }
             TbAccountOrgRel orgRel = new TbAccountOrgRel();
-            orgRel.setAcctOrgRelId(tbAccountOrgRel.getAcctOrgRelId());
-            orgRel.setAcctId(tbAccountOrgRel.getAcctId());
-            orgRel.setOrgId(tbAccountOrgRel.getOrgId());
-            orgRel.setOrgTreeId(tbAccountOrgRel.getOrgTreeId());
-            orgRel.setUpdateUser(tbAccountOrgRel.getUserId());
+            BeanUtils.copyProperties(tbAccountOrgRel, orgRel);
             baseMapper.updateById(orgRel);
         }
         TbAcct tbAcct = tbAcctService.getTbAcctById(tbAccountOrgRel.getAcctId());
@@ -156,16 +152,17 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
     @Override
     public TbAccountOrgRel addOrUpdateAcctOrg(AccountOrgRelVo tbAccountOrgRel){
         TbAccountOrgRel accountOrgRel = this.getTbAcctOrgRel(tbAccountOrgRel);
+        TbAccountOrgRel accountOrgRel1 = new TbAccountOrgRel();
+        BeanUtils.copyProperties(tbAccountOrgRel, accountOrgRel1);
         if(StrUtil.isNullOrEmpty(accountOrgRel)){
-            TbAccountOrgRel accountOrgRel1 = new TbAccountOrgRel();
             Long acctOrgRelId = this.getId();
-            BeanUtils.copyProperties(tbAccountOrgRel, accountOrgRel1);
             accountOrgRel1.setCreateUser(tbAccountOrgRel.getUserId());
             accountOrgRel1.setUpdateUser(tbAccountOrgRel.getUserId());
             accountOrgRel1.setAcctOrgRelId(acctOrgRelId);
             baseMapper.insert(accountOrgRel1);
             return accountOrgRel1;
         }
+        baseMapper.updateById(accountOrgRel1);
         return accountOrgRel;
     }
 

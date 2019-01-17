@@ -139,6 +139,7 @@
                 CERTNO LIKE '%'||#{psonOrgVo.search}||'%'
                  )
         </if>
+        order by sort
     </select>
     <!--组织人员关系查询-->
     <select id="selectPerOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
@@ -201,6 +202,7 @@
                      CERTNO LIKE '%'||#{psonOrgVo.search}||'%'
                 )
             </if>
+            order by sort
             )
             <if test="psonOrgVo.sortField!=null and psonOrgVo.sortField!='' and psonOrgVo.sortOrder!=null and psonOrgVo.sortOrder!='' ">
                 order by #{psonOrgVo.sortField}||' '||#{psonOrgVo.sortOrder}
@@ -265,6 +267,7 @@
                      MOBILE  LIKE '%'||#{psonOrgVo.search}||'%' OR
                      CERTNO LIKE '%'||#{psonOrgVo.search}||'%')
             </if>
+        <!--    ORDER BY SORT -->
             )
             <if test="psonOrgVo.sortField!=null and psonOrgVo.sortField!='' and psonOrgVo.sortOrder!=null and psonOrgVo.sortOrder!='' ">
                 order by #{psonOrgVo.sortField}||' '||#{psonOrgVo.sortOrder}
@@ -941,6 +944,56 @@
 
     <select id="getCert" resultType="java.lang.String">
          SELECT A.CERT_NO  FROM TB_CERT A WHERE A.STATUS_CD='1000' AND A.CERT_TYPE=1 AND A.PERSONNEL_ID= #{personnelId}  AND ROWNUM = 1
+    </select>
+
+
+
+    <select id="selectOrgRelsByPerIdPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo">
+        SELECT *
+        FROM (SELECT AA.ORG_ID orgId,AA.PERSONNEL_ID  personnelId,
+        AA.POST_ID postId,AA.REF_TYPE refType,AA.PROPERTY property,
+        AA.DOUBLE_NAME  doubleName,AA.ORG_NAME orgName,AA.Full_Name fullName,
+        AA.PSN_NAME PsnName,AA.PSN_CODE psnCode,AA.PSN_NBR psnNbr,
+        AA.NC_CODE ncCode,ORG_TREE_NAME orgTreeName,AA.STATUS_CD statusCd,
+        AA.ORG_TREE_ID orgTreeId,AA.ORG_PERSON_ID orgPersonId,
+        AA.SORT sort,pct.content mobile,pc.cert_no certNo
+        FROM (SELECT distinct tbOrgPersonRel.ORG_PERSON_ID,
+        tbOrgPersonRel.ORG_ID,tbOrgPersonRel.PERSONNEL_ID,tbOrgPersonRel.POST_ID,
+        tbOrgPersonRel.REF_TYPE,tbOrgPersonRel.PROPERTY,tbOrgPersonRel.DOUBLE_NAME,
+        tbOrgPersonRel.SORT,tbOrgPersonRel.STATUS_CD,tbOrgPersonRel.CREATE_DATE,
+        tbOrgPersonRel.CREATE_USER,tbOrgPersonRel.UPDATE_DATE,tbOrgPersonRel.UPDATE_USER,
+        tbOrgPersonRel.STATUS_DATE,E.ORG_TREE_NAME,
+        E.ORG_TREE_ID,D.ORG_NAME,
+        D.Full_Name,A.NC_CODE,A.PSN_NBR,A.PSN_CODE,A.PSN_NAME
+        FROM
+        TB_PERSONNEL  A,TB_ORG_PERSON_REL tbOrgPersonRel,TB_ORGTREE_ORGPERSON_REL C,
+        TB_ORG  D,TB_ORG_TREE E,TB_ORG_LEVEL F,TB_ORG_ORGTYPE_REL  G
+        WHERE A.STATUS_CD = '1000'　AND tbOrgPersonRel.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000'　AND D.STATUS_CD = '1000'　AND E.STATUS_CD = '1000'
+        AND F.STATUS_CD = '1000'　AND G.STATUS_CD = '1000'
+        AND A.PERSONNEL_ID = tbOrgPersonRel.PERSONNEL_ID
+        <if test="psonOrgVo.tabOrgPerRelParams!='' and psonOrgVo.tabOrgPerRelParams!=null">
+            AND ${psonOrgVo.tabOrgPerRelParams}
+        </if>
+        AND G.ORG_ID = D.ORG_ID
+        AND F.ORG_ID = D.ORG_ID
+        AND D.ORG_ID = tbOrgPersonRel.ORG_ID
+        <if test="psonOrgVo.tabOrgOrgTypeParams!='' and psonOrgVo.tabOrgOrgTypeParams!=null">
+            AND ${psonOrgVo.tabOrgOrgTypeParams}
+        </if>
+        <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
+            AND ${psonOrgVo.tabOrgParams}
+        </if>
+        AND tbOrgPersonRel.ORG_PERSON_ID=C.ORG_PERSON_ID
+        AND E.ORG_TREE_ID = C.ORG_TREE_ID
+        AND E.ORG_TREE_ID = F.ORG_TREE_ID
+        AND E.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
+        AND A.Personnel_Id = #{psonOrgVo.personnelId}) AA
+
+        LEFT JOIN TB_CONTACT PCT ON PCT.STATUS_CD='1000' AND PCT.CONTACT_TYPE=1 AND PCT.PERSONNEL_ID=AA.PERSONNEL_ID
+        LEft join TB_CERT pc on pc.STATUS_CD='1000' and pc.cert_type=1 and pc.personnel_id=AA.PERSONNEL_ID
+
+        ) AB WHERE 1=1
     </select>
 
 </mapper>

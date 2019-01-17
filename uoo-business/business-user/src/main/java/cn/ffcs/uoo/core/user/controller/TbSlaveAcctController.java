@@ -65,9 +65,7 @@ public class TbSlaveAcctController extends BaseController {
         Long slaveAcctId = tbSlaveAcctService.getId();
         Long userId = editFormSlaveAcctVo.getUserId();
         AccountOrgRelVo accountOrgRelVo = new AccountOrgRelVo();
-        accountOrgRelVo.setAcctId(editFormSlaveAcctVo.getAcctId());
-        accountOrgRelVo.setOrgId(editFormSlaveAcctVo.getOrgId());
-        accountOrgRelVo.setOrgTreeId(editFormSlaveAcctVo.getOrgTreeId());
+        BeanUtils.copyProperties(editFormSlaveAcctVo, editFormSlaveAcctVo);
         TbAccountOrgRel tbAccountOrgRel = tbAccountOrgRelService.addOrUpdateAcctOrg(accountOrgRelVo);
         editFormSlaveAcctVo.setAcctOrgRelId(tbAccountOrgRel.getAcctOrgRelId());
 
@@ -158,9 +156,9 @@ public class TbSlaveAcctController extends BaseController {
         if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getSlaveAcct())){
             return ResultUtils.error(EumUserResponeCode.SLAVE_ACCT_NULL);
         }
-        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getAcctOrgRelId())){
-            return ResultUtils.error(EumUserResponeCode.ACCT_HOST_NULL);
-        }
+//        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getAcctOrgRelId())){
+//            return ResultUtils.error(EumUserResponeCode.ACCT_HOST_NULL);
+//        }
         if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getEnableDate())){
             return ResultUtils.error(EumUserResponeCode.EFF_DATE_NULL);
         }
