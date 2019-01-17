@@ -1662,7 +1662,7 @@
                 _.each(suggestions, function getSuggestionNode(suggestion) {
                     var $el, context;
                     context = that._injectQuery(query, suggestion);
-                    $el = $(that.templates.suggestion(context)).data(keys.obj, suggestion).data(keys.val, that.displayFn(suggestion)).addClass(that.classes.suggestion + " " + that.classes.selectable);
+                    $el = $(that.templates.suggestion(context)).data(keys.obj, suggestion).data(keys.val, that.displayFn(suggestion)).addClass(that.classes.suggestion);
                     fragment.appendChild($el[0]);
                 });
                 this.highlight && highlight({

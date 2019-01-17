@@ -59,6 +59,7 @@ public class RouteController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request,HttpServletResponse response) {
         request.getSession().invalidate();
+        System.out.println("--------------logout------------------------");
         return "loginPage";
     }
     @GetMapping("/route/{url}")

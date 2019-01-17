@@ -8,6 +8,8 @@ var lChBox =document.getElementById("lowerCheckBox");   //是否显示下级人�
 var orgFullName = '';
 var table;
 var isCheck = 0;
+var query,
+    delayTime = 500;
 
 // 获取组织完整路径
 function getOrgExtInfo () {
@@ -53,7 +55,7 @@ function initMainTable(isCheck,search){
                    if(row.slaveAcct == null){
                         return "-";
                    }else{
-                        return '<a href="editSubAccount.html?orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +
+                        return '<a href="editSubAccount.html?curSlaveOrgTreeId='+orgTreeId+'&orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +
                                 '&orgId=' + orgId + '&mainAcctId='+ row.accId +'&acctId='+ row.slaveAcctId +'&statusCd='+row.statusCd+'&hType=mh">'+ row.slaveAcct +'</a>';
                    }
                 }
@@ -117,6 +119,16 @@ function initMainTable(isCheck,search){
     });
 }
 
+// 搜索组织
+function search () {
+    query = $('.ui-input-search').val();
+    clearTimeout(this.timer);
+    // 添加的延时
+    this.timer = setTimeout(function(){
+        initMainTable(isCheck, query);
+    }, delayTime);
+}
+
 
 $('#orgName').html(orgName);
 getOrgExtInfo();
@@ -135,7 +147,8 @@ function boxClick(){            //点击复选框
             $(".ui-checkbox").css("background-position","0px 0px");
         }
     }
-    initMainTable(isCheck,'');
+    // initMainTable(isCheck,'');
+    search();
 }
 
 //新增账号

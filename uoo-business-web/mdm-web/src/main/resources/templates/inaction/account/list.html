@@ -22,7 +22,7 @@
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
     <link href="/css/custom.css" rel="stylesheet">
-    <link href="/vendors/typeahead/typeahead.css" rel="stylesheet">
+    <!-- <link href="/vendors/typeahead/typeahead.css" rel="stylesheet"> -->
 
     <!--[if lt IE 9]>
     <script src="../../../static/js/core/html5shiv.js"></script>
@@ -100,23 +100,24 @@
         </div>
 
          <!-- 新增的搜索部分 -->
-      <div class="pos-relative" style="margin-top: 7px;margin-left:5px;">
-        <div class="col-md-6 col-sm-6 col-xs-6">
+      <!-- <div class="pos-relative" style="margin-top: 7px;margin-left:5px;"> -->
+        <!-- <div class="col-md-6 col-sm-6 col-xs-6">
           <div class="form-item" style="width: 100%">
             <div class="typeahead col-md-8 col-sm-8 col-xs-8" style="padding: 0;">
               <div>
                 <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
                 <input class="ui-input typeahead-input tt-input" id="acctName" type="text" name="q" placeholder="请输入人员或账号进行搜索" autocomplete="off" spellcheck="false" dir="auto">
-                <!-- <img class="typeahead-spinner" src="img/spinner.gif" style="display: none;"> -->
               </div>
             </div>
           </div>
-        </div>
-        <div class="user-table typeahead-menu">
+        </div> -->
+        <!-- <div class="user-table typeahead-menu">
             <table id="userTable" class="stripe" width="100%"></table>
-        </div>
+        </div> -->
+      <!-- </div> -->
+      <div style="overflow: hidden;">
+          <input class="ui-input ui-input-search col-md-4 col-sm-4 col-xs-4" id="acctName" type="text" placeholder="请输入人员或账号进行搜索"  oninput="search()" onpropertychange="search()" autocomplete="off"/>
       </div>
-
       <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
           <table id="mainTable" class="stripe" width="100%"></table>
       </div>
@@ -127,9 +128,9 @@
     <!-- Bootstrap -->
     <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- handlebars -->
-    <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
+    <!-- <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script> -->
     <!-- typeahead -->
-    <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
+    <!-- <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script> -->
     <!-- Placeholder -->
     <script type="text/javascript" src="/vendors/lulu/js/common/ui/Placeholder.js"></script>
     <!-- jquery tagsinput -->
@@ -140,7 +141,7 @@
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
     <!-- account -->
     <script type="text/javascript" src="/js/account/list.js"></script>
-    <script type="text/javascript" src="/js/account/acctSearch.js"></script>
+    <!-- <script type="text/javascript" src="/js/account/acctSearch.js"></script> -->
 
     <script>
         $('input').placeholder();

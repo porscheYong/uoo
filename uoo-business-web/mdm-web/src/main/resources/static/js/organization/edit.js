@@ -205,6 +205,11 @@ function getAreaId(regionId) {
     })
 }
 
+//根据拉下框获取当前选中的区号ID
+function getAreaCodeId(ele) {
+    areaCodeId = $(ele).children('option:selected').val();
+}
+
 //证件信息初始化
 function initCredentialTable (results) {
     var table = $("#orgRelTable").DataTable({

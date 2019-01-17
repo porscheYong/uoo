@@ -41,7 +41,7 @@ function getHomeStatistics(){
             setSysInfo();
             setPsnChart();
             setOrgChart();
-            setSysChart();
+            // setSysChart();
       }, function (err) {
             parent.loadingHome.screenMaskDisable('LAY_app_body');
       })
@@ -183,101 +183,102 @@ function setOrgChart(){
         ]
     };
     myChart.setOption(option); 
+    parent.loadingHome.screenMaskDisable('LAY_app_body');
 }
 
 //专业系统下发数
-function setSysChart(){
-    var myChart = echarts.init(document.getElementById('IncomeFrom')); 
+// function setSysChart(){
+//     var myChart = echarts.init(document.getElementById('IncomeFrom')); 
 
-    option = {
-        tooltip : {
-            trigger: 'item',
-            formatter: "{b}: <br/>{c} ({d}%)",
-                textStyle: {
-                    color: '#CCC',
-                    fontSize: 18
-                }
-        },
-        legend: {
-            orient: 'vertical',
-            x: 'left',
-            data:['待办','在途','待审批','待推进']
-            },
-        series: [
-            {
-                name:'收入构成',
-                type:'pie',
-                radius: ['45%', '70%'],
-                avoidLabelOverlap: false,
-                label: {
-                    normal: {
-                        show: false,
-                        position: 'center'
-                    },
-                    emphasis: {
-                        show: true,
-                        textStyle: {
-                            fontSize: '22',
-                        }
-                    }
-                },
-                labelLine: {
-                    normal: {
-                        show: false
-                    }
-                },
-                data:[
-                    {value:178, name:'待办',
-                    itemStyle:{
-                            normal:{color:'#a0d98c',borderWidth: 2,borderColor: '#FFF'}
-                        }
-                    },
-                    {value:256, name:'在途',
-                    itemStyle:{
-                            normal:{color:'#61c7ff',borderWidth: 2,borderColor: '#FFF'}
-                        }
-                    },
-                    {value:211, name:'待审批',
-                    itemStyle:{
-                            normal:{color:'#ffa9ad',borderWidth: 2,borderColor: '#FFF'}
-                        }
-                    },
-                    {value:95, name:'待推进',
-                    itemStyle:{
-                            normal:{color:'#ffc870',borderWidth: 2,borderColor: '#FFF'}
-                        }
-                    }
-                ]
-            }
-        ]
-    };
-        myChart.setOption(option);
-        var currentIndex = -1;
+//     option = {
+//         tooltip : {
+//             trigger: 'item',
+//             formatter: "{b}: <br/>{c} ({d}%)",
+//                 textStyle: {
+//                     color: '#CCC',
+//                     fontSize: 18
+//                 }
+//         },
+//         legend: {
+//             orient: 'vertical',
+//             x: 'left',
+//             data:['待办','在途','待审批','待推进']
+//             },
+//         series: [
+//             {
+//                 name:'收入构成',
+//                 type:'pie',
+//                 radius: ['45%', '70%'],
+//                 avoidLabelOverlap: false,
+//                 label: {
+//                     normal: {
+//                         show: false,
+//                         position: 'center'
+//                     },
+//                     emphasis: {
+//                         show: true,
+//                         textStyle: {
+//                             fontSize: '22',
+//                         }
+//                     }
+//                 },
+//                 labelLine: {
+//                     normal: {
+//                         show: false
+//                     }
+//                 },
+//                 data:[
+//                     {value:178, name:'待办',
+//                     itemStyle:{
+//                             normal:{color:'#a0d98c',borderWidth: 2,borderColor: '#FFF'}
+//                         }
+//                     },
+//                     {value:256, name:'在途',
+//                     itemStyle:{
+//                             normal:{color:'#61c7ff',borderWidth: 2,borderColor: '#FFF'}
+//                         }
+//                     },
+//                     {value:211, name:'待审批',
+//                     itemStyle:{
+//                             normal:{color:'#ffa9ad',borderWidth: 2,borderColor: '#FFF'}
+//                         }
+//                     },
+//                     {value:95, name:'待推进',
+//                     itemStyle:{
+//                             normal:{color:'#ffc870',borderWidth: 2,borderColor: '#FFF'}
+//                         }
+//                     }
+//                 ]
+//             }
+//         ]
+//     };
+//         myChart.setOption(option);
+//         var currentIndex = -1;
 
-        setInterval(function () {
-            var dataLen = option.series[0].data.length;
-        // 取消之前高亮的图形
-        myChart.dispatchAction({
-            type: 'downplay',
-            seriesIndex: 0,
-            dataIndex: currentIndex
-        });
-        currentIndex = (currentIndex + 1) % dataLen;
-        // 高亮当前图形
-        myChart.dispatchAction({
-            type: 'highlight',
-            seriesIndex: 0,
-            dataIndex: currentIndex
-        });
-        // 显示 tooltip
-        myChart.dispatchAction({
-            type: 'showTip',
-            seriesIndex: 0,
-            dataIndex: currentIndex
-        });
-    }, 3000);
-    parent.loadingHome.screenMaskDisable('LAY_app_body');
-}
+//         setInterval(function () {
+//             var dataLen = option.series[0].data.length;
+//         // 取消之前高亮的图形
+//         myChart.dispatchAction({
+//             type: 'downplay',
+//             seriesIndex: 0,
+//             dataIndex: currentIndex
+//         });
+//         currentIndex = (currentIndex + 1) % dataLen;
+//         // 高亮当前图形
+//         myChart.dispatchAction({
+//             type: 'highlight',
+//             seriesIndex: 0,
+//             dataIndex: currentIndex
+//         });
+//         // 显示 tooltip
+//         myChart.dispatchAction({
+//             type: 'showTip',
+//             seriesIndex: 0,
+//             dataIndex: currentIndex
+//         });
+//     }, 3000);
+//     parent.loadingHome.screenMaskDisable('LAY_app_body');
+// }
 
 //设置系统概览面板
 function setSysInfo(){

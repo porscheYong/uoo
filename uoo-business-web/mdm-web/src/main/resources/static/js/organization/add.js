@@ -319,6 +319,63 @@ function getStatusCd (statusCd) {
 //     formSelects.render('contractType');
 // }
 
+// 获取组织基础信息
+function getOrg (orgId) {
+    $http.get('/org/getOrg', {
+        orgId: orgId
+    }, function (data) {
+        var orgAddForm = $('#orgAddForm');
+        orgAddForm.find('input:not(#orgName)').each(function () {
+            $(this).attr('disabled', 'disabled')
+        });
+        $('#orgName').val(data.orgName);
+        $('#orgCode').val(data.orgCode);
+        $('#shortName').val(data.shortName);
+        $('#orgBizFullName').val(data.orgBizFullName);
+        $('#orgBizFullName').attr('title', data.orgBizFullName);
+        $('#orgNameEn').val(data.orgNameEn);
+        orgMartCode = data.orgMartCode;
+        laydate.render({
+            elem: '#foundingTime',
+            value: new Date(data.foundingTime)
+        });
+        $('#foundingTime').val(data.foundingTime);
+        if (data.psonOrgVoList && data.psonOrgVoList.length > 0) {
+            $('#psonOrgVoList').val(data.psonOrgVoList[0].psnName);
+        }
+        $('#officePhone').val(data.officePhone);
+        $('#sort').val(data.sort);
+        areaCodeId = data.areaCodeId;
+        // render area code
+        var option = '';
+        if (data.areaCode)
+            option = "<option value='" + areaCodeId + "'>" + data.areaCode +"</option>";
+        $('#areaCode').append(option);
+        $('#areaCode').selectMatch();
+        formValidate.isPass($('#areaCode'));
+
+        $('#address').val(data.address);
+        $('#orgContent').val(data.orgContent);
+        $('#orgDesc').val(data.orgDesc);
+        getScale(data.orgScale);
+        getCityVillage(data.cityTown);
+        getOrgPostLevel(data.orgPositionLevel);
+        getStatusCd(data.statusCd);
+        locationList = data.politicalLocationList;
+        orgTypeList = data.orgTypeList;
+        positionList = data.positionList;
+        orgPostList = data.postList;
+        selectUser = data.psonOrgVoList;
+        $('#locationList').importTags(locationList);
+        $('#orgTypeList').importTags(orgTypeList);
+        $('#positionList').importTags(positionList);
+        $('#postList').importTags(orgPostList);
+        expandovalueVoList = data.expandovalueVoList;
+    }, function (err) {
+
+    })
+}
+
 // 添加子节点
 function addOrg () {
     if (!formValidate.isAllPass())
@@ -424,6 +481,36 @@ function addOrg () {
     })
 }
 
+// 添加搜索子节点
+function  addTreeNode () {
+    var loading = parent.loading;
+    loading.screenMaskEnable('container');
+    $http.post('/orgRel/addOrgRel', JSON.stringify({
+        orgRootId: '1',
+        orgTreeId: '1',
+        supOrgId: orgId,
+        orgId: selectNode.orgId
+    }), function (data) {
+        var newNode = {
+            name: selectNode.orgName,
+            id: selectNode.orgId
+        };
+        parent.addNodeById(orgId, newNode);
+        parent.openTreeById(orgId, data.id);
+        window.location.replace("list.html?id=" + selectNode.orgId + '&pid=' + orgId + "&name=" + encodeURI(selectNode.orgName));
+        loading.screenMaskDisable('container');
+        toastr.success('新增成功！');
+    }, function () {
+        loading.screenMaskDisable('container');
+    })
+}
+
+function add() {
+    if (selectNode && selectNode.orgId)
+        addTreeNode();
+    else
+        addOrg();
+}
 // 取消
 function cancel () {
     var url = "list.html?id=" + orgId + "&name=" + encodeURI(orgName);
@@ -434,3 +521,81 @@ getScale();
 getCityVillage();
 getOrgPostLevel();
 getStatusCd('1000'); //默认选择生效
+
+
+var engine, template, empty, selectNode, query;
+
+template = Handlebars.compile($("#result-template").html());
+
+engine = new Bloodhound({
+    identify: function(o) { return o.id_str; },
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name', 'orgName'),
+    dupDetector: function(a, b) { return a.id_str === b.id_str; },
+    remote: {
+        url: '/org/getOrgPage?orgRootId=1&search=%QUERY',
+        wildcard: '%QUERY',
+        filter: function (response) {
+            return response.data.records;
+        }
+    }
+});
+
+function engineWithDefaults(q, sync, async) {
+    console.log(query, q, selectNode)
+    if (q != query && selectNode && selectNode.orgId){
+        // console.log(query, q)
+        selectNode = {};
+        $('#orgAddForm').find(':input').each(function () {
+            $(this).attr('disabled', false)
+        });
+    }
+    if (q === '') {
+        async([]);
+    }
+
+    else {
+        engine.search(q, sync, async);
+    }
+}
+
+$('#orgName').typeahead({
+    hint: $('.typeahead-hint'),
+    menu: $('.typeahead-menu'),
+    minLength: 0,
+    highlight:true,
+    classNames: {
+        open: 'is-open',
+        empty: 'is-empty',
+        cursor: 'is-active',
+        suggestion: 'Typeahead-suggestion',
+        selectable: 'Typeahead-selectable'
+    }
+}, {
+    source: engineWithDefaults,
+    displayKey: 'orgName',
+    templates: {
+        suggestion: template
+    }
+})
+    .on('typeahead:asyncrequest', function() {
+
+    })
+    .on('typeahead:asynccancel typeahead:asyncreceive', function() {
+
+    });
+
+// typeahead获取选中的节点
+$('#orgName').bind('typeahead:select', function(ev, suggestion) {
+    query = $('#orgName').val();
+    selectNode = suggestion;
+    getOrg(suggestion.orgId);
+});
+
+Handlebars.registerHelper('eq', function(v1, v2, opts) {
+    if(v1 == v2){
+        return opts.fn(this);
+    }
+    else
+        return opts.inverse(this);
+});

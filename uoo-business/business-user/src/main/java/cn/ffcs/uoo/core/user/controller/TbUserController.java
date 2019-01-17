@@ -146,7 +146,7 @@ public class TbUserController extends BaseController {
         formAcctVo.setTbRolesList(tbRolesList);
 
         //归属组织信息
-        Page<ListAcctOrgVo> acctOrgVoPage = tbUserService.getAcctOrg(tbAcct.getAcctId(), 0, 0, account);
+        Page<ListAcctOrgVo> acctOrgVoPage = tbUserService.getAcctOrg(tbAcct.getAcctId(), 0, 50, account);
         formAcctVo.setAcctOrgVoPage(acctOrgVoPage);
 
         //从账号

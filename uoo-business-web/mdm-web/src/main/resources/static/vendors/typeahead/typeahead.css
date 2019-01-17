@@ -218,6 +218,7 @@
 .ProfileCard {
   position: relative;
   padding: 8px;
+  cursor: default;
 }
 
 .ProfileCard-avatar {
@@ -278,14 +279,14 @@
   margin-left: 5px;
 }
 
-.ProfileCard:hover,
+/*.ProfileCard:hover,*/
 .ProfileCard.is-active {
   color: #fff;
   background: #55acee;
 }
 
-.ProfileCard:hover .ProfileCard-screenName,
-.ProfileCard:hover .ProfileCard-stat-label,
+/*.ProfileCard:hover .ProfileCard-screenName,*/
+/*.ProfileCard:hover .ProfileCard-stat-label,*/
 .ProfileCard.is-active .ProfileCard-screenName,
 .ProfileCard.is-active .ProfileCard-stat-label {
   color: #fff;

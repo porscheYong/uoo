@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -83,7 +84,7 @@ public class SystemLogHandlerInterceptor implements HandlerInterceptor{
                         for (Entry<String, String> entry : entrySet) {
                             String pm = entry.getValue();
                             String url = entry.getKey();
-                            try {
+                            if(StringUtils.isNotBlank(url)){
                                 if(pm.startsWith("perms[")){
                                     String tmp = url.replaceAll("\\*", ".*");
                                     if(Pattern.matches(tmp, requestURI)){
@@ -91,9 +92,8 @@ public class SystemLogHandlerInterceptor implements HandlerInterceptor{
                                         break;
                                     }
                                 }
-                            } catch (Exception e) {
-                                System.err.println(url);
                             }
+                             
                         }
                         logs.setFormData(formData);
                         

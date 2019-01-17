@@ -144,7 +144,7 @@ function getOrg (orgId) {
         $('#orgName').html(data.orgName);
         $('#orgCode').html(data.orgCode);
         $('#shortName').html(data.shortName);
-        $('#fullName').html(data.fullName);
+        $('#orgBizFullName').html(data.orgBizFullName);
         $('#orgMartCode ').html(data.orgMartCode);
         $('#createDate ').html(data.createDate);
         $('#orgNameEn').html(data.orgNameEn);

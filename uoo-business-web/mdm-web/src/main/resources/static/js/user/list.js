@@ -34,7 +34,7 @@ function initOrgPersonnelTable (isSearchlower,search) {
             },
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + 
+                    return "<a href='edit.html?id=" + orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId +
                                         "&name="+ encodeURI(orgName) +"&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
                 }
             },
@@ -118,7 +118,7 @@ function initFreePersonnelTable () {
             },
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId +
+                    return "<a href='edit.html?id=" + orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId +
                         "&name="+ encodeURI(orgName) +"&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
                 }
             },
