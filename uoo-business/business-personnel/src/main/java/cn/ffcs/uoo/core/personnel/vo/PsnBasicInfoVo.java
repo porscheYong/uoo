@@ -12,6 +12,8 @@ public class PsnBasicInfoVo extends BaseVo {
 
     private String psnName;
 
+    private String certNo;
+
     private String psnNbr;
 
     private String gender;
