@@ -1165,3 +1165,14 @@ a.BoardTitle.Back:hover {
 .xm-select-parent {
     padding: 0;
 }
+
+.btn-fixed {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    background: #fff;
+    padding-top: 10px;
+    border-top: 1px solid #ecedef;
+    z-index: 100;
+}

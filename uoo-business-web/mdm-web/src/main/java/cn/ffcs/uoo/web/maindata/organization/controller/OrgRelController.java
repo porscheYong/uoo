@@ -89,7 +89,7 @@ public class OrgRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/addOrgRel", method = RequestMethod.POST)
-    public ResponseResult<TreeNodeVo> addOrgRel(@RequestBody Org org){
+    public ResponseResult<TreeNodeVo> addOrgRel(@RequestBody OrgVo org){
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         Long userId = currentLoginUser.getUserId();

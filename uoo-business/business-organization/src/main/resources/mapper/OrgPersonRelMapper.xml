@@ -502,7 +502,8 @@
         ) A
         WHERE 1 = 1
         <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
-            AND (PsnName like '%'||#{psonOrgVo.search}||'%' or acct like '%'||#{psonOrgVo.search}||'%')
+            AND (PsnName like '%'||#{psonOrgVo.search}||'%' or acct like '%'||#{psonOrgVo.search}||'%' or
+                 slaveAcct like '%'||#{psonOrgVo.search}||'%' )
         </if>
 
     </select>
@@ -808,7 +809,7 @@
                 left join tb_slave_acct v on v.status_cd=1000 and v.acct_id=t.acct_id and t.acct_org_rel_id=v.acct_org_rel_id
                              ) where 1=1
                 <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
-                    AND (PsnName like '%'||#{psonOrgVo.search}||'%' or acct like '%'||#{psonOrgVo.search}||'%')
+                    AND (PsnName like '%'||#{psonOrgVo.search}||'%' or acct like '%'||#{psonOrgVo.search}||'%' or slaveAcct like '%'||#{psonOrgVo.search}||'%' )
                 </if>
                 )
             </when>
@@ -889,7 +890,7 @@
                 left join tb_slave_acct v on v.status_cd=1000 and v.acct_id=t.acct_id and t.acct_org_rel_id=v.acct_org_rel_id
                 ) where 1=1
                 <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
-                    AND (PsnName like '%'||#{psonOrgVo.search}||'%'   or acct like '%'||#{psonOrgVo.search}||'%')
+                    AND (PsnName like '%'||#{psonOrgVo.search}||'%'   or acct like '%'||#{psonOrgVo.search}||'%' or slaveAcct like '%'||#{psonOrgVo.search}||'%')
                 </if>
                 )
             </otherwise>

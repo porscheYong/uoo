@@ -280,7 +280,7 @@
 }
 
 /*.ProfileCard:hover,*/
-.ProfileCard.is-active {
+.ProfileCard.is-active:hover {
   color: #fff;
   background: #55acee;
 }
