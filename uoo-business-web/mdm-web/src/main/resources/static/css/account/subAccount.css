@@ -96,3 +96,12 @@ table.dataTable tbody td {
     margin: 5px 1px;
     padding: 0 10px;
 }
+.pngDot{
+    position: absolute;
+    /* margin-left: -2%; */
+    margin-top: 0.7%;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../images/dot.png);
+}
