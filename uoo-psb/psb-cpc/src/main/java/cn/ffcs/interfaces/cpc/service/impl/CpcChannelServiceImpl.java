@@ -305,8 +305,8 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                         //Long personnelId = acctCrossRelMapper.checkExistCrossRelTypeAndSalesCode("100100102", String.valueOf(staff.get("SALES_CODE")));
                         Long personnelId = tbPersonnelMapper.checkExistPsnCode(psnCode);
                         if (personnelId == null) {
-                            rsMap.put("result_code", "1000");
-                            rsMap.put("message", "人员标识不存在。");
+                            rsMap.put("result_code", "0");
+                            //rsMap.put("message", "人员标识不存在。");
                             return;
                         } else {
                             //修改人
