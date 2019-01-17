@@ -35,9 +35,9 @@ function initRoleTree () {
       data: {
           simpleData: {
               enable:true,
-              idKey: "id",
-              pIdKey: "pid",
-              rootPId: null
+            //   idKey: "id",
+            //   pIdKey: "pid",
+            //   rootPId: null
           }
       },
       callback: {
@@ -50,12 +50,14 @@ function initRoleTree () {
           chkboxType: { "Y": "", "N": "" }
       }
     };
-    $http.get('/system/sysRole/treeRole', {}, 
+    $http.get('/permission/tbRoles/listPageRoles/pageNo=1&pageSize=1000', {}, 
     function (data) {
-        // for(var i=0;i < data.length;i++){
-        //     allRoles.push({"id":data[i].id,"pid":data[i].pid,"name":data[i].name});
-        // }
-        $.fn.zTree.init($("#roleTree"), roleTetting, data);
+        allRoles = [];
+        for(var i=0;i < data.records.length;i++){
+            allRoles.push({"id":data.records[i].roleId, "name":data.records[i].roleName});
+        }
+        console.log(allRoles);
+        $.fn.zTree.init($("#roleTree"), roleTetting, allRoles);
         autoCheck();
     }, function (err) {
 
