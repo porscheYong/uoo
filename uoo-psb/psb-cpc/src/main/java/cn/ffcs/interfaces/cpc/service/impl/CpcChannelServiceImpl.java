@@ -214,7 +214,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                         DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"), "2");
                                 tbAcctMapper.insert(tbAcct);
                                 // 插入TB_CONTACT
-                                if (StringUtils.isNotEmpty((String) staff.get("MOBILE_PHONE"))) {
+                                if (staff.get("MOBILE_PHONE") != null) {
                                     TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
                                             String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
