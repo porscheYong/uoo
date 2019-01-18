@@ -17,6 +17,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysPermissionClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionDTO;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionEditDTO;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionPrivDTO;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
@@ -46,7 +47,7 @@ public class SysPermissionController {
             @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long" ,paramType="path"),
     })
     @GetMapping("/get/{id}")
-    public ResponseResult<SysPermissionEditDTO> get(@PathVariable(value="id" ,required=true) Long id){
+    public ResponseResult<SysPermissionPrivDTO> get(@PathVariable(value="id" ,required=true) Long id){
         return permSvc.get(id);
     }
     @OperateLog(type=OperateType.SELECT,module="平台系统权限模块",methods="分页查看权限",desc="")
