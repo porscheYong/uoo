@@ -387,8 +387,12 @@ function deleteTbAcct(){    //删除主账号
         contentType: "application/json",
         dataType:"json",
         success: function (data) { //返回json结果
-          toastr.success(data.message);
-          deleteSuccess();
+          if(data.state === 4){
+            toastr.success(data.message);
+            deleteSuccess();
+          }else{
+            toastr.error(data.message);
+          }
         },
         error:function(err){
           toastr.error('删除失败！');
