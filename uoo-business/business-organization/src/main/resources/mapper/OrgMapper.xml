@@ -209,35 +209,69 @@
 
     <select id="selectOrgByOrgId" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
 
-        SELECT A.ORG_ID ORGID,
-        A.LOC_ID LOCID,
-        A.AREA_CODE_ID AREACODEID,
-        A.ORG_NAME ORGNAME,
-        A.ORG_CODE ORGCODE,
-        A.SHORT_NAME SHORTNAME,
-        A.ORG_NAME_EN ORGNAMEEN,
-        A.FULL_NAME FULLNAME,
-        A.CITY_TOWN CITYTOWN,
-        A.OFFICE_PHONE OFFICEPHONE,
-        TO_CHAR(A.FOUNDING_TIME, 'YYYY-MM-DD') FOUNDINGTIME,
-        A.ORG_SCALE ORGSCALE,
-        A.ORG_LEVEL ORGLEVEL,
-        A.ORG_POSITION_LEVEL ORGPOSITIONLEVEL,
-        A.SORT SORT,
-        A.ORG_CONTENT ORGCONTENT,
-        A.ORG_DESC ORGDESC,
-        A.ADDRESS ADDRESS,
-        TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') CREATEDATE,
-        A.ORG_MART_CODE ORGMARTCODE,
-        B.ORG_BIZ_NAME ORGBIZNAME,
-        B.ORG_BIZ_FULL_NAME ORGBIZFULLNAME,
-        A.STANDARD_FLAG standardFlag
-        FROM TB_ORG A, TB_ORG_ORGTREE_REL B
-        WHERE A.STATUS_CD = '1000'
-        AND B.STATUS_CD = '1000'
-        AND B.ORG_ID = A.ORG_ID
-        AND A.ORG_ID = #{orgId}
-        AND B.ORG_TREE_ID = #{orgTreeId}
+        <choose>
+        <when test='orgTreeId!=null and orgTreeId!=""'>
+            SELECT A.ORG_ID ORGID,
+            A.LOC_ID LOCID,
+            A.AREA_CODE_ID AREACODEID,
+            A.ORG_NAME ORGNAME,
+            A.ORG_CODE ORGCODE,
+            A.SHORT_NAME SHORTNAME,
+            A.ORG_NAME_EN ORGNAMEEN,
+            A.FULL_NAME FULLNAME,
+            A.CITY_TOWN CITYTOWN,
+            A.OFFICE_PHONE OFFICEPHONE,
+            TO_CHAR(A.FOUNDING_TIME, 'YYYY-MM-DD') FOUNDINGTIME,
+            A.ORG_SCALE ORGSCALE,
+            A.ORG_LEVEL ORGLEVEL,
+            A.ORG_POSITION_LEVEL ORGPOSITIONLEVEL,
+            A.SORT SORT,
+            A.ORG_CONTENT ORGCONTENT,
+            A.ORG_DESC ORGDESC,
+            A.ADDRESS ADDRESS,
+            TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') CREATEDATE,
+            A.ORG_MART_CODE ORGMARTCODE,
+            B.ORG_BIZ_NAME ORGBIZNAME,
+            B.ORG_BIZ_FULL_NAME ORGBIZFULLNAME,
+            A.STANDARD_FLAG standardFlag
+            FROM TB_ORG A, TB_ORG_ORGTREE_REL B
+            WHERE A.STATUS_CD = '1000'
+            AND B.STATUS_CD = '1000'
+            AND B.ORG_ID = A.ORG_ID
+            AND A.ORG_ID = #{orgId}
+            AND B.ORG_TREE_ID = #{orgTreeId}
+        </when>
+        <otherwise>
+            SELECT A.ORG_ID ORGID,
+            A.LOC_ID LOCID,
+            A.AREA_CODE_ID AREACODEID,
+            A.ORG_NAME ORGNAME,
+            A.ORG_CODE ORGCODE,
+            A.SHORT_NAME SHORTNAME,
+            A.ORG_NAME_EN ORGNAMEEN,
+            A.FULL_NAME FULLNAME,
+            A.CITY_TOWN CITYTOWN,
+            A.OFFICE_PHONE OFFICEPHONE,
+            TO_CHAR(A.FOUNDING_TIME, 'YYYY-MM-DD') FOUNDINGTIME,
+            A.ORG_SCALE ORGSCALE,
+            A.ORG_LEVEL ORGLEVEL,
+            A.ORG_POSITION_LEVEL ORGPOSITIONLEVEL,
+            A.SORT SORT,
+            A.ORG_CONTENT ORGCONTENT,
+            A.ORG_DESC ORGDESC,
+            A.ADDRESS ADDRESS,
+            TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') CREATEDATE,
+            A.STANDARD_FLAG standardFlag
+            FROM TB_ORG A
+            WHERE A.STATUS_CD = '1000'
+            AND A.ORG_ID = #{orgId}
+
+        </otherwise>
+        </choose>
+
+
+
+
   </select>
 
 

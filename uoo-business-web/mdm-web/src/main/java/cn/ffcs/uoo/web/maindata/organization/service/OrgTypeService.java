@@ -33,10 +33,14 @@ public interface OrgTypeService {
 
     @RequestMapping(value = "/orgType/getOrgTypeTree", method = RequestMethod.GET, headers = {"Content-Type=application/json"})
     public ResponseResult<List<TreeNodeVo>> getOrgTypeTree(@RequestParam(value = "id",required = false)String id,
-                                                           @RequestParam(value = "orgTypeCode",required = false)String orgTypeCode);
+                                                           @RequestParam(value = "orgTypeCode",required = false)String orgTypeCode,
+                                                           @RequestParam(value = "userId",required = false)Long userId,
+                                                           @RequestParam(value = "accout",required = false)String accout);
 
     @RequestMapping(value = "/orgType/getFullOrgTypeTree", method = RequestMethod.GET, headers = {"Content-Type=application/json"})
     public ResponseResult<List<TreeNodeVo>> getFullOrgTypeTree(@RequestParam(value = "id")String id,
                                                                @RequestParam(value = "orgTypeCode")String orgTypeCode,
-                                                               @RequestParam(value = "orgId")String orgId);
+                                                               @RequestParam(value = "orgId")String orgId,
+                                                               @RequestParam(value = "userId",required = false)Long userId,
+                                                               @RequestParam(value = "accout",required = false)String accout);
 }

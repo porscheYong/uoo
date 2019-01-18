@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>联系人</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- jquery datatable -->
+    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="/js/core/html5shiv.js"></script>
+    <script src="/js/core/respond.js"></script>
+    <script src="/js/core/excanvas.js"></script>
+    <script>document.documentElement.focus();</script>
+    <![endif]-->
+    <style type="text/css">
+      table.dataTable {
+        table-layout: fixed;
+      }
+
+      th {
+        text-align: center;
+        white-space: nowrap;
+      }
+      table.dataTable tbody tr.selectable {
+        color: #008aff;
+      }
+      table.dataTable tbody td {
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      table.dataTable tbody tr:hover {
+        background: #fff;
+      }
+      table.dataTable.stripe tbody tr.odd:hover {
+        background: #fff;
+      }
+      table.dataTable tbody tr.selectable:hover {
+        background: rgb(217,242,255) !important;
+      }
+      .menu {
+        padding: 0 10px;
+      }
+    </style>
+  </head>
+
+  <body style="background: #fff;">
+    <div class="container">
+      <div class="form-item" style="width: 100%; padding: 20px;">
+        <label for="orgInput" class="col-md-4 col-sm-4 col-xs-12" style="line-height: 40px;text-align: right;">组织名称：</label>
+        <div class="typeahead col-md-5 col-sm-5 col-xs-12">
+          <div class="pos-relative">
+            <input class="ui-input" id="orgInput" type="text" placeholder="输入组织关键字" style="width: 100%" oninput="search()" onpropertychange="search()" />
+          </div>
+        </div>
+      </div>
+      <div class="menu">
+        <table id="orgTable" class="stripe" width="100%"></table>
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+    <!-- init -->
+    <script type="text/javascript" src="/js/init.js"></script>
+    <script type="text/javascript" src="/js/modal/orgSearchDialog.js"></script>
+  
+  </body>
+</html>

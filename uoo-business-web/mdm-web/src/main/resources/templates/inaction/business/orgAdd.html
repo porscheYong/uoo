@@ -71,7 +71,11 @@
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-item" style="width: 100%">
                   <label for="orgName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织名称</label>
-                  <input id="orgName" class="ui-input col-md-8 col-sm-8 col-xs-12" required onkeyup="autoFillShortName()">
+                  <!--<input id="orgName" class="ui-input col-md-8 col-sm-8 col-xs-12" required onkeyup="autoFillShortName()">-->
+                  <div class="col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
+                    <input class="ui-input" id="orgName" style="width: 100%" oninput="changeOrgName()" onpropertychange="changeOrgName()" required />
+                    <span style="position: absolute; right: 0; top: 0; font-size: 25px; color: #7f7f7f; cursor: pointer; padding-right: 7px" onclick="openOrgSearchDialog()"><i class="fa fa-search"></i></span>
+                  </div>
                 </div>
               </div>
 
@@ -275,7 +279,7 @@
           </form>
           <div class="clearfix"></div>
           <div class="row btn-fixed">
-            <button class="ui-button ui-button-primary" onclick="addOrg()">保存</button>
+            <button class="ui-button ui-button-primary" onclick="add()">保存</button>
             <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
           </div>
         </div>
@@ -293,7 +297,7 @@
           <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="form-item" style="width: 100%">
               <label for="areaType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">区域级别</label>
-              <select id="areaType" class="col-md-8 col-sm-8 col-xs-12" required></select>
+              <select id="areaType" class="col-md-8 col-sm-8 col-xs-12" name="selectable" required></select>
             </div>
           </div>
         </div>
@@ -308,7 +312,7 @@
           <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="form-item" style="width: 100%">
               <label for="contractType" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">承包类型</label>
-              <select id="contractType" class="col-md-8 col-sm-8 col-xs-12"></select>
+              <select id="contractType" class="col-md-8 col-sm-8 col-xs-12" name="selectable"></select>
             </div>
           </div>
         </div>

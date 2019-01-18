@@ -1,42 +1,39 @@
-package cn.ffcs.uoo.system.entity;
+package cn.ffcs.uoo.web.maindata.common.system.dto;
 
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
 
 /**
  * <p>
- * 对部门可选岗位的限定
+ * 
  * </p>
  *
- * @author ffcs-gzb
- * @since 2018-12-20
+ * @author zengxsh
+ * @since 2018-12-24
  */
-@TableName("SYS_DEPT_POSITION_REF")
-public class SysDeptPositionRef extends Model<SysDeptPositionRef> {
+@TableName("SYS_FILE")
+public class SysFile extends Model<SysFile> {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 系统部门可选职位关系标识
-     */
-    @TableId(value = "DEPT_POSITION_REF_ID")
-    private Long deptPositionRefId;
-    /**
-     * 部门编码
-     */
-    @TableField("ORG_CODE")
-    private String orgCode;
-    /**
-     * 职位编码
-     */
-    @TableField("POSITION_CODE")
-    private String positionCode;
+    @TableId("FILE_ID")
+    private Long fileId;
+    @TableField("FILE_NAME")
+    private String fileName;
+    @TableField("FILE_TYPE")
+    private String fileType;
+    @TableField("FILE_SIZE")
+    private Double fileSize;
+    @TableField("FILE_DESC")
+    private String fileDesc;
+    @TableField("FILE_VERSION")
+    private String fileVersion;
+    @TableField("FILE_ADDR")
+    private String fileAddr;
     /**
      * 状态
      */
@@ -67,56 +64,62 @@ public class SysDeptPositionRef extends Model<SysDeptPositionRef> {
      */
     @TableField("STATUS_DATE")
     private Date statusDate;
-    /**
-     * 备注
-     */
-    @TableField("NOTES")
-    private String notes;
 
-    @TableField(exist=false)
-    private Long positionId;
 
-    @TableField(exist=false)
-    private String batchNumber;
-
-    public String getBatchNumber() {
-        return batchNumber;
+    public Long getFileId() {
+        return fileId;
     }
 
-    public void setBatchNumber(String batchNumber) {
-        this.batchNumber = batchNumber;
+    public void setFileId(Long fileId) {
+        this.fileId = fileId;
     }
 
-    public Long getPositionId() {
-        return positionId;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setPositionId(Long positionId) {
-        this.positionId = positionId;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
-    public Long getDeptPositionRefId() {
-        return deptPositionRefId;
+    public String getFileType() {
+        return fileType;
     }
 
-    public void setDeptPositionRefId(Long deptPositionRefId) {
-        this.deptPositionRefId = deptPositionRefId;
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 
-    public String getOrgCode() {
-        return orgCode;
+    public Double getFileSize() {
+        return fileSize;
     }
 
-    public void setOrgCode(String orgCode) {
-        this.orgCode = orgCode;
+    public void setFileSize(Double fileSize) {
+        this.fileSize = fileSize;
     }
 
-    public String getPositionCode() {
-        return positionCode;
+    public String getFileDesc() {
+        return fileDesc;
     }
 
-    public void setPositionCode(String positionCode) {
-        this.positionCode = positionCode;
+    public void setFileDesc(String fileDesc) {
+        this.fileDesc = fileDesc;
+    }
+
+    public String getFileVersion() {
+        return fileVersion;
+    }
+
+    public void setFileVersion(String fileVersion) {
+        this.fileVersion = fileVersion;
+    }
+
+    public String getFileAddr() {
+        return fileAddr;
+    }
+
+    public void setFileAddr(String fileAddr) {
+        this.fileAddr = fileAddr;
     }
 
     public String getStatusCd() {
@@ -167,32 +170,27 @@ public class SysDeptPositionRef extends Model<SysDeptPositionRef> {
         this.statusDate = statusDate;
     }
 
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
     @Override
     protected Serializable pkVal() {
-        return this.deptPositionRefId;
+        return this.fileId;
     }
 
     @Override
     public String toString() {
-        return "SysDeptPositionRef{" +
-        ", deptPositionRefId=" + deptPositionRefId +
-        ", orgCode=" + orgCode +
-        ", positionCode=" + positionCode +
+        return "SysFile{" +
+        ", fileId=" + fileId +
+        ", fileName=" + fileName +
+        ", fileType=" + fileType +
+        ", fileSize=" + fileSize +
+        ", fileDesc=" + fileDesc +
+        ", fileVersion=" + fileVersion +
+        ", fileAddr=" + fileAddr +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
         ", createUser=" + createUser +
         ", updateDate=" + updateDate +
         ", updateUser=" + updateUser +
         ", statusDate=" + statusDate +
-        ", notes=" + notes +
         "}";
     }
 }

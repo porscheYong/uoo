@@ -4,6 +4,7 @@ package cn.ffcs.uoo.system.controller;
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.system.entity.SysFile;
 import cn.ffcs.uoo.system.service.ISysFileService;
+import cn.ffcs.uoo.system.service.ModifyHistoryService;
 import cn.ffcs.uoo.system.vo.ResponseResult;
 import cn.ffcs.uoo.system.vo.SysFileVo;
 import com.baomidou.mybatisplus.mapper.Condition;
@@ -30,6 +31,9 @@ public class SysFileController {
 
     @Autowired
     private ISysFileService iSysFileService;
+
+    @Autowired
+    private ModifyHistoryService modifyHistoryService;
 
     @ApiOperation(value = "查询文件信息-web", notes = "查询文件信息")
     @ApiImplicitParams({
@@ -73,12 +77,13 @@ public class SysFileController {
     @RequestMapping(value = "/addSysFile", method = RequestMethod.POST)
     public ResponseResult<String> addSysFile(@RequestBody SysFileVo sysFileVo){
         ResponseResult<String> ret = new ResponseResult<>();
-
+        String batchNum = modifyHistoryService.getBatchNumber();
         SysFile sysFile = new SysFile();
         BeanUtils.copyProperties(sysFileVo, sysFile);
         Long id = iSysFileService.getId();
         sysFile.setFileId(id);
         sysFile.setCreateUser(sysFileVo.getUserId());
+        sysFile.setBatchNumber(batchNum);
         iSysFileService.add(sysFile);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("新增系统文件成功");
@@ -97,8 +102,11 @@ public class SysFileController {
                 .eq("STATUS_CD","1000");
         SysFile sysFile = iSysFileService.selectOne(sysFileWrapper);
         if(sysFile!=null){
+            String batchNum = modifyHistoryService.getBatchNumber();
+
             BeanUtils.copyProperties(sysFileVo, sysFile);
             sysFile.setUpdateUser(sysFileVo.getUserId());
+            sysFile.setBatchNumber(batchNum);
             iSysFileService.update(sysFile);
         }
 
@@ -115,12 +123,15 @@ public class SysFileController {
     @RequestMapping(value = "/deleteSysFile", method = RequestMethod.POST)
     public ResponseResult<String> deleteSysFile(@RequestBody SysFileVo sysFileVo){
         ResponseResult<String> ret = new ResponseResult<>();
+        String batchNum = modifyHistoryService.getBatchNumber();
+
         Wrapper sysFileWrapper = Condition.create()
                 .eq("FILE_ID",sysFileVo.getFileId())
                 .eq("STATUS_CD","1000");
         SysFile sysFile = iSysFileService.selectOne(sysFileWrapper);
         if(sysFile!=null){
             sysFile.setUpdateUser(sysFileVo.getUserId());
+            sysFile.setBatchNumber(batchNum);
             iSysFileService.delete(sysFile);
         }
         ret.setState(ResponseResult.STATE_OK);

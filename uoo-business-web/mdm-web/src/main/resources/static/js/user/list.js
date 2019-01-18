@@ -8,6 +8,8 @@ var orgName = getQueryString('name');
 var orgTreeName = getQueryString('orgTreeName');
 var table;
 var checked = 0;
+var query,
+    delayTime = 500;
 
 $('#orgName').html(orgName);
 parent.getOrgExtInfo();
@@ -178,16 +180,25 @@ function initFreePersonnelTable () {
     loading.screenMaskDisable('container');
 }
 
+// 搜索组织
+function search () {
+    query = $('.ui-input-search').val();
+    clearTimeout(this.timer);
+    // 添加的延时
+    this.timer = setTimeout(function(){
+        initOrgPersonnelTable(checked, query);
+    }, delayTime);
+}
+
 //勾选显示下级组织人员
 function showLower() {
-    sortFlag = 0;
     checked = $('#isShowLower').is(':checked')? 1: 0;
     if(isIE8 && checked == 1){
         $(".ui-checkbox").css("background-position","0 -40px");
     }else if(isIE8 && checked == 0){
         $(".ui-checkbox").css("background-position","0px 0px");
     }
-    initOrgPersonnelTable(checked, $("#psnName").val());
+    initOrgPersonnelTable(checked, query);
 }
 
 if (orgId == '88888888') {
