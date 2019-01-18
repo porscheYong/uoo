@@ -37,13 +37,13 @@ public interface OrgTypeService extends IService<OrgType> {
      * @param orgTypeCode
      * @return
      */
-    public List<TreeNodeVo> selectOrgTypeTree(String orgTypeId,String orgTypeCode);
+    public List<TreeNodeVo> selectOrgTypeTree(String orgTypeId,String orgTypeCode,String orgTypeParams);
 
     /**
      * 查询组织类别树
      * @return
      */
-    public List<TreeNodeVo> selectFullOrgTypeTree();
+    public List<TreeNodeVo> selectFullOrgTypeTree(String orgTypeParams);
 
     /**
      * 查询组织类别树
@@ -51,7 +51,10 @@ public interface OrgTypeService extends IService<OrgType> {
      * @param orgTypeCode
      * @return
      */
-    public List<TreeNodeVo> selectFullOrgTypeTreeByOrgId(String orgTypeId,String orgTypeCode,String orgId);
+    public List<TreeNodeVo> selectFullOrgTypeTreeByOrgId(String orgTypeId,
+                                                         String orgTypeCode,
+                                                         String orgId,
+                                                         String orgOrgTypeParams);
 
     /**
      * 是否存在子节点
