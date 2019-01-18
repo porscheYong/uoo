@@ -4,11 +4,13 @@ package cn.ffcs.uoo.system.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,12 +25,18 @@ import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.system.consts.StatusCD;
+import cn.ffcs.uoo.system.entity.SysDataRule;
+import cn.ffcs.uoo.system.entity.SysFile;
 import cn.ffcs.uoo.system.entity.SysPermission;
 import cn.ffcs.uoo.system.entity.SysPermissionDataRulesRel;
 import cn.ffcs.uoo.system.entity.SysPermissionElementRel;
 import cn.ffcs.uoo.system.entity.SysPermissionFuncRel;
 import cn.ffcs.uoo.system.entity.SysPermissionMenuRel;
 import cn.ffcs.uoo.system.entity.SysPrivFileRel;
+import cn.ffcs.uoo.system.service.ISysDataRuleService;
+import cn.ffcs.uoo.system.service.ISysElementService;
+import cn.ffcs.uoo.system.service.ISysFileService;
+import cn.ffcs.uoo.system.service.ISysFunctionService;
 import cn.ffcs.uoo.system.service.ISysPermissionDataRulesRelService;
 import cn.ffcs.uoo.system.service.ISysPermissionElementRelService;
 import cn.ffcs.uoo.system.service.ISysPermissionFuncRelService;
@@ -36,9 +44,11 @@ import cn.ffcs.uoo.system.service.ISysPermissionMenuRelService;
 import cn.ffcs.uoo.system.service.ISysPermissionService;
 import cn.ffcs.uoo.system.service.ISysPrivFileRelService;
 import cn.ffcs.uoo.system.service.ISysRolePermissionRefService;
+import cn.ffcs.uoo.system.service.SysMenuService;
 import cn.ffcs.uoo.system.vo.ResponseResult;
 import cn.ffcs.uoo.system.vo.SysPermissionDTO;
 import cn.ffcs.uoo.system.vo.SysPermissionEditDTO;
+import cn.ffcs.uoo.system.vo.SysPermissionPrivDTO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -60,31 +70,97 @@ public class SysPermissionController {
     @Autowired
     ISysPermissionDataRulesRelService permDataRulesRelSvc;
     @Autowired
+    ISysDataRuleService dataRuleSvc;
+    
+    @Autowired
     ISysPermissionElementRelService permEleRelSvc;
+    @Autowired
+    ISysElementService eleSvc;
+    
     @Autowired
     ISysPermissionFuncRelService permFuncRelSvc;
     @Autowired
+    ISysFunctionService funcSvc;
+    
+    @Autowired
     ISysPermissionMenuRelService permMenuRelSvc;
+    @Autowired
+    SysMenuService menuSvc;
+    
     @Autowired
     ISysPrivFileRelService permFileRelSvc;
     @Autowired
+    ISysFileService fileSvc;
+    
+    @Autowired
     ISysRolePermissionRefService permRoleRelSvc;
     
+    @SuppressWarnings("unchecked")
     @ApiOperation(value = "获取单个数据", notes = "获取单个数据")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long" ,paramType="path"),
     })
     @UooLog(key="getSysPermission",value="获取单个数据")
     @GetMapping("/get/{id}")
-    public ResponseResult<SysPermissionEditDTO> get(@PathVariable(value="id" ,required=true) Long id){
-        SysPermissionEditDTO dto=new SysPermissionEditDTO();
+    public ResponseResult<SysPermissionPrivDTO> get(@PathVariable(value="id" ,required=true) Long id){
+        SysPermissionPrivDTO dto=new SysPermissionPrivDTO();
         SysPermissionDTO sp = permSvc.selectOne(id);
         BeanUtils.copyProperties(sp, dto);
-        dto.setDataRuleRels(permDataRulesRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode())));
-        dto.setElementRels(permEleRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode())));
-        dto.setFileRels(permFileRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode())));
-        dto.setFuncRels(permFuncRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode())));
-        dto.setMenuRels(permMenuRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode())));
+        List<SysPermissionDataRulesRel> list1 = permDataRulesRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode()));
+        List<SysPermissionElementRel> list2 = permEleRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode()));
+        List<SysPrivFileRel> list3 = permFileRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode()));
+        List<SysPermissionFuncRel> list4 = permFuncRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode()));
+        List<SysPermissionMenuRel> list5 = permMenuRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode()));
+        if(list1!=null&&!list1.isEmpty()){
+            List<Long> collect = list1.stream().map(SysPermissionDataRulesRel::getDataRuleId).collect(Collectors.toList());
+            if(collect!=null&&!collect.isEmpty()){
+                List<SysDataRule> selectBatchIds = dataRuleSvc.selectBatchIds(collect);
+                if(selectBatchIds!=null&&!selectBatchIds.isEmpty()){
+                    Iterator<SysDataRule> iterator = selectBatchIds.iterator();
+                    while (iterator.hasNext()) {
+                        SysDataRule next = iterator.next();
+                        if(!"1000".equals(next.getStatusCd())){
+                            iterator.remove();
+                        }
+                    }
+                }
+                dto.setDataRules(selectBatchIds);
+            }
+        }
+        if(list2!=null&&!list2.isEmpty()){
+            List<String> collect = list2.stream().map(SysPermissionElementRel::getElementCode).collect(Collectors.toList());
+            if(collect!=null&&!collect.isEmpty()){
+                dto.setElements(eleSvc.selectList(Condition.create().in("ELEMENT_CODE", collect).eq("STATUS_CD", "1000")));
+            }
+        }
+        if(list3!=null&&!list3.isEmpty()){
+            List<Integer> collect = list3.stream().map(SysPrivFileRel::getFileId).collect(Collectors.toList());
+            if(collect!=null&&!collect.isEmpty()){
+                List<SysFile> selectBatchIds = fileSvc.selectBatchIds(collect);
+                if(selectBatchIds!=null&&!selectBatchIds.isEmpty()){
+                    Iterator<SysFile> iterator = selectBatchIds.iterator();
+                    while (iterator.hasNext()) {
+                        SysFile next = iterator.next();
+                        if(!"1000".equals(next.getStatusCd())){
+                            iterator.remove();
+                        }
+                    }
+                }
+                dto.setFiles(selectBatchIds);
+            }
+        }
+        if(list4!=null&&!list4.isEmpty()){
+            List<String> collect = list4.stream().map(SysPermissionFuncRel::getFuncCode).collect(Collectors.toList());
+            if(collect!=null&&!collect.isEmpty()){
+                dto.setFuncs(funcSvc.selectList(Condition.create().in("FUNC_CODE", collect).eq("STATUS_CD", "1000")));
+            }
+        }
+        if(list5!=null&&!list5.isEmpty()){
+            List<String> collect = list5.stream().map(SysPermissionMenuRel::getMenuCode).collect(Collectors.toList());
+            if(collect!=null&&!collect.isEmpty()){
+                dto.setMenus(menuSvc.selectList(Condition.create().in("MENU_CODE", collect).eq("STATUS_CD", "1000")));
+            }
+        }
         return ResponseResult.createSuccessResult(dto, "");
     }
     

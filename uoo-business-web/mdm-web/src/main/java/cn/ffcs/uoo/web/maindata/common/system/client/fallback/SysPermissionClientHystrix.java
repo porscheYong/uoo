@@ -7,12 +7,13 @@ import com.baomidou.mybatisplus.plugins.Page;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysPermissionClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionDTO;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionEditDTO;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionPrivDTO;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 @Component
 public class SysPermissionClientHystrix implements SysPermissionClient {
 
     @Override
-    public ResponseResult<SysPermissionEditDTO> get(Long id) {
+    public ResponseResult<SysPermissionPrivDTO> get(Long id) {
         return ResponseResult.createErrorResult("服务不可用");
     }
 

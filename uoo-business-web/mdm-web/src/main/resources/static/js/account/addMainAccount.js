@@ -49,7 +49,7 @@ function getAcctUser(personnelId){     //获取人员信息(新增)
   }, function (data) {
       //新增
       initAddUserInfo(data);
-      // addAcctAutoSelectOrg(orgId,orgFullName,orgName);
+      addAcctAutoSelectOrg(orgId,orgFullName,orgName,"30");
   }, function (err) {
 
   })
@@ -125,7 +125,8 @@ function setAcctInfoTables(){
           }
       }
       acctHtml += "<div class='curDiv' style='padding:10px 0;'>"+
-                      "<span class='Name Dot Gray3' id='orgTreeName_"+i+"'>"+addOrgList[i].orgTreeName+"</span>"+
+                      "<span class='pngDot'></span>"+
+                      "<span class='Name Gray3' style='margin-left:1.5%;' id='orgTreeName_"+i+"'>"+addOrgList[i].orgTreeName+"</span>"+
                       "<span class='Tag' style='cursor:pointer;' title='"+addOrgList[i].fullName+"' id='orgName_"+i+"'>"+addOrgList[i].orgName+"</span>"+
                       // "<span id='editBtn_"+i+"' title='组织编辑' onclick='' class='icon icon-edit'></span>"+
                       "<span class='Tag' style='cursor:pointer;' id='relTypeName_"+i+"'>"+relType+"</span>"+
@@ -214,7 +215,7 @@ function openOrgDialog() {
       shade: 0.8,
       area: ['27%', '80%'],
       maxmin: true,
-      content: 'orgDialog.html?orgTreeId='+orgTreeId+'&relType=0',
+      content: 'orgDialog.html?orgTreeId='+orgTreeId+'&relType=30',
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象

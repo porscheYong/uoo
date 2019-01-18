@@ -151,7 +151,8 @@ function setAcctInfoTables(){
         }
         acctHtml += "<div id='activeDiv_"+i+"' style='margin-top:2%;margin-left:-3.3%;width:100%;'>"+
                       "<div class='curDiv' style='padding:10px 0;'>"+
-                        "<span class='Name Dot Gray3' id='orgTreeName_"+i+"'>"+acctInfoList[i].acct.orgTreeName+"</span>"+
+                        "<span class='pngDot'></span>"+
+                        "<span class='Name Gray3' style='margin-left:1.5%;' id='orgTreeName_"+i+"'>"+acctInfoList[i].acct.orgTreeName+"</span>"+
                         "<span class='Tag' style='cursor:pointer;' title='"+acctInfoList[i].acct.fullName+"' id='orgName_"+i+"'>"+acctInfoList[i].acct.orgName+"</span>"+
                         "<span class='Tag' style='cursor:pointer;' id='relTypeName_"+i+"'>"+relType+"</span>"+
                         "<span id='editBtn_"+i+"' title='组织编辑' onclick='openEditOrgDialog("+acctInfoList[i].acct.relType+","+acctInfoList[i].acct.acctOrgRelId+","+acctInfoList[i].acct.orgTreeId+")' class='icon icon-edit'></span>"+
@@ -550,7 +551,7 @@ function isNull(s,r){    //判断是否为null
 //删除组织
 function deleteOrg(orgId,orgTreeId){
     if(orgNum == 1){
-      toastr.warning("无法删除所有组织");
+      toastr.error("无法删除所有组织");
     }else{
         parent.layer.confirm('是否删除该组织？', {
         icon: 0,
@@ -618,7 +619,7 @@ function openOrgDialog() {
       shade: 0.8,
       area: ['27%', '80%'],
       maxmin: true,
-      content: 'orgDialog.html?orgTreeId='+orgTreeId+'&relType=0',
+      content: 'orgDialog.html?orgTreeId='+orgTreeId+'&relType=30',
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象

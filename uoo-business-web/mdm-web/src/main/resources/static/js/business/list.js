@@ -25,6 +25,7 @@ function initOrgTable (results) {
         "scrollY": "395px",
         'scrollCollapse': true,
         'columns': [
+            { 'data': "orgId", 'title': '组织标识', 'className': 'org-id' },
             { 'data': "orgName", 'title': '部门', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
                     return '<a href="orgInfo.html?id=' + row.orgId + '&pid=' + orgId + '&orgTreeId=' + orgTreeId + '&standardFlag=' + standardFlag + '&name=' + encodeURI(row.orgName) + '">'+ row.orgName +'</a>'
@@ -233,7 +234,7 @@ function orgEdit () {
 }
 
 function orgSearch () {
-    var url = 'search.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&refCode=' + refCode + '&name=' + encodeURI(orgName);
+    var url = 'orgAdd.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&refCode=' + refCode + '&name=' + encodeURI(orgName);
     // $('#searchBtn').attr('href', url);
     window.location.href = url;
 }

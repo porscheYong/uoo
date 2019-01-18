@@ -3,24 +3,26 @@ var orgName = getQueryString('orgName');
 var orgFullName = getQueryString('orgFullName');
 var orgTreeId = getQueryString('orgTreeId');
 var businessName = getQueryString('businessName');
-var engine, template, empty, selectNode;
+var selectNode;
 var table;
+var query,
+    delayTime = 500;
 
-empty = Handlebars.compile($("#empty-template").html());
-engine = new Bloodhound({
-    identify: function(o) { return o.id_str; },
-    queryTokenizer: Bloodhound.tokenizers.whitespace,
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name', 'orgName'),
-    dupDetector: function(a, b) { return a.id_str === b.id_str; },
-    // prefetch: remoteHost + '/demo/prefetch',
-    remote: {
-        url: '/personnel/getPsnBasicInfo?keyWord=%QUERY&pageNo=1&pageSize=10',
-        wildcard: '%QUERY',
-        filter: function (response) {
-            return;
-        }
-    }
-});
+// empty = Handlebars.compile($("#empty-template").html());
+// engine = new Bloodhound({
+//     identify: function(o) { return o.id_str; },
+//     queryTokenizer: Bloodhound.tokenizers.whitespace,
+//     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name', 'orgName'),
+//     dupDetector: function(a, b) { return a.id_str === b.id_str; },
+//     // prefetch: remoteHost + '/demo/prefetch',
+//     remote: {
+//         url: '/personnel/getPsnBasicInfo?keyWord=%QUERY&pageNo=1&pageSize=10',
+//         wildcard: '%QUERY',
+//         filter: function (response) {
+//             return;
+//         }
+//     }
+// });
 
 function initTable(keyWord){
     table = $("#psnTable").DataTable({
@@ -37,7 +39,7 @@ function initTable(keyWord){
                 }
             },
             { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name'},
-            { 'data': "psnName", 'title': '重名称谓', 'className': 'row-mobile' },
+            { 'data': "certNo", 'title': '证件号码', 'className': 'row-cert' },
             { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
             { 'data': "content", 'title': '联系方式', 'className': 'row-mobile' },
             { 'data': "createDate", 'title': '创建时间', 'className': 'status-code',
@@ -110,45 +112,55 @@ function initTable(keyWord){
     });
 }
 
-function engineWithDefaults(q, sync, async) {
-    if (q === '') {
-        // sync(engine.get(''));
-        // async([]);
-        engine.search('', sync, async);
-    }
+// function engineWithDefaults(q, sync, async) {
+//     if (q === '') {
+//         // sync(engine.get(''));
+//         // async([]);
+//         engine.search('', sync, async);
+//     }
 
-    else {
-        engine.search(q, sync, async);
-    }
+//     else {
+//         engine.search(q, sync, async);
+//     }
+// }
+
+// $('#user-input').typeahead({
+//     hint: $('.typeahead-hint'),
+//     menu: $('.menu'),
+//     minLength: 0,
+//     highlight:true,
+//     classNames: {
+//         open: 'is-open',
+//         empty: 'is-empty',
+//         cursor: 'is-active',
+//         suggestion: 'Typeahead-suggestion',
+//         selectable: 'Typeahead-selectable'
+//     }
+// }, {
+//     source: engineWithDefaults,
+//     displayKey: 'orgName',
+//     templates: {
+//         suggestion: empty,
+//         empty: empty
+//     }
+// })
+//     .on('typeahead:asyncrequest', function() {
+//         $('.Typeahead-spinner').show();
+//         initTable($("#user-input").val());
+//     })
+//     .on('typeahead:asynccancel typeahead:asyncreceive', function() {
+//         $('.Typeahead-spinner').hide();
+//     });
+
+// 搜索组织
+function search () {
+    query = $('.ui-input-search').val();
+    clearTimeout(this.timer);
+    // 添加的延时
+    this.timer = setTimeout(function(){
+        initTable(query);
+    }, delayTime);
 }
-
-$('#user-input').typeahead({
-    hint: $('.typeahead-hint'),
-    menu: $('.menu'),
-    minLength: 0,
-    highlight:true,
-    classNames: {
-        open: 'is-open',
-        empty: 'is-empty',
-        cursor: 'is-active',
-        suggestion: 'Typeahead-suggestion',
-        selectable: 'Typeahead-selectable'
-    }
-}, {
-    source: engineWithDefaults,
-    displayKey: 'orgName',
-    templates: {
-        suggestion: empty,
-        empty: empty
-    }
-})
-    .on('typeahead:asyncrequest', function() {
-        $('.Typeahead-spinner').show();
-        initTable($("#user-input").val());
-    })
-    .on('typeahead:asynccancel typeahead:asyncreceive', function() {
-        $('.Typeahead-spinner').hide();
-    });
 
 //获取选中行数据
 function getSelectUser () {
