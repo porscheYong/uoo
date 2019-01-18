@@ -89,6 +89,19 @@ public class SysPosition extends Model<SysPosition> {
     private Date statusDate;
 
 
+
+    @TableField(exist=false)
+    private String batchNumber;
+
+    public String getBatchNumber() {
+        return batchNumber;
+    }
+
+    public void setBatchNumber(String batchNumber) {
+        this.batchNumber = batchNumber;
+    }
+
+
     public Long getPositionId() {
         return positionId;
     }

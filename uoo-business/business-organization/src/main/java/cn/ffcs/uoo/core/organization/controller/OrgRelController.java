@@ -229,6 +229,7 @@ public class OrgRelController extends BaseController {
     })
     @UooLog(value = "新增组织关系", key = "addOrgRel")
     @RequestMapping(value = "/addOrgRel", method = RequestMethod.POST)
+    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<TreeNodeVo> addOrgRel(@RequestBody OrgVo org) throws IOException {
         ResponseResult<TreeNodeVo> ret = new ResponseResult<TreeNodeVo>();
         if(StrUtil.isNullOrEmpty(org.getOrgId())){
@@ -358,7 +359,7 @@ public class OrgRelController extends BaseController {
         /*新增化小编码*/
         //新增营销组织扩展属性
         List<ExpandovalueVo> extValueList = org.getExpandovalueVoList();
-        if(extValueList.size()>0){
+        if(extValueList !=null && extValueList.size()>0){
             if(extValueList!=null && extValueList.size()>0){
                 ResponseResult<ExpandovalueVo> publicRet = new ResponseResult<ExpandovalueVo>();
                 for(ExpandovalueVo extVo : extValueList){

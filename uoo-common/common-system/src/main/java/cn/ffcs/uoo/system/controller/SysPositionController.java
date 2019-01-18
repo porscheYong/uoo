@@ -6,6 +6,7 @@ import cn.ffcs.uoo.system.entity.SysPosition;
 import cn.ffcs.uoo.system.entity.SysPositiontRoleRef;
 import cn.ffcs.uoo.system.entity.SysRole;
 import cn.ffcs.uoo.system.service.ISysPositiontRoleRefService;
+import cn.ffcs.uoo.system.service.ModifyHistoryService;
 import cn.ffcs.uoo.system.service.SysPositionService;
 import cn.ffcs.uoo.system.service.SysRoleService;
 import cn.ffcs.uoo.system.util.StrUtil;
@@ -50,6 +51,8 @@ public class SysPositionController {
     private SysRoleService sysRoleService;
     @Autowired
     private ISysPositiontRoleRefService iSysPositiontRoleRefService;
+    @Autowired
+    private ModifyHistoryService modifyHistoryService;
 
     @ApiOperation(value = "查询职位信息", notes = "查询职位信息")
     @ApiImplicitParams({
@@ -169,6 +172,7 @@ public class SysPositionController {
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<String> updatePosition(@RequestBody SysPositionVo sysPositionVo){
         ResponseResult<String> ret = new ResponseResult<String>();
+        String batchNum = modifyHistoryService.getBatchNumber();
         if(StrUtil.isNullOrEmpty(sysPositionVo.getPositionId())){
             ret.setState(ResponseResult.STATE_ERROR);
             ret.setMessage("职位标识不存在");
@@ -230,6 +234,7 @@ public class SysPositionController {
                     sysPositiontRoleRef.setCreateUser(sysPositionVo.getUserId());
                     sysPositiontRoleRef.setNotes(sysPositionVo.getNotes());
                     sysPositiontRoleRef.setCreateUser(sysPositionVo.getUserId());
+                    sysPositiontRoleRef.setBatchNumber(batchNum);
                     iSysPositiontRoleRefService.add(sysPositiontRoleRef);
                 }
             }
@@ -246,6 +251,7 @@ public class SysPositionController {
                 }
                 if(!isExists){
                     otf.setUpdateUser(sysPositionVo.getUserId());
+                    otf.setBatchNumber(batchNum);
                     iSysPositiontRoleRefService.delete(otf);
                 }
             }
@@ -253,10 +259,12 @@ public class SysPositionController {
             if(curPosRoleList!=null && curPosRoleList.size()>0){
                 for(SysPositiontRoleRef otf : curPosRoleList){
                     otf.setUpdateUser(sysPositionVo.getUserId());
+                    otf.setBatchNumber(batchNum);
                     iSysPositiontRoleRefService.delete(otf);
                 }
             }
         }
+        sysPosition.setBatchNumber(batchNum);
         sysPosition.setUpdateUser(sysPositionVo.getUserId());
         sysPositionService.update(sysPosition);
 
@@ -274,6 +282,7 @@ public class SysPositionController {
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<TreeNodeVo> addPosition(@RequestBody SysPositionVo pos){
         ResponseResult<TreeNodeVo> ret = new ResponseResult<TreeNodeVo>();
+        String batchNum = modifyHistoryService.getBatchNumber();
         Long positionId = sysPositionService.getId();
         SysPosition sysPosition = new SysPosition();
         sysPosition.setPositionCode(pos.getPositionCode());
@@ -285,6 +294,7 @@ public class SysPositionController {
         sysPosition.setParentPositionCode(pos.getParentPositionCode());
         sysPosition.setRegionNbr(pos.getRegionNbr());
         sysPosition.setCreateUser(pos.getUserId());
+        sysPosition.setBatchNumber(batchNum);
         sysPositionService.add(sysPosition);
 
         List<SysRoleDTO> sysRoleDTOList = pos.getSysRoleDTOList();
@@ -304,6 +314,7 @@ public class SysPositionController {
             sysPositiontRoleRef.setPositionCode(pos.getPositionCode());
             sysPositiontRoleRef.setCreateUser(pos.getUserId());
             sysPositiontRoleRef.setNotes(vo.getNotes());
+            sysPositiontRoleRef.setBatchNumber(batchNum);
             iSysPositiontRoleRefService.add(sysPositiontRoleRef);
         }
         TreeNodeVo vo = new TreeNodeVo();
@@ -363,6 +374,8 @@ public class SysPositionController {
                 return ret;
             }
         }
+        String batchNum = modifyHistoryService.getBatchNumber();
+        vo.setBatchNumber(batchNum);
         vo.setUpdateUser(pos.getUserId());
         sysPositionService.delete(vo);
         ret.setState(ResponseResult.STATE_OK);

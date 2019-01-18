@@ -2,6 +2,7 @@ package cn.ffcs.uoo.system.service.impl;
 
 import cn.ffcs.uoo.system.entity.SysPosition;
 import cn.ffcs.uoo.system.dao.SysPositionMapper;
+import cn.ffcs.uoo.system.service.ModifyHistoryService;
 import cn.ffcs.uoo.system.service.SysPositionService;
 import cn.ffcs.uoo.system.dao.SysPositionMapper;
 import cn.ffcs.uoo.system.entity.SysPosition;
@@ -11,8 +12,11 @@ import cn.ffcs.uoo.system.vo.SysPositionVo;
 import cn.ffcs.uoo.system.vo.SysRoleDTO;
 import cn.ffcs.uoo.system.vo.SysUserVo;
 import cn.ffcs.uoo.system.vo.TreeNodeVo;
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,6 +34,9 @@ import java.util.List;
 @Service
 public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPosition> implements SysPositionService {
 
+
+    @Autowired
+    private ModifyHistoryService modifyHistoryService;
     /**
      * 获取seq
      * @return
@@ -50,6 +57,7 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
         sysPosition.setUpdateDate(new Date());
         sysPosition.setUpdateUser(StrUtil.isNullOrEmpty(sysPosition.getUpdateUser())?0L:sysPosition.getUpdateUser());
         updateById(sysPosition);
+        modifyHistoryService.addModifyHistory(sysPosition,null,sysPosition.getUpdateUser(),sysPosition.getBatchNumber());
     }
 
 
@@ -64,6 +72,7 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
         sysPosition.setStatusCd("1000");
         sysPosition.setStatusDate(new Date());
         insert(sysPosition);
+        modifyHistoryService.addModifyHistory(null,sysPosition,sysPosition.getCreateUser(),sysPosition.getBatchNumber());
     }
 
     /**
@@ -75,6 +84,13 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
         sysPosition.setUpdateUser(StrUtil.isNullOrEmpty(sysPosition.getUpdateUser())?0L:sysPosition.getUpdateUser());
         sysPosition.setStatusDate(new Date());
         updateById(sysPosition);
+
+        Wrapper depWrapper = Condition.create()
+                .eq("POSITION_ID",sysPosition.getPositionId())
+                .eq("STATUS_CD","1000");
+        SysPosition sysPositionOld = selectOne(depWrapper);
+        modifyHistoryService.addModifyHistory(sysPositionOld,sysPosition,sysPosition.getUpdateUser(),sysPosition.getBatchNumber());
+
     }
 
     @Override

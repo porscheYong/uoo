@@ -76,6 +76,17 @@ public class SysDeptPositionRef extends Model<SysDeptPositionRef> {
     @TableField(exist=false)
     private Long positionId;
 
+    @TableField(exist=false)
+    private String batchNumber;
+
+    public String getBatchNumber() {
+        return batchNumber;
+    }
+
+    public void setBatchNumber(String batchNumber) {
+        this.batchNumber = batchNumber;
+    }
+
     public Long getPositionId() {
         return positionId;
     }

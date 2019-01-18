@@ -1249,6 +1249,48 @@ public class OrgController extends BaseController {
         modifyHistoryService.addModifyHistory(oldOrg,org,userId,batchNumber);
 
 
+
+        ResponseResult<List<ExpandovalueVo>> publicRet = expandovalueService.queryExpandovalueVoList("TB_ORG",org.getOrgId().toString());
+        List<ExpandovalueVo> curExtList = publicRet.getData();
+        if(curExtList!=null && curExtList.size()>0){
+            for(ExpandovalueVo vo : curExtList){
+                //删除所有
+                expandovalueService.removeTbExpandovalue(vo.getValueId(),0L);
+            }
+        }
+        if(!StrUtil.isNullOrEmpty(org.getOrgMartCode())) {
+            String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
+                @Override
+                public String doInConnection(Connection conn) throws SQLException, DataAccessException {
+                    CallableStatement cstmt = null;
+                    String result = "";
+                    try {
+                        cstmt = conn.prepareCall("{CALL P_ORG_CNTRT_MGMT_DEL (?,?)}");
+                        cstmt.setObject(1, org.getOrgCode());
+                        cstmt.registerOutParameter(2, Types.VARCHAR);
+                        cstmt.execute();
+                        if (!StrUtil.isNullOrEmpty(cstmt.getString(2))) {
+                            result = cstmt.getString(2).toString();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (cstmt != null) {
+                            cstmt.close();
+                            cstmt = null;
+                        }
+                        if (conn != null) {
+                            conn.close();
+                            conn = null;
+                        }
+                    }
+                    return result;
+                }
+            });
+            //}
+        }
+
         List<OrgRel> orgRelList = orgRelService.getOrgRel(orgTreeId,orgId);
         for(OrgRel orgRel : orgRelList){
             orgRel.setUpdateUser(userId);
@@ -1309,46 +1351,8 @@ public class OrgController extends BaseController {
             modifyHistoryService.addModifyHistory(vo,null,userId,batchNumber);
         }
 
-        if("0401".equals(ortCur.getRefCode())) {
+        //if("0401".equals(ortCur.getRefCode())) {
             //删除扩展类型
-            ResponseResult<List<ExpandovalueVo>> publicRet = expandovalueService.queryExpandovalueVoList("TB_ORG",org.getOrgId().toString());
-            List<ExpandovalueVo> curExtList = publicRet.getData();
-            if(curExtList!=null && curExtList.size()>0){
-                for(ExpandovalueVo vo : curExtList){
-                    //删除所有
-                    expandovalueService.removeTbExpandovalue(vo.getValueId(),0L);
-                }
-            }
-            String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
-                @Override
-                public String doInConnection(Connection conn) throws SQLException, DataAccessException {
-                    CallableStatement cstmt = null;
-                    String result = "";
-                    try {
-                        cstmt = conn.prepareCall("{CALL P_ORG_CNTRT_MGMT_DEL (?,?)}");
-                        cstmt.setObject(1, org.getOrgCode());
-                        cstmt.registerOutParameter(2, Types.VARCHAR);
-                        cstmt.execute();
-                        if (!StrUtil.isNullOrEmpty(cstmt.getString(2))) {
-                            result = cstmt.getString(2).toString();
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        if (cstmt != null) {
-                            cstmt.close();
-                            cstmt = null;
-                        }
-                        if (conn != null) {
-                            conn.close();
-                            conn = null;
-                        }
-                    }
-                    return result;
-                }
-            });
-        }
 
 
         String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+orgId+"}}" ;
@@ -1411,14 +1415,7 @@ public class OrgController extends BaseController {
             Wrapper orgWrapper = Condition.create()
                     .eq("STATUS_CD","1000")
                     .eq("ORG_ID",orgId);
-            Org org1 = new Org();
-            org1 = orgService.selectOne(orgWrapper);
-            if(org1==null){
-                ret.setState(ResponseResult.PARAMETER_ERROR);
-                ret.setMessage("组织不存在");
-                return ret;
-            }
-            BeanUtils.copyProperties(org1, org);
+            org = orgService.selectOrgByOrgId(orgId,orgTreeId);
         }
 
         if(!StrUtil.isNullOrEmpty(orgTreeId)){

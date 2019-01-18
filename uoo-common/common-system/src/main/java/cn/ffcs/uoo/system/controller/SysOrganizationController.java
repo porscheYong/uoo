@@ -185,8 +185,8 @@ public class SysOrganizationController {
                 sysDeptPositionRef.setOrgCode(id.toString());
                 sysDeptPositionRef.setPositionCode(sysvo1.getPositionCode());
                 sysDeptPositionRef.setCreateUser(vo.getUserId());
+                sysDeptPositionRef.setBatchNumber(batchNum);
                 sysDeptPositionRefService.add(sysDeptPositionRef);
-                modifyHistoryService.addModifyHistory(null,sysDeptPositionRef,vo.getUserId(),batchNum);
             }
         }
         TreeNodeVo vo1 = new TreeNodeVo();
@@ -220,12 +220,10 @@ public class SysOrganizationController {
         SysOrganization sysvo = new SysOrganization();
         BeanUtils.copyProperties(vo,sysvo);
         sysvo.setUpdateUser(vo.getUserId());
+        sysvo.setBatchNumber(batchNum);
         sysOrganizationService.update(sysvo);
-        //modifyHistoryService.addModifyHistory(null,sysvo,vo.getUserId(),batchNum);
-
 
         List<SysPositionVo> sysPositionList = vo.getSysPositionVos();
-
         List<SysPosition> sysPositions = new ArrayList<>();
         for(SysPositionVo vo1 : sysPositionList){
               Wrapper sysPositionWrapper = Condition.create()
@@ -253,6 +251,7 @@ public class SysOrganizationController {
                     sysDeptPositionRef.setOrgCode(vo.getOrgCode());
                     sysDeptPositionRef.setPositionCode(ot.getPositionCode());
                     sysDeptPositionRef.setCreateUser(vo.getUserId());
+                    sysDeptPositionRef.setBatchNumber(batchNum);
                     sysDeptPositionRefService.add(sysDeptPositionRef);
                 }
             }
@@ -269,6 +268,7 @@ public class SysOrganizationController {
                 }
                 if(!isExists){
                     otf.setUpdateUser(vo.getUserId());
+                    otf.setBatchNumber(batchNum);
                     sysDeptPositionRefService.delete(otf);
                 }
             }
@@ -276,6 +276,7 @@ public class SysOrganizationController {
             if(sysDeptPositionRefCur!=null && sysDeptPositionRefCur.size()>0){
                 for(SysDeptPositionRef otf : sysDeptPositionRefCur){
                     otf.setUpdateUser(vo.getUserId());
+                    otf.setBatchNumber(batchNum);
                     sysDeptPositionRefService.delete(otf);
                 }
             }
@@ -292,7 +293,21 @@ public class SysOrganizationController {
     @RequestMapping(value = "/getOrg", method = RequestMethod.GET)
     public ResponseResult<SysOrganizationVo> getOrg(String id,Long userId,String accout) throws IOException {
         ResponseResult<SysOrganizationVo> ret = new ResponseResult<SysOrganizationVo>();
-        SysOrganizationVo vo = sysOrganizationService.getOrg(id);
+        if(StrUtil.isNullOrEmpty(id)){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("组织标识不能为空");
+            return ret;
+        }
+        Wrapper orgWrapper = Condition.create()
+                .eq("ORG_ID",id)
+                .eq("STATUS_CD","1000");
+        SysOrganization svo = sysOrganizationService.selectOne(orgWrapper);
+        if(svo==null){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("组织不存在");
+            return ret;
+        }
+        SysOrganizationVo vo = sysOrganizationService.getOrg(svo.getOrgCode());
         ret.setData(vo);
         ret.setState(ResponseResult.STATE_OK);
         return ret;
@@ -345,7 +360,9 @@ public class SysOrganizationController {
             ret.setMessage("组织下存在角色");
             return ret;
         }
+        String batchNum = modifyHistoryService.getBatchNumber();
         sysOrganization.setUpdateUser(userId);
+        sysOrganization.setBatchNumber(batchNum);
         sysOrganizationService.delete(sysOrganization);
         ret.setData("删除成功");
         ret.setState(ResponseResult.STATE_OK);

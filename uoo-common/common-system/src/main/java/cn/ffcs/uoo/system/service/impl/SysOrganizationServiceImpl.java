@@ -2,6 +2,7 @@ package cn.ffcs.uoo.system.service.impl;
 
 
 import cn.ffcs.uoo.system.dao.SysOrganizationMapper;
+import cn.ffcs.uoo.system.entity.SysDeptPositionRef;
 import cn.ffcs.uoo.system.entity.SysOrganization;
 import cn.ffcs.uoo.system.entity.SysUser;
 import cn.ffcs.uoo.system.service.ModifyHistoryService;
@@ -11,6 +12,8 @@ import cn.ffcs.uoo.system.util.StrUtil;
 import cn.ffcs.uoo.system.vo.SysOrganizationVo;
 import cn.ffcs.uoo.system.vo.SysPositionVo;
 import cn.ffcs.uoo.system.vo.TreeNodeVo;
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +87,10 @@ public class SysOrganizationServiceImpl extends ServiceImpl<SysOrganizationMappe
         sysOrganization.setUpdateUser(StrUtil.isNullOrEmpty(sysOrganization.getUpdateUser())?0L:sysOrganization.getUpdateUser());
         sysOrganization.setStatusDate(new Date());
         updateById(sysOrganization);
-        SysOrganization sysOrganizationOld = baseMapper.selectById(sysOrganization.getOrgId());
+        Wrapper depWrapper = Condition.create()
+                .eq("ORG_ID",sysOrganization.getOrgId())
+                .eq("STATUS_CD","1000");
+        SysOrganization sysOrganizationOld = selectOne(depWrapper);
         modifyHistoryService.addModifyHistory(sysOrganizationOld,sysOrganization,sysOrganization.getUpdateUser(),sysOrganization.getBatchNumber());
     }
 

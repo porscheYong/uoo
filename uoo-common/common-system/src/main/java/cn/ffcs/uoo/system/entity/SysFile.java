@@ -66,6 +66,19 @@ public class SysFile extends Model<SysFile> {
     private Date statusDate;
 
 
+
+    @TableField(exist=false)
+    private String batchNumber;
+
+    public String getBatchNumber() {
+        return batchNumber;
+    }
+
+    public void setBatchNumber(String batchNumber) {
+        this.batchNumber = batchNumber;
+    }
+
+
     public Long getFileId() {
         return fileId;
     }
