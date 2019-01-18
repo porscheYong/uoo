@@ -244,22 +244,19 @@
                     </div>
 
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-6 col-sm-6 col-xs-6">
+                        <!-- <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%" id='default_psw'>
                                 <label for="defaultPsw" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
                                 <input type="password" id="defaultPsw" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" required value="" autocomplete="off"> 
                             </div>
-                        </div>
-
+                        </div> -->
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
                                 <label for="effectDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
                                 <input id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" required readonly autocomplete="off" onfocus="this.blur()"> 
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
                                 <label for="invalidDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
@@ -277,15 +274,9 @@
                         </div>
                     </div>
                     
-                    <!-- <div class="row">
+                    <div class="row">
                         <div style="margin-left: 29%;margin-top: 5%;" id="editBtnDiv">
                             <button class="ui-button ui-button-cancel"  onclick="backToAcctInfo()" style="margin-left: 95px;">取消编辑</button>
-                        </div>
-                    </div> -->
-                    <div class="row">
-                        <div id="addBtnDiv" style="margin-left: 32%;margin-top: 5%;">
-                            <button class="ui-button ui-button-primary" id="opBtn" onclick="btnSubmit()">保存</button>
-                            <button class="ui-button ui-button-cancel"  onclick="backToAcctInfo()" style="margin-left: 40px;">取消</button>
                         </div>
                     </div>
                 </div>
@@ -382,7 +373,15 @@
                     </div>
                 </div> -->
 
-                <input class="Btn BtnRed2" id="delSubAcct" type="button" onclick="deleteTbSubAcct()" value="删除从账号" style="margin-top:20px;" />
+                <div class="row">
+                    <div id="addBtnDiv" style="margin-left: 30%;margin-top: 5%;">
+                        <button class="ui-button ui-button-primary" id="opBtn" onclick="btnSubmit()">保存</button>
+                        <button class="ui-button BtnRed2" id="delSubAcct" onclick="deleteTbSubAcct()" style="margin-left:10px;">删除</button>
+                        <button class="ui-button ui-button-cancel"  onclick="submitToOther()" style="margin-left: 10px;">取消</button>
+                    </div>
+                </div>
+
+                <!-- <input class="Btn BtnRed2" id="delSubAcct" type="button" onclick="deleteTbSubAcct()" value="删除从账号" style="margin-top:20px;" /> -->
 
             </form>
 

@@ -1669,16 +1669,16 @@ public class OrgController extends BaseController {
                     errorStr = "组织:"+vo.getName()+",删除失败["+delret.getMessage()+"]"+"\n";
                 }
             }else if("add".equals(vo.getOper())){
-                Org org = new Org();
-                org.setOrgId(new Long(vo.getId()));
-                org.setSupOrgId(new Long(vo.getPid()));
-                org.setOrgTreeId(1L);
-                addret = orgRelController.addOrgRel(org);
-                if(addret.getState()==ResponseResult.PARAMETER_ERROR){
-                    if(addret.getState()==ResponseResult.PARAMETER_ERROR){
-                        errorStr = "组织:"+vo.getName()+",新增失败["+addret.getMessage()+"]"+"\n";
-                    }
-                }
+//                Org org = new Org();
+//                org.setOrgId(new Long(vo.getId()));
+//                org.setSupOrgId(new Long(vo.getPid()));
+//                org.setOrgTreeId(1L);
+//                addret = orgRelController.addOrgRel(org);
+//                if(addret.getState()==ResponseResult.PARAMETER_ERROR){
+//                    if(addret.getState()==ResponseResult.PARAMETER_ERROR){
+//                        errorStr = "组织:"+vo.getName()+",新增失败["+addret.getMessage()+"]"+"\n";
+//                    }
+//                }
             }
 
         }

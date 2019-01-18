@@ -106,6 +106,17 @@ public class SysUserVo {
     private String orgName;
     private String userPositions;
 
+
+    private String positionName;
+
+    public String getPositionName() {
+        return positionName;
+    }
+
+    public void setPositionName(String positionName) {
+        this.positionName = positionName;
+    }
+
     public Long getOrgId() {
         return orgId;
     }

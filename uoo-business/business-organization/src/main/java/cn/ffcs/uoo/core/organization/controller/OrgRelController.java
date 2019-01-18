@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.organization.controller;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.organization.Api.service.ExpandovalueService;
 import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.service.*;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
@@ -20,6 +21,9 @@ import io.swagger.models.auth.In;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ConnectionCallback;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +33,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -76,6 +84,14 @@ public class OrgRelController extends BaseController {
 
     @Autowired
     private ModifyHistoryService modifyHistoryService;
+
+
+    @Autowired
+    private ExpandovalueService expandovalueService;
+
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
 
     @ApiOperation(value = "查询组织树信息-web", notes = "查询组织树信息")
@@ -209,11 +225,11 @@ public class OrgRelController extends BaseController {
 
     @ApiOperation(value = "新增组织关系-web", notes = "新增组织关系")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "org", value = "组织", required = true, dataType = "Org"),
+            @ApiImplicitParam(name = "org", value = "组织", required = true, dataType = "OrgVo"),
     })
     @UooLog(value = "新增组织关系", key = "addOrgRel")
     @RequestMapping(value = "/addOrgRel", method = RequestMethod.POST)
-    public ResponseResult<TreeNodeVo> addOrgRel(@RequestBody Org org) throws IOException {
+    public ResponseResult<TreeNodeVo> addOrgRel(@RequestBody OrgVo org) throws IOException {
         ResponseResult<TreeNodeVo> ret = new ResponseResult<TreeNodeVo>();
         if(StrUtil.isNullOrEmpty(org.getOrgId())){
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -339,6 +355,52 @@ public class OrgRelController extends BaseController {
         orgOrgtreeRelService.add(orgOrgtreeRef);
         modifyHistoryService.addModifyHistory(null,orgOrgtreeRef,org.getUpdateUser(),batchNumber);
 
+        /*新增化小编码*/
+        //新增营销组织扩展属性
+        List<ExpandovalueVo> extValueList = org.getExpandovalueVoList();
+        if(extValueList.size()>0){
+            if(extValueList!=null && extValueList.size()>0){
+                ResponseResult<ExpandovalueVo> publicRet = new ResponseResult<ExpandovalueVo>();
+                for(ExpandovalueVo extVo : extValueList){
+                    extVo.setTableName("TB_ORG");
+                    extVo.setRecordId(org.getOrgId().toString());
+                    publicRet = expandovalueService.addExpandoInfo(extVo);
+                }
+            }
+
+
+
+            String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
+                @Override
+                public String doInConnection(Connection conn) throws SQLException, DataAccessException {
+                    CallableStatement cstmt = null;
+                    String result = "";
+                    try {
+                        cstmt = conn.prepareCall("{CALL P_ORG_CNTRT_MGMT_GENERATOR (?,?,?)}");
+                        cstmt.setObject(1, org.getOrgCode());
+                        cstmt.registerOutParameter(2, Types.VARCHAR);
+                        cstmt.registerOutParameter(3, Types.VARCHAR);
+                        cstmt.execute();
+                        if(!StrUtil.isNullOrEmpty(cstmt.getString(2))){
+                            result = cstmt.getString(2).toString();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (cstmt != null) {
+                            cstmt.close();
+                            cstmt = null;
+                        }
+                        if (conn != null) {
+                            conn.close();
+                            conn = null;
+                        }
+                    }
+                    return result;
+                }
+            });
+        }
 
         /* 新增组织类型**/
         TreeNodeVo vo = new TreeNodeVo();

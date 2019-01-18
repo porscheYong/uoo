@@ -87,7 +87,8 @@
 
         <choose>
         <when test='vo.isSearchlower=="0"'>
-       SELECT A.ORG_CODE orgCode,
+       SELECT  A.ORG_ID orgId,
+               A.ORG_CODE orgCode,
                A.PARENT_ORG_CODE parentOrgCode,
                A.ORG_NAME orgName,
                (select d.region_name
@@ -112,7 +113,9 @@
 
         </when>
         <otherwise>
-            SELECT A.ORG_CODE orgCode,
+            SELECT
+            A.ORG_ID orgId,
+            A.ORG_CODE orgCode,
             A.PARENT_ORG_CODE parentOrgCode,
             A.ORG_NAME orgName,
             (select d.region_name

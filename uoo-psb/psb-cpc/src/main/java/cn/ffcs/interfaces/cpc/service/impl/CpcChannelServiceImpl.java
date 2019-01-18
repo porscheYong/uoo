@@ -61,8 +61,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
     @Override
     public String handle(String json){
         logger.info("json:{}，date:{}",json,new Date());
-
-        Map<String, Object> map = Json2MapUtil.handle(json);
+        Map<String, Object> map = null;
         //1000是失败，0成功
         String result_code = "0";
         //结果描述
@@ -72,38 +71,48 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         //结果集
         Map<String, Object> rsMap = new HashMap<>();
         rsMap.put("result_code", result_code);
-        if (map == null) {
-            result_msg.append("json is null.");
-        } else {
-            try {
-                TransactionID = (String) map.get("TransactionID") == null ? "" : (String) map.get("TransactionID");
-                rsMap.put("TransactionID", TransactionID);
-                /*渠道*/
-                Map<String, Object> CHANNEL = (Map<String, Object>) map.get("CHANNEL");
-                /*员工*/
-                Map<String, Object> STAFF = (Map<String, Object>) map.get("STAFF");
-                /*员工渠道关系*/
-                List<Map<String, Object>> STAFF_CHANNEL_RELAS = (List<Map<String, Object>>) map.get("STAFF_CHANNEL_RELAS");
+        try{
+            map = Json2MapUtil.handle(json);
+            if (map == null) {
+                result_msg.append("json is null.");
+            } else {
+                try {
+                    TransactionID = (String) map.get("TransactionID") == null ? "" : (String) map.get("TransactionID");
+                    rsMap.put("TransactionID", TransactionID);
+                    /*渠道*/
+                    Map<String, Object> CHANNEL = (Map<String, Object>) map.get("CHANNEL");
+                    /*员工*/
+                    Map<String, Object> STAFF = (Map<String, Object>) map.get("STAFF");
+                    /*员工渠道关系*/
+                    List<Map<String, Object>> STAFF_CHANNEL_RELAS = (List<Map<String, Object>>) map.get("STAFF_CHANNEL_RELAS");
 
-                hand_CHANNEL(CHANNEL, rsMap);
-                hand_STAFF(STAFF, rsMap);
+                    hand_CHANNEL(CHANNEL, rsMap);
+                    hand_STAFF(STAFF, rsMap);
 
             /*if(STAFF_CHANNEL_RELAS != null && STAFF_CHANNEL_RELAS.size() >0){
                 STAFF_CHANNEL_RELAS.forEach((temp)->{
                     hand_STAFF_CHANNEL_RELAS(temp,rsMap);
                 });
             }*/
-            }catch (Exception e){
-                logger.error("Exception:{}",e);
-                rsMap.put("result_code","1000");
-                rsMap.put("message", "处理时异常！");
-            }
+                }catch (Exception e){
+                    logger.error("Exception:{}",e);
+                    rsMap.put("result_code","1000");
+                    rsMap.put("message", "处理时异常！");
+                }
 
-            //事务回滚
-            if ("1000".equals(rsMap.get("result_code"))) {
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                //事务回滚
+                if ("1000".equals(rsMap.get("result_code"))) {
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                }
             }
+        }catch (Exception e){
+            logger.error("Exception:{},json:{}",e.toString(),json);
+            rsMap.put("result_code","1000");
+            rsMap.put("message", "处理不了的报文");
         }
+
+
+
         logger.info("rsMap:{}",rsMap);
         return JSON.toJSONString(rsMap);
     }
@@ -169,7 +178,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
      * @param staff
      * @param rsMap
      */
-    private void hand_STAFF(Map<String, Object> staff, Map<String, Object> rsMap) {
+    private void hand_STAFF(Map<String, Object> staff, Map<String, Object> rsMap){
 
         if (null == staff || "1000".equals((String) (rsMap.get("result_code")))) {
             return;
@@ -205,7 +214,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                         DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"), "2");
                                 tbAcctMapper.insert(tbAcct);
                                 // 插入TB_CONTACT
-                                if (StringUtils.isNotEmpty((String) staff.get("MOBILE_PHONE"))) {
+                                if (staff.get("MOBILE_PHONE") != null) {
                                     TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
                                             String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
@@ -258,7 +267,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                 }
                                 //修改 TB_CONTACT 1.删除该人的所有的联系方式 2.插入新的联系方式
                                 tbContactMapper.deleteByPersonnelId(personnelId);
-                                if (StringUtils.isNotEmpty((String)  (staff.get("MOBILE_PHONE")))) {
+                                if (staff.get("MOBILE_PHONE") != null) {
                                     TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
                                             String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
@@ -296,8 +305,8 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                         //Long personnelId = acctCrossRelMapper.checkExistCrossRelTypeAndSalesCode("100100102", String.valueOf(staff.get("SALES_CODE")));
                         Long personnelId = tbPersonnelMapper.checkExistPsnCode(psnCode);
                         if (personnelId == null) {
-                            rsMap.put("result_code", "1000");
-                            rsMap.put("message", "人员标识不存在。");
+                            rsMap.put("result_code", "0");
+                            //rsMap.put("message", "人员标识不存在。");
                             return;
                         } else {
                             //修改人

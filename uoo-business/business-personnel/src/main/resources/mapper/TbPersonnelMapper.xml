@@ -128,19 +128,22 @@
 
     <select id="getPsnBasicInfo" resultType="cn.ffcs.uoo.core.personnel.vo.PsnBasicInfoVo">
         select t1.personnel_id,
-               t1.psn_name,
-               t1.psn_nbr,
-               t1.gender,
-               t2.content,
-               t1.create_date
-        from tb_personnel t1, tb_contact t2
+        t1.psn_name,
+        t1.psn_nbr,
+        t1.gender,
+        t2.content,
+        t1.create_date,
+        t3.cert_no
+        from tb_personnel t1, tb_contact t2, tb_cert t3
         where t1.status_cd = 1000
-          and t2.status_cd = 1000
-          and t1.personnel_id = t2.personnel_id
-          and t2.contact_type = '1'
-          and t2.first_flag = 1
+        and t2.status_cd = 1000
+        and t3.status_cd = 1000
+        and t1.personnel_id = t2.personnel_id
+        and t1.personnel_id = t3.personnel_id
+        and t2.contact_type = '1'
+        and t2.first_flag = 1
         <if test ="psnBasicInfoVo.keyWord != null and psnBasicInfoVo.keyWord != ''" >
-            and (t1.psn_name like '%'||#{psnBasicInfoVo.keyWord}||'%' or t1.psn_code like '%'||#{psnBasicInfoVo.keyWord}||'%' or t2.content like '%'||#{psnBasicInfoVo.keyWord}||'%')
+            and (t1.psn_name like '%'||#{psnBasicInfoVo.keyWord}||'%' or t1.psn_code like '%'||#{psnBasicInfoVo.keyWord}||'%' or t2.content like '%'||#{psnBasicInfoVo.keyWord}||'%' or t3.cert_no like '%'||#{psnBasicInfoVo.keyWord}||'%')
         </if>
 
     </select>

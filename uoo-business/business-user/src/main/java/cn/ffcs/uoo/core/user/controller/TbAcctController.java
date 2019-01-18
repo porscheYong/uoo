@@ -77,8 +77,9 @@ public class TbAcctController extends BaseController {
         }
 
         //角色
-        tbUserRoleService.saveUserRole(editFormAcctVo.getTbRolesList(), acctId, 1L, userId);
-
+        if(!StrUtil.isNullOrEmpty(editFormAcctVo.getTbRolesList())){
+            tbUserRoleService.saveUserRole(editFormAcctVo.getTbRolesList(), acctId, 1L, userId);
+        }
         //组织
         tbAccountOrgRelService.saveAcctOrg(editFormAcctVo.getAcctOrgVoList(), acctId, userId);
 

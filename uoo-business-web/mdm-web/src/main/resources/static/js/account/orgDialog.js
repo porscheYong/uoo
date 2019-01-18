@@ -81,16 +81,16 @@ function initOrgRelTree (orgTreeId) {
     })
 }
 
-// 初始化业务组织列表
+// 初始化组织关系列表
 function initRelTypeName () {
         var option = '';
         for (var i = 0; i < relTypeName.length; i++) {
             var select = relTypeVal === relTypeName[i].itemValue? 'selected' : '';
             option += "<option value='" + relTypeName[i].itemValue + "' " + select + ">" + relTypeName[i].itemCnname +"</option>";
         }
-        if(relTypeVal == "null" || relTypeVal == 0){
-            relTypeVal = relTypeName[0].itemValue;
-        }
+        // if(relTypeVal == "null" || relTypeVal == 0){
+        //     relTypeVal = relTypeName[0].itemValue;
+        // }
         $('#businessOrg').append(option);
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
             $('#businessOrg').selectMatch();
