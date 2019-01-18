@@ -88,11 +88,14 @@ function removeNode (e) {
 }
 
 function autoCheck () {
-  var zTree = $.fn.zTree.getZTreeObj("orgTypeTree");
+  var tree = $.fn.zTree.getZTreeObj("orgTypeTree");
   for (var i = 0; i < orgTypeList.length; i++) {
-      var id = orgTypeList[i].orgTypeId || orgTypeList[i].id;
-    var node = zTree.getNodeByTId("orgTypeTree_" + id);
-    zTree.checkNode(node, true);
+    var id = orgTypeList[i].orgTypeId || orgTypeList[i].id;
+    var pid = orgTypeList[i].parentOrgTypeId || orgTypeList[i].pid;
+    var node = tree.getNodeByTId("orgTypeTree_" + id);
+    var pNode = tree.getNodeByParam('id', pid);
+    tree.checkNode(node, true);
+    tree.expandNode(pNode, true);
     checkNode.push(node);
     renderTag();
   }

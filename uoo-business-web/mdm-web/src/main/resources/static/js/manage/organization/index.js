@@ -61,13 +61,13 @@ function refreshResult () {
 
 function initOrgRelTree () {
     var setting = {
-        async: {
-            enable: true,
-            url: '/sysOrganization/getOrgRelTree',
-            autoParam: ['id'],
-            type: 'get',
-            dataFilter: filter
-        },
+        // async: {
+        //     enable: true,
+        //     url: '/sysOrganization/getOrgRelTree',
+        //     autoParam: ['id'],
+        //     type: 'get',
+        //     dataFilter: filter
+        // },
         view: {
             showLine: false,
             showIcon: false,
@@ -88,7 +88,9 @@ function initOrgRelTree () {
             onClick: onNodeClick
         }
     };
-    $http.get('/sysOrganization/getOrgRelTree', {}, function (data) {
+    $http.get('/sysOrganization/getOrgRelTree', {
+        isSync: true
+    }, function (data) {
         $.fn.zTree.init($("#platformOrgTree"), setting, data);
         var tree = $.fn.zTree.getZTreeObj("platformOrgTree");
         var nodes = tree.getNodes();
@@ -107,6 +109,13 @@ function selectNodeById (id) {
     var node = zTree.getNodeByTId(tId);
     zTree.selectNode(node);
     $('.curSelectedNode').trigger('click');
+}
+
+// 根据组织ID展开组织
+function expandNodeById (id) {
+    var tree = $.fn.zTree.getZTreeObj("platformOrgTree");
+    var node = tree.getNodeByParam('id', id)
+    tree.expandNode(node, true, true, true);
 }
 
 // 根据组织ID获取组织名称

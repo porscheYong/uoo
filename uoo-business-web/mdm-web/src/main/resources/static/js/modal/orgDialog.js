@@ -38,7 +38,7 @@ function initOrgTree() {
             simpleData: {
                 enable:true,
                 idKey: "id",
-                pIdKey: "pId",
+                pIdKey: "pid",
                 rootPId: ""
             }
         },
