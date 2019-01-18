@@ -49,24 +49,23 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
 
     @Override
     public Object saveAcctOrg(List<ListAcctOrgVo> acctOrgVoList, Long acctId, Long userId){
-        List<TbAccountOrgRel> tbAccountOrgRels = new ArrayList<TbAccountOrgRel>();
-        TbAccountOrgRel tbAccountOrgRel = null;
+
         if(acctOrgVoList != null && acctOrgVoList.size() > 0){
+            List<TbAccountOrgRel> tbAccountOrgRels = new ArrayList<TbAccountOrgRel>();
             for (ListAcctOrgVo acctOrg : acctOrgVoList){
-                tbAccountOrgRel = new TbAccountOrgRel();
+                Long acctOrgRelId = baseMapper.getId();
+                TbAccountOrgRel tbAccountOrgRel = new TbAccountOrgRel();
                 BeanUtils.copyProperties(acctOrg, tbAccountOrgRel);
-                tbAccountOrgRel.setAcctOrgRelId(this.getId());
+                tbAccountOrgRel.setAcctOrgRelId(acctOrgRelId);
                 tbAccountOrgRel.setAcctId(acctId);
                 tbAccountOrgRel.setOrgTreeId(acctOrg.getOrgTreeId());
                 tbAccountOrgRel.setCreateUser(userId);
                 tbAccountOrgRel.setUpdateUser(userId);
                 tbAccountOrgRels.add(tbAccountOrgRel);
             }
+            this.insertBatch(tbAccountOrgRels);
         }
-        if(this.insertBatch(tbAccountOrgRels)){
-            return ResultUtils.success(null);
-        }
-        return ResultUtils.error(EumUserResponeCode.USER_RESPONSE_ERROR);
+        return ResultUtils.success(null);
     }
 
     @Override
