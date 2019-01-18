@@ -481,14 +481,24 @@ p {
 .IconUserLight {
 	background: url(../images/ico_user2.svg);
 	}
-.IconMobile {
+/* .IconMobile {
 	background: url(../images/ico_mobile.svg);
+	} */
+.IconMobile {
+	background-image: url(../images/ico_mobile.png);
+	background-image: url(../images/ico_mobile.svg), none;
+	cursor: pointer;
 	}
 .IconLocation {
 	background: url(../images/ico_location.svg);
 	}
-.IconEmail {
+/* .IconEmail {
 	background: url(../images/ico_email.svg);
+	} */
+.IconEmail {
+	background-image: url(../images/ico_email.png);
+	background-image: url(../images/ico_email.svg), none;
+	cursor: pointer;
 	}
 .TipsIcon {
 	background: url(../images/ico_done.svg) no-repeat;

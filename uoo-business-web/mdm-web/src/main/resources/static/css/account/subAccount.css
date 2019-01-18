@@ -83,7 +83,7 @@ table.dataTable tbody td {
     border: 1px solid #dce1e6
 }
 .lableStyle{
-    margin-left: 5%;
+    /* margin-left: 5%; */
     margin-bottom:10px;
     color:rgb(74,74,74);
     font-size: 15px;

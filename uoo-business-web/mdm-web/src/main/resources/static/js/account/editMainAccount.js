@@ -196,7 +196,7 @@ function setAcctInfoTables(){
                   'render': function (data, type, row, meta) {
                       return '<a title="'+ row.slaveAcct +'" href="editSubAccount.html?curOrgId='+curOrgId+'&curOrgTreeId='+curOrgTreeId+
                               '&orgTreeId=' + orgTreeId + '&curSlaveOrgTreeId='+row.orgTreeId+'&toMainType=' + hType +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +
-                              '&curSlaveOrgTreeName='+row.orgTreeName+'&hType=th&mainAcctId='+acctId+'&acctId='+row.slaveAcctId+'&statusCd='+row.statusCd+'">'+row.slaveAcct+'</a>';
+                              '&curSlaveOrgTreeName='+encodeURI(row.orgTreeName)+'&hType=th&mainAcctId='+acctId+'&acctId='+row.slaveAcctId+'&statusCd='+row.statusCd+'">'+row.slaveAcct+'</a>';
                   }
                 },
                   { 'data': "slaveAcctType", 'title': '类型', 'className': 'row-acctype' },
