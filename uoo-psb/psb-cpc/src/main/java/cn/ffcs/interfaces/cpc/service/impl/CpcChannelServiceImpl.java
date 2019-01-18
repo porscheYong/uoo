@@ -266,18 +266,31 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                     tbAcctMapper.updateById(tbAcct);
                                 }
                                 //修改 TB_CONTACT 1.删除该人的所有的联系方式 2.插入新的联系方式
-                                tbContactMapper.deleteByPersonnelId(personnelId);
+                                //tbContactMapper.deleteByPersonnelId(personnelId);
                                 if (staff.get("MOBILE_PHONE") != null) {
-                                    TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
-                                            String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
-                                            "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
-                                    tbContactMapper.insert(tbContact);
+                                    //判断手机号是不是已存在
+                                    if(tbContactMapper.selectCount(new EntityWrapper<TbContact>()
+                                            .eq("STATUS_CD","1000")
+                                            .eq("CONTACT_TYPE","1")
+                                            .eq("PERSONNEL_ID",personnelId)
+                                            .eq("CONTENT",staff.get("MOBILE_PHONE"))) ==0){
+                                        TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
+                                             String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
+                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
+                                        tbContactMapper.insert(tbContact);
+                                    }
                                 }
                                 if (StringUtils.isNotEmpty((String)(staff.get("E_MAIL")))) {
-                                    TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "2",
-                                            String.valueOf(staff.get("E_MAIL")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
-                                            "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
-                                    tbContactMapper.insert(tbContact);
+                                    if(tbContactMapper.selectCount(new EntityWrapper<TbContact>()
+                                            .eq("STATUS_CD","1000")
+                                            .eq("CONTACT_TYPE","2")
+                                            .eq("PERSONNEL_ID",personnelId)
+                                            .eq("CONTENT",staff.get("E_MAIL"))) ==0) {
+                                        TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "2",
+                                                String.valueOf(staff.get("E_MAIL")), UUID.randomUUID().toString().replaceAll("-", "").toUpperCase(),
+                                                "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
+                                        tbContactMapper.insert(tbContact);
+                                    }
                                 }
                                 //修改TB_ACCT_CROSS_REL1.删除该人的关系类型为'100100102'跨域账号 2.插入新的TB_ACCT_CROSS_REL1
                                 acctCrossRelMapper.deleteByAcctIdAndRelaType(tbAcct.getAcctId(), "100100102");
