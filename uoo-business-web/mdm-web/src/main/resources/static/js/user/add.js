@@ -32,6 +32,8 @@ var sortFlag = 0;
 var currentPage = 0;
 
 var psnImageId;
+var delayTime = 500;
+var timeout;
 
 var toastr = window.top.toastr;
 
@@ -42,9 +44,6 @@ var pliticalStatusData = window.top.dictionaryData.pliticalStatus();
 var marriageData = window.top.dictionaryData.marriage();
 var propertyData = window.top.dictionaryData.property();
 var refTypeData = window.top.dictionaryData.refType();
-
-$('#orgName').html(orgName);
-parent.getOrgExtInfo();
 
 // 步骤条
 $("#userAdd").steps({
@@ -309,61 +308,19 @@ function addEmail () {
 empty = Handlebars.compile($(".typeahead-menu").html());
 
 engine = new Bloodhound({
-    identify: function(o) { return o.id_str; },
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('psnName'),
-    dupDetector: function(a, b) { return a.id_str === b.id_str; },
     remote: {
         url: '/personnel/getPsnBasicInfo?keyWord=%QUERY&pageNo=1&pageSize=10',
         wildcard: '%QUERY',
+        rateLimitBy: 'debounce',
+        rateLimitWait: 5000,
         filter: function (response) {
-            if (response.data && response.data.records.length == 0)
+            if (response.data && response.data.records.length == 0) {
+                $('#userTable').html('');
+                $('#userTable_wrapper .bottom').remove();
                 return;
-            // table = $("#userTable").DataTable({
-            //     'data': response.data.records,
-            //     'destroy': true,
-            //     'searching': false,
-            //     'autoWidth': false,
-            //     'ordering': true,
-            //     'initComplete': function (settings, json) {
-            //         console.log(settings, json)
-            //     },
-            //     'columns': [
-            //         { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name' },
-            //         { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
-            //         { 'data': "content", 'title': '联系方式', 'className': 'row-mobile' },
-            //         { 'data': "createDate", 'title': '创建时间', 'className': 'status-code',
-            //             'render': function (data, type, row, meta) {
-            //                 var time = formatDateTime(row.createDate);
-            //                 return time;
-            //             }
-            //         },
-            //         { 'data': "", 'title': '操作', 'className': 'status-code',
-            //             'render': function (data, type, row, meta) {
-            //                 return "<a href='edit.html?orgId=" + orgId + "&orgTreeId=" + orgTreeId + "&personnelId=" + row.personnelId +"'>选择</a>";
-            //             }
-            //         }
-            //     ],
-            //     'language': {
-            //         'emptyTable': '没有数据',
-            //         'loadingRecords': '加载中...',
-            //         'processing': '查询中...',
-            //         'search': '检索:',
-            //         'lengthMenu': ' _MENU_ ',
-            //         'zeroRecords': '没有数据',
-            //         'paginate': {
-            //             'first':      '首页',
-            //             'last':       '尾页',
-            //             'next':       '下一页',
-            //             'previous':   '上一页'
-            //         },
-            //         'info': '总_TOTAL_人',
-            //         'infoEmpty': '没有数据'
-            //     },
-            //     "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
-            //     'pagingType': 'simple_numbers',
-            //     'dom': '<"top"f>t<"bottom"ipl>'
-            // });
+            }
         }
     }
 });
@@ -375,6 +332,7 @@ function initTable(keyWord){
         'searching': false,
         'autoWidth': false,
         'ordering': true,
+        'lsort': true,
         'columns': [
             { 'data': "psnName", 'title': '人员姓名', 'className': 'row-nameS'},
             { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-noS' },
@@ -431,23 +389,31 @@ function initTable(keyWord){
             })
         }
     });
-
-    initSort(".row-nameS","psnName");
-    initSort(".cert-noS","psnNbr");
-    initSort(".row-mobileS","content");
-    initSort(".status-codeS","createDate");
-
 }
 
+// 搜索用户
+// function search () {
+//     clearTimeout(this.timer);
+//     // 添加的延时
+//     this.timer = setTimeout(function(){
+//         initTable($('#psnName').val());
+//     }, delayTime);
+// }
+
 function engineWithDefaults(q, sync, async) {
-    if (q === '') {
-        sortFlag = 0;
-        $('#userTable').html('');
-        $('#userTable_wrapper .bottom').remove();
+    if (timeout) {
+        clearTimeout(timeout);
     }
-    else {
-        engine.search(q, sync, async);
-    }
+
+    timeout = setTimeout(function() {
+        if (q === '') {
+            $('#userTable').html('');
+            $('#userTable_wrapper .bottom').remove();
+        }
+        else {
+            engine.search(q, sync, async);
+        }
+    }, 500);
 }
 
 $('#psnName').typeahead({
@@ -470,13 +436,8 @@ $('#psnName').typeahead({
     }
 })
   .on('typeahead:asyncrequest', function(a, b) {
-        $('.Typeahead-spinner').show();
-        sortFlag = 0;
         if ($("#psnName").val())
             initTable($("#psnName").val());
-    })
-  .on('typeahead:asynccancel typeahead:asyncreceive', function() {
-        $('.Typeahead-spinner').hide();
     });
 
 /***
@@ -1021,20 +982,6 @@ Handlebars.registerHelper('eq', function(v1, v2, opts) {
 });
 
 
-// 获取组织完整路径
-function getOrgExtInfo () {
-    var pathArry = parent.nodeArr;
-    var pathStr = '';
-    for (var i = pathArry.length - 1; i >= 0; i--) {
-        if (i === 0) {
-            pathStr +=  '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a></span>';
-        } else {
-            pathStr += '<span class="breadcrumb-item"><a href="javascript:viod(0);">' + pathArry[i] + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
-        }
-    }
-    $('.breadcrumb').html(pathStr);
-}
-
 //将时间戳改为yyyy-MM-dd HH-mm-ss
 function formatDateTime(unix) {
     var now = new Date(parseInt(unix) * 1);
@@ -1172,6 +1119,7 @@ function savePersonnel () {
     var ncCode = $('#ncCode').val();
     var nation = $('#nation option:selected') .val();
     var date = $('#toWorkTime').val();
+    var address = $('#address').val();
     var toWorkTime;
     if (date) {
         toWorkTime = new Date(date).getTime();
@@ -1203,6 +1151,7 @@ function savePersonnel () {
         toWorkTime: toWorkTime,
         pliticalStatus: pliticalStatus,
         marriage: marriage,
+        address: address,
         tbMobileVoList: tbMobileVoList,
         tbEamilVoList: tbEamilVoList,
         tbEduList: eduList,
@@ -1217,69 +1166,8 @@ function savePersonnel () {
     })
 }
 
-function arrSort (arr, dataLeven) { // 参数：arr 排序的数组; dataLeven 数组内的需要比较的元素属性 
-    /* 获取数组元素内需要比较的值 */
-    function getValue (option) { // 参数： option 数组元素
-      if (!dataLeven) return option
-      var data = option
-      dataLeven.split('.').filter(function (item) {
-        data = data[item]
-      })
-      return data + ''
-    }
-    arr.sort(function (item1, item2) {
-      return getValue(item1).localeCompare(getValue(item2), 'zh-CN');
-    })
-  }
-
-  function descSort(asc,desc){      //desc排序
-    for(var i=asc.length-1;i>=0;i--){
-        desc.push(asc[i]);
-    }
-    return desc;
-  }
-
-  function sortToTable(arr){   //将排完序的数据写入表格
-    for(var i =0;i<arr.length;i++){
-        sortFlag = 1;
-        table
-            .row(i)
-            .data({
-                "psnName":arr[i].psnName,
-                "psnNbr":arr[i].psnNbr,
-                "content":arr[i].content,
-                "createDate":arr[i].createDate,
-                "statusCd":arr[i].statusCd,
-                "personnelId":arr[i].personnelId
-            })
-            .draw();
-    }
-  }
-
-  //初始化排序
-  function initSort(thClass,param){       
-    $(thClass).on('click', function () {
-        var tableLength = table.data().length;
-        var arr = [];
-        var descArr = [];
-    
-        for(var i = 0;i < tableLength;i++){
-            arr.push(table.row(i).data());
-        }
-        
-        arrSort(arr,param);
-        
-        if($(this).hasClass("sorting_desc")){
-            descArr = descSort(arr,descArr);
-            sortToTable(descArr);
-        }else{
-            sortToTable(arr);
-        }
-        table.page(currentPage).draw( false );
-    });
-}
-
-// getOrgExtInfo();
+$('#orgName').html(orgName);
+parent.getOrgExtInfo();
 getCertType();
 getNation();
 getPliticalStatus();

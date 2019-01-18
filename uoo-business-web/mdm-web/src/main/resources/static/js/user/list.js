@@ -40,9 +40,9 @@ function initOrgPersonnelTable (isSearchlower,search) {
                                         "&name="+ encodeURI(orgName) +"&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
                 }
             },
-            { 'data': "doubleName", 'title': '重名称谓', 'className': 'row-mobile' },
-            { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
-            { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
+            { 'data': "certNo", 'title': '身份证', 'className': 'row-mobile' },
+            { 'data': "psnNbr", 'title': '工号', 'className': 'cert-no' },
+            { 'data': "mobile", 'title': '手机', 'className': 'post-name' },
             { 'data': "orgName", 'title': '所属组织', 'className': '' },
             { 'data': "statusCd", 'title': '状态', 'className': 'status-code',
                 'render': function (data, type, row, meta) {
@@ -124,9 +124,10 @@ function initFreePersonnelTable () {
                         "&name="+ encodeURI(orgName) +"&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
                 }
             },
-            { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
-            // { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
-            // { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
+            { 'data': "certNo", 'title': '身份证', 'className': 'cert-no' },
+            { 'data': "psnNbr", 'title': '工号', 'className': 'cert-no' },
+            { 'data': "mobile", 'title': '手机', 'className': 'mobile' },
+            { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
             { 'data': "statusCd", 'title': '状态', 'className': 'status-code',
                 'render': function (data, type, row, meta) {
                     var statusStr = '';

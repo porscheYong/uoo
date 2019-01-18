@@ -68,7 +68,7 @@ function autoFillShortName () {
 function openOrgSearchDialog() {
     parent.layer.open({
         type: 2,
-        title: '游离组织',
+        title: '选择组织',
         shadeClose: true,
         shade: 0.8,
         area: ['70%', '85%'],
