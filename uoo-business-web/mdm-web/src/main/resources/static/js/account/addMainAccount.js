@@ -124,13 +124,13 @@ function setAcctInfoTables(){
             break;
           }
       }
-      acctHtml += "<div class='curDiv' style='padding:10px 0;'>"+
+      acctHtml += "<div class='curDiv' style='padding:10px 0;margin-left:2%;'>"+
                       "<span class='pngDot'></span>"+
                       "<span class='Name Gray3' style='margin-left:1.5%;' id='orgTreeName_"+i+"'>"+addOrgList[i].orgTreeName+"</span>"+
                       "<span class='Tag' style='cursor:pointer;' title='"+addOrgList[i].fullName+"' id='orgName_"+i+"'>"+addOrgList[i].orgName+"</span>"+
                       // "<span id='editBtn_"+i+"' title='组织编辑' onclick='' class='icon icon-edit'></span>"+
                       "<span class='Tag' style='cursor:pointer;' id='relTypeName_"+i+"'>"+relType+"</span>"+
-                      "<span class='fright FunctionBtn' style='float:right;margin-right:3.5%;'>"+
+                      "<span class='fright FunctionBtn' style='float:right;margin-right:-1.2%;'>"+
                           "<a class='BtnDel' style='cursor:pointer;' onclick='deleteOrg("+i+")' id='delBtn_"+i+"'><span></span>删除组织关系</a></span></div>";
   }
   $("#acctOrgDiv").append(acctHtml);
