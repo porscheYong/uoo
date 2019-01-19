@@ -774,6 +774,9 @@ function updateOrg () {
   if (!formValidate.isAllPass())
       return;
   loading.screenMaskEnable('container');
+    var statusCd = $('#statusCd option:selected') .val();
+    if (statusCd == '1100')
+        return deleteOrg();
   var userList = [];
   var location = [];
   var position = [];
@@ -818,7 +821,7 @@ function updateOrg () {
   // }
   var orgPositionLevel = $('#orgPositionLevel option:selected') .val();
   var officePhone = $('#officePhone').val();
-  var statusCd = $('#statusCd option:selected') .val();
+  // var statusCd = $('#statusCd option:selected') .val();
   var sort = $('#sort').val();
   var address = $('#address').val();
   var orgContent = $('#orgContent').val();
