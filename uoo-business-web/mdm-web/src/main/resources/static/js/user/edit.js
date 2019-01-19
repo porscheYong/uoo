@@ -1046,9 +1046,9 @@ $(document).ready(function(){
 function gotoPrev(){
 	var url="/inaction/user/list.html?";
 		url+="id="+orgId;
-		url+="orgTreeId="+orgTreeId;
-		url+="orgTreeName="+orgTreeName;
-		url+="name="+orgName;
+		url+="&orgTreeId="+orgTreeId;
+		url+="&orgTreeName="+orgTreeName;
+		url+="&name="+orgName;
  location.href=url;
 }
 function gotoAccout(i){
