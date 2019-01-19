@@ -1067,7 +1067,7 @@ function gotoAccout(i){
     url+="acctId="+userAcc.acctId+"&";
     url+="statusCd="+userAcc.statusCd+"&";
     url+="tabPage="+"acct"+"&";
-    alert(url)
+    
     window.location.href=url;
 }
 function autoWriteForm(){
