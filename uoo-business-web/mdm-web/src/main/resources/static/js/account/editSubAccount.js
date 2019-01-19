@@ -367,6 +367,7 @@ function getSysSelect(){   //获取应用系统下拉列表
             }else{
                 if(resourceObjId == data[i].businessSystemId){
                     option += "<option value='" + data[i].businessSystemId + "' selected>" + data[i].systemName +"</option>";
+                    $("#sysLable").text(data[i].systemName);
                 }else{
                     option += "<option value='" + data[i].businessSystemId + "'>" + data[i].systemName +"</option>";
                 }
