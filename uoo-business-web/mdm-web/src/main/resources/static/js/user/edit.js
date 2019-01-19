@@ -1013,6 +1013,8 @@ $(document).ready(function(){
     if(tabPage=='acct'){
         $('#personnel').removeClass('active');
         $('#user').addClass('active');
+        $('#psnTabLI').removeClass('active');
+        $('#userTabLI').addClass('active');
     }
 
     if(!isNum(orgId)){
@@ -1041,6 +1043,13 @@ $(document).ready(function(){
 
 });
 function gotoAccout(i){
+	var mainAcctId=0;
+	for(var j=0;j<personalData.userList.records.length;j++){
+		if(personalData.userList.records[j].type==1){
+			mainAcctId=personalData.userList.records[j].acctId;
+			break;
+		}
+	}
     var userAcc=personalData.userList.records[i];
     var url="";
     if(userAcc.type==1){
@@ -1055,6 +1064,7 @@ function gotoAccout(i){
         url+="curOrgId="+parent.getCurrentOrgId()+"&";
         url+="curSlaveOrgTreeId="+userAcc.curSlaveOrgTreeId+"&";
         url+="curSlaveOrgTreeName="+userAcc.curSlaveOrgTreeName+"&";
+        url+="mainAcctId="+mainAcctId+"&";
     }
     
     url+="orgId="+orgId+"&";
