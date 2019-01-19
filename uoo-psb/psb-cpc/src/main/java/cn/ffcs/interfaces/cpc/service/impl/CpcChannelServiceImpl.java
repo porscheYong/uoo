@@ -92,6 +92,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                         });
                     }
                     hand_CHANNEL(CHANNEL, rsMap);
+
                     hand_STAFF(STAFF, rsMap);
 
                 }catch (Exception e){
