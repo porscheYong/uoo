@@ -613,7 +613,7 @@
                         <td>学习方式</td>
                         <td>学历</td>
                         <td>学位</td>
-                        <td>是否第一学历</td>
+                        <td>是否最高学历</td>
                         <td width="50px">编辑</td>
                     </tr>
                      {{#each eduInfo.records}}
@@ -626,7 +626,7 @@
                         <td>全日制</td>
                         <td>{{education}}</td>
                         <td>{{degree}}</td>
-                        <td>{{#if firstEducation}} 是  {{else}}否{{/if}} </td>
+                        <td>{{#if lastEducation}} 是  {{else}}否{{/if}} </td>
                          <td><a class="Icon IconEdit" href="javascript:void(0);" onclick="openEduEditByEdit('{{@index}}')"></a></td>
                     </tr>
                      {{/each}}
@@ -695,7 +695,7 @@
                     <tr class="Title">
                         <td width="50px">序号</td>
                         <td>姓名</td>
-                        <td>称谓</td>
+                        <td>与本人关系</td>
                         <td>联系电话</td>
                         <td>联系地址</td>
                         <td width="50px">编辑</td>
