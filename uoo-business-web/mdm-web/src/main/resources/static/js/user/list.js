@@ -205,13 +205,12 @@ function showLower() {
 if (orgId == '88888888') {
     $('#titleName').html('游离人员');
     $('#isShow').hide();
-    initFreePersonnelTable();
 }
 else {
     $('#titleName').html('组织人员');
     $('#isShow').show();
-    initOrgPersonnelTable(0, '');
 }
+initOrgPersonnelTable(0, '');
 // $('#editBtn').on('click', function () {
 //     var url = 'edit.html?id=' + orgId;
 //     $(this).attr('href', url);
