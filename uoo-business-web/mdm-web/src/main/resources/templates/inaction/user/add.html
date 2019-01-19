@@ -180,8 +180,8 @@
                             <!--<input id="psnName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" oninput="search()" onpropertychange="search()" required>-->
                             <div class="typeahead col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
                                 <div>
-                                    <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
-                                    <input class="ui-input typeahead-input tt-input" id="psnName" type="text" name="q"  placeholder="输入人员关键字" autocomplete="off" spellcheck="false" dir="auto">
+                                    <!--<input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">-->
+                                    <input class="ui-input tt-input" id="psnName" style="width: 100%" type="text" name="q" required placeholder="输入人员关键字" autocomplete="off" spellcheck="false" dir="auto" oninput="search()" onpropertychange="search()" onpaste="search()" />
                                     <img class="typeahead-spinner" src="img/spinner.gif" style="display: none;">
                                 </div>
                             </div>
