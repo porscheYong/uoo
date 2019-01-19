@@ -70,12 +70,12 @@
         select T.ORG_TYPE_ID id, T.PARENT_ORG_TYPE_ID pid, T.ORG_TYPE_NAME name
         from tb_org_type T
         where T.STATUS_CD = 1000
-        <if test="supOrgTypeId != null">
+        <if test="supOrgTypeId != null and supOrgTypeId!=''">
             AND T.PARENT_ORG_TYPE_ID = #{supOrgTypeId}
         </if>
-  <!--      <if test="orgTypeCode != null and orgTypeCode != ''">
-            AND T.ORG_TYPE_CODE = #{orgTypeCode}
-        </if>-->
+        <if test="orgTypeParams != null and orgTypeParams != ''">
+            AND ${orgTypeParams}
+        </if>
         ORDER BY T.ORG_TYPE_ID ASC
     </select>
     <!--查询组织类别树是否存在子节点-->

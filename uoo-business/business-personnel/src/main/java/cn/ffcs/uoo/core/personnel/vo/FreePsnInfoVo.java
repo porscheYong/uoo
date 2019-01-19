@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class FreePsnInfoVo {
 
+    private Long id;
+
     private Long personnelId;
 
     private String psnName;
@@ -18,4 +20,6 @@ public class FreePsnInfoVo {
     private String certNo;
 
     private String mobile;
+
+    private String orgName;
 }

@@ -175,7 +175,7 @@
                         <div class="form-item" style="width: 100%">
                             <label for="psnName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;">姓名</label>
-                            <!--<input id="psnName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" required>-->
+                            <!--<input id="psnName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" oninput="search()" onpropertychange="search()" required>-->
                             <div class="typeahead col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
                                 <div>
                                     <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
@@ -186,7 +186,7 @@
                         </div>
                     </div>
 
-                    <input type="file" id="psnImgFile" name="psnImgFile" style="display: none;" accept="image/jpeg,image/gif,image/png" />   
+                    <input type="file" id="psnImgFile" name="psnImgFile" style="display: none;" accept="image/jpeg,image/gif,image/png" />
                     <div style="width:100%">
                         <div class="fleft Col1" style="width: 8%;">
                             <img class="BigFace" id="psnImg" src="{{personalData.personalData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null" onclick="setPsnImg()" />
@@ -198,7 +198,7 @@
                     </div>
                 </div>
 
-                
+
 
                 <div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -207,7 +207,7 @@
                                     style="padding-right: 20px;line-height: 40px;text-align: right;">性别</label>
                             <div style="line-height: 40px;" id="gender">
                                 <input type="radio" id="male" name="validateRadio" required value="1"
-                                ><label for="male" class="ui-radio"></label
+                                ><label for="male" class="ui-radio" style="margin-left: 0"></label
                             ><label for="male" class="gender">男</label>
 
                                 <input type="radio" id="female" name="validateRadio" required value="2"
@@ -303,7 +303,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!--<div class="user-table">-->
                     <!--<table id="userTable" class="stripe" width="100%"></table>-->
                 <!--</div>-->
@@ -344,10 +344,10 @@
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="form-item" style="width: 100%">
-                            <label for="tbFamilyList" class="form-item-label col-md-2 col-sm-2 col-xs-12"
+                            <label for="address" class="form-item-label col-md-2 col-sm-2 col-xs-12"
                                    style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">家庭地址</label>
                             <div class="col-md-10 col-sm-10 col-xs-12" style="width: 84%;position: relative;padding: 0;">
-                                <input id="tbFamilyList" class="ui-input" style="width: 100%;position: relative;">
+                                <input id="address" class="ui-input" style="width: 100%;position: relative;">
                             </div>
                         </div>
                     </div>
@@ -808,8 +808,7 @@
 <!-- typeahead -->
 <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
 <!-- jquery datatable -->
-<!-- <script type="text/javascript" src="/vendors/datatable/datatables.js"></script> -->
-<script type="text/javascript" src="/js/datatables.js"></script>
+ <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
 <!-- sea js -->
 <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
 <!-- laydate -->

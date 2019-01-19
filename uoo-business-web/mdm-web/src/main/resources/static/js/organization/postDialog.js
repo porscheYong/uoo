@@ -29,9 +29,11 @@ function autoCheck () {
     var zTree = $.fn.zTree.getZTreeObj("orgPostTree");
     for (var i = 0; i < orgPostList.length; i++) {
         var id = orgPostList[i].postId || orgPostList[i].id;
+        var pid = orgPostList[i].parentPositionId;
         var node = zTree.getNodeByTId("orgPostTree_" + id);
+        var pNode = zTree.getNodeByParam('id', pid);
         zTree.checkNode(node, true);
-        zTree.expandNode(node, true, true, true);
+        zTree.expandNode(pNode, true);
         checkNode.push(node);
     }
 }

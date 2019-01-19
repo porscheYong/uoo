@@ -43,11 +43,9 @@ public class TbUserRoleServiceImpl<main> extends ServiceImpl<TbUserRoleMapper, T
                 tbUserRole.setUpdateUser(userId);
                 tbUserRoles.add(tbUserRole);
             }
+            this.insertBatch(tbUserRoles);
         }
-        if(this.insertBatch(tbUserRoles)){
-            return ResultUtils.success(null);
-        }
-        return ResultUtils.error(EumUserResponeCode.USER_RESPONSE_ERROR);
+        return ResultUtils.success(null);
     }
 
     @Override

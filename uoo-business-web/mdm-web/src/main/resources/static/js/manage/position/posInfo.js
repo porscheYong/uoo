@@ -53,7 +53,7 @@ function initPosInfo(result){
         locationList = [{"id":result.regionNbr,"name":result.regionName}];
         $('#location').addTag(locationList);
     }
-    if(result.pPositionId){
+    if(result.pPositionName){
         pPosList = [{"id":result.pPositionId,"name":result.pPositionName}];
         $('#supPos').addTag(pPosList);
     }

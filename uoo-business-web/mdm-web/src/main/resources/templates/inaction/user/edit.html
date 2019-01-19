@@ -141,7 +141,9 @@
             <div class="base-info">
                 <div class="board-title">
              
-                <div style="float: left"> <span class="name">用户信息</span><a id="userEditButton"  style="float: right" onclick="editUser()" class=" Icon IconEdit" href="javascript:void(0)"></a></div>
+                <div style="float: left"> <span class="name">用户信息</span>
+                <a id="userEditButton"  style="float: right" onclick="editUser()" class=" Icon IconEdit" href="javascript:void(0)"></a>
+                </div>
                 </div>
                 <div class="BoardContent ulhide" id="userInfo" style="overflow-x: hidden">
                 </div>
@@ -192,7 +194,7 @@
             
             <div   class="BoardContent TableStyle tcenter">
                 
-            <input class="Btn BtnRedWhite" id="delPsn" type="button" onclick="deleteTbAcct()" value="删除人员" style="margin-top:20px;" />
+            
             </div>
         </div>
         <div class="tab-pane" id="user">
@@ -307,105 +309,114 @@
 </script>
 
 <script id="userEditTemplate" type="text/x-handlebars-template">
-    <div style="display:'none'">
-    <form id="imgForm" enctype='multipart/form-data'>
-    <input type="file" id="choseFileImg" name="editormd-image-file" style="display: none;" accept="image/jpeg,image/gif,image/png" />    
-    <input type="hidden" id="psnImageId" value="{{personalData.personalData.image}}" name="psnImageId"/>
-    </form>
-    </div>
-    <div>
-        <div class="fleft Wp2 tcenter"  >
-                    <img class="BigFace" id="psnImg" src="{{personalData.personalData.image}}" alt="头像" onerror="this.src='/images/face/zqz.png';this.onerror=null" />
+<div >
+  <div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <img class="avatar" id="psnImg" src="{{personalData.personalData.image}}" onerror="this.src='/images/face/zqz.png';this.onerror=null" onclick="openChoseImg()" />
                     <div class="KeyWords tcenter">
-                         <a href="#" onclick="openChoseImg()">编辑</a> 
+                         <a href="#" onclick="openChoseImg()">编辑</a>
                     </div>
                 </div>
-       
-            <form id="userEditForm">
-       <div class="fleft Wp8 FormList">
-            <ul id="userEditUL0" class="fleft Wp5">
-                <li>
-                    <span class="Label"><span class="Red">* </span>姓名</span>
-                    <input class="Wp6 ui-input" type="text" id="psnName" value="{{personalData.psnName}}" required/>
-                </li>
-                <li>
-                    <span class="Label"><span class="Red">* </span>证件类型</span>
-                    <select id="certType" class="Wp6">
+        <form id="userEditForm" class="col-md-10 col-sm-10 col-xs-10">
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                        <label for="userName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;"> 姓名</label>
+                        <input   class="ui-input col-md-8 col-sm-8 col-xs-12" id="psnName" value="{{personalData.psnName}}" required/>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                        <label for="passwd" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">性别</label>
+                        <select id="gender" class="col-md-8 col-sm-8 col-xs-12"   required>
+                            {{#each genderData}}
+                            <option value="{{itemValue}}" {{#eq itemValue ../personalData.gender}}selected="selected"{{/eq}} >{{itemCnname}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                        <label for="certType" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件类型</label>
+                        <select id="certType" class="col-md-8 col-sm-8 col-xs-12" onchange="getSelectedCert()" required>
                         {{#each certTypeData}}
-                    <option value="{{itemValue}}" {{#eq itemValue ../personalData.certType}}selected="selected"{{/eq}} >{{itemCnname}}</option>
+                        <option value="{{itemValue}}" {{#eq itemValue ../personalData.certType}}selected="selected"{{/eq}} >{{itemCnname}}</option>
                         {{/each}}
-                    </select>
-                </li>
-                <li>
-                    <span class="Label"><span class="Red">* </span>证件号码</span>
-                    <input class="Wp6 ui-input" onkeyup="autoWriteForm()" required type="text" id="certNo" value="{{personalData.certNo}}"/>
-                </li>
-                <li>
-                    <span class="Label">员工工号</span>
-                    <input class="Wp6" type="text" value="{{personalData.psnNbr}}" disabled/>
-                </li>
-                <li>
-                    <span class="Label">人员编码</span>
-                    <input class="Wp6" type="text" value="{{personalData.psnCode}}" disabled/>
-                </li>
-                <li>
-                    <span class="Label">人力编码</span>
-                    <input class="Wp6" type="text" value="{{personalData.ncCode}}" disabled/>
-                </li>
-                <li>
-                    <span class="Label"> 籍贯</span>
-                    <input class="Wp6"   type="text" id="nationality" value="{{personalData.nationality}}"/>
-                </li>
-            </ul>
-            <ul id="userEditUL1" class="fleft Wp5">
-                <li id="sexLi">
-                    <span class="Label"><span class="Red">* </span>性别</span>
-                    <select id="gender" name="sex" class="Wp6">     
-                    {{#each genderData}}
-                     <option value="{{itemValue}}" {{#eq itemValue ../personalData.gender}}selected="selected"{{/eq}} >{{itemCnname}}</option>
-                    {{/each}}
-                    </select>
-                </li>
-                <li id="firstJobLi">
-                    <span class="Label"><span class="Red">* </span>首次工作时间</span>
-                    <input onclick="openDate()" readonly="readonly" isTime="yes" class="Wp5" type="text" id="toWorkTime" value="{{#format personalData.toWorkTime}}{{/format}}"/>
-                </li>
-                <li>
-                    <span class="Label"><span class="Red">* </span>婚姻状况</span>
-                     <select id="marriage" class="Wp6">
+                        </select>
+                    </div>
+                    <div id="phoneDiv" class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                            
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                        <label for="certNo" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                        <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{personalData.certNo}}" onkeyup="autoWriteForm()"  required />
+                    </div>
+                    <div id="emailDiv" class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                        <label for="birthday" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">员工工号</label>
+                        <input   class="ui-input col-md-8 col-sm-8 col-xs-12" readonly="readonly" value="{{personalData.psnNbr}}" disabled/>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                        <label for="gender" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">首次工作时间</label>
+                              <input class="ui-input col-md-8 col-sm-8 col-xs-12" onclick="openDate()" readonly="readonly" isTime="yes"  id="toWorkTime" value="{{#format personalData.toWorkTime}}{{/format}}" />                  
+                    </div>
+
+
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
+                        <label for="mobile"  class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                               style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
+                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{personalData.psnCode}}" readonly="readonly" disabled />
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
+                        <label for="email" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                               style="padding-right: 20px;line-height: 40px;text-align: right;">婚姻状况</label>
+                        <select id="marriage"  class="col-md-8 col-sm-8 col-xs-12" required>
                         {{#each marriageData}}
-                    <option value="{{itemValue}}" {{#eq itemValue ../personalData.marriage}}selected="selected"{{/eq}} >{{itemCnname}}</option>
+                            <option value="{{itemValue}}" {{#eq itemValue ../personalData.marriage}}selected="selected"{{/eq}} >{{itemCnname}}</option>
                         {{/each}}
                     </select>
-                </li>
-                <li>
-                    <span class="Label">政治面貌</span>
-                    <select id="pliticalStatus" class="Wp6">
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
+                        <label for="email" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                               style="padding-right: 20px;line-height: 40px;text-align: right;">人力编码</label>
+                        <input   class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.mobile}}" value="{{personalData.ncCode}}" readonly="readonly" disabled />
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
+                        <label for="email" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                               style="padding-right: 20px;line-height: 40px;text-align: right;">政治面貌</label>
+                        <select id="pliticalStatus" class="col-md-8 col-sm-8 col-xs-12" required>
                         {{#each pliticalStatusData}}
                     <option value="{{itemValue}}" {{#eq itemValue ../personalData.pliticalStatus}}selected="selected"{{/eq}} >{{itemCnname}}</option>
                         {{/each}}
                     </select>
-                </li>
-                <li>
-                    <span class="Label">民族</span>
-                    <select id="nation" class="Wp6">
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
+                        <label for="mobile" class="col-md-4 col-sm-4 col-xs-12"
+                               style="padding-right: 20px;line-height: 40px;text-align: right;">籍贯</label>
+                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" id="nationality" value="{{personalData.nationality}}" />
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
+                        <label for="email" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                               style="padding-right: 20px;line-height: 40px;text-align: right;">民族</label>
+                       <select id="nation" class="col-md-8 col-sm-8 col-xs-12" required>
                         {{#each nationData}}
                     <option value="{{itemValue}}" {{#eq itemValue ../personalData.nation}}selected="selected"{{/eq}} >{{itemCnname}}</option>
                         {{/each}}
                     </select>
-                </li>
-            </ul>
-            <ul class="clear ColFull">
-                <li>
-                    <span class="Label"> 详细地址</span>
-                    <input class="Wp8" type="text" value=""/>
-                </li>
-            </ul>
-       
-        </div>
+                    </div>
+
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                        <label for="userCode" class="form-item-label col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;"> 详细地址</label>
+                        <input   class="ui-input col-md-10 col-sm-10 col-xs-12"  />
+                    </div>
+                </form>
+</div>
+
+     
         <div class="Contents clear"> </div>
         <div class="BotBtn bdTop">
             <input class="Btn BtnBlue" type="button" value="保存" onclick="updatePersonnel()"/>
+<input class="Btn BtnRedWhite" id="delPsn" type="button" onclick="deleteTbAcct()" value="删除人员" style="margin-top:20px;" />
             <input class="Btn" type="button" value="取消" onClick="cancelUserEdit()"/>
         </div>
  </form>

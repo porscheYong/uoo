@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.organization.controller;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.organization.Api.service.ExpandovalueService;
 import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.service.*;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
@@ -22,6 +23,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ConnectionCallback;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -82,6 +84,14 @@ public class OrgRelController extends BaseController {
 
     @Autowired
     private ModifyHistoryService modifyHistoryService;
+
+
+    @Autowired
+    private ExpandovalueService expandovalueService;
+
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
 
     @ApiOperation(value = "查询组织树信息-web", notes = "查询组织树信息")
@@ -215,10 +225,11 @@ public class OrgRelController extends BaseController {
 
     @ApiOperation(value = "新增组织关系-web", notes = "新增组织关系")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "org", value = "组织", required = true, dataType = "Org"),
+            @ApiImplicitParam(name = "org", value = "组织", required = true, dataType = "OrgVo"),
     })
     @UooLog(value = "新增组织关系", key = "addOrgRel")
     @RequestMapping(value = "/addOrgRel", method = RequestMethod.POST)
+    @Transactional(rollbackFor = Exception.class)
     public ResponseResult<TreeNodeVo> addOrgRel(@RequestBody OrgVo org) throws IOException {
         ResponseResult<TreeNodeVo> ret = new ResponseResult<TreeNodeVo>();
         if(StrUtil.isNullOrEmpty(org.getOrgId())){
@@ -347,21 +358,18 @@ public class OrgRelController extends BaseController {
 
         /*新增化小编码*/
         //新增营销组织扩展属性
-        org
-        if("0401".equals(ortCur.getRefCode())){
-            //boolean isExitExp = false;
+        List<ExpandovalueVo> extValueList = org.getExpandovalueVoList();
+        if(extValueList !=null && extValueList.size()>0){
             if(extValueList!=null && extValueList.size()>0){
                 ResponseResult<ExpandovalueVo> publicRet = new ResponseResult<ExpandovalueVo>();
                 for(ExpandovalueVo extVo : extValueList){
                     extVo.setTableName("TB_ORG");
-                    extVo.setRecordId(newOrg.getOrgId().toString());
+                    extVo.setRecordId(org.getOrgId().toString());
                     publicRet = expandovalueService.addExpandoInfo(extVo);
                 }
-                //isExitExp = true;
             }
 
 
-            //if (isExitExp) {
 
             String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
                 @Override
@@ -370,7 +378,7 @@ public class OrgRelController extends BaseController {
                     String result = "";
                     try {
                         cstmt = conn.prepareCall("{CALL P_ORG_CNTRT_MGMT_GENERATOR (?,?,?)}");
-                        cstmt.setObject(1, orgCode);
+                        cstmt.setObject(1, org.getOrgCode());
                         cstmt.registerOutParameter(2, Types.VARCHAR);
                         cstmt.registerOutParameter(3, Types.VARCHAR);
                         cstmt.execute();
@@ -393,7 +401,6 @@ public class OrgRelController extends BaseController {
                     return result;
                 }
             });
-            //}
         }
 
         /* 新增组织类型**/

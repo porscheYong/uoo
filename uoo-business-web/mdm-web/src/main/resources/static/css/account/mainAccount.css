@@ -2,9 +2,9 @@
     margin-left: 0px;
     margin-right: 0px;
 }
-.col-md-6 {
+/* .col-md-6 {
     width: 45%;
-}
+} */
 .row-id{
     width: 15% !important;
 }
@@ -98,12 +98,12 @@ table.dataTable tbody td {
 }
 .tcenter{
     text-align: left !important;
-    margin-left: -55px !important;
+    /* margin-left: -55px !important; */
 }
-#delAcct{
+/* #delAcct{
     margin-top: 10% !important;
     margin-left: 37%;
-}
+} */
 .acctTypeSpan{
     display: inline-block;
     background: rgb(252, 211, 217);
@@ -128,6 +128,15 @@ table.dataTable tbody td {
     display:inline-block;
     width:18%;
     text-align:right;
+}
+.pngDot{
+    position: absolute;
+    /* margin-left: -2%; */
+    margin-top: 0.7%;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../images/dot.png);
 }
 
 

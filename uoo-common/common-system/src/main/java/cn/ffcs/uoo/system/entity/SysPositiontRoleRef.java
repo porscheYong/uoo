@@ -77,6 +77,18 @@ public class SysPositiontRoleRef extends Model<SysPositiontRoleRef> {
     private String roleId;
 
 
+    @TableField(exist=false)
+    private String batchNumber;
+
+    public String getBatchNumber() {
+        return batchNumber;
+    }
+
+    public void setBatchNumber(String batchNumber) {
+        this.batchNumber = batchNumber;
+    }
+
+
     public String getRoleId() {
         return roleId;
     }

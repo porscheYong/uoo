@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysPermissionClientHystrix;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionDTO;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionEditDTO;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionPrivDTO;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 
 /**
@@ -29,7 +30,7 @@ import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 public interface SysPermissionClient {
     
     @GetMapping("/system/sysPermission/get/{id}")
-    public ResponseResult<SysPermissionEditDTO> get(@PathVariable(value="id" ,required=true) Long id);
+    public ResponseResult<SysPermissionPrivDTO> get(@PathVariable(value="id" ,required=true) Long id);
     
     @GetMapping("/system/sysPermission/listPage")
     public ResponseResult<Page<SysPermissionDTO>> listPage(@RequestParam("pageNo")Integer pageNo,@RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord")String keyWord);

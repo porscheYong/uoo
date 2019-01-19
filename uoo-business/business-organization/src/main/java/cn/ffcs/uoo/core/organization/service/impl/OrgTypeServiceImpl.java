@@ -42,10 +42,10 @@ public class OrgTypeServiceImpl extends ServiceImpl<OrgTypeMapper, OrgType> impl
     }
 
     @Override
-    public List<TreeNodeVo> selectOrgTypeTree(String orgTypeId,String orgTypeCode){
+    public List<TreeNodeVo> selectOrgTypeTree(String orgTypeId,String orgTypeCode,String orgTypeParams){
         List<TreeNodeVo> volist = new ArrayList<>();
         if(StrUtil.isNullOrEmpty(orgTypeId)){orgTypeId="0";}
-        volist = baseMapper.selectOrgTypeTree(orgTypeId,orgTypeCode);
+        volist = baseMapper.selectOrgTypeTree(orgTypeId,orgTypeCode,orgTypeParams);
         for(TreeNodeVo vo : volist){
             isLeaf(vo);
         }
@@ -53,9 +53,9 @@ public class OrgTypeServiceImpl extends ServiceImpl<OrgTypeMapper, OrgType> impl
     }
 
     @Override
-    public List<TreeNodeVo> selectFullOrgTypeTree(){
+    public List<TreeNodeVo> selectFullOrgTypeTree(String orgTypeParams){
         List<TreeNodeVo> volist = new ArrayList<>();
-        volist = baseMapper.selectOrgTypeTree(null,null);
+        volist = baseMapper.selectOrgTypeTree(null,null,orgTypeParams);
         for(TreeNodeVo vo : volist){
             isLeaf(vo);
         }
@@ -63,10 +63,10 @@ public class OrgTypeServiceImpl extends ServiceImpl<OrgTypeMapper, OrgType> impl
     }
 
     @Override
-    public List<TreeNodeVo> selectFullOrgTypeTreeByOrgId(String orgTypeId,String orgTypeCode,String orgId){
+    public List<TreeNodeVo> selectFullOrgTypeTreeByOrgId(String orgTypeId,String orgTypeCode,String orgId,String orgOrgTypeParams){
         List<TreeNodeVo> volist = new ArrayList<>();
         if(StrUtil.isNullOrEmpty(orgTypeId)){orgTypeId="0";}
-        volist = baseMapper.selectFullOrgTypeTreeByOrgId(orgTypeId,orgTypeCode,orgId);
+        volist = baseMapper.selectFullOrgTypeTreeByOrgId(orgTypeId,orgTypeCode,orgId,orgOrgTypeParams);
 //        for(TreeNodeVo vo : volist){
 //            isLeaf(vo);
 //        }

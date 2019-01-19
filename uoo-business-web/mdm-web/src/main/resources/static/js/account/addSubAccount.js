@@ -56,11 +56,11 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 });
 
   // lulu ui tips插件
-seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
-    $('#defaultPsw').tips({
-        align: 'right'
-    });
-});
+// seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
+//     $('#defaultPsw').tips({
+//         align: 'right'
+//     });
+// });
 
 function getUserInfo(){         //新增从账号
     $http.get('/user/getPsnUser', {    
@@ -273,7 +273,7 @@ function addTbSlaveAcct(){      //从账号新增
         "orgTreeId":slaveOrgTreeId,
         "disableDate": $('#invalidDate').val(),
         "enableDate": $('#effectDate').val(),
-        "password": $('#defaultPsw').val(),
+        // "password": $('#defaultPsw').val(),
         "personnelId": parseInt(personnelId),
         "resourceObjId": resourceObjId,
         "rolesList": roleList,
@@ -435,10 +435,11 @@ function setAcctInfoTables(result){
             break;
         }
     }
-    acctHtml = "<div class='curDiv' style='padding:10px 0;'>"+
-                    "<span class='Name Dot Gray3' id='orgTreeName_'>"+result.orgTreeName+"</span>"+
-                    "<span class='Tag' style='cursor:pointer;' title='"+result.fullName+"' id='orgName_'>"+result.orgName+"</span>"+
-                    "<span class='Tag' style='cursor:pointer;' id='relTypeName_'>"+relType+"</span></div>";
+    acctHtml = "<div class='curDiv' style='padding:10px 20px;'>"+
+                    "<span class='pngDot'></span>"+
+                    "<span class='Name Gray3' style='margin-left:1.5%;' id='orgTreeName_'>"+result.orgTreeName+"</span>"+
+                    "<span class='Tag BgBlue' style='cursor:pointer;' title='"+result.fullName+"' id='orgName_'>"+result.orgName+"</span>"+
+                    "<span class='Tag BgBlue' style='cursor:pointer;' id='relTypeName_'>"+relType+"</span></div>";
                     // "<span id='editBtn_' title='组织编辑' onclick='' class='icon icon-edit'></span>"+
                     // "<span class='fright FunctionBtn' style='float:right;margin-right:3.5%;'>";
                         // "<a class='BtnDel_' style='cursor:pointer;' onclick='deleteOrg()' id='delBtn'><span></span>删除组织关系</a></span></div>";

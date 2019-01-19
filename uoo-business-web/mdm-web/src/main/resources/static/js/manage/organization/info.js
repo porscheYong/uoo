@@ -102,6 +102,12 @@ function getOrgRel (orgId) {
     })
 }
 
+//编辑组织
+function orgEdit() {
+    var url = 'edit.html?id=' + orgId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    window.location.href = url;
+}
+
 $('.orgName').html(orgName);
 // 显示组织路径
 parent.getOrgExtInfo();

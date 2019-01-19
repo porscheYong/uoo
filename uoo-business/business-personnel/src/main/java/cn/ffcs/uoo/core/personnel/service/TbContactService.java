@@ -29,9 +29,10 @@ public interface TbContactService extends IService<TbContact> {
      * 根据personnelId 删除 联系信息
      * @param personnelId
      * @param userId
+     * @param batchNum
      * @return
      */
-    public Object delTbContactByPsnId(Long personnelId, Long userId);
+    public Object delTbContactByPsnId(Long personnelId, Long userId, String batchNum);
 
     /**
      * 联系方式 新增或修改

@@ -165,11 +165,9 @@ function initTable(keyWord){
                 //     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "'>" + row.psnName + "</a>";
                 // }
             },
-            { 'data': "psnName", 'title': '重名称谓', 'className': 'row-mobile' },
+            { 'data': "certNo", 'title': '证件号码', 'className': 'row-mobile' },
             { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
             { 'data': "content", 'title': '联系方式', 'className': 'row-mobile' },
-            { 'data': "psnName", 'title': '所属组织全称', 'className': 'org-name' },
-            { 'data': "psnName", 'title': '职位名称', 'className': 'post-name' },
             { 'data': "createDate", 'title': '创建时间', 'className': 'status-code',
                 'render': function (data, type, row, meta) {
                     var time = formatDateTime(row.createDate);
@@ -330,11 +328,9 @@ function initContactTable () {
                 //     return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId + "'>" + row.psnName + "</a>";
                 // }
             },
-            { 'data': "psnName", 'title': '重名称谓', 'className': 'row-mobile' },
+            { 'data': "certNo", 'title': '证件号码', 'className': 'row-mobile' },
             { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
             { 'data': "content", 'title': '联系方式', 'className': 'row-mobile' },
-            { 'data': "psnName", 'title': '所属组织全称', 'className': 'org-name' },
-            { 'data': "psnName", 'title': '职位名称', 'className': 'post-name' },
             { 'data': "createDate", 'title': '创建时间', 'className': 'status-code',
                 'render': function (data, type, row, meta) {
                     var time = formatDateTime(row.createDate);

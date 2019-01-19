@@ -17,6 +17,7 @@ function initOrgTable () {
         "scrollY": "395px",
         'scrollCollapse': true,
         'columns': [
+            { 'data': "orgId", 'title': '组织标识', 'className': 'org-id' },
             { 'data': "orgName", 'title': '部门', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
                     return '<a href="info.html?id=' + row.orgId + '&pid=' + orgId + '&name=' + encodeURI(row.orgName) + '">'+ row.orgName +'</a>'

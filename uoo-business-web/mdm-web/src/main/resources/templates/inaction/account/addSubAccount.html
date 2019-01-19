@@ -49,7 +49,7 @@
         }
         .tcenter{
             text-align: left !important;
-            margin-left: -55px !important;
+            /* margin-left: -55px !important; */
         }
         #delSubAcct{
           margin-top: 20px !important;
@@ -63,10 +63,10 @@
             margin-bottom: 6px !important;
             margin-left: -5px !important;
         }
-        .Tag{
+        /* .Tag{
             background: rgb(193, 237, 255) !important;
             color:#959da9 !important;
-        }
+        } */
         .BtnRed2 {
             border: 1px solid #ee4063 !important;
             color: #ee4063 !important;
@@ -77,12 +77,12 @@
             /* margin-bottom: 0px !important; */
         }
         #role_tagsinput{
-            width: 75.5% !important;
+            width: 83.3% !important;
         }
-        #slaveType{
+        /* #slaveType{
             width: 107px !important;
             margin-left: -7px !important;
-        }
+        } */
         .Name{
             font: bold 16px/24px microsoft yahei,helvetia,pingfang sc,Arial,Tahoma;
             padding: 0 10px;
@@ -100,9 +100,9 @@
         <span class="name ft18" id="sub-title">新增从账号</span>
     </div>
 
-    <div class="tab-content" style="margin-left:5%;margin-top: 2%">
+    <div class="tab-content" style="margin-top: 2%;margin-bottom:10%;margin-right: 2%;">
         <div class="tab-pane active" id="tab_content1">
-            <form action="/submit" id="addAcctForm" method="post" style="padding: 10px;">
+            <form action="/submit" id="addAcctForm" method="post" style="padding: 0px;">
 
                 <div id="editAcctPanel">
                     <div class="row" style="margin-bottom: 10px;">
@@ -194,22 +194,19 @@
                     </div>
 
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-6 col-sm-6 col-xs-6">
+                        <!-- <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%" id='default_psw'>
                                 <label for="defaultPsw" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
                                 <input type="text" id="defaultPsw" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" required value="" autocomplete="off"> 
                             </div>
-                        </div>
-
+                        </div> -->
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
                                 <label for="effectDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">生效时间</label>
                                 <input id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" required readonly autocomplete="off" onfocus="this.blur()"> 
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
                                 <label for="invalidDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">失效时间</label>
@@ -220,9 +217,9 @@
 
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="form-item" style="width: 100%">
-                                <label for="role" class="form-item-label col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width:14%;">角色</label>
-                                <input id="role" class="ui-input col-md-8 col-sm-8 col-xs-12" style="width:72%;" onclick="openTypeDialog()" readonly></input>
+                            <div class="form-item" style="width: 101%">
+                                <label for="role" class="form-item-label col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;width:15.6%;">角色</label>
+                                <input id="role" class="ui-input col-md-8 col-sm-8 col-xs-8" style="width:81%;" onclick="openTypeDialog()" readonly></input>
                             </div>
                         </div>
                     </div>
@@ -230,7 +227,7 @@
                 </div>
 
                 <div style="margin-top:7%">
-                    <div class="board-title" style="margin-left:-6.7%;">
+                    <div class="board-title">
                         <span class="name ft18">归属组织</span>
                     </div>
 
@@ -248,14 +245,14 @@
                 </div> -->
 
                 <div style="display: block;margin-bottom: 30px;margin-top: 60px;">
-                    <div class="board-title" style="margin-left:-6.7%;">
+                    <div class="board-title">
                         <span class="name ft18">扩展信息</span>
                         <input type="checkbox" id="extCheckBox" name="checkbox" onclick="extInfoFade()" value= "0">
                         <label for="extCheckBox" class="ui-checkbox"></label>
                     </div>
                 </div>
                 
-                <div id="extInfo" style="display:none;border-style: solid;border-radius: 8px;border-width: 1px;border-color: #b6b6b6;margin-right: 59px;">
+                <div id="extInfo" style="display:none;border-style: solid;border-radius: 8px;border-width: 1px;border-color: #b6b6b6;">
                     <div class="row" style="margin-bottom: 10px;margin-left:25px;margin-top:25px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
@@ -318,19 +315,16 @@
                         </div>
                     </div>
                 </div> -->
-                
-                
             </form>
-
-            <div class="row">
-                <div id="addBtnDiv" style="margin-left: 29%;margin-top: 5%;">
-                    <button class="ui-button ui-button-primary" id="opBtn" onclick="btnSubmit()">保存</button>
-                    <button class="ui-button ui-button-cancel"  onclick="submitToOther()" style="margin-left: 40px;">取消</button>
-                </div>
-            </div>
         </div>
     </div>
         
+    <div class="row">
+        <div class="btn-fixed" id="addBtnDiv" style="margin-left: -2%;margin-top: 5%;">
+            <button class="ui-button ui-button-primary" id="opBtn" onclick="btnSubmit()">保存</button>
+            <button class="ui-button ui-button-cancel"  onclick="submitToOther()" style="margin-left: 40px;">取消</button>
+        </div>
+    </div>
 
     <!-- jQuery -->
     <script src="/js/core/jquery.js"></script>

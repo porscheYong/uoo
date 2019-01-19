@@ -36,7 +36,7 @@ public class OrgTypeServiceHystrix implements OrgTypeService {
     }
 
     @Override
-    public ResponseResult<List<TreeNodeVo>> getOrgTypeTree(String id, String orgTypeCode){
+    public ResponseResult<List<TreeNodeVo>> getOrgTypeTree(String id, String orgTypeCode,Long userId,String accout){
         ResponseResult<List<TreeNodeVo>> responseResult = new ResponseResult<List<TreeNodeVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
@@ -44,7 +44,7 @@ public class OrgTypeServiceHystrix implements OrgTypeService {
     }
 
     @Override
-    public ResponseResult<List<TreeNodeVo>> getFullOrgTypeTree(String id,String orgTypeCode,String orgId){
+    public ResponseResult<List<TreeNodeVo>> getFullOrgTypeTree(String id,String orgTypeCode,String orgId,Long userId,String accout){
         ResponseResult<List<TreeNodeVo>> responseResult = new ResponseResult<List<TreeNodeVo>>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

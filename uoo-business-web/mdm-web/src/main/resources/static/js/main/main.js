@@ -52,9 +52,19 @@ function getHomeStatistics(){
 function setPsnChart(){
     var myChart = echarts.init(document.getElementById('Personnel')); 
     option = {
-        grid: {
-            left: 100,
-            right: 60,
+        //鼠标悬停显示数值
+        // tooltip : {
+        //     trigger: 'axis',
+        //     axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+        //         type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        //     }, 
+        //     formatter: function(params){
+        //         return params[0].data;
+        //     }
+        // },//end
+        grid: { //设置图标大小
+            left: 50, //100
+            right: 20, //60
             bottom:40,
             top: 20,
         },
@@ -96,11 +106,11 @@ function setPsnChart(){
                 barGap:'-100%',
                 label: {
                     normal: {
-                        show: true,
+                        show: true, //设置柱状图上方的数据是否显示
                         position: 'top',
                         textStyle:{
                             color:'#CCC',
-                            fontSize: 18
+                            fontSize: 12
                         },
                     }
                 },
@@ -122,8 +132,8 @@ function setOrgChart(){
     var myChart = echarts.init(document.getElementById('Org')); 
     option = {
         grid: {
-            left: 100,
-            right: 60,
+            left: 50,
+            right: 20,
             bottom:40,
             top: 20,
         },
@@ -168,7 +178,7 @@ function setOrgChart(){
                         position: 'top',
                         textStyle:{
                             color:'#CCC',
-                            fontSize: 18
+                            fontSize: 12
                         },
                     }
                 },

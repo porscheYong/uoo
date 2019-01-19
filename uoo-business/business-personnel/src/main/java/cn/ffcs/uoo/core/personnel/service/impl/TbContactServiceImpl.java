@@ -50,7 +50,7 @@ public class TbContactServiceImpl extends ServiceImpl<TbContactMapper, TbContact
     }
 
     @Override
-    public Object delTbContactByPsnId(Long personnelId, Long userId){
+    public Object delTbContactByPsnId(Long personnelId, Long userId, String batchNum){
         TbContact tbContact = new TbContact();
         tbContact.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
         tbContact.setStatusDate(new Date());
