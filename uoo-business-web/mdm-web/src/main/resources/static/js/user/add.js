@@ -42,6 +42,7 @@ var certTypeData = window.top.dictionaryData.certType();
 var nationData = window.top.dictionaryData.nation();
 var pliticalStatusData = window.top.dictionaryData.pliticalStatus();
 var marriageData = window.top.dictionaryData.marriage();
+var memRelationData = window.top.dictionaryData.memRelation();
 var propertyData = window.top.dictionaryData.property();
 var refTypeData = window.top.dictionaryData.refType();
 
@@ -722,7 +723,24 @@ function  initFamilyTable (results) {
         'columns': [
             { 'data': null, 'title': '序号', 'className': 'row-no' },
             { 'data': "memName", 'title': '家庭成员姓名', 'className': 'row-name'},
-            { 'data': "appellation", 'title': '称谓', 'className': 'row-mobile' },
+            { 'data': "appellation", 'title': '与本人关系', 'className': 'row-mobile',
+                'render': function (data, type, row, meta) {
+                    var str = '';
+                    if (row.appellation == "1")
+                        str = '<span>父子</span>'
+                    if (row.appellation == "2")
+                        str = '<span>母子</span>'
+                    if (row.appellation == "3")
+                        str = '<span>夫妻</span>'
+                    if (row.appellation == "4")
+                        str = '<span>兄弟</span>'
+                    if (row.appellation == "5")
+                        str = '<span>姐妹</span>'
+                    if (row.appellation == "6")
+                        str = '<span>祖孙</span>'
+                    return str;
+                }
+            },
             { 'data': "gender", 'title': '性别', 'className': 'cert-no',
                 'render': function (data, type, row, meta) {
                     var str = '';
@@ -770,13 +788,14 @@ function editFamilyList (index) {
     else
         familyFlag = 0;
     if (data) {
+        data.memRelationData = memRelationData;
         var familyEditTemplate = Handlebars.compile($("#familyEditTemplate").html());
         var familyEditHtml = familyEditTemplate({familyData: data});
         $('#familyEdit').html(familyEditHtml);
     }
     else {
         var familyEditTemplate = Handlebars.compile($("#familyEditTemplate").html());
-        var familyEditHtml = familyEditTemplate({familyData: {}});
+        var familyEditHtml = familyEditTemplate({familyData: {memRelationData: memRelationData}});
         $('#familyEdit').html(familyEditHtml);
     }
     seajs.use('/vendors/lulu/js/common/ui/Select', function () {
@@ -786,7 +805,7 @@ function editFamilyList (index) {
 //新增/修改 家庭成员信息
 function addFamilyList () {
     var memName = $('#memName').val();
-    var appellation = $('#appellation').val();
+    var appellation = $('#appellation option:selected').val();
     var gender = $('#gender2 option:selected').val();
     var relaPhone = $('#relaPhone').val();
     var relaAddr = $('#relaAddr').val();
