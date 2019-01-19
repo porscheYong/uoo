@@ -44,7 +44,7 @@
             width: 28px !important;
         }
         #role_tagsinput{
-            width: 75.5% !important;
+            width: 83.3% !important;
         }
         #toast-container{
            margin-top: 20% !important;
@@ -80,9 +80,9 @@
         <span class="name ft18" id="main-title">新增主账号</span>
     </div> 
 
-    <div class="tab-content" style="margin-left:5%;margin-top: 2%;margin-bottom:10%;">
+    <div class="tab-content" style="margin-top: 2%;margin-bottom:10%;margin-right: 2%;">
         <div class="tab-pane active" id="tab_content1">
-            <form action="/submit" id="addAcctForm" method="post" style="padding: 10px;">
+            <form action="/submit" id="addAcctForm" method="post" style="padding: 0px;">
 
                 <div id="editAcctPanel">
                     <div class="row" style="margin-bottom: 10px;">
@@ -157,13 +157,13 @@
                     </div>
 
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-6 col-sm-6 col-xs-6">
+                        <!-- <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
                                 <label for="defaultPsw" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
                                 <input type="text" id="defaultPsw" class="ui-input col-md-8 col-sm-8 col-xs-8" required autocomplete="off">
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
@@ -172,9 +172,7 @@
                                 <input id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-8" required readonly autocomplete="off" onfocus="this.blur()">
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
                                 <label for="invalidDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
@@ -186,10 +184,10 @@
 
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="form-item" style="width: 100%">
-                                <label for="role" class="form-item-label col-md-2 col-sm-2 col-xs-12" 
-                                       style="padding-right: 20px;line-height: 40px;text-align: right;width:14%;">角色</label>
-                                <input id="role" class="ui-input col-md-8 col-sm-8 col-xs-12" style="width:72%;" onclick="openTypeDialog()" readonly></input>
+                            <div class="form-item" style="width: 101%">
+                                <label for="role" class="form-item-label col-md-4 col-sm-4 col-xs-4" 
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;width:15.6%;">角色</label>
+                                <input id="role" class="ui-input col-md-8 col-sm-8 col-xs-8" style="width:81%;" onclick="openTypeDialog()" readonly></input>
                             </div>
                         </div>
                     </div>
@@ -197,11 +195,11 @@
                 </div>
 
                 <div style="margin-top:7%">
-                    <div class="board-title" style="margin-left:-6.7%;">
+                    <div class="board-title">
                         <span class="name ft18">归属组织</span>
                     </div>
 
-                    <div class="fright" style="margin-right: 36px;margin-top:-4.5%;"> 
+                    <div class="fright" style="margin-top:-4.5%;"> 
                         <a class="button-add" id="addBtn" onclick="openOrgDialog()"><span class="fa fa-plus-circle icon-add"></span>新增归属组织</a>
                     </div>
                 </div>

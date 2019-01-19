@@ -138,7 +138,7 @@ $('#busOrgName').typeahead({
 })
   .on('typeahead:asyncrequest', function() {
         $('.Typeahead-spinner').show();
-        if($("#busOrgName").val() != '' && !Regx.test($("#busOrgName").val())){
+        if($("#busOrgName").val() != ''){ // && !Regx.test($("#busOrgName").val())
             initOrgSearchTable($("#busOrgName").val());
         }
     })

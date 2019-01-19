@@ -37,12 +37,12 @@ function initOrgPersonnelTable (isSearchlower,search) {
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
                     return "<a href='edit.html?id=" + orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId +
-                                        "&name="+ encodeURI(orgName) +"&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
+                                        "&name="+ encodeURI(orgName) +"&orgTreeId="+orgTreeId+"&orgTreeName="+encodeURI(orgTreeName)+"'>" + row.psnName + "</a>";
                 }
             },
-            { 'data': "doubleName", 'title': '重名称谓', 'className': 'row-mobile' },
-            { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
-            { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
+            { 'data': "certNo", 'title': '身份证', 'className': 'row-mobile' },
+            { 'data': "psnNbr", 'title': '工号', 'className': 'cert-no' },
+            { 'data': "mobile", 'title': '手机', 'className': 'post-name' },
             { 'data': "orgName", 'title': '所属组织', 'className': '' },
             { 'data': "statusCd", 'title': '状态', 'className': 'status-code',
                 'render': function (data, type, row, meta) {
@@ -124,9 +124,10 @@ function initFreePersonnelTable () {
                         "&name="+ encodeURI(orgName) +"&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
                 }
             },
-            { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
-            // { 'data': "postName", 'title': '职位名称', 'className': 'post-name' },
-            // { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
+            { 'data': "certNo", 'title': '身份证', 'className': 'cert-no' },
+            { 'data': "psnNbr", 'title': '工号', 'className': 'cert-no' },
+            { 'data': "mobile", 'title': '手机', 'className': 'mobile' },
+            { 'data': "orgName", 'title': '所属组织', 'className': 'org-name' },
             { 'data': "statusCd", 'title': '状态', 'className': 'status-code',
                 'render': function (data, type, row, meta) {
                     var statusStr = '';
@@ -204,13 +205,12 @@ function showLower() {
 if (orgId == '88888888') {
     $('#titleName').html('游离人员');
     $('#isShow').hide();
-    initFreePersonnelTable();
 }
 else {
     $('#titleName').html('组织人员');
     $('#isShow').show();
-    initOrgPersonnelTable(0, '');
 }
+initOrgPersonnelTable(0, '');
 // $('#editBtn').on('click', function () {
 //     var url = 'edit.html?id=' + orgId;
 //     $(this).attr('href', url);

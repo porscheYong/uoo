@@ -31,7 +31,7 @@
     <link href="/css/account/style2.css" rel="stylesheet">
     <link href="/css/account/artModal.css" rel="stylesheet">
     <link href="/css/account/mainAccount.css" rel="stylesheet">
-    <link href="/css/user/style.css" rel="stylesheet">
+    <!-- <link href="/css/user/style.css" rel="stylesheet"> -->
 
     <!--[if lt IE 9]>
     <script src="../../../static/js/core/html5shiv.js"></script>
@@ -64,7 +64,7 @@
             background: #FFF !important;
         }
         #role_tagsinput{
-            width: 75.5% !important;
+            width: 83.3% !important;
         }
         #toast-container{
            margin-top: 20% !important;
@@ -122,15 +122,15 @@
         <span class="name ft18" id="main-title">主账号信息</span><a id="acctEditButton" title="信息编辑" onclick="editAcctInfo()" class="icon icon-edit" href="javascript:void(0)"></a>
     </div> 
 
-    <div class="tab-content" style="margin-left:5%;margin-top: 2%">
+    <div class="tab-content" style="margin-top: 2%;margin-right: 2%;">
         <div class="tab-pane active" id="tab_content1">
-            <form action="/submit" id="addAcctForm" method="post" style="padding: 10px;">  <!-- id="addAcctForm" -->
+            <form action="/submit" id="addAcctForm" method="post" style="padding: 0px;">  <!-- id="addAcctForm" -->
 
                 <div id="acctInfo" style="margin-left:17%;">
                     <div class="col-md-2 fleft tcenter">
                         <img class="avatar" id="psnImg" src="/images/avatar.png" alt="头像" />
                     </div>
-                    <div style="width: auto;margin-left: 120px;margin-top: -20%;">
+                    <div style="width: auto;margin-left: 25%;margin-top: -20%;">
                         <!-- <div id="nameAndRole"> -->
                             <div style="margin-bottom:10px">
                                 <span class="acctTypeSpan">主账号</span>
@@ -243,13 +243,13 @@
                     </div>
 
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-6 col-sm-6 col-xs-6">
+                        <!-- <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
                                 <label for="defaultPsw" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">默认密码</label>
                                 <input type="password" id="defaultPsw" class="ui-input col-md-8 col-sm-8 col-xs-8" required autocomplete="off">
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
@@ -258,9 +258,7 @@
                                 <input id="effectDate" class="ui-input col-md-8 col-sm-8 col-xs-8" required readonly autocomplete="off" onfocus="this.blur()">
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="form-item" style="width: 100%">
                                 <label for="invalidDate" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" 
@@ -272,29 +270,30 @@
 
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="form-item" style="width: 100%">
-                                <label for="role" class="form-item-label col-md-2 col-sm-2 col-xs-12" 
-                                       style="padding-right: 20px;line-height: 40px;text-align: right;width:14%;">角色</label>
-                                <input id="role" class="ui-input col-md-8 col-sm-8 col-xs-12" style="width:72%;" onclick="openTypeDialog()" readonly></input>
+                            <div class="form-item" style="width: 101%">
+                                <label for="role" class="form-item-label col-md-4 col-sm-4 col-xs-4" 
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;width:15.6%;">角色</label>
+                                <input id="role" class="ui-input col-md-8 col-sm-8 col-xs-8" style="width:81%;" onclick="openTypeDialog()" readonly></input>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div style="margin-left: 32%;margin-top: 5%;" id="editBtnDiv">
+                        <div style="margin-left: 32%;margin-top: 3%;margin-bottom: 3%;" id="editBtnDiv">
                             <button class="ui-button ui-button-primary" id="editBtn" onclick="updateAcct()">保存</button>
-                            <button class="ui-button ui-button-cancel"  onclick="backToAcctInfo()" style="margin-left: 40px;">取消</button>
+                            <button class="ui-button BtnRed2" id="delAcct" onclick="deleteTbAcct()" style="margin-left:10px;">删除</button>
+                            <button class="ui-button ui-button-cancel"  onclick="backToAcctInfo()" style="margin-left: 10px;">取消</button>
                         </div>
                     </div>
 
                 </div>
 
                 <div style="margin-top:7%">
-                    <div class="board-title" style="margin-left:-6.7%;">
+                    <div class="board-title">
                         <span class="name ft18">关联从账号信息</span>
                     </div>
     
-                    <div class="fright" style="margin-right: 36px;margin-top:-4.5%;"> 
+                    <div class="fright" style="margin-top:-4.5%;"> 
                         <a class="button-add" id="addBtn" onclick="openOrgDialog()"><span class="fa fa-plus-circle icon-add"></span>新增归属组织</a>
                     </div>
 
@@ -322,7 +321,7 @@
                 <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 20px;margin-left:-3.3%;">
                     <table id="subInfoTable" class="stripe" width="100%"></table>
                 </div> -->
-                <input class="Btn BtnRed2" id="delAcct" type="button" onclick="deleteTbAcct()" value="删除用户" style="margin-top:20px;" />
+                <!-- <input class="Btn BtnRed2" id="delAcct" type="button" onclick="deleteTbAcct()" value="删除用户" style="margin-top:20px;" /> -->
             </form>
         </div>
     </div>

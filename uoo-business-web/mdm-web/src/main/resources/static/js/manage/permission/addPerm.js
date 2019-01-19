@@ -90,7 +90,6 @@ function delRes(){
             cancelList.push(id);
         }
     }
-    console.log(cancelList);
     for(var i=0;i<cancelList.length;i++){
         var sel;
         sel = document.getElementById("sel_"+cancelList[i]);
