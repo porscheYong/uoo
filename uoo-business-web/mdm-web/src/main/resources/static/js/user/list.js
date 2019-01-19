@@ -36,7 +36,7 @@ function initOrgPersonnelTable (isSearchlower,search) {
             },
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return "<a href='edit.html?id=" + orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId +
+                    return "<a href='edit.html?id=" + row.orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId +
                                         "&name="+ encodeURI(orgName) +"&orgTreeId="+orgTreeId+"&orgTreeName="+encodeURI(orgTreeName)+"'>" + row.psnName + "</a>";
                 }
             },
@@ -182,18 +182,13 @@ function initFreePersonnelTable () {
 }
 
 // 搜索组织
-// function search () {
-//     query = $('.ui-input-search').val();
-//     clearTimeout(this.timer);
-//     // 添加的延时
-//     this.timer = setTimeout(function(){
-//         initOrgPersonnelTable(checked, query);
-//     }, delayTime);
-// }
-
 function search () {
     query = $('.ui-input-search').val();
-    initOrgPersonnelTable(checked, query);
+    clearTimeout(this.timer);
+    // 添加的延时
+    this.timer = setTimeout(function(){
+        initOrgPersonnelTable(checked, query);
+    }, delayTime);
 }
 
 //勾选显示下级组织人员
@@ -204,7 +199,7 @@ function showLower() {
     }else if(isIE8 && checked == 0){
         $(".ui-checkbox").css("background-position","0px 0px");
     }
-    initOrgPersonnelTable(checked, "");
+    initOrgPersonnelTable(checked, query);
 }
 
 if (orgId == '88888888') {
