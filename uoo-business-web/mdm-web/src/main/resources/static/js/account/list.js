@@ -10,7 +10,7 @@ var table;
 var isCheck = 0;
 var query,
     delayTime = 500;
-// var loading = parent.loading;
+var loading = parent.loading;
 
 // 获取组织完整路径
 function getOrgExtInfo () {
@@ -114,6 +114,7 @@ function initMainTable(isCheck,search){
                 //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                 callback(returnData);
+                loading.screenMaskDisable('container');
             }, function (err) {
             })
         }
@@ -132,7 +133,7 @@ function initMainTable(isCheck,search){
 
 // 搜索组织
 function search () {
-    // loading.screenMaskEnable('container');
+    loading.screenMaskEnable('container');
     query = $('.ui-input-search').val();
     initMainTable(isCheck, query);
     // loading.screenMaskDisable('container');
@@ -156,7 +157,7 @@ function boxClick(){            //点击复选框
             $(".ui-checkbox").css("background-position","0px 0px");
         }
     }
-    initMainTable(isCheck,'');
+    // initMainTable(isCheck,'');
     // search();
 }
 
