@@ -37,7 +37,7 @@ function initOrgPersonnelTable (isSearchlower,search) {
             { 'data': "psnName", 'title': '姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
                     return "<a href='edit.html?id=" + orgId + "&orgRootId=" + row.orgRootId + "&personnelId=" + row.personnelId +
-                                        "&name="+ encodeURI(orgName) +"&orgTreeId="+orgTreeId+"'>" + row.psnName + "</a>";
+                                        "&name="+ encodeURI(orgName) +"&orgTreeId="+orgTreeId+"&orgTreeName="+encodeURI(orgTreeName)+"'>" + row.psnName + "</a>";
                 }
             },
             { 'data': "certNo", 'title': '身份证', 'className': 'row-mobile' },

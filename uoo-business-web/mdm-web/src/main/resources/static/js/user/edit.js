@@ -5,6 +5,7 @@ var tabPage = getQueryString('tabPage');
 //var orgRootId = 1;
 var personnelId = getQueryString('personnelId');
 var orgTreeId = getQueryString('orgTreeId');
+var orgTreeName = getQueryString('orgTreeName');
 var orgName = getQueryString('name');
 var addOrg = getQueryString('addOrg');
 var personalData={},genderData,certTypeData,nationData,pliticalStatusData,marriageData,orgInfo={},
@@ -1042,6 +1043,14 @@ $(document).ready(function(){
     getPsnImage();
 
 });
+function gotoPrev(){
+	var url="/inaction/user/list.html?";
+		url+="id="+orgId;
+		url+="orgTreeId="+orgTreeId;
+		url+="orgTreeName="+orgTreeName;
+		url+="name="+orgName;
+ location.href=url;
+}
 function gotoAccout(i){
 	var mainAcctId=0;
 	for(var j=0;j<personalData.userList.records.length;j++){
@@ -1077,6 +1086,7 @@ function gotoAccout(i){
     url+="acctId="+userAcc.acctId+"&";
     url+="statusCd="+userAcc.statusCd+"&";
     url+="tabPage="+"acct"+"&";
+    url+="orgTreeName="+orgTreeName+"&";
     
     window.location.href=url;
 }
