@@ -86,14 +86,14 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                     /*员工渠道关系*/
                     List<Map<String, Object>> STAFF_CHANNEL_RELAS = (List<Map<String, Object>>) map.get("STAFF_CHANNEL_RELAS");
 
+                    if(STAFF_CHANNEL_RELAS != null && STAFF_CHANNEL_RELAS.size() >0){
+                        STAFF_CHANNEL_RELAS.forEach((temp)->{
+                            hand_STAFF_CHANNEL_RELAS(temp,rsMap);
+                        });
+                    }
                     hand_CHANNEL(CHANNEL, rsMap);
                     hand_STAFF(STAFF, rsMap);
 
-            /*if(STAFF_CHANNEL_RELAS != null && STAFF_CHANNEL_RELAS.size() >0){
-                STAFF_CHANNEL_RELAS.forEach((temp)->{
-                    hand_STAFF_CHANNEL_RELAS(temp,rsMap);
-                });
-            }*/
                 }catch (Exception e){
                     logger.error("Exception:{}",e);
                     rsMap.put("result_code","1000");
@@ -369,6 +369,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         // 检查必要信息
         String salesCode = (String) staffChannelRel.get("SALES_CODE");
         String channelNBR = (String) staffChannelRel.get("CHANNEL_NBR");
+        String relaType = (String) staffChannelRel.get("RELA_TYPE");
         String action = (String) staffChannelRel.get("ACTION");
         if (StringUtils.isEmpty(salesCode) || StringUtils.isEmpty(channelNBR) || StringUtils.isEmpty(action)) {
             rsMap.put("result_code", "1000");
@@ -378,9 +379,19 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         try {
             switch (action) {
                 case "ADD":
+                    if (StringUtils.isEmpty(relaType)) {
+                        rsMap.put("result_code", "1000");
+                        rsMap.put("message", "必要信息关系类型为空");
+                        return;
+                    }
                     addStaffChannelRelas(staffChannelRel);
                     break;
                 case "MOD":
+                    if (StringUtils.isEmpty(relaType)) {
+                        rsMap.put("result_code", "1000");
+                        rsMap.put("message", "必要信息关系类型为空");
+                        return;
+                    }
                     modStaffChannelRelas(staffChannelRel);
                     break;
                 case "DEL":
@@ -394,7 +405,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         } catch (Exception e) {
             e.printStackTrace();
             rsMap.put("result_code", "1000");
-            rsMap.put("message", e.getStackTrace());
+            rsMap.put("message", e.toString());
         }
     }
 
@@ -613,24 +624,25 @@ public class CpcChannelServiceImpl implements CpcChannelService {
      * @param staffChannelRel
      */
     private void addStaffChannelRelas(Map<String, Object> staffChannelRel) throws Exception {
-
         // 检查主账号组织关系
         AccountOrgRel accountOrgRel = checkAccoutOrgRel(staffChannelRel);
         AccountOrgRel rel = accountOrgRelMapper.selectOne(accountOrgRel);
-        if (null != rel) {
-            throw new RuntimeException("主账号组织关系已存在");
+        if (null == rel) {
+            accountOrgRel.setCreateDate(new Date());
+            accountOrgRelMapper.insert(accountOrgRel);
+            // 更新从账号
+            TbSlaveAcct tbSlaveAcct = new TbSlaveAcct();
+            tbSlaveAcct.setResourceObjId(Long.valueOf(SystemConstant.CPC_SYSTEM_ID));
+            tbSlaveAcct.setAcctId(accountOrgRel.getAcctId());
+            tbSlaveAcct.setStatusCd(HandleChannelConstant.VALID_STATE);
+            tbSlaveAcct = tbSlaveAcctMapper.selectOne(tbSlaveAcct);
+            if (null != tbSlaveAcct) {
+                tbSlaveAcct.setAcctOrgRelId(accountOrgRel.getAcctOrgRelId());
+                tbSlaveAcct.setUpdateDate(new Date());
+                tbSlaveAcct.setStatusDate(new Date());
+                tbSlaveAcctMapper.updateById(tbSlaveAcct);
+            }
         }
-        accountOrgRel.setCreateDate(new Date());
-        accountOrgRelMapper.insert(accountOrgRel);
-
-        // 更新从账号
-        TbSlaveAcct tbSlaveAcct = new TbSlaveAcct();
-        tbSlaveAcct.setResourceObjId(Long.valueOf(HandleChannelConstant.RESOURCE_ID));
-        tbSlaveAcct.setAcctId(accountOrgRel.getAcctId());
-        tbSlaveAcct.setStatusCd(HandleChannelConstant.VALID_STATE);
-        tbSlaveAcct = tbSlaveAcctMapper.selectOne(tbSlaveAcct);
-        tbSlaveAcct.setAcctOrgRelId(accountOrgRel.getAcctOrgRelId());
-        tbSlaveAcctMapper.updateById(tbSlaveAcct);
     }
 
     /**
@@ -639,16 +651,8 @@ public class CpcChannelServiceImpl implements CpcChannelService {
      * @param staffChannelRel
      */
     private void modStaffChannelRelas(Map<String, Object> staffChannelRel) throws Exception {
-        //
-        AccountOrgRel accountOrgRel = checkAccoutOrgRel(staffChannelRel);
 
-        // 删除原来的关系，新增现有关系
-        if (null != accountOrgRel) {
-            accountOrgRel.setStatusCd(HandleChannelConstant.INVALID_STATE);
-            accountOrgRel.setUpdateDate(new Date());
-            accountOrgRel.setStatusDate(new Date());
-            accountOrgRelMapper.updateById(accountOrgRel);
-        }
+        delStaffChannelRelas(staffChannelRel);
 
         addStaffChannelRelas(staffChannelRel);
     }
@@ -658,15 +662,19 @@ public class CpcChannelServiceImpl implements CpcChannelService {
      *
      * @param staffChannelRel
      */
-    private void delStaffChannelRelas(Map<String, Object> staffChannelRel) {
+    private void delStaffChannelRelas(Map<String, Object> staffChannelRel) throws Exception {
         AccountOrgRel accountOrgRel = checkAccoutOrgRel(staffChannelRel);
-        if (null == accountOrgRel) {
-            throw new RuntimeException("主账号组织关系不存在");
+        if (null != accountOrgRel) {
+            accountOrgRel = accountOrgRelMapper.selectOne(accountOrgRel);
+            if (null != accountOrgRel) {
+                accountOrgRel.setStatusCd(HandleChannelConstant.INVALID_STATE);
+                accountOrgRel.setUpdateDate(new Date());
+                accountOrgRel.setStatusDate(new Date());
+                accountOrgRelMapper.updateById(accountOrgRel);
+            }
+
         }
-        accountOrgRel.setStatusCd(HandleChannelConstant.INVALID_STATE);
-        accountOrgRel.setUpdateDate(new Date());
-        accountOrgRel.setStatusDate(new Date());
-        accountOrgRelMapper.updateById(accountOrgRel);
+
 
     }
 
@@ -676,28 +684,25 @@ public class CpcChannelServiceImpl implements CpcChannelService {
      * @param staffChannelRel
      * @return
      */
-    private AccountOrgRel checkAccoutOrgRel(Map<String, Object> staffChannelRel) {
+    private AccountOrgRel checkAccoutOrgRel(Map<String, Object> staffChannelRel) throws Exception {
         Expandovalue expandovalue = checkChannelNbr(staffChannelRel);
         if (null == expandovalue || StringUtils.isEmpty(expandovalue.getRecordId())) {
-            throw new RuntimeException("组织不存在");
+            throw new Exception("组织不存在");
         }
 
         // 获取主账号
-        AcctCrossRel acctCrossRel = new AcctCrossRel();
-        acctCrossRel.setCrossTran(staffChannelRel.get("SALES_CODE").toString());
-        acctCrossRel.setRelaType(HandleChannelConstant.RELA_TYPE);
-        acctCrossRel.setStatusCd(HandleChannelConstant.VALID_STATE);
-        acctCrossRel = acctCrossRelMapper.selectOne(acctCrossRel);
-        if (null == acctCrossRel || StringUtils.isEmpty(String.valueOf(acctCrossRel.getAcctId()))) {
-            throw new RuntimeException("主账号不存在");
+        List<AcctCrossRel> acctCrossRels = acctCrossRelMapper.selectList(new EntityWrapper<AcctCrossRel>().
+                eq("CROSS_TRAN",staffChannelRel.get("SALES_CODE").toString())
+                .eq("STATUS_CD",HandleChannelConstant.VALID_STATE));
+        if (null == acctCrossRels || acctCrossRels.size() > 1) {
+            throw new Exception("主账号信息不正确");
         }
-
         AccountOrgRel accountOrgRel = new AccountOrgRel();
-        accountOrgRel.setAcctId(acctCrossRel.getAcctId());
+        accountOrgRel.setAcctId(acctCrossRels.get(0).getAcctId());
         accountOrgRel.setOrgId(Long.valueOf(expandovalue.getRecordId()));
         accountOrgRel.setStatusCd(HandleChannelConstant.VALID_STATE);
         accountOrgRel.setOrgTreeId(HandleChannelConstant.ORG_TREE_ID);
-        accountOrgRel.setRelType(HandleChannelConstant.REL_TYPE);
+        accountOrgRel.setRelType(staffChannelRel.get("RELA_TYPE").toString());
         return accountOrgRel;
     }
 
