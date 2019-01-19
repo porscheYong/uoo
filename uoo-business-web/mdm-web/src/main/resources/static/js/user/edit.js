@@ -349,6 +349,9 @@ function  editUser() {
              });
          });*/
     });
+    seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $('select').selectMatch();
+      })
     getPsnImage();
 }
 function editOrgInfo(){
@@ -813,6 +816,8 @@ function updatePersonnel(){
     updates.marriage=marriage;
     updates.pliticalStatus=pliticalStatus;
     updates.image=psnImageId;
+    updates.address=$('#address').val();
+    
     var tbMobileVoList =new Array();
     var mobiles=$("input[name='mobiles']").each(function(){
         var obj={};
@@ -1039,11 +1044,19 @@ function gotoAccout(i){
     var userAcc=personalData.userList.records[i];
     var url="";
     if(userAcc.type==1){
-        url+="/inaction/account/editMainAccount.html"
+        url+="/inaction/account/editMainAccount.html";
+        url+="?";
+        url+="curOrgTreeId="+parent.getCurrentOrgTreeId()+"&";
+        url+="curOrgId="+parent.getCurrentOrgId()+"&";
     }else{
-        url+="/inaction/account/editSubAccount.html"
+        url+="/inaction/account/editSubAccount.html";
+        url+="?";
+        url+="curOrgTreeId="+parent.getCurrentOrgTreeId()+"&";
+        url+="curOrgId="+parent.getCurrentOrgId()+"&";
+        url+="curSlaveOrgTreeId="+userAcc.curSlaveOrgTreeId+"&";
+        url+="curSlaveOrgTreeName="+userAcc.curSlaveOrgTreeName+"&";
     }
-    url+="?";
+    
     url+="orgId="+orgId+"&";
     url+="orgRootId="+orgRootId+"&";
     url+="personnelId="+personnelId +"&";
@@ -1054,6 +1067,7 @@ function gotoAccout(i){
     url+="acctId="+userAcc.acctId+"&";
     url+="statusCd="+userAcc.statusCd+"&";
     url+="tabPage="+"acct"+"&";
+    alert(url)
     window.location.href=url;
 }
 function autoWriteForm(){

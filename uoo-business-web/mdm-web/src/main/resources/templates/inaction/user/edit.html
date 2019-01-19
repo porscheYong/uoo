@@ -273,7 +273,7 @@
                         <a href="mailto:{{content}}">{{content}}</a>
                         {{/each}}{{else}}&nbsp;{{/if}}
                     </li>
-                    <li><span class="Icon fleft IconLocation"></span>浙江省杭州市余杭区育士路50号</li>
+                    <li><span class="Icon fleft IconLocation"></span>{{personalData.address}}</li>
                 </ul>
                 <ul class="col-md-6 line_30">
                     <li>
@@ -407,7 +407,7 @@
 
                     <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
                         <label for="userCode" class="form-item-label col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;"> 详细地址</label>
-                        <input   class="ui-input col-md-10 col-sm-10 col-xs-12"  />
+                        <input id="address"  class="ui-input col-md-10 col-sm-10 col-xs-12" value="{{personalData.address}}" />
                     </div>
                 </form>
 </div>
