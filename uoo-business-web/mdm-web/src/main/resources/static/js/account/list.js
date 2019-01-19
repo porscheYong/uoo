@@ -10,6 +10,7 @@ var table;
 var isCheck = 0;
 var query,
     delayTime = 500;
+// var loading = parent.loading;
 
 // 获取组织完整路径
 function getOrgExtInfo () {
@@ -120,13 +121,21 @@ function initMainTable(isCheck,search){
 }
 
 // 搜索组织
+// function search () {
+//     query = $('.ui-input-search').val();
+//     clearTimeout(this.timer);
+//     // 添加的延时
+//     this.timer = setTimeout(function(){
+//         initMainTable(isCheck, query);
+//     }, delayTime);
+// }
+
+// 搜索组织
 function search () {
+    // loading.screenMaskEnable('container');
     query = $('.ui-input-search').val();
-    clearTimeout(this.timer);
-    // 添加的延时
-    this.timer = setTimeout(function(){
-        initMainTable(isCheck, query);
-    }, delayTime);
+    initMainTable(isCheck, query);
+    // loading.screenMaskDisable('container');
 }
 
 
@@ -147,8 +156,8 @@ function boxClick(){            //点击复选框
             $(".ui-checkbox").css("background-position","0px 0px");
         }
     }
-    // initMainTable(isCheck,'');
-    search();
+    initMainTable(isCheck,'');
+    // search();
 }
 
 //新增账号

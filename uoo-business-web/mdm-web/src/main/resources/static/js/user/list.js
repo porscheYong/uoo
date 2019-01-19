@@ -182,13 +182,18 @@ function initFreePersonnelTable () {
 }
 
 // 搜索组织
+// function search () {
+//     query = $('.ui-input-search').val();
+//     clearTimeout(this.timer);
+//     // 添加的延时
+//     this.timer = setTimeout(function(){
+//         initOrgPersonnelTable(checked, query);
+//     }, delayTime);
+// }
+
 function search () {
     query = $('.ui-input-search').val();
-    clearTimeout(this.timer);
-    // 添加的延时
-    this.timer = setTimeout(function(){
-        initOrgPersonnelTable(checked, query);
-    }, delayTime);
+    initOrgPersonnelTable(checked, query);
 }
 
 //勾选显示下级组织人员
@@ -199,7 +204,7 @@ function showLower() {
     }else if(isIE8 && checked == 0){
         $(".ui-checkbox").css("background-position","0px 0px");
     }
-    initOrgPersonnelTable(checked, query);
+    initOrgPersonnelTable(checked, "");
 }
 
 if (orgId == '88888888') {

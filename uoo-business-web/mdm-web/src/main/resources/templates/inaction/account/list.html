@@ -116,13 +116,14 @@
         </div> -->
       <!-- </div> -->
       <div style="overflow: hidden;">
-          <input class="ui-input ui-input-search col-md-4 col-sm-4 col-xs-4" id="acctName" type="text" placeholder="请输入人员或账号进行搜索"  oninput="search()" onpropertychange="search()" autocomplete="off"/>
+          <input class="ui-input ui-input-search col-md-4 col-sm-4 col-xs-4" id="acctName" type="text" placeholder="请输入人员或账号进行搜索" autocomplete="off"/>
+          <button class="ui-button ui-button-primary" id="searchBtn" onclick="search()" style="margin-left:1%;">搜索</button>
       </div>
       <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
           <table id="mainTable" class="stripe" width="100%"></table>
       </div>
     </div>
-
+    <!-- oninput="search()" onpropertychange="search()" -->
     <!-- jQuery -->
     <script src="/js/core/jquery.js"></script>
     <!-- Bootstrap -->
