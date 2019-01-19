@@ -773,10 +773,10 @@ $('#myTabs a').click(function (e) {
 function updateOrg () {
   if (!formValidate.isAllPass())
       return;
-  loading.screenMaskEnable('container');
-    var statusCd = $('#statusCd option:selected') .val();
-    if (statusCd == '1100')
-        return deleteOrg();
+  var statusCd = $('#statusCd option:selected') .val();
+  if (statusCd == '1100')
+      return deleteOrg();
+    loading.screenMaskEnable('container');
   var userList = [];
   var location = [];
   var position = [];
