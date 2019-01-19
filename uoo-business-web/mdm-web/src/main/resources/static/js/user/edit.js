@@ -777,7 +777,7 @@ function convertToFile(base64Codes){
             psnImageId = data.data.psnImageId;
         },
         error:function(data){
-            console.log(data);
+
         }
     });
 }

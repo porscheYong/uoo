@@ -599,7 +599,6 @@ engine = new Bloodhound({
 });
 
 function engineWithDefaults(q, sync, async) {
-    console.log(query, q, selectNode)
     if (q != query && selectNode && selectNode.orgId){
         // console.log(query, q)
         selectNode = {};

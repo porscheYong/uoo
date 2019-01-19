@@ -1129,7 +1129,7 @@ function convertToFile(base64Codes){
             psnImageId = data.data.psnImageId.toString();
         },
         error:function(data){
-            console.log(data);
+
         }
     });
 }
