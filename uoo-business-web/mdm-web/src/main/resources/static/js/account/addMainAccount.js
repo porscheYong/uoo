@@ -17,7 +17,7 @@ var orgNum = 0;
 var toastr = window.top.toastr;
 var cerTypeList = window.top.dictionaryData.certType();
 var statusCdList = window.top.dictionaryData.statusCd();
-var relTypeName = parent.relTypeName;
+var relTypeName = window.top.relTypeName;
 
 window.localStorage.setItem('userRoleList',JSON.stringify(''));
 
@@ -36,11 +36,11 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 });
 
 // lulu ui tips插件
-seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
-  $('#defaultPsw').tips({
-      align: 'right'
-  });
-});
+// seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
+//   $('#defaultPsw').tips({
+//       align: 'right'
+//   });
+// });
 
 function getAcctUser(personnelId){     //获取人员信息(新增)
   $http.get('/user/getPsnUser', {    
@@ -172,7 +172,7 @@ function addTbAcct(){         //新增
     "acctOrgVoList": addOrgList,
     "disableDate": $('#invalidDate').val(),
     "enableDate": $('#effectDate').val(),
-    "password": $('#defaultPsw').val(),
+    "password": "4A@12345",
     "personnelId": personnelId,
     "statusCd": $("#statusCd").val(), 
     "tbRolesList":roleList,

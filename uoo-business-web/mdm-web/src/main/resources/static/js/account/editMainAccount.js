@@ -15,7 +15,7 @@ var personnelId;
 var orgTable;
 var orgNum = 0;
 var slaveOrgIdList = [];
-var psw;
+// var psw;
 var roleList = [];      //需要上传的角色列表
 var userRoleList = [];      //用户已有角色列表
 var formValidate;
@@ -23,7 +23,7 @@ var acctInfoList = [];
 var toastr = window.top.toastr;
 var cerTypeList = window.top.dictionaryData.certType();
 var statusCdList = window.top.dictionaryData.statusCd();
-var relTypeName = parent.relTypeName;
+var relTypeName = window.top.relTypeName;
 var relTypeVal = "";
 var loading = parent.loading;
 
@@ -44,11 +44,11 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 });
 
 // lulu ui tips插件
-seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
-  $('#defaultPsw').tips({
-      align: 'right'
-  });
-});
+// seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
+//   $('#defaultPsw').tips({
+//       align: 'right'
+//   });
+// });
 
 //添加数组IndexOf方法
 if (!Array.prototype.indexOf){
@@ -268,10 +268,10 @@ function initEditUserInfo(results){     //初始化用户信息(编辑)
   $('#email').val(results.eamil);
   $('#cerNo').val(results.certNo);
   $('#acct').val(results.tbAcct.acct);
-  $('#defaultPsw').val(results.tbAcct.password);
+  // $('#defaultPsw').val(results.tbAcct.password);
   setDate(results.tbAcct.enableDate,results.tbAcct.disableDate);
 
-  psw = results.tbAcct.password;
+  // psw = results.tbAcct.password;
 
   $('#role').addTag(results.tbRolesList);
 
@@ -346,7 +346,7 @@ function updateAcct(){      //编辑主账号
       "acctId": acctId,
       "disableDate": $('#invalidDate').val(),
       "enableDate": $('#effectDate').val(),
-      "password": $('#defaultPsw').val(),
+      "password": "4A@12345",
       "personnelId": personnelId,
       "statusCd": $("#statusCd").val(), 
       "tbRolesList":roleList,
@@ -682,20 +682,20 @@ function deleteSuccess(){
     window.location.href = url;
 }
 
-$("#defaultPsw").focus(function (){    //默认密码输入框获得焦点
-  if($("#defaultPsw").attr("type") == "password"){
-    $("#defaultPsw").val('');
-    $("#defaultPsw").attr("type","text");
-  }
-})
+// $("#defaultPsw").focus(function (){    //默认密码输入框获得焦点
+//   if($("#defaultPsw").attr("type") == "password"){
+//     $("#defaultPsw").val('');
+//     $("#defaultPsw").attr("type","text");
+//   }
+// })
 
-$("#defaultPsw").blur(function (){     //默认密码输入框失去焦点
-  if($("#defaultPsw").val() == ''){
-    $("#defaultPsw").val(psw);
-    $("#defaultPsw").attr("type","password");
-    formValidate.isAllPass($('#defaultPsw'));
-  }
-})
+// $("#defaultPsw").blur(function (){     //默认密码输入框失去焦点
+//   if($("#defaultPsw").val() == ''){
+//     $("#defaultPsw").val(psw);
+//     $("#defaultPsw").attr("type","password");
+//     formValidate.isAllPass($('#defaultPsw'));
+//   }
+// })
 
 getUser(acctId);
 noSelectUserInfo();

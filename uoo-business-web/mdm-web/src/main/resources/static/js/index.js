@@ -3,6 +3,7 @@ var loadingHome = new Loading();
 var dictionaryData = new Dictionary();
 var account;
 var userId;
+var relTypeName = [];
 // toastr
 toastr.options = {
     "closeButton": false,
@@ -130,6 +131,15 @@ function setIcon(menuName){         //设置菜单icon
     return icon;
 }
 
+//获取组织关系类型字典
+function getList(){
+    $http.get('/tbDictionaryItem/getList/REL_TYPE', {   
+    }, function (data) {
+        relTypeName =  data;
+    }, function (err) {
+        
+    })
+}
 
 // 获取字典数据
 function getDictionaryData () {
@@ -211,6 +221,7 @@ function cancel(){
 initUserInfo();
 initUserPermission();
 getDictionaryData();
+getList();
 // layui admin
 // layui.config({
 //     base: '/vendors/layuiadmin/' //静态资源所在路径

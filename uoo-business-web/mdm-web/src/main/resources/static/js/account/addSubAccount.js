@@ -35,7 +35,7 @@ var resourceObjId = null;
 var cerTypeList = window.top.dictionaryData.certType();
 var acctTypeList = window.top.dictionaryData.acctType();
 var statusCdList = window.top.dictionaryData.statusCd();
-var relTypeName = parent.relTypeName;
+var relTypeName = window.top.relTypeName;
 // if(hostId != null){
 //     acctOrgRelId = hostId;
 // }

@@ -1,7 +1,7 @@
 var orgTreeId = getQueryString('orgTreeId');
 var relTypeVal = getQueryString('relType');
 var toastr = window.top.toastr;
-var relTypeName = parent.relTypeName;
+var relTypeName = window.top.relTypeName;
 var orgIdSelect,
     orgFullName,
     orgName,
