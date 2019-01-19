@@ -215,7 +215,7 @@ function openOrgDialog() {
       shade: 0.8,
       area: ['27%', '80%'],
       maxmin: true,
-      content: 'orgDialog.html?orgTreeId='+orgTreeId+'&relType=30',
+      content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType=30',
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象
@@ -312,7 +312,7 @@ function openTypeDialog() {
       shade: 0.8,
       area: ['70%', '85%'],
       maxmin: true,
-      content: 'roleDialog.html',
+      content: '/inaction/account/roleDialog.html',
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象

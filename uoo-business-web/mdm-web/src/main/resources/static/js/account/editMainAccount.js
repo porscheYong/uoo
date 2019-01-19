@@ -387,7 +387,7 @@ function deleteTbAcct(){    //删除主账号
         contentType: "application/json",
         dataType:"json",
         success: function (data) { //返回json结果
-          if(data.state === 4){
+          if(data.state === 1000){
             toastr.success(data.message);
             deleteSuccess();
           }else{
@@ -580,7 +580,7 @@ function cancel() {   //取消按钮
   if(hType != "uh"){  //返回list.html
     url = "list.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;
   }else{
-    url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName) + "&id=" + orgId + 
+    url = "/inaction/user/edit.html?orgTreeName="+encodeURI(orgTreeName)+"&orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName) + "&id=" + orgId + 
     "&personnelId=" + personnelId + "&orgRootId=" + orgRootId + "&tabPage=" + tabPage;
   }
   window.location.href = url;
@@ -600,7 +600,7 @@ function openTypeDialog() {
       shade: 0.8,
       area: ['70%', '85%'],
       maxmin: true,
-      content: 'roleDialog.html',
+      content: '/inaction/account/roleDialog.html',
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象
@@ -628,7 +628,7 @@ function openOrgDialog() {
       shade: 0.8,
       area: ['27%', '80%'],
       maxmin: true,
-      content: 'orgDialog.html?orgTreeId='+orgTreeId+'&relType=30',
+      content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType=30',
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象
@@ -653,7 +653,7 @@ function openEditOrgDialog(val,acctOrgRelId,orgTreeId) {
       shade: 0.8,
       area: ['27%', '80%'],
       maxmin: true,
-      content: 'orgDialog.html?orgTreeId='+orgTreeId+'&relType='+val,
+      content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType='+val,
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象
@@ -671,8 +671,8 @@ function openEditOrgDialog(val,acctOrgRelId,orgTreeId) {
 
 //提交成功
 function submitSuccess(){     
-    var url = "editMainAccount.html?acctId="+ acctId +"&orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + 
-                  "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=mh" + "&orgTreeName="+encodeURI(orgTreeName);
+    var url = "editMainAccount.html?curOrgId="+curOrgId+"&curOrgTreeId="+curOrgTreeId+"&acctId="+ acctId +"&orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + 
+                  "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType="+ hType + "&orgTreeName="+encodeURI(orgTreeName);
     window.location.href = url;
 }
 

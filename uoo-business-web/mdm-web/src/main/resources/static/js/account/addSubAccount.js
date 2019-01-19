@@ -378,7 +378,7 @@ parent.layer.open({
     shade: 0.8,
     area: ['70%', '85%'],
     maxmin: true,
-    content: 'roleDialog.html',
+    content: '/inaction/account/roleDialog.html',
     btn: ['确认', '取消'],
     yes: function(index, layero){
         //获取layer iframe对象
@@ -405,7 +405,7 @@ function openOrgDialog() {
         shade: 0.8,
         area: ['27%', '80%'],
         maxmin: true,
-        content: 'orgDialog.html?orgTreeId='+slaveOrgTreeId+'&relType='+relTypeVal,
+        content: '/inaction/account/orgDialog.html?orgTreeId='+slaveOrgTreeId+'&relType='+relTypeVal,
         btn: ['确认', '取消'],
         yes: function(index, layero){
             // $('#addText').text('更换归属组织');
@@ -501,7 +501,7 @@ function submitToSuccess(){ //保存成功跳转编辑从账号页面
                     slaveAcctId = data.slaveAcctOrgVoPage.records[i].slaveAcctId;
                 }
             }
-            url = 'editSubAccount.html?curOrgId='+curOrgId+'&curOrgTreeId='+curOrgTreeId+'&orgTreeId=' + orgTreeId + '&toMainType=' + hType +
+            url = 'editSubAccount.html?curOrgId='+curOrgId+'&curOrgTreeId='+curOrgTreeId+'&orgTreeId=' + orgTreeId + '&toMainType=' + toMainType +
                     '&curSlaveOrgTreeId='+slaveOrgTreeId+'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&hType=th&mainAcctId='+ mainAcctId +
                     '&acctId='+ slaveAcctId;
             window.location.href = url;
