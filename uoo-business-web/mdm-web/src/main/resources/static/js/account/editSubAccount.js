@@ -384,7 +384,6 @@ function getSysSelect(){   //获取应用系统下拉列表
         });
         $('#system').unbind('change').bind('change', function (event) {
             resourceObjId = event.target.options[event.target.options.selectedIndex].value;
-            console.log(resourceObjId);
         })
         loading.screenMaskDisable('container');
     }, function (err) {

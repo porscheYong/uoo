@@ -96,7 +96,7 @@ function initOrgPersonnelTable (isSearchlower,search) {
                 callback(returnData);
                 loading.screenMaskDisable('container');
             }, function (err) {
-
+                loading.screenMaskDisable('container');
             })
         }
     });

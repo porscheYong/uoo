@@ -577,12 +577,8 @@ function deleteOrg(orgId,orgTreeId){
 
 function cancel() {   //取消按钮
   var url = '';
-  if(hType != "uh"){  //返回list.html
+  if(hType != "uh" && hType != "null"){  //返回list.html
     url = "list.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;
-    if(hType == "null"){
-      url = "/inaction/user/edit.html?orgTreeName="+encodeURI(orgTreeName)+"&orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName) + "&id=" + orgId + 
-          "&personnelId=" + personnelId + "&orgRootId=" + orgRootId + "&tabPage=" + tabPage;
-    }
   }else{
     url = "/inaction/user/edit.html?orgTreeName="+encodeURI(orgTreeName)+"&orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName) + "&id=" + orgId + 
     "&personnelId=" + personnelId + "&orgRootId=" + orgRootId + "&tabPage=" + tabPage;

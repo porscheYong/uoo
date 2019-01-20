@@ -56,7 +56,7 @@ function initMainTable(isCheck,search){
                    if(row.slaveAcct == null){
                         return "-";
                    }else{
-                        return '<a href="editSubAccount.html?curSlaveOrgTreeId='+orgTreeId+'&orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +
+                        return '<a href="editSubAccount.html?curOrgId='+row.orgId+'&curOrgTreeId='+row.orgTreeId+'&curSlaveOrgTreeId='+orgTreeId+'&orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +
                                 '&orgId=' + orgId + '&mainAcctId='+ row.accId +'&acctId='+ row.slaveAcctId +'&statusCd='+row.statusCd+'&hType=mh">'+ row.slaveAcct +'</a>';
                    }
                 }
@@ -116,6 +116,7 @@ function initMainTable(isCheck,search){
                 callback(returnData);
                 loading.screenMaskDisable('container');
             }, function (err) {
+                loading.screenMaskDisable('container');
             })
         }
     });
