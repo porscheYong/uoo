@@ -125,11 +125,32 @@ public class TbAccountOrgRelServiceImpl extends ServiceImpl<TbAccountOrgRelMappe
         if(!StrUtil.isNullOrEmpty(tbAccountOrgRel.getSlaveAcctId())){
             TbAccountOrgRel acctOrg = this.addOrUpdateAcctOrg(tbAccountOrgRel);
 
+                EntityWrapper<TbSlaveAcct> wrapper = new EntityWrapper<TbSlaveAcct>();
+                wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+                wrapper.eq(BaseUnitConstants.TABLE_SLAVE_ACCT_ID, tbAccountOrgRel.getSlaveAcctId());
+                TbSlaveAcct slaveAcct = tbSlaveAcctService.selectOne(wrapper);
+                if(!slaveAcct.getAcctOrgRelId().equals(acctOrg.getAcctOrgRelId())){
+                    EntityWrapper<TbSlaveAcct> wrapper1 = new EntityWrapper<TbSlaveAcct>();
+                    wrapper1.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+                    wrapper1.eq(BaseUnitConstants.TB_ACCT_ORG_REL_ID, slaveAcct.getAcctOrgRelId());
+                    wrapper1.notIn(BaseUnitConstants.TABLE_SLAVE_ACCT_ID, tbAccountOrgRel.getSlaveAcctId());
+                    List<TbSlaveAcct> list = tbSlaveAcctService.selectList(wrapper1);
+                    if(list == null || list.size() == 0){
+                        TbAccountOrgRel accountOrgRel = new TbAccountOrgRel();
+                        accountOrgRel.setAcctOrgRelId(slaveAcct.getAcctOrgRelId());
+                        accountOrgRel.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+                        accountOrgRel.setStatusDate(new Date());
+                        accountOrgRel.setUpdateUser(tbAccountOrgRel.getUserId());
+                        baseMapper.updateById(accountOrgRel);
+                    }
+                }
+
             TbSlaveAcct tbSlaveAcct = new TbSlaveAcct();
             tbSlaveAcct.setSlaveAcctId(tbAccountOrgRel.getSlaveAcctId());
             tbSlaveAcct.setUpdateUser(tbAccountOrgRel.getUserId());
             tbSlaveAcct.setAcctOrgRelId(acctOrg.getAcctOrgRelId());
             tbSlaveAcctService.updateTbSlaveAcct(tbSlaveAcct);
+
         }else{
             //主账号 组织变更
             TbAccountOrgRel accountOrgRel = this.getTbAcctOrgRel(tbAccountOrgRel);
