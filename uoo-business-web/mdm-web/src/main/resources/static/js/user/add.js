@@ -972,7 +972,8 @@ function addOrgList () {
         orgObj.propertyName = propertyName;
         orgObj.refTypeName = refTypeName;
         orgObj.postName = postName;
-        orgObj.postId = orgPostList[0].postId;
+        if (orgPostList.length > 0)
+            orgObj.postId = orgPostList[0].postId;
         orgTable.row(orgFlag-1).data(orgObj).draw();
     }
     else {
