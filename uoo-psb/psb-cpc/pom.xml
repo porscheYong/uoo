@@ -12,7 +12,6 @@
     <artifactId>psb-cpc</artifactId>
     <packaging>jar</packaging>
 
-
     <dependencies>
         <dependency>
             <groupId>com.esp</groupId>
