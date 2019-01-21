@@ -24,6 +24,7 @@ var acctInfoList = [];
 var toastr = window.top.toastr;
 var cerTypeList = window.top.dictionaryData.certType();
 var statusCdList = window.top.dictionaryData.statusCd();
+var acctTypeList = window.top.dictionaryData.acctType();
 var relTypeName = window.top.relTypeName;
 var relTypeVal = "";
 var loading = parent.loading;
@@ -206,7 +207,18 @@ function setAcctInfoTables(){
                               '&curSlaveOrgTreeName='+encodeURI(row.orgTreeName)+'&hType=th&mainAcctId='+acctId+'&acctId='+row.slaveAcctId+'&statusCd='+row.statusCd+'">'+row.slaveAcct+'</a>';
                   }
                 },
-                  { 'data': "slaveAcctType", 'title': '类型', 'className': 'row-acctype' },
+                  { 'data': null, 'title': '类型', 'className': 'row-acctype' ,
+                      'render': function (data, type, row, meta) {
+                        var acctType = "";
+                        for(var i=0;i<acctTypeList.length;i++){
+                            if(row.slaveAcctType == acctTypeList[i].itemValue){
+                              acctType = acctTypeList[i].itemCnname;
+                              break;
+                            }
+                        }
+                        return acctType;
+                      }
+                  },
                   { 'data': "systemName", 'title': '系统', 'className': 'row-system'},
                   { 'data': "statusCd", 'title': '状态', 'className': 'row-state' ,
                     'render': function (data, type, row, meta) {
@@ -498,7 +510,7 @@ function addSlaveBtnClick(acctOrgRelId,id,slaveOrgTreeId,relTypeVal){      //点
     var sOrgName = $("#orgName_"+id).text();
     var treeName = $("#orgTreeName_"+id).text();
     var url = 'addSubAccount.html?curOrgId='+curOrgId+'&curOrgTreeId='+curOrgTreeId+'&orgTreeId='+orgTreeId+'&hType=th&personnelId='+personnelId + '&slaveOrgTreeId=' + slaveOrgTreeId +
-                      '&mainAcctId='+ acctId +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&toMainType=' + hType + '&curSlaveOrgName='+sOrgName+
+                      '&mainAcctId='+ acctId +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&toMainType=' + hType + '&curSlaveOrgName='+encodeURI(sOrgName)+
                       '&fullName=' + encodeURI(sFullName) + '&acctOrgRelId=' + acctOrgRelId + '&orgTreeName=' + encodeURI(treeName)+'&relTypeVal='+relTypeVal;
     window.location.href = url;
 }
