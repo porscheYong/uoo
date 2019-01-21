@@ -14,9 +14,9 @@
     }
 }(this, function (require) {
 
-    if (typeof require == 'function') {
-        require('common/ui/Enhance');
-    }
+    // if (typeof require == 'function') {
+    //     require('common/ui/Enhance');
+    // }
 
     /**
      * 模拟下拉框效果
@@ -170,7 +170,7 @@
                 if (combobox.hasClass(ACTIVE)) {
                     // 边界判断
                     var overflow = datalist.offset().top + datalist.outerHeight() > Math.max($(document.body).height(), $(window).height());
-                    combobox[overflow ? 'addClass' : 'removeClass'](REVERSE);
+                    // combobox[overflow ? 'addClass' : 'removeClass'](REVERSE);
                     // aria状态
                     button.attr('aria-expanded', 'true');
 
@@ -184,7 +184,7 @@
                         combobox.removeData('scrollTop');
                     }
                 } else {
-                    combobox.removeClass(REVERSE);
+                    // combobox.removeClass(REVERSE);
                     // aria状态
                     button.attr('aria-expanded', 'false');
                 }
@@ -221,7 +221,8 @@
             $(document).on('mouseup', function(event) {
                 var target = event.target;
                 if (target && combobox.hasClass(ACTIVE) && combobox[0] !== target && combobox[0].contains(target) == false) {
-                    combobox.removeClass(ACTIVE).removeClass(REVERSE);
+                    // combobox.removeClass(ACTIVE).removeClass(REVERSE);
+                    combobox.removeClass(ACTIVE);
                 }
             });
         } else {

@@ -225,7 +225,7 @@ initOrgTable();
 initOrgPersonnelTable(0);
 
 function orgInfo() {
-    var url = 'orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&standardFlag=' + standardFlag + '&name=' + encodeURI(orgName);
+    var url = 'orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&refCode=' + refCode + '&standardFlag=' + standardFlag + '&name=' + encodeURI(orgName);
     window.location.href = url;
 }
 function orgEdit () {

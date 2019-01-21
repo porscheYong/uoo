@@ -153,7 +153,7 @@ function getOrg (orgId) {
         orgId: orgId
     }, function (data) {
         $('#orgName').html(data.orgName);
-        $('#orgCode').html(data.orgCode);
+        $('#orgId').html(data.orgId);
         $('#shortName').html(data.shortName);
         $('#orgBizFullName').html(data.orgBizFullName);
         $('#orgMartCode ').html(data.orgMartCode);
