@@ -107,6 +107,10 @@ public interface OrgPersonRelService extends IService<OrgPersonRel> {
      * 查询组织树组织信息
      */
     public List<OrgPersonRel> getOrgPsnRel(String orgTreeId,String orgId);
+    /**
+     * 查询组织树账号信息
+     */
+    public List<OrgPersonRel>  getOrgAcctRel(String orgTreeId,String orgId);
 
 
 

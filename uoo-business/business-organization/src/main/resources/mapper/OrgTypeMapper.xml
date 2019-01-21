@@ -93,7 +93,11 @@
 
         WITH ORGTYPENODE AS(
         SELECT * FROM (
-        SELECT * FROM TB_ORG_TYPE A WHERE A.STATUS_CD='1000') AA
+        SELECT * FROM TB_ORG_TYPE A WHERE A.STATUS_CD='1000'
+        <if test="orgTypeParams != null and orgTypeParams != ''">
+            AND ${orgTypeParams}
+        </if>
+        ) AA
         START WITH ORG_TYPE_ID IN (SELECT ORG_TYPE_ID FROM (SELECT * FROM TB_ORG_TYPE A WHERE A.PARENT_ORG_TYPE_ID=#{orgTypeId} AND A.STATUS_CD='1000'))
         CONNECT BY PRIOR AA.ORG_TYPE_ID = AA.PARENT_ORG_TYPE_ID
         ),

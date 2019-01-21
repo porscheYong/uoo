@@ -270,4 +270,14 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
     public List<OrgPersonRel> getOrgPsnRel(String orgTreeId,String orgId){
         return baseMapper.getOrgPsnRel(orgTreeId,orgId);
     }
+    /**
+     * 查询组织树账号人员
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    @Override
+    public List<OrgPersonRel>  getOrgAcctRel(String orgTreeId,String orgId){
+        return baseMapper. getOrgAcctRel(orgTreeId,orgId);
+    }
 }
