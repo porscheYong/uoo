@@ -88,7 +88,7 @@ $("#userAdd").steps({
     }
 });
 
-seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+seajs.use(['/vendors/lulu/js/common/ui/Validate', '/vendors/lulu/js/common/ui/Radio'], function (Validate) {
     var userAddForm = $('#userAddForm');
     formValidate = new Validate(userAddForm);
     formValidate.immediate();
@@ -98,7 +98,7 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
         //     formValidate.isPass($(this));
         // });
         $(this).bind({
-            hover : function(){
+            mouseenter : function(){
                 formValidate.isPass($(this));
             },
             paste : function(){
@@ -333,7 +333,7 @@ function initTable(keyWord){
         'searching': false,
         'autoWidth': false,
         'ordering': true,
-        'lsort': true,
+        'lSort': true,
         'columns': [
             { 'data': "psnName", 'title': '人员姓名', 'className': 'row-nameS'},
             { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-noS' },
