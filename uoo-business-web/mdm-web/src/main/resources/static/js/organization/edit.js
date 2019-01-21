@@ -765,6 +765,7 @@ function updateOrg () {
       orgMartCode: orgMart
   }), function () {
       parent.changeNodeName(orgId, orgName);
+      parent.moveNode(pid, orgId, sort);
       window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
       loading.screenMaskDisable('container');
       toastr.success('更新成功！');
