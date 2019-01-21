@@ -9,6 +9,7 @@ var acctId = getQueryString('acctId');
 var orgTreeName = getQueryString('orgTreeName');
 var curOrgId = getQueryString('curOrgId');
 var curOrgTreeId = getQueryString('curOrgTreeId');
+var addToEditFlag = getQueryString('addToEditFlag'); //判断是从新增账号页面跳转过来的
 
 var slaveAcctCount; //从账号数量
 var personnelId;
@@ -115,6 +116,12 @@ function noSelectUserInfo(){     //控制人员信息不可选
 function initAcctInfo(results){
    var acct = results.acctOrgVoPage.records;
    var slave = results.slaveAcctOrgVoPage.records;
+   for(var k=0;k<acct.length;k++){
+      if(acct[k].orgId == orgId){
+          addToEditFlag = 0;
+          break;
+      }
+   }
    acctInfoList = [];
    for(var i=0;i<acct.length;i++){
       if(acct[i].orgTreeId == orgTreeId || orgTreeId == 1){
@@ -626,9 +633,9 @@ function openOrgDialog() {
       title: '选择组织',
       shadeClose: true,
       shade: 0.8,
-      area: ['27%', '80%'],
+      area: ['40%', '80%'],
       maxmin: true,
-      content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType=30',
+      content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType=30'+'&addToEditFlag='+addToEditFlag,
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象
@@ -651,7 +658,7 @@ function openEditOrgDialog(val,acctOrgRelId,orgTreeId) {
       title: '选择组织',
       shadeClose: true,
       shade: 0.8,
-      area: ['27%', '80%'],
+      area: ['40%', '80%'],
       maxmin: true,
       content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType='+val,
       btn: ['确认', '取消'],

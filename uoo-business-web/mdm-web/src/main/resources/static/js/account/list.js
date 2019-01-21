@@ -198,10 +198,12 @@ function getPsnUser(personnelId){
       }, function (data) {
         if(data.tbAcct != null){
             url = "editMainAccount.html?acctId="+ data.tbAcct.acctId +"&orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + 
-                    "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=mh" + "&orgTreeName="+encodeURI(parent.businessName);
+                    "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=mh" + "&orgTreeName="+encodeURI(parent.businessName)+
+                    "&curOrgId="+orgId+"&curOrgTreeId="+orgTreeId+"&addToEditFlag=1";
         }else{
             url = "addMainAccount.html?orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) +
-                    "&orgId=" + orgId + "&personnelId=" + personnelId + "&hType=mh" + "&orgTreeName="+encodeURI(parent.businessName);
+                    "&orgId=" + orgId + "&personnelId=" + personnelId + "&hType=mh" + "&orgTreeName="+encodeURI(parent.businessName)+
+                    "&curOrgId="+orgId+"&curOrgTreeId="+orgTreeId;
         }
         window.location.href = url;
       }, function (err) {
