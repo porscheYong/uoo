@@ -5,6 +5,7 @@ var tabPage = getQueryString('tabPage');
 //var orgRootId = 1;
 var personnelId = getQueryString('personnelId');
 var orgTreeId = getQueryString('orgTreeId');
+var orgTreeName = getQueryString('orgTreeName');
 var orgName = getQueryString('name');
 var addOrg = getQueryString('addOrg');
 var personalData={},genderData,certTypeData,nationData,pliticalStatusData,marriageData,orgInfo={},
@@ -349,6 +350,9 @@ function  editUser() {
              });
          });*/
     });
+    seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $('select').selectMatch();
+      })
     getPsnImage();
 }
 function editOrgInfo(){
@@ -773,7 +777,7 @@ function convertToFile(base64Codes){
             psnImageId = data.data.psnImageId;
         },
         error:function(data){
-            console.log(data);
+
         }
     });
 }
@@ -813,6 +817,8 @@ function updatePersonnel(){
     updates.marriage=marriage;
     updates.pliticalStatus=pliticalStatus;
     updates.image=psnImageId;
+    updates.address=$('#address').val();
+    
     var tbMobileVoList =new Array();
     var mobiles=$("input[name='mobiles']").each(function(){
         var obj={};
@@ -1008,6 +1014,8 @@ $(document).ready(function(){
     if(tabPage=='acct'){
         $('#personnel').removeClass('active');
         $('#user').addClass('active');
+        $('#psnTabLI').removeClass('active');
+        $('#userTabLI').addClass('active');
     }
 
     if(!isNum(orgId)){
@@ -1035,15 +1043,44 @@ $(document).ready(function(){
     getPsnImage();
 
 });
+function gotoPrev(){
+    if (orgId == '88888888') {
+        parent.openTreeById('', '88888888')
+    }
+    else {
+        var url = "/inaction/user/list.html?";
+        url += "id=" + orgId;
+        url += "&orgTreeId=" + orgTreeId;
+        url += "&orgTreeName=" + orgTreeName;
+        url += "&name=" + orgName;
+        location.href = url;
+    }
+}
 function gotoAccout(i){
+	var mainAcctId=0;
+	for(var j=0;j<personalData.userList.records.length;j++){
+		if(personalData.userList.records[j].type==1){
+			mainAcctId=personalData.userList.records[j].acctId;
+			break;
+		}
+	}
     var userAcc=personalData.userList.records[i];
     var url="";
     if(userAcc.type==1){
-        url+="/inaction/account/editMainAccount.html"
+        url+="/inaction/account/editMainAccount.html";
+        url+="?";
+        url+="curOrgTreeId="+parent.getCurrentOrgTreeId()+"&";
+        url+="curOrgId="+parent.getCurrentOrgId()+"&";
     }else{
-        url+="/inaction/account/editSubAccount.html"
+        url+="/inaction/account/editSubAccount.html";
+        url+="?";
+        url+="curOrgTreeId="+parent.getCurrentOrgTreeId()+"&";
+        url+="curOrgId="+parent.getCurrentOrgId()+"&";
+        url+="curSlaveOrgTreeId="+userAcc.curSlaveOrgTreeId+"&";
+        url+="curSlaveOrgTreeName="+userAcc.curSlaveOrgTreeName+"&";
+        url+="mainAcctId="+mainAcctId+"&";
     }
-    url+="?";
+    
     url+="orgId="+orgId+"&";
     url+="orgRootId="+orgRootId+"&";
     url+="personnelId="+personnelId +"&";
@@ -1054,6 +1091,8 @@ function gotoAccout(i){
     url+="acctId="+userAcc.acctId+"&";
     url+="statusCd="+userAcc.statusCd+"&";
     url+="tabPage="+"acct"+"&";
+    url+="orgTreeName="+orgTreeName+"&";
+    
     window.location.href=url;
 }
 function autoWriteForm(){

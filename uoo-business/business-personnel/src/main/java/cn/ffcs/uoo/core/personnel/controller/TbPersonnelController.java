@@ -196,7 +196,7 @@ public class TbPersonnelController extends BaseController {
         tbPersonnel.setPersonnelId(personnelId);
         tbPersonnel.setCreateUser(userId);
         tbPersonnel.setUpdateUser(userId);
-        tbPersonnel.setGender(IDCardUtil.getGender(editFormPersonnelVo.getCertNo()));
+        //tbPersonnel.setGender(IDCardUtil.getGender(editFormPersonnelVo.getCertNo()));
         tbPersonnel.setBatchNum(batchNum);
         tbPersonnelService.insertOrUpdateTbPsn(tbPersonnel);
 
@@ -211,15 +211,18 @@ public class TbPersonnelController extends BaseController {
 
         /**  2、组织信息           */
         List<PsonOrgVo> psonOrgVoList = editFormPersonnelVo.getPsonOrgVoList();
-        List<PsonOrgVo> psonOrgVos = new ArrayList<PsonOrgVo>();
-        for(PsonOrgVo psonOrgVo : psonOrgVoList){
-            psonOrgVo.setPersonnelId(personnelId);
-            psonOrgVo.setUserId(String.valueOf(userId));
-            psonOrgVos.add(psonOrgVo);
+        if(!StrUtil.isNullOrEmpty(psonOrgVoList)){
+            List<PsonOrgVo> psonOrgVos = new ArrayList<PsonOrgVo>();
+            for(PsonOrgVo psonOrgVo : psonOrgVoList){
+                psonOrgVo.setPersonnelId(personnelId);
+                psonOrgVo.setUserId(String.valueOf(userId));
+                psonOrgVos.add(psonOrgVo);
+            }
+            if(psonOrgVos != null && psonOrgVos.size() > 0){
+                orgPersonRelClient.addOrgPsn(psonOrgVos);
+            }
         }
-        if(psonOrgVos != null && psonOrgVos.size() > 0){
-            orgPersonRelClient.addOrgPsn(psonOrgVos);
-        }
+
 
         /**  3、联系方式           */
         List<TbContact> tbContactList = editFormPersonnelVo.getTbMobileVoList();

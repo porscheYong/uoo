@@ -31,7 +31,7 @@ function initTable(keyWord){
         'searching': false,
         'autoWidth': false,
         'ordering': true,
-        'lsort':true,
+        'lSort':true,
         'columns': [
             { 'data': null, 'title': '选择', 'className': 'row-select',
                 'render': function (data, type, row, meta) {

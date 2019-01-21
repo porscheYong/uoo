@@ -1,7 +1,7 @@
 // loadingMask
 var loading = new Loading();
 
-var relTypeName = [];
+// var relTypeName = [];
 
 var orgId,
     orgName,
@@ -14,14 +14,14 @@ var orgId,
 loading.screenMaskEnable('container');
 
 //获取组织关系类型字典
-function getList(){
-    $http.get('/tbDictionaryItem/getList/REL_TYPE', {   
-    }, function (data) {
-        relTypeName =  data;
-    }, function (err) {
+// function getList(){
+//     $http.get('/tbDictionaryItem/getList/REL_TYPE', {   
+//     }, function (data) {
+//         relTypeName =  data;
+//     }, function (err) {
         
-    })
-}
+//     })
+// }
 
 function onNodeClick(e,treeId, treeNode) {
     orgId = treeNode.id;
@@ -160,5 +160,5 @@ function openTreeById (sId, id) {
 }
 
 initBusinessList();
-getList();
+// getList();
 

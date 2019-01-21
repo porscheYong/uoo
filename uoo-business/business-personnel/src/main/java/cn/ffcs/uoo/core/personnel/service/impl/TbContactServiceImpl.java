@@ -66,6 +66,26 @@ public class TbContactServiceImpl extends ServiceImpl<TbContactMapper, TbContact
 
     @Override
     public Object addOrUpdateTbContact(List<TbContact> tbContactList, Long personnelId, String contactType, Long userId){
+        List<TbContact> contactList = this.getTbContactByPsnId(personnelId, contactType);
+        if(contactList != null && contactList.size() > 0){
+            for(TbContact contact : contactList){
+                boolean bool = true;
+                if(tbContactList != null && tbContactList.size() > 0){
+                    for(TbContact tbContact : tbContactList){
+                        if(contact.getContactId().equals(tbContact.getContactId())){
+                            bool = false;
+                            break;
+                        }
+                    }
+                }
+                if(bool){
+                    contact.setUpdateUser(userId);
+                    contact.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+                    contact.setStatusDate(new Date());
+                    baseMapper.updateById(contact);
+                }
+            }
+        }
         if(tbContactList != null && tbContactList.size() > 0){
             for(TbContact tbContact : tbContactList){
                 if(!StrUtil.isNullOrEmpty(tbContact.getContactId())){

@@ -32,5 +32,9 @@ public class ListUserVo {
     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private String createDate;
 
+    private Long curSlaveOrgTreeId;
+
+    private String curSlaveOrgTreeName;
+
 
 }

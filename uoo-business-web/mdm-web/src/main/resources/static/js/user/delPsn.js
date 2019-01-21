@@ -36,25 +36,91 @@ function deleteOrgPsn(){
 
 //删除人员组织关系
 function deletePersonnel(){
-    $http.delet('/personnel/deletePersonnel?personnelId=' + personnelId,{},function(data){
-        toastr.success('操作成功');
-        window.location.href = "list.html?id="+orgId+"&name="+orgName+"&orgTreeId="+orgTreeId;
-    });
+	
+	 $http.delet('/personnel/deletePersonnel?personnelId=' + personnelId,{},function(data){
+	        toastr.success('操作成功');
+	        window.location.href = "list.html?id="+orgId+"&name="+orgName+"&orgTreeId="+orgTreeId;
+	    });
 }
 
 function deleteTbAcct(){    //删除人员
-    parent.layer.confirm('此操作将删除该用户, 是否继续?', {
-      icon: 0,
-      title: '提示',
-      btn: ['确定','取消']
-  }, function(index, layero){
-      // 未分类
-      if (orgId == '88888888')
-          deletePersonnel();
-      else
-        deleteOrgPsn();
-      parent.layer.close(index);
-    }, function(){
-  
-    });
+	if (orgId != '88888888'){
+		parent.layer.confirm('此操作将删除该人员与当前组织关系，是否继续？', {
+		      icon: 0,
+		      title: '提示',
+		      btn: ['确定','取消']
+		  }, function(index, layero){
+		      // 未分类
+		      if (orgId == '88888888')
+		          deletePersonnel();
+		      else
+		        deleteOrgPsn();
+		      parent.layer.close(index);
+		    }, function(){
+		  
+		    });
+		return;
+		
+	}
+    
+	$http.get('/user/getUserList', {personnelId:personnelId}, function (data) {
+		if(data.total>0){
+			var hasMainAcct=false,hasSubAcct=false;
+			for(var i=0;i<data.total;i++){
+				if(data.records[i].type==1){
+					hasMainAcct=true;
+				}else{
+					hasSubAcct=true;
+				}
+			}
+			if(hasMainAcct&&hasSubAcct){
+				parent.layer.confirm('人员已关联主账号和从账号，此操作将删除该人员、主账号、从账号信息，是否继续？', {
+				      icon: 0,
+				      title: '提示',
+				      btn: ['确定','取消']
+				  }, function(index, layero){
+				      // 未分类
+				      if (orgId == '88888888')
+				          deletePersonnel();
+				      else
+				        deleteOrgPsn();
+				      parent.layer.close(index);
+				    }, function(){
+				  
+				    });
+			}else if(hasMainAcct&&!hasSubAcct){
+				parent.layer.confirm('人员已关联主账号，此操作将删除该人员和主账号信息，是否继续？', {
+				      icon: 0,
+				      title: '提示',
+				      btn: ['确定','取消']
+				  }, function(index, layero){
+				      // 未分类
+				      if (orgId == '88888888')
+				          deletePersonnel();
+				      else
+				        deleteOrgPsn();
+				      parent.layer.close(index);
+				    }, function(){
+				  
+				    });
+			}
+		}else{
+			parent.layer.confirm('此操作将删除该用户, 是否继续?', {
+			      icon: 0,
+			      title: '提示',
+			      btn: ['确定','取消']
+			  }, function(index, layero){
+			      // 未分类
+			      if (orgId == '88888888')
+			          deletePersonnel();
+			      else
+			        deleteOrgPsn();
+			      parent.layer.close(index);
+			    }, function(){
+			  
+			    });
+		}
+		 
+    }, function (err) {
+    })
   }

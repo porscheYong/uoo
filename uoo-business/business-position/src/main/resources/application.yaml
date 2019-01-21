@@ -6,7 +6,7 @@ spring:
   application:
     name: business-position
   zipkin:
-      base-url: http://134.96.253.223:8600
+      base-url: http://134.96.217.244:8600
   sleuth:
     sampler:
       percentage: 1.0

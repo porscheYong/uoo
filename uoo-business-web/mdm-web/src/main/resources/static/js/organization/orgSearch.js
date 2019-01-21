@@ -140,7 +140,7 @@ $('#orgName').typeahead({
 })
   .on('typeahead:asyncrequest', function(e) {
         $('.Typeahead-spinner').show();
-        if($("#orgName").val() != '' && !Regx.test($("#orgName").val())){
+        if($("#orgName").val() != ''){ //&& !Regx.test($("#orgName").val())
             initOrgSearchTable($("#orgName").val());
         }
     })

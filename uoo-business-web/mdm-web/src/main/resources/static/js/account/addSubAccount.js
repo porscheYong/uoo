@@ -35,7 +35,7 @@ var resourceObjId = null;
 var cerTypeList = window.top.dictionaryData.certType();
 var acctTypeList = window.top.dictionaryData.acctType();
 var statusCdList = window.top.dictionaryData.statusCd();
-var relTypeName = parent.relTypeName;
+var relTypeName = window.top.relTypeName;
 // if(hostId != null){
 //     acctOrgRelId = hostId;
 // }
@@ -134,88 +134,7 @@ function noSelectUserInfo(){     //控制人员信息不可选
     $("#email").attr("disabled","disabled");
     $("#cerType").attr("disabled","disabled");
     $("#cerNo").attr("disabled","disabled");
- }
-
-// function initOrgTable(results){
-//     table = $("#orgTable").DataTable({
-//       'data': results,
-//       'destroy':true,
-//       'searching': false,
-//       'autoWidth': false,
-//       'ordering': true,
-//       'paging': false,
-//       'info': false,
-//       "scrollY": "375px",
-//       'scrollCollapse': true,
-//       'columns': [
-//           { 'data': "id", 'title': '序号', 'className': 'row-id' ,
-//           'render': function (data, type, row, meta) {
-//             return 1;
-//         }
-//         },
-//           { 'data': "orgTreeName", 'title': '组织树', 'className': 'row-orgTree'},
-//           { 'data': "fullName", 'title': '组织名称', 'className': 'row-fullName' ,
-//           'render': function (data, type, row, meta) {
-//             if(row.fullName != null){
-//                 return '<span title="'+ row.fullName +'" style="cursor:pointer;">'+row.fullName+'</span>';
-//               }else{
-//                 return "";
-//             }
-//         }
-//         },
-//         {'data': "orgId", 'title': '操作', 'className': 'row-delete' ,
-//             'render': function (data, type, row, meta) {
-//                 return "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' title='删除' onclick='deleteOrg()'></a>";
-//             }
-//         }
-//       ],
-//       'language': {
-//           'emptyTable': '没有数据',  
-//           'loadingRecords': '加载中...',  
-//           'processing': '查询中...',  
-//           'search': '检索:',  
-//           'lengthMenu': ' _MENU_ ',  
-//           'zeroRecords': '没有数据', 
-//           'infoEmpty': '没有数据'
-//       }
-//     });
-//   }
-
-//   function initAcctOrgTable(results){
-//     var num = 1;
-//     slaveTable = $("#acctOrgTable").DataTable({
-//       'data': results,
-//       'destroy':true,
-//       'searching': false,
-//       'autoWidth': false,
-//       'ordering': true,
-//       'paging': false,
-//       'info': false,
-//       "scrollY": "240px",
-//       'columns': [
-//         { 'data': "id", 'title': '序号', 'className': 'row-t1' ,
-//             'render': function (data, type, row, meta) {
-//                 return num++;
-//             }
-//         },
-//         { 'data': "orgTreeName", 'title': '组织树', 'className': 'row-t2'},
-//         { 'data': "fullName", 'title': '可选组织', 'className': 'row-t3',
-//         'render': function (data, type, row, meta) {
-//             return "<a href='javascript:void(0);' title='"+row.fullName+"' onclick='saveSlaveOrg("+ num + ","+ row.acctOrgRelId + ")'>"+ row.fullName +'</a>'
-//         }
-//         }
-//       ],
-//       'language': {
-//           'emptyTable': '没有数据',  
-//           'loadingRecords': '加载中...',  
-//           'processing': '查询中...',  
-//           'search': '检索:',  
-//           'lengthMenu': ' _MENU_ ',  
-//           'zeroRecords': '没有数据', 
-//           'infoEmpty': '没有数据'
-//       }
-//     });
-//   }
+}
 
 function initUserInfo(results){   //新增时初始化信息
     $('#psnName').val(results.psnName);
@@ -328,7 +247,6 @@ function getSysSelect(){   //获取应用系统下拉列表
         });
         $('#system').unbind('change').bind('change', function (event) {
             resourceObjId = event.target.options[event.target.options.selectedIndex].value;
-            console.log(resourceObjId);
         })
     }, function (err) {
     })
@@ -378,7 +296,7 @@ parent.layer.open({
     shade: 0.8,
     area: ['70%', '85%'],
     maxmin: true,
-    content: 'roleDialog.html',
+    content: '/inaction/account/roleDialog.html',
     btn: ['确认', '取消'],
     yes: function(index, layero){
         //获取layer iframe对象
@@ -403,9 +321,9 @@ function openOrgDialog() {
         title: '选择组织',
         shadeClose: true,
         shade: 0.8,
-        area: ['27%', '80%'],
+        area: ['40%', '80%'],
         maxmin: true,
-        content: 'orgDialog.html?orgTreeId='+slaveOrgTreeId+'&relType='+relTypeVal,
+        content: '/inaction/account/orgDialog.html?orgTreeId='+slaveOrgTreeId+'&relType='+relTypeVal,
         btn: ['确认', '取消'],
         yes: function(index, layero){
             // $('#addText').text('更换归属组织');
@@ -501,7 +419,7 @@ function submitToSuccess(){ //保存成功跳转编辑从账号页面
                     slaveAcctId = data.slaveAcctOrgVoPage.records[i].slaveAcctId;
                 }
             }
-            url = 'editSubAccount.html?curOrgId='+curOrgId+'&curOrgTreeId='+curOrgTreeId+'&orgTreeId=' + orgTreeId + '&toMainType=' + hType +
+            url = 'editSubAccount.html?curOrgId='+curOrgId+'&curOrgTreeId='+curOrgTreeId+'&orgTreeId=' + orgTreeId + '&toMainType=' + toMainType +
                     '&curSlaveOrgTreeId='+slaveOrgTreeId+'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&hType=th&mainAcctId='+ mainAcctId +
                     '&acctId='+ slaveAcctId;
             window.location.href = url;

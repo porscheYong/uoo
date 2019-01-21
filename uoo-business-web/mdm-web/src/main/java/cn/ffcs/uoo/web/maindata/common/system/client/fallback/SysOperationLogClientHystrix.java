@@ -3,6 +3,7 @@ package cn.ffcs.uoo.web.maindata.common.system.client.fallback;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.baomidou.mybatisplus.plugins.Page;
 
@@ -31,7 +32,7 @@ public class SysOperationLogClientHystrix implements SysOperationLogClient {
     }
 
     @Override
-    public ResponseResult<Page<LogDTO>> listPage(Integer pageNo, Integer pageSize, String keyWord) {
+    public ResponseResult<Page<LogDTO>> listPage(Integer pageNo, Integer pageSize, String keyWord, String logEnum) {
 
         ResponseResult<Page<LogDTO>> rr=new ResponseResult<>();
         rr.setState(ResponseResult.STATE_SERVICE_ERROR);

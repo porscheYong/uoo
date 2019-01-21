@@ -98,9 +98,9 @@ public class TbAcctServiceImpl extends ServiceImpl<TbAcctMapper, TbAcct> impleme
             type = "insert";
         }
         if("insert".equals(type) || !editFormAcctVo.getPassword().equals(tbAcct.getPassword())){
-            if(!PwdPolicyUtil.isMatchBasicPattern(editFormAcctVo.getPassword())){
-                return ResultUtils.error(EumUserResponeCode.PWD_ERROR);
-            }
+//            if(!PwdPolicyUtil.isMatchBasicPattern(editFormAcctVo.getPassword())){
+//                return ResultUtils.error(EumUserResponeCode.PWD_ERROR);
+//            }
             // 获取盐
             String salt = MD5Tool.getSalt();
             // 非对称密码

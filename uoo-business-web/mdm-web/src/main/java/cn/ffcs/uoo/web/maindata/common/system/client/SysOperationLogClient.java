@@ -36,7 +36,7 @@ public interface SysOperationLogClient {
     @GetMapping("/system/sysOperationLog/getOperatModifyHistory")
     public ResponseResult<List<ModifyHistory>> getOperatModifyHistory(@RequestParam("id") Long id,@RequestParam("userCode")String userCode,@RequestParam("userId")Long userId);
     @GetMapping("/system/sysOperationLog/listPage")
-    public ResponseResult<Page<LogDTO>> listPage(@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord);
+    public ResponseResult<Page<LogDTO>> listPage(@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord,@RequestParam("logEnum")String logEnum);
 
     @RequestMapping(value = "/system/sysOperationLog/add", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<Void> add(@RequestBody SysOperationLog sysOperationLog);

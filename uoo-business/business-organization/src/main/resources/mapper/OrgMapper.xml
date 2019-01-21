@@ -156,17 +156,16 @@
         A.ORG_CODE orgCode,
         A.FULL_NAME fullName,
         A.STATUS_CD statusCd,
-        to_char(A.CREATE_DATE,'YYYY-MM-DD hh24:mi:ss') createDate
-        FROM TB_ORG A
-        WHERE 1=1
-        <if test="orgVo.search != null and orgVo.search != ''">
-            AND (A.ORG_NAME like '%'||#{orgVo.search}||'%'
-                or A.ORG_CODE like '%'||#{orgVo.search}||'%')
-        </if>
-        <if test="orgVo.statusCd != null and orgVo.statusCd != ''">
-            AND A.STATUS_CD = #{orgVo.statusCd}
-        </if>
-        <!--ORDER BY A.SORT-->
+        to_char(A.CREATE_DATE,'YYYY-MM-DD hh24:mi:ss') createDate,
+        DECODE(B.ORG_ORGTREE_ID,NULL,0,1) flag
+        FROM (SELECT * FROM TB_ORG  WHERE STATUS_CD = 1000
+            <if test="orgVo.search != null and orgVo.search != ''">
+                AND (ORG_NAME like '%'||#{orgVo.search}||'%'
+                or ORG_CODE like '%'||#{orgVo.search}||'%')
+            </if>
+        ) A
+        LEFT JOIN TB_ORG_ORGTREE_REL B ON B.STATUS_CD = 1000  AND B.ORG_TREE_ID = #{orgVo.orgTreeId} AND B.ORG_ID = A.ORG_ID
+        ORDER BY flag
     </select>
 
     <select id="getSysFullName" resultType="java.lang.String">
