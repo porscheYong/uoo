@@ -382,8 +382,12 @@ function initTable(keyWord){
                 returnData.recordsTotal = result.total;//返回数据全部记录
                 returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
                 returnData.data = result.records;//返回的数据列表
-                //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
-                //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                if (result.records.length == 0) {
+                    $('#userTable').html('');
+                    $('#userTable_wrapper .bottom').remove();
+                    $('.typeahead-menu').hide();
+                    return
+                }
                 callback(returnData);
             }, function (err) {
 
@@ -393,13 +397,27 @@ function initTable(keyWord){
 }
 
 // 搜索用户
-// function search () {
-//     clearTimeout(this.timer);
-//     // 添加的延时
-//     this.timer = setTimeout(function(){
-//         initTable($('#psnName').val());
-//     }, delayTime);
-// }
+function search () {
+    clearTimeout(this.timer);
+    // 添加的延时
+    this.timer = setTimeout(function(){
+        if ($('#psnName').val() === '') {
+            $('#userTable').html('');
+            $('#userTable_wrapper .bottom').remove();
+            $('.typeahead-menu').hide();
+            return;
+        }
+        $('.typeahead-menu').show();
+        initTable($('#psnName').val());
+    }, delayTime);
+}
+// 点击空白页面消失
+$(document).click(function(event){
+    var _con = $('.typeahead-menu');
+    if(!_con.is(event.target) && _con.has(event.target).length === 0){
+        $('.typeahead-menu').hide();          //淡出消失
+    }
+});
 
 function engineWithDefaults(q, sync, async) {
     if (timeout) {
@@ -417,29 +435,29 @@ function engineWithDefaults(q, sync, async) {
     }, 500);
 }
 
-$('#psnName').typeahead({
-    hint: $('.typeahead-hint'),
-    menu: $('.user-table'),
-    minLength: 0,
-    highlight:true,
-    classNames: {
-        open: 'is-open',
-        empty: 'is-empty',
-        cursor: 'is-active',
-        suggestion: 'Typeahead-suggestion',
-        selectable: 'Typeahead-selectable'
-    }
-}, {
-    source: engineWithDefaults,
-    displayKey: 'orgName',
-    templates: {
-        suggestion: empty
-    }
-})
-  .on('typeahead:asyncrequest', function(a, b) {
-        if ($("#psnName").val())
-            initTable($("#psnName").val());
-    });
+// $('#psnName').typeahead({
+//     hint: $('.typeahead-hint'),
+//     menu: $('.user-table'),
+//     minLength: 0,
+//     highlight:true,
+//     classNames: {
+//         open: 'is-open',
+//         empty: 'is-empty',
+//         cursor: 'is-active',
+//         suggestion: 'Typeahead-suggestion',
+//         selectable: 'Typeahead-selectable'
+//     }
+// }, {
+//     source: engineWithDefaults,
+//     displayKey: 'orgName',
+//     templates: {
+//         suggestion: empty
+//     }
+// })
+//   .on('typeahead:asyncrequest', function(a, b) {
+//         if ($("#psnName").val())
+//             initTable($("#psnName").val());
+//     });
 
 /***
  * 工作经历编辑
@@ -1111,7 +1129,7 @@ function convertToFile(base64Codes){
             psnImageId = data.data.psnImageId.toString();
         },
         error:function(data){
-            console.log(data);
+
         }
     });
 }

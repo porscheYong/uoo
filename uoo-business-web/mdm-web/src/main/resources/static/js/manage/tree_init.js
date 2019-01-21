@@ -63,12 +63,10 @@ function onNodeClick(e,treeId, treeNode) {
 }
 
 function onNodeCheck (e, treeId, treeNode) {
-    console.log(e, treeId, treeNode)
     var zTree = $.fn.zTree.getZTreeObj("roleTree");
     var node = zTree.getNodeByTId(treeNode.tId);
     // zTree.checkNode(node, false, false);
     addTag("tags_2", node.name);
-    console.log(node)
 }
 
 function checkNode (e) {

@@ -49,7 +49,7 @@ function initAcctInfo(results){
           }
         }
     }
-    console.log(acctInfoList);
+    // console.log(acctInfoList);
 }
 
 //展示主从账号信息

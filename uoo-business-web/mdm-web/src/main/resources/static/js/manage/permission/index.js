@@ -4,7 +4,7 @@ var table = $("#permTable").DataTable({
     'autoWidth': false,
     'ordering': true,
     'initComplete': function (settings, json) {
-        console.log(settings, json)
+
     },
     "scrollY": "375px",
     'scrollCollapse': true,

@@ -267,8 +267,13 @@ function setAcctHref(){
         userType: "1"
     }, function (data) {
         $("#acctLink").text(data.tbAcct.acct);
-        $("#acctLink").attr("href","editMainAccount.html?curOrgId="+curOrgId+"&curOrgTreeId="+curOrgTreeId+"&orgTreeId=" + orgTreeId + 
-                                    "&hType="+toMainType+"&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&acctId=" + mainAcctId);
+        if(hType == "mh"){
+            $("#acctLink").attr("href","editMainAccount.html?curOrgId="+curOrgId+"&curOrgTreeId="+curOrgTreeId+"&orgTreeId=" + orgTreeId + 
+                        "&hType="+hType+"&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&acctId=" + mainAcctId);
+        }else{
+            $("#acctLink").attr("href","editMainAccount.html?curOrgId="+curOrgId+"&curOrgTreeId="+curOrgTreeId+"&orgTreeId=" + orgTreeId + 
+                        "&hType="+toMainType+"&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&acctId=" + mainAcctId);
+        }
     }, function (err) {
 
     })
@@ -367,6 +372,7 @@ function getSysSelect(){   //获取应用系统下拉列表
             }else{
                 if(resourceObjId == data[i].businessSystemId){
                     option += "<option value='" + data[i].businessSystemId + "' selected>" + data[i].systemName +"</option>";
+                    $("#sysLable").text(data[i].systemName);
                 }else{
                     option += "<option value='" + data[i].businessSystemId + "'>" + data[i].systemName +"</option>";
                 }
@@ -378,7 +384,6 @@ function getSysSelect(){   //获取应用系统下拉列表
         });
         $('#system').unbind('change').bind('change', function (event) {
             resourceObjId = event.target.options[event.target.options.selectedIndex].value;
-            console.log(resourceObjId);
         })
         loading.screenMaskDisable('container');
     }, function (err) {
