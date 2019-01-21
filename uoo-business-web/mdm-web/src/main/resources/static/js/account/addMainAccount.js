@@ -51,7 +51,7 @@ function getAcctUser(personnelId){     //获取人员信息(新增)
   }, function (data) {
       //新增
       initAddUserInfo(data);
-      addAcctAutoSelectOrg(orgId,orgFullName,orgName,"30");
+      addAcctAutoSelectOrg(orgId,orgFullName,orgName,"99");
   }, function (err) {
 
   })
@@ -217,7 +217,7 @@ function openOrgDialog() {
       shade: 0.8,
       area: ['40%', '80%'],
       maxmin: true,
-      content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType=30',
+      content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType=99',
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象

@@ -635,7 +635,7 @@ function openOrgDialog() {
       shade: 0.8,
       area: ['40%', '80%'],
       maxmin: true,
-      content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType=30'+'&addToEditFlag='+addToEditFlag,
+      content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType=99'+'&addToEditFlag='+addToEditFlag,
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象
