@@ -71,7 +71,7 @@ public class SysOperationLogController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long"  ),
     })
     @GetMapping("/listPage")
-    public ResponseResult<Page<LogDTO>> listPage(@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord){
-        return logClient.listPage(pageNo, pageSize, keyWord);
+    public ResponseResult<Page<LogDTO>> listPage(@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord,@RequestParam("logEnum")String logEnum){
+        return logClient.listPage(pageNo, pageSize, keyWord,logEnum);
     }
 }
