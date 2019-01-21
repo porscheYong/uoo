@@ -36,7 +36,7 @@
   </sql>
 
   <resultMap id="OrgVoMapper" type="cn.ffcs.uoo.message.server.vo.TbOrgVo" extends="BaseResultMap">
-
+    <result column="ORG_MART_CODE" jdbcType="VARCHAR" property="orgMartCode"></result>
     <result column="ORG_TREE_ID" jdbcType="DECIMAL" property="orgTreeId"></result>
     <result column="BUSINESS_SYSTEM_ID" jdbcType="DECIMAL" property="businessSystemId"></result>
     <result column="org_biz_name" jdbcType="VARCHAR" property="orgBizName"></result>
