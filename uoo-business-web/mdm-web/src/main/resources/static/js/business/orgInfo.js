@@ -3,6 +3,7 @@ var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
 var standardFlag = ~~getQueryString('standardFlag');
 var orgName = getQueryString('name');
+var refCode = getQueryString('refCode');
 var locationList;
 var orgTypeList;
 var positionList;
@@ -182,7 +183,7 @@ function getOrgRel (orgId) {
 }
 
 function orgEdit () {
-    var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&refCode=' + refCode + '&name=' + encodeURI(orgName);
     $('#editBtn').attr('href', url);
 }
 
