@@ -139,11 +139,29 @@ function changeNodeName(orgId, name) {
 }
 
 // 添加子节点
-function addNodeById (sId, newNode) {
+function addNodeById (sId, index, newNode) {
     var zTree = $.fn.zTree.getZTreeObj("businessTree");
     var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
     if (selectNode)
-        var newNode = zTree.addNodes(selectNode, newNode);
+        var newNode = zTree.addNodes(selectNode, index, newNode);
+}
+
+//移动节点至指定位置
+function moveNode(pid, orgId, index) {
+    if (index) {
+        var tree = $.fn.zTree.getZTreeObj('businessTree');
+        var pNode = tree.getNodeByParam('id', pid);
+        var node = tree.getNodeByParam('id', orgId);
+        var childNode = pNode.children;
+        childNode.splice($.inArray(node, childNode), 1);
+        var targetNode = childNode[index - 1];
+        if (childNode.length > 0) {
+            if (targetNode)
+                tree.moveNode(targetNode, node, 'prev');
+            else
+                tree.moveNode(childNode[childNode.length - 1], node, 'next'); //移动到最后一个元素
+        }
+    }
 }
 
 // 删除节点

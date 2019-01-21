@@ -619,7 +619,7 @@ function addOrg () {
         orgDesc: orgDesc,
         expandovalueVoList: expandovalueVoList
     }), function (data) {
-        parent.addNodeById(orgId, data);
+        parent.addNodeById(orgId, sort - 1, data);
         parent.openTreeById(orgId, data.id);
         window.location.replace("list.html?id=" + data.id + '&orgTreeId=' + orgTreeId + "&refCode=" + refCode + '&pid=' + data.pid + "&name=" + encodeURI(data.name));
         loading.screenMaskDisable('container');

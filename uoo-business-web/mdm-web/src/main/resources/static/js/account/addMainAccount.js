@@ -5,6 +5,8 @@ var hType = getQueryString('hType');
 var orgTreeId = getQueryString('orgTreeId');
 var orgRootId = getQueryString('orgRootId');
 var orgTreeName = getQueryString('orgTreeName');
+var curOrgId = getQueryString('curOrgId');
+var curOrgTreeId = getQueryString('curOrgTreeId');
 
 var acctId = getQueryString('acctId');
 var personnelId = getQueryString('personnelId');
@@ -213,7 +215,7 @@ function openOrgDialog() {
       title: '选择组织',
       shadeClose: true,
       shade: 0.8,
-      area: ['27%', '80%'],
+      area: ['40%', '80%'],
       maxmin: true,
       content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType=30',
       btn: ['确认', '取消'],
@@ -338,7 +340,8 @@ function submitSuccess(personnelId){
       userType: "1"
     }, function (data) {
       url = "editMainAccount.html?acctId="+ data.tbAcct.acctId +"&orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + 
-              "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=mh" + "&orgTreeName="+encodeURI(orgTreeName);
+              "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=mh" + "&orgTreeName="+encodeURI(orgTreeName)+
+              "&curOrgId="+curOrgId+"&curOrgTreeId="+curOrgTreeId;
       window.location.href = url;
     }, function (err) {
   
