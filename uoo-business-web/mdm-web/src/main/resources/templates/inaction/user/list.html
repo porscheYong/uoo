@@ -70,7 +70,8 @@
           </div>
       </div>
       <div style="overflow: hidden;">
-        <input class="ui-input ui-input-search col-md-4 col-sm-4 col-xs-4" type="text" placeholder="组织搜索"  oninput="search()" onpropertychange="search()" />
+        <input class="ui-input ui-input-search col-md-4 col-sm-4 col-xs-4" type="text" placeholder="姓名/身份证/手机号码/工号"/>
+        <button class="ui-button ui-button-primary" id="searchBtn" onclick="search()" style="margin-left:1%;">搜索</button>
       </div>
       <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
           <table id="personnelTable" class="stripe" width="100%"></table>

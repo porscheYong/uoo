@@ -5,12 +5,14 @@ import cn.ffcs.uoo.core.personnel.constant.EumPersonnelResponseCode;
 import cn.ffcs.uoo.core.personnel.dao.TbCertMapper;
 import cn.ffcs.uoo.core.personnel.entity.TbCert;
 import cn.ffcs.uoo.core.personnel.entity.TbEdu;
+import cn.ffcs.uoo.core.personnel.service.ModifyHistoryService;
 import cn.ffcs.uoo.core.personnel.service.TbCertService;
 import cn.ffcs.uoo.core.personnel.util.ResultUtils;
 import cn.ffcs.uoo.core.personnel.util.StrUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zipkin2.Call;
 
@@ -29,6 +31,8 @@ import java.util.Map;
 @Service
 public class TbCertServiceImpl extends ServiceImpl<TbCertMapper, TbCert> implements TbCertService {
 
+    @Autowired
+    private ModifyHistoryService modifyHistoryService;
 
     @Override
     public Long getId() {
@@ -49,24 +53,26 @@ public class TbCertServiceImpl extends ServiceImpl<TbCertMapper, TbCert> impleme
     }
 
     @Override
-    public Object delTbCertByPsnId(Long personnelId, Long userId){
-        TbCert tbCert = new TbCert();
-        tbCert.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
-        tbCert.setStatusDate(new Date());
-        tbCert.setUpdateUser(userId);
+    public Object delTbCertByPsnId(Long personnelId, Long userId, String batchNum){
         EntityWrapper<TbCert> wrapper = new EntityWrapper<TbCert>();
         wrapper.eq(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
         wrapper.eq(BaseUnitConstants.TBPERSONNEL_PERSONNEL_ID, personnelId);
-        if(retBool(baseMapper.update(tbCert, wrapper))){
-            return ResultUtils.success(null);
+        TbCert tbCert = this.selectOne(wrapper);
+        if(!StrUtil.isNullOrEmpty(tbCert)){
+            tbCert.setStatusCd(BaseUnitConstants.ENTT_STATE_INACTIVE);
+            tbCert.setStatusDate(new Date());
+            tbCert.setUpdateUser(userId);
+            if(retBool(baseMapper.updateById(tbCert))){
+                modifyHistoryService.deleteModifyHistory(tbCert, userId, batchNum);
+            }
         }
-        return ResultUtils.error(EumPersonnelResponseCode.PERSONNEL_RESPONSE_ERROR);
+        return ResultUtils.success(null);
     }
 
     @Override
     public Object getCertInfo(String keyWord, Integer pageNo, Integer pageSize){
-        pageNo = pageNo == 0 ? 1 : pageNo;
-        pageSize = pageSize == 0 ? 5 : pageSize;
+        pageNo = StrUtil.intiPageNo(pageNo);
+        pageSize = StrUtil.intiPageSize(pageSize);
 
         Page<TbCert> page =  this.selectPage(new Page<TbCert>(pageNo, pageSize), new EntityWrapper<TbCert>().like(BaseUnitConstants.TBCERT_CERT_NO, keyWord).or().like(BaseUnitConstants.TBCERT_CERT_NAME, keyWord));
         return ResultUtils.success(page);

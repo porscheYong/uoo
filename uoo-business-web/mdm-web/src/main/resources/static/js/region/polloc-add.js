@@ -49,7 +49,6 @@ function saveRegion(){
 	if(!validFormData()){
 		return;
 	}
-	console.log(serializeObject($('#regionForm')));
 	$http.post('/region/politicalLocation/addPoliticalLocation',JSON.stringify(),function(data){
 		toastr.success('操作成功');
 		//在父节点增加数据啊

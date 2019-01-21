@@ -146,25 +146,26 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
         if(StrUtil.isNullOrEmpty(tbSlaveAcct)){
             tbSlaveAcct = new TbSlaveAcct();
             type = "insert";
-        }else{
-            pwd = tbSlaveAcct.getPassword();
         }
+//        else{
+//            pwd = tbSlaveAcct.getPassword();
+//        }
         CopyUtils.copyProperties(editFormSlaveAcctVo, tbSlaveAcct);
 
-        if("insert".equals(type) || !editFormSlaveAcctVo.getPassword().equals(pwd)){
-            if(!PwdPolicyUtil.isMatchBasicPattern(editFormSlaveAcctVo.getPassword())){
-                return ResultUtils.error(EumUserResponeCode.PWD_ERROR);
-            }
-            // 获取盐
-            String salt = MD5Tool.getSalt();
-            // 非对称密码
-            String password = MD5Tool.md5Encoding(editFormSlaveAcctVo.getPassword(), salt);
-            // 对称密码
-            String symmetryPassword = AESTool.AESEncode(editFormSlaveAcctVo.getPassword());
-            tbSlaveAcct.setSalt(salt);
-            tbSlaveAcct.setPassword(password);
-            tbSlaveAcct.setSymmetryPassword(symmetryPassword);
-        }
+//        if("insert".equals(type) || !editFormSlaveAcctVo.getPassword().equals(pwd)){
+//            if(!PwdPolicyUtil.isMatchBasicPattern(editFormSlaveAcctVo.getPassword())){
+//                return ResultUtils.error(EumUserResponeCode.PWD_ERROR);
+//            }
+//            // 获取盐
+//            String salt = MD5Tool.getSalt();
+//            // 非对称密码
+//            String password = MD5Tool.md5Encoding(editFormSlaveAcctVo.getPassword(), salt);
+//            // 对称密码
+//            String symmetryPassword = AESTool.AESEncode(editFormSlaveAcctVo.getPassword());
+//            tbSlaveAcct.setSalt(salt);
+//            tbSlaveAcct.setPassword(password);
+//            tbSlaveAcct.setSymmetryPassword(symmetryPassword);
+//        }
 
         if("insert".equals(type)){
             //TbAcct tbAcct = (TbAcct) tbAcctService.getTbAcctByPsnId(editFormSlaveAcctVo.getPersonnelId());

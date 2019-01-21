@@ -5,6 +5,7 @@ var tabPage = getQueryString('tabPage');
 //var orgRootId = 1;
 var personnelId = getQueryString('personnelId');
 var orgTreeId = getQueryString('orgTreeId');
+var orgTreeName = getQueryString('orgTreeName');
 var orgName = getQueryString('name');
 var addOrg = getQueryString('addOrg');
 var personalData={},genderData,certTypeData,nationData,pliticalStatusData,marriageData,orgInfo={},
@@ -268,31 +269,32 @@ function  editUser() {
         }
         for(var i=0;i<personalData.personalData.tbMobileVoList.length;i++){
             var d=personalData.personalData.tbMobileVoList[i];
-            mobileHtml+="<li>";
             if(i==0){
-                mobileHtml+="<span class='Label'><span class='Red'>* </span>联系电话</span>";
-                mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' style='width:50%' class='ui-input' required type='text' value='"+d.content+"'/>";
+            	mobileHtml+="<div class='col-md-12 col-sm-12 col-xs-12'>";
+            	mobileHtml+="<label for='mobile' class='form-item-label-required col-md-4 col-sm-4 col-xs-12' style='padding-right: 20px;line-height: 40px;text-align: right;'>联系电话</label>";
+            	mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' class='ui-input col-md-7 col-sm-7 col-xs-12' value='"+d.content+"'   required />";
+            	mobileHtml+="<a class='col-md-1 col-sm-1 col-xs-12' href='javascript:void(0)' onclick='addMobileInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 30px;'></span></a>";
+            	mobileHtml+="</div>";
             }else{
-                mobileHtml+="<span class='Label'><span class='Red'> </span> </span>";
-                mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' style='width:50%' type='text' value='"+d.content+"'/>";
-                mobileHtml+="&nbsp;<a class='icon-del Wp1'><span class='fa fa-minus-circle'></span></a>";
-
+            	mobileHtml+="<div class='col-md-12 col-sm-12 col-xs-12'>";
+            	mobileHtml+="<label for='mobile' class='col-md-4 col-sm-4 col-xs-12' style='padding-right: 20px;line-height: 40px;text-align: right;'></label>";
+            	mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' class='ui-input col-md-7 col-sm-7 col-xs-12' value='"+d.content+"'  required />";
+            	mobileHtml+="<a class='icon-del col-md-1 col-sm-1 col-xs-12' href='javascript:void(0)'  ><span class='fa fa-minus-circle ' style='padding-right: 0; font-size: 30px;'></span></a>";
+            	mobileHtml+="</div>";
             }
-            if(i==0){
-                mobileHtml+="&nbsp;<a id='' class='Wp1'  href='javascript:void(0)' onclick='addMobileInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
-            }else{
-                //mobileHtml+="&nbsp;<a id='' href='javascript:void(0)' onclick='addMobileInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
-
-            }
-            mobileHtml+="</li>";
+             
         }
     }else{
-        mobileHtml+="<li>";
-        mobileHtml+="<span class='Label'><span class='Red'>* </span>联系电话</span>";
-        mobileHtml+="<input name='mobiles' contactid='' style='width:50%' class='ui-input' required type='text' value=''/>";
-        mobileHtml+="&nbsp;<a id='' href='javascript:void(0)' class='Wp1' onclick='addMobileInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
-        mobileHtml+="</li>";
+    	mobileHtml+="<div class='col-md-12 col-sm-12 col-xs-12'>";
+    	mobileHtml+="<label for='mobile' class='form-item-label-required col-md-4 col-sm-4 col-xs-12' style='padding-right: 20px;line-height: 40px;text-align: right;'>联系电话</label>";
+    	mobileHtml+="<input name='mobiles' contactid='' class='ui-input col-md-7 col-sm-7 col-xs-12'   required />";
+    	mobileHtml+="<a class='col-md-1 col-sm-1 col-xs-12' href='javascript:void(0)' onclick='addMobileInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 30px;'></span></a>";
+    	mobileHtml+="</div>";
+        
     }
+    
+    
+    
     
     var emailHtml="";
     if(personalData.personalData.tbEamilVoList.length>0){
@@ -304,29 +306,31 @@ function  editUser() {
         }
         for(var i=0;i<personalData.personalData.tbEamilVoList.length;i++){
             var d=personalData.personalData.tbEamilVoList[i];
-            emailHtml+="<li id='emailLi'>";
             if(i==0){
-                emailHtml+="<span class='Label'><span class='Red'>* </span>邮箱</span>";
-                emailHtml+="<input name='emails' contactid='"+d.contactId+"' style='width:50%' class='ui-input' required type='text' value='"+d.content+"'/>";
+            	emailHtml+="<div class='col-md-12 col-sm-12 col-xs-12'>";
+            	emailHtml+="<label for='mobile' class='form-item-label-required col-md-4 col-sm-4 col-xs-12' style='padding-right: 20px;line-height: 40px;text-align: right;'>邮箱</label>";
+            	emailHtml+="<input name='emails' contactid='"+d.contactId+"' class='ui-input col-md-7 col-sm-7 col-xs-12' value='"+d.content+"'   required />";
+            	emailHtml+="<a class='col-md-1 col-sm-1 col-xs-12' href='javascript:void(0)' onclick='addEmailInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 30px;'></span></a>";
+            	emailHtml+="</div>";
             }else{
-                emailHtml+="<span class='Label'><span class='Red'> </span> </span>";
-                emailHtml+="<input name='emails' contactid='"+d.contactId+"' style='width:50%' type='text' value='"+d.content+"'/>";
-                emailHtml+="&nbsp;<a class='icon-del Wp1'><span class='fa fa-minus-circle '></span></a>";
+            	emailHtml+="<div class='col-md-12 col-sm-12 col-xs-12'>";
+            	emailHtml+="<label for='mobile' class='col-md-4 col-sm-4 col-xs-12' style='padding-right: 20px;line-height: 40px;text-align: right;'></label>";
+            	emailHtml+="<input name='emails' contactid='"+d.contactId+"' class='ui-input col-md-7 col-sm-7 col-xs-12' value='"+d.content+"'  required />";
+            	emailHtml+="<a class='icon-del col-md-1 col-sm-1 col-xs-12' href='javascript:void(0)'  ><span class='fa fa-minus-circle ' style='padding-right: 0; font-size: 30px;'></span></a>";
+            	emailHtml+="</div>";
             }
-            if(i==0){
-                emailHtml+="&nbsp;<a id='' class='Wp1' href='javascript:void(0)' onclick='addEmailInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
-            }
-            emailHtml+="</li>";
+             
         }
     }else{
-        emailHtml+="<li id='emailLi'>";
-        emailHtml+="<span class='Label'><span class='Red'>* </span>邮箱</span>";
-        emailHtml+="<input name='emails' contactid='' style='width:50%' class='ui-input' required type='text' value=''/>";
-        emailHtml+="&nbsp;<a id='' class='Wp1' href='javascript:void(0)' onclick='addEmailInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 23px;'></span></a>";
-        emailHtml+="</li>";
+    	emailHtml+="<div class='col-md-12 col-sm-12 col-xs-12'>";
+    	emailHtml+="<label for='mobile' class='form-item-label-required col-md-4 col-sm-4 col-xs-12' style='padding-right: 20px;line-height: 40px;text-align: right;'>邮箱</label>";
+    	emailHtml+="<input name='emails'  class='ui-input col-md-7 col-sm-7 col-xs-12'    required />";
+    	emailHtml+="<a class='col-md-1 col-sm-1 col-xs-12' href='javascript:void(0)' onclick='addEmailInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 30px;'></span></a>";
+    	emailHtml+="</div>";
+         
     }
-    $('#sexLi').after(emailHtml);
-    $('#sexLi').after(mobileHtml);
+    $('#emailDiv').append(emailHtml);
+    $('#phoneDiv').append(mobileHtml);
     laydate.render({
         elem:  'input[isTime="yes"]'
     });
@@ -346,6 +350,9 @@ function  editUser() {
              });
          });*/
     });
+    seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $('select').selectMatch();
+      })
     getPsnImage();
 }
 function editOrgInfo(){
@@ -770,7 +777,7 @@ function convertToFile(base64Codes){
             psnImageId = data.data.psnImageId;
         },
         error:function(data){
-            console.log(data);
+
         }
     });
 }
@@ -810,6 +817,8 @@ function updatePersonnel(){
     updates.marriage=marriage;
     updates.pliticalStatus=pliticalStatus;
     updates.image=psnImageId;
+    updates.address=$('#address').val();
+    
     var tbMobileVoList =new Array();
     var mobiles=$("input[name='mobiles']").each(function(){
         var obj={};
@@ -852,23 +861,26 @@ function updatePersonnel(){
      
 }
 function addEmailInput(){
-    var mh="<li>";
-    mh+="<span class='Label'></span>"
-    mh+="<input style='width:50%' contactid='' name='emails' type='text'  />&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a>";
-    mh+="</li>";
-    $('#firstJobLi').before(mh);
+	var mh=" ";
+    mh+="<div class='col-md-12 col-sm-12 col-xs-12'>";
+    mh+="<label for='mobile' class='col-md-4 col-sm-4 col-xs-12' style='padding-right: 20px;line-height: 40px;text-align: right;'></label>";
+    mh+="<input name='emails' contactid='' class='ui-input col-md-7 col-sm-7 col-xs-12' value=''  required />";
+    mh+="<a class='icon-del col-md-1 col-sm-1 col-xs-12' href='javascript:void(0)'  ><span class='fa fa-minus-circle ' style='padding-right: 0; font-size: 30px;'></span></a>";
+    mh+="</div>";
+    $('#emailDiv').append(mh);
     $('.icon-del').on('click', function () {
         $(this).parent().remove();
     });
 }
 function addMobileInput(){
-    var mh="<li>";
-    mh+="<span class='Label'></span>"
-    //mh+=" <input required class='Col6'> <a class='icon-del'><span class='fa fa-minus-circle'></span></a>  ";
-
-    mh+="<input  style='width:50%' type='text'  contactid='' name='mobiles' type='text' />&nbsp;<a class='icon-del'><span class='fa fa-minus-circle '></span></a> ";
-    mh+="</li>";
-    $('#emailLi').before(mh);
+    var mh=" ";
+    mh+="<div class='col-md-12 col-sm-12 col-xs-12'>";
+    mh+="<label for='mobile' class='col-md-4 col-sm-4 col-xs-12' style='padding-right: 20px;line-height: 40px;text-align: right;'></label>";
+    mh+="<input name='mobiles' contactid='' class='ui-input col-md-7 col-sm-7 col-xs-12' value=''  required />";
+    mh+="<a class='icon-del col-md-1 col-sm-1 col-xs-12' href='javascript:void(0)'  ><span class='fa fa-minus-circle ' style='padding-right: 0; font-size: 30px;'></span></a>";
+    mh+="</div>";
+     
+    $('#phoneDiv').append(mh);
     $('.icon-del').on('click', function () {
         $(this).parent().remove();
     });
@@ -1002,6 +1014,8 @@ $(document).ready(function(){
     if(tabPage=='acct'){
         $('#personnel').removeClass('active');
         $('#user').addClass('active');
+        $('#psnTabLI').removeClass('active');
+        $('#userTabLI').addClass('active');
     }
 
     if(!isNum(orgId)){
@@ -1029,15 +1043,44 @@ $(document).ready(function(){
     getPsnImage();
 
 });
+function gotoPrev(){
+    if (orgId == '88888888') {
+        parent.openTreeById('', '88888888')
+    }
+    else {
+        var url = "/inaction/user/list.html?";
+        url += "id=" + orgId;
+        url += "&orgTreeId=" + orgTreeId;
+        url += "&orgTreeName=" + orgTreeName;
+        url += "&name=" + orgName;
+        location.href = url;
+    }
+}
 function gotoAccout(i){
+	var mainAcctId=0;
+	for(var j=0;j<personalData.userList.records.length;j++){
+		if(personalData.userList.records[j].type==1){
+			mainAcctId=personalData.userList.records[j].acctId;
+			break;
+		}
+	}
     var userAcc=personalData.userList.records[i];
     var url="";
     if(userAcc.type==1){
-        url+="/inaction/account/editMainAccount.html"
+        url+="/inaction/account/editMainAccount.html";
+        url+="?";
+        url+="curOrgTreeId="+parent.getCurrentOrgTreeId()+"&";
+        url+="curOrgId="+parent.getCurrentOrgId()+"&";
     }else{
-        url+="/inaction/account/editSubAccount.html"
+        url+="/inaction/account/editSubAccount.html";
+        url+="?";
+        url+="curOrgTreeId="+parent.getCurrentOrgTreeId()+"&";
+        url+="curOrgId="+parent.getCurrentOrgId()+"&";
+        url+="curSlaveOrgTreeId="+userAcc.curSlaveOrgTreeId+"&";
+        url+="curSlaveOrgTreeName="+userAcc.curSlaveOrgTreeName+"&";
+        url+="mainAcctId="+mainAcctId+"&";
     }
-    url+="?";
+    
     url+="orgId="+orgId+"&";
     url+="orgRootId="+orgRootId+"&";
     url+="personnelId="+personnelId +"&";
@@ -1048,6 +1091,8 @@ function gotoAccout(i){
     url+="acctId="+userAcc.acctId+"&";
     url+="statusCd="+userAcc.statusCd+"&";
     url+="tabPage="+"acct"+"&";
+    url+="orgTreeName="+orgTreeName+"&";
+    
     window.location.href=url;
 }
 function autoWriteForm(){

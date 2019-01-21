@@ -7,7 +7,7 @@ spring:
     name: business-public
   # 目前使用的是我的阿里云上的mysql数据库
   zipkin:
-      base-url: http://134.96.253.223:8600
+      base-url: http://134.96.217.244:8600
   sleuth:
     sampler:
       percentage: 1.0

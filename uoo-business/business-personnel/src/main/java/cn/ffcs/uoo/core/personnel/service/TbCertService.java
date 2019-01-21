@@ -27,9 +27,10 @@ public interface TbCertService extends IService<TbCert> {
      * 根据personnelId 删除 证件信息
      * @param personnelId
      * @param userId
+     * @param batchNum
      * @return
      */
-    public Object delTbCertByPsnId(Long personnelId, Long userId);
+    public Object delTbCertByPsnId(Long personnelId, Long userId, String batchNum);
 
     /**
      * 证件查询

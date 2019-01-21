@@ -114,7 +114,7 @@ function autoFillShortName () {
 function openOrgSearchDialog() {
     parent.layer.open({
         type: 2,
-        title: '游离组织',
+        title: '选择组织',
         shadeClose: true,
         shade: 0.8,
         area: ['70%', '85%'],
@@ -199,7 +199,7 @@ function openTypeDialog() {
         shade: 0.8,
         area: ['70%', '85%'],
         maxmin: true,
-        content: '/inaction/organization/typeDialog.html?id=' + orgId,
+        content: '/inaction/organization/typeDialog.html',
         btn: ['确认', '取消'],
         yes: function(index, layero){
             //获取layer iframe对象
@@ -619,7 +619,7 @@ function addOrg () {
         orgDesc: orgDesc,
         expandovalueVoList: expandovalueVoList
     }), function (data) {
-        parent.addNodeById(orgId, data);
+        parent.addNodeById(orgId, sort - 1, data);
         parent.openTreeById(orgId, data.id);
         window.location.replace("list.html?id=" + data.id + '&orgTreeId=' + orgTreeId + "&refCode=" + refCode + '&pid=' + data.pid + "&name=" + encodeURI(data.name));
         loading.screenMaskDisable('container');

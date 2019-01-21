@@ -9,6 +9,7 @@ function initOrgTable (query) {
         'searching': false,
         'autoWidth': false,
         'ordering': true,
+        'lSort': true,
         'columns': [
             { 'data': "orgName", 'title': '组织名称', 'className': 'org-name',
                 'render': function (data, type, row, meta) {

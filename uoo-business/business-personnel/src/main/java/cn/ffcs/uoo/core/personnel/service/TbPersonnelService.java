@@ -42,9 +42,11 @@ public interface TbPersonnelService extends IService<TbPersonnel> {
     /**
      * 根据personnelId 删除 人员基础信息
      * @param personnelId
+     * @param userId
+     * @param batchNum
      * @return
      */
-    public Object delTbPersonnelByPsnId(Long personnelId, Long userId);
+    public Object delTbPersonnelByPsnId(Long personnelId, Long userId, String batchNum);
 
     /**
      * 选择人员
@@ -91,4 +93,11 @@ public interface TbPersonnelService extends IService<TbPersonnel> {
      * @return
      */
     public Object getHomeStatistics(String labelType);
+
+    /**
+     *  人员信息 校验
+     * @param editFormPersonnelVo
+     * @return
+     */
+    public Object checkFormPersonnel(EditFormPersonnelVo editFormPersonnelVo);
 }

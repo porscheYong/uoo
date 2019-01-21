@@ -773,7 +773,10 @@ $('#myTabs a').click(function (e) {
 function updateOrg () {
   if (!formValidate.isAllPass())
       return;
-  loading.screenMaskEnable('container');
+  var statusCd = $('#statusCd option:selected') .val();
+  if (statusCd == '1100')
+      return deleteOrg();
+    loading.screenMaskEnable('container');
   var userList = [];
   var location = [];
   var position = [];
@@ -818,7 +821,7 @@ function updateOrg () {
   // }
   var orgPositionLevel = $('#orgPositionLevel option:selected') .val();
   var officePhone = $('#officePhone').val();
-  var statusCd = $('#statusCd option:selected') .val();
+  // var statusCd = $('#statusCd option:selected') .val();
   var sort = $('#sort').val();
   var address = $('#address').val();
   var orgContent = $('#orgContent').val();
@@ -871,6 +874,7 @@ function updateOrg () {
       orgMartCode: orgMart
   }), function () {
       parent.changeNodeName(orgId, orgName);
+      parent.moveNode(pid, orgId, sort);
       window.location.replace("list.html?id=" + orgId + '&orgTreeId=' + orgTreeId + "&refCode=" + refCode + '&pid=' + pid + "&name=" + encodeURI(orgName));
       loading.screenMaskDisable('container');
       toastr.success('更新成功！');

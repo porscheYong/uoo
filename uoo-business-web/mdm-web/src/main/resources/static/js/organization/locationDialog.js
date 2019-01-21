@@ -55,9 +55,11 @@ function autoCheck () {
     var zTree = $.fn.zTree.getZTreeObj("locationTree");
     for (var i = 0; i < locationList.length; i++) {
         var id = locationList[i].id || locationList[i].locId;
+        var pid = locationList[i].parentLocId || locationList[i].pId;
         var node = zTree.getNodeByTId("orgPostTree_" + id);
+        var pNode = zTree.getNodeByParam('id', pid);
         zTree.checkNode(node, true);
-        zTree.expandNode(node, true, true, true);
+        zTree.expandNode(pNode, true);
         checkNode.push(node);
     }
 }

@@ -2,9 +2,9 @@
     margin-left: 0px;
     margin-right: 0px;
 }
-.col-md-6 {
+/* .col-md-6 {
     width: 45%;
-}
+} */
 .row-id{
     width: 15% !important;
 }
@@ -83,6 +83,7 @@ table.dataTable tbody td {
     border: 1px solid #dce1e6
 }
 .lableStyle{
+    /* margin-left: 5%; */
     margin-bottom:10px;
     color:rgb(74,74,74);
     font-size: 15px;

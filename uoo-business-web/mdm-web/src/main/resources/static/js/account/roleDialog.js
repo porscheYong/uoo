@@ -56,7 +56,6 @@ function initRoleTree () {
         for(var i=0;i < data.records.length;i++){
             allRoles.push({"id":data.records[i].roleId, "name":data.records[i].roleName});
         }
-        console.log(allRoles);
         $.fn.zTree.init($("#roleTree"), roleTetting, allRoles);
         autoCheck();
     }, function (err) {

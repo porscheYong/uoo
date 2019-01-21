@@ -468,4 +468,8 @@ table.dataTable td {
   }
 }
 
+table.dataTable thead th.row-no {
+  width: 50px;
+}
+
 

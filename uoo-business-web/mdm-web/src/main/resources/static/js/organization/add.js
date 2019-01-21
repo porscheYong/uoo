@@ -68,7 +68,7 @@ function autoFillShortName () {
 function openOrgSearchDialog() {
     parent.layer.open({
         type: 2,
-        title: '游离组织',
+        title: '选择组织',
         shadeClose: true,
         shade: 0.8,
         area: ['70%', '85%'],
@@ -528,7 +528,7 @@ function addOrg () {
         orgDesc: orgDesc,
         expandovalueVoList: expandovalueVoList
     }), function (data) {
-        parent.addNodeById(orgId, data);
+        parent.addNodeById(orgId, sort - 1, data);
         parent.openTreeById(orgId, data.id);
         window.location.replace("list.html?id=" + data.id + '&pid=' + data.pid + "&name=" + encodeURI(data.name));
         loading.screenMaskDisable('container');
@@ -599,7 +599,6 @@ engine = new Bloodhound({
 });
 
 function engineWithDefaults(q, sync, async) {
-    console.log(query, q, selectNode)
     if (q != query && selectNode && selectNode.orgId){
         // console.log(query, q)
         selectNode = {};

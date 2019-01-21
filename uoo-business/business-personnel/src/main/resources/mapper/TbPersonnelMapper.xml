@@ -158,7 +158,7 @@
     </select>
 
     <select id="getFreePsnInfo" resultType="cn.ffcs.uoo.core.personnel.vo.FreePsnInfoVo">
-        select d.* from (select a.*, b.cert_no, c.content as mobile
+        select ROWNUM id,d.* from (select a.*, b.cert_no, c.content as mobile
                          from (select t.personnel_id,
                                       t.psn_name,
                                       t.psn_nbr,

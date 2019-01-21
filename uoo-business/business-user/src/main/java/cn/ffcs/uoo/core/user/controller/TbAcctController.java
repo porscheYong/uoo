@@ -139,7 +139,7 @@ public class TbAcctController extends BaseController {
         }
         rabbitMqService.sendMqMsg("person", "delete", "personnelId", tbAcct.getPersonnelId());
 
-        return ResultUtils.successfulTip(EumUserResponeCode.ACCT_IS_DELETE);
+        return ResultUtils.success(null);
     }
 
     @ApiOperation(value = "修改主账号",notes = "主账号修改")
@@ -167,7 +167,7 @@ public class TbAcctController extends BaseController {
 
         rabbitMqService.sendMqMsg("person", "update", "personnelId", tbAcct.getPersonnelId());
 
-        return ResultUtils.successfulTip(EumUserResponeCode.USER_RESPONSE_SUCCESS);
+        return ResultUtils.success(null);
 
     }
 

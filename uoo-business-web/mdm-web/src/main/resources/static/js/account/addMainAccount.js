@@ -5,6 +5,8 @@ var hType = getQueryString('hType');
 var orgTreeId = getQueryString('orgTreeId');
 var orgRootId = getQueryString('orgRootId');
 var orgTreeName = getQueryString('orgTreeName');
+var curOrgId = getQueryString('curOrgId');
+var curOrgTreeId = getQueryString('curOrgTreeId');
 
 var acctId = getQueryString('acctId');
 var personnelId = getQueryString('personnelId');
@@ -17,7 +19,7 @@ var orgNum = 0;
 var toastr = window.top.toastr;
 var cerTypeList = window.top.dictionaryData.certType();
 var statusCdList = window.top.dictionaryData.statusCd();
-var relTypeName = parent.relTypeName;
+var relTypeName = window.top.relTypeName;
 
 window.localStorage.setItem('userRoleList',JSON.stringify(''));
 
@@ -36,11 +38,11 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 });
 
 // lulu ui tips插件
-seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
-  $('#defaultPsw').tips({
-      align: 'right'
-  });
-});
+// seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
+//   $('#defaultPsw').tips({
+//       align: 'right'
+//   });
+// });
 
 function getAcctUser(personnelId){     //获取人员信息(新增)
   $http.get('/user/getPsnUser', {    
@@ -124,13 +126,13 @@ function setAcctInfoTables(){
             break;
           }
       }
-      acctHtml += "<div class='curDiv' style='padding:10px 0;'>"+
+      acctHtml += "<div class='curDiv' style='padding:10px 0;margin-left:2%;'>"+
                       "<span class='pngDot'></span>"+
                       "<span class='Name Gray3' style='margin-left:1.5%;' id='orgTreeName_"+i+"'>"+addOrgList[i].orgTreeName+"</span>"+
                       "<span class='Tag' style='cursor:pointer;' title='"+addOrgList[i].fullName+"' id='orgName_"+i+"'>"+addOrgList[i].orgName+"</span>"+
                       // "<span id='editBtn_"+i+"' title='组织编辑' onclick='' class='icon icon-edit'></span>"+
                       "<span class='Tag' style='cursor:pointer;' id='relTypeName_"+i+"'>"+relType+"</span>"+
-                      "<span class='fright FunctionBtn' style='float:right;margin-right:3.5%;'>"+
+                      "<span class='fright FunctionBtn' style='float:right;margin-right:-1.2%;'>"+
                           "<a class='BtnDel' style='cursor:pointer;' onclick='deleteOrg("+i+")' id='delBtn_"+i+"'><span></span>删除组织关系</a></span></div>";
   }
   $("#acctOrgDiv").append(acctHtml);
@@ -172,7 +174,7 @@ function addTbAcct(){         //新增
     "acctOrgVoList": addOrgList,
     "disableDate": $('#invalidDate').val(),
     "enableDate": $('#effectDate').val(),
-    "password": $('#defaultPsw').val(),
+    "password": "4A@12345",
     "personnelId": personnelId,
     "statusCd": $("#statusCd").val(), 
     "tbRolesList":roleList,
@@ -213,9 +215,9 @@ function openOrgDialog() {
       title: '选择组织',
       shadeClose: true,
       shade: 0.8,
-      area: ['27%', '80%'],
+      area: ['40%', '80%'],
       maxmin: true,
-      content: 'orgDialog.html?orgTreeId='+orgTreeId+'&relType=30',
+      content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType=30',
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象
@@ -312,7 +314,7 @@ function openTypeDialog() {
       shade: 0.8,
       area: ['70%', '85%'],
       maxmin: true,
-      content: 'roleDialog.html',
+      content: '/inaction/account/roleDialog.html',
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象
@@ -338,7 +340,8 @@ function submitSuccess(personnelId){
       userType: "1"
     }, function (data) {
       url = "editMainAccount.html?acctId="+ data.tbAcct.acctId +"&orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + 
-              "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=mh" + "&orgTreeName="+encodeURI(orgTreeName);
+              "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=mh" + "&orgTreeName="+encodeURI(orgTreeName)+
+              "&curOrgId="+curOrgId+"&curOrgTreeId="+curOrgTreeId;
       window.location.href = url;
     }, function (err) {
   

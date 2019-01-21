@@ -58,24 +58,13 @@
 		SYS_USER t
 		WHERE
 		t.USER_CODE = ol.USER_CODE
-		<!-- UNION 
-        SELECT
-        mh.MODIFY_ID AS logId,
-        mh.OPERATE_TYPE AS logName,
-        t.ACCOUT AS opUser,
-        1 AS succeed,
-        '' AS ip,
-        mh.STATUS_CD AS statusCd,
-        mh.CREATE_DATE AS createDate,
-        'MODF' as logEnum
-        FROM
-        TB_MODIFY_HISTORY mh ,SYS_USER t
-        WHERE
-        t.USER_ID= mh.CREATE_USER -->
 		)
 		<where>
 		  <if test="keyWord != null and keyWord != ''">
 		      logName like #{keyWord} or opUser like #{keyWord}
+		  </if>
+		  <if test="logEnum != null and logEnum != ''">
+		      AND logEnum=#{logEnum}
 		  </if>
 		</where>
 		ORDER BY
@@ -133,6 +122,9 @@
         <where>
           <if test="keyWord != null and keyWord != ''">
               logName like #{keyWord} or opUser like #{keyWord}
+          </if>
+          <if test="logEnum != null and logEnum != ''">
+              AND logEnum=#{logEnum}
           </if>
         </where>
         ORDER BY

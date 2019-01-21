@@ -23,7 +23,7 @@
         ACCT_ORG_REL_ID, ORG_ID, ACCT_ID, SORT, ORG_TREE_ID, REL_TYPE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
-    <select id="getId" resultType="java.lang.Long">
+    <select id="getId" resultType="java.lang.Long" useCache="false" flushCache="true">
         select SEQ_ACCT_ORG_REL_ID.nextval from dual
     </select>
 
