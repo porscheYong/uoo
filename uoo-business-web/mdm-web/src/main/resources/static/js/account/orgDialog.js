@@ -21,7 +21,21 @@ function onNodeClick(e,treeId, treeNode) {
     orgFullName = getOrgExtInfo();
 }
 
-function zTreeOnAsyncSuccess(e,treeId, treeNode){
+function zTreeOnAsyncSuccess(e,treeId, treeNode, msg){
+    if (treeNode.level == 0) {
+        var response = JSON.parse(msg);
+        if (response && response.data) {
+            var data = response.data;
+            for (var i = 0; i < data.length; i++) {
+                // 未分类
+                if (data[i].id == '88888888') {
+                    var tree = $.fn.zTree.getZTreeObj("standardTree");
+                    var node = tree.getNodeByParam('id', data[i].id);
+                    tree.removeNode(node);
+                }
+            }
+        }
+    }
     if(addToEditFlag == 1){
         var zTreeObj = $.fn.zTree.getZTreeObj("standardTree");
         var curSelectedNode = zTreeObj.getNodeByTId(nodeList[0].node.tId); //当前选择的node
