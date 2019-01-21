@@ -2,6 +2,7 @@ var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var areaCodeId = ''; //区号ID
+var orgCode = ''; //组织编码
 var locationList;
 var orgTypeList;
 var orgMartCode; //划小组织编码
@@ -552,12 +553,13 @@ function getOrg (orgId) {
         orgId: orgId
     }, function (data) {
         $('#orgName').val(data.orgName).focus();
-        $('#orgCode').val(data.orgCode);
+        $('#orgId').val(data.orgId);
         $('#shortName').val(data.shortName);
         $('#orgBizFullName').val(data.orgBizFullName);
         $('#orgBizFullName').attr('title', data.orgBizFullName);
         $('#orgNameEn').val(data.orgNameEn);
         orgMartCode = data.orgMartCode;
+        orgCode = data.orgCode;
         laydate.render({
           elem: '#foundingTime',
           value: new Date(data.foundingTime)
@@ -742,6 +744,7 @@ function updateOrg () {
       orgId: orgId,
       supOrgId: pid,
       orgName: orgName,
+      orgCode: orgCode,
       shortName: shortName,
       orgBizFullName: orgBizFullName,
       cityTown: cityTown,
