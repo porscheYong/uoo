@@ -34,7 +34,7 @@ public class SendJob {
     @Autowired
     private AmqpTemplate template;
 
-    @Scheduled(cron = "0 0/15 * * * ?")
+    @Scheduled(cron = "0 0/5 * * * ?")
     @Transactional(readOnly = false,rollbackFor = Exception.class)
     public void sendMsg() {
         logger.info("执行开始-----");
