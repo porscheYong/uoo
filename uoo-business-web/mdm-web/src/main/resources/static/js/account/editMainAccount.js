@@ -188,7 +188,7 @@ function setAcctInfoTables(){
               'data': acctInfoList[i].slaveAcct,
               'destroy':true,
               'searching': false,
-              'autoWidth': false,
+              'autoWidth': true,
               'ordering': true,
               'paging': false,
               'info': false,

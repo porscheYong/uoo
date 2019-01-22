@@ -36,7 +36,7 @@ function initMainTable(isCheck,search){
     table = $("#mainTable").DataTable({
         'destroy':true,
         'searching': false,
-        'autoWidth': false,
+        'autoWidth': true,
         'ordering': true,
         'lSort': true,
         'info': true,
