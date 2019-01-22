@@ -77,7 +77,7 @@ public class SlaveAcctController {
     @ApiImplicitParam(name = "tbAcctExt", value = "从账号扩展信息", required = true, dataType = "TbAcctExt")
     @RequestMapping(value = "/delTbAcctExt", method = RequestMethod.DELETE)
     @OperateLog(type= OperateType.DELETE, module="账号管理",methods="addTbAcctExt",desc="删除从账号扩展信息")
-    public Object delTbAcctExt(TbAcctExt tbAcctExt){
+    public Object delTbAcctExt(@RequestBody TbAcctExt tbAcctExt){
         tbAcctExt.setUpdateUser(SysUserInfo.getUserId());
         return slaveAcctService.delTbAcctExt(tbAcctExt);
     }
