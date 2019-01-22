@@ -265,8 +265,8 @@ function getAreaId(regionId) {
     })
 }
 //根据拉下框获取当前选中的区号ID
-function getAreaCodeId() {
-    areaCodeId = $(this).children('option:selected').val();
+function getAreaCodeId(ele) {
+    areaCodeId = $(ele).children('option:selected').val();
 }
 
 // 获取规模字典数据
