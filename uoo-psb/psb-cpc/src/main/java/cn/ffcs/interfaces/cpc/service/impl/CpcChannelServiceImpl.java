@@ -390,6 +390,11 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             rsMap.put("message", "必要信息为空");
             return;
         }
+        if (!"10".equals(relaType) || !"20".equals(relaType) || !"30".equals(relaType)) {
+            rsMap.put("result_code", "1000");
+            rsMap.put("message", "无效的人员关系类型RELA_TYPE");
+            return;
+        }
         try {
             switch (action) {
                 case "ADD":
