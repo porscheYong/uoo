@@ -49,7 +49,7 @@ public class TbAcctExtController extends BaseController {
     @ApiImplicitParam(name = "tbAcctExt", value = "从账号扩展信息", required = true, dataType = "TbAcctExt")
     @UooLog(value = "删除从账号扩展信息", key = "delTbAcctExt")
     @RequestMapping(value = "/delTbAcctExt", method = RequestMethod.DELETE)
-    public Object delTbAcctExt(TbAcctExt tbAcctExt){
+    public Object delTbAcctExt(@RequestBody TbAcctExt tbAcctExt){
         tbAcctExtService.delTbAcctExt(tbAcctExt.getSlaveAcctId(), tbAcctExt.getUpdateUser());
         rabbitMqService.sendMqMsg("person", "update", "slaveAcctId", tbAcctExt.getSlaveAcctId());
         return ResultUtils.success(null);
