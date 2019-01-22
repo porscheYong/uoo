@@ -39,18 +39,18 @@ public class TbAcctExtServiceImpl extends ServiceImpl<TbAcctExtMapper, TbAcctExt
     }
 
     @Override
-    public Object saveTbAcctExt(TbAcctExt tbAcctExt){
+    public TbAcctExt saveTbAcctExt(TbAcctExt tbAcctExt){
         if(StrUtil.isNullOrEmpty(tbAcctExt.getAcctExtId())){
             tbAcctExt.setAcctExtId(this.getId());
             if(this.insert(tbAcctExt)){
-                return ResultUtils.success(null);
+                return tbAcctExt;
             }
         }else{
             if(this.updateById(tbAcctExt)){
-                return ResultUtils.success(null);
+                return tbAcctExt;
             }
         }
-        return ResultUtils.error(EumUserResponeCode.USER_RESPONSE_ERROR);
+        return null;
     }
 
     @Override
