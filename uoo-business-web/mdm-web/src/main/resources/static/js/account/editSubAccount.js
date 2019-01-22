@@ -579,6 +579,9 @@ function showEditDiv(){
     // $("#extInfoEdit").css("display","none");
     $("#extInfoDiv").css("display","none");
     $("#extInfo").css("display","block");
+    if(extFlag == 1){
+        $("#delExtInfo").css("display","inline-block");
+    }
 }
 
 function backToInfo(){
@@ -614,7 +617,7 @@ function addTbAcctExt(){
     }), function (message) {
         reflashExtInfo();
         backToInfo();
-        toastr.success(message);
+        toastr.success("保存成功");
     }, function (err) {
         
     })
@@ -629,13 +632,43 @@ function updateTbAcctExt(){
         contactWay : $('#extMobile').val(),
         name : $('#extName').val(),
         workEmail : $('#extEmail').val()
-    }), function (message) {
+    }), function (data) {
         reflashExtInfo();
         backToInfo();
-        toastr.success(message);
+        toastr.success("保存成功");
     }, function (err) {
         // toastr.error("保存失败！");
     })
+}
+
+//删除扩展信息
+function delTbAcctExt(){
+    parent.layer.confirm('此操作将删除扩展信息, 是否继续?', {
+        icon: 0,
+        title: '提示',
+        btn: ['确定','取消']
+    }, function(index, layero){
+        parent.layer.close(index);
+        $http.delet('/slaveAcct/delTbAcctExt',JSON.stringify({  
+            slaveAcctId : acctId,
+            acctExtId : acctExtId,
+            certNo : $('#extCerNo').val(),
+            certType : $('#extCerType').val().toString(),
+            contactWay : $('#extMobile').val(),
+            name : $('#extName').val(),
+            workEmail : $('#extEmail').val()
+        }),function(message){
+            extFlag = 0;
+            backToInfo();
+            $("#delExtInfo").css("display","none");
+            $('#extCerNo').val("");
+            $('#extMobile').val("");
+            $('#extName').val("");
+            $('#extEmail').val("");
+            toastr.success("删除成功");
+        });
+      }, function(){
+    }); 
 }
 
 //刷新扩展信息

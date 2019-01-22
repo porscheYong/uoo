@@ -36,10 +36,8 @@ var cerTypeList = window.top.dictionaryData.certType();
 var acctTypeList = window.top.dictionaryData.acctType();
 var statusCdList = window.top.dictionaryData.statusCd();
 var relTypeName = window.top.relTypeName;
-// if(hostId != null){
-//     acctOrgRelId = hostId;
-// }
-// $('#addText').text('新增归属组织');
+
+// var loading = parent.loading;
 
 seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
     var addAcctForm = $('#addAcctForm');
@@ -153,8 +151,11 @@ function initUserInfo(results){   //新增时初始化信息
 }
 
 function addTbSlaveAcct(){      //从账号新增
-    if(!formValidate.isAllPass())
+    // loading.screenMaskEnable('container');
+    if(!formValidate.isAllPass()){
+        // loading.screenMaskDisable('container');
         return;
+    } 
     var slaveAcctType = $('#accType').val();
     var subStatusCd = $('#statusCd').val();
     var certType = $('#extCerType').val();
@@ -198,6 +199,7 @@ function addTbSlaveAcct(){      //从账号新增
           }
         },
         error:function(err){
+        //   loading.screenMaskDisable('container');
           toastr.error('新增失败');
         }
       });
@@ -391,7 +393,7 @@ function submitToSuccess(){ //保存成功跳转编辑从账号页面
         personnelId: personnelId,
         userType: "1"
       }, function (data) {
-            var slaveAcctId;
+            var slaveAcctId;//$('#system').find("option:selected").text()
             var url = "";
             for(var i=0;i<data.slaveAcctOrgVoPage.records.length;i++){
                 if($('#acct').val() == data.slaveAcctOrgVoPage.records[i].slaveAcct){
@@ -401,6 +403,7 @@ function submitToSuccess(){ //保存成功跳转编辑从账号页面
             url = 'editSubAccount.html?curOrgId='+curOrgId+'&curOrgTreeId='+curOrgTreeId+'&orgTreeId=' + orgTreeId + '&toMainType=' + toMainType +
                     '&curSlaveOrgTreeId='+slaveOrgTreeId+'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&hType=th&mainAcctId='+ mainAcctId +
                     '&acctId='+ slaveAcctId;
+            // loading.screenMaskDisable('container');
             window.location.href = url;
       }, function (err) {
     
