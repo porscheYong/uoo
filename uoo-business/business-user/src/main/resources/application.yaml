@@ -22,9 +22,9 @@ spring:
       username: octopus
       password: octopus
 
-      initial-size: 10
+      initial-size: 60
       min-idle: 4
-      max-active: 30
+      max-active: 200
       max-wait: 60000
       time-between-eviction-runs-millis: 60000
       min-evictable-idle-time-millis: 300000
@@ -102,11 +102,15 @@ spring:
     port: 5672
     username: root
     password: 123
+
   zipkin:
     base-url: http://134.96.253.223:8600
+  #base-url: http://100.64.8.106:8600
   sleuth:
+    feign:
+      enabled: true
     sampler:
-      percentage: 0.5
+      percentage: 1.0
 
 mybatis-plus:
   mapper-locations: classpath:mapper/**Mapper.xml
@@ -147,6 +151,15 @@ eureka:
     service-url:
       defaultZone:  http://134.96.253.221:${eureka.server.port}/eureka/,http://134.96.253.222:${eureka.server.port}/eureka/,http://134.96.253.223:${eureka.server.port}/eureka/
       #defaultZone: http://134.96.217.231:8751/eureka/
+feign:
+  hystrix:
+    enabled: true
+  httpclient:
+    enabled: true
+    max-connections: 1100 # 默认值
+    max-connections-per-route: 110 # 默认值
+
 logging:
   level:
-    cn.ffcs.uoo: info
+    org.springframework.cloud.netflix.feign: debug
+

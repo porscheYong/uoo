@@ -181,5 +181,6 @@ div[xm-select-search-type="1"] .xm-select .xm-select-input{display: none !import
         background-position: 0 -40px; }
     .xm-dis-disabled .ui-checkbox {
         filter: alpha(opacity=38); }
-    .xm-select-parent .xm-select-title DIV.xm-select-label > SPAN {
-        height: 30px;}}
+    }
+.xm-select-parent .xm-select-title DIV.xm-select-label > SPAN {
+    height: 30px\9;}

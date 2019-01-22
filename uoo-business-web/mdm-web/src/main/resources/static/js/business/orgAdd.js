@@ -35,23 +35,17 @@ var contractTypeData = window.top.dictionaryData.contractType();
 
 $('.orgName').html(orgName);
 parent.getOrgExtInfo();
-
-// lulu ui select插件
-seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-    $('select').selectMatch();
-});
-
-seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
-    var orgAddForm = $('#orgAddForm');
-    formValidate = new Validate(orgAddForm);
-    formValidate.immediate();
-    orgAddForm.find(':input').each(function () {
-        $(this).hover(function () {
-            formValidate.isPass($(this));
-        });
+//区号 select render
+$('#areaCode').selectMatch();
+var orgAddForm = $('#orgAddForm');
+formValidate = new Validate(orgAddForm);
+formValidate.immediate();
+orgAddForm.find(':input').each(function () {
+    $(this).hover(function () {
+        formValidate.isPass($(this));
     });
-    formValidate.isAllPass();
 });
+formValidate.isAllPass();
 
 laydate.render({
     elem: '#foundingTime'
@@ -346,8 +340,8 @@ function getAreaId(regionId) {
     })
 }
 //根据拉下框获取当前选中的区号ID
-function getAreaCodeId() {
-    areaCodeId = $(this).children('option:selected').val();
+function getAreaCodeId(ele) {
+    areaCodeId = $(ele).children('option:selected').val();
 }
 
 // 获取规模字典数据
@@ -357,7 +351,7 @@ function getScale () {
         option += "<option value='" + scaleData[i].itemValue + "'>" + scaleData[i].itemCnname +"</option>";
     }
     $('#orgScale').append(option);
-    // $('#orgScale').selectMatch();
+    $('#orgScale').selectMatch();
 }
 
 // 获取城乡字典数据
@@ -367,7 +361,7 @@ function getCityVillage () {
         option += "<option value='" + cityVillageData[i].itemValue + "'>" + cityVillageData[i].itemCnname +"</option>";
     }
     $('#cityTown').append(option);
-    // $('#cityTown').selectMatch();
+    $('#cityTown').selectMatch();
 }
 
 // 获取组织最高岗位级别字典数据
@@ -377,7 +371,7 @@ function getOrgPostLevel () {
         option += "<option value='" + orgPostLevelData[i].itemValue + "'>" + orgPostLevelData[i].itemCnname +"</option>";
     }
     $('#orgPositionLevel').append(option);
-    // $('#orgPositionLevel').selectMatch();
+    $('#orgPositionLevel').selectMatch();
 }
 
 // 获取状态数据
@@ -388,7 +382,7 @@ function getStatusCd (statusCd) {
         option += "<option value='" + statusCdData[i].itemValue + "' " + select + ">" + statusCdData[i].itemCnname +"</option>";
     }
     $('#statusCd').append(option);
-    // $('#statusCd').selectMatch();
+    $('#statusCd').selectMatch();
 }
 
 // 获取组织节点类型字典数据
@@ -682,7 +676,7 @@ function add() {
 
 // 取消
 function cancel () {
-    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName);
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&refCode=" + refCode + '&pid=' + pid + "&name=" + encodeURI(orgName);
     window.location.href = url;
 }
 

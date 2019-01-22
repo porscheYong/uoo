@@ -284,12 +284,12 @@ function setDate(){    //设置时间
 
 //删除组织
 function deleteOrg(num){
-    if(orgNum == 1){
-      toastr.error("无法删除所有组织");
-    }else{
-      orgNum--;
-      addOrgList.splice(num,1);
-    }
+    // if(orgNum == 1){
+    //   toastr.error("无法删除所有组织");
+    // }else{
+    orgNum--;
+    addOrgList.splice(num,1);
+    // }
     setAcctInfoTables();
 }
 

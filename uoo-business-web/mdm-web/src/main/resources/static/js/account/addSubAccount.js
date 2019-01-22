@@ -356,7 +356,7 @@ function setAcctInfoTables(result){
     acctHtml = "<div class='curDiv' style='padding:10px 20px;'>"+
                     "<span class='pngDot'></span>"+
                     "<span class='Name Gray3' style='margin-left:1.5%;' id='orgTreeName_'>"+result.orgTreeName+"</span>"+
-                    "<span class='Tag BgBlue' style='cursor:pointer;' title='"+result.fullName+"' id='orgName_'>"+result.orgName+"</span>"+
+                    "<span class='Tag BgBlue' style='cursor:pointer;' title='"+result.orgFullName+"' id='orgName_'>"+result.orgName+"</span>"+
                     "<span class='Tag BgBlue' style='cursor:pointer;' id='relTypeName_'>"+relType+"</span></div>";
                     // "<span id='editBtn_' title='组织编辑' onclick='' class='icon icon-edit'></span>"+
                     // "<span class='fright FunctionBtn' style='float:right;margin-right:3.5%;'>";
