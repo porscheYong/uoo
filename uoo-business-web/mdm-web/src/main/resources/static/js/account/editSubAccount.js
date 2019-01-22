@@ -21,6 +21,7 @@ var curSlaveOrgTreeId = getQueryString('curSlaveOrgTreeId');
 var curSlaveOrgTreeName = getQueryString('curSlaveOrgTreeName');
 var relType;
 var extCerTypeName;
+var extFlag = 0;
 
 var table;
 var slaveTable;
@@ -174,44 +175,51 @@ function initSubInfo(results){  //编辑时初始化信息
     }
 
     for(var i=0;i<cerTypeList.length;i++){
-        var select = "";
         if(results.certType === cerTypeList[i].itemValue){
           $("#cerType").append("<option value='" + cerTypeList[i].itemValue + "' selected>" + cerTypeList[i].itemCnname +"</option>");
-        }
-        if(results.tbAcctExt != null && results.tbAcctExt.certType === cerTypeList[i].itemValue){
-            extCerTypeName = cerTypeList[i].itemCnname;
-            select = "selected";
-        }
-        $("#extCerType").append("<option value='" + cerTypeList[i].itemValue + "' " + select + ">" + cerTypeList[i].itemCnname +"</option>");     
+        }    
     }
     seajs.use('/vendors/lulu/js/common/ui/Select', function () {
         $("#cerType").selectMatch();
         $("#statusCd").selectMatch();
-        $("#extCerType").selectMatch();
     });
 
     resourceObjId = results.tbSlaveAcct.resourceObjId;
     psw = results.tbSlaveAcct.password;
 
-     //扩展信息
+    initExtInfo(results);
+}
+
+//初始化扩展信息
+function initExtInfo(results){
+
+    for(var i=0;i<cerTypeList.length;i++){
+        var select = "";
+        if(results.tbAcctExt != null && results.tbAcctExt.certType === cerTypeList[i].itemValue){
+            extCerTypeName = cerTypeList[i].itemCnname;
+            select = "selected";
+        }
+        $("#extCerType").append("<option value='" + cerTypeList[i].itemValue + "' " + select + ">" + cerTypeList[i].itemCnname +"</option>"); 
+    }
+    seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $("#extCerType").selectMatch();
+    });
+
+    //扩展信息
     if(results.tbAcctExt != null){
-        $("#extCheckBox").attr("checked",true);
-        // $("#extInfo").css("border-color","#00A4FF"); 
-        $("#extInfo").css("display","block"); 
-        $("#extCheckBox").attr("value","1");
-        isChecked = 1;
+        extFlag = 1;
+        $("#extInfoDiv").css("display","block"); 
 
         $('#extCerNo').val(results.tbAcctExt.certNo);
         $('#extMobile').val(results.tbAcctExt.contactWay);
         $('#extName').val(results.tbAcctExt.name);
         $('#extEmail').val(results.tbAcctExt.workEmail);
 
-        $("#showMoreInfoDiv").css("display","block");
-        $('#extCerNumLable').text(results.tbAcctExt.certNo);
-        $('#extMobileLable').text(results.tbAcctExt.contactWay);
-        $('#extNameLable').text(results.tbAcctExt.name);
-        $('#extEmailLable').text(results.tbAcctExt.workEmail);
-        $('#extCerTypeLable').text(extCerTypeName);
+        isNull("#extCerNumLable",results.tbAcctExt.certNo);
+        isNull("#extMobileLable",results.tbAcctExt.contactWay);
+        isNull("#extNameLable",results.tbAcctExt.name);
+        isNull("#extEmailLable",results.tbAcctExt.workEmail);
+        isNull("#extCerTypeLable",extCerTypeName);
     }
 }
 
@@ -289,8 +297,8 @@ function updateTbSlaveAcct(){       //更新从账号信息
 
     var slaveAcctType = $('#accType').val();
     var subStatusCd = $('#statusCd').val();
-    var certType = $('#extCerType').val();
-    var tbAcctExt = hasExtInfo(certType);
+    // var certType = $('#extCerType').val();
+    // var tbAcctExt = hasExtInfo(certType);
 
     if(roleList.length == 0){
         roleList = userRoleList;
@@ -308,7 +316,7 @@ function updateTbSlaveAcct(){       //更新从账号信息
         "slaveAcctId": slaveAcctId,
         "slaveAcctType": slaveAcctType.toString(),
         "statusCd": subStatusCd.toString(),
-        "tbAcctExt": tbAcctExt,
+        // "tbAcctExt": tbAcctExt,
         "userType": "2"
     };
     
@@ -391,22 +399,22 @@ function getSysSelect(){   //获取应用系统下拉列表
     })
 }
 
-function  hasExtInfo(certType){  //判断是否需要扩展信息
-    var tbAcctExt;
-    if(isChecked == 0){
-        tbAcctExt = null;
-    }else{
-        tbAcctExt = {
-            "acctExtId":acctExtId,
-            "certNo": $('#extCerNo').val(),
-            "certType": certType.toString(),
-            "contactWay": $('#extMobile').val(),
-            "name": $('#extName').val(),
-            "workEmail": $('#extEmail').val()
-          };
-    }
-    return tbAcctExt;
-}
+// function  hasExtInfo(certType){  //判断是否需要扩展信息
+//     var tbAcctExt;
+//     if(isChecked == 0){
+//         tbAcctExt = null;
+//     }else{
+//         tbAcctExt = {
+//             "acctExtId":acctExtId,
+//             "certNo": $('#extCerNo').val(),
+//             "certType": certType.toString(),
+//             "contactWay": $('#extMobile').val(),
+//             "name": $('#extName').val(),
+//             "workEmail": $('#extEmail').val()
+//           };
+//     }
+//     return tbAcctExt;
+// }
 
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
@@ -538,27 +546,6 @@ function btnSubmit(){       //提交
     }
 }
 
-function extInfoFade(){     //点击复选框
-    var extCheckBox = $("#extCheckBox");
-    if(extCheckBox.attr("value") == "0"){  
-        extCheckBox.attr("value","1");
-        // $("#extInfo").css("border-color","#00A4FF"); 
-        $("#extInfo").css("display","block"); 
-        isChecked = 1;
-        if(isIE8){
-            $(".ui-checkbox").css("background-position","0px -40px");
-        }
-    }else{
-        extCheckBox.attr("value","0")
-        // $("#extInfo").css("border-color","#b6b6b6"); 
-        $("#extInfo").css("display","none"); 
-        isChecked = 0;
-        if(isIE8){
-            $(".ui-checkbox").css("background-position","0px 0px");
-        }
-    }
-}
-
 function isNull(s,r){    //判断是否为null
     if(r == null){
       $(s).text("");
@@ -587,29 +574,85 @@ function submitToSuccess(){//curSlaveOrgTreeId
     window.location.href = url;
 }
 
-//显示扩展信息
-function showMoreInfo(){
-    $("#showMoreInfoDiv").css("display","none");
-    $("#extInfoDiv").css("display","block");
+//扩展信息编辑按钮
+function showEditDiv(){
+    // $("#extInfoEdit").css("display","none");
+    $("#extInfoDiv").css("display","none");
+    $("#extInfo").css("display","block");
 }
 
-// $("#defaultPsw").focus(function (){    //默认密码输入框获得焦点
-//     if($("#defaultPsw").attr("type") == "password"){
-//       $("#defaultPsw").val('');
-//       $("#defaultPsw").attr("type","text");
-//     }
-//   })
-  
-// $("#defaultPsw").blur(function (){     //默认密码输入框失去焦点
-//     if($("#defaultPsw").val() == ''){
-//       $("#defaultPsw").val(psw);
-//       $("#defaultPsw").attr("type","password");
-//       formValidate.isAllPass($('#defaultPsw'));
-//     }
-//   })
+function backToInfo(){
+    // $("#extInfoEdit").css("display","block");
+    if(extFlag == 1){
+        $("#extInfoDiv").css("display","block");
+        $("#extInfo").css("display","none");
+    }else{
+        $("#extInfoDiv").css("display","none");
+        $("#extInfo").css("display","none");
+    }
+}
 
+//保存扩展信息
+function saveExtInfo(){
+    if(extFlag == 1){
+        updateTbAcctExt();
+    }else{
+        addTbAcctExt();
+    }
+}
 
-// $('#addText').text('更换归属组织');
+//新增扩展信息
+function addTbAcctExt(){
+    $http.post('/slaveAcct/addTbAcctExt', JSON.stringify({  
+        acctExtId : acctExtId,
+        certNo : $('#extCerNo').val(),
+        certType : $('#extCerType').val().toString(),
+        contactWay : $('#extMobile').val(),
+        name : $('#extName').val(),
+        workEmail : $('#extEmail').val(),
+        slaveAcctId : acctId
+    }), function (message) {
+        reflashExtInfo();
+        backToInfo();
+        toastr.success(message);
+    }, function (err) {
+        
+    })
+}
+
+//更新扩展信息
+function updateTbAcctExt(){
+    $http.post('/slaveAcct/updateTbAcctExt', JSON.stringify({  
+        acctExtId : acctExtId,
+        certNo : $('#extCerNo').val(),
+        certType : $('#extCerType').val().toString(),
+        contactWay : $('#extMobile').val(),
+        name : $('#extName').val(),
+        workEmail : $('#extEmail').val()
+    }), function (message) {
+        reflashExtInfo();
+        backToInfo();
+        toastr.success(message);
+    }, function (err) {
+        // toastr.error("保存失败！");
+    })
+}
+
+//刷新扩展信息
+function reflashExtInfo() {                
+    $http.get('/user/getUser', {  
+        acctId: acctId,
+        userType: "2",
+    }, function (data) {
+        if(data.tbAcctExt != null){
+            acctExtId = data.tbAcctExt.acctExtId;
+        }
+        initExtInfo(data);
+    }, function (err) {
+        loading.screenMaskDisable('container');
+    })
+}
+
 noSelectUserInfo();
 getSubUser(acctId); 
 

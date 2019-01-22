@@ -55,12 +55,6 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
     });
 });
 
-  // lulu ui tips插件
-// seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
-//     $('#defaultPsw').tips({
-//         align: 'right'
-//     });
-// });
 
 function getUserInfo(){         //新增从账号
     $http.get('/user/getPsnUser', {    
@@ -111,21 +105,6 @@ function setDate(){    //设置时间
       }
     }); 
 }
-
-// function getAcctOrg(){          //获取从账号可选组织列表(添加组织)
-//     $http.get('/user/getAcctOrgByPsnId', {    
-//         personnelId: personnelId,
-//         resourceObjId: resourceObjId
-//       }, function (data) {
-//         slaveOrgList = [];
-//         for(var i=0;i<data.length;i++){
-//             slaveOrgList.push({"orgTreeName":data[i].orgTreeName,"fullName":data[i].fullName});
-//         }
-//         initAcctOrgTable(data);
-//       }, function (err) {
-
-//       })
-// }
 
 function noSelectUserInfo(){     //控制人员信息不可选
     $("#psnName").attr("disabled","disabled");
@@ -254,9 +233,7 @@ function getSysSelect(){   //获取应用系统下拉列表
 
 function  hasExtInfo(certType){  //判断是否需要扩展信息
     var tbAcctExt;
-    if(isChecked == 0){
-        tbAcctExt = null;
-    }else{
+    if($('#extCerNo').val() != "" || $('#extMobile').val() != "" || $('#extName').val() != "" || $('#extEmail').val() != ""){
         tbAcctExt = {
             "acctExtId":acctExtId,
             "certNo": $('#extCerNo').val(),
@@ -265,6 +242,8 @@ function  hasExtInfo(certType){  //判断是否需要扩展信息
             "name": $('#extName').val(),
             "workEmail": $('#extEmail').val()
           };
+    }else{
+        tbAcctExt = null;
     }
     return tbAcctExt;
 }
@@ -365,28 +344,28 @@ function setAcctInfoTables(result){
   $("#acctOrgDiv").append(acctHtml);
 }
 
-function extInfoFade(){     //点击复选框
-    var extCheckBox = $("#extCheckBox");
-    if(extCheckBox.attr("value") == "0"){  
-        extCheckBox.attr("value","1")
-        // $("#extInfo").css("border-color","#00A4FF"); 
-        // $("#extInfo").fadeIn();
-        $("#extInfo").css("display","block"); 
-        isChecked = 1;
-        if(isIE8){
-            $(".ui-checkbox").css("background-position","0px -40px");
-        }
-    }else{
-        extCheckBox.attr("value","0")
-        // $("#extInfo").css("border-color","#b6b6b6"); 
-        // $("#extInfo").fadeOut();
-        $("#extInfo").css("display","none"); 
-        isChecked = 0;
-        if(isIE8){
-            $(".ui-checkbox").css("background-position","0px 0px");
-        }
-    }
-}
+// function extInfoFade(){     //点击复选框
+//     var extCheckBox = $("#extCheckBox");
+//     if(extCheckBox.attr("value") == "0"){  
+//         extCheckBox.attr("value","1")
+//         // $("#extInfo").css("border-color","#00A4FF"); 
+//         // $("#extInfo").fadeIn();
+//         $("#extInfo").css("display","block"); 
+//         isChecked = 1;
+//         if(isIE8){
+//             $(".ui-checkbox").css("background-position","0px -40px");
+//         }
+//     }else{
+//         extCheckBox.attr("value","0")
+//         // $("#extInfo").css("border-color","#b6b6b6"); 
+//         // $("#extInfo").fadeOut();
+//         $("#extInfo").css("display","none"); 
+//         isChecked = 0;
+//         if(isIE8){
+//             $(".ui-checkbox").css("background-position","0px 0px");
+//         }
+//     }
+// }
 
 function isNull(s,r){    //判断是否为null
     if(r == null){

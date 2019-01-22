@@ -20,6 +20,7 @@ var toastr = window.top.toastr;
 var cerTypeList = window.top.dictionaryData.certType();
 var statusCdList = window.top.dictionaryData.statusCd();
 var relTypeName = window.top.relTypeName;
+var loading = parent.loading;
 
 window.localStorage.setItem('userRoleList',JSON.stringify(''));
 
@@ -65,53 +66,6 @@ function noSelectUserInfo(){     //控制人员信息不可选
    $("#cerType").attr("disabled","disabled");
    $("#cerNo").attr("disabled","disabled");
 }
-
-// function initOrgTable(results){         //主账号组织数据表格
-//     var num =1;
-//     orgTable = $("#orgTable").DataTable({
-//     'data': results,
-//     'destroy':true,
-//     'searching': false,
-//     'autoWidth': false,
-//     'ordering': true,
-//     'paging': false,
-//     'info': false,
-//     "scrollY": "375px",
-//     'scrollCollapse': true,
-//     'columns': [
-//         { 'data': "id", 'title': '序号', 'className': 'row-id' ,
-//         'render': function (data, type, row, meta) {
-//           return num++;
-//       }
-//       },
-//         { 'data': "orgTreeName", 'title': '组织树', 'className': 'row-orgTree'},
-//         { 'data': "fullName", 'title': '组织名称', 'className': 'row-fullName' ,
-//         'render': function (data, type, row, meta) {
-//           if(row.fullName != null){
-//               return row.fullName;
-//             }else{
-//               return "";
-//           }
-//         }
-//       },
-//       {'data': "orgId", 'title': '操作', 'className': 'row-delete' ,
-//       'render': function (data, type, row, meta) {
-//               return "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' title='删除' onclick='deleteOrg("+num+","+row.orgId+")'></a>"; 
-//       }
-//     },
-//     { 'data': "orgId", 'title': 'orgId', 'className': 'row-orgId'}
-//     ],
-//     'language': {
-//         'emptyTable': '没有数据',  
-//         'loadingRecords': '加载中...',  
-//         'processing': '查询中...',  
-//         'search': '检索:',  
-//         'lengthMenu': ' _MENU_ ',  
-//         'zeroRecords': '没有数据', 
-//         'infoEmpty': '没有数据'
-//     }
-//   });
-// }
 
 //展示主账号组织信息
 function setAcctInfoTables(){
@@ -164,8 +118,12 @@ function initAddUserInfo(results){    //初始化用户信息(新增)
 }
 
 function addTbAcct(){         //新增
-  if(!formValidate.isAllPass())
+  loading.screenMaskEnable('container');
+  if(!formValidate.isAllPass()){
+    loading.screenMaskDisable('container');
     return;
+  }
+    
   if(roleList.length == 0){
     roleList = userRoleList;
   }
@@ -189,6 +147,7 @@ function addTbAcct(){         //新增
     dataType:"JSON",
     success: function (data) { //返回json结果
       if(data.state === 1000){
+        loading.screenMaskDisable('container');
         toastr.success(data.message);
         submitSuccess(personnelId);
       }else{
@@ -196,6 +155,7 @@ function addTbAcct(){         //新增
       }
     },
     error:function(err){
+      loading.screenMaskDisable('container');
       toastr.error('新增失败');
     }
   });
