@@ -578,20 +578,20 @@ function isNull(s,r){    //判断是否为null
 
 //删除组织
 function deleteOrg(orgId,orgTreeId){
-    if(orgNum == 1){
-      toastr.error("无法删除所有组织");
-    }else{
-        parent.layer.confirm('是否删除该组织？', {
-        icon: 0,
-        title: '提示',
-        btn: ['确定','取消']
-        }, function(index, layero){
-          removeAcctOrg(orgId,orgTreeId);
-          parent.layer.close(index);
-        }, function(){
-      
-        });
-    }
+    // if(orgNum == 1){
+    //   toastr.error("无法删除所有组织");
+    // }else{
+    parent.layer.confirm('是否删除该组织？', {
+    icon: 0,
+    title: '提示',
+    btn: ['确定','取消']
+    }, function(index, layero){
+      removeAcctOrg(orgId,orgTreeId);
+      parent.layer.close(index);
+    }, function(){
+  
+    });
+    // }
 }
 
 function cancel() {   //取消按钮
