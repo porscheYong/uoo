@@ -47,6 +47,7 @@ function initUserPermission(){    //初始化人员权限
             }).extend({
                 index: 'lib/index' //主入口模块
             }).use('index');
+            loadingHome.screenMaskDisable('LAY_app_body');
         }, function (err) {
             loading.screenMaskDisable('container');
         })

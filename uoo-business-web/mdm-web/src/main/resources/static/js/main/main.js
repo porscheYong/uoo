@@ -43,7 +43,8 @@ function getHomeStatistics(){
             setOrgChart();
             // setSysChart();
       }, function (err) {
-            parent.loadingHome.screenMaskDisable('LAY_app_body');
+            if (parent.loadingHome)
+                parent.loadingHome.screenMaskDisable('LAY_app_body');
       })
 }
 
@@ -192,8 +193,9 @@ function setOrgChart(){
             }
         ]
     };
-    myChart.setOption(option); 
-    parent.loadingHome.screenMaskDisable('LAY_app_body');
+    myChart.setOption(option);
+    if (parent.loadingHome)
+        parent.loadingHome.screenMaskDisable('LAY_app_body');
 }
 
 //专业系统下发数

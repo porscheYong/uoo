@@ -42,27 +42,17 @@ var contractTypeData = window.top.dictionaryData.contractType();
 $('.orgName').html(orgName);
 parent.getOrgExtInfo();
 
-// lulu ui select插件
-seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-    $('select').selectMatch();
-});
-
-seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
-    var orgEditForm = $('#orgEditForm');
-    formValidate = new Validate(orgEditForm);
-    formValidate.immediate();
-    orgEditForm.find(':input').each(function () {
-        $(this).hover(function () {
-            // if (!blurForm.data('immediate')) {
-            //     $.validate.focusable = 0;
-            formValidate.isPass($(this));
-            // }
-        });
+var orgEditForm = $('#orgEditForm');
+formValidate = new Validate(orgEditForm);
+formValidate.immediate();
+orgEditForm.find(':input').each(function () {
+    $(this).hover(function () {
+        // if (!blurForm.data('immediate')) {
+        //     $.validate.focusable = 0;
+        formValidate.isPass($(this));
+        // }
     });
-    // $('#postList').hover(function () {
-    //     formValidate.isPass($(this));
-    // })
-})
+});
 
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
@@ -915,7 +905,7 @@ function deleteOrg () {
 
 // 取消
 function cancel () {
-    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName);
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&refCode=" + refCode + '&pid=' + pid + "&name=" + encodeURI(orgName);
     window.location.href = url;
 }
 
