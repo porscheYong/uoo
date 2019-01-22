@@ -158,7 +158,13 @@ function initBusinessList () {
 }
 
 initBusinessList();
-
+function getCurrentOrgTreeId(){
+	return $('#businessOrg').val();
+}
+function getCurrentOrgId(){
+	var ztree=$.fn.zTree.getZTreeObj("userTree");
+	return ztree.getSelectedNodes()[0].id;
+}
 // function getOrgTreeId(){
 // 	return orgTreeId;
 // }

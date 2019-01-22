@@ -10,6 +10,7 @@ var table;
 var isCheck = 0;
 var query,
     delayTime = 500;
+var loading = parent.loading;
 
 // 获取组织完整路径
 function getOrgExtInfo () {
@@ -35,7 +36,7 @@ function initMainTable(isCheck,search){
     table = $("#mainTable").DataTable({
         'destroy':true,
         'searching': false,
-        'autoWidth': false,
+        'autoWidth': true,
         'ordering': true,
         'lSort': true,
         'info': true,
@@ -55,7 +56,7 @@ function initMainTable(isCheck,search){
                    if(row.slaveAcct == null){
                         return "-";
                    }else{
-                        return '<a href="editSubAccount.html?curSlaveOrgTreeId='+orgTreeId+'&orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +
+                        return '<a href="editSubAccount.html?curOrgId='+row.orgId+'&curOrgTreeId='+row.orgTreeId+'&curSlaveOrgTreeId='+orgTreeId+'&orgTreeId=' + orgTreeId + '&orgName=' + encodeURI(orgName) +
                                 '&orgId=' + orgId + '&mainAcctId='+ row.accId +'&acctId='+ row.slaveAcctId +'&statusCd='+row.statusCd+'&hType=mh">'+ row.slaveAcct +'</a>';
                    }
                 }
@@ -113,20 +114,30 @@ function initMainTable(isCheck,search){
                 //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                 callback(returnData);
+                loading.screenMaskDisable('container');
             }, function (err) {
+                loading.screenMaskDisable('container');
             })
         }
     });
 }
 
 // 搜索组织
+// function search () {
+//     query = $('.ui-input-search').val();
+//     clearTimeout(this.timer);
+//     // 添加的延时
+//     this.timer = setTimeout(function(){
+//         initMainTable(isCheck, query);
+//     }, delayTime);
+// }
+
+// 搜索组织
 function search () {
+    loading.screenMaskEnable('container');
     query = $('.ui-input-search').val();
-    clearTimeout(this.timer);
-    // 添加的延时
-    this.timer = setTimeout(function(){
-        initMainTable(isCheck, query);
-    }, delayTime);
+    initMainTable(isCheck, query);
+    // loading.screenMaskDisable('container');
 }
 
 
@@ -148,7 +159,7 @@ function boxClick(){            //点击复选框
         }
     }
     // initMainTable(isCheck,'');
-    search();
+    // search();
 }
 
 //新增账号
@@ -187,10 +198,12 @@ function getPsnUser(personnelId){
       }, function (data) {
         if(data.tbAcct != null){
             url = "editMainAccount.html?acctId="+ data.tbAcct.acctId +"&orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + 
-                    "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=mh" + "&orgTreeName="+encodeURI(parent.businessName);
+                    "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=mh" + "&orgTreeName="+encodeURI(parent.businessName)+
+                    "&curOrgId="+orgId+"&curOrgTreeId="+orgTreeId+"&addToEditFlag=1";
         }else{
             url = "addMainAccount.html?orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) +
-                    "&orgId=" + orgId + "&personnelId=" + personnelId + "&hType=mh" + "&orgTreeName="+encodeURI(parent.businessName);
+                    "&orgId=" + orgId + "&personnelId=" + personnelId + "&hType=mh" + "&orgTreeName="+encodeURI(parent.businessName)+
+                    "&curOrgId="+orgId+"&curOrgTreeId="+orgTreeId;
         }
         window.location.href = url;
       }, function (err) {

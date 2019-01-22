@@ -9,13 +9,14 @@ var acctId = getQueryString('acctId');
 var orgTreeName = getQueryString('orgTreeName');
 var curOrgId = getQueryString('curOrgId');
 var curOrgTreeId = getQueryString('curOrgTreeId');
+var addToEditFlag = getQueryString('addToEditFlag'); //判断是从新增账号页面跳转过来的
 
 var slaveAcctCount; //从账号数量
 var personnelId;
 var orgTable;
 var orgNum = 0;
 var slaveOrgIdList = [];
-var psw;
+// var psw;
 var roleList = [];      //需要上传的角色列表
 var userRoleList = [];      //用户已有角色列表
 var formValidate;
@@ -23,7 +24,8 @@ var acctInfoList = [];
 var toastr = window.top.toastr;
 var cerTypeList = window.top.dictionaryData.certType();
 var statusCdList = window.top.dictionaryData.statusCd();
-var relTypeName = parent.relTypeName;
+var acctTypeList = window.top.dictionaryData.acctType();
+var relTypeName = window.top.relTypeName;
 var relTypeVal = "";
 var loading = parent.loading;
 
@@ -44,11 +46,11 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
 });
 
 // lulu ui tips插件
-seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
-  $('#defaultPsw').tips({
-      align: 'right'
-  });
-});
+// seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
+//   $('#defaultPsw').tips({
+//       align: 'right'
+//   });
+// });
 
 //添加数组IndexOf方法
 if (!Array.prototype.indexOf){
@@ -115,6 +117,12 @@ function noSelectUserInfo(){     //控制人员信息不可选
 function initAcctInfo(results){
    var acct = results.acctOrgVoPage.records;
    var slave = results.slaveAcctOrgVoPage.records;
+   for(var k=0;k<acct.length;k++){
+      if(acct[k].orgId == orgId){
+          addToEditFlag = 0;
+          break;
+      }
+   }
    acctInfoList = [];
    for(var i=0;i<acct.length;i++){
       if(acct[i].orgTreeId == orgTreeId || orgTreeId == 1){
@@ -180,7 +188,7 @@ function setAcctInfoTables(){
               'data': acctInfoList[i].slaveAcct,
               'destroy':true,
               'searching': false,
-              'autoWidth': false,
+              'autoWidth': true,
               'ordering': true,
               'paging': false,
               'info': false,
@@ -199,7 +207,18 @@ function setAcctInfoTables(){
                               '&curSlaveOrgTreeName='+encodeURI(row.orgTreeName)+'&hType=th&mainAcctId='+acctId+'&acctId='+row.slaveAcctId+'&statusCd='+row.statusCd+'">'+row.slaveAcct+'</a>';
                   }
                 },
-                  { 'data': "slaveAcctType", 'title': '类型', 'className': 'row-acctype' },
+                  { 'data': null, 'title': '类型', 'className': 'row-acctype' ,
+                      'render': function (data, type, row, meta) {
+                        var acctType = "";
+                        for(var i=0;i<acctTypeList.length;i++){
+                            if(row.slaveAcctType == acctTypeList[i].itemValue){
+                              acctType = acctTypeList[i].itemCnname;
+                              break;
+                            }
+                        }
+                        return acctType;
+                      }
+                  },
                   { 'data': "systemName", 'title': '系统', 'className': 'row-system'},
                   { 'data': "statusCd", 'title': '状态', 'className': 'row-state' ,
                     'render': function (data, type, row, meta) {
@@ -268,10 +287,10 @@ function initEditUserInfo(results){     //初始化用户信息(编辑)
   $('#email').val(results.eamil);
   $('#cerNo').val(results.certNo);
   $('#acct').val(results.tbAcct.acct);
-  $('#defaultPsw').val(results.tbAcct.password);
+  // $('#defaultPsw').val(results.tbAcct.password);
   setDate(results.tbAcct.enableDate,results.tbAcct.disableDate);
 
-  psw = results.tbAcct.password;
+  // psw = results.tbAcct.password;
 
   $('#role').addTag(results.tbRolesList);
 
@@ -346,7 +365,7 @@ function updateAcct(){      //编辑主账号
       "acctId": acctId,
       "disableDate": $('#invalidDate').val(),
       "enableDate": $('#effectDate').val(),
-      "password": $('#defaultPsw').val(),
+      "password": "4A@12345",
       "personnelId": personnelId,
       "statusCd": $("#statusCd").val(), 
       "tbRolesList":roleList,
@@ -387,7 +406,7 @@ function deleteTbAcct(){    //删除主账号
         contentType: "application/json",
         dataType:"json",
         success: function (data) { //返回json结果
-          if(data.state === 4){
+          if(data.state === 1000){
             toastr.success(data.message);
             deleteSuccess();
           }else{
@@ -491,7 +510,7 @@ function addSlaveBtnClick(acctOrgRelId,id,slaveOrgTreeId,relTypeVal){      //点
     var sOrgName = $("#orgName_"+id).text();
     var treeName = $("#orgTreeName_"+id).text();
     var url = 'addSubAccount.html?curOrgId='+curOrgId+'&curOrgTreeId='+curOrgTreeId+'&orgTreeId='+orgTreeId+'&hType=th&personnelId='+personnelId + '&slaveOrgTreeId=' + slaveOrgTreeId +
-                      '&mainAcctId='+ acctId +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&toMainType=' + hType + '&curSlaveOrgName='+sOrgName+
+                      '&mainAcctId='+ acctId +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&toMainType=' + hType + '&curSlaveOrgName='+encodeURI(sOrgName)+
                       '&fullName=' + encodeURI(sFullName) + '&acctOrgRelId=' + acctOrgRelId + '&orgTreeName=' + encodeURI(treeName)+'&relTypeVal='+relTypeVal;
     window.location.href = url;
 }
@@ -559,28 +578,28 @@ function isNull(s,r){    //判断是否为null
 
 //删除组织
 function deleteOrg(orgId,orgTreeId){
-    if(orgNum == 1){
-      toastr.error("无法删除所有组织");
-    }else{
-        parent.layer.confirm('是否删除该组织？', {
-        icon: 0,
-        title: '提示',
-        btn: ['确定','取消']
-        }, function(index, layero){
-          removeAcctOrg(orgId,orgTreeId);
-          parent.layer.close(index);
-        }, function(){
-      
-        });
-    }
+    // if(orgNum == 1){
+    //   toastr.error("无法删除所有组织");
+    // }else{
+    parent.layer.confirm('是否删除该组织？', {
+    icon: 0,
+    title: '提示',
+    btn: ['确定','取消']
+    }, function(index, layero){
+      removeAcctOrg(orgId,orgTreeId);
+      parent.layer.close(index);
+    }, function(){
+  
+    });
+    // }
 }
 
 function cancel() {   //取消按钮
   var url = '';
-  if(hType != "uh"){  //返回list.html
+  if(hType != "uh" && hType != "null"){  //返回list.html
     url = "list.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;
   }else{
-    url = "/inaction/user/edit.html?orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName) + "&id=" + orgId + 
+    url = "/inaction/user/edit.html?orgTreeName="+encodeURI(orgTreeName)+"&orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName) + "&id=" + orgId + 
     "&personnelId=" + personnelId + "&orgRootId=" + orgRootId + "&tabPage=" + tabPage;
   }
   window.location.href = url;
@@ -600,7 +619,7 @@ function openTypeDialog() {
       shade: 0.8,
       area: ['70%', '85%'],
       maxmin: true,
-      content: 'roleDialog.html',
+      content: '/inaction/account/roleDialog.html',
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象
@@ -626,9 +645,9 @@ function openOrgDialog() {
       title: '选择组织',
       shadeClose: true,
       shade: 0.8,
-      area: ['27%', '80%'],
+      area: ['40%', '80%'],
       maxmin: true,
-      content: 'orgDialog.html?orgTreeId='+orgTreeId+'&relType=30',
+      content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType=99'+'&addToEditFlag='+addToEditFlag,
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象
@@ -651,9 +670,9 @@ function openEditOrgDialog(val,acctOrgRelId,orgTreeId) {
       title: '选择组织',
       shadeClose: true,
       shade: 0.8,
-      area: ['27%', '80%'],
+      area: ['40%', '80%'],
       maxmin: true,
-      content: 'orgDialog.html?orgTreeId='+orgTreeId+'&relType='+val,
+      content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType='+val,
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象
@@ -671,8 +690,8 @@ function openEditOrgDialog(val,acctOrgRelId,orgTreeId) {
 
 //提交成功
 function submitSuccess(){     
-    var url = "editMainAccount.html?acctId="+ acctId +"&orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + 
-                  "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=mh" + "&orgTreeName="+encodeURI(orgTreeName);
+    var url = "editMainAccount.html?curOrgId="+curOrgId+"&curOrgTreeId="+curOrgTreeId+"&acctId="+ acctId +"&orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + 
+                  "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType="+ hType + "&orgTreeName="+encodeURI(orgTreeName);
     window.location.href = url;
 }
 
@@ -682,20 +701,20 @@ function deleteSuccess(){
     window.location.href = url;
 }
 
-$("#defaultPsw").focus(function (){    //默认密码输入框获得焦点
-  if($("#defaultPsw").attr("type") == "password"){
-    $("#defaultPsw").val('');
-    $("#defaultPsw").attr("type","text");
-  }
-})
+// $("#defaultPsw").focus(function (){    //默认密码输入框获得焦点
+//   if($("#defaultPsw").attr("type") == "password"){
+//     $("#defaultPsw").val('');
+//     $("#defaultPsw").attr("type","text");
+//   }
+// })
 
-$("#defaultPsw").blur(function (){     //默认密码输入框失去焦点
-  if($("#defaultPsw").val() == ''){
-    $("#defaultPsw").val(psw);
-    $("#defaultPsw").attr("type","password");
-    formValidate.isAllPass($('#defaultPsw'));
-  }
-})
+// $("#defaultPsw").blur(function (){     //默认密码输入框失去焦点
+//   if($("#defaultPsw").val() == ''){
+//     $("#defaultPsw").val(psw);
+//     $("#defaultPsw").attr("type","password");
+//     formValidate.isAllPass($('#defaultPsw'));
+//   }
+// })
 
 getUser(acctId);
 noSelectUserInfo();

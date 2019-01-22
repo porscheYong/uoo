@@ -303,7 +303,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 			var dinfo = _this2.renderSelect(id, fs.config.placeholder, select);
 			var heightStyle = !fs.config.height || fs.config.height == 'auto' ? '' : 'xm-hg style="height: 34px;"';
 			var inputHtml = ['<div class="' + LABEL + '">', '<input type="text" fsw class="' + FORM_INPUT + ' ' + INPUT + '" ' + (fs.config.isSearch ? '' : 'style="display: none;"') + ' autocomplete="off" debounce="0" />', '</div>'];
-			var reElem = $('<div class="' + FORM_SELECT + '" ' + SKIN + '="' + fs.config.skin + '">\n\t\t\t\t\t<input class="' + HIDE_INPUT + '" value="" name="' + fs.config.formname + '" lay-verify="' + fs.config.layverify + '" lay-verType="' + fs.config.layverType + '" type="text" style="position: absolute;bottom: 0; z-index: -1;width: 100%; height: 100%; border: none; opacity: 0;"/>\n\t\t\t\t\t<div class="' + FORM_TITLE + ' ' + (fs.config.disabled ? DIS : '') + '">\n\t\t\t\t\t\t<div class="' + FORM_INPUT + ' ' + NAME + '" ' + heightStyle + '>\n\t\t\t\t\t\t\t' + inputHtml.join('') + '\n\t\t\t\t\t\t\t<i class="' + SANJIAO + '"></i>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class="' + TDIV + '">\n\t\t\t\t\t\t\t<input type="text" autocomplete="off" placeholder="' + fs.config.placeholder + '" readonly="readonly" unselectable="on" class="' + FORM_INPUT + '">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div></div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<dl xid="' + id + '" class="' + DL + ' ' + (fs.config.radio ? RADIO : '') + '">' + dinfo + '</dl>\n\t\t\t\t</div>');
+			var reElem = $('<div class="' + FORM_SELECT + '" ' + SKIN + '="' + fs.config.skin + '">\n\t\t\t\t\t<input class="' + HIDE_INPUT + '" value="" ' + (options.name == 'nodeTypes'? 'required' : '') + ' name="' + fs.config.formname + '" lay-verify="' + fs.config.layverify + '" lay-verType="' + fs.config.layverType + '" type="text" style="position: absolute;bottom: 0; z-index: -1;width: 100%; height: 100%; border: none; opacity: 0;"/>\n\t\t\t\t\t<div class="' + FORM_TITLE + ' ' + (fs.config.disabled ? DIS : '') + '">\n\t\t\t\t\t\t<div class="' + FORM_INPUT + ' ' + NAME + '" ' + heightStyle + '>\n\t\t\t\t\t\t\t' + inputHtml.join('') + '\n\t\t\t\t\t\t\t<i class="' + SANJIAO + '"></i>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class="' + TDIV + '">\n\t\t\t\t\t\t\t<input type="text" autocomplete="off" placeholder="' + fs.config.placeholder + '" readonly="readonly" unselectable="on" class="' + FORM_INPUT + '">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div></div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<dl xid="' + id + '" class="' + DL + ' ' + (fs.config.radio ? RADIO : '') + '">' + dinfo + '</dl>\n\t\t\t\t</div>');
 
 			var $parent = $('<div class="' + className + ' ' + PNAME + '" FS_ID="' + id + '"></div>');
 			$parent.append(reElem);
@@ -1498,7 +1498,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 	};
 
 	Common.prototype.log = function (obj) {
-		console.log(obj);
+		// console.log(obj);
 	};
 
     Common.prototype.setDisabled = function (id, item) {

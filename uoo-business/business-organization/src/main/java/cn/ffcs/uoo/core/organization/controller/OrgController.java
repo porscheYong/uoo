@@ -1219,22 +1219,24 @@ public class OrgController extends BaseController {
             ret.setMessage("组织下存在组织无法删除");
             return ret;
         }
-//        Wrapper orgPer = Condition.create()
-//                .eq("ORG_ID",orgId)
-//                .eq("STATUS_CD","1000");
-//        int num = orgPersonRelService.selectCount(orgPer);
-        List<OrgPersonRel> oplist = orgPersonRelService.getOrgPsnRel(orgTree.getOrgTreeId().toString(),orgId);
-        if(oplist!=null && oplist.size()>0){
-            ret.setState(ResponseResult.STATE_ERROR);
-            ret.setMessage("组织下存在员工无法删除");
-            return ret;
+        //0411 人力查人
+        if("0411".equals(ortCur.getRefCode())){
+            List<OrgPersonRel> oplist = orgPersonRelService.getOrgPsnRel(orgTree.getOrgTreeId().toString(),orgId);
+            if(oplist!=null && oplist.size()>0){
+                ret.setState(ResponseResult.STATE_ERROR);
+                ret.setMessage("组织下存在员工无法删除");
+                return ret;
+            }
+        }else{
+            List<OrgPersonRel> oplist = orgPersonRelService.getOrgAcctRel(orgTree.getOrgTreeId().toString(),orgId);
+            if(oplist!=null && oplist.size()>0){
+                ret.setState(ResponseResult.STATE_ERROR);
+                ret.setMessage("组织下存在账号无法删除");
+                return ret;
+            }
         }
-//        List<OrgRel> orgRelList = orgRelService.getOrgRel(orgTreeId,orgId);
-//        if(orgRelList!=null && orgRelList.size()>1){
-//            ret.setState(ResponseResult.STATE_ERROR);
-//            ret.setMessage("组织被其他组织树引用无法删除");
-//            return ret;
-//        }
+
+
 
         String batchNumber = modifyHistoryService.getBatchNumber();
 

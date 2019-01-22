@@ -19,7 +19,7 @@
 
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
-    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/css/account/custom.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="/js/core/html5shiv.js"></script>
@@ -44,7 +44,7 @@
           color: #fff;    
       }
       .col-md-8{
-            width:63% !important;
+            width:70% !important;
         }   
         #businessOrg{
             max-height: 200px !important;
@@ -54,17 +54,17 @@
 
   <body style="background: #fff;">
     <div class="container">
-        <div style="height: 350px;margin-top: 2%;">
+        <div style="margin-top: 0;">
             <!-- <span>关系类型：</span> -->
             <!-- <select id="businessOrg" class="col-md-9 col-sm-9 col-xs-11" style="margin-left: 10px;"></select> -->
-            <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-12 col-sm-12 col-xs-12" style="position:fixed;background:#fff;z-index:100;padding-top:3%;border-bottom:1px solid #ecedef">
                 <div class="form-item" style="width: 100%">
-                    <label for="accType" id="slaveType" class="form-item-label col-md-4 col-sm-4 col-xs-4" style="width:37%;padding-right: 20px;line-height: 40px;text-align: right;">关系类型</label>
+                    <label for="accType" id="slaveType" class="form-item-label col-md-4 col-sm-4 col-xs-4" style="width:26%;padding-right: 20px;line-height: 40px;text-align: right;">关系类型</label>
                     <select  class="col-md-8 col-sm-8 col-xs-8" id='businessOrg'>
                     </select>
                 </div>
             </div>
-            <div style="display: inline-block;width: 100%;overflow-y: auto;">
+            <div style="display: inline-block;width: 100%;overflow-y: auto;margin-top:14%;"> <!-- overflow-y: auto; -->
                 <ul id="standardTree" class="ztree"></ul>
             </div>
         </div>

@@ -99,7 +99,6 @@ var toastr = window.top.toastr;
         loading.screenMaskDisable('container');
         toastr.success('新增成功！');
       }, function (err) {
-          console.log(err);
           loading.screenMaskDisable('container');
       })
   }

@@ -3,6 +3,7 @@ var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
 var standardFlag = ~~getQueryString('standardFlag');
 var orgName = getQueryString('name');
+var refCode = getQueryString('refCode');
 var locationList;
 var orgTypeList;
 var positionList;
@@ -12,6 +13,12 @@ var selectUser = [];
 var formValidate;
 var loading = parent.loading;
 var toastr = parent.parent.toastr;
+
+//字典数据
+var scaleData = window.top.dictionaryData.scale();
+var cityVillageData = window.top.dictionaryData.cityVillage();
+var orgPostLevelData = window.top.dictionaryData.orgPostLevel();
+var statusCdData = window.top.dictionaryData.statusCd();
 
 $('.orgName').html(orgName);
 //不可编辑
@@ -77,62 +84,46 @@ function initOrgRelTable (results) {
 
 // 获取规模字典数据
 function getScale (orgScale) {
-    $http.get('/tbDictionaryItem/getList/SCALE', {}, function (data) {
-        var value = '';
-        for (var i = 0; i < data.length; i++) {
-            if (orgScale === data[i].itemValue) {
-                value = data[i].itemCnname
-            }
+    var value = '';
+    for (var i = 0; i < scaleData.length; i++) {
+        if (orgScale === scaleData[i].itemValue) {
+            value = scaleData[i].itemCnname
         }
-        $('#orgScale').html(value);
-    }, function (err) {
-
-    })
+    }
+    $('#orgScale').html(value);
 }
 
 // 获取城乡字典数据
 function getCityVillage (cityTown) {
-    $http.get('/tbDictionaryItem/getList/CITY_VILLAGE', {}, function (data) {
-        var value = '';
-        for (var i = 0; i < data.length; i++) {
-            if (cityTown === data[i].itemValue) {
-                value = data[i].itemCnname
-            }
+    var value = '';
+    for (var i = 0; i < cityVillageData.length; i++) {
+        if (cityTown === cityVillageData[i].itemValue) {
+            value = cityVillageData[i].itemCnname
         }
-        $('#cityTown').html(value);
-    }, function (err) {
-
-    })
+    }
+    $('#cityTown').html(value);
 }
 
 // 获取组织最高岗位级别字典数据
 function getOrgPostLevel (orgPositionLevel) {
-    $http.get('/tbDictionaryItem/getList/ORG_POST_LEVEL', {}, function (data) {
-        var value = '';
-        for (var i = 0; i < data.length; i++) {
-            if (orgPositionLevel === data[i].itemValue) {
-                value = data[i].itemCnname
-            }
+    var value = '';
+    for (var i = 0; i < orgPostLevelData.length; i++) {
+        if (orgPositionLevel === orgPostLevelData[i].itemValue) {
+            value = orgPostLevelData[i].itemCnname
         }
-        $('#orgPositionLevel').html(value);
-    }, function (err) {
-
-    })
+    }
+    $('#orgPositionLevel').html(value);
 }
 
 // 获取状态数据
 function getStatusCd (statusCd) {
-    $http.get('/tbDictionaryItem/getList/STATUS_CD', {}, function (data) {
-        var value = '';
-        for (var i = 0; i < data.length; i++) {
-            if (statusCd === data[i].itemValue) {
-                value = data[i].itemCnname
-            }
+    var value = '';
+    for (var i = 0; i < statusCdData.length; i++) {
+        if (statusCd === statusCdData[i].itemValue) {
+            value = statusCdData[i].itemCnname
         }
-        $('#statusCd').html(value);
-    }, function (err) {
-
-    })
+    }
+    $('#statusCd').html(value);
 }
 
 // 获取组织基础信息
@@ -142,15 +133,18 @@ function getOrg (orgId) {
         orgId: orgId
     }, function (data) {
         $('#orgName').html(data.orgName);
-        $('#orgCode').html(data.orgCode);
+        $('#orgId').html(data.orgId);
         $('#shortName').html(data.shortName);
         $('#orgBizFullName').html(data.orgBizFullName);
         $('#orgMartCode ').html(data.orgMartCode);
-        $('#createDate ').html(data.createDate);
+        $('#foundingTime ').html(data.foundingTime);
         $('#orgNameEn').html(data.orgNameEn);
         $('#officePhone').html(data.officePhone);
         $('#sort').html(data.sort);
         $('#address').html(data.address);
+        if (data.psonOrgVoList && data.psonOrgVoList.length > 0) {
+            $('#psonOrgVoList').html(data.psonOrgVoList[0].psnName);
+        }
         if (data.orgContent) {
             var content = "<p>"+ data.orgContent + "</p>";
             $('#orgContent').html(content);
@@ -160,7 +154,7 @@ function getOrg (orgId) {
         getScale(data.orgScale);
         getCityVillage(data.cityTown);
         getOrgPostLevel(data.orgPositionLevel);
-        getStatusCd(data.statusCd);
+        // getStatusCd(data.statusCd);
         locationList = data.politicalLocationList;
         orgTypeList = data.orgTypeList;
         positionList = data.positionList;
@@ -189,7 +183,7 @@ function getOrgRel (orgId) {
 }
 
 function orgEdit () {
-    var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&refCode=' + refCode + '&name=' + encodeURI(orgName);
     $('#editBtn').attr('href', url);
 }
 

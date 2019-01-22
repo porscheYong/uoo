@@ -2,6 +2,7 @@ var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var areaCodeId = ''; //区号ID
+var orgCode = ''; //组织编码
 var locationList;
 var orgTypeList;
 var orgMartCode; //划小组织编码
@@ -552,12 +553,13 @@ function getOrg (orgId) {
         orgId: orgId
     }, function (data) {
         $('#orgName').val(data.orgName).focus();
-        $('#orgCode').val(data.orgCode);
+        $('#orgId').val(data.orgId);
         $('#shortName').val(data.shortName);
         $('#orgBizFullName').val(data.orgBizFullName);
         $('#orgBizFullName').attr('title', data.orgBizFullName);
         $('#orgNameEn').val(data.orgNameEn);
         orgMartCode = data.orgMartCode;
+        orgCode = data.orgCode;
         laydate.render({
           elem: '#foundingTime',
           value: new Date(data.foundingTime)
@@ -665,6 +667,9 @@ $('#myTabs a').click(function (e) {
 function updateOrg () {
   if (!formValidate.isAllPass())
       return;
+  var statusCd = $('#statusCd option:selected') .val();
+  if (statusCd == '1100')
+      return deleteOrg();
   loading.screenMaskEnable('container');
   var userList = [];
   var location = [];
@@ -708,7 +713,7 @@ function updateOrg () {
   // }
   var orgPositionLevel = $('#orgPositionLevel option:selected') .val();
   var officePhone = $('#officePhone').val();
-  var statusCd = $('#statusCd option:selected') .val();
+  // var statusCd = $('#statusCd option:selected') .val();
   var sort = $('#sort').val();
   var address = $('#address').val();
   var orgContent = $('#orgContent').val();
@@ -739,6 +744,7 @@ function updateOrg () {
       orgId: orgId,
       supOrgId: pid,
       orgName: orgName,
+      orgCode: orgCode,
       shortName: shortName,
       orgBizFullName: orgBizFullName,
       cityTown: cityTown,
@@ -762,6 +768,7 @@ function updateOrg () {
       orgMartCode: orgMart
   }), function () {
       parent.changeNodeName(orgId, orgName);
+      parent.moveNode(pid, orgId, sort);
       window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
       loading.screenMaskDisable('container');
       toastr.success('更新成功！');

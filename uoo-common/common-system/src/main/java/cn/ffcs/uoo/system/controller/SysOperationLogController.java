@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -110,26 +111,27 @@ public class SysOperationLogController {
     })
     @UooLog(key="listPage",value="获取分页列表")
     @GetMapping("/listPage")
-    public ResponseResult<Page<LogDTO>> listPage(@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord){
+    public ResponseResult<Page<LogDTO>> listPage(@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord,@RequestParam("logEnum")String logEnum){
         pageNo = pageNo==null?0:pageNo;
         pageSize = pageSize==null?20:pageSize;
         HashMap<String,Object> map=new HashMap<>();
         if(keyWord!=null&&keyWord.trim().length()>0){
             map.put("keyWord", "%"+keyWord+"%");
-        }/*
-        if(parentRoleCode!=null&&parentRoleCode.trim().length()>0){
-            map.put("PARENT_ROLE_CODE",  parentRoleCode );
-        }*/
+        } 
+        if(logEnum!=null&&logEnum.trim().length()>0){
+            map.put("logEnum", logEnum);
+        } 
         map.put("from", (pageNo-1)*pageSize);
         map.put("end", pageNo * pageSize);
+        ResponseResult<Page<LogDTO>> createSuccessResult = ResponseResult.createSuccessResult( "");
         Long countLog = sysOperationLogService.countLog(map);
         List<LogDTO> listLog = sysOperationLogService.listLog(map);
         Page<LogDTO> page=new Page<>(pageNo, pageSize);
         page.setTotal(countLog);
         page.setRecords(listLog);
-        ResponseResult<Page<LogDTO>> createSuccessResult = ResponseResult.createSuccessResult( "");
         createSuccessResult.setTotalRecords(countLog);
         createSuccessResult.setData(page);
+        
         return createSuccessResult;
     }
 

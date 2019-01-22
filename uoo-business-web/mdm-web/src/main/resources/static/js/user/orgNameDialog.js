@@ -32,7 +32,8 @@ function initOrgFullNameTree () {
           }
       },
       callback: {
-          onCheck: onOrgTypeCheck
+          onCheck: onOrgTypeCheck,
+          onAsyncSuccess: onAsyncSuccess
       },
       check: {
           enable: true,
@@ -57,6 +58,24 @@ function onOrgTypeCheck (e, treeId, treeNode) {
     var zTree = $.fn.zTree.getZTreeObj("orgFullNameTree");
     var node = zTree.getNodeByTId(treeNode.tId);
     checkNode = node;
+}
+
+function onAsyncSuccess (event, treeId, treeNode, msg) {
+    //自动展开删除'未分类'
+    if (treeNode.level == 0) {
+        var response = JSON.parse(msg);
+        if (response && response.data) {
+            var data = response.data;
+            for (var i = 0; i < data.length; i++) {
+                // 未分类
+                if (data[i].id == '88888888') {
+                    var tree = $.fn.zTree.getZTreeObj("orgFullNameTree");
+                    var node = tree.getNodeByParam('id', data[i].id);
+                    tree.removeNode(node);
+                }
+            }
+        }
+    }
 }
 
 function filter (treeId, parentNode, childNodes) {
