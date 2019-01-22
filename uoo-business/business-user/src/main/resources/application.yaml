@@ -106,6 +106,10 @@ spring:
   zipkin:
     base-url: http://134.96.253.223:8600
   #base-url: http://100.64.8.106:8600
+    enabled : true
+    locator:
+      discovery:
+        enabled: true
   sleuth:
     feign:
       enabled: true

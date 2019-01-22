@@ -14,9 +14,9 @@ spring:
         driver-class-name:  oracle.jdbc.OracleDriver
         username: octopus
         password: octopus
-        initial-size: 10
+        initial-size: 60
         min-idle: 4
-        max-active: 30
+        max-active: 200
         max-wait: 60000
         time-between-eviction-runs-millis: 60000
         min-evictable-idle-time-millis: 300000
