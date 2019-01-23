@@ -84,7 +84,7 @@
     <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
     <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
-
+    <result column="SORT" jdbcType="DECIMAL" property="sort" />
     <association property="orgTreeInfo" javaType="cn.ffcs.uoo.message.server.pojo.TbOrgTree"
     select="getOrgTree" column="ORG_TREE_ID"></association>
 
@@ -259,8 +259,10 @@
   </select>
 
   <!--组织层级-->
+  <!--SELECT * FROM TB_ORG_LEVEL WHERE org_Id = #{orgId} AND ORG_TREE_ID = #{orgTreeId} and status_cd = 1000-->
   <select id="getOrgLevel" resultMap="OrgLevelMap">
-    SELECT * FROM TB_ORG_LEVEL WHERE org_Id = #{orgId} AND ORG_TREE_ID = #{orgTreeId} and status_cd = 1000
+    SELECT a.*,b.SORT FROM TB_ORG_LEVEL a,tb_org_orgtree_rel b WHERE a.org_Id = #{orgId} AND a.ORG_TREE_ID = #{orgTreeId}
+    and a.status_cd = 1000 and b.org_Id = a.org_id AND b.ORG_TREE_ID = a.ORG_TREE_ID and b.status_cd = 1000
   </select>
 
   <!--组织树-->
