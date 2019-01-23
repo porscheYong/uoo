@@ -3,11 +3,8 @@ package cn.ffcs.common.gol;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import xyz.wongs.common.persistence.jpa.repository.BaseRepositoryFactoryBean;
 
 /**
@@ -36,13 +33,24 @@ import xyz.wongs.common.persistence.jpa.repository.BaseRepositoryFactoryBean;
 */
 @EnableEurekaClient
 @SpringBootApplication
-@ServletComponentScan(basePackages = {"cn.ffcs.common"}) //扫描使用注解方式的Servlet
+@ServletComponentScan(basePackages = {"cn.ffcs.common"}) //Scan servlets using annotations
 @EnableJpaRepositories(basePackages = {"cn.ffcs.common"},
-        repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class//指定自己的工厂类
+        repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class//Specify your own factory class
 )
 public class LogApplication {
 
+
+    /**Get the log entity from the message middleware, store the database after deserialization
+     * @author WCNGS@QQ.COM
+     * @See
+     * @date 2019/1/23 16:09
+     * @param args
+     * @return void
+     * @throws
+     * @since
+     */
     public static void main(String[] args) {
+
         SpringApplication.run(LogApplication.class, args);
     }
 
