@@ -86,9 +86,19 @@
                 <version>${common-abstract.version}</version>
             </dependency>
             <dependency>
-                <groupId>xyz.wongs.base.persistence.jpa</groupId>
+                <groupId>xyz.wongs</groupId>
                 <artifactId>persistence-jpa</artifactId>
                 <version>1.0.1-RELEASE</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.baomidou</groupId>
+                        <artifactId>mybatisplus-spring-boot-starter</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.baomidou</groupId>
+                        <artifactId>mybatis-plus</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- db -->
             <dependency>
