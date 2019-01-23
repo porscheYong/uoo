@@ -1,8 +1,10 @@
 var orgId = getQueryString('id');
 var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
+var ppid = getQueryString('ppid');
 var standardFlag = ~~getQueryString('standardFlag');
 var orgName = getQueryString('name');
+var pName = getQueryString('pName');
 var refCode = getQueryString('refCode');
 var locationList;
 var orgTypeList;
@@ -163,6 +165,45 @@ function getOrg (orgId) {
         $('#orgTypeList').addTag(orgTypeList);
         $('#positionList').addTag(positionList);
         $('#postList').addTag(orgPostList);
+        var expandovalueVoList = data.expandovalueVoList;
+        // if (refCode == '0401') {
+        //     var expandovalueVoObj = {};
+        //     var nodeTypeList = [];
+        //     var countTypeList = [];
+        //     var nodeTypeStr = '';
+        //     var countTypeStr = '';
+        //     for (var i = 0; i < expandovalueVoList.length; i++) {
+        //         if (expandovalueVoList[i].columnName == 'nodeType') {
+        //             nodeTypeList.push(expandovalueVoList[i]);
+        //         }
+        //         if (expandovalueVoList[i].columnName == 'areaType') {
+        //             expandovalueVoObj.areaTypeStr = expandovalueVoList[i].columnCnname;
+        //         }
+        //         if (expandovalueVoList[i].columnName == 'countType') {
+        //             countTypeList.push(expandovalueVoList[i]);
+        //         }
+        //         if (expandovalueVoList[i].columnName == 'contractType') {
+        //             expandovalueVoObj.contractTypeStr = expandovalueVoList[i].columnCnname;
+        //         }
+        //     }
+        //     for (var i = 0; i < nodeTypeList.length; i++) {
+        //         if (i == nodeTypeList.length - 1)
+        //             nodeTypeStr = nodeTypeStr + nodeTypeList[i].columnCnname;
+        //         else
+        //             nodeTypeStr = nodeTypeStr + nodeTypeList[i].columnCnname + ', ';
+        //     }
+        //     for (var i = 0; i < countTypeList.length; i++) {
+        //         if (i == countTypeList.length - 1)
+        //             countTypeStr = countTypeStr + countTypeList[i].columnCnname;
+        //         else
+        //             countTypeStr = countTypeStr + countTypeList[i].columnCnname + ', ';
+        //     }
+        //     expandovalueVoObj.nodeTypeStr = nodeTypeStr;
+        //     expandovalueVoObj.countTypeStr = countTypeStr;
+        //     var smallTemplate = Handlebars.compile($("#smallTemplate").html());
+        //     var smallHtml = smallTemplate(expandovalueVoObj);
+        //     $('#small').html(smallHtml);
+        // }
     }, function (err) {
 
     })
@@ -183,7 +224,7 @@ function getOrgRel (orgId) {
 }
 
 function orgEdit () {
-    var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&refCode=' + refCode + '&name=' + encodeURI(orgName);
+    var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&ppid=' + ppid + '&refCode=' + refCode + '&name=' + encodeURI(orgName) + '&infoFlag=1' + '&pName=' + encodeURI(pName);
     $('#editBtn').attr('href', url);
 }
 

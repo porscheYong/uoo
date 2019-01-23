@@ -128,8 +128,10 @@ function changeNodeName(orgId, name) {
     var tId = 'standardTree_' + orgId;
     var zTree = $.fn.zTree.getZTreeObj("standardTree");
     var treeNode = zTree.getNodeByTId(tId);
-    treeNode.name = name;
-    $('#standardTree_' + orgId + '_span').html(name);
+    if (treeNode) {
+        treeNode.name = name;
+        $('#standardTree_' + orgId + '_span').html(name);
+    }
 }
 
 //移动节点至指定位置
@@ -139,13 +141,15 @@ function moveNode(pid, orgId, index) {
         var pNode = tree.getNodeByParam('id', pid);
         var node = tree.getNodeByParam('id', orgId);
         var childNode = pNode.children;
-        childNode.splice($.inArray(node, childNode), 1);
-        var targetNode = childNode[index - 1];
-        if (childNode.length > 0) {
-            if (targetNode)
-                tree.moveNode(targetNode, node, 'prev');
-            else
-                tree.moveNode(childNode[childNode.length - 1], node, 'next'); //移动到最后一个元素
+        if (childNode && childNode.length > 0) {
+            childNode.splice($.inArray(node, childNode), 1);
+            var targetNode = childNode[index - 1];
+            if (childNode.length > 0) {
+                if (targetNode)
+                    tree.moveNode(targetNode, node, 'prev');
+                else
+                    tree.moveNode(childNode[childNode.length - 1], node, 'next'); //移动到最后一个元素
+            }
         }
     }
 }

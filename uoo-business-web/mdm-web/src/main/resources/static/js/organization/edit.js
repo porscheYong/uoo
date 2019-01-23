@@ -1,6 +1,9 @@
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
+var ppid = getQueryString('ppid');
 var orgName = getQueryString('name');
+var pName = getQueryString('pName');
+var infoFlag = getQueryString('infoFlag');
 var areaCodeId = ''; //区号ID
 var orgCode = ''; //组织编码
 var locationList;
@@ -769,7 +772,10 @@ function updateOrg () {
   }), function () {
       parent.changeNodeName(orgId, orgName);
       parent.moveNode(pid, orgId, sort);
-      window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
+      if (infoFlag)
+          window.location.replace("list.html?id=" + pid + '&pid=' + ppid + "&name=" + encodeURI(pName));
+      else
+        window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
       loading.screenMaskDisable('container');
       toastr.success('更新成功！');
   }, function (err) {
@@ -792,7 +798,10 @@ function deleteOrg () {
             supOrgId: pid
         }, function () {
             parent.deleteNode(orgId);
-            parent.selectRootNode();
+            if (infoFlag)
+                parent.openTreeById(ppid);
+            else
+                parent.openTreeById(pid);
             loading.screenMaskDisable('container');
             toastr.success('删除成功！');
         }, function (err) {
