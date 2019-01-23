@@ -25,4 +25,10 @@
     STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE, ACCT_ORG_REL_ID, 
     ACCT_ID, ENABLE_DATE, DISABLE_DATE
   </sql>
+
+  <select id="selectBySlaveAcctAndAcctId" resultMap="BaseResultMap">
+    select * from tb_slave_acct where slave_acct = #{slave_acct} and acct_id = #{acct_id} and RESOURCE_OBJ_ID = #{resourceObjId}
+    and SLAVE_ACCT_TYPE ='1'  and status_cd = '1000'
+  </select>
+
 </mapper>

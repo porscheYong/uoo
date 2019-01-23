@@ -7,6 +7,17 @@ spring:
   sleuth:
     sampler:
       percentage: 0.1
+  rabbitmq:
+    username: root
+    password: 123
+    host: 134.96.253.221,134.96.253.222,134.96.253.223
+    port: 5672
+    listener:
+      direct:
+        acknowledge-mode: manual
+      simple:
+        acknowledge-mode: manual
+
   datasource:
       druid:
         #测试环境
@@ -88,6 +99,8 @@ spring:
           #允许清除记录
           reset-enable: false
   #      aop-patterns: cn.ffcs.uoo.**.service.*
+
+
 mybatis-plus:
   mapper-locations: classpath:mapper/**Mapper.xml
   typeAliasesPackage: cn.ffcs.interfaces

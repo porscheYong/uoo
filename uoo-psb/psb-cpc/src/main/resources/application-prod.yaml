@@ -6,6 +6,16 @@ spring:
   sleuth:
     sampler:
       percentage: 0.1
+  rabbitmq:
+    username: root
+    password: 123
+    host: 134.96.249.38
+    port: 5672
+    listener:
+      direct:
+        acknowledge-mode: manual
+      simple:
+        acknowledge-mode: manual
   datasource:
       druid:
         url: jdbc:oracle:thin:@(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.48)(PORT = 3436))

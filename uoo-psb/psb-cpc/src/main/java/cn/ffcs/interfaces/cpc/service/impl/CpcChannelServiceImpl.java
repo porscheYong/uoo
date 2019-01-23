@@ -12,6 +12,8 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -22,6 +24,9 @@ import java.util.*;
 @Service
 @Transactional(readOnly = false, rollbackFor = Exception.class)
 public class CpcChannelServiceImpl implements CpcChannelService {
+
+    @Autowired
+    private AmqpTemplate template;
 
     @Resource
     private TbOrgMapper tbOrgMapper;
@@ -41,8 +46,6 @@ public class CpcChannelServiceImpl implements CpcChannelService {
     private OrgTypeMapper orgTypeMapper;
     @Resource
     private TbOrgOrgtypeRelMapper tbOrgOrgtypeRelMapper;
-
-
     @Resource
     private TbPersonnelMapper tbPersonnelMapper;
     @Resource
@@ -86,14 +89,15 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                     /*员工渠道关系*/
                     List<Map<String, Object>> STAFF_CHANNEL_RELAS = (List<Map<String, Object>>) map.get("STAFF_CHANNEL_RELAS");
 
+                    hand_CHANNEL(CHANNEL, rsMap);
+
+                    hand_STAFF(STAFF, rsMap);
+
                     if(STAFF_CHANNEL_RELAS != null && STAFF_CHANNEL_RELAS.size() >0){
                         STAFF_CHANNEL_RELAS.forEach((temp)->{
                             hand_STAFF_CHANNEL_RELAS(temp,rsMap);
                         });
                     }
-                    hand_CHANNEL(CHANNEL, rsMap);
-
-                    hand_STAFF(STAFF, rsMap);
 
                 }catch (Exception e){
                     logger.error("Exception:{}",e);
@@ -239,6 +243,8 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                         "1000", DateUtils.parseDate(DateUtils.getDateTime()), null,
                                         tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
                                     tbSlaveAcctMapper.insert(tbSlaveAcct);
+                                    String msg = "{\"type\":\"person\",\"handle\":\"insert\",\"context\":{\"column\":\"slaveAcctId\",\"value\":"+tbSlaveAcct.getSlaveAcctId()+"}}";
+                                    send(msg);
                                 }
                             } else {
                                 //修改人
@@ -300,12 +306,18 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                         DateUtils.parseDate(DateUtils.getDateTime()));
                                 acctCrossRelMapper.insert(acctCrossRel);
                                 //插入TB_SLAVE_ACCT。判断该账号是否存在。
-                                if (staff.get("ACCOUNT") != null && tbSlaveAcctMapper.selectBySlaveAcctAndAcctId(String.valueOf(staff.get("ACCOUNT")), tbAcct.getAcctId()) < 1) {
-                                    TbSlaveAcct tbSlaveAcct = new TbSlaveAcct(String.valueOf(staff.get("ACCOUNT")), "1314",
+                                TbSlaveAcct tbSlaveAcct = tbSlaveAcctMapper.selectBySlaveAcctAndAcctId(String.valueOf(staff.get("ACCOUNT")), tbAcct.getAcctId(),SystemConstant.CPC_SYSTEM_ID);
+                                if (staff.get("ACCOUNT") != null &&  tbSlaveAcct == null) {
+                                     tbSlaveAcct = new TbSlaveAcct(String.valueOf(staff.get("ACCOUNT")), "1314",
                                             "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", SystemConstant.CPC_SYSTEM_ID,
                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), null,
                                             tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
                                     tbSlaveAcctMapper.insert(tbSlaveAcct);
+                                    String msg = "{\"type\":\"person\",\"handle\":\"insert\",\"context\":{\"column\":\"slaveAcctId\",\"value\":"+tbSlaveAcct.getSlaveAcctId()+"}}";
+                                    send(msg);
+                                }else{
+                                    String msg = "{\"type\":\"person\",\"handle\":\"update\",\"context\":{\"column\":\"slaveAcctId\",\"value\":"+tbSlaveAcct.getSlaveAcctId()+"}}";
+                                    send(msg);
                                 }
                             }
                         }else{
@@ -323,31 +335,25 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                             //rsMap.put("message", "人员标识不存在。");
                             return;
                         } else {
-                            //修改人
-                            TbPersonnel tbPersonnel = new TbPersonnel();
-                            tbPersonnel.setPersonnelId(personnelId);
-                            tbPersonnel.setStatusCd("1100");
-                            tbPersonnel.setUpdateDate(new Date());
-                            tbPersonnel.setStatusDate(new Date());
-                            //tbPersonnel.setPsnName(staffName);
-                            tbPersonnelMapper.updateById(tbPersonnel);
-                            //修改 TB_CERT
-                            tbCertMapper.deleteByPersonnelId(personnelId);
-                            //修改TB_ACCT
                             TbAcct tbAcct = tbAcctMapper.selectByPersonnelId(personnelId);
                             if (tbAcct == null) {
                                 rsMap.put("result_code", "1000");
                                 rsMap.put("message", "主账号标识不存在。");
                                 return;
                             }
-                            tbAcct.setStatusCd("1100");
-                            tbAcctMapper.updateById(tbAcct);
-                            //删除TB_ACCT_CROSS_REL
-                            acctCrossRelMapper.deleteByAcctIdAndRelaType(tbAcct.getAcctId(), "100100102");
-                            //删除联系方式
-                            tbContactMapper.deleteByPersonnelId(personnelId);
-                            //删除从账号
-                            tbSlaveAcctMapper.deleteByAcctId(tbAcct.getAcctId());
+                            List<TbSlaveAcct> slaveAcctList = tbSlaveAcctMapper.selectList(new EntityWrapper<TbSlaveAcct>()
+                                    .eq("ACCT_ID",tbAcct.getAcctId())
+                                    .eq("STATUS_CD","1000")
+                                    .eq("SLAVE_ACCT_TYPE","1")
+                                    .eq("RESOURCE_OBJ_ID",SystemConstant.CPC_SYSTEM_ID));
+                            
+                            if(slaveAcctList != null){
+                                for (TbSlaveAcct tbSlaveAcct : slaveAcctList) {
+                                    String msg = "{\"type\":\"person\",\"handle\":\"delete\",\"context\":{\"column\":\"slaveAcctId\",\"value\":"+tbSlaveAcct.getSlaveAcctId()+"}}";
+                                    send(msg);
+                                }
+                            }
+                            tbSlaveAcctMapper.deleteByAcctId(tbAcct.getAcctId(),SystemConstant.CPC_SYSTEM_ID);
                         }
                     }
                     ;
@@ -660,6 +666,8 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                 tbSlaveAcct.setUpdateDate(new Date());
                 tbSlaveAcct.setStatusDate(new Date());
                 tbSlaveAcctMapper.updateById(tbSlaveAcct);
+                String msg = "{\"type\":\"person\",\"handle\":\"insert\",\"context\":{\"column\":\"slaveAcctId\",\"value\":"+tbSlaveAcct.getSlaveAcctId()+"}}";
+                send(msg);
             }
         }
     }
@@ -739,5 +747,9 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         tbOrgOrgtypeRel.setOrgId(orgId);
         tbOrgOrgtypeRel.setOrgTypeId(orgType.getOrgTypeId());
         return tbOrgOrgtypeRel;
+    }
+
+    private void send(String msg){
+        template.convertAndSend("message_sharing_center_queue",msg);
     }
 }
