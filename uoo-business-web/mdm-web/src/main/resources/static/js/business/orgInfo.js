@@ -6,6 +6,7 @@ var standardFlag = ~~getQueryString('standardFlag');
 var orgName = getQueryString('name');
 var pName = getQueryString('pName');
 var refCode = getQueryString('refCode');
+var infoFlag = ~~getQueryString('infoFlag');
 var locationList;
 var orgTypeList;
 var positionList;
@@ -224,7 +225,7 @@ function getOrgRel (orgId) {
 }
 
 function orgEdit () {
-    var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&ppid=' + ppid + '&refCode=' + refCode + '&name=' + encodeURI(orgName) + '&infoFlag=1' + '&pName=' + encodeURI(pName);
+    var url = 'orgEdit.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&ppid=' + ppid + '&refCode=' + refCode + '&name=' + encodeURI(orgName) + '&infoFlag=' + infoFlag + '&pName=' + encodeURI(pName);
     $('#editBtn').attr('href', url);
 }
 

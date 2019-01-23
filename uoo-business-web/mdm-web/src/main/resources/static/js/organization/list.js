@@ -20,7 +20,7 @@ function initOrgTable () {
             { 'data': "orgId", 'title': '组织标识', 'className': 'org-id' },
             { 'data': "orgName", 'title': '部门', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return '<a href="info.html?id=' + row.orgId + '&pid=' + orgId + '&ppid=' + pid + '&name=' + encodeURI(row.orgName) + '&pName=' + encodeURI(orgName) + '">'+ row.orgName +'</a>'
+                    return '<a href="info.html?id=' + row.orgId + '&pid=' + orgId + '&ppid=' + pid + '&name=' + encodeURI(row.orgName) + '&pName=' + encodeURI(orgName) + '&infoFlag=1' + + '">'+ row.orgName +'</a>'
                 }
             },
             { 'data': "orgTypeSplit",

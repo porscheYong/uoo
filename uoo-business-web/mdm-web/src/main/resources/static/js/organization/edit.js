@@ -3,7 +3,7 @@ var pid = getQueryString('pid');
 var ppid = getQueryString('ppid');
 var orgName = getQueryString('name');
 var pName = getQueryString('pName');
-var infoFlag = getQueryString('infoFlag');
+var infoFlag = ~~getQueryString('infoFlag');
 var areaCodeId = ''; //区号ID
 var orgCode = ''; //组织编码
 var locationList;
