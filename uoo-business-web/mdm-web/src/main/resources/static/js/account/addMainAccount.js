@@ -54,7 +54,7 @@ function getAcctUser(personnelId){     //获取人员信息(新增)
       initAddUserInfo(data);
       addAcctAutoSelectOrg(orgId,orgFullName,orgName,"99");
   }, function (err) {
-
+      loading.screenMaskDisable('container');
   })
 }
 
@@ -306,7 +306,7 @@ function submitSuccess(personnelId){
       loading.screenMaskDisable('container');
       window.location.href = url;
     }, function (err) {
-  
+      loading.screenMaskDisable('container');
     })
 }
 
