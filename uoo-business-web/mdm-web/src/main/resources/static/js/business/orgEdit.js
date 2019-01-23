@@ -898,9 +898,9 @@ function deleteOrg () {
         }, function () {
             parent.deleteNode(orgId);
             if (infoFlag)
-                parent.openTreeById(ppid);
+                parent.openTreeById(null, ppid);
             else
-                parent.openTreeById(pid);
+                parent.openTreeById(null, pid);
             loading.screenMaskDisable('container');
             toastr.success('删除成功！');
         }, function (err) {

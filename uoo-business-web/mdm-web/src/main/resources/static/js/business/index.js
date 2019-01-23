@@ -120,10 +120,6 @@ function openTreeById (sId, id) {
     var tId = 'standardTree_' + id;
     var sId = 'standardTree_' + sId;
     var zTree = $.fn.zTree.getZTreeObj("businessTree");
-    var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-    if (!selectNode.open) {
-        zTree.expandNode(selectNode, true);
-    }
     var node = zTree.getNodeByTId(tId);
     zTree.selectNode(node);
     $('.curSelectedNode').trigger('click');
