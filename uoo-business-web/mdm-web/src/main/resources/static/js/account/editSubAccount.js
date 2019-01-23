@@ -607,7 +607,7 @@ function saveExtInfo(){
 //新增扩展信息
 function addTbAcctExt(){
     $http.post('/slaveAcct/addTbAcctExt', JSON.stringify({  
-        acctExtId : acctExtId,
+        // acctExtId : acctExtId,
         certNo : $('#extCerNo').val(),
         certType : $('#extCerType').val().toString(),
         contactWay : $('#extMobile').val(),
