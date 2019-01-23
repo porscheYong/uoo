@@ -464,7 +464,9 @@ p {
 	background: url(../images/ico_edit.svg);
 	}
 .IconDel {
-	background: url(../images/ico_del2.svg);
+	background-image: url(../images/ico_del2.png);
+	background-image: url(../images/ico_del2.svg), none;
+	cursor: pointer;
 	}
 .IconAdd {
 	background: url(../images/ico_add2.svg);
