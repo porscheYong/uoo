@@ -20,7 +20,7 @@ var toastr = window.top.toastr;
 var cerTypeList = window.top.dictionaryData.certType();
 var statusCdList = window.top.dictionaryData.statusCd();
 var relTypeName = window.top.relTypeName;
-// var loading = parent.loading;
+var loading = parent.loading;
 
 window.localStorage.setItem('userRoleList',JSON.stringify(''));
 
@@ -118,9 +118,9 @@ function initAddUserInfo(results){    //初始化用户信息(新增)
 }
 
 function addTbAcct(){         //新增
-  // loading.screenMaskEnable('container');
+  loading.screenMaskEnable('container');
   if(!formValidate.isAllPass()){
-    // loading.screenMaskDisable('container');
+    loading.screenMaskDisable('container');
     return;
   }
     
@@ -151,11 +151,12 @@ function addTbAcct(){         //新增
         toastr.success(data.message);
         submitSuccess(personnelId);
       }else{
+        loading.screenMaskDisable('container');
         toastr.error(data.message);
       }
     },
     error:function(err){
-      // loading.screenMaskDisable('container');
+      loading.screenMaskDisable('container');
       toastr.error('新增失败');
     }
   });
@@ -302,7 +303,7 @@ function submitSuccess(personnelId){
       url = "editMainAccount.html?acctId="+ data.tbAcct.acctId +"&orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + 
               "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=mh" + "&orgTreeName="+encodeURI(orgTreeName)+
               "&curOrgId="+curOrgId+"&curOrgTreeId="+curOrgTreeId;
-      // loading.screenMaskDisable('container');
+      loading.screenMaskDisable('container');
       window.location.href = url;
     }, function (err) {
   
