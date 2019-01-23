@@ -7,7 +7,6 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.spring.web.json.Json;
 
 /**
  *  ┏┓　　　┏┓

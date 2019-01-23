@@ -59,14 +59,14 @@
 
 
     <!-- 控制台输出日志级别 -->
-    <root level="WARN">
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="provider"/>
     </root>
 
     <!-- 1. 输出SQL 到控制台和文件-->
     <logger name="org.hibernate.SQL" additivity="false" >
-        <level value="WARN" />
+        <level value="INFO" />
         <appender-ref ref="STDOUT" />
         <appender-ref ref="provider" />
     </logger>
@@ -79,7 +79,7 @@
     </logger>
 
 
-    <logger name="xyz.wongs" level="WARN">
+    <logger name="xyz.wongs" level="INFO">
         <appender-ref ref="provider"/>
     </logger>
 
