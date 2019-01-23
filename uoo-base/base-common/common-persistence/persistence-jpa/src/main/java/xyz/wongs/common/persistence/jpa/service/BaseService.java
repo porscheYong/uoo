@@ -46,7 +46,7 @@ public abstract class BaseService<T extends AbstractEntity<?>, ID extends Serial
      * @return 返回保存的实体
      */
     public T save(T t) {
-        t.setCreateDate(new Date());
+        t.setCreateDate(new java.sql.Timestamp(System.currentTimeMillis()));
         return jpaRepository.save(t);
     }
 
