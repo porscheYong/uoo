@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.web.aspect;
 
 import cn.ffcs.uoo.web.accesslog.ControllerAccessLog;
+import cn.ffcs.uoo.web.maindata.tool.IpAddressTool;
 import cn.ffcs.uoo.web.maindata.tool.MdmTool;
 import com.alibaba.fastjson.JSON;
 import org.aspectj.lang.JoinPoint;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -58,6 +60,9 @@ public class WebLogAspect {
     @Autowired
     private AmqpTemplate template;
 
+    @Autowired
+    private Environment env;
+
     @Pointcut("execution(public * cn.ffcs.uoo.web..controller.*.*(..))")
     public void pointCut(){
 
@@ -80,7 +85,7 @@ public class WebLogAspect {
 
         // 记录下请求内容
         log.setUrl(request.getRequestURL().toString());
-        log.setIpAddress(request.getRemoteAddr());
+        log.setIpAddress(IpAddressTool.getIPAddress(request));
         List<Object> args = Arrays.asList(joinPoint.getArgs());
         List<Object> logArgs = args.stream().filter(arg -> (!(arg instanceof HttpServletRequest) && !(arg instanceof HttpServletResponse)))
                 .collect(Collectors.toList());
@@ -112,11 +117,15 @@ public class WebLogAspect {
         //Non-empty judgment to prevent handling of empty objects
         if(null != log){
             // Responsed Content
-            log.setResponse(JSON.toJSONString(ret));
+//            log.setResponse(JSON.toJSONString(ret));
             log.setCostMillis(System.currentTimeMillis() - log.getCostMillis());
-            template.convertAndSend("QUEUE_ACC_LOG", JSON.toJSONString(log));
+            String active = env.getProperty("spring.profiles");
+            if("dev".equalsIgnoreCase(active)){
+                logger.error(" 使用开发环境"+" ; ActiveProfile value is "+active);
+                template.convertAndSend("QUEUE_ACC_LOG", JSON.toJSONString(log));
+            }
         }
-        logger.error(JSON.toJSONString(log));
+//        logger.error(JSON.toJSONString(log));
     }
 
 

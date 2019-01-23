@@ -1,5 +1,6 @@
 package xyz.wongs.common.persistence.jpa.service;
 
+import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -45,7 +46,7 @@ public abstract class BaseService<T extends AbstractEntity<?>, ID extends Serial
      * @return 返回保存的实体
      */
     public T save(T t) {
-        t.setCreateDate(new Date());
+        t.setCreateDate(new java.sql.Timestamp(System.currentTimeMillis()));
         return jpaRepository.save(t);
     }
 
