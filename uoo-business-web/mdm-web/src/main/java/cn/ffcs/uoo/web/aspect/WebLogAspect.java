@@ -1,5 +1,8 @@
 package cn.ffcs.uoo.web.aspect;
 
+import cn.ffcs.uoo.web.log.ControllerAccessLog;
+import cn.ffcs.uoo.web.maindata.tool.MdmTool;
+import com.alibaba.fastjson.JSON;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -7,13 +10,18 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *  ┏┓　　　┏┓
@@ -34,7 +42,7 @@ import java.util.Arrays;
  *　　　┃┫┫　┃┫┫
  *　　　┗┻┛　┗┻┛
  * @ClassName WebLogAspect
- * @Description 拦截Controller访问日志，可以使用消息队列将日志缓存到文件或者数据库中
+ * @Description Intercept the <b>Controller</b> access log, you can use the message queue to cache the log to a file or database
  * @author WCNGS@QQ.COM
  * @date 2018/9/8 20:54
  * @Version 1.0.0
@@ -44,14 +52,16 @@ import java.util.Arrays;
 @Order(7)
 public class WebLogAspect {
 
-    ThreadLocal<Long> startTime = new ThreadLocal<>();
+    ThreadLocal<ControllerAccessLog> startLog = new ThreadLocal<ControllerAccessLog>();
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private AmqpTemplate template;
 
     @Pointcut("execution(public * cn.ffcs.uoo.web..controller.*.*(..))")
     public void pointCut(){
 
     }
-
 
     /**
      * @author WCNGS@QQ.COM
@@ -64,22 +74,30 @@ public class WebLogAspect {
      */
     @Before("pointCut()")
     public void doBefore(JoinPoint joinPoint) throws Throwable{
-
-        startTime.set(System.currentTimeMillis());
-
         ServletRequestAttributes requestAttributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
+        ControllerAccessLog log = new ControllerAccessLog();
 
         // 记录下请求内容
-        logger.info("URL : " + request.getRequestURL().toString());
-        logger.info("HTTP_METHOD : " + request.getMethod());
-        logger.info("IP : " + request.getRemoteAddr());
-        logger.info("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
-        logger.info("ARGS : " + Arrays.toString(joinPoint.getArgs()));
+        log.setUrl(request.getRequestURL().toString());
+        log.setIpAddress(request.getRemoteAddr());
+        List<Object> args = Arrays.asList(joinPoint.getArgs());
+        List<Object> logArgs = args.stream().filter(arg -> (!(arg instanceof HttpServletRequest) && !(arg instanceof HttpServletResponse)))
+                .collect(Collectors.toList());
+//        String argStr = JSON.toJSONString(logArgs);
+        log.setArgs(logArgs);
+        String operating = joinPoint.getSignature().getName();
+        log.setMethod(operating);
+        log.setOperate(MdmTool.Operate(operating));
+        log.setClazz(joinPoint.getSignature().getDeclaringTypeName());
+        log.setCostMillis(System.currentTimeMillis());
+        log.setUserId(MdmTool.getUser());
+        startLog.set(log);
     }
 
 
-    /**在处理结果返回之前执行，指定哪个Poingcut
+
+    /**Execute before the processing result returns, specify which <b>Poingcut</b>
      * @author WCNGS@QQ.COM
      * @See
      * @date 2018/9/8 20:56
@@ -91,8 +109,16 @@ public class WebLogAspect {
     @AfterReturning(returning="ret",pointcut="pointCut()")
     public void doAfterReturning(Object ret){
 
-        // 处理完请求，返回内容
-        logger.info("RESPONSE : " + ret);
-        logger.info("SPEND TIME : " + (System.currentTimeMillis() - startTime.get()));
+        ControllerAccessLog log = startLog.get();
+        //Non-empty judgment to prevent handling of empty objects
+        if(null != log){
+            // Responsed Content
+            log.setResponse(ret);
+            log.setCostMillis(System.currentTimeMillis() - log.getCostMillis());
+//            template.convertAndSend("", JSON.toJSONString(log));
+        }
+        logger.error(JSON.toJSONString(log));
     }
+
+
 }

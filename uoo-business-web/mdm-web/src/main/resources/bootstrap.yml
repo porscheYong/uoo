@@ -40,7 +40,7 @@ ribbon.ConnectTimeout: 30000
 
 logging:
   level:
-    cn.ffcs.uoo.web: debug
+    cn.ffcs.uoo.web: warn
 
 ---
 spring:
@@ -63,6 +63,11 @@ eureka:
 ---
 spring:
   profiles: dev
+  rabbitmq:
+    host: 134.96.253.221
+    port: 5672
+    username: root
+    password: 123
   zipkin:
     base-url: http://134.96.253.223:8600
   sleuth:
