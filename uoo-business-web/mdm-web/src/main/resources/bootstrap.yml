@@ -45,6 +45,11 @@ logging:
 ---
 spring:
   profiles: test
+  rabbitmq:
+    host: 134.96.253.221
+    port: 5672
+    username: root
+    password: 123
   zipkin:
     base-url: http://134.96.253.223:8600
   sleuth:
@@ -86,6 +91,11 @@ eureka:
 ---
 spring:
   profiles: pro
+  rabbitmq:
+    host: 134.96.249.38
+    port: 5672
+    username: root
+    password: 123
   zipkin:
     base-url: http://134.96.217.244:8600
   sleuth:
