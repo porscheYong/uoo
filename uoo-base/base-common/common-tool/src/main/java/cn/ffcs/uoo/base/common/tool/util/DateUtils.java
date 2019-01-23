@@ -172,21 +172,6 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		return (afterTime - beforeTime) / (1000 * 60 * 60 * 24);
 	}
 
-	/**
-	 * @param args
-	 * @throws ParseException
-	 */
-	public static void main(String[] args) throws ParseException {
-//		System.out.println(formatDate(parseDate("2010/3/6")));
-//		System.out.println(getDate("yyyy年MM月dd日 E"));
-//		long time = new Date().getTime()-parseDate("2012-11-19").getTime();
-//		System.out.println(time/(24*60*60*1000));
-//		System.out.println(getYesterDay());
-//		System.out.println(getLastMonth());
-//		System.out.println(isValidDate("201710","YYYYMMDD"));
-		System.out.println(getDaySimple(-1).substring(4,6)+"=="+getDaySimple(-1).substring(6,8));
-
-	}
 
 	/**
 	 * @Author: WCNGS@QQ.COM
@@ -323,5 +308,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		long time2 = date2.getTime();
 		long between_days=(time2-time1)/(1000*3600*24);
 		return Integer.parseInt(String.valueOf(between_days));
+	}
+
+	public static void main(String[] args) {
+		System.out.println(DateUtils.getDate("yyyy-MM-dd HH:mm:ss"));
 	}
 }

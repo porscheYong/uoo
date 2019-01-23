@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import xyz.wongs.common.persistence.jpa.entity.BaseOracleEntity;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -80,5 +81,6 @@ public class ControllerAccessLog extends BaseOracleEntity<Long> {
 
     @Column(name = "operate",length = 100)
     private String operate;
+
 
 }

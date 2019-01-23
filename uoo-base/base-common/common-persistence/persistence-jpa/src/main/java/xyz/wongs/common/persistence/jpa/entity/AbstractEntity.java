@@ -2,7 +2,7 @@ package xyz.wongs.common.persistence.jpa.entity;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.data.domain.Persistable;
-import javax.persistence.Column;
+
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -50,9 +50,9 @@ public abstract class AbstractEntity<ID extends Serializable> implements Persist
      */
     public abstract void setId(final ID id);
 
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "CREATE_DATE")
+    @javax.persistence.Basic
+    @javax.persistence.Column(name="CREATE_DATE", columnDefinition="DATE")
+    @Temporal(value = TemporalType.TIMESTAMP)
     private Date createDate;
 
     public Date getCreateDate() {
