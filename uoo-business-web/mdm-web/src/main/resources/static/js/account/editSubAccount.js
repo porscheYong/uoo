@@ -192,7 +192,7 @@ function initSubInfo(results){  //编辑时初始化信息
 
 //初始化扩展信息
 function initExtInfo(results){
-
+    $("#extCerType").empty();
     for(var i=0;i<cerTypeList.length;i++){
         var select = "";
         if(results.tbAcctExt != null && results.tbAcctExt.certType === cerTypeList[i].itemValue){
@@ -587,11 +587,16 @@ function showEditDiv(){
 function backToInfo(){
     // $("#extInfoEdit").css("display","block");
     if(extFlag == 1){
+        reflashExtInfo();
         $("#extInfoDiv").css("display","block");
         $("#extInfo").css("display","none");
     }else{
         $("#extInfoDiv").css("display","none");
         $("#extInfo").css("display","none");
+        $('#extCerNo').val("");
+        $('#extMobile').val("");
+        $('#extName').val("");
+        $('#extEmail').val("");
     }
 }
 

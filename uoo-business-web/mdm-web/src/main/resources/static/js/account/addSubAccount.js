@@ -37,7 +37,7 @@ var acctTypeList = window.top.dictionaryData.acctType();
 var statusCdList = window.top.dictionaryData.statusCd();
 var relTypeName = window.top.relTypeName;
 
-// var loading = parent.loading;
+var loading = parent.loading;
 
 seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
     var addAcctForm = $('#addAcctForm');
@@ -151,9 +151,9 @@ function initUserInfo(results){   //新增时初始化信息
 }
 
 function addTbSlaveAcct(){      //从账号新增
-    // loading.screenMaskEnable('container');
+    loading.screenMaskEnable('container');
     if(!formValidate.isAllPass()){
-        // loading.screenMaskDisable('container');
+        loading.screenMaskDisable('container');
         return;
     } 
     var slaveAcctType = $('#accType').val();
@@ -195,11 +195,12 @@ function addTbSlaveAcct(){      //从账号新增
             toastr.success(data.message);
             submitToSuccess();
           }else{
+            loading.screenMaskDisable('container');
             toastr.error(data.message);
           }
         },
         error:function(err){
-        //   loading.screenMaskDisable('container');
+          loading.screenMaskDisable('container');
           toastr.error('新增失败');
         }
       });
@@ -396,14 +397,14 @@ function submitToSuccess(){ //保存成功跳转编辑从账号页面
             var slaveAcctId;//$('#system').find("option:selected").text()
             var url = "";
             for(var i=0;i<data.slaveAcctOrgVoPage.records.length;i++){
-                if($('#acct').val() == data.slaveAcctOrgVoPage.records[i].slaveAcct){
+                if($('#acct').val() == data.slaveAcctOrgVoPage.records[i].slaveAcct && $('#system').find("option:selected").text() == data.slaveAcctOrgVoPage.records[i].systemName){
                     slaveAcctId = data.slaveAcctOrgVoPage.records[i].slaveAcctId;
                 }
             }
             url = 'editSubAccount.html?curOrgId='+curOrgId+'&curOrgTreeId='+curOrgTreeId+'&orgTreeId=' + orgTreeId + '&toMainType=' + toMainType +
                     '&curSlaveOrgTreeId='+slaveOrgTreeId+'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&hType=th&mainAcctId='+ mainAcctId +
                     '&acctId='+ slaveAcctId;
-            // loading.screenMaskDisable('container');
+            loading.screenMaskDisable('container');
             window.location.href = url;
       }, function (err) {
     

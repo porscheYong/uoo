@@ -154,15 +154,17 @@ function moveNode(pid, orgId, index) {
         var tree = $.fn.zTree.getZTreeObj('businessTree');
         var pNode = tree.getNodeByParam('id', pid);
         var node = tree.getNodeByParam('id', orgId);
-        var childNode = pNode.children;
-        if (childNode && childNode.length > 0) {
-            childNode.splice($.inArray(node, childNode), 1);
-            var targetNode = childNode[index - 1];
-            if (childNode.length > 0) {
-                if (targetNode)
-                    tree.moveNode(targetNode, node, 'prev');
-                else
-                    tree.moveNode(childNode[childNode.length - 1], node, 'next'); //移动到最后一个元素
+        if(pNode){
+            var childNode = pNode.children;
+            if (childNode && childNode.length > 0) {
+                childNode.splice($.inArray(node, childNode), 1);
+                var targetNode = childNode[index - 1];
+                if (childNode.length > 0) {
+                    if (targetNode)
+                        tree.moveNode(targetNode, node, 'prev');
+                    else
+                        tree.moveNode(childNode[childNode.length - 1], node, 'next'); //移动到最后一个元素
+                }
             }
         }
     }
