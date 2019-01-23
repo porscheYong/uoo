@@ -45,7 +45,6 @@ import java.util.Arrays;
 public class WebLogAspect {
 
     ThreadLocal<Long> startTime = new ThreadLocal<>();
-
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Pointcut("execution(public * cn.ffcs.uoo.web..controller.*.*(..))")
@@ -77,7 +76,6 @@ public class WebLogAspect {
         logger.info("IP : " + request.getRemoteAddr());
         logger.info("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
         logger.info("ARGS : " + Arrays.toString(joinPoint.getArgs()));
-
     }
 
 
