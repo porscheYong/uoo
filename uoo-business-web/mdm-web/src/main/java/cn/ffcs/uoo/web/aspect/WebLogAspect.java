@@ -1,6 +1,6 @@
 package cn.ffcs.uoo.web.aspect;
 
-import cn.ffcs.uoo.web.log.ControllerAccessLog;
+import cn.ffcs.uoo.web.accesslog.ControllerAccessLog;
 import cn.ffcs.uoo.web.maindata.tool.MdmTool;
 import com.alibaba.fastjson.JSON;
 import org.aspectj.lang.JoinPoint;
@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
  *　　　┃┫┫　┃┫┫
  *　　　┗┻┛　┗┻┛
  * @ClassName WebLogAspect
- * @Description Intercept the <b>Controller</b> access log, you can use the message queue to cache the log to a file or database
+ * @Description Intercept the <b>Controller</b> access accesslog, you can use the message queue to cache the accesslog to a file or database
  * @author WCNGS@QQ.COM
  * @date 2018/9/8 20:54
  * @Version 1.0.0
@@ -115,7 +115,7 @@ public class WebLogAspect {
             // Responsed Content
             log.setResponse(ret);
             log.setCostMillis(System.currentTimeMillis() - log.getCostMillis());
-//            template.convertAndSend("", JSON.toJSONString(log));
+//            template.convertAndSend("", JSON.toJSONString(accesslog));
         }
         logger.error(JSON.toJSONString(log));
     }
