@@ -38,6 +38,7 @@ var statusCdList = window.top.dictionaryData.statusCd();
 var relTypeName = window.top.relTypeName;
 
 var loading = parent.loading;
+loading.screenMaskEnable('container');
 
 seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
     var addAcctForm = $('#addAcctForm');
@@ -59,11 +60,10 @@ function getUserInfo(){         //新增从账号
         personnelId: personnelId,
         userType: "2"
     }, function (data) {
-        // initOrgTable("");
         initUserInfo(data);
         getSysSelect();
     }, function (data) {
-        
+        loading.screenMaskDisable('container');
     })
 }
 
@@ -230,7 +230,9 @@ function getSysSelect(){   //获取应用系统下拉列表
         $('#system').unbind('change').bind('change', function (event) {
             resourceObjId = event.target.options[event.target.options.selectedIndex].value;
         })
+        loading.screenMaskDisable('container');
     }, function (err) {
+        loading.screenMaskDisable('container');
     })
 }
 
@@ -407,7 +409,7 @@ function submitToSuccess(){ //保存成功跳转编辑从账号页面
             loading.screenMaskDisable('container');
             window.location.href = url;
       }, function (err) {
-    
+            loading.screenMaskDisable('container');
       })
 }
 
