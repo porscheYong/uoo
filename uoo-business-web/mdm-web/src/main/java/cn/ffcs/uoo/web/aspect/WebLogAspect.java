@@ -84,7 +84,6 @@ public class WebLogAspect {
         List<Object> args = Arrays.asList(joinPoint.getArgs());
         List<Object> logArgs = args.stream().filter(arg -> (!(arg instanceof HttpServletRequest) && !(arg instanceof HttpServletResponse)))
                 .collect(Collectors.toList());
-//        String argStr = JSON.toJSONString(logArgs);
         log.setArgs(logArgs);
         String operating = joinPoint.getSignature().getName();
         log.setMethod(operating);

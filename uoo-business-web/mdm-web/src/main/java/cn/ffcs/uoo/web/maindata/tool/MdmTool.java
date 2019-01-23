@@ -54,8 +54,16 @@ public class MdmTool {
         return userId;
     }
 
+    /** Get specific actions based on the method
+     * @author WCNGS@QQ.COM
+     * @See
+     * @date 2019/1/23 13:36
+     * @param operate
+     * @return java.lang.String
+     * @throws
+     * @since
+     */
     public static String Operate(String operate){
-
         String result = Operat.getDesc(LoginConsts.QUERY_STR);
 
         if(operate.startsWith(LoginConsts.UPDATE_STR)){

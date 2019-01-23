@@ -17,6 +17,7 @@
         <module>common-cache</module>
         <module>common-queues</module>
         <module>common-activiti</module>
+        <module>common-log</module>
     </modules>
 
     <dependencies>

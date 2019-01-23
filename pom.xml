@@ -85,6 +85,11 @@
                 <artifactId>common-abstract</artifactId>
                 <version>${common-abstract.version}</version>
             </dependency>
+            <dependency>
+                <groupId>xyz.wongs.base.persistence.jpa</groupId>
+                <artifactId>persistence-jpa</artifactId>
+                <version>1.0.1-RELEASE</version>
+            </dependency>
             <!-- db -->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
