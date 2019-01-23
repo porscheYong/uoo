@@ -84,7 +84,7 @@ public class WebLogAspect {
         List<Object> args = Arrays.asList(joinPoint.getArgs());
         List<Object> logArgs = args.stream().filter(arg -> (!(arg instanceof HttpServletRequest) && !(arg instanceof HttpServletResponse)))
                 .collect(Collectors.toList());
-        log.setArgs(logArgs);
+        log.setArgs(JSON.toJSONString(logArgs));
         String operating = joinPoint.getSignature().getName();
         log.setMethod(operating);
         log.setOperate(MdmTool.Operate(operating));
@@ -112,9 +112,9 @@ public class WebLogAspect {
         //Non-empty judgment to prevent handling of empty objects
         if(null != log){
             // Responsed Content
-            log.setResponse(ret);
+            log.setResponse(JSON.toJSONString(ret));
             log.setCostMillis(System.currentTimeMillis() - log.getCostMillis());
-//            template.convertAndSend("", JSON.toJSONString(accesslog));
+            template.convertAndSend("QUEUE_ACC_LOG", JSON.toJSONString(log));
         }
         logger.error(JSON.toJSONString(log));
     }

@@ -1,8 +1,9 @@
-package cn.ffcs.uoo.web.accesslog;
+package cn.ffcs.common.gol.repository;
 
-import lombok.Data;
-import java.io.Serializable;
-import java.util.List;
+
+import cn.ffcs.common.gol.entity.ControllerAccessLog;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import xyz.wongs.common.persistence.jpa.repository.BaseRepository;
 
 /**
  *  ┏┓　　　┏┓
@@ -22,31 +23,13 @@ import java.util.List;
  *　　┗┓┓┏━┳┓┏┛
  *　　　┃┫┫　┃┫┫
  *　　　┗┻┛　┗┻┛
- * @ClassName ControllerAccessLog
+ * @ClassName AccessLogRepository
  * @Description 
  * @author WCNGS@QQ.COM
- * @date 2019/1/23 10:45
+ * @date 2019/1/19 15:20
  * @Version 1.0.0
 */
-@Data
-public class ControllerAccessLog {
+public interface AccessLogRepository extends BaseRepository<ControllerAccessLog, Long>,JpaSpecificationExecutor<ControllerAccessLog> {
 
-    private String url;
-
-    private String method;
-
-    private String ipAddress;
-
-    private String clazz;
-
-    private String args;
-
-    private String response;
-
-    private long costMillis;
-
-    private Long userId;
-
-    private String operate;
 
 }

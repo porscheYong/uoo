@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import xyz.wongs.common.persistence.jpa.entity.AbstractEntity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,6 +45,7 @@ public abstract class BaseService<T extends AbstractEntity<?>, ID extends Serial
      * @return 返回保存的实体
      */
     public T save(T t) {
+        t.setCreateDate(new Date());
         return jpaRepository.save(t);
     }
 
