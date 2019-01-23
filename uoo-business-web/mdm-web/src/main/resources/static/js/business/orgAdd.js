@@ -454,7 +454,7 @@ function getContractType () {
             }
         }
     }
-    var option = '<option></option>';
+    var option = '<option>--请选择--</option>';
     for (var i = 0; i < contractTypeData.length; i++) {
         option += "<option value='" + contractTypeData[i].itemValue + "'>" + contractTypeData[i].itemCnname +"</option>";
     }
