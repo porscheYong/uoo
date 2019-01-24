@@ -1,5 +1,5 @@
 server:
-  port:
+  port: 13130
 spring:
   application:
     name: common-log
@@ -47,7 +47,7 @@ spring:
     host: 134.96.253.221
     port: 5672
     username: Sub_Pub_Uoo
-    password: '@rasPwWtiFtmDsZnuT80OnxNBUnZvcpBEkK&g8En'
+    password: "@rasPwWtiFtmDsZnuT80OnxNBUnZvcpBEkK&g8En"
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1

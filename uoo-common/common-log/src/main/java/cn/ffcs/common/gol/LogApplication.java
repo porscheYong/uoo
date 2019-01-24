@@ -40,7 +40,7 @@ import xyz.wongs.common.persistence.jpa.repository.BaseRepositoryFactoryBean;
 @EnableJpaRepositories(basePackages = {"cn.ffcs.common"},
         repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class//Specify your own factory class
 )
-public class LogApplication extends WebMvcConfigurerAdapter {
+public class LogApplication {
 
 
     /**Get the log entity from the message middleware, store the database after deserialization
@@ -57,10 +57,10 @@ public class LogApplication extends WebMvcConfigurerAdapter {
         SpringApplication.run(LogApplication.class, args);
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-    }
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+//        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+//        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+//    }
 }
