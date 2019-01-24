@@ -9,6 +9,7 @@ import cn.ffcs.uoo.core.organization.Api.service.ExpandovalueService;
 import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.service.*;
 import cn.ffcs.uoo.core.organization.service.impl.OrgServiceImpl;
+import cn.ffcs.uoo.core.organization.util.ExcelUtil;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
 import cn.ffcs.uoo.core.organization.vo.*;
@@ -327,16 +328,27 @@ public class OrgController extends BaseController {
 
 
             //组织组织树关系
-            List<OrgOrgtreeRel> ootrList = orgOrgtreeRelService.getFullBizOrgList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString());
+//            List<OrgOrgtreeRel> ootrList = orgOrgtreeRelService.getFullBizOrgList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString());
+//            String fullBizName = "";
+//            if(ootrList!=null && ootrList.size()>0){
+//                for(int i=0;i<ootrList.size();i++){
+//                    fullBizName += ootrList.get(i).getOrgBizName();
+//                }
+//                fullBizName+=StrUtil.strnull(org.getOrgName());
+//            }else{
+//                fullBizName+=StrUtil.strnull(org.getOrgName());
+//            }
+            // TODO: 2019/1/23 获取组织树ID  组织组织树新增字段 begin
             String fullBizName = "";
-            if(ootrList!=null && ootrList.size()>0){
-                for(int i=0;i<ootrList.size();i++){
-                    fullBizName += ootrList.get(i).getOrgBizName();
-                }
-                fullBizName+=StrUtil.strnull(org.getOrgName());
-            }else{
-                fullBizName+=StrUtil.strnull(org.getOrgName());
-            }
+            fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),"");
+            fullBizName+=StrUtil.strnull(org.getOrgName());
+
+            String fullBizNameId = "";
+            fullBizNameId = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),",");
+            fullBizNameId+=","+newOrg.getOrgId();
+            // TODO: 2019/1/23 获取组织树ID  组织组织树新增字段 end
+
+
             Long orgOrgtreeRefId = orgOrgtreeRelService.getId();
             OrgOrgtreeRel orgOrgtreeRef = new OrgOrgtreeRel();
             orgOrgtreeRef.setOrgOrgtreeId(orgOrgtreeRefId);
@@ -346,12 +358,14 @@ public class OrgController extends BaseController {
             orgOrgtreeRef.setOrgBizFullName(fullBizName);
             orgOrgtreeRef.setStatusCd("1000");
             orgOrgtreeRef.setCreateUser(org.getUpdateUser());
+            // TODO: 2019/1/23
+            orgOrgtreeRef.setOrgBizFullId(fullBizNameId);
+
             if(!StrUtil.isNullOrEmpty(org.getSort())){
                 orgOrgtreeRef.setSort(Integer.valueOf(org.getSort()));
             }
             orgOrgtreeRelService.add(orgOrgtreeRef);
             modifyHistoryService.addModifyHistory(null,orgOrgtreeRef,org.getUpdateUser(),batchNumber);
-
 
             //组织层级
             Wrapper orgLevelWrapper = Condition.create()
@@ -1012,19 +1026,31 @@ public class OrgController extends BaseController {
                 orgOrgtreeRelOne.setOrgBizName(org.getOrgBizName());
             }
 
-            List<OrgOrgtreeRel> ootrList = orgOrgtreeRelService.getFullBizOrgList(orgTree.getOrgTreeId().toString(),org.getOrgId().toString());
-            if(ootrList!=null && ootrList.size()>0){
-                if(ootrList.size()==1){
-                    orgOrgtreeRelOne.setOrgBizFullName(org.getOrgBizName());
-                }else{
-                    String fullName = "";
-                    for(int i=0;i<ootrList.size()-1;i++){
-                        fullName += ootrList.get(i).getOrgBizName();
-                    }
-                    fullName+=orgOrgtreeRelOne.getOrgBizName();
-                    orgOrgtreeRelOne.setOrgBizFullName(fullName);
-                }
-            }
+//            List<OrgOrgtreeRel> ootrList = orgOrgtreeRelService.getFullBizOrgList(orgTree.getOrgTreeId().toString(),org.getOrgId().toString());
+//            if(ootrList!=null && ootrList.size()>0){
+//                if(ootrList.size()==1){
+//                    orgOrgtreeRelOne.setOrgBizFullName(org.getOrgBizName());
+//                }else{
+//                    String fullName = "";
+//                    for(int i=0;i<ootrList.size()-1;i++){
+//                        fullName += ootrList.get(i).getOrgBizName();
+//                    }
+//                    fullName+=orgOrgtreeRelOne.getOrgBizName();
+//                    orgOrgtreeRelOne.setOrgBizFullName(fullName);
+//                }
+//            }
+            // TODO: 2019/1/23
+            String fullBizName = "";
+            fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getOrgId().toString(),"");
+            fullBizName+=StrUtil.strnull(org.getOrgName());
+            String fullBizNameId = "";
+            fullBizNameId = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getOrgId().toString(),",");
+            fullBizNameId+=","+newOrg.getOrgId();
+            orgOrgtreeRelOne.setOrgBizFullName(fullBizName);
+            orgOrgtreeRelOne.setOrgBizFullId(fullBizNameId);
+
+
+
             if(!StrUtil.isNullOrEmpty(org.getSort())){
                 orgOrgtreeRelOne.setSort(Integer.valueOf(org.getSort()));
             }
@@ -1219,22 +1245,24 @@ public class OrgController extends BaseController {
             ret.setMessage("组织下存在组织无法删除");
             return ret;
         }
-//        Wrapper orgPer = Condition.create()
-//                .eq("ORG_ID",orgId)
-//                .eq("STATUS_CD","1000");
-//        int num = orgPersonRelService.selectCount(orgPer);
-        List<OrgPersonRel> oplist = orgPersonRelService.getOrgPsnRel(orgTree.getOrgTreeId().toString(),orgId);
-        if(oplist!=null && oplist.size()>0){
-            ret.setState(ResponseResult.STATE_ERROR);
-            ret.setMessage("组织下存在员工无法删除");
-            return ret;
+        //0411 人力查人
+        if("0411".equals(ortCur.getRefCode())){
+            List<OrgPersonRel> oplist = orgPersonRelService.getOrgPsnRel(orgTree.getOrgTreeId().toString(),orgId);
+            if(oplist!=null && oplist.size()>0){
+                ret.setState(ResponseResult.STATE_ERROR);
+                ret.setMessage("组织下存在员工无法删除");
+                return ret;
+            }
+        }else{
+            List<OrgPersonRel> oplist = orgPersonRelService.getOrgAcctRel(orgTree.getOrgTreeId().toString(),orgId);
+            if(oplist!=null && oplist.size()>0){
+                ret.setState(ResponseResult.STATE_ERROR);
+                ret.setMessage("组织下存在账号无法删除");
+                return ret;
+            }
         }
-//        List<OrgRel> orgRelList = orgRelService.getOrgRel(orgTreeId,orgId);
-//        if(orgRelList!=null && orgRelList.size()>1){
-//            ret.setState(ResponseResult.STATE_ERROR);
-//            ret.setMessage("组织被其他组织树引用无法删除");
-//            return ret;
-//        }
+
+
 
         String batchNumber = modifyHistoryService.getBatchNumber();
 
@@ -1249,48 +1277,48 @@ public class OrgController extends BaseController {
         modifyHistoryService.addModifyHistory(oldOrg,org,userId,batchNumber);
 
 
+        if("0401".equals(ortCur.getRefCode())) {
+            ResponseResult<List<ExpandovalueVo>> publicRet = expandovalueService.queryExpandovalueVoList("TB_ORG", org.getOrgId().toString());
+            List<ExpandovalueVo> curExtList = publicRet.getData();
+            if (curExtList != null && curExtList.size() > 0) {
+                for (ExpandovalueVo vo : curExtList) {
+                    //删除所有
+                    expandovalueService.removeTbExpandovalue(vo.getValueId(), 0L);
+                }
+            }
+            if (!StrUtil.isNullOrEmpty(org.getOrgMartCode())) {
+                String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
+                    @Override
+                    public String doInConnection(Connection conn) throws SQLException, DataAccessException {
+                        CallableStatement cstmt = null;
+                        String result = "";
+                        try {
+                            cstmt = conn.prepareCall("{CALL P_ORG_CNTRT_MGMT_DEL (?,?)}");
+                            cstmt.setObject(1, org.getOrgCode());
+                            cstmt.registerOutParameter(2, Types.VARCHAR);
+                            cstmt.execute();
+                            if (!StrUtil.isNullOrEmpty(cstmt.getString(2))) {
+                                result = cstmt.getString(2).toString();
+                            }
 
-        ResponseResult<List<ExpandovalueVo>> publicRet = expandovalueService.queryExpandovalueVoList("TB_ORG",org.getOrgId().toString());
-        List<ExpandovalueVo> curExtList = publicRet.getData();
-        if(curExtList!=null && curExtList.size()>0){
-            for(ExpandovalueVo vo : curExtList){
-                //删除所有
-                expandovalueService.removeTbExpandovalue(vo.getValueId(),0L);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            if (cstmt != null) {
+                                cstmt.close();
+                                cstmt = null;
+                            }
+                            if (conn != null) {
+                                conn.close();
+                                conn = null;
+                            }
+                        }
+                        return result;
+                    }
+                });
+                //}
             }
         }
-        if(!StrUtil.isNullOrEmpty(org.getOrgMartCode())) {
-            String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
-                @Override
-                public String doInConnection(Connection conn) throws SQLException, DataAccessException {
-                    CallableStatement cstmt = null;
-                    String result = "";
-                    try {
-                        cstmt = conn.prepareCall("{CALL P_ORG_CNTRT_MGMT_DEL (?,?)}");
-                        cstmt.setObject(1, org.getOrgCode());
-                        cstmt.registerOutParameter(2, Types.VARCHAR);
-                        cstmt.execute();
-                        if (!StrUtil.isNullOrEmpty(cstmt.getString(2))) {
-                            result = cstmt.getString(2).toString();
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        if (cstmt != null) {
-                            cstmt.close();
-                            cstmt = null;
-                        }
-                        if (conn != null) {
-                            conn.close();
-                            conn = null;
-                        }
-                    }
-                    return result;
-                }
-            });
-            //}
-        }
-
         List<OrgRel> orgRelList = orgRelService.getOrgRel(orgTreeId,orgId);
         for(OrgRel orgRel : orgRelList){
             orgRel.setUpdateUser(userId);
@@ -1698,6 +1726,31 @@ public class OrgController extends BaseController {
 ////        orgService.getBssOrg();
 ////        return ret;
 ////    }
+
+//    @ApiOperation(value = "生成excel文件", notes = "生成excel文件")
+//    @UooLog(value = "生成excel文件", key = "createExcelFile")
+//    @RequestMapping(value = "/createExcelFile", method = RequestMethod.GET)
+//    @Transactional(rollbackFor = Exception.class)
+//    public ResponseResult<String> createExcelFile() throws IOException {
+//        ResponseResult<String> ret = new ResponseResult<String>();
+//        List<String> list = new ArrayList<>();
+//        //ExcelUtil.exportExcel("测试",);
+//        return ret;
+//    }
+
+    @ApiOperation(value = "组织移动", notes = "组织移动")
+    @UooLog(value = "组织移动", key = "updateOrgMove")
+    @RequestMapping(value = "/updateOrgMove", method = RequestMethod.GET)
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<String> updateOrgMove(Long orgId,Long parentOrgId) throws IOException {
+        ResponseResult<String> ret = new ResponseResult<String>();
+        List<String> list = new ArrayList<>();
+        //ExcelUtil.exportExcel("测试",);
+        return ret;
+    }
+
+
+
 
 
 }

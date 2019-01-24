@@ -2,6 +2,17 @@ var toastr = window.top.toastr;
 // var pswCheck = /^[A-Za-z0-9]+$/;
 var pswCheck = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z_]{8,16}$/;
 
+// lulu ui tips插件
+seajs.use('/vendors/lulu/js/common/ui/Tips', function () {
+    $('#newPswA').tips({
+        align: 'rotate'
+    });
+
+    $('#newPsw').tips({
+        align: 'rotate'
+    });
+});
+
 function submitPwd(){  //保存
     var oldPsw = $("#oldPsw").val();
     var newPsw = $("#newPsw").val();
@@ -15,7 +26,7 @@ function submitPwd(){  //保存
     }else if(oldPsw == newPsw){
         toastr.error("新密码不能和旧密码一致");
     }else if(!pswCheck.test(newPsw)){
-        toastr.error("请输入8位字母+数字组合的密码");
+        toastr.error("请输入8位字母和数字组合的密码");
     }else{
         pwdList = {
             "account":parent.account,

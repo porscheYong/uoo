@@ -1,6 +1,11 @@
 spring:
   application:
     name: business-permission
+  zipkin:
+    base-url: http://134.96.217.244:8600
+  sleuth:
+    sampler:
+      percentage: 1.0
   datasource:
     druid:
       #url: jdbc:oracle:thin:@134.129.68.156:1521:fjtpdb
@@ -17,13 +22,13 @@ spring:
       #      username: uom
       #      password: uom
       driver-class-name: oracle.jdbc.OracleDriver
-      url: jdbc:oracle:thin:@134.96.248.48:3436/ZJ4APRD
+      url: jdbc:oracle:thin:@(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.48)(PORT = 3436))(ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.49)(PORT = 3436))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = ZJ4APRD)))
       username: octopus
       password: octopus
 
-      initial-size: 10
+      initial-size: 60
       min-idle: 4
-      max-active: 30
+      max-active: 200
       max-wait: 60000
       time-between-eviction-runs-millis: 60000
       min-evictable-idle-time-millis: 300000

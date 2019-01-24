@@ -1044,12 +1044,17 @@ $(document).ready(function(){
 
 });
 function gotoPrev(){
-	var url="/inaction/user/list.html?";
-		url+="id="+orgId;
-		url+="&orgTreeId="+orgTreeId;
-		url+="&orgTreeName="+orgTreeName;
-		url+="&name="+orgName;
- location.href=url;
+    if (orgId == '88888888') {
+        parent.openTreeById('', '88888888')
+    }
+    else {
+        var url = "/inaction/user/list.html?";
+        url += "id=" + orgId;
+        url += "&orgTreeId=" + orgTreeId;
+        url += "&orgTreeName=" + orgTreeName;
+        url += "&name=" + orgName;
+        location.href = url;
+    }
 }
 function gotoAccout(i){
 	var mainAcctId=0;

@@ -141,4 +141,6 @@ public interface OrgRelService extends IService<OrgRel> {
          * @return
          */
         public List<OrgVo> getFullOrgList(String orgTreeId,String orgId);
+
+
 }

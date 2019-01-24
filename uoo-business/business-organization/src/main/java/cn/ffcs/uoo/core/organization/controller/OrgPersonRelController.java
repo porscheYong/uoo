@@ -71,6 +71,9 @@ public class OrgPersonRelController extends BaseController {
     @Autowired
     private ModifyHistoryService modifyHistoryService;
 
+    @Autowired
+    private OrgRelTypeService orgRelTypeService;
+
     @ApiOperation(value = "新增组织人员关系-web" , notes = "新增组织人员")
     @ApiImplicitParams({
     })
@@ -94,6 +97,9 @@ public class OrgPersonRelController extends BaseController {
                 }
 
                 OrgPersonRel orgPersonRel = orgPersonRelService.convertObj(psonOrgVo);
+                if(StrUtil.isNullOrEmpty(orgPersonRel.getOrgId()) || "88888888".equals(orgPersonRel.getOrgId().toString())){
+                    continue;
+                }
                 Long orgPsndocRefId = orgPersonRelService.getId();
                 orgPersonRel.setOrgPersonId(orgPsndocRefId);
                 orgPersonRel.setOrgTreeId(psonOrgVo.getOrgTreeId().toString());
@@ -142,7 +148,9 @@ public class OrgPersonRelController extends BaseController {
                     ret.setMessage("组织树不存在");
                     return ret;
                 }
-
+                if(StrUtil.isNullOrEmpty(psonOrgVo.getOrgId()) || "88888888".equals(psonOrgVo.getOrgId().toString())){
+                    continue;
+                }
                 OrgPersonRel orgPersonRel = orgPersonRelService.convertObj(psonOrgVo);
                 Long orgPsndocRefId = orgPersonRelService.getId();
                 orgPersonRel.setOrgPersonId(orgPsndocRefId);
@@ -197,16 +205,17 @@ public class OrgPersonRelController extends BaseController {
             ret.setMessage("组织树不存在");
             return ret;
         }
-
-        List<OrgPersonRel> orgPersonRelList = orgPersonRelService.getOrgPsnByOrgAndPsnId(
-                                                    psonOrgVo.getOrgTreeId().toString(),
-                                                    personnelId.toString(),
-                                                    psonOrgVo.getOrgId().toString());
-        if(orgPersonRelList!=null && orgPersonRelList.size()>0){
-            String batchNumber = modifyHistoryService.getBatchNumber();
-            OrgPersonRel orgPersonRel = orgPersonRelList.get(0);
+        Wrapper orgPerConfWrapper = Condition.create()
+                .eq("ORG_PERSON_ID",psonOrgVo.getOrgPersonId())
+                .eq("STATUS_CD","1000");
+        OrgPersonRel orgPersonRel = orgPersonRelService.selectOne(orgPerConfWrapper);
+        if(orgPersonRel!=null){
             OrgPersonRel orgPersonRelOLd = new OrgPersonRel();
             BeanUtils.copyProperties(orgPersonRel,orgPersonRelOLd);
+            String batchNumber = modifyHistoryService.getBatchNumber();
+            if(!StrUtil.isNullOrEmpty(psonOrgVo.getOrgId())){
+                orgPersonRel.setOrgId(psonOrgVo.getOrgId());
+            }
             orgPersonRel.setDoubleName(StrUtil.strnull(psonOrgVo.getDoubleName()));
             orgPersonRel.setProperty(StrUtil.strnull(psonOrgVo.getProperty()));
             if(!StrUtil.isNullOrEmpty(psonOrgVo.getPostId())){
@@ -219,6 +228,30 @@ public class OrgPersonRelController extends BaseController {
             orgPersonRelService.update(orgPersonRel);
             modifyHistoryService.addModifyHistory(orgPersonRelOLd,orgPersonRel,psonOrgVo.getSysUserId(),batchNumber);
         }
+
+
+
+//        List<OrgPersonRel> orgPersonRelList = orgPersonRelService.getOrgPsnByOrgAndPsnId(
+//                                                    psonOrgVo.getOrgTreeId().toString(),
+//                                                    personnelId.toString(),
+//                                                    psonOrgVo.getOrgId().toString());
+//        if(orgPersonRelList!=null && orgPersonRelList.size()>0){
+//            String batchNumber = modifyHistoryService.getBatchNumber();
+//            OrgPersonRel orgPersonRel = orgPersonRelList.get(0);
+//            OrgPersonRel orgPersonRelOLd = new OrgPersonRel();
+//            BeanUtils.copyProperties(orgPersonRel,orgPersonRelOLd);
+//            orgPersonRel.setDoubleName(StrUtil.strnull(psonOrgVo.getDoubleName()));
+//            orgPersonRel.setProperty(StrUtil.strnull(psonOrgVo.getProperty()));
+//            if(!StrUtil.isNullOrEmpty(psonOrgVo.getPostId())){
+//                orgPersonRel.setPostId(new Long(psonOrgVo.getPostId()));
+//            }
+//            if(!StrUtil.isNullOrEmpty(psonOrgVo.getSort())){
+//                orgPersonRel.setSort(new Double(psonOrgVo.getSort()));
+//            }
+//            orgPersonRel.setUpdateUser(psonOrgVo.getSysUserId());
+//            orgPersonRelService.update(orgPersonRel);
+//            modifyHistoryService.addModifyHistory(orgPersonRelOLd,orgPersonRel,psonOrgVo.getSysUserId(),batchNumber);
+//        }
         String mqmsg = "{\"type\":\"person\",\"handle\":\"update\",\"context\":{\"column\":\"personnelId\",\"value\":"+personnelId+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);
 
@@ -611,7 +644,7 @@ public class OrgPersonRelController extends BaseController {
             return ret;
         }
         Page<PsonOrgVo> page = null;
-        if(orgLev.getOrgLevel()<3 && "1".equals(psonOrgVo.getIsSearchlower())){
+        if(orgLev.getOrgLevel()==1 && "1".equals(psonOrgVo.getIsSearchlower())){
             //查全部
             page = orgPersonRelService.selectAllPerOrgRelPage(psonOrgVo);
         }else{
@@ -722,10 +755,17 @@ public class OrgPersonRelController extends BaseController {
             }
         }
 
-
+        List<OrgRelType> orts = orgRelTypeService.getOrgRelType(orgtree.getOrgTreeId().toString());
+        if(orts==null || orts.size()<1){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织关系类型不存在");
+            return ret;
+        }
+        OrgRelType ort = orts.get(0);
         psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
         psonOrgVo.setOrgId(new Long(orgId));
         psonOrgVo.setOrgTreeId(orgtree.getOrgTreeId());
+        psonOrgVo.setRefCode(ort.getRefCode());
         if(!StrUtil.isNullOrEmpty(search)){
             psonOrgVo.setSearch(search);
         }

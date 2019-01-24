@@ -82,9 +82,22 @@ public class OrgOrgtreeRel extends Model<OrgOrgtreeRel> {
     private Integer sort;
 
 
+    //@TableField("ORG_BIZ_FULL_ID")
+    @TableField(exist=false)
+    private String orgBizFullId;
+
+
     @TableField(exist=false)
     private String lv;
 
+
+    public String getOrgBizFullId() {
+        return orgBizFullId;
+    }
+
+    public void setOrgBizFullId(String orgBizFullId) {
+        this.orgBizFullId = orgBizFullId;
+    }
 
     public String getLv() {
         return lv;

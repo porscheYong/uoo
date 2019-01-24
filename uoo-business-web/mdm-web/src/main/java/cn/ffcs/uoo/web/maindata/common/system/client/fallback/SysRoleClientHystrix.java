@@ -17,7 +17,7 @@ public class SysRoleClientHystrix implements SysRoleClient{
     
 
     @Override
-    public ResponseResult<List<TreeNodeVo>> treeRole(String parentRoleCode) {
+    public ResponseResult<List<TreeNodeVo>> treeRole(Long id) {
         ResponseResult<List<TreeNodeVo>> rr=new ResponseResult<>();
         rr.setState(ResponseResult.STATE_SERVICE_ERROR);
         rr.setMessage("服务不可用");

@@ -195,6 +195,11 @@ public class OrgShowUtil {
 
         if(vo.getAreaCodeInfo() != null){
             vo.getAreaCodeInfo().setAreaCodeId(null);
+            if("057".equals(vo.getAreaCodeInfo().getAreaNbr())){
+                vo.getAreaCodeInfo().setAreaCode("0571");
+            }else{
+                vo.getAreaCodeInfo().setAreaCode(vo.getAreaCodeInfo().getAreaNbr());
+            }
             vo.getAreaCodeInfo().setAreaNbr(null);
             vo.getAreaCodeInfo().setCommonRegionId(null);
             vo.getAreaCodeInfo().setStatusCd(null);

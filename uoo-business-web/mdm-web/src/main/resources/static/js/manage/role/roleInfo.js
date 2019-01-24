@@ -1,3 +1,67 @@
+var id = getQueryString('id');
+var roleId = getQueryString('roleId');
+var roleFullName = getQueryString('roleFullName');
+var roleCode = getQueryString('roleCode');
+var locationList = [];
+var parRoleList = [];
+var permList = [];
+
+//获取角色信息
+function getRoleInfo(){
+    $http.get('/system/sysRole/get/'+id, {
+    }, function (data) {
+        $("#roleNameTitle").html(data.roleName);
+        initRoleInfo(data);
+    }, function (err) {
+        // loading.screenMaskDisable('container');
+    });
+}
+
+//初始化角色信息
+function initRoleInfo(result){
+    $("#perms").empty();
+    isNull("roleCodeLable",result.roleCode);
+    isNull("parRoleLable",result.parentRoleName);
+    isNull("areaLable",result.commonRegionName);
+    isNull("remarkLable",result.notes);
+    isNull("sortLable",result.sortNum);
+    $("#stateLable").text("有效");
+    if(result.permissionNames){
+        permList = result.permissionNames.split(',');
+    }
+    for(var i=0;i<permList.length;i++){ 
+        $("#perms").append("<span class='perTab'>"+permList[i]+"</span>");
+    }
+
+    isInputNull("roleName",result.roleName);
+    isInputNull("roleCode",result.roleCode);
+    isInputNull("sortNum",result.sortNum);
+    isInputNull("notes",result.notes);
+    $('#perm').addTag(permList);
+    // if(result.commonRegionName){
+    //     locationList = [{"id":result.regionNbr,"name":result.regionName}];
+    //     $('#location').addTag(locationList);
+    // }
+    // if(result.parRole){
+    //     parRoleList = [{"id":result.pPositionId,"name":result.pPositionName}];
+    //     $('#parRole').addTag(parRoleList);
+    // }
+}
+
+//判断返回值是否为null
+function isNull(el,str){
+    if(str != null){
+        $("#"+el).text(str);
+    }
+}
+
+//判断填入input中的值是否为null
+function isInputNull(el,str){
+    if(str != null){
+        $("#"+el).val(str);
+    }
+}
+
 function editInfo(){
     $("#roleInfo").css("display","none");
     $("#editInfo").css("display","block");
@@ -54,3 +118,11 @@ $('#myTabs a').click(function (e) {
     $(this).tab('show');
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
 })
+
+//返回
+function backToList(){
+    window.location.href = "list.html?roleCode="+roleCode+"&roleId="+roleId;
+}
+
+$(".breadcrumb").html(roleFullName);
+getRoleInfo();

@@ -43,7 +43,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     public SysRoleDTO selectOne(Long ROLE_ID) {
-        return baseMapper.selectOne(ROLE_ID);
+        List<SysRoleDTO> selectOne = baseMapper.selectOne(ROLE_ID);
+        if(selectOne!=null&&!selectOne.isEmpty()){
+            return selectOne.get(0);
+        }
+        return null;
     }
 
     @Override

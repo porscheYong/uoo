@@ -88,6 +88,13 @@ public interface TbSlaveAcctService extends IService<TbSlaveAcct> {
      */
     public Object insertOrUpdateTbSlaveAcct(EditFormSlaveAcctVo editFormSlaveAcctVo, Long slaveAcctId);
 
+    /**
+     * 从账号表单 验证
+     * @param editFormSlaveAcctVo
+     * @return
+     */
+    public Object checkFormSlaveAcct(EditFormSlaveAcctVo editFormSlaveAcctVo);
+
 
 
 }

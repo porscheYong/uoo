@@ -26,6 +26,8 @@ public class OrgLevelVo {
 
     private Date statusDate;
 
+    private Short sort;
+
     private TbOrgTree orgTreeInfo;
 
     public Long getOrgLevelId() {
@@ -116,4 +118,11 @@ public class OrgLevelVo {
         this.orgTreeInfo = orgTreeInfo;
     }
 
+    public Short getSort() {
+        return sort;
+    }
+
+    public void setSort(Short sort) {
+        this.sort = sort;
+    }
 }

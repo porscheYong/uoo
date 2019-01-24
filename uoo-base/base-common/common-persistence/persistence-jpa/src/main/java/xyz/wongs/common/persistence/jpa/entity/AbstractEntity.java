@@ -2,10 +2,9 @@ package xyz.wongs.common.persistence.jpa.entity;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.data.domain.Persistable;
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -38,10 +37,6 @@ import java.util.Date;
 public abstract class AbstractEntity<ID extends Serializable> implements Persistable<ID> {
 
 
-	/**
-	 * @Fields serialVersionUID : TODO（用一句话描述这个变量表示什么）
-	 */
-
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -54,81 +49,17 @@ public abstract class AbstractEntity<ID extends Serializable> implements Persist
      */
     public abstract void setId(final ID id);
 
-
-    @Column(name = "STATUS_CD",length = 4)
-    private String statusCd;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "CREATE_DATE")
+    @Column(name="CREATE_DATE", columnDefinition="DATE")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @Temporal(value = TemporalType.TIMESTAMP)
     private Date createDate;
 
-    @Column(name = "CREATE_USER",length = 12)
-    private Long createUser;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "UPDATE_DATE")
-    private Date updateDate;
-
-    @Column(name = "UPDATE_USER",length = 12)
-    private Long updateUser;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "STATUS_DATE")
-    private Date statusDate;
-
-
-    public String getStatusCd() {
-        return statusCd;
-    }
-
-    public void setStatusCd(String statusCd) {
-        this.statusCd = statusCd;
-    }
-
     public Date getCreateDate() {
-
         return createDate;
     }
 
     public void setCreateDate(Date createDate) {
-
         this.createDate = createDate;
-    }
-
-    public Long getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(Long createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getUpdateDate() {
-
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-
-        this.updateDate = updateDate;
-    }
-
-    public Long getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(Long updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    public Date getStatusDate() {
-
-        return statusDate;
-    }
-
-    public void setStatusDate(Date statusDate) {
-
-        this.statusDate = statusDate;
     }
 
     @Override
@@ -136,7 +67,6 @@ public abstract class AbstractEntity<ID extends Serializable> implements Persist
 
         return null == getId();
     }
-
 
     @Override
     public boolean equals(Object obj) {

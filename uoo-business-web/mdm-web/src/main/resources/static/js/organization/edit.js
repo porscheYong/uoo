@@ -1,7 +1,11 @@
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
+var ppid = getQueryString('ppid');
 var orgName = getQueryString('name');
+var pName = getQueryString('pName');
+var infoFlag = ~~getQueryString('infoFlag');
 var areaCodeId = ''; //区号ID
+var orgCode = ''; //组织编码
 var locationList;
 var orgTypeList;
 var orgMartCode; //划小组织编码
@@ -552,12 +556,13 @@ function getOrg (orgId) {
         orgId: orgId
     }, function (data) {
         $('#orgName').val(data.orgName).focus();
-        $('#orgCode').val(data.orgCode);
+        $('#orgId').val(data.orgId);
         $('#shortName').val(data.shortName);
         $('#orgBizFullName').val(data.orgBizFullName);
         $('#orgBizFullName').attr('title', data.orgBizFullName);
         $('#orgNameEn').val(data.orgNameEn);
         orgMartCode = data.orgMartCode;
+        orgCode = data.orgCode;
         laydate.render({
           elem: '#foundingTime',
           value: new Date(data.foundingTime)
@@ -742,6 +747,7 @@ function updateOrg () {
       orgId: orgId,
       supOrgId: pid,
       orgName: orgName,
+      orgCode: orgCode,
       shortName: shortName,
       orgBizFullName: orgBizFullName,
       cityTown: cityTown,
@@ -765,7 +771,11 @@ function updateOrg () {
       orgMartCode: orgMart
   }), function () {
       parent.changeNodeName(orgId, orgName);
-      window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
+      parent.moveNode(pid, orgId, sort);
+      if (infoFlag)
+          window.location.replace("list.html?id=" + pid + '&pid=' + ppid + "&name=" + encodeURI(pName));
+      else
+        window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
       loading.screenMaskDisable('container');
       toastr.success('更新成功！');
   }, function (err) {
@@ -788,7 +798,10 @@ function deleteOrg () {
             supOrgId: pid
         }, function () {
             parent.deleteNode(orgId);
-            parent.selectRootNode();
+            if (infoFlag)
+                parent.openTreeById(null, ppid);
+            else
+                parent.openTreeById(null, pid);
             loading.screenMaskDisable('container');
             toastr.success('删除成功！');
         }, function (err) {

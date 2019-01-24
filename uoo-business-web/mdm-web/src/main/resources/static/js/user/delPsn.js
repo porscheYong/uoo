@@ -44,6 +44,25 @@ function deletePersonnel(){
 }
 
 function deleteTbAcct(){    //删除人员
+	if (orgId != '88888888'){
+		parent.layer.confirm('此操作将删除该人员与当前组织关系，是否继续？', {
+		      icon: 0,
+		      title: '提示',
+		      btn: ['确定','取消']
+		  }, function(index, layero){
+		      // 未分类
+		      if (orgId == '88888888')
+		          deletePersonnel();
+		      else
+		        deleteOrgPsn();
+		      parent.layer.close(index);
+		    }, function(){
+		  
+		    });
+		return;
+		
+	}
+    
 	$http.get('/user/getUserList', {personnelId:personnelId}, function (data) {
 		if(data.total>0){
 			var hasMainAcct=false,hasSubAcct=false;

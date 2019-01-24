@@ -61,21 +61,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- swagger -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-        </dependency>
 
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.47</version>
-        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -98,6 +84,21 @@
                 <groupId>cn.ffcs.uoo</groupId>
                 <artifactId>common-abstract</artifactId>
                 <version>${common-abstract.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>xyz.wongs</groupId>
+                <artifactId>persistence-jpa</artifactId>
+                <version>1.0.2-RELEASE</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.baomidou</groupId>
+                        <artifactId>mybatisplus-spring-boot-starter</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.baomidou</groupId>
+                        <artifactId>mybatis-plus</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- db -->
             <dependency>

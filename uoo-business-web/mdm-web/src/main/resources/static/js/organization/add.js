@@ -2,6 +2,7 @@ var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var areaCodeId = ''; //区号ID
+var orgCode = ''; //组织编码
 var locationList = [];
 var orgTypeList = [];
 var expandovalueVoList = []; //划小扩展字段
@@ -264,8 +265,8 @@ function getAreaId(regionId) {
     })
 }
 //根据拉下框获取当前选中的区号ID
-function getAreaCodeId() {
-    areaCodeId = $(this).children('option:selected').val();
+function getAreaCodeId(ele) {
+    areaCodeId = $(ele).children('option:selected').val();
 }
 
 // 获取规模字典数据
@@ -386,12 +387,13 @@ function getOrg (orgId) {
             $(this).attr('disabled', 'disabled')
         });
         $('#orgName').val(data.orgName);
-        $('#orgCode').val(data.orgCode);
+        $('#orgId').val(data.orgId);
         $('#shortName').val(data.shortName);
         $('#orgBizFullName').val(data.orgBizFullName);
         $('#orgBizFullName').attr('title', data.orgBizFullName);
         $('#orgNameEn').val(data.orgNameEn);
         orgMartCode = data.orgMartCode;
+        orgCode = data.orgCode;
         laydate.render({
             elem: '#foundingTime',
             value: new Date(data.foundingTime)
@@ -508,6 +510,7 @@ function addOrg () {
         orgId: orgId,
         supOrgId: orgId,
         orgName: orgName,
+        orgCode: orgCode,
         shortName: shortName,
         cityTown: cityTown,
         orgScale: orgScale,
@@ -528,7 +531,7 @@ function addOrg () {
         orgDesc: orgDesc,
         expandovalueVoList: expandovalueVoList
     }), function (data) {
-        parent.addNodeById(orgId, data);
+        parent.addNodeById(orgId, sort - 1, data);
         parent.openTreeById(orgId, data.id);
         window.location.replace("list.html?id=" + data.id + '&pid=' + data.pid + "&name=" + encodeURI(data.name));
         loading.screenMaskDisable('container');

@@ -5,6 +5,7 @@ import cn.ffcs.uoo.core.user.constant.EumUserResponeCode;
 import cn.ffcs.uoo.core.user.dao.TbSlaveAcctMapper;
 import cn.ffcs.uoo.core.user.entity.ListUser;
 import cn.ffcs.uoo.core.user.entity.TbAcct;
+import cn.ffcs.uoo.core.user.entity.TbAcctExt;
 import cn.ffcs.uoo.core.user.entity.TbSlaveAcct;
 import cn.ffcs.uoo.core.user.service.*;
 import cn.ffcs.uoo.core.user.util.*;
@@ -65,7 +66,7 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
         map.put(BaseUnitConstants.TB_ACCOUNT_ORG_REL, "t2");
         String inSql = commonSystemService.getSqlJointList(map, account);
 
-        Page<ListSlaveAcctOrgVo> page = new Page<ListSlaveAcctOrgVo>(StrUtil.intiPageNo(slaveAcctOrgVo.getPageNo()), StrUtil.intiPageSize(slaveAcctOrgVo.getPageSize()));
+        Page<ListSlaveAcctOrgVo> page = new Page<ListSlaveAcctOrgVo>(StrUtil.intiPageNo(slaveAcctOrgVo.getPageNo()), 50);
         List<ListSlaveAcctOrgVo> list = baseMapper.getSlaveAcctOrg(page, slaveAcctOrgVo, inSql);
         page.setRecords(list);
         return page;
@@ -178,6 +179,53 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
         if("update".equals(type)){
             tbSlaveAcct.setUpdateUser(editFormSlaveAcctVo.getUserId());
             baseMapper.updateById(tbSlaveAcct);
+        }
+        return null;
+    }
+
+    @Override
+    public Object checkFormSlaveAcct(EditFormSlaveAcctVo editFormSlaveAcctVo){
+
+        //验证主账号是否已有
+        TbAcct tbAcct = (TbAcct) tbAcctService.getTbAcctByPsnId(editFormSlaveAcctVo.getPersonnelId());
+        if(StrUtil.isNullOrEmpty(tbAcct)){
+            return ResultUtils.error(EumUserResponeCode.ACCT_NO_EXIST_RE);
+        }
+
+        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getPersonnelId())){
+            return ResultUtils.error(EumUserResponeCode.PERSONNEL_NO_CHOOSE);
+        }
+        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getSlaveAcct())){
+            return ResultUtils.error(EumUserResponeCode.SLAVE_ACCT_NULL);
+        }
+//        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getAcctOrgRelId())){
+//            return ResultUtils.error(EumUserResponeCode.ACCT_HOST_NULL);
+//        }
+        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getEnableDate())){
+            return ResultUtils.error(EumUserResponeCode.EFF_DATE_NULL);
+        }
+        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getDisableDate())){
+            return ResultUtils.error(EumUserResponeCode.EXP_DATE_NULL);
+        }
+        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getStatusCd())){
+            return ResultUtils.error(EumUserResponeCode.STATUS_CD_NULL);
+        }
+        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getRolesList())){
+            return ResultUtils.error(EumUserResponeCode.ROLES_NULL);
+        }
+        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getResourceObjId())){
+            return ResultUtils.error(EumUserResponeCode.RESOURCE_OBJ_NULL);
+        }
+        if(!StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getTbAcctExt())){
+            Object obj = tbAcctExtService.checkAcctExt(editFormSlaveAcctVo.getTbAcctExt());
+            if(!StrUtil.isNullOrEmpty(obj)){
+                return obj;
+            }
+        }
+
+        //从账号是否已存在
+        if(this.checkSlaveAcct(editFormSlaveAcctVo.getSlaveAcct(), editFormSlaveAcctVo.getResourceObjId(), editFormSlaveAcctVo.getSlaveAcctId())){
+            return ResultUtils.error(EumUserResponeCode.SLAVE_ACCT_IS_EXIST);
         }
         return null;
     }

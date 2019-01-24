@@ -94,6 +94,9 @@ public class TbPoliticalLocationController extends BaseController {
             ztlist.add(n);
             n.setId(polloc.getLocId());
             n.setName(polloc.getLocName());
+            Map<String,Object> extParams = new HashMap<>();
+            extParams.put("locCode", polloc.getLocCode());
+            n.setExtParams(extParams);
             n.setpId(polloc.getParentLocId()==null||polloc.getParentLocId()<1?0:polloc.getParentLocId());
             for (TbPoliticalLocation tmp : list) {
                 if(polloc.getLocId().equals(tmp.getParentLocId())){

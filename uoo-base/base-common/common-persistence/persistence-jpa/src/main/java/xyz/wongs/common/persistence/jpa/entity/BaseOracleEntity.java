@@ -1,10 +1,8 @@
 package xyz.wongs.common.persistence.jpa.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -22,23 +20,7 @@ import java.io.Serializable;
 @MappedSuperclass
 public abstract class BaseOracleEntity<PK extends Serializable> extends AbstractEntity<PK> {
 
-
-	/**
-	 * @Fields serialVersionUID : TODO（用一句话描述这个变量表示什么）
-	 */
-
 	private static final long serialVersionUID = 1L;
-	@Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    private PK id;
 
-    @Override
-    public PK getId() {
-        return id;
-    }
 
-    @Override
-    public void setId(PK id) {
-        this.id = id;
-    }
 }

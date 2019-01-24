@@ -44,6 +44,8 @@ public interface OrgPersonRelMapper extends BaseMapper<OrgPersonRel> {
                                                          @Param("orgId")String orgId);
 
     public List<OrgPersonRel> getOrgPsnRel(@Param("orgTreeId")String orgTreeId,@Param("orgId")String orgId);
+    public List<OrgPersonRel> getOrgAcctRel(@Param("orgTreeId")String orgTreeId,@Param("orgId")String orgId);
+
 
     //EXT
     //获取职位

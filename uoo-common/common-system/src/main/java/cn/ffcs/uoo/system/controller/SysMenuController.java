@@ -92,6 +92,7 @@ public class SysMenuController {
         if(StringUtils.isNotBlank(keyWord)){
             wrapper.andNew("MENU_NAME like {0}", "'%"+keyWord+"%'").or("MENU_CODE like {0}","'%"+keyWord+"%'");
         }
+        wrapper.orderBy("MENU_SORT", true);
         Page<SysMenu> page = sysMenuService.selectPage(new Page<SysMenu>(pageNo, pageSize), wrapper);
         ResponseResult<Page<SysMenu>> rr = ResponseResult.createSuccessResult("");
         rr.setData(page);

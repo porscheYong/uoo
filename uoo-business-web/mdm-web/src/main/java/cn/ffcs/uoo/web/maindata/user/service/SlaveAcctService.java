@@ -1,6 +1,9 @@
 package cn.ffcs.uoo.web.maindata.user.service;
 
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.personnel.service.fallback.PsnjobServiceHystrix;
+import cn.ffcs.uoo.web.maindata.user.dto.TbAcctExt;
 import cn.ffcs.uoo.web.maindata.user.service.fallback.SlaveAcctServiceHystrix;
 import cn.ffcs.uoo.web.maindata.user.vo.EditFormSlaveAcctVo;
 import common.config.PersonnelServiceConfiguration;
@@ -28,4 +31,15 @@ public interface SlaveAcctService {
 
     @RequestMapping(value = "/tbSlaveAcct/updateTbSlaveAcct", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     public Object updateTbSlaveAcct(@RequestBody EditFormSlaveAcctVo editFormSlaveAcctVo);
+
+    @RequestMapping(value = "tbAcctExt/addOrUpdateTbAcctExt", method = RequestMethod.POST, headers={"Content-Type=application/json"})
+    public Object addOrUpdateTbAcctExt(@RequestBody TbAcctExt tbAcctExt);
+
+    @RequestMapping(value = "/tbAcctExt/delTbAcctExt", method = RequestMethod.DELETE, headers={"Content-Type=application/json"})
+    public Object delTbAcctExt(@RequestBody TbAcctExt tbAcctExt);
+
+
+
+
+
 }

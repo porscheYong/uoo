@@ -57,7 +57,7 @@ public class TbSlaveAcctController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     public Object saveSlaveAcct(@RequestBody EditFormSlaveAcctVo editFormSlaveAcctVo){
 
-        Object obj = checkFormSlaveAcct(editFormSlaveAcctVo);
+        Object obj = tbSlaveAcctService.checkFormSlaveAcct(editFormSlaveAcctVo);
         if(!StrUtil.isNullOrEmpty(obj)){
             return obj;
         }
@@ -112,7 +112,7 @@ public class TbSlaveAcctController extends BaseController {
     @RequestMapping(value = "/updateTbSlaveAcct", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
     public Object updateTbSlaveAcct(@RequestBody EditFormSlaveAcctVo editFormSlaveAcctVo){
-        Object obj = checkFormSlaveAcct(editFormSlaveAcctVo);
+        Object obj = tbSlaveAcctService.checkFormSlaveAcct(editFormSlaveAcctVo);
         if(!StrUtil.isNullOrEmpty(obj)){
             return obj;
         }
@@ -127,15 +127,15 @@ public class TbSlaveAcctController extends BaseController {
         List<TbRoles> oldTbRolesList = tbAcctService.getTbRoles(2L, editFormSlaveAcctVo.getSlaveAcctId());
         tbUserRoleService.updateUserRole(editFormSlaveAcctVo.getRolesList(), oldTbRolesList, editFormSlaveAcctVo.getSlaveAcctId(), 2L, userId);
 
-        //扩展属性
-        if(!StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getTbAcctExt())){
-            TbAcctExt tbAcctExt = editFormSlaveAcctVo.getTbAcctExt();
-            tbAcctExt.setSlaveAcctId(editFormSlaveAcctVo.getSlaveAcctId());
-            tbAcctExt.setUpdateUser(userId);
-            tbAcctExtService.saveTbAcctExt(tbAcctExt);
-        }else{
-            tbAcctExtService.delTbAcctExt(editFormSlaveAcctVo.getSlaveAcctId(), userId);
-        }
+//        //扩展属性
+//        if(!StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getTbAcctExt())){
+//            TbAcctExt tbAcctExt = editFormSlaveAcctVo.getTbAcctExt();
+//            tbAcctExt.setSlaveAcctId(editFormSlaveAcctVo.getSlaveAcctId());
+//            tbAcctExt.setUpdateUser(userId);
+//            tbAcctExtService.saveTbAcctExt(tbAcctExt);
+//        }else{
+//            tbAcctExtService.delTbAcctExt(editFormSlaveAcctVo.getSlaveAcctId(), userId);
+//        }
 
         rabbitMqService.sendMqMsg("person", "update", "slaveAcctId", editFormSlaveAcctVo.getSlaveAcctId());
 
@@ -143,60 +143,7 @@ public class TbSlaveAcctController extends BaseController {
     }
 
 
-    public Object checkFormSlaveAcct(EditFormSlaveAcctVo editFormSlaveAcctVo){
 
-        //验证主账号是否已有
-        TbAcct tbAcct = (TbAcct) tbAcctService.getTbAcctByPsnId(editFormSlaveAcctVo.getPersonnelId());
-        if(StrUtil.isNullOrEmpty(tbAcct)){
-            return ResultUtils.error(EumUserResponeCode.ACCT_NO_EXIST_RE);
-        }
-
-        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getPersonnelId())){
-            return ResultUtils.error(EumUserResponeCode.PERSONNEL_NO_CHOOSE);
-        }
-        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getSlaveAcct())){
-            return ResultUtils.error(EumUserResponeCode.SLAVE_ACCT_NULL);
-        }
-//        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getAcctOrgRelId())){
-//            return ResultUtils.error(EumUserResponeCode.ACCT_HOST_NULL);
-//        }
-        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getEnableDate())){
-            return ResultUtils.error(EumUserResponeCode.EFF_DATE_NULL);
-        }
-        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getDisableDate())){
-            return ResultUtils.error(EumUserResponeCode.EXP_DATE_NULL);
-        }
-        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getStatusCd())){
-            return ResultUtils.error(EumUserResponeCode.STATUS_CD_NULL);
-        }
-        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getRolesList())){
-            return ResultUtils.error(EumUserResponeCode.ROLES_NULL);
-        }
-        if(StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getResourceObjId())){
-            return ResultUtils.error(EumUserResponeCode.RESOURCE_OBJ_NULL);
-        }
-        if(!StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getTbAcctExt())){
-            TbAcctExt tbAcctExt = editFormSlaveAcctVo.getTbAcctExt();
-            if(StrUtil.isNullOrEmpty(tbAcctExt.getWorkEmail()) || !StrUtil.checkEmail(tbAcctExt.getWorkEmail())){
-                return ResultUtils.error(EumUserResponeCode.EMAIL_ERROR);
-            }
-            if(StrUtil.isNullOrEmpty(tbAcctExt.getContactWay()) || !StrUtil.checkTelephoneNumber(tbAcctExt.getContactWay())) {
-                return ResultUtils.error(EumUserResponeCode.MOBILE_ERROR);
-            }
-            if(StrUtil.isNullOrEmpty(tbAcctExt.getCertNo())) {
-                return ResultUtils.error(EumUserResponeCode.CERT_NO_ERROR);
-            }
-            if("1".equals(tbAcctExt.getCertType()) && !IdCardVerification.idCardValidate(tbAcctExt.getCertNo())){
-                return ResultUtils.error(EumUserResponeCode.CERT_NO_ERROR);
-            }
-        }
-
-        //从账号是否已存在
-        if(tbSlaveAcctService.checkSlaveAcct(editFormSlaveAcctVo.getSlaveAcct(), editFormSlaveAcctVo.getResourceObjId(), editFormSlaveAcctVo.getSlaveAcctId())){
-            return ResultUtils.error(EumUserResponeCode.SLAVE_ACCT_IS_EXIST);
-        }
-        return null;
-    }
 
 
 

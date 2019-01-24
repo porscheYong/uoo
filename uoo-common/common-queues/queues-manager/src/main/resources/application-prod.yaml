@@ -18,9 +18,9 @@ spring:
         driver-class-name:  oracle.jdbc.OracleDriver
         username: octopus
         password: octopus
-        initial-size: 10
+        initial-size: 60
         min-idle: 4
-        max-active: 30
+        max-active: 200
         max-wait: 60000
         time-between-eviction-runs-millis: 60000
         min-evictable-idle-time-millis: 300000
@@ -94,8 +94,8 @@ spring:
   #      aop-patterns: cn.ffcs.uoo.**.service.*
 
   rabbitmq:
-    username: root
-    password: 123
+    username: Sub_Pub_Uoo
+    password: FUkCrcs4SIzlnia7OoosTd$rO5$lR8669ISeHjji
     host: 134.96.249.38
 
 mybatis-plus:

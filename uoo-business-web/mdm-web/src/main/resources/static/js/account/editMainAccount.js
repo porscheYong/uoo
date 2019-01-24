@@ -9,6 +9,7 @@ var acctId = getQueryString('acctId');
 var orgTreeName = getQueryString('orgTreeName');
 var curOrgId = getQueryString('curOrgId');
 var curOrgTreeId = getQueryString('curOrgTreeId');
+var addToEditFlag = getQueryString('addToEditFlag'); //判断是从新增账号页面跳转过来的
 
 var slaveAcctCount; //从账号数量
 var personnelId;
@@ -23,6 +24,7 @@ var acctInfoList = [];
 var toastr = window.top.toastr;
 var cerTypeList = window.top.dictionaryData.certType();
 var statusCdList = window.top.dictionaryData.statusCd();
+var acctTypeList = window.top.dictionaryData.acctType();
 var relTypeName = window.top.relTypeName;
 var relTypeVal = "";
 var loading = parent.loading;
@@ -115,6 +117,12 @@ function noSelectUserInfo(){     //控制人员信息不可选
 function initAcctInfo(results){
    var acct = results.acctOrgVoPage.records;
    var slave = results.slaveAcctOrgVoPage.records;
+   for(var k=0;k<acct.length;k++){
+      if(acct[k].orgId == orgId){
+          addToEditFlag = 0;
+          break;
+      }
+   }
    acctInfoList = [];
    for(var i=0;i<acct.length;i++){
       if(acct[i].orgTreeId == orgTreeId || orgTreeId == 1){
@@ -180,7 +188,7 @@ function setAcctInfoTables(){
               'data': acctInfoList[i].slaveAcct,
               'destroy':true,
               'searching': false,
-              'autoWidth': false,
+              'autoWidth': true,
               'ordering': true,
               'paging': false,
               'info': false,
@@ -199,7 +207,18 @@ function setAcctInfoTables(){
                               '&curSlaveOrgTreeName='+encodeURI(row.orgTreeName)+'&hType=th&mainAcctId='+acctId+'&acctId='+row.slaveAcctId+'&statusCd='+row.statusCd+'">'+row.slaveAcct+'</a>';
                   }
                 },
-                  { 'data': "slaveAcctType", 'title': '类型', 'className': 'row-acctype' },
+                  { 'data': null, 'title': '类型', 'className': 'row-acctype' ,
+                      'render': function (data, type, row, meta) {
+                        var acctType = "";
+                        for(var i=0;i<acctTypeList.length;i++){
+                            if(row.slaveAcctType == acctTypeList[i].itemValue){
+                              acctType = acctTypeList[i].itemCnname;
+                              break;
+                            }
+                        }
+                        return acctType;
+                      }
+                  },
                   { 'data': "systemName", 'title': '系统', 'className': 'row-system'},
                   { 'data': "statusCd", 'title': '状态', 'className': 'row-state' ,
                     'render': function (data, type, row, meta) {
@@ -239,6 +258,7 @@ function deleteTbSubAcct(slaveAcctId){     //删除从账号
       btn: ['确定','取消']
   }, function(index, layero){
       parent.layer.close(index);
+      loading.screenMaskEnable('container');
       $.ajax({
           url: '/slaveAcct/delTbSlaveAcct?&slaveAcctId='+parseInt(slaveAcctId),
           type: 'DELETE',
@@ -249,11 +269,13 @@ function deleteTbSubAcct(slaveAcctId){     //删除从账号
                   toastr.success(data.message);
                   refreshTb(acctId);
               }else{
+                  loading.screenMaskDisable('container');
                   toastr.error(data.message);
               }
           },
           error:function(err){
-            toastr.error('删除失败');
+              loading.screenMaskDisable('container');
+              toastr.error('删除失败');
           }
         });
     }, function(){
@@ -334,9 +356,12 @@ function initAcctInfoCheck(results){     //初始化用户信息(查看)
 }
 
 function updateAcct(){      //编辑主账号
-    if(!formValidate.isAllPass())
-        return;
-
+    loading.screenMaskEnable('container');
+    if(!formValidate.isAllPass()){
+      loading.screenMaskDisable('container');
+      return;
+    }
+        
     if(roleList.length == 0){
       roleList = userRoleList;
     }
@@ -364,10 +389,12 @@ function updateAcct(){      //编辑主账号
           toastr.success(data.message);
           submitSuccess();
         }else{
+          loading.screenMaskDisable('container');
           toastr.error(data.message);
         }
       },
       error:function(err){
+        loading.screenMaskDisable('container');
         toastr.error('编辑失败');
       }
     });
@@ -380,6 +407,7 @@ function deleteTbAcct(){    //删除主账号
     btn: ['确定','取消']
 }, function(index, layero){
     parent.layer.close(index);
+    loading.screenMaskEnable('container');
     if(slaveAcctCount == 0){
       $.ajax({
         url: '/acct/deleteTbAcct?&acctId='+parseInt(acctId),
@@ -391,14 +419,17 @@ function deleteTbAcct(){    //删除主账号
             toastr.success(data.message);
             deleteSuccess();
           }else{
+            loading.screenMaskDisable('container');
             toastr.error(data.message);
           }
         },
         error:function(err){
+          loading.screenMaskDisable('container');
           toastr.error('删除失败！');
         }
       });
     }else{
+      loading.screenMaskDisable('container');
       toastr.error('主账号存在关联的从账号，删除主账号失败！');
     }
   }, function(){
@@ -407,6 +438,7 @@ function deleteTbAcct(){    //删除主账号
 }
 
 function removeAcctOrg(orgId,orgTreeId){   //编辑时删除组织
+    loading.screenMaskEnable('container');
     $.ajax({
       url: '/acct/removeAcctOrg?personnelId='+personnelId+'&acctId='+acctId+'&orgId='+parseInt(orgId)+'&orgTreeId='+orgTreeId,
       type: 'DELETE',
@@ -418,16 +450,19 @@ function removeAcctOrg(orgId,orgTreeId){   //编辑时删除组织
           refreshTb(acctId);
           orgNum -= 1;
         }else{
+          loading.screenMaskDisable('container');
           toastr.error(data.message);
         }
       },
       error:function(err){
+        loading.screenMaskDisable('container');
         toastr.error('删除失败');
       }
     });
 }
 
 function addAcctOrg(orgId,orgTreeId,relTypeVal){ //编辑时新增组织
+  loading.screenMaskEnable('container');
   var tbAccountOrgRel={
     "acctId": acctId,
     "orgId": parseInt(orgId),
@@ -446,10 +481,12 @@ function addAcctOrg(orgId,orgTreeId,relTypeVal){ //编辑时新增组织
         refreshTb(acctId);
         orgNum += 1;
       }else{
+        loading.screenMaskDisable('container');
         toastr.error(data.message);
       }
     },
     error:function(err){
+      loading.screenMaskDisable('container');
       toastr.error('新增失败');
     }
   });
@@ -457,6 +494,7 @@ function addAcctOrg(orgId,orgTreeId,relTypeVal){ //编辑时新增组织
 
 //编辑时修改组织
 function updateAcctOrg(orgId,orgTreeId,relTypeVal,acctOrgRelId){ 
+    loading.screenMaskEnable('container');
     $http.put('/acct/updateAcctOrg', JSON.stringify({  
       acctId : acctId,
       acctOrgRelId : acctOrgRelId,
@@ -467,6 +505,7 @@ function updateAcctOrg(orgId,orgTreeId,relTypeVal,acctOrgRelId){
         refreshTb(acctId);
         toastr.success("保存成功！");
     }, function (err) {
+        loading.screenMaskDisable('container');
         // toastr.error("保存失败！");
     })
 }
@@ -481,8 +520,9 @@ function refreshTb(acctId) {           //新增组织后刷新组织表格
       slaveAcctCount = data.slaveAcctOrgVoPage.records.length;
       initAcctInfo(data);
       setAcctInfoTables();
+      loading.screenMaskDisable('container');
   }, function (err) {
-
+      loading.screenMaskDisable('container');
   })
 }
 
@@ -491,7 +531,7 @@ function addSlaveBtnClick(acctOrgRelId,id,slaveOrgTreeId,relTypeVal){      //点
     var sOrgName = $("#orgName_"+id).text();
     var treeName = $("#orgTreeName_"+id).text();
     var url = 'addSubAccount.html?curOrgId='+curOrgId+'&curOrgTreeId='+curOrgTreeId+'&orgTreeId='+orgTreeId+'&hType=th&personnelId='+personnelId + '&slaveOrgTreeId=' + slaveOrgTreeId +
-                      '&mainAcctId='+ acctId +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&toMainType=' + hType + '&curSlaveOrgName='+sOrgName+
+                      '&mainAcctId='+ acctId +'&orgName=' + encodeURI(orgName) + '&orgId=' + orgId +'&toMainType=' + hType + '&curSlaveOrgName='+encodeURI(sOrgName)+
                       '&fullName=' + encodeURI(sFullName) + '&acctOrgRelId=' + acctOrgRelId + '&orgTreeName=' + encodeURI(treeName)+'&relTypeVal='+relTypeVal;
     window.location.href = url;
 }
@@ -559,20 +599,20 @@ function isNull(s,r){    //判断是否为null
 
 //删除组织
 function deleteOrg(orgId,orgTreeId){
-    if(orgNum == 1){
-      toastr.error("无法删除所有组织");
-    }else{
-        parent.layer.confirm('是否删除该组织？', {
-        icon: 0,
-        title: '提示',
-        btn: ['确定','取消']
-        }, function(index, layero){
-          removeAcctOrg(orgId,orgTreeId);
-          parent.layer.close(index);
-        }, function(){
-      
-        });
-    }
+    // if(orgNum == 1){
+    //   toastr.error("无法删除所有组织");
+    // }else{
+    parent.layer.confirm('是否删除该组织？', {
+    icon: 0,
+    title: '提示',
+    btn: ['确定','取消']
+    }, function(index, layero){
+      removeAcctOrg(orgId,orgTreeId);
+      parent.layer.close(index);
+    }, function(){
+  
+    });
+    // }
 }
 
 function cancel() {   //取消按钮
@@ -626,9 +666,9 @@ function openOrgDialog() {
       title: '选择组织',
       shadeClose: true,
       shade: 0.8,
-      area: ['27%', '80%'],
+      area: ['40%', '80%'],
       maxmin: true,
-      content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType=30',
+      content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType=99'+'&addToEditFlag='+addToEditFlag,
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象
@@ -651,7 +691,7 @@ function openEditOrgDialog(val,acctOrgRelId,orgTreeId) {
       title: '选择组织',
       shadeClose: true,
       shade: 0.8,
-      area: ['27%', '80%'],
+      area: ['40%', '80%'],
       maxmin: true,
       content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType='+val,
       btn: ['确认', '取消'],
@@ -673,12 +713,14 @@ function openEditOrgDialog(val,acctOrgRelId,orgTreeId) {
 function submitSuccess(){     
     var url = "editMainAccount.html?curOrgId="+curOrgId+"&curOrgTreeId="+curOrgTreeId+"&acctId="+ acctId +"&orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + 
                   "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType="+ hType + "&orgTreeName="+encodeURI(orgTreeName);
+    loading.screenMaskDisable('container');
     window.location.href = url;
 }
 
 //删除成功
 function deleteSuccess(){
     var url = "list.html?orgTreeId=" + orgTreeId + "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId;
+    loading.screenMaskDisable('container');
     window.location.href = url;
 }
 

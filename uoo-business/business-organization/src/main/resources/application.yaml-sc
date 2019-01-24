@@ -3,6 +3,11 @@ server:
 spring:
   application:
     name: business-organization
+  zipkin:
+    base-url: http://134.96.217.244:8600
+  sleuth:
+    sampler:
+      percentage: 1.0
   datasource:
     druid:
       #url: jdbc:oracle:thin:@134.96.248.48:3436/ZJ4APRD
@@ -10,9 +15,9 @@ spring:
       driver-class-name: oracle.jdbc.OracleDriver
       username: octopus
       password: octopus
-      initial-size: 10
+      initial-size: 60
       min-idle: 4
-      max-active: 30
+      max-active: 200
       max-wait: 60000
       time-between-eviction-runs-millis: 60000
       min-evictable-idle-time-millis: 300000

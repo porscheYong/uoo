@@ -2,14 +2,16 @@ package xyz.wongs.common.persistence.jpa.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import xyz.wongs.common.persistence.jpa.entity.AbstractEntity;
+import xyz.wongs.common.persistence.jpa.util.MethodUtil;
 
+import javax.persistence.criteria.Predicate;
 import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +38,25 @@ public abstract class BaseService<T extends AbstractEntity<?>, ID extends Serial
 	public abstract void setJpaRepository(JpaRepository<T, ID> jpaRepository);
 
 
+    public Page<T> findTiy(int page, int size, T t) {
+        size=size==0?10:size;
+        // TODO Auto-generated method stub
+        Pageable pageable = new PageRequest(page, size);
+
+        ExampleMatcher matcher = ExampleMatcher.matching();
+        List<String> fields = new ArrayList<String>();
+        MethodUtil.getField(t,fields);
+        for (String fld: fields){
+            matcher.withMatcher(fld,ExampleMatcher.GenericPropertyMatchers.exact());
+        }
+
+/*                .withMatcher("username", ExampleMatcher.GenericPropertyMatchers.startsWith())
+                .withMatcher("address" ,ExampleMatcher.GenericPropertyMatchers.contains())
+                .withIgnorePaths("password");*/
+
+        Example<T> example = Example.of(t,matcher);
+        return jpaRepository.findAll(example,pageable);
+    }
 
     /**
      * 保存单个实体
@@ -44,6 +65,7 @@ public abstract class BaseService<T extends AbstractEntity<?>, ID extends Serial
      * @return 返回保存的实体
      */
     public T save(T t) {
+        t.setCreateDate(new java.sql.Timestamp(System.currentTimeMillis()));
         return jpaRepository.save(t);
     }
 
@@ -164,13 +186,13 @@ public abstract class BaseService<T extends AbstractEntity<?>, ID extends Serial
     }
 
 
-    public Page<T> findCriteria(Integer page, Integer size,final AbstractEntity<?> ae) {
-        Pageable pageable = new PageRequest(page, size);
-
-//        Sort sort = new Sort(Sort.Direction.DESC, "id");
-
-        return findAll(pageable);
-    }
+//    public Page<T> findCriteria(Integer page, Integer size,final AbstractEntity<?> ae) {
+//        Pageable pageable = new PageRequest(page, size);
+//
+////        Sort sort = new Sort(Sort.Direction.DESC, "id");
+//
+//        return findAll(pageable);
+//    }
 
 //    /***
 //     *

@@ -28,6 +28,9 @@ public class PsonOrgVo extends BaseVo {
      * 组织树根节点
      */
     private Long orgTreeId;
+
+    private String refCode;
+
     /**
      * 组织根节点
      */
@@ -209,6 +212,14 @@ public class PsonOrgVo extends BaseVo {
     private String accout;
     private Long sysUserId;
 
+
+    public String getRefCode() {
+        return refCode;
+    }
+
+    public void setRefCode(String refCode) {
+        this.refCode = refCode;
+    }
 
     public String getTabAccountOrgRelParams() {
         return tabAccountOrgRelParams;

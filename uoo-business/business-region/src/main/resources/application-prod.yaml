@@ -4,7 +4,7 @@ spring:
   application:
     name: business-region
   zipkin:
-    base-url: http://134.96.253.223:8600
+    base-url: http://134.96.217.244:8600
   sleuth:
     sampler:
       percentage: 1.0
@@ -16,10 +16,10 @@ spring:
       username: octopus
       password: octopus
 
-      initial-size: 10
+      initial-size: 60
       min-idle: 4
-      max-active: 30
-      max-wait: -1
+      max-active: 200
+      max-wait: 60000
       time-between-eviction-runs-millis: 600000
       min-evictable-idle-time-millis: 300000
       validation-query: SELECT 1 FROM DUAL

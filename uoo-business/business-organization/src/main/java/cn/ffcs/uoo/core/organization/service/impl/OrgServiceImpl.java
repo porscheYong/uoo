@@ -146,16 +146,16 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
                 }
                 String trees = baseMapper.getAppOrgTrees(vo.getOrgId().toString());
                 vo.setOrgTreeInfos(trees);
-                if(!StrUtil.isNullOrEmpty(orgVo.getOrgTreeId())){
-                    com.baomidou.mybatisplus.mapper.Wrapper orgOrgTreeWrapper = Condition.create()
-                            .eq("ORG_TREE_ID",orgVo.getOrgTreeId())
-                            .eq("ORG_ID",vo.getOrgId())
-                            .eq("STATUS_CD","1000");
-                    List<OrgOrgtreeRel> orgOrgtreeList = orgOrgtreeRelService.selectList(orgOrgTreeWrapper);
-                    if(orgOrgtreeList!=null && orgOrgtreeList.size()>0){
-                        vo.setFlag(1);
-                    }
-                }
+//                if(!StrUtil.isNullOrEmpty(orgVo.getOrgTreeId())){
+//                    com.baomidou.mybatisplus.mapper.Wrapper orgOrgTreeWrapper = Condition.create()
+//                            .eq("ORG_TREE_ID",orgVo.getOrgTreeId())
+//                            .eq("ORG_ID",vo.getOrgId())
+//                            .eq("STATUS_CD","1000");
+//                    List<OrgOrgtreeRel> orgOrgtreeList = orgOrgtreeRelService.selectList(orgOrgTreeWrapper);
+//                    if(orgOrgtreeList!=null && orgOrgtreeList.size()>0){
+//                        vo.setFlag(1);
+//                    }
+//                }
 
             }
         }
