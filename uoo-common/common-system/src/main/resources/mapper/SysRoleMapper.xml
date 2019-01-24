@@ -64,9 +64,9 @@
 		LEFT JOIN (
 		SELECT
 		rpr.ROLE_CODE,
-		wm_concat ( p.PERMISSION_NAME ) AS
+		to_char(wm_concat ( p.PERMISSION_NAME )) AS
 		permissionNames,
-		wm_concat ( p.PERMISSION_CODE ) AS permissionCodes
+		to_char(wm_concat ( p.PERMISSION_CODE )) AS permissionCodes
 		FROM
 		SYS_PERMISSION p
 		LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON
@@ -145,9 +145,9 @@
 		LEFT JOIN (
 		SELECT
 		rpr.ROLE_CODE,
-		wm_concat ( p.PERMISSION_NAME ) AS
+		to_char(wm_concat ( p.PERMISSION_NAME )) AS
 		permissionNames,
-		wm_concat ( p.PERMISSION_CODE ) AS permissionCodes
+		to_char(wm_concat ( p.PERMISSION_CODE )) AS permissionCodes
 		FROM
 		SYS_PERMISSION p
 		LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON
@@ -214,9 +214,9 @@
 		LEFT JOIN (
 		SELECT
 		rpr.ROLE_CODE,
-		wm_concat (
-		p.PERMISSION_NAME ) AS permissionNames,
-		wm_concat ( p.PERMISSION_CODE )
+		to_char(wm_concat (
+		p.PERMISSION_NAME )) AS permissionNames,
+		to_char(wm_concat ( p.PERMISSION_CODE ))
 		AS permissionCodes
 		FROM
 		SYS_PERMISSION p
