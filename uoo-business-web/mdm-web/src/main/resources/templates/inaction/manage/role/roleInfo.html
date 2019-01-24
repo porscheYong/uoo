@@ -42,11 +42,14 @@
           text-overflow: ellipsis;
       }
       .perTab{
-            background: rgb(223,225,229);
-            border-radius: 5px;
-            margin-right: 8px;
-            padding: 2px 8px;
-            color: #5f6c7e;
+            background: #dfe1e5;
+            border-radius: 4px;
+            line-height: 1.5em;
+            color: rgba(0,0,0,.5);
+            padding: 3px 10px;
+            display: inline-block;
+            margin-right: 5px;
+            margin-bottom:4px;
         }
         .icon{
             margin: 14px 3px !important;
@@ -88,11 +91,27 @@
         .row-state{
             width: 10%;
         }
+        #perm_tagsinput{
+            width: 83% !important;
+        }
+        #location_tagsinput,
+        #parRole_tagsinput{
+            width: 64% !important;
+        }
+        #location_tagsinput .tag,
+        #parRole_tagsinput .tag{
+            margin-bottom: 0px !important;
+        }
+        #location,#parRole,#perm{
+            opacity: 0;
+            filter: alpha(opacity=0);
+            position: absolute;
+        }
     </style>
   </head>
 
   <body style="background: #fff;">
-        <a class="BoardTitle Back" href="list.html" style="color:#008aff;margin-bottom:10px;border-bottom: 0px;" onclick="">返回</a>
+        <a class="BoardTitle Back" style="color:#008aff;margin-bottom:10px;border-bottom: 0px;" onclick="backToList()">返回</a>
         <div class="board-title">
             <span class="name ft18" style="margin-top: 15px;">角色详情</span>
         </div>
@@ -108,23 +127,23 @@
                 <div class="tab-pane active" id="tab_content1">
                     <div id="roleInfo" style="margin-top:15px;">
                         <div class="board-title">
-                            <span class="name ft18" style="margin-top: 15px;">标准组织树维护</span>
+                            <span class="name ft18" style="margin-top: 15px;" id="roleNameTitle"></span>
                             <a class="icon icon-edit" id="EditButton" title="信息编辑" onclick="editInfo()" href="javascript:void(0)"></a>
                         </div>
-                        <div class="breadcrumb" style="padding: 0px 15px 0; background: #fff;margin-bottom: 30px !important;">标准组织树维护</div>   <!-- 完整路径-->
+                        <div class="breadcrumb" style="padding: 0px 15px 0; background: #fff;margin-bottom: 30px !important;"></div>   <!-- 完整路径-->
                         <div style="margin-left:11px;">
                             <div class="row" style="margin-bottom: 10px;">
                                 <div class="col-md-4 col-sm-4 col-xs-4" style="margin-bottom:15px;color:#959da9;">
-                                    <span>角色编码：</span><span id="roleNumLable">343334</span>
+                                    <span>角色编码：</span><span id="roleCodeLable"></span>
                                 </div>
                                 <div class="col-md-4 col-sm-4 col-xs-4" style="margin-bottom:15px;color:#959da9;">
-                                    <span>上级角色：</span><span id="supRoleLable">无</span>
+                                    <span>上级角色：</span><span id="parRoleLable"></span>
                                 </div>
                             </div>
     
                             <div class="row" style="margin-bottom: 10px;">
                                 <div class="col-md-4 col-sm-4 col-xs-4" style="margin-bottom:15px;color:#959da9;">
-                                    <span>管理区域：</span><span id="areaLable">杭州</span>
+                                    <span>管理区域：</span><span id="areaLable"></span>
                                 </div>
     
                                 <div class="col-md-4 col-sm-4 col-xs-4" style="margin-bottom:15px;color:#959da9;">
@@ -134,22 +153,21 @@
     
                             <div class="row" style="margin-bottom: 10px;">
                                 <div class="col-md-4 col-sm-4 col-xs-4" style="margin-bottom:15px;color:#959da9;">
-                                    <span>排序号：</span><span id="sortLable">03</span>
+                                    <span>排序号：</span><span id="sortLable"></span>
                                 </div>
                                 <div class="col-md-4 col-sm-4 col-xs-4" style="margin-bottom:15px;color:#959da9;">
-                                    <span>备注：</span><span id="remarkLable">无</span>
+                                    <span>备注：</span><span id="remarkLable"></span>
                                 </div>
                             </div>
                                     
                             <div class="row" style="margin-bottom: 10px;">
-                                <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom:15px;color:#959da9;">
-                                    <span>所含权限：</span>
-                                    <span class="perTab">创建组织</span>
-                                    <span class="perTab">修改组织基础信息</span>
-                                    <span class="perTab">修改组织关系信息</span>
-                                    <span class="perTab">删除组织</span>
-                                    <span class="perTab">查看组织</span>
-                                </div>  
+                                <div class="col-md-2 col-sm-2 col-xs-2" style="width:9%;">
+                                    <span class="permission" style="line-height: 2em;">所含权限</span> 
+                                </div>
+                    
+                                <div class="col-md-10 col-sm-10 col-xs-10">
+                                    <span id="perms"></span>
+                                </div>
                             </div>
                         </div>
                         
@@ -161,74 +179,70 @@
                                 <div class="form-item" style="width: 100%">
                                     <label for="roleName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">角色名称</label>
                                     <input id="roleName" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                            size="40" value="杭州市单位管理员" autocomplete="off">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                <div class="form-item" style="width: 100%">
-                                    <label for="roleNum" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">角色编码</label>
-                                    <input id="roleNum" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                            size="40" value="314445" autocomplete="off">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row" style="margin-bottom: 10px;">
-                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                <div class="form-item" style="width: 100%">
-                                    <label for="supRole" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">上级角色</label>
-                                    <select class="col-md-8 col-sm-8 col-xs-8" id="select1">
-                                        <option>1</option>
-                                        <option>2</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                <div class="form-item" style="width: 100%">
-                                    <label for="area" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">管理区域</label>
-                                    <select  class="col-md-8 col-sm-8 col-xs-8" id="select2">
-                                        <option>杭州</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row" style="margin-bottom: 10px;">
-                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                <div class="form-item" style="width: 100%">
-                                    <label for="permision" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">所含权限</label>
-                                    <input id="permision" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
                                             size="40" value="" autocomplete="off">
                                 </div>
                             </div>
 
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="state" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
-                                    <select  class="col-md-8 col-sm-8 col-xs-8" id="select3">
+                                    <label for="roleCode" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">角色编码</label>
+                                    <input id="roleCode" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                            size="40" value="" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <div class="form-item" style="width: 100%">
+                                    <label for="parRole" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">上级角色</label>
+                                    <input id="parRole" class="ui-input col-md-8 col-sm-8 col-xs-8" onclick="openParRoleDialog()" required readonly>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <div class="form-item" style="width: 100%">
+                                    <label for="location" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">管理区域</label>
+                                    <input id="location" class="ui-input col-md-8 col-sm-8 col-xs-8" onclick="openLocationDialog()" required readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <div class="form-item" style="width: 100%">
+                                    <label for="statusCd" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
+                                    <select  class="col-md-8 col-sm-8 col-xs-8" id="statusCd">
                                         <option>有效</option>
                                         <option>无效</option>
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <div class="form-item" style="width: 100%">
+                                    <label for="sortNum" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">排序号</label>
+                                    <input id="sortNum" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                            size="40" value="03" autocomplete="off">
+                                </div>
+                            </div>
                         </div>
 
                         <div class="row" style="margin-bottom: 10px;">
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="sort" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">排序号</label>
-                                    <input id="sort" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                            size="40" value="03" autocomplete="off">
+                                    <label for="notes" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">备注</label>
+                                    <input id="notes" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                            size="40" value="" autocomplete="off">
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="remark" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">备注</label>
-                                    <input id="remark" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                            size="40" value="" autocomplete="off">
+                                    <label for="perm" class="col-md-2 col-sm-2 col-xs-2" style="padding-right: 20px;line-height: 40px;text-align: right;">所含权限</label>
+                                    <input id="perm" class="ui-input col-md-10 col-sm-10 col-xs-10" style="width:83%;" onclick="openPermDialog()" required readonly></input>
                                 </div>
                             </div>
                         </div>
