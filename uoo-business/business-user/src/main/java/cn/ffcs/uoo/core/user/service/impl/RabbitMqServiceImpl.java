@@ -11,6 +11,9 @@ import com.alibaba.fastjson.JSON;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.logging.Logger;
+
 /**
  * RabbitMqServiceImpl
  * @author wudj
@@ -23,6 +26,8 @@ public class RabbitMqServiceImpl implements RabbitMqService {
     private AmqpTemplate template;
     @Autowired
     private TbAcctService tbAcctService;
+
+    Logger logger = Logger.getLogger(RabbitMqServiceImpl.class.toString());
 
     @Override
     public Object sendMqMsg(String type, String handle, String column, Long value){
@@ -42,6 +47,7 @@ public class RabbitMqServiceImpl implements RabbitMqService {
 
         if(!StrUtil.isNullOrEmpty(mqMessageVo)){
             template.convertAndSend(BaseUnitConstants.MSG_SHARING_QUEUE, JSON.toJSONString(mqMessageVo));
+            logger.info(JSON.toJSONString(mqMessageVo));
         }
         return null;
     }

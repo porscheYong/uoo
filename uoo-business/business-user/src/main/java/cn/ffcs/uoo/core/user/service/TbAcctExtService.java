@@ -34,5 +34,12 @@ public interface TbAcctExtService extends IService<TbAcctExt> {
      */
     public Object delTbAcctExt(Long slaveAcctId, Long userId);
 
+    /**
+     * 扩展属性 验证
+     * @param tbAcctExt
+     * @return
+     */
+    public Object checkAcctExt(TbAcctExt tbAcctExt);
+
 
 }
