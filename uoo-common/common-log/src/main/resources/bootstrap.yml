@@ -1,5 +1,5 @@
 server:
-  port: 13130
+  port:
 spring:
   application:
     name: common-log
@@ -46,8 +46,8 @@ spring:
   rabbitmq:
     host: 134.96.253.221
     port: 5672
-    username: root
-    password: 1NQ6!DyOP4eY$1kelffF
+    username: Sub_Pub_Uoo
+    password: '@rasPwWtiFtmDsZnuT80OnxNBUnZvcpBEkK&g8En'
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
@@ -130,8 +130,8 @@ spring:
   rabbitmq:
     host: 134.96.249.38
     port: 5672
-    username: root
-    password: mvLx#qa3NKxv9OfktHfT
+    username: Sub_Pub_Uoo
+    password: 'FUkCrcs4SIzlnia7OoosTd$rO5$lR8669ISeHjji'
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:oracle:thin:@(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.48)(PORT = 3436))
