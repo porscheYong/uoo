@@ -114,7 +114,7 @@
 		(
 		SELECT TB.*,ROWNUM RN
 		FROM (
-		SELECT
+		SELECT DISTINCT r.ROLE_ID ,
 		r.ROLE_ID AS roleId,
 		r.ROLE_NAME AS roleName,
 		r.ROLE_CODE AS
@@ -136,8 +136,7 @@
 		r.STATUS_DATE
 		AS statusDate,
 		t.*,
-		t2.parentRoleName AS
-		parentRoleName,
+		
 		t3.commonRegionName AS commonRegionName
 		FROM
 		SYS_ROLE r
@@ -162,11 +161,6 @@
 		rpr.ROLE_CODE
 		) t ON t.ROLE_CODE =
 		rpr.ROLE_CODE
-		LEFT JOIN ( SELECT pr.ROLE_CODE AS rc, pr.ROLE_NAME AS
-		parentRoleName FROM
-		SYS_ROLE pr WHERE pr.STATUS_CD = '1000' ) t2 ON
-		t2.rc =
-		r.PARENT_ROLE_CODE
 		LEFT JOIN ( SELECT c.REGION_NAME AS
 		commonRegionName, c.REGION_NBR FROM
 		TB_COMMON_REGION c WHERE
@@ -212,7 +206,7 @@
 	</select>
 	<select id="countList" resultType="Long" parameterType="java.util.HashMap">
 		SELECT
-		count(*)
+		 count(DISTINCT r.ROLE_ID  )
 		FROM
 		SYS_ROLE r
 		LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON
@@ -235,11 +229,7 @@
 		GROUP BY
 		rpr.ROLE_CODE
 		) t ON t.ROLE_CODE = rpr.ROLE_CODE
-		LEFT JOIN ( SELECT
-		pr.ROLE_CODE AS rc, pr.ROLE_NAME AS parentRoleName FROM
-		SYS_ROLE pr
-		WHERE pr.STATUS_CD = '1000' ) t2 ON t2.rc =
-		r.PARENT_ROLE_CODE
+		 
 		LEFT JOIN
 		( SELECT c.REGION_NAME AS commonRegionName, c.REGION_NBR FROM
 		TB_COMMON_REGION c WHERE c.STATUS_CD = '1000' ) t3 ON t3.REGION_NBR =
