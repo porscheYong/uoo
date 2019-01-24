@@ -5,6 +5,7 @@ import cn.ffcs.uoo.core.user.constant.EumUserResponeCode;
 import cn.ffcs.uoo.core.user.dao.TbAcctExtMapper;
 import cn.ffcs.uoo.core.user.entity.TbAcctExt;
 import cn.ffcs.uoo.core.user.service.TbAcctExtService;
+import cn.ffcs.uoo.core.user.util.IdCardVerification;
 import cn.ffcs.uoo.core.user.util.ResultUtils;
 import cn.ffcs.uoo.core.user.util.StrUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -66,5 +67,21 @@ public class TbAcctExtServiceImpl extends ServiceImpl<TbAcctExtMapper, TbAcctExt
             return ResultUtils.success(null);
         }
         return ResultUtils.error(EumUserResponeCode.USER_RESPONSE_ERROR);
+    }
+
+    @Override
+    public Object checkAcctExt(TbAcctExt tbAcctExt){
+        if(!StrUtil.isNullOrEmpty(tbAcctExt)){
+            if(!StrUtil.isNullOrEmpty(tbAcctExt.getWorkEmail()) && !StrUtil.checkEmail(tbAcctExt.getWorkEmail())){
+                return ResultUtils.error(EumUserResponeCode.EMAIL_ERROR);
+            }
+            if(!StrUtil.isNullOrEmpty(tbAcctExt.getContactWay()) && !StrUtil.checkTelephoneNumber(tbAcctExt.getContactWay())) {
+                return ResultUtils.error(EumUserResponeCode.MOBILE_ERROR);
+            }
+            if(!StrUtil.isNullOrEmpty(tbAcctExt.getCertNo()) && "1".equals(tbAcctExt.getCertType()) && !IdCardVerification.idCardValidate(tbAcctExt.getCertNo())) {
+                return ResultUtils.error(EumUserResponeCode.CERT_NO_ERROR);
+            }
+        }
+        return null;
     }
 }

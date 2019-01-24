@@ -40,6 +40,10 @@ public class TbAcctExtController extends BaseController {
     @RequestMapping(value = "/addOrUpdateTbAcctExt", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
     public Object addOrUpdateTbAcctExt(@RequestBody TbAcctExt tbAcctExt){
+        Object obj = tbAcctExtService.checkAcctExt(tbAcctExt);
+        if(!StrUtil.isNullOrEmpty(obj)){
+            return obj;
+        }
         tbAcctExtService.saveTbAcctExt(tbAcctExt);
         rabbitMqService.sendMqMsg("person", "update", "slaveAcctId", tbAcctExt.getSlaveAcctId());
         return ResultUtils.success(null);

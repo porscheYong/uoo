@@ -16,5 +16,5 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
     List<SysRoleDTO> findList(HashMap<String, Object> map);
     Long countList(HashMap<String, Object> map);
     List<TreeNodeVo> treeRole();
-    SysRoleDTO selectOne(Long ROLE_ID);
+    List<SysRoleDTO> selectOne(Long ROLE_ID);
 }
