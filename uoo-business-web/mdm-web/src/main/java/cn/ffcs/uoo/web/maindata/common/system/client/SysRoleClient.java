@@ -67,6 +67,6 @@ public interface SysRoleClient {
     @GetMapping("/system/sysRole/get/{id}")
     public ResponseResult<SysRoleDTO> get(@PathVariable(value="id" ,required=true) Long id);
     @GetMapping("/system/sysRole/treeRole")
-    public ResponseResult<List<TreeNodeVo>> treeRole(@RequestParam("parentRoleCode") String parentRoleCode);
+    public ResponseResult<List<TreeNodeVo>> treeRole(@RequestParam("id") Long id);
     
 }

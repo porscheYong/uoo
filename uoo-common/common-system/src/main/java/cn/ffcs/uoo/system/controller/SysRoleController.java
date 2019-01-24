@@ -12,6 +12,7 @@ package cn.ffcs.uoo.system.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
@@ -83,23 +85,26 @@ public class SysRoleController {
     })
     @UooLog(key="treeRole",value="treeRole")
     @GetMapping("/treeRole")
-    public ResponseResult<List<TreeNodeVo>> treeRole( String parentRoleCode){
-        //Wrapper<SysRole> wrapper=Condition.create().eq("STATUS_CD", StatusCD.VALID);
-        /*if("null".equals(parentRoleCode)||StringUtils.isBlank(parentRoleCode)){
+    public ResponseResult<List<TreeNodeVo>> treeRole( @RequestParam("id") Long id){
+        Wrapper<SysRole> wrapper=Condition.create().eq("STATUS_CD", StatusCD.VALID);
+        if(id==0){
             wrapper.eq("STATUS_CD", StatusCD.VALID).isNull("PARENT_ROLE_CODE");
         }else{
-            wrapper.eq("STATUS_CD", StatusCD.VALID).eq("PARENT_ROLE_CODE", parentRoleCode);
-        }*/
-        List<TreeNodeVo> selectList = sysRoleService.treeRole();
-        if(selectList!=null)
-        for (TreeNodeVo sysRole : selectList) {
-            for (TreeNodeVo sr : selectList) {
-                if(sysRole.getId().equals(sr.getPid())){
-                    sysRole.setParent(true);
-                    break;
-                }
-            }
+            SysRole selectById = sysRoleService.selectById(id);
+            wrapper.eq("STATUS_CD", StatusCD.VALID).eq("PARENT_ROLE_CODE", selectById.getRoleCode());
         }
+        List<TreeNodeVo> selectList = new LinkedList<>();
+        List<SysRole> list = sysRoleService.selectList(wrapper);
+        for (SysRole sysRole : list) {
+            TreeNodeVo vo=new TreeNodeVo();
+            vo.setId(sysRole.getRoleId().toString());
+            vo.setName(sysRole.getRoleName());
+            vo.setPid(id.toString());
+            vo.setExtField1(sysRole.getRoleCode());
+            vo.setParent(sysRoleService.selectCount(Condition.create().eq("PARENT_ROLE_CODE", sysRole.getRoleCode()).eq("STATUS_CD", StatusCD.VALID))>0);
+            selectList.add(vo);
+        }
+         
         return ResponseResult.createSuccessResult(selectList, "");
     }
     @ApiOperation(value = "获取分页列表", notes = "获取分页列表")
