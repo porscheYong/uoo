@@ -88,8 +88,8 @@ spring:
   #      aop-patterns: cn.ffcs.uoo.**.service.*
 
   rabbitmq:
-    username: root
-    password: 123
+    username: Sub_Pub_Uoo
+    password: '@rasPwWtiFtmDsZnuT80OnxNBUnZvcpBEkK&g8En'
     host: 134.96.253.221,134.96.253.222,134.96.253.223
     port: 5672
     listener:

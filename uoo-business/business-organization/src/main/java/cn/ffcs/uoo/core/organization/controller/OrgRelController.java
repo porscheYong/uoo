@@ -346,6 +346,15 @@ public class OrgRelController extends BaseController {
         }
 
         //组织组织树关系
+        // TODO: 2019/1/23
+        String fullBizName = "";
+        fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),"");
+        fullBizName+=StrUtil.strnull(o.getOrgName());
+        String fullBizNameId = "";
+        fullBizNameId = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),",");
+        fullBizNameId+=","+o.getOrgId();
+
+
         Long orgOrgtreeRefId = orgOrgtreeRelService.getId();
         OrgOrgtreeRel orgOrgtreeRef = new OrgOrgtreeRel();
         orgOrgtreeRef.setOrgOrgtreeId(orgOrgtreeRefId);
@@ -353,6 +362,10 @@ public class OrgRelController extends BaseController {
         orgOrgtreeRef.setOrgTreeId(orgTree.getOrgTreeId());
         orgOrgtreeRef.setStatusCd("1000");
         orgOrgtreeRef.setCreateUser(org.getUpdateUser());
+        // TODO: 2019/1/23
+        orgOrgtreeRef.setOrgBizFullName(fullBizName);
+        orgOrgtreeRef.setOrgBizFullId(fullBizNameId);
+
         orgOrgtreeRelService.add(orgOrgtreeRef);
         modifyHistoryService.addModifyHistory(null,orgOrgtreeRef,org.getUpdateUser(),batchNumber);
 
