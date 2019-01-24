@@ -59,6 +59,9 @@ public class CpcChannelServiceImpl implements CpcChannelService {
     @Resource
     private AcctCrossRelMapper acctCrossRelMapper;
 
+    @Autowired
+    private SystemConstant systemConstant;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -239,7 +242,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                 //插入TB_SLAVE_ACCT
                                 if(StringUtils.isNotEmpty((String) staff.get("ACCOUNT"))){
                                     TbSlaveAcct tbSlaveAcct = new TbSlaveAcct(String.valueOf(staff.get("ACCOUNT")), "1314",
-                                        "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", SystemConstant.CPC_SYSTEM_ID,
+                                        "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", systemConstant.getCpcSystemId(),
                                         "1000", DateUtils.parseDate(DateUtils.getDateTime()), null,
                                         tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
                                     tbSlaveAcctMapper.insert(tbSlaveAcct);
@@ -306,10 +309,10 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                         DateUtils.parseDate(DateUtils.getDateTime()));
                                 acctCrossRelMapper.insert(acctCrossRel);
                                 //插入TB_SLAVE_ACCT。判断该账号是否存在。
-                                TbSlaveAcct tbSlaveAcct = tbSlaveAcctMapper.selectBySlaveAcctAndAcctId(String.valueOf(staff.get("ACCOUNT")), tbAcct.getAcctId(),SystemConstant.CPC_SYSTEM_ID);
+                                TbSlaveAcct tbSlaveAcct = tbSlaveAcctMapper.selectBySlaveAcctAndAcctId(String.valueOf(staff.get("ACCOUNT")), tbAcct.getAcctId(),systemConstant.getCpcSystemId());
                                 if (staff.get("ACCOUNT") != null &&  tbSlaveAcct == null) {
                                      tbSlaveAcct = new TbSlaveAcct(String.valueOf(staff.get("ACCOUNT")), "1314",
-                                            "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", SystemConstant.CPC_SYSTEM_ID,
+                                            "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", systemConstant.getCpcSystemId(),
                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), null,
                                             tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
                                     tbSlaveAcctMapper.insert(tbSlaveAcct);
@@ -345,7 +348,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                     .eq("ACCT_ID",tbAcct.getAcctId())
                                     .eq("STATUS_CD","1000")
                                     .eq("SLAVE_ACCT_TYPE","1")
-                                    .eq("RESOURCE_OBJ_ID",SystemConstant.CPC_SYSTEM_ID));
+                                    .eq("RESOURCE_OBJ_ID",systemConstant.getCpcSystemId()));
                             
                             if(slaveAcctList != null){
                                 for (TbSlaveAcct tbSlaveAcct : slaveAcctList) {
@@ -353,7 +356,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                     send(msg);
                                 }
                             }
-                            tbSlaveAcctMapper.deleteByAcctId(tbAcct.getAcctId(),SystemConstant.CPC_SYSTEM_ID);
+                            tbSlaveAcctMapper.deleteByAcctId(tbAcct.getAcctId(),systemConstant.getCpcSystemId());
                         }
                     }
                     ;
@@ -657,7 +660,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             accountOrgRelMapper.insert(accountOrgRel);
             // 更新从账号
             TbSlaveAcct tbSlaveAcct = new TbSlaveAcct();
-            tbSlaveAcct.setResourceObjId(Long.valueOf(SystemConstant.CPC_SYSTEM_ID));
+            tbSlaveAcct.setResourceObjId(Long.valueOf(systemConstant.getCpcSystemId()));
             tbSlaveAcct.setAcctId(accountOrgRel.getAcctId());
             tbSlaveAcct.setStatusCd(HandleChannelConstant.VALID_STATE);
             tbSlaveAcct = tbSlaveAcctMapper.selectOne(tbSlaveAcct);
