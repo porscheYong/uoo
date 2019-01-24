@@ -47,7 +47,7 @@ spring:
     host: 134.96.253.221
     port: 5672
     username: root
-    password: 123
+    password: 1NQ6!DyOP4eY$1kelffF
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
@@ -131,7 +131,7 @@ spring:
     host: 134.96.249.38
     port: 5672
     username: root
-    password: 123
+    password: mvLx#qa3NKxv9OfktHfT
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:oracle:thin:@(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.48)(PORT = 3436))
