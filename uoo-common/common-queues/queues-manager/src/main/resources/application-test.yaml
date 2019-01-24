@@ -89,7 +89,7 @@ spring:
 
   rabbitmq:
     username: Sub_Pub_Uoo
-    password: @rasPwWtiFtmDsZnuT80OnxNBUnZvcpBEkK&g8En
+    password: '@rasPwWtiFtmDsZnuT80OnxNBUnZvcpBEkK&g8En'
     host: 134.96.253.221,134.96.253.222,134.96.253.223
 
 mybatis-plus:
