@@ -59,6 +59,8 @@ public class TbOrgVo {
 
     private Date statusDate;
 
+    private String orgMartCode;
+
     //组织称谓
     private String orgBizName;
 
@@ -412,5 +414,13 @@ public class TbOrgVo {
 
     public void setExtendInfo(List<Map<String, Object>> extendInfo) {
         this.extendInfo = extendInfo;
+    }
+
+    public String getOrgMartCode() {
+        return orgMartCode;
+    }
+
+    public void setOrgMartCode(String orgMartCode) {
+        this.orgMartCode = orgMartCode;
     }
 }

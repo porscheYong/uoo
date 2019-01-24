@@ -120,10 +120,6 @@ function openTreeById (sId, id) {
     var tId = 'standardTree_' + id;
     var sId = 'standardTree_' + sId;
     var zTree = $.fn.zTree.getZTreeObj("businessTree");
-    var selectNode = zTree.getNodeByTId(sId); //获取当前选中的节点并取消选择状态
-    if (!selectNode.open) {
-        zTree.expandNode(selectNode, true);
-    }
     var node = zTree.getNodeByTId(tId);
     zTree.selectNode(node);
     $('.curSelectedNode').trigger('click');
@@ -134,8 +130,10 @@ function changeNodeName(orgId, name) {
     var tId = 'businessTree_' + orgId;
     var zTree = $.fn.zTree.getZTreeObj("businessTree");
     var treeNode = zTree.getNodeByTId(tId);
-    treeNode.name = name;
-    $('#businessTree_' + orgId + '_span').html(name);
+    if (treeNode) {
+        treeNode.name = name;
+        $('#businessTree_' + orgId + '_span').html(name);
+    }
 }
 
 // 添加子节点
@@ -152,14 +150,18 @@ function moveNode(pid, orgId, index) {
         var tree = $.fn.zTree.getZTreeObj('businessTree');
         var pNode = tree.getNodeByParam('id', pid);
         var node = tree.getNodeByParam('id', orgId);
-        var childNode = pNode.children;
-        childNode.splice($.inArray(node, childNode), 1);
-        var targetNode = childNode[index - 1];
-        if (childNode.length > 0) {
-            if (targetNode)
-                tree.moveNode(targetNode, node, 'prev');
-            else
-                tree.moveNode(childNode[childNode.length - 1], node, 'next'); //移动到最后一个元素
+        if(pNode){
+            var childNode = pNode.children;
+            if (childNode && childNode.length > 0) {
+                childNode.splice($.inArray(node, childNode), 1);
+                var targetNode = childNode[index - 1];
+                if (childNode.length > 0) {
+                    if (targetNode)
+                        tree.moveNode(targetNode, node, 'prev');
+                    else
+                        tree.moveNode(childNode[childNode.length - 1], node, 'next'); //移动到最后一个元素
+                }
+            }
         }
     }
 }

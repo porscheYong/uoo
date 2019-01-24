@@ -1,6 +1,9 @@
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
+var ppid = getQueryString('ppid');
 var orgName = getQueryString('name');
+var pName = getQueryString('pName');
+var infoFlag = ~~getQueryString('infoFlag');
 var locationList;
 var orgTypeList;
 var positionList;
@@ -153,7 +156,7 @@ function getOrg (orgId) {
         orgId: orgId
     }, function (data) {
         $('#orgName').html(data.orgName);
-        $('#orgCode').html(data.orgCode);
+        $('#orgId').html(data.orgId);
         $('#shortName').html(data.shortName);
         $('#orgBizFullName').html(data.orgBizFullName);
         $('#orgMartCode ').html(data.orgMartCode);
@@ -203,7 +206,7 @@ function getOrgRel (orgId) {
 }
 
 function orgEdit () {
-    var url = 'edit.html?id=' + orgId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    var url = 'edit.html?id=' + orgId + '&pid=' + pid + '&ppid=' + ppid + '&name=' + encodeURI(orgName) + '&infoFlag=' + infoFlag + '&pName=' + encodeURI(pName);
     $('#editBtn').attr('href', url);
 }
 

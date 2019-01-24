@@ -3,6 +3,7 @@ package cn.ffcs.uoo.web.maindata.user.controller;
 import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
 import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.personnel.utils.SysUserInfo;
+import cn.ffcs.uoo.web.maindata.user.dto.TbAcctExt;
 import cn.ffcs.uoo.web.maindata.user.service.SlaveAcctService;
 import cn.ffcs.uoo.web.maindata.user.vo.EditFormSlaveAcctVo;
 import io.swagger.annotations.Api;
@@ -53,5 +54,31 @@ public class SlaveAcctController {
     public Object updateTbSlaveAcct(@RequestBody EditFormSlaveAcctVo editFormSlaveAcctVo){
         editFormSlaveAcctVo.setUserId(SysUserInfo.getUserId());
         return slaveAcctService.updateTbSlaveAcct(editFormSlaveAcctVo);
+    }
+
+    @ApiOperation(value = "新增从账号扩展信息", notes = "新增从账号扩展信息")
+    @ApiImplicitParam(name = "tbAcctExt", value = "从账号扩展信息", required = true, dataType = "TbAcctExt")
+    @RequestMapping(value = "/addTbAcctExt", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.ADD, module="账号管理",methods="addTbAcctExt",desc="新增从账号扩展信息")
+    public Object addTbAcctExt(@RequestBody TbAcctExt tbAcctExt){
+        return slaveAcctService.addOrUpdateTbAcctExt(tbAcctExt);
+    }
+
+    @ApiOperation(value = "更新从账号扩展信息", notes = "更新从账号扩展信息")
+    @ApiImplicitParam(name = "tbAcctExt", value = "从账号扩展信息", required = true, dataType = "TbAcctExt")
+    @RequestMapping(value = "/updateTbAcctExt", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.UPDATE, module="账号管理",methods="addTbAcctExt",desc="更新从账号扩展信息")
+    public Object updateTbAcctExt(@RequestBody TbAcctExt tbAcctExt){
+        tbAcctExt.setUpdateUser(SysUserInfo.getUserId());
+        return slaveAcctService.addOrUpdateTbAcctExt(tbAcctExt);
+    }
+
+    @ApiOperation(value = "删除从账号扩展信息", notes = "删除从账号扩展信息")
+    @ApiImplicitParam(name = "tbAcctExt", value = "从账号扩展信息", required = true, dataType = "TbAcctExt")
+    @RequestMapping(value = "/delTbAcctExt", method = RequestMethod.DELETE)
+    @OperateLog(type= OperateType.DELETE, module="账号管理",methods="addTbAcctExt",desc="删除从账号扩展信息")
+    public Object delTbAcctExt(@RequestBody TbAcctExt tbAcctExt){
+        tbAcctExt.setUpdateUser(SysUserInfo.getUserId());
+        return slaveAcctService.delTbAcctExt(tbAcctExt);
     }
 }

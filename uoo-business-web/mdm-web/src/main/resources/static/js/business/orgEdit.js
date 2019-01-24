@@ -1,9 +1,13 @@
 var orgId = getQueryString('id');
 var orgTreeId = getQueryString('orgTreeId');
 var pid = getQueryString('pid');
+var ppid = getQueryString('ppid');
 var orgName = getQueryString('name');
+var pName = getQueryString('pName');
 var refCode = getQueryString('refCode');
+var infoFlag = ~~getQueryString('infoFlag');
 var areaCodeId = ''; //区号ID
+var orgCode = ''; //组织编码
 var locationList = [];
 var orgTypeList;
 var orgMartCode; //划小组织编码
@@ -41,27 +45,17 @@ var contractTypeData = window.top.dictionaryData.contractType();
 $('.orgName').html(orgName);
 parent.getOrgExtInfo();
 
-// lulu ui select插件
-seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-    $('select').selectMatch();
-});
-
-seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
-    var orgEditForm = $('#orgEditForm');
-    formValidate = new Validate(orgEditForm);
-    formValidate.immediate();
-    orgEditForm.find(':input').each(function () {
-        $(this).hover(function () {
-            // if (!blurForm.data('immediate')) {
-            //     $.validate.focusable = 0;
-            formValidate.isPass($(this));
-            // }
-        });
+var orgEditForm = $('#orgEditForm');
+formValidate = new Validate(orgEditForm);
+formValidate.immediate();
+orgEditForm.find(':input').each(function () {
+    $(this).hover(function () {
+        // if (!blurForm.data('immediate')) {
+        //     $.validate.focusable = 0;
+        formValidate.isPass($(this));
+        // }
     });
-    // $('#postList').hover(function () {
-    //     formValidate.isPass($(this));
-    // })
-})
+});
 
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
@@ -640,7 +634,7 @@ function getContractType (type) {
             }
         }
     }
-    var option = '<option></option>';
+    var option = '<option value="">--请选择--</option>';
     for (var i = 0; i < contractTypeData.length; i++) {
         var select = type === contractTypeData[i].itemValue? 'selected' : '';
         option += "<option value='" + contractTypeData[i].itemValue + "' " + select + ">" + contractTypeData[i].itemCnname +"</option>";
@@ -656,13 +650,14 @@ function getOrg (orgId) {
         orgId: orgId
     }, function (data) {
         $('#orgName').val(data.orgName).focus();
-        $('#orgCode').val(data.orgCode);
+        $('#orgId').val(data.orgId);
         $('#shortName').val(data.shortName);
         $('#orgBizName').val(data.orgBizName);
         $('#orgBizFullName').val(data.orgBizFullName);
         $('#orgBizFullName').attr('title', data.orgBizFullName);
         $('#orgNameEn').val(data.orgNameEn);
         orgMartCode = data.orgMartCode;
+        orgCode = data.orgCode;
         laydate.render({
           elem: '#foundingTime',
           value: data.foundingTime
@@ -850,6 +845,7 @@ function updateOrg () {
       orgId: orgId,
       supOrgId: pid,
       orgName: orgName,
+      orgCode: orgCode,
       shortName: shortName,
       orgBizName: orgBizName,
       orgBizFullName: orgBizFullName,
@@ -875,7 +871,10 @@ function updateOrg () {
   }), function () {
       parent.changeNodeName(orgId, orgName);
       parent.moveNode(pid, orgId, sort);
-      window.location.replace("list.html?id=" + orgId + '&orgTreeId=' + orgTreeId + "&refCode=" + refCode + '&pid=' + pid + "&name=" + encodeURI(orgName));
+      if (infoFlag)
+          window.location.replace("list.html?id=" + pid + '&orgTreeId=' + orgTreeId + "&refCode=" + refCode + '&pid=' + ppid + "&name=" + encodeURI(pName));
+      else
+          window.location.replace("list.html?id=" + orgId + '&orgTreeId=' + orgTreeId + "&refCode=" + refCode + '&pid=' + pid + "&name=" + encodeURI(orgName));
       loading.screenMaskDisable('container');
       toastr.success('更新成功！');
   }, function () {
@@ -898,7 +897,10 @@ function deleteOrg () {
             supOrgId: pid
         }, function () {
             parent.deleteNode(orgId);
-            parent.selectRootNode();
+            if (infoFlag)
+                parent.openTreeById(null, ppid);
+            else
+                parent.openTreeById(null, pid);
             loading.screenMaskDisable('container');
             toastr.success('删除成功！');
         }, function (err) {
@@ -912,7 +914,7 @@ function deleteOrg () {
 
 // 取消
 function cancel () {
-    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&name=" + encodeURI(orgName);
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&refCode=" + refCode + '&pid=' + pid + "&name=" + encodeURI(orgName);
     window.location.href = url;
 }
 

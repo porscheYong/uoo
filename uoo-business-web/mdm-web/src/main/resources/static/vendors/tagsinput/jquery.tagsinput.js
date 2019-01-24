@@ -210,10 +210,11 @@
             $(data.holder).css('width',settings.width);
             $(data.holder).css('min-height',settings.minHeight);
             $(data.holder).css('height',settings.height);
-            var a = $(data.real_input).val()
-            if ($(data.real_input).val()!='') {
-                $.fn.tagsInput.importTags($(data.real_input),$(data.real_input).val());
-            }
+            // var a = $(data.real_input).val()
+            // if ($(data.real_input).val()!='') {
+            //     $.fn.tagsInput.importTags($(data.real_input),$(data.real_input).val());
+            // }
+            $.fn.tagsInput.importTags($(data.real_input),[]);
 
             if (settings.unique && $(data.real_input).val() == '') {
                 $(data.holder).addClass('not_valid');

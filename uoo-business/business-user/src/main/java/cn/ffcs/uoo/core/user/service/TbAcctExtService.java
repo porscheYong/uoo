@@ -24,7 +24,7 @@ public interface TbAcctExtService extends IService<TbAcctExt> {
      * @param tbAcctExt
      * @return
      */
-    public Object saveTbAcctExt(TbAcctExt tbAcctExt);
+    public TbAcctExt saveTbAcctExt(TbAcctExt tbAcctExt);
 
     /**
      * 根据slaveAcctId 删除 扩展属性
@@ -33,4 +33,6 @@ public interface TbAcctExtService extends IService<TbAcctExt> {
      * @return
      */
     public Object delTbAcctExt(Long slaveAcctId, Long userId);
+
+
 }

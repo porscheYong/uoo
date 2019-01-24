@@ -1,11 +1,20 @@
 package cn.ffcs.uoo.core.user.controller;
 
 
+import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.controller.BaseController;
+import cn.ffcs.uoo.core.user.constant.EumUserResponeCode;
+import cn.ffcs.uoo.core.user.entity.TbAcctExt;
+import cn.ffcs.uoo.core.user.service.RabbitMqService;
+import cn.ffcs.uoo.core.user.service.TbAcctExtService;
+import cn.ffcs.uoo.core.user.util.ResultUtils;
+import cn.ffcs.uoo.core.user.util.StrUtil;
+import cn.ffcs.uoo.core.user.vo.EditFormSlaveAcctVo;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -21,20 +30,31 @@ import org.springframework.web.client.RestTemplate;
 public class TbAcctExtController extends BaseController {
 
     @Autowired
-    private RestTemplate restTemplate;
+    private TbAcctExtService tbAcctExtService;
+    @Autowired
+    private RabbitMqService rabbitMqService;
 
-    @GetMapping("/msg")
-    public String getMsg(){
-        return "sdfsdfsdfsdfs";
+    @ApiOperation(value = "新增修改从账号扩展信息", notes = "新增修改从账号扩展信息")
+    @ApiImplicitParam(name = "tbAcctExt", value = "从账号扩展信息", required = true, dataType = "TbAcctExt")
+    @UooLog(value = "新增修改从账号扩展信息", key = "addOrUpdateTbAcctExt")
+    @RequestMapping(value = "/addOrUpdateTbAcctExt", method = RequestMethod.POST)
+    @Transactional(rollbackFor = Exception.class)
+    public Object addOrUpdateTbAcctExt(@RequestBody TbAcctExt tbAcctExt){
+        tbAcctExtService.saveTbAcctExt(tbAcctExt);
+        rabbitMqService.sendMqMsg("person", "update", "slaveAcctId", tbAcctExt.getSlaveAcctId());
+        return ResultUtils.success(null);
     }
 
-    @GetMapping("/personnel")
-    public Object getPersonnel(){
-        return restTemplate.getForObject(
-                "http://PERSONNEL-SERVICE/personnel/getPage/pageNo=1&pageSize=20",
-                Object.class
-                );
+    @ApiOperation(value = "删除从账号扩展信息", notes = "删除从账号扩展信息")
+    @ApiImplicitParam(name = "tbAcctExt", value = "从账号扩展信息", required = true, dataType = "TbAcctExt")
+    @UooLog(value = "删除从账号扩展信息", key = "delTbAcctExt")
+    @RequestMapping(value = "/delTbAcctExt", method = RequestMethod.DELETE)
+    public Object delTbAcctExt(@RequestBody TbAcctExt tbAcctExt){
+        tbAcctExtService.delTbAcctExt(tbAcctExt.getSlaveAcctId(), tbAcctExt.getUpdateUser());
+        rabbitMqService.sendMqMsg("person", "update", "slaveAcctId", tbAcctExt.getSlaveAcctId());
+        return ResultUtils.success(null);
     }
+
 
 }
 

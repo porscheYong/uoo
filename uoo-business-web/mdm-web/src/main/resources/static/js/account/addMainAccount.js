@@ -20,6 +20,7 @@ var toastr = window.top.toastr;
 var cerTypeList = window.top.dictionaryData.certType();
 var statusCdList = window.top.dictionaryData.statusCd();
 var relTypeName = window.top.relTypeName;
+var loading = parent.loading;
 
 window.localStorage.setItem('userRoleList',JSON.stringify(''));
 
@@ -51,9 +52,9 @@ function getAcctUser(personnelId){     //获取人员信息(新增)
   }, function (data) {
       //新增
       initAddUserInfo(data);
-      addAcctAutoSelectOrg(orgId,orgFullName,orgName,"30");
+      addAcctAutoSelectOrg(orgId,orgFullName,orgName,"99");
   }, function (err) {
-
+      loading.screenMaskDisable('container');
   })
 }
 
@@ -65,53 +66,6 @@ function noSelectUserInfo(){     //控制人员信息不可选
    $("#cerType").attr("disabled","disabled");
    $("#cerNo").attr("disabled","disabled");
 }
-
-// function initOrgTable(results){         //主账号组织数据表格
-//     var num =1;
-//     orgTable = $("#orgTable").DataTable({
-//     'data': results,
-//     'destroy':true,
-//     'searching': false,
-//     'autoWidth': false,
-//     'ordering': true,
-//     'paging': false,
-//     'info': false,
-//     "scrollY": "375px",
-//     'scrollCollapse': true,
-//     'columns': [
-//         { 'data': "id", 'title': '序号', 'className': 'row-id' ,
-//         'render': function (data, type, row, meta) {
-//           return num++;
-//       }
-//       },
-//         { 'data': "orgTreeName", 'title': '组织树', 'className': 'row-orgTree'},
-//         { 'data': "fullName", 'title': '组织名称', 'className': 'row-fullName' ,
-//         'render': function (data, type, row, meta) {
-//           if(row.fullName != null){
-//               return row.fullName;
-//             }else{
-//               return "";
-//           }
-//         }
-//       },
-//       {'data': "orgId", 'title': '操作', 'className': 'row-delete' ,
-//       'render': function (data, type, row, meta) {
-//               return "<a class='Icon IconDel' href='javascript:void(0);' id='delOrgBtn' title='删除' onclick='deleteOrg("+num+","+row.orgId+")'></a>"; 
-//       }
-//     },
-//     { 'data': "orgId", 'title': 'orgId', 'className': 'row-orgId'}
-//     ],
-//     'language': {
-//         'emptyTable': '没有数据',  
-//         'loadingRecords': '加载中...',  
-//         'processing': '查询中...',  
-//         'search': '检索:',  
-//         'lengthMenu': ' _MENU_ ',  
-//         'zeroRecords': '没有数据', 
-//         'infoEmpty': '没有数据'
-//     }
-//   });
-// }
 
 //展示主账号组织信息
 function setAcctInfoTables(){
@@ -164,8 +118,12 @@ function initAddUserInfo(results){    //初始化用户信息(新增)
 }
 
 function addTbAcct(){         //新增
-  if(!formValidate.isAllPass())
+  loading.screenMaskEnable('container');
+  if(!formValidate.isAllPass()){
+    loading.screenMaskDisable('container');
     return;
+  }
+    
   if(roleList.length == 0){
     roleList = userRoleList;
   }
@@ -189,13 +147,16 @@ function addTbAcct(){         //新增
     dataType:"JSON",
     success: function (data) { //返回json结果
       if(data.state === 1000){
+        // loading.screenMaskDisable('container');
         toastr.success(data.message);
         submitSuccess(personnelId);
       }else{
+        loading.screenMaskDisable('container');
         toastr.error(data.message);
       }
     },
     error:function(err){
+      loading.screenMaskDisable('container');
       toastr.error('新增失败');
     }
   });
@@ -217,7 +178,7 @@ function openOrgDialog() {
       shade: 0.8,
       area: ['40%', '80%'],
       maxmin: true,
-      content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType=30',
+      content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType=99',
       btn: ['确认', '取消'],
       yes: function(index, layero){
           //获取layer iframe对象
@@ -284,12 +245,12 @@ function setDate(){    //设置时间
 
 //删除组织
 function deleteOrg(num){
-    if(orgNum == 1){
-      toastr.error("无法删除所有组织");
-    }else{
-      orgNum--;
-      addOrgList.splice(num,1);
-    }
+    // if(orgNum == 1){
+    //   toastr.error("无法删除所有组织");
+    // }else{
+    orgNum--;
+    addOrgList.splice(num,1);
+    // }
     setAcctInfoTables();
 }
 
@@ -342,9 +303,10 @@ function submitSuccess(personnelId){
       url = "editMainAccount.html?acctId="+ data.tbAcct.acctId +"&orgFullName=" + encodeURI(orgFullName) + "&orgTreeId=" + orgTreeId + 
               "&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&hType=mh" + "&orgTreeName="+encodeURI(orgTreeName)+
               "&curOrgId="+curOrgId+"&curOrgTreeId="+curOrgTreeId;
+      loading.screenMaskDisable('container');
       window.location.href = url;
     }, function (err) {
-  
+      loading.screenMaskDisable('container');
     })
 }
 

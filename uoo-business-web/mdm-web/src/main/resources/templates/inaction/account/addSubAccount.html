@@ -44,9 +44,6 @@
         .row-delete{
             width: 28px !important;
         }
-        #mobileLable{
-            line-height: 21px !important;
-        }
         .tcenter{
             text-align: left !important;
             /* margin-left: -55px !important; */
@@ -247,74 +244,55 @@
                 <div style="display: block;margin-bottom: 30px;margin-top: 60px;">
                     <div class="board-title">
                         <span class="name ft18">扩展信息</span>
-                        <input type="checkbox" id="extCheckBox" name="checkbox" onclick="extInfoFade()" value= "0">
-                        <label for="extCheckBox" class="ui-checkbox"></label>
+                        <!-- <input type="checkbox" id="extCheckBox" name="checkbox" onclick="extInfoFade()" value= "0">
+                        <label for="extCheckBox" class="ui-checkbox"></label> -->
                     </div>
                 </div>
                 
-                <div id="extInfo" style="display:none;border-style: solid;border-radius: 8px;border-width: 1px;border-color: #b6b6b6;">
-                    <div class="row" style="margin-bottom: 10px;margin-left:25px;margin-top:25px;">
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                            <div class="form-item" style="width: 100%">
-                                <label for="extName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">姓名</label>
-                                <input id="extName" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row" style="margin-bottom: 10px;margin-left:25px;">
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                            <div class="form-item" style="width: 100%">
-                                <label for="extEmail" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">工作邮箱</label>
-                                <input id="extEmail" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
-                            </div>
-                        </div>
-    
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                            <div class="form-item" style="width: 100%">
-                                <label for="extMobile" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;" id="mobileLable">接收短信手机号码</label>
-                                <input id="extMobile" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row" style="margin-bottom: 10px;margin-left:25px;">
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                            <div class="form-item" style="width: 100%">
-                                <label for="extCerType" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align:right;">证件类型</label>
-                                <select  class="col-md-8 col-sm-8 col-xs-8" id='extCerType'>
-                                    <!-- <option>身份证</option> -->
-                                </select>
-                            </div>
-                        </div>
-    
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                            <div class="form-item" style="width: 100%">
-                                <label for="extCerNo" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                                <input id="extCerNo" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
-                            </div>
+                <!-- <div id="extInfo" style="display:none;border-style: solid;border-radius: 8px;border-width: 1px;border-color: #b6b6b6;"> -->
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="form-item" style="width: 100%">
+                            <label for="extName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">姓名</label>
+                            <input id="extName" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
                         </div>
                     </div>
                 </div>
 
-                <!-- 模态框（Modal） -->
-                <!-- <div class="modal" id="slaveOrgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header" style="border-radius:6px;">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                    &times;
-                                </button>
-                                <span id="selectTile">选择组织</span>
-                            </div>
-
-                            <div id="table-container" style="width: 100%;font-size: 14px; overflow: hidden;">
-                                <table id="acctOrgTable" class="stripe" width="100%"></table>
-                            </div>
-
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="form-item" style="width: 100%">
+                            <label for="extEmail" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">工作邮箱</label>
+                            <input id="extEmail" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
                         </div>
                     </div>
-                </div> -->
+
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="form-item" style="width: 100%">
+                            <label for="extMobile" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;" id="mobileLable">接收短信号码</label>
+                            <input id="extMobile" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="form-item" style="width: 100%">
+                            <label for="extCerType" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align:right;">证件类型</label>
+                            <select  class="col-md-8 col-sm-8 col-xs-8" id='extCerType'>
+                                <!-- <option>身份证</option> -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="form-item" style="width: 100%">
+                            <label for="extCerNo" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                            <input id="extCerNo" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+                <!-- </div> -->
             </form>
         </div>
     </div>
