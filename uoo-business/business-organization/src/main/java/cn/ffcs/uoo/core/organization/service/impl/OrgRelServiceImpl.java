@@ -246,6 +246,7 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
     public List<OrgVo> getFullOrgList(String orgTreeId,String orgId){
         return orgMapper.getFullOrgList(orgTreeId,orgId);
     }
+    
 
     /**
      * 查询树对应的组织关系

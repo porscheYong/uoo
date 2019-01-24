@@ -1,4 +1,4 @@
-package cn.ffcs.common.gol.util;
+package xyz.wongs.common.persistence.jpa.util;
 
 
 import cn.ffcs.uoo.base.common.tool.util.DateUtils;
@@ -130,5 +130,26 @@ public class MethodUtil {
             e.printStackTrace();
         }
         return 0;
+    }
+
+
+    public static void getField(Object bean,List<String> retFields){
+        try {
+            Class<?> cls = bean.getClass();
+            Field[] fields = cls.getDeclaredFields();
+            Method[] methods = cls.getDeclaredMethods();
+            for (int i=0;i<fields.length;i++) {
+                String fieldGetName = StringUtils.parGetName(fields[i].getName());
+                //校验是否有GETTER、SETTER的方法
+                if (!StringUtils.checkGetMet(methods, fieldGetName)) {
+                    continue;
+                }
+                retFields.add(fields[i].getName());
+            }
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -88,6 +88,12 @@
             <artifactId>java-object-diff</artifactId>
             <version>0.95</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.7</version>
+            <scope>compile</scope>
+        </dependency>
         <!--<dependency>-->
             <!--<groupId>org.hibernate.javax.persistence</groupId>-->
             <!--<artifactId>hibernate-jpa-2.1-api</artifactId>-->

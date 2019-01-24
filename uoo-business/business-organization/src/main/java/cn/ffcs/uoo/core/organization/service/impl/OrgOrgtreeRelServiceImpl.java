@@ -77,4 +77,54 @@ public class OrgOrgtreeRelServiceImpl extends ServiceImpl<OrgOrgtreeRelMapper, O
     public List<OrgOrgtreeRel> getFullBizOrgList(String orgTreeId, String orgId){
         return baseMapper.getFullBizOrgList(orgTreeId,orgId);
     }
+
+
+    /**
+     * 获取组织名称全路
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    @Override
+    public String getFullBizOrgNameList(String orgTreeId,String orgId,String split){
+        String fullName = "";
+        List<OrgOrgtreeRel> ootrList = baseMapper.getFullBizOrgList(orgTreeId,orgId);
+        if(ootrList!=null && ootrList.size()>0){
+            for(int i=0;i<ootrList.size();i++){
+                fullName += ootrList.get(i).getOrgBizName();
+                if(!StrUtil.isNullOrEmpty(split)){
+                    fullName += split;
+                }
+            }
+            if(!StrUtil.isNullOrEmpty(fullName) && !StrUtil.isNullOrEmpty(split)){
+                fullName = fullName.substring(0,fullName.length()-split.length());
+            }
+        }
+        return fullName;
+    }
+
+    /**
+     * 获取组织Id全路
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    @Override
+    public String getFullBizOrgIdList(String orgTreeId,String orgId,String split){
+        String fullNameId = "";
+        List<OrgOrgtreeRel> ootrList = baseMapper.getFullBizOrgList(orgTreeId,orgId);
+        if(ootrList!=null && ootrList.size()>0){
+            for(int i=0;i<ootrList.size();i++){
+                fullNameId += ootrList.get(i).getOrgId();
+                if(!StrUtil.isNullOrEmpty(split)){
+                    fullNameId += split;
+                }
+            }
+            if(!StrUtil.isNullOrEmpty(fullNameId) && !StrUtil.isNullOrEmpty(split)){
+                fullNameId = fullNameId.substring(0,fullNameId.length()-split.length());
+            }
+        }
+        return fullNameId;
+    }
+
 }
