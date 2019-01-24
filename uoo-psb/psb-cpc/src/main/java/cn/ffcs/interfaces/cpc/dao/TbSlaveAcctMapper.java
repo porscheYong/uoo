@@ -14,5 +14,5 @@ public interface TbSlaveAcctMapper extends BaseMapper<TbSlaveAcct> {
 
     @Update("update tb_slave_acct set status_cd = '1100' where acct_id =#{acctId} and RESOURCE_OBJ_ID = #{resourceObjId}" +
             " and SLAVE_ACCT_TYPE ='1'  and status_cd = '1000'")
-    boolean deleteByAcctId(@Param("acctId") Long acctId ,@Param("resourceObjId") Long RESOURCE_OBJ_ID);
+    boolean deleteByAcctId(@Param("acctId") Long acctId ,@Param("resourceObjId") Long resourceObjId);
 }
