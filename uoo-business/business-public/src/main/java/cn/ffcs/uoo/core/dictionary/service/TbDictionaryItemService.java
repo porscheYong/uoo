@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.core.dictionary.service;
 
 import cn.ffcs.uoo.core.dictionary.entity.TbDictionaryItem;
+import cn.ffcs.uoo.core.vo.DictionaryItemVo;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.List;
@@ -26,4 +27,6 @@ public interface TbDictionaryItemService extends IService<TbDictionaryItem> {
     List<TbDictionaryItem> selectDicItemList(TbDictionaryItem tbDictionaryItem);
 
     List<TbDictionaryItem> selectDicItemListByDicName(String dictionaryName);
+
+    List<DictionaryItemVo> selectAllDicitemVoList();
 }

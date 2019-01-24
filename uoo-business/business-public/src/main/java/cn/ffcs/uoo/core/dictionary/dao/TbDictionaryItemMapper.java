@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.core.dictionary.dao;
 
 import cn.ffcs.uoo.core.dictionary.entity.TbDictionaryItem;
+import cn.ffcs.uoo.core.vo.DictionaryItemVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,4 +32,10 @@ public interface TbDictionaryItemMapper extends BaseMapper<TbDictionaryItem> {
     List<TbDictionaryItem> selectDicItemList(TbDictionaryItem tbDictionaryItem);
 
     List<TbDictionaryItem> selectDicItemListByDicName(@Param("dictionaryName") String dictionaryName);
+
+    /**
+     * 查询所有字典项值对象列表
+     * @return
+     */
+    List<DictionaryItemVo> selectAllDicitemVoList();
 }
