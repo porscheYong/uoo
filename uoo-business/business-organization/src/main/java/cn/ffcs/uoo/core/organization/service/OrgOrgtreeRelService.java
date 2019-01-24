@@ -47,4 +47,20 @@ public interface OrgOrgtreeRelService extends IService<OrgOrgtreeRel> {
      */
     public List<OrgOrgtreeRel> getFullBizOrgList(String orgTreeId, String orgId);
 
+    /**
+     * 获取组织名称全路
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    public String getFullBizOrgNameList(String orgTreeId,String orgId,String split);
+
+    /**
+     * 获取组织Id全路
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    public String getFullBizOrgIdList(String orgTreeId,String orgId,String split);
+
 }

@@ -71,6 +71,9 @@ public class OrgPersonRelController extends BaseController {
     @Autowired
     private ModifyHistoryService modifyHistoryService;
 
+    @Autowired
+    private OrgRelTypeService orgRelTypeService;
+
     @ApiOperation(value = "新增组织人员关系-web" , notes = "新增组织人员")
     @ApiImplicitParams({
     })
@@ -641,7 +644,7 @@ public class OrgPersonRelController extends BaseController {
             return ret;
         }
         Page<PsonOrgVo> page = null;
-        if(orgLev.getOrgLevel()<3 && "1".equals(psonOrgVo.getIsSearchlower())){
+        if(orgLev.getOrgLevel()==1 && "1".equals(psonOrgVo.getIsSearchlower())){
             //查全部
             page = orgPersonRelService.selectAllPerOrgRelPage(psonOrgVo);
         }else{
@@ -752,10 +755,17 @@ public class OrgPersonRelController extends BaseController {
             }
         }
 
-
+        List<OrgRelType> orts = orgRelTypeService.getOrgRelType(orgtree.getOrgTreeId().toString());
+        if(orts==null || orts.size()<1){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织关系类型不存在");
+            return ret;
+        }
+        OrgRelType ort = orts.get(0);
         psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
         psonOrgVo.setOrgId(new Long(orgId));
         psonOrgVo.setOrgTreeId(orgtree.getOrgTreeId());
+        psonOrgVo.setRefCode(ort.getRefCode());
         if(!StrUtil.isNullOrEmpty(search)){
             psonOrgVo.setSearch(search);
         }

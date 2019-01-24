@@ -250,8 +250,6 @@
     </select>
     <!--组织检索翻页-->
     <select id="selectFuzzyOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
-
-
         SELECT distinct E.ORG_NAME orgName ,E.ORG_ID orgId,D.PARENT_ORG_ID parentOrgId,E.ORG_CODE orgCode
         FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E,
         TB_ORG_ORGTYPE_REL  F
@@ -275,9 +273,8 @@
         AND A.ORG_TREE_ID = B.ORG_TREE_ID
         AND A.ORG_TREE_ID = #{orgVo.orgTreeId}
         <if test="orgVo.search != null and orgVo.search != ''">
-            AND E.ORG_NAME like '%'||#{orgVo.search}||'%'
+            AND (E.ORG_NAME like '%'||#{orgVo.search}||'%' or E.ORG_ID like '%'||#{orgVo.search}||'%')
         </if>
-
     </select>
     <!--检索出的组织树-->
     <select id="selectFuzzyOrgRelTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
