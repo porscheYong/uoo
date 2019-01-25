@@ -22,6 +22,11 @@ var scaleData = window.top.dictionaryData.scale();
 var cityVillageData = window.top.dictionaryData.cityVillage();
 var orgPostLevelData = window.top.dictionaryData.orgPostLevel();
 var statusCdData = window.top.dictionaryData.statusCd();
+var nodeTypeData = window.top.dictionaryData.nodeType();
+var areaTypeData = window.top.dictionaryData.areaType();
+var countTypeData = window.top.dictionaryData.countType();
+var contractTypeData = window.top.dictionaryData.contractType();
+var vipRuleFlgData = window.top.dictionaryData.vipRuleFlg();
 
 $('.orgName').html(orgName);
 //不可编辑
@@ -167,44 +172,39 @@ function getOrg (orgId) {
         $('#positionList').addTag(positionList);
         $('#postList').addTag(orgPostList);
         var expandovalueVoList = data.expandovalueVoList;
-        // if (refCode == '0401') {
-        //     var expandovalueVoObj = {};
-        //     var nodeTypeList = [];
-        //     var countTypeList = [];
-        //     var nodeTypeStr = '';
-        //     var countTypeStr = '';
-        //     for (var i = 0; i < expandovalueVoList.length; i++) {
-        //         if (expandovalueVoList[i].columnName == 'nodeType') {
-        //             nodeTypeList.push(expandovalueVoList[i]);
-        //         }
-        //         if (expandovalueVoList[i].columnName == 'areaType') {
-        //             expandovalueVoObj.areaTypeStr = expandovalueVoList[i].columnCnname;
-        //         }
-        //         if (expandovalueVoList[i].columnName == 'countType') {
-        //             countTypeList.push(expandovalueVoList[i]);
-        //         }
-        //         if (expandovalueVoList[i].columnName == 'contractType') {
-        //             expandovalueVoObj.contractTypeStr = expandovalueVoList[i].columnCnname;
-        //         }
-        //     }
-        //     for (var i = 0; i < nodeTypeList.length; i++) {
-        //         if (i == nodeTypeList.length - 1)
-        //             nodeTypeStr = nodeTypeStr + nodeTypeList[i].columnCnname;
-        //         else
-        //             nodeTypeStr = nodeTypeStr + nodeTypeList[i].columnCnname + ', ';
-        //     }
-        //     for (var i = 0; i < countTypeList.length; i++) {
-        //         if (i == countTypeList.length - 1)
-        //             countTypeStr = countTypeStr + countTypeList[i].columnCnname;
-        //         else
-        //             countTypeStr = countTypeStr + countTypeList[i].columnCnname + ', ';
-        //     }
-        //     expandovalueVoObj.nodeTypeStr = nodeTypeStr;
-        //     expandovalueVoObj.countTypeStr = countTypeStr;
-        //     var smallTemplate = Handlebars.compile($("#smallTemplate").html());
-        //     var smallHtml = smallTemplate(expandovalueVoObj);
-        //     $('#small').html(smallHtml);
-        // }
+        if (refCode == '0401') {
+            var expandovalueVoObj = {};
+            expandovalueVoObj.nodeTypeData = nodeTypeData;
+            expandovalueVoObj.areaTypeData = areaTypeData;
+            expandovalueVoObj.countTypeData = countTypeData;
+            expandovalueVoObj.contractTypeData = contractTypeData;
+            expandovalueVoObj.vipRuleFlgData = vipRuleFlgData;
+            var nodeTypeList = [];
+            var countTypeList = [];
+            for (var i = 0; i < expandovalueVoList.length; i++) {
+                if (expandovalueVoList[i].columnName == 'nodeType') {
+                    nodeTypeList.push(expandovalueVoList[i]);
+                }
+                if (expandovalueVoList[i].columnName == 'areaType') {
+                    expandovalueVoObj.areaType = expandovalueVoList[i].data;
+                }
+                if (expandovalueVoList[i].columnName == 'countType') {
+                    countTypeList.push(expandovalueVoList[i]);
+                }
+                if (expandovalueVoList[i].columnName == 'contractType') {
+                    expandovalueVoObj.contractType = expandovalueVoList[i].data;
+                }
+                if (expandovalueVoList[i].columnName == 'vipRuleFlg') {
+                    expandovalueVoObj.vipRuleFlg = expandovalueVoList[i].data;
+                }
+            }
+            expandovalueVoObj.nodeTypeList = nodeTypeList;
+            console.log(nodeTypeList)
+            expandovalueVoObj.countTypeList = countTypeList;
+            var smallTemplate = Handlebars.compile($("#smallTemplate").html());
+            var smallHtml = smallTemplate(expandovalueVoObj);
+            $('#small').html(smallHtml);
+        }
     }, function (err) {
 
     })
@@ -231,3 +231,11 @@ function orgEdit () {
 
 getOrg(orgId);
 getOrgRel(orgId);
+
+Handlebars.registerHelper('eq', function(v1, v2, opts) {
+    if(v1 == v2){
+        return opts.fn(this);
+    }
+    else
+        return opts.inverse(this);
+});
