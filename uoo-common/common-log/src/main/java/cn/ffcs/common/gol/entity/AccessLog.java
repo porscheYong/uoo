@@ -27,7 +27,7 @@ import java.util.List;
  *　　┗┓┓┏━┳┓┏┛
  *　　　┃┫┫　┃┫┫
  *　　　┗┻┛　┗┻┛
- * @ClassName ControllerAccessLog
+ * @ClassName AccessLog
  * @Description 
  * @author WCNGS@QQ.COM
  * @date 2019/1/23 10:45
@@ -38,7 +38,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name="LOG_ACCESS")
-public class ControllerAccessLog extends BaseOracleEntity<Long> {
+public class AccessLog extends BaseOracleEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_acc")
@@ -76,8 +76,11 @@ public class ControllerAccessLog extends BaseOracleEntity<Long> {
     @Column(name = "cost_Millis",length = 12)
     private Long costMillis;
 
-    @Column(name = "user_id",length = 12)
-    private Long userId;
+
+    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},
+            fetch=FetchType.EAGER,optional=false)
+    @JoinColumn(name="user_id")
+    private SysUser sysUser;
 
     @Column(name = "operate",length = 100)
     private String operate;

@@ -25,7 +25,7 @@ import javax.persistence.*;
  *　　┗┓┓┏━┳┓┏┛
  *　　　┃┫┫　┃┫┫
  *　　　┗┻┛　┗┻┛
- * @ClassName ControllerAccessLog
+ * @ClassName AccessLog
  * @Description 
  * @author WCNGS@QQ.COM
  * @date 2019/1/23 10:45

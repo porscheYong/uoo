@@ -1,6 +1,6 @@
 package cn.ffcs.common.gol.web.controller;
 
-import cn.ffcs.common.gol.entity.ControllerAccessLog;
+import cn.ffcs.common.gol.entity.AccessLog;
 import cn.ffcs.common.gol.service.AccessLogService;
 import cn.ffcs.common.gol.vo.AccessLogVo;
 import com.alibaba.fastjson.JSONObject;
@@ -35,9 +35,9 @@ public class AccessLogController {
 //            @ApiResponse(code = 500, message = "服务器不能完成请求")}
 //    )
 //    @RequestMapping(value = "/ccessLog",method = RequestMethod.POST)
-//    public Page<ControllerAccessLog> getControllerAccessLog(Long id, String clazz,@PathVariable("method") String method, @PathVariable("userId")  Long userId){
+//    public Page<AccessLog> getControllerAccessLog(Long id, String clazz,@PathVariable("method") String method, @PathVariable("userId")  Long userId){
 //
-//        ControllerAccessLog controllerAccessLog = new ControllerAccessLog();
+//        AccessLog controllerAccessLog = new AccessLog();
 //
 //        controllerAccessLog.setClazz(clazz);
 //        controllerAccessLog.setMethod(method);
@@ -54,11 +54,11 @@ public class AccessLogController {
             @ApiResponse(code = 500, message = "服务器不能完成请求")}
     )
     @RequestMapping(value = "/ccessLog",method = RequestMethod.POST)
-    public Page<ControllerAccessLog> getControllerAccessLog(@ApiParam(value = "日志数据", required = true) @RequestBody AccessLogVo accessLogVo){
+    public Page<AccessLog> getControllerAccessLog(@ApiParam(value = "日志数据", required = true) @RequestBody AccessLogVo accessLogVo){
 
-        ControllerAccessLog controllerAccessLog = JSONObject.parseObject(JSONObject.toJSON(accessLogVo).toString(),ControllerAccessLog.class);
-        System.out.println(controllerAccessLog.toString());
-        return accessLogService.findTiy(0,0,controllerAccessLog);
+        AccessLog accessLog = JSONObject.parseObject(JSONObject.toJSON(accessLogVo).toString(),AccessLog.class);
+        System.out.println(accessLog.toString());
+        return accessLogService.findTiy(0,0, accessLog);
     }
 
 }
