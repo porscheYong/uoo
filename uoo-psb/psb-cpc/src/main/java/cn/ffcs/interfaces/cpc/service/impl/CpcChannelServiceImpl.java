@@ -226,12 +226,14 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                     TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
                                             String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
+                                    tbContact.setCreateUser(1004040L);
                                     tbContactMapper.insert(tbContact);
                                 }
                                 if (StringUtils.isNotEmpty((String) staff.get("E_MAIL"))) {
                                     TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "2",
                                             String.valueOf(staff.get("E_MAIL")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
+                                    tbContact.setCreateUser(1004040L);
                                     tbContactMapper.insert(tbContact);
                                 }
                                 //插入TB_ACCT_CROSS_REL
@@ -287,6 +289,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                         TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
                                              String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
                                              "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
+                                        tbContact.setCreateUser(1004040L);
                                         tbContactMapper.insert(tbContact);
                                     }
                                 }
@@ -299,6 +302,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                         TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "2",
                                                 String.valueOf(staff.get("E_MAIL")), UUID.randomUUID().toString().replaceAll("-", "").toUpperCase(),
                                                 "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
+                                        tbContact.setCreateUser(1004040L);
                                         tbContactMapper.insert(tbContact);
                                     }
                                 }
