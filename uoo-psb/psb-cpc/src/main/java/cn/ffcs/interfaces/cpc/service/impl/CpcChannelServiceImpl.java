@@ -508,6 +508,8 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         expandovalueMapper.insert(valueOfIsChannel);
         expandovalueMapper.insert(valueOfChannelNBR);
 
+        // 插入标准树
+
         // 插入组织类别
         String chnTypeCd = String.valueOf(channel.get("CHN_TYPE_CD"));
         TbOrgOrgtypeRel tbOrgOrgtypeRel = checkTbOrgOrgTypeRel(chnTypeCd, tbOrg.getOrgId());
@@ -604,6 +606,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                 }
             }
 
+            /*
             // 删除组织
             TbOrg tbOrg = tbOrgMapper.selectById(Long.valueOf(expandovalue.getRecordId()));
             if (null != tbOrg) {
@@ -625,6 +628,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                     tbOrgOrgtypeRelMapper.updateById(orgOrgtypeRel);
                 }
             }
+            */
 
         }
 
