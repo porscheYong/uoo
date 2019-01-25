@@ -233,6 +233,8 @@ public class TbDictionaryItemController extends BaseController {
 
         dictionaryListVo.setREL_TYPE(group.get("REL_TYPE"));
 
+        dictionaryListVo.setVipRuleFlg(group.get("vipRuleFlg"));
+
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("请求成功");
         responseResult.setData(dictionaryListVo);

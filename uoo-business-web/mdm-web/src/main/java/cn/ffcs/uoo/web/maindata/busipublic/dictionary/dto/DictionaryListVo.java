@@ -43,6 +43,7 @@ public class DictionaryListVo {
     private List<DictionaryItemVo> 	contractType	;//	承包类型
     private List<DictionaryItemVo>   ACCT_LEVEL; // 账号等级
     private List<DictionaryItemVo>   REL_TYPE; // 账号组织关系类型
+    private List<DictionaryItemVo>   vipRuleFlg; // 跨域规则
 
     public List<DictionaryItemVo> getNodeType() {
         return nodeType;
@@ -362,5 +363,13 @@ public class DictionaryListVo {
 
     public void setREL_TYPE(List<DictionaryItemVo> REL_TYPE) {
         this.REL_TYPE = REL_TYPE;
+    }
+
+    public List<DictionaryItemVo> getVipRuleFlg() {
+        return vipRuleFlg;
+    }
+
+    public void setVipRuleFlg(List<DictionaryItemVo> vipRuleFlg) {
+        this.vipRuleFlg = vipRuleFlg;
     }
 }
