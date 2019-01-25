@@ -30,7 +30,7 @@ import xyz.wongs.common.persistence.jpa.service.BaseService;
  *　　┗┓┓┏━┳┓┏┛
  *　　　┃┫┫　┃┫┫
  *　　　┗┻┛　┗┻┛
- * @ClassName TbUserService
+ * @ClassName SysUserService
  * @Description 
  * @author WCNGS@QQ.COM
  * @date 2019/1/19 14:43
