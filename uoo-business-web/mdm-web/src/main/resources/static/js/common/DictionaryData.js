@@ -38,6 +38,7 @@ function Dictionary() {
   this._countType = []; //统计属性
   this._contractType = []; //承包类型
   this._acctLevel = []; //账号等级
+  this._vipRuleFlg = []; //跨区规则
 }
 
 Dictionary.prototype.cityVillage = function () {
@@ -388,5 +389,14 @@ Dictionary.prototype.acctLevel = function () {
     }
     else {
         return this._acctLevel;
+    }
+}
+
+Dictionary.prototype.vipRuleFlg = function () {
+    if (arguments.length === 1) {
+        this._vipRuleFlg = arguments[0];
+    }
+    else {
+        return this._vipRuleFlg;
     }
 }

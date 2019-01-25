@@ -33,11 +33,12 @@ function getPosExtInfo () {
 
 //初始化职位表格
 function initPosTable(isCheck,search){
+    $("#perms").empty();
     positionCodeList = [];
     posTable = $("#posTable").DataTable({
         'destroy':true,
         'searching': false,
-        'autoWidth': false,
+        'autoWidth': true,
         'ordering': true,
         'lSort': true,
         'info': true,

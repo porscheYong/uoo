@@ -54,11 +54,11 @@ public class SysRoleController {
     @OperateLog(type=OperateType.SELECT,module="平台系统角色模块",methods="角色树",desc="")
     @ApiOperation(value = "角色树", notes = "角色树")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "parentRoleCode", value = "parentRoleCode", required = false, dataType = "String"  ),
+            @ApiImplicitParam(name = "parentId", value = "parentId", required = false, dataType = "Long"  ),
     })
     @GetMapping("/treeRole")
-    public ResponseResult<List<TreeNodeVo>> treeRole( String parentRoleCode){
-        return sysRoleClient.treeRole(parentRoleCode);
+    public ResponseResult<List<TreeNodeVo>> treeRole( @RequestParam("id") Long id){
+        return sysRoleClient.treeRole(id);
     }
     
     @OperateLog(type=OperateType.SELECT,module="平台系统角色模块",methods="分页查询角色列表",desc="")

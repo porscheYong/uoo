@@ -64,9 +64,9 @@
 		LEFT JOIN (
 		SELECT
 		rpr.ROLE_CODE,
-		wm_concat ( p.PERMISSION_NAME ) AS
+		to_char(wm_concat ( p.PERMISSION_NAME )) AS
 		permissionNames,
-		wm_concat ( p.PERMISSION_CODE ) AS permissionCodes
+		to_char(wm_concat ( p.PERMISSION_CODE )) AS permissionCodes
 		FROM
 		SYS_PERMISSION p
 		LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON
@@ -85,11 +85,11 @@
 		SYS_ROLE pr WHERE pr.STATUS_CD = '1000' ) t2 ON
 		t2.rc =
 		r.PARENT_ROLE_CODE
-		LEFT JOIN ( SELECT c.REGION_NAME AS
-		commonRegionName, c.REGION_NBR FROM
-		TB_COMMON_REGION c WHERE
-		c.STATUS_CD = '1000' ) t3 ON t3.REGION_NBR =
-		r.REGION_NBR
+		LEFT JOIN ( SELECT c.LOC_NAME AS
+        commonRegionName, c.LOC_CODE FROM
+        TB_POLITICAL_LOCATION c WHERE
+        c.STATUS_CD = '1000' ) t3 ON t3.LOC_CODE =
+        r.REGION_NBR
 		WHERE
 		r.STATUS_CD = '1000'
 		AND ROLE_ID=#{ROLE_ID}
@@ -145,9 +145,9 @@
 		LEFT JOIN (
 		SELECT
 		rpr.ROLE_CODE,
-		wm_concat ( p.PERMISSION_NAME ) AS
+		to_char(wm_concat ( p.PERMISSION_NAME )) AS
 		permissionNames,
-		wm_concat ( p.PERMISSION_CODE ) AS permissionCodes
+		to_char(wm_concat ( p.PERMISSION_CODE )) AS permissionCodes
 		FROM
 		SYS_PERMISSION p
 		LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON
@@ -161,11 +161,11 @@
 		rpr.ROLE_CODE
 		) t ON t.ROLE_CODE =
 		rpr.ROLE_CODE
-		LEFT JOIN ( SELECT c.REGION_NAME AS
-		commonRegionName, c.REGION_NBR FROM
-		TB_COMMON_REGION c WHERE
-		c.STATUS_CD = '1000' ) t3 ON t3.REGION_NBR =
-		r.REGION_NBR
+		LEFT JOIN ( SELECT c.LOC_NAME AS
+        commonRegionName, c.LOC_CODE FROM
+        TB_POLITICAL_LOCATION c WHERE
+        c.STATUS_CD = '1000' ) t3 ON t3.LOC_CODE =
+        r.REGION_NBR
 		WHERE
 		r.STATUS_CD = '1000'
 		<if test="ROLE_ID !=null and ROLE_ID !=''">
@@ -214,9 +214,9 @@
 		LEFT JOIN (
 		SELECT
 		rpr.ROLE_CODE,
-		wm_concat (
-		p.PERMISSION_NAME ) AS permissionNames,
-		wm_concat ( p.PERMISSION_CODE )
+		to_char(wm_concat (
+		p.PERMISSION_NAME )) AS permissionNames,
+		to_char(wm_concat ( p.PERMISSION_CODE ))
 		AS permissionCodes
 		FROM
 		SYS_PERMISSION p
@@ -230,10 +230,11 @@
 		rpr.ROLE_CODE
 		) t ON t.ROLE_CODE = rpr.ROLE_CODE
 		 
-		LEFT JOIN
-		( SELECT c.REGION_NAME AS commonRegionName, c.REGION_NBR FROM
-		TB_COMMON_REGION c WHERE c.STATUS_CD = '1000' ) t3 ON t3.REGION_NBR =
-		r.REGION_NBR
+		LEFT JOIN ( SELECT c.LOC_NAME AS
+        commonRegionName, c.LOC_CODE FROM
+        TB_POLITICAL_LOCATION c WHERE
+        c.STATUS_CD = '1000' ) t3 ON t3.LOC_CODE =
+        r.REGION_NBR
 		WHERE
 		r.STATUS_CD = '1000'
 		<if test="ROLE_ID !=null and ROLE_ID !=''">

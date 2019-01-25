@@ -1,6 +1,6 @@
 package cn.ffcs.common.gol.config;
 
-import cn.ffcs.common.gol.entity.ControllerAccessLog;
+import cn.ffcs.common.gol.entity.AccessLog;
 import cn.ffcs.common.gol.service.AccessLogService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -44,7 +44,7 @@ public class RabbitMqQueueConf {
     public void process(String str){
         try {
             JSONObject jObj = JSONObject.parseObject(str);
-            ControllerAccessLog ca = JSON.toJavaObject(jObj,ControllerAccessLog.class);
+            AccessLog ca = JSON.toJavaObject(jObj,AccessLog.class);
             accessLogService.save(ca);
         } catch (Exception e) {
             e.printStackTrace();

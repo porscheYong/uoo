@@ -2,7 +2,9 @@ package cn.ffcs.common.gol.service;
 
 
 import cn.ffcs.common.gol.entity.AccessLog;
+import cn.ffcs.common.gol.entity.SysUser;
 import cn.ffcs.common.gol.repository.AccessLogRepository;
+import cn.ffcs.common.gol.repository.SysUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,53 +30,25 @@ import xyz.wongs.common.persistence.jpa.service.BaseService;
  *　　┗┓┓┏━┳┓┏┛
  *　　　┃┫┫　┃┫┫
  *　　　┗┻┛　┗┻┛
- * @ClassName TbUserService
+ * @ClassName SysUserService
  * @Description 
  * @author WCNGS@QQ.COM
  * @date 2019/1/19 14:43
  * @Version 1.0.0
 */
-@Service(value="accessLogService")
+@Service(value="sysUserService")
 @Transactional(readOnly = true,rollbackFor = Exception.class)
-public class AccessLogService extends BaseService<AccessLog, Long> {
+public class SysUserService extends BaseService<SysUser, Long> {
 
-	private AccessLogRepository accessLogRepository;
-
-
-//	public Page<AccessLog> findCriteria(AccessLog controllerAccessLog){
-//		return findCriteria(15,controllerAccessLog);
-//	}
-//
-//	public Page<AccessLog> findCriteria(int size, AccessLog controllerAccessLog){
-//		return findCriteria(0,size,controllerAccessLog);
-//	}
-
-//	public Page<AccessLog> findCriteria(int page, int size, AccessLog controllerAccessLog) {
-//		size=size==0?10:size;
-//		// TODO Auto-generated method stub
-//		Pageable pageable = new PageRequest(page, size);
-//		try {
-//			return accessLogRepository.findAll((Specification<AccessLog>) (root, query, cb) -> {
-//				List<Predicate> lp = new ArrayList<>();
-//				MethodUtil.getFieldValue(controllerAccessLog,root,cb,lp);
-//				Predicate[] pe = new Predicate[lp.size()];
-//				query.where(cb.and(lp.toArray(pe)));
-//				return query.getRestriction();
-//			}, pageable);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		return null;
-//	}
+	private SysUserRepository sysUserRepository;
 
 	@Autowired
-	@Qualifier("accessLogRepository")
+	@Qualifier("sysUserRepository")
 	@Override
-	public void setJpaRepository(JpaRepository<AccessLog, Long> jpaRepository) {
+	public void setJpaRepository(JpaRepository<SysUser, Long> jpaRepository) {
 		// TODO Auto-generated method stub
 		this.jpaRepository=jpaRepository;
-		this.accessLogRepository =(AccessLogRepository)jpaRepository;
+		this.sysUserRepository =(SysUserRepository)jpaRepository;
 	}
 
 }
