@@ -398,6 +398,22 @@
           </div>
         </div>
       </div>
+      <div id="crossRegionalRules"></div>
+    </div>
+  </script>
+  <script id="crossRegionalRulesTemplate" type="text/x-handlebars-template">
+    <div class="row">
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="form-item" style="width: 100%">
+          <label for="vipRuleFlg" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">跨区规则</label>
+          <select id="vipRuleFlg" class="col-md-8 col-sm-8 col-xs-12" name="selectable">
+            <option value="">请选择</option>
+            {{#each ruleList}}
+              <option value="{{itemValue}}" {{#eq itemValue ../ruleData}}selected="selected"{{/eq}}>{{itemCnname}}</option>
+            {{/each}}
+          </select>
+        </div>
+      </div>
     </div>
   </script>
   <!-- jQuery -->

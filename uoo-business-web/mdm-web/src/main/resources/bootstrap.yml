@@ -18,8 +18,8 @@ feign:
 
   httpclient:
     enabled: true
-    max-connections: 1100 # 默认值
-    max-connections-per-route: 110 # 默认值
+    max-connections: 1400 # 默认值
+    max-connections-per-route: 250 # 默认值
 
 hystrix:
   enabled: true
