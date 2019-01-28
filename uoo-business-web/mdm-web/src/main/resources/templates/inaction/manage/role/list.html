@@ -79,7 +79,8 @@
 
   <body style="background: #fff;">
         <div class="board-title">
-            <span class="name ft18 org-name" id="roleName"></span>   <!--杭州分公司 -->
+            <span class="name ft18 org-name" id="roleName" style="cursor:pointer;"></span>   <!--杭州分公司 -->
+            <a class="icon icon-info" id="infoBtn" style="vertical-align: top; margin-top: -0.1%;" title="角色详情"></a>   
         </div>
         <div class="breadcrumb" style="padding: 10px 13px 0; background: #fff;"></div>   <!-- 完整路径-->
         <div class="row" style="margin-bottom: 10px;">
@@ -99,7 +100,7 @@
             </div>
         </div>
 
-        <div class="pos-relative" style="margin-top: 7px;margin-left:5px;overflow: hidden;">
+        <!-- <div class="pos-relative" style="margin-top: 7px;margin-left:5px;overflow: hidden;">
             <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-item" style="width: 100%">
                     <div class="typeahead col-md-8 col-sm-8 col-xs-8" style="padding: 0;">
@@ -110,6 +111,11 @@
                     </div>
                 </div>
             </div>
+        </div> -->
+
+        <div style="overflow: hidden;">
+            <input class="ui-input ui-input-search col-md-4 col-sm-4 col-xs-4" id="acctName" type="text" placeholder="搜索角色" autocomplete="off"/>
+            <button class="ui-button ui-button-primary" id="searchBtn" onclick="search()" style="margin-left:1%;">搜索</button>
         </div>
 
         <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">

@@ -54,7 +54,7 @@ function autoCheck () {
     var zTree = $.fn.zTree.getZTreeObj("locationTree");
     for (var i = 0; i < locationList.length; i++) {
         var id = locationList[i].id || locationList[i].locId;
-        var node = zTree.getNodeByTId("orgPostTree_" + id);
+        var node = zTree.getNodeByTId("locationTree_" + id);
         zTree.checkNode(node, true);
         zTree.expandNode(node, true, true, true);
         checkNode.push(node);

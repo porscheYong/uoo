@@ -16,11 +16,14 @@
     <link href="/vendors/zTree/zTreeStyle.css" rel="stylesheet">
     <!-- lulu ui -->
     <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+    <!-- jquery datatable -->
+    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+    <link href="/vendors/typeahead/typeahead.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
-    <link href="/css/account/custom.css" rel="stylesheet">
-
+    <!-- <link href="/css/account/custom.css" rel="stylesheet"> -->
+    <link href="/css/custom.css" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="/js/core/html5shiv.js"></script>
     <script src="/js/core/respond.js"></script>
@@ -49,22 +52,53 @@
         #businessOrg{
             max-height: 200px !important;
         }
+        .typeahead-menu {
+        border-radius: 0;
+        width: 90%;
+        padding: 10px;
+        margin-top: 9%;
+        margin-left: 1%;
+      }
+      th{
+        display: none;
+      }
+      #busTable_length{
+        display: none !important;
+      }
+      .bottom{
+        margin-right: 20px;
+      }
     </style>
   </head>
 
   <body style="background: #fff;">
     <div class="container">
-        <div style="margin-top: 0;">
+        <div style="margin-top: 0;height: 100%;">
             <!-- <span>关系类型：</span> -->
             <!-- <select id="businessOrg" class="col-md-9 col-sm-9 col-xs-11" style="margin-left: 10px;"></select> -->
-            <div class="col-md-12 col-sm-12 col-xs-12" style="position:fixed;background:#fff;z-index:100;padding-top:3%;border-bottom:1px solid #ecedef">
+            <div class="col-md-12 col-sm-12 col-xs-12" style="position:fixed;background:#fff;z-index:100;padding-top:3%;padding-bottom:1%;border-bottom:1px solid #ecedef">
                 <div class="form-item" style="width: 100%">
                     <label for="accType" id="slaveType" class="form-item-label col-md-4 col-sm-4 col-xs-4" style="width:26%;padding-right: 20px;line-height: 40px;text-align: right;">关系类型</label>
                     <select  class="col-md-8 col-sm-8 col-xs-8" id='businessOrg'>
                     </select>
                 </div>
+
+                <!-- 新增的搜索部分 -->
+                <div style="margin: 2px 0 3px 0;padding-right:25px;">
+                    <label for="accType" id="slaveType" class="form-item-label col-md-4 col-sm-4 col-xs-4" style="width:26%;padding-right: 20px;line-height: 40px;text-align: right;">组织搜索</label>
+                    <div class="typeahead col-md-8 col-sm-8 col-xs-12" style="padding: 0;width: 99%;">
+                        <div>
+                            <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
+                            <input class="ui-input typeahead-input tt-input" id="busOrgName" type="text" name="q" placeholder="请输入关键词进行搜索" autocomplete="off" spellcheck="false" dir="auto">
+                            <!-- <img class="typeahead-spinner" src="img/spinner.gif" style="display: none;"> -->
+                        </div>
+                    </div>
+                    <div class="bus-table typeahead-menu">
+                        <table id="busTable" class="stripe" width="100%"></table>
+                    </div>
+                </div>
             </div>
-            <div style="display: inline-block;width: 100%;overflow-y: auto;margin-top:14%;"> <!-- overflow-y: auto; -->
+            <div style="display: inline-block;width: 100%;overflow-y: auto;margin-top:24%;height: 70%;" id="treeDiv"> <!-- overflow-y: auto; -->
                 <ul id="standardTree" class="ztree"></ul>
             </div>
         </div>
@@ -76,6 +110,14 @@
     <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- sea js -->
     <script src="/vendors/lulu/js/plugin/sea.js"></script>
+    <!-- handlebars -->
+    <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
+    <!-- typeahead -->
+    <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+    <!-- jquery tagsinput -->
+    <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- loading -->
     <script type="text/javascript" src="/js/core/spin.min.js"></script>
     <script type="text/javascript" src="/js/core/loading.js"></script>
@@ -85,6 +127,7 @@
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
     <script type="text/javascript" src="/js/account/orgDialog.js"></script>
+    <script type="text/javascript" src="/js/account/acctOrgSearch.js"></script>
   
   </body>
 </html>

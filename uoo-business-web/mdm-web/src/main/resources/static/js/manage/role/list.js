@@ -1,31 +1,17 @@
+var isIE=!!window.ActiveXObject;
+var isIE8=isIE&&document.documentMode<9;
+
 var roleId = getQueryString('roleId');
 var roleName = getQueryString('roleName');
 var roleCode = getQueryString('roleCode');
 var lChBox =document.getElementById("lowerCheckBox"); 
-var roleFullName = "";
+// var roleFullName = "";
 var roleTable;
 var permList = [];
 var isCheck = 0;
+var query;
+var loading = parent.loading;
 
-
-// 获取组织完整路径
-function getRoleExtInfo () {
-    var pathArry = parent.nodeArr;
-    var pathStr = '';
-    if (pathArry && pathArry.length > 0) {
-        for (var i = pathArry.length - 1; i >= 0; i--) {
-            var node = pathArry[i].node;
-            if (pathArry[i].current) {
-                pathStr +=  '<span class="breadcrumb-item"><a href="javascript:void(0);">' + node.name + '</a></span>';
-            } else {
-                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+node.id+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
-            }
-            roleFullName += node.name + ' / '; 
-        }
-        roleFullName = roleFullName.toString().substring(0,roleFullName.toString().length-2);
-        $('.breadcrumb').html(pathStr);
-    }
-}
 
 //获取当前角色的权限
 function getRolePerm(){
@@ -109,21 +95,53 @@ function initRoleTable(isCheck,keyWord){
                 //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                 callback(returnData);
+                loading.screenMaskDisable('container');
             }, function (err) {
+                loading.screenMaskDisable('container');
             })
         }
     });
 }
-    
 
-function setRoleInfo(id){
-    window.location.href = "roleInfo.html?roleId="+roleId+"&id="+id+"&roleCode="+roleCode+"&roleFullName="+roleFullName;
+// 搜索角色
+function search () {
+    loading.screenMaskEnable('container');
+    query = $('.ui-input-search').val();
+    initRoleTable(isCheck, query);
+    // loading.screenMaskDisable('container');
 }
+
+function boxClick(){            //点击复选框
+    sortFlag = 0;
+    if(lChBox.checked == true){
+        isCheck = 1;
+        if(isIE8){
+            $(".ui-checkbox").css("background-position","0px -40px");
+        }
+    }else{
+        isCheck = 0;
+        if(isIE8){
+            $(".ui-checkbox").css("background-position","0px 0px");
+        }
+    }
+}
+    
+function setRoleInfo(id){
+    window.location.href = "roleInfo.html?roleId="+roleId+"&id="+id+"&roleCode="+roleCode;
+}
+
+$("#roleName").on("click",function(){
+    window.location.href = "roleInfo.html?roleId="+roleId+"&id="+roleId+"&roleCode="+roleCode;
+});
+
+$("#infoBtn").on('click',function(){
+    window.location.href = "roleInfo.html?roleId="+roleId+"&id="+roleId+"&roleCode="+roleCode;
+})
 
 $("#addBtn").on('click',function(){
     window.location.href = "add.html?roleId="+roleId+"&roleCode="+roleCode;
 })
 
-getRoleExtInfo();
+$('.breadcrumb').html(parent.getRoleExtInfo(1));
 getRolePerm();
 initRoleTable(isCheck,"");

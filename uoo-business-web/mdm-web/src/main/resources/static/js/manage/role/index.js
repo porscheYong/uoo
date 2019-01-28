@@ -103,5 +103,30 @@ function openTreeById (sId, id) {
     $('.curSelectedNode').trigger('click');
 }
 
+// 获取组织完整路径
+function getRoleExtInfo (flag) {
+    var pathArry = nodeArr;
+    var roleFullName = "";
+    var pathStr = "";
+    if (pathArry && pathArry.length > 0) {
+        for (var i = pathArry.length - 1; i >= 0; i--) {
+            var node = pathArry[i].node;
+            if (pathArry[i].current) {
+                pathStr +=  '<span class="breadcrumb-item"><a href="javascript:void(0);">' + node.name + '</a></span>';
+            } else {
+                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+node.id+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+            }
+            roleFullName += node.name + ' / '; 
+        }
+        roleFullName = roleFullName.toString().substring(0,roleFullName.toString().length-2);
+        // $('.breadcrumb').html(pathStr);
+        if(flag == 0){
+            return roleFullName;
+        }else{
+            return pathStr;
+        }
+    }
+}
+
 initRoleRelTree();
 
