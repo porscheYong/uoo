@@ -15,11 +15,13 @@
         <result column="CREATE_USER" property="createUser" />
         <result column="UPDATE_DATE" property="updateDate" />
         <result column="UPDATE_USER" property="updateUser" />
+        <result column="DATA_RULE_GROUP_ID" property="dataRuleGroupId" />
+        <result column="AND_OR" property="andOr" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        DATA_RULE_ID, TAB_NAME, COL_NAME, RULE_OPERATOR, COL_VALUE, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
+        DATA_RULE_ID, TAB_NAME, COL_NAME, RULE_OPERATOR, COL_VALUE, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, DATA_RULE_GROUP_ID, AND_OR
     </sql>
 
     <select id="getId" resultType="java.lang.Long">
