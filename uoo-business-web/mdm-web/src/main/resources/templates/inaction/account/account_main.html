@@ -16,8 +16,11 @@
     <!-- <link href="../../../static/vendors/nprogress/nprogress.css" rel="stylesheet"> -->
     <!-- ztree -->
     <link href="/vendors/zTree/zTreeStyle.css" rel="stylesheet">
+    <!-- jquery datatable -->
+    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
     <!-- lulu ui -->
     <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+    <link href="/vendors/typeahead/typeahead.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
@@ -33,6 +36,22 @@
         width: 98% !important;
         margin-left: 1% !important;
         margin-top: 2% !important;
+        margin-bottom: 2% !important;
+      }
+      .typeahead-menu {
+        border-radius: 0;
+        width: 90%;
+        padding: 10px;
+        margin-top: 34%;
+      }
+      th{
+        display: none;
+      }
+      #busTable_length{
+        display: none !important;
+      }
+      .bottom{
+        margin-right: 20px;
       }
     </style>
   </head>
@@ -41,10 +60,23 @@
     <div class="container" id="container">
       <div class="main-container">
         <div class="content-left">
-          <select id="businessOrg" class="col-md-9 col-sm-9 col-xs-11" style="margin-left: 10px;">
+          <select id="businessOrg" class="col-md-9 col-sm-9 col-xs-11" style="margin-left: 10px;z-index: 100;"></select>
 
-          </select>
-          <div style="display: inline-block;width: 100%;padding-top: 10px;">
+          <!-- 新增的搜索部分 -->
+          <div style="margin: 7px 0 3px 3px;">
+            <div class="typeahead col-md-8 col-sm-8 col-xs-12" style="padding: 0;width: 99%;">
+                <div>
+                    <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
+                    <input class="ui-input typeahead-input tt-input" id="busOrgName" type="text" name="q" placeholder="请输入关键词进行搜索" autocomplete="off" spellcheck="false" dir="auto">
+                    <!-- <img class="typeahead-spinner" src="img/spinner.gif" style="display: none;"> -->
+                </div>
+            </div>
+            <div class="bus-table typeahead-menu">
+                <table id="busTable" class="stripe" width="100%"></table>
+            </div>
+          </div>
+
+          <div style="display: inline-block;width: 100%;padding-top: 1%;">
               <ul id="standardTree" class="ztree"></ul>
           </div>
         </div>
@@ -60,6 +92,14 @@
     <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- sea js -->
     <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
+    <!-- handlebars -->
+    <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
+    <!-- typeahead -->
+    <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+    <!-- jquery tagsinput -->
+    <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- NProgress -->
     <!-- <script type="text/javascript" src="../../../static/vendors/nprogress/nprogress.js"></script> -->
     <!-- ztree -->
@@ -76,6 +116,6 @@
     <!-- init -->
     <script src="/js/init.js"></script>
     <script type="text/javascript" src="/js/account/account_main.js"></script>
-    <!-- <script type="text/javascript" src="/js/organization/index.js"></script> -->
+    <script type="text/javascript" src="/js/account/acctOrgSearch.js"></script>
   </body>
 </html>

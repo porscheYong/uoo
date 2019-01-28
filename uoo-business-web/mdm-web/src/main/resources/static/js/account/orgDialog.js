@@ -38,14 +38,21 @@ function zTreeOnAsyncSuccess(e,treeId, treeNode, msg){
     }
     if(addToEditFlag == 1){
         var zTreeObj = $.fn.zTree.getZTreeObj("standardTree");
-        var curSelectedNode = zTreeObj.getNodeByTId(nodeList[0].node.tId); //当前选择的node
-        for(var i=nodeList.length-1;i>=0;i--){
+        for(var i=nodeList.length-2;i>=0;i--){
             zTreeObj.expandNode(zTreeObj.getNodeByTId(nodeList[i].node.tId), true);
+            zTreeObj.selectNode(treeNode, false);
         }
-        // zTreeObj.expandNode(curSelectedNode, false);
-        zTreeObj.selectNode(curSelectedNode, false);
-        onNodeClick(null, null, curSelectedNode);
+        zTreeObj.selectNode(treeNode, false);
+        if(zTreeObj.getNodeByTId(nodeList[0].node.tId) != null){
+            zTreeObj.selectNode(zTreeObj.getNodeByTId(nodeList[0].node.tId), false);
+            onNodeClick(null, null, zTreeObj.getNodeByTId(nodeList[0].node.tId));
+        }
     }
+}
+
+function zTreeOnExpand(event, treeId, treeNode){
+    var zTreeObj = $.fn.zTree.getZTreeObj("standardTree");
+    zTreeObj.selectNode(treeNode, false);
 }
 
 // 获取父节点路径
@@ -93,7 +100,8 @@ function initOrgRelTree (orgTreeId) {
         },
         callback: {
             onClick: onNodeClick,
-            onAsyncSuccess: zTreeOnAsyncSuccess
+            onAsyncSuccess: zTreeOnAsyncSuccess,
+            onExpand: zTreeOnExpand
         }
     };
 
@@ -103,7 +111,7 @@ function initOrgRelTree (orgTreeId) {
         $.fn.zTree.init($("#standardTree"), setting, data);
         var zTree = $.fn.zTree.getZTreeObj("standardTree");
         var nodes = zTree.getNodes();
-        zTree.expandNode(nodes[0], true);
+        zTree.expandNode(nodes[0], true,false,true,true);
         zTree.selectNode(nodes[0], false);
         onNodeClick(null, null, nodes[0]);
     }, function (err) {
