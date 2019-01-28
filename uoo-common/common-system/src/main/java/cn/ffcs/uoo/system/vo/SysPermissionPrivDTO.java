@@ -20,7 +20,13 @@ public class SysPermissionPrivDTO extends SysPermission{
     private List<SysFile> files;
     private List<SysDataRule> dataRules;
     private String regionName;
-     
+    private Long locId;
+    public Long getLocId() {
+        return locId;
+    }
+    public void setLocId(Long locId) {
+        this.locId = locId;
+    }
     public String getRegionName() {
         return regionName;
     }
