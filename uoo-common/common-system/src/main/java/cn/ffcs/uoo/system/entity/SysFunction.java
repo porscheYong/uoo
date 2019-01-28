@@ -1,6 +1,9 @@
 package cn.ffcs.uoo.system.entity;
 
 import java.util.Date;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
@@ -28,16 +31,19 @@ public class SysFunction extends Model<SysFunction> {
     /**
      * 功能名称
      */
+    @NotBlank(message="功能名称不能为空")
     @TableField("FUNC_NAME")
     private String funcName;
     /**
      * 功能编码
      */
+    @NotBlank(message="功能编码不能为空")
     @TableField("FUNC_CODE")
     private String funcCode;
     /**
      * 功能API
      */
+    @NotBlank(message="功能API不能为空")
     @TableField("FUNC_API")
     private String funcApi;
     /**

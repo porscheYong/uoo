@@ -1,11 +1,14 @@
 package cn.ffcs.uoo.system.entity;
 
+import java.io.Serializable;
 import java.util.Date;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
-import java.io.Serializable;
 
 /**
  * <p>
@@ -28,15 +31,18 @@ public class SysElement extends Model<SysElement> {
     /**
      * 元素名称
      */
+    @NotBlank(message="元素名称不能为空")
     @TableField("ELEMENT_NAME")
     private String elementName;
     @TableField("MENU_CODE")
     private String menuCode;
+    @NotBlank(message="元素编码不能为空")
     @TableField("ELEMENT_CODE")
     private String elementCode;
     /**
      * 元素类型
      */
+    @NotBlank(message="元素类型不能为空")
     @TableField("ELEMENT_TYPE")
     private String elementType;
     @TableField("READONLY_FLAG")

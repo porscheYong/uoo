@@ -32,7 +32,7 @@
 	</select>
 	<select id="selectOne" resultType="cn.ffcs.uoo.system.vo.SysRoleDTO"
 		parameterType="Long">
-		SELECT
+		SELECT DISTINCT r.ROLE_ID ,
 		r.ROLE_ID AS roleId,
 		r.ROLE_NAME AS roleName,
 		r.ROLE_CODE AS
@@ -56,7 +56,9 @@
 		t.*,
 		t2.parentRoleName AS
 		parentRoleName,
-		t3.commonRegionName AS commonRegionName
+		t2.parentRoleId as parentRoleId,
+		t3.commonRegionName AS commonRegionName,
+		t3.locId as locId
 		FROM
 		SYS_ROLE r
 		LEFT JOIN
@@ -64,6 +66,8 @@
 		LEFT JOIN (
 		SELECT
 		rpr.ROLE_CODE,
+		to_char(wm_concat ( p.PERMISSION_ID )) AS
+		permissionIds,
 		to_char(wm_concat ( p.PERMISSION_NAME )) AS
 		permissionNames,
 		to_char(wm_concat ( p.PERMISSION_CODE )) AS permissionCodes
@@ -80,13 +84,13 @@
 		rpr.ROLE_CODE
 		) t ON t.ROLE_CODE =
 		rpr.ROLE_CODE
-		LEFT JOIN ( SELECT pr.ROLE_CODE AS rc, pr.ROLE_NAME AS
+		LEFT JOIN ( SELECT pr.ROLE_ID as parentRoleId, pr.ROLE_CODE AS rc, pr.ROLE_NAME AS
 		parentRoleName FROM
 		SYS_ROLE pr WHERE pr.STATUS_CD = '1000' ) t2 ON
 		t2.rc =
 		r.PARENT_ROLE_CODE
 		LEFT JOIN ( SELECT c.LOC_NAME AS
-        commonRegionName, c.LOC_CODE FROM
+        commonRegionName,c.LOC_ID as locId, c.LOC_CODE FROM
         TB_POLITICAL_LOCATION c WHERE
         c.STATUS_CD = '1000' ) t3 ON t3.LOC_CODE =
         r.REGION_NBR

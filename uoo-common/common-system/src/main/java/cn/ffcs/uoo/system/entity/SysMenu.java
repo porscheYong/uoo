@@ -1,6 +1,9 @@
 package cn.ffcs.uoo.system.entity;
 
 import java.util.Date;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
@@ -25,10 +28,13 @@ public class SysMenu extends Model<SysMenu> {
      */
     @TableId("MENU_ID")
     private Long menuId;
+    @NotBlank(message="菜单名称不能为空")
     @TableField("MENU_NAME")
     private String menuName;
+    @NotBlank(message="菜单编码不能为空")
     @TableField("MENU_CODE")
     private String menuCode;
+    @NotBlank(message="菜单URL不能为空")
     @TableField("MENU_URL")
     private String menuUrl;
     @TableField("MENU_SORT")

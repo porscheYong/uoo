@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -144,7 +146,7 @@ public class SysRoleController {
     @UooLog(value = "修改角色", key = "updateTbRoles")
     @Transactional
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult<Void> update(@RequestBody SysRoleDTO sysRole) {
+    public ResponseResult<Void> update(@RequestBody @Valid SysRoleDTO sysRole) {
         ResponseResult<Void> responseResult = new ResponseResult<Void>();
         // 校验必填项
         if(sysRole.getRoleId() == null) {
@@ -192,6 +194,7 @@ public class SysRoleController {
                 entity.setPermissionCode(s);
                 entity.setRoleCode(sysRole.getRoleCode());
                 entity.setRolePermissionRefId(rolePermRefSvc.getId());
+                entity.setStatusCd(StatusCD.VALID);
                 rolePermRefSvc.insert(entity);
             }
         }
@@ -205,7 +208,7 @@ public class SysRoleController {
     @UooLog(value = "新增", key = "add")
     @Transactional
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<Void> add(@RequestBody SysRoleDTO sysRole) {
+    public ResponseResult<Void> add(@RequestBody @Valid SysRoleDTO sysRole) {
         String roleCode = sysRole.getRoleCode();
         long c=sysRoleService.selectCount(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", roleCode));
         if(c>0){
@@ -229,6 +232,7 @@ public class SysRoleController {
                 entity.setPermissionCode(s);
                 entity.setRoleCode(sysRole.getRoleCode());
                 entity.setRolePermissionRefId(rolePermRefSvc.getId());
+                entity.setStatusCd(StatusCD.VALID);
                 rolePermRefSvc.insert(entity);
             }
         }

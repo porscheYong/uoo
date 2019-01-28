@@ -3,6 +3,8 @@ package cn.ffcs.uoo.system.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,7 +74,7 @@ public class SysFunctionController {
     })
     @UooLog(key="add",value="新增")
     @RequestMapping(value="/add",method=RequestMethod.POST)
-    public ResponseResult<Void> add(@RequestBody SysFunction fun){
+    public ResponseResult<Void> add(@RequestBody @Valid SysFunction fun){
         String funcCode = fun.getFuncCode();
         long size=funcSvc.selectCount(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("FUNC_CODE", funcCode));
         if(size>0){
@@ -89,7 +91,7 @@ public class SysFunctionController {
     })
     @UooLog(key="update",value="更新")
     @RequestMapping(value="/update",method=RequestMethod.POST)
-    public ResponseResult<Void> update(@RequestBody SysFunction fun){
+    public ResponseResult<Void> update(@RequestBody @Valid SysFunction fun){
         String funcCode = fun.getFuncCode();
         SysFunction one = funcSvc.selectById(fun.getFuncId());
         if(one==null){
