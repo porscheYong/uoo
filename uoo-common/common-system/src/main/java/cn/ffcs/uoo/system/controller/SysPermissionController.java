@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.PermissionDeniedDataAccessException;
@@ -197,7 +199,7 @@ public class SysPermissionController {
     @UooLog(value = "新增", key = "add")
     @Transactional
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<Void> add(@RequestBody SysPermissionEditDTO sysPermissionEditDTO) {
+    public ResponseResult<Void> add(@RequestBody @Valid SysPermissionEditDTO sysPermissionEditDTO) {
         //校验编码
         String permissionCode = sysPermissionEditDTO.getPermissionCode();
         int selectCount = permSvc.selectCount(Condition.create().eq("PERMISSION_CODE", permissionCode).eq("STATUS_CD", StatusCD.VALID));
@@ -278,7 +280,7 @@ public class SysPermissionController {
     @UooLog(value = "修改", key = "update")
     @Transactional
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult<Void> update(@RequestBody SysPermissionEditDTO sysPermissionEditDTO) {
+    public ResponseResult<Void> update(@RequestBody @Valid SysPermissionEditDTO sysPermissionEditDTO) {
         //校验编码
         String permissionCode = sysPermissionEditDTO.getPermissionCode();
         SysPermission one = permSvc.selectById(sysPermissionEditDTO.getPermissionId());

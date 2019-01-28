@@ -37,6 +37,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.validation.Valid;
+
 /**
  * 〈一句话功能简述〉<br> 
  * 〈〉
@@ -104,7 +106,7 @@ public class SysMenuController {
     @UooLog(value = "修改", key = "updateTbRoles")
     @Transactional
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult<Void> update(@RequestBody SysMenu sysMenu) {
+    public ResponseResult<Void> update(@RequestBody  @Valid SysMenu sysMenu) {
         ResponseResult<Void> responseResult = new ResponseResult<Void>();
         // 校验必填项
         if(sysMenu.getMenuId() == null) {
@@ -144,7 +146,7 @@ public class SysMenuController {
     @UooLog(value = "新增", key = "add")
     @Transactional
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<Void> add(@RequestBody SysMenu sysMenu) {
+    public ResponseResult<Void> add(@RequestBody @Valid SysMenu sysMenu) {
         ResponseResult<Void> responseResult = new ResponseResult<Void>();
         String menuCode = sysMenu.getMenuCode();
         long size = sysMenuService.selectCount(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("MENU_CODE", menuCode));

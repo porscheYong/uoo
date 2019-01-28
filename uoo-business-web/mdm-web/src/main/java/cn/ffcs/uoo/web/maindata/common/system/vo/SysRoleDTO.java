@@ -63,7 +63,28 @@ public class SysRoleDTO {
     private String parentRoleName;
     private String permissionNames;
     private String permissionCodes;
+    private String permissionIds;
+    private Long locId;
+    private Long parentRoleId;
     
+    public String getPermissionIds() {
+        return permissionIds;
+    }
+    public void setPermissionIds(String permissionIds) {
+        this.permissionIds = permissionIds;
+    }
+    public Long getParentRoleId() {
+        return parentRoleId;
+    }
+    public void setParentRoleId(Long parentRoleId) {
+        this.parentRoleId = parentRoleId;
+    }
+    public Long getLocId() {
+        return locId;
+    }
+    public void setLocId(Long locId) {
+        this.locId = locId;
+    }
     public Long getRoleId() {
         return roleId;
     }
