@@ -32,7 +32,7 @@ public interface OrgService{
     public ResponseResult<TreeNodeVo> addOrg(@RequestBody OrgVo org);
 
     @RequestMapping(value="/org/updateOrg",method = RequestMethod.POST,headers={"Content-Type=application/json"})
-    public ResponseResult<Void> updateOrg(@RequestBody OrgVo org);
+    public ResponseResult<List<TreeNodeVo>> updateOrg(@RequestBody OrgVo org);
 
     @RequestMapping(value="/org/getOrg",method = RequestMethod.GET)
     public ResponseResult<OrgVo> getOrg(@RequestParam(value = "orgId",required = false) String orgId,

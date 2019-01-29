@@ -80,7 +80,7 @@ public class OrgOrgtreeRelServiceImpl extends ServiceImpl<OrgOrgtreeRelMapper, O
 
 
     /**
-     * 获取组织名称全路
+     * 获取组织名称全路径
      * @param orgTreeId
      * @param orgId
      * @return

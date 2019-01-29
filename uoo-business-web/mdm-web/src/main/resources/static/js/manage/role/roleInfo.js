@@ -9,6 +9,7 @@ var permIdList = [];
 var permCodeList = [];
 var parRoleCode;
 var locationCode;
+var toastr = window.top.toastr;
 
 //获取角色信息
 function getRoleInfo(){
@@ -219,7 +220,8 @@ function updateRole(){
         statusCd : $("#statusCd").val(),
         sortNum : $("#sortNum").val(),
         roleCode : $("#roleCode").val(),
-        roleName : $("#roleName").val()
+        roleName : $("#roleName").val(),
+        roleId : id
     }), function (message) {
         backToList();
         parent.initRoleRelTree();
@@ -245,7 +247,7 @@ function deleteRole(){
                 toastr.success("删除成功！");
             }, function (err) {
                 parent.layer.close(index);
-                toastr.error("删除失败！");
+                // toastr.error("删除失败！");
             })
         }, function(){
       

@@ -486,8 +486,8 @@ public class OrgController extends BaseController {
     })
     @UooLog(value = "更新组织信息", key = "updateOrg")
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
-    public ResponseResult<Void> updateOrg(@RequestBody OrgVo org){
-        ResponseResult<Void> ret = new ResponseResult<Void>();
+    public ResponseResult<List<TreeNodeVo>> updateOrg(@RequestBody OrgVo org){
+        ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
 
         String msg = orgService.JudgeOrgParams(org);
         if(!StrUtil.isNullOrEmpty(msg)){
@@ -561,7 +561,15 @@ public class OrgController extends BaseController {
                 return ret;
             }
         }
-
+        //修改组织关系
+        if(org.getMoveParentOrgId()!=null && !org.getMoveParentOrgId().toString().equals(org.getSupOrgId().toString())){
+            String moveMsg = orgService.moveOrg(org.getOrgId(),org.getMoveParentOrgId(),orgTree.getOrgTreeId(),org.getUpdateUser());
+            if(!StrUtil.isNullOrEmpty(moveMsg)){
+                ret.setState(ResponseResult.STATE_ERROR);
+                ret.setMessage(moveMsg);
+                return ret;
+            }
+        }
         String batchNumber = modifyHistoryService.getBatchNumber();
 
         Org newOrg = new Org();
@@ -573,14 +581,13 @@ public class OrgController extends BaseController {
         if(!StrUtil.isNullOrEmpty(org.getAreaCodeId())){
             newOrg.setAreaCodeId(new Long(org.getAreaCodeId()));
         }
-
-        List<OrgVo> orgListVo = orgRelService.getFullOrgList("1",newOrg.getOrgId().toString());
+        List<OrgVo> orgListVo = orgRelService.getFullOrgList("1",org.getSupOrgId().toString());
         if(orgListVo!=null && orgListVo.size()>0){
             if(orgListVo.size()==1){
                 newOrg.setFullName(org.getOrgName());
             }else{
                 String fullName = "";
-                for(int i=0;i<orgListVo.size()-1;i++){
+                for(int i=0;i<orgListVo.size();i++){
                     fullName += orgListVo.get(i).getOrgName();
                 }
                 fullName+=org.getOrgName();
@@ -589,10 +596,8 @@ public class OrgController extends BaseController {
         }
 
         newOrg.setOrgName(StrUtil.strnull(org.getOrgName()));
-        //newOrg.setOrgCode(StrUtil.strnull(org.getOrgCode()));
         newOrg.setShortName(StrUtil.strnull(org.getShortName()));
         newOrg.setOrgNameEn(StrUtil.strnull(org.getOrgNameEn()));
-        //newOrg.setFullName(StrUtil.strnull(org.getFullName()));
         newOrg.setCityTown(StrUtil.strnull(org.getCityTown()));
         newOrg.setOfficePhone(StrUtil.strnull(org.getOfficePhone()));
         if(!StrUtil.isNullOrEmpty(org.getFoundingTime())){
@@ -607,10 +612,6 @@ public class OrgController extends BaseController {
         newOrg.setOrgContent(StrUtil.strnull(org.getOrgContent()));
         newOrg.setOrgDesc(StrUtil.strnull(org.getOrgDesc()));
         newOrg.setAddress(StrUtil.strnull(org.getAddress()));
-        //newOrg.setUuid(StrUtil.getUUID());
-
-        //newOrg.updateById();
-
         Wrapper orgTypeWrapper = Condition.create()
                 .eq("ORG_ID",org.getOrgId())
                 .eq("STATUS_CD","1000");
@@ -1022,33 +1023,16 @@ public class OrgController extends BaseController {
         OrgOrgtreeRel orgOrgtreeRelOLd = new OrgOrgtreeRel();
         BeanUtils.copyProperties(orgOrgtreeRelOne,orgOrgtreeRelOLd);
         if(orgOrgtreeRelOne!=null){
-            if(!StrUtil.isNullOrEmpty(org.getOrgBizName())) {
-                orgOrgtreeRelOne.setOrgBizName(org.getOrgBizName());
-            }
-
-//            List<OrgOrgtreeRel> ootrList = orgOrgtreeRelService.getFullBizOrgList(orgTree.getOrgTreeId().toString(),org.getOrgId().toString());
-//            if(ootrList!=null && ootrList.size()>0){
-//                if(ootrList.size()==1){
-//                    orgOrgtreeRelOne.setOrgBizFullName(org.getOrgBizName());
-//                }else{
-//                    String fullName = "";
-//                    for(int i=0;i<ootrList.size()-1;i++){
-//                        fullName += ootrList.get(i).getOrgBizName();
-//                    }
-//                    fullName+=orgOrgtreeRelOne.getOrgBizName();
-//                    orgOrgtreeRelOne.setOrgBizFullName(fullName);
-//                }
-//            }
+            orgOrgtreeRelOne.setOrgBizName(StrUtil.isNullOrEmpty(org.getOrgBizName())?org.getOrgName():org.getOrgBizName());
             // TODO: 2019/1/23
             String fullBizName = "";
-            fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getOrgId().toString(),"");
-            fullBizName+=StrUtil.strnull(org.getOrgName());
+            fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),"");
+            fullBizName+=StrUtil.isNullOrEmpty(org.getOrgBizName())?org.getOrgName():org.getOrgBizName();
             String fullBizNameId = "";
-            fullBizNameId = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getOrgId().toString(),",");
+            fullBizNameId = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),",");
             fullBizNameId+=","+newOrg.getOrgId();
             orgOrgtreeRelOne.setOrgBizFullName(fullBizName);
             orgOrgtreeRelOne.setOrgBizFullId(fullBizNameId);
-
 
 
             if(!StrUtil.isNullOrEmpty(org.getSort())){
@@ -1188,6 +1172,9 @@ public class OrgController extends BaseController {
         modifyHistoryService.addModifyHistory(o,newOrg,org.getUpdateUser(),batchNumber);
         String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+newOrg.getOrgId()+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);
+        //增加返回数据
+        List<TreeNodeVo> treeNodeVos = orgService.getFullOrgVo(orgTree.getOrgTreeId().toString(),newOrg.getOrgId().toString());
+        ret.setData(treeNodeVos);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("更新成功");
         return ret;
@@ -1738,16 +1725,16 @@ public class OrgController extends BaseController {
 //        return ret;
 //    }
 
-    @ApiOperation(value = "组织移动", notes = "组织移动")
-    @UooLog(value = "组织移动", key = "updateOrgMove")
-    @RequestMapping(value = "/updateOrgMove", method = RequestMethod.GET)
-    @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<String> updateOrgMove(Long orgId,Long parentOrgId) throws IOException {
-        ResponseResult<String> ret = new ResponseResult<String>();
-        List<String> list = new ArrayList<>();
-        //ExcelUtil.exportExcel("测试",);
-        return ret;
-    }
+//    @ApiOperation(value = "组织移动", notes = "组织移动")
+//    @UooLog(value = "组织移动", key = "updateOrgMove")
+//    @RequestMapping(value = "/updateOrgMove", method = RequestMethod.GET)
+//    @Transactional(rollbackFor = Exception.class)
+//    public ResponseResult<String> updateOrgMove(Long orgId,Long parentOrgId) throws IOException {
+//        ResponseResult<String> ret = new ResponseResult<String>();
+//        List<String> list = new ArrayList<>();
+//        //ExcelUtil.exportExcel("测试",);
+//        return ret;
+//    }
 
 
 

@@ -1,7 +1,7 @@
 var table = $("#funResTable").DataTable({
     'destroy':true,
     'searching': false,
-    'autoWidth': false,
+    'autoWidth': true,
     'ordering': true,
     'lSort': true,
     'info': true,

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.organization.dao.ExcelOrgImportMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.organization.entity.ExcelOrgImport">
+        <result column="EXCEL_ORG_IMPORT_ID" property="excelOrgImportId" />
+        <result column="IMP_SEQ" property="impSeq" />
+        <result column="SOURCE_ORG_ID" property="sourceOrgId" />
+        <result column="TARGET_ORG_ID" property="targetOrgId" />
+        <result column="ORG_NAME" property="orgName" />
+        <result column="FILE_NAME" property="fileName" />
+        <result column="SIGN" property="sign" />
+        <result column="CONTENT" property="content" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        EXCEL_ORG_IMPORT_ID, IMP_SEQ, SOURCE_ORG_ID, TARGET_ORG_ID, ORG_NAME, FILE_NAME, SIGN, CONTENT, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+</mapper>

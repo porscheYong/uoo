@@ -50,29 +50,15 @@ public class OrgVo extends BaseVo{
     private String orgTreeInfos;
     //组织存在组织树标识
     private int flag;
+    //移动的目标节点
+    private Long moveParentOrgId;
 
-    public int getFlag() {
-        return flag;
+    public Long getMoveParentOrgId() {
+        return moveParentOrgId;
     }
 
-    public void setFlag(int flag) {
-        this.flag = flag;
-    }
-
-    public String getOrgTreeInfos() {
-        return orgTreeInfos;
-    }
-
-    public void setOrgTreeInfos(String orgTreeInfos) {
-        this.orgTreeInfos = orgTreeInfos;
-    }
-
-    public String getOrgBizFullName() {
-        return orgBizFullName;
-    }
-
-    public void setOrgBizFullName(String orgBizFullName) {
-        this.orgBizFullName = orgBizFullName;
+    public void setMoveParentOrgId(Long moveParentOrgId) {
+        this.moveParentOrgId = moveParentOrgId;
     }
 
     /**
@@ -125,20 +111,39 @@ public class OrgVo extends BaseVo{
     private List<OrgCertVo> orgCertVoList;
     //检索
     private String search;
-    private String orgRelCreatDate;
+    //检索类型是否是全数字
+    private String isSearchNum;
 
+    public String getIsSearchNum() {
+        return isSearchNum;
+    }
+
+    public void setIsSearchNum(String isSearchNum) {
+        this.isSearchNum = isSearchNum;
+    }
+
+    private String orgRelCreatDate;
 
     //排序字段
     private String sortField;
     //排序方式
     private String sortOrder;
-
     //tb_org 权限参数
     private String tabOrgParams;
     //tb_org_rel权限参数
     private String tabOrgRelParams;
     //TB_ORG_ORGTYPE_REL
     private String tabOrgOrgTypeParams;
+    //组织excel导入列表
+    private List<ExcelOrgImportVo> excelOrgImportVoList;
+
+    public List<ExcelOrgImportVo> getExcelOrgImportVoList() {
+        return excelOrgImportVoList;
+    }
+
+    public void setExcelOrgImportVoList(List<ExcelOrgImportVo> excelOrgImportVoList) {
+        this.excelOrgImportVoList = excelOrgImportVoList;
+    }
 
     public String getTabOrgOrgTypeParams() {
         return tabOrgOrgTypeParams;
@@ -541,4 +546,31 @@ public class OrgVo extends BaseVo{
     public void setOrgBizName(String orgBizName) {
         this.orgBizName = orgBizName;
     }
+
+
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
+    public String getOrgTreeInfos() {
+        return orgTreeInfos;
+    }
+
+    public void setOrgTreeInfos(String orgTreeInfos) {
+        this.orgTreeInfos = orgTreeInfos;
+    }
+
+    public String getOrgBizFullName() {
+        return orgBizFullName;
+    }
+
+    public void setOrgBizFullName(String orgBizFullName) {
+        this.orgBizFullName = orgBizFullName;
+    }
+
 }
