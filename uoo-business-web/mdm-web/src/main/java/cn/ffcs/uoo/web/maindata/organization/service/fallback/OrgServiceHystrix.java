@@ -33,8 +33,8 @@ public class OrgServiceHystrix implements OrgService {
         return responseResult;
     }
     @Override
-    public ResponseResult<Void> updateOrg(OrgVo org){
-        ResponseResult<Void> responseResult = new ResponseResult<Void>();
+    public ResponseResult<List<TreeNodeVo>> updateOrg(OrgVo org){
+        ResponseResult<List<TreeNodeVo>> responseResult = new ResponseResult<>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");
         return responseResult;

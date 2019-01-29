@@ -8,6 +8,7 @@ import cn.ffcs.uoo.core.organization.util.StrUtil;
 import cn.ffcs.uoo.core.organization.vo.AreaCodeVo;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
 import cn.ffcs.uoo.core.organization.vo.PageVo;
+import cn.ffcs.uoo.core.organization.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -332,5 +333,22 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
             }
         }
         return str;
+    }
+
+
+    @Override
+    public List<TreeNodeVo> getFullOrgVo(String orgTreeId, String orgId){
+        List<OrgVo> orgList = baseMapper.getFullOrgList(orgTreeId,orgId);
+        List<TreeNodeVo> treeNodes = new ArrayList<>();
+        if(orgList!=null && orgList.size()>0){
+            for(OrgVo vo:orgList){
+                TreeNodeVo nodeVo = new TreeNodeVo();
+                nodeVo.setId(vo.getOrgId().toString());
+                nodeVo.setPid(vo.getSupOrgId().toString());
+                nodeVo.setName(vo.getOrgName());
+                treeNodes.add(nodeVo);
+            }
+        }
+        return treeNodes;
     }
 }

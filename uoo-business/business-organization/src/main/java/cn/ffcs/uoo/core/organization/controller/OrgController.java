@@ -486,8 +486,8 @@ public class OrgController extends BaseController {
     })
     @UooLog(value = "更新组织信息", key = "updateOrg")
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
-    public ResponseResult<Void> updateOrg(@RequestBody OrgVo org){
-        ResponseResult<Void> ret = new ResponseResult<Void>();
+    public ResponseResult<List<TreeNodeVo>> updateOrg(@RequestBody OrgVo org){
+        ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
 
         String msg = orgService.JudgeOrgParams(org);
         if(!StrUtil.isNullOrEmpty(msg)){
@@ -1173,7 +1173,8 @@ public class OrgController extends BaseController {
         String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+newOrg.getOrgId()+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);
         //增加返回数据
-
+        List<TreeNodeVo> treeNodeVos = orgService.getFullOrgVo(orgTree.getOrgTreeId().toString(),newOrg.getOrgId().toString());
+        ret.setData(treeNodeVos);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("更新成功");
         return ret;

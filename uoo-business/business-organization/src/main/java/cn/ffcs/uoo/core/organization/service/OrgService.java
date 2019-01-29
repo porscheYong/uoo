@@ -5,6 +5,7 @@ import cn.ffcs.uoo.core.organization.entity.PoliticalLocation;
 import cn.ffcs.uoo.core.organization.vo.AreaCodeVo;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
 import cn.ffcs.uoo.core.organization.vo.PageVo;
+import cn.ffcs.uoo.core.organization.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.baomidou.mybatisplus.service.IService;
@@ -129,6 +130,12 @@ public interface OrgService extends IService<Org> {
      */
     public String moveOrg(Long orgId,Long parentOrgId,Long orgTreeId,Long userId);
 
-
+    /**
+     * 组织树路径
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    public List<TreeNodeVo> getFullOrgVo(String orgTreeId, String orgId);
 
 }
