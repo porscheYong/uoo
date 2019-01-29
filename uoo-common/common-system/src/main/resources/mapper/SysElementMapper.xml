@@ -52,5 +52,17 @@
         AND u.STATUS_CD = '1000'
         AND u.ACCOUT = #{accout}
     </select>
-    
+    <select id="listByPermissionId" resultType="cn.ffcs.uoo.system.vo.PermElement">
+           SELECT
+    a.* ,
+    b.PRIV_ELEMENT_ID AS relId 
+FROM
+    SYS_ELEMENT a
+    LEFT JOIN SYS_PERMISSION_ELEMENT_REL b ON b.ELEMENT_CODE = a.ELEMENT_CODE
+    LEFT JOIN SYS_PERMISSION c ON c.permission_code = b.permission_code 
+WHERE
+    a.STATUS_CD = '1000' 
+    AND b.STATUS_CD = '1000' 
+    AND c.permission_id =  #{permId} 
+    </select>
 </mapper>
