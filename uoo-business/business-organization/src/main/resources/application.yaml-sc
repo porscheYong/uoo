@@ -11,7 +11,7 @@ spring:
   datasource:
     druid:
       #url: jdbc:oracle:thin:@134.96.248.48:3436/ZJ4APRD
-      url: jdbc:oracle:thin:@(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.48)(PORT = 3436))(ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.49)(PORT = 3436))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = ZJ4APRD)))
+      url: jdbc:oracle:thin:@(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.49)(PORT = 3436))(ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.48)(PORT = 3436))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = ZJ4APRD)))
       driver-class-name: oracle.jdbc.OracleDriver
       username: octopus
       password: octopus
@@ -98,8 +98,8 @@ spring:
   rabbitmq:
     host: 134.96.249.38
     port: 5672
-    username: root
-    password: 123
+    username: Sub_Pub_Uoo
+    password: "FUkCrcs4SIzlnia7OoosTd$rO5$lR8669ISeHjji"
 
 
 

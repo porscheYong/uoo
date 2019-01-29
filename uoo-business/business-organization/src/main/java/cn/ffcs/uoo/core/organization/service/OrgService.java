@@ -104,5 +104,31 @@ public interface OrgService extends IService<Org> {
     public List<AreaCodeVo> getOrgAreaCode(String orgId);
 
 
+    /**
+     * 获取组织名称全路
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    public String getFullOrgNameList(String orgTreeId,String orgId,String split);
+
+    /**
+     * 获取组织标识名称全路径
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    public String getFullOrgIdList(String orgTreeId,String orgId,String split);
+
+    /**
+     * 组织移动
+     * @param orgId
+     * @param parentOrgId
+     * @param orgTreeId
+     * @return
+     */
+    public String moveOrg(Long orgId,Long parentOrgId,Long orgTreeId,Long userId);
+
+
 
 }

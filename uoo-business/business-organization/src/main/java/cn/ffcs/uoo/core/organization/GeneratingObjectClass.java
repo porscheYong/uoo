@@ -45,7 +45,7 @@ public class GeneratingObjectClass {
 
 //    public static String[] tabeNamesList={"TB_POSITION200","TB_POST","TB_POST_LOCATION","TB_POSITION","TB_ORG_POSITION_REL"
 //    ,"TB_POST2","TB_ORG_POST_REL"};
-    public static String[] tabeNamesList = {"TB_TREE_STAFF_TYPE_REL","TB_ORGTREE_ORGPERSON_REL"};
+    public static String[] tabeNamesList = {"TB_EXCEL_ORG_IMPORT"};
 public static String modelName="uoo-organization";
     public static void main(String[] args) {
         File f = new File(modelName);

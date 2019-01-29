@@ -273,7 +273,11 @@
         AND A.ORG_TREE_ID = B.ORG_TREE_ID
         AND A.ORG_TREE_ID = #{orgVo.orgTreeId}
         <if test="orgVo.search != null and orgVo.search != ''">
-            AND (E.ORG_NAME like '%'||#{orgVo.search}||'%' or E.ORG_ID like '%'||#{orgVo.search}||'%')
+            AND (E.ORG_NAME like '%'||#{orgVo.search}||'%'
+            <if test='orgVo.isSearchNum=="1"'>
+                 or E.ORG_ID=#{orgVo.search}
+            </if>
+            )
         </if>
     </select>
     <!--检索出的组织树-->

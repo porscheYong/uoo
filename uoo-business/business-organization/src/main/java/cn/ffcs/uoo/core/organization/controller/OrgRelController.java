@@ -349,7 +349,7 @@ public class OrgRelController extends BaseController {
         // TODO: 2019/1/23
         String fullBizName = "";
         fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),"");
-        fullBizName+=StrUtil.strnull(o.getOrgName());
+        fullBizName+=StrUtil.strnull(StrUtil.isNullOrEmpty(org.getOrgBizName())?o.getOrgName():org.getOrgBizName());
         String fullBizNameId = "";
         fullBizNameId = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),",");
         fullBizNameId+=","+o.getOrgId();
@@ -363,6 +363,7 @@ public class OrgRelController extends BaseController {
         orgOrgtreeRef.setStatusCd("1000");
         orgOrgtreeRef.setCreateUser(org.getUpdateUser());
         // TODO: 2019/1/23
+        orgOrgtreeRef.setOrgBizName(StrUtil.isNullOrEmpty(org.getOrgBizName())?o.getOrgName():org.getOrgBizName());
         orgOrgtreeRef.setOrgBizFullName(fullBizName);
         orgOrgtreeRef.setOrgBizFullId(fullBizNameId);
 
@@ -535,12 +536,12 @@ public class OrgRelController extends BaseController {
 
 
         orgVo.setOrgTreeId(new Long(orgTreeId));
-      //  orgVo.setOrgId(new Long(orgTree.getOrgId()));
         if(!StrUtil.isNullOrEmpty(search)){
             orgVo.setSearch(search);
+            if(StrUtil.isNumeric(search)){
+                orgVo.setIsSearchNum("1");
+            }
         }
-
-        //orgVo.setOrgRootId(orgRootId);
         if(!StrUtil.isNullOrEmpty(pageSize)){
             orgVo.setPageSize(pageSize);
         }
