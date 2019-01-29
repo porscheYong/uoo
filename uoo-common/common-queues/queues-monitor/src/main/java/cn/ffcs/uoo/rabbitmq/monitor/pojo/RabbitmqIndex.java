@@ -12,7 +12,7 @@ import java.util.Date;
 @TableName("RABBITMQ_INDEX")
 public class RabbitmqIndex extends Model<RabbitmqIndex> {
     @TableId("ID")
-    private BigDecimal id;
+    private String id;
 
     @TableField("STATE")
     private String state;
@@ -26,11 +26,11 @@ public class RabbitmqIndex extends Model<RabbitmqIndex> {
     @TableField("RABBITMQ_DATE")
     private String rabbitmqDate;
 
-    public BigDecimal getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(String id) {
         this.id = id;
     }
 

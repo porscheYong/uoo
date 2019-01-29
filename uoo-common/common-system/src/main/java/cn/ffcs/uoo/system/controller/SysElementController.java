@@ -3,10 +3,13 @@ package cn.ffcs.uoo.system.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -89,7 +92,7 @@ public class SysElementController {
     @Transactional
     @UooLog(key="add",value="新增")
     @RequestMapping(value="/add",method=RequestMethod.POST)
-    public ResponseResult<Void> add(@RequestBody SysElement ele){
+    public ResponseResult<Void> add(@RequestBody @Valid SysElement ele){
         String code = ele.getElementCode();
         long size=eleSvc.selectCount(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ELEMENT_CODE", code));
         if(size>0){
@@ -110,7 +113,7 @@ public class SysElementController {
     })
     @UooLog(key="update",value="更新")
     @RequestMapping(value="/update",method=RequestMethod.POST)
-    public ResponseResult<Void> update(@RequestBody SysElement ele){
+    public ResponseResult<Void> update(@RequestBody @Valid SysElement ele){
         String funcCode = ele.getElementCode();
         SysElement one = eleSvc.selectById(ele.getElementId());
         if(one==null){

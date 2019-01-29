@@ -17,6 +17,7 @@ var countTypeList = [];
 var nodeTypeId;
 var areaTypeId;
 var countTypeId;
+var vipRuleData;
 var contractTypeId;
 var positionList;
 var orgPostList;
@@ -41,6 +42,7 @@ var nodeTypeData = window.top.dictionaryData.nodeType();
 var areaTypeData = window.top.dictionaryData.areaType();
 var countTypeData = window.top.dictionaryData.countType();
 var contractTypeData = window.top.dictionaryData.contractType();
+var vipRuleFlgData = window.top.dictionaryData.vipRuleFlg();
 
 $('.orgName').html(orgName);
 parent.getOrgExtInfo();
@@ -643,6 +645,19 @@ function getContractType (type) {
     $('#contractType').selectMatch();
 }
 
+//改变承包类型选中值，渲染跨区规则
+function changeContractType(ele) {
+    var selectVal = $(ele).children('option:selected').val();
+    if (selectVal && $('#vipRuleFlg').length == 0) {
+        var crossRegionalRulesTemplate = Handlebars.compile($("#crossRegionalRulesTemplate").html());
+        var crossRegionalRulesHtml = crossRegionalRulesTemplate({ruleList: vipRuleFlgData, ruleData: vipRuleData});
+        $('#crossRegionalRules').html(crossRegionalRulesHtml);
+        $('#vipRuleFlg').selectMatch();
+    }
+    if (!selectVal)
+        $('#crossRegionalRules').html('');
+}
+
 // 获取组织基础信息
 function getOrg (orgId) {
     $http.get('/org/getOrg', {
@@ -721,11 +736,15 @@ function getOrg (orgId) {
                             contractData = expandovalueVoList[i].data;
                             contractTypeId = expandovalueVoList[i].valueId;
                         }
+                        if (expandovalueVoList[i].columnName == 'vipRuleFlg') {
+                            vipRuleData = expandovalueVoList[i].data;
+                        }
                     }
                     getNodeType();
                     getAreaType(areaData);
                     getCountType();
                     getContractType(contractData);
+                    changeContractType('#contractType');
                     $('#small').find(':input').each(function () {
                         $(this).hover(function () {
                             formValidate.isPass($(this));
@@ -826,6 +845,7 @@ function updateOrg () {
   var areaType = $('#areaType option:selected') .val();
   var countType = formSelects.value('countType');
   var contractType = $('#contractType option:selected') .val();
+  var vipRuleFlg = $('#vipRuleFlg option:selected') .val();
   var orgMart = orgMartCode; //传给后台的划小组织编码
   if (editSmallField) {
       if (areaType)
@@ -838,6 +858,8 @@ function updateOrg () {
       for (var i = 0; i < countType.length; i++){
           expandovalueVoList.push({columnName: 'countType', data: countType[i].value})
       }
+      if (vipRuleFlg)
+          expandovalueVoList.push({columnName: 'vipRuleFlg', data: vipRuleFlg});
   }
   $http.post('/org/updateOrg', JSON.stringify({
       orgRootId: '1',
@@ -918,3 +940,10 @@ function cancel () {
     window.location.href = url;
 }
 
+Handlebars.registerHelper('eq', function(v1, v2, opts) {
+    if(v1 == v2){
+        return opts.fn(this);
+    }
+    else
+        return opts.inverse(this);
+});

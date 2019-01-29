@@ -7,7 +7,7 @@ var areaCodeId = ''; //区号ID
 var orgCode = ''; //组织编码
 var locationList = [];
 var orgTypeList = [];
-var expandovalueVoList = []; //划小扩展字段
+// var expandovalueVoList = []; //划小扩展字段
 var positionList = [];
 var orgPostList = [];
 var checkNode;
@@ -32,6 +32,7 @@ var nodeTypeData = window.top.dictionaryData.nodeType();
 var areaTypeData = window.top.dictionaryData.areaType();
 var countTypeData = window.top.dictionaryData.countType();
 var contractTypeData = window.top.dictionaryData.contractType();
+var vipRuleFlgData = window.top.dictionaryData.vipRuleFlg();
 
 $('.orgName').html(orgName);
 parent.getOrgExtInfo();
@@ -462,6 +463,19 @@ function getContractType () {
     $('#contractType').selectMatch();
 }
 
+//改变承包类型选中值，渲染跨区规则
+function changeContractType(ele) {
+    var selectVal = $(ele).children('option:selected').val();
+    if (selectVal && $('#vipRuleFlg').length == 0) {
+        var crossRegionalRulesTemplate = Handlebars.compile($("#crossRegionalRulesTemplate").html());
+        var crossRegionalRulesHtml = crossRegionalRulesTemplate({data: vipRuleFlgData});
+        $('#crossRegionalRules').html(crossRegionalRulesHtml);
+        $('#vipRuleFlg').selectMatch();
+    }
+    if (!selectVal)
+        $('#crossRegionalRules').html('');
+}
+
 // 获取组织基础信息
 function getOrg (orgId) {
     $http.get('/org/getOrg', {
@@ -514,7 +528,7 @@ function getOrg (orgId) {
         $('#orgTypeList').importTags(orgTypeList);
         $('#positionList').importTags(positionList);
         $('#postList').importTags(orgPostList);
-        expandovalueVoList = data.expandovalueVoList;
+        // expandovalueVoList = data.expandovalueVoList;
     }, function (err) {
 
     })
@@ -576,6 +590,8 @@ function addOrg () {
     // var countType = $('#countType option:selected') .val();
     var countType = formSelects.value('countType');
     var contractType = $('#contractType option:selected') .val();
+    var vipRuleFlg = $('#vipRuleFlg option:selected') .val();
+    var expandovalueVoList = []; //划小扩展字段
     if (editSmallField) {
         if (areaType)
             expandovalueVoList.push({columnName: 'areaType', data: areaType});
@@ -587,6 +603,8 @@ function addOrg () {
         for (var i = 0; i < countType.length; i++){
             expandovalueVoList.push({columnName: 'countType', data: countType[i].value})
         }
+        if (vipRuleFlg)
+            expandovalueVoList.push({columnName: 'vipRuleFlg', data: vipRuleFlg});
     }
     $http.post('/org/addOrg', JSON.stringify({
         orgRootId: '1',
@@ -635,6 +653,7 @@ function  addTreeNode () {
     var areaType = $('#areaType option:selected') .val();
     var countType = formSelects.value('countType');
     var contractType = $('#contractType option:selected') .val();
+    var expandovalueVoList = []; //划小扩展字段
     if (editSmallField) {
         if (areaType)
             expandovalueVoList.push({columnName: 'areaType', data: areaType});

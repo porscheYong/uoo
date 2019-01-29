@@ -12,6 +12,11 @@
         <property name="location" value="classpath:dubbo.properties" />
     </bean>
 
+
+    <bean id="systemConstant" class="cn.ffcs.interfaces.cpc.constant.SystemConstant">
+        <property name="cpcSystemId" value="${systemId}"></property>
+    </bean>
+
     <dubbo:application name="33.1089"  />
 
     <dubbo:protocol name="dubbo" port="${port}"></dubbo:protocol>

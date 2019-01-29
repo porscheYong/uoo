@@ -1,38 +1,43 @@
 package cn.ffcs.uoo.system.controller;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import cn.ffcs.uoo.system.entity.SysFile;
-import cn.ffcs.uoo.system.entity.SysTable;
-import cn.ffcs.uoo.system.entity.SysTableColumn;
-import cn.ffcs.uoo.system.service.ISysTableColumnService;
-import cn.ffcs.uoo.system.service.ISysTableService;
-import cn.ffcs.uoo.system.util.StrUtil;
-import cn.ffcs.uoo.system.vo.SysDataRuleVo;
-import com.baomidou.mybatisplus.mapper.Condition;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+import javax.annotation.Resource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+
 import cn.ffcs.uoo.base.common.annotion.UooLog;
+import cn.ffcs.uoo.system.consts.StatusCD;
 import cn.ffcs.uoo.system.entity.SysDataRule;
+import cn.ffcs.uoo.system.entity.SysDataRuleGroup;
+import cn.ffcs.uoo.system.entity.SysTable;
+import cn.ffcs.uoo.system.entity.SysTableColumn;
+import cn.ffcs.uoo.system.service.ISysDataRuleGroupService;
 import cn.ffcs.uoo.system.service.ISysDataRuleService;
+import cn.ffcs.uoo.system.service.ISysTableColumnService;
+import cn.ffcs.uoo.system.service.ISysTableService;
+import cn.ffcs.uoo.system.util.StrUtil;
+import cn.ffcs.uoo.system.vo.DataRuleGroupVO;
 import cn.ffcs.uoo.system.vo.DataRuleRequestVO;
+import cn.ffcs.uoo.system.vo.DataRuleResponseVO;
 import cn.ffcs.uoo.system.vo.ResponseResult;
+import cn.ffcs.uoo.system.vo.SysDataRuleVo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-
-import javax.annotation.Resource;
 
 /**
  * <p>
@@ -54,13 +59,14 @@ public class SysDataRuleController {
 
     @Resource
     private ISysTableColumnService iSysTableColumnService;
+    @Resource
+    ISysDataRuleGroupService dataRuleGroupSvc;
     
     @ApiOperation(value = "获取单个用户的数据权限", notes = "获取单个用户的数据权限")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "requestVo", value = "requestVo", required = true, dataType = "DataRuleRequestVO"  ),
     })
     @UooLog(key="getDataRuleByAccout",value="获取单个用户的数据权限")
-    @Transactional
     @RequestMapping(value = "/getDataRuleByAccout", method = RequestMethod.POST)
     public ResponseResult<List<SysDataRule>> getDataRuleByAccout(@RequestBody DataRuleRequestVO requestVo){
         if(requestVo.getTableNames()==null||requestVo.getTableNames().isEmpty()){
@@ -74,7 +80,67 @@ public class SysDataRuleController {
         map.put("tableNames", requestVo.getTableNames());
         return ResponseResult.createSuccessResult(dataRuleSvc.listByAccout(map), "");
     }
-
+    @ApiOperation(value = "获取单个用户的数据权限", notes = "获取单个用户的数据权限")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "requestVo", value = "requestVo", required = true, dataType = "DataRuleRequestVO"  ),
+    })
+    @UooLog(key="getDataRuleByAccout2",value="获取单个用户的数据权限")
+    @RequestMapping(value = "/getDataRuleByAccout2", method = RequestMethod.POST)
+    public ResponseResult<DataRuleResponseVO> getDataRuleByAccout2(@RequestBody DataRuleRequestVO requestVo){
+        if(requestVo.getTableNames()==null||requestVo.getTableNames().isEmpty()){
+            return ResponseResult.createErrorResult("表名不能为空");
+        }
+        if(StringUtils.isBlank(requestVo.getAccout())){
+            return ResponseResult.createErrorResult("账号名不能为空");
+        }
+        DataRuleResponseVO vo=new DataRuleResponseVO();
+        vo.setDataRules(new ArrayList<>());
+        vo.setGroups(new ArrayList<>());
+        HashMap<String, Object> map=new HashMap<>();
+        map.put("accout", requestVo.getAccout());
+        map.put("tableNames", requestVo.getTableNames());
+        List<SysDataRule> listByAccout = dataRuleSvc.listByAccout(map);
+        List<SysDataRule> groupDataRules=new ArrayList<>(listByAccout.size());
+        List<Long> groupIds=new ArrayList<>(listByAccout.size());
+        for (SysDataRule sysDataRule : listByAccout) {
+            if(sysDataRule.getDataRuleGroupId()!=null&&sysDataRule.getDataRuleGroupId()>0){
+                groupDataRules.add(sysDataRule);
+                groupIds.add(sysDataRule.getDataRuleGroupId());
+            }else{
+                vo.getDataRules().add(sysDataRule);
+            }
+        }
+        List<SysDataRuleGroup> list = dataRuleGroupSvc.selectBatchIds(groupIds);
+        List<DataRuleGroupVO> vos=new ArrayList<>();
+        for(int i = 0 ; i<list.size();i++){
+            if(StatusCD.VALID.equals(list.get(i).getStatusCd())){
+                DataRuleGroupVO obj=new DataRuleGroupVO();
+                BeanUtils.copyProperties(list.get(i), obj);
+                obj.setChilds(new ArrayList<>());
+                obj.setDataRules(new ArrayList<>());
+                for (SysDataRule rule : groupDataRules) {
+                    if(rule.getDataRuleGroupId().longValue()==obj.getDataRuleGroupId().longValue()){
+                        obj.getDataRules().add(rule);
+                    }
+                }
+                vos.add(obj);
+            }
+        }
+        while(!vos.isEmpty()){
+            for (int i = 0; i < vos.size(); i++) {
+                for (DataRuleGroupVO current : vos) {
+                    if(current.getDataRuleGroupId().equals(vos.get(i).getParentRuleGroupId())){
+                        current.getChilds().add(vos.get(i));
+                        vos.remove(i);
+                        i--;
+                        break;
+                    }
+                }
+            }
+        }
+        vo.setGroups(vos);
+        return ResponseResult.createSuccessResult(vo, "");
+    }
     @ApiOperation(value = "获取数据权限翻页", notes = "获取数据权限翻页")
     @ApiImplicitParams({
     })

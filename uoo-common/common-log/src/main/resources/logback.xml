@@ -66,14 +66,14 @@
 
     <!-- 1. 输出SQL 到控制台和文件-->
     <logger name="org.hibernate.SQL" additivity="false" >
-        <level value="INFO" />
+        <level value="DEBUG" />
         <appender-ref ref="STDOUT" />
         <appender-ref ref="provider" />
     </logger>
 
     <!-- 2. 输出SQL 的参数到控制台和文件-->
     <logger name="org.hibernate.type.descriptor.sql.BasicBinder" additivity="false" level="TRACE" >
-        <level value="WARN" />
+        <level value="DEBUG" />
         <appender-ref ref="STDOUT" />
         <appender-ref ref="provider" />
     </logger>

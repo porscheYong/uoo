@@ -125,7 +125,7 @@ function getCertType () {
 
 // 获取民族字典数据
 function getNation () {
-    var option = '';
+    var option = '<option value="">--请选择--</option>';
     for (var i = 0; i < nationData.length; i++) {
         option += "<option value='" + nationData[i].itemValue + "'>" + nationData[i].itemCnname +"</option>";
     }
@@ -134,7 +134,7 @@ function getNation () {
 
 // 获取政治面貌字典数据
 function getPliticalStatus () {
-    var option = '';
+    var option = '<option value="">--请选择--</option>';
     for (var i = 0; i < pliticalStatusData.length; i++) {
         option += "<option value='" + pliticalStatusData[i].itemValue + "'>" + pliticalStatusData[i].itemCnname +"</option>";
     }
@@ -143,7 +143,7 @@ function getPliticalStatus () {
 
 // 获取婚姻状况字典数据
 function getMarriage () {
-    var option = '';
+    var option = '<option value="">--请选择--</option>';
     for (var i = 0; i < marriageData.length; i++) {
         option += "<option value='" + marriageData[i].itemValue + "'>" + marriageData[i].itemCnname +"</option>";
     }

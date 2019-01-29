@@ -140,6 +140,7 @@
               </div>
             </div>
           </div>
+          <div id="small"></div>
           <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-6">
               <div class="item">
@@ -262,10 +263,79 @@
   </div>
 </div>
 
+<script id="smallTemplate" type="text/x-handlebars-template">
+  <div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-6">
+      <div class="item">
+        <label class="item-label col-md-4 col-sm-4 col-xs-4">节点类型:</label>
+        <span id="nodeTypes" class="col-md-8 col-sm-8 col-xs-8">
+          {{#each nodeTypeList}}
+            {{#each ../nodeTypeData}}
+              {{#eq itemValue ../data}}
+                {{itemCnname}}
+              {{/eq}}
+            {{/each}}
+          {{/each}}
+        </span>
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-6">
+      <div class="item">
+        <label class="item-label col-md-4 col-sm-4 col-xs-4">区域级别:</label>
+        {{#each areaTypeData}}
+          {{#eq itemValue ../areaType}}
+            <span id="areaType" class="col-md-8 col-sm-8 col-xs-8">{{itemCnname}}</span>
+          {{/eq}}
+        {{/each}}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-6">
+      <div class="item">
+        <label class="item-label col-md-4 col-sm-4 col-xs-4">统计属性:</label>
+        <span id="countType" class="col-md-8 col-sm-8 col-xs-8">
+          {{#each countTypeList}}
+            {{#each ../countTypeData}}
+              {{#eq itemValue ../data}}
+                {{itemCnname}}
+              {{/eq}}
+            {{/each}}
+          {{/each}}
+        </span>
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-6">
+      <div class="item">
+        <label class="item-label col-md-4 col-sm-4 col-xs-4">承包类型:</label>
+        {{#each contractTypeData}}
+          {{#eq itemValue ../contractType}}
+            <span id="contractType" class="col-md-8 col-sm-8 col-xs-8">{{itemCnname}}</span>
+          {{/eq}}
+        {{/each}}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-6">
+      <div class="item">
+        <label class="item-label col-md-4 col-sm-4 col-xs-4">跨区规则:</label>
+        {{#each vipRuleFlgData}}
+          {{#eq itemValue ../vipRuleFlg}}
+            <span id="vipRuleFlg" class="col-md-8 col-sm-8 col-xs-8">{{itemCnname}}</span>
+          {{/eq}}
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</script>
+
 <!-- jQuery -->
 <script type="text/javascript" src="/js/core/jquery.js"></script>
 <!-- Bootstrap -->
 <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- handlebars -->
+<script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
 <!-- jquery datatable -->
 <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
 <!-- jquery tagsinput -->

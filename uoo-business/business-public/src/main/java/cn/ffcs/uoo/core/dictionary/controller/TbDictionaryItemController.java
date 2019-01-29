@@ -9,6 +9,7 @@ import cn.ffcs.uoo.core.dictionary.entity.TbDictionary;
 import cn.ffcs.uoo.core.dictionary.entity.TbDictionaryItem;
 import cn.ffcs.uoo.core.dictionary.service.TbDictionaryItemService;
 import cn.ffcs.uoo.core.dictionary.service.TbDictionaryService;
+import cn.ffcs.uoo.core.vo.DictionaryItemVo;
 import cn.ffcs.uoo.core.vo.DictionaryListVo;
 import cn.ffcs.uoo.core.vo.ResponseResult;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -20,11 +21,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -147,130 +146,94 @@ public class TbDictionaryItemController extends BaseController {
     public ResponseResult<DictionaryListVo> queryAllList() {
         ResponseResult<DictionaryListVo> responseResult = new ResponseResult<DictionaryListVo>();
         DictionaryListVo dictionaryListVo = new DictionaryListVo();
-        List<TbDictionaryItem> list = new ArrayList<TbDictionaryItem>();
+        List<DictionaryItemVo> list = tbDictionaryItemService.selectAllDicitemVoList();
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("CITY_VILLAGE");
-        dictionaryListVo.setCITY_VILLAGE(list);
+        // 按照字典名称，给list分组
+        Map<String, List<DictionaryItemVo>> group = list.stream().collect(Collectors.groupingBy(DictionaryItemVo::getDictionaryName));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("SCALE");
-        dictionaryListVo.setSCALE(list);
+        dictionaryListVo.setCITY_VILLAGE(group.get("CITY_VILLAGE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("ORG_POST_LEVEL");
-        dictionaryListVo.setORG_POST_LEVEL(list);
+        dictionaryListVo.setSCALE(group.get("SCALE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("COLUM_TYPE");
-        dictionaryListVo.setCOLUM_TYPE(list);
+        dictionaryListVo.setORG_POST_LEVEL(group.get("ORG_POST_LEVEL"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("COL_NULLABLE");
-        dictionaryListVo.setCOL_NULLABLE(list);
+        dictionaryListVo.setCOLUM_TYPE(group.get("COLUM_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("EDITABLE");
-        dictionaryListVo.setEDITABLE(list);
+        dictionaryListVo.setCOL_NULLABLE(group.get("COL_NULLABLE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("STATUS_CD");
-        dictionaryListVo.setSTATUS_CD(list);
+        dictionaryListVo.setEDITABLE(group.get("EDITABLE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("YES_NO");
-        dictionaryListVo.setYES_NO(list);
+        dictionaryListVo.setSTATUS_CD(group.get("STATUS_CD"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("RULE_OPERATOR");
-        dictionaryListVo.setRULE_OPERATOR(list);
+        dictionaryListVo.setYES_NO(group.get("YES_NO"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("NATIONALITY");
-        dictionaryListVo.setNATIONALITY(list);
+        dictionaryListVo.setRULE_OPERATOR(group.get("RULE_OPERATOR"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("GENDER");
-        dictionaryListVo.setGENDER(list);
+        dictionaryListVo.setNATIONALITY(group.get("NATIONALITY"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("NATION");
-        dictionaryListVo.setNATION(list);
+        dictionaryListVo.setGENDER(group.get("GENDER"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("MARRIAGE");
-        dictionaryListVo.setMARRIAGE(list);
+        dictionaryListVo.setNATION(group.get("NATION"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("PLITICAL_STATUS");
-        dictionaryListVo.setPLITICAL_STATUS(list);
+        dictionaryListVo.setMARRIAGE(group.get("MARRIAGE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("SCHOOL_TYPE");
-        dictionaryListVo.setSCHOOL_TYPE(list);
+        dictionaryListVo.setPLITICAL_STATUS(group.get("PLITICAL_STATUS"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("MEM_RELATION");
-        dictionaryListVo.setMEM_RELATION(list);
+        dictionaryListVo.setSCHOOL_TYPE(group.get("SCHOOL_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("CERT_TYPE");
-        dictionaryListVo.setCERT_TYPE(list);
+        dictionaryListVo.setMEM_RELATION(group.get("MEM_RELATION"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("ACCT_TYPE");
-        dictionaryListVo.setACCT_TYPE(list);
+        dictionaryListVo.setCERT_TYPE(group.get("CERT_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("USER_HOST_TYPE");
-        dictionaryListVo.setUSER_HOST_TYPE(list);
+        dictionaryListVo.setACCT_TYPE(group.get("ACCT_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("ORG_TREE_TYPE");
-        dictionaryListVo.setORG_TREE_TYPE(list);
+        dictionaryListVo.setUSER_HOST_TYPE(group.get("USER_HOST_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("RELA_TYPE");
-        dictionaryListVo.setRELA_TYPE(list);
+        dictionaryListVo.setORG_TREE_TYPE(group.get("ORG_TREE_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("PROPERTY");
-        dictionaryListVo.setPROPERTY(list);
+        dictionaryListVo.setRELA_TYPE(group.get("RELA_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("REF_TYPE");
-        dictionaryListVo.setREF_TYPE(list);
+        dictionaryListVo.setPROPERTY(group.get("PROPERTY"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("ROLE_TYPE");
-        dictionaryListVo.setROLE_TYPE(list);
+        dictionaryListVo.setREF_TYPE(group.get("REF_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("GRANT_OBJ_TYPE");
-        dictionaryListVo.setGRANT_OBJ_TYPE(list);
+        dictionaryListVo.setROLE_TYPE(group.get("ROLE_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("PRIV_TYPE");
-        dictionaryListVo.setPRIV_TYPE(list);
+        dictionaryListVo.setGRANT_OBJ_TYPE(group.get("GRANT_OBJ_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("PRIV_REF_TYPE");
-        dictionaryListVo.setPRIV_REF_TYPE(list);
+        dictionaryListVo.setPRIV_TYPE(group.get("PRIV_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("COMP_TYPE");
-        dictionaryListVo.setCOMP_TYPE(list);
+        dictionaryListVo.setPRIV_REF_TYPE(group.get("PRIV_REF_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("INTF_TYPE");
-        dictionaryListVo.setINTF_TYPE(list);
+        dictionaryListVo.setCOMP_TYPE(group.get("COMP_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("CONNECT_TYPE");
-        dictionaryListVo.setCONNECT_TYPE(list);
+        dictionaryListVo.setINTF_TYPE(group.get("INTF_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("REGION_TYPE");
-        dictionaryListVo.setREGION_TYPE(list);
+        dictionaryListVo.setCONNECT_TYPE(group.get("CONNECT_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("LOC_TYPE");
-        dictionaryListVo.setLOC_TYPE(list);
+        dictionaryListVo.setREGION_TYPE(group.get("REGION_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("POST_TYPE");
-        dictionaryListVo.setPOST_TYPE(list);
+        dictionaryListVo.setLOC_TYPE(group.get("LOC_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("POSITION_TYPE");
-        dictionaryListVo.setPOSITION_TYPE(list);
+        dictionaryListVo.setPOST_TYPE(group.get("POST_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("POSITION_TYPE");
-        dictionaryListVo.setPOSITION_TYPE(list);
+        dictionaryListVo.setPOSITION_TYPE(group.get("POSITION_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("nodeType");
-        dictionaryListVo.setNodeType(list);
+        dictionaryListVo.setPOSITION_TYPE(group.get("POSITION_TYPE"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("areaType");
-        dictionaryListVo.setAreaType(list);
+        dictionaryListVo.setNodeType(group.get("nodeType"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("countType");
-        dictionaryListVo.setCountType(list);
+        dictionaryListVo.setAreaType(group.get("areaType"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("contractType");
-        dictionaryListVo.setContractType(list);
+        dictionaryListVo.setCountType(group.get("countType"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("ACCT_LEVEL");
-        dictionaryListVo.setACCT_LEVEL(list);
+        dictionaryListVo.setContractType(group.get("contractType"));
 
-        list = tbDictionaryItemService.selectDicItemListByDicName("REL_TYPE");
-        dictionaryListVo.setREL_TYPE(list);
+        dictionaryListVo.setACCT_LEVEL(group.get("ACCT_LEVEL"));
+
+        dictionaryListVo.setREL_TYPE(group.get("REL_TYPE"));
+
+        dictionaryListVo.setVipRuleFlg(group.get("vipRuleFlg"));
 
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("请求成功");

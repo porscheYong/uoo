@@ -24,7 +24,7 @@ public class TestController {
 
     @GetMapping("test")
     public Map<String,Object> test(){
-        Object object = rabbitmqDateService.selectById(new BigDecimal(4));
+        Object object = rabbitmqDateService.selectById("1");
 
         System.out.println("-----"+testService.test());
         Map<String,Object> map = rabbitmqDateService.test();

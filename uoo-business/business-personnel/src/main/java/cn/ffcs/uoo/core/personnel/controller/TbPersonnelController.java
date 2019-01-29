@@ -210,16 +210,19 @@ public class TbPersonnelController extends BaseController {
 
 
         /**  2、组织信息           */
-        List<PsonOrgVo> psonOrgVoList = editFormPersonnelVo.getPsonOrgVoList();
-        if(!StrUtil.isNullOrEmpty(psonOrgVoList)){
-            List<PsonOrgVo> psonOrgVos = new ArrayList<PsonOrgVo>();
-            for(PsonOrgVo psonOrgVo : psonOrgVoList){
-                psonOrgVo.setPersonnelId(personnelId);
-                psonOrgVo.setUserId(String.valueOf(userId));
-                psonOrgVos.add(psonOrgVo);
-            }
-            if(psonOrgVos != null && psonOrgVos.size() > 0){
-                orgPersonRelClient.addOrgPsn(psonOrgVos);
+
+        if(!StrUtil.isNullOrEmpty(editFormPersonnelVo.getPsonOrgVoList())){
+            List<PsonOrgVo> psonOrgVoList = editFormPersonnelVo.getPsonOrgVoList();
+            if(psonOrgVoList !=null && psonOrgVoList.size() > 0) {
+                List<PsonOrgVo> psonOrgVos = new ArrayList<PsonOrgVo>();
+                for (PsonOrgVo psonOrgVo : psonOrgVoList) {
+                    psonOrgVo.setPersonnelId(personnelId);
+                    psonOrgVo.setUserId(String.valueOf(userId));
+                    psonOrgVos.add(psonOrgVo);
+                }
+                if (psonOrgVos != null && psonOrgVos.size() > 0) {
+                    orgPersonRelClient.addOrgPsn(psonOrgVos);
+                }
             }
         }
 

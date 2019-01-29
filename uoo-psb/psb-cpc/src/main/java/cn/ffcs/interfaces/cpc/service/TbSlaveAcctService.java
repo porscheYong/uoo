@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.service.IService;
  * Created by liuxiaodong on 2019/1/11.
  */
 public interface TbSlaveAcctService extends IService<TbSlaveAcct> {
-    int selectBySlaveAcctAndAcctId(String account, Long acctId);
+    TbSlaveAcct selectBySlaveAcctAndAcctId(String account, Long acctId,Long resourceObjId);
 
-    boolean deleteByAcctId(Long acctId);
+    boolean deleteByAcctId(Long acctId,Long resourceObjId);
 }

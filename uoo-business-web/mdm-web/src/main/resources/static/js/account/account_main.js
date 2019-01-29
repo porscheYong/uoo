@@ -97,7 +97,7 @@ function initOrgRelTree (orgTreeId) {
         zTree.expandNode(nodes[0], true);
         zTree.selectNode(nodes[0], true);
         onNodeClick(null, null, nodes[0]);
-        loading.screenMaskDisable('container');
+        // loading.screenMaskDisable('container');
     }, function (err) {
         loading.screenMaskDisable('container');
     });

@@ -132,7 +132,28 @@ public class SysDataRuleVo {
      */
 
     private Long updateUser;
+    private Long dataRuleGroupId;
 
+    /**
+     * 条件操作符
+     */
+    private String andOr;
+
+    public Long getDataRuleGroupId() {
+        return dataRuleGroupId;
+    }
+
+    public void setDataRuleGroupId(Long dataRuleGroupId) {
+        this.dataRuleGroupId = dataRuleGroupId;
+    }
+
+    public String getAndOr() {
+        return andOr;
+    }
+
+    public void setAndOr(String andOr) {
+        this.andOr = andOr;
+    }
 
     public Long getDataRuleId() {
         return dataRuleId;
