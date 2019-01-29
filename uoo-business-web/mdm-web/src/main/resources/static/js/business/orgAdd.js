@@ -91,6 +91,7 @@ function getFullOrgTypeTree() {
                     getAreaType();
                     getCountType();
                     getContractType();
+                    getVipRuleFlg();
                     editSmallField = true;
                     return;
                 }
@@ -225,6 +226,7 @@ function openTypeDialog() {
                             getAreaType();
                             getCountType();
                             getContractType();
+                            getVipRuleFlg();
                             return
                         }
                         else {
@@ -463,17 +465,27 @@ function getContractType () {
     $('#contractType').selectMatch();
 }
 
+// 跨区规则
+function getVipRuleFlg () {
+    var option = '<option value="">--请选择--</option>';
+    for (var i = 0; i < vipRuleFlgData.length; i++) {
+        option += "<option value='" + vipRuleFlgData[i].itemValue + "'>" + vipRuleFlgData[i].itemCnname +"</option>";
+    }
+    $('#vipRuleFlg').append(option);
+    $('#vipRuleFlg').selectMatch();
+}
+
 //改变承包类型选中值，渲染跨区规则
 function changeContractType(ele) {
     var selectVal = $(ele).children('option:selected').val();
-    if (selectVal && $('#vipRuleFlg').length == 0) {
-        var crossRegionalRulesTemplate = Handlebars.compile($("#crossRegionalRulesTemplate").html());
-        var crossRegionalRulesHtml = crossRegionalRulesTemplate({data: vipRuleFlgData});
-        $('#crossRegionalRules').html(crossRegionalRulesHtml);
+    if (selectVal) {
+        $('#vipRuleFlg').attr('disabled', false);
+    }
+    if (!selectVal) {
+        $('#vipRuleFlg').attr('disabled', true);
+        $('#vipRuleFlg').val('');
         $('#vipRuleFlg').selectMatch();
     }
-    if (!selectVal)
-        $('#crossRegionalRules').html('');
 }
 
 // 获取组织基础信息

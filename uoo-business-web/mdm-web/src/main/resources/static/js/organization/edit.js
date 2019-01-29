@@ -17,6 +17,8 @@ var contractTypeId;
 var positionList;
 var orgPostList;
 var regionList = [];
+var targetOrgList = [];
+var moveParentOrgId = pid;
 var checkNode;
 var selectUser = [];
 var formValidate;
@@ -61,6 +63,7 @@ if(typeof $.fn.tagsInput !== 'undefined'){
   $('#positionList').tagsInput();
   $('#postList').tagsInput();
   $('#regionId').tagsInput();
+  $('#targetOrg').tagsInput();
 }
 
 //联系人选择
@@ -112,6 +115,30 @@ function openTypeDialog() {
         },
         btn2: function(index, layero){},
         cancel: function(){}
+    });
+}
+
+//上级组织选择
+function openOrgDialog() {
+    parent.layer.open({
+        type: 2,
+        title: '上级组织',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['50%', '80%'],
+        maxmin: true,
+        content: '/inaction/modal/standardOrgDialog.html?orgTreeId=1',
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            nodeArr = iframeWin.nodeArr || iframeWin.nodePath;
+            var node = iframeWin.getCheckdNodes();
+            $('#targetOrg').importTags(node);
+            targetOrgList = node;
+            moveParentOrgId = targetOrgList[0].id;
+            parent.layer.close(index);
+        }
     });
 }
 
@@ -598,6 +625,10 @@ function getOrg (orgId) {
         $('#orgTypeList').addTag(orgTypeList);
         $('#positionList').addTag(positionList);
         $('#postList').addTag(orgPostList);
+        //获取父节点
+        var pNode = parent.getNodeById(pid);
+        targetOrgList.push(pNode);
+        $('#targetOrg').addTag(targetOrgList);
         expandovalueVoList = data.expandovalueVoList;
         // for (var i = 0; i < orgTypeList.length; i++) {
         //     if (orgTypeList[i].orgTypeCode && orgTypeList[i].orgTypeCode.substr(0, 3) == 'N11') {
@@ -768,16 +799,25 @@ function updateOrg () {
       orgContent: orgContent,
       orgDesc: orgDesc,
       expandovalueVoList: expandovalueVoList,
-      orgMartCode: orgMart
+      orgMartCode: orgMart,
+      moveParentOrgId: moveParentOrgId
   }), function () {
-      parent.changeNodeName(orgId, orgName);
-      parent.moveNode(pid, orgId, sort);
-      if (infoFlag)
-          window.location.replace("list.html?id=" + pid + '&pid=' + ppid + "&name=" + encodeURI(pName));
-      else
-        window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
+      if (moveParentOrgId != pid) {
+          parent.initOrgRelTree();
+      }
+      else {
+          parent.changeNodeName(orgId, orgName);
+          parent.moveNode(pid, orgId, sort);
+          if (infoFlag)
+              window.location.replace("list.html?id=" + pid + '&pid=' + ppid + "&name=" + encodeURI(pName));
+          else
+              window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
+      }
+
       loading.screenMaskDisable('container');
       toastr.success('更新成功！');
+      // parent.test(pid, orgId, sort);
+      // parent.moveId = orgId;
   }, function (err) {
 
   })

@@ -301,6 +301,21 @@
             </div>
           </div>
         </div>
+        <div class="row" style="margin-bottom: 10px;">
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="form-item" style="width: 100%">
+              <label for="contractType" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">承包类型</label>
+              <select id="contractType" class="col-md-8 col-sm-8 col-xs-12" onchange="changeContractType(this)"></select>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="form-item" style="width: 100%">
+              <label for="vipRuleFlg" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">跨区规则</label>
+              <select id="vipRuleFlg" class="col-md-8 col-sm-8 col-xs-12" name="selectable" disabled></select>
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="form-item" style="width: 100%">
@@ -308,33 +323,24 @@
               <select id="countType" class="col-md-8 col-sm-8 col-xs-12" name="countType" xm-select="countType"></select>
             </div>
           </div>
-
-          <div class="col-md-6 col-sm-6 col-xs-12">
-            <div class="form-item" style="width: 100%">
-              <label for="contractType" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">承包类型</label>
-              <select id="contractType" class="col-md-8 col-sm-8 col-xs-12" name="selectable" onchange="changeContractType(this)"></select>
-            </div>
-          </div>
-        </div>
-
-        <div id="crossRegionalRules"></div>
-      </div>
-    </script>
-    <script id="crossRegionalRulesTemplate" type="text/x-handlebars-template">
-      <div class="row">
-        <div class="col-md-6 col-sm-6 col-xs-12">
-          <div class="form-item" style="width: 100%">
-            <label for="vipRuleFlg" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">跨区规则</label>
-            <select id="vipRuleFlg" class="col-md-8 col-sm-8 col-xs-12" name="selectable">
-              <option value="">请选择</option>
-              {{#each data}}
-                <option value="{{itemValue}}">{{itemCnname}}</option>
-              {{/each}}
-            </select>
-          </div>
         </div>
       </div>
     </script>
+    <!--<script id="crossRegionalRulesTemplate" type="text/x-handlebars-template">-->
+      <!--<div class="row">-->
+        <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
+          <!--<div class="form-item" style="width: 100%">-->
+            <!--<label for="vipRuleFlg" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">跨区规则</label>-->
+            <!--<select id="vipRuleFlg" class="col-md-8 col-sm-8 col-xs-12" name="selectable">-->
+              <!--<option value="">请选择</option>-->
+              <!--{{#each data}}-->
+                <!--<option value="{{itemValue}}">{{itemCnname}}</option>-->
+              <!--{{/each}}-->
+            <!--</select>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</script>-->
     <!-- jQuery -->
     <script type="text/javascript" src="/js/core/jquery.js"></script>
     <!-- Bootstrap -->
