@@ -24,7 +24,7 @@ function initPermTable(keyWord){
             },
             { 'data': null, 'title': '权限名称', 'className': 'row-pName',
                 'render': function (data, type, row, meta) {
-                    return "<a href='javascript:void(0);' onclick='setPermInfo()'>"+row.permissionName+"</span>";
+                    return "<a href='javascript:void(0);' onclick='setPermInfo("+row.permissionId+")'>"+row.permissionName+"</span>";
                 }
             },
             { 'data': "regionName", 'title': '管理区域', 'className': 'row-area'},
@@ -91,13 +91,12 @@ function search () {
     // loading.screenMaskDisable('container');
 }
 
-
-function setPermInfo(){
-    window.location.href = "permInfo.html";
+function setPermInfo(id){
+    window.location.href = "permInfo.html?permId="+id;
 }
 
 $("#addBtn").on('click',function(){
-    window.location.href = "addPerm.html";
+    window.location.href = "add.html";
 })
 
 initPermTable("");

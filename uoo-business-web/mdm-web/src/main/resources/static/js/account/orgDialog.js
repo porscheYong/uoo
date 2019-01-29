@@ -37,22 +37,29 @@ function zTreeOnAsyncSuccess(e,treeId, treeNode, msg){
         }
     }
     if(addToEditFlag == 1){
-        var zTreeObj = $.fn.zTree.getZTreeObj("standardTree");
-        for(var i=nodeList.length-2;i>=0;i--){
-            zTreeObj.expandNode(zTreeObj.getNodeByTId(nodeList[i].node.tId), true);
-            zTreeObj.selectNode(treeNode, false);
+        var idx;
+        var tree = $.fn.zTree.getZTreeObj("standardTree");
+        for (var i = nodeList.length - 1; i >= 0; i--) {
+            var node = nodeList[i].node;
+            if (node.id == treeNode.id) {
+                idx = i;
+                break;
+            }
         }
-        zTreeObj.selectNode(treeNode, false);
-        if(zTreeObj.getNodeByTId(nodeList[0].node.tId) != null){
-            zTreeObj.selectNode(zTreeObj.getNodeByTId(nodeList[0].node.tId), false);
-            onNodeClick(null, null, zTreeObj.getNodeByTId(nodeList[0].node.tId));
+
+        if (idx > 1) {
+            var openNode = tree.getNodeByParam('id', nodeList[idx - 1].node.id);
+            tree.expandNode(openNode, true, false, true, true);
+        }
+        else {
+            var openNode = tree.getNodeByParam('id', nodeList[0].node.id);
+            onNodeClick(null, null, openNode);
+            tree.selectNode(openNode, false);
+            setTimeout(function () {
+                tree.showNodeFocus(openNode);
+            }, 300)
         }
     }
-}
-
-function zTreeOnExpand(event, treeId, treeNode){
-    var zTreeObj = $.fn.zTree.getZTreeObj("standardTree");
-    zTreeObj.selectNode(treeNode, false);
 }
 
 // 获取父节点路径
@@ -100,8 +107,7 @@ function initOrgRelTree (orgTreeId) {
         },
         callback: {
             onClick: onNodeClick,
-            onAsyncSuccess: zTreeOnAsyncSuccess,
-            onExpand: zTreeOnExpand
+            onAsyncSuccess: zTreeOnAsyncSuccess
         }
     };
 
