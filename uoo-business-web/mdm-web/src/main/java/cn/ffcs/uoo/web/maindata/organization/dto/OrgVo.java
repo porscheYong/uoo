@@ -49,14 +49,14 @@ public class OrgVo extends BaseVo{
     private int flag;
 
     //移动的目标节点
-    private Long moveOrgId;
+    private Long moveParentOrgId;
 
-    public Long getMoveOrgId() {
-        return moveOrgId;
+    public Long getMoveParentOrgId() {
+        return moveParentOrgId;
     }
 
-    public void setMoveOrgId(Long moveOrgId) {
-        this.moveOrgId = moveOrgId;
+    public void setMoveParentOrgId(Long moveParentOrgId) {
+        this.moveParentOrgId = moveParentOrgId;
     }
 
     public int getFlag() {
