@@ -49,7 +49,7 @@
     </select>
     <select id="listByPermissionId" resultType="cn.ffcs.uoo.system.vo.PermFunction">
           SELECT
-    a.* ,
+    DISTINCT a.FUNC_ID,a.* ,
     b.PRIV_FUNC_ID AS relId 
 FROM
     SYS_FUNCTION a

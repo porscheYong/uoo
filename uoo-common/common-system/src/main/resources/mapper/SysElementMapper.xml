@@ -54,7 +54,7 @@
     </select>
     <select id="listByPermissionId" resultType="cn.ffcs.uoo.system.vo.PermElement">
            SELECT
-    a.* ,
+    DISTINCT a.ELEMENT_ID, a.* ,
     b.PRIV_ELEMENT_ID AS relId 
 FROM
     SYS_ELEMENT a

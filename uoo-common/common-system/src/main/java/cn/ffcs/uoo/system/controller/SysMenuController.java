@@ -92,7 +92,7 @@ public class SysMenuController {
 
         Wrapper<SysMenu> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID);
         if(StringUtils.isNotBlank(keyWord)){
-            wrapper.andNew("MENU_NAME like {0}", "'%"+keyWord+"%'").or("MENU_CODE like {0}","'%"+keyWord+"%'");
+            wrapper.andNew().like("MENU_NAME", keyWord).or().like("MENU_CODE", keyWord);
         }
         wrapper.orderBy("MENU_SORT", true);
         Page<SysMenu> page = sysMenuService.selectPage(new Page<SysMenu>(pageNo, pageSize), wrapper);

@@ -165,6 +165,7 @@ public class SysPermissionController {
         List<SysPermissionFuncRel> funcRels = sysPermissionEditDTO.getFuncRels();
         if(funcRels!=null&&!funcRels.isEmpty()){
             funcRels.forEach(entity->{
+                entity.setFuncCode(entity.getFuncCode());
                 entity.setPrivFuncId(permFuncRelSvc.getId());
                 entity.setCreateDate(new Date());
                 entity.setCreateUser(sysPermissionEditDTO.getCreateUser());
@@ -249,12 +250,12 @@ public class SysPermissionController {
         }
         if(!one.getPermissionCode().equals(permissionCode)){
             //修改了编码  先把对应的关系表改一下
-            permFuncRelSvc.updatePermissionCode(one.getPermissionCode(),permissionCode);
-            permMenuRelSvc.updatePermissionCode(one.getPermissionCode(),permissionCode);
-            permEleRelSvc.updatePermissionCode(one.getPermissionCode(),permissionCode);
-            permFileRelSvc.updatePermissionCode(one.getPermissionCode(),permissionCode);
-            permDataRulesRelSvc.updatePermissionCode(one.getPermissionCode(),permissionCode);
-            permRoleRelSvc.updatePermissionCode(one.getPermissionCode(),permissionCode);
+            permFuncRelSvc.updateForSet("PERMISSION_CODE='"+permissionCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", one.getPermissionCode()));
+            permMenuRelSvc.updateForSet("PERMISSION_CODE='"+permissionCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", one.getPermissionCode()));
+            permEleRelSvc.updateForSet("PERMISSION_CODE='"+permissionCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", one.getPermissionCode()));
+            permFileRelSvc.updateForSet("PERMISSION_CODE='"+permissionCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", one.getPermissionCode()));
+            permDataRulesRelSvc.updateForSet("PERMISSION_CODE='"+permissionCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", one.getPermissionCode()));
+            permRoleRelSvc.updateForSet("PERMISSION_CODE='"+permissionCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", one.getPermissionCode()));
         }
         
         ResponseResult<Void> responseResult = new ResponseResult<Void>();
@@ -434,6 +435,13 @@ public class SysPermissionController {
         permission.setStatusCd(StatusCD.INVALID);
         permission.setStatusDate(new Date());
         permSvc.updateById(permission);
+        // 删除关系
+        permFuncRelSvc.delete(Condition.create().eq("PERMISSION_CODE", permission.getPermissionCode()));
+        permMenuRelSvc.delete(Condition.create().eq("PERMISSION_CODE", permission.getPermissionCode()));
+        permEleRelSvc.delete(Condition.create().eq("PERMISSION_CODE", permission.getPermissionCode()));
+        permFileRelSvc.delete(Condition.create().eq("PERMISSION_CODE", permission.getPermissionCode()));
+        permDataRulesRelSvc.delete(Condition.create().eq("PERMISSION_CODE", permission.getPermissionCode()));
+        permRoleRelSvc.delete(Condition.create().eq("PERMISSION_CODE", permission.getPermissionCode()));
         return ResponseResult.createSuccessResult("删除成功");
     }
 }
