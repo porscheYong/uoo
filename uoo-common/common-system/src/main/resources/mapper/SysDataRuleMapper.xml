@@ -82,4 +82,17 @@
       AND B.DICTIONARY_NAME='RULE_OPERATOR'
       AND A.ITEM_VALUE=#{itemValue}
     </select>
+    <select id="listByPermissionId" resultType="cn.ffcs.uoo.system.vo.PermDataRule">
+            SELECT
+    a.* ,
+    b.PRIV_DATA_REL_ID AS relId 
+FROM
+    SYS_DATA_RULE a
+    LEFT JOIN SYS_PERMISSION_DATA_RULES_REL b ON b.DATA_RULE_ID = a.DATA_RULE_ID
+    LEFT JOIN SYS_PERMISSION c ON c.permission_code = b.permission_code 
+WHERE
+    a.STATUS_CD = '1000' 
+    AND b.STATUS_CD = '1000' 
+    AND c.permission_id = #{permId} 
+    </select>
 </mapper>

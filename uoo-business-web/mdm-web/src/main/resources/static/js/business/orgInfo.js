@@ -33,7 +33,7 @@ $('.orgName').html(orgName);
 if (standardFlag)
     $('#editBtn').remove();
 // 显示组织路径
-parent.getOrgExtInfo();
+parent.getOrgExtInfo(orgName);
 
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){

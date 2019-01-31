@@ -45,17 +45,25 @@ function getParentNodes(parentNode, currentNode) {
 }
 
 // 获取组织完整路径
-function getOrgExtInfo () {
+function getOrgExtInfo (orgName) {
     var pathArry = nodeArr;
     var pathStr = '';
     if (pathArry && pathArry.length > 0) {
         for (var i = pathArry.length - 1; i >= 0; i--) {
             var node = pathArry[i].node;
-            if (pathArry[i].current) {
-                pathStr +=  '<span class="breadcrumb-item">' + node.name + '</span>';
-            } else {
+            if (orgName) {
                 pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+orgId+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
             }
+            else {
+                if (pathArry[i].current) {
+                    pathStr +=  '<span class="breadcrumb-item">' + node.name + '</span>';
+                } else {
+                    pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+orgId+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+                }
+            }
+        }
+        if (orgName) {
+            pathStr +=  '<span class="breadcrumb-item">' + orgName + '</span>';
         }
         $('#businessFrame').contents().find('.breadcrumb').html(pathStr);
     }
@@ -231,5 +239,11 @@ function orgTreeEdit () {
 function addBusiness () {
     var url = "add.html?id=" + orgId +"&orgTreeId=" + orgTreeId + "&refCode=" + refCode + "&name=" + encodeURI(businessName) + "&treeName=" + encodeURI(businessName);
     $('#businessFrame').attr("src",url);
+}
+
+//根据id获取节点
+function getNodeById(orgId) {
+    var tree = $.fn.zTree.getZTreeObj('businessTree');
+    return tree.getNodeByParam('id', orgId);
 }
 initBusinessList();

@@ -97,7 +97,6 @@ public class SysPermissionController {
     @Autowired
     ISysRolePermissionRefService permRoleRelSvc;
     
-    @SuppressWarnings("unchecked")
     @ApiOperation(value = "获取单个数据", notes = "获取单个数据")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Long" ,paramType="path"),
@@ -108,61 +107,11 @@ public class SysPermissionController {
         SysPermissionPrivDTO dto=new SysPermissionPrivDTO();
         SysPermissionDTO sp = permSvc.selectOne(id);
         BeanUtils.copyProperties(sp, dto);
-        List<SysPermissionDataRulesRel> list1 = permDataRulesRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode()));
-        List<SysPermissionElementRel> list2 = permEleRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode()));
-        List<SysPrivFileRel> list3 = permFileRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode()));
-        List<SysPermissionFuncRel> list4 = permFuncRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode()));
-        List<SysPermissionMenuRel> list5 = permMenuRelSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", sp.getPermissionCode()));
-        if(list1!=null&&!list1.isEmpty()){
-            List<Long> collect = list1.stream().map(SysPermissionDataRulesRel::getDataRuleId).collect(Collectors.toList());
-            if(collect!=null&&!collect.isEmpty()){
-                List<SysDataRule> selectBatchIds = dataRuleSvc.selectBatchIds(collect);
-                if(selectBatchIds!=null&&!selectBatchIds.isEmpty()){
-                    Iterator<SysDataRule> iterator = selectBatchIds.iterator();
-                    while (iterator.hasNext()) {
-                        SysDataRule next = iterator.next();
-                        if(!"1000".equals(next.getStatusCd())){
-                            iterator.remove();
-                        }
-                    }
-                }
-                dto.setDataRules(selectBatchIds);
-            }
-        }
-        if(list2!=null&&!list2.isEmpty()){
-            List<String> collect = list2.stream().map(SysPermissionElementRel::getElementCode).collect(Collectors.toList());
-            if(collect!=null&&!collect.isEmpty()){
-                dto.setElements(eleSvc.selectList(Condition.create().in("ELEMENT_CODE", collect).eq("STATUS_CD", "1000")));
-            }
-        }
-        if(list3!=null&&!list3.isEmpty()){
-            List<Integer> collect = list3.stream().map(SysPrivFileRel::getFileId).collect(Collectors.toList());
-            if(collect!=null&&!collect.isEmpty()){
-                List<SysFile> selectBatchIds = fileSvc.selectBatchIds(collect);
-                if(selectBatchIds!=null&&!selectBatchIds.isEmpty()){
-                    Iterator<SysFile> iterator = selectBatchIds.iterator();
-                    while (iterator.hasNext()) {
-                        SysFile next = iterator.next();
-                        if(!"1000".equals(next.getStatusCd())){
-                            iterator.remove();
-                        }
-                    }
-                }
-                dto.setFiles(selectBatchIds);
-            }
-        }
-        if(list4!=null&&!list4.isEmpty()){
-            List<String> collect = list4.stream().map(SysPermissionFuncRel::getFuncCode).collect(Collectors.toList());
-            if(collect!=null&&!collect.isEmpty()){
-                dto.setFuncs(funcSvc.selectList(Condition.create().in("FUNC_CODE", collect).eq("STATUS_CD", "1000")));
-            }
-        }
-        if(list5!=null&&!list5.isEmpty()){
-            List<String> collect = list5.stream().map(SysPermissionMenuRel::getMenuCode).collect(Collectors.toList());
-            if(collect!=null&&!collect.isEmpty()){
-                dto.setMenus(menuSvc.selectList(Condition.create().in("MENU_CODE", collect).eq("STATUS_CD", "1000")));
-            }
-        }
+        dto.setDataRules(dataRuleSvc.listByPermissionId(id));
+        dto.setFiles(fileSvc.listByPermissionId(id));
+        dto.setFuncs(funcSvc.listByPermissionId(id));
+        dto.setElements(eleSvc.listByPermissionId(id));
+        dto.setMenus(menuSvc.listByPermissionId(id));
         return ResponseResult.createSuccessResult(dto, "");
     }
     
@@ -216,6 +165,7 @@ public class SysPermissionController {
         List<SysPermissionFuncRel> funcRels = sysPermissionEditDTO.getFuncRels();
         if(funcRels!=null&&!funcRels.isEmpty()){
             funcRels.forEach(entity->{
+                entity.setFuncCode(entity.getFuncCode());
                 entity.setPrivFuncId(permFuncRelSvc.getId());
                 entity.setCreateDate(new Date());
                 entity.setCreateUser(sysPermissionEditDTO.getCreateUser());
@@ -300,12 +250,12 @@ public class SysPermissionController {
         }
         if(!one.getPermissionCode().equals(permissionCode)){
             //修改了编码  先把对应的关系表改一下
-            permFuncRelSvc.updatePermissionCode(one.getPermissionCode(),permissionCode);
-            permMenuRelSvc.updatePermissionCode(one.getPermissionCode(),permissionCode);
-            permEleRelSvc.updatePermissionCode(one.getPermissionCode(),permissionCode);
-            permFileRelSvc.updatePermissionCode(one.getPermissionCode(),permissionCode);
-            permDataRulesRelSvc.updatePermissionCode(one.getPermissionCode(),permissionCode);
-            permRoleRelSvc.updatePermissionCode(one.getPermissionCode(),permissionCode);
+            permFuncRelSvc.updateForSet("PERMISSION_CODE='"+permissionCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", one.getPermissionCode()));
+            permMenuRelSvc.updateForSet("PERMISSION_CODE='"+permissionCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", one.getPermissionCode()));
+            permEleRelSvc.updateForSet("PERMISSION_CODE='"+permissionCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", one.getPermissionCode()));
+            permFileRelSvc.updateForSet("PERMISSION_CODE='"+permissionCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", one.getPermissionCode()));
+            permDataRulesRelSvc.updateForSet("PERMISSION_CODE='"+permissionCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", one.getPermissionCode()));
+            permRoleRelSvc.updateForSet("PERMISSION_CODE='"+permissionCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("PERMISSION_CODE", one.getPermissionCode()));
         }
         
         ResponseResult<Void> responseResult = new ResponseResult<Void>();
@@ -485,6 +435,13 @@ public class SysPermissionController {
         permission.setStatusCd(StatusCD.INVALID);
         permission.setStatusDate(new Date());
         permSvc.updateById(permission);
+        // 删除关系
+        permFuncRelSvc.delete(Condition.create().eq("PERMISSION_CODE", permission.getPermissionCode()));
+        permMenuRelSvc.delete(Condition.create().eq("PERMISSION_CODE", permission.getPermissionCode()));
+        permEleRelSvc.delete(Condition.create().eq("PERMISSION_CODE", permission.getPermissionCode()));
+        permFileRelSvc.delete(Condition.create().eq("PERMISSION_CODE", permission.getPermissionCode()));
+        permDataRulesRelSvc.delete(Condition.create().eq("PERMISSION_CODE", permission.getPermissionCode()));
+        permRoleRelSvc.delete(Condition.create().eq("PERMISSION_CODE", permission.getPermissionCode()));
         return ResponseResult.createSuccessResult("删除成功");
     }
 }

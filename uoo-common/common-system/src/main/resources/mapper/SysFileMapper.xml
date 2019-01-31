@@ -41,4 +41,17 @@
     and fileName like '%'||#{search}||'%'
  </if>
     </select>
+    <select id="listByPermissionId" resultType="cn.ffcs.uoo.system.vo.PermFile">
+          SELECT
+    a.* ,
+    b.PRIV_FILE_ID AS relId 
+FROM
+    SYS_FILE a
+    LEFT JOIN SYS_PRIV_FILE_REL b ON b.FILE_ID = a.FILE_ID
+    LEFT JOIN SYS_PERMISSION c ON c.permission_code = b.permission_code 
+WHERE
+    a.STATUS_CD = '1000' 
+    AND b.STATUS_CD = '1000' 
+    AND c.permission_id =  #{permId} 
+    </select>
 </mapper>

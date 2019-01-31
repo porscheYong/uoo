@@ -2,6 +2,179 @@
 var loading = new Loading();
 loading.screenMaskEnable('container');
 
+var testData = [{
+    "id": "31948",
+    "state": null,
+    "pid": "31937",
+    "icon": null,
+    "iconClose": null,
+    "iconOpen": null,
+    "name": "高亭支局",
+    "open": false,
+    "level": 4,
+    "checked": false,
+    "chkDisabled": false,
+    "extField1": null,
+    "standardFlag": "0",
+    "parent": true,
+    "tId": "standardTree_31948",
+    "parentTId": "standardTree_31937",
+    "zAsync": false,
+    "isFirstNode": false,
+    "isLastNode": false,
+    "isAjaxing": false,
+    "checkedOld": false,
+    "nocheck": false,
+    "halfCheck": false,
+    "check_Child_State": -1,
+    "check_Focus": false,
+    "isHover": true,
+    "editNameFlag": false,
+}, {
+    "id": "31937",
+    "state": null,
+    "pid": "11",
+    "icon": null,
+    "iconClose": null,
+    "iconOpen": null,
+    "name": "岱山县分公司",
+    "open": true,
+    "level": 3,
+    "checked": false,
+    "chkDisabled": false,
+    "extField1": null,
+    "standardFlag": "0",
+    "parent": true,
+    "tId": "standardTree_31937",
+    "parentTId": "standardTree_11",
+    "zAsync": true,
+    "isFirstNode": false,
+    "isLastNode": false,
+    "isAjaxing": null,
+    "checkedOld": false,
+    "nocheck": false,
+    "halfCheck": false,
+    "check_Child_State": 0,
+    "check_Focus": false,
+    "isHover": false,
+    "editNameFlag": false,
+}, {
+    "id": "11",
+    "state": null,
+    "pid": "1",
+    "icon": null,
+    "iconClose": null,
+    "iconOpen": null,
+    "name": "舟山市分公司",
+    "open": true,
+    "level": 2,
+    "checked": false,
+    "chkDisabled": false,
+    "extField1": null,
+    "standardFlag": "0",
+    "parent": true,
+    "tId": "standardTree_11",
+    "parentTId": "standardTree_1",
+    "zAsync": true,
+    "isFirstNode": false,
+    "isLastNode": false,
+    "isAjaxing": null,
+    "checkedOld": false,
+    "nocheck": false,
+    "halfCheck": false,
+    "check_Child_State": 0,
+    "check_Focus": false,
+    "isHover": false,
+    "editNameFlag": false,
+}, {
+    "id": "1",
+    "state": null,
+    "pid": "10000001",
+    "icon": null,
+    "iconClose": null,
+    "iconOpen": null,
+    "name": "浙江省电信公司",
+    "open": true,
+    "level": 1,
+    "checked": false,
+    "chkDisabled": false,
+    "extField1": null,
+    "standardFlag": "0",
+    "parent": true,
+    "tId": "standardTree_1",
+    "parentTId": "standardTree_10000001",
+    "zAsync": true,
+    "isFirstNode": false,
+    "isLastNode": false,
+    "isAjaxing": null,
+    "checkedOld": false,
+    "nocheck": false,
+    "halfCheck": false,
+    "check_Child_State": 0,
+    "check_Focus": false,
+    "isHover": false,
+    "editNameFlag": false,
+}, {
+    "id": "10000001",
+    "state": null,
+    "pid": "",
+    "icon": null,
+    "iconClose": null,
+    "iconOpen": null,
+    "name": "中国电信股份有限公司浙江分公司",
+    "open": true,
+    "level": 0,
+    "checked": false,
+    "chkDisabled": false,
+    "extField1": null,
+    "standardFlag": "0",
+    "parent": true,
+    "tId": "standardTree_10000001",
+    "parentTId": null,
+    "zAsync": true,
+    "isFirstNode": true,
+    "isLastNode": true,
+    "isAjaxing": null,
+    "checkedOld": false,
+    "nocheck": false,
+    "halfCheck": false,
+    "check_Child_State": 0,
+    "check_Focus": false,
+    "isHover": false,
+    "editNameFlag": false,
+}];
+var changeFlg = false;
+var moveId;
+
+function test() {
+    var tree = $.fn.zTree.getZTreeObj('standardTree');
+    changeFlg = true;
+    for (var i = testData.length - 1; i >= 0; i--) {
+        var node = tree.getNodeByParam('id', testData[i].id);
+        if (!node.open)
+            return tree.expandNode(node, true, false, true, true);
+    }
+}
+
+function onAsyncSuccess (event, treeId, treeNode, msg) {
+    var tree = $.fn.zTree.getZTreeObj('standardTree');
+    if (treeNode.id == testData[0].id) {
+        var pNode = tree.getNodeByParam('id', treeNode.id);
+        var node = tree.getNodeByParam('id', moveId);
+        tree.moveNode(pNode, node, 'inner');
+        setTimeout(function () {
+            tree.showNodeFocus(node);
+        }, 300)
+    }
+    if (changeFlg) {
+        for (var i = testData.length - 1; i >= 0; i--) {
+            var node = tree.getNodeByParam('id', testData[i].id);
+            if (!node.open)
+                tree.expandNode(node, true, false, true, true);
+        }
+    }
+}
+
 var setting = {
     async: {
         enable: true,
@@ -27,7 +200,8 @@ var setting = {
         }
     },
     callback: {
-        onClick: onNodeClick
+        onClick: onNodeClick,
+        onAsyncSuccess: onAsyncSuccess
     }
 };
 var orgId,
@@ -63,17 +237,25 @@ function getParentNodes(parentNode, currentNode) {
 }
 
 // 获取组织完整路径
-function getOrgExtInfo () {
+function getOrgExtInfo (orgName) {
     var pathArry = nodeArr;
     var pathStr = '';
     if (pathArry && pathArry.length > 0) {
         for (var i = pathArry.length - 1; i >= 0; i--) {
             var node = pathArry[i].node;
-            if (pathArry[i].current) {
-                pathStr +=  '<span class="breadcrumb-item">' + node.name + '</span>';
-            } else {
+            if (orgName) {
                 pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+orgId+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+            } else {
+                if (pathArry[i].current) {
+                    pathStr +=  '<span class="breadcrumb-item">' + node.name + '</span>';
+                } else {
+                    pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+orgId+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+                }
             }
+
+        }
+        if (orgName) {
+            pathStr +=  '<span class="breadcrumb-item">' + orgName + '</span>';
         }
         $('#orgFrame').contents().find('.breadcrumb').html(pathStr);
     }
@@ -173,4 +355,12 @@ function selectRootNode () {
     $('.curSelectedNode').trigger('click');
 }
 
+//根据id获取节点
+function getNodeById(orgId) {
+    var tree = $.fn.zTree.getZTreeObj('standardTree');
+    return tree.getNodeByParam('id', orgId);
+}
+
 initOrgRelTree();
+
+

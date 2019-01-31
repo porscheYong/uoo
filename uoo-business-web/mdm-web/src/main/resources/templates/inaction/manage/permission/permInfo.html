@@ -49,6 +49,7 @@
         }
         .col-sm-7 {
             width: 100% !important;
+            text-align: center;
         }
         .col-sm-4 {
             width: 30% !important;
@@ -88,13 +89,30 @@
             filter: alpha(opacity=0);
             position: absolute;
         }
+        .BtnRed2 {
+            width: 82px;
+            height: 40px;
+            border: 1px solid #ee4063 !important;
+            color: #ee4063 !important;
+            background: #FFF !important;
+            border-radius:4px;
+        }
+        #funcResInfoTable_info{
+            display: none;
+        }
+        #funcResInfoTable_filter,
+        #menuResInfoTable_filter{
+            float: left;
+            margin-bottom: 5.5%;
+            margin-top: 4%;
+        }
     </style>
   </head>
 
   <body style="background: #fff;">
         <a class="BoardTitle Back" style="color:#008aff;margin-bottom:10px;border-bottom: 1px solid #ecedef;cursor: pointer;" onclick="backToList()">返回</a>
         <div class="board-title" style="margin-top: 1%;">
-            <span class="name ft18" style="margin-left: 1%;">创建权限</span>
+            <span class="name ft18" style="margin-left: 1%;">编辑权限</span>
         </div>
 
         <div id="editInfo" style="margin-top:30px;">
@@ -165,12 +183,12 @@
                 <li role="presentation" class="" style="width: 12%;">
                     <a href="#tab_content3" role="tab" id="elem-tab" data-toggle="tab" aria-expanded="false">元素资源</a>
                 </li>
-                <li role="presentation" class="" style="width: 12%;">
+                <!-- <li role="presentation" class="" style="width: 12%;">
                     <a href="#tab_content4" role="tab" id="file-tab" data-toggle="tab" aria-expanded="false">文件资源</a>
                 </li>
                 <li role="presentation" class="" style="width: 12%;">
                     <a href="#tab_content5" role="tab" id="data-tab" data-toggle="tab" aria-expanded="false">数据资源</a>
-                </li>
+                </li> -->
             </ul>
 
             <div class="tab-content">
@@ -178,45 +196,75 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-5 col-sm-5 col-xs-5" style="margin-left:2%;">
                             <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">资源信息列表</div>
-                            <div class="pos-relative" style="margin-top: 7px;margin-left:5px;overflow: hidden;">
-                                <div class="col-md-6 col-sm-6 col-xs-6">
-                                    <div class="form-item" style="width: 100%">
-                                        <div class="typeahead col-md-7 col-sm-7 col-xs-7" style="padding: 0;">
-                                            <div>
-                                                <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
-                                                <input class="ui-input typeahead-input tt-input" id="roleSearch" type="text" name="q" placeholder="搜索资源名称" autocomplete="off" spellcheck="false" dir="auto">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
-                                <table id="resInfoTable" class="stripe" width="100%"></table>
+                                <table id="funcResInfoTable" class="stripe" width="100%"></table>
                             </div>
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top:13%;margin-left:2%;">
                             <div>
-                                <button class="BtnBlue" id="addBtn" onclick="addRes()" style="margin-top: 10px;"></button>
+                                <button class="BtnBlue" id="addBtn" onclick="addFuncRes()" style="margin-top: 10px;"></button>
                             </div>
                             <div>
-                                <button class="BtnBlue" id="delBtn" onclick="delRes()" style="margin-top: 10px;"></button>
+                                <button class="BtnBlue" id="delBtn" onclick="delFuncRes()" style="margin-top: 10px;"></button>
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-5">
                             <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">已选择的列表</div>
                             <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top:13%;">
-                                <table id="resSelectedTable" class="stripe" width="100%"></table>
+                                <table id="funcResSelectedTable" class="stripe" width="100%"></table>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="tab-pane" id="tab_content2">
-                    <p>2
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-5 col-sm-5 col-xs-5" style="margin-left:2%;">
+                            <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">资源信息列表</div>
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
+                                <table id="menuResInfoTable" class="stripe" width="100%"></table>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top:13%;margin-left:2%;">
+                            <div>
+                                <button class="BtnBlue" id="addBtn2" onclick="addMenuRes()" style="margin-top: 10px;"></button>
+                            </div>
+                            <div>
+                                <button class="BtnBlue" id="delBtn2" onclick="delMenuRes()" style="margin-top: 10px;"></button>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-5">
+                            <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">已选择的列表</div>
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top:13%;">
+                                <table id="menuResSelectedTable" class="stripe" width="100%"></table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="tab-pane" id="tab_content3">
-                    <p>3
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-5 col-sm-5 col-xs-5" style="margin-left:2%;">
+                            <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">资源信息列表</div>
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
+                                <table id="elemResInfoTable" class="stripe" width="100%"></table>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top:13%;margin-left:2%;">
+                            <div>
+                                <button class="BtnBlue" id="addBtn3" onclick="addElemRes()" style="margin-top: 10px;"></button>
+                            </div>
+                            <div>
+                                <button class="BtnBlue" id="delBtn3" onclick="delElemRes()" style="margin-top: 10px;"></button>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-5">
+                            <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">已选择的列表</div>
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top:13%;">
+                                <table id="elemResSelectedTable" class="stripe" width="100%"></table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="tab-pane" id="tab_content4">
@@ -228,11 +276,11 @@
                 </div>
             </div>
 
-            <div class="row" style="margin-bottom: 10px;">
-                <div style="margin-left:43%;margin-top:5%;">
-                    <button class="ui-button ui-button-primary">保存</button>
-                    <!-- <button class="Btn BtnRed2" id="delAcct" onclick="deleteTbAcct()" style="margin-left: 10px;">删除</button> -->
-                    <button class="ui-button ui-button-cancel" onclick="cancel()" style="margin-left: 10px;">取消</button>
+            <div class="row" style="margin-bottom: 10px;text-align: center;">
+                <div style="margin-top:5%;">
+                    <button class="ui-button ui-button-primary" onclick="updatePermission()">保存</button>
+                    <button class="Btn BtnRed2" id="delAcct" onclick="deletePermission()" style="margin-left: 10px;">删除</button>
+                    <button class="ui-button ui-button-cancel" onclick="backToList()" style="margin-left: 10px;">取消</button>
                 </div>
             </div>
         </div>

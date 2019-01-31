@@ -19,7 +19,7 @@ var table = $("#dataResTable").DataTable({
             }
         },
         { 'data': "colName", 'title': '字段名称', 'className': 'row-fName'},
-        { 'data': "ruleOperatorName", 'title': '规则操作符', 'className': 'row-rule'},
+        { 'data': "ruleOperator", 'title': '规则操作符', 'className': 'row-rule'},
         { 'data': "colValue", 'title': '字段值', 'className': 'row-fVal'},
         { 'data': "statusCd", 'title': '状态', 'className': 'row-state' ,
             'render': function (data, type, row, meta) {

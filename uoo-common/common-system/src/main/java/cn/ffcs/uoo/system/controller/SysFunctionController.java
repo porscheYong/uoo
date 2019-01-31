@@ -44,7 +44,8 @@ public class SysFunctionController {
         pageSize = pageSize==null?20:pageSize;
         Wrapper<SysFunction> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID);
         if(StringUtils.isNotBlank(keyWord)){
-            wrapper.andNew("FUNC_NAME like {0}", "'%"+keyWord+"%'").or("FUNC_CODE like {0}","'%"+keyWord+"%'");
+            wrapper.andNew().like("FUNC_NAME", keyWord).or().like("FUNC_CODE", keyWord);
+            //wrapper.andNew("FUNC_NAME like '%{0}%'", keyWord).or("FUNC_CODE like '%{0}%'",keyWord);
         }
         Page<SysFunction> page = funcSvc.selectPage(new Page<SysFunction>(pageNo, pageSize), wrapper);
         ResponseResult<Page<SysFunction>> rr = ResponseResult.createSuccessResult("");

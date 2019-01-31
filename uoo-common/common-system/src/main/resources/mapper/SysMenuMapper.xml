@@ -68,5 +68,17 @@
 		AND u.ACCOUT = #{accout}
 		ORDER BY MENU_SORT
 	</select>
-
+<select id="listByPermissionId" resultType="cn.ffcs.uoo.system.vo.PermMenu">
+          SELECT
+    a.* ,
+    b.PRIV_MENU_ID AS relId 
+FROM
+    SYS_MENU a
+    LEFT JOIN SYS_PERMISSION_MENU_REL b ON b.MENU_CODE = a.MENU_CODE
+    LEFT JOIN SYS_PERMISSION c ON c.permission_code = b.permission_code 
+WHERE
+    a.STATUS_CD = '1000' 
+    AND b.STATUS_CD = '1000' 
+    AND c.permission_id  =  #{permId} 
+    </select>
 </mapper>

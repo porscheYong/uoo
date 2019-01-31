@@ -1,12 +1,15 @@
 package cn.ffcs.uoo.system.dao;
 
-import cn.ffcs.uoo.system.entity.SysFile;
-import cn.ffcs.uoo.system.vo.SysFileVo;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.baomidou.mybatisplus.plugins.pagination.Pagination;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
+import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
+
+import cn.ffcs.uoo.system.entity.SysFile;
+import cn.ffcs.uoo.system.vo.PermFile;
+import cn.ffcs.uoo.system.vo.SysFileVo;
 
 /**
  * <p>
@@ -20,4 +23,5 @@ public interface SysFileMapper extends BaseMapper<SysFile> {
 
     public Long getId();
     List<SysFileVo> getSysFilePage(Pagination page, @Param("search")String search);
+    public List<PermFile> listByPermissionId(Long permId);
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 import cn.ffcs.uoo.system.entity.SysElement;
+import cn.ffcs.uoo.system.vo.PermElement;
 
 /**
  * <p>
@@ -17,4 +18,5 @@ import cn.ffcs.uoo.system.entity.SysElement;
 public interface SysElementMapper extends BaseMapper<SysElement> {
     List<SysElement> getElementByAccout(String accout);
     Integer getId();
+    public List<PermElement> listByPermissionId(Long permId);
 }

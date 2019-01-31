@@ -22,7 +22,7 @@ var statusCdData = window.top.dictionaryData.statusCd();
 
 $('.orgName').html(orgName);
 // 显示组织路径
-parent.getOrgExtInfo();
+parent.getOrgExtInfo(orgName);
 
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
