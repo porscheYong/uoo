@@ -128,7 +128,7 @@ public interface OrgService extends IService<Org> {
      * @param orgTreeId
      * @return
      */
-    public String moveOrg(Long orgId,Long parentOrgId,Long orgTreeId,Long userId);
+    public String moveOrg(Long orgId,Long parentOrgId,Long orgTreeId,Long userId,String batchNumber);
 
     /**
      * 组织树路径

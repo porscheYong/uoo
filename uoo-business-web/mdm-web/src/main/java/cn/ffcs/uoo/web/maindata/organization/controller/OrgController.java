@@ -2,6 +2,8 @@ package cn.ffcs.uoo.web.maindata.organization.controller;
 
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.organization.dto.Org;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgVo;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
@@ -39,6 +41,7 @@ public class OrgController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.ADD, module="组织新增",methods="addOrg",desc="组织新增")
     public ResponseResult addOrg(@RequestBody OrgVo org) {
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
@@ -52,6 +55,7 @@ public class OrgController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.UPDATE, module="组织编辑",methods="updateOrg",desc="组织编辑")
     public ResponseResult updateOrg(@RequestBody OrgVo org) {
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
@@ -119,6 +123,7 @@ public class OrgController {
 
     })
     @RequestMapping(value = "/deleteOrg", method = RequestMethod.GET)
+    @OperateLog(type= OperateType.DELETE, module="组织删除",methods="deleteOrg",desc="组织删除")
     public ResponseResult<String> deleteOrg(@RequestParam(value = "orgTreeId",required = false)String orgTreeId,
                                             @RequestParam(value = "orgId",required = false)String orgId,
                                             @RequestParam(value = "supOrgId",required = false)String supOrgId){

@@ -366,7 +366,7 @@
             </if>
             AND B.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
             <if test="psonOrgVo.personnelId != null and psonOrgVo.personnelId != ''">
-                AND tbOrgPersonRel.PERSONNEL_ID = #{psonOrgVo.personnelId}
+            AND tbOrgPersonRel.PERSONNEL_ID = #{psonOrgVo.personnelId}
             </if>
             ) AA
             LEFT JOIN TB_PERSONNEL PER ON PER.STATUS_CD='1000' AND PER.PERSONNEL_ID = AA.PERSONNEL_ID
@@ -378,11 +378,73 @@
                      MOBILE  LIKE '%'||#{psonOrgVo.search}||'%' OR
                      CERTNO LIKE '%'||#{psonOrgVo.search}||'%')
             </if>
-        <!--    ORDER BY SORT -->
             )
             <if test="psonOrgVo.sortField!=null and psonOrgVo.sortField!='' and psonOrgVo.sortOrder!=null and psonOrgVo.sortOrder!='' ">
                 order by #{psonOrgVo.sortField}||' '||#{psonOrgVo.sortOrder}
             </if>
+
+
+            <!--WITH ORGFULL AS (SELECT ORG_NAME,ORG_ID,-->
+            <!--PARENT_ORG_ID,SORT,LOC_ID,AREA_CODE_ID,ORG_CODE-->
+            <!--FROM (SELECT A.ORG_ID,A.SORT,A.ORG_NAME,A.LOC_ID,-->
+            <!--A.AREA_CODE_ID,A.ORG_CODE,A.FULL_NAME,B.PARENT_ORG_ID-->
+            <!--FROM TB_ORG  A,TB_ORG_REL B-->
+            <!--WHERE A.STATUS_CD = 1000 AND B.STATUS_CD = 1000 AND A.ORG_ID = B.ORG_ID-->
+            <!--<if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">-->
+                <!--AND ${psonOrgVo.tabOrgParams}-->
+            <!--</if>-->
+            <!--AND B.REF_CODE=#{psonOrgVo.refCode}-->
+            <!--) AA-->
+            <!--START WITH ORG_ID = #{psonOrgVo.orgId}-->
+            <!--CONNECT BY PRIOR AA.ORG_ID =  AA.PARENT_ORG_ID),-->
+            <!--PER AS(-->
+            <!--SELECT T1.PERSONNEL_ID,T1.PSN_NAME,T1.PSN_NBR,T2.CONTENT,T1.CREATE_DATE,T3.CERT_NO,-->
+            <!--T1.NC_CODE,T1.PSN_CODE-->
+            <!--FROM TB_PERSONNEL T1, TB_CONTACT T2, TB_CERT T3-->
+            <!--WHERE T1.STATUS_CD = 1000-->
+            <!--AND T2.STATUS_CD = 1000-->
+            <!--AND T3.STATUS_CD = 1000-->
+            <!--AND T1.PERSONNEL_ID = T2.PERSONNEL_ID-->
+            <!--AND T1.PERSONNEL_ID = T3.PERSONNEL_ID-->
+            <!--AND T2.CONTACT_TYPE = '1'-->
+            <!--AND T3.CERT_TYPE = 1-->
+            <!--AND T2.FIRST_FLAG = 1-->
+            <!--<if test="psonOrgVo.search != null and psonOrgVo.search != ''">-->
+            <!--AND (T1.PSN_NAME LIKE '%'||#{psonOrgVo.search}||'%' OR-->
+                 <!--T1.PSN_CODE LIKE '%'||#{psonOrgVo.search}||'%' OR-->
+                 <!--T2.CONTENT LIKE '%'||#{psonOrgVo.search}||'%' OR-->
+                 <!--T3.CERT_NO LIKE '%'||#{psonOrgVo.search}||'%')-->
+            <!--</if>-->
+            <!--),-->
+            <!--ORGPER AS (-->
+            <!--SELECT  TBORGPERSONREL.ORG_PERSON_ID,TBORGPERSONREL.ORG_ID,-->
+            <!--TBORGPERSONREL.PERSONNEL_ID,TBORGPERSONREL.POST_ID,TBORGPERSONREL.REF_TYPE,-->
+            <!--TBORGPERSONREL.PROPERTY,TBORGPERSONREL.DOUBLE_NAME,TBORGPERSONREL.SORT,-->
+            <!--TBORGPERSONREL.STATUS_CD,TBORGPERSONREL.CREATE_DATE,TBORGPERSONREL.CREATE_USER,-->
+            <!--TBORGPERSONREL.UPDATE_DATE,TBORGPERSONREL.UPDATE_USER,B.ORG_TREE_ID,-->
+            <!--TBORGPERSONREL.STATUS_DATE,D.ORG_NAME-->
+            <!--FROM TB_ORG_PERSON_REL TBORGPERSONREL,-->
+            <!--TB_ORGTREE_ORGPERSON_REL B ,-->
+            <!--ORGFULL D-->
+            <!--WHERE TBORGPERSONREL.STATUS_CD = '1000' AND B.STATUS_CD='1000'-->
+            <!--AND TBORGPERSONREL.ORG_PERSON_ID=B.ORG_PERSON_ID-->
+            <!--AND TBORGPERSONREL.ORG_ID=D.ORG_ID-->
+            <!--<if test="psonOrgVo.tabOrgPerRelParams!='' and psonOrgVo.tabOrgPerRelParams!=null">-->
+               <!--AND ${psonOrgVo.tabOrgPerRelParams}-->
+            <!--</if>-->
+            <!--<if test="psonOrgVo.personnelId != null and psonOrgVo.personnelId != ''">-->
+               <!--AND tbOrgPersonRel.PERSONNEL_ID = #{psonOrgVo.personnelId}-->
+            <!--</if>-->
+            <!--AND B.ORG_TREE_ID = #{psonOrgVo.orgTreeId}-->
+            <!--)-->
+            <!--SELECT *-->
+            <!--FROM (-->
+            <!--SELECT ORG_ID ORGID,ORGPER.PERSONNEL_ID PERSONNELID,-->
+            <!--POST_ID POSTID,REF_TYPE REFTYPE,PROPERTY PROPERTY,DOUBLE_NAME DOUBLENAME,-->
+            <!--ORG_NAME ORGNAME,PSN_NAME PSNNAME,PSN_CODE PSNCODE,-->
+            <!--PSN_NBR PSNNBR,NC_CODE NCCODE,STATUS_CD STATUSCD,-->
+            <!--ORG_TREE_ID ORGTREEID,ORG_PERSON_ID ORGPERSONID,SORT SORT,-->
+            <!--CONTENT MOBILE,CERT_NO CERTNO FROM ORGPER LEFT JOIN PER ON ORGPER.PERSONNEL_ID = PER.PERSONNEL_ID ) WHERE CERTNO IS NOT NULL-->
         </otherwise>
         </choose>
     </select>

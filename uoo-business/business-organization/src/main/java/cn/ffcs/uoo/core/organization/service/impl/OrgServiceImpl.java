@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +50,8 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
     @Autowired
     private OrgRelTypeService orgRelTypeService;
 
-
+    @Autowired
+    private ModifyHistoryService modifyHistoryService;
 
     @Override
     public Long getId(){
@@ -286,7 +288,7 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
     }
 
     @Override
-    public String moveOrg(Long orgId,Long parentOrgId,Long orgTreeId,Long userId){
+    public String moveOrg(Long orgId,Long parentOrgId,Long orgTreeId,Long userId,String batchNumber){
         String str = "";
         OrgVo parentOrg = selectOrgByOrgId(parentOrgId.toString(),orgTreeId.toString());
         if(StrUtil.isNullOrEmpty(parentOrg)){
@@ -307,7 +309,7 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
                 .eq("STATUS_CD","1000")
                 .like("ORG_BIZ_FULL_NAME",fullName,SqlLike.RIGHT);
         int count = orgOrgtreeRelService.selectCount(orgOrgTreeWrapper);
-        if(count>30){
+        if(count>50){
             return "移动组织的下级组织数量太大，请联系管理员操作";
         }
         List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
@@ -321,9 +323,13 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
                 .eq("STATUS_CD","1000")
                 .eq("ORG_ID",orgId);
         OrgRel orgRel = orgRelService.selectOne(orgRelWrapper);
+        OrgRel orgRelOld = new OrgRel();
+        BeanUtils.copyProperties(orgRel,orgRelOld);
         orgRel.setUpdateUser(userId);
         orgRel.setParentOrgId(parentOrgId);
         orgRelService.update(orgRel);
+        modifyHistoryService.addModifyHistory(orgRelOld,orgRel,userId,batchNumber);
+
         List<OrgOrgtreeRel> orgOrgTreeRels =  orgOrgtreeRelService.selectList(orgOrgTreeWrapper);
         if(orgOrgTreeRels!=null && orgOrgTreeRels.size()>0){
             for(OrgOrgtreeRel ootr : orgOrgTreeRels){
@@ -344,7 +350,9 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
             for(OrgVo vo:orgList){
                 TreeNodeVo nodeVo = new TreeNodeVo();
                 nodeVo.setId(vo.getOrgId().toString());
-                nodeVo.setPid(vo.getSupOrgId().toString());
+                if(!StrUtil.isNullOrEmpty(vo.getSupOrgId())){
+                    nodeVo.setPid(vo.getSupOrgId().toString());
+                }
                 nodeVo.setName(vo.getOrgName());
                 treeNodes.add(nodeVo);
             }

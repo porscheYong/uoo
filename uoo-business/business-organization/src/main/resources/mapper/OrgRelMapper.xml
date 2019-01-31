@@ -249,7 +249,7 @@
         )
     </select>
     <!--组织检索翻页-->
-    <select id="selectFuzzyOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
+    <select id="selectFuzzyOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo" useCache="false" flushCache="true">
         SELECT distinct E.ORG_NAME orgName ,E.ORG_ID orgId,D.PARENT_ORG_ID parentOrgId,E.ORG_CODE orgCode
         FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E,
         TB_ORG_ORGTYPE_REL  F
@@ -281,7 +281,7 @@
         </if>
     </select>
     <!--检索出的组织树-->
-    <select id="selectFuzzyOrgRelTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+    <select id="selectFuzzyOrgRelTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo" useCache="false" flushCache="true">
 
         SELECT * FROM (
         SELECT ORG_ID id,PARENT_ORG_ID pid,ORG_NAME name FROM (
@@ -297,7 +297,7 @@
         CONNECT BY AA.ORG_ID = PRIOR AA.PARENT_ORG_ID )
     </select>
     <!--检索出完检索出完整的组织树-->
-    <select id="selectFuzzyFullOrgRelTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
+    <select id="selectFuzzyFullOrgRelTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo" useCache="false" flushCache="true">
 
         WITH ROOTTREE AS(
         SELECT * FROM (

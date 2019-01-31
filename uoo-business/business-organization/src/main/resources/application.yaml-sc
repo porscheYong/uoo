@@ -10,8 +10,8 @@ spring:
       percentage: 1.0
   datasource:
     druid:
-      #url: jdbc:oracle:thin:@134.96.248.48:3436/ZJ4APRD
-      url: jdbc:oracle:thin:@(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.49)(PORT = 3436))(ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.48)(PORT = 3436))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = ZJ4APRD)))
+      url: jdbc:oracle:thin:@134.96.248.49:3436/ZJ4APRD
+      #url: jdbc:oracle:thin:@(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.49)(PORT = 3436))(ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.48)(PORT = 3436))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = ZJ4APRD)))
       driver-class-name: oracle.jdbc.OracleDriver
       username: octopus
       password: octopus

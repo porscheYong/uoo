@@ -561,16 +561,16 @@ public class OrgController extends BaseController {
                 return ret;
             }
         }
+        String batchNumber = modifyHistoryService.getBatchNumber();
         //修改组织关系
-        if(org.getMoveParentOrgId()!=null && !org.getMoveParentOrgId().toString().equals(org.getSupOrgId().toString())){
-            String moveMsg = orgService.moveOrg(org.getOrgId(),org.getMoveParentOrgId(),orgTree.getOrgTreeId(),org.getUpdateUser());
+        if(org.getMoveParentOrgId()!=null && org.getSupOrgId()!=null && !org.getMoveParentOrgId().toString().equals(org.getSupOrgId().toString())){
+            String moveMsg = orgService.moveOrg(org.getOrgId(),org.getMoveParentOrgId(),orgTree.getOrgTreeId(),org.getUpdateUser(),batchNumber);
             if(!StrUtil.isNullOrEmpty(moveMsg)){
                 ret.setState(ResponseResult.STATE_ERROR);
                 ret.setMessage(moveMsg);
                 return ret;
             }
         }
-        String batchNumber = modifyHistoryService.getBatchNumber();
 
         Org newOrg = new Org();
         newOrg.setOrgId(org.getOrgId());
@@ -581,19 +581,25 @@ public class OrgController extends BaseController {
         if(!StrUtil.isNullOrEmpty(org.getAreaCodeId())){
             newOrg.setAreaCodeId(new Long(org.getAreaCodeId()));
         }
-        List<OrgVo> orgListVo = orgRelService.getFullOrgList("1",org.getSupOrgId().toString());
-        if(orgListVo!=null && orgListVo.size()>0){
-            if(orgListVo.size()==1){
-                newOrg.setFullName(org.getOrgName());
-            }else{
-                String fullName = "";
-                for(int i=0;i<orgListVo.size();i++){
-                    fullName += orgListVo.get(i).getOrgName();
+
+        if(!StrUtil.isNullOrEmpty(org.getSupOrgId())){
+            List<OrgVo> orgListVo = orgRelService.getFullOrgList("1",org.getSupOrgId().toString());
+            if(orgListVo!=null && orgListVo.size()>0){
+                if(orgListVo.size()==1){
+                    newOrg.setFullName(org.getOrgName());
+                }else{
+                    String fullName = "";
+                    for(int i=0;i<orgListVo.size();i++){
+                        fullName += orgListVo.get(i).getOrgName();
+                    }
+                    fullName+=org.getOrgName();
+                    newOrg.setFullName(fullName);
                 }
-                fullName+=org.getOrgName();
-                newOrg.setFullName(fullName);
             }
+        }else{
+            newOrg.setFullName(org.getOrgName());
         }
+
 
         newOrg.setOrgName(StrUtil.strnull(org.getOrgName()));
         newOrg.setShortName(StrUtil.strnull(org.getShortName()));
@@ -1026,10 +1032,12 @@ public class OrgController extends BaseController {
             orgOrgtreeRelOne.setOrgBizName(StrUtil.isNullOrEmpty(org.getOrgBizName())?org.getOrgName():org.getOrgBizName());
             // TODO: 2019/1/23
             String fullBizName = "";
-            fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),"");
-            fullBizName+=StrUtil.isNullOrEmpty(org.getOrgBizName())?org.getOrgName():org.getOrgBizName();
             String fullBizNameId = "";
-            fullBizNameId = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),",");
+            if(!StrUtil.isNullOrEmpty(org.getSupOrgId())){
+                fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),"");
+                fullBizNameId = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),",");
+            }
+            fullBizName+=StrUtil.isNullOrEmpty(org.getOrgBizName())?org.getOrgName():org.getOrgBizName();
             fullBizNameId+=","+newOrg.getOrgId();
             orgOrgtreeRelOne.setOrgBizFullName(fullBizName);
             orgOrgtreeRelOne.setOrgBizFullId(fullBizNameId);
