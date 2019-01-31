@@ -3,21 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>uoo</artifactId>
+        <artifactId>uoo-common</artifactId>
         <groupId>cn.ffcs</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>uoo-common</artifactId>
     <packaging>pom</packaging>
-
+    <version>1.0.1-SNAPSHOT</version>
     <modules>
-        <module>common-system</module>
-        <module>common-cache</module>
-        <module>common-queues</module>
-        <module>common-activiti</module>
-        <module>common-log</module>
-        <module>common-workflow</module>
+
     </modules>
+    <artifactId>common-workflow</artifactId>
+    <groupId>xyz.wongs.workflow</groupId>
+
+
+
 
 </project>

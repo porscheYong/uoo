@@ -134,8 +134,8 @@ spring:
     password: 'FUkCrcs4SIzlnia7OoosTd$rO5$lR8669ISeHjji'
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:oracle:thin:@(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.48)(PORT = 3436))
-                                                          (ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.49)(PORT = 3436))
+    url: jdbc:oracle:thin:@(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.49)(PORT = 3436))
+                                                          (ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.48)(PORT = 3436))
                                                           (CONNECT_DATA =
                                                             (SERVER = DEDICATED)
                                                             (SERVICE_NAME = ZJ4APRD)
