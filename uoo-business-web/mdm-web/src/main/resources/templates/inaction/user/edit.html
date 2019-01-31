@@ -370,6 +370,7 @@
                         <label for="email" class="form-item-label col-md-4 col-sm-4 col-xs-12"
                                style="padding-right: 20px;line-height: 40px;text-align: right;">婚姻状况</label>
                         <select id="marriage"  class="col-md-8 col-sm-8 col-xs-12" required>
+                            <option value="" >--请选择--</option>
                         {{#each marriageData}}
                             <option value="{{itemValue}}" {{#eq itemValue ../personalData.marriage}}selected="selected"{{/eq}} >{{itemCnname}}</option>
                         {{/each}}
@@ -385,6 +386,7 @@
                         <label for="email" class="form-item-label col-md-4 col-sm-4 col-xs-12"
                                style="padding-right: 20px;line-height: 40px;text-align: right;">政治面貌</label>
                         <select id="pliticalStatus" class="col-md-8 col-sm-8 col-xs-12" required>
+                            <option value="" >--请选择--</option>
                         {{#each pliticalStatusData}}
                     <option value="{{itemValue}}" {{#eq itemValue ../personalData.pliticalStatus}}selected="selected"{{/eq}} >{{itemCnname}}</option>
                         {{/each}}
@@ -397,11 +399,12 @@
                         <input class="ui-input col-md-8 col-sm-8 col-xs-12" id="nationality" value="{{personalData.nationality}}" />
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
-                        <label for="email" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                        <label for="nation" class="form-item-label col-md-4 col-sm-4 col-xs-12"
                                style="padding-right: 20px;line-height: 40px;text-align: right;">民族</label>
                        <select id="nation" class="col-md-8 col-sm-8 col-xs-12" required>
+                           <option value="" >--请选择--</option>
                         {{#each nationData}}
-                    <option value="{{itemValue}}" {{#eq itemValue ../personalData.nation}}selected="selected"{{/eq}} >{{itemCnname}}</option>
+                        <option value="{{itemValue}}" {{#eq itemValue ../personalData.nation}}selected="selected"{{/eq}} >{{itemCnname}}</option>
                         {{/each}}
                     </select>
                     </div>
