@@ -101,7 +101,9 @@
             display: none;
         }
         #funcResInfoTable_filter,
-        #menuResInfoTable_filter{
+        #menuResInfoTable_filter,
+        #elemResInfoTable_filter,
+        #fileResInfoTable_filter{
             float: left;
             margin-bottom: 5.5%;
             margin-top: 4%;
@@ -183,10 +185,10 @@
                 <li role="presentation" class="" style="width: 12%;">
                     <a href="#tab_content3" role="tab" id="elem-tab" data-toggle="tab" aria-expanded="false">元素资源</a>
                 </li>
-                <!-- <li role="presentation" class="" style="width: 12%;">
+                <li role="presentation" class="" style="width: 12%;">
                     <a href="#tab_content4" role="tab" id="file-tab" data-toggle="tab" aria-expanded="false">文件资源</a>
                 </li>
-                <li role="presentation" class="" style="width: 12%;">
+                <!-- <li role="presentation" class="" style="width: 12%;">
                     <a href="#tab_content5" role="tab" id="data-tab" data-toggle="tab" aria-expanded="false">数据资源</a>
                 </li> -->
             </ul>
@@ -196,7 +198,7 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-5 col-sm-5 col-xs-5" style="margin-left:2%;">
                             <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">资源信息列表</div>
-                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;height: 312px;">
                                 <table id="funcResInfoTable" class="stripe" width="100%"></table>
                             </div>
                         </div>
@@ -221,7 +223,7 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-5 col-sm-5 col-xs-5" style="margin-left:2%;">
                             <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">资源信息列表</div>
-                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;height: 312px;">
                                 <table id="menuResInfoTable" class="stripe" width="100%"></table>
                             </div>
                         </div>
@@ -246,7 +248,7 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-5 col-sm-5 col-xs-5" style="margin-left:2%;">
                             <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">资源信息列表</div>
-                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;height: 312px;">
                                 <table id="elemResInfoTable" class="stripe" width="100%"></table>
                             </div>
                         </div>
@@ -268,7 +270,28 @@
                 </div>
 
                 <div class="tab-pane" id="tab_content4">
-                    <p>4
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-5 col-sm-5 col-xs-5" style="margin-left:2%;">
+                            <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">资源信息列表</div>
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;height: 312px;">
+                                <table id="fileResInfoTable" class="stripe" width="100%"></table>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top:13%;margin-left:2%;">
+                            <div>
+                                <button class="BtnBlue" id="addBtn4" onclick="addFileRes()" style="margin-top: 10px;"></button>
+                            </div>
+                            <div>
+                                <button class="BtnBlue" id="delBtn4" onclick="delFileRes()" style="margin-top: 10px;"></button>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-5">
+                            <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">已选择的列表</div>
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top:13%;">
+                                <table id="fileResSelectedTable" class="stripe" width="100%"></table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="tab-pane" id="tab_content5">

@@ -73,17 +73,9 @@
             </div>
         </div>
 
-        <div class="pos-relative" style="margin-top: 7px;margin-left:5px;overflow: hidden;">
-            <div class="col-md-6 col-sm-6 col-xs-6">
-                <div class="form-item" style="width: 100%">
-                    <div class="typeahead col-md-8 col-sm-8 col-xs-8" style="padding: 0;">
-                        <div>
-                            <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
-                            <input class="ui-input typeahead-input tt-input" id="menuResSearch" type="text" name="q" placeholder="搜索资源" autocomplete="off" spellcheck="false" dir="auto">
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div style="overflow: hidden;">
+            <input class="ui-input ui-input-search col-md-4 col-sm-4 col-xs-4" style="width: 25%;" id="fileSearch" type="text" placeholder="搜索资源" autocomplete="off"/>
+            <button class="ui-button ui-button-primary" id="searchBtn" onclick="search()" style="margin-left:1%;">搜索</button>
         </div>
 
         <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
