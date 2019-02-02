@@ -1,21 +1,24 @@
 package cn.ffcs.uoo.system.service.impl;
 
-import cn.ffcs.uoo.system.entity.SysFile;
-import cn.ffcs.uoo.system.dao.SysFileMapper;
-import cn.ffcs.uoo.system.service.ISysFileService;
-import cn.ffcs.uoo.system.service.ModifyHistoryService;
-import cn.ffcs.uoo.system.util.StrUtil;
-import cn.ffcs.uoo.system.vo.SysFileVo;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import cn.ffcs.uoo.system.dao.SysFileMapper;
+import cn.ffcs.uoo.system.entity.SysFile;
+import cn.ffcs.uoo.system.service.ISysFileService;
+import cn.ffcs.uoo.system.service.ModifyHistoryService;
+import cn.ffcs.uoo.system.util.StrUtil;
+import cn.ffcs.uoo.system.vo.PermFile;
+import cn.ffcs.uoo.system.vo.SysFileVo;
 
 /**
  * <p>
@@ -92,5 +95,10 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
         list = baseMapper.getSysFilePage(page,search);
         page.setRecords(list);
         return page;
+    }
+
+    @Override
+    public List<PermFile> listByPermissionId(Long permId) {
+        return baseMapper.listByPermissionId(permId);
     }
 }

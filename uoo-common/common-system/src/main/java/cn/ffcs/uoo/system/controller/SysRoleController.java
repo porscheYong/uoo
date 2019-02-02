@@ -34,7 +34,6 @@ import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.system.consts.StatusCD;
-import cn.ffcs.uoo.system.entity.SysMenu;
 import cn.ffcs.uoo.system.entity.SysRole;
 import cn.ffcs.uoo.system.entity.SysRolePermissionRef;
 import cn.ffcs.uoo.system.service.ISysDeptRoleRefService;
@@ -159,13 +158,13 @@ public class SysRoleController {
         if(one==null){
             return ResponseResult.createErrorResult("ID不存在");
         }
-        List<SysMenu> tmp = sysRoleService.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", roleCode));
+        List<SysRole> tmp = sysRoleService.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", roleCode));
         if(tmp!=null&&!tmp.isEmpty()){
             if(tmp.size()>1){
                 return ResponseResult.createErrorResult("编码已存在");
             }else{
-                SysMenu obj = tmp.get(0);
-                if(!obj.getMenuId().equals(sysRole.getRoleId())){
+                SysRole obj = tmp.get(0);
+                if(!obj.getRoleId().equals(sysRole.getRoleId())){
                     return ResponseResult.createErrorResult("编码已存在");
                 }
             }

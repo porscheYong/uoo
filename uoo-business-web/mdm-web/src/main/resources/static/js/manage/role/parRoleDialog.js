@@ -12,13 +12,13 @@ function filter (treeId, parentNode, childNodes) {
 
 function getLocation() {
     var treeSetting = {
-        // async: {
-        //     enable: true,
-        //     url: "/sysPosition/getPositionTree?isSync=false",
-        //     autoParam: ["id"],
-        //     type: "get",
-        //     dataFilter: filter
-        // },
+        async: {
+            enable: true,
+            url: "/system/sysRole/treeRole",
+            autoParam: ["id"],
+            type: "get",
+            dataFilter: filter
+        },
         view: {
             showLine: false,
             showIcon: false,
@@ -46,6 +46,7 @@ function getLocation() {
         }
     };
     $http.get('/system/sysRole/treeRole', {
+        id:0
     }, function (data) {
         $.fn.zTree.init($("#locationTree"), treeSetting, data);
         autoCheck();

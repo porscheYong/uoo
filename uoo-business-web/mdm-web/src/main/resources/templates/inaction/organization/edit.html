@@ -43,7 +43,7 @@
           overflow: hidden;
           text-overflow: ellipsis;
       }
-      #locationList, #orgTypeList, #positionList, #postList, #regionId {
+      #locationList, #orgTypeList, #positionList, #postList, #targetOrg {
         opacity: 0;
         filter: alpha(opacity=0);
         position: absolute;
@@ -124,6 +124,16 @@
                       <label for="orgTypeList" class="form-item-label-required col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">组织类别</label>
                       <!--<div id="orgTypeList" class="ui-input col-md-10 col-sm-10 col-xs-12 tagsinput" style="width: 84%; height: auto; min-height: 40px; border: 1px solid #ababaf; border-radius: 4px;" onclick="openTypeDialog()" required></div>-->
                       <input id="orgTypeList" class="ui-input col-md-10 col-sm-10 col-xs-12" style="width: 84%" onclick="openTypeDialog()" required readonly></input>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-item" style="width: 100%">
+                      <label for="targetOrg" class="form-item-label col-md-2 col-sm-2 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;width: 16%;">上级组织</label>
+                      <!--<div id="orgTypeList" class="ui-input col-md-10 col-sm-10 col-xs-12 tagsinput" style="width: 84%; height: auto; min-height: 40px; border: 1px solid #ababaf; border-radius: 4px;" onclick="openTypeDialog()" required></div>-->
+                      <input id="targetOrg" class="ui-input col-md-10 col-sm-10 col-xs-12" style="width: 84%" onclick="openOrgDialog()" readonly></input>
                     </div>
                   </div>
                 </div>

@@ -37,14 +37,28 @@ function zTreeOnAsyncSuccess(e,treeId, treeNode, msg){
         }
     }
     if(addToEditFlag == 1){
-        var zTreeObj = $.fn.zTree.getZTreeObj("standardTree");
-        var curSelectedNode = zTreeObj.getNodeByTId(nodeList[0].node.tId); //当前选择的node
-        for(var i=nodeList.length-1;i>=0;i--){
-            zTreeObj.expandNode(zTreeObj.getNodeByTId(nodeList[i].node.tId), true);
+        var idx;
+        var tree = $.fn.zTree.getZTreeObj("standardTree");
+        for (var i = nodeList.length - 1; i >= 0; i--) {
+            var node = nodeList[i].node;
+            if (node.id == treeNode.id) {
+                idx = i;
+                break;
+            }
         }
-        // zTreeObj.expandNode(curSelectedNode, false);
-        zTreeObj.selectNode(curSelectedNode, false);
-        onNodeClick(null, null, curSelectedNode);
+
+        if (idx > 1) {
+            var openNode = tree.getNodeByParam('id', nodeList[idx - 1].node.id);
+            tree.expandNode(openNode, true, false, true, true);
+        }
+        else {
+            var openNode = tree.getNodeByParam('id', nodeList[0].node.id);
+            onNodeClick(null, null, openNode);
+            tree.selectNode(openNode, false);
+            setTimeout(function () {
+                tree.showNodeFocus(openNode);
+            }, 300)
+        }
     }
 }
 
@@ -103,7 +117,7 @@ function initOrgRelTree (orgTreeId) {
         $.fn.zTree.init($("#standardTree"), setting, data);
         var zTree = $.fn.zTree.getZTreeObj("standardTree");
         var nodes = zTree.getNodes();
-        zTree.expandNode(nodes[0], true);
+        zTree.expandNode(nodes[0], true,false,true,true);
         zTree.selectNode(nodes[0], false);
         onNodeClick(null, null, nodes[0]);
     }, function (err) {

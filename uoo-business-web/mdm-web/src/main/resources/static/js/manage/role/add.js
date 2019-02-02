@@ -32,7 +32,7 @@ function openLocationDialog() {
             $('#location').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
             locationList = checkNode;
-            locationCode = checkNode[0].id;
+            locationCode = checkNode[0].extParams.locCode;
             parent.layer.close(index);
         },
         btn2: function(index, layero){},
@@ -106,7 +106,7 @@ function addRole(){
         statusCd : $("#statusCd").val(),
         sortNum : $("#sortNum").val(),
         roleCode : $("#roleCode").val(),
-        roleName : $("#roleName").val(),
+        roleName : $("#roleName").val()
     }), function (message) {
         backToList();
         parent.initRoleRelTree();

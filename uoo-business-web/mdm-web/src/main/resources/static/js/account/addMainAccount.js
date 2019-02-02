@@ -176,7 +176,7 @@ function openOrgDialog() {
       title: '选择组织',
       shadeClose: true,
       shade: 0.8,
-      area: ['40%', '80%'],
+      area: ['40%', '90%'],
       maxmin: true,
       content: '/inaction/account/orgDialog.html?orgTreeId='+orgTreeId+'&relType=99',
       btn: ['确认', '取消'],

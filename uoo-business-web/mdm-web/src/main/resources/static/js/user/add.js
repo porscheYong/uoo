@@ -1199,6 +1199,7 @@ function savePersonnel () {
     }), function () {
         parent.initBusinessList();
         loading.screenMaskDisable('container');
+        toastr.success('新增成功！');
     }, function (err) {
         loading.screenMaskDisable('container');
     })

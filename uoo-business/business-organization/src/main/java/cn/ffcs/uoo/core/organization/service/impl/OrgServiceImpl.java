@@ -2,25 +2,26 @@ package cn.ffcs.uoo.core.organization.service.impl;
 
 import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.dao.OrgMapper;
-import cn.ffcs.uoo.core.organization.service.OrgOrgtreeRelService;
-import cn.ffcs.uoo.core.organization.service.OrgService;
-import cn.ffcs.uoo.core.organization.service.OrgOrgtypeRelService;
-import cn.ffcs.uoo.core.organization.service.OrgTypeService;
+import cn.ffcs.uoo.core.organization.service.*;
 import cn.ffcs.uoo.core.organization.util.OrgConstant;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
 import cn.ffcs.uoo.core.organization.vo.AreaCodeVo;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
 import cn.ffcs.uoo.core.organization.vo.PageVo;
+import cn.ffcs.uoo.core.organization.vo.TreeNodeVo;
+import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Wrapper;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,14 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
     @Autowired
     private OrgOrgtreeRelService orgOrgtreeRelService;
 
+    @Autowired
+    private OrgRelService orgRelService;
 
+    @Autowired
+    private OrgRelTypeService orgRelTypeService;
+
+    @Autowired
+    private ModifyHistoryService modifyHistoryService;
 
     @Override
     public Long getId(){
@@ -226,5 +234,129 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
     @Override
     public List<AreaCodeVo> getOrgAreaCode(String orgId){
         return baseMapper.getOrgAreaCode(orgId);
+    }
+
+
+
+    /**
+     * 获取组织名称全路
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    @Override
+    public String getFullOrgNameList(String orgTreeId,String orgId,String split){
+        List<OrgVo> voList = baseMapper.getFullOrgList(orgTreeId,orgId);
+        String fullName = "";
+        if(voList!=null && voList.size()>0){
+            for(int i=0;i<voList.size();i++){
+                fullName += voList.get(i).getOrgName();
+                if(!StrUtil.isNullOrEmpty(split)){
+                    fullName += split;
+                }
+            }
+            if(!StrUtil.isNullOrEmpty(fullName) && !StrUtil.isNullOrEmpty(split)){
+                fullName = fullName.substring(0,fullName.length()-split.length());
+            }
+        }
+        return fullName;
+    }
+
+
+    /**
+     * 获取组织标识名称全路径
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    @Override
+    public String getFullOrgIdList(String orgTreeId,String orgId,String split){
+        List<OrgVo> voList = baseMapper.getFullOrgList(orgTreeId,orgId);
+        String fullNameId = "";
+        if(voList!=null && voList.size()>0){
+            for(int i=0;i<voList.size();i++){
+                fullNameId += voList.get(i).getOrgId();
+                if(!StrUtil.isNullOrEmpty(split)){
+                    fullNameId += split;
+                }
+            }
+            if(!StrUtil.isNullOrEmpty(fullNameId) && !StrUtil.isNullOrEmpty(split)){
+                fullNameId = fullNameId.substring(0,fullNameId.length()-split.length());
+            }
+        }
+        return fullNameId;
+    }
+
+    @Override
+    public String moveOrg(Long orgId,Long parentOrgId,Long orgTreeId,Long userId,String batchNumber){
+        String str = "";
+        OrgVo parentOrg = selectOrgByOrgId(parentOrgId.toString(),orgTreeId.toString());
+        if(StrUtil.isNullOrEmpty(parentOrg)){
+            return "移动的父组织不存在";
+        }
+        //当前节点的父节点 全路径
+        // TODO: 2019/1/28 组织全程
+        String fullNameSplit = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),orgId.toString(),",");
+        String fullParentNameSplit = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),parentOrgId.toString(),",");
+        fullNameSplit+=",";
+        fullParentNameSplit+=",";
+        if(fullParentNameSplit.contains(fullNameSplit)){
+            return "节点不能移动到该节点的子节点上";
+        }
+        String fullName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),orgId.toString(),"");
+        com.baomidou.mybatisplus.mapper.Wrapper orgOrgTreeWrapper = Condition.create()
+                .eq("ORG_TREE_ID",orgTreeId)
+                .eq("STATUS_CD","1000")
+                .like("ORG_BIZ_FULL_NAME",fullName,SqlLike.RIGHT);
+        int count = orgOrgtreeRelService.selectCount(orgOrgTreeWrapper);
+        if(count>50){
+            return "移动组织的下级组织数量太大，请联系管理员操作";
+        }
+        List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
+        orgRelTypeListCur = orgRelTypeService.getOrgRelType(orgTreeId.toString());
+        OrgRelType ortCur = new OrgRelType();
+        if(orgRelTypeListCur!=null && orgRelTypeListCur.size()>0){
+            ortCur = orgRelTypeListCur.get(0);
+        }
+        com.baomidou.mybatisplus.mapper.Wrapper orgRelWrapper = Condition.create()
+                .eq("REF_CODE",ortCur.getRefCode())
+                .eq("STATUS_CD","1000")
+                .eq("ORG_ID",orgId);
+        OrgRel orgRel = orgRelService.selectOne(orgRelWrapper);
+        OrgRel orgRelOld = new OrgRel();
+        BeanUtils.copyProperties(orgRel,orgRelOld);
+        orgRel.setUpdateUser(userId);
+        orgRel.setParentOrgId(parentOrgId);
+        orgRelService.update(orgRel);
+        modifyHistoryService.addModifyHistory(orgRelOld,orgRel,userId,batchNumber);
+
+        List<OrgOrgtreeRel> orgOrgTreeRels =  orgOrgtreeRelService.selectList(orgOrgTreeWrapper);
+        if(orgOrgTreeRels!=null && orgOrgTreeRels.size()>0){
+            for(OrgOrgtreeRel ootr : orgOrgTreeRels){
+                fullName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),ootr.getOrgId().toString(),"");
+                ootr.setOrgBizFullName(fullName);
+                orgOrgtreeRelService.update(ootr);
+            }
+        }
+        return str;
+    }
+
+
+    @Override
+    public List<TreeNodeVo> getFullOrgVo(String orgTreeId, String orgId){
+        List<OrgVo> orgList = baseMapper.getFullOrgList(orgTreeId,orgId);
+        List<TreeNodeVo> treeNodes = new ArrayList<>();
+        if(orgList!=null && orgList.size()>0){
+            for(OrgVo vo:orgList){
+                TreeNodeVo nodeVo = new TreeNodeVo();
+                nodeVo.setId(vo.getOrgId().toString());
+                if(!StrUtil.isNullOrEmpty(vo.getSupOrgId())){
+                    nodeVo.setPid(vo.getSupOrgId().toString());
+                }
+                nodeVo.setName(vo.getOrgName());
+                treeNodes.add(nodeVo);
+            }
+        }
+        return treeNodes;
     }
 }

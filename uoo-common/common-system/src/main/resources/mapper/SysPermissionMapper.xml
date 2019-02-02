@@ -32,11 +32,13 @@
 	<select id="selectOne" resultType="cn.ffcs.uoo.system.vo.SysPermissionDTO"
 		parameterType="Long">
 		SELECT
-        p.*
+        p.*,t1.locId,t1.regionName
         FROM
         SYS_PERMISSION p
-        LEFT JOIN ( SELECT cr.REGION_NAME as regionName, cr.REGION_NBR FROM TB_COMMON_REGION cr
-        WHERE cr.STATUS_CD = '1000' ) t1 ON t1.REGION_NBR = p.REGION_NBR 
+        LEFT JOIN ( SELECT c.LOC_NAME AS
+        regionName,c.LOC_ID as locId, c.LOC_CODE FROM
+        TB_POLITICAL_LOCATION c WHERE
+        c.STATUS_CD = '1000') t1 ON t1.LOC_CODE = p.REGION_NBR 
         WHERE p.PERMISSION_ID = #{id}
 		</select>
 	<select id="findList" resultType="cn.ffcs.uoo.system.vo.SysPermissionDTO"
@@ -46,12 +48,15 @@
         SELECT TB.*,ROWNUM RN
         FROM (
 		SELECT
-		p.*
+		p.*,t1.regionName,t1.locId
 		FROM
 		SYS_PERMISSION p
-		LEFT JOIN ( SELECT cr.REGION_NAME as regionName, cr.REGION_NBR FROM TB_COMMON_REGION cr
-		WHERE cr.STATUS_CD = '1000' ) t1 ON t1.REGION_NBR = p.REGION_NBR
+		LEFT JOIN ( SELECT c.LOC_NAME AS
+        regionName,c.LOC_ID as locId, c.LOC_CODE FROM
+        TB_POLITICAL_LOCATION c WHERE
+        c.STATUS_CD = '1000' ) t1 ON t1.LOC_CODE = p.REGION_NBR 
 		<where>
+		p.STATUS_CD='1000'
 		<if test="keyWord != null and keyWord != ''">
 		  AND (p.PERMISSION_NAME like #{keyWord} OR p.PERMISSION_CODE like #{keyWord})
 		</if>
@@ -66,9 +71,12 @@
         count(*)
         FROM
         SYS_PERMISSION p
-        LEFT JOIN ( SELECT cr.REGION_NAME as regionName, cr.REGION_NBR FROM TB_COMMON_REGION cr
-        WHERE cr.STATUS_CD = '1000' ) t1 ON t1.REGION_NBR = p.REGION_NBR
+        LEFT JOIN ( SELECT c.LOC_NAME AS
+        regionName,c.LOC_ID as locId, c.LOC_CODE FROM
+        TB_POLITICAL_LOCATION c WHERE
+        c.STATUS_CD = '1000' ) t1 ON t1.LOC_CODE = p.REGION_NBR 
         <where>
+        p.STATUS_CD='1000' 
         <if test="keyWord != null and keyWord != ''">
          AND (p.PERMISSION_NAME like #{keyWord} OR p.PERMISSION_CODE like #{keyWord})
         </if>

@@ -1,6 +1,7 @@
 
 var oldStep = "#funRes";
 var menuList = []; //元素资源的菜单列表
+var loading = parent.loading;
 $('#resFrame').attr("src","funResList.html");
 
 $("li").on('click',function(){

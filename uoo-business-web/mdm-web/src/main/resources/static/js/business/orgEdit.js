@@ -32,6 +32,9 @@ var editSmallField = false;
 var selectStandardNode = false; //是否选中标准节点
 var selectRevenueCenter = false; //是否选中收入中心
 var U5Node = false; //是否存在U5节点
+var moveParentOrgId = pid;
+var targetOrgList = [];
+var nodeArr;
 
 //字典数据
 var scaleData = window.top.dictionaryData.scale();
@@ -66,6 +69,7 @@ if(typeof $.fn.tagsInput !== 'undefined'){
   $('#positionList').tagsInput();
   $('#postList').tagsInput();
   $('#regionId').tagsInput({unique: true});
+  $('#targetOrg').tagsInput();
 }
 
 //联系人选择
@@ -134,6 +138,8 @@ function openTypeDialog() {
                                 getAreaType();
                                 getCountType();
                                 getContractType();
+                                getVipRuleFlg();
+                                changeContractType('#contractType');
                                 return
                             }
                             else {
@@ -154,6 +160,30 @@ function openTypeDialog() {
         },
         btn2: function(index, layero){},
         cancel: function(){}
+    });
+}
+
+//上级组织选择
+function openOrgDialog() {
+    parent.layer.open({
+        type: 2,
+        title: '上级组织',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['50%', '80%'],
+        maxmin: true,
+        content: '/inaction/modal/standardOrgDialog.html?orgTreeId=' + orgTreeId + '&infoFlag=' + infoFlag,
+        btn: ['确认', '取消'],
+        yes: function(index, layero){
+            //获取layer iframe对象
+            var iframeWin = parent.window[layero.find('iframe')[0].name];
+            nodeArr = iframeWin.nodeArr || iframeWin.nodePath;
+            var node = iframeWin.getCheckdNodes();
+            $('#targetOrg').importTags(node);
+            targetOrgList = node;
+            moveParentOrgId = targetOrgList[0].id;
+            parent.layer.close(index);
+        }
     });
 }
 
@@ -645,17 +675,28 @@ function getContractType (type) {
     $('#contractType').selectMatch();
 }
 
+// 跨区规则
+function getVipRuleFlg (type) {
+    var option = '<option value="">--请选择--</option>';
+    for (var i = 0; i < vipRuleFlgData.length; i++) {
+        var select = type === vipRuleFlgData[i].itemValue? 'selected' : '';
+        option += "<option value='" + vipRuleFlgData[i].itemValue + "' " + select + ">" + vipRuleFlgData[i].itemCnname +"</option>";
+    }
+    $('#vipRuleFlg').append(option);
+    $('#vipRuleFlg').selectMatch();
+}
+
 //改变承包类型选中值，渲染跨区规则
 function changeContractType(ele) {
     var selectVal = $(ele).children('option:selected').val();
-    if (selectVal && $('#vipRuleFlg').length == 0) {
-        var crossRegionalRulesTemplate = Handlebars.compile($("#crossRegionalRulesTemplate").html());
-        var crossRegionalRulesHtml = crossRegionalRulesTemplate({ruleList: vipRuleFlgData, ruleData: vipRuleData});
-        $('#crossRegionalRules').html(crossRegionalRulesHtml);
+    if (selectVal) {
+        $('#vipRuleFlg').attr('disabled', false);
+    }
+    if (!selectVal) {
+        $('#vipRuleFlg').attr('disabled', true);
+        $('#vipRuleFlg').val('');
         $('#vipRuleFlg').selectMatch();
     }
-    if (!selectVal)
-        $('#crossRegionalRules').html('');
 }
 
 // 获取组织基础信息
@@ -707,6 +748,10 @@ function getOrg (orgId) {
         $('#orgTypeList').addTag(orgTypeList);
         $('#positionList').addTag(positionList);
         $('#postList').addTag(orgPostList);
+        //获取父节点
+        var pNode = parent.getNodeById(pid);
+        targetOrgList.push(pNode);
+        $('#targetOrg').addTag(targetOrgList);
         expandovalueVoList = data.expandovalueVoList;
 
         if (refCode == '0401') {
@@ -744,6 +789,7 @@ function getOrg (orgId) {
                     getAreaType(areaData);
                     getCountType();
                     getContractType(contractData);
+                    getVipRuleFlg(vipRuleData);
                     changeContractType('#contractType');
                     $('#small').find(':input').each(function () {
                         $(this).hover(function () {
@@ -889,14 +935,20 @@ function updateOrg () {
       orgContent: orgContent,
       orgDesc: orgDesc,
       expandovalueVoList: expandovalueVoList,
-      orgMartCode: orgMart
+      orgMartCode: orgMart,
+      moveParentOrgId: moveParentOrgId
   }), function () {
-      parent.changeNodeName(orgId, orgName);
-      parent.moveNode(pid, orgId, sort);
-      if (infoFlag)
-          window.location.replace("list.html?id=" + pid + '&orgTreeId=' + orgTreeId + "&refCode=" + refCode + '&pid=' + ppid + "&name=" + encodeURI(pName));
-      else
-          window.location.replace("list.html?id=" + orgId + '&orgTreeId=' + orgTreeId + "&refCode=" + refCode + '&pid=' + pid + "&name=" + encodeURI(orgName));
+      if (moveParentOrgId != pid) {
+          parent.initTree(orgTreeId);
+      }
+      else {
+          parent.changeNodeName(orgId, orgName);
+          parent.moveNode(pid, orgId, sort);
+          if (infoFlag)
+              window.location.replace("list.html?id=" + pid + '&orgTreeId=' + orgTreeId + "&refCode=" + refCode + '&pid=' + ppid + "&name=" + encodeURI(pName));
+          else
+              window.location.replace("list.html?id=" + orgId + '&orgTreeId=' + orgTreeId + "&refCode=" + refCode + '&pid=' + pid + "&name=" + encodeURI(orgName));
+      }
       loading.screenMaskDisable('container');
       toastr.success('更新成功！');
   }, function () {

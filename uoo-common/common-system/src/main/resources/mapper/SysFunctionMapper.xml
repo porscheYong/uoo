@@ -47,4 +47,17 @@
         AND u.STATUS_CD = '1000'
         AND u.ACCOUT = #{accout}
     </select>
+    <select id="listByPermissionId" resultType="cn.ffcs.uoo.system.vo.PermFunction">
+          SELECT
+    DISTINCT a.FUNC_ID,a.* ,
+    b.PRIV_FUNC_ID AS relId 
+FROM
+    SYS_FUNCTION a
+    LEFT JOIN SYS_PERMISSION_FUNC_REL b ON b.FUNC_CODE = a.FUNC_CODE
+    LEFT JOIN SYS_PERMISSION c ON c.permission_code = b.permission_code 
+WHERE
+    a.STATUS_CD = '1000' 
+    AND b.STATUS_CD = '1000' 
+    AND c.permission_id =  #{permId} 
+    </select>
 </mapper>

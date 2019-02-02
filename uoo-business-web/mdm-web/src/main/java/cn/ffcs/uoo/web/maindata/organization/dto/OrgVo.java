@@ -48,6 +48,17 @@ public class OrgVo extends BaseVo{
     //组织存在组织树标识
     private int flag;
 
+    //移动的目标节点
+    private Long moveParentOrgId;
+
+    public Long getMoveParentOrgId() {
+        return moveParentOrgId;
+    }
+
+    public void setMoveParentOrgId(Long moveParentOrgId) {
+        this.moveParentOrgId = moveParentOrgId;
+    }
+
     public int getFlag() {
         return flag;
     }
