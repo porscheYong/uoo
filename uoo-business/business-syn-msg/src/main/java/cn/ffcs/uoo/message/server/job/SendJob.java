@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -57,13 +58,19 @@ public class SendJob {
                 if(list != null && list.size() >0){
                     list.forEach((temp)->{
                         String type = temp.getImportType();
-                        Long value = Long.parseLong(temp.getImportValue());
+                        Long value = null;
+
+                        if(temp.getImportValue() != null){
+                            value = Long.parseLong(temp.getImportValue());
+                        }
+
                         switch (type){
                             case "orgId":{
                                 TbOrg org = tbOrgMapper.selectById(value);
                                 if(org == null){
                                     temp.setStatusCd("-2");
                                     temp.setFailReason("组织标识不在数据库");
+                                    temp.setHandleDate(new Date());
                                     tbImportMapper.updateById(temp);
                                 }else{
                                     String msg = "";
@@ -78,6 +85,7 @@ public class SendJob {
                                     }
                                     temp.setStatusCd("1");
                                     temp.setSimpleData(msg);
+                                    temp.setHandleDate(new Date());
                                     tbImportMapper.updateById(temp);
                                 }
                             };break;
@@ -86,6 +94,7 @@ public class SendJob {
                                 if(tbSlaveAcct == null){
                                     temp.setStatusCd("-2");
                                     temp.setFailReason("从账号标识不在数据库");
+                                    temp.setHandleDate(new Date());
                                     tbImportMapper.updateById(temp);
                                 }else{String msg ="";
                                     if("1000".equals(tbSlaveAcct.getStatusCd())){
@@ -99,6 +108,7 @@ public class SendJob {
                                     }
                                     temp.setStatusCd("1");
                                     temp.setSimpleData(msg);
+                                    temp.setHandleDate(new Date());
                                     tbImportMapper.updateById(temp);
                                 }
                             };break;
@@ -107,6 +117,7 @@ public class SendJob {
                                 if(tbPersonnelList == null && tbPersonnelList.size() <=0){
                                     temp.setStatusCd("-2");
                                     temp.setFailReason("人员/主账号不在数据库");
+                                    temp.setHandleDate(new Date());
                                     tbImportMapper.updateById(temp);
                                 }else{
                                     String cd = "1100";
@@ -128,6 +139,7 @@ public class SendJob {
                                     }
                                     temp.setStatusCd("1");
                                     temp.setSimpleData(msg);
+                                    temp.setHandleDate(new Date());
                                     tbImportMapper.updateById(temp);
                                 }
                             };break;

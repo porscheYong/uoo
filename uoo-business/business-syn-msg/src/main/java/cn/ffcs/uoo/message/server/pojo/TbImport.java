@@ -10,6 +10,7 @@ import lombok.Data;
 import org.apache.ibatis.annotations.SelectKey;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @TableName("tb_import")
@@ -36,6 +37,9 @@ public class TbImport extends Model<TbImport> {
 
     @TableField("fail_Reason")
     private String failReason;
+
+    @TableField("HANDLE_DATE")
+    private Date handleDate;
 
     @Override
     protected Serializable pkVal() {
