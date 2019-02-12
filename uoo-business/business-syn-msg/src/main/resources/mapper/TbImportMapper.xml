@@ -9,8 +9,9 @@
     <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
     <result column="SIMPLE_DATA" jdbcType="VARCHAR" property="simpleData" />
     <result column="FAIL_REASON" jdbcType="VARCHAR" property="failReason" />
+    <result column="HANDLE_DATE" jdbcType="DATE" property="handleDate"></result>
   </resultMap>
   <sql id="Base_Column_List">
-    IMPORT_ID, IMPORT_TYPE, IMPORT_VALUE, BATCH_CODE, STATUS_CD, SIMPLE_DATA, FAIL_REASON
+    IMPORT_ID, IMPORT_TYPE, IMPORT_VALUE, BATCH_CODE, STATUS_CD, SIMPLE_DATA, FAIL_REASON, HANDLE_DATE
   </sql>
 </mapper>

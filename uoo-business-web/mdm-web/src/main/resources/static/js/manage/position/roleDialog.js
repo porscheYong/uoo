@@ -26,37 +26,50 @@ if (!Array.prototype.indexOf){
     };
 }
 
+function filter (treeId, parentNode, childNodes) {
+    return childNodes.data
+}
+
 // 角色树初始化
 function initRoleTree () {
     var roleTetting = {
-      view: {
-          showLine: false,
-          showIcon: false,
-          dblClickExpand: false
-      },
-      data: {
-          simpleData: {
-              enable:true,
-              idKey: "id",
-              pIdKey: "pid",
-              rootPId: null
-          }
-      },
-      callback: {
-          beforeClick: roleBeforeClick,
-          onCheck: onRoleCheck
-      },
-      check: {
-          enable: true,
-          chkStyle: 'checkbox',
-          chkboxType: { "Y": "", "N": "" }
-      }
+        async: {
+            enable: true,
+            url: "/system/sysRole/treeRole",
+            autoParam: ["id"],
+            type: "get",
+            dataFilter: filter
+        },
+        view: {
+            showLine: false,
+            showIcon: false,
+            dblClickExpand: false
+        },
+        data: {
+            key: {
+                isParent: "parent",
+            },
+            simpleData: {
+                enable:true,
+                idKey: "id",
+                pIdKey: "pid",
+                rootPId: null
+            }
+        },
+        callback: {
+            beforeClick: roleBeforeClick,
+            onCheck: onRoleCheck
+        },
+        check: {
+            enable: true,
+            chkStyle: 'checkbox',
+            chkboxType: { "Y": "", "N": "" }
+        }
     };
-    $http.get('/system/sysRole/treeRole', {}, 
+    $http.get('/system/sysRole/treeRole', {
+        id : 0
+    }, 
     function (data) {
-        // for(var i=0;i < data.length;i++){
-        //     allRoles.push({"id":data[i].id,"pid":data[i].pid,"name":data[i].name});
-        // }
         $.fn.zTree.init($("#roleTree"), roleTetting, data);
         autoCheck();
     }, function (err) {
@@ -146,7 +159,7 @@ function autoCheck () {
     // checkRole.push({"roleId":node.id,"roleName":""});
     renderTag();
   }
-  zTree.expandAll(true);  
+//   zTree.expandAll(true);  
 }
 
 initRoleTree();

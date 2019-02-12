@@ -658,6 +658,8 @@ function addOrg () {
 
 // 添加搜索子节点
 function  addTreeNode () {
+    if (!formValidate.isAllPass())
+        return;
     var loading = parent.loading;
     loading.screenMaskEnable('container');
     //划小扩展字段

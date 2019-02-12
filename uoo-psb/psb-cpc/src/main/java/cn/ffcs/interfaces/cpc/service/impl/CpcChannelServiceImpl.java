@@ -225,7 +225,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                 if (staff.get("MOBILE_PHONE") != null) {
                                     TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
                                             String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
-                                            "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
+                                            "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
                                     tbContact.setCreateUser(1004040L);
                                     tbContactMapper.insert(tbContact);
                                 }

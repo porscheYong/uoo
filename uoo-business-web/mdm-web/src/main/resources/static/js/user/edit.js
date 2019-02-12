@@ -17,6 +17,22 @@ var imgUrl = "";
 // seajs.use('../../../static/vendors/lulu/js/common/ui/Select', function () {
 //   $('select').selectMatch();
 // })
+
+//字典数据
+var certTypeData = window.top.dictionaryData.certType();
+var nationData = window.top.dictionaryData.nation();
+var pliticalStatusData = window.top.dictionaryData.pliticalStatus();
+var marriageData = window.top.dictionaryData.marriage();
+var memRelationData = window.top.dictionaryData.memRelation();
+var refTypeData = window.top.dictionaryData.refType();
+
+personalData.certTypeData = certTypeData;
+personalData.nationData = nationData;
+personalData.pliticalStatusData = pliticalStatusData;
+personalData.marriageData = marriageData;
+personalData.memRelation = memRelationData;
+personalData.refTypeData = refTypeData;
+
 function getUserAccount(){
     $http.get('/user/getUserList', {personnelId:personnelId}, function (data) {
         personalData.userList=data;
@@ -33,13 +49,7 @@ function getOrgTreeList () {
 
     })
 }
-function getRefType () {
-    $http.get('/tbDictionaryItem/getList/REF_TYPE', {}, function (data) {
-        personalData.refType=data;
-    }, function (err) {
 
-    })
-}
 function getYesNo () {
     $http.get('/tbDictionaryItem/getList/YES_NO', {}, function (data) {
         personalData.yesNo=data;
@@ -75,14 +85,7 @@ function getFamilyInfo(){
      
 
 }
-// 与本人关系
-function getMemRelation () {
-    $http.get('/tbDictionaryItem/getList/MEM_RELATION', {}, function (data) {
-        personalData.memRelation=data;
-    }, function (err) {
 
-    })
-}
 // SCHOOL_TYPE
 function getSchoolType () {
     $http.get('/tbDictionaryItem/getList/SCHOOL_TYPE', {}, function (data) {
@@ -96,46 +99,6 @@ function getGender () {
     $http.get('/tbDictionaryItem/getList/GENDER', {}, function (data) {
         genderData=data;
         personalData.genderData=genderData;
-    }, function (err) {
-
-    })
-}
-
-// 获取证件类型字典数据
-function getCertType () {
-    $http.get('/tbDictionaryItem/getList/CERT_TYPE', {}, function (data) {
-        certTypeData=data;
-        personalData.certTypeData=certTypeData;
-    }, function (err) {
-
-    })
-}
-
-// 获取民族字典数据
-function getNation () {
-    $http.get('/tbDictionaryItem/getList/NATION', {}, function (data) {
-        nationData=data;
-        personalData.nationData=nationData;
-    }, function (err) {
-
-    })
-}
-
-// 获取政治面貌字典数据
-function getPliticalStatus () {
-    $http.get('/tbDictionaryItem/getList/PLITICAL_STATUS', {}, function (data) {
-        pliticalStatusData=data;
-        personalData.pliticalStatusData=pliticalStatusData;
-    }, function (err) {
-
-    })
-}
-
-// 获取婚姻状况字典数据
-function getMarriage () {
-    $http.get('/tbDictionaryItem/getList/MARRIAGE', {}, function (data) {
-        marriageData=data;
-        personalData.marriageData=marriageData;
     }, function (err) {
 
     })
@@ -1025,16 +988,10 @@ $(document).ready(function(){
         orgTreeId=0;
     }
 
-    getRefType();
     getYesNo();
     getOrgTreeList();
     getSchoolType();
-    getMemRelation();
     getGender();
-    getCertType();
-    getNation();
-    getPliticalStatus();
-    getMarriage();
     getJobInfo();
     getEduInfo();
     getFamilyInfo();

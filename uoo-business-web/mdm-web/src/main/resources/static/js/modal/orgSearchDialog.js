@@ -2,6 +2,8 @@ var orgTreeId = getQueryString('orgTreeId'),
     table,
     query,
     delayTime = 500;
+var orgFrame = parent.window['standardOrg'] || parent.window['business'];
+var query = orgFrame.document.getElementById('orgName').value;
 
 function initOrgTable (query) {
     table = $("#orgTable").DataTable({
@@ -71,6 +73,18 @@ function initOrgTable (query) {
                         $(this).addClass('selected');
                     }
                 });
+                //该组织已挂在组织树其他节点上提示
+                $('#orgTable tbody tr.unselectable').click(function () {
+                    if (orgFrame && orgFrame.parent.layer) {
+                        orgFrame.parent.layer.confirm('该组织已挂在组织树其他节点上!', {
+                            icon: 0,
+                            title: '提示',
+                            btn: ['确定']
+                        }, function(index){
+                            parent.layer.close(index);
+                        });
+                    }
+                });
             }, function (err) {
 
             })
@@ -78,6 +92,9 @@ function initOrgTable (query) {
         "createdRow": function( row, data, dataIndex ) {
             if ( !data.flag ) {
                 $(row).addClass( 'selectable' );
+            }
+            else {
+                $(row).addClass( 'unselectable' );
             }
         }
     });
@@ -99,4 +116,10 @@ function getSelectOrg () {
     return table.rows('.selected').data();
 }
 
-initOrgTable();
+if (query) {
+    $('#orgInput').val(query);
+    initOrgTable(query)
+}
+else {
+    initOrgTable();
+}

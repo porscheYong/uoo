@@ -3,6 +3,7 @@ var permId = getQueryString('permId');
 var funcResSelectedList = [];   //已选择表格的功能数据
 var menuResSelectedList = [];   //已选择表格的菜单数据
 var elemResSelectedList = [];   //已选择表格的元素数据
+var fileResSelectedList = [];   //已选择表格的文件数据
 var locationList = [];
 var locationCode;
 
@@ -15,19 +16,27 @@ var menuResInfoTable;
 var elemResSelectedTable;   //元素资源
 var elemResInfoTable;
 
+var fileResSelectedTable;   //文件资源
+var fileResInfoTable;
+
 var funcData;
 var menuData;
 var elemData;
+var fileData;
 var locId = 0;
 var toastr = window.top.toastr;
+var loading = parent.loading;
+
+loading.screenMaskEnable('LAY_app_body');
 
 //获取权限信息 
 function getSysPermission(){
     $http.get('/system/sysPermission/get/'+permId, {
     }, function (data) {
         initPermInfo(data);
+        loading.screenMaskDisable('LAY_app_body');
     }, function (err) {
-        // loading.screenMaskDisable('container');
+        loading.screenMaskDisable('LAY_app_body');
     });
 }
 
@@ -41,6 +50,7 @@ function getFuncRes(keyWord){
         funcData = data.records;
         initFuncTable(data.records);
     }, function (err) {
+        loading.screenMaskDisable('LAY_app_body');
     });
 }
 
@@ -54,6 +64,7 @@ function getMenuRes(keyWord){
         menuData = data.records;
         initMenuTable(data.records);
     }, function (err) {
+        loading.screenMaskDisable('LAY_app_body');
     });
 }
 
@@ -67,6 +78,21 @@ function getElemRes(keyWord){
         elemData = data.records;
         initElemTable(data.records);
     }, function (err) {
+        loading.screenMaskDisable('LAY_app_body');
+    });
+}
+
+//获取文件资源数据
+function getFileRes(search){
+    $http.get('/sysFile/getSysFilePage', {
+        pageSize : 1000,
+        pageNo : 1,
+        search : search
+    }, function (data) {
+        fileData = data.records;
+        initFileTable(data.records);
+    }, function (err) {
+        loading.screenMaskDisable('LAY_app_body');
     });
 }
 
@@ -86,9 +112,12 @@ function initPermInfo(result){
     funcResSelectedList = result.funcs;
     menuResSelectedList = result.menus;
     elemResSelectedList = result.elements;
+    fileResSelectedList = result.files;
     initFuncSelectedTable(funcResSelectedList);
     initMenuSelectedTable(menuResSelectedList);
     initElemSelectedTable(elemResSelectedList);
+    initFileSelectedTable(fileResSelectedList);
+    loading.screenMaskDisable('LAY_app_body');
 }
 
 //判断填入input中的值是否为null
@@ -491,6 +520,137 @@ function delElemRes(){
     inputClick("elemResSelectedTable");
 }
 
+// ************************************************************************
+//文件资源
+function initFileTable(results){
+    fileResInfoTable = $("#fileResInfoTable").DataTable({
+        'data': results,
+        'destroy':true,
+        'searching': true,
+        'autoWidth': true,
+        'ordering': false,
+        'paging': true,
+        'info': false,
+        "lengthChange": false,
+        "scrollY": "190px",
+        'scrollCollapse': true,
+        'columns': [
+            { 'data': null, 'title': '选择', 'className': 'row-select' ,
+                'render': function (data, type, row, meta) {
+                    return "<input type='checkbox' id='file_"+row.fileId+"' name='checkbox'><label for='file_"+row.fileId+"' class='ui-checkbox'></label>";
+                }
+            },
+            { 'data': "fileName", 'title': '文件名称', 'className': 'row-fName'},
+            { 'data': "fileId", 'title': '文件编码', 'className': 'row-fCode'}
+        ],
+        "iDisplayLength":5,
+        'language': {
+            'emptyTable': '没有数据',  
+            'loadingRecords': '加载中...',  
+            'processing': '查询中...',  
+            'search': '',  
+            'lengthMenu': ' _MENU_ ',  
+            'zeroRecords': '没有数据',  
+            'paginate': {  
+                'first':      '首页',  
+                'last':       '尾页',  
+                'next':       '下一页',  
+                'previous':   '上一页'  
+            },   
+            'infoEmpty': '没有数据'
+        }
+    });
+
+    inputClick("fileResInfoTable");
+    $("#fileResInfoTable_filter").parent().prev().css("display","none");
+    $(".dataTables_filter input").attr("placeholder","搜索资源");
+}
+
+//初始化元素已选表格
+function initFileSelectedTable(selectedList){
+    fileResSelectedTable = $("#fileResSelectedTable").DataTable({
+        'data': selectedList,
+        'destroy':true,
+        'searching': false,
+        'autoWidth': true,
+        'ordering': false,
+        'paging': true,
+        'info': false,
+        "lengthChange": false,
+        "scrollY": "190px",
+        'scrollCollapse': true,
+        'columns': [
+            { 'data': null, 'title': '选择', 'className': 'row-select' ,
+                'render': function (data, type, row, meta) {
+                    return "<input type='checkbox' id='fileS_"+row.fileId+"' name='checkbox'><label for='fileS_"+row.fileId+"' class='ui-checkbox'></label>";
+                }
+            },
+            { 'data': "fileName", 'title': '文件名称', 'className': 'row-fName'},
+            { 'data': "fileId", 'title': '文件编码', 'className': 'row-fCode'}
+        ],
+        "iDisplayLength":5,
+        'language': {
+            'emptyTable': '没有数据',  
+            'loadingRecords': '加载中...',  
+            'processing': '查询中...',  
+            'search': '检索:',  
+            'lengthMenu': ' _MENU_ ',  
+            'zeroRecords': '没有数据',  
+            'paginate': {  
+                'first':      '首页',  
+                'last':       '尾页',  
+                'next':       '下一页',  
+                'previous':   '上一页'  
+            },   
+            'infoEmpty': '没有数据'
+        }
+    });
+
+    inputClick("fileResSelectedTable");
+}
+
+//添加文件资源
+function addFileRes(){
+    var codeList = [];      //要添加至已选择列表的功能数据code
+    var resList = getSelectRow(fileResInfoTable);
+    if(fileResSelectedList.length != 0){
+        for(var j=0;j<fileResSelectedList.length;j++){
+            codeList.push(fileResSelectedList[j].fileId);
+        }
+    }
+
+    for(var i=0;i<resList.length;i++){
+        if(codeList.indexOf(resList[i].fileId) == -1){
+            fileResSelectedList.unshift(resList[i]);
+        }
+    }
+    initFileSelectedTable(fileResSelectedList);
+    initFileTable(fileData);
+    inputClick("fileResInfoTable");
+    inputClick("fileResSelectedTable");
+}
+
+//移除文件资源
+function delFileRes(){
+    var saveData = [];
+    var codeList = [];
+    var allData = fileResSelectedTable.data();
+    var delResList = getSelectRow(fileResSelectedTable);
+
+    for(var i=0;i<delResList.length;i++){
+        codeList.push(delResList[i].fileId);
+    }
+
+    for(var j=0;j<allData.length;j++){
+        if(codeList.indexOf(allData[j].fileId) == -1){
+            saveData.push(allData[j]);
+        }
+    }
+    fileResSelectedList = saveData;
+    initFileSelectedTable(saveData);
+    inputClick("fileResSelectedTable");
+}
+
 //复选框点击事件
 function inputClick(tableName){
     $('#'+tableName).delegate('tbody tr td input','click',function(){
@@ -550,16 +710,26 @@ function openLocationDialog() {
 function updatePermission(){
     var funcRels = [];
     var menuRels = [];
+    var elementRels = [];
+    var fileRels = [];
     for(var i=0;i<funcResSelectedList.length;i++){
         funcRels.push({"funcCode":funcResSelectedList[i].funcCode,"relId":funcResSelectedList[i].relId});
     }
     for(var j=0;j<menuResSelectedList.length;j++){
         menuRels.push({"menuCode":menuResSelectedList[j].menuCode,"relId":menuResSelectedList[j].relId});
     }
+    for(var k=0;k<elemResSelectedList.length;k++){
+        elementRels.push({"elementCode":elemResSelectedList[k].elementCode,"relId":elemResSelectedList[k].relId});
+    }
+    for(var l=0;l<fileResSelectedList.length;l++){
+        fileRels.push({"fileId":fileResSelectedList[l].fileId});
+    }
 
     $http.post('/system/sysPermission/update', JSON.stringify({  
         funcRels : funcRels,
         menuRels : menuRels,
+        elementRels : elementRels,
+        fileRels : fileRels,
         notes : $("#notes").val(),
         permissionName : $("#permissionName").val(),
         permissionCode : $("#permissionCode").val(),
@@ -582,8 +752,10 @@ function deletePermission(){
         title: '提示',
         btn: ['确定','取消']
         }, function(index, layero){
+            loading.screenMaskEnable('LAY_app_body');
             $http.get('/system/sysPermission/delete/'+permId, {  
             }, function (message) {
+                loading.screenMaskDisable('LAY_app_body');
                 backToList();
                 parent.layer.close(index);
                 toastr.success("删除成功！");
@@ -602,6 +774,7 @@ function backToList(){
 
 //刷新权限页面
 function reflashPermInfo(){
+    loading.screenMaskEnable('LAY_app_body');
     window.location.href = "permInfo.html?permId="+permId;
 }
 
@@ -612,13 +785,16 @@ $('#myTabs a').click(function (e) {
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
 })
 
-getSysPermission();
 getFuncRes("");
 getMenuRes("");
 getElemRes("");
+getFileRes("");
+getSysPermission();
 $("#addBtn").html("添加 >>");
 $("#delBtn").html("<< 移除");
 $("#addBtn2").html("添加 >>");
 $("#delBtn2").html("<< 移除");
 $("#addBtn3").html("添加 >>");
 $("#delBtn3").html("<< 移除");
+$("#addBtn4").html("添加 >>");
+$("#delBtn4").html("<< 移除");
