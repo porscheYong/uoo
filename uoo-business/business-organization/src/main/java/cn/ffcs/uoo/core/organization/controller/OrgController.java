@@ -20,6 +20,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,18 +35,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.multipart.MultipartFile;
 import sun.swing.StringUIClientPropertyKey;
 
 import javax.annotation.Resource;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -345,7 +348,7 @@ public class OrgController extends BaseController {
 
             String fullBizNameId = "";
             fullBizNameId = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),",");
-            fullBizNameId+=","+newOrg.getOrgId();
+            fullBizNameId=","+fullBizNameId+","+newOrg.getOrgId()+",";
             // TODO: 2019/1/23 获取组织树ID  组织组织树新增字段 end
 
 
@@ -1038,7 +1041,7 @@ public class OrgController extends BaseController {
                 fullBizNameId = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),",");
             }
             fullBizName+=StrUtil.isNullOrEmpty(org.getOrgBizName())?org.getOrgName():org.getOrgBizName();
-            fullBizNameId+=","+newOrg.getOrgId();
+            fullBizNameId=","+fullBizNameId+","+newOrg.getOrgId()+",";
             orgOrgtreeRelOne.setOrgBizFullName(fullBizName);
             orgOrgtreeRelOne.setOrgBizFullId(fullBizNameId);
 
@@ -1712,39 +1715,29 @@ public class OrgController extends BaseController {
         return ret;
     }
 
-//    @ApiOperation(value = "获取BSS组织", notes = "获取BSS组织")
-////    @UooLog(value = "获取BSS组织", key = "getBssOrg")
-////    @RequestMapping(value = "/getBssOrg", method = RequestMethod.GET)
-////    @Transactional(rollbackFor = Exception.class)
-////    public ResponseResult<Page<TreeNodeVo>> getBssOrg() throws IOException {
-////        ResponseResult<Page<TreeNodeVo>> ret = new ResponseResult<List<TreeNodeVo>>();
-////        orgService.getBssOrg();
-////        return ret;
-////    }
 
-//    @ApiOperation(value = "生成excel文件", notes = "生成excel文件")
-//    @UooLog(value = "生成excel文件", key = "createExcelFile")
-//    @RequestMapping(value = "/createExcelFile", method = RequestMethod.GET)
+
+//    @ApiOperation(value = "生成excel文件数据", notes = "生成excel文件数据")
+//    @UooLog(value = "生成excel文件数据", key = "createExcelFile")
+//    @RequestMapping(value = "/createExcelFile", method=RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 //    @Transactional(rollbackFor = Exception.class)
-//    public ResponseResult<String> createExcelFile() throws IOException {
+//    public ResponseResult<String> createExcelFileData(@RequestParam(value="fileInfo",required = false) MultipartFile fileInfo) throws IOException {
 //        ResponseResult<String> ret = new ResponseResult<String>();
-//        List<String> list = new ArrayList<>();
-//        //ExcelUtil.exportExcel("测试",);
+//        String fileName = fileInfo.getOriginalFilename();
+//        FileInputStream is = (FileInputStream) fileInfo.getInputStream();
+//        HSSFWorkbook wb = null;
+//        wb = new HSSFWorkbook(fileInfo.getInputStream());
+//        HSSFSheet sheet = wb.getSheetAt(0);
+//        for(int i= sheet.getFirstRowNum();i<=sheet.getLastRowNum();i++){
+//            HSSFRow row = sheet.getRow(i);
+//            Iterator cells = row.cellIterator();
+//            while(cells.hasNext()){
+//                HSSFCell cell = (HSSFCell) cells.next();
+//                System.out.println(cell.getStringCellValue());
+//            }
+//        }
 //        return ret;
 //    }
-
-//    @ApiOperation(value = "组织移动", notes = "组织移动")
-//    @UooLog(value = "组织移动", key = "updateOrgMove")
-//    @RequestMapping(value = "/updateOrgMove", method = RequestMethod.GET)
-//    @Transactional(rollbackFor = Exception.class)
-//    public ResponseResult<String> updateOrgMove(Long orgId,Long parentOrgId) throws IOException {
-//        ResponseResult<String> ret = new ResponseResult<String>();
-//        List<String> list = new ArrayList<>();
-//        //ExcelUtil.exportExcel("测试",);
-//        return ret;
-//    }
-
-
 
 
 

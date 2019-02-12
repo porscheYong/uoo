@@ -181,6 +181,25 @@ public class CommonSystemServiceImpl implements CommonSystemService {
 
 
     /**
+     * 获取指定表权限参数
+     * @param tabName
+     * @param sysDataRuleList
+     * @return
+     */
+    @Override
+    public String getSysDataRuleParams(String tabName,String tabColName,List<SysDataRule> sysDataRuleList){
+        String params = "";
+        if(sysDataRuleList!=null && sysDataRuleList.size()>0){
+            for(SysDataRule sysDataRule : sysDataRuleList){
+                if(sysDataRule.getTabName().equals(tabName) && sysDataRule.getColName().equals(tabColName)){
+                    return sysDataRule.getColValue();
+                }
+            }
+        }
+        return params;
+    }
+
+    /**
      * 获取指定表权限sql（表别名）
      * @param tabAliasName
      * @param tabName

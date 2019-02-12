@@ -1,12 +1,11 @@
-package cn.ffcs.uoo.core.organization.entity;
+package cn.ffcs.uoo.web.maindata.organization.dto;
 
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -24,17 +23,15 @@ public class ExcelOrgImport extends Model<ExcelOrgImport> {
     @TableField("EXCEL_ORG_IMPORT_ID")
     private Long excelOrgImportId;
     @TableField("IMP_SEQ")
-    private String impSeq;
+    private Long impSeq;
     @TableField("ORG_ID")
-    private String orgId;
+    private Long orgId;
     @TableField("PARENT_ORG_ID")
-    private String parentOrgId;
+    private Long parentOrgId;
     @TableField("ORG_NAME")
     private String orgName;
     @TableField("FILE_NAME")
     private String fileName;
-    @TableField("FILE_SIGN")
-    private String fileSign;
     @TableField("SIGN")
     private String sign;
     @TableField("CONTENT")
@@ -51,25 +48,7 @@ public class ExcelOrgImport extends Model<ExcelOrgImport> {
     private Long updateUser;
     @TableField("STATUS_DATE")
     private Date statusDate;
-    @TableField("ORG_TREE_ID")
-    private Long orgTreeId;
 
-
-    public String getFileSign() {
-        return fileSign;
-    }
-
-    public void setFileSign(String fileSign) {
-        this.fileSign = fileSign;
-    }
-
-    public Long getOrgTreeId() {
-        return orgTreeId;
-    }
-
-    public void setOrgTreeId(Long orgTreeId) {
-        this.orgTreeId = orgTreeId;
-    }
 
     public Long getExcelOrgImportId() {
         return excelOrgImportId;
@@ -79,27 +58,27 @@ public class ExcelOrgImport extends Model<ExcelOrgImport> {
         this.excelOrgImportId = excelOrgImportId;
     }
 
-    public String getImpSeq() {
+    public Long getImpSeq() {
         return impSeq;
     }
 
-    public void setImpSeq(String impSeq) {
+    public void setImpSeq(Long impSeq) {
         this.impSeq = impSeq;
     }
 
-    public String getOrgId() {
+    public Long getOrgId() {
         return orgId;
     }
 
-    public void setOrgId(String orgId) {
+    public void setOrgId(Long orgId) {
         this.orgId = orgId;
     }
 
-    public String getParentOrgId() {
+    public Long getParentOrgId() {
         return parentOrgId;
     }
 
-    public void setParentOrgId(String parentOrgId) {
+    public void setParentOrgId(Long parentOrgId) {
         this.parentOrgId = parentOrgId;
     }
 
@@ -197,7 +176,6 @@ public class ExcelOrgImport extends Model<ExcelOrgImport> {
         ", parentOrgId=" + parentOrgId +
         ", orgName=" + orgName +
         ", fileName=" + fileName +
-        ", fileSign=" + fileSign +
         ", sign=" + sign +
         ", content=" + content +
         ", statusCd=" + statusCd +
@@ -206,7 +184,6 @@ public class ExcelOrgImport extends Model<ExcelOrgImport> {
         ", updateDate=" + updateDate +
         ", updateUser=" + updateUser +
         ", statusDate=" + statusDate +
-                ", orgTreeId=" + orgTreeId +
         "}";
     }
 }

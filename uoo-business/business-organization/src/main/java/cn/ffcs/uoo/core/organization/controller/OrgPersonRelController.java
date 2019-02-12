@@ -594,6 +594,8 @@ public class OrgPersonRelController extends BaseController {
         OrgRelType ort = orts.get(0);
 
         PsonOrgVo psonOrgVo = new PsonOrgVo();
+        psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
+
         //获取权限
         if(!StrUtil.isNullOrEmpty(accout)) {
             List<String> tabNames = new ArrayList<String>();
@@ -617,20 +619,22 @@ public class OrgPersonRelController extends BaseController {
                 psonOrgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
             }
         }
-
+        String orgOrgTreeRelParams = orgService.getFullOrgIdList(orgtree.getOrgTreeId().toString(),orgId,",");
+        orgOrgTreeRelParams="tbOrgOrgTreeRel.ORG_BIZ_FULL_ID like ',"+orgOrgTreeRelParams+",%'";
+        psonOrgVo.setTabOrgOrgTreeRelParams(orgOrgTreeRelParams);
         psonOrgVo.setRefCode(ort.getRefCode());
-        psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
         psonOrgVo.setOrgId(new Long(orgId));
-        //psonOrgVo.setOrgRootId(new Long(orgRootId));
         psonOrgVo.setOrgTreeId(orgtree.getOrgTreeId());
         psonOrgVo.setSortField(StrUtil.strnull(sortField));
         psonOrgVo.setSortOrder(StrUtil.strnull(sortOrder));
         if(!StrUtil.isNullOrEmpty(personnelId)){
             psonOrgVo.setPersonnelId(new Long(personnelId));
         }
-
         if(!StrUtil.isNullOrEmpty(search)){
             psonOrgVo.setSearch(search);
+            if(StrUtil.isNumeric(search)){
+                psonOrgVo.setIsSearchNum("1");
+            }
         }
         if(!StrUtil.isNullOrEmpty(pageSize)){
             psonOrgVo.setPageSize(pageSize);

@@ -29,6 +29,8 @@ public interface CommonSystemService {
 
     public boolean isOrgTreeAutho(String orgTreeId,List<SysDataRule> rulelist);
 
+    public String getSysDataRuleParams(String tabName,String tabColName,List<SysDataRule> sysDataRuleList);
+
     public String getSysDataRuleSql(String tabName, List<SysDataRule> sysDataRuleList);
 
     public String getSysDataRuleSql(String tabAliasName,String tabName, List<SysDataRule> sysDataRuleList);

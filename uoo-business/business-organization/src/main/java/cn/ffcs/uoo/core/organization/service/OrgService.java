@@ -122,6 +122,14 @@ public interface OrgService extends IService<Org> {
     public String getFullOrgIdList(String orgTreeId,String orgId,String split);
 
     /**
+     * 移动组织判断
+     * @param orgId
+     * @param parentOrgId
+     * @param orgTreeId
+     * @return
+     */
+    public String JudgeMoveOrg(Long orgId,Long parentOrgId,String orgName,Long orgTreeId);
+    /**
      * 组织移动
      * @param orgId
      * @param parentOrgId

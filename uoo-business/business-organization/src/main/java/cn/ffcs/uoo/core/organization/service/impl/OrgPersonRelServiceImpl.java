@@ -1,9 +1,11 @@
 package cn.ffcs.uoo.core.organization.service.impl;
 
+import cn.ffcs.uoo.core.organization.entity.Org;
 import cn.ffcs.uoo.core.organization.entity.OrgPersonRel;
 import cn.ffcs.uoo.core.organization.dao.OrgPersonRelMapper;
 import cn.ffcs.uoo.core.organization.entity.Post;
 import cn.ffcs.uoo.core.organization.service.OrgPersonRelService;
+import cn.ffcs.uoo.core.organization.service.OrgService;
 import cn.ffcs.uoo.core.organization.service.PostService;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
 import cn.ffcs.uoo.core.organization.vo.PsonOrgVo;
@@ -12,6 +14,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,6 +31,9 @@ import java.util.List;
  */
 @Service
 public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, OrgPersonRel> implements OrgPersonRelService {
+
+    @Autowired
+    private OrgService orgService;
 
     @Override
     public Long getId(){
@@ -127,14 +133,13 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
                 ,psonOrgVo.getPageSize()==0?10:psonOrgVo.getPageSize());
         List<PsonOrgVo> list = baseMapper.selectPerOrgRelPage(page,psonOrgVo);
         for(PsonOrgVo psOrg : list){
-            if(!StrUtil.isNullOrEmpty(psOrg.getPostId())){
-                Post post = baseMapper.getPost(psOrg.getPostId());
-                psOrg.setPostName(StrUtil.strnull(post.getPostName()));
+            if(!StrUtil.isNullOrEmpty(psOrg.getOrgId())){
+                Wrapper orgWrapper = Condition.create()
+                        .eq("ORG_ID", psOrg.getOrgId())
+                        .eq("STATUS_CD", "1000");
+                Org org = orgService.selectOne(orgWrapper);
+                psOrg.setOrgName(StrUtil.strnull(org.getOrgName()));
             }
-//            if(!StrUtil.isNullOrEmpty(psOrg.getPersonnelId())){
-//                String mobile = baseMapper.getMobile(psOrg.getPersonnelId().toString());
-//                psOrg.setMobile(mobile);
-//            }
         }
         page.setRecords(list);
         return page;
@@ -172,14 +177,13 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
                 ,psonOrgVo.getPageSize()==0?10:psonOrgVo.getPageSize());
         List<PsonOrgVo> list = baseMapper.selectAllPerOrgRelPage(page,psonOrgVo);
         for(PsonOrgVo psOrg : list){
-            if(!StrUtil.isNullOrEmpty(psOrg.getPostId())){
-                Post post = baseMapper.getPost(psOrg.getPostId());
-                psOrg.setPostName(StrUtil.strnull(post.getPostName()));
+            if(!StrUtil.isNullOrEmpty(psOrg.getOrgId())){
+                Wrapper orgWrapper = Condition.create()
+                        .eq("ORG_ID", psOrg.getOrgId())
+                        .eq("STATUS_CD", "1000");
+                Org org = orgService.selectOne(orgWrapper);
+                psOrg.setOrgName(StrUtil.strnull(org.getOrgName()));
             }
-//            if(!StrUtil.isNullOrEmpty(psOrg.getPersonnelId())){
-//                String mobile = baseMapper.getMobile(psOrg.getPersonnelId().toString());
-//                psOrg.setMobile(mobile);
-//            }
         }
         page.setRecords(list);
         return page;

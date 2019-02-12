@@ -216,6 +216,11 @@ public class SysOrganizationController {
             ret.setMessage("组织编码不能为空");
             return ret;
         }
+        if(vo.getParentOrgCode().equals(vo.getOrgCode())){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("父节点不能等于子节点");
+            return ret;
+        }
         String batchNum = modifyHistoryService.getBatchNumber();
         SysOrganization sysvo = new SysOrganization();
         BeanUtils.copyProperties(vo,sysvo);

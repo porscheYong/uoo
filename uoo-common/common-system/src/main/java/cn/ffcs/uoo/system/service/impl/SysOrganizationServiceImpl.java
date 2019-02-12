@@ -189,6 +189,7 @@ public class SysOrganizationServiceImpl extends ServiceImpl<SysOrganizationMappe
         if(vo!=null){
             List<SysPositionVo> list = sysPositionService.getSysOrgPosition(orgCode);
             vo.setSysPositionVos(list);
+
         }
         return vo;
     }
