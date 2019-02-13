@@ -134,8 +134,19 @@ public class OrgVo extends BaseVo{
     private String tabOrgRelParams;
     //TB_ORG_ORGTYPE_REL
     private String tabOrgOrgTypeParams;
+    //tb_org_orgtree_rel
+    private String tabOrgOrgTreeRelParams;
     //组织excel导入列表
     private List<ExcelOrgImportVo> excelOrgImportVoList;
+
+
+    public String getTabOrgOrgTreeRelParams() {
+        return tabOrgOrgTreeRelParams;
+    }
+
+    public void setTabOrgOrgTreeRelParams(String tabOrgOrgTreeRelParams) {
+        this.tabOrgOrgTreeRelParams = tabOrgOrgTreeRelParams;
+    }
 
     public List<ExcelOrgImportVo> getExcelOrgImportVoList() {
         return excelOrgImportVoList;

@@ -63,21 +63,21 @@
 
     <select id="queryOrgTreeChilden" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
         SELECT DISTINCT CC.* FROM (
-        SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.PARENT_ORG_ID PID,B.STANDARD_FLAG standardFlag,G.Sort sort
+        SELECT  B.ORG_NAME NAME, B.ORG_ID ID ,A.PARENT_ORG_ID PID,B.STANDARD_FLAG standardFlag,orgOrgTreeRel.Sort sort
         FROM TB_ORG_REL         A,
         TB_ORG                  B,
         TB_ORG_ORGTYPE_REL      F,
         TB_ORG_REL_TYPE         C,
         TB_OGT_ORG_RELTYPE_CONF D,
         TB_ORG_TREE             E,
-        TB_ORG_ORGTREE_REL G
+        TB_ORG_ORGTREE_REL orgOrgTreeRel
         WHERE A.STATUS_CD = '1000'
         AND B.STATUS_CD = '1000'
         AND C.STATUS_CD = '1000'
         AND D.STATUS_CD = '1000'
         AND E.STATUS_CD = '1000'
         AND F.STATUS_CD = '1000'
-        AND G.STATUS_CD = '1000'
+        AND orgOrgTreeRel.STATUS_CD = '1000'
         AND F.ORG_ID = A.ORG_ID
         <if test="orgOrgTypeParams!='' and orgOrgTypeParams!=null">
             AND ${orgOrgTypeParams}
@@ -89,8 +89,11 @@
         <if test="orgParams!='' and orgParams!=null">
             AND ${orgParams}
         </if>
-        AND B.ORG_ID=G.ORG_ID
-        AND E.ORG_TREE_ID = G.ORG_TREE_ID
+        AND B.ORG_ID=orgOrgTreeRel.ORG_ID
+        <if test="orgOrgTreeRelParams!='' and orgOrgTreeRelParams!=null">
+            AND ${orgOrgTreeRelParams}
+        </if>
+        AND E.ORG_TREE_ID = orgOrgTreeRel.ORG_TREE_ID
         AND E.ORG_TREE_ID = #{orgTreeId}
         <if test="pid != null">
             AND A.PARENT_ORG_ID = #{pid}
@@ -252,7 +255,7 @@
     <select id="selectFuzzyOrgRelPage" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo" useCache="false" flushCache="true">
         SELECT distinct E.ORG_NAME orgName ,E.ORG_ID orgId,D.PARENT_ORG_ID parentOrgId,E.ORG_CODE orgCode
         FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E,
-        TB_ORG_ORGTYPE_REL  F
+        TB_ORG_ORGTYPE_REL  F,TB_ORG_ORGTREE_REL orgOrgTreeRel
         WHERE
         A.STATUS_CD = '1000'
         AND B.STATUS_CD = '1000'
@@ -260,8 +263,13 @@
         AND D.STATUS_CD = '1000'
         AND E.STATUS_CD = '1000'
         AND F.STATUS_CD = '1000'
+        AND orgOrgTreeRel.STATUS_CD = '1000'
         AND E.ORG_ID=F.ORG_ID
         AND D.ORG_ID=E.ORG_ID
+        AND D.ORG_ID=orgOrgTreeRel.ORG_ID
+        <if test="orgVo.tabOrgOrgTreeRelParams!='' and orgVo.tabOrgOrgTreeRelParams!=null">
+            AND ${orgVo.tabOrgOrgTreeRelParams}
+        </if>
         <if test="orgVo.tabOrgOrgTypeParams!='' and orgVo.tabOrgOrgTypeParams!=null">
             AND ${orgVo.tabOrgOrgTypeParams}
         </if>
@@ -270,6 +278,7 @@
         </if>
         AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
         AND C.REF_CODE=D.REF_CODE
+        AND A.ORG_TREE_ID = orgOrgTreeRel.ORG_TREE_ID
         AND A.ORG_TREE_ID = B.ORG_TREE_ID
         AND A.ORG_TREE_ID = #{orgVo.orgTreeId}
         <if test="orgVo.search != null and orgVo.search != ''">

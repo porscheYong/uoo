@@ -241,7 +241,8 @@
                 </if>
                 <if test='psonOrgVo.isSearchNum!="1"' >
                     AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR
-                    PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%' )
+                    PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%'　OR
+                    CERTNO LIKE '%'||#{psonOrgVo.search}||'%')
                 </if>
             </if>
 
@@ -392,7 +393,8 @@
                     </if>
                     <if test='psonOrgVo.isSearchNum!="1"' >
                         AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR
-                        PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%' )
+                        PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%' OR
+                        CERTNO LIKE '%'||#{psonOrgVo.search}||'%')
                     </if>
                 </if>
                 )
@@ -537,7 +539,8 @@
                 </if>
                 <if test='psonOrgVo.isSearchNum!="1"' >
                     AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR
-                    PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%' )
+                    PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%' OR
+                    CERTNO LIKE '%'||#{psonOrgVo.search}||'%')
                 </if>
             </if>
             )

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -308,6 +309,38 @@ public class CommonSystemServiceImpl implements CommonSystemService {
             return true;
         }
         return isRet;
+    }
+
+    /**
+     *
+     * @param orgIds
+     * @return
+     */
+    @Override
+    public String getOrgOrgTreeRelSql(String orgIds){
+
+        String orgGroup[] = orgIds.split("\\|");
+        List<String> OrgIdlist = new ArrayList();
+        for(String orgG : orgGroup){
+            String[] orgIdsz = orgG.substring(1,orgG.length()-1).split(",");
+            for(String orgId:orgIdsz){
+                OrgIdlist.add(orgId);
+            }
+        }
+        HashSet h = new HashSet(OrgIdlist);
+        OrgIdlist.clear();
+        OrgIdlist.addAll(h);
+        String orgOrgTreeRelParams = "(orgOrgTreeRel.ORG_ID in (";
+        for(String orgId : OrgIdlist){
+            orgOrgTreeRelParams+=orgId+",";
+        }
+        orgOrgTreeRelParams = orgOrgTreeRelParams.substring(0,orgOrgTreeRelParams.length()-1);
+        orgOrgTreeRelParams+=")";
+        for(String og : orgGroup){
+            orgOrgTreeRelParams+=" or orgOrgTreeRel.ORG_BIZ_FULL_ID like '"+og+"%'";
+        }
+        orgOrgTreeRelParams+=")";
+        return orgOrgTreeRelParams;
     }
 
 }

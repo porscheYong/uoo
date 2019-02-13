@@ -35,4 +35,5 @@ public interface CommonSystemService {
 
     public String getSysDataRuleSql(String tabAliasName,String tabName, List<SysDataRule> sysDataRuleList);
 
+    public String getOrgOrgTreeRelSql(String orgIds);
 }

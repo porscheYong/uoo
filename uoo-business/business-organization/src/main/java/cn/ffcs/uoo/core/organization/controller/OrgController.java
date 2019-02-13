@@ -1567,6 +1567,7 @@ public class OrgController extends BaseController {
             tabNames.add("TB_ORG");
             tabNames.add("TB_ORG_REL");
             tabNames.add("TB_ORG_ORGTYPE_REL");
+            tabNames.add("TB_ORG_ORGREL_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
@@ -1576,8 +1577,13 @@ public class OrgController extends BaseController {
                 }
                 String orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
                 String orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
+                String orgOrgTreeRelParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL","ORG_BIZ_FULL_ID",sdrList);
+                if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParams)){
+                    orgOrgTreeRelParams = commonSystemService.getOrgOrgTreeRelSql(orgOrgTreeRelParams);
+                }
                 orgVo.setTabOrgParams(orgParams);
                 orgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
+                orgVo.setTabOrgOrgTreeRelParams(orgOrgTreeRelParams);
             }
         }
         Wrapper orgTreeConfWrapper = Condition.create()

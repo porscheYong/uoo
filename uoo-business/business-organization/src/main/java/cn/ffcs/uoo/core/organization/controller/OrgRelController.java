@@ -129,12 +129,14 @@ public class OrgRelController extends BaseController {
         //获取权限
         String orgParams = "";
         String orgOrgTypeParams = "";
+        String orgOrgTreeRelParams = "";
         if(!StrUtil.isNullOrEmpty(accout)) {
             List<String> tabNames = new ArrayList<String>();
             tabNames.add("TB_ORG_TREE");
             tabNames.add("TB_ORG");
             tabNames.add("TB_ORG_REL");
             tabNames.add("TB_ORG_ORGTYPE_REL");
+            tabNames.add("TB_ORG_ORGTREE_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
@@ -144,11 +146,15 @@ public class OrgRelController extends BaseController {
                 }
                 orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
                 orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
+                orgOrgTreeRelParams = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
+                if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParams)) {
+                    orgOrgTreeRelParams = commonSystemService.getOrgOrgTreeRelSql(orgOrgTreeRelParams);
+                }
             }
         }
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
         treeNodeVos = orgRelService.queryOrgTree(orgTree.getOrgTreeId().toString(),orgTree.getOrgId(),refCode,
-                id,isRoot,orgParams,orgOrgTypeParams);
+                id,isRoot,orgParams,orgOrgTypeParams,orgOrgTreeRelParams);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("组织树查询成功");
         ret.setData(treeNodeVos);
@@ -512,12 +518,14 @@ public class OrgRelController extends BaseController {
 
         String orgParams = "";
         String orgOrgTypeParams = "";
+        String orgOrgTreeRelParams = "";
         if(!StrUtil.isNullOrEmpty(accout)) {
             List<String> tabNames = new ArrayList<String>();
             tabNames.add("TB_ORG_TREE");
             tabNames.add("TB_ORG");
             tabNames.add("TB_ORG_REL");
             tabNames.add("TB_ORG_ORGTYPE_REL");
+            tabNames.add("TB_ORG_ORGTREE_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
@@ -527,8 +535,13 @@ public class OrgRelController extends BaseController {
                 }
                 orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
                 orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
+                orgOrgTreeRelParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
+                if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParams)){
+                    orgOrgTreeRelParams = commonSystemService.getOrgOrgTreeRelSql(orgOrgTreeRelParams);
+                }
                 orgVo.setTabOrgParams(orgParams);
                 orgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
+                orgVo.setTabOrgOrgTreeRelParams(orgOrgTreeRelParams);
             }
         }
 

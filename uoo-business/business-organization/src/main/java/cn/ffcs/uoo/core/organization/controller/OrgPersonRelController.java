@@ -604,6 +604,7 @@ public class OrgPersonRelController extends BaseController {
             tabNames.add("TB_ACCOUNT_ORG_REL");
             tabNames.add("TB_ORG_ORGTYPE_REL");
             tabNames.add("TB_ORG_PERSON_REL");
+            tabNames.add("TB_ORG_ORGTREE_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
@@ -617,11 +618,16 @@ public class OrgPersonRelController extends BaseController {
                 psonOrgVo.setTabOrgPerRelParams(orgPerParams);
                 String orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
                 psonOrgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
+                String orgOrgTreeRelParams = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
+                if(orgOrgTreeRelParams.contains(","+orgId+",")){
+                    orgOrgTreeRelParams="tbOrgOrgTreeRel.ORG_BIZ_FULL_ID like ',"+orgOrgTreeRelParams+",%'";
+                }else{
+                    orgOrgTreeRelParams = orgService.getFullOrgIdList(orgtree.getOrgTreeId().toString(),orgId,",");
+                    orgOrgTreeRelParams="tbOrgOrgTreeRel.ORG_BIZ_FULL_ID like ',"+orgOrgTreeRelParams+",%'";
+                }
+                psonOrgVo.setTabOrgOrgTreeRelParams(orgOrgTreeRelParams);
             }
         }
-        String orgOrgTreeRelParams = orgService.getFullOrgIdList(orgtree.getOrgTreeId().toString(),orgId,",");
-        orgOrgTreeRelParams="tbOrgOrgTreeRel.ORG_BIZ_FULL_ID like ',"+orgOrgTreeRelParams+",%'";
-        psonOrgVo.setTabOrgOrgTreeRelParams(orgOrgTreeRelParams);
         psonOrgVo.setRefCode(ort.getRefCode());
         psonOrgVo.setOrgId(new Long(orgId));
         psonOrgVo.setOrgTreeId(orgtree.getOrgTreeId());
@@ -747,6 +753,7 @@ public class OrgPersonRelController extends BaseController {
             tabNames.add("TB_ORG_PERSON_REL");
             tabNames.add("TB_ACCOUNT_ORG_REL");
             tabNames.add("TB_ORG_ORGTYPE_REL");
+            tabNames.add("TB_ORG_ORGTREE_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
@@ -762,6 +769,14 @@ public class OrgPersonRelController extends BaseController {
                 psonOrgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
                 String orgAccountRelParams = commonSystemService.getSysDataRuleSql("tbAccountOrgRel","TB_ACCOUNT_ORG_REL",sdrList);
                 psonOrgVo.setTabAccountOrgRelParams(orgAccountRelParams);
+                String orgOrgTreeRelParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
+                if(orgOrgTreeRelParams.contains(","+orgId+",")){
+                    orgOrgTreeRelParams="tbOrgOrgTreeRel.ORG_BIZ_FULL_ID like ',"+orgOrgTreeRelParams+",%'";
+                }else{
+                    orgOrgTreeRelParams = orgService.getFullOrgIdList(orgtree.getOrgTreeId().toString(),orgId,",");
+                    orgOrgTreeRelParams="tbOrgOrgTreeRel.ORG_BIZ_FULL_ID like ',"+orgOrgTreeRelParams+",%'";
+                }
+                psonOrgVo.setTabOrgOrgTreeRelParams(orgOrgTreeRelParams);
             }
         }
 
