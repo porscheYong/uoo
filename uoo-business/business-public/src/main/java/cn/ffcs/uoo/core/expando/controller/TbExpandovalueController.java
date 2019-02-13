@@ -106,6 +106,20 @@ public class TbExpandovalueController extends BaseController {
 
         Long columnId = tbExpandocolumns.get(0).getColumnId();
 
+        // 判断当前记录扩展值是否存在
+        Wrapper<TbExpandovalue> tbExpandovalueWrapper = new EntityWrapper<TbExpandovalue>();
+        tbExpandovalueWrapper.eq("TABLE_ID", tableId);
+        tbExpandovalueWrapper.eq("COLUMN_ID", columnId);
+        tbExpandovalueWrapper.eq("RECORD_ID", expandovalueVo.getRecordId());
+        tbExpandovalueWrapper.eq("DATA_", expandovalueVo.getData());
+        tbExpandovalueWrapper.eq("STATUS_CD", StatusEnum.VALID.getValue());
+        List<TbExpandovalue> tbExpandovalues = tbExpandovalueService.selectList(tbExpandovalueWrapper);
+        if(tbExpandovalues != null && tbExpandovalues.size() > 0) {
+            responseResult.setState(ResponseResult.STATE_ERROR);
+            responseResult.setMessage("当前记录该扩展值已存在");
+            return responseResult;
+        }
+
         // 新增扩展行
         TbExpandorow tbExpandorow = new TbExpandorow();
         tbExpandorow.setTableId(tableId);
