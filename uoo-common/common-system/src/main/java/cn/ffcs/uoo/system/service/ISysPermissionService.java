@@ -21,4 +21,5 @@ public interface ISysPermissionService extends IService<SysPermission> {
     Long countList(HashMap<String, Object> map);
     Long getId();
     SysPermissionDTO selectOne(Long id);
+    List<SysPermission> listByRoleCode(String roleCode);
 }

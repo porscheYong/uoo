@@ -11,9 +11,15 @@ public class SysPermissionEditDTO extends SysPermission{
     private List<SysPermissionMenuRel> menuRels;
     private List<SysPermissionElementRel> elementRels;
     private List<SysPrivFileRel> fileRels;
-    private List<SysPermissionDataRulesRel> dataRuleRels;
+    private List<DataRuleGroupEditVO> dataRuleGroups;
     private String regionName;
      
+    public List<DataRuleGroupEditVO> getDataRuleGroups() {
+        return dataRuleGroups;
+    }
+    public void setDataRuleGroups(List<DataRuleGroupEditVO> dataRuleGroups) {
+        this.dataRuleGroups = dataRuleGroups;
+    }
     public String getRegionName() {
         return regionName;
     }
@@ -44,12 +50,7 @@ public class SysPermissionEditDTO extends SysPermission{
     public void setFileRels(List<SysPrivFileRel> fileRels) {
         this.fileRels = fileRels;
     }
-    public List<SysPermissionDataRulesRel> getDataRuleRels() {
-        return dataRuleRels;
-    }
-    public void setDataRuleRels(List<SysPermissionDataRulesRel> dataRuleRels) {
-        this.dataRuleRels = dataRuleRels;
-    }
+    
      
      
     

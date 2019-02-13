@@ -78,6 +78,8 @@ public class SysRoleController {
     public ResponseResult<SysRoleDTO> get(@PathVariable(value="id" ,required=true) Long id){
         
         SysRoleDTO Roles = sysRoleService.selectOne(id);
+        
+        
         return ResponseResult.createSuccessResult(Roles, "success");
     }
     @ApiOperation(value = "角色树", notes = "角色树")

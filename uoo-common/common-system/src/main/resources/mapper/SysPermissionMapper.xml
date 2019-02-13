@@ -82,4 +82,19 @@
         </if>
         </where>
     </select>
+    
+    <select id="listByRoleCode" resultType="cn.ffcs.uoo.system.entity.SysPermission" >
+        SELECT
+        DISTINCT(p.PERMISSION_ID),p.*
+        FROM
+        SYS_PERMISSION p
+        LEFT JOIN  SYS_ROLE_PERMISSION_REF rpr
+        on  p.PERMISSION_CODE = rpr.PERMISSION_CODE 
+        <where>
+        p.STATUS_CD='1000' 
+        and rpr.STATUS_CD='1000'
+        and rpr.ROLE_CODE= #{roleCode}
+        </where>
+        ORDER BY p.PERMISSION_ID
+    </select>
 </mapper>

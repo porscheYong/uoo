@@ -21,4 +21,5 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
     SysPermissionDTO selectOne(Long id);
     Long countList(HashMap<String, Object> map);
     Long getId();
+    List<SysPermission> listByRoleCode(String roleCode);
 }
