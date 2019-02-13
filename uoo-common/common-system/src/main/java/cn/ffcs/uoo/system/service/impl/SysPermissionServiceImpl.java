@@ -43,4 +43,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         return baseMapper.selectOne(id);
     }
 
+    @Override
+    public List<SysPermission> listByRoleCode(String roleCode) {
+        return baseMapper.listByRoleCode(roleCode);
+    }
+
 }
