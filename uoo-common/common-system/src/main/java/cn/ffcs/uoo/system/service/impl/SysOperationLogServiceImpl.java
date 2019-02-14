@@ -12,6 +12,7 @@ import cn.ffcs.uoo.system.dao.SysOperationLogMapper;
 import cn.ffcs.uoo.system.entity.SysOperationLog;
 import cn.ffcs.uoo.system.service.SysOperationLogService;
 import cn.ffcs.uoo.system.vo.LogDTO;
+import cn.ffcs.uoo.system.vo.SysOperationLogVO;
 
 
 /*
@@ -35,5 +36,10 @@ public class SysOperationLogServiceImpl extends ServiceImpl<SysOperationLogMappe
     @Override
     public Long countLog(HashMap<String, Object> map) {
         return baseMapper.countLog(map);
+    }
+
+    @Override
+    public SysOperationLogVO getVO(Long id) {
+        return baseMapper.getVO(id);
     }
 }

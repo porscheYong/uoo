@@ -24,6 +24,14 @@
 	<select id="getId" resultType="Long">
 		select SEQ_TB_SYS_OPERATION_LOG.NEXTVAL from dual
 	</select>
+	<select id="getVO" resultType="cn.ffcs.uoo.system.vo.SysOperationLogVO"  >
+	   select a.*,b.menu_name as menuName,c.accout as accout  from SYS_OPERATION_LOG a
+	   left join SYS_MENU b on b.menu_code= a.menu_code
+	   left join sys_user c on c.user_code= a.user_code
+	   where OPERATION_LOG_ID = #{id}
+	   and a.STATUS_CD='1000'
+	
+	</select>
 	<select id="listLog" resultType="cn.ffcs.uoo.system.vo.LogDTO" parameterType="java.util.HashMap">
 		 
 		SELECT
