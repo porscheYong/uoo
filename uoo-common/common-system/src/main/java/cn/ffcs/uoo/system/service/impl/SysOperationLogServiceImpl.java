@@ -1,20 +1,17 @@
 package cn.ffcs.uoo.system.service.impl;
 
-import cn.ffcs.uoo.system.dao.SysMenuMapper;
-import cn.ffcs.uoo.system.dao.SysOperationLogMapper;
-import cn.ffcs.uoo.system.entity.SysMenu;
-import cn.ffcs.uoo.system.entity.SysOperationLog;
-import cn.ffcs.uoo.system.service.SysMenuService;
-import cn.ffcs.uoo.system.service.SysOperationLogService;
-import cn.ffcs.uoo.system.vo.LogDTO;
-
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+
+import cn.ffcs.uoo.system.dao.SysOperationLogMapper;
+import cn.ffcs.uoo.system.entity.SysOperationLog;
+import cn.ffcs.uoo.system.service.SysOperationLogService;
+import cn.ffcs.uoo.system.vo.LogDTO;
 
 
 /*
@@ -31,8 +28,8 @@ public class SysOperationLogServiceImpl extends ServiceImpl<SysOperationLogMappe
     }
 
     @Override
-    public List<LogDTO> listLog(HashMap<String, Object> map) {
-        return baseMapper.listLog(map);
+    public List<LogDTO> listLog(Page<LogDTO> page,HashMap<String, Object> map) {
+        return baseMapper.listLog(page,map);
     }
 
     @Override

@@ -43,10 +43,7 @@
 		</select>
 	<select id="findList" resultType="cn.ffcs.uoo.system.vo.SysPermissionDTO"
 		parameterType="java.util.HashMap">
-		SELECT * FROM
-        (
-        SELECT TB.*,ROWNUM RN
-        FROM (
+		 
 		SELECT
 		p.*,t1.regionName,t1.locId
 		FROM
@@ -61,9 +58,7 @@
 		  AND (p.PERMISSION_NAME like #{keyWord} OR p.PERMISSION_CODE like #{keyWord})
 		</if>
 		</where>
-		)TB WHERE ROWNUM &lt;= #{end}
-        )
-        WHERE RN &gt;= #{from}
+		 
 	</select>
 	<select id="countList" resultType="Long"
         parameterType="java.util.HashMap">

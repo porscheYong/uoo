@@ -25,10 +25,7 @@
 		select SEQ_TB_SYS_OPERATION_LOG.NEXTVAL from dual
 	</select>
 	<select id="listLog" resultType="cn.ffcs.uoo.system.vo.LogDTO" parameterType="java.util.HashMap">
-		SELECT * FROM
-        (
-        SELECT TB.*,ROWNUM RN
-        FROM (
+		 
 		SELECT
 		*
 		FROM
@@ -69,9 +66,7 @@
 		</where>
 		ORDER BY
 		createDate DESC
-		 )TB WHERE ROWNUM &lt;= #{end}
-        )
-        WHERE RN &gt;= #{from}
+		  
 	</select>
 <select id="countLog" resultType="Long" parameterType="java.util.HashMap">
          

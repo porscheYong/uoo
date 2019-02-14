@@ -128,17 +128,13 @@ public class SysRoleController {
         map.put("from", (pageNo-1)*pageSize);
         map.put("end", pageNo * pageSize);
         if(includChild==1){
-            
             map.put("includeChild",includChild);
         } 
-        List<SysRoleDTO> Roles=sysRoleService.findList(map);
-        Long count = sysRoleService.countList(map);
         Page<SysRoleDTO> page=new Page<>(pageNo,pageSize);
+        List<SysRoleDTO> Roles=sysRoleService.findList(page,map);
         page.setRecords(Roles);
-        page.setTotal(count);
         ResponseResult<Page<SysRoleDTO>> createSuccessResult = ResponseResult.createSuccessResult( "");
         createSuccessResult.setData(page);
-        createSuccessResult.setTotalRecords(count);
         return createSuccessResult;
     }
 

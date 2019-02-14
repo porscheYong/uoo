@@ -139,13 +139,10 @@ public class SysPermissionController {
         }
         map.put("from", (pageNo-1)*pageSize);
         map.put("end", pageNo * pageSize);
-        List<SysPermissionDTO> list=permSvc.findList(map);
-        Long count = permSvc.countList(map);
         Page<SysPermissionDTO> page=new Page<>(pageNo,pageSize);
-        page.setTotal(count);
+        List<SysPermissionDTO> list=permSvc.findList(page,map);
         page.setRecords(list);
         ResponseResult<Page<SysPermissionDTO>> createSuccessResult = ResponseResult.createSuccessResult("");
-        createSuccessResult.setTotalRecords(count);
         createSuccessResult.setData(page);
         return createSuccessResult;
     }

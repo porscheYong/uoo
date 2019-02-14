@@ -3,6 +3,7 @@ package cn.ffcs.uoo.system.service;
 import java.util.HashMap;
 import java.util.List;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 
 import cn.ffcs.uoo.system.entity.SysRole;
@@ -15,7 +16,7 @@ import cn.ffcs.uoo.system.vo.TreeNodeVo;
  */
 public interface SysRoleService extends IService<SysRole> {
     Long getId();
-    List<SysRoleDTO> findList(HashMap<String, Object> map);
+    List<SysRoleDTO> findList(Page<SysRoleDTO> page,HashMap<String, Object> map);
     Long countList(HashMap<String, Object> map);
     List<TreeNodeVo> treeRole();
     SysRoleDTO selectOne(Long ROLE_ID);

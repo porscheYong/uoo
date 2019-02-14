@@ -124,12 +124,9 @@ public class SysOperationLogController {
         map.put("from", (pageNo-1)*pageSize);
         map.put("end", pageNo * pageSize);
         ResponseResult<Page<LogDTO>> createSuccessResult = ResponseResult.createSuccessResult( "");
-        Long countLog = sysOperationLogService.countLog(map);
-        List<LogDTO> listLog = sysOperationLogService.listLog(map);
         Page<LogDTO> page=new Page<>(pageNo, pageSize);
-        page.setTotal(countLog);
+        List<LogDTO> listLog = sysOperationLogService.listLog(page,map);
         page.setRecords(listLog);
-        createSuccessResult.setTotalRecords(countLog);
         createSuccessResult.setData(page);
         
         return createSuccessResult;

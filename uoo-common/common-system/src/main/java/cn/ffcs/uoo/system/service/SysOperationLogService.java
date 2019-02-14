@@ -3,6 +3,7 @@ package cn.ffcs.uoo.system.service;
 import java.util.HashMap;
 import java.util.List;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 
 import cn.ffcs.uoo.system.entity.SysOperationLog;
@@ -14,6 +15,6 @@ import cn.ffcs.uoo.system.vo.LogDTO;
  */
 public interface SysOperationLogService extends IService<SysOperationLog> {
     Long getId();
-    List<LogDTO> listLog(HashMap<String, Object> map); 
+    List<LogDTO> listLog(Page<LogDTO> page,HashMap<String, Object> map); 
     Long countLog(HashMap<String, Object> map); 
 }
