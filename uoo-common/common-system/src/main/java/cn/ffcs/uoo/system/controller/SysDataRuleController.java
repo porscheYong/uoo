@@ -99,6 +99,7 @@ public class SysDataRuleController {
         HashMap<String, Object> map=new HashMap<>();
         map.put("accout", requestVo.getAccout());
         map.put("tableNames", requestVo.getTableNames());
+        map.put("treeId", requestVo.getTreeId());
         List<SysDataRule> listByAccout = dataRuleSvc.listByAccout(map);
         List<SysDataRule> groupDataRules=new ArrayList<>(listByAccout.size());
         List<Long> groupIds=new ArrayList<>(listByAccout.size());

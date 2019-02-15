@@ -30,8 +30,8 @@ public class TbAreaCodeServiceImpl extends ServiceImpl<TbAreaCodeMapper, TbAreaC
         return baseMapper.getId();
     }
     @Override
-    public List<AreaCodeVO> selectListAreaCode(HashMap<String, Object> map) {
-        return baseMapper.selectListAreaCode(map);
+    public List<AreaCodeVO> selectListAreaCode(Page<AreaCodeVO> page,HashMap<String, Object> map) {
+        return baseMapper.selectListAreaCode(page,map);
     }
     @Override
     public Long countListAreaCode(HashMap<String,Object> map) {

@@ -17,11 +17,12 @@
         <result column="UPDATE_USER" property="updateUser" />
         <result column="DATA_RULE_GROUP_ID" property="dataRuleGroupId" />
         <result column="AND_OR" property="andOr" />
+        <result column="SORT" property="sort" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        DATA_RULE_ID, TAB_NAME, COL_NAME, RULE_OPERATOR, COL_VALUE, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, DATA_RULE_GROUP_ID, AND_OR
+        DATA_RULE_ID, TAB_NAME, COL_NAME, RULE_OPERATOR, COL_VALUE, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, DATA_RULE_GROUP_ID, AND_OR,SORT
     </sql>
 
     <select id="getId" resultType="java.lang.Long">
@@ -33,7 +34,10 @@
         DISTINCT(m.DATA_RULE_ID),m.*
         FROM
         SYS_DATA_RULE m
-        LEFT JOIN SYS_PERMISSION_DATA_RULES_REL pmr ON pmr.DATA_RULE_ID = m.DATA_RULE_ID
+        <if test="treeId != null and treeId != '' ">
+            left join SYS_DATA_RULE_GROUP drg on m.DATA_RULE_GROUP_ID = drg.DATA_RULE_GROUP_ID
+        </if>
+        LEFT JOIN SYS_PERMISSION_DATA_RULES_REL pmr ON pmr.DATA_RULE_GROUP_ID = m.DATA_RULE_GROUP_ID
         LEFT JOIN SYS_PERMISSION p ON p.PERMISSION_CODE = pmr.PERMISSION_CODE
         LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON rpr.PERMISSION_CODE =
         p.PERMISSION_CODE
@@ -51,10 +55,15 @@
         AND upr.STATUS_CD = '1000'
         AND u.STATUS_CD = '1000'
         AND u.ACCOUT = #{accout}
-        AND m.TAB_NAME in 
-        <foreach collection="tableNames" index="index" item="item" open="(" separator="," close=")">
-                 #{item}       
-         </foreach>
+        <if test="treeId != null and treeId != '' ">
+            and drg.ORG_TREE_ID = #{treeId}
+        </if>
+        <if test="tableNames != null and tableNames !='' ">
+	        AND m.TAB_NAME in 
+	        <foreach collection="tableNames" index="index" item="item" open="(" separator="," close=")">
+	                 #{item}       
+	         </foreach>
+        </if>
     </select>
 
 

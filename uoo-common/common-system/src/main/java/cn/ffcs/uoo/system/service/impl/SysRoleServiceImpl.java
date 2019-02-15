@@ -1,23 +1,21 @@
 package cn.ffcs.uoo.system.service.impl;
 
-import cn.ffcs.uoo.system.dao.SysMenuMapper;
-import cn.ffcs.uoo.system.dao.SysPermissionMapper;
-import cn.ffcs.uoo.system.dao.SysRoleMapper;
-import cn.ffcs.uoo.system.entity.SysMenu;
-import cn.ffcs.uoo.system.entity.SysPermission;
-import cn.ffcs.uoo.system.entity.SysRole;
-import cn.ffcs.uoo.system.service.SysMenuService;
-import cn.ffcs.uoo.system.service.SysRoleService;
-import cn.ffcs.uoo.system.vo.SysRoleDTO;
-import cn.ffcs.uoo.system.vo.TreeNodeVo;
-
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-
 import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+
+import cn.ffcs.uoo.system.dao.SysPermissionMapper;
+import cn.ffcs.uoo.system.dao.SysRoleMapper;
+import cn.ffcs.uoo.system.entity.SysPermission;
+import cn.ffcs.uoo.system.entity.SysRole;
+import cn.ffcs.uoo.system.service.SysRoleService;
+import cn.ffcs.uoo.system.vo.SysRoleDTO;
+import cn.ffcs.uoo.system.vo.TreeNodeVo;
 
 
 /*
@@ -35,8 +33,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public List<SysRoleDTO> findList(HashMap<String, Object> map) {
-        List<SysRoleDTO> findList = baseMapper.findList(map);
+    public List<SysRoleDTO> findList(Page<SysRoleDTO> page, HashMap<String, Object> map) {
+        List<SysRoleDTO> findList = baseMapper.findList(page,map);
         for (SysRoleDTO sysRoleDTO : findList) {
             List<SysPermission> listByRoleCode = permMapper.listByRoleCode(sysRoleDTO.getRoleCode());
             StringBuilder permNames=new StringBuilder();

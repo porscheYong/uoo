@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 
+import cn.ffcs.uoo.web.accesslog.ControllerAccessLog;
 import cn.ffcs.uoo.web.maindata.common.system.client.SysOperationLogClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysOperationLog;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
@@ -35,9 +36,18 @@ public class SystemLogHandlerInterceptor implements HandlerInterceptor{
     SysOperationLogClient opLogClient;
     @Autowired
     ShiroFilterFactoryBean shiroFilterFactoryBean;
+    
+    ThreadLocal<String> formDataThreadLocal = new ThreadLocal<String>();
+    
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        String formData=parameterMap==null||parameterMap.isEmpty()?"":JSONObject.toJSONString(parameterMap);
+        if(formData.length()>4000){
+            formData=formData.substring(0, 4000);
+        }
+        formDataThreadLocal.set(formData);
         return true;
     }
 
@@ -73,11 +83,8 @@ public class SystemLogHandlerInterceptor implements HandlerInterceptor{
                         logs.setLogType(l.type().type);
                         logs.setUserCode(user.getUserCode());
                         logs.setSucceed(ex==null?1L:0L);
-                        Map<String, String[]> parameterMap = request.getParameterMap();
-                        String formData=parameterMap==null||parameterMap.isEmpty()?"":JSONObject.toJSONString(parameterMap);
-                        if(formData.length()>4000){
-                            formData=formData.substring(0, 4000);
-                        }
+                       
+                        
                         String requestURI = request.getRequestURI();
                         Map<String, String> filterChainDefinitionMap = shiroFilterFactoryBean.getFilterChainDefinitionMap();
                         Set<Entry<String, String>> entrySet = filterChainDefinitionMap.entrySet();
@@ -95,7 +102,7 @@ public class SystemLogHandlerInterceptor implements HandlerInterceptor{
                             }
                              
                         }
-                        logs.setFormData(formData);
+                        logs.setFormData(formDataThreadLocal.get());
                         
                         logs.setMenuCode(request.getHeader("MENU_CODE"));
                         logs.setNotes(l.desc());

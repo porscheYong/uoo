@@ -114,10 +114,7 @@
 	</select>
 	<select id="findList" resultType="cn.ffcs.uoo.system.vo.SysRoleDTO"
 		parameterType="java.util.HashMap">
-		SELECT * FROM
-		(
-		SELECT TB.*,ROWNUM RN
-		FROM (
+		 
 		SELECT DISTINCT r.ROLE_ID ,
 		r.ROLE_ID AS roleId,
 		r.ROLE_NAME AS roleName,
@@ -204,9 +201,7 @@
 
 			</otherwise>
 		</choose>
-		)TB WHERE ROWNUM &lt;= #{end}
-		)
-		WHERE RN &gt;= #{from}
+		 
 	</select>
 	<select id="countList" resultType="Long" parameterType="java.util.HashMap">
 		SELECT

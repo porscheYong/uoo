@@ -85,17 +85,13 @@ public class TbAreaCodeController extends BaseController {
         if(keyWord!=null&&keyWord.trim().length()>0){
             map.put("keyWord", "%"+keyWord+"%");
         }
-        Long countListAreaCode = areaCodeService.countListAreaCode(map);
         map.put("from", (pageNo-1)*pageSize);
         map.put("end", pageNo * pageSize);
-        areaCodeService.selectListAreaCode(map);
-        List<AreaCodeVO> page = areaCodeService.selectListAreaCode(map);
+        Page<AreaCodeVO> pages=new Page<>(pageNo,pageSize);
+        List<AreaCodeVO> page = areaCodeService.selectListAreaCode(pages,map);
         ResponseResult result = ResponseResult.createSuccessResult(page, "");
-        result.setTotalRecords(countListAreaCode);
         result.setPageNo(pageNo);
         result.setPageSize(pageSize);
-        Page<AreaCodeVO> pages=new Page<>(pageNo,pageSize);
-        pages.setTotal(countListAreaCode);
         pages.setRecords(page);
         result.setData(pages);
         return result;

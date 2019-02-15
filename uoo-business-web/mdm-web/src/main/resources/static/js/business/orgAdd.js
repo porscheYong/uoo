@@ -497,6 +497,7 @@ function getOrg (orgId) {
         orgAddForm.find('input:not(#orgName)').each(function () {
             $(this).attr('disabled', 'disabled')
         });
+        $("input[name='nodeTypes']").removeAttr('disabled');
         $('#orgName').val(data.orgName);
         $('#orgId').val(data.orgId);
         $('#shortName').val(data.shortName);
@@ -548,8 +549,6 @@ function getOrg (orgId) {
 
 // 添加子节点
 function addOrg () {
-    if (!formValidate.isAllPass())
-        return;
     loading.screenMaskEnable('container');
     var userList = [];
     var location = [];
@@ -658,8 +657,6 @@ function addOrg () {
 
 // 添加搜索子节点
 function  addTreeNode () {
-    if (!formValidate.isAllPass())
-        return;
     var loading = parent.loading;
     loading.screenMaskEnable('container');
     //划小扩展字段
@@ -692,7 +689,7 @@ function  addTreeNode () {
         };
         parent.addNodeById(orgId, newNode);
         parent.openTreeById(orgId, data.id);
-        window.location.replace("list.html?id=" + selectOrg.orgId + '&orgTreeId=' + orgTreeId + '&pid=' + orgId + "&name=" + encodeURI(selectOrg.orgName));
+        window.location.replace("list.html?id=" + selectOrg.orgId + '&orgTreeId=' + orgTreeId + "&refCode=" + refCode + '&pid=' + orgId + "&name=" + encodeURI(selectOrg.orgName));
         loading.screenMaskDisable('container');
         toastr.success('新增成功！');
     }, function () {
@@ -701,6 +698,8 @@ function  addTreeNode () {
 }
 
 function add() {
+    if (!formValidate.isAllPass())
+        return;
     if (selectOrg && selectOrg.orgId)
         addTreeNode();
     else
