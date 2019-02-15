@@ -46,7 +46,7 @@
 		DISTINCT(m.DATA_RULE_GROUP_ID),m.*
 		FROM
 		SYS_DATA_RULE_GROUP m
-		<if test="tableNames != null and tableNames !='' ">
+		<if test="tableNames != null  ">
 			left join SYS_DATA_RULE dr on dr.DATA_RULE_GROUP_ID =
 			m.DATA_RULE_GROUP_ID
 		</if>
@@ -69,10 +69,10 @@
 		AND upr.STATUS_CD = '1000'
 		AND u.STATUS_CD = '1000'
 		AND u.ACCOUT = #{accout}
-		<if test="treeId != null and treeId != '' ">
+		<if test="treeId != null and treeId != 0 ">
             and m.ORG_TREE_ID = #{treeId}
         </if>
-		<if test="tableNames != null and tableNames !='' ">
+		<if test="tableNames != null  ">
            AND dr.STATUS_CD = '1000'
            AND dr.TAB_NAME in 
             <foreach collection="tableNames" index="index" item="item" open="(" separator="," close=")">

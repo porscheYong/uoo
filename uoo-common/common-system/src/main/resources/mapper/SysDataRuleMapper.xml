@@ -31,7 +31,7 @@
 
     <select id="listByAccout" resultType="cn.ffcs.uoo.system.entity.SysDataRule" parameterType="java.util.HashMap">
         SELECT
-        DISTINCT(m.DATA_RULE_ID),m.*
+        DISTINCT(m.DATA_RULE_ID),m.*,drg.SORT as tmp1
         FROM
         SYS_DATA_RULE m
         left join SYS_DATA_RULE_GROUP drg on m.DATA_RULE_GROUP_ID = drg.DATA_RULE_GROUP_ID
@@ -54,16 +54,16 @@
         AND u.STATUS_CD = '1000'
         AND drg.STATUS_CD = '1000'
         AND u.ACCOUT = #{accout}
-        <if test="treeId != null and treeId != '' ">
+        <if test="treeId != null and treeId != 0 ">
             and drg.ORG_TREE_ID = #{treeId}
         </if>
-        <if test="tableNames != null and tableNames !='' ">
+        <if test="tableNames != null   ">
 	        AND m.TAB_NAME in 
 	        <foreach collection="tableNames" index="index" item="item" open="(" separator="," close=")">
 	                 #{item}       
 	         </foreach>
         </if>
-        order by 
+        order by drg.SORT,m.SORT asc
     </select>
 
 
