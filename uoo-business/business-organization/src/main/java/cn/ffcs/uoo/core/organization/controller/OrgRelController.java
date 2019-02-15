@@ -148,7 +148,7 @@ public class OrgRelController extends BaseController {
                 orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
                 orgOrgTreeRelParams = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
                 if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParams)) {
-                    orgOrgTreeRelParams = commonSystemService.getOrgOrgTreeRelSql(orgOrgTreeRelParams);
+                    orgOrgTreeRelParams = commonSystemService.getOrgOrgTreeRelSql(orgOrgTreeRelParams,orgTree.getOrgTreeId().toString());
                 }
             }
         }
@@ -495,11 +495,6 @@ public class OrgRelController extends BaseController {
                                                           Integer pageNo,
                                                           Long userId,String accout) throws IOException {
         ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
-//        if(StrUtil.isNullOrEmpty(search)){
-//            ret.setMessage("检索信息不能为空");
-//            ret.setState(ResponseResult.PARAMETER_ERROR);
-//            return ret;
-//        }
         if(StrUtil.isNullOrEmpty(orgTreeId)){
             ret.setMessage("组织树标识不能为空");
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -535,18 +530,15 @@ public class OrgRelController extends BaseController {
                 }
                 orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
                 orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
-                orgOrgTreeRelParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
+                orgOrgTreeRelParams = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
                 if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParams)){
-                    orgOrgTreeRelParams = commonSystemService.getOrgOrgTreeRelSql(orgOrgTreeRelParams);
+                    orgOrgTreeRelParams = commonSystemService.getOrgOrgTreeRelSql(orgOrgTreeRelParams,orgTreeId);
                 }
                 orgVo.setTabOrgParams(orgParams);
                 orgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
                 orgVo.setTabOrgOrgTreeRelParams(orgOrgTreeRelParams);
             }
         }
-
-
-
         orgVo.setOrgTreeId(new Long(orgTreeId));
         if(!StrUtil.isNullOrEmpty(search)){
             orgVo.setSearch(search);

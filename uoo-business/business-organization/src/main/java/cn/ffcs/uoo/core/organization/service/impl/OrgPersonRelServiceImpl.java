@@ -199,10 +199,15 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
         Page<PsonOrgVo> page = new Page<PsonOrgVo>(psonOrgVo.getPageNo()==0?1:psonOrgVo.getPageNo()
                 ,psonOrgVo.getPageSize()==0?10:psonOrgVo.getPageSize());
         List<PsonOrgVo> list = baseMapper.selectUserOrgRelPage(page,psonOrgVo);
-//        for(PsonOrgVo vo : list){
-//            String cert = baseMapper.getCert(vo.getPersonnelId().toString());
-//            vo.setCertNo(cert);
-//        }
+        for(PsonOrgVo psOrg : list){
+            if(!StrUtil.isNullOrEmpty(psOrg.getOrgId())){
+                Wrapper orgWrapper = Condition.create()
+                        .eq("ORG_ID", psOrg.getOrgId())
+                        .eq("STATUS_CD", "1000");
+                Org org = orgService.selectOne(orgWrapper);
+                psOrg.setOrgName(StrUtil.strnull(org.getOrgName()));
+            }
+        }
         page.setRecords(list);
         return page;
     }
@@ -217,10 +222,16 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
         Page<PsonOrgVo> page = new Page<PsonOrgVo>(psonOrgVo.getPageNo()==0?1:psonOrgVo.getPageNo()
                 ,psonOrgVo.getPageSize()==0?10:psonOrgVo.getPageSize());
         List<PsonOrgVo> list = baseMapper.selectAllUserOrgRelPage(page,psonOrgVo);
-//        for(PsonOrgVo vo : list){
-//            String cert = baseMapper.getCert(vo.getPersonnelId().toString());
-//            vo.setCertNo(cert);
-//        }
+
+        for(PsonOrgVo psOrg : list){
+            if(!StrUtil.isNullOrEmpty(psOrg.getOrgId())){
+                Wrapper orgWrapper = Condition.create()
+                        .eq("ORG_ID", psOrg.getOrgId())
+                        .eq("STATUS_CD", "1000");
+                Org org = orgService.selectOne(orgWrapper);
+                psOrg.setOrgName(StrUtil.strnull(org.getOrgName()));
+            }
+        }
         page.setRecords(list);
         return page;
     }
@@ -282,6 +293,6 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
      */
     @Override
     public List<OrgPersonRel>  getOrgAcctRel(String orgTreeId,String orgId){
-        return baseMapper. getOrgAcctRel(orgTreeId,orgId);
+        return baseMapper.getOrgAcctRel(orgTreeId,orgId);
     }
 }
