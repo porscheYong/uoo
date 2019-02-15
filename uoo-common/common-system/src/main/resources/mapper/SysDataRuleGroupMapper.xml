@@ -2,28 +2,83 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ffcs.uoo.system.dao.SysDataRuleGroupMapper">
 
-    <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysDataRuleGroup">
-        <id column="DATA_RULE_GROUP_ID" property="dataRuleGroupId" />
-        <result column="GROUP_NAME" property="groupName" />
-        <result column="AND_OR" property="andOr" />
-        <result column="SORT" property="sort" />
-        <result column="STATUS_CD" property="statusCd" />
-        <result column="STATUS_DATE" property="statusDate" />
-        <result column="CREATE_DATE" property="createDate" />
-        <result column="CREATE_USER" property="createUser" />
-        <result column="UPDATE_DATE" property="updateDate" />
-        <result column="UPDATE_USER" property="updateUser" />
-        <result column="PARENT_RULE_GROUP_ID" property="parentRuleGroupId" />
-        <result column="ORG_TREE_ID" property="orgTreeId" />
-    </resultMap>
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysDataRuleGroup">
+		<id column="DATA_RULE_GROUP_ID" property="dataRuleGroupId" />
+		<result column="GROUP_NAME" property="groupName" />
+		<result column="AND_OR" property="andOr" />
+		<result column="SORT" property="sort" />
+		<result column="STATUS_CD" property="statusCd" />
+		<result column="STATUS_DATE" property="statusDate" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_DATE" property="updateDate" />
+		<result column="UPDATE_USER" property="updateUser" />
+		<result column="PARENT_RULE_GROUP_ID" property="parentRuleGroupId" />
+		<result column="ORG_TREE_ID" property="orgTreeId" />
+	</resultMap>
 
-    <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        DATA_RULE_GROUP_ID, GROUP_NAME, AND_OR, SORT, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, PARENT_RULE_GROUP_ID,ORG_TREE_ID
-    </sql>
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		DATA_RULE_GROUP_ID, GROUP_NAME, AND_OR, SORT, STATUS_CD, STATUS_DATE, CREATE_DATE,
+		CREATE_USER, UPDATE_DATE, UPDATE_USER,
+		PARENT_RULE_GROUP_ID,ORG_TREE_ID
+	</sql>
 
-    <select id="getId" resultType="Long">
-        SELECT SEQ_SYS_DATA_RULE_GROUP_ID.nextval FROM dual
-    </select>
+	<select id="getId" resultType="Long">
+		SELECT SEQ_SYS_DATA_RULE_GROUP_ID.nextval FROM dual
+	</select>
+	<select id="listByPermCode" resultType="cn.ffcs.uoo.system.entity.SysDataRuleGroup">
+	SELECT
+        DISTINCT(m.DATA_RULE_GROUP_ID),m.*
+        FROM
+        SYS_DATA_RULE_GROUP m
+        LEFT JOIN SYS_PERMISSION_DATA_RULES_REL pmr ON pmr.DATA_RULE_GROUP_ID
+        = m.DATA_RULE_GROUP_ID
+        WHERE
+        m.STATUS_CD = '1000'
+        AND pmr.STATUS_CD = '1000'
+        order by m.sort asc
+	</select>
+	<select id="listByAccout" resultType="cn.ffcs.uoo.system.entity.SysDataRuleGroup">
+
+		SELECT
+		DISTINCT(m.DATA_RULE_GROUP_ID),m.*
+		FROM
+		SYS_DATA_RULE_GROUP m
+		<if test="tableNames != null and tableNames !='' ">
+			left join SYS_DATA_RULE dr on dr.DATA_RULE_GROUP_ID =
+			m.DATA_RULE_GROUP_ID
+		</if>
+		LEFT JOIN SYS_PERMISSION_DATA_RULES_REL pmr ON pmr.DATA_RULE_GROUP_ID
+		= m.DATA_RULE_GROUP_ID
+		LEFT JOIN SYS_PERMISSION p ON p.PERMISSION_CODE = pmr.PERMISSION_CODE
+		LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON rpr.PERMISSION_CODE =
+		p.PERMISSION_CODE
+		LEFT JOIN SYS_ROLE r ON r.ROLE_CODE = rpr.ROLE_CODE
+		left join SYS_POSITIONT_ROLE_REF prr on prr.ROLE_CODE=r.ROLE_CODE
+		left join SYS_USER_POSITION_REF upr on upr.POSITION_CODE=prr.POSITION_CODE
+		LEFT JOIN SYS_USER u ON u.USER_CODE = upr.USER_CODE
+		WHERE
+		m.STATUS_CD = '1000'
+		AND pmr.STATUS_CD = '1000'
+		AND p.STATUS_CD = '1000'
+		AND rpr.STATUS_CD = '1000'
+		AND r.STATUS_CD = '1000'
+		AND prr.STATUS_CD = '1000'
+		AND upr.STATUS_CD = '1000'
+		AND u.STATUS_CD = '1000'
+		AND u.ACCOUT = #{accout}
+		<if test="treeId != null and treeId != '' ">
+            and m.ORG_TREE_ID = #{treeId}
+        </if>
+		<if test="tableNames != null and tableNames !='' ">
+           AND dr.STATUS_CD = '1000'
+           AND dr.TAB_NAME in 
+            <foreach collection="tableNames" index="index" item="item" open="(" separator="," close=")">
+                     #{item}       
+             </foreach>
+        </if>
+		order by m.sort asc
+	</select>
 </mapper>

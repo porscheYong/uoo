@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
@@ -59,6 +60,7 @@ import cn.ffcs.uoo.system.vo.SysPermissionPrivDTO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import net.minidev.json.writer.BeansMapper.Bean;
 
 /**
  * <p>
@@ -115,11 +117,26 @@ public class SysPermissionController {
         SysPermissionPrivDTO dto=new SysPermissionPrivDTO();
         SysPermissionDTO sp = permSvc.selectOne(id);
         BeanUtils.copyProperties(sp, dto);
-        dto.setDataRules(dataRuleSvc.listByPermissionId(id));
+        
         dto.setFiles(fileSvc.listByPermissionId(id));
         dto.setFuncs(funcSvc.listByPermissionId(id));
         dto.setElements(eleSvc.listByPermissionId(id));
         dto.setMenus(menuSvc.listByPermissionId(id));
+        
+        List<DataRuleGroupEditVO> dataRuleGroups=new ArrayList<>();
+        List<SysDataRuleGroup> listByPermCode = dataRuleGroupSvc.listByPermCode(dto.getPermissionCode());
+        for (SysDataRuleGroup sysDataRuleGroup : listByPermCode) {
+            DataRuleGroupEditVO vo =new DataRuleGroupEditVO();
+            BeanUtils.copyProperties(sysDataRuleGroup, vo);
+            Wrapper<SysDataRule> w = new Condition().eq("STATUS", StatusCD.VALID).eq("DATA_RULE_GROUP_ID", sysDataRuleGroup.getDataRuleGroupId()); 
+            w.orderBy("SORT", true);
+            List<SysDataRule> list = dataRuleSvc.selectList(w);
+            vo.setDataRules(list);
+            
+            dataRuleGroups.add(vo);
+        }
+        dto.setDataRules(dataRuleGroups);
+        
         return ResponseResult.createSuccessResult(dto, "");
     }
     

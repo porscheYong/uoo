@@ -34,10 +34,8 @@
         DISTINCT(m.DATA_RULE_ID),m.*
         FROM
         SYS_DATA_RULE m
-        <if test="treeId != null and treeId != '' ">
-            left join SYS_DATA_RULE_GROUP drg on m.DATA_RULE_GROUP_ID = drg.DATA_RULE_GROUP_ID
-        </if>
-        LEFT JOIN SYS_PERMISSION_DATA_RULES_REL pmr ON pmr.DATA_RULE_GROUP_ID = m.DATA_RULE_GROUP_ID
+        left join SYS_DATA_RULE_GROUP drg on m.DATA_RULE_GROUP_ID = drg.DATA_RULE_GROUP_ID
+        LEFT JOIN SYS_PERMISSION_DATA_RULES_REL pmr ON pmr.DATA_RULE_GROUP_ID = drg.DATA_RULE_GROUP_ID
         LEFT JOIN SYS_PERMISSION p ON p.PERMISSION_CODE = pmr.PERMISSION_CODE
         LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON rpr.PERMISSION_CODE =
         p.PERMISSION_CODE
@@ -54,6 +52,7 @@
         AND prr.STATUS_CD = '1000'
         AND upr.STATUS_CD = '1000'
         AND u.STATUS_CD = '1000'
+        AND drg.STATUS_CD = '1000'
         AND u.ACCOUT = #{accout}
         <if test="treeId != null and treeId != '' ">
             and drg.ORG_TREE_ID = #{treeId}
@@ -64,6 +63,7 @@
 	                 #{item}       
 	         </foreach>
         </if>
+        order by 
     </select>
 
 
