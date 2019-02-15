@@ -232,16 +232,25 @@ public class SysPermissionController {
         }
         List<DataRuleGroupEditVO> dataRuleGroups = sysPermissionEditDTO.getDataRuleGroups();
         for (DataRuleGroupEditVO dataRuleGroupEditVO : dataRuleGroups) {
+            //保存数据权的组信息
+            SysDataRuleGroup group=new SysDataRuleGroup();
+            BeanUtils.copyProperties(dataRuleGroupEditVO, group);
+            group.setDataRuleGroupId(dataRuleGroupSvc.getId());
+            group.setStatusCd(StatusCD.VALID);
+            group.setCreateDate(new Date());
+            group.setCreateUser(sysPermissionEditDTO.getCreateUser());
+            dataRuleGroupSvc.insert(group);
             List<SysDataRule> dataRules = dataRuleGroupEditVO.getDataRules();
+          //保存数据权的关系信息
+            SysPermissionDataRulesRel rel=new SysPermissionDataRulesRel();
+            rel.setPrivDataRelId(permDataRulesRelSvc.getId());
+            rel.setPermissionCode(sysPermissionEditDTO.getPermissionCode());
+            rel.setCreateDate(new Date());
+            rel.setCreateUser(sysPermissionEditDTO.getCreateUser());
+            rel.setStatusCd(StatusCD.VALID);
+            rel.setDataRuleGroupId(group.getDataRuleGroupId());
+            permDataRulesRelSvc.insert(rel);
             for (SysDataRule sysDataRule : dataRules) {
-                //保存数据权的组信息
-                SysDataRuleGroup group=new SysDataRuleGroup();
-                BeanUtils.copyProperties(dataRuleGroupEditVO, group);
-                group.setDataRuleGroupId(dataRuleGroupSvc.getId());
-                group.setStatusCd(StatusCD.VALID);
-                group.setCreateDate(new Date());
-                group.setCreateUser(sysPermissionEditDTO.getCreateUser());
-                dataRuleGroupSvc.insert(group);
                 //保存数据权的信息
                 sysDataRule.setDataRuleGroupId(group.getDataRuleGroupId());
                 sysDataRule.setDataRuleId(dataRuleSvc.getId());
@@ -249,15 +258,7 @@ public class SysPermissionController {
                 sysDataRule.setCreateDate(new Date());
                 sysDataRule.setCreateUser(sysPermissionEditDTO.getCreateUser());
                 dataRuleSvc.insert(sysDataRule);
-                //保存数据权的关系信息
-                SysPermissionDataRulesRel rel=new SysPermissionDataRulesRel();
-                rel.setPrivDataRelId(permDataRulesRelSvc.getId());
-                rel.setPermissionCode(sysPermissionEditDTO.getPermissionCode());
-                rel.setCreateDate(new Date());
-                rel.setCreateUser(sysPermissionEditDTO.getCreateUser());
-                rel.setStatusCd(StatusCD.VALID);
-                rel.setDataRuleGroupId(sysDataRule.getDataRuleId());
-                permDataRulesRelSvc.insert(rel);
+                
             }
             
         }
@@ -441,20 +442,29 @@ public class SysPermissionController {
         permDataRulesRelSvc.deleteBatchIds(idList);
         List<DataRuleGroupEditVO> dataRuleGroups = sysPermissionEditDTO.getDataRuleGroups();
         for (DataRuleGroupEditVO dataRuleGroupEditVO : dataRuleGroups) {
+            //保存数据权的组信息
+            SysDataRuleGroup group=new SysDataRuleGroup();
+            BeanUtils.copyProperties(dataRuleGroupEditVO, group);
+            group.setStatusCd(StatusCD.VALID);
+            group.setCreateDate(new Date());
+            group.setCreateUser(sysPermissionEditDTO.getCreateUser());
+            if(group.getDataRuleGroupId()==null||group.getDataRuleGroupId().longValue()==0){
+                group.setDataRuleGroupId(dataRuleGroupSvc.getId());
+                dataRuleGroupSvc.insert(group);
+            }else{
+                dataRuleGroupSvc.updateById(group);
+            }
+          //保存数据权的关系信息
+            SysPermissionDataRulesRel rel=new SysPermissionDataRulesRel();
+            rel.setPrivDataRelId(permDataRulesRelSvc.getId());
+            rel.setPermissionCode(sysPermissionEditDTO.getPermissionCode());
+            rel.setCreateDate(new Date());
+            rel.setCreateUser(sysPermissionEditDTO.getCreateUser());
+            rel.setStatusCd(StatusCD.VALID);
+            rel.setDataRuleGroupId(group.getDataRuleGroupId());
+            permDataRulesRelSvc.insert(rel);
             List<SysDataRule> dataRules = dataRuleGroupEditVO.getDataRules();
             for (SysDataRule sysDataRule : dataRules) {
-                //保存数据权的组信息
-                SysDataRuleGroup group=new SysDataRuleGroup();
-                BeanUtils.copyProperties(dataRuleGroupEditVO, group);
-                group.setStatusCd(StatusCD.VALID);
-                group.setCreateDate(new Date());
-                group.setCreateUser(sysPermissionEditDTO.getCreateUser());
-                if(group.getDataRuleGroupId()==null||group.getDataRuleGroupId().longValue()==0){
-                    group.setDataRuleGroupId(dataRuleGroupSvc.getId());
-                    dataRuleGroupSvc.insert(group);
-                }else{
-                    dataRuleGroupSvc.updateById(group);
-                }
                 //保存数据权的信息
                 sysDataRule.setDataRuleGroupId(group.getDataRuleGroupId());
                 
@@ -468,15 +478,6 @@ public class SysPermissionController {
                     dataRuleSvc.updateById(sysDataRule);
                 }
                
-                //保存数据权的关系信息
-                SysPermissionDataRulesRel rel=new SysPermissionDataRulesRel();
-                rel.setPrivDataRelId(permDataRulesRelSvc.getId());
-                rel.setPermissionCode(sysPermissionEditDTO.getPermissionCode());
-                rel.setCreateDate(new Date());
-                rel.setCreateUser(sysPermissionEditDTO.getCreateUser());
-                rel.setStatusCd(StatusCD.VALID);
-                rel.setDataRuleGroupId(sysDataRule.getDataRuleId());
-                permDataRulesRelSvc.insert(rel);
             }
             
         }
