@@ -239,7 +239,7 @@ public class SysPermissionController {
                 rel.setCreateDate(new Date());
                 rel.setCreateUser(sysPermissionEditDTO.getCreateUser());
                 rel.setStatusCd(StatusCD.VALID);
-                rel.setDataRuleId(sysDataRule.getDataRuleId());
+                rel.setDataRuleGroupId(sysDataRule.getDataRuleId());
                 permDataRulesRelSvc.insert(rel);
             }
             
@@ -458,7 +458,7 @@ public class SysPermissionController {
                 rel.setCreateDate(new Date());
                 rel.setCreateUser(sysPermissionEditDTO.getCreateUser());
                 rel.setStatusCd(StatusCD.VALID);
-                rel.setDataRuleId(sysDataRule.getDataRuleId());
+                rel.setDataRuleGroupId(sysDataRule.getDataRuleId());
                 permDataRulesRelSvc.insert(rel);
             }
             

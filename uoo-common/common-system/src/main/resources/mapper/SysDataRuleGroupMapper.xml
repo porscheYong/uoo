@@ -15,11 +15,12 @@
         <result column="UPDATE_DATE" property="updateDate" />
         <result column="UPDATE_USER" property="updateUser" />
         <result column="PARENT_RULE_GROUP_ID" property="parentRuleGroupId" />
+        <result column="ORG_TREE_ID" property="orgTreeId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        DATA_RULE_GROUP_ID, GROUP_NAME, AND_OR, SORT, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, PARENT_RULE_GROUP_ID
+        DATA_RULE_GROUP_ID, GROUP_NAME, AND_OR, SORT, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, PARENT_RULE_GROUP_ID,ORG_TREE_ID
     </sql>
 
     <select id="getId" resultType="Long">

@@ -6,7 +6,7 @@
     <resultMap id="BaseResultMap" type="cn.ffcs.uoo.system.entity.SysPermissionDataRulesRel">
         <id column="PRIV_DATA_REL_ID" property="privDataRelId" />
         <result column="PERMISSION_CODE" property="permissionCode" />
-        <result column="DATA_RULE_ID" property="dataRuleId" />
+        <result column="DATA_RULE_GROUP_ID" property="dataRuleGroupId" />
         <result column="EFF_DATE" property="effDate" />
         <result column="EXP_DATE" property="expDate" />
         <result column="STATUS_CD" property="statusCd" />
@@ -19,7 +19,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        PRIV_DATA_REL_ID, PERMISSION_CODE, DATA_RULE_ID, EFF_DATE, EXP_DATE, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
+        PRIV_DATA_REL_ID, PERMISSION_CODE, DATA_RULE_GROUP_ID, EFF_DATE, EXP_DATE, STATUS_CD, STATUS_DATE, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER
     </sql>
     <select id="getId" resultType="Long">
         select SEQ_PERMISSION_DATA_RULES_REL.NEXTVAL from dual
