@@ -128,7 +128,7 @@ public class SysPermissionController {
         for (SysDataRuleGroup sysDataRuleGroup : listByPermCode) {
             DataRuleGroupEditVO vo =new DataRuleGroupEditVO();
             BeanUtils.copyProperties(sysDataRuleGroup, vo);
-            Wrapper<SysDataRule> w = new Condition().eq("STATUS", StatusCD.VALID).eq("DATA_RULE_GROUP_ID", sysDataRuleGroup.getDataRuleGroupId()); 
+            Wrapper<SysDataRule> w = new Condition().eq("STATUS_CD", StatusCD.VALID).eq("DATA_RULE_GROUP_ID", sysDataRuleGroup.getDataRuleGroupId()); 
             w.orderBy("SORT", true);
             List<SysDataRule> list = dataRuleSvc.selectList(w);
             vo.setDataRules(list);
@@ -459,10 +459,12 @@ public class SysPermissionController {
             rel.setPrivDataRelId(permDataRulesRelSvc.getId());
             rel.setPermissionCode(sysPermissionEditDTO.getPermissionCode());
             rel.setCreateDate(new Date());
-            rel.setCreateUser(sysPermissionEditDTO.getCreateUser());
+            rel.setUpdateUser(sysPermissionEditDTO.getUpdateUser());
             rel.setStatusCd(StatusCD.VALID);
             rel.setDataRuleGroupId(group.getDataRuleGroupId());
             permDataRulesRelSvc.insert(rel);
+            //把该group下的数据权的关系解除  
+            dataRuleSvc.updateForSet("DATA_RULE_GROUP_ID=0", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("DATA_RULE_GROUP_ID", group.getDataRuleGroupId()));
             List<SysDataRule> dataRules = dataRuleGroupEditVO.getDataRules();
             for (SysDataRule sysDataRule : dataRules) {
                 //保存数据权的信息
@@ -470,7 +472,7 @@ public class SysPermissionController {
                 
                 sysDataRule.setStatusCd(StatusCD.VALID);
                 sysDataRule.setCreateDate(new Date());
-                sysDataRule.setCreateUser(sysPermissionEditDTO.getCreateUser());
+                sysDataRule.setUpdateUser(sysPermissionEditDTO.getUpdateUser());
                 if(sysDataRule.getDataRuleId()==null||sysDataRule.getDataRuleId().longValue()==0){
                     sysDataRule.setDataRuleId(dataRuleSvc.getId());
                     dataRuleSvc.insert(sysDataRule);

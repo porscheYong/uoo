@@ -98,7 +98,7 @@ public class SysDataRuleController {
         for (SysDataRuleGroup g : groups) {
             DataRuleGroupVO gvo=new DataRuleGroupVO();
             BeanUtils.copyProperties(g, gvo);
-            Wrapper<SysDataRule> w = new Condition().eq("STATUS", StatusCD.VALID).eq("DATA_RULE_GROUP_ID", g.getDataRuleGroupId()); 
+            Wrapper<SysDataRule> w = new Condition().eq("STATUS_CD", StatusCD.VALID).eq("DATA_RULE_GROUP_ID", g.getDataRuleGroupId()); 
             if(requestVo.getTableNames()!=null && !requestVo.getTableNames().isEmpty()){
                 w.in("TAB_NAME", requestVo.getTableNames());
             }

@@ -38,6 +38,7 @@
         WHERE
         m.STATUS_CD = '1000'
         AND pmr.STATUS_CD = '1000'
+        AND pmr.permission_code=#{permCode}
         order by m.sort asc
 	</select>
 	<select id="listByAccout" resultType="cn.ffcs.uoo.system.entity.SysDataRuleGroup">
