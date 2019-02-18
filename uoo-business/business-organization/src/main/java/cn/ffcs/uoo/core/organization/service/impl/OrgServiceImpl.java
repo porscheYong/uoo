@@ -375,7 +375,7 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         if(orgOrgTreeRels!=null && orgOrgTreeRels.size()>0){
             for(OrgOrgtreeRel ootr : orgOrgTreeRels){
                 fullName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),ootr.getOrgId().toString(),"");
-                String fullOrgId = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),ootr.getOrgId().toString(),",");
+                String fullOrgId = orgOrgtreeRelService.getFullBizOrgIdList(orgTreeId.toString(),ootr.getOrgId().toString(),",");
                 fullOrgId =","+fullOrgId+",";
                 ootr.setOrgBizFullName(fullName);
                 ootr.setOrgBizFullId(fullOrgId);

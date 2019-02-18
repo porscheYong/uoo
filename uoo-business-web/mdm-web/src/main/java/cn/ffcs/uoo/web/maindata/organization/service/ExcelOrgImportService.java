@@ -37,14 +37,14 @@ public interface ExcelOrgImportService {
 
 
 
-    @RequestMapping(value = "/importExcelFileData", method=RequestMethod.POST,produces = {MediaType.APPLICATION_JSON_UTF8_VALUE}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @RequestMapping(value = "/excelOrgImport/importExcelFileData", method=RequestMethod.POST,produces = {MediaType.APPLICATION_JSON_UTF8_VALUE}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseResult<String> importExcelFileData(@RequestPart(value="fileInfo",required = false) MultipartFile fileInfo,
                                                       @RequestParam(value = "userId",required = false)Long userId,
                                                       @RequestParam(value = "accout",required = false)String accout);
 
 
 
-    @RequestMapping(value = "/addExcelFileData", method=RequestMethod.POST)
+    @RequestMapping(value = "/excelOrgImport/addExcelFileData", method=RequestMethod.POST)
     public ResponseResult<String> addExcelFileData(@RequestParam(value = "fileSign",required = false)String fileSign,
                                                    @RequestParam(value = "userId",required = false)Long userId,
                                                    @RequestParam(value = "accout",required = false)String accout);
@@ -52,7 +52,7 @@ public interface ExcelOrgImportService {
 
 
 
-    @RequestMapping(value = "/getExcelFileData", method=RequestMethod.GET)
+    @RequestMapping(value = "/excelOrgImport/getExcelFileData", method=RequestMethod.GET)
     public ResponseResult<Page<ExcelOrgImport>> getExcelFileData(@RequestParam(value = "fileSign",required = false)String fileSign,
                                                                  @RequestParam(value = "dataSign",required = false)String dataSign,
                                                                  @RequestParam(value = "pageSize",required = false)Integer pageSize,

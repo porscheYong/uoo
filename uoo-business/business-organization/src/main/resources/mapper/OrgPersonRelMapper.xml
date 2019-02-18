@@ -236,20 +236,30 @@
             AND C.FIRST_FLAG = 1) D
             )
             ) where 1=1
+            <!--<if test="psonOrgVo.search != null and psonOrgVo.search != ''">-->
+                <!--<if test='psonOrgVo.isSearchNum=="1"' >-->
+                    <!--AND (PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%' OR-->
+                    <!--MOBILE  LIKE '%'||#{psonOrgVo.search}||'%' OR-->
+                    <!--CERTNO LIKE '%'||#{psonOrgVo.search}||'%')-->
+                <!--</if>-->
+                <!--<if test='psonOrgVo.isSearchNum!="1"' >-->
+                    <!--AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR-->
+                    <!--PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%'　OR-->
+                    <!--CERTNO LIKE '%'||#{psonOrgVo.search}||'%')-->
+                <!--</if>-->
+            <!--</if>-->
             <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
                 <if test='psonOrgVo.isSearchNum=="1"' >
-                    AND (PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%' OR
-                    MOBILE  LIKE '%'||#{psonOrgVo.search}||'%' OR
-                    CERTNO LIKE '%'||#{psonOrgVo.search}||'%')
+                    AND (INSTR(PSNNBR,#{psonOrgVo.search})>0 OR
+                    MOBILE = #{psonOrgVo.search} OR
+                    CERTNO = #{psonOrgVo.search})
                 </if>
                 <if test='psonOrgVo.isSearchNum!="1"' >
-                    AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR
-                    PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%'　OR
-                    CERTNO LIKE '%'||#{psonOrgVo.search}||'%')
+                    AND (INSTR(PSNNAME,#{psonOrgVo.search})>0 OR
+                    INSTR(PSNNBR,#{psonOrgVo.search})>0 OR
+                    CERTNO = #{psonOrgVo.search})
                 </if>
             </if>
-
-
         </when>
         <otherwise>
             SELECT D.* FROM (SELECT 88888888 orgId,A.personnelId,null postId,null refType,
@@ -278,11 +288,17 @@
             AND C.STATUS_CD = 1000
             AND C.CONTACT_TYPE = '1'
             AND C.FIRST_FLAG = 1) D where 1=1
+            <!--<if test ="psonOrgVo.search!=null and psonOrgVo.search!=''">-->
+                <!--AND (D.psnName LIKE '%'||#{psonOrgVo.search}||'%'-->
+                <!--OR D.psnNbr LIKE  '%'||#{psonOrgVo.search}||'%'-->
+                <!--OR D.certNo LIKE '%'||#{psonOrgVo.search}||'%'-->
+                <!--OR D.mobile LIKE '%'||#{psonOrgVo.search}||'%')-->
+            <!--</if>-->
             <if test ="psonOrgVo.search!=null and psonOrgVo.search!=''">
-                AND (D.psnName LIKE '%'||#{psonOrgVo.search}||'%'
-                OR D.psnNbr LIKE  '%'||#{psonOrgVo.search}||'%'
-                OR D.certNo LIKE '%'||#{psonOrgVo.search}||'%'
-                OR D.mobile LIKE '%'||#{psonOrgVo.search}||'%')
+                AND (INSTR(D.psnName,#{psonOrgVo.search})>0 OR
+                INSTR(D.psnNbr,#{psonOrgVo.search})>0 OR
+                INSTR(D.certNo,#{psonOrgVo.search})>0 OR
+                INSTR(D.mobile,#{psonOrgVo.search})>0 OR)
             </if>
         </otherwise>
         </choose>
@@ -388,16 +404,28 @@
                 LEFT JOIN TB_CONTACT PCT ON PCT.STATUS_CD='1000'  AND PCT.PERSONNEL_ID=AA.PERSONNEL_ID AND PCT.FIRST_FLAG=1 AND PCT.CONTACT_TYPE=1
                 LEft join TB_CERT pc on pc.STATUS_CD='1000'  and pc.personnel_id=AA.PERSONNEL_ID and pc.cert_type=1
                 ) AB where 1=1
+                <!--<if test="psonOrgVo.search != null and psonOrgVo.search != ''">-->
+                    <!--<if test='psonOrgVo.isSearchNum=="1"' >-->
+                        <!--AND (PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%' OR-->
+                        <!--MOBILE  LIKE '%'||#{psonOrgVo.search}||'%' OR-->
+                        <!--CERTNO LIKE '%'||#{psonOrgVo.search}||'%')-->
+                    <!--</if>-->
+                    <!--<if test='psonOrgVo.isSearchNum!="1"' >-->
+                        <!--AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR-->
+                        <!--PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%' OR-->
+                        <!--CERTNO LIKE '%'||#{psonOrgVo.search}||'%')-->
+                    <!--</if>-->
+                <!--</if>-->
                 <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
                     <if test='psonOrgVo.isSearchNum=="1"' >
-                        AND (PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%' OR
-                        MOBILE  LIKE '%'||#{psonOrgVo.search}||'%' OR
-                        CERTNO LIKE '%'||#{psonOrgVo.search}||'%')
+                        AND (INSTR(PSNNBR,#{psonOrgVo.search})>0 OR
+                        INSTR(MOBILE,#{psonOrgVo.search})>0 OR
+                        INSTR(CERTNO,#{psonOrgVo.search})>0)
                     </if>
                     <if test='psonOrgVo.isSearchNum!="1"' >
-                        AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR
-                        PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%' OR
-                        CERTNO LIKE '%'||#{psonOrgVo.search}||'%')
+                        AND (INSTR(PSNNAME,#{psonOrgVo.search})>0 OR
+                        INSTR(PSNNBR,#{psonOrgVo.search})>0 OR
+                        INSTR(CERTNO,#{psonOrgVo.search})>0)
                     </if>
                 </if>
                 )
@@ -432,11 +460,17 @@
                 AND C.STATUS_CD = 1000
                 AND C.CONTACT_TYPE = '1'
                 AND C.FIRST_FLAG = 1) D WHERE 1=1
+                <!--<if test ="psonOrgVo.search!=null and psonOrgVo.search!=''">-->
+                    <!--and ( D.psnName LIKE '%'||#{psonOrgVo.search}||'%'-->
+                    <!--OR D.psnNbr LIKE  '%'||#{psonOrgVo.search}||'%'-->
+                    <!--OR D.certNo LIKE '%'||#{psonOrgVo.search}||'%'-->
+                    <!--OR D.mobile LIKE '%'||#{psonOrgVo.search}||'%' )-->
+                <!--</if>-->
                 <if test ="psonOrgVo.search!=null and psonOrgVo.search!=''">
-                    and ( D.psnName LIKE '%'||#{psonOrgVo.search}||'%'
-                    OR D.psnNbr LIKE  '%'||#{psonOrgVo.search}||'%'
-                    OR D.certNo LIKE '%'||#{psonOrgVo.search}||'%'
-                    OR D.mobile LIKE '%'||#{psonOrgVo.search}||'%' )
+                    AND (INSTR(D.psnName,#{psonOrgVo.search})>0 OR
+                    INSTR(D.psnNbr,#{psonOrgVo.search})>0 OR
+                    INSTR(D.certNo,#{psonOrgVo.search})>0 OR
+                    INSTR(D.mobile,#{psonOrgVo.search})>0 OR)
                 </if>
             </otherwise>
         </choose>
@@ -500,7 +534,7 @@
                 <!--order by #{psonOrgVo.sortField}||' '||#{psonOrgVo.sortOrder}-->
             <!--</if>-->
 
-            SELECT * FROM (
+
             SELECT * FROM (
             SELECT AA.ORG_ID orgId,AA.PERSONNEL_ID personnelId,
             AA.POST_ID postId,AA.REF_TYPE refType,AA.PROPERTY property,AA.DOUBLE_NAME doubleName,
@@ -534,19 +568,31 @@
             LEFT JOIN TB_CONTACT PCT ON PCT.STATUS_CD='1000'  AND PCT.PERSONNEL_ID=AA.PERSONNEL_ID AND PCT.FIRST_FLAG=1 AND PCT.CONTACT_TYPE=1
             LEft join TB_CERT pc on pc.STATUS_CD='1000'  and pc.personnel_id=AA.PERSONNEL_ID and pc.cert_type=1
             ) AB where 1=1
+            <!--<if test="psonOrgVo.search != null and psonOrgVo.search != ''">-->
+                <!--<if test='psonOrgVo.isSearchNum=="1"' >-->
+                    <!--AND (PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%' OR-->
+                    <!--MOBILE  LIKE '%'||#{psonOrgVo.search}||'%' OR-->
+                    <!--CERTNO LIKE '%'||#{psonOrgVo.search}||'%')-->
+                <!--</if>-->
+                <!--<if test='psonOrgVo.isSearchNum!="1"' >-->
+                    <!--AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR-->
+                    <!--PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%' OR-->
+                    <!--CERTNO LIKE '%'||#{psonOrgVo.search}||'%')-->
+                <!--</if>-->
+            <!--</if>-->
             <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
                 <if test='psonOrgVo.isSearchNum=="1"' >
-                    AND (PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%' OR
-                    MOBILE  LIKE '%'||#{psonOrgVo.search}||'%' OR
-                    CERTNO LIKE '%'||#{psonOrgVo.search}||'%')
+                    AND (INSTR(PSNNBR,#{psonOrgVo.search})>0 OR
+                    INSTR(MOBILE,#{psonOrgVo.search})>0 OR
+                    INSTR(CERTNO,#{psonOrgVo.search})>0)
                 </if>
                 <if test='psonOrgVo.isSearchNum!="1"' >
-                    AND (PSNNAME LIKE '%'||#{psonOrgVo.search}||'%' OR
-                    PSNNBR  LIKE '%'||#{psonOrgVo.search}||'%' OR
-                    CERTNO LIKE '%'||#{psonOrgVo.search}||'%')
+                    AND (INSTR(PSNNAME,#{psonOrgVo.search})>0 OR
+                    INSTR(PSNNBR,#{psonOrgVo.search})>0 OR
+                    INSTR(CERTNO,#{psonOrgVo.search})>0)
                 </if>
             </if>
-            )
+
             <if test="psonOrgVo.sortField!=null and psonOrgVo.sortField!='' and psonOrgVo.sortOrder!=null and psonOrgVo.sortOrder!='' ">
                 order by #{psonOrgVo.sortField}||' '||#{psonOrgVo.sortOrder}
             </if>
@@ -811,7 +857,9 @@
                 left join tb_slave_acct v on v.status_cd=1000 and v.acct_id=t.acct_id and t.acct_org_rel_id=v.acct_org_rel_id
                 ) where 1=1
                 <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
-                    AND (PsnName like '%'||#{psonOrgVo.search}||'%' or acct like '%'||#{psonOrgVo.search}||'%' or slaveAcct like '%'||#{psonOrgVo.search}||'%' )
+                    AND (INSTR(PsnName,#{psonOrgVo.search})>0 or
+                    INSTR(acct,#{psonOrgVo.search})>0 or
+                    INSTR(slaveAcct,#{psonOrgVo.search})>0 )
                 </if>
                 )
 
@@ -918,8 +966,15 @@
                 and tbAccountOrgRel.org_tree_id = #{psonOrgVo.orgTreeId}) t
                 left join tb_slave_acct v on v.status_cd=1000 and v.acct_id=t.acct_id and t.acct_org_rel_id=v.acct_org_rel_id
                 ) where 1=1
+                <!--<if test="psonOrgVo.search != null and psonOrgVo.search != ''">-->
+                    <!--AND (PsnName like '%'||#{psonOrgVo.search}||'%' or -->
+                    <!--acct like '%'||#{psonOrgVo.search}||'%' or -->
+                    <!--slaveAcct like '%'||#{psonOrgVo.search}||'%')-->
+                <!--</if>-->
                 <if test="psonOrgVo.search != null and psonOrgVo.search != ''">
-                    AND (PsnName like '%'||#{psonOrgVo.search}||'%'   or acct like '%'||#{psonOrgVo.search}||'%' or slaveAcct like '%'||#{psonOrgVo.search}||'%')
+                    AND (INSTR(PsnName,#{psonOrgVo.search})>0 or
+                    INSTR(acct,#{psonOrgVo.search})>0 or
+                    INSTR(slaveAcct,#{psonOrgVo.search})>0 )
                 </if>
                 )
             </otherwise>
@@ -995,10 +1050,55 @@
 
 
     <select id="selectOrgRelsByPerIdPage" resultType="cn.ffcs.uoo.core.organization.vo.PsonOrgVo" useCache="false" flushCache="true">
+        <!--SELECT *-->
+        <!--FROM (SELECT AA.ORG_ID orgId,AA.PERSONNEL_ID  personnelId,-->
+        <!--AA.POST_ID postId,AA.REF_TYPE refType,AA.PROPERTY property,-->
+        <!--AA.DOUBLE_NAME  doubleName,AA.ORG_NAME orgName,AA.Full_Name fullName,-->
+        <!--AA.PSN_NAME PsnName,AA.PSN_CODE psnCode,AA.PSN_NBR psnNbr,-->
+        <!--AA.NC_CODE ncCode,ORG_TREE_NAME orgTreeName,AA.STATUS_CD statusCd,-->
+        <!--AA.ORG_TREE_ID orgTreeId,AA.ORG_PERSON_ID orgPersonId,-->
+        <!--AA.SORT sort,pct.content mobile,pc.cert_no certNo-->
+        <!--FROM (SELECT distinct tbOrgPersonRel.ORG_PERSON_ID,-->
+        <!--tbOrgPersonRel.ORG_ID,tbOrgPersonRel.PERSONNEL_ID,tbOrgPersonRel.POST_ID,-->
+        <!--tbOrgPersonRel.REF_TYPE,tbOrgPersonRel.PROPERTY,tbOrgPersonRel.DOUBLE_NAME,-->
+        <!--tbOrgPersonRel.SORT,tbOrgPersonRel.STATUS_CD,tbOrgPersonRel.CREATE_DATE,-->
+        <!--tbOrgPersonRel.CREATE_USER,tbOrgPersonRel.UPDATE_DATE,tbOrgPersonRel.UPDATE_USER,-->
+        <!--tbOrgPersonRel.STATUS_DATE,E.ORG_TREE_NAME,-->
+        <!--E.ORG_TREE_ID,D.ORG_NAME,-->
+        <!--D.Full_Name,A.NC_CODE,A.PSN_NBR,A.PSN_CODE,A.PSN_NAME-->
+        <!--FROM-->
+        <!--TB_PERSONNEL  A,TB_ORG_PERSON_REL tbOrgPersonRel,TB_ORGTREE_ORGPERSON_REL C,-->
+        <!--TB_ORG  D,TB_ORG_TREE E,TB_ORG_LEVEL F,TB_ORG_ORGTYPE_REL  G-->
+        <!--WHERE A.STATUS_CD = '1000'　AND tbOrgPersonRel.STATUS_CD = '1000'-->
+        <!--AND C.STATUS_CD = '1000'　AND D.STATUS_CD = '1000'　AND E.STATUS_CD = '1000'-->
+        <!--AND F.STATUS_CD = '1000'　AND G.STATUS_CD = '1000'-->
+        <!--AND A.PERSONNEL_ID = tbOrgPersonRel.PERSONNEL_ID-->
+        <!--<if test="psonOrgVo.tabOrgPerRelParams!='' and psonOrgVo.tabOrgPerRelParams!=null">-->
+            <!--AND ${psonOrgVo.tabOrgPerRelParams}-->
+        <!--</if>-->
+        <!--AND G.ORG_ID = D.ORG_ID-->
+        <!--AND F.ORG_ID = D.ORG_ID-->
+        <!--AND D.ORG_ID = tbOrgPersonRel.ORG_ID-->
+        <!--<if test="psonOrgVo.tabOrgOrgTypeParams!='' and psonOrgVo.tabOrgOrgTypeParams!=null">-->
+            <!--AND ${psonOrgVo.tabOrgOrgTypeParams}-->
+        <!--</if>-->
+        <!--<if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">-->
+            <!--AND ${psonOrgVo.tabOrgParams}-->
+        <!--</if>-->
+        <!--AND tbOrgPersonRel.ORG_PERSON_ID=C.ORG_PERSON_ID-->
+        <!--AND E.ORG_TREE_ID = C.ORG_TREE_ID-->
+        <!--AND E.ORG_TREE_ID = F.ORG_TREE_ID-->
+        <!--AND E.ORG_TREE_ID = #{psonOrgVo.orgTreeId}-->
+        <!--AND A.Personnel_Id = #{psonOrgVo.personnelId}) AA-->
+
+        <!--LEFT JOIN TB_CONTACT PCT ON PCT.STATUS_CD='1000' AND PCT.CONTACT_TYPE=1 AND PCT.PERSONNEL_ID=AA.PERSONNEL_ID AND PCT.FIRST_FLAG=1-->
+        <!--LEft join TB_CERT pc on pc.STATUS_CD='1000' and pc.cert_type=1 and pc.personnel_id=AA.PERSONNEL_ID-->
+
+        <!--) AB WHERE 1=1-->
         SELECT *
         FROM (SELECT AA.ORG_ID orgId,AA.PERSONNEL_ID  personnelId,
         AA.POST_ID postId,AA.REF_TYPE refType,AA.PROPERTY property,
-        AA.DOUBLE_NAME  doubleName,AA.ORG_NAME orgName,AA.Full_Name fullName,
+        AA.DOUBLE_NAME  doubleName,
         AA.PSN_NAME PsnName,AA.PSN_CODE psnCode,AA.PSN_NBR psnNbr,
         AA.NC_CODE ncCode,ORG_TREE_NAME orgTreeName,AA.STATUS_CD statusCd,
         AA.ORG_TREE_ID orgTreeId,AA.ORG_PERSON_ID orgPersonId,
@@ -1009,30 +1109,29 @@
         tbOrgPersonRel.SORT,tbOrgPersonRel.STATUS_CD,tbOrgPersonRel.CREATE_DATE,
         tbOrgPersonRel.CREATE_USER,tbOrgPersonRel.UPDATE_DATE,tbOrgPersonRel.UPDATE_USER,
         tbOrgPersonRel.STATUS_DATE,E.ORG_TREE_NAME,
-        E.ORG_TREE_ID,D.ORG_NAME,
-        D.Full_Name,A.NC_CODE,A.PSN_NBR,A.PSN_CODE,A.PSN_NAME
+        E.ORG_TREE_ID,A.NC_CODE,A.PSN_NBR,A.PSN_CODE,A.PSN_NAME
         FROM
         TB_PERSONNEL  A,TB_ORG_PERSON_REL tbOrgPersonRel,TB_ORGTREE_ORGPERSON_REL C,
-        TB_ORG  D,TB_ORG_TREE E,TB_ORG_LEVEL F,TB_ORG_ORGTYPE_REL  G
+        TB_ORG_TREE E,TB_ORG_ORGTYPE_REL  G,TB_ORG_ORGTREE_REL tbOrgOrgTreeRel
         WHERE A.STATUS_CD = '1000'　AND tbOrgPersonRel.STATUS_CD = '1000'
-        AND C.STATUS_CD = '1000'　AND D.STATUS_CD = '1000'　AND E.STATUS_CD = '1000'
-        AND F.STATUS_CD = '1000'　AND G.STATUS_CD = '1000'
+        AND C.STATUS_CD = '1000' AND E.STATUS_CD = '1000' AND G.STATUS_CD = '1000'
         AND A.PERSONNEL_ID = tbOrgPersonRel.PERSONNEL_ID
         <if test="psonOrgVo.tabOrgPerRelParams!='' and psonOrgVo.tabOrgPerRelParams!=null">
             AND ${psonOrgVo.tabOrgPerRelParams}
         </if>
-        AND G.ORG_ID = D.ORG_ID
-        AND F.ORG_ID = D.ORG_ID
-        AND D.ORG_ID = tbOrgPersonRel.ORG_ID
+        AND G.ORG_ID = tbOrgPersonRel.ORG_ID
         <if test="psonOrgVo.tabOrgOrgTypeParams!='' and psonOrgVo.tabOrgOrgTypeParams!=null">
             AND ${psonOrgVo.tabOrgOrgTypeParams}
         </if>
         <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
             AND ${psonOrgVo.tabOrgParams}
         </if>
+        <if test="psonOrgVo.tabOrgOrgTreeRelParams!='' and psonOrgVo.tabOrgOrgTreeRelParams!=null">
+            AND ${psonOrgVo.tabOrgOrgTreeRelParams}
+        </if>
         AND tbOrgPersonRel.ORG_PERSON_ID=C.ORG_PERSON_ID
         AND E.ORG_TREE_ID = C.ORG_TREE_ID
-        AND E.ORG_TREE_ID = F.ORG_TREE_ID
+        AND E.ORG_TREE_ID = tbOrgOrgTreeRel.ORG_TREE_ID
         AND E.ORG_TREE_ID = #{psonOrgVo.orgTreeId}
         AND A.Personnel_Id = #{psonOrgVo.personnelId}) AA
 
@@ -1040,6 +1139,7 @@
         LEft join TB_CERT pc on pc.STATUS_CD='1000' and pc.cert_type=1 and pc.personnel_id=AA.PERSONNEL_ID
 
         ) AB WHERE 1=1
+
     </select>
 
 </mapper>
