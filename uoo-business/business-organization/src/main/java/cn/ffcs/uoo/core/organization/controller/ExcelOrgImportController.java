@@ -63,9 +63,9 @@ public class ExcelOrgImportController {
     @RequestMapping(value = "/importExcelFileData", method=RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<String> importExcelFileData(@RequestPart(value="fileInfo",required = false) MultipartFile fileInfo,
-                                                      String orgTreeId,
-                                                      Long userId,
-                                                      String accout) throws IOException {
+                                                      @RequestParam("orgTreeId")String orgTreeId,
+                                                      @RequestParam("userId")Long userId,
+                                                      @RequestParam("accout")String accout) throws IOException {
         ResponseResult<String> ret = new ResponseResult<String>();
         if(StrUtil.isNullOrEmpty(orgTreeId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);

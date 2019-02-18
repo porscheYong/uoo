@@ -10,6 +10,7 @@ import cn.ffcs.uoo.web.maindata.organization.service.fallback.ExcelOrgImportServ
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgContactRelServiceHystrix;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.plugins.Page;
+import common.config.PersonnelImageServiceConfiguration;
 import common.config.PersonnelServiceConfiguration;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParams;
@@ -32,7 +33,7 @@ import java.util.Iterator;
  * @author ffcs-gzb
  * @since 2019-01-25
  */
-@FeignClient(value = "business-organization",configuration = {PersonnelServiceConfiguration.class},fallback = ExcelOrgImportServiceHystrix.class)
+@FeignClient(value = "business-organization",configuration = {PersonnelImageServiceConfiguration.class},fallback = ExcelOrgImportServiceHystrix.class)
 public interface ExcelOrgImportService {
 
 
