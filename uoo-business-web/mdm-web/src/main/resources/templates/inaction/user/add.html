@@ -100,19 +100,43 @@
         .ui-input-del:hover .icon-del, .ui-input-del:focus .icon-del {
             display: block;
         }
+        .del {
+            position: absolute;
+            right: 0;
+            line-height: 40px;
+        }
         .icon-del {
-            display: none;
+            /*display: none;*/
             position: absolute;
             z-index: 2;
             line-height: 40px;
             top: 0;
-            right: 5px;
+            right: 0;
             color: #f26d7e;
             font-size: 23px;
             cursor: pointer;
         }
+        .default-set {
+            display: none;
+            position: absolute;
+            right: 33px;
+            line-height: 40px;
+            cursor: pointer;
+        }
+        .mobile-item:hover .default-set {
+            display: block;
+        }
         .icon-del:hover {
             color: #f26d7e;
+        }
+        .default-tag {
+            background: rgb(255, 121, 2);
+            border-radius: 4px;
+            line-height: 1.5em;
+            color: #fff;
+            padding: 3px 10px;
+            display: inline-block;
+            margin-right: 5px;
         }
         .work-edit {
             color: rgb(0,164,255);
@@ -244,15 +268,10 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-item" style="width: 100%; position: relative;">
-                                <label for="mobile" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                                       style="padding-right: 20px;line-height: 40px;text-align: right;">电话</label>
-                                <div id="tbMobileVoList" class="ui-input col-md-8 col-sm-8 col-xs-12">
-                                    <input id="mobile" required onkeyup="autoFillMail()" onpaste="autoFillMail()">
-                                </div>
-                                <div class="fright" style="position: absolute; right: 0; line-height: 40px;" onclick="addMobile()">
-                                    <a id="mobileAdd" href="javascript:void(0)"><span class="fa fa-plus-circle icon-add" style="padding-right: 0; font-size: 23px;"></span></a>
-                                </div>
+                            <div class="form-item" style="width: 100%">
+                                <label for="certNo" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
+                                <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" required onkeyup="getIdCardInfo()" onpaste="getIdCardInfo()">
                             </div>
                         </div>
                         <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
@@ -265,23 +284,49 @@
                     </div>
 
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-item" style="width: 100%">
-                                <label for="certNo" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
-                                        style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                                <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" required onkeyup="getIdCardInfo()" onpaste="getIdCardInfo()">
+                        <div class="col-md-6 col-sm-6 col-xs-12" id="tbMobileVoList">
+                            <div class="form-item" style="width: 100%; position: relative;">
+                                <label for="mobile" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">电话</label>
+                                <div class="ui-input col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
+                                    <input id="mobile" required onkeyup="autoFillMail()" onpaste="autoFillMail()">
+                                </div>
+                                <!--<div class="fright" style="position: absolute; right: 0; line-height: 40px;" onclick="addMobile()">-->
+                                    <!--<a id="mobileAdd" href="javascript:void(0)"><span class="fa fa-plus-circle icon-add" style="padding-right: 0; font-size: 23px;"></span></a>-->
+                                <!--</div>-->
+                                <div class="fright" style="position: absolute; right: -33px; line-height: 40px;">
+                                    <span class="default-tag">默认</span>
+                                </div>
+                            </div>
+                            <!--<div class='form-item mobile-item' style='width: 100%; position: relative;'>-->
+                                <!--<input class='ui-input col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4'>-->
+                                <!--<div class='fright del'>-->
+                                    <!--<a class='icon-del' href='javascript:void(0)'><span class='fa fa-minus-circle'></span></a>-->
+                                <!--</div>-->
+                                <!--<div class='fright default-set'>-->
+                                    <!--<a href='javascript:void(0)' onclick='setDefault(this)'>设为默认</a>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <div class="col-md-offset-4 col-sm-offset-4">
+                                <a class="button-add" href='javascript:void(0)' onclick="addMobile(this)"><span class="fa fa-plus-circle icon-add"></span>添加</a>
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-12" id="tbEamilVoList">
                             <div class="form-item" style="width: 100%; position: relative;">
-                                <label for="tbEamilVoList" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                                <label for="email" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
-                                <div id="tbEamilVoList" class="ui-input col-md-8 col-sm-8 col-xs-12">
+                                <div class="ui-input col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
                                     <input id="email" required>
                                 </div>
-                                <div class="fright" style="position: absolute; right: 0; line-height: 40px;" onclick="addEmail()">
-                                    <a id="emailAdd" href="javascript:void(0)"><span class="fa fa-plus-circle icon-add" style="padding-right: 0; font-size: 23px;"></span></a>
-                                </div>
+                            </div>
+                            <!--<div class='form-item' style='width: 100%; position: relative;'>-->
+                                <!--<input class='ui-input col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4'>-->
+                                <!--<div class='fright del'>-->
+                                    <!--<a class='icon-del' href='javascript:void(0)'><span class='fa fa-minus-circle'></span></a>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <div class="col-md-offset-4 col-sm-offset-4">
+                                <a class="button-add" href='javascript:void(0)' onclick="addEmail(this)"><span class="fa fa-plus-circle icon-add"></span>添加</a>
                             </div>
                         </div>
                         <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
