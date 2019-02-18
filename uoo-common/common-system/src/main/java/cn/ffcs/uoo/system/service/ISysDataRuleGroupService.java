@@ -1,7 +1,10 @@
 package cn.ffcs.uoo.system.service;
 
-import cn.ffcs.uoo.system.entity.SysDataRuleGroup;
+import java.util.List;
+
 import com.baomidou.mybatisplus.service.IService;
+
+import cn.ffcs.uoo.system.entity.SysDataRuleGroup;
 
 /**
  * <p>
@@ -13,4 +16,6 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ISysDataRuleGroupService extends IService<SysDataRuleGroup> {
     public Long getId();
+    List<SysDataRuleGroup> listByPermCode(String permCode);
+    List<SysDataRuleGroup> listByAccout(String accout,Long treeId,List<String> tableNames);
 }

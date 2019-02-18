@@ -23,7 +23,7 @@ public interface ISysDataRuleService extends IService<SysDataRule> {
     List<SysDataRule> listByAccout(HashMap<String, Object> map);
 
     Page<SysDataRuleVo> getDataRulePage(String search, Integer pageSize, Integer pageNo);
-
+    public List<SysDataRuleVo> listSysDataRuleVoByGroupId(Long groupId);
     /**
      * 获取seq
      * @return

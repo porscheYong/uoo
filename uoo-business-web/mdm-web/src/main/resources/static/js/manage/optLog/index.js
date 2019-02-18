@@ -1,68 +1,71 @@
-var orgId = getQueryString('orgId');
-var orgName = getQueryString('orgName');
-var orgFullName = getQueryString('orgFullName');
-var orgTreeId = getQueryString('orgTreeId');
-var businessName = getQueryString('businessName');
-var selectNode;
-var table;
-var query,
-    delayTime = 500;
+var logTable;
+var query;
+var loading = parent.loading;
 
-// empty = Handlebars.compile($("#empty-template").html());
-// engine = new Bloodhound({
-//     identify: function(o) { return o.id_str; },
-//     queryTokenizer: Bloodhound.tokenizers.whitespace,
-//     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name', 'orgName'),
-//     dupDetector: function(a, b) { return a.id_str === b.id_str; },
-//     // prefetch: remoteHost + '/demo/prefetch',
-//     remote: {
-//         url: '/personnel/getPsnBasicInfo?keyWord=%QUERY&pageNo=1&pageSize=10',
-//         wildcard: '%QUERY',
-//         filter: function (response) {
-//             return;
-//         }
-//     }
-// });
+loading.screenMaskEnable('LAY_app_body');
 
-function initTable(keyWord){
-    table = $("#psnTable").DataTable({
-        //'data': response.data.records,
-        'destroy': true,
+//初始化日志列表
+function initLogTable(keyWord,logEnum){
+    logTable = $("#logTable").DataTable({
+        'destroy':true,
         'searching': false,
-        'autoWidth': false,
+        'autoWidth': true,
         'ordering': true,
-        'lSort':true,
+        'lSort': true,
+        'info': true,
+        "scrollY": "375px",
+        'scrollCollapse': true,
         'columns': [
-            { 'data': null, 'title': '选择', 'className': 'row-select',
+            { 'data': null, 'title': '序号', 'className': 'row-num' ,
                 'render': function (data, type, row, meta) {
-                    return "<input type='radio' id='"+row.psnNbr+"' name='radio' onclick=''><label for='"+row.psnNbr+"' class='ui-checkbox'></label>";
+                    return meta.row + 1 + meta.settings._iDisplayStart;
                 }
             },
-            { 'data': "psnName", 'title': '人员姓名', 'className': 'row-name'},
-            { 'data': "certNo", 'title': '证件号码', 'className': 'row-cert' },
-            { 'data': "psnNbr", 'title': '员工工号', 'className': 'cert-no' },
-            { 'data': "content", 'title': '联系方式', 'className': 'row-mobile' },
-            { 'data': "createDate", 'title': '创建时间', 'className': 'status-code',
+            { 'data': null, 'title': '账号', 'className': 'row-acct',
                 'render': function (data, type, row, meta) {
-                    var time = formatDateTime(row.createDate);
-                    return time;
+                    return "<a href='javascript:void(0);' onclick='getlogInfo(\""+row.logEnum+"\","+row.logId+")'>"+row.opUser+"</span>";
+                }
+            },
+            { 'data': "logName", 'title': '日志名称', 'className': 'row-lName'},
+            { 'data': null, 'title': '类型', 'className': 'row-lType',
+                'render': function (data, type, row, meta) {
+                    if(row.logEnum == "OPT"){
+                        return "操作日志";
+                    }else{
+                        return "登录日志";
+                    }
+                }
+            },
+            { 'data': null, 'title': '是否成功', 'className': 'row-isSuc',
+                'render': function (data, type, row, meta) {
+                    if(row.succeed == 1){
+                        return "是";
+                    }else{
+                        return "否";
+                    }
+                }
+            },
+            { 'data': "ip", 'title': 'IP地址', 'className': 'row-iAddr'},
+            { 'data': null, 'title': '操作时间', 'className': 'row-date',
+                'render': function (data, type, row, meta) {
+                    return formatDateTime(row.createDate);
                 }
             }
         ],
         'language': {
-            'emptyTable': '没有数据',
-            'loadingRecords': '加载中...',
-            'processing': '查询中...',
-            'search': '检索:',
-            'lengthMenu': ' _MENU_ ',
-            'zeroRecords': '没有数据',
-            'paginate': {
-                'first':      '首页',
-                'last':       '尾页',
-                'next':       '下一页',
-                'previous':   '上一页'
-            },
-            'info': '总_TOTAL_人',
+            'emptyTable': '没有数据',  
+            'loadingRecords': '加载中...',  
+            'processing': '查询中...',  
+            'search': '检索:',  
+            'lengthMenu': ' _MENU_ ',  
+            'zeroRecords': '没有数据',  
+            'paginate': {  
+                'first':      '首页',  
+                'last':       '尾页',  
+                'next':       '下一页',  
+                'previous':   '上一页'  
+            },  
+            'info': '总_TOTAL_个',  
             'infoEmpty': '没有数据'
         },
         "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
@@ -73,8 +76,9 @@ function initTable(keyWord){
             var param = {};
             param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
             param.pageNo = (data.start / data.length) + 1;//当前页码
+            param.logEnum = logEnum;
             param.keyWord = keyWord;
-            $http.get('/personnel/getPsnBasicInfo', param, function (result) {
+            $http.get('/system/sysOperationLog/listPage', param, function (result) {
                 var returnData = {};
                 // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
                 returnData.recordsTotal = result.total;//返回数据全部记录
@@ -83,49 +87,19 @@ function initTable(keyWord){
                 //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                 callback(returnData);
-
-                //选中行
-                $('#psnTable tbody tr').click(function () {
-                    if ($(this).hasClass('selected') ) {
-                        $(this).removeClass('selected');
-                        $(this).children('.row-select').children('input').removeAttr("checked");
-                    } else {
-                        table.$('tr.selected').removeClass('selected');
-                        $(this).addClass('selected');
-                        $(this).children('.row-select').children('input').prop("checked",true);
-                    }
-                });
-                $('#psnTable tbody tr input').click(function () {
-                    if ($(this).parent().parent().hasClass('selected') ) {
-                        $(this).parent().parent().removeClass('selected');
-                        $(this).removeAttr("checked");
-                    } else {
-                        table.$('tr.selected').removeClass('selected');
-                        $(this).parent().parent().addClass('selected');
-                        // $(this).attr("checked","");
-                    }
-                });
+                loading.screenMaskDisable('LAY_app_body');
             }, function (err) {
-
+                loading.screenMaskDisable('LAY_app_body');
             })
         }
     });
 }
 
-// 搜索组织
+// 搜索日志
 function search () {
+    loading.screenMaskEnable('LAY_app_body');
     query = $('.ui-input-search').val();
-    clearTimeout(this.timer);
-    // 添加的延时
-    this.timer = setTimeout(function(){
-        initTable(query);
-    }, delayTime);
-}
-
-//获取选中行数据
-function getSelectUser () {
-    selectNode = table.rows('.selected').data();
-    return table.rows('.selected').data();
+    initLogTable(query,"");
 }
 
 //将时间戳改为yyyy-MM-dd HH-mm-ss
@@ -194,4 +168,12 @@ function formatDateTime(unix) {
     return now;
 }
 
-initTable("");
+function getlogInfo(logEnum,logId){
+    if(logEnum == "OPT"){
+        window.location.href = "optLogInfo.html?logId="+logId+"&logEnum="+logEnum;
+    }else{
+        window.location.href = "loginLogInfo.html?logId="+logId+"&logEnum="+logEnum;
+    }
+}
+
+initLogTable("","");

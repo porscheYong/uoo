@@ -28,16 +28,30 @@
     <select id="getId" resultType="java.lang.Long">
                     SELECT SEQ_SYS_DATA_RULE_ID.NEXTVAL FROM DUAL
     </select>
-
+	<select id="listSysDataRuleVoByGroupId" resultType="cn.ffcs.uoo.system.vo.SysDataRuleVo" parameterType="Long">
+			   SELECT
+		    a.*,
+		    b.TAB_ID AS tabId,
+		    c.COL_ID AS colId 
+		FROM
+		    SYS_DATA_RULE a
+		    LEFT JOIN SYS_TABLE b ON b.TAB_NAME = a.TAB_NAME
+		    LEFT JOIN SYS_TABLE_COLUMN c ON c.COL_NAME = a.COL_NAME 
+		    AND b.TAB_ID = c.TAB_ID 
+		WHERE
+		    a.status_cd = '1000' 
+		    AND b.status_cd = '1000' 
+		    AND c.status_cd = '1000'
+	   and a.DATA_RULE_GROUP_ID = #{groupId}
+	   order by a.SORT
+    </select>
     <select id="listByAccout" resultType="cn.ffcs.uoo.system.entity.SysDataRule" parameterType="java.util.HashMap">
         SELECT
-        DISTINCT(m.DATA_RULE_ID),m.*
+        DISTINCT(m.DATA_RULE_ID),m.*,drg.SORT as tmp1
         FROM
         SYS_DATA_RULE m
-        <if test="treeId != null and treeId != '' ">
-            left join SYS_DATA_RULE_GROUP drg on m.DATA_RULE_GROUP_ID = drg.DATA_RULE_GROUP_ID
-        </if>
-        LEFT JOIN SYS_PERMISSION_DATA_RULES_REL pmr ON pmr.DATA_RULE_GROUP_ID = m.DATA_RULE_GROUP_ID
+        left join SYS_DATA_RULE_GROUP drg on m.DATA_RULE_GROUP_ID = drg.DATA_RULE_GROUP_ID
+        LEFT JOIN SYS_PERMISSION_DATA_RULES_REL pmr ON pmr.DATA_RULE_GROUP_ID = drg.DATA_RULE_GROUP_ID
         LEFT JOIN SYS_PERMISSION p ON p.PERMISSION_CODE = pmr.PERMISSION_CODE
         LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON rpr.PERMISSION_CODE =
         p.PERMISSION_CODE
@@ -54,16 +68,18 @@
         AND prr.STATUS_CD = '1000'
         AND upr.STATUS_CD = '1000'
         AND u.STATUS_CD = '1000'
+        AND drg.STATUS_CD = '1000'
         AND u.ACCOUT = #{accout}
-        <if test="treeId != null and treeId != '' ">
+        <if test="treeId != null and treeId != 0 ">
             and drg.ORG_TREE_ID = #{treeId}
         </if>
-        <if test="tableNames != null and tableNames !='' ">
+        <if test="tableNames != null   ">
 	        AND m.TAB_NAME in 
 	        <foreach collection="tableNames" index="index" item="item" open="(" separator="," close=")">
 	                 #{item}       
 	         </foreach>
         </if>
+        order by drg.SORT,m.SORT asc
     </select>
 
 

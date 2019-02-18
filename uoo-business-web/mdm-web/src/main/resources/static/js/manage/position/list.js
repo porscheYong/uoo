@@ -63,7 +63,7 @@ function initPosTable(isCheck,search){
             },
             { 'data': "regionName", 'title': '管理区域', 'className': 'row-area' },
             { 'data': "orgPositionNum", 'title': '职位授予组织数', 'className': 'row-orgNum' },
-            { 'data': "orgUserNum", 'title': '用户数', 'className': 'row-userNum' }
+            { 'data': "orgUserNum", 'title': '职位授予用户数', 'className': 'row-userNum' }
         ],
         'language': {
             'emptyTable': '没有数据',  
