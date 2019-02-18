@@ -40,6 +40,7 @@ import cn.ffcs.uoo.system.service.SysLoginLogService;
 import cn.ffcs.uoo.system.service.SysOperationLogService;
 import cn.ffcs.uoo.system.vo.LogDTO;
 import cn.ffcs.uoo.system.vo.ResponseResult;
+import cn.ffcs.uoo.system.vo.SysOperationLogVO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -73,7 +74,29 @@ public class SysOperationLogController {
         if("LOGIN".equals(logEnum)){
             return ResponseResult.createSuccessResult(sysLoginLogService.selectById(id), "success");
         }else if("OPT".equals(logEnum)){
-            return ResponseResult.createSuccessResult(sysOperationLogService.selectById(id), "success");
+            SysOperationLogVO vo = sysOperationLogService.getVO(id);
+            if(vo==null){
+                return ResponseResult.createErrorResult("数据不存在");
+            }
+            Long logType = vo.getLogType();
+            switch (logType.intValue()) {
+            case 1:
+                vo.setOperateName("查询");
+                break;
+            case 2:
+                vo.setOperateName("新增");
+                break;
+            case 3:
+                vo.setOperateName("修改");
+                break;
+            case 4:
+                vo.setOperateName("删除");
+                break;
+            default:
+                vo.setOperateName("其他");
+                break;
+            }
+            return ResponseResult.createSuccessResult(vo, "success");
         }else if("MODF".equals(logEnum)){
             return ResponseResult.createSuccessResult(mhSvc.selectById(id), "success");
         }else{
@@ -124,12 +147,9 @@ public class SysOperationLogController {
         map.put("from", (pageNo-1)*pageSize);
         map.put("end", pageNo * pageSize);
         ResponseResult<Page<LogDTO>> createSuccessResult = ResponseResult.createSuccessResult( "");
-        Long countLog = sysOperationLogService.countLog(map);
-        List<LogDTO> listLog = sysOperationLogService.listLog(map);
         Page<LogDTO> page=new Page<>(pageNo, pageSize);
-        page.setTotal(countLog);
+        List<LogDTO> listLog = sysOperationLogService.listLog(page,map);
         page.setRecords(listLog);
-        createSuccessResult.setTotalRecords(countLog);
         createSuccessResult.setData(page);
         
         return createSuccessResult;

@@ -33,8 +33,8 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
     /**
      * 权限规则标识,主键
      */
-    @TableField("DATA_RULE_ID")
-    private Long dataRuleId;
+    @TableField("DATA_RULE_GROUP_ID")
+    private Long dataRuleGroupId;
     /**
      * 生效时间
      */
@@ -93,12 +93,12 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
         this.permissionCode = permissionCode;
     }
 
-    public Long getDataRuleId() {
-        return dataRuleId;
+    public Long getDataRuleGroupId() {
+        return dataRuleGroupId;
     }
 
-    public void setDataRuleId(Long dataRuleId) {
-        this.dataRuleId = dataRuleId;
+    public void setDataRuleGroupId(Long dataRuleGroupId) {
+        this.dataRuleGroupId = dataRuleGroupId;
     }
 
     public Date getEffDate() {
@@ -175,7 +175,7 @@ public class SysPermissionDataRulesRel extends Model<SysPermissionDataRulesRel> 
         return "SysPermissionDataRulesRel{" +
         ", privDataRelId=" + privDataRelId +
         ", permissionCode=" + permissionCode +
-        ", dataRuleId=" + dataRuleId +
+        ", dataRuleGroupId=" + dataRuleGroupId +
         ", effDate=" + effDate +
         ", expDate=" + expDate +
         ", statusCd=" + statusCd +

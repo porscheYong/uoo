@@ -96,7 +96,8 @@ public interface OrgRelService extends IService<OrgRel> {
          * @return
          */
         public List<TreeNodeVo> queryOrgTree(String orgTreeId,String orgRootId,String refCode,
-                                             String pid,boolean isRoot,String orgParams,String orgOrgTypeParams);
+                                             String pid,boolean isRoot,
+                                             String orgParams,String orgOrgTypeParams,String orgOrgTreeRelParams);
 
         /**
          * 获取组织关系类型

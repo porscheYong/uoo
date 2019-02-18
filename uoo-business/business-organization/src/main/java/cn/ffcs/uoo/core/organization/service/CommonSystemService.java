@@ -29,8 +29,17 @@ public interface CommonSystemService {
 
     public boolean isOrgTreeAutho(String orgTreeId,List<SysDataRule> rulelist);
 
+    public String getSysDataRuleParams(String tabName,String tabColName,List<SysDataRule> sysDataRuleList);
+
     public String getSysDataRuleSql(String tabName, List<SysDataRule> sysDataRuleList);
 
     public String getSysDataRuleSql(String tabAliasName,String tabName, List<SysDataRule> sysDataRuleList);
+
+    //public String getOrgOrgTreeRelSql(String orgIds);
+    public String getOrgOrgTreeRelSql(String orgIds,String orgTreeId);
+
+    public String getQueryPerPath(String orgId,String orgOrgTreeRelParams,String orgTreeId);
+
+    public boolean isOrgQueryAuth(String orgId,String orgOrgTreeRelParams);
 
 }

@@ -189,6 +189,12 @@ public class PsonOrgVo extends BaseVo {
 
     private String isSearchlower;
 
+    private String isSearchNum;
+
+    private String isSearchLikeCert;
+
+    private String isSearchLikeMobole;
+
     //排序字段
     private String sortField;
     //排序方式
@@ -206,12 +212,36 @@ public class PsonOrgVo extends BaseVo {
 
     private String tabAccountOrgRelParams;
 
-
+    private String tabOrgOrgTreeRelParams;
 
     /** 账号权限**/
     private String accout;
     private Long sysUserId;
 
+
+    public String getTabOrgOrgTreeRelParams() {
+        return tabOrgOrgTreeRelParams;
+    }
+
+    public void setTabOrgOrgTreeRelParams(String tabOrgOrgTreeRelParams) {
+        this.tabOrgOrgTreeRelParams = tabOrgOrgTreeRelParams;
+    }
+
+    public String getIsSearchLikeCert() {
+        return isSearchLikeCert;
+    }
+
+    public void setIsSearchLikeCert(String isSearchLikeCert) {
+        this.isSearchLikeCert = isSearchLikeCert;
+    }
+
+    public String getIsSearchLikeMobole() {
+        return isSearchLikeMobole;
+    }
+
+    public void setIsSearchLikeMobole(String isSearchLikeMobole) {
+        this.isSearchLikeMobole = isSearchLikeMobole;
+    }
 
     public String getRefCode() {
         return refCode;
@@ -523,5 +553,13 @@ public class PsonOrgVo extends BaseVo {
 
     public void setRefType(String refType) {
         this.refType = refType;
+    }
+
+    public String getIsSearchNum() {
+        return isSearchNum;
+    }
+
+    public void setIsSearchNum(String isSearchNum) {
+        this.isSearchNum = isSearchNum;
     }
 }

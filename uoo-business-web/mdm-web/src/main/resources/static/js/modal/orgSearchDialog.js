@@ -3,6 +3,7 @@ var orgTreeId = getQueryString('orgTreeId'),
     query,
     delayTime = 500;
 var orgFrame = parent.window['standardOrg'] || parent.window['business'];
+var query = orgFrame.document.getElementById('orgName').value;
 
 function initOrgTable (query) {
     table = $("#orgTable").DataTable({
@@ -115,4 +116,10 @@ function getSelectOrg () {
     return table.rows('.selected').data();
 }
 
-initOrgTable();
+if (query) {
+    $('#orgInput').val(query);
+    initOrgTable(query)
+}
+else {
+    initOrgTable();
+}

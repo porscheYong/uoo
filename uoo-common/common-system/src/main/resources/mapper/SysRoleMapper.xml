@@ -53,7 +53,7 @@
 		AS updateUser,
 		r.STATUS_DATE
 		AS statusDate,
-		t.*,
+		 
 		t2.parentRoleName AS
 		parentRoleName,
 		t2.parentRoleId as parentRoleId,
@@ -63,7 +63,7 @@
 		SYS_ROLE r
 		LEFT JOIN
 		SYS_ROLE_PERMISSION_REF rpr ON r.ROLE_CODE = rpr.ROLE_CODE
-		LEFT JOIN (
+		<!-- to_char 字符串超过4000就异常LEFT JOIN (
 		SELECT
 		rpr.ROLE_CODE,
 		to_char(wm_concat ( p.PERMISSION_ID )) AS
@@ -83,7 +83,7 @@
 		GROUP BY
 		rpr.ROLE_CODE
 		) t ON t.ROLE_CODE =
-		rpr.ROLE_CODE
+		rpr.ROLE_CODE -->
 		LEFT JOIN ( SELECT pr.ROLE_ID as parentRoleId, pr.ROLE_CODE AS rc, pr.ROLE_NAME AS
 		parentRoleName FROM
 		SYS_ROLE pr WHERE pr.STATUS_CD = '1000' ) t2 ON
@@ -114,10 +114,7 @@
 	</select>
 	<select id="findList" resultType="cn.ffcs.uoo.system.vo.SysRoleDTO"
 		parameterType="java.util.HashMap">
-		SELECT * FROM
-		(
-		SELECT TB.*,ROWNUM RN
-		FROM (
+		 
 		SELECT DISTINCT r.ROLE_ID ,
 		r.ROLE_ID AS roleId,
 		r.ROLE_NAME AS roleName,
@@ -139,14 +136,14 @@
 		AS updateUser,
 		r.STATUS_DATE
 		AS statusDate,
-		t.*,
+		
 		
 		t3.commonRegionName AS commonRegionName
 		FROM
 		SYS_ROLE r
 		LEFT JOIN
 		SYS_ROLE_PERMISSION_REF rpr ON r.ROLE_CODE = rpr.ROLE_CODE
-		LEFT JOIN (
+		<!-- LEFT JOIN (
 		SELECT
 		rpr.ROLE_CODE,
 		to_char(wm_concat ( p.PERMISSION_NAME )) AS
@@ -164,7 +161,7 @@
 		GROUP BY
 		rpr.ROLE_CODE
 		) t ON t.ROLE_CODE =
-		rpr.ROLE_CODE
+		rpr.ROLE_CODE -->
 		LEFT JOIN ( SELECT c.LOC_NAME AS
         commonRegionName, c.LOC_CODE FROM
         TB_POLITICAL_LOCATION c WHERE
@@ -204,9 +201,7 @@
 
 			</otherwise>
 		</choose>
-		)TB WHERE ROWNUM &lt;= #{end}
-		)
-		WHERE RN &gt;= #{from}
+		 
 	</select>
 	<select id="countList" resultType="Long" parameterType="java.util.HashMap">
 		SELECT
@@ -215,7 +210,7 @@
 		SYS_ROLE r
 		LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON
 		r.ROLE_CODE = rpr.ROLE_CODE
-		LEFT JOIN (
+		<!-- LEFT JOIN (
 		SELECT
 		rpr.ROLE_CODE,
 		to_char(wm_concat (
@@ -232,7 +227,7 @@
 		AND rpr.STATUS_CD = '1000'
 		GROUP BY
 		rpr.ROLE_CODE
-		) t ON t.ROLE_CODE = rpr.ROLE_CODE
+		) t ON t.ROLE_CODE = rpr.ROLE_CODE -->
 		 
 		LEFT JOIN ( SELECT c.LOC_NAME AS
         commonRegionName, c.LOC_CODE FROM

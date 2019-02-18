@@ -585,15 +585,18 @@ public class OrgPersonRelController extends BaseController {
                 return ret;
             }
         }
-        List<OrgRelType> orts = orgRelTypeService.getOrgRelType(orgtree.getOrgTreeId().toString());
-        if(orts==null || orts.size()<1){
-            ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织关系类型不存在");
-            return ret;
-        }
-        OrgRelType ort = orts.get(0);
+//        List<OrgRelType> orts = orgRelTypeService.getOrgRelType(orgtree.getOrgTreeId().toString());
+//        if(orts==null || orts.size()<1){
+//            ret.setState(ResponseResult.PARAMETER_ERROR);
+//            ret.setMessage("组织关系类型不存在");
+//            return ret;
+//        }
+//        OrgRelType ort = orts.get(0);
 
+        Page<PsonOrgVo> page = new Page<PsonOrgVo>(0,0);
         PsonOrgVo psonOrgVo = new PsonOrgVo();
+        psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
+        String orgOrgTreeRelParamsA = "";
         //获取权限
         if(!StrUtil.isNullOrEmpty(accout)) {
             List<String> tabNames = new ArrayList<String>();
@@ -602,6 +605,7 @@ public class OrgPersonRelController extends BaseController {
             tabNames.add("TB_ACCOUNT_ORG_REL");
             tabNames.add("TB_ORG_ORGTYPE_REL");
             tabNames.add("TB_ORG_PERSON_REL");
+            tabNames.add("TB_ORG_ORGTREE_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
@@ -615,22 +619,30 @@ public class OrgPersonRelController extends BaseController {
                 psonOrgVo.setTabOrgPerRelParams(orgPerParams);
                 String orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
                 psonOrgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
+                orgOrgTreeRelParamsA = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
             }
         }
-
-        psonOrgVo.setRefCode(ort.getRefCode());
-        psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
+        String orgOrgTreeRelParamsB = commonSystemService.getQueryPerPath(orgId,orgOrgTreeRelParamsA,orgtree.getOrgTreeId().toString());
+        psonOrgVo.setTabOrgOrgTreeRelParams(orgOrgTreeRelParamsB);
+        if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParamsA) && psonOrgVo.getIsSearchlower().equals("0") && !commonSystemService.isOrgQueryAuth(orgId,orgOrgTreeRelParamsA)){
+            ret.setState(ResponseResult.STATE_OK);
+            ret.setMessage("成功");
+            ret.setData(page);
+            return ret;
+        }
+        //psonOrgVo.setRefCode(ort.getRefCode());
         psonOrgVo.setOrgId(new Long(orgId));
-        //psonOrgVo.setOrgRootId(new Long(orgRootId));
         psonOrgVo.setOrgTreeId(orgtree.getOrgTreeId());
         psonOrgVo.setSortField(StrUtil.strnull(sortField));
         psonOrgVo.setSortOrder(StrUtil.strnull(sortOrder));
         if(!StrUtil.isNullOrEmpty(personnelId)){
             psonOrgVo.setPersonnelId(new Long(personnelId));
         }
-
         if(!StrUtil.isNullOrEmpty(search)){
             psonOrgVo.setSearch(search);
+            if(StrUtil.isNumeric(search)){
+                psonOrgVo.setIsSearchNum("1");
+            }
         }
         if(!StrUtil.isNullOrEmpty(pageSize)){
             psonOrgVo.setPageSize(pageSize);
@@ -649,7 +661,7 @@ public class OrgPersonRelController extends BaseController {
             ret.setMessage("组织树层级不存在");
             return ret;
         }
-        Page<PsonOrgVo> page = null;
+
         if(orgLev.getOrgLevel()==1 && "1".equals(psonOrgVo.getIsSearchlower())){
             //查全部
             page = orgPersonRelService.selectAllPerOrgRelPage(psonOrgVo);
@@ -657,7 +669,6 @@ public class OrgPersonRelController extends BaseController {
             //查部分
             page = orgPersonRelService.selectPerOrgRelPage(psonOrgVo);
         }
-
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
         ret.setData(page);
@@ -732,9 +743,10 @@ public class OrgPersonRelController extends BaseController {
             }
         }
 
-
+        Page<PsonOrgVo> page = new Page<PsonOrgVo>(0,0);
         PsonOrgVo psonOrgVo = new PsonOrgVo();
-
+        psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
+        String orgOrgTreeRelParamsA = "";
         //获取权限
         if(!StrUtil.isNullOrEmpty(accout)) {
             List<String> tabNames = new ArrayList<String>();
@@ -743,6 +755,7 @@ public class OrgPersonRelController extends BaseController {
             tabNames.add("TB_ORG_PERSON_REL");
             tabNames.add("TB_ACCOUNT_ORG_REL");
             tabNames.add("TB_ORG_ORGTYPE_REL");
+            tabNames.add("TB_ORG_ORGTREE_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
@@ -758,9 +771,27 @@ public class OrgPersonRelController extends BaseController {
                 psonOrgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
                 String orgAccountRelParams = commonSystemService.getSysDataRuleSql("tbAccountOrgRel","TB_ACCOUNT_ORG_REL",sdrList);
                 psonOrgVo.setTabAccountOrgRelParams(orgAccountRelParams);
+                orgOrgTreeRelParamsA = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
+//                String orgOrgTreeRelParamsB = commonSystemService.getQueryPerPath(orgId,orgOrgTreeRelParamsA,orgtree.getOrgTreeId().toString());
+//                psonOrgVo.setTabOrgOrgTreeRelParams(orgOrgTreeRelParamsB);
+//
+//                if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParamsA) && psonOrgVo.getIsSearchlower().equals("0") && !commonSystemService.isOrgQueryAuth(orgId,orgOrgTreeRelParamsA)){
+//                    ret.setState(ResponseResult.STATE_OK);
+//                    ret.setMessage("成功");
+//                    ret.setData(page);
+//                    return ret;
+//                }
             }
         }
+        String orgOrgTreeRelParamsB = commonSystemService.getQueryPerPath(orgId,orgOrgTreeRelParamsA,orgtree.getOrgTreeId().toString());
+        psonOrgVo.setTabOrgOrgTreeRelParams(orgOrgTreeRelParamsB);
 
+        if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParamsA) && psonOrgVo.getIsSearchlower().equals("0") && !commonSystemService.isOrgQueryAuth(orgId,orgOrgTreeRelParamsA)){
+            ret.setState(ResponseResult.STATE_OK);
+            ret.setMessage("成功");
+            ret.setData(page);
+            return ret;
+        }
         List<OrgRelType> orts = orgRelTypeService.getOrgRelType(orgtree.getOrgTreeId().toString());
         if(orts==null || orts.size()<1){
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -768,7 +799,6 @@ public class OrgPersonRelController extends BaseController {
             return ret;
         }
         OrgRelType ort = orts.get(0);
-        psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
         psonOrgVo.setOrgId(new Long(orgId));
         psonOrgVo.setOrgTreeId(orgtree.getOrgTreeId());
         psonOrgVo.setRefCode(ort.getRefCode());
@@ -800,12 +830,14 @@ public class OrgPersonRelController extends BaseController {
                 .eq("STATUS_CD", "1000");
         List<OrgLevel> orgLevList = orgLevelService.selectList(orgLevel2ConfWrapper);
 
-        Page<PsonOrgVo> page = null;
-        if(orgLev.getOrgLevel()<3 && orgLevList.size()==1 && "1".equals(psonOrgVo.getIsSearchlower())){
-            page = orgPersonRelService.selectAllUserOrgRelPage(psonOrgVo);
-        }else{
-            page = orgPersonRelService.selectUserOrgRelPage(psonOrgVo);
-        }
+
+//        if(orgLev.getOrgLevel()<3 && orgLevList.size()==1 && "1".equals(psonOrgVo.getIsSearchlower())){
+//            page = orgPersonRelService.selectAllUserOrgRelPage(psonOrgVo);
+//        }else{
+//            page = orgPersonRelService.selectUserOrgRelPage(psonOrgVo);
+//        }
+        page = orgPersonRelService.selectUserOrgRelPage(psonOrgVo);
+
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
         ret.setData(page);

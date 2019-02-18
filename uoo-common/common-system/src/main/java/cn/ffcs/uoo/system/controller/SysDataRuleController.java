@@ -87,18 +87,31 @@ public class SysDataRuleController {
     @UooLog(key="getDataRuleByAccout2",value="获取单个用户的数据权限")
     @RequestMapping(value = "/getDataRuleByAccout2", method = RequestMethod.POST)
     public ResponseResult<DataRuleResponseVO> getDataRuleByAccout2(@RequestBody DataRuleRequestVO requestVo){
-        if(requestVo.getTableNames()==null||requestVo.getTableNames().isEmpty()){
-            return ResponseResult.createErrorResult("表名不能为空");
-        }
+        
         if(StringUtils.isBlank(requestVo.getAccout())){
             return ResponseResult.createErrorResult("账号名不能为空");
         }
         DataRuleResponseVO vo=new DataRuleResponseVO();
         vo.setDataRules(new ArrayList<>());
         vo.setGroups(new ArrayList<>());
-        HashMap<String, Object> map=new HashMap<>();
+        List<SysDataRuleGroup> groups = dataRuleGroupSvc.listByAccout(requestVo.getAccout(), requestVo.getTreeId(), requestVo.getTableNames());
+        for (SysDataRuleGroup g : groups) {
+            DataRuleGroupVO gvo=new DataRuleGroupVO();
+            BeanUtils.copyProperties(g, gvo);
+            Wrapper<SysDataRule> w = new Condition().eq("STATUS_CD", StatusCD.VALID).eq("DATA_RULE_GROUP_ID", g.getDataRuleGroupId()); 
+            if(requestVo.getTableNames()!=null && !requestVo.getTableNames().isEmpty()){
+                w.in("TAB_NAME", requestVo.getTableNames());
+            }
+            w.orderBy("SORT", true);
+            List<SysDataRule> list = dataRuleSvc.selectList(w);
+            gvo.setDataRules(list);
+            vo.getGroups().add(gvo);
+        }
+        
+       /* HashMap<String, Object> map=new HashMap<>();
         map.put("accout", requestVo.getAccout());
         map.put("tableNames", requestVo.getTableNames());
+        map.put("treeId", requestVo.getTreeId());
         List<SysDataRule> listByAccout = dataRuleSvc.listByAccout(map);
         List<SysDataRule> groupDataRules=new ArrayList<>(listByAccout.size());
         List<Long> groupIds=new ArrayList<>(listByAccout.size());
@@ -138,7 +151,7 @@ public class SysDataRuleController {
                 }
             }
         }
-        vo.setGroups(vos);
+        vo.setGroups(vos);*/
         return ResponseResult.createSuccessResult(vo, "");
     }
     @ApiOperation(value = "获取数据权限翻页", notes = "获取数据权限翻页")

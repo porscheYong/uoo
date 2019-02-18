@@ -24,15 +24,17 @@ public class ExcelOrgImport extends Model<ExcelOrgImport> {
     @TableField("EXCEL_ORG_IMPORT_ID")
     private Long excelOrgImportId;
     @TableField("IMP_SEQ")
-    private Long impSeq;
+    private String impSeq;
     @TableField("ORG_ID")
-    private Long orgId;
+    private String orgId;
     @TableField("PARENT_ORG_ID")
-    private Long parentOrgId;
+    private String parentOrgId;
     @TableField("ORG_NAME")
     private String orgName;
     @TableField("FILE_NAME")
     private String fileName;
+    @TableField("FILE_SIGN")
+    private String fileSign;
     @TableField("SIGN")
     private String sign;
     @TableField("CONTENT")
@@ -49,7 +51,25 @@ public class ExcelOrgImport extends Model<ExcelOrgImport> {
     private Long updateUser;
     @TableField("STATUS_DATE")
     private Date statusDate;
+    @TableField("ORG_TREE_ID")
+    private Long orgTreeId;
 
+
+    public String getFileSign() {
+        return fileSign;
+    }
+
+    public void setFileSign(String fileSign) {
+        this.fileSign = fileSign;
+    }
+
+    public Long getOrgTreeId() {
+        return orgTreeId;
+    }
+
+    public void setOrgTreeId(Long orgTreeId) {
+        this.orgTreeId = orgTreeId;
+    }
 
     public Long getExcelOrgImportId() {
         return excelOrgImportId;
@@ -59,27 +79,27 @@ public class ExcelOrgImport extends Model<ExcelOrgImport> {
         this.excelOrgImportId = excelOrgImportId;
     }
 
-    public Long getImpSeq() {
+    public String getImpSeq() {
         return impSeq;
     }
 
-    public void setImpSeq(Long impSeq) {
+    public void setImpSeq(String impSeq) {
         this.impSeq = impSeq;
     }
 
-    public Long getOrgId() {
+    public String getOrgId() {
         return orgId;
     }
 
-    public void setOrgId(Long orgId) {
+    public void setOrgId(String orgId) {
         this.orgId = orgId;
     }
 
-    public Long getParentOrgId() {
+    public String getParentOrgId() {
         return parentOrgId;
     }
 
-    public void setParentOrgId(Long parentOrgId) {
+    public void setParentOrgId(String parentOrgId) {
         this.parentOrgId = parentOrgId;
     }
 
@@ -177,6 +197,7 @@ public class ExcelOrgImport extends Model<ExcelOrgImport> {
         ", parentOrgId=" + parentOrgId +
         ", orgName=" + orgName +
         ", fileName=" + fileName +
+        ", fileSign=" + fileSign +
         ", sign=" + sign +
         ", content=" + content +
         ", statusCd=" + statusCd +
@@ -185,6 +206,7 @@ public class ExcelOrgImport extends Model<ExcelOrgImport> {
         ", updateDate=" + updateDate +
         ", updateUser=" + updateUser +
         ", statusDate=" + statusDate +
+                ", orgTreeId=" + orgTreeId +
         "}";
     }
 }

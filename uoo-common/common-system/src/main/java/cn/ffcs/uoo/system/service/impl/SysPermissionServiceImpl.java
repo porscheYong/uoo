@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
 import cn.ffcs.uoo.system.dao.SysPermissionMapper;
@@ -24,8 +25,8 @@ import cn.ffcs.uoo.system.vo.SysPermissionDTO;
 public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysPermission> implements ISysPermissionService {
 
     @Override
-    public List<SysPermissionDTO> findList(HashMap<String, Object> map) {
-        return baseMapper.findList(map);
+    public List<SysPermissionDTO> findList(Page<SysPermissionDTO> page,HashMap<String, Object> map) {
+        return baseMapper.findList(page,map);
     }
 
     @Override
@@ -41,6 +42,11 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Override
     public SysPermissionDTO selectOne(Long id) {
         return baseMapper.selectOne(id);
+    }
+
+    @Override
+    public List<SysPermission> listByRoleCode(String roleCode) {
+        return baseMapper.listByRoleCode(roleCode);
     }
 
 }

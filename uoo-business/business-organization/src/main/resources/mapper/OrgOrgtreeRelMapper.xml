@@ -9,6 +9,7 @@
         <result column="ORG_TREE_ID" property="orgTreeId" />
         <result column="ORG_BIZ_NAME" property="orgBizName" />
         <result column="ORG_BIZ_FULL_NAME" property="orgBizFullName" />
+        <result column="ORG_BIZ_FULL_ID" property="orgBizFullId" />
         <result column="SORT" property="sort" />
         <result column="STATUS_CD" property="statusCd" />
         <result column="CREATE_DATE" property="createDate" />
@@ -20,7 +21,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ORG_ORGTREE_ID, ORG_ID, ORG_TREE_ID,ORG_BIZ_NAME,ORG_BIZ_FULL_NAME,SORT, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        ORG_ORGTREE_ID, ORG_ID, ORG_TREE_ID,ORG_BIZ_NAME,ORG_BIZ_FULL_NAME,ORG_BIZ_FULL_ID,SORT, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
 

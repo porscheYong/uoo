@@ -31,4 +31,5 @@ public interface SysDataRuleMapper extends BaseMapper<SysDataRule> {
 
     public String getDicItem(@Param("itemValue")String itemValue);
     public List<PermDataRule> listByPermissionId(Long permId);
+    public List<SysDataRuleVo> listSysDataRuleVoByGroupId(Long groupId);
 }

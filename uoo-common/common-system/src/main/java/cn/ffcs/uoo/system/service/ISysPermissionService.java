@@ -6,6 +6,7 @@ import cn.ffcs.uoo.system.vo.SysPermissionDTO;
 import java.util.HashMap;
 import java.util.List;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -17,8 +18,9 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-12-24
  */
 public interface ISysPermissionService extends IService<SysPermission> {
-    List<SysPermissionDTO> findList(HashMap<String, Object> map);
+    List<SysPermissionDTO> findList(Page<SysPermissionDTO> page,HashMap<String, Object> map);
     Long countList(HashMap<String, Object> map);
     Long getId();
     SysPermissionDTO selectOne(Long id);
+    List<SysPermission> listByRoleCode(String roleCode);
 }

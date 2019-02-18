@@ -99,6 +99,15 @@ public class SysDataRule extends Model<SysDataRule> {
      */
     @TableField("AND_OR")
     private String andOr;
+    @TableField("SORT")
+    private String sort;
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
 
     public Long getDataRuleId() {
         return dataRuleId;

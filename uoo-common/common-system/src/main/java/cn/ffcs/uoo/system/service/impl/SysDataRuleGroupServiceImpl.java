@@ -4,6 +4,9 @@ import cn.ffcs.uoo.system.entity.SysDataRuleGroup;
 import cn.ffcs.uoo.system.dao.SysDataRuleGroupMapper;
 import cn.ffcs.uoo.system.service.ISysDataRuleGroupService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,5 +22,15 @@ public class SysDataRuleGroupServiceImpl extends ServiceImpl<SysDataRuleGroupMap
     @Override
     public Long getId(){
         return baseMapper.getId();
+    }
+
+    @Override
+    public List<SysDataRuleGroup> listByAccout(String accout, Long treeId, List<String> tableNames) {
+        return baseMapper.listByAccout(accout, treeId, tableNames);
+    }
+
+    @Override
+    public List<SysDataRuleGroup> listByPermCode(String permCode) {
+        return baseMapper.listByPermCode(permCode);
     }
 }

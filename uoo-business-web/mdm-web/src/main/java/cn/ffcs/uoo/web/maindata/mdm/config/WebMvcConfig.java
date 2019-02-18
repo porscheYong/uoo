@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import cn.ffcs.uoo.web.maindata.mdm.interceptor.SystemLogHandlerInterceptor;
 
-@Configuration
+//@Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter{
 
     @Override

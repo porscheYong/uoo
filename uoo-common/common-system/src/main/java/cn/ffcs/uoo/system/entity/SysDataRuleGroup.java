@@ -79,12 +79,22 @@ public class SysDataRuleGroup extends Model<SysDataRuleGroup> {
      */
     @TableField("UPDATE_USER")
     private Long updateUser;
+    @TableField("ORG_TREE_ID")
+    private Long orgTreeId;
 
     @TableField("PARENT_RULE_GROUP_ID")
     private Long parentRuleGroupId;
 
     public Long getDataRuleGroupId() {
         return dataRuleGroupId;
+    }
+
+    public Long getOrgTreeId() {
+        return orgTreeId;
+    }
+
+    public void setOrgTreeId(Long orgTreeId) {
+        this.orgTreeId = orgTreeId;
     }
 
     public void setDataRuleGroupId(Long dataRuleGroupId) {

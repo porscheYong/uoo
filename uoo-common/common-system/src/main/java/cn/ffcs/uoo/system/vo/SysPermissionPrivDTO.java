@@ -11,7 +11,7 @@ public class SysPermissionPrivDTO extends SysPermission{
     private List<PermMenu> menus;
     private List<PermElement> elements;
     private List<PermFile> files;
-    private List<PermDataRule> dataRules;
+    private List<DataRuleGroupEditVO> dataRuleGroups;
     private String regionName;
     private Long locId;
     public Long getLocId() {
@@ -50,11 +50,12 @@ public class SysPermissionPrivDTO extends SysPermission{
     public void setFiles(List<PermFile> files) {
         this.files = files;
     }
-    public List<PermDataRule> getDataRules() {
-        return dataRules;
+    public List<DataRuleGroupEditVO> getDataRuleGroups() {
+        return dataRuleGroups;
     }
-    public void setDataRules(List<PermDataRule> dataRules) {
-        this.dataRules = dataRules;
+    public void setDataRules(List<DataRuleGroupEditVO> dataRuleGroups) {
+        this.dataRuleGroups = dataRuleGroups;
     }
+     
      
 }

@@ -292,18 +292,29 @@ function autoFillMail() {
 }
 
 // 点击电话新增btn
-function addMobile () {
-    $('#tbMobileVoList').append("<div class='ui-input ui-input-del'> <input required> <a class='icon-del'><span class='fa fa-minus-circle'></span></a> </div>");
+function addMobile (e) {
+    $("<div class='form-item mobile-item' style='width: 100%; position: relative;'><input class='ui-input col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4'><div class='fright del'><a class='icon-del' href='javascript:void(0)'><span class='fa fa-minus-circle'></span></a></div><div class='fright default-set'><a href='javascript:void(0)' onclick='setDefault(this)'>设为默认</a></div></div>").insertBefore($(e).parent());
+    // $('#tbMobileVoList').append("<div class='ui-input ui-input-del'> <input required> <a class='icon-del'><span class='fa fa-minus-circle'></span></a> </div>");
     $('.icon-del').on('click', function () {
-        $(this).parent().remove();
+        $(this).parent().parent().remove();
     });
 }
 // 点击邮箱新增btn
-function addEmail () {
-    $('#tbEamilVoList').append("<div class='ui-input ui-input-del'> <input required> <a class='icon-del'><span class='fa fa-minus-circle'></span></a> </div>");
+function addEmail (e) {
+    $("<div class='form-item' style='width: 100%; position: relative;'><input class='ui-input col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4'><div class='fright del'><a class='icon-del' href='javascript:void(0)'><span class='fa fa-minus-circle'></span></a></div></div>").insertBefore($(e).parent())
+    // $('#tbEamilVoList').append("<div class='ui-input ui-input-del'> <input required> <a class='icon-del'><span class='fa fa-minus-circle'></span></a> </div>");
     $('.icon-del').on('click', function () {
-        $(this).parent().remove();
+        $(this).parent().parent().remove();
     });
+}
+// 设置默认电话
+function setDefault (e) {
+    var temp1 = $('#mobile').val();
+    var temp2 = $(e).parent().siblings('input').val();
+    if (temp1 && temp2) {
+        $('#mobile').val(temp2);
+        $(e).parent().siblings('input').val(temp1);
+    }
 }
 
 empty = Handlebars.compile($(".typeahead-menu").html());

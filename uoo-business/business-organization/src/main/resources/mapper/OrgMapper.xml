@@ -112,21 +112,21 @@
         AND A.ORG_ID = D.ORG_ID) ORGTYPESPLIT
         FROM (
         SELECT * FROM (
-        SELECT distinct B.*,G.SORT bizSort
+        SELECT distinct B.*,orgOrgTreeRel.SORT bizSort
         FROM TB_ORG_REL A,
         TB_ORG B,
         TB_ORG_ORGTYPE_REL  F,
         TB_ORG_REL_TYPE C,
         TB_OGT_ORG_RELTYPE_CONF D,
         TB_ORG_TREE E,
-        TB_ORG_ORGTREE_REL G
+        TB_ORG_ORGTREE_REL orgOrgTreeRel
         WHERE A.STATUS_CD = '1000'
         AND B.STATUS_CD = '1000'
         AND C.STATUS_CD = '1000'
         AND D.STATUS_CD = '1000'
         AND E.STATUS_CD = '1000'
         AND F.STATUS_CD = '1000'
-        AND G.STATUS_CD = '1000'
+        AND orgOrgTreeRel.STATUS_CD = '1000'
         <if test="orgVo.tabOrgOrgTypeParams!='' and orgVo.tabOrgOrgTypeParams!=null">
             AND ${orgVo.tabOrgOrgTypeParams}
         </if>
@@ -139,8 +139,11 @@
         AND C.ORG_REL_TYPE_ID = D.ORG_REL_TYPE_ID
         AND A.REF_CODE = C.REF_CODE
         AND A.ORG_ID=B.ORG_ID
-        AND A.ORG_ID=G.ORG_ID
-        AND E.ORG_TREE_ID = G.ORG_TREE_ID
+        AND A.ORG_ID=orgOrgTreeRel.ORG_ID
+        <if test="orgVo.tabOrgOrgTreeRelParams!='' and orgVo.tabOrgOrgTreeRelParams!=null">
+            AND ${orgVo.tabOrgOrgTreeRelParams}
+        </if>
+        AND E.ORG_TREE_ID = orgOrgTreeRel.ORG_TREE_ID
         AND E.ORG_TREE_ID=#{orgVo.orgTreeId}
         AND A.PARENT_ORG_ID=#{orgVo.orgId} )  order by bizSort) D
         LEFT JOIN TB_POLITICAL_LOCATION PL ON PL.LOC_ID=D.LOC_ID

@@ -129,12 +129,14 @@ public class OrgRelController extends BaseController {
         //获取权限
         String orgParams = "";
         String orgOrgTypeParams = "";
+        String orgOrgTreeRelParams = "";
         if(!StrUtil.isNullOrEmpty(accout)) {
             List<String> tabNames = new ArrayList<String>();
             tabNames.add("TB_ORG_TREE");
             tabNames.add("TB_ORG");
             tabNames.add("TB_ORG_REL");
             tabNames.add("TB_ORG_ORGTYPE_REL");
+            tabNames.add("TB_ORG_ORGTREE_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
@@ -144,11 +146,15 @@ public class OrgRelController extends BaseController {
                 }
                 orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
                 orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
+                orgOrgTreeRelParams = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
+                if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParams)) {
+                    orgOrgTreeRelParams = commonSystemService.getOrgOrgTreeRelSql(orgOrgTreeRelParams,orgTree.getOrgTreeId().toString());
+                }
             }
         }
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
         treeNodeVos = orgRelService.queryOrgTree(orgTree.getOrgTreeId().toString(),orgTree.getOrgId(),refCode,
-                id,isRoot,orgParams,orgOrgTypeParams);
+                id,isRoot,orgParams,orgOrgTypeParams,orgOrgTreeRelParams);
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("组织树查询成功");
         ret.setData(treeNodeVos);
@@ -352,8 +358,7 @@ public class OrgRelController extends BaseController {
         fullBizName+=StrUtil.strnull(StrUtil.isNullOrEmpty(org.getOrgBizName())?o.getOrgName():org.getOrgBizName());
         String fullBizNameId = "";
         fullBizNameId = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),",");
-        fullBizNameId+=","+o.getOrgId();
-
+        fullBizNameId=","+fullBizNameId+","+o.getOrgId()+",";
 
         Long orgOrgtreeRefId = orgOrgtreeRelService.getId();
         OrgOrgtreeRel orgOrgtreeRef = new OrgOrgtreeRel();
@@ -490,11 +495,6 @@ public class OrgRelController extends BaseController {
                                                           Integer pageNo,
                                                           Long userId,String accout) throws IOException {
         ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
-//        if(StrUtil.isNullOrEmpty(search)){
-//            ret.setMessage("检索信息不能为空");
-//            ret.setState(ResponseResult.PARAMETER_ERROR);
-//            return ret;
-//        }
         if(StrUtil.isNullOrEmpty(orgTreeId)){
             ret.setMessage("组织树标识不能为空");
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -513,12 +513,14 @@ public class OrgRelController extends BaseController {
 
         String orgParams = "";
         String orgOrgTypeParams = "";
+        String orgOrgTreeRelParams = "";
         if(!StrUtil.isNullOrEmpty(accout)) {
             List<String> tabNames = new ArrayList<String>();
             tabNames.add("TB_ORG_TREE");
             tabNames.add("TB_ORG");
             tabNames.add("TB_ORG_REL");
             tabNames.add("TB_ORG_ORGTYPE_REL");
+            tabNames.add("TB_ORG_ORGTREE_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
@@ -528,13 +530,15 @@ public class OrgRelController extends BaseController {
                 }
                 orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
                 orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
+                orgOrgTreeRelParams = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
+                if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParams)){
+                    orgOrgTreeRelParams = commonSystemService.getOrgOrgTreeRelSql(orgOrgTreeRelParams,orgTreeId);
+                }
                 orgVo.setTabOrgParams(orgParams);
                 orgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
+                orgVo.setTabOrgOrgTreeRelParams(orgOrgTreeRelParams);
             }
         }
-
-
-
         orgVo.setOrgTreeId(new Long(orgTreeId));
         if(!StrUtil.isNullOrEmpty(search)){
             orgVo.setSearch(search);

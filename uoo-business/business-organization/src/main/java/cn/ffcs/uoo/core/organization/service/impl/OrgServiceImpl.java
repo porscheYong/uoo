@@ -287,6 +287,47 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         return fullNameId;
     }
 
+
+    @Override
+    public String JudgeMoveOrg(Long orgId,Long parentOrgId,String orgName,Long orgTreeId){
+        if(StrUtil.isNullOrEmpty(orgId)){
+            return "组织标识不能为空";
+        }
+        if(StrUtil.isNullOrEmpty(parentOrgId)){
+            return "组织父节点不能为空";
+        }
+        OrgVo curOrg = selectOrgByOrgId(orgId.toString(),orgTreeId.toString());
+        if(StrUtil.isNullOrEmpty(curOrg)){
+            return "组织不存在";
+        }
+        if(!curOrg.getOrgName().equals(orgName)){
+            return "组织名称和现有组织名称不匹配";
+        }
+        OrgVo parentOrg = selectOrgByOrgId(parentOrgId.toString(),orgTreeId.toString());
+        if(StrUtil.isNullOrEmpty(parentOrg)){
+            return "移动的父组织不存在";
+        }
+        // TODO: 2019/1/28 组织全程
+        String fullNameSplit = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),orgId.toString(),",");
+        String fullParentNameSplit = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),parentOrgId.toString(),",");
+        fullNameSplit+=",";
+        fullParentNameSplit+=",";
+        if(fullParentNameSplit.contains(fullNameSplit)){
+            return "节点不能移动到该节点的子节点上";
+        }
+        String fullName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),orgId.toString(),"");
+        com.baomidou.mybatisplus.mapper.Wrapper orgOrgTreeWrapper = Condition.create()
+                .eq("ORG_TREE_ID",orgTreeId)
+                .eq("STATUS_CD","1000")
+                .like("ORG_BIZ_FULL_NAME",fullName,SqlLike.RIGHT);
+        int count = orgOrgtreeRelService.selectCount(orgOrgTreeWrapper);
+        if(count>50){
+            return "移动组织的下级组织数量太大，请联系管理员操作";
+        }
+        return "";
+    }
+
+
     @Override
     public String moveOrg(Long orgId,Long parentOrgId,Long orgTreeId,Long userId,String batchNumber){
         String str = "";
@@ -334,7 +375,10 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         if(orgOrgTreeRels!=null && orgOrgTreeRels.size()>0){
             for(OrgOrgtreeRel ootr : orgOrgTreeRels){
                 fullName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),ootr.getOrgId().toString(),"");
+                String fullOrgId = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),ootr.getOrgId().toString(),",");
+                fullOrgId =","+fullOrgId+",";
                 ootr.setOrgBizFullName(fullName);
+                ootr.setOrgBizFullId(fullOrgId);
                 orgOrgtreeRelService.update(ootr);
             }
         }

@@ -82,8 +82,7 @@ public class OrgOrgtreeRel extends Model<OrgOrgtreeRel> {
     private Integer sort;
 
 
-    //@TableField("ORG_BIZ_FULL_ID")
-    @TableField(exist=false)
+    @TableField("ORG_BIZ_FULL_ID")
     private String orgBizFullId;
 
 
@@ -221,6 +220,7 @@ public class OrgOrgtreeRel extends Model<OrgOrgtreeRel> {
         ", updateDate=" + updateDate +
         ", updateUser=" + updateUser +
         ", statusDate=" + statusDate +
+        ",orgBizFullId="+orgBizFullId+
         "}";
     }
 }

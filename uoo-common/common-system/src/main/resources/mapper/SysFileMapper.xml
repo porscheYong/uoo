@@ -28,30 +28,32 @@
 	</select>
     <select id="getSysFilePage" resultType="cn.ffcs.uoo.system.vo.SysFileVo">
         select a.file_id fileId,
-       a.file_name fileName,
-       a.file_type fileType,
-       a.file_size fileSize,
-       a.file_desc fileDesc,
-       a.file_version fileVersion,
-       a.file_addr fileAddr,
-       a.status_cd statusCd
-  from sys_file a
- where a.status_cd = '1000'
- <if test="search!=null and search!=''">
-    and fileName like '%'||#{search}||'%'
- </if>
+        a.file_name fileName,
+        a.file_type fileType,
+        a.file_size fileSize,
+        a.file_desc fileDesc,
+        a.file_version fileVersion,
+        a.file_addr fileAddr,
+        a.status_cd statusCd
+        from sys_file a
+        where a.status_cd = '1000'
+        <if test="search!=null and search!=''">
+        and a.file_name like '%'||#{search}||'%'
+        </if>
     </select>
+
+
     <select id="listByPermissionId" resultType="cn.ffcs.uoo.system.vo.PermFile">
-          SELECT
-    a.* ,
-    b.PRIV_FILE_ID AS relId 
-FROM
-    SYS_FILE a
-    LEFT JOIN SYS_PRIV_FILE_REL b ON b.FILE_ID = a.FILE_ID
-    LEFT JOIN SYS_PERMISSION c ON c.permission_code = b.permission_code 
-WHERE
-    a.STATUS_CD = '1000' 
-    AND b.STATUS_CD = '1000' 
-    AND c.permission_id =  #{permId} 
+        SELECT
+        a.* ,
+        b.PRIV_FILE_ID AS relId
+        FROM
+        SYS_FILE a
+        LEFT JOIN SYS_PRIV_FILE_REL b ON b.FILE_ID = a.FILE_ID
+        LEFT JOIN SYS_PERMISSION c ON c.permission_code = b.permission_code
+        WHERE
+        a.STATUS_CD = '1000'
+        AND b.STATUS_CD = '1000'
+        AND c.permission_id =  #{permId}
     </select>
 </mapper>

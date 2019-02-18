@@ -152,7 +152,7 @@
       SELECT A.POSITION_ID positionId,A.POSITION_NAME positionName,A.POSITION_CODE positionCode,A.PARENT_POSITION_CODE parentPositionCode,A.REGION_NBR regionNbr,A.SORT_NUM sortNum,A.NOTES notes,
       (select b.region_name from TB_COMMON_REGION b where b.common_region_id=A.Region_Nbr) regionName,
 
-      (select B.POSITION_NAME from SYS_POSITION B where B.STATUS_CD = 1000 AND B.POSITION_CODE = A.PARENT_POSITION_CODE) pPositionName
+      (select B.POSITION_NAME from SYS_POSITION B where B.STATUS_CD = '1000' AND B.POSITION_CODE = A.PARENT_POSITION_CODE) pPositionName
             FROM SYS_POSITION A
             WHERE A.STATUS_CD = '1000'
             AND A.POSITION_ID = #{positionId}
@@ -163,8 +163,8 @@
     <select id="getSysOrgPosition" resultType="cn.ffcs.uoo.system.vo.SysPositionVo">
         SELECT B.POSITION_ID positionId,B.POSITION_NAME positionName,B.POSITION_CODE positionCode,B.PARENT_POSITION_CODE parentPositionCode
         FROM SYS_POSITION B, SYS_DEPT_POSITION_REF A
-        WHERE A.STATUS_CD = 1000
-        AND B.STATUS_CD = 1000
+        WHERE A.STATUS_CD = '1000'
+        AND B.STATUS_CD = '1000'
         AND A.POSITION_CODE = B.POSITION_CODE
         AND A.ORG_CODE = #{orgCode}
     </select>
@@ -177,8 +177,8 @@
                    b.parent_role_code parentRoleCode,
                    b.region_nbr regionNbr
               from SYS_POSITIONT_ROLE_REF a, SYS_ROLE b
-             where a.status_cd = 1000
-               and b.status_cd = 1000
+             where a.status_cd = '1000'
+               and b.status_cd = '1000'
                and a.role_code = b.role_code
                and a.position_code = #{positionCode}
     </select>

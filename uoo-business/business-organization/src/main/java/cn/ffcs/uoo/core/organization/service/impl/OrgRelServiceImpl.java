@@ -74,12 +74,12 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
 
     @Override
     public List<TreeNodeVo> queryOrgTree(String orgTreeId, String orgRootId, String refCode, String pid, boolean isRoot,
-                                         String orgParams,String orgOrgTypeParams){
+                                         String orgParams,String orgOrgTypeParams,String orgOrgTreeRelParams){
         List<TreeNodeVo> volist = new ArrayList<>();
         if(StrUtil.isNullOrEmpty(pid)){
             volist = orgRelMapper.queryOrgTreeRoot(orgTreeId,orgRootId);
         }else{
-            volist = orgRelMapper.queryOrgTreeChilden(orgTreeId,pid,orgParams,orgOrgTypeParams);
+            volist = orgRelMapper.queryOrgTreeChilden(orgTreeId,pid,orgParams,orgOrgTypeParams,refCode,orgOrgTreeRelParams);
         }
         for(TreeNodeVo vo : volist){
             isLeaf(vo,orgTreeId);
