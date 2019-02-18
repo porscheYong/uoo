@@ -8,7 +8,9 @@ import cn.ffcs.uoo.core.organization.service.OrgTreeService;
 import cn.ffcs.uoo.core.organization.util.EnumRuleOperator;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
+import cn.ffcs.uoo.core.organization.vo.DataRuleGroupVO;
 import cn.ffcs.uoo.core.organization.vo.DataRuleRequestVO;
+import cn.ffcs.uoo.core.organization.vo.DataRuleResponseVO;
 import cn.ffcs.uoo.core.organization.vo.SysDataRule;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -283,6 +285,32 @@ public class CommonSystemServiceImpl implements CommonSystemService {
     }
 
     /**
+     * 获取系统权限SysDataRule 根据组织系统
+     * @param tabNames
+     * @param accout
+     * @param orgTreeId
+     * @return
+     */
+    @Override
+    public List<SysDataRule> getSysDataRuleList(List<String> tabNames,String accout,String orgTreeId){
+        DataRuleRequestVO requestVo = new DataRuleRequestVO();
+        requestVo.setAccout(accout);
+        requestVo.setTableNames(tabNames);
+        requestVo.setTreeId(new Long(orgTreeId));
+        ResponseResult<DataRuleResponseVO> sysDataRulelist = systemService.getDataRuleByAccout2(requestVo);
+        List<SysDataRule> sysList = new ArrayList<>();
+        if(sysDataRulelist.getData()!=null && sysDataRulelist.getData().getGroups()!=null){
+            for(DataRuleGroupVO vo : sysDataRulelist.getData().getGroups()){
+                for(SysDataRule svo : vo.getDataRules()){
+                    sysList.add(svo);
+                }
+
+            }
+        }
+        return sysList;
+    }
+
+    /**
      * 是否有查询树的权限
      * @param orgTreeId
      * @param rulelist
@@ -377,7 +405,7 @@ public class CommonSystemServiceImpl implements CommonSystemService {
             if(!StrUtil.isNullOrEmpty(odd)){
                 odd = ","+odd+",";
             }
-            if(odd.contains(","+orgId+",")){
+            if(!StrUtil.isNullOrEmpty(odd) && (odd.contains(","+orgId+",") || StrUtil.isNullOrEmpty(orgId))){
                 likeSql.add(odd);
             }
 

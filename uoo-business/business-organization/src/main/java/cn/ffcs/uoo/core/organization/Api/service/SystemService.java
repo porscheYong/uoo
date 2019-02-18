@@ -6,6 +6,7 @@ package cn.ffcs.uoo.core.organization.Api.service;/**
 
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.vo.DataRuleRequestVO;
+import cn.ffcs.uoo.core.organization.vo.DataRuleResponseVO;
 import cn.ffcs.uoo.core.organization.vo.SysDataRule;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -27,5 +28,10 @@ public interface SystemService {
 
     @RequestMapping(value = "/system/sysDataRule/getDataRuleByAccout", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<List<SysDataRule>> getDataRuleByAccout(@RequestBody DataRuleRequestVO requestVo);
+
+
+    @RequestMapping(value = "/system/sysDataRule/getDataRuleByAccout2", method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    public ResponseResult<DataRuleResponseVO> getDataRuleByAccout2(@RequestBody DataRuleRequestVO requestVo);
+
 
 }

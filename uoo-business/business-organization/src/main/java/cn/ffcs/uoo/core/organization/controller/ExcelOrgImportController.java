@@ -194,5 +194,26 @@ public class ExcelOrgImportController {
         ret.setState(ResponseResult.STATE_OK);
         return ret;
     }
+
+    @ApiOperation(value = "更新数据", notes = "更新数据")
+    @UooLog(value = "更新数据", key = "updateExcelFileData")
+    @RequestMapping(value = "/updateExcelFileData", method=RequestMethod.POST)
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<String> updateExcelFileData(ExcelOrgImport excelOrgImport,
+                                                                 Long userId,
+                                                                 String accout) throws IOException {
+        ResponseResult<String> ret = new ResponseResult<String>();
+//        com.baomidou.mybatisplus.mapper.Wrapper excelWrapper = Condition.create()
+//                .eq("FILE_SIGN",fileSign)
+//                .eq("SIGN",dataSign)
+//                .eq("STATUS_CD","1000");
+//        Page<ExcelOrgImport> excelOrgImportPage = excelOrgImportService.selectPage(new Page<ExcelOrgImport>(
+//                StrUtil.isNullOrEmpty(pageNo)||pageNo==0?1:pageNo,
+//                StrUtil.isNullOrEmpty(pageSize)||pageSize==0?10:pageSize));
+        ret.setData("");
+        ret.setState(ResponseResult.STATE_OK);
+        return ret;
+    }
+
 }
 

@@ -464,7 +464,7 @@ public class OrgPersonRelController extends BaseController {
             ret.setMessage("人员标识不能为空");
             return ret;
         }
-
+        String orgOrgTreeRelParamsA="";
         PsonOrgVo psonOrgVo = new PsonOrgVo();
         //获取权限
         if(!StrUtil.isNullOrEmpty(accout)) {
@@ -474,6 +474,7 @@ public class OrgPersonRelController extends BaseController {
             tabNames.add("TB_ACCOUNT_ORG_REL");
             tabNames.add("TB_ORG_ORGTYPE_REL");
             tabNames.add("TB_ORG_PERSON_REL");
+            tabNames.add("TB_ORG_ORGTREE_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgtree.getOrgTreeId().toString(),sdrList)){
@@ -487,6 +488,13 @@ public class OrgPersonRelController extends BaseController {
                 psonOrgVo.setTabOrgPerRelParams(orgPerParams);
                 String orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
                 psonOrgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
+
+                orgOrgTreeRelParamsA = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
+                if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParamsA)){
+                    String orgOrgTreeRelParamsB = commonSystemService.getQueryPerPath("",orgOrgTreeRelParamsA,orgtree.getOrgTreeId().toString());
+                    psonOrgVo.setTabOrgOrgTreeRelParams(orgOrgTreeRelParamsB);
+                }
+
             }
         }
         psonOrgVo.setOrgTreeId(orgtree.getOrgTreeId());
@@ -592,6 +600,12 @@ public class OrgPersonRelController extends BaseController {
 //            return ret;
 //        }
 //        OrgRelType ort = orts.get(0);
+//
+//        // TODO: 2019/2/18
+//        List<String> tabNames1 = new ArrayList<String>();
+//        tabNames1.add("TB_ORG_ORGTREE_REL");
+//        commonSystemService.getSysDataRuleList(tabNames1, accout,"15960");
+//        // TODO: 2019/2/18
 
         Page<PsonOrgVo> page = new Page<PsonOrgVo>(0,0);
         PsonOrgVo psonOrgVo = new PsonOrgVo();
@@ -872,6 +886,19 @@ public class OrgPersonRelController extends BaseController {
         }
         return ret;
     }
+
+
+
+//    @ApiOperation(value = "test", notes = "test")
+//    @ApiImplicitParams({
+//    })
+//    @UooLog(value = "test",key = "test")
+//    @RequestMapping(value = "/test",method = RequestMethod.GET)
+//    public ResponseResult<Void> test(){
+//        ResponseResult<Void> ret = new ResponseResult<Void>();
+//        commonSystemService.
+//        return ret;
+//    }
 
 }
 

@@ -183,8 +183,8 @@
         AND not exists
         (select * from TB_ORG_ORGTREE_REL B
         where B.STATUS_CD = 1000
-        AND B.ORG_TREE_ID = #{orgVo.orgTreeId}
-        AND A.ORG_ID = B.ORG_ID)
+        AND A.ORG_ID = B.ORG_ID
+        AND B.ORG_TREE_ID = #{orgVo.orgTreeId})
         union all
         select A.Org_Id orgId,
         A.Org_Name orgName,
@@ -193,15 +193,22 @@
         A.STATUS_CD statusCd,
         to_char(A.CREATE_DATE,'YYYY-MM-DD hh24:mi:ss') createDate,
         1 flag
-        from TB_ORG A, TB_ORG_ORGTREE_REL B
+        from TB_ORG A
         where A.STATUS_CD = 1000
-        AND B.STATUS_CD = 1000
+        AND exists
+        (select * from TB_ORG_ORGTREE_REL B
+        where B.STATUS_CD = 1000
         AND A.ORG_ID = B.ORG_ID
         AND B.ORG_TREE_ID = #{orgVo.orgTreeId}
-        ) where 1=1
+        )) where 1=1
         <if test="orgVo.search != null and orgVo.search != ''">
-            AND (orgName like '%'||#{orgVo.search}||'%'
-            or orgCode like '%'||#{orgVo.search}||'%')
+        <if test='psonOrgVo.isSearchNum!="1"'>
+            AND INSTR(orgName,#{orgVo.search})>0
+        </if>
+        <if test='psonOrgVo.isSearchNum=="1"'>
+            AND (INSTR(orgName,#{orgVo.search})>0
+            or orgCode = #{orgVo.search})
+        </if>
         </if>
     </select>
 
