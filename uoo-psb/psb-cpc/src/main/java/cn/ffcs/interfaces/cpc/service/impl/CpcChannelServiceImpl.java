@@ -192,10 +192,10 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             return;
         }
         String staffName = (String) staff.get("STAFF_NAME");
-        String psnCode =(String) staff.get("STAFF_CODE");
+        String staffCode =(String) staff.get("STAFF_CODE");
         String idCard = (String) staff.get("CERT_NUMBER");
         String salesCode = (String) staff.get("SALES_CODE");
-        if (StringUtils.isNotEmpty(psnCode)) {
+        if (StringUtils.isNotEmpty(staffCode)) {
             try {
                 //ADD|MOD|DEL
                 switch ((String) staff.get("ACTION")) {
@@ -207,7 +207,19 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                             if (personnelId == null) {
                                 //新增
                                 // 插入TB_PERSONNEL表
+
+                                //查询是否在人力存在
+                                String ncCode = tbPersonnelMapper.checkExistNcCodeByIdCode(String.valueOf(staff.get("CERT_NUMBER")));
+
+                                String psnCode = "";
+                                if(ncCode != null && !"".equals(ncCode)){
+                                    psnCode = ncCode.replaceAll("@ZJ","");
+                                }else{
+                                    psnCode = "H"+tbPersonnelMapper.getPsnCode();
+                                }
+
                                 TbPersonnel tbPersonnel = new TbPersonnel(staffName, psnCode, psnCode, idCard);
+                                tbPersonnel.setNcCode(ncCode);
                                 tbPersonnelMapper.insertValueOfPersonnel(tbPersonnel);
                                 // 插入TB_CERT
                                 TbCert tbCert = new TbCert(tbPersonnel.getPersonnelId(), staffName,
@@ -256,8 +268,8 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                 TbPersonnel tbPersonnel = new TbPersonnel();
                                 tbPersonnel.setPersonnelId(personnelId);
                                 tbPersonnel.setStatusCd("1000");
-                                tbPersonnel.setPsnCode(psnCode);
-                                tbPersonnel.setPsnNbr(psnCode);
+                                //tbPersonnel.setPsnCode(psnCode);
+                                //tbPersonnel.setPsnNbr(psnCode);
                                 tbPersonnel.setUpdateDate(new Date());
                                 tbPersonnel.setStatusDate(new Date());
                                 tbPersonnel.setPsnName(staffName);
@@ -268,13 +280,13 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                 TbAcct tbAcct = tbAcctMapper.selectByPersonnelId(personnelId);
                                 if (tbAcct == null) {
                                     // 插入TB_ACCT
-                                    tbAcct = new TbAcct(String.valueOf(tbPersonnel.getPersonnelId()), psnCode, "1314",
+                                    tbAcct = new TbAcct(String.valueOf(tbPersonnel.getPersonnelId()), tbPersonnel.getPsnCode(), "1314",
                                             "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1000",
                                             DateUtils.parseDate(DateUtils.getDateTime()), "2",
                                             DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"), "2");
                                     tbAcctMapper.insert(tbAcct);
                                 } else {
-                                    tbAcct.setAcct(psnCode);
+                                    tbAcct.setAcct(tbPersonnel.getPsnCode());
                                     tbAcctMapper.updateById(tbAcct);
                                 }
                                 //修改 TB_CONTACT 1.删除该人的所有的联系方式 2.插入新的联系方式
@@ -335,8 +347,8 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                     ;
                     break;
                     case "DEL": {
-                        //Long personnelId = acctCrossRelMapper.checkExistCrossRelTypeAndSalesCode("100100102", String.valueOf(staff.get("SALES_CODE")));
-                        Long personnelId = tbPersonnelMapper.checkExistPsnCode(psnCode);
+                        Long personnelId = acctCrossRelMapper.checkExistCrossRelTypeAndSalesCode("100100102",staffCode);
+                        //Long personnelId = tbPersonnelMapper.checkExistPsnCode(psnCode);
                         if (personnelId == null) {
                             rsMap.put("result_code", "0");
                             //rsMap.put("message", "人员标识不存在。");
