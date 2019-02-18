@@ -84,7 +84,7 @@ public class ExcelOrgImportController {
         int rowCount = sheet.getLastRowNum() - sheet.getFirstRowNum();
         if(rowCount-1>50){
             ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织导入数量最大为50条");
+            ret.setMessage("组织导入数量最大为100条");
         }
         long time = System.currentTimeMillis();
         String t = String.valueOf(time/1000);
