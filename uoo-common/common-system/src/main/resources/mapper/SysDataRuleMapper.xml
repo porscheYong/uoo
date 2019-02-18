@@ -28,7 +28,23 @@
     <select id="getId" resultType="java.lang.Long">
                     SELECT SEQ_SYS_DATA_RULE_ID.NEXTVAL FROM DUAL
     </select>
-
+	<select id="listSysDataRuleVoByGroupId" resultType="cn.ffcs.uoo.system.vo.SysDataRuleVo" parameterType="Long">
+			   SELECT
+		    a.*,
+		    b.TAB_ID AS tabId,
+		    c.COL_ID AS colId 
+		FROM
+		    SYS_DATA_RULE a
+		    LEFT JOIN SYS_TABLE b ON b.TAB_NAME = a.TAB_NAME
+		    LEFT JOIN SYS_TABLE_COLUMN c ON c.COL_NAME = a.COL_NAME 
+		    AND b.TAB_ID = c.TAB_ID 
+		WHERE
+		    a.status_cd = '1000' 
+		    AND b.status_cd = '1000' 
+		    AND c.status_cd = '1000'
+	   and a.DATA_RULE_GROUP_ID = #{groupId}
+	   order by a.SORT
+    </select>
     <select id="listByAccout" resultType="cn.ffcs.uoo.system.entity.SysDataRule" parameterType="java.util.HashMap">
         SELECT
         DISTINCT(m.DATA_RULE_ID),m.*,drg.SORT as tmp1

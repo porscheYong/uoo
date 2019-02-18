@@ -1,12 +1,9 @@
 package cn.ffcs.uoo.system.controller;
 
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,7 +11,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +28,6 @@ import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.system.consts.StatusCD;
 import cn.ffcs.uoo.system.entity.SysDataRule;
 import cn.ffcs.uoo.system.entity.SysDataRuleGroup;
-import cn.ffcs.uoo.system.entity.SysFile;
 import cn.ffcs.uoo.system.entity.SysPermission;
 import cn.ffcs.uoo.system.entity.SysPermissionDataRulesRel;
 import cn.ffcs.uoo.system.entity.SysPermissionElementRel;
@@ -54,13 +49,13 @@ import cn.ffcs.uoo.system.service.ISysRolePermissionRefService;
 import cn.ffcs.uoo.system.service.SysMenuService;
 import cn.ffcs.uoo.system.vo.DataRuleGroupEditVO;
 import cn.ffcs.uoo.system.vo.ResponseResult;
+import cn.ffcs.uoo.system.vo.SysDataRuleVo;
 import cn.ffcs.uoo.system.vo.SysPermissionDTO;
 import cn.ffcs.uoo.system.vo.SysPermissionEditDTO;
 import cn.ffcs.uoo.system.vo.SysPermissionPrivDTO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import net.minidev.json.writer.BeansMapper.Bean;
 
 /**
  * <p>
@@ -128,12 +123,9 @@ public class SysPermissionController {
         for (SysDataRuleGroup sysDataRuleGroup : listByPermCode) {
             DataRuleGroupEditVO vo =new DataRuleGroupEditVO();
             BeanUtils.copyProperties(sysDataRuleGroup, vo);
-            Wrapper<SysDataRule> w = new Condition().eq("STATUS_CD", StatusCD.VALID).eq("DATA_RULE_GROUP_ID", sysDataRuleGroup.getDataRuleGroupId()); 
-            w.orderBy("SORT", true);
-            List<SysDataRule> list = dataRuleSvc.selectList(w);
-            vo.setDataRules(list);
-            
-            dataRuleGroups.add(vo);
+            List<SysDataRuleVo> listSysDataRuleVoByGroupId = dataRuleSvc.listSysDataRuleVoByGroupId(sysDataRuleGroup.getDataRuleGroupId());
+            vo.setDataRules(listSysDataRuleVoByGroupId);
+             dataRuleGroups.add(vo);
         }
         dto.setDataRules(dataRuleGroups);
         
@@ -240,7 +232,7 @@ public class SysPermissionController {
             group.setCreateDate(new Date());
             group.setCreateUser(sysPermissionEditDTO.getCreateUser());
             dataRuleGroupSvc.insert(group);
-            List<SysDataRule> dataRules = dataRuleGroupEditVO.getDataRules();
+            List<SysDataRuleVo> dataRules = dataRuleGroupEditVO.getDataRules();
           //保存数据权的关系信息
             SysPermissionDataRulesRel rel=new SysPermissionDataRulesRel();
             rel.setPrivDataRelId(permDataRulesRelSvc.getId());
@@ -465,7 +457,7 @@ public class SysPermissionController {
             permDataRulesRelSvc.insert(rel);
             //把该group下的数据权的关系解除  
             dataRuleSvc.updateForSet("DATA_RULE_GROUP_ID=0", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("DATA_RULE_GROUP_ID", group.getDataRuleGroupId()));
-            List<SysDataRule> dataRules = dataRuleGroupEditVO.getDataRules();
+            List<SysDataRuleVo> dataRules = dataRuleGroupEditVO.getDataRules();
             for (SysDataRule sysDataRule : dataRules) {
                 //保存数据权的信息
                 sysDataRule.setDataRuleGroupId(group.getDataRuleGroupId());

@@ -98,4 +98,8 @@ public class SysDataRuleServiceImpl extends ServiceImpl<SysDataRuleMapper, SysDa
     public List<PermDataRule> listByPermissionId(Long permId) {
         return baseMapper.listByPermissionId(permId);
     }
+    @Override
+    public List<SysDataRuleVo> listSysDataRuleVoByGroupId(Long groupId) {
+        return baseMapper.listSysDataRuleVoByGroupId(groupId);
+    }
 }
