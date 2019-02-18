@@ -26,7 +26,7 @@ public class ExcelOrgImportServiceHystrix implements ExcelOrgImportService {
 
 
     @Override
-    public ResponseResult<String> importExcelFileData(MultipartFile fileInfo, Long userId, String accout){
+    public ResponseResult<String> importExcelFileData(MultipartFile fileInfo,String orgTreeId, Long userId, String accout){
         ResponseResult<String> responseResult = new ResponseResult<String>();
         responseResult.setState(ResponseResult.STATE_ERROR);
         responseResult.setMessage("系统暂时不可用");

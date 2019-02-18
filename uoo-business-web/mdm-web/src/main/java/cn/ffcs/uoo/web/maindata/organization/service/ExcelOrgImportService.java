@@ -39,7 +39,8 @@ public interface ExcelOrgImportService {
 
 
     @RequestMapping(value = "/excelOrgImport/importExcelFileData", method=RequestMethod.POST,produces = {MediaType.APPLICATION_JSON_UTF8_VALUE}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseResult<String> importExcelFileData(@RequestPart(value="fileInfo",required = false) MultipartFile fileInfo,
+    public ResponseResult<String> importExcelFileData(@RequestPart(value="fileInfo",required = false)MultipartFile fileInfo,
+                                                      @RequestPart(value="orgTreeId",required = false)String orgTreeId,
                                                       @RequestParam(value = "userId",required = false)Long userId,
                                                       @RequestParam(value = "accout",required = false)String accout);
 

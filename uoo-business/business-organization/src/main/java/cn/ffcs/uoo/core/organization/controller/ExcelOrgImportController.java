@@ -62,7 +62,7 @@ public class ExcelOrgImportController {
     @UooLog(value = "生成excel文件数据", key = "importExcelFileData")
     @RequestMapping(value = "/importExcelFileData", method=RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<String> importExcelFileData(@RequestPart(value="fileInfo",required = false) MultipartFile fileInfo,
+    public ResponseResult<String> importExcelFileData(@RequestPart(value="fileInfo") MultipartFile fileInfo,
                                                       @RequestParam("orgTreeId")String orgTreeId,
                                                       @RequestParam("userId")Long userId,
                                                       @RequestParam("accout")String accout) throws IOException {
@@ -114,6 +114,8 @@ public class ExcelOrgImportController {
                     excelOrgImport.setOrgName(cellStr);
                 }
             }
+            System.out.println("orgId:"+excelOrgImport.getOrgId()+",pOrgId:"+excelOrgImport.getParentOrgId()+",OrgName:"+excelOrgImport.getOrgName()
+            +",orgTreeId:"+orgTreeId);
             Long excelId = excelOrgImportService.getId();
             excelOrgImport.setFileName(fileName);
             excelOrgImport.setExcelOrgImportId(excelId);
