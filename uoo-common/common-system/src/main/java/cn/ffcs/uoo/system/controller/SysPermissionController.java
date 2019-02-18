@@ -431,19 +431,24 @@ public class SysPermissionController {
         for (SysPermissionDataRulesRel sysPermissionDataRulesRel : exitDataRuleRels) {
             idList.add(sysPermissionDataRulesRel.getPrivDataRelId());
         }
-        permDataRulesRelSvc.deleteBatchIds(idList);
+        if(!idList.isEmpty()){
+            permDataRulesRelSvc.deleteBatchIds(idList);
+        }
         List<DataRuleGroupEditVO> dataRuleGroups = sysPermissionEditDTO.getDataRuleGroups();
         for (DataRuleGroupEditVO dataRuleGroupEditVO : dataRuleGroups) {
             //保存数据权的组信息
             SysDataRuleGroup group=new SysDataRuleGroup();
             BeanUtils.copyProperties(dataRuleGroupEditVO, group);
             group.setStatusCd(StatusCD.VALID);
-            group.setCreateDate(new Date());
-            group.setCreateUser(sysPermissionEditDTO.getCreateUser());
+            
             if(group.getDataRuleGroupId()==null||group.getDataRuleGroupId().longValue()==0){
                 group.setDataRuleGroupId(dataRuleGroupSvc.getId());
+                group.setCreateDate(new Date());
+                group.setCreateUser(sysPermissionEditDTO.getUpdateUser());
                 dataRuleGroupSvc.insert(group);
             }else{
+                group.setUpdateDate(new Date());
+                group.setUpdateUser(sysPermissionEditDTO.getUpdateUser());
                 dataRuleGroupSvc.updateById(group);
             }
           //保存数据权的关系信息
@@ -451,7 +456,7 @@ public class SysPermissionController {
             rel.setPrivDataRelId(permDataRulesRelSvc.getId());
             rel.setPermissionCode(sysPermissionEditDTO.getPermissionCode());
             rel.setCreateDate(new Date());
-            rel.setUpdateUser(sysPermissionEditDTO.getUpdateUser());
+            rel.setCreateUser(sysPermissionEditDTO.getUpdateUser());
             rel.setStatusCd(StatusCD.VALID);
             rel.setDataRuleGroupId(group.getDataRuleGroupId());
             permDataRulesRelSvc.insert(rel);
@@ -463,12 +468,14 @@ public class SysPermissionController {
                 sysDataRule.setDataRuleGroupId(group.getDataRuleGroupId());
                 
                 sysDataRule.setStatusCd(StatusCD.VALID);
-                sysDataRule.setCreateDate(new Date());
-                sysDataRule.setUpdateUser(sysPermissionEditDTO.getUpdateUser());
                 if(sysDataRule.getDataRuleId()==null||sysDataRule.getDataRuleId().longValue()==0){
+                    sysDataRule.setCreateDate(new Date());
+                    sysDataRule.setCreateUser(sysPermissionEditDTO.getUpdateUser());
                     sysDataRule.setDataRuleId(dataRuleSvc.getId());
                     dataRuleSvc.insert(sysDataRule);
                 }else{
+                    sysDataRule.setUpdateDate(new Date());
+                    sysDataRule.setUpdateUser(sysPermissionEditDTO.getUpdateUser());
                     dataRuleSvc.updateById(sysDataRule);
                 }
                
@@ -477,7 +484,7 @@ public class SysPermissionController {
         }
         
         responseResult.setState(ResponseResult.STATE_OK);
-        responseResult.setMessage("新增成功");
+        responseResult.setMessage("更新成功");
         return responseResult;
     }
     
