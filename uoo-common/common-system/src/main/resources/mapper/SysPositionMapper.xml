@@ -123,7 +123,7 @@
             SUPR.POSITION_CODE=A.POSITION_CODE) ORGUSERNUM
             FROM SYS_POSITION A
             WHERE A.STATUS_CD = '1000'
-            START WITH A.POSITION_CODE = #{vo.positionCode}
+            START WITH A.PARENT_POSITION_CODE = #{vo.positionCode}
             CONNECT BY PRIOR A.POSITION_CODE = A.PARENT_POSITION_CODE
             ) where 1=1
             <if test="vo.search!=null and vo.search!=''">
