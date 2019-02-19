@@ -509,6 +509,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         expandorow.setRecordId(String.valueOf(tbOrg.getOrgId()));
         expandorow.setStatusCd(HandleChannelConstant.VALID_STATE);
         expandorow.setCreateDate(new Date());
+        expandorow.setCreateUser(HandleChannelConstant.HANDLE_USER);
         expandorowMapper.insert(expandorow);
 
 
@@ -531,6 +532,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         valueOfIsChannel.setData("Y");
         valueOfIsChannel.setStatusCd(HandleChannelConstant.VALID_STATE);
         valueOfIsChannel.setCreateDate(new Date());
+        valueOfIsChannel.setCreateUser(HandleChannelConstant.HANDLE_USER);
 
         Expandovalue valueOfChannelNBR = new Expandovalue();
         valueOfChannelNBR.setResourceId(HandleChannelConstant.RESOURCE_ID);
@@ -541,6 +543,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         valueOfChannelNBR.setData(channel.get("CHANNEL_NBR").toString());
         valueOfChannelNBR.setStatusCd(HandleChannelConstant.VALID_STATE);
         valueOfChannelNBR.setCreateDate(new Date());
+        valueOfChannelNBR.setCreateUser(HandleChannelConstant.HANDLE_USER);
         expandovalueMapper.insert(valueOfIsChannel);
         expandovalueMapper.insert(valueOfChannelNBR);
 
@@ -555,6 +558,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         if (null == tbOrgOrgtypeRelMapper.selectOne(tbOrgOrgtypeRel)) {
             tbOrgOrgtypeRel.setStatusCd(HandleChannelConstant.VALID_STATE);
             tbOrgOrgtypeRel.setCreateDate(new Date());
+            tbOrgOrgtypeRel.setCreateUser(HandleChannelConstant.HANDLE_USER);
             tbOrgOrgtypeRelMapper.insert(tbOrgOrgtypeRel);
         }
 
@@ -585,6 +589,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         tbOrg.setAreaCodeId(commonRegions.get(0).getAreaCodeId());
         tbOrg.setUpdateDate(new Date());
         tbOrg.setStatusDate(new Date());
+        tbOrg.setUpdateUser(HandleChannelConstant.HANDLE_USER);
         tbOrgMapper.updateById(tbOrg);
 
         // 修改组织类别
@@ -599,10 +604,12 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         if (null == tbOrgOrgtypeRel) {
             rel.setStatusCd(HandleChannelConstant.VALID_STATE);
             rel.setCreateDate(new Date());
+            rel.setCreateUser(HandleChannelConstant.HANDLE_USER);
             tbOrgOrgtypeRelMapper.insert(rel);
         } else {
             tbOrgOrgtypeRel.setOrgTypeId(rel.getOrgTypeId());
             tbOrgOrgtypeRel.setUpdateDate(new Date());
+            tbOrgOrgtypeRel.setUpdateUser(HandleChannelConstant.HANDLE_USER);
             tbOrgOrgtypeRelMapper.updateById(tbOrgOrgtypeRel);
         }
 
@@ -630,6 +637,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                 expandorow.setStatusCd(HandleChannelConstant.INVALID_STATE);
                 expandorow.setUpdateDate(new Date());
                 expandorow.setStatusDate(new Date());
+                expandorow.setUpdateUser(HandleChannelConstant.HANDLE_USER);
                 expandorowMapper.updateById(expandorow);
             }
 
@@ -638,6 +646,9 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             if (null != expandovalues && expandovalues.size() > 0) {
                 for (Expandovalue value : expandovalues) {
                     value.setStatusCd(HandleChannelConstant.INVALID_STATE);
+                    value.setUpdateDate(new Date());
+                    value.setStatusDate(new Date());
+                    value.setUpdateUser(HandleChannelConstant.HANDLE_USER);
                     expandovalueMapper.updateById(value);
                 }
             }
@@ -712,6 +723,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                 tbSlaveAcct.setAcctOrgRelId(accountOrgRel.getAcctOrgRelId());
                 tbSlaveAcct.setUpdateDate(new Date());
                 tbSlaveAcct.setStatusDate(new Date());
+                tbSlaveAcct.setUpdateUser(HandleChannelConstant.HANDLE_USER);
                 tbSlaveAcctMapper.updateById(tbSlaveAcct);
                 String msg = "{\"type\":\"person\",\"handle\":\"insert\",\"context\":{\"column\":\"slaveAcctId\",\"value\":"+tbSlaveAcct.getSlaveAcctId()+"}}";
                 send(msg);
@@ -744,6 +756,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                 accountOrgRel.setStatusCd(HandleChannelConstant.INVALID_STATE);
                 accountOrgRel.setUpdateDate(new Date());
                 accountOrgRel.setStatusDate(new Date());
+                accountOrgRel.setUpdateUser(HandleChannelConstant.HANDLE_USER);
                 accountOrgRelMapper.updateById(accountOrgRel);
             }
 

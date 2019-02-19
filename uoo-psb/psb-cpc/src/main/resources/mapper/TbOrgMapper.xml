@@ -51,7 +51,7 @@
    CITY_TOWN,
    UUID,
    STATUS_CD,
-   CREATE_DATE,
+   CREATE_DATE,CREATE_USER,
    STATUS_DATE)
 VALUES
   (#{orgId},
@@ -63,7 +63,7 @@ VALUES
    '2',
    SYS_GUID(),
    '1000',
-   SYSDATE,
+   SYSDATE,'1004040'
    SYSDATE)
   </insert>
 </mapper>
