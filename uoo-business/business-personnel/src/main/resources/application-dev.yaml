@@ -1,19 +1,19 @@
 spring:
   datasource:
     druid:
-      url: jdbc:oracle:thin:@(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.48)(PORT = 3436))(ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.49)(PORT = 3436))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = ZJ4APRD)))
       driver-class-name:  oracle.jdbc.OracleDriver
+      url: jdbc:oracle:thin:@134.96.167.19:1521:uomdb1
       username: octopus
       password: octopus
 
       initial-size: 60
       min-idle: 4
       max-active: 200
-      max-wait: 60000
-      time-between-eviction-runs-millis: 60000
+      max-wait: -1
+      time-between-eviction-runs-millis: 600000
       min-evictable-idle-time-millis: 300000
       validation-query: SELECT 1 FROM DUAL
-      validationQueryTimeout: 5
+      validationQueryTimeout: 50
       test-while-idle: true
       test-on-borrow: false
       test-on-return: false
@@ -23,7 +23,7 @@ spring:
         stat:
           enabled: true
           log-slow-sql: true
-          slow-sql-millis: 1000
+          slow-sql-millis: 10000
           merge-sql: true
         slf4j:
           enabled: true
@@ -81,12 +81,13 @@ spring:
         reset-enable: false
   #      aop-patterns: cn.ffcs.uoo.**.service.*
   rabbitmq:
-    host: 134.96.249.38
+    host: 134.96.253.221
     port: 5672
     username: Sub_Pub_Uoo
-    password: FUkCrcs4SIzlnia7OoosTd$rO5$lR8669ISeHjji
+    password: "@rasPwWtiFtmDsZnuT80OnxNBUnZvcpBEkK&g8En"
+
   zipkin:
-    base-url: http://134.96.217.244:8600
+    base-url: http://134.96.253.223:8600
   sleuth:
     sampler:
       percentage: 0.5
@@ -103,4 +104,4 @@ eureka:
     port: 8751
   client:
     service-url:
-      defaultZone: http://134.96.217.231:8751/eureka/,http://134.96.217.232:8751/eureka/,http://134.96.217.233:8751/eureka/
+      defaultZone:  http://134.96.253.221:${eureka.server.port}/eureka/,http://134.96.253.222:${eureka.server.port}/eureka/,http://134.96.253.223:${eureka.server.port}/eureka/
