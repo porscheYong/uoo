@@ -1,5 +1,7 @@
 package cn.ffcs.uoo.core.resource.service;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 
@@ -38,5 +40,5 @@ public interface ModifyHistoryService extends IService<ModifyHistory> {
      * @return
      */
     public String getBatchNumber();
-    public Page<ModifyHistoryDTO> selectPageDTO(Page<ModifyHistoryDTO> page,long tableId,long recordId);
+    public List<ModifyHistoryDTO> selectPageDTO(Page<ModifyHistoryDTO> page,long tableId,long recordId);
 }
