@@ -32,7 +32,7 @@
 	</select>
 	<select id="selectOne" resultType="cn.ffcs.uoo.system.vo.SysRoleDTO"
 		parameterType="Long">
-		SELECT
+		SELECT DISTINCT r.ROLE_ID ,
 		r.ROLE_ID AS roleId,
 		r.ROLE_NAME AS roleName,
 		r.ROLE_CODE AS
@@ -53,20 +53,24 @@
 		AS updateUser,
 		r.STATUS_DATE
 		AS statusDate,
-		t.*,
+		 
 		t2.parentRoleName AS
 		parentRoleName,
-		t3.commonRegionName AS commonRegionName
+		t2.parentRoleId as parentRoleId,
+		t3.commonRegionName AS commonRegionName,
+		t3.locId as locId
 		FROM
 		SYS_ROLE r
 		LEFT JOIN
 		SYS_ROLE_PERMISSION_REF rpr ON r.ROLE_CODE = rpr.ROLE_CODE
-		LEFT JOIN (
+		<!-- to_char 字符串超过4000就异常LEFT JOIN (
 		SELECT
 		rpr.ROLE_CODE,
-		wm_concat ( p.PERMISSION_NAME ) AS
+		to_char(wm_concat ( p.PERMISSION_ID )) AS
+		permissionIds,
+		to_char(wm_concat ( p.PERMISSION_NAME )) AS
 		permissionNames,
-		wm_concat ( p.PERMISSION_CODE ) AS permissionCodes
+		to_char(wm_concat ( p.PERMISSION_CODE )) AS permissionCodes
 		FROM
 		SYS_PERMISSION p
 		LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON
@@ -79,17 +83,17 @@
 		GROUP BY
 		rpr.ROLE_CODE
 		) t ON t.ROLE_CODE =
-		rpr.ROLE_CODE
-		LEFT JOIN ( SELECT pr.ROLE_CODE AS rc, pr.ROLE_NAME AS
+		rpr.ROLE_CODE -->
+		LEFT JOIN ( SELECT pr.ROLE_ID as parentRoleId, pr.ROLE_CODE AS rc, pr.ROLE_NAME AS
 		parentRoleName FROM
 		SYS_ROLE pr WHERE pr.STATUS_CD = '1000' ) t2 ON
 		t2.rc =
 		r.PARENT_ROLE_CODE
-		LEFT JOIN ( SELECT c.REGION_NAME AS
-		commonRegionName, c.REGION_NBR FROM
-		TB_COMMON_REGION c WHERE
-		c.STATUS_CD = '1000' ) t3 ON t3.REGION_NBR =
-		r.REGION_NBR
+		LEFT JOIN ( SELECT c.LOC_NAME AS
+        commonRegionName,c.LOC_ID as locId, c.LOC_CODE FROM
+        TB_POLITICAL_LOCATION c WHERE
+        c.STATUS_CD = '1000' ) t3 ON t3.LOC_CODE =
+        r.REGION_NBR
 		WHERE
 		r.STATUS_CD = '1000'
 		AND ROLE_ID=#{ROLE_ID}
@@ -110,11 +114,8 @@
 	</select>
 	<select id="findList" resultType="cn.ffcs.uoo.system.vo.SysRoleDTO"
 		parameterType="java.util.HashMap">
-		SELECT * FROM
-		(
-		SELECT TB.*,ROWNUM RN
-		FROM (
-		SELECT
+		 
+		SELECT DISTINCT r.ROLE_ID ,
 		r.ROLE_ID AS roleId,
 		r.ROLE_NAME AS roleName,
 		r.ROLE_CODE AS
@@ -135,20 +136,19 @@
 		AS updateUser,
 		r.STATUS_DATE
 		AS statusDate,
-		t.*,
-		t2.parentRoleName AS
-		parentRoleName,
+		
+		
 		t3.commonRegionName AS commonRegionName
 		FROM
 		SYS_ROLE r
 		LEFT JOIN
 		SYS_ROLE_PERMISSION_REF rpr ON r.ROLE_CODE = rpr.ROLE_CODE
-		LEFT JOIN (
+		<!-- LEFT JOIN (
 		SELECT
 		rpr.ROLE_CODE,
-		wm_concat ( p.PERMISSION_NAME ) AS
+		to_char(wm_concat ( p.PERMISSION_NAME )) AS
 		permissionNames,
-		wm_concat ( p.PERMISSION_CODE ) AS permissionCodes
+		to_char(wm_concat ( p.PERMISSION_CODE )) AS permissionCodes
 		FROM
 		SYS_PERMISSION p
 		LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON
@@ -161,17 +161,12 @@
 		GROUP BY
 		rpr.ROLE_CODE
 		) t ON t.ROLE_CODE =
-		rpr.ROLE_CODE
-		LEFT JOIN ( SELECT pr.ROLE_CODE AS rc, pr.ROLE_NAME AS
-		parentRoleName FROM
-		SYS_ROLE pr WHERE pr.STATUS_CD = '1000' ) t2 ON
-		t2.rc =
-		r.PARENT_ROLE_CODE
-		LEFT JOIN ( SELECT c.REGION_NAME AS
-		commonRegionName, c.REGION_NBR FROM
-		TB_COMMON_REGION c WHERE
-		c.STATUS_CD = '1000' ) t3 ON t3.REGION_NBR =
-		r.REGION_NBR
+		rpr.ROLE_CODE -->
+		LEFT JOIN ( SELECT c.LOC_NAME AS
+        commonRegionName, c.LOC_CODE FROM
+        TB_POLITICAL_LOCATION c WHERE
+        c.STATUS_CD = '1000' ) t3 ON t3.LOC_CODE =
+        r.REGION_NBR
 		WHERE
 		r.STATUS_CD = '1000'
 		<if test="ROLE_ID !=null and ROLE_ID !=''">
@@ -206,23 +201,21 @@
 
 			</otherwise>
 		</choose>
-		)TB WHERE ROWNUM &lt;= #{end}
-		)
-		WHERE RN &gt;= #{from}
+		 
 	</select>
 	<select id="countList" resultType="Long" parameterType="java.util.HashMap">
 		SELECT
-		count(*)
+		 count(DISTINCT r.ROLE_ID  )
 		FROM
 		SYS_ROLE r
 		LEFT JOIN SYS_ROLE_PERMISSION_REF rpr ON
 		r.ROLE_CODE = rpr.ROLE_CODE
-		LEFT JOIN (
+		<!-- LEFT JOIN (
 		SELECT
 		rpr.ROLE_CODE,
-		wm_concat (
-		p.PERMISSION_NAME ) AS permissionNames,
-		wm_concat ( p.PERMISSION_CODE )
+		to_char(wm_concat (
+		p.PERMISSION_NAME )) AS permissionNames,
+		to_char(wm_concat ( p.PERMISSION_CODE ))
 		AS permissionCodes
 		FROM
 		SYS_PERMISSION p
@@ -234,16 +227,13 @@
 		AND rpr.STATUS_CD = '1000'
 		GROUP BY
 		rpr.ROLE_CODE
-		) t ON t.ROLE_CODE = rpr.ROLE_CODE
-		LEFT JOIN ( SELECT
-		pr.ROLE_CODE AS rc, pr.ROLE_NAME AS parentRoleName FROM
-		SYS_ROLE pr
-		WHERE pr.STATUS_CD = '1000' ) t2 ON t2.rc =
-		r.PARENT_ROLE_CODE
-		LEFT JOIN
-		( SELECT c.REGION_NAME AS commonRegionName, c.REGION_NBR FROM
-		TB_COMMON_REGION c WHERE c.STATUS_CD = '1000' ) t3 ON t3.REGION_NBR =
-		r.REGION_NBR
+		) t ON t.ROLE_CODE = rpr.ROLE_CODE -->
+		 
+		LEFT JOIN ( SELECT c.LOC_NAME AS
+        commonRegionName, c.LOC_CODE FROM
+        TB_POLITICAL_LOCATION c WHERE
+        c.STATUS_CD = '1000' ) t3 ON t3.LOC_CODE =
+        r.REGION_NBR
 		WHERE
 		r.STATUS_CD = '1000'
 		<if test="ROLE_ID !=null and ROLE_ID !=''">

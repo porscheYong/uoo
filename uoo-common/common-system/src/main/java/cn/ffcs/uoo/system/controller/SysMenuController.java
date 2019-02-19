@@ -16,6 +16,7 @@ import cn.ffcs.uoo.system.entity.SysElement;
 import cn.ffcs.uoo.system.entity.SysMenu;
 import cn.ffcs.uoo.system.entity.SysPermission;
 import cn.ffcs.uoo.system.service.ISysPermissionMenuRelService;
+import cn.ffcs.uoo.system.service.ModifyHistoryService;
 import cn.ffcs.uoo.system.service.SysMenuService;
 import cn.ffcs.uoo.system.vo.ResponseResult;
 import cn.ffcs.uoo.system.vo.SysMenuVO;
@@ -37,6 +38,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.validation.Valid;
+
 /**
  * 〈一句话功能简述〉<br> 
  * 〈〉
@@ -52,6 +55,8 @@ public class SysMenuController {
     SysMenuService sysMenuService;
     @Autowired
     ISysPermissionMenuRelService permMenuSvc;
+    @Autowired
+    ModifyHistoryService modifyHistoryService;
     
 
     @ApiOperation(value = "获取单个数据", notes = "获取单个数据")
@@ -90,7 +95,7 @@ public class SysMenuController {
 
         Wrapper<SysMenu> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID);
         if(StringUtils.isNotBlank(keyWord)){
-            wrapper.andNew("MENU_NAME like {0}", "'%"+keyWord+"%'").or("MENU_CODE like {0}","'%"+keyWord+"%'");
+            wrapper.andNew().like("MENU_NAME", keyWord).or().like("MENU_CODE", keyWord);
         }
         wrapper.orderBy("MENU_SORT", true);
         Page<SysMenu> page = sysMenuService.selectPage(new Page<SysMenu>(pageNo, pageSize), wrapper);
@@ -104,7 +109,7 @@ public class SysMenuController {
     @UooLog(value = "修改", key = "updateTbRoles")
     @Transactional
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult<Void> update(@RequestBody SysMenu sysMenu) {
+    public ResponseResult<Void> update(@RequestBody  @Valid SysMenu sysMenu) {
         ResponseResult<Void> responseResult = new ResponseResult<Void>();
         // 校验必填项
         if(sysMenu.getMenuId() == null) {
@@ -135,6 +140,7 @@ public class SysMenuController {
         sysMenuService.updateById(sysMenu);
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("修改成功");
+        modifyHistoryService.addModifyHistory(one, sysMenu, sysMenu.getUpdateUser(), modifyHistoryService.getBatchNumber());
         return responseResult;
     }
 
@@ -144,7 +150,7 @@ public class SysMenuController {
     @UooLog(value = "新增", key = "add")
     @Transactional
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<Void> add(@RequestBody SysMenu sysMenu) {
+    public ResponseResult<Void> add(@RequestBody @Valid SysMenu sysMenu) {
         ResponseResult<Void> responseResult = new ResponseResult<Void>();
         String menuCode = sysMenu.getMenuCode();
         long size = sysMenuService.selectCount(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("MENU_CODE", menuCode));
@@ -158,6 +164,8 @@ public class SysMenuController {
         sysMenuService.insert(sysMenu);
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增角色成功");
+
+        modifyHistoryService.addModifyHistory(null, sysMenu, sysMenu.getCreateUser(), modifyHistoryService.getBatchNumber());
         return responseResult;
     }
 
@@ -182,6 +190,8 @@ public class SysMenuController {
         obj.setStatusDate(new Date());
         obj.setUpdateDate(new Date());
         sysMenuService.updateById(obj);
+
+        modifyHistoryService.addModifyHistory(obj, null, sysMenu.getUpdateUser(), modifyHistoryService.getBatchNumber());
         return ResponseResult.createSuccessResult("success");
     }
     @ApiOperation(value = "获取单个用户的菜单", notes = "获取单个用户的菜单")

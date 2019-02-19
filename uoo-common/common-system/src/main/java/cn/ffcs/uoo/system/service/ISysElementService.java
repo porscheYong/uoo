@@ -1,10 +1,11 @@
 package cn.ffcs.uoo.system.service;
 
-import cn.ffcs.uoo.system.entity.SysElement;
-
 import java.util.List;
 
 import com.baomidou.mybatisplus.service.IService;
+
+import cn.ffcs.uoo.system.entity.SysElement;
+import cn.ffcs.uoo.system.vo.PermElement;
 
 /**
  * <p>
@@ -17,4 +18,5 @@ import com.baomidou.mybatisplus.service.IService;
 public interface ISysElementService extends IService<SysElement> {
     List<SysElement> getElementByAccout(String accout);
     Integer getId();
+    public List<PermElement> listByPermissionId(Long permId);
 }

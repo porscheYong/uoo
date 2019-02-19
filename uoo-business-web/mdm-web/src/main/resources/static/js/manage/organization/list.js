@@ -124,26 +124,19 @@ function orgEdit() {
 
 //获取组织扩展信息
 function getOrgExt() {
-    $http.get('/org/getOrgExtByOrgId', {
-        orgTreeId: '1',
-        orgId: orgId
+    $http.get('/sysOrganization/getOrgPositionList', {
+        id: orgId
     }, function (data) {
-        var followOrgList = [];
-        var orgTypeInfoList = [];
-        var followOrgStr= '';
-        var orgTypeInfoStr= '';
-        if (data.FOLLOW_ORG)
-            followOrgList = data.FOLLOW_ORG.split(',');
-        if (data.ORG_TYPE_INFO)
-            orgTypeInfoList = data.ORG_TYPE_INFO.split(',');
-        for (var i = 0; i < followOrgList.length; i++) {
-            followOrgStr += '<span class="uoo-tag">'+ followOrgList[i] +'</span>';
+        console.log(data)
+        var positionList = [];
+        var positionStr= '';
+        if (data.length > 0) {
+            positionList = data[0].positionName.split('&');
         }
-        for (var i = 0; i < orgTypeInfoList.length; i++) {
-            orgTypeInfoStr += '<span class="uoo-tag">'+ orgTypeInfoList[i] +'</span>';
+        for (var i = 0; i < positionList.length; i++) {
+            positionStr += '<span class="uoo-tag">'+ positionList[i] +'</span>';
         }
-        $('#followOrg').html(followOrgStr);
-        $('#orgTypeInfo').html(orgTypeInfoStr);
+        $('.org-ext').html(positionStr);
     }, function (err) {
 
     })

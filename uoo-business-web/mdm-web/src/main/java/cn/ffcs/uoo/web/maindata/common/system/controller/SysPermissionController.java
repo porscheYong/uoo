@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.web.maindata.common.system.client.SysPermissionClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermission;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionDTO;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionEditDTO;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionPrivDTO;
@@ -85,7 +86,12 @@ public class SysPermissionController {
     @ApiImplicitParam(name = "id", value = "删除", required = true, dataType = "Long",paramType="path")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public ResponseResult<Void> delete(@PathVariable(value="id" ,required=true) Long id){
-        return permSvc.delete(id);
+        SysPermission perm=new SysPermission();
+        perm.setPermissionId(id);
+        Subject subject=SecurityUtils.getSubject();
+        SysUser sysuser= (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        perm.setUpdateUser(sysuser.getUserId());
+        return permSvc.delete(perm);
     }
 }
 

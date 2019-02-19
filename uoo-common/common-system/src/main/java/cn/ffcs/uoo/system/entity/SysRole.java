@@ -1,6 +1,9 @@
 package cn.ffcs.uoo.system.entity;
 
 import java.util.Date;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
@@ -28,11 +31,13 @@ public class SysRole extends Model<SysRole> {
     /**
      * 角色名称
      */
+    @NotBlank(message="角色名称不能为空")
     @TableField("ROLE_NAME")
     private String roleName;
     /**
      * 角色编码
      */
+    @NotBlank(message="角色编码不能为空")
     @TableField("ROLE_CODE")
     private String roleCode;
     /**

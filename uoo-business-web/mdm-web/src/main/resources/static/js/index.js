@@ -184,6 +184,7 @@ function getDictionaryData () {
         dictionaryData.countType(data.countType);
         dictionaryData.contractType(data.contractType);
         dictionaryData.acctLevel(data.acct_LEVEL);
+        dictionaryData.vipRuleFlg(data.vipRuleFlg);
     }, function (err) {
 
     })

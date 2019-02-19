@@ -112,46 +112,6 @@ function initTable(keyWord){
     });
 }
 
-// function engineWithDefaults(q, sync, async) {
-//     if (q === '') {
-//         // sync(engine.get(''));
-//         // async([]);
-//         engine.search('', sync, async);
-//     }
-
-//     else {
-//         engine.search(q, sync, async);
-//     }
-// }
-
-// $('#user-input').typeahead({
-//     hint: $('.typeahead-hint'),
-//     menu: $('.menu'),
-//     minLength: 0,
-//     highlight:true,
-//     classNames: {
-//         open: 'is-open',
-//         empty: 'is-empty',
-//         cursor: 'is-active',
-//         suggestion: 'Typeahead-suggestion',
-//         selectable: 'Typeahead-selectable'
-//     }
-// }, {
-//     source: engineWithDefaults,
-//     displayKey: 'orgName',
-//     templates: {
-//         suggestion: empty,
-//         empty: empty
-//     }
-// })
-//     .on('typeahead:asyncrequest', function() {
-//         $('.Typeahead-spinner').show();
-//         initTable($("#user-input").val());
-//     })
-//     .on('typeahead:asynccancel typeahead:asyncreceive', function() {
-//         $('.Typeahead-spinner').hide();
-//     });
-
 // 搜索组织
 function search () {
     query = $('.ui-input-search').val();
@@ -192,7 +152,12 @@ function formatDateTime(unix) {
             }
             var temp4 = parseInt(temp3); // 5
             temp4 = 12 + temp4;  // 17
-            var temp5 = temp4 + temp2.substring(2, temp2.length); // 17:17:43
+            if(temp2.indexOf(":") == 1){
+                temp2 = temp2.substring(1, temp2.length);
+            }else{
+                temp2 = temp2.substring(2, temp2.length);
+            }
+            var temp5 = temp4 + temp2; // 17:17:43
             now = temp1 + temp5; // 2014/7/6 17:17:43
             now = now.replace("/", "-"); //  2014-7/6 17:17:43
             now = now.replace("/", "-"); //  2014-7-6 17:17:43
@@ -216,7 +181,12 @@ function formatDateTime(unix) {
         }else {  // 02 03 ... 09
             temp4 = "0"+temp4;
         }
-        var temp5 = temp4 + temp2.substring(index-1,temp2.length); // 07:17:43
+        if(temp2.indexOf(":") == 1){
+            temp2 = temp2.substring(1,temp2.length);
+        }else{
+            temp2 = temp2.substring(2,temp2.length);
+        }
+        var temp5 = temp4 + temp2; // 07:17:43
         now = temp1 + temp5; // 2014/7/6 07:17:43
         now = now.replace("/","-"); //  2014-7/6 07:17:43
         now = now.replace("/","-"); //  2014-7-6 07:17:43

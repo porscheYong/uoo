@@ -2,53 +2,63 @@ package cn.ffcs.uoo.web.maindata.common.system.dto;
 
 import java.util.List;
 
-public class SysPermissionPrivDTO extends SysPermission{
-    /**
-     * 
-     */
+import cn.ffcs.uoo.web.maindata.common.system.vo.PermDataRule;
+import cn.ffcs.uoo.web.maindata.common.system.vo.PermElement;
+import cn.ffcs.uoo.web.maindata.common.system.vo.PermFile;
+import cn.ffcs.uoo.web.maindata.common.system.vo.PermFunction;
+import cn.ffcs.uoo.web.maindata.common.system.vo.PermMenu;
+
+public class SysPermissionPrivDTO extends SysPermission{ 
+ 
     private static final long serialVersionUID = 1L;
-    private List<SysFunction> funcs;
-    private List<SysMenu> menus;
-    private List<SysElement> elements;
-    private List<SysFile> files;
-    private List<SysDataRule> dataRules;
+    private List<PermFunction> funcs;
+    private List<PermMenu> menus;
+    private List<PermElement> elements;
+    private List<PermFile> files;
+    private List<DataRuleGroupEditVO> dataRuleGroups;
     private String regionName;
-     
+    private Long locId;
+    public Long getLocId() {
+        return locId;
+    }
+    public void setLocId(Long locId) {
+        this.locId = locId;
+    }
     public String getRegionName() {
         return regionName;
     }
     public void setRegionName(String regionName) {
         this.regionName = regionName;
     }
-    public List<SysFunction> getFuncs() {
+    public List<PermFunction> getFuncs() {
         return funcs;
     }
-    public void setFuncs(List<SysFunction> funcs) {
+    public void setFuncs(List<PermFunction> funcs) {
         this.funcs = funcs;
     }
-    public List<SysMenu> getMenus() {
+    public List<PermMenu> getMenus() {
         return menus;
     }
-    public void setMenus(List<SysMenu> menus) {
+    public void setMenus(List<PermMenu> menus) {
         this.menus = menus;
     }
-    public List<SysElement> getElements() {
+    public List<PermElement> getElements() {
         return elements;
     }
-    public void setElements(List<SysElement> elements) {
+    public void setElements(List<PermElement> elements) {
         this.elements = elements;
     }
-    public List<SysFile> getFiles() {
+    public List<PermFile> getFiles() {
         return files;
     }
-    public void setFiles(List<SysFile> files) {
+    public void setFiles(List<PermFile> files) {
         this.files = files;
     }
-    public List<SysDataRule> getDataRules() {
-        return dataRules;
+    public List<DataRuleGroupEditVO> getDataRuleGroups() {
+        return dataRuleGroups;
     }
-    public void setDataRules(List<SysDataRule> dataRules) {
-        this.dataRules = dataRules;
+    public void setDataRuleGroups(List<DataRuleGroupEditVO> dataRuleGroups) {
+        this.dataRuleGroups = dataRuleGroups;
     }
-    
+     
 }

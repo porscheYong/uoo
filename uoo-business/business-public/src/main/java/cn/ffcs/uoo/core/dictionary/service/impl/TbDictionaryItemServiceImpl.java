@@ -5,6 +5,7 @@ import cn.ffcs.uoo.core.constant.StatusEnum;
 import cn.ffcs.uoo.core.dictionary.dao.TbDictionaryItemMapper;
 import cn.ffcs.uoo.core.dictionary.entity.TbDictionaryItem;
 import cn.ffcs.uoo.core.dictionary.service.TbDictionaryItemService;
+import cn.ffcs.uoo.core.vo.DictionaryItemVo;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -57,5 +58,10 @@ public class TbDictionaryItemServiceImpl extends ServiceImpl<TbDictionaryItemMap
     @Override
     public List<TbDictionaryItem> selectDicItemListByDicName(String dictionaryName) {
         return baseMapper.selectDicItemListByDicName(dictionaryName);
+    }
+
+    @Override
+    public List<DictionaryItemVo> selectAllDicitemVoList() {
+        return baseMapper.selectAllDicitemVoList();
     }
 }

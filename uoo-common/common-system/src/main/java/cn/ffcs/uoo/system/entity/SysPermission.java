@@ -1,6 +1,9 @@
 package cn.ffcs.uoo.system.entity;
 
 import java.util.Date;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
@@ -28,6 +31,7 @@ public class SysPermission extends Model<SysPermission> {
     /**
      * 权限名称
      */
+    @NotBlank(message="权限名称不能为空")
     @TableField("PERMISSION_NAME")
     private String permissionName;
     /**
@@ -38,6 +42,7 @@ public class SysPermission extends Model<SysPermission> {
     /**
      * 权限编码
      */
+    @NotBlank(message="权限编码不能为空")
     @TableField("PERMISSION_CODE")
     private String permissionCode;
     /**

@@ -79,6 +79,9 @@ public class SysFunctionController {
     })
     @RequestMapping(value="/delete",method=RequestMethod.POST)
     public ResponseResult<Void> delete(@RequestBody SysFunction fun){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser sysuser= (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        fun.setUpdateUser(sysuser.getUserId());
         return funcClient.delete(fun);
     }
 }

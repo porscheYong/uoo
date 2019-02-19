@@ -18,8 +18,8 @@ feign:
 
   httpclient:
     enabled: true
-    max-connections: 1100 # 默认值
-    max-connections-per-route: 110 # 默认值
+    max-connections: 1400 # 默认值
+    max-connections-per-route: 250 # 默认值
 
 hystrix:
   enabled: true
@@ -48,8 +48,8 @@ spring:
   rabbitmq:
     host: 134.96.253.221
     port: 5672
-    username: root
-    password: 123
+    username: Sub_Pub_Uoo
+    password: "@rasPwWtiFtmDsZnuT80OnxNBUnZvcpBEkK&g8En"
   zipkin:
     base-url: http://134.96.253.223:8600
   sleuth:
@@ -71,8 +71,8 @@ spring:
   rabbitmq:
     host: 134.96.253.221
     port: 5672
-    username: root
-    password: 123
+    username: Sub_Pub_Uoo
+    password: "@rasPwWtiFtmDsZnuT80OnxNBUnZvcpBEkK&g8En"
   zipkin:
     base-url: http://134.96.253.223:8600
   sleuth:
@@ -94,8 +94,8 @@ spring:
   rabbitmq:
     host: 134.96.249.38
     port: 5672
-    username: root
-    password: 123
+    username: Sub_Pub_Uoo
+    password: "FUkCrcs4SIzlnia7OoosTd$rO5$lR8669ISeHjji"
   zipkin:
     base-url: http://134.96.217.244:8600
   sleuth:

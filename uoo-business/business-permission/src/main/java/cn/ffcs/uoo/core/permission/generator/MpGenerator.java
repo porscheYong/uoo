@@ -79,7 +79,7 @@ public class MpGenerator {
     // strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
         strategy.setTablePrefix(new String[] { "TB_", "tsys_" });// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude(new String[] {"TB_BUSINESS_FUNC","TB_BUSINESS_FUNC_MAP","TB_FUNC","TB_FILE","TB_ELEMENT"}); // 需要生成的表
+        strategy.setInclude(new String[] {"SYS_DATA_RULE_GROUP","SYS_DATA_RULE"}); // 需要生成的表
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类
         // strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");
@@ -103,8 +103,8 @@ public class MpGenerator {
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent("cn.ffcs.uoo.core");
-        pc.setModuleName("resource");
+        pc.setParent("cn.ffcs.uoo");
+        pc.setModuleName("system");
         pc.setMapper("dao");
         pc.setController("controller");
         mpg.setPackageInfo(pc);

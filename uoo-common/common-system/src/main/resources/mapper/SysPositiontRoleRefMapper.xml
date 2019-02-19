@@ -30,8 +30,8 @@
             SELECT A.POSITIONT_ROLE_REF_ID positiontRoleRefId, A.POSITION_CODE positionCode, A.ROLE_CODE roleCode,
             B.ROLE_ID roleId
             FROM SYS_POSITIONT_ROLE_REF A, SYS_ROLE B
-            WHERE A.STATUS_CD = 1000
-            AND B.STATUS_CD = 1000
+            WHERE A.STATUS_CD = '1000'
+            AND B.STATUS_CD = '1000'
             AND A.ROLE_CODE = B.ROLE_CODE
             AND A.POSITION_CODE = #{positionCode}
     </select>

@@ -12,7 +12,10 @@ package cn.ffcs.uoo.system.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +29,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.system.consts.StatusCD;
-import cn.ffcs.uoo.system.entity.SysMenu;
 import cn.ffcs.uoo.system.entity.SysRole;
 import cn.ffcs.uoo.system.entity.SysRolePermissionRef;
 import cn.ffcs.uoo.system.service.ISysDeptRoleRefService;
 import cn.ffcs.uoo.system.service.ISysPositiontRoleRefService;
 import cn.ffcs.uoo.system.service.ISysRolePermissionRefService;
 import cn.ffcs.uoo.system.service.ISysUserRoleRefService;
+import cn.ffcs.uoo.system.service.ModifyHistoryService;
 import cn.ffcs.uoo.system.service.SysRoleService;
 import cn.ffcs.uoo.system.vo.ResponseResult;
 import cn.ffcs.uoo.system.vo.SysRoleDTO;
@@ -65,6 +69,8 @@ public class SysRoleController {
     @Autowired
     ISysRolePermissionRefService rolePermRefSvc;
     @Autowired
+    ModifyHistoryService modifyHistoryService;
+    @Autowired
     ISysUserRoleRefService userRoleRefSvc;
     @ApiOperation(value = "获取单个数据", notes = "获取单个数据")
     @ApiImplicitParams({
@@ -75,6 +81,8 @@ public class SysRoleController {
     public ResponseResult<SysRoleDTO> get(@PathVariable(value="id" ,required=true) Long id){
         
         SysRoleDTO Roles = sysRoleService.selectOne(id);
+        
+        
         return ResponseResult.createSuccessResult(Roles, "success");
     }
     @ApiOperation(value = "角色树", notes = "角色树")
@@ -83,23 +91,26 @@ public class SysRoleController {
     })
     @UooLog(key="treeRole",value="treeRole")
     @GetMapping("/treeRole")
-    public ResponseResult<List<TreeNodeVo>> treeRole( String parentRoleCode){
-        //Wrapper<SysRole> wrapper=Condition.create().eq("STATUS_CD", StatusCD.VALID);
-        /*if("null".equals(parentRoleCode)||StringUtils.isBlank(parentRoleCode)){
+    public ResponseResult<List<TreeNodeVo>> treeRole( @RequestParam("id") Long id){
+        Wrapper<SysRole> wrapper=Condition.create().eq("STATUS_CD", StatusCD.VALID);
+        if(id==0){
             wrapper.eq("STATUS_CD", StatusCD.VALID).isNull("PARENT_ROLE_CODE");
         }else{
-            wrapper.eq("STATUS_CD", StatusCD.VALID).eq("PARENT_ROLE_CODE", parentRoleCode);
-        }*/
-        List<TreeNodeVo> selectList = sysRoleService.treeRole();
-        if(selectList!=null)
-        for (TreeNodeVo sysRole : selectList) {
-            for (TreeNodeVo sr : selectList) {
-                if(sysRole.getId().equals(sr.getPid())){
-                    sysRole.setParent(true);
-                    break;
-                }
-            }
+            SysRole selectById = sysRoleService.selectById(id);
+            wrapper.eq("STATUS_CD", StatusCD.VALID).eq("PARENT_ROLE_CODE", selectById.getRoleCode());
         }
+        List<TreeNodeVo> selectList = new LinkedList<>();
+        List<SysRole> list = sysRoleService.selectList(wrapper);
+        for (SysRole sysRole : list) {
+            TreeNodeVo vo=new TreeNodeVo();
+            vo.setId(sysRole.getRoleId().toString());
+            vo.setName(sysRole.getRoleName());
+            vo.setPid(id.toString());
+            vo.setExtField1(sysRole.getRoleCode());
+            vo.setParent(sysRoleService.selectCount(Condition.create().eq("PARENT_ROLE_CODE", sysRole.getRoleCode()).eq("STATUS_CD", StatusCD.VALID))>0);
+            selectList.add(vo);
+        }
+         
         return ResponseResult.createSuccessResult(selectList, "");
     }
     @ApiOperation(value = "获取分页列表", notes = "获取分页列表")
@@ -120,17 +131,13 @@ public class SysRoleController {
         map.put("from", (pageNo-1)*pageSize);
         map.put("end", pageNo * pageSize);
         if(includChild==1){
-            
             map.put("includeChild",includChild);
         } 
-        List<SysRoleDTO> Roles=sysRoleService.findList(map);
-        Long count = sysRoleService.countList(map);
         Page<SysRoleDTO> page=new Page<>(pageNo,pageSize);
+        List<SysRoleDTO> Roles=sysRoleService.findList(page,map);
         page.setRecords(Roles);
-        page.setTotal(count);
         ResponseResult<Page<SysRoleDTO>> createSuccessResult = ResponseResult.createSuccessResult( "");
         createSuccessResult.setData(page);
-        createSuccessResult.setTotalRecords(count);
         return createSuccessResult;
     }
 
@@ -139,7 +146,7 @@ public class SysRoleController {
     @UooLog(value = "修改角色", key = "updateTbRoles")
     @Transactional
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseResult<Void> update(@RequestBody SysRoleDTO sysRole) {
+    public ResponseResult<Void> update(@RequestBody @Valid SysRoleDTO sysRole) {
         ResponseResult<Void> responseResult = new ResponseResult<Void>();
         // 校验必填项
         if(sysRole.getRoleId() == null) {
@@ -152,13 +159,13 @@ public class SysRoleController {
         if(one==null){
             return ResponseResult.createErrorResult("ID不存在");
         }
-        List<SysMenu> tmp = sysRoleService.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", roleCode));
+        List<SysRole> tmp = sysRoleService.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", roleCode));
         if(tmp!=null&&!tmp.isEmpty()){
             if(tmp.size()>1){
                 return ResponseResult.createErrorResult("编码已存在");
             }else{
-                SysMenu obj = tmp.get(0);
-                if(!obj.getMenuId().equals(sysRole.getRoleId())){
+                SysRole obj = tmp.get(0);
+                if(!obj.getRoleId().equals(sysRole.getRoleId())){
                     return ResponseResult.createErrorResult("编码已存在");
                 }
             }
@@ -187,11 +194,13 @@ public class SysRoleController {
                 entity.setPermissionCode(s);
                 entity.setRoleCode(sysRole.getRoleCode());
                 entity.setRolePermissionRefId(rolePermRefSvc.getId());
+                entity.setStatusCd(StatusCD.VALID);
                 rolePermRefSvc.insert(entity);
             }
         }
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("修改成功");
+        modifyHistoryService.addModifyHistory(one, obj, obj.getUpdateUser(), modifyHistoryService.getBatchNumber());
         return responseResult;
     }
 
@@ -200,7 +209,7 @@ public class SysRoleController {
     @UooLog(value = "新增", key = "add")
     @Transactional
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseResult<Void> add(@RequestBody SysRoleDTO sysRole) {
+    public ResponseResult<Void> add(@RequestBody @Valid SysRoleDTO sysRole) {
         String roleCode = sysRole.getRoleCode();
         long c=sysRoleService.selectCount(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", roleCode));
         if(c>0){
@@ -224,11 +233,13 @@ public class SysRoleController {
                 entity.setPermissionCode(s);
                 entity.setRoleCode(sysRole.getRoleCode());
                 entity.setRolePermissionRefId(rolePermRefSvc.getId());
+                entity.setStatusCd(StatusCD.VALID);
                 rolePermRefSvc.insert(entity);
             }
         }
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增成功");
+        modifyHistoryService.addModifyHistory(null, obj, obj.getCreateUser(), modifyHistoryService.getBatchNumber());
         return responseResult;
     }
 
@@ -257,6 +268,7 @@ public class SysRoleController {
         deptRoleRefSvc.delete(Condition.create().eq("ROLE_CODE", obj.getRoleCode()));
         posiRoleRefSvc.delete(Condition.create().eq("ROLE_CODE", obj.getRoleCode()));
         userRoleRefSvc.delete(Condition.create().eq("ROLE_CODE", obj.getRoleCode()));
+        modifyHistoryService.addModifyHistory(obj, null, obj.getUpdateUser(), modifyHistoryService.getBatchNumber());
         return ResponseResult.createSuccessResult("success");
     }
 }

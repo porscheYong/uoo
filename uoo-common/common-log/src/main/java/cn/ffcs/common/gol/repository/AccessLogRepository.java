@@ -1,7 +1,7 @@
 package cn.ffcs.common.gol.repository;
 
 
-import cn.ffcs.common.gol.entity.ControllerAccessLog;
+import cn.ffcs.common.gol.entity.AccessLog;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import xyz.wongs.common.persistence.jpa.repository.BaseRepository;
 
@@ -29,7 +29,7 @@ import xyz.wongs.common.persistence.jpa.repository.BaseRepository;
  * @date 2019/1/19 15:20
  * @Version 1.0.0
 */
-public interface AccessLogRepository extends BaseRepository<ControllerAccessLog, Long>,JpaSpecificationExecutor<ControllerAccessLog> {
+public interface AccessLogRepository extends BaseRepository<AccessLog, Long>,JpaSpecificationExecutor<AccessLog> {
 
 
 }

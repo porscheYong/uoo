@@ -17,6 +17,7 @@
         <module>common-queues</module>
         <module>common-activiti</module>
         <module>common-log</module>
+        <module>common-workflow</module>
     </modules>
 
 </project>

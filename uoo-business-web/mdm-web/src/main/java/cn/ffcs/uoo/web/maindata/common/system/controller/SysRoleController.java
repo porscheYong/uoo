@@ -54,11 +54,11 @@ public class SysRoleController {
     @OperateLog(type=OperateType.SELECT,module="平台系统角色模块",methods="角色树",desc="")
     @ApiOperation(value = "角色树", notes = "角色树")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "parentRoleCode", value = "parentRoleCode", required = false, dataType = "String"  ),
+            @ApiImplicitParam(name = "parentId", value = "parentId", required = false, dataType = "Long"  ),
     })
     @GetMapping("/treeRole")
-    public ResponseResult<List<TreeNodeVo>> treeRole( String parentRoleCode){
-        return sysRoleClient.treeRole(parentRoleCode);
+    public ResponseResult<List<TreeNodeVo>> treeRole( @RequestParam("id") Long id){
+        return sysRoleClient.treeRole(id);
     }
     
     @OperateLog(type=OperateType.SELECT,module="平台系统角色模块",methods="分页查询角色列表",desc="")
@@ -96,6 +96,9 @@ public class SysRoleController {
     })
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ResponseResult<Void> deleteRole(@RequestBody SysRole sysRole) {
+        Subject subject=SecurityUtils.getSubject();
+        SysUser sysuser= (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        sysRole.setUpdateUser(sysuser.getUserId());
         return sysRoleClient.deleteRole(sysRole);
     }
     @OperateLog(type=OperateType.SELECT,module="平台系统角色模块",methods="获取单个数据",desc="")

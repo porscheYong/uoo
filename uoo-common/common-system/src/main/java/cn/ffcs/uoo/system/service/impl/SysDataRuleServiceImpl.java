@@ -5,17 +5,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import cn.ffcs.uoo.system.util.StrUtil;
-import cn.ffcs.uoo.system.vo.SysDataRuleVo;
-import cn.ffcs.uoo.system.vo.SysFileVo;
-import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
 import cn.ffcs.uoo.system.dao.SysDataRuleMapper;
 import cn.ffcs.uoo.system.entity.SysDataRule;
 import cn.ffcs.uoo.system.service.ISysDataRuleService;
+import cn.ffcs.uoo.system.util.StrUtil;
+import cn.ffcs.uoo.system.vo.PermDataRule;
+import cn.ffcs.uoo.system.vo.SysDataRuleVo;
 
 /**
  * <p>
@@ -93,5 +93,13 @@ public class SysDataRuleServiceImpl extends ServiceImpl<SysDataRuleMapper, SysDa
     @Override
     public String getDicItem(String itemValue){
         return baseMapper.getDicItem(itemValue);
+    }
+    @Override
+    public List<PermDataRule> listByPermissionId(Long permId) {
+        return baseMapper.listByPermissionId(permId);
+    }
+    @Override
+    public List<SysDataRuleVo> listSysDataRuleVoByGroupId(Long groupId) {
+        return baseMapper.listSysDataRuleVoByGroupId(groupId);
     }
 }

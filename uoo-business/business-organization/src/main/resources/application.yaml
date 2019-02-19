@@ -123,7 +123,7 @@ eureka:
     port: 8751
   client:
     service-url:
-      defaultZone:  http://134.96.253.222:${eureka.server.port}/eureka/,http://134.96.253.223:${eureka.server.port}/eureka/,http://134.96.253.221:${eureka.server.port}/eureka/
+      defaultZone:  http://134.96.253.221:${eureka.server.port}/eureka/,http://134.96.253.222:${eureka.server.port}/eureka/,http://134.96.253.223:${eureka.server.port}/eureka/
       #,http://134.96.253.222:${eureka.server.port}/eureka/,http://134.96.253.223:${eureka.server.port}/eureka/
       #defaultZone:  http://134.96.253.221:${eureka.server.port}/eureka/
       #defaultZone:  http://localhost:${eureka.server.port}/eureka/

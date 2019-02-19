@@ -62,6 +62,7 @@
   </head>
 
   <body style="background: #fff;height: auto;">
+    <div class="container" id="container">
         <div class="board-title" style="margin-top:1%">
             <span class="name ft18" style="margin-left:1%">平台权限</span>
             <div class="fright">
@@ -69,20 +70,11 @@
             </div>
         </div>
 
-        <div class="pos-relative" style="margin-top: 7px;margin-left:5px;overflow: hidden;">
-            <div class="col-md-6 col-sm-6 col-xs-6">
-                <div class="form-item" style="width: 100%">
-                    <div class="typeahead col-md-8 col-sm-8 col-xs-8" style="padding: 0;">
-                        <div>
-                            <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
-                            <input class="ui-input typeahead-input tt-input" id="roleSearch" type="text" name="q" placeholder="搜索权限" autocomplete="off" spellcheck="false" dir="auto">
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div style="overflow: hidden;">
+            <input class="ui-input ui-input-search col-md-4 col-sm-4 col-xs-4" id="permName" style="margin-left:1%;" type="text" placeholder="搜索权限" autocomplete="off"/>
+            <button class="ui-button ui-button-primary" id="searchBtn" onclick="search()" style="margin-left:1%;">搜索</button>
         </div>
-        
-        <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
+        <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;margin-bottom: 2%;">
             <table id="permTable" class="stripe" width="100%"></table>
         </div>
     </div>
@@ -91,6 +83,9 @@
     <script src="/js/core/jquery.js"></script>
     <!-- Bootstrap -->
     <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- loading -->
+    <script type="text/javascript" src="/js/core/spin.min.js"></script>
+    <script type="text/javascript" src="/js/core/loading.js"></script>
     <!-- handlebars -->
     <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
     <!-- typeahead -->
@@ -103,7 +98,6 @@
     <script src="/js/init.js"></script>
     <!-- jquery datatable -->
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
-    <script type="text/javascript" src="/js/manage/user.js"></script>
     <script type="text/javascript" src="/js/manage/permission/index.js"></script>
 
     <!-- <script>

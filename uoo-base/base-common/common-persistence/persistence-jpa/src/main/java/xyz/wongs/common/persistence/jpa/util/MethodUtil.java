@@ -144,11 +144,25 @@ public class MethodUtil {
                 if (!StringUtils.checkGetMet(methods, fieldGetName)) {
                     continue;
                 }
-                retFields.add(fields[i].getName());
+                Method fieldSetMet = cls.getMethod(fieldGetName);
+                Object o =fieldSetMet.invoke(bean);
+                //Type conversion
+                if(null!=o){
+                    retFields.add(fields[i].getName());
+                }
+
             }
         } catch (SecurityException e) {
             e.printStackTrace();
         } catch (NumberFormatException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
     }

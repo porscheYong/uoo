@@ -51,10 +51,14 @@
             margin-bottom: 15px !important;
         }
         .perTab{
-            background: rgb(223,225,229);
-            border-radius: 5px;
-            margin-right: 8px;
-            padding: 2px 8px;
+            background: #dfe1e5;
+            border-radius: 4px;
+            line-height: 1.5em;
+            color: rgba(0,0,0,.5);
+            padding: 3px 10px;
+            display: inline-block;
+            margin-right: 5px;
+            margin-bottom:4px;
         }
         .row-num{
             width: 10%;
@@ -66,23 +70,37 @@
         .row-perm{
             width: 35%;
         }
+        .row{
+            margin-left: 0px !important;
+            margin-right: 0px !important;
+        }
     </style>
   </head>
 
   <body style="background: #fff;">
         <div class="board-title">
-            <span class="name ft18 org-name" id="roleName"></span>   <!--杭州分公司 -->
+            <span class="name ft18 org-name" id="roleName" style="cursor:pointer;"></span>   <!--杭州分公司 -->
+            <a class="icon icon-info" id="infoBtn" style="vertical-align: top; margin-top: -0.1%;" title="角色详情"></a>   
         </div>
-        <div class="breadcrumb" style="padding: 10px 15px 0; background: #fff;">标准组织树维护</div>   <!-- 完整路径-->
-        <div style="margin-bottom:20px">
-            <span class="permission" style="padding: 10px 15px 0; background: #fff;">所含权限</span>   
-            <span class="perTab">创建组织</span>
-            <span class="perTab">修改组织基础信息</span>
-            <span class="perTab">修改组织关系信息</span>
-            <span class="perTab">删除组织</span>
-            <span class="perTab">查看组织</span>
+        <div class="breadcrumb" style="padding: 10px 13px 0; background: #fff;"></div>   <!-- 完整路径-->
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-2 col-sm-2 col-xs-2" style="width:9%;margin-left:1%;">
+                <span class="permission" style="line-height: 2em;">所含权限</span> 
+            </div>
+
+            <div class="col-md-10 col-sm-10 col-xs-10" style="width:90%;">
+                <span id="perms"></span>
+            </div>  
         </div>
-        <div class="pos-relative" style="margin-top: 7px;margin-left:5px;overflow: hidden;">
+
+        <div class="board-title">
+            <span class="name ft18">下级角色</span>
+            <div class="fright">
+                <a class="button-add" id="addBtn"><span class="fa fa-plus-circle icon-add"></span>创建角色</a>
+            </div>
+        </div>
+
+        <!-- <div class="pos-relative" style="margin-top: 7px;margin-left:5px;overflow: hidden;">
             <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-item" style="width: 100%">
                     <div class="typeahead col-md-8 col-sm-8 col-xs-8" style="padding: 0;">
@@ -93,13 +111,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="board-title">
-            <span class="name ft18">下级角色</span>
-            <div class="fright">
-                <a class="button-add" id="addBtn"><span class="fa fa-plus-circle icon-add"></span>创建角色</a>
-            </div>
+        <div style="overflow: hidden;">
+            <input class="ui-input ui-input-search col-md-4 col-sm-4 col-xs-4" id="acctName" type="text" placeholder="搜索角色" autocomplete="off"/>
+            <button class="ui-button ui-button-primary" id="searchBtn" onclick="search()" style="margin-left:1%;">搜索</button>
         </div>
 
         <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
@@ -123,7 +139,6 @@
     <script src="/js/init.js"></script>
     <!-- jquery datatable -->
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
-    <script type="text/javascript" src="/js/manage/user.js"></script>
     <script type="text/javascript" src="/js/manage/role/list.js"></script>
 
     <!-- <script>

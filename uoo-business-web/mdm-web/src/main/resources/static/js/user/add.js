@@ -125,7 +125,7 @@ function getCertType () {
 
 // 获取民族字典数据
 function getNation () {
-    var option = '';
+    var option = '<option value="">--请选择--</option>';
     for (var i = 0; i < nationData.length; i++) {
         option += "<option value='" + nationData[i].itemValue + "'>" + nationData[i].itemCnname +"</option>";
     }
@@ -134,7 +134,7 @@ function getNation () {
 
 // 获取政治面貌字典数据
 function getPliticalStatus () {
-    var option = '';
+    var option = '<option value="">--请选择--</option>';
     for (var i = 0; i < pliticalStatusData.length; i++) {
         option += "<option value='" + pliticalStatusData[i].itemValue + "'>" + pliticalStatusData[i].itemCnname +"</option>";
     }
@@ -143,7 +143,7 @@ function getPliticalStatus () {
 
 // 获取婚姻状况字典数据
 function getMarriage () {
-    var option = '';
+    var option = '<option value="">--请选择--</option>';
     for (var i = 0; i < marriageData.length; i++) {
         option += "<option value='" + marriageData[i].itemValue + "'>" + marriageData[i].itemCnname +"</option>";
     }
@@ -292,18 +292,29 @@ function autoFillMail() {
 }
 
 // 点击电话新增btn
-function addMobile () {
-    $('#tbMobileVoList').append("<div class='ui-input ui-input-del'> <input required> <a class='icon-del'><span class='fa fa-minus-circle'></span></a> </div>");
+function addMobile (e) {
+    $("<div class='form-item mobile-item' style='width: 100%; position: relative;'><input class='ui-input col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4'><div class='fright del'><a class='icon-del' href='javascript:void(0)'><span class='fa fa-minus-circle'></span></a></div><div class='fright default-set'><a href='javascript:void(0)' onclick='setDefault(this)'>设为默认</a></div></div>").insertBefore($(e).parent());
+    // $('#tbMobileVoList').append("<div class='ui-input ui-input-del'> <input required> <a class='icon-del'><span class='fa fa-minus-circle'></span></a> </div>");
     $('.icon-del').on('click', function () {
-        $(this).parent().remove();
+        $(this).parent().parent().remove();
     });
 }
 // 点击邮箱新增btn
-function addEmail () {
-    $('#tbEamilVoList').append("<div class='ui-input ui-input-del'> <input required> <a class='icon-del'><span class='fa fa-minus-circle'></span></a> </div>");
+function addEmail (e) {
+    $("<div class='form-item' style='width: 100%; position: relative;'><input class='ui-input col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4'><div class='fright del'><a class='icon-del' href='javascript:void(0)'><span class='fa fa-minus-circle'></span></a></div></div>").insertBefore($(e).parent())
+    // $('#tbEamilVoList').append("<div class='ui-input ui-input-del'> <input required> <a class='icon-del'><span class='fa fa-minus-circle'></span></a> </div>");
     $('.icon-del').on('click', function () {
-        $(this).parent().remove();
+        $(this).parent().parent().remove();
     });
+}
+// 设置默认电话
+function setDefault (e) {
+    var temp1 = $('#mobile').val();
+    var temp2 = $(e).parent().siblings('input').val();
+    if (temp1 && temp2) {
+        $('#mobile').val(temp2);
+        $(e).parent().siblings('input').val(temp1);
+    }
 }
 
 empty = Handlebars.compile($(".typeahead-menu").html());
@@ -1199,6 +1210,7 @@ function savePersonnel () {
     }), function () {
         parent.initBusinessList();
         loading.screenMaskDisable('container');
+        toastr.success('新增成功！');
     }, function (err) {
         loading.screenMaskDisable('container');
     })

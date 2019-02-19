@@ -1,10 +1,11 @@
 package cn.ffcs.uoo.system.dao;
 
-import cn.ffcs.uoo.system.entity.SysFunction;
-
 import java.util.List;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import cn.ffcs.uoo.system.entity.SysFunction;
+import cn.ffcs.uoo.system.vo.PermFunction;
 
 /**
  * <p>
@@ -17,4 +18,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 public interface SysFunctionMapper extends BaseMapper<SysFunction> {
     List<SysFunction> getFunctionByAccout(String accout);
     Long getId();
+    public List<PermFunction> listByPermissionId(Long permId);
 }

@@ -3,6 +3,8 @@ package cn.ffcs.uoo.system.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,7 @@ import cn.ffcs.uoo.system.consts.StatusCD;
 import cn.ffcs.uoo.system.entity.SysFunction;
 import cn.ffcs.uoo.system.service.ISysFunctionService;
 import cn.ffcs.uoo.system.service.ISysPermissionFuncRelService;
+import cn.ffcs.uoo.system.service.ModifyHistoryService;
 import cn.ffcs.uoo.system.vo.ResponseResult;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -29,6 +32,8 @@ import io.swagger.annotations.ApiOperation;
 public class SysFunctionController {
     @Autowired
     ISysFunctionService funcSvc;
+    @Autowired
+    ModifyHistoryService modifyHistoryService;
     @Autowired
     ISysPermissionFuncRelService permFuncSvc;
     @ApiOperation(value = "分页查询api", notes = "分页查询api")
@@ -42,7 +47,8 @@ public class SysFunctionController {
         pageSize = pageSize==null?20:pageSize;
         Wrapper<SysFunction> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID);
         if(StringUtils.isNotBlank(keyWord)){
-            wrapper.andNew("FUNC_NAME like {0}", "'%"+keyWord+"%'").or("FUNC_CODE like {0}","'%"+keyWord+"%'");
+            wrapper.andNew().like("FUNC_NAME", keyWord).or().like("FUNC_CODE", keyWord);
+            //wrapper.andNew("FUNC_NAME like '%{0}%'", keyWord).or("FUNC_CODE like '%{0}%'",keyWord);
         }
         Page<SysFunction> page = funcSvc.selectPage(new Page<SysFunction>(pageNo, pageSize), wrapper);
         ResponseResult<Page<SysFunction>> rr = ResponseResult.createSuccessResult("");
@@ -72,7 +78,7 @@ public class SysFunctionController {
     })
     @UooLog(key="add",value="新增")
     @RequestMapping(value="/add",method=RequestMethod.POST)
-    public ResponseResult<Void> add(@RequestBody SysFunction fun){
+    public ResponseResult<Void> add(@RequestBody @Valid SysFunction fun){
         String funcCode = fun.getFuncCode();
         long size=funcSvc.selectCount(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("FUNC_CODE", funcCode));
         if(size>0){
@@ -81,6 +87,7 @@ public class SysFunctionController {
         fun.setFuncId(funcSvc.getId());
         fun.setCreateDate(new Date());
         funcSvc.insert(fun);
+        modifyHistoryService.addModifyHistory(null, fun, fun.getCreateUser(), modifyHistoryService.getBatchNumber());
         return ResponseResult.createSuccessResult("新增成功");
     }
     @Transactional
@@ -89,7 +96,7 @@ public class SysFunctionController {
     })
     @UooLog(key="update",value="更新")
     @RequestMapping(value="/update",method=RequestMethod.POST)
-    public ResponseResult<Void> update(@RequestBody SysFunction fun){
+    public ResponseResult<Void> update(@RequestBody @Valid SysFunction fun){
         String funcCode = fun.getFuncCode();
         SysFunction one = funcSvc.selectById(fun.getFuncId());
         if(one==null){
@@ -111,6 +118,7 @@ public class SysFunctionController {
         }
         fun.setUpdateDate(new Date());
         funcSvc.updateById(fun);
+        modifyHistoryService.addModifyHistory(one, fun, fun.getUpdateUser(), modifyHistoryService.getBatchNumber());
         return ResponseResult.createSuccessResult("修改成功");
     }
     @Transactional
@@ -125,6 +133,7 @@ public class SysFunctionController {
         df.setStatusCd(StatusCD.INVALID);
         df.setStatusDate(new Date());
         funcSvc.updateById(df);
+        modifyHistoryService.addModifyHistory(df, null, fun.getUpdateUser(), modifyHistoryService.getBatchNumber());
         return ResponseResult.createSuccessResult("修改成功");
     }
 }

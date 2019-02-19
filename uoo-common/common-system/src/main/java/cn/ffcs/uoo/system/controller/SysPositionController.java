@@ -282,6 +282,19 @@ public class SysPositionController {
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<TreeNodeVo> addPosition(@RequestBody SysPositionVo pos){
         ResponseResult<TreeNodeVo> ret = new ResponseResult<TreeNodeVo>();
+        if(StrUtil.isNullOrEmpty(pos.getPositionCode())){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("职位编码不能为空");
+            return ret;
+        }
+        Wrapper sysPositionWrapper = Condition.create()
+                .eq("POSITION_CODE",pos.getPositionCode()).eq("STATUS_CD","1000");
+        int num = sysPositionService.selectCount(sysPositionWrapper);
+        if(num>0){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("职位编码已经存在");
+            return ret;
+        }
         String batchNum = modifyHistoryService.getBatchNumber();
         Long positionId = sysPositionService.getId();
         SysPosition sysPosition = new SysPosition();
@@ -367,12 +380,12 @@ public class SysPositionController {
                 ret.setMessage("职位组织关系存在，不能删除");
                 return ret;
             }
-            num = sysPositionService.getPositionRoleRefCount(vo.getPositionCode());
-            if(num>0){
-                ret.setState(ResponseResult.STATE_ERROR);
-                ret.setMessage("职位角色关系存在，不能删除");
-                return ret;
-            }
+//            num = sysPositionService.getPositionRoleRefCount(vo.getPositionCode());
+//            if(num>0){
+//                ret.setState(ResponseResult.STATE_ERROR);
+//                ret.setMessage("职位角色关系存在，不能删除");
+//                return ret;
+//            }
         }
         String batchNum = modifyHistoryService.getBatchNumber();
         vo.setBatchNumber(batchNum);

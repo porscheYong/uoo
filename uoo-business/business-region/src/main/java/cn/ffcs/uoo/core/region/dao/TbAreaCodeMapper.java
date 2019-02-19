@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.base.common.annotion.MyBatisDao;
 import cn.ffcs.uoo.core.region.entity.TbAreaCode;
@@ -21,6 +22,6 @@ import cn.ffcs.uoo.core.region.vo.AreaCodeVO;
 public interface TbAreaCodeMapper extends BaseMapper<TbAreaCode> {
     public List<TbAreaCode> getAreaCodeByPollocId(Long id);
     public Long getId();
-    public List<AreaCodeVO> selectListAreaCode(HashMap<String,Object> map);
+    public List<AreaCodeVO> selectListAreaCode(Page<AreaCodeVO> page,HashMap<String,Object> map);
     public Long countListAreaCode(HashMap<String,Object> map);
 }

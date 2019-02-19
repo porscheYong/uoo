@@ -52,18 +52,20 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>springloaded</artifactId>
-			<version>1.2.6.RELEASE</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.2.47</version>
 		</dependency>
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus</artifactId>
 		</dependency>
+		<dependency>
+        <groupId>com.oracle</groupId>
+        <artifactId>ojdbc6</artifactId>
+      </dependency>
 		<!-- <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-solr</artifactId> 
 			</dependency> -->
 

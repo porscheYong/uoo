@@ -3,11 +3,14 @@ package cn.ffcs.uoo.core.organization.service.impl;
 import cn.ffcs.uoo.core.organization.Api.service.SystemService;
 import cn.ffcs.uoo.core.organization.entity.OrgTree;
 import cn.ffcs.uoo.core.organization.service.CommonSystemService;
+import cn.ffcs.uoo.core.organization.service.OrgService;
 import cn.ffcs.uoo.core.organization.service.OrgTreeService;
 import cn.ffcs.uoo.core.organization.util.EnumRuleOperator;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
+import cn.ffcs.uoo.core.organization.vo.DataRuleGroupVO;
 import cn.ffcs.uoo.core.organization.vo.DataRuleRequestVO;
+import cn.ffcs.uoo.core.organization.vo.DataRuleResponseVO;
 import cn.ffcs.uoo.core.organization.vo.SysDataRule;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -16,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -33,6 +37,8 @@ public class CommonSystemServiceImpl implements CommonSystemService {
     private OrgTreeService orgTreeService;
     @Autowired
     private SystemService systemService;
+    @Autowired
+    private OrgService orgService;
 
     /**
      * 获取单表权限Wrapper
@@ -181,6 +187,25 @@ public class CommonSystemServiceImpl implements CommonSystemService {
 
 
     /**
+     * 获取指定表权限参数
+     * @param tabName
+     * @param sysDataRuleList
+     * @return
+     */
+    @Override
+    public String getSysDataRuleParams(String tabName,String tabColName,List<SysDataRule> sysDataRuleList){
+        String params = "";
+        if(sysDataRuleList!=null && sysDataRuleList.size()>0){
+            for(SysDataRule sysDataRule : sysDataRuleList){
+                if(sysDataRule.getTabName().equals(tabName) && sysDataRule.getColName().equals(tabColName)){
+                    return sysDataRule.getColValue();
+                }
+            }
+        }
+        return params;
+    }
+
+    /**
      * 获取指定表权限sql（表别名）
      * @param tabAliasName
      * @param tabName
@@ -260,6 +285,32 @@ public class CommonSystemServiceImpl implements CommonSystemService {
     }
 
     /**
+     * 获取系统权限SysDataRule 根据组织系统
+     * @param tabNames
+     * @param accout
+     * @param orgTreeId
+     * @return
+     */
+    @Override
+    public List<SysDataRule> getSysDataRuleList(List<String> tabNames,String accout,String orgTreeId){
+        DataRuleRequestVO requestVo = new DataRuleRequestVO();
+        requestVo.setAccout(accout);
+        requestVo.setTableNames(tabNames);
+        requestVo.setTreeId(new Long(orgTreeId));
+        ResponseResult<DataRuleResponseVO> sysDataRulelist = systemService.getDataRuleByAccout2(requestVo);
+        List<SysDataRule> sysList = new ArrayList<>();
+        if(sysDataRulelist.getData()!=null && sysDataRulelist.getData().getGroups()!=null){
+            for(DataRuleGroupVO vo : sysDataRulelist.getData().getGroups()){
+                for(SysDataRule svo : vo.getDataRules()){
+                    sysList.add(svo);
+                }
+
+            }
+        }
+        return sysList;
+    }
+
+    /**
      * 是否有查询树的权限
      * @param orgTreeId
      * @param rulelist
@@ -289,6 +340,110 @@ public class CommonSystemServiceImpl implements CommonSystemService {
             return true;
         }
         return isRet;
+    }
+
+    /**
+     *
+     * @param orgIds
+     * @return
+     */
+    @Override
+    public String getOrgOrgTreeRelSql(String orgIds,String orgTreeId){
+
+        String orgGroup[] = orgIds.split("\\|");
+        List<String> OrgIdlist = new ArrayList();
+        for(String orgG : orgGroup){
+            String[] orgIdsz = orgG.substring(1,orgG.length()-1).split(",");
+            for(String orgId:orgIdsz){
+                OrgIdlist.add(orgId);
+            }
+        }
+        HashSet h = new HashSet(OrgIdlist);
+        OrgIdlist.clear();
+        OrgIdlist.addAll(h);
+        String orgOrgTreeRelParams = "(orgOrgTreeRel.ORG_ID in (";
+        for(String orgId : OrgIdlist){
+            orgOrgTreeRelParams+=orgId+",";
+        }
+        orgOrgTreeRelParams = orgOrgTreeRelParams.substring(0,orgOrgTreeRelParams.length()-1);
+        orgOrgTreeRelParams+=")";
+        for(String og : orgGroup){
+            // TODO: 2019/2/14 截取最新的数据
+            String[] orgIdsz = og.substring(1,og.length()-1).split(",");
+            String odd = orgIdsz[orgIdsz.length-1];
+            odd = orgService.getFullOrgIdList(orgTreeId,odd,",");
+            orgOrgTreeRelParams+=" or orgOrgTreeRel.ORG_BIZ_FULL_ID like ',"+odd+",%'";
+
+            //orgOrgTreeRelParams+=" or orgOrgTreeRel.ORG_BIZ_FULL_ID like '"+og+"%'";
+        }
+        orgOrgTreeRelParams+=")";
+        return orgOrgTreeRelParams;
+    }
+
+    /**
+     *
+     * @param orgId
+     * @param orgOrgTreeRelParams
+     * @return
+     */
+    @Override
+    public String getQueryPerPath(String orgId,String orgOrgTreeRelParams,String orgTreeId){
+        String orgOrgTreeRelSql = "";
+        if(StrUtil.isNullOrEmpty(orgOrgTreeRelParams)){
+            String orgdd = orgService.getFullOrgIdList(orgTreeId,orgId,",");
+            orgOrgTreeRelSql = " tbOrgOrgTreeRel.ORG_BIZ_FULL_ID like ',"+orgdd+",%'";
+            return orgOrgTreeRelSql;
+        }
+        String orgGroup[] = orgOrgTreeRelParams.split("\\|");
+
+        List<String> likeSql = new ArrayList<>();
+        for(String orgG : orgGroup){
+            // TODO: 2019/2/14
+            String[] orgIdsz = orgG.substring(1,orgG.length()-1).split(",");
+            String odd = orgIdsz[orgIdsz.length-1];
+            odd = orgService.getFullOrgIdList(orgTreeId,odd,",");
+            if(!StrUtil.isNullOrEmpty(odd)){
+                odd = ","+odd+",";
+            }
+            if(!StrUtil.isNullOrEmpty(odd) && (odd.contains(","+orgId+",") || StrUtil.isNullOrEmpty(orgId))){
+                likeSql.add(odd);
+            }
+
+//            if(orgG.contains(","+orgId+",")){
+//                likeSql.add(orgG);
+//            }
+        }
+        if(likeSql!=null && likeSql.size()>0){
+            for(String s1 : likeSql){
+                orgOrgTreeRelSql=" tbOrgOrgTreeRel.ORG_BIZ_FULL_ID like '"+s1+"%' " + "or";
+            }
+            orgOrgTreeRelSql = orgOrgTreeRelSql.substring(0,orgOrgTreeRelSql.length()-2);
+            orgOrgTreeRelSql = "("+orgOrgTreeRelSql+")";
+        }else{
+            orgOrgTreeRelSql = orgService.getFullOrgIdList(orgTreeId,orgId,",");
+            orgOrgTreeRelSql=" tbOrgOrgTreeRel.ORG_BIZ_FULL_ID like ',"+orgOrgTreeRelSql+",%'";
+        }
+        return orgOrgTreeRelSql;
+    }
+
+    /**
+     * 查询组织是否有权限
+     * @param orgId
+     * @param orgOrgTreeRelParams
+     * @return
+     */
+    @Override
+    public boolean isOrgQueryAuth(String orgId,String orgOrgTreeRelParams){
+        String orgGroup[] = orgOrgTreeRelParams.split("\\|");
+        for(String og : orgGroup){
+            String[] orgIdsz = og.substring(1,og.length()-1).split(",");
+            for(int i=0;i<orgIdsz.length-1;i++){
+                if(orgId.equals(orgIdsz[i])){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 }

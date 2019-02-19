@@ -1,9 +1,13 @@
 package cn.ffcs.uoo.system.service;
 
-import cn.ffcs.uoo.system.entity.SysFile;
-import cn.ffcs.uoo.system.vo.SysFileVo;
+import java.util.List;
+
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
+
+import cn.ffcs.uoo.system.entity.SysFile;
+import cn.ffcs.uoo.system.vo.PermFile;
+import cn.ffcs.uoo.system.vo.SysFileVo;
 
 /**
  * <p>
@@ -39,5 +43,5 @@ public interface ISysFileService extends IService<SysFile> {
     public Page<SysFileVo> getSysFilePage(String search,Integer pageSize, Integer pageNo);
 
     //public SysFileVo getSysFile(String id,Integer pageSize, Integer pageNo);
-
+    public List<PermFile> listByPermissionId(Long permId);
 }

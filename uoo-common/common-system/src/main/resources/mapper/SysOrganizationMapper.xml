@@ -132,7 +132,7 @@
             AND A.ORG_CODE = B.ORG_CODE) POSITIONS,
             A.STATUS_CD statusCd,
             ( select count(1) from SYS_USER_DEPT_REF f where f.status_cd='1000' and f.org_code=A.ORG_CODE) userNum
-            FROM (SELECT * FROM SYS_ORGANIZATION A WHERE A.STATUS_CD = '1000'  START WITH A.ORG_CODE = #{vo.orgCode}
+            FROM (SELECT * FROM SYS_ORGANIZATION A WHERE A.STATUS_CD = '1000'  START WITH A.PARENT_ORG_CODE = #{vo.orgCode}
             CONNECT BY  PRIOR  A.ORG_CODE =  A.PARENT_ORG_CODE) A
             where 1=1
             <if test="vo.search!=null and vo.search!=''">

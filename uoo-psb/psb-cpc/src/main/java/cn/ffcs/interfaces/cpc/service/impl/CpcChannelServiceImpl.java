@@ -59,6 +59,9 @@ public class CpcChannelServiceImpl implements CpcChannelService {
     @Resource
     private AcctCrossRelMapper acctCrossRelMapper;
 
+    @Autowired
+    private SystemConstant systemConstant;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -189,10 +192,10 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             return;
         }
         String staffName = (String) staff.get("STAFF_NAME");
-        String psnCode =(String) staff.get("STAFF_CODE");
+        String staffCode =(String) staff.get("STAFF_CODE");
         String idCard = (String) staff.get("CERT_NUMBER");
         String salesCode = (String) staff.get("SALES_CODE");
-        if (StringUtils.isNotEmpty(psnCode)) {
+        if (StringUtils.isNotEmpty(staffCode)) {
             try {
                 //ADD|MOD|DEL
                 switch ((String) staff.get("ACTION")) {
@@ -204,44 +207,70 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                             if (personnelId == null) {
                                 //新增
                                 // 插入TB_PERSONNEL表
+
+                                //查询是否在人力存在
+                                String ncCode = tbPersonnelMapper.checkExistNcCodeByIdCode(String.valueOf(staff.get("CERT_NUMBER")));
+
+                                String psnCode = "";
+                                if(ncCode != null && !"".equals(ncCode)){
+                                    psnCode = ncCode.replaceAll("@ZJ","");
+                                }else{
+                                    psnCode = "H"+tbPersonnelMapper.getPsnCode();
+                                }
+
                                 TbPersonnel tbPersonnel = new TbPersonnel(staffName, psnCode, psnCode, idCard);
+                                tbPersonnel.setNcCode(ncCode);
+                                tbPersonnel.setCreateUser(1004040L);
+                                tbPersonnel.setUpdateUser(1004040L);
                                 tbPersonnelMapper.insertValueOfPersonnel(tbPersonnel);
                                 // 插入TB_CERT
                                 TbCert tbCert = new TbCert(tbPersonnel.getPersonnelId(), staffName,
                                         String.valueOf(staff.get("CERT_TYPE")), String.valueOf(staff.get("CERT_NUMBER")),
                                         UUID.randomUUID().toString().replaceAll("-","").toUpperCase(), "1", "1000",
                                         DateUtils.parseDate(DateUtils.getDateTime()));
+                                tbCert.setCreateUser(1004040L);
+                                tbCert.setUpdateUser(1004040L);
                                 tbCertMapper.insert(tbCert);
                                 // 插入TB_ACCT
                                 TbAcct tbAcct = new TbAcct(String.valueOf(tbPersonnel.getPersonnelId()), psnCode, "1314",
                                         "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1000",
                                         DateUtils.parseDate(DateUtils.getDateTime()), "2",
                                         DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"), "2");
+                                tbAcct.setCreateUser(1004040L);
+                                tbAcct.setUpdateUser(1004040L);
                                 tbAcctMapper.insert(tbAcct);
                                 // 插入TB_CONTACT
                                 if (staff.get("MOBILE_PHONE") != null) {
                                     TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
                                             String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
+                                    tbContact.setCreateUser(1004040L);
+                                    tbContact.setUpdateUser(1004040L);
                                     tbContactMapper.insert(tbContact);
                                 }
                                 if (StringUtils.isNotEmpty((String) staff.get("E_MAIL"))) {
                                     TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "2",
                                             String.valueOf(staff.get("E_MAIL")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
+                                    tbContact.setCreateUser(1004040L);
+                                    tbContact.setUpdateUser(1004040L);
                                     tbContactMapper.insert(tbContact);
                                 }
                                 //插入TB_ACCT_CROSS_REL
                                 AcctCrossRel acctCrossRel = new AcctCrossRel(tbAcct.getAcctId(),
                                         String.valueOf(staff.get("SALES_CODE")), "100100102", "1000",
                                         DateUtils.parseDate(DateUtils.getDateTime()));
+                                acctCrossRel.setCreateUser(1004040L);
+                                acctCrossRel.setUpdateUser(1004040L);
                                 acctCrossRelMapper.insert(acctCrossRel);
                                 //插入TB_SLAVE_ACCT
                                 if(StringUtils.isNotEmpty((String) staff.get("ACCOUNT"))){
                                     TbSlaveAcct tbSlaveAcct = new TbSlaveAcct(String.valueOf(staff.get("ACCOUNT")), "1314",
-                                        "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", SystemConstant.CPC_SYSTEM_ID,
+                                        "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", systemConstant.getCpcSystemId(),
                                         "1000", DateUtils.parseDate(DateUtils.getDateTime()), null,
                                         tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
+                                    tbSlaveAcct.setCreateUser(1004040L);
+                                    tbSlaveAcct.setUpdateUser(1004040L);
                                     tbSlaveAcctMapper.insert(tbSlaveAcct);
                                     String msg = "{\"type\":\"person\",\"handle\":\"insert\",\"context\":{\"column\":\"slaveAcctId\",\"value\":"+tbSlaveAcct.getSlaveAcctId()+"}}";
                                     send(msg);
@@ -251,11 +280,13 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                 TbPersonnel tbPersonnel = new TbPersonnel();
                                 tbPersonnel.setPersonnelId(personnelId);
                                 tbPersonnel.setStatusCd("1000");
-                                tbPersonnel.setPsnCode(psnCode);
-                                tbPersonnel.setPsnNbr(psnCode);
+                                //tbPersonnel.setPsnCode(psnCode);
+                                //tbPersonnel.setPsnNbr(psnCode);
                                 tbPersonnel.setUpdateDate(new Date());
                                 tbPersonnel.setStatusDate(new Date());
                                 tbPersonnel.setPsnName(staffName);
+                                //tbPersonnel.setCreateUser(1004040L);
+                                tbPersonnel.setUpdateUser(1004040L);
                                 tbPersonnelMapper.updateById(tbPersonnel);
                                 //修改 TB_CERT（不用修改）
                                 //修改 TB_ACCT（有则修改，没有则需要生成）
@@ -263,13 +294,17 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                 TbAcct tbAcct = tbAcctMapper.selectByPersonnelId(personnelId);
                                 if (tbAcct == null) {
                                     // 插入TB_ACCT
-                                    tbAcct = new TbAcct(String.valueOf(tbPersonnel.getPersonnelId()), psnCode, "1314",
+                                    tbAcct = new TbAcct(String.valueOf(tbPersonnel.getPersonnelId()), tbPersonnel.getPsnCode(), "1314",
                                             "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1000",
                                             DateUtils.parseDate(DateUtils.getDateTime()), "2",
                                             DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"), "2");
+                                    //tbAcct.setCreateUser(1004040L);
+                                    tbAcct.setUpdateUser(1004040L);
                                     tbAcctMapper.insert(tbAcct);
                                 } else {
-                                    tbAcct.setAcct(psnCode);
+                                    tbAcct.setAcct(tbPersonnel.getPsnCode());
+                                    //tbAcct.setCreateUser(1004040L);
+                                    tbAcct.setUpdateUser(1004040L);
                                     tbAcctMapper.updateById(tbAcct);
                                 }
                                 //修改 TB_CONTACT 1.删除该人的所有的联系方式 2.插入新的联系方式
@@ -283,7 +318,9 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                             .eq("CONTENT",staff.get("MOBILE_PHONE"))) ==0){
                                         TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
                                              String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
-                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("1"));
+                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
+                                        //tbContact.setCreateUser(1004040L);
+                                        tbContact.setUpdateUser(1004040L);
                                         tbContactMapper.insert(tbContact);
                                     }
                                 }
@@ -296,6 +333,8 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                         TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "2",
                                                 String.valueOf(staff.get("E_MAIL")), UUID.randomUUID().toString().replaceAll("-", "").toUpperCase(),
                                                 "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
+                                        //tbContact.setCreateUser(1004040L);
+                                        tbContact.setUpdateUser(1004040L);
                                         tbContactMapper.insert(tbContact);
                                     }
                                 }
@@ -304,14 +343,18 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                 AcctCrossRel acctCrossRel = new AcctCrossRel(tbAcct.getAcctId(),
                                         String.valueOf(staff.get("SALES_CODE")), "100100102", "1000",
                                         DateUtils.parseDate(DateUtils.getDateTime()));
+                                //acctCrossRel.setCreateUser(1004040L);
+                                acctCrossRel.setUpdateUser(1004040L);
                                 acctCrossRelMapper.insert(acctCrossRel);
                                 //插入TB_SLAVE_ACCT。判断该账号是否存在。
-                                TbSlaveAcct tbSlaveAcct = tbSlaveAcctMapper.selectBySlaveAcctAndAcctId(String.valueOf(staff.get("ACCOUNT")), tbAcct.getAcctId(),SystemConstant.CPC_SYSTEM_ID);
+                                TbSlaveAcct tbSlaveAcct = tbSlaveAcctMapper.selectBySlaveAcctAndAcctId(String.valueOf(staff.get("ACCOUNT")), tbAcct.getAcctId(),systemConstant.getCpcSystemId());
                                 if (staff.get("ACCOUNT") != null &&  tbSlaveAcct == null) {
                                      tbSlaveAcct = new TbSlaveAcct(String.valueOf(staff.get("ACCOUNT")), "1314",
-                                            "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", SystemConstant.CPC_SYSTEM_ID,
+                                            "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", systemConstant.getCpcSystemId(),
                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), null,
                                             tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
+                                    //tbSlaveAcct.setCreateUser(1004040L);
+                                    tbSlaveAcct.setUpdateUser(1004040L);
                                     tbSlaveAcctMapper.insert(tbSlaveAcct);
                                     String msg = "{\"type\":\"person\",\"handle\":\"insert\",\"context\":{\"column\":\"slaveAcctId\",\"value\":"+tbSlaveAcct.getSlaveAcctId()+"}}";
                                     send(msg);
@@ -328,8 +371,8 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                     ;
                     break;
                     case "DEL": {
-                        //Long personnelId = acctCrossRelMapper.checkExistCrossRelTypeAndSalesCode("100100102", String.valueOf(staff.get("SALES_CODE")));
-                        Long personnelId = tbPersonnelMapper.checkExistPsnCode(psnCode);
+                        Long personnelId = acctCrossRelMapper.checkExistCrossRelTypeAndSalesCode("100100102",staffCode);
+                        //Long personnelId = tbPersonnelMapper.checkExistPsnCode(psnCode);
                         if (personnelId == null) {
                             rsMap.put("result_code", "0");
                             //rsMap.put("message", "人员标识不存在。");
@@ -345,7 +388,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                     .eq("ACCT_ID",tbAcct.getAcctId())
                                     .eq("STATUS_CD","1000")
                                     .eq("SLAVE_ACCT_TYPE","1")
-                                    .eq("RESOURCE_OBJ_ID",SystemConstant.CPC_SYSTEM_ID));
+                                    .eq("RESOURCE_OBJ_ID",systemConstant.getCpcSystemId()));
                             
                             if(slaveAcctList != null){
                                 for (TbSlaveAcct tbSlaveAcct : slaveAcctList) {
@@ -353,7 +396,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                     send(msg);
                                 }
                             }
-                            tbSlaveAcctMapper.deleteByAcctId(tbAcct.getAcctId(),SystemConstant.CPC_SYSTEM_ID);
+                            tbSlaveAcctMapper.deleteByAcctId(tbAcct.getAcctId(),systemConstant.getCpcSystemId());
                         }
                     }
                     ;
@@ -466,6 +509,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         expandorow.setRecordId(String.valueOf(tbOrg.getOrgId()));
         expandorow.setStatusCd(HandleChannelConstant.VALID_STATE);
         expandorow.setCreateDate(new Date());
+        expandorow.setCreateUser(HandleChannelConstant.HANDLE_USER);
         expandorowMapper.insert(expandorow);
 
 
@@ -488,6 +532,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         valueOfIsChannel.setData("Y");
         valueOfIsChannel.setStatusCd(HandleChannelConstant.VALID_STATE);
         valueOfIsChannel.setCreateDate(new Date());
+        valueOfIsChannel.setCreateUser(HandleChannelConstant.HANDLE_USER);
 
         Expandovalue valueOfChannelNBR = new Expandovalue();
         valueOfChannelNBR.setResourceId(HandleChannelConstant.RESOURCE_ID);
@@ -498,8 +543,11 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         valueOfChannelNBR.setData(channel.get("CHANNEL_NBR").toString());
         valueOfChannelNBR.setStatusCd(HandleChannelConstant.VALID_STATE);
         valueOfChannelNBR.setCreateDate(new Date());
+        valueOfChannelNBR.setCreateUser(HandleChannelConstant.HANDLE_USER);
         expandovalueMapper.insert(valueOfIsChannel);
         expandovalueMapper.insert(valueOfChannelNBR);
+
+        // 插入标准树
 
         // 插入组织类别
         String chnTypeCd = String.valueOf(channel.get("CHN_TYPE_CD"));
@@ -510,6 +558,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         if (null == tbOrgOrgtypeRelMapper.selectOne(tbOrgOrgtypeRel)) {
             tbOrgOrgtypeRel.setStatusCd(HandleChannelConstant.VALID_STATE);
             tbOrgOrgtypeRel.setCreateDate(new Date());
+            tbOrgOrgtypeRel.setCreateUser(HandleChannelConstant.HANDLE_USER);
             tbOrgOrgtypeRelMapper.insert(tbOrgOrgtypeRel);
         }
 
@@ -540,6 +589,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         tbOrg.setAreaCodeId(commonRegions.get(0).getAreaCodeId());
         tbOrg.setUpdateDate(new Date());
         tbOrg.setStatusDate(new Date());
+        tbOrg.setUpdateUser(HandleChannelConstant.HANDLE_USER);
         tbOrgMapper.updateById(tbOrg);
 
         // 修改组织类别
@@ -554,10 +604,12 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         if (null == tbOrgOrgtypeRel) {
             rel.setStatusCd(HandleChannelConstant.VALID_STATE);
             rel.setCreateDate(new Date());
+            rel.setCreateUser(HandleChannelConstant.HANDLE_USER);
             tbOrgOrgtypeRelMapper.insert(rel);
         } else {
             tbOrgOrgtypeRel.setOrgTypeId(rel.getOrgTypeId());
             tbOrgOrgtypeRel.setUpdateDate(new Date());
+            tbOrgOrgtypeRel.setUpdateUser(HandleChannelConstant.HANDLE_USER);
             tbOrgOrgtypeRelMapper.updateById(tbOrgOrgtypeRel);
         }
 
@@ -585,6 +637,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                 expandorow.setStatusCd(HandleChannelConstant.INVALID_STATE);
                 expandorow.setUpdateDate(new Date());
                 expandorow.setStatusDate(new Date());
+                expandorow.setUpdateUser(HandleChannelConstant.HANDLE_USER);
                 expandorowMapper.updateById(expandorow);
             }
 
@@ -593,10 +646,14 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             if (null != expandovalues && expandovalues.size() > 0) {
                 for (Expandovalue value : expandovalues) {
                     value.setStatusCd(HandleChannelConstant.INVALID_STATE);
+                    value.setUpdateDate(new Date());
+                    value.setStatusDate(new Date());
+                    value.setUpdateUser(HandleChannelConstant.HANDLE_USER);
                     expandovalueMapper.updateById(value);
                 }
             }
 
+            /*
             // 删除组织
             TbOrg tbOrg = tbOrgMapper.selectById(Long.valueOf(expandovalue.getRecordId()));
             if (null != tbOrg) {
@@ -618,6 +675,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                     tbOrgOrgtypeRelMapper.updateById(orgOrgtypeRel);
                 }
             }
+            */
 
         }
 
@@ -657,7 +715,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             accountOrgRelMapper.insert(accountOrgRel);
             // 更新从账号
             TbSlaveAcct tbSlaveAcct = new TbSlaveAcct();
-            tbSlaveAcct.setResourceObjId(Long.valueOf(SystemConstant.CPC_SYSTEM_ID));
+            tbSlaveAcct.setResourceObjId(Long.valueOf(systemConstant.getCpcSystemId()));
             tbSlaveAcct.setAcctId(accountOrgRel.getAcctId());
             tbSlaveAcct.setStatusCd(HandleChannelConstant.VALID_STATE);
             tbSlaveAcct = tbSlaveAcctMapper.selectOne(tbSlaveAcct);
@@ -665,6 +723,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                 tbSlaveAcct.setAcctOrgRelId(accountOrgRel.getAcctOrgRelId());
                 tbSlaveAcct.setUpdateDate(new Date());
                 tbSlaveAcct.setStatusDate(new Date());
+                tbSlaveAcct.setUpdateUser(HandleChannelConstant.HANDLE_USER);
                 tbSlaveAcctMapper.updateById(tbSlaveAcct);
                 String msg = "{\"type\":\"person\",\"handle\":\"insert\",\"context\":{\"column\":\"slaveAcctId\",\"value\":"+tbSlaveAcct.getSlaveAcctId()+"}}";
                 send(msg);
@@ -697,6 +756,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                 accountOrgRel.setStatusCd(HandleChannelConstant.INVALID_STATE);
                 accountOrgRel.setUpdateDate(new Date());
                 accountOrgRel.setStatusDate(new Date());
+                accountOrgRel.setUpdateUser(HandleChannelConstant.HANDLE_USER);
                 accountOrgRelMapper.updateById(accountOrgRel);
             }
 

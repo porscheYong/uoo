@@ -3,12 +3,14 @@ package cn.ffcs.uoo.system.dao;
 import java.util.HashMap;
 import java.util.List;
 
-import cn.ffcs.uoo.system.vo.SysDataRuleVo;
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 
 import cn.ffcs.uoo.system.entity.SysDataRule;
-import com.baomidou.mybatisplus.plugins.pagination.Pagination;
-import org.apache.ibatis.annotations.Param;
+import cn.ffcs.uoo.system.vo.PermDataRule;
+import cn.ffcs.uoo.system.vo.SysDataRuleVo;
 
 /**
  * <p>
@@ -28,4 +30,6 @@ public interface SysDataRuleMapper extends BaseMapper<SysDataRule> {
     List<SysDataRuleVo> getDataRulePage(Pagination page, @Param("search")String search);
 
     public String getDicItem(@Param("itemValue")String itemValue);
+    public List<PermDataRule> listByPermissionId(Long permId);
+    public List<SysDataRuleVo> listSysDataRuleVoByGroupId(Long groupId);
 }

@@ -5,6 +5,13 @@ import java.util.List;
 public class DataRuleRequestVO {
     private String accout;
     private List<String> tableNames;
+    private Long treeId;
+    public Long getTreeId() {
+        return treeId;
+    }
+    public void setTreeId(Long treeId) {
+        this.treeId = treeId;
+    }
     public String getAccout() {
         return accout;
     }

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>创建权限</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- jquery datatable -->
+    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+    <!-- jquery tagsinput -->
+    <link href="/vendors/tagsinput/jquery.tagsinput.css" rel="stylesheet">
+    <link href="/vendors/typeahead/typeahead.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/css/permission/permission.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="./vendors/html5shiv.js"></script>
+    <script src="./vendors/respond.js"></script>
+    <script src="./vendors/excanvas.js"></script>
+    <![endif]-->
+    <style type="text/css">
+    </style>
+  </head>
+
+  <body style="background: #fff;">
+        <a class="BoardTitle Back" style="color:#008aff;margin-bottom:10px;border-bottom: 1px solid #ecedef;cursor: pointer;" onclick="backToList()">返回</a>
+        <div class="board-title" style="margin-top: 1%;">
+            <span class="name ft18" style="margin-left: 1%;">创建权限</span>
+        </div>
+
+        <div id="editInfo" style="margin-top:30px;">
+            <div class="row" style="margin-bottom: 10px;">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-item" style="width: 100%">
+                        <label for="permissionName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">权限名称</label>
+                        <input id="permissionName" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                size="40" value="" autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-item" style="width: 100%">
+                        <label for="permissionCode" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">权限编码</label>
+                        <input id="permissionCode" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                size="40" value="" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 10px;">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-item" style="width: 100%">
+                        <label for="location" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">管理区域</label>
+                        <input id="location" class="ui-input col-md-8 col-sm-8 col-xs-8" onclick="openLocationDialog()" required readonly>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-item" style="width: 100%">
+                        <label for="permissionDesc" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">权限描述</label>
+                        <input id="permissionDesc" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                size="40" value="" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 10px;">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-item" style="width: 100%">
+                        <label for="statusCd" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">状态</label>
+                        <select  class="col-md-8 col-sm-8 col-xs-8" id="statusCd">
+                            <option value="1000">有效</option>
+                            <option value="1100">无效</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-item" style="width: 100%">
+                        <label for="notes" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">备注</label>
+                        <input id="notes" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
+                                size="40" value="" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-tabs-brief" style="padding-top: 15px;">
+            <ul class="nav nav-tabs tab-title" role="tablist" id="myTabs">
+                <li role="presentation" class="active" style="width: 12%;">
+                    <a href="#tab_content1" id="func-tab" role="tab" data-toggle="tab" aria-expanded="true">功能资源</a>
+                </li>
+                <li role="presentation" class="" style="width: 12%;">
+                    <a href="#tab_content2" role="tab" id="menu-tab" data-toggle="tab" aria-expanded="false">菜单资源</a>
+                </li>
+                <li role="presentation" class="" style="width: 12%;">
+                    <a href="#tab_content3" role="tab" id="elem-tab" data-toggle="tab" aria-expanded="false">元素资源</a>
+                </li>
+                <li role="presentation" class="" style="width: 12%;">
+                    <a href="#tab_content4" role="tab" id="file-tab" data-toggle="tab" aria-expanded="false">文件资源</a>
+                </li>
+                <li role="presentation" class="" style="width: 12%;">
+                    <a href="#tab_content5" role="tab" id="data-tab" data-toggle="tab" aria-expanded="false">数据资源</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_content1">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-5 col-sm-5 col-xs-5" style="margin-left:2%;">
+                            <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">资源信息列表</div>
+                            <!-- <div class="pos-relative" style="margin-top: 7px;margin-left:5px;overflow: hidden;">
+                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-item" style="width: 100%">
+                                        <div class="typeahead col-md-7 col-sm-7 col-xs-7" style="padding: 0;">
+                                            <div>
+                                                <input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
+                                                <input class="ui-input typeahead-input tt-input" id="roleSearch" type="text" name="q" placeholder="搜索资源名称" autocomplete="off" spellcheck="false" dir="auto">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div style="overflow: hidden;margin-top:2%;margin-left: 2%;">
+                                <input class="ui-input ui-input-search col-md-6 col-sm-6 col-xs-6" id="resName" style="margin-left:1%;" type="text" placeholder="搜索资源" autocomplete="off"/>
+                                <button class="ui-button ui-button-primary" id="searchBtn" onclick="search()" style="margin-left:1%;">搜索</button>
+                            </div> -->
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;height: 312px;">
+                                <table id="funcResInfoTable" class="stripe" width="100%"></table>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top:13%;margin-left:2%;">
+                            <div>
+                                <button class="BtnBlue" id="addBtn" onclick="addFuncRes()" style="margin-top: 10px;"></button>
+                            </div>
+                            <div>
+                                <button class="BtnBlue" id="delBtn" onclick="delFuncRes()" style="margin-top: 10px;"></button>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-5">
+                            <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">已选择的列表</div>
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top:13%;">
+                                <table id="funcResSelectedTable" class="stripe" width="100%"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="tab_content2">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-5 col-sm-5 col-xs-5" style="margin-left:2%;">
+                            <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">资源信息列表</div>
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;height: 312px;">
+                                <table id="menuResInfoTable" class="stripe" width="100%"></table>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top:13%;margin-left:2%;">
+                            <div>
+                                <button class="BtnBlue" id="addBtn2" onclick="addMenuRes()" style="margin-top: 10px;"></button>
+                            </div>
+                            <div>
+                                <button class="BtnBlue" id="delBtn2" onclick="delMenuRes()" style="margin-top: 10px;"></button>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-5">
+                            <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">已选择的列表</div>
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top:13%;">
+                                <table id="menuResSelectedTable" class="stripe" width="100%"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="tab_content3">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-5 col-sm-5 col-xs-5" style="margin-left:2%;">
+                            <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">资源信息列表</div>
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;height: 312px;">
+                                <table id="elemResInfoTable" class="stripe" width="100%"></table>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top:13%;margin-left:2%;">
+                            <div>
+                                <button class="BtnBlue" id="addBtn3" onclick="addElemRes()" style="margin-top: 10px;"></button>
+                            </div>
+                            <div>
+                                <button class="BtnBlue" id="delBtn3" onclick="delElemRes()" style="margin-top: 10px;"></button>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-5">
+                            <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">已选择的列表</div>
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top:13%;">
+                                <table id="elemResSelectedTable" class="stripe" width="100%"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="tab_content4">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-5 col-sm-5 col-xs-5" style="margin-left:2%;">
+                            <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">资源信息列表</div>
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;height: 312px;">
+                                <table id="fileResInfoTable" class="stripe" width="100%"></table>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top:13%;margin-left:2%;">
+                            <div>
+                                <button class="BtnBlue" id="addBtn4" onclick="addFileRes()" style="margin-top: 10px;"></button>
+                            </div>
+                            <div>
+                                <button class="BtnBlue" id="delBtn4" onclick="delFileRes()" style="margin-top: 10px;"></button>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-5">
+                            <div style="margin-top:2%;margin-left:3%;font-size:16px;font-weight:600;">已选择的列表</div>
+                            <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top:13%;">
+                                <table id="fileResSelectedTable" class="stripe" width="100%"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="tab_content5" style="padding:10px;">
+                    <div class="row" style="width: 100%;">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div style="width: 100%">
+                                <label for="businessOrg" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;margin-bottom:2%;
+                                        line-height: 40px;text-align: right;width:27%;font-weight: 600;margin-left: 9%;">选择组织树</label>
+                                <select class="col-md-3 col-sm-3 col-xs-3" id="businessOrg">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <span style="font-weight: 600;margin-left: 10%;">条件规则：(组内条件之间的关系为并且，组之间的关系可选择配置)</span>
+                    <div class="fright" style="margin-right:10%;">
+                        <a class="button-add" id="addBtn" onclick="addDataGroup()"><span class="fa fa-plus-circle icon-add"></span>添加分组</a>
+                    </div>
+
+                    <!-- <div class="dataGroup">
+                        <div id="conDiv">
+                            <div class="dataCondition">
+                                <div class="row" style="width: 100%;">
+                                    <span class="pngDel" style="float:right;"></span>
+                                </div>
+
+                                <div class="row" style="margin-bottom: 10px;">
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <div style="width: 100%">
+                                            <label for="tabName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">表名称</label>
+                                            <select class="col-md-8 col-sm-8 col-xs-8" id="tabName"></select>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <div style="width: 100%">
+                                            <label for="colName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;
+                                                    line-height: 40px;text-align: right;width: 24%;">字段名称</label>
+                                            <select class="col-md-8 col-sm-8 col-xs-8" id="colName">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div class="row" style="margin-bottom: 10px;">
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <div style="width: 100%">
+                                            <label for="ruleOperator" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;
+                                                    line-height: 40px;text-align: right;width:27%;">规则操作符</label>
+                                            <select class="col-md-8 col-sm-8 col-xs-8" id="ruleOperator">
+                                            </select>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <div style="width: 100%">
+                                            <label for="colValue" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">字段值</label>
+                                            <input id="colValue" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom: 10px;margin-top:1%;">
+                            <div class="col-md-2 col-sm-2 col-xs-2" style="float:right;">
+                                <button class="BtnDelGroup">删除分组</button>
+                            </div>
+
+                            <div class="col-md-2 col-sm-2 col-xs-2" style="float:right;">
+                                <button class="BtnAddRela">添加条件</button>
+                            </div>
+
+                            <div class="col-md-3 col-sm-3 col-xs-3" style="width:15%;float: right;">
+                                <select class="col-md-9 col-sm-9 col-xs-9" id="relation" style="width:100%;"></select>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 10px;">
+                <div style="margin-left:43%;margin-top:5%;">
+                    <button class="ui-button ui-button-primary" onclick="addPermission()">保存</button>
+                    <!-- <button class="Btn BtnRed2" id="delAcct" onclick="deleteTbAcct()" style="margin-left: 10px;">删除</button> -->
+                    <button class="ui-button ui-button-cancel" onclick="backToList()" style="margin-left: 10px;">取消</button>
+                </div>
+            </div>
+        </div>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- sea js -->
+    <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
+    <!-- layer -->
+    <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+    <!-- handlebars -->
+    <script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
+    <!-- typeahead -->
+    <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
+    <!-- jquery tagsinput -->
+    <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
+    <!-- lulu -->
+    <script type="text/javascript" src="/vendors/lulu/js/common/ui/Validate.js"></script>
+    <!-- init -->
+    <script type="text/javascript" src="/js/init.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script type="text/javascript" src="/js/manage/permission/add.js"></script>
+    <script type="text/javascript" src="/js/manage/permission/addSelectDataRes.js"></script>
+    <script type="text/javascript">
+        seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+            $('#statusCd').selectMatch();
+            // $('#businessOrg').selectMatch();
+            // $('#colName').selectMatch();
+            // $('#ruleOperator').selectMatch();
+            // $('#relation').selectMatch();
+        })
+    </script>
+  </body>
+</html>

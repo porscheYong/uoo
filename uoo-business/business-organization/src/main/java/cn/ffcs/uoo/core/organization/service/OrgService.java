@@ -5,6 +5,7 @@ import cn.ffcs.uoo.core.organization.entity.PoliticalLocation;
 import cn.ffcs.uoo.core.organization.vo.AreaCodeVo;
 import cn.ffcs.uoo.core.organization.vo.OrgVo;
 import cn.ffcs.uoo.core.organization.vo.PageVo;
+import cn.ffcs.uoo.core.organization.vo.TreeNodeVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.baomidou.mybatisplus.service.IService;
@@ -104,5 +105,45 @@ public interface OrgService extends IService<Org> {
     public List<AreaCodeVo> getOrgAreaCode(String orgId);
 
 
+    /**
+     * 获取组织名称全路
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    public String getFullOrgNameList(String orgTreeId,String orgId,String split);
+
+    /**
+     * 获取组织标识名称全路径
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    public String getFullOrgIdList(String orgTreeId,String orgId,String split);
+
+    /**
+     * 移动组织判断
+     * @param orgId
+     * @param parentOrgId
+     * @param orgTreeId
+     * @return
+     */
+    public String JudgeMoveOrg(Long orgId,Long parentOrgId,String orgName,Long orgTreeId);
+    /**
+     * 组织移动
+     * @param orgId
+     * @param parentOrgId
+     * @param orgTreeId
+     * @return
+     */
+    public String moveOrg(Long orgId,Long parentOrgId,Long orgTreeId,Long userId,String batchNumber);
+
+    /**
+     * 组织树路径
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    public List<TreeNodeVo> getFullOrgVo(String orgTreeId, String orgId);
 
 }

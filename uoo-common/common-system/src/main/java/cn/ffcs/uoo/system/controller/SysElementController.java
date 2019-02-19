@@ -3,10 +3,13 @@ package cn.ffcs.uoo.system.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,6 +41,7 @@ public class SysElementController {
     ISysElementService eleSvc;
     @Autowired
     ModifyHistoryService modifyHistorySvc;
+    
     @Autowired
     ISysPermissionElementRelService permEleSvc;
     @ApiOperation(value = "分页查询元素", notes = "分页查询元素")
@@ -51,7 +55,7 @@ public class SysElementController {
         pageSize = pageSize==null?20:pageSize;
         Wrapper<SysElement> wrapper = Condition.create().eq("STATUS_CD", StatusCD.VALID);
         if(StringUtils.isNotBlank(keyWord)){
-            wrapper.andNew("ELEMENT_NAME like {0}", "'%"+keyWord+"%'").or("ELEMENT_CODE like {0}","'%"+keyWord+"%'");
+            wrapper.andNew().like("ELEMENT_NAME", keyWord).or().like("ELEMENT_CODE", keyWord);
         }
         Page<SysElement> page = eleSvc.selectPage(new Page<SysElement>(pageNo, pageSize), wrapper);
         ResponseResult<Page<SysElement>> rr = ResponseResult.createSuccessResult( "");
@@ -89,7 +93,7 @@ public class SysElementController {
     @Transactional
     @UooLog(key="add",value="新增")
     @RequestMapping(value="/add",method=RequestMethod.POST)
-    public ResponseResult<Void> add(@RequestBody SysElement ele){
+    public ResponseResult<Void> add(@RequestBody @Valid SysElement ele){
         String code = ele.getElementCode();
         long size=eleSvc.selectCount(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ELEMENT_CODE", code));
         if(size>0){
@@ -101,7 +105,7 @@ public class SysElementController {
         ele.setElementId(eleSvc.getId());
         ele.setCreateDate(new Date());
         eleSvc.insert(ele);
-        //modifyHistorySvc.addModifyHistory(null, ele, ele.getCreateUser(),modifyHistorySvc.getBatchNumber());
+        modifyHistorySvc.addModifyHistory(null, ele, ele.getCreateUser(),modifyHistorySvc.getBatchNumber());
         return ResponseResult.createSuccessResult("新增成功");
     }
     @Transactional
@@ -110,7 +114,7 @@ public class SysElementController {
     })
     @UooLog(key="update",value="更新")
     @RequestMapping(value="/update",method=RequestMethod.POST)
-    public ResponseResult<Void> update(@RequestBody SysElement ele){
+    public ResponseResult<Void> update(@RequestBody @Valid SysElement ele){
         String funcCode = ele.getElementCode();
         SysElement one = eleSvc.selectById(ele.getElementId());
         if(one==null){
@@ -135,7 +139,7 @@ public class SysElementController {
         }
         ele.setUpdateDate(new Date());
         eleSvc.updateById(ele);
-        //modifyHistorySvc.addModifyHistory(one, ele, ele.getUpdateUser(),modifyHistorySvc.getBatchNumber());
+        modifyHistorySvc.addModifyHistory(one, ele, ele.getUpdateUser(),modifyHistorySvc.getBatchNumber());
         return ResponseResult.createSuccessResult("修改成功");
     }
     @ApiOperation(value = "删除", notes = "删除")
@@ -150,7 +154,7 @@ public class SysElementController {
         df.setStatusCd(StatusCD.INVALID);
         df.setStatusDate(new Date());
         eleSvc.updateById(df);
-       // modifyHistorySvc.addModifyHistory(df, null, fun.getUpdateUser(),modifyHistorySvc.getBatchNumber());
+        modifyHistorySvc.addModifyHistory(eleSvc.selectById(fun.getElementId()), null, fun.getUpdateUser(),modifyHistorySvc.getBatchNumber());
         return ResponseResult.createSuccessResult("修改成功");
     }
 }

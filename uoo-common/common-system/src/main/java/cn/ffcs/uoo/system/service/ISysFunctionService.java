@@ -1,10 +1,11 @@
 package cn.ffcs.uoo.system.service;
 
-import cn.ffcs.uoo.system.entity.SysFunction;
-
 import java.util.List;
 
 import com.baomidou.mybatisplus.service.IService;
+
+import cn.ffcs.uoo.system.entity.SysFunction;
+import cn.ffcs.uoo.system.vo.PermFunction;
 
 /**
  * <p>
@@ -17,5 +18,5 @@ import com.baomidou.mybatisplus.service.IService;
 public interface ISysFunctionService extends IService<SysFunction> {
     Long getId();
     List<SysFunction> getFunctionByAccout(String accout);
-
+    public List<PermFunction> listByPermissionId(Long permId);
 }

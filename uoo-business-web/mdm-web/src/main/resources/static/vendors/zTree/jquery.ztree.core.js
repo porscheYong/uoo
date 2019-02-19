@@ -1825,6 +1825,12 @@
             }
           }
         },
+        showNodeFocus: function (node) {
+            var a = $$(node, setting).get(0);
+            if (a && focus !== false) {
+                view.scrollIntoView(setting, a);
+            }
+        },
         getNodes: function () {
           return data.getNodes(setting);
         },

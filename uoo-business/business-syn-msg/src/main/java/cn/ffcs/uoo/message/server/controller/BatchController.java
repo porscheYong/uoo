@@ -134,6 +134,7 @@ public class BatchController {
                 tbImport.setStatusCd("0");
                 tbImport.setSimpleData(null);
                 tbImport.setFailReason(null);
+                tbImport.setHandleDate(null);
                 tbImportMapper.insert(tbImport);
 
                 TbImportLog tbImportLog = new TbImportLog();

@@ -1,14 +1,14 @@
 package cn.ffcs.uoo.system.service;
 
-import cn.ffcs.uoo.system.entity.SysDataRule;
-
 import java.util.HashMap;
 import java.util.List;
 
-import cn.ffcs.uoo.system.entity.SysFile;
-import cn.ffcs.uoo.system.vo.SysDataRuleVo;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
+
+import cn.ffcs.uoo.system.entity.SysDataRule;
+import cn.ffcs.uoo.system.vo.PermDataRule;
+import cn.ffcs.uoo.system.vo.SysDataRuleVo;
 
 /**
  * <p>
@@ -23,7 +23,7 @@ public interface ISysDataRuleService extends IService<SysDataRule> {
     List<SysDataRule> listByAccout(HashMap<String, Object> map);
 
     Page<SysDataRuleVo> getDataRulePage(String search, Integer pageSize, Integer pageNo);
-
+    public List<SysDataRuleVo> listSysDataRuleVoByGroupId(Long groupId);
     /**
      * 获取seq
      * @return
@@ -49,4 +49,6 @@ public interface ISysDataRuleService extends IService<SysDataRule> {
 
 
     public String getDicItem(String itemValue);
+    
+    public List<PermDataRule> listByPermissionId(Long permId);
 }
