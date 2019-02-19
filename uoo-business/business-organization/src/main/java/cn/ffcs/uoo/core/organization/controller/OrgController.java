@@ -347,7 +347,7 @@ public class OrgController extends BaseController {
             fullBizName+=StrUtil.strnull(org.getOrgName());
 
             String fullBizNameId = "";
-            fullBizNameId = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),",");
+            fullBizNameId = orgOrgtreeRelService.getFullBizOrgIdList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),",");
             fullBizNameId=","+fullBizNameId+","+newOrg.getOrgId()+",";
             // TODO: 2019/1/23 获取组织树ID  组织组织树新增字段 end
 
@@ -1038,7 +1038,7 @@ public class OrgController extends BaseController {
             String fullBizNameId = "";
             if(!StrUtil.isNullOrEmpty(org.getSupOrgId())){
                 fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),"");
-                fullBizNameId = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),",");
+                fullBizNameId = orgOrgtreeRelService.getFullBizOrgIdList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),",");
             }
             fullBizName+=StrUtil.isNullOrEmpty(org.getOrgBizName())?org.getOrgName():org.getOrgBizName();
             fullBizNameId=","+fullBizNameId+","+newOrg.getOrgId()+",";
@@ -1641,6 +1641,9 @@ public class OrgController extends BaseController {
         }
         if(!StrUtil.isNullOrEmpty(orgTreeId)){
             orgVo.setOrgTreeId(new Long(orgTreeId));
+        }
+        if(StrUtil.isNumeric(search)){
+            orgVo.setIsSearchNum("1");
         }
         Page<OrgVo> page = orgService.selectOrgPage(orgVo);
         ret.setState(ResponseResult.STATE_OK);

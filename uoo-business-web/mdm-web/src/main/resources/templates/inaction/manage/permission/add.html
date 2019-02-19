@@ -23,7 +23,7 @@
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
     <link href="/css/custom.css" rel="stylesheet">
-    <!-- <link href="/css/account/style2.css" rel="stylesheet"> -->
+    <link href="/css/permission/permission.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="./vendors/html5shiv.js"></script>
@@ -31,120 +31,6 @@
     <script src="./vendors/excanvas.js"></script>
     <![endif]-->
     <style type="text/css">
-        table.dataTable {
-            table-layout: fixed;
-        }
-        
-        th {
-            text-align: center;
-            white-space: nowrap;
-        }
-        table.dataTable tbody td {
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .col-sm-9 {
-            width: 100% !important;
-        }
-        .col-sm-8 {
-            width: 64% !important;
-        }
-        .col-sm-7 {
-            width: 100% !important;
-            text-align: center;
-        }
-        .col-sm-3 {
-            width: 32% !important;
-        }
-        .col-sm-4 {
-            width: 27% !important;
-        }
-        .col-sm-2{
-            width: 10% !important;
-        }
-        .row{
-            margin-left: 0px !important;
-            margin-right: 0px !important;
-        }
-        .BtnBlueClass { 
-            width: 82px;
-            height: 40px;
-            border: 1px solid rgb(53,173,239);
-            background: #FFF !important;
-            border-radius:4px;
-        }
-        .BtnAddRela{
-            width: 82px;
-            height: 40px;
-            border: 1px solid rgb(53,173,239);
-            color: rgb(53,173,239);
-            background: #FFF !important;
-            border-radius:8px;
-        }
-        .BtnDelGroup{
-            width: 82px;
-            height: 40px;
-            border: 1px solid rgb(255, 0, 0);
-            color: rgb(255, 0, 0);
-            background: #FFF !important;
-            border-radius:8px;
-        }
-        .dataGroup{
-            margin-top: 3%;
-            width: 80%;
-            margin-left: 10%;
-            padding: 3px 10px 0px 10px;
-            border: 2px solid #ff7800;
-            border-radius: 4px;
-        }
-        .dataCondition{
-            border: 2px solid #b5b5b5;
-            border-radius: 4px;
-            margin-top: 1%;
-        }
-        .pngDel{
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;    
-            background: url(del.png);
-        }
-        .ui-select-datalist{
-            max-height: 185px !important;
-        }
-        #funcResInfoTable_info{
-            display: none;
-        }
-        #funcResInfoTable_filter,
-        #menuResInfoTable_filter,
-        #elemResInfoTable_filter,
-        #fileResInfoTable_filter{
-            float: left;
-            margin-bottom: 5.5%;
-            margin-top: 4%;
-        }
-        .row-select{
-            width: 20%;
-        }
-        .row-fName{
-            width: 50%;
-        }
-        .row-fCode{
-            width: 30%; 
-        }
-        #location_tagsinput{
-            width: 64% !important;
-        }
-        #location_tagsinput .tag{
-            margin-bottom: 0px !important;
-        }
-        #location{
-            opacity: 0;
-            filter: alpha(opacity=0);
-            position: absolute;
-        }
     </style>
   </head>
 
@@ -257,10 +143,10 @@
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top:13%;margin-left:2%;">
                             <div>
-                                <button class="BtnBlueClass" id="addBtn" onclick="addFuncRes()" style="margin-top: 10px;"></button>
+                                <button class="BtnBlue" id="addBtn" onclick="addFuncRes()" style="margin-top: 10px;"></button>
                             </div>
                             <div>
-                                <button class="BtnBlueClass" id="delBtn" onclick="delFuncRes()" style="margin-top: 10px;"></button>
+                                <button class="BtnBlue" id="delBtn" onclick="delFuncRes()" style="margin-top: 10px;"></button>
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-5">
@@ -282,10 +168,10 @@
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top:13%;margin-left:2%;">
                             <div>
-                                <button class="BtnBlueClass" id="addBtn2" onclick="addMenuRes()" style="margin-top: 10px;"></button>
+                                <button class="BtnBlue" id="addBtn2" onclick="addMenuRes()" style="margin-top: 10px;"></button>
                             </div>
                             <div>
-                                <button class="BtnBlueClass" id="delBtn2" onclick="delMenuRes()" style="margin-top: 10px;"></button>
+                                <button class="BtnBlue" id="delBtn2" onclick="delMenuRes()" style="margin-top: 10px;"></button>
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-5">
@@ -307,10 +193,10 @@
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top:13%;margin-left:2%;">
                             <div>
-                                <button class="BtnBlueClass" id="addBtn3" onclick="addElemRes()" style="margin-top: 10px;"></button>
+                                <button class="BtnBlue" id="addBtn3" onclick="addElemRes()" style="margin-top: 10px;"></button>
                             </div>
                             <div>
-                                <button class="BtnBlueClass" id="delBtn3" onclick="delElemRes()" style="margin-top: 10px;"></button>
+                                <button class="BtnBlue" id="delBtn3" onclick="delElemRes()" style="margin-top: 10px;"></button>
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-5">
@@ -332,10 +218,10 @@
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top:13%;margin-left:2%;">
                             <div>
-                                <button class="BtnBlueClass" id="addBtn4" onclick="addFileRes()" style="margin-top: 10px;"></button>
+                                <button class="BtnBlue" id="addBtn4" onclick="addFileRes()" style="margin-top: 10px;"></button>
                             </div>
                             <div>
-                                <button class="BtnBlueClass" id="delBtn4" onclick="delFileRes()" style="margin-top: 10px;"></button>
+                                <button class="BtnBlue" id="delBtn4" onclick="delFileRes()" style="margin-top: 10px;"></button>
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-5">
@@ -448,6 +334,8 @@
     <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
     <!-- jquery tagsinput -->
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
+    <!-- lulu -->
+    <script type="text/javascript" src="/vendors/lulu/js/common/ui/Validate.js"></script>
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
     <!-- jquery datatable -->
@@ -458,7 +346,7 @@
     <script type="text/javascript">
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
             $('#statusCd').selectMatch();
-            $('#businessOrg').selectMatch();
+            // $('#businessOrg').selectMatch();
             // $('#colName').selectMatch();
             // $('#ruleOperator').selectMatch();
             // $('#relation').selectMatch();

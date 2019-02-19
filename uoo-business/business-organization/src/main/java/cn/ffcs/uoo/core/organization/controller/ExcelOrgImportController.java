@@ -62,10 +62,10 @@ public class ExcelOrgImportController {
     @UooLog(value = "生成excel文件数据", key = "importExcelFileData")
     @RequestMapping(value = "/importExcelFileData", method=RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<String> importExcelFileData(@RequestPart(value="fileInfo",required = false) MultipartFile fileInfo,
-                                                      String orgTreeId,
-                                                      Long userId,
-                                                      String accout) throws IOException {
+    public ResponseResult<String> importExcelFileData(@RequestPart(value="fileInfo") MultipartFile fileInfo,
+                                                      @RequestParam("orgTreeId")String orgTreeId,
+                                                      @RequestParam("userId")Long userId,
+                                                      @RequestParam("accout")String accout) throws IOException {
         ResponseResult<String> ret = new ResponseResult<String>();
         if(StrUtil.isNullOrEmpty(orgTreeId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -84,7 +84,7 @@ public class ExcelOrgImportController {
         int rowCount = sheet.getLastRowNum() - sheet.getFirstRowNum();
         if(rowCount-1>50){
             ret.setState(ResponseResult.PARAMETER_ERROR);
-            ret.setMessage("组织导入数量最大为50条");
+            ret.setMessage("组织导入数量最大为100条");
         }
         long time = System.currentTimeMillis();
         String t = String.valueOf(time/1000);
@@ -114,6 +114,8 @@ public class ExcelOrgImportController {
                     excelOrgImport.setOrgName(cellStr);
                 }
             }
+            System.out.println("orgId:"+excelOrgImport.getOrgId()+",pOrgId:"+excelOrgImport.getParentOrgId()+",OrgName:"+excelOrgImport.getOrgName()
+            +",orgTreeId:"+orgTreeId);
             Long excelId = excelOrgImportService.getId();
             excelOrgImport.setFileName(fileName);
             excelOrgImport.setExcelOrgImportId(excelId);
@@ -194,5 +196,26 @@ public class ExcelOrgImportController {
         ret.setState(ResponseResult.STATE_OK);
         return ret;
     }
+
+    @ApiOperation(value = "更新数据", notes = "更新数据")
+    @UooLog(value = "更新数据", key = "updateExcelFileData")
+    @RequestMapping(value = "/updateExcelFileData", method=RequestMethod.POST)
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<String> updateExcelFileData(ExcelOrgImport excelOrgImport,
+                                                                 Long userId,
+                                                                 String accout) throws IOException {
+        ResponseResult<String> ret = new ResponseResult<String>();
+//        com.baomidou.mybatisplus.mapper.Wrapper excelWrapper = Condition.create()
+//                .eq("FILE_SIGN",fileSign)
+//                .eq("SIGN",dataSign)
+//                .eq("STATUS_CD","1000");
+//        Page<ExcelOrgImport> excelOrgImportPage = excelOrgImportService.selectPage(new Page<ExcelOrgImport>(
+//                StrUtil.isNullOrEmpty(pageNo)||pageNo==0?1:pageNo,
+//                StrUtil.isNullOrEmpty(pageSize)||pageSize==0?10:pageSize));
+        ret.setData("");
+        ret.setState(ResponseResult.STATE_OK);
+        return ret;
+    }
+
 }
 

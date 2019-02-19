@@ -182,7 +182,9 @@ public class WebLogAspect {
         Object target = joinPoint.getTarget();
         Method currentMethod = target.getClass().getMethod(msig.getName(), msig.getParameterTypes());
         SysOperationLog logs=new SysOperationLog();
+        boolean hasOperateLogAnnotation=false;
         if(currentMethod.isAnnotationPresent(OperateLog.class)){
+            hasOperateLogAnnotation=true;
             OperateLog annotation = currentMethod.getAnnotation(OperateLog.class);
             logs.setLogName(annotation.module()+"-"+annotation.methods());
             logs.setLogType(annotation.type().type);
@@ -217,6 +219,9 @@ public class WebLogAspect {
                 }
             }
              
+        }
+        if(StringUtils.isBlank(logs.getFuncCode())&&!hasOperateLogAnnotation){
+            return null;
         }
         return logs;
     }

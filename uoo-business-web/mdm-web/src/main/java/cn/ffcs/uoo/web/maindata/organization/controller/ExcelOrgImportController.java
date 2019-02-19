@@ -56,7 +56,7 @@ public class ExcelOrgImportController {
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         userId = currentLoginUser.getUserId();
         accout = currentLoginUser.getAccout();
-        return excelOrgImportService.importExcelFileData(fileInfo,userId,accout);
+        return excelOrgImportService.importExcelFileData(fileInfo,orgTreeId,userId,accout);
     }
 
 

@@ -1,4 +1,6 @@
+import cn.ffcs.uoo.core.organization.Api.service.SystemService;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
+import cn.ffcs.uoo.core.organization.vo.DataRuleRequestVO;
 
 //package cn.ffcs.uoo.core.organization.Api.service;/**
 // * @description:
@@ -154,6 +156,8 @@ String params = "AND";
         if(StrUtil.isNullOrEmpty(params)){
             System.out.println(params);
         }
+        DataRuleRequestVO requestVo = new DataRuleRequestVO();
+
 //        Org orgVo1 = new Org();
 //        //orgVo1.setOrgId(1L);
 //        orgVo1.setFullName("11111");

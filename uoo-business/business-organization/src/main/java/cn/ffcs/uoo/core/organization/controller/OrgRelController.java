@@ -357,7 +357,7 @@ public class OrgRelController extends BaseController {
         fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),"");
         fullBizName+=StrUtil.strnull(StrUtil.isNullOrEmpty(org.getOrgBizName())?o.getOrgName():org.getOrgBizName());
         String fullBizNameId = "";
-        fullBizNameId = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),",");
+        fullBizNameId = orgOrgtreeRelService.getFullBizOrgIdList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),",");
         fullBizNameId=","+fullBizNameId+","+o.getOrgId()+",";
 
         Long orgOrgtreeRefId = orgOrgtreeRelService.getId();

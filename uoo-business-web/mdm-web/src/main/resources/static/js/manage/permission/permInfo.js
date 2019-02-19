@@ -4,6 +4,7 @@ var funcResSelectedList = [];   //已选择表格的功能数据
 var menuResSelectedList = [];   //已选择表格的菜单数据
 var elemResSelectedList = [];   //已选择表格的元素数据
 var fileResSelectedList = [];   //已选择表格的文件数据
+var dataResSelectedList = [];   //已选择的数据资源数据
 var locationList = [];
 var locationCode;
 
@@ -28,6 +29,20 @@ var toastr = window.top.toastr;
 var loading = parent.loading;
 
 loading.screenMaskEnable('LAY_app_body');
+
+seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+    var tab = $('#tab_content5');
+    formValidate = new Validate(tab);
+    formValidate.immediate();
+    tab.find(':input').each(function () {
+      $(this).bind({
+          paste : function(){
+              formValidate.isPass($(this));
+              $(this).removeClass('error');
+          }
+      });
+    });
+  });
 
 //获取权限信息 
 function getSysPermission(){
@@ -96,6 +111,17 @@ function getFileRes(search){
     });
 }
 
+//获取表名称列表
+function getTab(list){
+    $http.get('/system/sysDataRule/getTab', {
+    }, function (data) {
+        initDataSelectedGroups(list,data);      
+    }, function (err) {
+        toastr.error("获取信息失败！");
+        loading.screenMaskDisable('LAY_app_body');
+    } )
+}
+
 //初始化权限信息
 function initPermInfo(result){
     isInputNull("permissionName",result.permissionName);
@@ -113,10 +139,12 @@ function initPermInfo(result){
     menuResSelectedList = result.menus;
     elemResSelectedList = result.elements;
     fileResSelectedList = result.files;
+    dataResSelectedList = result.dataRuleGroups;
     initFuncSelectedTable(funcResSelectedList);
     initMenuSelectedTable(menuResSelectedList);
     initElemSelectedTable(elemResSelectedList);
     initFileSelectedTable(fileResSelectedList);
+    getTab(dataResSelectedList);
     loading.screenMaskDisable('LAY_app_body');
 }
 
@@ -706,12 +734,70 @@ function openLocationDialog() {
     });
 }
 
+//获取数据资源的数据
+function getDataRules(){
+    var dataRuleGroupList = [];
+    var orgTreeId = $("#businessOrg").val();
+
+    for(var i=0;i<allIdList.length;i++){
+        var groupId = 0;
+        var dataRuleGroup;
+        if($("#group_"+allIdList[i].gId).attr("groupId") != -1){
+            groupId = $("#group_"+allIdList[i].gId).attr("groupId");
+        }
+        dataRuleGroup = {
+            "andOr": $("#relation_"+allIdList[i].gId).val(),
+            "dataRuleGroupId" : groupId,
+            "dataRules": [],
+            "orgTreeId": orgTreeId,
+            "sort": i
+        };
+        dataRuleGroupList.push(dataRuleGroup);
+    }   
+
+    for(var j=0;j<dataRuleGroupList.length;j++){
+        for(var k=0;k<allIdList[j].cId.length;k++){
+            var cId = allIdList[j].cId[k];
+            var dataRule;
+            var colName;
+            var dataRuleId = 0;
+            if($("#colName_"+cId).find("option:selected").text() == "无字段"){
+                colName = "";
+            }else{
+                colName = $("#colName_"+cId).find("option:selected").text();
+            }
+
+            if($("#tabName_"+cId).find("option:selected").attr("conId") != -1){
+                dataRuleId = $("#tabName_"+cId).find("option:selected").attr("conId");
+            }
+
+            dataRule = {
+                "andOr": "and", 
+                "colName": colName,
+                "colValue": $("#colValue_"+cId).val(),
+                "dataRuleId": dataRuleId,
+                "ruleOperator": $("#ruleOperator_"+cId).val(),
+                "sort": k,
+                "tabName": $("#tabName_"+cId).find("option:selected").text()
+            };
+            dataRuleGroupList[j].dataRules.push(dataRule);
+        }
+    }
+    return dataRuleGroupList;
+}
+
 //更新权限
 function updatePermission(){
+    loading.screenMaskEnable('LAY_app_body');
+    if(!formValidate.isAllPass()){
+        loading.screenMaskDisable('LAY_app_body');
+        return;
+    }
     var funcRels = [];
     var menuRels = [];
     var elementRels = [];
     var fileRels = [];
+    var dataRuleGroups = getDataRules();
     for(var i=0;i<funcResSelectedList.length;i++){
         funcRels.push({"funcCode":funcResSelectedList[i].funcCode,"relId":funcResSelectedList[i].relId});
     }
@@ -730,6 +816,7 @@ function updatePermission(){
         menuRels : menuRels,
         elementRels : elementRels,
         fileRels : fileRels,
+        dataRuleGroups : dataRuleGroups,
         notes : $("#notes").val(),
         permissionName : $("#permissionName").val(),
         permissionCode : $("#permissionCode").val(),
@@ -741,6 +828,7 @@ function updatePermission(){
         reflashPermInfo();
         toastr.success("保存成功！");
     }, function (err) {
+        loading.screenMaskDisable('LAY_app_body');
         // toastr.error("保存失败！");
     })
 }
@@ -774,7 +862,8 @@ function backToList(){
 
 //刷新权限页面
 function reflashPermInfo(){
-    loading.screenMaskEnable('LAY_app_body');
+    // loading.screenMaskEnable('LAY_app_body');
+    loading.screenMaskDisable('LAY_app_body');
     window.location.href = "permInfo.html?permId="+permId;
 }
 
