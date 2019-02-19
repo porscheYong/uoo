@@ -89,8 +89,11 @@ public class ModifyHistoryController {
         Long commonTableId = modifyHistoryService.getCommonTableId(tableName);
         if(commonTableId!=null){
             Page<ModifyHistoryDTO> page = modifyHistoryService.selectPageDTO(new Page<ModifyHistoryDTO>(pageNo,pageSize),  commonTableId.longValue() , Long.valueOf(recordId).longValue() );
-            ret.setState(1000);
             ret.setData(page);
+        }
+        ret.setState(1000);
+        if(ret.getData()==null){
+            ret.setData(new Page<>());
         }
         return ret;
     }

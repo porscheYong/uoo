@@ -45,12 +45,6 @@ import io.swagger.annotations.ApiOperation;
 @FeignClient(value = "common-system",configuration = {FeignClientConfiguration.class},fallback = SysRoleClientHystrix.class)
 public interface SysRoleClient {
      
-    @OperateLog(type=OperateType.SELECT,module="平台系统角色模块",methods="分页查询角色列表",desc="")
-    @ApiOperation(value = "获取分页列表", notes = "获取分页列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true, dataType = "Long" ),
-            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false, dataType = "Long" ),
-    })
     @GetMapping("/system/sysRole/listPage")
     public ResponseResult<Page<SysRoleDTO>> listPage(@RequestParam("pageNo") Integer pageNo,@RequestParam("pageSize") Integer pageSize,@RequestParam("keyWord") String keyWord,@RequestParam("parentRoleCode")String parentRoleCode,@RequestParam("includChild")Integer includChild);
 
