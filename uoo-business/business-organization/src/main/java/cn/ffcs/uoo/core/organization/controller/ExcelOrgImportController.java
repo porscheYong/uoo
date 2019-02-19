@@ -82,13 +82,13 @@ public class ExcelOrgImportController {
         }
         Sheet sheet = wb.getSheetAt(0);
         int rowCount = sheet.getLastRowNum() - sheet.getFirstRowNum();
-        if(rowCount-1>50){
+        if(rowCount>100){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织导入数量最大为100条");
         }
         long time = System.currentTimeMillis();
         String t = String.valueOf(time/1000);
-        for(int i=2;i<rowCount+1;i++){
+        for(int i=1;i<rowCount+1;i++){
             Row row = sheet.getRow(i);
             ExcelOrgImport excelOrgImport = new ExcelOrgImport();
             for(int j=0;j<row.getLastCellNum();j++){
@@ -122,6 +122,17 @@ public class ExcelOrgImportController {
             excelOrgImport.setFileSign(t);
             String errMsg = orgService.JudgeMoveOrg(new Long(excelOrgImport.getOrgId()),
                         new Long(excelOrgImport.getParentOrgId()),excelOrgImport.getOrgName(),new Long(orgTreeId));
+
+            com.baomidou.mybatisplus.mapper.Wrapper excelWrapper = Condition.create()
+                    .eq("FILE_SIGN",t)
+                    .eq("ORG_ID",excelOrgImport.getOrgId())
+                    .eq("ORG_NAME",excelOrgImport.getOrgName())
+                    .eq("SIGN","0")
+                    .eq("STATUS_CD","1000");
+            int num = excelOrgImportService.selectCount(excelWrapper);
+            if(num>0){
+                errMsg="数据重复导入";
+            }
             excelOrgImport.setSign(StrUtil.isNullOrEmpty(errMsg)?"0":"1");
             excelOrgImport.setContent(StrUtil.isNullOrEmpty(errMsg)?"":errMsg);
             excelOrgImport.setOrgTreeId(new Long(orgTreeId));
@@ -185,14 +196,35 @@ public class ExcelOrgImportController {
                                                                  Long userId,
                                                                  String accout) throws IOException {
         ResponseResult<Page<ExcelOrgImport>> ret = new ResponseResult<Page<ExcelOrgImport>>();
+        if(StrUtil.isNullOrEmpty(fileSign)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("文件标识不能为空");
+        }
+
         com.baomidou.mybatisplus.mapper.Wrapper excelWrapper = Condition.create()
                 .eq("FILE_SIGN",fileSign)
-                .eq("SIGN",dataSign)
                 .eq("STATUS_CD","1000");
+        if(!StrUtil.isNullOrEmpty(dataSign)){
+            excelWrapper.eq("SIGN",dataSign);
+        }
         Page<ExcelOrgImport> excelOrgImportPage = excelOrgImportService.selectPage(new Page<ExcelOrgImport>(
                 StrUtil.isNullOrEmpty(pageNo)||pageNo==0?1:pageNo,
-                StrUtil.isNullOrEmpty(pageSize)||pageSize==0?10:pageSize));
+                StrUtil.isNullOrEmpty(pageSize)||pageSize==0?10:pageSize),excelWrapper);
         ret.setData(excelOrgImportPage);
+        ret.setState(ResponseResult.STATE_OK);
+        return ret;
+    }
+
+
+    @ApiOperation(value = "模板导出", notes = "模板导出")
+    @UooLog(value = "模板导出", key = "exportExcelFileData")
+    @RequestMapping(value = "/exportExcelFileData", method=RequestMethod.GET)
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<String> exportExcelFileData(ExcelOrgImport excelOrgImport,
+                                                      Long userId,
+                                                      String accout) throws IOException {
+        ResponseResult<String> ret = new ResponseResult<String>();
+        ret.setData("");
         ret.setState(ResponseResult.STATE_OK);
         return ret;
     }

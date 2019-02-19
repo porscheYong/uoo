@@ -21,7 +21,7 @@ public class ExcelOrgImport extends Model<ExcelOrgImport> {
 
     private static final long serialVersionUID = 1L;
 
-    @TableField("EXCEL_ORG_IMPORT_ID")
+    @TableId("EXCEL_ORG_IMPORT_ID")
     private Long excelOrgImportId;
     @TableField("IMP_SEQ")
     private String impSeq;

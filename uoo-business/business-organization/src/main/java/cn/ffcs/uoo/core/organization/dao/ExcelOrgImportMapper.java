@@ -12,5 +12,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @since 2019-01-25
  */
 public interface ExcelOrgImportMapper extends BaseMapper<ExcelOrgImport> {
+
     public Long getId();
 }
