@@ -140,8 +140,6 @@ public class SysOrganizationController {
         SysOrganizationVo vo = new SysOrganizationVo();
         if(StrUtil.isNullOrEmpty(isSearchlower)){
             vo.setIsSearchlower("0");
-        }else{
-            vo.setIsSearchlower("1");
         }
         vo.setOrgCode(id);
         if(!StrUtil.isNullOrEmpty(pageNo)){

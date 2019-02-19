@@ -12,6 +12,7 @@
     <version>1.0.1-SNAPSHOT</version>
     <modules>
 
+        <module>workflow-demo</module>
     </modules>
     <artifactId>common-workflow</artifactId>
     <groupId>xyz.wongs.workflow</groupId>

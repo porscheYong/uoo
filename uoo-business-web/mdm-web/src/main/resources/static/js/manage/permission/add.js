@@ -27,6 +27,20 @@ var loading = parent.loading;
 
 loading.screenMaskEnable('LAY_app_body');
 
+seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+    var tab = $('#tab_content5');
+    formValidate = new Validate(tab);
+    formValidate.immediate();
+    tab.find(':input').each(function () {
+      $(this).bind({
+          paste : function(){
+              formValidate.isPass($(this));
+              $(this).removeClass('error');
+          }
+      });
+    });
+});
+
 //获取功能资源数据
 function getFuncRes(keyWord){
     $http.get('/system/sysFunction/listAll', {
@@ -78,7 +92,7 @@ function getFileRes(search){
     }, function (data) {
         fileData = data.records;
         initFileTable(data.records);
-        loading.screenMaskDisable('LAY_app_body');
+        // loading.screenMaskDisable('LAY_app_body');
     }, function (err) {
         loading.screenMaskDisable('LAY_app_body');
     });
@@ -665,12 +679,58 @@ function openLocationDialog() {
     });
 }
 
+//获取数据资源的数据
+function getDataRules(){
+    var dataRuleGroupList = [];
+    var orgTreeId = $("#businessOrg").val();
+    for(var i=0;i<allIdList.length;i++){
+        var dataRuleGroup = {
+            "andOr": $("#relation_"+allIdList[i].gId).val(),
+            "dataRules": [],
+            "orgTreeId": orgTreeId,
+            "sort": i
+        };
+        dataRuleGroupList.push(dataRuleGroup);
+    }   
+
+    for(var j=0;j<dataRuleGroupList.length;j++){
+        for(var k=0;k<allIdList[j].cId.length;k++){
+            var cId = allIdList[j].cId[k];
+            var dataRule;
+            var colName;
+            if($("#colName_"+cId).find("option:selected").text() == "无字段"){
+                colName = "";
+            }else{
+                colName = $("#colName_"+cId).find("option:selected").text();
+            }
+
+            dataRule = {
+                "andOr": "and", 
+                "colName": colName,
+                "colValue": $("#colValue_"+cId).val(),
+                "ruleOperator": $("#ruleOperator_"+cId).val(),
+                "sort": k,
+                "tabName": $("#tabName_"+cId).find("option:selected").text()
+            };
+            dataRuleGroupList[j].dataRules.push(dataRule);
+        }
+    }
+    return dataRuleGroupList;
+}
+
 //新增权限
 function addPermission(){
+    loading.screenMaskEnable('LAY_app_body');
+    if(!formValidate.isAllPass()){
+        loading.screenMaskDisable('LAY_app_body');
+        return;
+    }
+
     var funcRels = [];
     var menuRels = [];
     var elementRels = [];
     var fileRels = [];
+    var dataRuleGroups = getDataRules();
     for(var i=0;i<funcResSelectedList.length;i++){
         funcRels.push({"funcCode":funcResSelectedList[i].funcCode});
     }
@@ -683,11 +743,13 @@ function addPermission(){
     for(var l=0;l<fileResSelectedList.length;l++){
         fileRels.push({"fileId":fileResSelectedList[l].fileId});
     }
+
     $http.post('/system/sysPermission/add', JSON.stringify({  
         funcRels : funcRels,
         menuRels : menuRels,
         elementRels : elementRels,
         fileRels : fileRels,
+        dataRuleGroups : dataRuleGroups,
         notes : $("#notes").val(),
         permissionName : $("#permissionName").val(),
         permissionCode : $("#permissionCode").val(),
@@ -695,9 +757,11 @@ function addPermission(){
         statusCd : $("#statusCd").val(),
         permissionDesc : $("#permissionDesc").val()
     }), function (message) {
+        loading.screenMaskDisable('LAY_app_body');
         backToList();
         toastr.success("创建成功！");
     }, function (err) {
+        loading.screenMaskDisable('LAY_app_body');
         // toastr.error("保存失败！");
     })
 }

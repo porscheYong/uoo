@@ -23,6 +23,7 @@
     <!-- Custom Theme Style -->
     <link href="/css/reset.css" rel="stylesheet">
     <link href="/css/custom.css" rel="stylesheet">
+    <link href="/css/permission/permission.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="./vendors/html5shiv.js"></script>
@@ -30,84 +31,7 @@
     <script src="./vendors/excanvas.js"></script>
     <![endif]-->
     <style type="text/css">
-        table.dataTable {
-            table-layout: fixed;
-        }
         
-        th {
-            text-align: center;
-            white-space: nowrap;
-        }
-        table.dataTable tbody td {
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .col-sm-8 {
-            width: 64% !important;
-        }
-        .col-sm-7 {
-            width: 100% !important;
-            text-align: center;
-        }
-        .col-sm-4 {
-            width: 30% !important;
-        }
-        .col-sm-2{
-            width: 10% !important;
-        }
-        .row{
-            margin-left: 0px !important;
-            margin-right: 0px !important;
-        }
-        .BtnBlue { 
-            width: 82px;
-            height: 40px;
-            border: 1px solid rgb(53,173,239);
-            /* color: #ee4063 !important; */
-            background: #FFF !important;
-            border-radius:4px;
-        }
-        .row-select{
-            width: 20%;
-        }
-        .row-fName{
-            width: 50%;
-        }
-        .row-fCode{
-            width: 30%; 
-        }
-        #location_tagsinput{
-            width: 64% !important;
-        }
-        #location_tagsinput .tag{
-            margin-bottom: 0px !important;
-        }
-        #location{
-            opacity: 0;
-            filter: alpha(opacity=0);
-            position: absolute;
-        }
-        .BtnRed2 {
-            width: 82px;
-            height: 40px;
-            border: 1px solid #ee4063 !important;
-            color: #ee4063 !important;
-            background: #FFF !important;
-            border-radius:4px;
-        }
-        #funcResInfoTable_info{
-            display: none;
-        }
-        #funcResInfoTable_filter,
-        #menuResInfoTable_filter,
-        #elemResInfoTable_filter,
-        #fileResInfoTable_filter{
-            float: left;
-            margin-bottom: 5.5%;
-            margin-top: 4%;
-        }
     </style>
   </head>
 
@@ -188,9 +112,9 @@
                 <li role="presentation" class="" style="width: 12%;">
                     <a href="#tab_content4" role="tab" id="file-tab" data-toggle="tab" aria-expanded="false">文件资源</a>
                 </li>
-                <!-- <li role="presentation" class="" style="width: 12%;">
+                <li role="presentation" class="" style="width: 12%;">
                     <a href="#tab_content5" role="tab" id="data-tab" data-toggle="tab" aria-expanded="false">数据资源</a>
-                </li> -->
+                </li>
             </ul>
 
             <div class="tab-content">
@@ -295,7 +219,20 @@
                 </div>
 
                 <div class="tab-pane" id="tab_content5">
-                    <p>5
+                    <div class="row" style="width: 100%;">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div style="width: 100%">
+                                <label for="businessOrg" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;margin-bottom:2%;
+                                        line-height: 40px;text-align: right;width:27%;font-weight: 600;margin-left: 9%;">选择组织树</label>
+                                <select class="col-md-3 col-sm-3 col-xs-3" id="businessOrg">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <span style="font-weight: 600;margin-left: 10%;">条件规则：(组内条件之间的关系为并且，组之间的关系可选择配置)</span>
+                    <div class="fright" style="margin-right:10%;">
+                        <a class="button-add" id="addBtn" onclick="addDataGroup(1)"><span class="fa fa-plus-circle icon-add"></span>添加分组</a>
+                    </div>
                 </div>
             </div>
 
@@ -322,16 +259,18 @@
     <script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
     <!-- jquery tagsinput -->
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
+    <!-- lulu -->
+    <script type="text/javascript" src="/vendors/lulu/js/common/ui/Validate.js"></script>
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
     <!-- jquery datatable -->
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
     <!-- Custom Theme Scripts -->
-    <script type="text/javascript" src="/js/manage/user.js"></script>
     <script type="text/javascript" src="/js/manage/permission/permInfo.js"></script>
+    <script type="text/javascript" src="/js/manage/permission/updateSelectDataRes.js"></script>
+
     <script type="text/javascript">
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
-            $('#area').selectMatch();
             $('#statusCd').selectMatch();
         })
     </script>
