@@ -40,6 +40,7 @@ import cn.ffcs.uoo.system.service.ISysDeptRoleRefService;
 import cn.ffcs.uoo.system.service.ISysPositiontRoleRefService;
 import cn.ffcs.uoo.system.service.ISysRolePermissionRefService;
 import cn.ffcs.uoo.system.service.ISysUserRoleRefService;
+import cn.ffcs.uoo.system.service.ModifyHistoryService;
 import cn.ffcs.uoo.system.service.SysRoleService;
 import cn.ffcs.uoo.system.vo.ResponseResult;
 import cn.ffcs.uoo.system.vo.SysRoleDTO;
@@ -67,6 +68,8 @@ public class SysRoleController {
     ISysPositiontRoleRefService posiRoleRefSvc;
     @Autowired
     ISysRolePermissionRefService rolePermRefSvc;
+    @Autowired
+    ModifyHistoryService modifyHistoryService;
     @Autowired
     ISysUserRoleRefService userRoleRefSvc;
     @ApiOperation(value = "获取单个数据", notes = "获取单个数据")
@@ -197,6 +200,7 @@ public class SysRoleController {
         }
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("修改成功");
+        modifyHistoryService.addModifyHistory(one, obj, obj.getUpdateUser(), modifyHistoryService.getBatchNumber());
         return responseResult;
     }
 
@@ -235,6 +239,7 @@ public class SysRoleController {
         }
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增成功");
+        modifyHistoryService.addModifyHistory(null, obj, obj.getCreateUser(), modifyHistoryService.getBatchNumber());
         return responseResult;
     }
 
@@ -263,6 +268,7 @@ public class SysRoleController {
         deptRoleRefSvc.delete(Condition.create().eq("ROLE_CODE", obj.getRoleCode()));
         posiRoleRefSvc.delete(Condition.create().eq("ROLE_CODE", obj.getRoleCode()));
         userRoleRefSvc.delete(Condition.create().eq("ROLE_CODE", obj.getRoleCode()));
+        modifyHistoryService.addModifyHistory(obj, null, obj.getUpdateUser(), modifyHistoryService.getBatchNumber());
         return ResponseResult.createSuccessResult("success");
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.web.maindata.common.system.client.SysPermissionClient;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermission;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionDTO;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionEditDTO;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionPrivDTO;
@@ -33,7 +34,7 @@ public class SysPermissionClientHystrix implements SysPermissionClient {
     }
 
     @Override
-    public ResponseResult<Void> delete(Long id) {
+    public ResponseResult<Void> delete(SysPermission id) {
         return ResponseResult.createErrorResult("服务不可用");
     }
 

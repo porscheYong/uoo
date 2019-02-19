@@ -41,6 +41,7 @@ public class SysElementController {
     ISysElementService eleSvc;
     @Autowired
     ModifyHistoryService modifyHistorySvc;
+    
     @Autowired
     ISysPermissionElementRelService permEleSvc;
     @ApiOperation(value = "分页查询元素", notes = "分页查询元素")
@@ -104,7 +105,7 @@ public class SysElementController {
         ele.setElementId(eleSvc.getId());
         ele.setCreateDate(new Date());
         eleSvc.insert(ele);
-        //modifyHistorySvc.addModifyHistory(null, ele, ele.getCreateUser(),modifyHistorySvc.getBatchNumber());
+        modifyHistorySvc.addModifyHistory(null, ele, ele.getCreateUser(),modifyHistorySvc.getBatchNumber());
         return ResponseResult.createSuccessResult("新增成功");
     }
     @Transactional
@@ -138,7 +139,7 @@ public class SysElementController {
         }
         ele.setUpdateDate(new Date());
         eleSvc.updateById(ele);
-        //modifyHistorySvc.addModifyHistory(one, ele, ele.getUpdateUser(),modifyHistorySvc.getBatchNumber());
+        modifyHistorySvc.addModifyHistory(one, ele, ele.getUpdateUser(),modifyHistorySvc.getBatchNumber());
         return ResponseResult.createSuccessResult("修改成功");
     }
     @ApiOperation(value = "删除", notes = "删除")
@@ -153,7 +154,7 @@ public class SysElementController {
         df.setStatusCd(StatusCD.INVALID);
         df.setStatusDate(new Date());
         eleSvc.updateById(df);
-       // modifyHistorySvc.addModifyHistory(df, null, fun.getUpdateUser(),modifyHistorySvc.getBatchNumber());
+        modifyHistorySvc.addModifyHistory(eleSvc.selectById(fun.getElementId()), null, fun.getUpdateUser(),modifyHistorySvc.getBatchNumber());
         return ResponseResult.createSuccessResult("修改成功");
     }
 }

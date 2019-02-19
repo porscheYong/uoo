@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.web.maindata.common.system.client.fallback.SysPermissionClientHystrix;
+import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermission;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionDTO;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionEditDTO;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysPermissionPrivDTO;
@@ -42,7 +43,7 @@ public interface SysPermissionClient {
     @RequestMapping(value = "/system/sysPermission/update", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<Void> update(@RequestBody SysPermissionEditDTO sysPermissionEditDTO);
     
-    @RequestMapping(value = "/system/sysPermission/delete/{id}", method = RequestMethod.GET)
-    public ResponseResult<Void> delete(@PathVariable(value="id" ,required=true) Long id);
+    @RequestMapping(value = "/system/sysPermission/delete", method = RequestMethod.POST)
+    public ResponseResult<Void> delete(@RequestBody SysPermission perm);
 }
 
