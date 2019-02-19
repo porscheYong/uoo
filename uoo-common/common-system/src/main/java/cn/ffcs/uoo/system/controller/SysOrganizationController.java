@@ -140,6 +140,8 @@ public class SysOrganizationController {
         SysOrganizationVo vo = new SysOrganizationVo();
         if(StrUtil.isNullOrEmpty(isSearchlower)){
             vo.setIsSearchlower("0");
+        }else{
+            vo.setIsSearchlower(isSearchlower);
         }
         vo.setOrgCode(id);
         if(!StrUtil.isNullOrEmpty(pageNo)){
@@ -302,7 +304,7 @@ public class SysOrganizationController {
             return ret;
         }
         Wrapper orgWrapper = Condition.create()
-                .eq("ORG_ID",id)
+                .eq("ORG_CODE",id)
                 .eq("STATUS_CD","1000");
         SysOrganization svo = sysOrganizationService.selectOne(orgWrapper);
         if(svo==null){
@@ -326,13 +328,13 @@ public class SysOrganizationController {
         ResponseResult<String> ret = new ResponseResult<String>();
         if(StrUtil.isNullOrEmpty(id)){
             ret.setState(ResponseResult.STATE_ERROR);
-            ret.setMessage("组织标识不能为空");
+            ret.setMessage("组织编码不能为空");
             return ret;
         }
 
 
         Wrapper orgWrapper = Condition.create()
-                .eq("ORG_ID",id)
+                .eq("ORG_CODE",id)
                 .eq("STATUS_CD","1000");
         SysOrganization sysOrganization = sysOrganizationService.selectOne(orgWrapper);
         if(sysOrganization==null){
@@ -344,10 +346,10 @@ public class SysOrganizationController {
         Wrapper orgRelWrapper = Condition.create()
                 .eq("PARENT_ORG_CODE",id)
                 .eq("STATUS_CD","1000");
-        int orgRelNum = sysOrganizationService.selectCount(orgWrapper);
+        int orgRelNum = sysOrganizationService.selectCount(orgRelWrapper);
         if(orgRelNum>0){
-            ret.setState(ResponseResult.STATE_OK);
-            ret.setMessage("存在上级组织");
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("存在下级组织");
             return ret;
         }
 
@@ -357,12 +359,12 @@ public class SysOrganizationController {
             ret.setMessage("组织下存在用户");
             return ret;
         }
-        num = sysOrganizationService.getOrgRoleCount(sysOrganization.getOrgCode());
-        if(num>0){
-            ret.setState(ResponseResult.STATE_ERROR);
-            ret.setMessage("组织下存在角色");
-            return ret;
-        }
+//        num = sysOrganizationService.getOrgRoleCount(sysOrganization.getOrgCode());
+//        if(num>0){
+//            ret.setState(ResponseResult.STATE_ERROR);
+//            ret.setMessage("组织下存在角色");
+//            return ret;
+//        }
         String batchNum = modifyHistoryService.getBatchNumber();
         sysOrganization.setUpdateUser(userId);
         sysOrganization.setBatchNumber(batchNum);
