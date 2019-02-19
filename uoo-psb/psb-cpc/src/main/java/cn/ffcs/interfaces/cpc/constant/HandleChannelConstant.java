@@ -34,6 +34,8 @@ public class HandleChannelConstant {
      */
     public static final Long ORG_TREE_ID = 1L;
 
+    public static final Long HANDLE_USER = 1004040L;
+
     public static final Map<String, Object> ORG_TYPE_REL = new HashMap<>();
 
     static {
