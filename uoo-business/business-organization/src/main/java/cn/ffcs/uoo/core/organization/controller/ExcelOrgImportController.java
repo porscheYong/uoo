@@ -151,11 +151,16 @@ public class ExcelOrgImportController {
     @ApiOperation(value = "保存数据", notes = "保存数据")
     @UooLog(value = "保存数据", key = "addExcelFileData")
     @RequestMapping(value = "/addExcelFileData", method=RequestMethod.POST)
-    //@Transactional(rollbackFor = Exception.class)
-    public ResponseResult<String> addExcelFileData(String fileSign,
-                                                      Long userId,
-                                                      String accout) throws IOException {
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<String> addExcelFileData(@RequestParam("fileSign")String fileSign,
+                                                   @RequestParam("userId")Long userId,
+                                                   @RequestParam("accout")String accout) throws IOException {
         ResponseResult<String> ret = new ResponseResult<String>();
+        if(StrUtil.isNullOrEmpty(fileSign)){
+            ret.setMessage("文件标识不能为空");
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            return ret;
+        }
         com.baomidou.mybatisplus.mapper.Wrapper excelerrWrapper = Condition.create()
                 .eq("FILE_SIGN",fileSign)
                 .eq("SIGN","1")

@@ -344,15 +344,15 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         if(fullParentNameSplit.contains(fullNameSplit)){
             return "节点不能移动到该节点的子节点上";
         }
-        String fullName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),orgId.toString(),"");
+        String fullNameId = orgOrgtreeRelService.getFullBizOrgIdList(orgTreeId.toString(),orgId.toString(),"");
         com.baomidou.mybatisplus.mapper.Wrapper orgOrgTreeWrapper = Condition.create()
                 .eq("ORG_TREE_ID",orgTreeId)
                 .eq("STATUS_CD","1000")
-                .like("ORG_BIZ_FULL_NAME",fullName,SqlLike.RIGHT);
-        int count = orgOrgtreeRelService.selectCount(orgOrgTreeWrapper);
-        if(count>50){
-            return "移动组织的下级组织数量太大，请联系管理员操作";
-        }
+                .like("ORG_BIZ_FULL_ID",fullNameId,SqlLike.RIGHT);
+//        int count = orgOrgtreeRelService.selectCount(orgOrgTreeWrapper);
+//        if(count>50){
+//            return "移动组织的下级组织数量太大，请联系管理员操作";
+//        }
         List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
         orgRelTypeListCur = orgRelTypeService.getOrgRelType(orgTreeId.toString());
         OrgRelType ortCur = new OrgRelType();
@@ -374,7 +374,7 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         List<OrgOrgtreeRel> orgOrgTreeRels =  orgOrgtreeRelService.selectList(orgOrgTreeWrapper);
         if(orgOrgTreeRels!=null && orgOrgTreeRels.size()>0){
             for(OrgOrgtreeRel ootr : orgOrgTreeRels){
-                fullName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),ootr.getOrgId().toString(),"");
+                String fullName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),ootr.getOrgId().toString(),"");
                 String fullOrgId = orgOrgtreeRelService.getFullBizOrgIdList(orgTreeId.toString(),ootr.getOrgId().toString(),",");
                 fullOrgId =","+fullOrgId+",";
                 ootr.setOrgBizFullName(fullName);
