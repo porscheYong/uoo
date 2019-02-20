@@ -40,6 +40,9 @@ function getCertType () {
         option += "<option value='" + certTypeData[i].itemValue + "'>" + certTypeData[i].itemCnname +"</option>";
     }
     $('#certType').append(option);
+    seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $('#certType').selectMatch();
+    });
 }
 
 // 获取状态数据
@@ -59,6 +62,9 @@ function getAcctLevel () {
         option += "<option value='" + acctLevelData[i].itemValue + "'>" + acctLevelData[i].itemCnname +"</option>";
     }
     $('#acctLevel').append(option);
+    seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $('#acctLevel').selectMatch();
+    });
 }
 
 // 获取性别字典数据
@@ -68,6 +74,9 @@ function getGender () {
         option += "<option value='" + genderData[i].itemValue + "'>" + genderData[i].itemCnname +"</option>";
     }
     $('#gender').append(option);
+    seajs.use('/vendors/lulu/js/common/ui/Select', function () {
+        $('#gender').selectMatch();
+    });
 }
 
 //选择证件类型
@@ -188,9 +197,9 @@ function editOrgPost (index) {
         var postStr = '';
         for (var i = 0; i < postList.length; i++) {
             if (i == postList.length - 1)
-                postStr = postStr + postList[i].name;
+                postStr = postStr + postList[i].positionName;
             else
-                postStr = postStr + postList[i].name + ', ';
+                postStr = postStr + postList[i].positionName + ', ';
         }
         $('#postName').val(postStr);
     }
@@ -459,7 +468,10 @@ $('.org-name').html(orgName);
 parent.getOrgExtInfo();
 
 // 添加默认归属组织
-if (orgId) {
+// if (orgId) {
+//     sysUserDeptPositionVos.push({orgCode: orgId, orgName: orgName, userPositionRefList: postList})
+// }
+if(orgFlag == 1){
     sysUserDeptPositionVos.push({orgCode: orgId, orgName: orgName, userPositionRefList: postList})
 }
 
@@ -488,4 +500,8 @@ getCertType();
 getStatusCd();
 getAcctLevel();
 getGender();
-initOrgTable(sysUserDeptPositionVos);
+if(orgFlag == 1){
+    initOrgTable(sysUserDeptPositionVos);
+}else{
+    initOrgTable("");
+}

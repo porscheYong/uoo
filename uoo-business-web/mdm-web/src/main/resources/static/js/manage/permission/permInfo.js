@@ -32,8 +32,11 @@ loading.screenMaskEnable('LAY_app_body');
 
 seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
     var tab = $('#tab_content5');
+    var infoDiv = $("#editInfo");
     formValidate = new Validate(tab);
+    infoValidate = new Validate(infoDiv);
     formValidate.immediate();
+    infoValidate.immediate();
     tab.find(':input').each(function () {
       $(this).bind({
           paste : function(){
@@ -42,6 +45,15 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
           }
       });
     });
+
+    infoDiv.find(':input').each(function () {
+        $(this).bind({
+            paste : function(){
+                infoValidate.isPass($(this));
+                $(this).removeClass('error');
+            }
+        });
+    });
   });
 
 //获取权限信息 
@@ -49,7 +61,7 @@ function getSysPermission(){
     $http.get('/system/sysPermission/get/'+permId, {
     }, function (data) {
         initPermInfo(data);
-        loading.screenMaskDisable('LAY_app_body');
+        // loading.screenMaskDisable('LAY_app_body');
     }, function (err) {
         loading.screenMaskDisable('LAY_app_body');
     });
@@ -145,7 +157,7 @@ function initPermInfo(result){
     initElemSelectedTable(elemResSelectedList);
     initFileSelectedTable(fileResSelectedList);
     getTab(dataResSelectedList);
-    loading.screenMaskDisable('LAY_app_body');
+    // loading.screenMaskDisable('LAY_app_body');
 }
 
 //判断填入input中的值是否为null

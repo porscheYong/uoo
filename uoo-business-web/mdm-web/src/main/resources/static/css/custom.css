@@ -1129,6 +1129,7 @@ ul.tab-title.right li {
     padding: 3px 10px;
     display: inline-block;
     margin-right: 5px;
+    margin-top: 5px;
 }
 /*
  * Component: user add gender radio

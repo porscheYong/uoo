@@ -10,7 +10,7 @@ function getTab(){
     $http.get('/system/sysDataRule/getTab', {
     }, function (data) {
         tabData = data;
-        loading.screenMaskDisable('LAY_app_body');
+        // loading.screenMaskDisable('LAY_app_body');
     }, function (err) {
         toastr.error("获取信息失败！");
         loading.screenMaskDisable('LAY_app_body');
@@ -25,6 +25,7 @@ function getTabColumn(tabId,conId){
         initColName(data,conId);
     }, function (err) {
         toastr.error("获取信息失败！");
+        loading.screenMaskDisable('LAY_app_body');
     } )
 }
 
@@ -80,8 +81,9 @@ function initBusinessList () {
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
             $('#businessOrg').selectMatch();
         });
+        loading.screenMaskDisable('LAY_app_body');
     }, function (err) {
-        // loading.screenMaskDisable('container');
+        loading.screenMaskDisable('LAY_app_body');
     })
 }
 

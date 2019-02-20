@@ -28,7 +28,7 @@ function onOrgPostCheck (e, treeId, treeNode) {
 function autoCheck () {
     var zTree = $.fn.zTree.getZTreeObj("orgPostTree");
     for (var i = 0; i < postList.length; i++) {
-        var id = postList[i].postId || postList[i].id;
+        var id = postList[i].postId || postList[i].id || postList[i].positionCode;
         var node = zTree.getNodeByTId("orgPostTree_" + id);
         zTree.checkNode(node, true);
         zTree.expandNode(node, true, true, true);

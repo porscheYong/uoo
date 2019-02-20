@@ -117,67 +117,75 @@ function initUpdateTable () {
     $("#updateTable").DataTable({
         'destroy':true,
         'searching': false,
-        'autoWidth': false,
+        'autoWidth': true,
         'ordering': true,
         'lSort': true,
-        "scrollY": "395px",
+        'info': true,
+        "scrollY": "390px",
         'scrollCollapse': true,
         'columns': [
-            { 'data': null, 'title': '序号', 'className': 'row-no',
+            { 'data': null, 'title': '订单号', 'className': 'row-num', 
                 'render': function (data, type, row, meta) {
-                    return meta.row + 1 + meta.settings._iDisplayStart;
-                }
+                    return "<span style='cursor:pointer;' title='"+row.batchNumber+"'>"+row.batchNumber+"</span>";
+                }     
             },
-            { 'data': "createDate", 'title': '登陆时间', 'className': 'row-name',
-                'render': function (data) {
-                    return formatDateTime(data)
-                }
-            },
-            { 'data': "ip", 'title': '登陆IP', 'className': 'user-account' },
-            { 'data': "statusCd", 'title': '状态', 'className': 'role-type',
+            { 'data': "operateType", 'title': '操作说明', 'className': 'row-explain'},
+            { 'data': "userName", 'title': '操作人', 'className': 'row-psn' },
+            { 'data': "userOrgName", 'title': '操作人组织', 'className': 'row-org' },
+            { 'data': "userAccout", 'title': '操作账号', 'className': 'row-acct' },
+            { 'data': null, 'title': '时间', 'className': 'row-date' ,
                 'render': function (data, type, row, meta) {
-                    var statusStr = '';
-                    if (row.statusCd == '1000') {
-                        statusStr = '<span>有效</span>';
-                    } else {
-                        statusStr = '<span>无效</span>';
-                    }
-                    return statusStr
-                }
+                    return parent.formatDateTime(row.createDate);
+                }     
             },
+            { 'data': null, 'title': '状态', 'className': 'row-state', 
+                'render': function (data, type, row, meta) {
+                    if(row.statusCd == 1000){
+                        return "有效";
+                    }else{
+                        return "失效";
+                    } 
+                }
+            }
         ],
         'language': {
-            'emptyTable': '没有数据',
-            'loadingRecords': '加载中...',
-            'processing': '查询中...',
-            'search': '检索:',
-            'lengthMenu': ' _MENU_ ',
-            'zeroRecords': '没有数据',
-            'paginate': {
-                'first':      '首页',
-                'last':       '尾页',
-                'next':       '下一页',
-                'previous':   '上一页'
-            },
-            'info': '总_TOTAL_条',
+            'emptyTable': '没有数据',  
+            'loadingRecords': '加载中...',  
+            'processing': '查询中...',  
+            'search': '检索:',  
+            'lengthMenu': ' _MENU_ ',  
+            'zeroRecords': '没有数据',  
+            'paginate': {  
+                'first':      '首页',  
+                'last':       '尾页',  
+                'next':       '下一页',  
+                'previous':   '上一页'  
+            },  
+            'info': '总_TOTAL_个',  
             'infoEmpty': '没有数据'
         },
         "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
         'pagingType': 'simple_numbers',
         'dom': '<"top"f>t<"bottom"ipl>',
         'serverSide': true,  //启用服务器端分页
-        'ajax': function (data, callback) {
+        'ajax': function (data, callback, settings) {
             var param = {};
             param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
             param.pageNo = (data.start / data.length) + 1;//当前页码
-            param.tableName = 'SYS_ORGANIZATION';
             param.recordId = userId;
+            param.tableName = "SYS_ORGANIZATION";
             $http.get('/public/modifyHistory/listByRecord', param, function (result) {
                 var returnData = {};
-                returnData.recordsTotal = result.total;
-                returnData.recordsFiltered = result.total;
-                returnData.data = result.records;
+                // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
+                returnData.recordsTotal = result.total;//返回数据全部记录
+                returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
+                returnData.data = result.records;//返回的数据列表
+                //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                 callback(returnData);
+                // loading.screenMaskDisable('container');
+            }, function (err) {
+                loading.screenMaskDisable('container');
             })
         }
     });
@@ -368,7 +376,7 @@ function addOrgList () {
             $('#orgEdit').removeClass( 'edit-form');
             $('#orgEdit').html('');
             loading.screenMaskDisable('container');
-            toastr.success('删除成功！');
+            toastr.success('修改成功！');
             getSysUerInfo();
         }, function () {
             loading.screenMaskDisable('container');
@@ -390,7 +398,7 @@ function addOrgList () {
             $('#orgEdit').removeClass( 'edit-form');
             $('#orgEdit').html('');
             loading.screenMaskDisable('container');
-            toastr.success('删除成功！');
+            toastr.success('新增成功！');
             getSysUerInfo();
         }, function () {
             loading.screenMaskDisable('container');
