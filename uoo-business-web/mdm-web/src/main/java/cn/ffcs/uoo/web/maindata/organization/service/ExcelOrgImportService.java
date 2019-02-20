@@ -46,7 +46,7 @@ public interface ExcelOrgImportService {
 
 
 
-    @RequestMapping(value = "/excelOrgImport/addExcelFileData", method=RequestMethod.POST,headers={"Content-Type=application/json"})
+    @RequestMapping(value = "/excelOrgImport/addExcelFileData", method=RequestMethod.GET)
     public ResponseResult<String> addExcelFileData(@RequestParam(value = "fileSign",required = false)String fileSign,
                                                    @RequestParam(value = "userId",required = false)Long userId,
                                                    @RequestParam(value = "accout",required = false)String accout);
