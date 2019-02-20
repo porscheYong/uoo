@@ -239,6 +239,12 @@ function orgSearch () {
     window.location.href = url;
 }
 
+function orgMove () {
+    var url = 'upload.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&refCode=' + refCode + '&name=' + encodeURI(orgName);
+    // $('#searchBtn').attr('href', url);
+    window.location.href = url;
+}
+
 // $('#orgName').on('click', function () {
 //     var url = 'orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&name=' + encodeURI(orgName);
 //     window.location.href = url;

@@ -502,6 +502,25 @@ select[disabled] + .ui-select .ui-select-datalist {
   cursor: pointer;
   overflow: visible; }
 
+.button-move {
+  display: inline-block;
+  height: 24px;
+  line-height: 24px;
+  font-size: 14px;
+  text-align: center;
+  color: #232c45;
+  border: 1px solid #daf1c7;
+  border-radius: 12px;
+  padding: 0 15px 0 3px;
+  background-color: #dae0f8;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-decoration: none;
+  -webkit-transition: border-color .15s, background-color .15s, opacity .15s;
+  transition: border-color .15s, background-color .15s, opacity .15s;
+  cursor: pointer;
+  overflow: visible; }
+
 .ui-button.error {
   border-color: #f4615c !important; }
 
