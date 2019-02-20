@@ -372,7 +372,9 @@ public class CommonSystemServiceImpl implements CommonSystemService {
             String[] orgIdsz = og.substring(1,og.length()-1).split(",");
             String odd = orgIdsz[orgIdsz.length-1];
             odd = orgService.getFullOrgIdList(orgTreeId,odd,",");
-            orgOrgTreeRelParams+=" or orgOrgTreeRel.ORG_BIZ_FULL_ID like ',"+odd+",%'";
+            //orgOrgTreeRelParams+=" or orgOrgTreeRel.ORG_BIZ_FULL_ID like ',"+odd+",%'";
+            orgOrgTreeRelParams+=" or INSTR(orgOrgTreeRel.ORG_BIZ_FULL_ID ,',"+odd+",')=1";
+
 
             //orgOrgTreeRelParams+=" or orgOrgTreeRel.ORG_BIZ_FULL_ID like '"+og+"%'";
         }
@@ -391,7 +393,8 @@ public class CommonSystemServiceImpl implements CommonSystemService {
         String orgOrgTreeRelSql = "";
         if(StrUtil.isNullOrEmpty(orgOrgTreeRelParams)){
             String orgdd = orgService.getFullOrgIdList(orgTreeId,orgId,",");
-            orgOrgTreeRelSql = " tbOrgOrgTreeRel.ORG_BIZ_FULL_ID like ',"+orgdd+",%'";
+            //orgOrgTreeRelSql = " tbOrgOrgTreeRel.ORG_BIZ_FULL_ID like ',"+orgdd+",%'";
+            orgOrgTreeRelSql = " INSTR(tbOrgOrgTreeRel.ORG_BIZ_FULL_ID,',"+orgdd+",')=1";
             return orgOrgTreeRelSql;
         }
         String orgGroup[] = orgOrgTreeRelParams.split("\\|");
@@ -415,13 +418,15 @@ public class CommonSystemServiceImpl implements CommonSystemService {
         }
         if(likeSql!=null && likeSql.size()>0){
             for(String s1 : likeSql){
-                orgOrgTreeRelSql=" tbOrgOrgTreeRel.ORG_BIZ_FULL_ID like '"+s1+"%' " + "or";
+                //orgOrgTreeRelSql=" tbOrgOrgTreeRel.ORG_BIZ_FULL_ID like '"+s1+"%' " + "or";
+                orgOrgTreeRelSql = " INSTR(tbOrgOrgTreeRel.ORG_BIZ_FULL_ID,'"+s1+"')=1 or";
             }
             orgOrgTreeRelSql = orgOrgTreeRelSql.substring(0,orgOrgTreeRelSql.length()-2);
             orgOrgTreeRelSql = "("+orgOrgTreeRelSql+")";
         }else{
             orgOrgTreeRelSql = orgService.getFullOrgIdList(orgTreeId,orgId,",");
-            orgOrgTreeRelSql=" tbOrgOrgTreeRel.ORG_BIZ_FULL_ID like ',"+orgOrgTreeRelSql+",%'";
+            //orgOrgTreeRelSql=" tbOrgOrgTreeRel.ORG_BIZ_FULL_ID like ',"+orgOrgTreeRelSql+",%'";
+            orgOrgTreeRelSql = " INSTR(tbOrgOrgTreeRel.ORG_BIZ_FULL_ID,',"+orgOrgTreeRelSql+",')=1 ";
         }
         return orgOrgTreeRelSql;
     }
