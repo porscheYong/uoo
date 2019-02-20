@@ -3,6 +3,8 @@ package cn.ffcs.uoo.web.maindata.organization.controller;
 
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import cn.ffcs.uoo.web.maindata.organization.dto.*;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgRelService;
 import com.baomidou.mybatisplus.mapper.Condition;
@@ -89,6 +91,7 @@ public class OrgRelController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/addOrgRel", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.ADD, module="组织关系新增",methods="addOrgRel",desc="组织关系新增")
     public ResponseResult<TreeNodeVo> addOrgRel(@RequestBody OrgVo org){
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);

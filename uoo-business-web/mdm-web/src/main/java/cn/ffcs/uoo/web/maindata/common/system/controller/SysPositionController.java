@@ -7,6 +7,8 @@ import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.common.system.vo.SysPositionVo;
 import cn.ffcs.uoo.web.maindata.common.system.vo.TreeNodeVo;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -94,6 +96,7 @@ public class SysPositionController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/updatePosition", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.UPDATE, module="平台职位编辑",methods="updatePosition",desc="平台职位编辑")
     public ResponseResult<String> updatePosition(@RequestBody  SysPositionVo sysPositionVo){
 
         Subject subject=SecurityUtils.getSubject();
@@ -109,6 +112,7 @@ public class SysPositionController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/addPosition", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.ADD, module="平台职位新增",methods="addPosition",desc="平台职位新增")
     public ResponseResult<TreeNodeVo> addPosition(@RequestBody SysPositionVo pos){
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
@@ -122,6 +126,7 @@ public class SysPositionController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/deletePosition", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.DELETE, module="平台职位删除",methods="deletePosition",desc="平台职位删除")
     public ResponseResult<String> deletePosition(@RequestBody SysPositionVo pos){
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
