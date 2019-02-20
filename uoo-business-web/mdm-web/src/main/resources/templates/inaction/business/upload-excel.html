@@ -54,23 +54,23 @@
 
   <body style="background: #fff;">
     <div>
-      <div class="board-title">
-        <span class="name ft18">导入移动组织</span>
+      <div>
+        <a class="BoardTitle Back" href="javascript:history.go(-1);"  >返回</a>
       </div>
       <div class="board-title">
-        <span class="name ft18">1 个移动组织信息将会被导入</span>
+        <span class="name ft18"><span id="correctNo" class="highlight"></span> 个移动组织信息将会被导入</span>
       </div>
       <div style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
           <table id="correctTable" class="stripe" width="100%"></table>
       </div>
 
       <div class="board-title">
-        <span class="name ft18">1 个移动组织信息由于不符合要求，将不会被导入</span>
+        <span class="name ft18"><span id="errorNo" class="highlight"></span> 个移动组织信息由于不符合要求，将不会被导入</span>
       </div>
       <div style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
           <table id="errorTable" class="stripe" width="100%"></table>
       </div>
-      <div class="row" style="text-align: center; width: 100%;">
+      <div class="row btn-fixed">
         <button class="ui-button ui-button-primary" onclick="uploadConfirm()">确认导入</button>
         <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
       </div>

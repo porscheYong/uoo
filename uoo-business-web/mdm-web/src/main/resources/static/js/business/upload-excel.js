@@ -1,4 +1,11 @@
+var orgId = getQueryString('id');
+var orgTreeId = getQueryString('orgTreeId');
+var pid = getQueryString('pid');
+var orgName = getQueryString('name');
+var refCode = getQueryString('refCode');
 var fileSign = getQueryString('fileSign');
+var loading = parent.loading;
+var toastr = window.top.toastr;
 
 function initCorrectTable () {
    $("#correctTable").DataTable({
@@ -45,6 +52,7 @@ function initCorrectTable () {
             param.fileSign = fileSign;
             param.dataSign = 0;
             $http.get('/excelOrgImport/getExcelFileData', param, function (result) {
+                $('#correctNo').html(result.total);
                 var returnData = {};
                 returnData.recordsTotal = result.total;
                 returnData.recordsFiltered = result.total;
@@ -106,6 +114,7 @@ function initErrorTable () {
             param.fileSign = fileSign;
             param.dataSign = 1;
             $http.get('/excelOrgImport/getExcelFileData', param, function (result) {
+                $('#errorNo').html(result.total);
                 var returnData = {};
                 returnData.recordsTotal = result.total;
                 returnData.recordsFiltered = result.total;
@@ -119,15 +128,21 @@ function initErrorTable () {
 }
 
 function uploadConfirm () {
-    $http.post('/excelOrgImport/addExcelFileData', JSON.stringify({
-        fileSign: fileSign
-    }), function () {
-        // loading.screenMaskDisable('container');
-        toastr.success('更新成功！');
+    loading.screenMaskEnable('container');
+    $http.get('/excelOrgImport/addExcelFileData?fileSign=' + fileSign, {}, function () {
+        loading.screenMaskDisable('container');
+        toastr.success('批量导入成功！');
+        parent.initTree(orgTreeId);
     }, function () {
-        // loading.screenMaskDisable('container');
+        loading.screenMaskDisable('container');
     })
 }
 
 initCorrectTable();
 initErrorTable();
+
+// 取消
+function cancel () {
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&refCode=" + refCode + '&pid=' + pid + "&name=" + encodeURI(orgName);
+    window.location.href = url;
+}

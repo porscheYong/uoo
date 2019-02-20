@@ -28,23 +28,27 @@
 
   <body style="background: #fff;">
     <div>
-      <div class="board-title">
-        <span class="name ft18">第一步：下载导入模板</span>
-      </div>
       <div>
-        <p>导入的组织移动信息个数需小于100，所有允许导入的信息字段请参考模版</p>
-        <a href="/移动组织导入模版.xlsx" class="ui-button ui-button-primary" role="button">下载导入模板</a>
+        <a class="BoardTitle Back" href="javascript:history.go(-1);"  >返回</a>
+      </div>
+      <div class="board-title" style="padding: 30px 0;">
+        <span class="name ft18">第一步：下载导入模板</span>
+        <div style="padding: 10px 15px 0; background: #fff;">
+          <p>导入的组织移动信息个数需小于100，所有允许导入的信息字段请参考模版</p>
+          <a href="/移动组织导入模版.xlsx" class="ui-button ui-button-primary" role="button" style="margin-top: 10px;">下载导入模板</a>
+        </div>
       </div>
 
-      <div class="board-title">
+      <div class="board-title" style="padding: 30px 0;">
         <span class="name ft18">第二步：上传数据文件</span>
+        <div style="padding: 10px 15px 0; background: #fff;">
+          <p>目前支持的文件类型为*.xls，*.xlsx</p>
+          <input id="load" type="file" onchange="importFile(this)" accept=".xls, .xlsx" style="display: none;" />
+          <a href="javascript:" class="ui-button ui-button-primary button-load" role="button" style="margin-top: 10px;">选择文件</a>
+        </div>
       </div>
-      <div>
-        <p>目前支持的文件类型为*.xls，*.xlsx</p>
-        <input id="load" type="file" onchange="importFile(this)" accept=".xls, .xlsx" style="display: none;" />
-        <a href="javascript:" class="ui-button ui-button-primary button-load" role="button">选择文件</a>
-      </div>
-      <div class="row" style="text-align: center; width: 100%;">
+
+      <div class="row btn-fixed">
         <button class="ui-button ui-button-primary" onclick="upload()">上传</button>
         <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
       </div>
