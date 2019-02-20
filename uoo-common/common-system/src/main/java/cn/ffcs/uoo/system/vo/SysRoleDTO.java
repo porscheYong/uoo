@@ -2,6 +2,8 @@ package cn.ffcs.uoo.system.vo;
 
 import java.util.Date;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 
@@ -19,10 +21,12 @@ public class SysRoleDTO {
     /**
      * 角色名称
      */
+    @NotBlank(message="角色名称不能为空")
     private String roleName;
     /**
      * 角色编码
      */
+    @NotBlank(message="角色编码不能为空")
     private String roleCode;
     /**
      * 上级角色角色编码

@@ -23,6 +23,7 @@ import cn.ffcs.uoo.system.consts.StatusCD;
 import cn.ffcs.uoo.system.entity.SysFunction;
 import cn.ffcs.uoo.system.service.ISysFunctionService;
 import cn.ffcs.uoo.system.service.ISysPermissionFuncRelService;
+import cn.ffcs.uoo.system.service.ModifyHistoryService;
 import cn.ffcs.uoo.system.vo.ResponseResult;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -31,6 +32,8 @@ import io.swagger.annotations.ApiOperation;
 public class SysFunctionController {
     @Autowired
     ISysFunctionService funcSvc;
+    @Autowired
+    ModifyHistoryService modifyHistoryService;
     @Autowired
     ISysPermissionFuncRelService permFuncSvc;
     @ApiOperation(value = "分页查询api", notes = "分页查询api")
@@ -84,6 +87,7 @@ public class SysFunctionController {
         fun.setFuncId(funcSvc.getId());
         fun.setCreateDate(new Date());
         funcSvc.insert(fun);
+        modifyHistoryService.addModifyHistory(null, fun, fun.getCreateUser(), modifyHistoryService.getBatchNumber());
         return ResponseResult.createSuccessResult("新增成功");
     }
     @Transactional
@@ -114,6 +118,7 @@ public class SysFunctionController {
         }
         fun.setUpdateDate(new Date());
         funcSvc.updateById(fun);
+        modifyHistoryService.addModifyHistory(one, fun, fun.getUpdateUser(), modifyHistoryService.getBatchNumber());
         return ResponseResult.createSuccessResult("修改成功");
     }
     @Transactional
@@ -128,6 +133,7 @@ public class SysFunctionController {
         df.setStatusCd(StatusCD.INVALID);
         df.setStatusDate(new Date());
         funcSvc.updateById(df);
+        modifyHistoryService.addModifyHistory(df, null, fun.getUpdateUser(), modifyHistoryService.getBatchNumber());
         return ResponseResult.createSuccessResult("修改成功");
     }
 }

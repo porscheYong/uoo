@@ -96,6 +96,9 @@ public class SysRoleController {
     })
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ResponseResult<Void> deleteRole(@RequestBody SysRole sysRole) {
+        Subject subject=SecurityUtils.getSubject();
+        SysUser sysuser= (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        sysRole.setUpdateUser(sysuser.getUserId());
         return sysRoleClient.deleteRole(sysRole);
     }
     @OperateLog(type=OperateType.SELECT,module="平台系统角色模块",methods="获取单个数据",desc="")

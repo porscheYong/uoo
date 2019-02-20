@@ -46,6 +46,7 @@ import cn.ffcs.uoo.system.service.ISysPermissionMenuRelService;
 import cn.ffcs.uoo.system.service.ISysPermissionService;
 import cn.ffcs.uoo.system.service.ISysPrivFileRelService;
 import cn.ffcs.uoo.system.service.ISysRolePermissionRefService;
+import cn.ffcs.uoo.system.service.ModifyHistoryService;
 import cn.ffcs.uoo.system.service.SysMenuService;
 import cn.ffcs.uoo.system.vo.DataRuleGroupEditVO;
 import cn.ffcs.uoo.system.vo.ResponseResult;
@@ -100,7 +101,8 @@ public class SysPermissionController {
     
     @Autowired
     ISysRolePermissionRefService permRoleRelSvc;
-    
+    @Autowired
+    ModifyHistoryService modifyHistoryService;
     
     @ApiOperation(value = "获取单个数据", notes = "获取单个数据")
     @ApiImplicitParams({
@@ -256,6 +258,7 @@ public class SysPermissionController {
         }
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增成功");
+        modifyHistoryService.addModifyHistory(null, sysPermissionEditDTO, sysPermissionEditDTO.getCreateUser(), modifyHistoryService.getBatchNumber());
         return responseResult;
     }
     @SuppressWarnings("unchecked")
@@ -482,6 +485,7 @@ public class SysPermissionController {
             }
             
         }
+        modifyHistoryService.addModifyHistory(one, sysPermissionEditDTO, sysPermissionEditDTO.getUpdateUser(), modifyHistoryService.getBatchNumber());
         
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("更新成功");
@@ -492,9 +496,9 @@ public class SysPermissionController {
     @ApiImplicitParam(name = "id", value = "删除", required = true, dataType = "Long",paramType="path")
     @UooLog(value = "删除", key = "delete")
     @Transactional
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public ResponseResult<Void> delete(@PathVariable(value="id" ,required=true) Long id){
-        SysPermission permission = permSvc.selectById(id);
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public ResponseResult<Void> delete(@RequestBody SysPermission perm){
+        SysPermission permission = permSvc.selectById(perm.getPermissionId());
         if(permission==null){
             return ResponseResult.createErrorResult("不能删除空数据");
         }
@@ -508,6 +512,7 @@ public class SysPermissionController {
         permFileRelSvc.delete(Condition.create().eq("PERMISSION_CODE", permission.getPermissionCode()));
         permDataRulesRelSvc.delete(Condition.create().eq("PERMISSION_CODE", permission.getPermissionCode()));
         permRoleRelSvc.delete(Condition.create().eq("PERMISSION_CODE", permission.getPermissionCode()));
+        modifyHistoryService.addModifyHistory(permission, null, perm.getUpdateUser(), modifyHistoryService.getBatchNumber());
         return ResponseResult.createSuccessResult("删除成功");
     }
 }

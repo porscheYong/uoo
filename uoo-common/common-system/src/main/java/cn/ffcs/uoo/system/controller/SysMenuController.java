@@ -16,6 +16,7 @@ import cn.ffcs.uoo.system.entity.SysElement;
 import cn.ffcs.uoo.system.entity.SysMenu;
 import cn.ffcs.uoo.system.entity.SysPermission;
 import cn.ffcs.uoo.system.service.ISysPermissionMenuRelService;
+import cn.ffcs.uoo.system.service.ModifyHistoryService;
 import cn.ffcs.uoo.system.service.SysMenuService;
 import cn.ffcs.uoo.system.vo.ResponseResult;
 import cn.ffcs.uoo.system.vo.SysMenuVO;
@@ -54,6 +55,8 @@ public class SysMenuController {
     SysMenuService sysMenuService;
     @Autowired
     ISysPermissionMenuRelService permMenuSvc;
+    @Autowired
+    ModifyHistoryService modifyHistoryService;
     
 
     @ApiOperation(value = "获取单个数据", notes = "获取单个数据")
@@ -137,6 +140,7 @@ public class SysMenuController {
         sysMenuService.updateById(sysMenu);
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("修改成功");
+        modifyHistoryService.addModifyHistory(one, sysMenu, sysMenu.getUpdateUser(), modifyHistoryService.getBatchNumber());
         return responseResult;
     }
 
@@ -160,6 +164,8 @@ public class SysMenuController {
         sysMenuService.insert(sysMenu);
         responseResult.setState(ResponseResult.STATE_OK);
         responseResult.setMessage("新增角色成功");
+
+        modifyHistoryService.addModifyHistory(null, sysMenu, sysMenu.getCreateUser(), modifyHistoryService.getBatchNumber());
         return responseResult;
     }
 
@@ -184,6 +190,8 @@ public class SysMenuController {
         obj.setStatusDate(new Date());
         obj.setUpdateDate(new Date());
         sysMenuService.updateById(obj);
+
+        modifyHistoryService.addModifyHistory(obj, null, sysMenu.getUpdateUser(), modifyHistoryService.getBatchNumber());
         return ResponseResult.createSuccessResult("success");
     }
     @ApiOperation(value = "获取单个用户的菜单", notes = "获取单个用户的菜单")
