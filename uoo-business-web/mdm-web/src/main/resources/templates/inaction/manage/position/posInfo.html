@@ -92,16 +92,16 @@
             filter: alpha(opacity=0);
             position: absolute;
         }
-        .row-num,
-        .row-psn{
+        .row-num{
+                width: 18%;
+        }
+        .row-psn,
+        .row-explain{
             width: 12%;
         }
+        .row-acct,
         .row-org{
-            width: 16%;
-        }
-        .row-explain,
-        .row-acct{
-            width: 15%; 
+            width: 14%; 
         }
         .row-date{
             width: 20%;
@@ -132,7 +132,7 @@
                             <span class="name ft18" style="margin-top: 15px;" id="posName"></span>
                             <a class="icon icon-edit" id="EditButton" title="信息编辑" onclick="editInfo()" href="javascript:void(0)"></a>
                         </div>
-                        <div class="breadcrumb" style="padding: 0px 15px 0; background: #fff;margin-bottom: 30px !important;"></div>   <!-- 完整路径-->
+                        <!-- <div class="breadcrumb" style="padding: 0px 15px 0; background: #fff;margin-bottom: 30px !important;"></div> -->
                         <div style="margin-left:11px">
                             <div class="row" style="margin-bottom: 10px;">
                                 <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom:15px;width: 40%;">
@@ -281,7 +281,6 @@
     <!-- jquery tagsinput -->
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- Custom Theme Scripts -->
-    <script type="text/javascript" src="/js/manage/user.js"></script>
     <script type="text/javascript" src="/js/manage/position/posInfo.js"></script>
     <script type="text/javascript">
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {

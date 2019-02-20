@@ -60,13 +60,17 @@
             <div class="board-title">
                 <span class="name ft18">下级组织</span>
                 <input type="checkbox" id="isShowLower" name="checkbox" onclick="showLower()">
-                <label for="isShowLower" class="ui-checkbox"></label><label for="isShowLower">显示多层下级组织</label>
+                <label for="isShowLower" class="ui-checkbox"></label><label for="isShowLower" style="margin-left:4px;">显示多层下级组织</label>
                 <div class="fright">
                     <a class="button-add" href="javascript:void(0);" onclick="addOrg()"><span class="fa fa-plus-circle icon-add"></span>创建组织</a>
                 </div>
             </div>
-            <div style="overflow: hidden;">
+            <!-- <div style="overflow: hidden;">
                 <input class="ui-input ui-input-search col-md-4 col-sm-4 col-xs-4" type="text" placeholder="组织搜索"  oninput="search()" onpropertychange="search()" />
+            </div> -->
+            <div style="overflow: hidden;">
+                <input class="ui-input ui-input-search col-md-4 col-sm-4 col-xs-4" id="acctName" type="text" placeholder="搜索组织" autocomplete="off"/>
+                <button class="ui-button ui-button-primary" id="searchBtn" onclick="search()" style="margin-left:1%;">搜索</button>
             </div>
             <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
                 <table id="orgTable" class="stripe" width="100%"></table>

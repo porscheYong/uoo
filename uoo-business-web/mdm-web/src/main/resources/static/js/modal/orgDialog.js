@@ -68,6 +68,7 @@ function autoCheck () {
         var id = orgList[i].id;
         var node = tree.getNodeByTId("orgTree_" + id);
         tree.checkNode(node, true);
+        tree.expandNode(node, true, true, true);
         checkNode.push(node);
     }
 }

@@ -24,13 +24,17 @@ var elemData;
 var fileData;
 var toastr = window.top.toastr;
 var loading = parent.loading;
-
+var formValidate;
+var infoValidate;
 loading.screenMaskEnable('LAY_app_body');
 
 seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
     var tab = $('#tab_content5');
+    var infoDiv = $("#editInfo");
     formValidate = new Validate(tab);
+    infoValidate = new Validate(infoDiv);
     formValidate.immediate();
+    infoValidate.immediate();
     tab.find(':input').each(function () {
       $(this).bind({
           paste : function(){
@@ -38,6 +42,15 @@ seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
               $(this).removeClass('error');
           }
       });
+    });
+
+    infoDiv.find(':input').each(function () {
+        $(this).bind({
+            paste : function(){
+                infoValidate.isPass($(this));
+                $(this).removeClass('error');
+            }
+        });
     });
 });
 
@@ -721,6 +734,12 @@ function getDataRules(){
 //新增权限
 function addPermission(){
     loading.screenMaskEnable('LAY_app_body');
+
+    if(!infoValidate.isAllPass()){
+        loading.screenMaskDisable('LAY_app_body');
+        return;
+    }
+
     if(!formValidate.isAllPass()){
         loading.screenMaskDisable('LAY_app_body');
         return;

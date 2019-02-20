@@ -68,8 +68,9 @@ function initBusinessList (orgTreeId) {
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
             $('#businessOrg').selectMatch();
         });
+        loading.screenMaskDisable('LAY_app_body');
     }, function (err) {
-        // loading.screenMaskDisable('container');
+        loading.screenMaskDisable('LAY_app_body');
     })
 }
 
@@ -222,13 +223,7 @@ function delDataCondition(conId,groupId){
 function initDataSelectedGroups(selectedList,tData){
     var dataList = [];
     var c = 0;
-    tabData = tData;
-    console.log(selectedList);
-    if(selectedList.length != 0){
-        initBusinessList(selectedList[0].orgTreeId);
-    }else{
-        initBusinessList(0);
-    }
+    tabData = tData;    
     
     for(var i=0;i<selectedList.length;i++){
         var ruleList = [];
@@ -246,6 +241,12 @@ function initDataSelectedGroups(selectedList,tData){
             c++;
         }
         dataList.push({"gId":i,"con":ruleList,"groundId":selectedList[i].dataRuleGroupId});
+    }
+    
+    if(selectedList.length != 0){
+        initBusinessList(selectedList[0].orgTreeId);
+    }else{
+        initBusinessList(0);
     }
 }
 

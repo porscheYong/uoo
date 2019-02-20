@@ -11,6 +11,8 @@ var roleList = [];
 var posRole = parent.posRole;
 var posFullName = "";
 var positionCodeList = [];
+var query;
+var loading = parent.loading;
 
 // 获取组织完整路径
 function getPosExtInfo () {
@@ -22,7 +24,7 @@ function getPosExtInfo () {
             if (pathArry[i].current) {
                 pathStr +=  '<span class="breadcrumb-item"><a href="javascript:void(0);">' + node.name + '</a></span>';
             } else {
-                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById('+positionCodeCur+','+node.id+')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
+                pathStr += '<span class="breadcrumb-item"><a href="javascript:void(0);" onclick="parent.openTreeById(\''+positionCodeCur+'\',\''+node.id+'\')">' + node.name + '</a><span class="breadcrumb-separator" style="margin: 0 9px;">/</span></span>';
             }
             posFullName += node.name + ' / '; 
         }
@@ -101,7 +103,9 @@ function initPosTable(isCheck,search){
                 //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                 callback(returnData);
+                loading.screenMaskDisable('container');
             }, function (err) {
+                loading.screenMaskDisable('container');
             })
         }
     });
@@ -119,6 +123,14 @@ function setPosInfo(id){
     window.location.href = "posInfo.html?positionCode=" + positionCode + "&posName=" + posName + "&posFullName="+posFullName+"&positionCodeCur="+positionCodeCur;
 }
 
+// 搜索职位
+function search () {
+    loading.screenMaskEnable('container');
+    query = $('.ui-input-search').val();
+    initPosTable(isCheck, query);
+    // loading.screenMaskDisable('container');
+}
+
 function boxClick(){            //点击复选框
     if(lChBox.checked == true){
         isCheck = 1;
@@ -131,7 +143,7 @@ function boxClick(){            //点击复选框
             $(".ui-checkbox").css("background-position","0px 0px");
         }
     }
-    initPosTable(isCheck,'');
+    // initPosTable(isCheck,'');
 }
 
 $("#addBtn").on('click',function(){

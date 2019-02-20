@@ -6,8 +6,8 @@ var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var checked = 0; //是否搜索下级
 var table;
-var query,
-    delayTime = 500;
+var loading = parent.loading;
+var query;
 
 function initOrgTable (isSearchlower, search) {
     table = $("#orgTable").DataTable({
@@ -21,7 +21,7 @@ function initOrgTable (isSearchlower, search) {
         'columns': [
             { 'data': "orgName", 'title': '组织名称', 'className': 'row-org',
                 'render': function (data, type, row, meta) {
-                    return '<a href="info.html?id=' + row.orgId + '&pid=' + orgId + '&name=' + encodeURI(row.orgName) + '">'+ row.orgName +'</a>'
+                    return '<a href="info.html?id=' + row.orgId + '&pid=' + orgId + '&name=' + encodeURI(row.orgName) + '&pidName=' + encodeURI(orgName) + '&flag=1' + '" +>'+ row.orgName +'</a>'
                 }
             },
             { 'data': "orgCode", 'title': '组织编码', 'className': 'row-code'},
@@ -72,24 +72,19 @@ function initOrgTable (isSearchlower, search) {
                 returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
                 returnData.data = result.records;//返回的数据列表
                 callback(returnData);
+                loading.screenMaskDisable('container');
             }, function (err) {
-
+                loading.screenMaskDisable('container');
             })
         }
     });
-
-    var loading = parent.loading;
-    loading.screenMaskDisable('container');
 }
 
 // 搜索组织
 function search () {
+    loading.screenMaskEnable('container');
     query = $('.ui-input-search').val();
-    clearTimeout(this.timer);
-    // 添加的延时
-    this.timer = setTimeout(function(){
-        initOrgTable(checked, query);
-    }, delayTime);
+    initOrgTable(checked, query);
 }
 
 //勾选显示下级组织人员
@@ -101,7 +96,7 @@ function showLower() {
     }else if(isIE8 && checked == 0){
         $(".ui-checkbox").css("background-position","0px 0px");
     }
-    initOrgTable(checked, query);
+    // initOrgTable(checked, query);
 }
 
 //创建组织
@@ -122,19 +117,14 @@ function orgEdit() {
     window.location.href = url;
 }
 
-//获取组织扩展信息
+//获取职位信息
 function getOrgExt() {
     $http.get('/sysOrganization/getOrgPositionList', {
         id: orgId
     }, function (data) {
-        console.log(data)
-        var positionList = [];
         var positionStr= '';
-        if (data.length > 0) {
-            positionList = data[0].positionName.split('&');
-        }
-        for (var i = 0; i < positionList.length; i++) {
-            positionStr += '<span class="uoo-tag">'+ positionList[i] +'</span>';
+        for (var i = 0; i < data.length; i++) {
+            positionStr += '<span class="uoo-tag">'+ data[i].positionName +'</span>';
         }
         $('.org-ext').html(positionStr);
     }, function (err) {

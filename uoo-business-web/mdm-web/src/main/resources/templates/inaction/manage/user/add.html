@@ -137,14 +137,14 @@
                             <div class="form-item" style="width: 100%">
                                 <label for="userName" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">用户姓名</label>
-                                <input id="userName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" required>
+                                <input id="userName" class="ui-input col-md-8 col-sm-8 col-xs-12" size="40" required autocomplete="off">
                             </div>
                         </div>
                         <div class="no-padding col-md-6 col-sm-6 col-xs-12">
                             <div class="form-item" style="width: 100%">
                                 <label for="passwd" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">密码</label>
-                                <input id="passwd" class="ui-input col-md-8 col-sm-8 col-xs-12" required />
+                                <input id="passwd" class="ui-input col-md-8 col-sm-8 col-xs-12" required autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -161,7 +161,7 @@
                             <div class="form-item" style="width: 100%">
                                 <label for="certNo" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
-                                <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" onkeyup="getIdCardInfo()" onpaste="getIdCardInfo()" required>
+                                <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" onkeyup="getIdCardInfo()" onpaste="getIdCardInfo()" required autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -171,7 +171,7 @@
                             <div class="form-item" style="width: 100%">
                                 <label for="accout" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">账号</label>
-                                <input id="accout" class="ui-input col-md-8 col-sm-8 col-xs-12" required />
+                                <input id="accout" class="ui-input col-md-8 col-sm-8 col-xs-12" required autocomplete="off">
                             </div>
                         </div>
                         <div class="no-padding col-md-6 col-sm-6 col-xs-12">
@@ -187,7 +187,7 @@
                         <div class="no-padding col-md-6 col-sm-6 col-xs-12">
                             <div class="form-item" style="width: 100%">
                                 <label for="birthday" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">出生年月</label>
-                                <input id="birthday" class="ui-input col-md-8 col-sm-8 col-xs-12" readonly="readonly" />
+                                <input id="birthday" class="ui-input col-md-8 col-sm-8 col-xs-12" readonly="readonly" autocomplete="off">
                             </div>
                         </div>
                         <div class="no-padding col-md-6 col-sm-6 col-xs-12">
@@ -204,7 +204,7 @@
                             <div class="form-item" style="width: 100%; position: relative;">
                                 <label for="mobile" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">手机号码</label>
-                                <input id="mobile" class="ui-input col-md-8 col-sm-8 col-xs-12" onkeyup="autoFillMail()" onpaste="autoFillMail()" required />
+                                <input id="mobile" class="ui-input col-md-8 col-sm-8 col-xs-12" onkeyup="autoFillMail()" onpaste="autoFillMail()" required autocomplete="off">
                             </div>
                         </div>
 
@@ -212,7 +212,7 @@
                             <div class="form-item" style="width: 100%; position: relative;">
                                 <label for="email" class="form-item-label col-md-4 col-sm-4 col-xs-12"
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
-                                <input id="email" class="ui-input col-md-8 col-sm-8 col-xs-12" />
+                                <input id="email" class="ui-input col-md-8 col-sm-8 col-xs-12" autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -295,6 +295,8 @@
         <script type="text/javascript" src="/vendors/lulu/js/common/ui/Follow.js"></script>
         <script type="text/javascript" src="/vendors/lulu/js/common/ui/ErrorTip.js"></script>
         <script type="text/javascript" src="/vendors/lulu/js/common/ui/Validate.js"></script>
+        <!-- sea js -->
+        <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
         <!-- layer -->
         <script type="text/javascript" src="/vendors/layer/layer.js"></script>
         <!-- laydate -->

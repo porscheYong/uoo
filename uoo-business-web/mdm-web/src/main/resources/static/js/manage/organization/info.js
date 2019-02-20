@@ -1,14 +1,20 @@
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
-var pName = parent.getNodeName(pid);
-var parentOrgList = [{id: orgId, name: pName}];
+var pidName = getQueryString('pidName');
+var flag = getQueryString('flag');
+var parentOrgList;
 var locationList = [];
 var orgPostList = [];
 var loading = parent.loading;
 var toastr = parent.parent.toastr;
 //字典数据
 var statusCdData = window.top.dictionaryData.statusCd();
+if(pid != ""){
+    parentOrgList = [{id: orgId, name: parent.getNodeName(pid)}];
+}else{
+    parentOrgList = [{id: orgId, name: "无上级组织"}];
+}
 
 // 组织关系信息初始化
 function initOrgRelTable (results) {
@@ -104,7 +110,7 @@ function getOrgRel (orgId) {
 
 //编辑组织
 function orgEdit() {
-    var url = 'edit.html?id=' + orgId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    var url = 'edit.html?id=' + orgId + '&pid=' + pid + '&name=' + encodeURI(orgName) + '&pidName=' + encodeURI(pidName) + '&flag=' + flag;
     window.location.href = url;
 }
 
