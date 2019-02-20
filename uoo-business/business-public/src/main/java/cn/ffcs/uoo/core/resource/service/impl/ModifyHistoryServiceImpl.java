@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.resource.service.impl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -234,7 +235,10 @@ public class ModifyHistoryServiceImpl extends ServiceImpl<ModifyHistoryMapper, M
 
     @Override
     public List<ModifyHistoryDTO> selectPageDTO(Page<ModifyHistoryDTO> page, long tableId, long recordId) {
-        return baseMapper.selectPageDTO(page, tableId, recordId);
+        HashMap<String, Object> map=new HashMap<>();
+        map.put("recordId"  , recordId);
+        map.put("tableId"  , tableId);
+        return baseMapper.selectPageDTO(page, map);
     }
 
 }
