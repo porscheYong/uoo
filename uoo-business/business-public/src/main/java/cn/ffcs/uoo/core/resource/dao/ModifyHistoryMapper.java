@@ -1,8 +1,7 @@
 package cn.ffcs.uoo.core.resource.dao;
 
+import java.util.HashMap;
 import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -25,5 +24,5 @@ public interface ModifyHistoryMapper extends BaseMapper<ModifyHistory> {
     public Long getCommonTableId(String tableName);
 
     public String getSeqBatchNumber();
-    public List<ModifyHistoryDTO> selectPageDTO(Page<ModifyHistoryDTO> page,@Param("tableId")long tableId,@Param("recordId")long recordId);
+    public List<ModifyHistoryDTO> selectPageDTO(Page<ModifyHistoryDTO> page,HashMap<String,Object> map);
 }

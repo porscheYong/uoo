@@ -37,8 +37,8 @@
         SELECT SEQ_BATCH_NUMBER.NEXTVAL FROM DUAL
     </select>
     
-    <select id="selectPageDTO" resultType="cn.ffcs.uoo.core.resource.vo.ModifyHistoryDTO">
-        select m.*,u.ACCOUT as userAccount,u.USER_NAME as userName,o.ORG_NAME as userOrgName from TB_MODIFY_HISTORY m 
+    <select id="selectPageDTO" resultType="cn.ffcs.uoo.core.resource.vo.ModifyHistoryDTO" parameterType="java.util.HashMap">
+        select m.*,u.ACCOUT as userAccout,u.USER_NAME as userName,o.ORG_NAME as userOrgName from TB_MODIFY_HISTORY m 
         left join SYS_USER u on u.USER_ID=m.CREATE_USER
         left join SYS_USER_DEPT_REF udr on udr.USER_CODE=u.USER_CODE
         left join SYS_ORGANIZATION o on o.ORG_CODE= udr.ORG_CODE

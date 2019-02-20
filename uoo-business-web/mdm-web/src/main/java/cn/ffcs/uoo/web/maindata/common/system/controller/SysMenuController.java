@@ -25,6 +25,7 @@ import cn.ffcs.uoo.web.maindata.common.system.vo.SysMenuVO;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
 import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
+import cn.ffcs.uoo.web.maindata.realm.LoadUrlPermissionService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +37,8 @@ public class SysMenuController {
     private SysMenuClient sysMenuClient;
     @Autowired
     ShiroFilterFactoryBean shiroFilterFactoryBean;
+    @Autowired
+    LoadUrlPermissionService reloadPermSvc;
     //type 必填，module必填，methods必填，desc选填
     //@OperateLog(type=OperateType.SELECT,module="平台系统菜单模块",methods="查询账号所有菜单",desc="获取当前所有菜单")
     @ApiOperation(value = "查询账号所有菜单", notes = "查询账号所有菜单")
@@ -77,7 +80,11 @@ public class SysMenuController {
         Subject subject=SecurityUtils.getSubject();
         SysUser sysuser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         sysMenu.setUpdateUser(sysuser.getUserId());
-        return sysMenuClient.update(sysMenu);
+        ResponseResult<Void> result = sysMenuClient.update(sysMenu);
+        if(result.getState()==1000){
+           // reloadPermSvc.notifyAllWebNodeUpdateUrlPermission();
+        }
+        return result;
     }
     @OperateLog(type=OperateType.ADD,module="平台系统菜单模块",methods="新增菜单",desc="新增菜单")
     @ApiOperation(value = "新增",notes = "新增")
@@ -87,7 +94,11 @@ public class SysMenuController {
         Subject subject=SecurityUtils.getSubject();
         SysUser sysuser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         sysMenu.setCreateUser(sysuser.getUserId());
-        return sysMenuClient.add(sysMenu);
+        ResponseResult<Void> result = sysMenuClient.add(sysMenu);
+        if(result.getState()==1000){
+            //reloadPermSvc.notifyAllWebNodeUpdateUrlPermission();
+        }
+        return result;
     }
     @OperateLog(type=OperateType.DELETE,module="平台系统菜单模块",methods="删除菜单",desc="删除菜单")
     @ApiOperation(value = "删除", notes = "删除")
@@ -99,6 +110,10 @@ public class SysMenuController {
         Subject subject=SecurityUtils.getSubject();
         SysUser sysuser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         sysMenu.setUpdateUser(sysuser.getUserId());
-        return sysMenuClient.deletePrivilege(sysMenu);
+        ResponseResult<Void> result = sysMenuClient.deletePrivilege(sysMenu);
+        if(result.getState()==1000){
+           /// reloadPermSvc.notifyAllWebNodeUpdateUrlPermission();
+        }
+        return result;
     }
 }

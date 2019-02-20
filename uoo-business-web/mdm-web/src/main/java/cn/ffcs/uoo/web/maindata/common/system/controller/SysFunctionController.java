@@ -20,6 +20,7 @@ import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
 import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
+import cn.ffcs.uoo.web.maindata.realm.LoadUrlPermissionService;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 @RestController
@@ -27,6 +28,8 @@ import io.swagger.annotations.ApiOperation;
 public class SysFunctionController {
     @Autowired
     SysFunctionClient funcClient;
+    @Autowired
+    LoadUrlPermissionService reloadPermSvc;
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @ApiImplicitParams({
     })
@@ -60,7 +63,11 @@ public class SysFunctionController {
         Subject subject=SecurityUtils.getSubject();
         SysUser sysuser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         fun.setCreateUser(sysuser.getUserId());
-        return funcClient.add(fun);
+        ResponseResult<Void> result = funcClient.add(fun);
+        if(result.getState()==1000){
+            //reloadPermSvc.notifyAllWebNodeUpdateUrlPermission();
+        }
+        return result;
     }
     @OperateLog(type=OperateType.UPDATE,module="平台系统功能模块",methods="更新",desc="")
     @ApiOperation(value = "更新", notes = "更新")
@@ -71,7 +78,11 @@ public class SysFunctionController {
         Subject subject=SecurityUtils.getSubject();
         SysUser sysuser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         fun.setUpdateUser(sysuser.getUserId());
-        return funcClient.update(fun);
+        ResponseResult<Void> result = funcClient.update(fun);
+        if(result.getState()==1000){
+            //reloadPermSvc.notifyAllWebNodeUpdateUrlPermission();
+        }
+        return result;
     }
     @OperateLog(type=OperateType.DELETE,module="平台系统功能模块",methods="删除",desc="")
     @ApiOperation(value = "删除", notes = "删除")
@@ -82,6 +93,10 @@ public class SysFunctionController {
         Subject subject=SecurityUtils.getSubject();
         SysUser sysuser= (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         fun.setUpdateUser(sysuser.getUserId());
-        return funcClient.delete(fun);
+        ResponseResult<Void> result = funcClient.delete(fun);
+        if(result.getState()==1000){
+            //reloadPermSvc.notifyAllWebNodeUpdateUrlPermission();
+        }
+        return result;
     }
 }
