@@ -945,6 +945,12 @@ ul.tab-title.right li {
     vertical-align: text-bottom;
     padding-right: 5px;
 }
+.icon-move {
+    color: #8699e9;
+    font-size: 18px;
+    vertical-align: text-bottom;
+    padding-right: 5px;
+}
 
 /*
  * Component: Nav
