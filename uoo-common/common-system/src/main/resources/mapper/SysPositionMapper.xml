@@ -208,7 +208,7 @@
             AND A.USER_CODE = C.USER_CODE
             AND B.ORG_CODE = #{id}
             <if test="search!=null and search!=''">
-                AND ( B.ORG_NAME like '%'||#{search}||'%' or B.USER_NAME like '%'||#{search}||'%')
+                AND ( B.ORG_NAME like '%'||#{search}||'%' or C.USER_NAME like '%'||#{search}||'%')
             </if>
         </when>
         <otherwise>
@@ -226,7 +226,7 @@
             AND A.USER_CODE = C.USER_CODE
             AND B.ORG_CODE in (select ORG_CODE from SYSORGTREE)
             <if test="search!=null and search!=''">
-                AND ( B.ORG_NAME like '%'||#{search}||'%' or B.USER_NAME like '%'||#{search}||'%')
+                AND ( B.ORG_NAME like '%'||#{search}||'%' or C.USER_NAME like '%'||#{search}||'%')
             </if>
         </otherwise>
         </choose>
@@ -258,7 +258,7 @@
                 select * from (
                 with pos as (
                 select * from sys_position a where a.status_cd=1000 start with a.position_code = #{positionCode} connect
-                by a.position_code = a.parent_position_code
+                by prior a.position_code = a.parent_position_code
                 )
                 select a.user_code userCode,a.position_code positionCode,b.user_id userId,b.accout accout,b.user_name
                 userName,e.position_name positionName,

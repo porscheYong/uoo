@@ -151,7 +151,7 @@ public class ExcelOrgImportController {
     @ApiOperation(value = "保存数据", notes = "保存数据")
     @UooLog(value = "保存数据", key = "addExcelFileData")
     @RequestMapping(value = "/addExcelFileData", method=RequestMethod.POST)
-    @Transactional(rollbackFor = Exception.class)
+    //@Transactional(rollbackFor = Exception.class)
     public ResponseResult<String> addExcelFileData(String fileSign,
                                                       Long userId,
                                                       String accout) throws IOException {

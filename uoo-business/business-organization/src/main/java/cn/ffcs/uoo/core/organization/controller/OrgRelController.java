@@ -138,6 +138,17 @@ public class OrgRelController extends BaseController {
             tabNames.add("TB_ORG_ORGTYPE_REL");
             tabNames.add("TB_ORG_ORGTREE_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
+            // TODO: 2019/2/20
+            List<String> tabNamenews = new ArrayList<String>();
+            tabNamenews.add("TB_ORG_ORGTREE_REL");
+            List<SysDataRule> sdrList1 = commonSystemService.getSysDataRuleList(tabNamenews,accout,orgTreeId);
+            if(sdrList1!=null && sdrList1.size()>0){
+                orgOrgTreeRelParams = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
+                if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParams)) {
+                    orgOrgTreeRelParams = commonSystemService.getOrgOrgTreeRelSql(orgOrgTreeRelParams,orgTree.getOrgTreeId().toString());
+                }
+            }
+
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
                     ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -146,10 +157,10 @@ public class OrgRelController extends BaseController {
                 }
                 orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
                 orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
-                orgOrgTreeRelParams = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
-                if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParams)) {
-                    orgOrgTreeRelParams = commonSystemService.getOrgOrgTreeRelSql(orgOrgTreeRelParams,orgTree.getOrgTreeId().toString());
-                }
+//                orgOrgTreeRelParams = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
+//                if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParams)) {
+//                    orgOrgTreeRelParams = commonSystemService.getOrgOrgTreeRelSql(orgOrgTreeRelParams,orgTree.getOrgTreeId().toString());
+//                }
             }
         }
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
@@ -522,6 +533,18 @@ public class OrgRelController extends BaseController {
             tabNames.add("TB_ORG_ORGTYPE_REL");
             tabNames.add("TB_ORG_ORGTREE_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
+            // TODO: 2019/2/20
+            List<String> tabNamenews = new ArrayList<String>();
+            tabNamenews.add("TB_ORG_ORGTREE_REL");
+            List<SysDataRule> sdrList1 = commonSystemService.getSysDataRuleList(tabNamenews,accout,orgTreeId);
+            if(sdrList1!=null && sdrList1.size()>0){
+                orgOrgTreeRelParams = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
+                if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParams)){
+                    orgOrgTreeRelParams = commonSystemService.getOrgOrgTreeRelSql(orgOrgTreeRelParams,orgTreeId);
+                }
+                orgVo.setTabOrgOrgTreeRelParams(orgOrgTreeRelParams);
+            }
+
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
                     ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -530,13 +553,14 @@ public class OrgRelController extends BaseController {
                 }
                 orgParams = commonSystemService.getSysDataRuleSql("TB_ORG",sdrList);
                 orgOrgTypeParams = commonSystemService.getSysDataRuleSql("TB_ORG_ORGTYPE_REL",sdrList);
-                orgOrgTreeRelParams = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
-                if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParams)){
-                    orgOrgTreeRelParams = commonSystemService.getOrgOrgTreeRelSql(orgOrgTreeRelParams,orgTreeId);
-                }
+//                orgOrgTreeRelParams = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
+//                if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParams)){
+//                    orgOrgTreeRelParams = commonSystemService.getOrgOrgTreeRelSql(orgOrgTreeRelParams,orgTreeId);
+//                }
+//                orgVo.setTabOrgOrgTreeRelParams(orgOrgTreeRelParams);
+
                 orgVo.setTabOrgParams(orgParams);
                 orgVo.setTabOrgOrgTypeParams(orgOrgTypeParams);
-                orgVo.setTabOrgOrgTreeRelParams(orgOrgTreeRelParams);
             }
         }
         orgVo.setOrgTreeId(new Long(orgTreeId));
