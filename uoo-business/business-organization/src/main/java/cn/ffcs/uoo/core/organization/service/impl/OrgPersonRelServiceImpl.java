@@ -295,4 +295,26 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
     public List<OrgPersonRel>  getOrgAcctRel(String orgTreeId,String orgId){
         return baseMapper.getOrgAcctRel(orgTreeId,orgId);
     }
+
+    /**
+     * 简单查询满足人员信息条件
+     * @param search
+     * @return
+     */
+    @Override
+    public boolean JudgePer(String search){
+        if(baseMapper.JudgePerName(search)>0){
+            return true;
+        }
+        if(baseMapper.JudgePerMobile(search)>0){
+            return true;
+        }
+        if(baseMapper.JudgePerCert(search)>0){
+            return true;
+        }
+        if(baseMapper.JudgePerNbr(search)>0){
+            return true;
+        }
+        return false;
+    }
 }

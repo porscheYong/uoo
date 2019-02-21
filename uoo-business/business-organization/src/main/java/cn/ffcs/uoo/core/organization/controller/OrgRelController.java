@@ -101,7 +101,6 @@ public class OrgRelController extends BaseController {
     @RequestMapping(value = "/getOrgRelTree", method = RequestMethod.GET)
     public ResponseResult<List<TreeNodeVo>> getOrgRelTree(String id,String orgTreeId,String orgRootId,String refCode,
                                                           boolean isOpen,boolean isAsync,boolean isRoot,Long userId,String accout) throws IOException {
-        System.out.println(new Date());
         ResponseResult<List<TreeNodeVo>> ret = new ResponseResult<>();
         if(StrUtil.isNullOrEmpty(orgTreeId) && StrUtil.isNullOrEmpty(refCode)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
@@ -126,6 +125,8 @@ public class OrgRelController extends BaseController {
                 return ret;
             }
         }
+
+        System.out.printf("getOrgRelTree-权限获取时间开始: %tF %<tT%n", System.currentTimeMillis());
         //获取权限
         String orgParams = "";
         String orgOrgTypeParams = "";
@@ -163,9 +164,12 @@ public class OrgRelController extends BaseController {
 //                }
             }
         }
+        System.out.printf("getOrgRelTree-权限获取时间结束: %tF %<tT%n", System.currentTimeMillis());
+        System.out.printf("getOrgRelTree-查询树开始: %tF %<tT%n", System.currentTimeMillis());
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
         treeNodeVos = orgRelService.queryOrgTree(orgTree.getOrgTreeId().toString(),orgTree.getOrgId(),refCode,
                 id,isRoot,orgParams,orgOrgTypeParams,orgOrgTreeRelParams);
+        System.out.printf("getOrgRelTree-查询树结束: %tF %<tT%n", System.currentTimeMillis());
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("组织树查询成功");
         ret.setData(treeNodeVos);

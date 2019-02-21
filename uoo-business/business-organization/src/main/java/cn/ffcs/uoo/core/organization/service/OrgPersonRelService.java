@@ -112,6 +112,11 @@ public interface OrgPersonRelService extends IService<OrgPersonRel> {
      */
     public List<OrgPersonRel>  getOrgAcctRel(String orgTreeId,String orgId);
 
-
+    /**
+     * 简单查询满足人员信息条件
+     * @param search
+     * @return
+     */
+    public boolean JudgePer(String search);
 
 }

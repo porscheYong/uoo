@@ -167,6 +167,22 @@ public class SysOrganizationController {
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
     public ResponseResult<TreeNodeVo> addOrg(@RequestBody SysOrganizationVo vo) throws IOException {
         ResponseResult<TreeNodeVo> ret = new ResponseResult<TreeNodeVo>();
+
+        if(StrUtil.isNullOrEmpty(vo.getOrgName())){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("组织名称不能为空");
+            return ret;
+        }
+        Wrapper sysOrgWrapper = Condition.create()
+                .eq("ORG_NAME",vo.getOrgName())
+                .eq("STATUS_CD","1000");
+        int num = sysOrganizationService.selectCount(sysOrgWrapper);
+        if(num>0){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("组织名称重复");
+            return ret;
+        }
+
         String batchNum = modifyHistoryService.getBatchNumber();
         SysOrganization sysvo = new SysOrganization();
         BeanUtils.copyProperties(vo,sysvo);
@@ -221,6 +237,22 @@ public class SysOrganizationController {
             ret.setMessage("父节点不能等于子节点");
             return ret;
         }
+        if(StrUtil.isNullOrEmpty(vo.getOrgName())){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("组织名称不能为空");
+            return ret;
+        }
+        Wrapper sysOrgWrapper = Condition.create()
+                .eq("ORG_NAME",vo.getOrgName())
+                .eq("STATUS_CD","1000");
+        int num = sysOrganizationService.selectCount(sysOrgWrapper);
+        if(num>0){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("组织名称重复");
+            return ret;
+        }
+
+
         String batchNum = modifyHistoryService.getBatchNumber();
         SysOrganization sysvo = new SysOrganization();
         BeanUtils.copyProperties(vo,sysvo);

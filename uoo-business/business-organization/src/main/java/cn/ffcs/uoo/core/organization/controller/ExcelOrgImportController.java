@@ -88,6 +88,7 @@ public class ExcelOrgImportController {
         }
         long time = System.currentTimeMillis();
         String t = String.valueOf(time/1000);
+        List<ExcelOrgImport> excelList = new ArrayList<>();
         for(int i=1;i<rowCount+1;i++){
             Row row = sheet.getRow(i);
             ExcelOrgImport excelOrgImport = new ExcelOrgImport();
@@ -123,21 +124,32 @@ public class ExcelOrgImportController {
             String errMsg = orgService.JudgeMoveOrg(new Long(excelOrgImport.getOrgId()),
                         new Long(excelOrgImport.getParentOrgId()),excelOrgImport.getOrgName(),new Long(orgTreeId));
 
-            com.baomidou.mybatisplus.mapper.Wrapper excelWrapper = Condition.create()
-                    .eq("FILE_SIGN",t)
-                    .eq("ORG_ID",excelOrgImport.getOrgId())
-                    .eq("ORG_NAME",excelOrgImport.getOrgName())
-                    .eq("SIGN","0")
-                    .eq("STATUS_CD","1000");
-            int num = excelOrgImportService.selectCount(excelWrapper);
-            if(num>0){
-                errMsg="数据重复导入";
+            if(excelList!=null && excelList.size()>0){
+                for(ExcelOrgImport e : excelList){
+                    if(e.getOrgName().equals(excelOrgImport.getOrgName()) &&
+                            e.getOrgId().equals(excelOrgImport.getOrgId()) &&
+                            e.getParentOrgId().equals(excelOrgImport.getParentOrgId())){
+                        errMsg="数据重复导入";
+                        break;
+                    }
+                }
             }
+//            com.baomidou.mybatisplus.mapper.Wrapper excelWrapper = Condition.create()
+//                    .eq("FILE_SIGN",t)
+//                    .eq("ORG_ID",excelOrgImport.getOrgId())
+//                    .eq("ORG_NAME",excelOrgImport.getOrgName())
+//                    .eq("SIGN","0")
+//                    .eq("STATUS_CD","1000");
+//            int num = excelOrgImportService.selectCount(excelWrapper);
+//            if(num>0){
+//                errMsg="数据重复导入";
+//            }
             excelOrgImport.setSign(StrUtil.isNullOrEmpty(errMsg)?"0":"1");
             excelOrgImport.setContent(StrUtil.isNullOrEmpty(errMsg)?"":errMsg);
             excelOrgImport.setOrgTreeId(new Long(orgTreeId));
             excelOrgImport.setCreateUser(userId);
             excelOrgImportService.add(excelOrgImport);
+            excelList.add(excelOrgImport);
         }
 
         ret.setState(ResponseResult.STATE_OK);
