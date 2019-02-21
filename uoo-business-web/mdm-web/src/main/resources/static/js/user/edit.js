@@ -988,6 +988,7 @@ function autoWriteForm(){
         $('#gender').val(getGenderByCard(certNo)?1:2);
     }
 }
+
 function isNum(n){
     var re = /^[0-9]+.?[0-9]*$/;
     return re.test(n);
