@@ -136,7 +136,7 @@ public class SysElementController {
                 }
             }
         }
-        tmp = eleSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ELEMENT_Name", ele.getElementName()));
+        tmp = eleSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ELEMENT_NAME", ele.getElementName()));
         if(tmp!=null&&!tmp.isEmpty()){
             if(tmp.size()>1){
                 return ResponseResult.createErrorResult("元素名称已存在");

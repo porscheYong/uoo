@@ -28,7 +28,7 @@ public class SysElementServiceImpl extends ServiceImpl<SysElementMapper, SysElem
     }
 
     @Override
-    public Integer getId() {
+    public Long getId() {
         return baseMapper.getId();
     }
 

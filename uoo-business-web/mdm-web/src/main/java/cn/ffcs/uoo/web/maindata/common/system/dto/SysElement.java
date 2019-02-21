@@ -23,7 +23,7 @@ public class SysElement extends Model<SysElement> {
      * 元素标识，主键
      */
     @TableField("ELEMENT_ID")
-    private Integer elementId;
+    private Long elementId;
     /**
      * 元素名称
      */
@@ -82,11 +82,11 @@ public class SysElement extends Model<SysElement> {
     private Date statusDate;
 
 
-    public Integer getElementId() {
+    public Long getElementId() {
         return elementId;
     }
 
-    public void setElementId(Integer elementId) {
+    public void setElementId(Long elementId) {
         this.elementId = elementId;
     }
 
