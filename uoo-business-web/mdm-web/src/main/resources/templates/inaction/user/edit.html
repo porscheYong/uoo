@@ -90,11 +90,28 @@
             position: absolute;
             z-index: 2;
             line-height: 40px;
-            /* top: 0; */
-            /* right: 5px; */
+            padding-left: 2px;
             color: #f26d7e;
             font-size: 23px;
             cursor: pointer;
+        }
+        .default-set {
+            display: none;
+            position: absolute;
+            right: 10px;
+            line-height: 40px;
+        }
+        .mobile-item:hover .default-set {
+            display: block;
+        }
+        .default-tag {
+            background: rgb(255, 121, 2);
+            border-radius: 4px;
+            line-height: 1.5em;
+            color: #fff;
+            padding: 3px 10px;
+            display: inline-block;
+            margin-right: 5px;
         }
         .icon-del:hover {
             color: #f26d7e;
@@ -340,15 +357,81 @@
                         {{/each}}
                         </select>
                     </div>
-                    <div id="phoneDiv" class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                            
-                    </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
                         <label for="certNo" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
                         <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{personalData.certNo}}" onkeyup="autoWriteForm()"  required />
                     </div>
-                    <div id="emailDiv" class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+
+                    <!--<div id="phoneDiv" class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">-->
+
+                    <!--</div>-->
+
+                    <!--<div id="emailDiv" class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">-->
+                    <!--</div>-->
+                    <div class="row" style="margin: 0; margin-bottom: 10px;">
+                        <div class="col-md-6 col-sm-6 col-xs-12" id="tbMobileVoList">
+                            <div style="width: 100%; position: relative; display: inline-block;">
+                                <label for="mobile" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">电话</label>
+                                {{#each personalData.tbMobileVoList}}
+                                    {{#eq @index 0}}
+                                        <div class="ui-input col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
+                                            <input id="mobile" required value="{{content}}" contactid="{{contactId}}" onkeyup="autoFillMail()" onpaste="autoFillMail()">
+                                        </div>
+                                    {{/eq}}
+                                {{/each}}
+                                <div class="fright" style="position: absolute; right: -55px; line-height: 40px;">
+                                    <span class="default-tag">默认</span>
+                                </div>
+                            </div>
+                            {{#each personalData.tbMobileVoList}}
+                                {{#if @index}}
+                                    <div class='mobile-item' style='width: 100%; position: relative; display: inline-block;'>
+                                        <input class='ui-input col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4' value="{{content}}" contactid="{{contactId}}">
+                                        <div class='fright del'>
+                                            <a class='icon-del' href='javascript:void(0)'>
+                                                <span class='fa fa-minus-circle'></span>
+                                            </a>
+                                        </div>
+                                        <div class='fright default-set'>
+                                            <a href='javascript:void(0)' onclick='setDefault(this)'>设为默认</a>
+                                        </div>
+                                    </div>
+                                {{/if}}
+                            {{/each}}
+                            <div class="col-md-offset-4 col-sm-offset-4">
+                                <a class="button-add" href='javascript:void(0)' onclick="addMobile(this)"><span class="fa fa-plus-circle icon-add"></span>添加</a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12" id="tbEamilVoList">
+                            <div style="width: 100%; position: relative; display: inline-block;">
+                                <label for="email" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
+                                {{#each personalData.tbEamilVoList}}
+                                    {{#eq @index 0}}
+                                        <div class="ui-input col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
+                                            <input id="email" value="{{content}}" contactid="{{contactId}}" required>
+                                        </div>
+                                    {{/eq}}
+                                {{/each}}
+                            </div>
+                            {{#each personalData.tbEamilVoList}}
+                                {{#if @index}}
+                                    <div style='width: 100%; position: relative; display: inline-block;'>
+                                        <input class='ui-input col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4' value="{{content}}" contactid="{{contactId}}">
+                                        <div class='fright del'>
+                                            <a class='icon-del' href='javascript:void(0)'>
+                                                <span class='fa fa-minus-circle'></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {{/if}}
+                            {{/each}}
+                            <div class="col-md-offset-4 col-sm-offset-4">
+                                <a class="button-add" href='javascript:void(0)' onclick="addEmail(this)"><span class="fa fa-plus-circle icon-add"></span>添加</a>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
