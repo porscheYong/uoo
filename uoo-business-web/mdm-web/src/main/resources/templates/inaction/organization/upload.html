@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>批量移动组织</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="/js/core/html5shiv.js"></script>
+    <script src="/js/core/respond.js"></script>
+    <script src="/js/core/excanvas.js"></script>
+    <![endif]-->
+  </head>
+
+  <body style="background: #fff;">
+    <div>
+      <div>
+        <a class="BoardTitle Back" href="javascript:history.go(-1);"  >返回</a>
+      </div>
+      <div class="board-title" style="padding: 30px 0;">
+        <span class="name ft18">第一步：下载导入模板</span>
+        <div style="padding: 10px 15px 0; background: #fff;">
+          <p>导入的组织移动信息个数需小于100，所有允许导入的信息字段请参考模版</p>
+          <a href="/移动组织导入模版.xlsx" class="ui-button ui-button-primary" role="button" style="margin-top: 10px;">下载导入模板</a>
+        </div>
+      </div>
+
+      <div class="board-title" style="padding: 30px 0;">
+        <span class="name ft18">第二步：上传数据文件</span>
+        <div style="padding: 10px 15px 0; background: #fff;">
+          <p>目前支持的文件类型为*.xls，*.xlsx</p>
+          <input id="load" type="file" onchange="importFile(this)" accept=".xls, .xlsx" style="display: none;" />
+          <a href="javascript:" class="ui-button ui-button-primary button-load" role="button" style="margin-top: 10px;">选择文件</a>
+          <span id="fileName"></span>
+        </div>
+      </div>
+
+      <div class="row btn-fixed">
+        <button class="ui-button ui-button-primary" onclick="upload()">上传</button>
+        <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
+      </div>
+    </div>
+    <!-- jQuery -->
+    <script src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- init -->
+    <script src="/js/init.js"></script>
+	<script type="text/javascript" src="/js/business/upload.js"></script>
+  </body>
+</html>
