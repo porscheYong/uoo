@@ -541,10 +541,27 @@ function getOrg (orgId) {
         $('#orgTypeList').importTags(orgTypeList);
         $('#positionList').importTags(positionList);
         $('#postList').importTags(orgPostList);
+        getOrgType();
         // expandovalueVoList = data.expandovalueVoList;
     }, function (err) {
 
     })
+}
+
+function getOrgType () {
+    if (refCode == '0401') {
+        $http.get('/orgType/getFullOrgTypeTree', {
+            orgId: orgId
+        }, function (data) {
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].extField1 == 'N11') {
+                    orgTypeList.unshift(data[i]);
+                    $('#orgTypeList').importTags(orgTypeList);
+                    return;
+                }
+            }
+        })
+    }
 }
 
 // 添加子节点
