@@ -211,17 +211,23 @@ function editOrgPost (index) {
     var orgEditForm = $('#orgEdit');
     orgValidate = new Validate(orgEditForm);
     orgValidate.immediate();
-    orgValidate.isAllPass();
-    orgEditForm.find(':input').each(function () {
-        $(this).hover(function () {
-            orgValidate.isPass($(this));
-        });
-    });
+    // orgValidate.isAllPass();
+    // orgEditForm.find(':input').each(function () {
+    //     $(this).hover(function () {
+    //         orgValidate.isPass($(this));
+    //     });
+    // });
+    if(editFlag != 0){
+        $("#orgName").attr("disabled","true");
+    }else{
+        $("#orgName").removeAttr("disabled");
+    }
 }
 //新增/修改 归属组织职位信息
 function addOrgList () {
     if (!orgValidate.isAllPass())
         return;
+    var hasOrg = 0;
     if (editFlag) {
         //修改归属组织职位信息
         var sysOrgPostObj = sysUserDeptPositionVos[editFlag-1];
@@ -232,12 +238,23 @@ function addOrgList () {
     }
     else {
         //新增归属组织职位信息
-        var sysOrgPostObj  = {};
-        sysOrgPostObj.orgCode = orgList[0].id;
-        sysOrgPostObj.orgName = orgList[0].name;
-        sysOrgPostObj.userPositionRefList = postList;
-        sysUserDeptPositionVos.push(sysOrgPostObj);
-        orgTable.row.add(sysOrgPostObj).draw();
+        for(var i=0;i<sysUserDeptPositionVos.length;i++){
+            if(orgList[0].id == sysUserDeptPositionVos[i].orgCode){
+                hasOrg = 1;
+                break;
+            }
+        }
+
+        if(hasOrg == 0){
+            var sysOrgPostObj  = {};
+            sysOrgPostObj.orgCode = orgList[0].id;
+            sysOrgPostObj.orgName = orgList[0].name;
+            sysOrgPostObj.userPositionRefList = postList;
+            sysUserDeptPositionVos.push(sysOrgPostObj);
+            orgTable.row.add(sysOrgPostObj).draw();
+        }else{
+            toastr.error('归属组织信息已存在！');
+        }
     }
     $('#orgPostEditBtn').show();
     $('.actions').show();
@@ -271,6 +288,13 @@ function getOrg() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
+            if(checkNode.length != 0 && orgList.length != 0 && checkNode[0].id != orgList[0].id){
+                $("#postName").val("");
+                postList = [];
+            }else if(checkNode.length == 0){
+                $("#postName").val("");
+                postList = [];
+            }
             orgList = checkNode;
             if (orgList.length > 0) {
                 $('#orgName').val(orgList[0].name);
@@ -281,7 +305,8 @@ function getOrg() {
                 $('#postName').val('');
             }
             parent.layer.close(index);
-            orgValidate.isPass($('#orgName'));
+            // orgValidate.isPass($('#orgName'));
+            orgValidate.isAllPass();
         }
     });
 }
@@ -320,6 +345,7 @@ function getPost() {
             }
             $('#postName').val(postStr);
             parent.layer.close(index);
+            orgValidate.isAllPass();
         }
     });
 }

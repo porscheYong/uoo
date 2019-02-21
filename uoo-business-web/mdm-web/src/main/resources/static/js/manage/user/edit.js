@@ -23,6 +23,8 @@ var certTypeData = window.top.dictionaryData.certType();
 var acctLevelData = window.top.dictionaryData.acctLevel();
 var genderData = window.top.dictionaryData.gender();
 
+loading.screenMaskEnable('container');
+
 // 获取人员信息
 function getSysUerInfo () {
     $http.get('/system/getSysUserDeptPosition', {
@@ -183,7 +185,7 @@ function initUpdateTable () {
                 //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                 callback(returnData);
-                // loading.screenMaskDisable('container');
+                loading.screenMaskDisable('container');
             }, function (err) {
                 loading.screenMaskDisable('container');
             })
@@ -349,17 +351,23 @@ function editOrgPost (index) {
     var orgEditForm = $('#orgEdit');
     orgValidate = new Validate(orgEditForm);
     orgValidate.immediate();
-    orgValidate.isAllPass();
-    orgEditForm.find(':input').each(function () {
-        $(this).hover(function () {
-            orgValidate.isPass($(this));
-        });
-    });
+    // orgValidate.isAllPass();
+    // orgEditForm.find(':input').each(function () {
+    //     $(this).hover(function () {
+    //         orgValidate.isPass($(this));
+    //     });
+    // });
+    if(editFlag != 0){
+        $("#orgName").attr("disabled","true");
+    }else{
+        $("#orgName").removeAttr("disabled");
+    }
 }
 //新增/修改 归属组织职位信息
 function addOrgList () {
     if (!orgValidate.isAllPass())
         return;
+    var hasOrg = 0;
     if (editFlag) {
         //修改归属组织职位信息
         sysOrgPostObj = sysUserDeptPositionVos[editFlag-1];
@@ -384,6 +392,13 @@ function addOrgList () {
     }
     else {
         //新增归属组织职位信息
+        for(var i=0;i<sysUserDeptPositionVos.length;i++){
+            if(orgList[0].id == sysUserDeptPositionVos[i].orgCode){
+                hasOrg = 1;
+                break;
+            }
+        }
+
         sysOrgPostObj  = {};
         sysOrgPostObj.orgCode = orgList[0].id;
         sysOrgPostObj.orgName = orgList[0].name;
@@ -392,17 +407,21 @@ function addOrgList () {
         for (var i = 0; i < postList.length; i++) {
             sysOrgPostObj.userPositionRefList.push({positionCode: postList[i].positionCode})
         }
-        $http.post('/sysUserDeptRef/addUserDeptPositionDef', JSON.stringify(sysOrgPostObj), function () {
-            $('#orgPostEditBtn').show();
-            $('#delBtn').show();
-            $('#orgEdit').removeClass( 'edit-form');
-            $('#orgEdit').html('');
-            loading.screenMaskDisable('container');
-            toastr.success('新增成功！');
-            getSysUerInfo();
-        }, function () {
-            loading.screenMaskDisable('container');
-        })
+        if(hasOrg == 0){
+            $http.post('/sysUserDeptRef/addUserDeptPositionDef', JSON.stringify(sysOrgPostObj), function () {
+                $('#orgPostEditBtn').show();
+                $('#delBtn').show();
+                $('#orgEdit').removeClass( 'edit-form');
+                $('#orgEdit').html('');
+                loading.screenMaskDisable('container');
+                toastr.success('新增成功！');
+                getSysUerInfo();
+            }, function () {
+                loading.screenMaskDisable('container');
+            })
+        }else{
+            toastr.error('归属组织信息已存在！');
+        }
     }
     // $('#orgPostEditBtn').show();
     // $('#delBtn').show();
@@ -453,12 +472,20 @@ function getOrg() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
+            if(checkNode.length != 0 && orgList.length != 0 && checkNode[0].id != orgList[0].id){
+                $("#postName").val("");
+                postList = [];
+            }else if(checkNode.length == 0){
+                $("#postName").val("");
+                postList = [];
+            }
             orgList = checkNode;
             if (orgList.length > 0)
                 $('#orgName').val(orgList[0].name);
             else
                 $('#orgName').val('');
             parent.layer.close(index);
+            orgValidate.isAllPass();
         }
     });
 }
@@ -497,6 +524,7 @@ function getPost() {
             }
             $('#postName').val(postStr);
             parent.layer.close(index);
+            orgValidate.isAllPass();
         }
     });
 }
