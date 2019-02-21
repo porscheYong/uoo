@@ -92,7 +92,21 @@ public class ModifyHistoryController {
         if(commonTableId!=null){
             Page<ModifyHistoryDTO> page = new Page<>(pageNo, pageSize);
              List<ModifyHistoryDTO> selectPageDTO = modifyHistoryService.selectPageDTO(page,  commonTableId.longValue() , Long.valueOf(recordId).longValue() );
-            page.setRecords(selectPageDTO);
+             StringBuilder sb= new StringBuilder();
+             for (ModifyHistoryDTO modifyHistoryDTO : selectPageDTO) {
+                 List<String> orgNamesByAccout = modifyHistoryService.getOrgNamesByAccout(modifyHistoryDTO.getUserAccout());
+                 if(orgNamesByAccout!=null){
+                     sb.delete( 0, sb.length() );
+                     for (int i =0;i<orgNamesByAccout.size();i++) {
+                         if(i!=0){
+                             sb.append(",");
+                         }
+                         sb.append(orgNamesByAccout.get(i));
+                     }
+                 }
+                 modifyHistoryDTO.setUserOrgName(sb.toString());
+            }
+             page.setRecords(selectPageDTO);
              ret.setData(page);
         }
         ret.setState(1000);

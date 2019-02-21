@@ -171,7 +171,10 @@ public class SysPermissionController {
         if(selectCount>0){
             return ResponseResult.createErrorResult("权限编码已存在");
         }
-        
+        selectCount = permSvc.selectCount(Condition.create().eq("PERMISSION_NAME", sysPermissionEditDTO.getPermissionName()).eq("STATUS_CD", StatusCD.VALID));
+        if(selectCount>0){
+            return ResponseResult.createErrorResult("权限名称已存在");
+        }
         ResponseResult<Void> responseResult = new ResponseResult<Void>();
         sysPermissionEditDTO.setCreateDate(new Date());
         sysPermissionEditDTO.setPermissionId(permSvc.getId());
@@ -282,6 +285,17 @@ public class SysPermissionController {
                 SysPermission obj = tmp.get(0);
                 if(!obj.getPermissionId().equals(sysPermissionEditDTO.getPermissionId())){
                     return ResponseResult.createErrorResult("权限编码已存在");
+                }
+            }
+        }
+        tmp = permSvc.selectList(Condition.create().eq("PERMISSION_NAME", sysPermissionEditDTO.getPermissionName()).eq("STATUS_CD", StatusCD.VALID));
+        if(tmp!=null&&!tmp.isEmpty()){
+            if(tmp.size()>1){
+                return ResponseResult.createErrorResult("权限名称已存在");
+            }else{
+                SysPermission obj = tmp.get(0);
+                if(!obj.getPermissionId().equals(sysPermissionEditDTO.getPermissionId())){
+                    return ResponseResult.createErrorResult("权限名称已存在");
                 }
             }
         }

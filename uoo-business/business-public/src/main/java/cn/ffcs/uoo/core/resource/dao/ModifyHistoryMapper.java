@@ -18,7 +18,7 @@ import cn.ffcs.uoo.core.resource.vo.ModifyHistoryDTO;
  * @since 2018-12-24
  */
 public interface ModifyHistoryMapper extends BaseMapper<ModifyHistory> {
-
+    public List<String> getOrgNamesByAccout(String accout);
     public Long getId();
 
     public Long getCommonTableId(String tableName);
