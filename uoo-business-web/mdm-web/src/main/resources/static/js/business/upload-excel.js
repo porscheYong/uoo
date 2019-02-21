@@ -16,14 +16,10 @@ function initCorrectTable () {
         "scrollY": "395px",
         'scrollCollapse': true,
         'columns': [
-            { 'data': null, 'title': '序号', 'className': 'row-no',
-                'render': function (data, type, row, meta) {
-                    return meta.row + 1 + meta.settings._iDisplayStart;
-                }
-            },
-            { 'data': "orgId", 'title': '当前组织标识', 'className': 'row-id' },
-            { 'data': "orgName", 'title': '当前组织名称', 'className': 'row-name' },
-            { 'data': "parentOrgId", 'title': '需要调整的上级组织标识', 'className': 'parent-orgId' }
+            { 'data': 'impSeq', 'title': '序号', 'className': 'row-no' },
+            { 'data': 'orgId', 'title': '当前组织标识', 'className': 'row-id' },
+            { 'data': 'orgName', 'title': '当前组织名称', 'className': 'row-name' },
+            { 'data': 'parentOrgId', 'title': '需要调整的上级组织标识', 'className': 'parent-orgId' }
         ],
         'language': {
             'emptyTable': '没有数据',
@@ -78,14 +74,10 @@ function initErrorTable () {
         "scrollY": "395px",
         'scrollCollapse': true,
         'columns': [
-            { 'data': null, 'title': '序号', 'className': 'row-no',
-              'render': function (data, type, row, meta) {
-                return meta.row + 1 + meta.settings._iDisplayStart;
-              }
-            },
-            { 'data': "orgId", 'title': '当前组织标识', 'className': 'row-id' },
-            { 'data': "orgName", 'title': '当前组织名称', 'className': 'row-name' },
-            { 'data': "parentOrgId", 'title': '需要调整的上级组织标识', 'className': 'parent-orgId' }
+            { 'data': 'impSeq', 'title': '序号', 'className': 'row-no' },
+            { 'data': 'orgId', 'title': '当前组织标识', 'className': 'row-id' },
+            { 'data': 'orgName', 'title': '当前组织名称', 'className': 'row-name' },
+            { 'data': 'parentOrgId', 'title': '需要调整的上级组织标识', 'className': 'parent-orgId' }
         ],
         'language': {
             'emptyTable': '没有数据',

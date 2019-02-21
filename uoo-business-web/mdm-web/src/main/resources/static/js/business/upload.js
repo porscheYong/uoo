@@ -44,6 +44,7 @@ function readFile (file) {
 
     reader.onload = function (e) {
         toastr.success('文件读取成功');
+        $('#fileName').html(file.name);
         var data = e.target.result;
         formData = new FormData();
         formData.append('fileInfo', file);

@@ -220,86 +220,13 @@ function  editUser() {
     var userHtml = userTemplate(personalData);
     //输入模板
     $('#userInfo').html(userHtml);
-     
-    //手动插入吧
-    var mobileHtml="";
-    if(personalData.personalData.tbMobileVoList.length>0){
-        for(var i=0;i<personalData.personalData.tbMobileVoList.length;i++){
-            var d=personalData.personalData.tbMobileVoList[i];
-            if(d.content==null||d.content=='null'){
-                personalData.personalData.tbMobileVoList[i].content='';
-            }
-        }
-        for(var i=0;i<personalData.personalData.tbMobileVoList.length;i++){
-            var d=personalData.personalData.tbMobileVoList[i];
-            if(i==0){
-            	mobileHtml+="<div class='col-md-12 col-sm-12 col-xs-12'>";
-            	mobileHtml+="<label for='mobile' class='form-item-label-required col-md-4 col-sm-4 col-xs-12' style='padding-right: 20px;line-height: 40px;text-align: right;'>联系电话</label>";
-            	mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' class='ui-input col-md-7 col-sm-7 col-xs-12' value='"+d.content+"'   required />";
-            	mobileHtml+="<a class='col-md-1 col-sm-1 col-xs-12' href='javascript:void(0)' onclick='addMobileInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 30px;'></span></a>";
-            	mobileHtml+="</div>";
-            }else{
-            	mobileHtml+="<div class='col-md-12 col-sm-12 col-xs-12'>";
-            	mobileHtml+="<label for='mobile' class='col-md-4 col-sm-4 col-xs-12' style='padding-right: 20px;line-height: 40px;text-align: right;'></label>";
-            	mobileHtml+="<input name='mobiles' contactid='"+d.contactId+"' class='ui-input col-md-7 col-sm-7 col-xs-12' value='"+d.content+"'  required />";
-            	mobileHtml+="<a class='icon-del col-md-1 col-sm-1 col-xs-12' href='javascript:void(0)'  ><span class='fa fa-minus-circle ' style='padding-right: 0; font-size: 30px;'></span></a>";
-            	mobileHtml+="</div>";
-            }
-             
-        }
-    }else{
-    	mobileHtml+="<div class='col-md-12 col-sm-12 col-xs-12'>";
-    	mobileHtml+="<label for='mobile' class='form-item-label-required col-md-4 col-sm-4 col-xs-12' style='padding-right: 20px;line-height: 40px;text-align: right;'>联系电话</label>";
-    	mobileHtml+="<input name='mobiles' contactid='' class='ui-input col-md-7 col-sm-7 col-xs-12'   required />";
-    	mobileHtml+="<a class='col-md-1 col-sm-1 col-xs-12' href='javascript:void(0)' onclick='addMobileInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 30px;'></span></a>";
-    	mobileHtml+="</div>";
-        
-    }
-    
-    
-    
-    
-    var emailHtml="";
-    if(personalData.personalData.tbEamilVoList.length>0){
-        for(var i=0;i<personalData.personalData.tbEamilVoList.length;i++){
-            var d=personalData.personalData.tbEamilVoList[i];
-            if(d.content==null||d.content=='null'){
-                personalData.personalData.tbEamilVoList[i].content='';
-            }
-        }
-        for(var i=0;i<personalData.personalData.tbEamilVoList.length;i++){
-            var d=personalData.personalData.tbEamilVoList[i];
-            if(i==0){
-            	emailHtml+="<div class='col-md-12 col-sm-12 col-xs-12'>";
-            	emailHtml+="<label for='mobile' class='form-item-label-required col-md-4 col-sm-4 col-xs-12' style='padding-right: 20px;line-height: 40px;text-align: right;'>邮箱</label>";
-            	emailHtml+="<input name='emails' contactid='"+d.contactId+"' class='ui-input col-md-7 col-sm-7 col-xs-12' value='"+d.content+"'   required />";
-            	emailHtml+="<a class='col-md-1 col-sm-1 col-xs-12' href='javascript:void(0)' onclick='addEmailInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 30px;'></span></a>";
-            	emailHtml+="</div>";
-            }else{
-            	emailHtml+="<div class='col-md-12 col-sm-12 col-xs-12'>";
-            	emailHtml+="<label for='mobile' class='col-md-4 col-sm-4 col-xs-12' style='padding-right: 20px;line-height: 40px;text-align: right;'></label>";
-            	emailHtml+="<input name='emails' contactid='"+d.contactId+"' class='ui-input col-md-7 col-sm-7 col-xs-12' value='"+d.content+"'  required />";
-            	emailHtml+="<a class='icon-del col-md-1 col-sm-1 col-xs-12' href='javascript:void(0)'  ><span class='fa fa-minus-circle ' style='padding-right: 0; font-size: 30px;'></span></a>";
-            	emailHtml+="</div>";
-            }
-             
-        }
-    }else{
-    	emailHtml+="<div class='col-md-12 col-sm-12 col-xs-12'>";
-    	emailHtml+="<label for='mobile' class='form-item-label-required col-md-4 col-sm-4 col-xs-12' style='padding-right: 20px;line-height: 40px;text-align: right;'>邮箱</label>";
-    	emailHtml+="<input name='emails'  class='ui-input col-md-7 col-sm-7 col-xs-12'    required />";
-    	emailHtml+="<a class='col-md-1 col-sm-1 col-xs-12' href='javascript:void(0)' onclick='addEmailInput()'><span class='fa fa-plus-circle icon-add' style='padding-right: 0; font-size: 30px;'></span></a>";
-    	emailHtml+="</div>";
-         
-    }
-    $('#emailDiv').append(emailHtml);
-    $('#phoneDiv').append(mobileHtml);
+
     laydate.render({
         elem:  'input[isTime="yes"]'
     });
 
     $('.icon-del').on('click', function () {
-        $(this).parent().remove();
+        $(this).parent().parent().remove();
     });
     $("#choseFileImg").change( function() {
         addPsonImg();
@@ -783,7 +710,8 @@ function updatePersonnel(){
     updates.address=$('#address').val();
     
     var tbMobileVoList =new Array();
-    var mobiles=$("input[name='mobiles']").each(function(){
+    $('#tbMobileVoList').find(':input').each(function(index){
+        var firstFlag = index == 0? 1: 0;
         var obj={};
         if($(this).attr('contactid')!=null&&typeof($(this).attr('contactid')) != "undefined"&&$(this).attr('contactid').length>0){
             obj.contactId=$(this).attr('contactid');
@@ -793,12 +721,13 @@ function updatePersonnel(){
             obj.content=$(this).val();
             obj.personnelId=personalData.personalData.personnelId;
             obj.contactType=1;
+            obj.firstFlag = firstFlag;
             tbMobileVoList.push(obj);
         }
 
     }) ;
     var tbEamilVoList =new Array();
-    var emails=$("input[name='emails']").each(function(){
+    $('#tbEamilVoList').find(':input').each(function(){
         var obj={};
         if($(this).attr('contactid')!=null&&typeof($(this).attr('contactid')) != "undefined"&&$(this).attr('contactid').length>0){
             obj.contactId=$(this).attr('contactid');
@@ -823,31 +752,31 @@ function updatePersonnel(){
     });
      
 }
-function addEmailInput(){
-	var mh=" ";
-    mh+="<div class='col-md-12 col-sm-12 col-xs-12'>";
-    mh+="<label for='mobile' class='col-md-4 col-sm-4 col-xs-12' style='padding-right: 20px;line-height: 40px;text-align: right;'></label>";
-    mh+="<input name='emails' contactid='' class='ui-input col-md-7 col-sm-7 col-xs-12' value=''  required />";
-    mh+="<a class='icon-del col-md-1 col-sm-1 col-xs-12' href='javascript:void(0)'  ><span class='fa fa-minus-circle ' style='padding-right: 0; font-size: 30px;'></span></a>";
-    mh+="</div>";
-    $('#emailDiv').append(mh);
+
+// 点击电话新增btn
+function addMobile (e) {
+    $("<div class='mobile-item' style='width: 100%; position: relative; display: inline-block;'><input class='ui-input col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4'><div class='fright del'><a class='icon-del' href='javascript:void(0)'><span class='fa fa-minus-circle'></span></a></div><div class='fright default-set'><a href='javascript:void(0)' onclick='setDefault(this)'>设为默认</a></div></div>").insertBefore($(e).parent());
     $('.icon-del').on('click', function () {
-        $(this).parent().remove();
+        $(this).parent().parent().remove();
     });
 }
-function addMobileInput(){
-    var mh=" ";
-    mh+="<div class='col-md-12 col-sm-12 col-xs-12'>";
-    mh+="<label for='mobile' class='col-md-4 col-sm-4 col-xs-12' style='padding-right: 20px;line-height: 40px;text-align: right;'></label>";
-    mh+="<input name='mobiles' contactid='' class='ui-input col-md-7 col-sm-7 col-xs-12' value=''  required />";
-    mh+="<a class='icon-del col-md-1 col-sm-1 col-xs-12' href='javascript:void(0)'  ><span class='fa fa-minus-circle ' style='padding-right: 0; font-size: 30px;'></span></a>";
-    mh+="</div>";
-     
-    $('#phoneDiv').append(mh);
+// 点击邮箱新增btn
+function addEmail (e) {
+    $("<div style='width: 100%; position: relative; display: inline-block;'><input class='ui-input col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4'><div class='fright del'><a class='icon-del' href='javascript:void(0)'><span class='fa fa-minus-circle'></span></a></div></div>").insertBefore($(e).parent())
     $('.icon-del').on('click', function () {
-        $(this).parent().remove();
+        $(this).parent().parent().remove();
     });
 }
+// 设置默认电话
+function setDefault (e) {
+    var temp1 = $('#mobile').val();
+    var temp2 = $(e).parent().siblings('input').val();
+    if (temp1 && temp2) {
+        $('#mobile').val(temp2);
+        $(e).parent().siblings('input').val(temp1);
+    }
+}
+
 function deleteJob(id){
     parent.layer.confirm('确定删除?', {
         icon: 0,
