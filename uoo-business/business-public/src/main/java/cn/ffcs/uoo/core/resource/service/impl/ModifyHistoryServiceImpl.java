@@ -241,4 +241,10 @@ public class ModifyHistoryServiceImpl extends ServiceImpl<ModifyHistoryMapper, M
         return baseMapper.selectPageDTO(page, map);
     }
 
+
+    @Override
+    public List<String> getOrgNamesByAccout(String accout) {
+        return baseMapper.getOrgNamesByAccout(accout);
+    }
+
 }

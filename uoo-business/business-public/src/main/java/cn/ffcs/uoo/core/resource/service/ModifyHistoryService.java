@@ -19,7 +19,7 @@ import cn.ffcs.uoo.core.resource.vo.ModifyHistoryDTO;
 public interface ModifyHistoryService extends IService<ModifyHistory> {
 
     public Long getId();
-
+    public List<String> getOrgNamesByAccout(String accout);
     public void delete(ModifyHistory modifyHistory);
 
     public void add(ModifyHistory modifyHistory);

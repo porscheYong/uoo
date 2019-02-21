@@ -4,6 +4,7 @@ var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var refCode = getQueryString('refCode');
 var formData;
+var loading = parent.loading;
 var toastr = window.top.toastr;
 
 function importFile (e) {
@@ -42,7 +43,7 @@ function readFile (file) {
     };
 
     reader.onload = function (e) {
-        toastr.info('文件读取成功');
+        toastr.success('文件读取成功');
         var data = e.target.result;
         formData = new FormData();
         formData.append('fileInfo', file);
@@ -52,6 +53,17 @@ function readFile (file) {
 
 //上传
 function upload () {
+    if (!formData) {
+        parent.layer.confirm('请选择后缀为.xlsx或者.xls的EXCEL文件', {
+            icon: 0,
+            title: '提示',
+            btn: ['确定']
+        }, function(index){
+            parent.layer.close(index);
+        });
+        return false;
+    }
+    loading.screenMaskEnable('container');
     var url =  "/excelOrgImport/importExcelFileData";
     var xhr = new XMLHttpRequest();
     xhr.onerror = function error(e) {
@@ -60,6 +72,7 @@ function upload () {
             title: '提示',
             btn: ['确定']
         }, function(index){
+            loading.screenMaskDisable('container');
             parent.layer.close(index);
         }, function(){
 
@@ -74,6 +87,7 @@ function upload () {
                 title: '提示',
                 btn: ['确定']
             }, function(index){
+                loading.screenMaskDisable('container');
                 parent.layer.close(index);
             }, function(){
 
@@ -82,8 +96,9 @@ function upload () {
         }
         else {
             var data = response.data;
-            var url = 'upload-excel.html?fileSign=' + data;
+            var url = 'upload-excel.html?fileSign=' + data + '&id=' + orgId + "&orgTreeId=" + orgTreeId + "&refCode=" + refCode + '&pid=' + pid + "&name=" + encodeURI(orgName);
             window.location.href = url;
+            loading.screenMaskDisable('container');
         }
     };
 
@@ -95,3 +110,8 @@ $('.button-load').on('click', function () {
     $("#load").click();
 });
 
+// 取消
+function cancel () {
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + "&refCode=" + refCode + '&pid=' + pid + "&name=" + encodeURI(orgName);
+    window.location.href = url;
+}

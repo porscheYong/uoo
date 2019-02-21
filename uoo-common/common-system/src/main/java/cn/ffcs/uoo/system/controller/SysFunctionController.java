@@ -84,6 +84,10 @@ public class SysFunctionController {
         if(size>0){
             return ResponseResult.createErrorResult("编码已存在");
         }
+        size=funcSvc.selectCount(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("FUNC_NAME", fun.getFuncName()));
+        if(size>0){
+            return ResponseResult.createErrorResult("名称已存在");
+        }
         fun.setFuncId(funcSvc.getId());
         fun.setCreateDate(new Date());
         funcSvc.insert(fun);
@@ -110,6 +114,18 @@ public class SysFunctionController {
                 SysFunction obj = tmp.get(0);
                 if(!obj.getFuncId().equals(fun.getFuncId())){
                     return ResponseResult.createErrorResult("编码已存在");
+                }
+            }
+        }
+        
+        tmp = funcSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("FUNC_NAME", fun.getFuncName()));
+        if(tmp!=null&&!tmp.isEmpty()){
+            if(tmp.size()>1){
+                return ResponseResult.createErrorResult("名称已存在");
+            }else{
+                SysFunction obj = tmp.get(0);
+                if(!obj.getFuncId().equals(fun.getFuncId())){
+                    return ResponseResult.createErrorResult("名称已存在");
                 }
             }
         }

@@ -170,7 +170,17 @@ public class SysRoleController {
                 }
             }
         }
-        
+        tmp = sysRoleService.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_NAME", sysRole.getRoleName()));
+        if(tmp!=null&&!tmp.isEmpty()){
+            if(tmp.size()>1){
+                return ResponseResult.createErrorResult("名称已存在");
+            }else{
+                SysRole obj = tmp.get(0);
+                if(!obj.getRoleId().equals(sysRole.getRoleId())){
+                    return ResponseResult.createErrorResult("名称已存在");
+                }
+            }
+        }
         sysRole.setUpdateDate(new Date());
         SysRole obj=new SysRole();
         BeanUtils.copyProperties(sysRole, obj);
@@ -214,6 +224,10 @@ public class SysRoleController {
         long c=sysRoleService.selectCount(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_CODE", roleCode));
         if(c>0){
             return ResponseResult.createErrorResult("编码已存在");
+        }
+        c=sysRoleService.selectCount(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ROLE_NAME", sysRole.getRoleName()));
+        if(c>0){
+            return ResponseResult.createErrorResult("名称已存在");
         }
         ResponseResult<Void> responseResult = new ResponseResult<Void>();
         sysRole.setCreateDate(new Date());
