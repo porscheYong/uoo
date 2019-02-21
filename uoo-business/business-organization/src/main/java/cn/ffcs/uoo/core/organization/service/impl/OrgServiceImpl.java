@@ -315,15 +315,15 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         if(fullParentNameSplit.contains(fullNameSplit)){
             return "节点不能移动到该节点的子节点上";
         }
-        String fullName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),orgId.toString(),"");
-        com.baomidou.mybatisplus.mapper.Wrapper orgOrgTreeWrapper = Condition.create()
-                .eq("ORG_TREE_ID",orgTreeId)
-                .eq("STATUS_CD","1000")
-                .like("ORG_BIZ_FULL_NAME",fullName,SqlLike.RIGHT);
-        int count = orgOrgtreeRelService.selectCount(orgOrgTreeWrapper);
-        if(count>50){
-            return "移动组织的下级组织数量太大，请联系管理员操作";
-        }
+//        String fullName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),orgId.toString(),"");
+//        com.baomidou.mybatisplus.mapper.Wrapper orgOrgTreeWrapper = Condition.create()
+//                .eq("ORG_TREE_ID",orgTreeId)
+//                .eq("STATUS_CD","1000")
+//                .like("ORG_BIZ_FULL_NAME",fullName,SqlLike.RIGHT);
+//        int count = orgOrgtreeRelService.selectCount(orgOrgTreeWrapper);
+//        if(count>50){
+//            return "移动组织的下级组织数量太大，请联系管理员操作";
+//        }
         return "";
     }
 

@@ -607,6 +607,7 @@ public class OrgPersonRelController extends BaseController {
 //        commonSystemService.getSysDataRuleList(tabNames1, accout,"15960");
 //        // TODO: 2019/2/18
 
+        System.out.printf("getPerOrgRelPage-权限获取时间开始: %tF %<tT%n", System.currentTimeMillis());
         Page<PsonOrgVo> page = new Page<PsonOrgVo>(0,0);
         PsonOrgVo psonOrgVo = new PsonOrgVo();
         psonOrgVo.setIsSearchlower(StrUtil.isNullOrEmpty(isSearchlower)?"0":isSearchlower);
@@ -622,7 +623,6 @@ public class OrgPersonRelController extends BaseController {
             tabNames.add("TB_ORG_ORGTREE_REL");
             List<SysDataRule> sdrList = commonSystemService.getSysDataRuleList(tabNames, accout);
 
-
             // TODO: 2019/2/20
             List<String> tabNamenews = new ArrayList<String>();
             tabNamenews.add("TB_ORG_ORGTREE_REL");
@@ -630,7 +630,6 @@ public class OrgPersonRelController extends BaseController {
             if(sdrList1!=null && sdrList1.size()>0){
                 orgOrgTreeRelParamsA = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
             }
-
 
             if(sdrList!=null && sdrList.size()>0){
                 if(!commonSystemService.isOrgTreeAutho(orgTreeId,sdrList)){
@@ -647,6 +646,7 @@ public class OrgPersonRelController extends BaseController {
                 //orgOrgTreeRelParamsA = commonSystemService.getSysDataRuleParams("TB_ORG_ORGTREE_REL","ORG_BIZ_FULL_ID",sdrList);
             }
         }
+        System.out.printf("getPerOrgRelPage-权限获取时间结束: %tF %<tT%n", System.currentTimeMillis());
         String orgOrgTreeRelParamsB = commonSystemService.getQueryPerPath(orgId,orgOrgTreeRelParamsA,orgtree.getOrgTreeId().toString());
         psonOrgVo.setTabOrgOrgTreeRelParams(orgOrgTreeRelParamsB);
         if(!StrUtil.isNullOrEmpty(orgOrgTreeRelParamsA) && psonOrgVo.getIsSearchlower().equals("0") && !commonSystemService.isOrgQueryAuth(orgId,orgOrgTreeRelParamsA)){
@@ -687,6 +687,16 @@ public class OrgPersonRelController extends BaseController {
             return ret;
         }
 
+        System.out.printf("getPerOrgRelPage-简单数据查询开始: %tF %<tT%n", System.currentTimeMillis());
+        if("1".equals(psonOrgVo.getIsSearchlower()) && !StrUtil.isNullOrEmpty(search)){
+            if(!orgPersonRelService.JudgePer(search)){
+                ret.setState(ResponseResult.STATE_OK);
+                ret.setMessage("成功");
+                ret.setData(page);
+            }
+        }
+        System.out.printf("getPerOrgRelPage-简单数据查询结束: %tF %<tT%n", System.currentTimeMillis());
+        System.out.printf("getPerOrgRelPage-数据查询开始: %tF %<tT%n", System.currentTimeMillis());
         if(orgLev.getOrgLevel()==1 && "1".equals(psonOrgVo.getIsSearchlower())){
             //查全部
             page = orgPersonRelService.selectAllPerOrgRelPage(psonOrgVo);
@@ -694,6 +704,7 @@ public class OrgPersonRelController extends BaseController {
             //查部分
             page = orgPersonRelService.selectPerOrgRelPage(psonOrgVo);
         }
+        System.out.printf("getPerOrgRelPage-数据查询结束: %tF %<tT%n", System.currentTimeMillis());
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("成功");
         ret.setData(page);

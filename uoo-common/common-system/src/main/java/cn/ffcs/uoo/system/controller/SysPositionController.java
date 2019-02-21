@@ -295,6 +295,22 @@ public class SysPositionController {
             ret.setMessage("职位编码已经存在");
             return ret;
         }
+
+        if(StrUtil.isNullOrEmpty(pos.getPositionName())){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("职位名称不能为空");
+            return ret;
+        }
+        Wrapper sysPosition1Wrapper = Condition.create()
+                .eq("POSITION_NAME",pos.getPositionName()).eq("STATUS_CD","1000");
+        num = sysPositionService.selectCount(sysPosition1Wrapper);
+        if(num>0){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("职位名称重复");
+            return ret;
+        }
+
+
         String batchNum = modifyHistoryService.getBatchNumber();
         Long positionId = sysPositionService.getId();
         SysPosition sysPosition = new SysPosition();
