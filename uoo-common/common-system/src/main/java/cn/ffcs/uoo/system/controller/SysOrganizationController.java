@@ -246,7 +246,7 @@ public class SysOrganizationController {
                 .eq("ORG_NAME",vo.getOrgName())
                 .eq("STATUS_CD","1000");
         int num = sysOrganizationService.selectCount(sysOrgWrapper);
-        if(num>0){
+        if(num>1){
             ret.setState(ResponseResult.STATE_ERROR);
             ret.setMessage("组织名称重复");
             return ret;

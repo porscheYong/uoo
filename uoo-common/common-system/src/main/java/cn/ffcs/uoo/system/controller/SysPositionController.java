@@ -179,6 +179,12 @@ public class SysPositionController {
             return ret;
         }
 
+        if(StrUtil.isNullOrEmpty(sysPositionVo.getPositionName())){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("职位名称不存在");
+            return ret;
+        }
+
         Wrapper positionWrapper = Condition.create()
                 .eq("POSITION_ID",sysPositionVo.getPositionId())
                 .eq("STATUS_CD","1000");
@@ -188,6 +194,18 @@ public class SysPositionController {
             ret.setMessage("职位不存在");
             return ret;
         }
+
+        Wrapper sysPosition1Wrapper = Condition.create()
+                .eq("POSITION_NAME",sysPositionVo.getPositionName()).eq("STATUS_CD","1000");
+        int num = sysPositionService.selectCount(sysPosition1Wrapper);
+        if(num>1){
+            ret.setState(ResponseResult.STATE_ERROR);
+            ret.setMessage("职位名称重复");
+            return ret;
+        }
+
+
+
         sysPosition.setStatusCd(sysPositionVo.getStatusCd());
         if(!StrUtil.isNullOrEmpty(sysPositionVo.getRegionNbr())) {
             sysPosition.setRegionNbr(sysPositionVo.getRegionNbr());

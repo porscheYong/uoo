@@ -1657,8 +1657,10 @@ public class OrgController extends BaseController {
         if(!StrUtil.isNullOrEmpty(orgTreeId)){
             orgVo.setOrgTreeId(new Long(orgTreeId));
         }
-        if(StrUtil.isNumeric(search)){
-            orgVo.setIsSearchNum("1");
+        if(!StrUtil.isNullOrEmpty(search)){
+            if(StrUtil.isNumeric(search)){
+                orgVo.setIsSearchNum("1");
+            }
         }
         Page<OrgVo> page = orgService.selectOrgPage(orgVo);
         ret.setState(ResponseResult.STATE_OK);

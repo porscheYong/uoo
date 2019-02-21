@@ -202,10 +202,10 @@
         AND B.ORG_TREE_ID = #{orgVo.orgTreeId}
         )) where 1=1
         <if test="orgVo.search != null and orgVo.search != ''">
-        <if test='psonOrgVo.isSearchNum!="1"'>
+        <if test='orgVo.isSearchNum!="1"'>
             AND INSTR(orgName,#{orgVo.search})>0
         </if>
-        <if test='psonOrgVo.isSearchNum=="1"'>
+        <if test='orgVo.isSearchNum=="1"'>
             AND (INSTR(orgName,#{orgVo.search})>0
             or orgCode = #{orgVo.search})
         </if>

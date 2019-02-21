@@ -89,7 +89,7 @@ public class ExcelOrgImportController {
         long time = System.currentTimeMillis();
         String t = String.valueOf(time/1000);
         List<ExcelOrgImport> excelList = new ArrayList<>();
-        for(int i=1;i<rowCount+1;i++){
+        for(int i=3;i<rowCount;i++){
             Row row = sheet.getRow(i);
             ExcelOrgImport excelOrgImport = new ExcelOrgImport();
             for(int j=0;j<row.getLastCellNum();j++){
@@ -121,10 +121,13 @@ public class ExcelOrgImportController {
             excelOrgImport.setFileName(fileName);
             excelOrgImport.setExcelOrgImportId(excelId);
             excelOrgImport.setFileSign(t);
-            String errMsg = orgService.JudgeMoveOrg(new Long(excelOrgImport.getOrgId()),
-                        new Long(excelOrgImport.getParentOrgId()),excelOrgImport.getOrgName(),new Long(orgTreeId));
+            String errMsg = orgService.JudgeMoveOrg(
+                        StrUtil.isNullOrEmpty(excelOrgImport.getOrgId())?null:new Long(excelOrgImport.getOrgId()),
+                        StrUtil.isNullOrEmpty(excelOrgImport.getParentOrgId())?null:new Long(excelOrgImport.getParentOrgId()),
+                        excelOrgImport.getOrgName(),
+                        new Long(orgTreeId));
 
-            if(excelList!=null && excelList.size()>0){
+            if(StrUtil.isNullOrEmpty(errMsg) && excelList!=null && excelList.size()>0){
                 for(ExcelOrgImport e : excelList){
                     if(e.getOrgName().equals(excelOrgImport.getOrgName()) &&
                             e.getOrgId().equals(excelOrgImport.getOrgId()) &&
