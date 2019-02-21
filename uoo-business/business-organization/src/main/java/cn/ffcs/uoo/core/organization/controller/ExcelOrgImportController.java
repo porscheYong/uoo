@@ -176,18 +176,19 @@ public class ExcelOrgImportController {
             ret.setState(ResponseResult.PARAMETER_ERROR);
             return ret;
         }
-        com.baomidou.mybatisplus.mapper.Wrapper excelerrWrapper = Condition.create()
-                .eq("FILE_SIGN",fileSign)
-                .eq("SIGN","1")
-                .eq("STATUS_CD","1000");
-        int errCount = excelOrgImportService.selectCount(excelerrWrapper);
-        if(errCount>0){
-            ret.setMessage("文件数据错误未处理");
-            ret.setState(ResponseResult.PARAMETER_ERROR);
-            return ret;
-        }
+//        com.baomidou.mybatisplus.mapper.Wrapper excelerrWrapper = Condition.create()
+//                .eq("FILE_SIGN",fileSign)
+//                .eq("SIGN","1")
+//                .eq("STATUS_CD","1000");
+//        int errCount = excelOrgImportService.selectCount(excelerrWrapper);
+//        if(errCount>0){
+//            ret.setMessage("文件数据错误未处理");
+//            ret.setState(ResponseResult.PARAMETER_ERROR);
+//            return ret;
+//        }
         com.baomidou.mybatisplus.mapper.Wrapper excelWrapper = Condition.create()
                 .eq("FILE_SIGN",fileSign)
+                .eq("SIGN","0")
                 .eq("STATUS_CD","1000");
         List<ExcelOrgImport> excelOrgImportList = excelOrgImportService.selectList(excelWrapper);
         if(excelOrgImportList!=null){

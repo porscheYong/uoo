@@ -44,6 +44,7 @@
                    AND B.STATUS_CD = '1000'
                    AND B.POSITION_CODE = C.POSITION_CODE
                    AND A.ORG_CODE = B.ORG_CODE) EXTFIELD1 FROM SYS_ORGANIZATION A WHERE A.STATUS_CD='1000' AND A.PARENT_ORG_CODE=#{id}
+                   ORDER BY A.SORT
     </select>
 
     <select id="selectOrgTree" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
@@ -108,7 +109,7 @@
             <if test="vo.search!=null and vo.search!=''">
                 AND ORG_NAME like '%'||#{vo.search}||'%'
             </if>
-
+            ORDER BY A.SORT
         </when>
         <otherwise>
             SELECT
@@ -134,6 +135,7 @@
             <if test="vo.search!=null and vo.search!=''">
                 AND ORG_NAME like '%'||#{vo.search}||'%'
             </if>
+            ORDER BY A.SORT
         </otherwise>
         </choose>
     </select>

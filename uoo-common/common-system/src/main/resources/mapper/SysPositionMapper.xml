@@ -39,6 +39,7 @@
           AND A.ROLE_CODE = B.ROLE_CODE AND A.POSITION_CODE=C.POSITION_CODE) EXTFIELD1
         FROM SYS_POSITION C
         WHERE C.STATUS_CD = '1000' and C.PARENT_POSITION_CODE = #{positionCode}
+        ORDER BY C.SORT_NUM
 <!--         START WITH C.POSITION_ID = #{positionId}
          CONNECT BY PRIOR C.POSITION_ID = C.P_POSITION_ID -->
     </select>
@@ -100,6 +101,7 @@
             <if test="vo.search!=null and vo.search!=''">
                 AND A.POSITION_NAME like '%'||#{vo.search}||'%'
             </if>
+            ORDER BY A.SORT_NUM
         </when>
         <otherwise>
             SELECT * from (
@@ -129,7 +131,7 @@
             <if test="vo.search!=null and vo.search!=''">
                 AND positionName like '%'||#{vo.search}||'%'
             </if>
-
+            ORDER BY A.SORT_NUM
         </otherwise>
         </choose>
     </select>
