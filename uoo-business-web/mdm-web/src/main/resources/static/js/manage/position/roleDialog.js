@@ -76,7 +76,7 @@ function initRoleTree () {
         var nodes = zTree.getNodes();
         for(var i=0;i<nodes.length;i++){
             for(var j=0;j<posRoleList.length;j++){
-                if(nodes[i].id == posRoleList[j].roleId){
+                if(nodes[i].id == (posRoleList[j].roleId || posRoleList[j].id)){
                     zTree.checkNode(nodes[i], true);
                     break;
                 }
@@ -93,13 +93,13 @@ function onAsyncSuccess(event, treeId, treeNode, msg) {
     var zTree = $.fn.zTree.getZTreeObj("roleTree");
     if(treeNode.parent){
         for(var i=0;i<treeNode.children.length;i++){
+            zTree.expandNode(treeNode.children[i], true, false, false);
             for(var j=0;j<posRoleList.length;j++){
-                if(treeNode.children[i].id == posRoleList[j].roleId){
+                if(treeNode.children[i].id == (posRoleList[j].roleId || posRoleList[j].id)){
                     zTree.checkNode(treeNode.children[i], true);
                     break;
                 }
             }
-            zTree.expandNode(treeNode.children[i], true, false, false);
         }
     }
 }
@@ -111,16 +111,29 @@ function roleBeforeClick (treeId, treeNode, clickFlag) {
 function onRoleCheck (e, treeId, treeNode) {
     var zTree = $.fn.zTree.getZTreeObj("roleTree");
     var node = zTree.getNodeByTId(treeNode.tId);
-    if (checkNode.indexOf(node) === -1) {
+    var cList = [];
+    // if (checkNode.indexOf(node) === -1) {
+    //     checkNode.push(node);
+    //     renderTag()
+    // } else {
+    //     var idx;
+    //     for(var i=0;i<checkNode.length;i++){
+    //         if(checkNode[i].tId == node.tId){
+    //             idx = i;
+    //             break;
+    //         }
+    //     }
+    //     checkNode.splice(idx, 1);
+    //     renderTag();
+    // }
+    for(var i=0;i<checkNode.length;i++){
+        cList.push(~~checkNode[i].id || ~~checkNode[i].roleId);
+    }
+
+    if (cList.indexOf(~~node.id) === -1) {
         checkNode.push(node);
-        // checkRole.push({"roleId":node.id,"roleName":""});
         renderTag()
     } else {
-        // var idx = checkNode.findIndex(
-        //     function(v){
-        //         return v.tId == node.tId;
-        //     }
-        // );
         var idx;
         for(var i=0;i<checkNode.length;i++){
             if(checkNode[i].tId == node.tId){
@@ -129,7 +142,6 @@ function onRoleCheck (e, treeId, treeNode) {
             }
         }
         checkNode.splice(idx, 1);
-        // checkRole.splice(idx, 1);
         renderTag();
     }
 }
@@ -182,7 +194,7 @@ function autoCheck () {
     // var node = zTree.getNodeByTId("roleTree_" + id);
     // nodes.push(node);
     // zTree.checkNode(node, true);
-    checkNode.push({"id":posRoleList[i].roleId,"name":posRoleList[i].roleName,"tId":posRoleList[i].roleId});
+    checkNode.push({"id":posRoleList[i].roleId || posRoleList[i].id,"name":posRoleList[i].roleName || posRoleList[i].name,"tId":"roleTree_"+(posRoleList[i].roleId || posRoleList[i].id)});
     // checkRole.push({"roleId":node.id,"roleName":""});
   }
   renderTag();
