@@ -59,6 +59,7 @@
           AND A.ROLE_CODE = B.ROLE_CODE AND A.POSITION_CODE=C.POSITION_CODE) EXTFIELD1
         FROM SYS_POSITION C
         WHERE C.STATUS_CD = '1000' AND C.PARENT_POSITION_CODE is null
+        ORDER BY C.SORT_NUM
     </select>
 
     <select id="selectPositionTree" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
