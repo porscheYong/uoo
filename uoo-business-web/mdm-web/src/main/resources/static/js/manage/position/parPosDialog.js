@@ -37,7 +37,8 @@ function getLocation() {
         },
         callback: {
             beforeClick: locationBeforeClick,
-            onCheck: onlocationCheck
+            onCheck: onlocationCheck,
+            onAsyncSuccess: onAsyncSuccess
         },
         check: {
             enable: true,
@@ -49,20 +50,51 @@ function getLocation() {
         isSync:false
     }, function (data) {
         $.fn.zTree.init($("#locationTree"), treeSetting, data);
-        autoCheck();
+        var zTree = $.fn.zTree.getZTreeObj("locationTree");
+        var nodes = zTree.getNodes();
+        for(var i=0;i<nodes.length;i++){
+            if(pPosList.length !=0 && nodes[i].id == pPosList[0].id){
+                zTree.checkNode(nodes[i], true);
+                break;
+            }
+            zTree.expandNode(nodes[i], true, false, false);
+        }
+        if(pPosList.length != 0){
+            checkNode.push({"id":pPosList[0].id,"name":pPosList[0].name});
+        }
+        // autoCheck();
     }, function (err) {
 
     })
 }
 
+function onAsyncSuccess(event, treeId, treeNode, msg) {
+    var zTree = $.fn.zTree.getZTreeObj("locationTree");
+    if(treeNode.parent){
+        for(var i=0;i<treeNode.children.length;i++){
+            if(pPosList.length !=0 && treeNode.children[i].id == pPosList[0].id){
+                zTree.checkNode(treeNode.children[i], true);
+                break;
+            }
+            zTree.expandNode(treeNode.children[i], true, false, false);
+        }
+    }
+}
+
 function onlocationCheck (e, treeId, treeNode) {
     var zTree = $.fn.zTree.getZTreeObj("locationTree");
     var node = zTree.getNodeByTId(treeNode.tId);
-    if ($.inArray(node, checkNode) === -1) {
+    // if ($.inArray(node, checkNode) === -1) {
+    //     checkNode = [];
+    //     checkNode.push(node);
+    // } else {
+    //     checkNode = [];
+    // }
+    if(checkNode.length != 0 && node.id == checkNode[0].id){
+        checkNode = [];
+    }else{
         checkNode = [];
         checkNode.push(node);
-    } else {
-        checkNode = [];
     }
 }
 

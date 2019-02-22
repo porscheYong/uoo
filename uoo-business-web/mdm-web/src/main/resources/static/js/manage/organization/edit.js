@@ -154,7 +154,8 @@ function updateOrg () {
         sort: sort,
         statusCd: statusCd
     }), function () {
-        parent.changeNodeName(orgId, orgName);
+        // parent.changeNodeName(orgId, orgName);
+        parent.initOrgRelTree();
         if(flag == 1){
             window.location.replace("list.html?id=" + pid + '&pid=' + pid + "&name=" + encodeURI(pidName));
         }else{
