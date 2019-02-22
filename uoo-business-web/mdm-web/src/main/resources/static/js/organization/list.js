@@ -232,3 +232,7 @@ $('#searchBtn').on('click', function () {
    window.location.href = url;
     return false;
 });
+$('.button-move').on('click', function () {
+    var url = 'upload.html?id=' + orgId + '&pid=' + pid + '&name=' + encodeURI(orgName);
+    window.location.href = url;
+});

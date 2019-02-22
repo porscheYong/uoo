@@ -271,8 +271,8 @@ function getIdCardNcCode (id) {
         certNo: id
     }, function (data) {
         if (data && data.uniCode) {
-            $('#psnCode').val(data.uniCode);
-            $('#ncCode').val(data.uniCode.split('@')[0]);
+            $('#ncCode').val(data.uniCode);
+            $('#psnCode').val(data.uniCode.split('@')[0]);
             $('#psnNbr').val(data.uniCode.split('@')[0]);
         }
     }, function (err) {

@@ -435,8 +435,8 @@
                     </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                        <label for="birthday" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">员工工号</label>
-                        <input   class="ui-input col-md-8 col-sm-8 col-xs-12" readonly="readonly" value="{{personalData.psnNbr}}" disabled/>
+                        <label for="psnNbr" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">员工工号</label>
+                        <input  class="ui-input col-md-8 col-sm-8 col-xs-12" id="psnNbr" readonly="readonly" value="{{personalData.psnNbr}}" disabled/>
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
                         <label for="gender" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">首次工作时间</label>
@@ -445,9 +445,9 @@
 
 
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
-                        <label for="mobile"  class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                        <label for="psnCode"  class="form-item-label col-md-4 col-sm-4 col-xs-12"
                                style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
-                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{personalData.psnCode}}" readonly="readonly" disabled />
+                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" id="psnCode" value="{{personalData.psnCode}}" readonly="readonly" disabled />
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
                         <label for="email" class="form-item-label col-md-4 col-sm-4 col-xs-12"
@@ -461,9 +461,9 @@
                     </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
-                        <label for="email" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                        <label for="ncCode" class="form-item-label col-md-4 col-sm-4 col-xs-12"
                                style="padding-right: 20px;line-height: 40px;text-align: right;">人力编码</label>
-                        <input   class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.mobile}}" value="{{personalData.ncCode}}" readonly="readonly" disabled />
+                        <input  class="ui-input col-md-8 col-sm-8 col-xs-12" id="ncCode" value="{{userData.mobile}}" value="{{personalData.ncCode}}" readonly="readonly" disabled />
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
                         <label for="email" class="form-item-label col-md-4 col-sm-4 col-xs-12"
