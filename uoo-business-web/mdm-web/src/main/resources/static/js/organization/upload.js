@@ -46,7 +46,7 @@ function readFile (file) {
         var data = e.target.result;
         formData = new FormData();
         formData.append('fileInfo', file);
-        formData.append("orgTreeId", 1);
+        formData.append('orgTreeId', 1);
     }
 }
 

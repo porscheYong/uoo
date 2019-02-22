@@ -122,7 +122,7 @@ function uploadConfirm () {
     $http.get('/excelOrgImport/addExcelFileData?fileSign=' + fileSign, {}, function () {
         loading.screenMaskDisable('container');
         toastr.success('批量导入成功！');
-        parent.initTree(orgTreeId);
+        parent.initOrgRelTree();
     }, function () {
         loading.screenMaskDisable('container');
     })
