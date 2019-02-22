@@ -138,9 +138,10 @@ function addOrg () {
         sort: sort,
         statusCd: statusCd
     }), function (data) {
-        parent.addNodeById(data.pid, data);
-        parent.expandNodeById(data.pid);
-        parent.selectNodeById(data.id);
+        parent.initOrgRelTree();
+        // parent.addNodeById(data.pid, data);
+        // parent.expandNodeById(data.pid);
+        // parent.selectNodeById(data.id);
         loading.screenMaskDisable('container');
         toastr.success('新增成功！');
     }, function () {

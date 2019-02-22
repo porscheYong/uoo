@@ -7,10 +7,27 @@ var permList = [];
 var permNameList = [];
 var permIdList = [];
 var permCodeList = [];
-var parRoleCode;
+var parRoleCode = "";
 var locationCode;
+var formValidate;
 var toastr = window.top.toastr;
 var loading = parent.loading;
+
+loading.screenMaskEnable('container');
+
+seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+    var posEditForm = $('#editInfo');
+    formValidate = new Validate(posEditForm);
+    formValidate.immediate();
+    posEditForm.find(':input').each(function () {
+      $(this).bind({
+          paste : function(){
+              formValidate.isPass($(this));
+              $(this).removeClass('error');
+          }
+      });
+    });
+});
 
 //获取角色信息
 function getRoleInfo(){
@@ -106,7 +123,7 @@ function initLogTable(roleId){
             { 'data': "userAccout", 'title': '操作账号', 'className': 'row-acct' },
             { 'data': null, 'title': '时间', 'className': 'row-date' ,
                 'render': function (data, type, row, meta) {
-                    return parent.formatDateTime(row.createDate);
+                    return formatDateTime(row.createDate);
                 }     
             },
             { 'data': null, 'title': '状态', 'className': 'row-state', 
@@ -187,7 +204,9 @@ function openLocationDialog() {
             $('#location').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
             locationList = checkNode;
-            locationCode = checkNode[0].extParams.locCode;
+            if(checkNode.length != 0){
+                locationCode = checkNode[0].extParams.locCode;
+            }
             parent.layer.close(index);
         },
         btn2: function(index, layero){},
@@ -212,8 +231,13 @@ function openParRoleDialog() {
             var checkNode = iframeWin.checkNode;
             $('#parRole').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
+            $("#parRole_tagsinput").removeClass("not_valid");
             parRoleList = checkNode;
-            parRoleCode = checkNode[0].extField1;
+            if(checkNode.length != 0){
+                parRoleCode = checkNode[0].extField1;
+            }else{
+                parRoleCode = "";
+            }
             parent.layer.close(index);
         },
         btn2: function(index, layero){},
@@ -248,6 +272,12 @@ function openPermDialog() {
 
 //更新角色
 function updateRole(){
+    loading.screenMaskEnable('container');
+    if(!formValidate.isAllPass()){
+        loading.screenMaskDisable('container');
+        return;
+    }
+
     var permCodeString = "";
     for(var i=0;i<permList.length;i++){
         permCodeString += permList[i].code + ",";
@@ -264,10 +294,12 @@ function updateRole(){
         roleName : $("#roleName").val(),
         roleId : id
     }), function (message) {
+        loading.screenMaskDisable('container');
         backToList();
         parent.initRoleRelTree();
         toastr.success("保存成功！");
     }, function (err) {
+        loading.screenMaskDisable('container');
         // toastr.error("保存失败！");
     })
 }
@@ -279,14 +311,17 @@ function deleteRole(){
         title: '提示',
         btn: ['确定','取消']
         }, function(index, layero){
+            loading.screenMaskEnable('container');
             $http.post('/system/sysRole/delete', JSON.stringify({  
                 roleId : id
             }), function (message) {
+                parent.layer.close(index);
+                loading.screenMaskDisable('container');
                 backToList();
                 parent.initRoleRelTree();
-                parent.layer.close(index);
                 toastr.success("删除成功！");
             }, function (err) {
+                loading.screenMaskDisable('container');
                 parent.layer.close(index);
                 // toastr.error("删除失败！");
             })

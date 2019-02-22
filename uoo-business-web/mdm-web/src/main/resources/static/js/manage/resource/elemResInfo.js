@@ -1,6 +1,21 @@
 var id = getQueryString('id');
 var toastr = window.top.toastr;
 var logTable;
+var formValidate;
+
+seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+    var posEditForm = $('#editInfo');
+    formValidate = new Validate(posEditForm);
+    formValidate.immediate();
+    posEditForm.find(':input').each(function () {
+      $(this).bind({
+          paste : function(){
+              formValidate.isPass($(this));
+              $(this).removeClass('error');
+          }
+      });
+    });
+});
 
 function getResInfo(){  
     $http.get('/system/SysElement/get', {  
@@ -48,6 +63,10 @@ function initMenuName(result,currentMenu){
 
 //更新元素资源信息
 function updateRes(){
+    if(!formValidate.isAllPass()){
+        return;
+    }
+    
     $http.post('/system/SysElement/update', JSON.stringify({  
         elementName : $("#elementName").val(),
         elementCode : $("#elementCode").val(),

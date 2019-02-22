@@ -531,3 +531,4 @@ if(orgFlag == 1){
 }else{
     initOrgTable("");
 }
+editOrgPost(1);

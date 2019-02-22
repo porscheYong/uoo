@@ -112,6 +112,21 @@ function search () {
 }
 
 function boxClick(){            //点击复选框
+    if(lChBox.checked == true){
+        isCheck = 1;
+        if(isIE8){
+            $(".ui-checkbox").css("background-position","0px -40px");
+        }
+    }else{
+        isCheck = 0;
+        if(isIE8){
+            $(".ui-checkbox").css("background-position","0px 0px");
+        }
+    }
+    // initPosTable(isCheck,'');
+}
+
+function boxClick(){            //点击复选框
     sortFlag = 0;
     if(lChBox.checked == true){
         isCheck = 1;

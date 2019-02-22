@@ -6,6 +6,21 @@ var levelId;
 var curParMenu; //当前上级菜单
 var curMenuLevel; //当前菜单级别
 var logTable;
+var formValidate;
+
+seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+    var posEditForm = $('#editInfo');
+    formValidate = new Validate(posEditForm);
+    formValidate.immediate();
+    posEditForm.find(':input').each(function () {
+      $(this).bind({
+          paste : function(){
+              formValidate.isPass($(this));
+              $(this).removeClass('error');
+          }
+      });
+    });
+});
 
 //获取选择的菜单资源信息
 function getResInfo(){
@@ -89,6 +104,10 @@ $('#menuLevel').unbind('change').bind('change', function (event) {
 
 //更新
 function updateRes(){
+    if(!formValidate.isAllPass()){
+        return;
+    }
+    
     $http.post('/system/update', JSON.stringify({   
         menuName : $("#menuName").val(),
         menuCode : $("#menuCode").val(),

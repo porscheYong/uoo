@@ -1,4 +1,19 @@
 var toastr = window.top.toastr;
+var formValidate;
+
+seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+    var posEditForm = $('#editInfo');
+    formValidate = new Validate(posEditForm);
+    formValidate.immediate();
+    posEditForm.find(':input').each(function () {
+      $(this).bind({
+          paste : function(){
+              formValidate.isPass($(this));
+              $(this).removeClass('error');
+          }
+      });
+    });
+});
 
 function backToList(){
     window.location.href = "elemResList.html";
@@ -6,6 +21,10 @@ function backToList(){
 
 //新增
 function addRes(){
+    if(!formValidate.isAllPass()){
+        return;
+    }
+    
     $http.post('/system/SysElement/add', JSON.stringify({   
         elementName : $("#elementName").val(),
         elementCode : $("#elementCode").val(),

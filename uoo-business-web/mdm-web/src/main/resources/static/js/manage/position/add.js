@@ -4,10 +4,23 @@ var posName = getQueryString('posName');
 var roleList = [];
 var locationList = [];
 var pPosList = [];
+var formValidate;
+var loading = parent.loading;
 var toastr = window.top.toastr;
 
-// locationList = [{"id":"","name":""}];
-// pPosList = [{"id":"","name":""}];
+seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+    var posEditForm = $('#editInfo');
+    formValidate = new Validate(posEditForm);
+    formValidate.immediate();
+    posEditForm.find(':input').each(function () {
+      $(this).bind({
+          paste : function(){
+              formValidate.isPass($(this));
+              $(this).removeClass('error');
+          }
+      });
+    });
+});
 
 //返回
 function backToList(){
@@ -91,6 +104,7 @@ function openParPosDialog() {
             var checkNode = iframeWin.checkNode;
             $('#supPos').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
+            $("#supPos_tagsinput").removeClass("not_valid");
             pPosList = checkNode;
             parent.layer.close(index);
         },
@@ -101,6 +115,12 @@ function openParPosDialog() {
 
 //创建职位
 function addPosition(){
+    loading.screenMaskEnable('container');
+    if(!formValidate.isAllPass()){
+        loading.screenMaskDisable('container');
+        return;
+    }
+    var pPos = "";
     var roleIdList = [];
     for(var i=0;i<roleList.length;i++){
         roleIdList.push({"roleId":roleList[i].id});
@@ -109,7 +129,7 @@ function addPosition(){
         var lc = locationList[0].id;
     }
     if(pPosList.length != 0){
-        var pPos = pPosList[0].id;
+        pPos = pPosList[0].id;
     }
     $http.post('/sysPosition/addPosition', JSON.stringify({  
         notes : $("#notes").val(),
@@ -121,10 +141,12 @@ function addPosition(){
         positionName : $("#posNameInput").val(),
         positionCode : $("#posNum").val()
     }), function (message) {
+        loading.screenMaskDisable('container');
         backToList();
         parent.initPosRelTree();
         toastr.success("创建成功！");
     }, function (err) {
+        loading.screenMaskDisable('container');
         // toastr.error("保存失败！");
     })
 }

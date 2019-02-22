@@ -52,17 +52,17 @@
             <div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="menuName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单名称</label>
+                        <label for="menuName" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单名称</label>
                         <input id="menuName" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" name="tel" value="" autocomplete="off">
+                                size="40" name="tel" value="" autocomplete="off" required>
                     </div>
                 </div>
 
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="menuCode" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单编码</label>
+                        <label for="menuCode" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单编码</label>
                         <input id="menuCode" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" name="tel" value="" autocomplete="off">
+                                size="40" name="tel" value="" autocomplete="off" required>
                     </div>
                 </div>
             </div>
@@ -91,9 +91,9 @@
             <div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="menuSort" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单排序</label>
+                        <label for="menuSort" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单排序</label>
                         <input id="menuSort" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" name="tel" value="" autocomplete="off">
+                                size="40" name="tel" value="" autocomplete="off" required>
                     </div>
                 </div>
 
@@ -111,15 +111,15 @@
             <div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="menuUrl" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单URL</label>
+                        <label for="menuUrl" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">菜单URL</label>
                         <input id="menuUrl" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" name="tel" value="" autocomplete="off">
+                                size="40" name="tel" value="" autocomplete="off" required>
                     </div>
                 </div>
             </div>
 
-            <div class="row" style="margin-bottom: 10px;">
-                <div style="margin-left:38%;margin-top:4%;">
+            <div class="row" style="margin-bottom: 10px;text-align: center;">
+                <div style="margin-top:4%;">
                     <button class="ui-button ui-button-primary" onclick="addRes()">保存</button>
                     <button class="ui-button ui-button-cancel" onclick="backToList()" style="margin-left: 10px;">取消</button>
                 </div>
@@ -134,6 +134,8 @@
     <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
     <!-- layer -->
     <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+    <!-- lulu -->
+    <script type="text/javascript" src="/vendors/lulu/js/common/ui/Validate.js"></script>
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
     <!-- jquery datatable -->

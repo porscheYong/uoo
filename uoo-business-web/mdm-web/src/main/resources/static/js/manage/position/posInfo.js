@@ -9,6 +9,23 @@ var positionId;
 var logTable;
 var toastr = window.top.toastr;
 var loading = parent.loading;
+var formValidate;
+
+loading.screenMaskEnable('container');
+
+seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+    var posEditForm = $('#editInfo');
+    formValidate = new Validate(posEditForm);
+    formValidate.immediate();
+    posEditForm.find(':input').each(function () {
+      $(this).bind({
+          paste : function(){
+              formValidate.isPass($(this));
+              $(this).removeClass('error');
+          }
+      });
+    });
+});
 
 function editInfo(){
     $("#posInfo").css("display","none");
@@ -58,7 +75,7 @@ function initPosInfo(result){
         $('#location').addTag(locationList);
     }
     if(result.pPositionName){
-        pPosList = [{"id":result.pPositionId,"name":result.pPositionName}];
+        pPosList = [{"id":result.parentPositionCode,"name":result.pPositionName}];
         $('#supPos').addTag(pPosList);
     }
 }
@@ -96,11 +113,15 @@ function initLogTable(posId){
             },
             { 'data': "operateType", 'title': '操作说明', 'className': 'row-explain'},
             { 'data': "userName", 'title': '操作人', 'className': 'row-psn' },
-            { 'data': "userOrgName", 'title': '操作人组织', 'className': 'row-org' },
+            { 'data': null, 'title': '操作人组织', 'className': 'row-org',
+                'render': function (data, type, row, meta) {
+                    return "<span style='cursor:pointer;' title='"+row.userOrgName+"'>"+row.userOrgName+"</span>";
+                }    
+            },
             { 'data': "userAccout", 'title': '操作账号', 'className': 'row-acct' },
             { 'data': null, 'title': '时间', 'className': 'row-date' ,
                 'render': function (data, type, row, meta) {
-                    return parent.formatDateTime(row.createDate);
+                    return formatDateTime(row.createDate);
                 }     
             },
             { 'data': null, 'title': '状态', 'className': 'row-state', 
@@ -148,7 +169,7 @@ function initLogTable(posId){
                 //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                 callback(returnData);
-                // loading.screenMaskDisable('container');
+                loading.screenMaskDisable('container');
             }, function (err) {
                 loading.screenMaskDisable('container');
             })
@@ -243,11 +264,12 @@ function openParPosDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             var checkNode = iframeWin.checkNode;
-            if(checkNode[0].id == positionCode){
+            if(checkNode.length !=0 && checkNode[0].id == positionCode){
                 toastr.error("不能选择当前职位为上级职位!");
             }else{
                 $('#supPos').importTags(checkNode, {unique: true});
                 $('.ui-tips-error').css('display', 'none');
+                $("#supPos_tagsinput").removeClass("not_valid");
                 pPosList = checkNode;
             }
             parent.layer.close(index);
@@ -259,12 +281,18 @@ function openParPosDialog() {
 
 //更新职位
 function updatePosition(){
+    loading.screenMaskEnable('container');
+    if(!formValidate.isAllPass()){
+        loading.screenMaskDisable('container');
+        return;
+    }
+    var pPos = "";
     var roleIdList = [];
     if(locationList.length != 0){
         var lc = locationList[0].id;
     }
     if(pPosList.length != 0){
-        var pPos = pPosList[0].id;
+        pPos = pPosList[0].id;
     }
 
     for(var i=0;i<roleList.length;i++){
@@ -281,10 +309,12 @@ function updatePosition(){
         positionName : $("#posNameInput").val(),
         positionCode : $("#posNum").val()
     }), function (message) {
+        loading.screenMaskDisable('container');
         backToList();
         parent.initPosRelTree();
         toastr.success("保存成功！");
     }, function (err) {
+        loading.screenMaskDisable('container');
         // toastr.error("保存失败！");
     })
 }
@@ -304,7 +334,7 @@ function deletePosition(){
                 toastr.success("删除成功！");
                 parent.layer.close(index);
             }, function (err) {
-                toastr.error("删除失败！");
+                // toastr.error("删除失败！");
                 parent.layer.close(index);
             })
         }, function(){
