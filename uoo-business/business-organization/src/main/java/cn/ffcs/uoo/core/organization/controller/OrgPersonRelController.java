@@ -693,6 +693,7 @@ public class OrgPersonRelController extends BaseController {
                 ret.setState(ResponseResult.STATE_OK);
                 ret.setMessage("成功");
                 ret.setData(page);
+                return ret;
             }
         }
         System.out.printf("getPerOrgRelPage-简单数据查询结束: %tF %<tT%n", System.currentTimeMillis());
