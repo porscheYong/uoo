@@ -345,10 +345,12 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
             return "节点不能移动到该节点的子节点上";
         }
         String fullNameId = orgOrgtreeRelService.getFullBizOrgIdList(orgTreeId.toString(),orgId.toString(),"");
-        com.baomidou.mybatisplus.mapper.Wrapper orgOrgTreeWrapper = Condition.create()
-                .eq("ORG_TREE_ID",orgTreeId)
-                .eq("STATUS_CD","1000")
-                .like("ORG_BIZ_FULL_ID",fullNameId,SqlLike.RIGHT);
+//        com.baomidou.mybatisplus.mapper.Wrapper orgOrgTreeWrapper = Condition.create()
+//                .eq("ORG_TREE_ID",orgTreeId)
+//                .eq("STATUS_CD","1000")
+//                .like("ORG_BIZ_FULL_ID",fullNameId,SqlLike.RIGHT);
+
+
 //        int count = orgOrgtreeRelService.selectCount(orgOrgTreeWrapper);
 //        if(count>50){
 //            return "移动组织的下级组织数量太大，请联系管理员操作";
@@ -371,17 +373,41 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         orgRelService.update(orgRel);
         modifyHistoryService.addModifyHistory(orgRelOld,orgRel,userId,batchNumber);
 
-        List<OrgOrgtreeRel> orgOrgTreeRels =  orgOrgtreeRelService.selectList(orgOrgTreeWrapper);
-        if(orgOrgTreeRels!=null && orgOrgTreeRels.size()>0){
-            for(OrgOrgtreeRel ootr : orgOrgTreeRels){
-                String fullName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),ootr.getOrgId().toString(),"");
-                String fullOrgId = orgOrgtreeRelService.getFullBizOrgIdList(orgTreeId.toString(),ootr.getOrgId().toString(),",");
-                fullOrgId =","+fullOrgId+",";
-                ootr.setOrgBizFullName(fullName);
-                ootr.setOrgBizFullId(fullOrgId);
-                orgOrgtreeRelService.update(ootr);
+
+        List<OrgVo> lowOrgVos = getLowOrgsByRefCode(ortCur.getRefCode(),orgId.toString());
+
+        if(lowOrgVos!=null && lowOrgVos.size()>0){
+            for(OrgVo vo : lowOrgVos){
+                com.baomidou.mybatisplus.mapper.Wrapper orgOrgTreeWrapper = Condition.create()
+                        .eq("ORG_TREE_ID",orgTreeId)
+                        .eq("STATUS_CD","1000")
+                        .eq("ORG_ID",vo.getOrgId());
+                OrgOrgtreeRel orgOrgTreeRel =  orgOrgtreeRelService.selectOne(orgOrgTreeWrapper);
+                if(orgOrgTreeRel!=null){
+                    String fullName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),vo.getOrgId().toString(),"");
+                    String fullOrgId = orgOrgtreeRelService.getFullBizOrgIdList(orgTreeId.toString(),vo.getOrgId().toString(),",");
+                    fullOrgId =","+fullOrgId+",";
+                    orgOrgTreeRel.setOrgBizFullName(fullName);
+                    orgOrgTreeRel.setOrgBizFullId(fullOrgId);
+                    orgOrgTreeRel.setUpdateUser(userId);
+                    orgOrgtreeRelService.update(orgOrgTreeRel);
+                }
             }
+
         }
+
+//        List<OrgOrgtreeRel> orgOrgTreeRels =  orgOrgtreeRelService.selectList(orgOrgTreeWrapper);
+//        if(orgOrgTreeRels!=null && orgOrgTreeRels.size()>0){
+//            for(OrgOrgtreeRel ootr : orgOrgTreeRels){
+//                String fullName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),ootr.getOrgId().toString(),"");
+//                String fullOrgId = orgOrgtreeRelService.getFullBizOrgIdList(orgTreeId.toString(),ootr.getOrgId().toString(),",");
+//                fullOrgId =","+fullOrgId+",";
+//                ootr.setOrgBizFullName(fullName);
+//                ootr.setOrgBizFullId(fullOrgId);
+//                ootr.setUpdateUser(userId);
+//                orgOrgtreeRelService.update(ootr);
+//            }
+//        }
         return str;
     }
 
@@ -403,4 +429,14 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         }
         return treeNodes;
     }
+    @Override
+    public List<OrgVo> getLowOrgs(String orgTreeId, String orgId){
+        return baseMapper.getLowOrgs(orgTreeId,orgId);
+    }
+
+    @Override
+    public List<OrgVo> getLowOrgsByRefCode(String refCode, String orgId){
+        return baseMapper.getLowOrgsByRefCode(refCode,orgId);
+    }
+
 }

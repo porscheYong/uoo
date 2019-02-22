@@ -146,4 +146,20 @@ public interface OrgService extends IService<Org> {
      */
     public List<TreeNodeVo> getFullOrgVo(String orgTreeId, String orgId);
 
+    /**
+     * 下级组织信息
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    public List<OrgVo> getLowOrgs(String orgTreeId, String orgId);
+
+
+    /**
+     * 下级组织信息
+     * @param refCode
+     * @param orgId
+     * @return
+     */
+    public List<OrgVo> getLowOrgsByRefCode(String refCode, String orgId);
 }

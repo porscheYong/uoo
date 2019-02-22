@@ -1036,7 +1036,11 @@ public class OrgController extends BaseController {
             // TODO: 2019/1/23
             String fullBizName = "";
             String fullBizNameId = "";
-            if(!StrUtil.isNullOrEmpty(org.getSupOrgId())){
+
+            if(!StrUtil.isNullOrEmpty(org.getMoveParentOrgId())){
+                fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getMoveParentOrgId().toString(),"");
+                fullBizNameId = orgOrgtreeRelService.getFullBizOrgIdList(orgTree.getOrgTreeId().toString(),org.getMoveParentOrgId().toString(),",");
+            }else if(!StrUtil.isNullOrEmpty(org.getSupOrgId())){
                 fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),"");
                 fullBizNameId = orgOrgtreeRelService.getFullBizOrgIdList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),",");
             }
