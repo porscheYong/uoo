@@ -133,6 +133,17 @@ public class SysMenuController {
                 }
             }
         }
+        tmp = sysMenuService.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("MENU_NAME", sysMenu.getMenuName()));
+        if(tmp!=null&&!tmp.isEmpty()){
+            if(tmp.size()>1){
+                return ResponseResult.createErrorResult("名称已存在");
+            }else{
+                SysMenu obj = tmp.get(0);
+                if(!obj.getMenuId().equals(sysMenu.getMenuId())){
+                    return ResponseResult.createErrorResult("名称已存在");
+                }
+            }
+        }
         if(!menuCode.equals(one.getMenuCode())){
             permMenuSvc.updateForSet("MENU_CODE='"+menuCode+"'", Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("MENU_CODE", one.getMenuCode()));
         }
@@ -156,6 +167,10 @@ public class SysMenuController {
         long size = sysMenuService.selectCount(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("MENU_CODE", menuCode));
         if(size>0){
             return ResponseResult.createErrorResult("编码已存在");
+        }
+        size = sysMenuService.selectCount(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("MENU_NAME", sysMenu.getMenuName()));
+        if(size>0){
+            return ResponseResult.createErrorResult("名称已存在");
         }
         sysMenu.setCreateDate(new Date());
         sysMenu.setMenuId((sysMenuService.getId()));

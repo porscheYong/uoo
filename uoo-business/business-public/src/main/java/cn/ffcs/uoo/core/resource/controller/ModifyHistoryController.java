@@ -1,6 +1,8 @@
 package cn.ffcs.uoo.core.resource.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -88,8 +90,24 @@ public class ModifyHistoryController {
         ResponseResult<Page<ModifyHistoryDTO>> ret = new ResponseResult<>();
         Long commonTableId = modifyHistoryService.getCommonTableId(tableName);
         if(commonTableId!=null){
-            Page<ModifyHistoryDTO> page = modifyHistoryService.selectPageDTO(new Page<ModifyHistoryDTO>(pageNo,pageSize),  commonTableId.longValue() , Long.valueOf(recordId).longValue() );
-            ret.setData(page);
+            Page<ModifyHistoryDTO> page = new Page<>(pageNo, pageSize);
+             List<ModifyHistoryDTO> selectPageDTO = modifyHistoryService.selectPageDTO(page,  commonTableId.longValue() , Long.valueOf(recordId).longValue() );
+             StringBuilder sb= new StringBuilder();
+             for (ModifyHistoryDTO modifyHistoryDTO : selectPageDTO) {
+                 List<String> orgNamesByAccout = modifyHistoryService.getOrgNamesByAccout(modifyHistoryDTO.getUserAccout());
+                 if(orgNamesByAccout!=null){
+                     sb.delete( 0, sb.length() );
+                     for (int i =0;i<orgNamesByAccout.size();i++) {
+                         if(i!=0){
+                             sb.append(",");
+                         }
+                         sb.append(orgNamesByAccout.get(i));
+                     }
+                 }
+                 modifyHistoryDTO.setUserOrgName(sb.toString());
+            }
+             page.setRecords(selectPageDTO);
+             ret.setData(page);
         }
         ret.setState(1000);
         if(ret.getData()==null){

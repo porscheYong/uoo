@@ -39,6 +39,7 @@
           AND A.ROLE_CODE = B.ROLE_CODE AND A.POSITION_CODE=C.POSITION_CODE) EXTFIELD1
         FROM SYS_POSITION C
         WHERE C.STATUS_CD = '1000' and C.PARENT_POSITION_CODE = #{positionCode}
+        ORDER BY C.SORT_NUM
 <!--         START WITH C.POSITION_ID = #{positionId}
          CONNECT BY PRIOR C.POSITION_ID = C.P_POSITION_ID -->
     </select>
@@ -72,6 +73,7 @@
           (SELECT DECODE(COUNT(1),0,0,1) FROM SYS_POSITION A WHERE A.STATUS_CD='1000' AND A.PARENT_POSITION_CODE=C.POSITION_CODE ) isParent
            FROM SYS_POSITION C
         WHERE C.STATUS_CD = '1000'
+        ORDER BY C.SORT_NUM
       <!--  start with C.POSITION_CODE is null connect  by C.POSITION_CODE = c.PARENT_POSITION_CODE -->
     </select>
 
@@ -85,7 +87,7 @@
             A.POSITION_CODE positionCode,
             A.POSITION_NAME positionName,
             A.REGION_NBR regionNbr,
-            (SELECT TCR.REGION_NAME FROM TB_COMMON_REGION TCR WHERE TCR.STATUS_CD='1000' AND TCR.REGION_NBR=A.REGION_NBR) REGIONNAME,
+            (SELECT TCR.REGION_NAME FROM TB_COMMON_REGION TCR WHERE TCR.STATUS_CD='1000' AND TCR.COMMON_REGION_ID=A.REGION_NBR) REGIONNAME,
             (SELECT WM_CONCAT(SR.ROLE_NAME)
               FROM SYS_POSITIONT_ROLE_REF SPRR, SYS_ROLE SR
              WHERE SPRR.STATUS_CD = '1000'
@@ -100,6 +102,7 @@
             <if test="vo.search!=null and vo.search!=''">
                 AND A.POSITION_NAME like '%'||#{vo.search}||'%'
             </if>
+            ORDER BY A.SORT_NUM
         </when>
         <otherwise>
             SELECT * from (
@@ -110,7 +113,7 @@
             A.POSITION_NAME positionName,
             A.REGION_NBR regionNbr,
             (SELECT TCR.REGION_NAME FROM TB_COMMON_REGION TCR WHERE TCR.STATUS_CD='1000' AND
-            TCR.REGION_NBR=A.REGION_NBR) REGIONNAME,
+            TCR.COMMON_REGION_ID=A.REGION_NBR) REGIONNAME,
             (SELECT WM_CONCAT(SR.ROLE_NAME)
             FROM SYS_POSITIONT_ROLE_REF SPRR, SYS_ROLE SR
             WHERE SPRR.STATUS_CD = '1000'
@@ -120,7 +123,8 @@
             (SELECT COUNT(1) FROM SYS_DEPT_POSITION_REF SDPR WHERE SDPR.STATUS_CD='1000' AND
             SDPR.POSITION_CODE=A.POSITION_CODE) ORGPOSITIONNUM,
             (SELECT COUNT(1) FROM SYS_USER_POSITION_REF SUPR WHERE SUPR.STATUS_CD='1000' AND
-            SUPR.POSITION_CODE=A.POSITION_CODE) ORGUSERNUM
+            SUPR.POSITION_CODE=A.POSITION_CODE) ORGUSERNUM,
+            A.SORT_NUM
             FROM SYS_POSITION A
             WHERE A.STATUS_CD = '1000'
             START WITH A.PARENT_POSITION_CODE = #{vo.positionCode}
@@ -129,7 +133,7 @@
             <if test="vo.search!=null and vo.search!=''">
                 AND positionName like '%'||#{vo.search}||'%'
             </if>
-
+            ORDER BY SORT_NUM
         </otherwise>
         </choose>
     </select>
@@ -208,7 +212,7 @@
             AND A.USER_CODE = C.USER_CODE
             AND B.ORG_CODE = #{id}
             <if test="search!=null and search!=''">
-                AND ( B.ORG_NAME like '%'||#{search}||'%' or B.USER_NAME like '%'||#{search}||'%')
+                AND ( B.ORG_NAME like '%'||#{search}||'%' or C.USER_NAME like '%'||#{search}||'%')
             </if>
         </when>
         <otherwise>
@@ -226,7 +230,7 @@
             AND A.USER_CODE = C.USER_CODE
             AND B.ORG_CODE in (select ORG_CODE from SYSORGTREE)
             <if test="search!=null and search!=''">
-                AND ( B.ORG_NAME like '%'||#{search}||'%' or B.USER_NAME like '%'||#{search}||'%')
+                AND ( B.ORG_NAME like '%'||#{search}||'%' or C.USER_NAME like '%'||#{search}||'%')
             </if>
         </otherwise>
         </choose>
@@ -258,7 +262,7 @@
                 select * from (
                 with pos as (
                 select * from sys_position a where a.status_cd=1000 start with a.position_code = #{positionCode} connect
-                by a.position_code = a.parent_position_code
+                by prior a.position_code = a.parent_position_code
                 )
                 select a.user_code userCode,a.position_code positionCode,b.user_id userId,b.accout accout,b.user_name
                 userName,e.position_name positionName,
@@ -306,6 +310,7 @@
         FROM SYS_POSITION C
         WHERE C.STATUS_CD = '1000'
                 AND C.POSITION_CODE in (SELECT A.POSITION_CODE FROM SYS_POSITION A WHERE A.STATUS_CD=1000 START WITH A.POSITION_CODE=#{positionCode} CONNECT BY PRIOR A.POSITION_CODE=A.PARENT_POSITION_CODE)
+                order by C.SORT_NUM
     </select>
 
 </mapper>

@@ -61,20 +61,20 @@
             margin-bottom:4px;
         }
         .row-num{
-            width: 10%;
+            width: 10% !important;
         }
         .row-pos{
-            width: 24%;
+            width: 24% !important;
         }
         .row-area{
-            width: 14%;
+            width: 14% !important;
         }
         .row-role{
-            width: 15%;
+            width: 15% !important;
         }
         .row-orgNum,
         .row-userNum{
-            width: 17%;
+            width: 17% !important;
         }
         .row{
             margin-left: 0px !important;
@@ -102,13 +102,13 @@
         <div class="board-title">
             <span class="name ft18">下级职位</span>
             <input type="checkbox" id="lowerCheckBox" name="checkbox" onclick="boxClick()">
-            <label for="lowerCheckBox" class="ui-checkbox"></label><label style="margin-left:4px">显示下级职位</label>
+            <label for="lowerCheckBox" class="ui-checkbox"></label><label style="margin-left:4px">显示多层下级职位</label>
             <div class="fright">
                 <a class="button-add" id="addBtn"><span class="fa fa-plus-circle icon-add"></span>创建职位</a>
             </div>
         </div>
 
-        <div class="pos-relative" style="margin-top: 7px;margin-left:5px;overflow: hidden;">
+        <!-- <div class="pos-relative" style="margin-top: 7px;margin-left:5px;overflow: hidden;">
             <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-item" style="width: 100%">
                     <div class="typeahead col-md-8 col-sm-8 col-xs-8" style="padding: 0;">
@@ -119,6 +119,11 @@
                     </div>
                 </div>
             </div>
+        </div> -->
+
+        <div style="overflow: hidden;">
+            <input class="ui-input ui-input-search col-md-4 col-sm-4 col-xs-4" id="acctName" type="text" placeholder="搜索职位" autocomplete="off"/>
+            <button class="ui-button ui-button-primary" id="searchBtn" onclick="search()" style="margin-left:1%;">搜索</button>
         </div>
 
         <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">

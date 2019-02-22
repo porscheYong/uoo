@@ -1,8 +1,11 @@
 var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
+var pidName = getQueryString('pidName');
+var flag = getQueryString('flag');
 // var pName = parent.getNodeName(pid);
-var orgList = [{id: orgId, name: orgName}];
+// var orgList = [{id: orgId, name: orgName}];
+var orgList = [];
 var locationList = [];
 var postList = [];
 var formValidate;
@@ -26,8 +29,8 @@ function openOrgDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             checkNode = iframeWin.checkNode;
-            $('#superiorOrg').importTags(checkNode, {unique: true});
-            superiorOrgList = checkNode;
+            $('#parentOrg').importTags(checkNode, {unique: true});
+            orgList = checkNode;
             parent.layer.close(index);
         }
     });
@@ -99,10 +102,16 @@ function getOrg (orgId) {
         $('#sort').val(data.sort);
         getStatusCd(data.statusCd);
 
+        if(data.parentOrgCode != null){
+            orgList.push({id: data.parentOrgCode, name: data.parentOrgName});
+        }
+        
         locationList.push({id: data.regionNbr, name: data.regionName});
         postList = data.sysPositionVos;
         $('#parentOrg').addTag(orgList);
-        $('#location').addTag(locationList);
+        if(data.regionNbr != null && data.regionName != null){
+            $('#location').addTag(locationList);
+        }
         $('#post').addTag(postList);
         seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
             var orgEditForm = $('#orgEditForm');
@@ -119,7 +128,7 @@ function updateOrg () {
     if (!formValidate.isAllPass())
         return;
     loading.screenMaskEnable('container');
-
+    var parOrg = "";
     var orgName = $('#orgName').val();
     var orgCode = $('#orgCode').val();
     var sort = $('#sort').val();
@@ -127,25 +136,35 @@ function updateOrg () {
     //组织职位
     var sysPositionVos = [];
     for (var i = 0; i < postList.length; i++) {
-        sysPositionVos.push({positionCode: postList[i].id});
+        var posCode = postList[i].positionCode || postList[i].id;
+        sysPositionVos.push({positionCode: posCode});
+    }
+
+    if(orgList.length != 0){
+        parOrg = orgList[0].id;
     }
 
     $http.post('/sysOrganization/updateOrg', JSON.stringify({
         orgId: orgId,
         orgName: orgName,
         orgCode: orgCode,
-        parentOrgCode: orgList[0].id,
+        parentOrgCode: parOrg,
         regionNbr: locationList[0].id,
         sysPositionVos: sysPositionVos,
         sort: sort,
         statusCd: statusCd
     }), function () {
-        parent.changeNodeName(orgId, orgName);
-        window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
+        // parent.changeNodeName(orgId, orgName);
+        parent.initOrgRelTree();
+        if(flag == 1){
+            window.location.replace("list.html?id=" + pid + '&pid=' + pid + "&name=" + encodeURI(pidName));
+        }else{
+            window.location.replace("list.html?id=" + orgId + '&pid=' + pid + "&name=" + encodeURI(orgName));
+        }
         loading.screenMaskDisable('container');
         toastr.success('更新成功！');
     }, function (err) {
-
+        loading.screenMaskDisable('container');
     })
 }
 

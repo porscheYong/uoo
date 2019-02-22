@@ -1142,4 +1142,19 @@
 
     </select>
 
+
+
+    <select id="JudgePerName" resultType="java.lang.Integer">
+          select count(1) from tb_personnel a where a.status_cd=1000 and INSTR(a.psn_name,#{search})>0
+    </select>
+    <select id="JudgePerNbr" resultType="java.lang.Integer">
+          select count(1) from tb_personnel a where a.status_cd=1000 and INSTR(a.psn_nbr,#{search})>0
+    </select>
+    <select id="JudgePerCert" resultType="java.lang.Integer">
+          select count(1) from tb_cert a where a.status_cd=1000 and INSTR(a.cert_no,#{search})>0 and a.cert_type=1
+    </select>
+    <select id="JudgePerMobile" resultType="java.lang.Integer">
+          select count(1) from tb_contact a where a.status_cd=1000 and INSTR(a.content,#{search})>0 and a.first_flag=1 and a.contact_type=1
+    </select>
+
 </mapper>

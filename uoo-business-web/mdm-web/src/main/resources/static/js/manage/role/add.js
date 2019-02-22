@@ -3,9 +3,25 @@ var roleCode = getQueryString('roleCode');
 var locationList = [];
 var parRoleList = [];
 var permList = [];
-var parRoleCode;
+var parRoleCode = "";
 var locationCode;
 var toastr = window.top.toastr;
+var formValidate;
+var loading = parent.loading;
+
+seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+    var posEditForm = $('#editInfo');
+    formValidate = new Validate(posEditForm);
+    formValidate.immediate();
+    posEditForm.find(':input').each(function () {
+      $(this).bind({
+          paste : function(){
+              formValidate.isPass($(this));
+              $(this).removeClass('error');
+          }
+      });
+    });
+});
 
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
@@ -32,7 +48,9 @@ function openLocationDialog() {
             $('#location').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
             locationList = checkNode;
-            locationCode = checkNode[0].extParams.locCode;
+            if(checkNode.length != 0){
+                locationCode = checkNode[0].extParams.locCode;
+            }
             parent.layer.close(index);
         },
         btn2: function(index, layero){},
@@ -57,8 +75,11 @@ function openParRoleDialog() {
             var checkNode = iframeWin.checkNode;
             $('#parRole').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
+            $("#parRole_tagsinput").removeClass("not_valid");
             parRoleList = checkNode;
-            parRoleCode = checkNode[0].extField1;
+            if(checkNode.length != 0){
+                parRoleCode = checkNode[0].extField1;
+            }
             parent.layer.close(index);
         },
         btn2: function(index, layero){},
@@ -93,6 +114,12 @@ function openPermDialog() {
 
 //新增角色
 function addRole(){
+    loading.screenMaskEnable('container');
+    if(!formValidate.isAllPass()){
+        loading.screenMaskDisable('container');
+        return;
+    }
+
     var permCodeString = "";
     for(var i=0;i<permList.length;i++){
         permCodeString += permList[i].code + ",";
@@ -108,10 +135,12 @@ function addRole(){
         roleCode : $("#roleCode").val(),
         roleName : $("#roleName").val()
     }), function (message) {
+        loading.screenMaskDisable('container');
         backToList();
         parent.initRoleRelTree();
         toastr.success("创建成功！");
     }, function (err) {
+        loading.screenMaskDisable('container');
         // toastr.error("保存失败！");
     })
 }

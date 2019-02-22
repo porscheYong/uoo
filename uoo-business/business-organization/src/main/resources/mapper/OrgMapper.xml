@@ -202,10 +202,10 @@
         AND B.ORG_TREE_ID = #{orgVo.orgTreeId}
         )) where 1=1
         <if test="orgVo.search != null and orgVo.search != ''">
-        <if test='psonOrgVo.isSearchNum!="1"'>
+        <if test='orgVo.isSearchNum!="1"'>
             AND INSTR(orgName,#{orgVo.search})>0
         </if>
-        <if test='psonOrgVo.isSearchNum=="1"'>
+        <if test='orgVo.isSearchNum=="1"'>
             AND (INSTR(orgName,#{orgVo.search})>0
             or orgCode = #{orgVo.search})
         </if>
@@ -223,7 +223,9 @@
         '/') fullName,ORG_ID orgId FROM (
         SELECT E.ORG_NAME,E.ORG_ID ,D.PARENT_ORG_ID,D.CREATE_DATE,E.ORG_CODE
         FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E
-        WHERE  A.ORG_TREE_ID = B.ORG_TREE_ID
+        WHERE
+        A.STATUS_CD='1000' AND B.STATUS_CD='1000' AND C.STATUS_CD='1000' AND D.STATUS_CD='1000' AND E.STATUS_CD='1000'
+        AND A.ORG_TREE_ID = B.ORG_TREE_ID
         AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
         AND D.ORG_ID=E.ORG_ID
         AND C.REF_CODE=D.REF_CODE
@@ -344,6 +346,31 @@
          where c.status_cd = 1000 and b.status_cd=1000
            and b.org_tree_id = c.org_tree_id
            and c.org_id = #{orgId}
+    </select>
+
+
+    <select id="getLowOrgs" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
+             SELECT ORG_ID orgId FROM (
+        SELECT E.ORG_NAME,E.ORG_ID ,D.PARENT_ORG_ID,D.CREATE_DATE,E.ORG_CODE
+        FROM TB_OGT_ORG_RELTYPE_CONF A, TB_ORG_TREE B, TB_ORG_REL_TYPE C,TB_ORG_REL D,TB_ORG E
+        WHERE  A.STATUS_CD='1000' AND B.STATUS_CD='1000' AND C.STATUS_CD='1000' AND D.STATUS_CD='1000' AND E.STATUS_CD='1000'
+        AND A.ORG_TREE_ID = B.ORG_TREE_ID
+        AND A.ORG_REL_TYPE_ID = C.ORG_REL_TYPE_ID
+        AND D.ORG_ID=E.ORG_ID
+        AND C.REF_CODE=D.REF_CODE
+        AND A.ORG_TREE_ID = #{orgTreeId} )AA
+        START WITH PARENT_ORG_ID = #{orgId}
+        CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID
+    </select>
+
+    <select id="getLowOrgsByRefCode" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
+             SELECT ORG_ID orgId FROM (
+        SELECT D.ORG_ID ,D.PARENT_ORG_ID
+        FROM TB_ORG_REL D,TB_ORG E
+        WHERE
+        D.STATUS_CD=1000 AND E.STATUS_CD=1000 AND D.ORG_ID=E.ORG_ID AND D.REF_CODE=#{refCode} )AA
+        START WITH PARENT_ORG_ID = #{orgId}
+        CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID
     </select>
 
 </mapper>

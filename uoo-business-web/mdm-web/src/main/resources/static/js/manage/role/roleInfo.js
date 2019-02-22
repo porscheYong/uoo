@@ -7,9 +7,27 @@ var permList = [];
 var permNameList = [];
 var permIdList = [];
 var permCodeList = [];
-var parRoleCode;
+var parRoleCode = "";
 var locationCode;
+var formValidate;
 var toastr = window.top.toastr;
+var loading = parent.loading;
+
+loading.screenMaskEnable('container');
+
+seajs.use('/vendors/lulu/js/common/ui/Validate', function (Validate) {
+    var posEditForm = $('#editInfo');
+    formValidate = new Validate(posEditForm);
+    formValidate.immediate();
+    posEditForm.find(':input').each(function () {
+      $(this).bind({
+          paste : function(){
+              formValidate.isPass($(this));
+              $(this).removeClass('error');
+          }
+      });
+    });
+});
 
 //获取角色信息
 function getRoleInfo(){
@@ -17,6 +35,7 @@ function getRoleInfo(){
     }, function (data) {
         $("#roleNameTitle").html(data.roleName);
         initRoleInfo(data);
+        initLogTable(id);
     }, function (err) {
         // loading.screenMaskDisable('container');
     });
@@ -81,45 +100,84 @@ function cancel(){
     $("#editInfo").css("display","none");
 }
 
-var logTable = $("#logTable").DataTable({
-    'data': logData,
-    'searching': false,
-    'autoWidth': false,
-    'ordering': true,
-    'initComplete': function (settings, json) {
-        // console.log(settings, json)
-    },
-    "scrollY": "375px",
-    'scrollCollapse': true,
-    'columns': [
-        { 'data': "num", 'title': '订单号', 'className': 'row-num' },
-        { 'data': "explain", 'title': '操作说明', 'className': 'row-explain'},
-        { 'data': "person", 'title': '操作人', 'className': 'row-psn' },
-        { 'data': "org", 'title': '操作人组织', 'className': 'row-org' },
-        { 'data': "acct", 'title': '操作账号', 'className': 'row-acct' },
-        { 'data': "date", 'title': '时间', 'className': 'row-date' },
-        { 'data': "state", 'title': '状态', 'className': 'row-state' }
-    ],
-    'language': {
-        'emptyTable': '没有数据',  
-        'loadingRecords': '加载中...',  
-        'processing': '查询中...',  
-        'search': '检索:',  
-        'lengthMenu': ' _MENU_ ',  
-        'zeroRecords': '没有数据',  
-        'paginate': {  
-            'first':      '首页',  
-            'last':       '尾页',  
-            'next':       '下一页',  
-            'previous':   '上一页'  
-        },  
-        'info': '总_TOTAL_个',  
-        'infoEmpty': '没有数据'
-    },
-    "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
-    'pagingType': 'simple_numbers',
-    'dom': '<"top"f>t<"bottom"ipl>'
-});
+//初始化更新记录表格
+function initLogTable(roleId){
+    logTable = $("#logTable").DataTable({
+        'destroy':true,
+        'searching': false,
+        'autoWidth': true,
+        'ordering': true,
+        'lSort': true,
+        'info': true,
+        "scrollY": "390px",
+        'scrollCollapse': true,
+        'columns': [
+            { 'data': null, 'title': '订单号', 'className': 'row-num', 
+                'render': function (data, type, row, meta) {
+                    return "<span style='cursor:pointer;' title='"+row.batchNumber+"'>"+row.batchNumber+"</span>";
+                }     
+            },
+            { 'data': "operateType", 'title': '操作说明', 'className': 'row-explain'},
+            { 'data': "userName", 'title': '操作人', 'className': 'row-psn' },
+            { 'data': "userOrgName", 'title': '操作人组织', 'className': 'row-org' },
+            { 'data': "userAccout", 'title': '操作账号', 'className': 'row-acct' },
+            { 'data': null, 'title': '时间', 'className': 'row-date' ,
+                'render': function (data, type, row, meta) {
+                    return formatDateTime(row.createDate);
+                }     
+            },
+            { 'data': null, 'title': '状态', 'className': 'row-state', 
+                'render': function (data, type, row, meta) {
+                    if(row.statusCd == 1000){
+                        return "有效";
+                    }else{
+                        return "失效";
+                    } 
+                }
+            }
+        ],
+        'language': {
+            'emptyTable': '没有数据',  
+            'loadingRecords': '加载中...',  
+            'processing': '查询中...',  
+            'search': '检索:',  
+            'lengthMenu': ' _MENU_ ',  
+            'zeroRecords': '没有数据',  
+            'paginate': {  
+                'first':      '首页',  
+                'last':       '尾页',  
+                'next':       '下一页',  
+                'previous':   '上一页'  
+            },  
+            'info': '总_TOTAL_个',  
+            'infoEmpty': '没有数据'
+        },
+        "aLengthMenu": [[10, 20, 50], ["10条/页", "20条/页", "50条/页"]],
+        'pagingType': 'simple_numbers',
+        'dom': '<"top"f>t<"bottom"ipl>',
+        'serverSide': true,  //启用服务器端分页
+        'ajax': function (data, callback, settings) {
+            var param = {};
+            param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
+            param.pageNo = (data.start / data.length) + 1;//当前页码
+            param.recordId = roleId;
+            param.tableName = "SYS_ROLE";
+            $http.get('/public/modifyHistory/listByRecord', param, function (result) {
+                var returnData = {};
+                // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
+                returnData.recordsTotal = result.total;//返回数据全部记录
+                returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
+                returnData.data = result.records;//返回的数据列表
+                //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                callback(returnData);
+                loading.screenMaskDisable('container');
+            }, function (err) {
+                loading.screenMaskDisable('container');
+            })
+        }
+    });
+}
 
 // tags init
 if(typeof $.fn.tagsInput !== 'undefined'){
@@ -146,7 +204,9 @@ function openLocationDialog() {
             $('#location').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
             locationList = checkNode;
-            locationCode = checkNode[0].extParams.locCode;
+            if(checkNode.length != 0){
+                locationCode = checkNode[0].extParams.locCode;
+            }
             parent.layer.close(index);
         },
         btn2: function(index, layero){},
@@ -171,8 +231,13 @@ function openParRoleDialog() {
             var checkNode = iframeWin.checkNode;
             $('#parRole').importTags(checkNode, {unique: true});
             $('.ui-tips-error').css('display', 'none');
+            $("#parRole_tagsinput").removeClass("not_valid");
             parRoleList = checkNode;
-            parRoleCode = checkNode[0].extField1;
+            if(checkNode.length != 0){
+                parRoleCode = checkNode[0].extField1;
+            }else{
+                parRoleCode = "";
+            }
             parent.layer.close(index);
         },
         btn2: function(index, layero){},
@@ -207,6 +272,12 @@ function openPermDialog() {
 
 //更新角色
 function updateRole(){
+    loading.screenMaskEnable('container');
+    if(!formValidate.isAllPass()){
+        loading.screenMaskDisable('container');
+        return;
+    }
+
     var permCodeString = "";
     for(var i=0;i<permList.length;i++){
         permCodeString += permList[i].code + ",";
@@ -223,10 +294,12 @@ function updateRole(){
         roleName : $("#roleName").val(),
         roleId : id
     }), function (message) {
+        loading.screenMaskDisable('container');
         backToList();
         parent.initRoleRelTree();
         toastr.success("保存成功！");
     }, function (err) {
+        loading.screenMaskDisable('container');
         // toastr.error("保存失败！");
     })
 }
@@ -238,14 +311,17 @@ function deleteRole(){
         title: '提示',
         btn: ['确定','取消']
         }, function(index, layero){
+            loading.screenMaskEnable('container');
             $http.post('/system/sysRole/delete', JSON.stringify({  
                 roleId : id
             }), function (message) {
+                parent.layer.close(index);
+                loading.screenMaskDisable('container');
                 backToList();
                 parent.initRoleRelTree();
-                parent.layer.close(index);
                 toastr.success("删除成功！");
             }, function (err) {
+                loading.screenMaskDisable('container');
                 parent.layer.close(index);
                 // toastr.error("删除失败！");
             })

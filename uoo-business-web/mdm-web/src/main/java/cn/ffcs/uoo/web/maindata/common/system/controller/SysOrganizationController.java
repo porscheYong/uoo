@@ -6,6 +6,8 @@ import cn.ffcs.uoo.web.maindata.common.system.client.SysOrganizationClient;
 import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.common.system.vo.*;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
+import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -109,6 +111,7 @@ public class SysOrganizationController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.ADD, module="平台组织新增",methods="addOrg",desc="平台组织新增")
     public ResponseResult<TreeNodeVo> addOrg(@RequestBody SysOrganizationVo vo){
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
@@ -122,6 +125,7 @@ public class SysOrganizationController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
+    @OperateLog(type= OperateType.UPDATE, module="平台组织更新",methods="updateOrg",desc="平台组织更新")
     public ResponseResult<String> updateOrg(@RequestBody SysOrganizationVo vo){
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
@@ -149,6 +153,7 @@ public class SysOrganizationController {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/deleteOrg", method = RequestMethod.GET)
+    @OperateLog(type= OperateType.DELETE, module="平台删除组织",methods="deleteOrg",desc="平台删除组织")
     public ResponseResult<String> deleteOrg(@RequestParam(value = "id",required = false)String id,
                                             @RequestParam(value = "userId",required = false)Long userId,
                                             @RequestParam(value = "accout",required = false)String accout){

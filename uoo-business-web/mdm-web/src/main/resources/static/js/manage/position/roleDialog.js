@@ -58,7 +58,8 @@ function initRoleTree () {
         },
         callback: {
             beforeClick: roleBeforeClick,
-            onCheck: onRoleCheck
+            onCheck: onRoleCheck,
+            onAsyncSuccess: onAsyncSuccess
         },
         check: {
             enable: true,
@@ -71,10 +72,36 @@ function initRoleTree () {
     }, 
     function (data) {
         $.fn.zTree.init($("#roleTree"), roleTetting, data);
+        var zTree = $.fn.zTree.getZTreeObj("roleTree");
+        var nodes = zTree.getNodes();
+        for(var i=0;i<nodes.length;i++){
+            for(var j=0;j<posRoleList.length;j++){
+                if(nodes[i].id == posRoleList[j].roleId){
+                    zTree.checkNode(nodes[i], true);
+                    break;
+                }
+            }
+            zTree.expandNode(nodes[i], true, false, false);
+        }
         autoCheck();
     }, function (err) {
 
     })
+}
+
+function onAsyncSuccess(event, treeId, treeNode, msg) {
+    var zTree = $.fn.zTree.getZTreeObj("roleTree");
+    if(treeNode.parent){
+        for(var i=0;i<treeNode.children.length;i++){
+            for(var j=0;j<posRoleList.length;j++){
+                if(treeNode.children[i].id == posRoleList[j].roleId){
+                    zTree.checkNode(treeNode.children[i], true);
+                    break;
+                }
+            }
+            zTree.expandNode(treeNode.children[i], true, false, false);
+        }
+    }
 }
 
 function roleBeforeClick (treeId, treeNode, clickFlag) {
@@ -148,18 +175,17 @@ function removeNode (e) {
 }
 
 function autoCheck () {
-  var zTree = $.fn.zTree.getZTreeObj("roleTree");
-  var nodes = [];
+//   var zTree = $.fn.zTree.getZTreeObj("roleTree");
+//   var nodes = [];
   for (var i = 0; i < posRoleList.length; i++) {
-    var id = posRoleList[i].roleId || posRoleList[i].id;
-    var node = zTree.getNodeByTId("roleTree_" + id);
-    nodes.push(node);
-    zTree.checkNode(node, true);
-    checkNode.push(node);
+    // var id = posRoleList[i].roleId || posRoleList[i].id;
+    // var node = zTree.getNodeByTId("roleTree_" + id);
+    // nodes.push(node);
+    // zTree.checkNode(node, true);
+    checkNode.push({"id":posRoleList[i].roleId,"name":posRoleList[i].roleName,"tId":posRoleList[i].roleId});
     // checkRole.push({"roleId":node.id,"roleName":""});
-    renderTag();
   }
-//   zTree.expandAll(true);  
+  renderTag();
 }
 
 initRoleTree();

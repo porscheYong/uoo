@@ -8,6 +8,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -34,6 +35,7 @@ import org.springframework.web.client.RestTemplate;
  * @date 2018/9/8 20:41
  * @Version 1.0.0
 */
+@EnableAsync
 @EnableFeignClients
 @EnableEurekaClient
 @SpringBootApplication

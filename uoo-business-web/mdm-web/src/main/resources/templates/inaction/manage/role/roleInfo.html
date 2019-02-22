@@ -76,16 +76,16 @@
             background: #FFF !important;
             border-radius:4px;
         }
-        .row-num,
-        .row-psn{
+        .row-num{
+                width: 18%;
+        }
+        .row-psn,
+        .row-explain{
             width: 12%;
         }
+        .row-acct,
         .row-org{
-            width: 16%;
-        }
-        .row-explain,
-        .row-acct{
-            width: 15%; 
+            width: 14%; 
         }
         .row-date{
             width: 20%;
@@ -179,9 +179,9 @@
                         <div class="row" style="margin-bottom: 10px;">
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="roleName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">角色名称</label>
+                                    <label for="roleName" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">角色名称</label>
                                     <input id="roleName" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                            size="40" value="" autocomplete="off">
+                                            size="40" value="" autocomplete="off" required>
                                 </div>
                             </div>
 
@@ -198,13 +198,13 @@
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
                                     <label for="parRole" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">上级角色</label>
-                                    <input id="parRole" class="ui-input col-md-8 col-sm-8 col-xs-8" onclick="openParRoleDialog()" required readonly>
+                                    <input id="parRole" class="ui-input col-md-8 col-sm-8 col-xs-8" onclick="openParRoleDialog()" readonly>
                                 </div>
                             </div>
 
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="location" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">管理区域</label>
+                                    <label for="location" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">管理区域</label>
                                     <input id="location" class="ui-input col-md-8 col-sm-8 col-xs-8" onclick="openLocationDialog()" required readonly>
                                 </div>
                             </div>
@@ -223,9 +223,9 @@
 
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="sortNum" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">排序号</label>
+                                    <label for="sortNum" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">排序号</label>
                                     <input id="sortNum" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                            size="40" value="03" autocomplete="off">
+                                            size="40" value="03" autocomplete="off" required>
                                 </div>
                             </div>
                         </div>
@@ -243,7 +243,7 @@
                         <div class="row" style="margin-bottom: 10px;">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="perm" class="col-md-2 col-sm-2 col-xs-2" style="padding-right: 20px;line-height: 40px;text-align: right;width: 14.3%;">所含权限</label>
+                                    <label for="perm" class="form-item-label-required col-md-2 col-sm-2 col-xs-2" style="padding-right: 20px;line-height: 40px;text-align: right;width: 14.3%;">所含权限</label>
                                     <input id="perm" class="ui-input col-md-10 col-sm-10 col-xs-10" style="width:83%;" onclick="openPermDialog()" required readonly></input>
                                 </div>
                             </div>
@@ -277,6 +277,8 @@
     <script type="text/javascript" src="/vendors/layer/layer.js"></script>
     <!-- jquery tagsinput -->
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
+    <!-- lulu -->
+    <script type="text/javascript" src="/vendors/lulu/js/common/ui/Validate.js"></script>
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
     <!-- jquery datatable -->

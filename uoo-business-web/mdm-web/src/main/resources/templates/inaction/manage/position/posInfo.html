@@ -93,18 +93,16 @@
             position: absolute;
         }
         .row-num,
-        .row-psn{
-            width: 12%;
-        }
         .row-org{
-            width: 16%;
+            width: 18%;
         }
+        .row-psn,
         .row-explain,
         .row-acct{
-            width: 15%; 
+            width: 12%;
         }
         .row-date{
-            width: 20%;
+            width: 18%;
         }
         .row-state{
             width: 10%;
@@ -132,7 +130,7 @@
                             <span class="name ft18" style="margin-top: 15px;" id="posName"></span>
                             <a class="icon icon-edit" id="EditButton" title="信息编辑" onclick="editInfo()" href="javascript:void(0)"></a>
                         </div>
-                        <div class="breadcrumb" style="padding: 0px 15px 0; background: #fff;margin-bottom: 30px !important;"></div>   <!-- 完整路径-->
+                        <!-- <div class="breadcrumb" style="padding: 0px 15px 0; background: #fff;margin-bottom: 30px !important;"></div> -->
                         <div style="margin-left:11px">
                             <div class="row" style="margin-bottom: 10px;">
                                 <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom:15px;width: 40%;">
@@ -178,9 +176,9 @@
                         <div class="row" style="margin-bottom: 10px;">
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="posNameInput" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">职位名称</label>
+                                    <label for="posNameInput" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">职位名称</label>
                                     <input id="posNameInput" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                            size="40" value="" autocomplete="off">
+                                            size="40" value="" autocomplete="off" required>
                                 </div>
                             </div>
 
@@ -197,13 +195,13 @@
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
                                     <label for="supPos" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">上级职位</label>
-                                    <input id="supPos" class="ui-input col-md-8 col-sm-8 col-xs-8" onclick="openParPosDialog()" required readonly>
+                                    <input id="supPos" class="ui-input col-md-8 col-sm-8 col-xs-8" onclick="openParPosDialog()" readonly>
                                 </div>
                             </div>
 
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="location" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">管理区域</label>
+                                    <label for="location" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">管理区域</label>
                                     <input id="location" class="ui-input col-md-8 col-sm-8 col-xs-8" onclick="openLocationDialog()" required readonly>
                                 </div>
                             </div>
@@ -222,9 +220,9 @@
 
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="sort" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">排序号</label>
+                                    <label for="sort" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">排序号</label>
                                     <input id="sort" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                            size="40" value="" autocomplete="off">
+                                            size="40" value="" autocomplete="off" required>
                                 </div>
                             </div>
                         </div>
@@ -242,7 +240,7 @@
                         <div class="row" style="margin-bottom: 10px;">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="role" class="col-md-2 col-sm-2 col-xs-2" style="padding-right: 20px;line-height: 40px;text-align: right;width: 14.3%">所含角色</label>
+                                    <label for="role" class="form-item-label-required col-md-2 col-sm-2 col-xs-2" style="padding-right: 20px;line-height: 40px;text-align: right;width: 14.3%">所含角色</label>
                                     <input id="role" class="ui-input col-md-10 col-sm-10 col-xs-10" style="width:83%;" onclick="openTypeDialog()" required readonly></input>
                                 </div>
                             </div>
@@ -274,6 +272,8 @@
     <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
     <!-- layer -->
     <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+    <!-- lulu -->
+    <script type="text/javascript" src="/vendors/lulu/js/common/ui/Validate.js"></script>
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
     <!-- jquery datatable -->
@@ -281,7 +281,6 @@
     <!-- jquery tagsinput -->
     <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
     <!-- Custom Theme Scripts -->
-    <script type="text/javascript" src="/js/manage/user.js"></script>
     <script type="text/javascript" src="/js/manage/position/posInfo.js"></script>
     <script type="text/javascript">
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {

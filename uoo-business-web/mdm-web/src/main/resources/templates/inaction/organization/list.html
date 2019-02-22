@@ -86,6 +86,8 @@
         <span class="name ft18">下级组织</span>
         <div class="fright">
           <a class="button-add" id="searchBtn" href="javascript:void(0);"><span class="fa fa-plus-circle icon-add"></span>新增组织</a>
+          <input id="move" type="file" onchange="importFile(this)" style="display: none;" />
+          <a class="button-move" href="javascript:void(0);"><span class="fa fa-arrows icon-move"></span>移动</a>
         </div>
       </div>
       <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
@@ -112,6 +114,6 @@
     <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
     <!-- init -->
     <script src="/js/init.js"></script>
-	  <script type="text/javascript" src="/js/organization/list.js"></script>
+	<script type="text/javascript" src="/js/organization/list.js"></script>
   </body>
 </html>

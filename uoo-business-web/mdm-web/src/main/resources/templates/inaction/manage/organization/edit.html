@@ -46,7 +46,7 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="orgName" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织名称</label>
-                            <input id="orgName" class="ui-input col-md-4 col-sm-4 col-xs-12 error" required />
+                            <input id="orgName" class="ui-input col-md-4 col-sm-4 col-xs-12 error" autocomplete="off" required />
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
@@ -57,9 +57,9 @@
                     </div>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
-                            <label for="parentOrg" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">上级组织</label>
+                            <label for="parentOrg" class="form-item-label col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">上级组织</label>
                             <div class="col-md-4 col-sm-4 col-xs-12" style="padding: 0;">
-                                <input id="parentOrg" class="ui-input col-md-12 col-sm-12 col-xs-12 error" onclick="openOrgDialog()" required readonly />
+                                <input id="parentOrg" class="ui-input col-md-12 col-sm-12 col-xs-12 error" onclick="openOrgDialog()" readonly />
                             </div>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="form-item" style="width: 100%">
                             <label for="post" class="form-item-label-required col-md-3 col-sm-3 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">组织职位</label>
-                            <input id="post" class="ui-input col-md-9 col-sm-9 col-xs-12 error" onclick="openPostDialog()" readonly />
+                            <input id="post" class="ui-input col-md-9 col-sm-9 col-xs-12 error" onclick="openPostDialog()" required readonly />
                         </div>
                     </div>
                 </form>

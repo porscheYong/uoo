@@ -5,6 +5,7 @@ var orgId = getQueryString('id');
 var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var orgFlag = ~~getQueryString('orgFlag');
+var loading = parent.loading;
 var checked = 0,
     query,
     delayTime = 500;
@@ -62,12 +63,12 @@ function initOrgUserTable (isSearchlower,search) {
                 returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
                 returnData.data = result.records;//返回的数据列表
                 callback(returnData);
+                loading.screenMaskDisable('container');
+            }, function (err) {
+                loading.screenMaskDisable('container');
             })
         }
     });
-
-    var loading = parent.loading;
-    loading.screenMaskDisable('container');
 }
 
 function initPositionUserTable (isSearchlower,search) {
@@ -82,11 +83,11 @@ function initPositionUserTable (isSearchlower,search) {
         'columns': [
             { 'data': "userName", 'title': '用户姓名', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return "<a href='edit.html?id=" + row.orgCode + "&userId=" + row.userId + '&orgFlag=0' + "&name="+ encodeURI(orgName) + "'>" + row.userName + "</a>";
+                    return "<a href='edit.html?id=" + orgId + "&userId=" + row.userId + '&orgFlag=0' + "&name="+ encodeURI(orgName) + "'>" + row.userName + "</a>";
                 }
             },
             { 'data': "accout", 'title': '账号', 'className': 'row-accout' },
-            { 'data': "userPositions", 'title': '平台职位', 'className': 'cert-no' },
+            { 'data': "positionName", 'title': '平台职位', 'className': 'cert-no' },
             { 'data': "orgName", 'title': '归属组织', 'className': '' }
         ],
         'language': {
@@ -122,25 +123,33 @@ function initPositionUserTable (isSearchlower,search) {
                 returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
                 returnData.data = result.records;//返回的数据列表
                 callback(returnData);
+                loading.screenMaskDisable('container');
+            }, function (err) {
+                loading.screenMaskDisable('container');
             })
         }
     });
-
-    var loading = parent.loading;
-    loading.screenMaskDisable('container');
 }
 
 // 搜索用户
+// function search () {
+//     query = $('.ui-input-search').val();
+//     clearTimeout(this.timer);
+//     this.timer = setTimeout(function(){
+//         if (orgFlag)
+//             initOrgUserTable(checked, query);
+//         else
+//             initPositionUserTable(checked, query);
+//     }, delayTime);
+// }
 function search () {
+    loading.screenMaskEnable('container');
     query = $('.ui-input-search').val();
-    clearTimeout(this.timer);
-    // 添加的延时
-    this.timer = setTimeout(function(){
-        if (orgFlag)
-            initOrgUserTable(checked, query);
-        else
-            initPositionUserTable(checked, query);
-    }, delayTime);
+    if (orgFlag)
+        initOrgUserTable(checked, query);
+    else{
+        initPositionUserTable(checked, query);
+    }
 }
 
 //勾选显示下级组织用户
@@ -152,10 +161,10 @@ function showLower() {
     }else if(isIE8 && checked == 0){
         $(".ui-checkbox").css("background-position","0px 0px");
     }
-    if (orgFlag)
-        initOrgUserTable(checked, query);
-    else
-        initPositionUserTable(checked, query);
+    // if (orgFlag)
+    //     initOrgUserTable(checked, query);
+    // else
+    //     initPositionUserTable(checked, query);
 }
 
 //创建组织

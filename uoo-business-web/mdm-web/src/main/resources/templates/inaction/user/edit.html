@@ -90,11 +90,28 @@
             position: absolute;
             z-index: 2;
             line-height: 40px;
-            /* top: 0; */
-            /* right: 5px; */
+            padding-left: 2px;
             color: #f26d7e;
             font-size: 23px;
             cursor: pointer;
+        }
+        .default-set {
+            display: none;
+            position: absolute;
+            right: 10px;
+            line-height: 40px;
+        }
+        .mobile-item:hover .default-set {
+            display: block;
+        }
+        .default-tag {
+            background: rgb(255, 121, 2);
+            border-radius: 4px;
+            line-height: 1.5em;
+            color: #fff;
+            padding: 3px 10px;
+            display: inline-block;
+            margin-right: 5px;
         }
         .icon-del:hover {
             color: #f26d7e;
@@ -129,10 +146,12 @@
 </head>
 
 <body style="background: #fff;">
-
-<div class="nav-tabs-custom" >
-<a class="BoardTitle Back" href="javascript:void(0);" onclick="gotoPrev()"  >返回</a>
-    <ul id="tabPageUL" class="nav nav-tabs" style="width: 300px;margin: 0 auto;">
+    <div>
+        <div style="overflow: hidden;">
+            <a class="BoardTitle Back" href="javascript:history.go(-1);">返回</a>
+        </div>
+        <div class="nav-tabs-custom" >
+    <ul id="tabPageUL" class="nav nav-tabs" style="width: 300px;margin: 10px auto;">
         <li id="psnTabLI" class="active"><a href="#personnel" data-toggle="tab">人员信息</a></li>
         <li id="userTabLI"><a href="#user" data-toggle="tab">用户信息</a></li>
     </ul>
@@ -141,7 +160,7 @@
             <div class="base-info">
                 <div class="board-title">
              
-                <div style="float: left"> <span class="name">用户信息</span>
+                <div style="float: left"> <span class="name">基本信息</span>
                 <a id="userEditButton"  style="float: right" onclick="editUser()" class=" Icon IconEdit" href="javascript:void(0)"></a>
                 </div>
                 </div>
@@ -242,6 +261,7 @@
         </div>
         </div>
         </div>
+    </div>
 
         
 <!--用户信息-->
@@ -340,20 +360,86 @@
                         {{/each}}
                         </select>
                     </div>
-                    <div id="phoneDiv" class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                            
-                    </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
                         <label for="certNo" class="form-item-label-required col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">证件号码</label>
                         <input id="certNo" class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{personalData.certNo}}" onkeyup="autoWriteForm()"  required />
                     </div>
-                    <div id="emailDiv" class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+
+                    <!--<div id="phoneDiv" class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">-->
+
+                    <!--</div>-->
+
+                    <!--<div id="emailDiv" class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">-->
+                    <!--</div>-->
+                    <div class="row" style="margin: 0; margin-bottom: 10px;">
+                        <div class="col-md-6 col-sm-6 col-xs-12" id="tbMobileVoList">
+                            <div style="width: 100%; position: relative; display: inline-block;">
+                                <label for="mobile" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">电话</label>
+                                {{#each personalData.tbMobileVoList}}
+                                    {{#eq @index 0}}
+                                        <div class="ui-input col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
+                                            <input id="mobile" required value="{{content}}" contactid="{{contactId}}" onkeyup="autoFillMail()" onpaste="autoFillMail()">
+                                        </div>
+                                    {{/eq}}
+                                {{/each}}
+                                <div class="fright" style="position: absolute; right: -55px; line-height: 40px;">
+                                    <span class="default-tag">默认</span>
+                                </div>
+                            </div>
+                            {{#each personalData.tbMobileVoList}}
+                                {{#if @index}}
+                                    <div class='mobile-item' style='width: 100%; position: relative; display: inline-block;'>
+                                        <input class='ui-input col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4' value="{{content}}" contactid="{{contactId}}">
+                                        <div class='fright del'>
+                                            <a class='icon-del' href='javascript:void(0)'>
+                                                <span class='fa fa-minus-circle'></span>
+                                            </a>
+                                        </div>
+                                        <div class='fright default-set'>
+                                            <a href='javascript:void(0)' onclick='setDefault(this)'>设为默认</a>
+                                        </div>
+                                    </div>
+                                {{/if}}
+                            {{/each}}
+                            <div class="col-md-offset-4 col-sm-offset-4">
+                                <a class="button-add" href='javascript:void(0)' onclick="addMobile(this)"><span class="fa fa-plus-circle icon-add"></span>添加</a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12" id="tbEamilVoList">
+                            <div style="width: 100%; position: relative; display: inline-block;">
+                                <label for="email" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
+                                       style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
+                                {{#each personalData.tbEamilVoList}}
+                                    {{#eq @index 0}}
+                                        <div class="ui-input col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
+                                            <input id="email" value="{{content}}" contactid="{{contactId}}" required>
+                                        </div>
+                                    {{/eq}}
+                                {{/each}}
+                            </div>
+                            {{#each personalData.tbEamilVoList}}
+                                {{#if @index}}
+                                    <div style='width: 100%; position: relative; display: inline-block;'>
+                                        <input class='ui-input col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4' value="{{content}}" contactid="{{contactId}}">
+                                        <div class='fright del'>
+                                            <a class='icon-del' href='javascript:void(0)'>
+                                                <span class='fa fa-minus-circle'></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {{/if}}
+                            {{/each}}
+                            <div class="col-md-offset-4 col-sm-offset-4">
+                                <a class="button-add" href='javascript:void(0)' onclick="addEmail(this)"><span class="fa fa-plus-circle icon-add"></span>添加</a>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                        <label for="birthday" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">员工工号</label>
-                        <input   class="ui-input col-md-8 col-sm-8 col-xs-12" readonly="readonly" value="{{personalData.psnNbr}}" disabled/>
+                        <label for="psnNbr" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">员工工号</label>
+                        <input  class="ui-input col-md-8 col-sm-8 col-xs-12" id="psnNbr" readonly="readonly" value="{{personalData.psnNbr}}" disabled/>
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
                         <label for="gender" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">首次工作时间</label>
@@ -362,9 +448,9 @@
 
 
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
-                        <label for="mobile"  class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                        <label for="psnCode"  class="form-item-label col-md-4 col-sm-4 col-xs-12"
                                style="padding-right: 20px;line-height: 40px;text-align: right;">人员编码</label>
-                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{personalData.psnCode}}" readonly="readonly" disabled />
+                        <input class="ui-input col-md-8 col-sm-8 col-xs-12" id="psnCode" value="{{personalData.psnCode}}" readonly="readonly" disabled />
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
                         <label for="email" class="form-item-label col-md-4 col-sm-4 col-xs-12"
@@ -378,9 +464,9 @@
                     </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
-                        <label for="email" class="form-item-label col-md-4 col-sm-4 col-xs-12"
+                        <label for="ncCode" class="form-item-label col-md-4 col-sm-4 col-xs-12"
                                style="padding-right: 20px;line-height: 40px;text-align: right;">人力编码</label>
-                        <input   class="ui-input col-md-8 col-sm-8 col-xs-12" value="{{userData.mobile}}" value="{{personalData.ncCode}}" readonly="readonly" disabled />
+                        <input  class="ui-input col-md-8 col-sm-8 col-xs-12" id="ncCode" value="{{userData.mobile}}" value="{{personalData.ncCode}}" readonly="readonly" disabled />
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px; position: relative;">
                         <label for="email" class="form-item-label col-md-4 col-sm-4 col-xs-12"
@@ -448,7 +534,7 @@
                         <td><a href="javascript:void(0)" onclick="gotoAccout('{{@index}}')">{{name}}</a></td>
                         <td><a href="javascript:void(0)" onclick="gotoAccout('{{@index}}')">{{acct}}</a></td>
                         <td>{{#eq statusCd 1000}}生效{{/eq}}</td>
-                        <td></td>
+                        <td>{{createDate}}</td>
                     </tr>
                     {{/each}}
                    {{else}}

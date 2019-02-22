@@ -1,6 +1,7 @@
 package cn.ffcs.uoo.core.resource.dao;
 
-import org.apache.ibatis.annotations.Param;
+import java.util.HashMap;
+import java.util.List;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -17,11 +18,11 @@ import cn.ffcs.uoo.core.resource.vo.ModifyHistoryDTO;
  * @since 2018-12-24
  */
 public interface ModifyHistoryMapper extends BaseMapper<ModifyHistory> {
-
+    public List<String> getOrgNamesByAccout(String accout);
     public Long getId();
 
     public Long getCommonTableId(String tableName);
 
     public String getSeqBatchNumber();
-    public Page<ModifyHistoryDTO> selectPageDTO(Page<ModifyHistoryDTO> page,@Param("tableId")long tableId,@Param("recordId")long recordId);
+    public List<ModifyHistoryDTO> selectPageDTO(Page<ModifyHistoryDTO> page,HashMap<String,Object> map);
 }

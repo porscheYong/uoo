@@ -55,4 +55,14 @@ public interface OrgPersonRelMapper extends BaseMapper<OrgPersonRel> {
     //获取身份证
     public String getCert(@Param("personnelId")String personnelId);
 
+
+    /**
+     * 简单判断数据
+     * @return
+     */
+    public int JudgePerName(@Param("search")String search);
+    public int JudgePerNbr(@Param("search")String search);
+    public int JudgePerCert(@Param("search")String search);
+    public int JudgePerMobile(@Param("search")String search);
+
 }

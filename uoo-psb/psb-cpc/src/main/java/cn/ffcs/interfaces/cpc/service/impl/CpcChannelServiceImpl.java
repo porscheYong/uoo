@@ -439,7 +439,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             rsMap.put("message", "必要信息为空");
             return;
         }
-        if (!"10".equals(relaType) || !"20".equals(relaType) || !"30".equals(relaType)) {
+        if (!"10".equals(relaType) && !"20".equals(relaType) && !"30".equals(relaType)) {
             rsMap.put("result_code", "1000");
             rsMap.put("message", "无效的人员关系类型RELA_TYPE");
             return;
@@ -712,6 +712,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         AccountOrgRel rel = accountOrgRelMapper.selectOne(accountOrgRel);
         if (null == rel) {
             accountOrgRel.setCreateDate(new Date());
+            accountOrgRel.setCreateUser(HandleChannelConstant.HANDLE_USER);
             accountOrgRelMapper.insert(accountOrgRel);
             // 更新从账号
             TbSlaveAcct tbSlaveAcct = new TbSlaveAcct();

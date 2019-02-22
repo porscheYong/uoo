@@ -56,6 +56,9 @@ function initOrgTree() {
         isSync: true
     }, function (data) {
         $.fn.zTree.init($("#orgTree"), treeSetting, data);
+        var zTree = $.fn.zTree.getZTreeObj("orgTree");
+        var nodes = zTree.getNodes();
+        zTree.expandNode(nodes[0], true,false,true,true);
         autoCheck();
     }, function (err) {
 
@@ -68,6 +71,7 @@ function autoCheck () {
         var id = orgList[i].id;
         var node = tree.getNodeByTId("orgTree_" + id);
         tree.checkNode(node, true);
+        tree.expandNode(node, true, true, true);
         checkNode.push(node);
     }
 }

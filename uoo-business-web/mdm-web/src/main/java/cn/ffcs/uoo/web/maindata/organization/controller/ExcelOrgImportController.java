@@ -66,7 +66,7 @@ public class ExcelOrgImportController {
     @OperateLog(type= OperateType.ADD, module="保存数据",methods="addExcelFileData",desc="保存数据")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/addExcelFileData", method=RequestMethod.POST)
+    @RequestMapping(value = "/addExcelFileData", method=RequestMethod.GET)
     public ResponseResult<String> addExcelFileData(@RequestParam(value="fileSign",required = false)String fileSign,
                                                    @RequestParam(value="userId",required = false)Long userId,
                                                    @RequestParam(value="accout",required = false)String accout){

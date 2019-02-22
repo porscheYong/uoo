@@ -52,17 +52,17 @@
             <div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="elementName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素名称</label>
+                        <label for="elementName" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素名称</label>
                         <input id="elementName" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" value="" autocomplete="off">
+                                size="40" value="" autocomplete="off" required>
                     </div>
                 </div>
 
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="elementCode" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素编码</label>
+                        <label for="elementCode" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素编码</label>
                         <input id="elementCode" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" value="" autocomplete="off">
+                                size="40" value="" autocomplete="off" required>
                     </div>
                 </div>
             </div>
@@ -70,9 +70,9 @@
             <div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="elementType" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素类型</label>
+                        <label for="elementType" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素类型</label>
                         <input id="elementType" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" value="" autocomplete="off">
+                                size="40" value="" autocomplete="off" required>
                     </div>
                 </div>
 
@@ -88,9 +88,9 @@
             <div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-item" style="width: 100%">
-                        <label for="urlAddr" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素URL</label>
+                        <label for="urlAddr" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素URL</label>
                         <input id="urlAddr" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                size="40" value="" autocomplete="off">
+                                size="40" value="" autocomplete="off" required>
                     </div>
                 </div>
 
@@ -115,8 +115,8 @@
                 </div>
             </div>
 
-            <div class="row" style="margin-bottom: 10px;">
-                <div style="margin-left:38%;margin-top:4%;">
+            <div class="row" style="margin-bottom: 10px;text-align: center;">
+                <div style="margin-top:4%;">
                     <button class="ui-button ui-button-primary" onclick="addRes()">保存</button>
                     <button class="ui-button ui-button-cancel" onclick="backToList()" style="margin-left: 10px;">取消</button>
                 </div>
@@ -131,6 +131,8 @@
     <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
     <!-- layer -->
     <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+    <!-- lulu -->
+    <script type="text/javascript" src="/vendors/lulu/js/common/ui/Validate.js"></script>
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
     <!-- jquery datatable -->

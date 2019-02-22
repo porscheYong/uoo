@@ -50,7 +50,7 @@
             width: 64% !important;
         }
         .col-sm-4 {
-            width: 23% !important;
+            width: 25% !important;
         }
         .row{
             margin-right: 0px !important;
@@ -63,16 +63,16 @@
             background: #FFF !important;
             border-radius:4px;
         }
-        .row-num,
-        .row-psn{
+        .row-num{
+            width: 18%;
+        }
+        .row-psn,
+        .row-explain{
             width: 12%;
         }
+        .row-acct,
         .row-org{
-            width: 16%;
-        }
-        .row-explain,
-        .row-acct{
-            width: 15%; 
+            width: 14%; 
         }
         .row-date{
             width: 20%;
@@ -105,17 +105,17 @@
                         <div class="row" style="margin-bottom: 10px;">
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="elementName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素名称</label>
+                                    <label for="elementName" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素名称</label>
                                     <input id="elementName" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                            size="40" value="" autocomplete="off">
+                                            size="40" value="" autocomplete="off" required>
                                 </div>
                             </div>
             
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="elementCode" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素编码</label>
+                                    <label for="elementCode" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素编码</label>
                                     <input id="elementCode" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                            size="40" value="112122" autocomplete="off">
+                                            size="40" value="" autocomplete="off" required>
                                 </div>
                             </div>
                         </div>
@@ -123,16 +123,16 @@
                         <div class="row" style="margin-bottom: 10px;">
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="elementType" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素类型</label>
+                                    <label for="elementType" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素类型</label>
                                     <input id="elementType" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                            size="40" value="112122" autocomplete="off">
+                                            size="40" value="" autocomplete="off" required>
                                 </div>
                             </div>
             
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
                                     <label for="menuName" class="col-md-6 col-sm-6 col-xs-6" style="padding-right: 20px;
-                                            line-height: 40px;text-align: right;width: 30%;margin-left: -7%;">所属菜单名称</label>
+                                            line-height: 40px;text-align: right;width: 30%;margin-left: -5%;">所属菜单名称</label>
                                     <select  class="col-md-8 col-sm-8 col-xs-8" id="menuName">
                                     </select>
                                 </div>
@@ -142,9 +142,9 @@
                         <div class="row" style="margin-bottom: 10px;">
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-item" style="width: 100%">
-                                    <label for="urlAddr" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素URL</label>
+                                    <label for="urlAddr" class="form-item-label-required col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">元素URL</label>
                                     <input id="urlAddr" style="padding:8px 8px" class="ui-input col-md-8 col-sm-8 col-xs-8" 
-                                            size="40" value="" autocomplete="off">
+                                            size="40" value="" autocomplete="off" required>
                                 </div>
                             </div>
             
@@ -169,8 +169,8 @@
                             </div>
                         </div>
             
-                        <div class="row" style="margin-bottom: 10px;">
-                            <div style="margin-left:32%;margin-top:4%;">
+                        <div class="row" style="margin-bottom: 10px;text-align: center;">
+                            <div style="margin-top:4%;">
                                 <button class="ui-button ui-button-primary" onclick="updateRes()">保存</button>
                                 <button class="Btn BtnRed2" id="delAcct" onclick="deleteRes()" style="margin-left: 10px;">删除</button>
                                 <button class="ui-button ui-button-cancel" onclick="backToList()" style="margin-left: 10px;">取消</button>
@@ -195,12 +195,13 @@
     <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
     <!-- layer -->
     <script type="text/javascript" src="/vendors/layer/layer.js"></script>
+    <!-- lulu -->
+    <script type="text/javascript" src="/vendors/lulu/js/common/ui/Validate.js"></script>
     <!-- init -->
     <script type="text/javascript" src="/js/init.js"></script>
     <!-- jquery datatable -->
     <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
     <!-- Custom Theme Scripts -->
-    <script type="text/javascript" src="/js/manage/user.js"></script>
     <script type="text/javascript" src="/js/manage/resource/elemResInfo.js"></script>
     <script type="text/javascript">
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {

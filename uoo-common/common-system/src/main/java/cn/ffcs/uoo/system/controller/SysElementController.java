@@ -97,7 +97,12 @@ public class SysElementController {
         String code = ele.getElementCode();
         long size=eleSvc.selectCount(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ELEMENT_CODE", code));
         if(size>0){
-            return ResponseResult.createErrorResult("编码已存在");
+            return ResponseResult.createErrorResult("元素编码已存在");
+        }
+        //元素名称
+        size=eleSvc.selectCount(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ELEMENT_NAME", ele.getElementName()));
+        if(size>0){
+            return ResponseResult.createErrorResult("元素名称已存在");
         }
         if(StringUtils.isBlank(ele.getMenuCode())){
             return ResponseResult.createErrorResult("请选择菜单");
@@ -131,6 +136,18 @@ public class SysElementController {
                 }
             }
         }
+        tmp = eleSvc.selectList(Condition.create().eq("STATUS_CD", StatusCD.VALID).eq("ELEMENT_NAME", ele.getElementName()));
+        if(tmp!=null&&!tmp.isEmpty()){
+            if(tmp.size()>1){
+                return ResponseResult.createErrorResult("元素名称已存在");
+            }else{
+                SysElement obj = tmp.get(0);
+                if(!obj.getElementId().equals(ele.getElementId())){
+                    return ResponseResult.createErrorResult("元素名称已存在");
+                }
+            }
+        }
+        
         if(StringUtils.isBlank(ele.getMenuCode())){
             return ResponseResult.createErrorResult("请选择菜单");
         }

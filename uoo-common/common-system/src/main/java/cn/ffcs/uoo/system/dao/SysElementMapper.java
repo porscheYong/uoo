@@ -17,6 +17,6 @@ import cn.ffcs.uoo.system.vo.PermElement;
  */
 public interface SysElementMapper extends BaseMapper<SysElement> {
     List<SysElement> getElementByAccout(String accout);
-    Integer getId();
+    Long getId();
     public List<PermElement> listByPermissionId(Long permId);
 }
