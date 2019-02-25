@@ -377,13 +377,9 @@
                             <div style="width: 100%; position: relative; display: inline-block;">
                                 <label for="mobile" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">电话</label>
-                                {{#each personalData.tbMobileVoList}}
-                                    {{#eq @index 0}}
-                                        <div class="ui-input col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
-                                            <input id="mobile" required value="{{content}}" contactid="{{contactId}}" onkeyup="autoFillMail()" onpaste="autoFillMail()">
-                                        </div>
-                                    {{/eq}}
-                                {{/each}}
+                                <div class="ui-input col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
+                                    <input id="mobile" required onkeyup="autoFillMail()">
+                                </div>
                                 <div class="fright" style="position: absolute; right: -55px; line-height: 40px;">
                                     <span class="default-tag">默认</span>
                                 </div>
@@ -411,13 +407,9 @@
                             <div style="width: 100%; position: relative; display: inline-block;">
                                 <label for="email" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
-                                {{#each personalData.tbEamilVoList}}
-                                    {{#eq @index 0}}
-                                        <div class="ui-input col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
-                                            <input id="email" value="{{content}}" contactid="{{contactId}}" required>
-                                        </div>
-                                    {{/eq}}
-                                {{/each}}
+                                <div class="ui-input col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
+                                    <input id="email" required>
+                                </div>
                             </div>
                             {{#each personalData.tbEamilVoList}}
                                 {{#if @index}}
