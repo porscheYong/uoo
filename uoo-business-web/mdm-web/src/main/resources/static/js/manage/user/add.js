@@ -528,7 +528,7 @@ getAcctLevel();
 getGender();
 if(orgFlag == 1){
     initOrgTable(sysUserDeptPositionVos);
+    editOrgPost(1);
 }else{
     initOrgTable("");
 }
-editOrgPost(1);
