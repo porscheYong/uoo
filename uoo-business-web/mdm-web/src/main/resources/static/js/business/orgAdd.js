@@ -541,6 +541,13 @@ function getOrg (orgId) {
         $('#orgTypeList').importTags(orgTypeList);
         $('#positionList').importTags(positionList);
         $('#postList').importTags(orgPostList);
+        //营销专业树游离组织存在'营销组织类型'不添加
+        if (refCode == '0401') {
+            for (var i = 0; i < orgTypeList.length; i++) {
+                if (orgTypeList[i].orgTypeCode == 'N11')
+                    return;
+            }
+        }
         getOrgType();
         // expandovalueVoList = data.expandovalueVoList;
     }, function (err) {

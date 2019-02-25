@@ -122,4 +122,21 @@ public interface OrgMapper extends BaseMapper<Org> {
      */
     public String getAppOrgTrees(@Param("orgId")String orgId);
 
+
+    /**
+     * 组织下级
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    public List<OrgVo> getLowOrgs(@Param("orgTreeId")String orgTreeId, @Param("orgId")String orgId);
+    /**
+     * 组织下级
+     * @param refCode
+     * @param orgId
+     * @return
+     */
+
+    public List<OrgVo> getLowOrgsByRefCode(@Param("refCode")String refCode, @Param("orgId")String orgId);
+
 }

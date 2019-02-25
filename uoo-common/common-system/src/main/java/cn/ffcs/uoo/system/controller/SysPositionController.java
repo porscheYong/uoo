@@ -210,9 +210,9 @@ public class SysPositionController {
         if(!StrUtil.isNullOrEmpty(sysPositionVo.getRegionNbr())) {
             sysPosition.setRegionNbr(sysPositionVo.getRegionNbr());
         }
-        if(!StrUtil.isNullOrEmpty(sysPositionVo.getParentPositionCode())) {
-            sysPosition.setParentPositionCode(sysPositionVo.getParentPositionCode());
-        }
+        //if(!StrUtil.isNullOrEmpty(sysPositionVo.getParentPositionCode())) {
+            sysPosition.setParentPositionCode(StrUtil.strnull(sysPositionVo.getParentPositionCode()));
+        //}
         sysPosition.setNotes(sysPositionVo.getNotes());
         if(!StrUtil.isNullOrEmpty(sysPositionVo.getSortNum())){
             sysPosition.setSortNum(sysPositionVo.getSortNum());

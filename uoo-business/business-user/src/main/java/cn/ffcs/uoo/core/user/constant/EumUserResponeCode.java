@@ -33,7 +33,8 @@ public enum EumUserResponeCode {
     ACCT_NOT_NULL(26, "账号不能为空"),
     PWD_ERROR(27, "不符合密码安全规范"),
     PSN_ID_NO_NULL(28, "人员标识不能为空"),
-    SYS_ID_NO_NULL(28, "应用系统不能为空"),
+    SYS_ID_NO_NULL(29, "应用系统不能为空"),
+    OPENID_ERROR(30, "微信openID不能包含中文")
     ;
 
     @Getter

@@ -200,6 +200,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         map.put(BaseUnitConstants.TB_SYS_USER_ACCOUT, sysUser.getAccout());
         SysUser user = this.selectOne(new EntityWrapper<SysUser>().allEq(map));
         if(!StrUtil.isNullOrEmpty(user)){
+            if(StrUtil.isNullOrEmpty(sysUser.getUserId()) && !StrUtil.isNullOrEmpty(user)){
+                return "账号已经被占用";
+            }
             if(!StrUtil.isNullOrEmpty(sysUser.getUserId()) && !user.getUserId().equals(sysUser.getUserId())){
                 return "账号已经被占用";
             }

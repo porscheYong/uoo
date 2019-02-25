@@ -220,7 +220,16 @@ function  editUser() {
     var userHtml = userTemplate(personalData);
     //输入模板
     $('#userInfo').html(userHtml);
-
+    //电话
+    if (personalData && personalData.personalData && personalData.personalData.tbMobileVoList.length > 0) {
+        $('#mobile').val(personalData.personalData.tbMobileVoList[0].content);
+        $('#mobile').attr('contactid', personalData.personalData.tbMobileVoList[0].contactId);
+    }
+    //邮箱
+    if (personalData && personalData.personalData && personalData.personalData.tbEamilVoList.length > 0) {
+        $('#email').val(personalData.personalData.tbEamilVoList[0].content);
+        $('#email').attr('contactid', personalData.personalData.tbEamilVoList[0].contactId);
+    }
     laydate.render({
         elem:  'input[isTime="yes"]'
     });
@@ -244,6 +253,16 @@ function  editUser() {
         $('select').selectMatch();
       })
     getPsnImage();
+}
+//邮箱自动填充
+function autoFillMail() {
+    var phoneNo = $('#mobile').val();
+    var emailNo = $('#email').val();
+    var reg = /^1[34578]\d{9}$/;
+    if (!emailNo && reg.test(phoneNo)) {
+        $('#email').val(phoneNo + '@189.cn');
+        $('#email').focus();
+    }
 }
 function editOrgInfo(){
 

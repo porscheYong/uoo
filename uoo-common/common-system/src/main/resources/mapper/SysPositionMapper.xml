@@ -59,6 +59,7 @@
           AND A.ROLE_CODE = B.ROLE_CODE AND A.POSITION_CODE=C.POSITION_CODE) EXTFIELD1
         FROM SYS_POSITION C
         WHERE C.STATUS_CD = '1000' AND C.PARENT_POSITION_CODE is null
+        ORDER BY C.SORT_NUM
     </select>
 
     <select id="selectPositionTree" resultType="cn.ffcs.uoo.system.vo.TreeNodeVo">
@@ -123,7 +124,8 @@
             (SELECT COUNT(1) FROM SYS_DEPT_POSITION_REF SDPR WHERE SDPR.STATUS_CD='1000' AND
             SDPR.POSITION_CODE=A.POSITION_CODE) ORGPOSITIONNUM,
             (SELECT COUNT(1) FROM SYS_USER_POSITION_REF SUPR WHERE SUPR.STATUS_CD='1000' AND
-            SUPR.POSITION_CODE=A.POSITION_CODE) ORGUSERNUM
+            SUPR.POSITION_CODE=A.POSITION_CODE) ORGUSERNUM,
+            A.SORT_NUM
             FROM SYS_POSITION A
             WHERE A.STATUS_CD = '1000'
             START WITH A.PARENT_POSITION_CODE = #{vo.positionCode}
@@ -132,7 +134,7 @@
             <if test="vo.search!=null and vo.search!=''">
                 AND positionName like '%'||#{vo.search}||'%'
             </if>
-            ORDER BY A.SORT_NUM
+            ORDER BY SORT_NUM
         </otherwise>
         </choose>
     </select>

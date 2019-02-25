@@ -43,7 +43,7 @@ public interface SysPermissionClient {
     @RequestMapping(value = "/system/sysPermission/update", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<Void> update(@RequestBody SysPermissionEditDTO sysPermissionEditDTO);
     
-    @RequestMapping(value = "/system/sysPermission/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/system/sysPermission/delete", method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<Void> delete(@RequestBody SysPermission perm);
 }
 

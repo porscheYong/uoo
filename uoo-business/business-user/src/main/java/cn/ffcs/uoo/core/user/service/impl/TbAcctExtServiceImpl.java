@@ -81,6 +81,9 @@ public class TbAcctExtServiceImpl extends ServiceImpl<TbAcctExtMapper, TbAcctExt
             if(!StrUtil.isNullOrEmpty(tbAcctExt.getCertNo()) && "1".equals(tbAcctExt.getCertType()) && !IdCardVerification.idCardValidate(tbAcctExt.getCertNo())) {
                 return ResultUtils.error(EumUserResponeCode.CERT_NO_ERROR);
             }
+            if(!StrUtil.isNullOrEmpty(tbAcctExt.getOpenid()) && StrUtil.isContainChinese(tbAcctExt.getOpenid())){
+                return ResultUtils.error(EumUserResponeCode.OPENID_ERROR);
+            }
         }
         return null;
     }

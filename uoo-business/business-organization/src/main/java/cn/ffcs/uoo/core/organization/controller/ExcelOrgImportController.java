@@ -4,8 +4,10 @@ package cn.ffcs.uoo.core.organization.controller;
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.core.organization.entity.ExcelOrgImport;
+import cn.ffcs.uoo.core.organization.entity.OrgOrgtreeRel;
 import cn.ffcs.uoo.core.organization.service.ExcelOrgImportService;
 import cn.ffcs.uoo.core.organization.service.ModifyHistoryService;
+import cn.ffcs.uoo.core.organization.service.OrgOrgtreeRelService;
 import cn.ffcs.uoo.core.organization.service.OrgService;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
@@ -56,6 +58,8 @@ public class ExcelOrgImportController {
     private OrgService orgService;
     @Autowired
     private ModifyHistoryService modifyHistoryService;
+    @Autowired
+    private OrgOrgtreeRelService orgOrgtreeRelService;
 
 
     @ApiOperation(value = "生成excel文件数据", notes = "生成excel文件数据")
@@ -82,7 +86,7 @@ public class ExcelOrgImportController {
         }
         Sheet sheet = wb.getSheetAt(0);
         int rowCount = sheet.getLastRowNum() - sheet.getFirstRowNum();
-        if(rowCount>100){
+        if(rowCount-3>100){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织导入数量最大为100条");
         }
@@ -195,6 +199,20 @@ public class ExcelOrgImportController {
             String batchNumber = modifyHistoryService.getBatchNumber();
             for(ExcelOrgImport exo : excelOrgImportList){
                 orgService.moveOrg(new Long(exo.getOrgId()),new Long(exo.getParentOrgId()),exo.getOrgTreeId(),userId,batchNumber);
+                com.baomidou.mybatisplus.mapper.Wrapper orgOrgTreeRelWrapper = Condition.create()
+                        .eq("ORG_ID",exo.getOrgId())
+                        .eq("STATUS_CD","1000")
+                        .eq("ORG_TREE_ID",exo.getOrgTreeId());
+                OrgOrgtreeRel ootr = orgOrgtreeRelService.selectOne(orgOrgTreeRelWrapper);
+                if(ootr!=null){
+                    String fullName = orgOrgtreeRelService.getFullBizOrgNameList(exo.getOrgTreeId().toString(),ootr.getOrgId().toString(),"");
+                    String fullOrgId = orgOrgtreeRelService.getFullBizOrgIdList(exo.getOrgTreeId().toString(),ootr.getOrgId().toString(),",");
+                    fullOrgId =","+fullOrgId+",";
+                    ootr.setOrgBizFullName(fullName);
+                    ootr.setOrgBizFullId(fullOrgId);
+                    ootr.setUpdateUser(userId);
+                    orgOrgtreeRelService.update(ootr);
+                }
                 exo.setUpdateUser(userId);
                 exo.setStatusCd("1100");
                 excelOrgImportService.update(exo);
