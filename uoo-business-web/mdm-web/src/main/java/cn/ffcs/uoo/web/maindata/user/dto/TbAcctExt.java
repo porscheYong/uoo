@@ -77,6 +77,16 @@ public class TbAcctExt extends Model<TbAcctExt> {
     @TableField("NATIVE_PLACE")
     private String nativePlace;
     /**
+     * 微信openID
+     */
+    @TableField("OPENID")
+    private String openid;
+    /**
+     * 销售员编码
+     */
+    @TableField("SALE_CODE")
+    private String saleCode;
+    /**
      * 状态
      */
     @JsonIgnore
