@@ -36,6 +36,8 @@ public class FormAcctVo {
 
     private String certNo;
 
+    private String crossTran;
+
     /**
      *  主账号
      */

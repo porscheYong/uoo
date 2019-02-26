@@ -86,8 +86,6 @@ public class TbSlaveAcctController extends BaseController {
             tbAcctExt.setUpdateUser(userId);
             tbAcctExtService.saveTbAcctExt(tbAcctExt);
         }
-
-
         rabbitMqService.sendMqMsg("person", "insert", "slaveAcctId", slaveAcctId);
 
         return ResultUtils.success(null);
@@ -126,16 +124,6 @@ public class TbSlaveAcctController extends BaseController {
         //角色
         List<TbRoles> oldTbRolesList = tbAcctService.getTbRoles(2L, editFormSlaveAcctVo.getSlaveAcctId());
         tbUserRoleService.updateUserRole(editFormSlaveAcctVo.getRolesList(), oldTbRolesList, editFormSlaveAcctVo.getSlaveAcctId(), 2L, userId);
-
-//        //扩展属性
-//        if(!StrUtil.isNullOrEmpty(editFormSlaveAcctVo.getTbAcctExt())){
-//            TbAcctExt tbAcctExt = editFormSlaveAcctVo.getTbAcctExt();
-//            tbAcctExt.setSlaveAcctId(editFormSlaveAcctVo.getSlaveAcctId());
-//            tbAcctExt.setUpdateUser(userId);
-//            tbAcctExtService.saveTbAcctExt(tbAcctExt);
-//        }else{
-//            tbAcctExtService.delTbAcctExt(editFormSlaveAcctVo.getSlaveAcctId(), userId);
-//        }
 
         rabbitMqService.sendMqMsg("person", "update", "slaveAcctId", editFormSlaveAcctVo.getSlaveAcctId());
 
