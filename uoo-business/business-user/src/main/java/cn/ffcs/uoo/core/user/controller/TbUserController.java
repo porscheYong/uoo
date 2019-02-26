@@ -175,6 +175,10 @@ public class TbUserController extends BaseController {
         map.put(BaseUnitConstants.TABLE_SLAVE_ACCT_ID, acctId);
         TbSlaveAcct tbSlaveAcct = tbSlaveAcctService.selectOne(new EntityWrapper<TbSlaveAcct>().allEq(map));
         formSlaveAcctVo.setTbSlaveAcct(tbSlaveAcct);
+        AcctCrossRelVo acctCrossRelVo = tbSlaveAcctService.getAcctCrossRel(tbSlaveAcct.getAcctId());
+        if(!StrUtil.isNullOrEmpty(acctCrossRelVo)){
+            formSlaveAcctVo.setCrossTran(acctCrossRelVo.getCrossTran());
+        }
 
         //人员
         map.remove(BaseUnitConstants.TABLE_SLAVE_ACCT_ID);

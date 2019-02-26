@@ -15,7 +15,6 @@
         <result column="NATION" property="nation" />
         <result column="NATIVE_PLACE" property="nativePlace" />
         <result column="OPENID" property="openid" />
-        <result column="SALE_CODE" property="saleCode" />
         <result column="STATUS_CD" property="statusCd" />
         <result column="CREATE_DATE" property="createDate" />
         <result column="CREATE_USER" property="createUser" />
@@ -26,7 +25,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ACCT_EXT_ID, PK_ACCT, NAME, CONTACT_WAY, WORK_EMAIL, CERT_TYPE, CERT_NO, GENDER, NATION, NATIVE_PLACE, OPENID, SALE_CODE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        ACCT_EXT_ID, PK_ACCT, NAME, CONTACT_WAY, WORK_EMAIL, CERT_TYPE, CERT_NO, GENDER, NATION, NATIVE_PLACE, OPENID, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
     </sql>
 
     <select id="getId"  resultType="java.lang.Long">

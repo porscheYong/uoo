@@ -223,13 +223,12 @@ public class TbPersonnelServiceImpl extends ServiceImpl<TbPersonnelMapper, TbPer
                 return mobileObj;
             }
             for (TbContact tbContact : tbEamilVoList) {
-//                if(StrUtil.isNullOrEmpty(tbContact.getContent())){
-//                    return ResultUtils.error(EumPersonnelResponseCode.EMAIL_IS_NULL);
-//                }
                 if(!StrUtil.checkEmail(tbContact.getContent())){
                     return ResultUtils.error(EumPersonnelResponseCode.EMAIL_ERROR);
                 }
             }
+        }else {
+            return ResultUtils.error(EumPersonnelResponseCode.EMAIL_IS_NULL);
         }
 
         //身份证是否被占用

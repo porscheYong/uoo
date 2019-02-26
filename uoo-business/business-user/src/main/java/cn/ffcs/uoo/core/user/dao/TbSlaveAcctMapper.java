@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.user.dao;
 import cn.ffcs.uoo.core.user.entity.ListUser;
 import cn.ffcs.uoo.core.user.entity.TbAcct;
 import cn.ffcs.uoo.core.user.entity.TbSlaveAcct;
+import cn.ffcs.uoo.core.user.vo.AcctCrossRelVo;
 import cn.ffcs.uoo.core.user.vo.ListSlaveAcctOrgVo;
 import cn.ffcs.uoo.core.user.vo.ListSlaveAcctVo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
@@ -34,4 +35,5 @@ public interface TbSlaveAcctMapper extends BaseMapper<TbSlaveAcct> {
 
     public List<ListSlaveAcctOrgVo> getSlaveAcctOrg(Pagination page,@Param("slaveAcctOrgVo") ListSlaveAcctOrgVo slaveAcctOrgVo, @Param("inSql") String inSql);
 
+    public AcctCrossRelVo getAcctCrossRel(@Param("acctId") Long acctId);
 }

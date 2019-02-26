@@ -34,6 +34,8 @@ public class FormSlaveAcctVo {
 
     private String certNo;
 
+    private String crossTran;
+
     /**
      * 从账号
      */
