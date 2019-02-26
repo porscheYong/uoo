@@ -233,6 +233,7 @@
     <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
     <result column="UPDATE_USER" jdbcType="DECIMAL" property="updateUser" />
     <result column="STATUS_DATE" jdbcType="DATE" property="statusDate" />
+    <result column="OPENID" jdbcType="VARCHAR" property="openId" />
   </resultMap>
 
   <!--人员-->
