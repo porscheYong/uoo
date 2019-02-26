@@ -136,6 +136,7 @@ public class TbAcctExt extends Model<TbAcctExt> {
         ", gender=" + gender +
         ", nation=" + nation +
         ", nativePlace=" + nativePlace +
+        ", openid=" + openid +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
         ", createUser=" + createUser +
