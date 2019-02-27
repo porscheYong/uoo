@@ -75,7 +75,17 @@ public class SysTable extends Model<SysTable> {
      */
     @TableField("UPDATE_DATE")
     private Date updateDate;
+    @TableField("SCENE_CODE")
+    private String sceneCode;
 
+
+    public String getSceneCode() {
+        return sceneCode;
+    }
+
+    public void setSceneCode(String sceneCode) {
+        this.sceneCode = sceneCode;
+    }
 
     public Long getTabId() {
         return tabId;
