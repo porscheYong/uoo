@@ -1,4 +1,5 @@
 package cn.ffcs.interfaces.cpc.service.impl;
+import java.util.Date;
 
 import cn.ffcs.interfaces.cpc.constant.HandleChannelConstant;
 import cn.ffcs.interfaces.cpc.constant.SystemConstant;
@@ -62,6 +63,8 @@ public class CpcChannelServiceImpl implements CpcChannelService {
     @Autowired
     private SystemConstant systemConstant;
 
+    private Long slaveAcctId = null;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -102,6 +105,11 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                         });
                     }
 
+                    /*如果增加了从账号*/
+                    if(slaveAcctId != null){
+                        String commonRegionId = (String)STAFF.get("COMMON_REGION_ID");
+                        hand_STAFF2(slaveAcctId,commonRegionId,rsMap);
+                    }
                 }catch (Exception e){
                     logger.error("Exception:{}",e);
                     rsMap.put("result_code","1000");
@@ -123,6 +131,51 @@ public class CpcChannelServiceImpl implements CpcChannelService {
 
         logger.info("rsMap:{}",rsMap);
         return JSON.toJSONString(rsMap);
+    }
+
+    private void hand_STAFF2(Long slaveAcctId, String commonRegionId,Map<String, Object> rsMap) {
+        if ("1000".equals((String) (rsMap.get("result_code")))) {
+            return;
+        }
+        TbSlaveAcct slaveAcct = tbSlaveAcctMapper.selectById(slaveAcctId);
+        if(slaveAcct == null){
+            rsMap.put("result_code","1000");
+            logger.warn("从账号不存在！");
+        }else{
+            if(slaveAcct.getAcctOrgRelId() == null && slaveAcct.getAcctId() != null){
+                //查询主账号与commonRegionId查询是否存在关系
+
+                Long orgId = tbAcctMapper.getOrgIdByCommonRegionId(commonRegionId);
+
+                if(orgId == null){
+                    orgId = HandleChannelConstant.ORG_ID;
+                }
+
+                AccountOrgRel accountOrgRel = new AccountOrgRel();
+                accountOrgRel.setAcctId(slaveAcct.getAcctId());
+                accountOrgRel.setStatusCd("1000");
+                accountOrgRel.setOrgId(orgId);
+                accountOrgRel.setOrgTreeId(HandleChannelConstant.ORG_TREE_ID);
+                AccountOrgRel temp = accountOrgRelMapper.selectOne(accountOrgRel);
+
+                if(temp == null){
+                    //新增一个
+                    accountOrgRel.setCreateDate(new Date());
+                    accountOrgRel.setCreateUser(HandleChannelConstant.HANDLE_USER);
+                    accountOrgRel.setUpdateDate(new Date());
+                    accountOrgRel.setUpdateUser(HandleChannelConstant.HANDLE_USER);
+                    accountOrgRel.setStatusDate(new Date());
+                    accountOrgRel.setRelType("10");
+                    accountOrgRelMapper.insert(accountOrgRel);
+                }
+
+                slaveAcct.setUpdateDate(new Date());
+                slaveAcct.setAcctOrgRelId(accountOrgRel.getAcctOrgRelId());
+                slaveAcct.setUpdateUser(HandleChannelConstant.HANDLE_USER);
+                tbSlaveAcctMapper.updateById(slaveAcct);
+
+            }
+        }
     }
 
     /**
@@ -271,6 +324,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                         tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
                                     tbSlaveAcct.setCreateUser(1004040L);
                                     tbSlaveAcct.setUpdateUser(1004040L);
+                                    slaveAcctId = tbSlaveAcct.getSlaveAcctId();
                                     tbSlaveAcctMapper.insert(tbSlaveAcct);
                                     String msg = "{\"type\":\"person\",\"handle\":\"insert\",\"context\":{\"column\":\"slaveAcctId\",\"value\":"+tbSlaveAcct.getSlaveAcctId()+"}}";
                                     send(msg);
@@ -355,6 +409,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                             tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
                                     //tbSlaveAcct.setCreateUser(1004040L);
                                     tbSlaveAcct.setUpdateUser(1004040L);
+                                    slaveAcctId = tbSlaveAcct.getSlaveAcctId();
                                     tbSlaveAcctMapper.insert(tbSlaveAcct);
                                     String msg = "{\"type\":\"person\",\"handle\":\"insert\",\"context\":{\"column\":\"slaveAcctId\",\"value\":"+tbSlaveAcct.getSlaveAcctId()+"}}";
                                     send(msg);
