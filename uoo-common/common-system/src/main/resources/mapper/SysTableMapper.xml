@@ -15,11 +15,13 @@
         <result column="CREATE_DATE" property="createDate" />
         <result column="STATUS_DATE" property="statusDate" />
         <result column="UPDATE_DATE" property="updateDate" />
+        <result column="SCENE_CODE" property="sceneCode" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        TAB_ID, TAB_NAME, TAB_PK, REMARK, VER_NUM, STATUS_CD, CREATE_STAFF, UPDATE_STAFF, CREATE_DATE, STATUS_DATE, UPDATE_DATE
+        TAB_ID, TAB_NAME, TAB_PK, REMARK, VER_NUM, STATUS_CD, CREATE_STAFF, 
+        UPDATE_STAFF, CREATE_DATE, STATUS_DATE, UPDATE_DATE,SCENE_CODE
     </sql>
 
 </mapper>

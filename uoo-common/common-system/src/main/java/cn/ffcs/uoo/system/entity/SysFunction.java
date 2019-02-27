@@ -76,7 +76,17 @@ public class SysFunction extends Model<SysFunction> {
      */
     @TableField("STATUS_DATE")
     private Date statusDate;
+    @TableField("NOTES")
+    private String notes;
 
+    
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
     public Long getFuncId() {
         return funcId;

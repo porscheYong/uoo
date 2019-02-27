@@ -71,7 +71,7 @@ function initRoleInfo(result){
     }
     if(result.parentRoleName){
         parRoleCode = result.parentRoleCode;
-        parRoleList = [{"id":result.parentRoleId,"name":result.parentRoleName}];
+        parRoleList = [{"id":result.parentRoleId,"name":result.parentRoleName,"extField1":parRoleCode}];
         $('#parRole').addTag(parRoleList);
     }
 }
@@ -229,14 +229,15 @@ function openParRoleDialog() {
             //获取layer iframe对象
             var iframeWin = parent.window[layero.find('iframe')[0].name];
             var checkNode = iframeWin.checkNode;
-            $('#parRole').importTags(checkNode, {unique: true});
-            $('.ui-tips-error').css('display', 'none');
-            $("#parRole_tagsinput").removeClass("not_valid");
-            parRoleList = checkNode;
-            if(checkNode.length != 0){
-                parRoleCode = checkNode[0].extField1;
+            if(checkNode.length !=0 && checkNode[0].id == id){
+                toastr.error("不能选择当前角色为上级角色!");
+                // parRoleCode = checkNode[0].extField1;
             }else{
-                parRoleCode = "";
+                $('#parRole').importTags(checkNode, {unique: true});
+                $('.ui-tips-error').css('display', 'none');
+                $("#parRole_tagsinput").removeClass("not_valid");
+                parRoleList = checkNode;
+                // parRoleCode = "";
             }
             parent.layer.close(index);
         },
@@ -278,14 +279,19 @@ function updateRole(){
         return;
     }
 
+    var pRole = "";
     var permCodeString = "";
     for(var i=0;i<permList.length;i++){
         permCodeString += permList[i].code + ",";
     }
 
+    if(parRoleList.length != 0){
+        pRole = parRoleList[0].extField1;
+    }
+
     $http.post('/system/sysRole/update', JSON.stringify({  
         notes : $("#notes").val(),
-        parentRoleCode : parRoleCode,
+        parentRoleCode : pRole,
         permissionCodes : permCodeString,
         regionNbr : locationCode,
         statusCd : $("#statusCd").val(),

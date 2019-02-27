@@ -55,7 +55,7 @@
    STATUS_DATE)
 VALUES
   (#{orgId},
-   '8330000',
+   #{locId},
    #{areaCodeId},
    #{orgName},
       (1000000000 + SEQ_ORG_CODE.NEXTVAL),
@@ -63,7 +63,8 @@ VALUES
    '2',
    SYS_GUID(),
    '1000',
-   SYSDATE,'1004040'
+   SYSDATE,
+   1004040,
    SYSDATE)
   </insert>
 </mapper>

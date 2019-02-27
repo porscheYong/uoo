@@ -141,6 +141,9 @@
                                     <span>人员编码：</span><span id="psnNumLable"></span>
                                 </div>
                                 <div class="lableStyle">
+                                    <span>销售员编码：</span><span id="saleCodeLable"></span>
+                                </div>
+                                <div class="lableStyle">
                                     <span id="cerNoTxt"></span><span id="cerNoLable"></span>
                                 </div>
                                 <div class="lableStyle">
@@ -329,10 +332,24 @@
                                 <span style="margin-top:1%;font-weight:600;">姓名：</span><span id="extNameLable"></span>
                             </div>
                         </div>
-    
-                        <div class="col-md-6 col-sm-6 col-xs-6">
+
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="margin-left:1%;">
+                            <div class="lableStyle">
+                                <span style="margin-top:1%;font-weight:600;">微信openID：</span><span id="extWeChatIDLable"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom: 10px;margin-left:25px;">
+                        <div class="col-md-4 col-sm-4 col-xs-4">
                             <div class="lableStyle">
                                 <span style="font-weight:600;">工作邮箱：</span><span id="extEmailLable"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="margin-left:1%;">
+                            <div class="lableStyle">
+                                <span style="font-weight:600;">接收短信号码：</span><span id="extMobileLable"></span>
                             </div>
                         </div>
                     </div>
@@ -344,20 +361,20 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="col-md-6 col-sm-6 col-xs-6" style="margin-left:1%;">
                             <div class="lableStyle">
                                 <span style="font-weight:600;">证件号码：</span><span id="extCerNumLable"></span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row" style="margin-bottom: 10px;margin-left:25px;">
+                    <!-- <div class="row" style="margin-bottom: 10px;margin-left:25px;">
                         <div class="col-md-4 col-sm-4 col-xs-4">
                             <div class="lableStyle">
-                                <span style="font-weight:600;">接收短信号码：</span><span id="extMobileLable"></span>
+                                <span style="font-weight:600;">销售员编码：</span><span id="extSaleIdLable"></span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div id="extInfo" style="display:none;">
@@ -366,6 +383,13 @@
                             <div class="form-item" style="width: 100%">
                                 <label for="extName" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">姓名</label>
                                 <input id="extName" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="form-item" style="width: 100%">
+                                <label for="extWeChatID" class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 20px;line-height: 40px;text-align: right;">微信openID</label>
+                                <input id="extWeChatID" class="ui-input col-md-8 col-sm-8 col-xs-8" size="40" value="" autocomplete="off">
                             </div>
                         </div>
                     </div>
