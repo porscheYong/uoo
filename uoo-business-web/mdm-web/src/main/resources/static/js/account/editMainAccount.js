@@ -333,6 +333,7 @@ function initAcctInfoCheck(results){     //初始化用户信息(查看)
   isNull("#cerNoLable",results.certNo);
   isNull("#effectDateLable",results.tbAcct.enableDate);
   isNull("#invalidDateLable",results.tbAcct.disableDate);
+  isNull("#saleCodeLable",results.crossTran);
   
   for(var i=0;i<cerTypeList.length;i++){
     if(results.certType === cerTypeList[i].itemValue){

@@ -60,7 +60,7 @@ function getLocation() {
             zTree.expandNode(nodes[i], true, false, false);
         }
         if(parRoleList.length != 0){
-            checkNode.push({"id":parRoleList[0].id,"name":parRoleList[0].name});
+            checkNode.push({"id":parRoleList[0].id,"name":parRoleList[0].name,"extField1":parRoleList[0].extField1});
         }
         // autoCheck();
     }, function (err) {

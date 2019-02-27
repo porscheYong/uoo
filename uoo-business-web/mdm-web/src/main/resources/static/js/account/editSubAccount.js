@@ -214,12 +214,14 @@ function initExtInfo(results){
         $('#extMobile').val(results.tbAcctExt.contactWay);
         $('#extName').val(results.tbAcctExt.name);
         $('#extEmail').val(results.tbAcctExt.workEmail);
+        $('#extWeChatID').val(results.tbAcctExt.openid);
 
         isNull("#extCerNumLable",results.tbAcctExt.certNo);
         isNull("#extMobileLable",results.tbAcctExt.contactWay);
         isNull("#extNameLable",results.tbAcctExt.name);
         isNull("#extEmailLable",results.tbAcctExt.workEmail);
         isNull("#extCerTypeLable",extCerTypeName);
+        isNull("#extWeChatIDLable",results.tbAcctExt.openid);
     }
 }
 
@@ -233,7 +235,8 @@ function initSubAcctInfoCheck(results){       //初始化从账号信息(查看)
     isNull("#cerNoLable",results.certNo);
     isNull("#effectDateLable",results.tbSlaveAcct.enableDate);
     isNull("#invalidDateLable",results.tbSlaveAcct.disableDate);
-    setAcctHref();
+    isNull("#saleCodeLable",results.crossTran);
+    setAcctHref(results.acct);
 
     for(var i=0;i<cerTypeList.length;i++){
         if(results.certType === cerTypeList[i].itemValue){
@@ -269,12 +272,12 @@ function initSubAcctInfoCheck(results){       //初始化从账号信息(查看)
 }
 
 //设置主账号点击跳转
-function setAcctHref(){
-    $http.get('/user/getUser', {   
-        acctId: mainAcctId,
-        userType: "1"
-    }, function (data) {
-        $("#acctLink").text(data.tbAcct.acct);
+function setAcctHref(account){
+    // $http.get('/user/getUser', {   
+    //     acctId: mainAcctId,
+    //     userType: "1"
+    // }, function (data) {
+        $("#acctLink").text(account);
         if(hType == "mh"){
             $("#acctLink").attr("href","editMainAccount.html?curOrgId="+curOrgId+"&curOrgTreeId="+curOrgTreeId+"&orgTreeId=" + orgTreeId + 
                         "&hType="+hType+"&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&acctId=" + mainAcctId);
@@ -282,9 +285,9 @@ function setAcctHref(){
             $("#acctLink").attr("href","editMainAccount.html?curOrgId="+curOrgId+"&curOrgTreeId="+curOrgTreeId+"&orgTreeId=" + orgTreeId + 
                         "&hType="+toMainType+"&orgName=" + encodeURI(orgName) + "&orgId=" + orgId + "&acctId=" + mainAcctId);
         }
-    }, function (err) {
-        loading.screenMaskDisable('container');
-    })
+    // }, function (err) {
+    //     loading.screenMaskDisable('container');
+    // })
 }
 
 function updateTbSlaveAcct(){       //更新从账号信息
@@ -609,6 +612,7 @@ function backToInfo(){
         $('#extMobile').val("");
         $('#extName').val("");
         $('#extEmail').val("");
+        $('#extWeChatID').val("");
     }
 }
 
@@ -624,7 +628,7 @@ function saveExtInfo(){
 //新增扩展信息
 function addTbAcctExt(){
     $http.post('/slaveAcct/addTbAcctExt', JSON.stringify({  
-        // acctExtId : acctExtId,
+        openid : $('#extWeChatID').val(),
         certNo : $('#extCerNo').val(),
         certType : $('#extCerType').val().toString(),
         contactWay : $('#extMobile').val(),
@@ -644,6 +648,7 @@ function addTbAcctExt(){
 function updateTbAcctExt(){
     $http.post('/slaveAcct/updateTbAcctExt', JSON.stringify({  
         acctExtId : acctExtId,
+        openid : $('#extWeChatID').val(),
         certNo : $('#extCerNo').val(),
         certType : $('#extCerType').val().toString(),
         contactWay : $('#extMobile').val(),
