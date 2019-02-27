@@ -492,6 +492,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         List<CommonRegion> commonRegions = commonRegionMapper.selectList(new EntityWrapper<CommonRegion>().
                 eq("COMMON_REGION_ID", commoinRegionId.substring(0, 5) + "00")
                 .eq("STATUS_CD", "1000"));
+        tbOrg.setLocId(Long.valueOf(commoinRegionId));
         tbOrg.setAreaCodeId(commonRegions.get(0).getAreaCodeId());
         tbOrg.setOrgName(channel.get("CHANNEL_NAME").toString());
         tbOrgMapper.insertChannel(tbOrg);
