@@ -35,6 +35,14 @@ public class SysUserPositionRefServiceImpl extends ServiceImpl<SysUserPositionRe
 
     @Override
     public Object addSysUserPositionRef(SysUserPositionRef sysUserPositionRef) {
+        Map<String, Object> map = new HashMap<String, Object>(16);
+        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        map.put(BaseUnitConstants.USER_CODE, sysUserPositionRef.getUserCode());
+        map.put(BaseUnitConstants.POSITION_CODE, sysUserPositionRef.getPositionCode());
+        SysUserPositionRef userPositionRef = this.selectOne(new EntityWrapper<SysUserPositionRef>().allEq(map));
+        if(!StrUtil.isNullOrEmpty(userPositionRef)){
+            return true;
+        }
         Long id = this.getId();
         sysUserPositionRef.setUserPositionRefId(id);
         if(retBool(baseMapper.insert(sysUserPositionRef))){
