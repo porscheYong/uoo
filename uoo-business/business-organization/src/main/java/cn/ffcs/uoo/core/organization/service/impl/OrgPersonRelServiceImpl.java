@@ -160,6 +160,13 @@ public class OrgPersonRelServiceImpl extends ServiceImpl<OrgPersonRelMapper, Org
                 Post post = baseMapper.getPost(psOrg.getPostId());
                 psOrg.setPostName(StrUtil.strnull(post.getPostName()));
             }
+            if(!StrUtil.isNullOrEmpty(psOrg.getOrgId())){
+                Wrapper orgWrapper = Condition.create()
+                        .eq("ORG_ID", psOrg.getOrgId())
+                        .eq("STATUS_CD", "1000");
+                Org org = orgService.selectOne(orgWrapper);
+                psOrg.setOrgName(StrUtil.strnull(org.getOrgName()));
+            }
         }
         page.setRecords(list);
         return page;

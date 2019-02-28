@@ -298,7 +298,7 @@
                 AND (INSTR(D.psnName,#{psonOrgVo.search})>0 OR
                 INSTR(D.psnNbr,#{psonOrgVo.search})>0 OR
                 INSTR(D.certNo,#{psonOrgVo.search})>0 OR
-                INSTR(D.mobile,#{psonOrgVo.search})>0 OR)
+                INSTR(D.mobile,#{psonOrgVo.search})>0)
             </if>
         </otherwise>
         </choose>
@@ -470,7 +470,7 @@
                     AND (INSTR(D.psnName,#{psonOrgVo.search})>0 OR
                     INSTR(D.psnNbr,#{psonOrgVo.search})>0 OR
                     INSTR(D.certNo,#{psonOrgVo.search})>0 OR
-                    INSTR(D.mobile,#{psonOrgVo.search})>0 OR)
+                    INSTR(D.mobile,#{psonOrgVo.search})>0 )
                 </if>
             </otherwise>
         </choose>
@@ -1123,9 +1123,9 @@
         <if test="psonOrgVo.tabOrgOrgTypeParams!='' and psonOrgVo.tabOrgOrgTypeParams!=null">
             AND ${psonOrgVo.tabOrgOrgTypeParams}
         </if>
-        <if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">
-            AND ${psonOrgVo.tabOrgParams}
-        </if>
+        <!--<if test="psonOrgVo.tabOrgParams!='' and psonOrgVo.tabOrgParams!=null">-->
+            <!--AND ${psonOrgVo.tabOrgParams}-->
+        <!--</if>-->
         <if test="psonOrgVo.tabOrgOrgTreeRelParams!='' and psonOrgVo.tabOrgOrgTreeRelParams!=null">
             AND ${psonOrgVo.tabOrgOrgTreeRelParams}
         </if>
