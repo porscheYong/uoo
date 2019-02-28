@@ -373,4 +373,13 @@
         CONNECT BY PRIOR AA.ORG_ID = AA.PARENT_ORG_ID
     </select>
 
+
+    <select id="getChannelSign" resultType="java.lang.String">
+        SELECT A.DATA_ FROM TB_EXPANDOVALUE A WHERE A.DATA_='Y' AND A.STATUS_CD=1000 AND A.COLUMN_ID=1060 AND A.RECORD_ID=#{orgId}
+    </select>
+
+    <select id="getChannelNBR" resultType="java.lang.String">
+        SELECT A.DATA_ FROM TB_EXPANDOVALUE A WHERE A.COLUMN_ID=1061 AND A.STATUS_CD=1000 AND A.RECORD_ID=#{orgId}
+    </select>
+
 </mapper>

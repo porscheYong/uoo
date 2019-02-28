@@ -93,7 +93,7 @@ public class ExcelOrgImportController {
         long time = System.currentTimeMillis();
         String t = String.valueOf(time/1000);
         List<ExcelOrgImport> excelList = new ArrayList<>();
-        for(int i=3;i<rowCount;i++){
+        for(int i=3;i<rowCount+1;i++){
             Row row = sheet.getRow(i);
             ExcelOrgImport excelOrgImport = new ExcelOrgImport();
             for(int j=0;j<row.getLastCellNum();j++){

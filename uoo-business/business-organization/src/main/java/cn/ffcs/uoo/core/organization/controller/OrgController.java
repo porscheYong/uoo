@@ -895,6 +895,28 @@ public class OrgController extends BaseController {
             //更新营销组织属性
             isExists = false;
             if(expList!=null && expList.size()>0){
+
+                if(curExtList!=null && curExtList.size()>0){
+                    ResponseResult<TbExpandovalue>  rr =null;
+                    for(ExpandovalueVo curVo : curExtList){
+                        isExists = false;
+                        for(ExpandovalueVo  vo : expList){
+                            if(StrUtil.isNullOrEmpty(vo.getValueId())){
+                                isExists=false;
+                                break;
+                            }
+                            if((vo.getValueId().toString()).equals(curVo.getValueId().toString())){
+                                isExists=true;
+                                break;
+                            }
+                        }
+                        if(!isExists){
+                            //删除
+                            rr = expandovalueService.removeTbExpandovalue(curVo.getValueId(),0L);
+                        }
+                    }
+                }
+
                 for(ExpandovalueVo  vo : expList){
                     if(StrUtil.isNullOrEmpty(vo.getData())){
                         continue;
@@ -929,26 +951,7 @@ public class OrgController extends BaseController {
                         expandovalueService.updateTbExpandovalue(voupdate);
                     }
                 }
-                if(curExtList!=null && curExtList.size()>0){
-                    ResponseResult<TbExpandovalue>  rr =null;
-                    for(ExpandovalueVo curVo : curExtList){
-                        isExists = false;
-                        for(ExpandovalueVo  vo : expList){
-                            if(StrUtil.isNullOrEmpty(vo.getValueId())){
-                                isExists=false;
-                                break;
-                            }
-                            if((vo.getValueId().toString()).equals(curVo.getValueId().toString())){
-                                isExists=true;
-                                break;
-                            }
-                        }
-                        if(!isExists){
-                            //删除
-                            rr = expandovalueService.removeTbExpandovalue(curVo.getValueId(),0L);
-                        }
-                    }
-                }
+
             }else{
                 if(curExtList!=null && curExtList.size()>0){
                     for(ExpandovalueVo vo : curExtList){
@@ -1491,6 +1494,12 @@ public class OrgController extends BaseController {
             org.setAreaCode(StrUtil.strnull(areaList.get(0).getAreaCode()));
         }
 
+        //营销标识.营销编码
+        HashMap<String,String> ls = orgService.getChannelInfo(orgId);
+        if(!StrUtil.isNullOrEmpty(ls) && !ls.isEmpty()){
+            org.setIsChannel(ls.get("isChannel"));
+            org.setChannelNBR(ls.get("channelNbr"));
+        }
         //营销化小编码
         ResponseResult<List<ExpandovalueVo>> Hxret = expandovalueService.queryExpandovalueVoList("TB_ORG",orgId);
         if(Hxret.getState()==ResponseResult.STATE_OK){
@@ -1501,8 +1510,6 @@ public class OrgController extends BaseController {
             ret.setData(org);
             return ret;
         }
-
-
 
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("查询成功");

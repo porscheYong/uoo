@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.service.IService;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -162,4 +163,11 @@ public interface OrgService extends IService<Org> {
      * @return
      */
     public List<OrgVo> getLowOrgsByRefCode(String refCode, String orgId);
+
+    /**
+     * 获取渠道编码和标识
+     * @param orgId
+     * @return
+     */
+    public HashMap<String,String> getChannelInfo(String orgId);
 }

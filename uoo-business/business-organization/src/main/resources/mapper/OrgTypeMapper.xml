@@ -67,7 +67,7 @@
 
     <!--查询组织类别树-->
     <select id="selectOrgTypeTree" resultType="cn.ffcs.uoo.core.organization.vo.TreeNodeVo">
-        select T.ORG_TYPE_ID id, T.PARENT_ORG_TYPE_ID pid, T.ORG_TYPE_NAME name
+        select T.ORG_TYPE_ID id, T.PARENT_ORG_TYPE_ID pid, T.ORG_TYPE_NAME name,T.ORG_TYPE_CODE extField1
         from tb_org_type T
         where T.STATUS_CD = 1000
         <if test="supOrgTypeId != null and supOrgTypeId!=''">

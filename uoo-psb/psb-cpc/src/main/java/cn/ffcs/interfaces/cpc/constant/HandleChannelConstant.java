@@ -13,6 +13,11 @@ public class HandleChannelConstant {
      */
     public static final String RESOURCE_ID = "1";
 
+    /**
+     *  浙江省公司
+     */
+    public static final Long ORG_ID = 1L;
+
     public static final String VALID_STATE = "1000";
 
     public static final String INVALID_STATE = "1100";
