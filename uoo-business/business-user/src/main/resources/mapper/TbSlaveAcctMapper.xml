@@ -99,4 +99,14 @@
         left join tb_org_tree t7 on t.org_tree_id = t7.org_tree_id and t7.status_cd = 1000
     </select>
 
+    <select id="getAcctCrossRel" resultType="cn.ffcs.uoo.core.user.vo.AcctCrossRelVo">
+        select distinct t.acct_cross_id, t.acct_id, t.cross_tran, t.rela_type
+        from tb_acct_cross_rel t
+        where t.status_cd = 1000
+          and t.rela_type = '100100102'
+        <if test="acctId != null and acctId != '' " >
+            and t.acct_id = #{acctId}
+        </if>
+    </select>
+
 </mapper>

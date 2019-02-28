@@ -7,7 +7,6 @@ import cn.ffcs.uoo.core.user.constant.BaseUnitConstants;
 import cn.ffcs.uoo.core.user.constant.EumUserResponeCode;
 import cn.ffcs.uoo.core.user.entity.*;
 import cn.ffcs.uoo.core.user.service.*;
-import cn.ffcs.uoo.core.user.util.ResponseResult;
 import cn.ffcs.uoo.core.user.util.ResultUtils;
 import cn.ffcs.uoo.core.user.util.StrUtil;
 import cn.ffcs.uoo.core.user.vo.*;
@@ -17,13 +16,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,9 +39,6 @@ import java.util.Map;
 public class TbUserController extends BaseController {
 
     @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
     private TbUserService tbUserService;
 
     @Autowired
@@ -56,9 +49,6 @@ public class TbUserController extends BaseController {
 
     @Autowired
     private TbSlaveAcctService tbSlaveAcctService;
-
-    @Autowired
-    private AmqpTemplate template;
 
     private String acctType = "1";
 
@@ -136,6 +126,11 @@ public class TbUserController extends BaseController {
         }
         formAcctVo.setTbAcct(tbAcct);
 
+        AcctCrossRelVo acctCrossRelVo = tbSlaveAcctService.getAcctCrossRel(tbAcct.getAcctId());
+        if(!StrUtil.isNullOrEmpty(acctCrossRelVo)){
+            formAcctVo.setCrossTran(acctCrossRelVo.getCrossTran());
+        }
+
         //人员信息
         formAcctVo.setPersonnelId(Long.valueOf(tbAcct.getPersonnelId()));
         PersonnelInfoVo tbPersonnel = tbUserService.getPersonnelInfo(tbAcct.getPersonnelId());
@@ -170,16 +165,32 @@ public class TbUserController extends BaseController {
         formSlaveAcctVo.setSlaveAcctType("1");
 
         //从账号
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
-        map.put(BaseUnitConstants.TABLE_SLAVE_ACCT_ID, acctId);
-        TbSlaveAcct tbSlaveAcct = tbSlaveAcctService.selectOne(new EntityWrapper<TbSlaveAcct>().allEq(map));
+        Map<String, Object> sAcctMap = new HashMap<String, Object>(16);
+        sAcctMap.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        sAcctMap.put(BaseUnitConstants.TABLE_SLAVE_ACCT_ID, acctId);
+        TbSlaveAcct tbSlaveAcct = tbSlaveAcctService.selectOne(new EntityWrapper<TbSlaveAcct>().allEq(sAcctMap));
         formSlaveAcctVo.setTbSlaveAcct(tbSlaveAcct);
+        if(StrUtil.isNullOrEmpty(tbSlaveAcct)){
+            return ResultUtils.error(EumUserResponeCode.SLAVE_ACCT_NO_EXITST);
+        }
+
+        //主账号
+        Map<String, Object> acctMap = new HashMap<String, Object>(16);
+        acctMap.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        acctMap.put(BaseUnitConstants.TABLE_ACCT_ID, tbSlaveAcct.getAcctId());
+        TbAcct tbAcct = tbAcctService.selectOne(new EntityWrapper<TbAcct>().allEq(acctMap));
+        if(StrUtil.isNullOrEmpty(tbAcct)){
+            return ResultUtils.error(EumUserResponeCode.ACCT_NO_EXIST);
+        }
+        formSlaveAcctVo.setAcct(tbAcct.getAcct());
+        formSlaveAcctVo.setAcctId(tbAcct.getAcctId());
+
+        AcctCrossRelVo acctCrossRelVo = tbSlaveAcctService.getAcctCrossRel(tbSlaveAcct.getAcctId());
+        if(!StrUtil.isNullOrEmpty(acctCrossRelVo)){
+            formSlaveAcctVo.setCrossTran(acctCrossRelVo.getCrossTran());
+        }
 
         //人员
-        map.remove(BaseUnitConstants.TABLE_SLAVE_ACCT_ID);
-        map.put(BaseUnitConstants.TABLE_ACCT_ID, tbSlaveAcct.getAcctId());
-        TbAcct tbAcct = tbAcctService.selectOne(new EntityWrapper<TbAcct>().allEq(map));
         PersonnelInfoVo tbPersonnel = tbUserService.getPersonnelInfo(tbAcct.getPersonnelId());
         BeanUtils.copyProperties(tbPersonnel, formSlaveAcctVo);
 
@@ -188,12 +199,14 @@ public class TbUserController extends BaseController {
         formSlaveAcctVo.setTbRolesList(tbRolesList);
 
         //扩展信息
-        map.remove(BaseUnitConstants.TABLE_ACCT_ID);
-        map.put(BaseUnitConstants.TABLE_SLAVE_ACCT_ID, tbSlaveAcct.getSlaveAcctId());
-        TbAcctExt tbAcctExt = tbAcctExtService.selectOne(new EntityWrapper<TbAcctExt>().allEq(map));
+        Map<String, Object> acctExtMap = new HashMap<String, Object>(16);
+        acctExtMap.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+        acctExtMap.put(BaseUnitConstants.TABLE_SLAVE_ACCT_ID, tbSlaveAcct.getSlaveAcctId());
+        TbAcctExt tbAcctExt = tbAcctExtService.selectOne(new EntityWrapper<TbAcctExt>().allEq(acctExtMap));
         if(!StrUtil.isNullOrEmpty(tbAcctExt)){
             formSlaveAcctVo.setTbAcctExt(tbAcctExt);
         }
+
         //归属组织信息
         ListAcctOrgVo acctOrgVo = new ListAcctOrgVo();
         acctOrgVo.setAcctOrgRelId(tbSlaveAcct.getAcctOrgRelId());

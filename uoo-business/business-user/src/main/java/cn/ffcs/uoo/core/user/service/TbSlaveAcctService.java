@@ -3,6 +3,7 @@ package cn.ffcs.uoo.core.user.service;
 import cn.ffcs.uoo.core.user.entity.ListUser;
 import cn.ffcs.uoo.core.user.entity.TbAcct;
 import cn.ffcs.uoo.core.user.entity.TbSlaveAcct;
+import cn.ffcs.uoo.core.user.vo.AcctCrossRelVo;
 import cn.ffcs.uoo.core.user.vo.EditFormSlaveAcctVo;
 import cn.ffcs.uoo.core.user.vo.ListSlaveAcctOrgVo;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -95,6 +96,11 @@ public interface TbSlaveAcctService extends IService<TbSlaveAcct> {
      */
     public Object checkFormSlaveAcct(EditFormSlaveAcctVo editFormSlaveAcctVo);
 
-
+    /**
+     * 获取 销售员编码
+     * @param acctId
+     * @return
+     */
+    public AcctCrossRelVo getAcctCrossRel(Long acctId);
 
 }

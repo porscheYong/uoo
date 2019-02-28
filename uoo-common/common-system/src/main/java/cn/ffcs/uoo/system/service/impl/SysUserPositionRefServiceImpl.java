@@ -4,16 +4,15 @@ import cn.ffcs.uoo.system.consts.BaseUnitConstants;
 import cn.ffcs.uoo.system.entity.SysUserPositionRef;
 import cn.ffcs.uoo.system.dao.SysUserPositionRefMapper;
 import cn.ffcs.uoo.system.service.SysUserPositionRefService;
+import cn.ffcs.uoo.system.util.StrUtil;
 import cn.ffcs.uoo.system.vo.SysUserPositionRefVo;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -77,13 +76,20 @@ public class SysUserPositionRefServiceImpl extends ServiceImpl<SysUserPositionRe
         if(newListBak != null && newListBak.size() > 0){
             List<SysUserPositionRef> refs = new ArrayList<>();
             for(String code : newListBak){
-                SysUserPositionRef positionRef = new SysUserPositionRef();
-                positionRef.setUserCode(userCode);
-                positionRef.setPositionCode(code);
-                positionRef.setUserPositionRefId(this.getId());
-                positionRef.setCreateUser(updateUser);
-                positionRef.setUpdateUser(updateUser);
-                refs.add(positionRef);
+                Map<String, Object> map = new HashMap<String, Object>(16);
+                map.put(BaseUnitConstants.TABLE_CLOUMN_STATUS_CD, BaseUnitConstants.ENTT_STATE_ACTIVE);
+                map.put(BaseUnitConstants.USER_CODE, userCode);
+                map.put(BaseUnitConstants.POSITION_CODE, code);
+                SysUserPositionRef userPositionRef = this.selectOne(new EntityWrapper<SysUserPositionRef>().allEq(map));
+                if(StrUtil.isNullOrEmpty(userPositionRef)){
+                    SysUserPositionRef positionRef = new SysUserPositionRef();
+                    positionRef.setUserCode(userCode);
+                    positionRef.setPositionCode(code);
+                    positionRef.setUserPositionRefId(this.getId());
+                    positionRef.setCreateUser(updateUser);
+                    positionRef.setUpdateUser(updateUser);
+                    refs.add(positionRef);
+                }
             }
             this.insertBatch(refs);
         }

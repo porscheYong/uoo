@@ -77,6 +77,11 @@ public class TbAcctExt extends Model<TbAcctExt> {
     @TableField("NATIVE_PLACE")
     private String nativePlace;
     /**
+     * 微信openID
+     */
+    @TableField("OPENID")
+    private String openid;
+    /**
      * 状态
      */
     @JsonIgnore
@@ -131,6 +136,7 @@ public class TbAcctExt extends Model<TbAcctExt> {
         ", gender=" + gender +
         ", nation=" + nation +
         ", nativePlace=" + nativePlace +
+        ", openid=" + openid +
         ", statusCd=" + statusCd +
         ", createDate=" + createDate +
         ", createUser=" + createUser +

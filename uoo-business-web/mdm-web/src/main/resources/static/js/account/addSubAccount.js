@@ -245,7 +245,8 @@ function  hasExtInfo(certType){  //判断是否需要扩展信息
             "certType": certType.toString(),
             "contactWay": $('#extMobile').val(),
             "name": $('#extName').val(),
-            "workEmail": $('#extEmail').val()
+            "workEmail": $('#extEmail').val(),
+            "openid": $('#extWeChatID').val()
           };
     }else{
         tbAcctExt = null;

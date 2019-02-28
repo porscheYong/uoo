@@ -30,4 +30,23 @@
     select * from tb_acct where personnel_id = #{personnelId} and status_cd = '1000'
   </select>
 
+  <select id="getOrgIdByCommonRegionId" resultType="Long">
+    select ORG_ID
+      from (select e.org_id, d.* from tb_common_region d
+          left join (
+                    select b.org_id, b.org_name, b.area_code_id
+                      from tb_org b,
+                            (SELECT org_id, parent_org_id
+                               FROM tb_org_rel a
+                              WHERE a.ref_code = '0410'
+                                AND a.parent_org_id IN ('10000001', '1')
+                                AND a.status_cd = '1000') c
+                     where b.status_cd = '1000'
+                       and c.org_id = b.org_id
+                       and (b.area_code_id, c.parent_org_id) not in
+                           (select 12, 1 from dual)) e
+            on d.area_code_id = e.area_code_id) f
+    where f.common_region_id = #{commonRegionId}
+  </select>
+
 </mapper>

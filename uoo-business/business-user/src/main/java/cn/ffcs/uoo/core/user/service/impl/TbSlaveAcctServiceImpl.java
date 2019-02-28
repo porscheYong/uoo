@@ -9,6 +9,7 @@ import cn.ffcs.uoo.core.user.entity.TbAcctExt;
 import cn.ffcs.uoo.core.user.entity.TbSlaveAcct;
 import cn.ffcs.uoo.core.user.service.*;
 import cn.ffcs.uoo.core.user.util.*;
+import cn.ffcs.uoo.core.user.vo.AcctCrossRelVo;
 import cn.ffcs.uoo.core.user.vo.EditFormSlaveAcctVo;
 import cn.ffcs.uoo.core.user.vo.ListSlaveAcctOrgVo;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -228,6 +229,11 @@ public class TbSlaveAcctServiceImpl extends ServiceImpl<TbSlaveAcctMapper, TbSla
             return ResultUtils.error(EumUserResponeCode.SLAVE_ACCT_IS_EXIST);
         }
         return null;
+    }
+
+    @Override
+    public AcctCrossRelVo getAcctCrossRel(Long acctId){
+        return baseMapper.getAcctCrossRel(acctId);
     }
 
 }

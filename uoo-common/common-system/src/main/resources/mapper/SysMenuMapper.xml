@@ -28,7 +28,7 @@
 		<result property="updateUser" column="UPDATE_USER" />
 
 		<result property="statusDate" column="STATUS_DATE" />
-
+<result column="NOTES" property="notes" />
 	</resultMap>
 
 	<!-- 通用查询结果列 -->
@@ -36,7 +36,7 @@
 
 	<sql id="Base_Column_List"> MENU_ID, MENU_NAME, MENU_CODE, MENU_URL, MENU_SORT,
 		MENU_LEVEL, PARENT_MENU_CODE, STATUS_CD, CREATE_DATE, CREATE_USER,
-		UPDATE_DATE, UPDATE_USER, STATUS_DATE </sql>
+		UPDATE_DATE, UPDATE_USER, STATUS_DATE,NOTES </sql>
 
 	<select id="getId" resultType="Long">
 		select SEQ_SYS_MENU_ID.NEXTVAL

@@ -21,6 +21,10 @@ public class BaseUnitConstants {
 
     public static final String TYPE_INSERT = "INSERT";
 
+    public static final String USER_CODE = "USER_CODE";
+
+    public static final String POSITION_CODE = "POSITION_CODE";
+
     /**
      * 生效状态
      */
