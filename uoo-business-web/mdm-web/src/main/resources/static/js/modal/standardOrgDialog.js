@@ -8,15 +8,15 @@ if (!infoFlag && parentNode && parentNode.length > 0) {
 }
 
 var nodePath = orgFrame.nodeArr || parentNode;
-var parent, nodeArr;
+var parentObj, nodeArr;
 
 // 获取父节点路径
 function getParentNodes(parentNode, currentNode) {
     if(parentNode!=null){
-        parent = {node: parentNode, current: false};
+        parentObj = {node: parentNode, current: false};
         var curNode = parentNode.getParentNode();
         nodeArr.push(currentNode);
-        getParentNodes(curNode, parent);
+        getParentNodes(curNode, parentObj);
     }else{
         //根节点
         nodeArr.push(currentNode);
