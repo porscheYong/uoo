@@ -1,8 +1,6 @@
-import cn.ffcs.uoo.core.organization.Api.service.SystemService;
-import cn.ffcs.uoo.core.organization.util.StrUtil;
-import cn.ffcs.uoo.core.organization.vo.DataRuleRequestVO;
 
-//package cn.ffcs.uoo.core.organization.Api.service;/**
+
+package cn.ffcs.uoo.core.organization.Api.service;/**
 // * @description:
 // * @author: ffcs-gzb
 // * @date: 2018-12-21
@@ -151,12 +149,12 @@ public class test {
 ////        System.out.println("类的名称是:" + c.getName());
 //    }
     public static void main(String[] args) {
-String params = "AND";
+/*String params = "AND";
         params = params.substring(0,params.length()-3);
         if(StrUtil.isNullOrEmpty(params)){
             System.out.println(params);
         }
-        DataRuleRequestVO requestVo = new DataRuleRequestVO();
+        DataRuleRequestVO requestVo = new DataRuleRequestVO();*/
 
 //        Org orgVo1 = new Org();
 //        //orgVo1.setOrgId(1L);
