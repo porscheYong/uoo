@@ -97,6 +97,8 @@ spring:
 rabbitmq:
   ip: 134.96.217.231
   port: 15672
+  username: root
+  password: mvLx#qa3NKxv9OfktHfT
 
 mybatis-plus:
   mapper-locations: classpath:mapper/**Mapper.xml
