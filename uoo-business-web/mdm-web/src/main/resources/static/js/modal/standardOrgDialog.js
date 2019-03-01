@@ -80,17 +80,31 @@ function onAsyncSuccess (event, treeId, treeNode, msg) {
         }
     }
 
-    if (idx > 0) {
+    //未修改过的
+    // if (idx > 0) {
+    //     var openNode = tree.getNodeByParam('id', nodePath[idx - 1].node.id);
+    //     tree.expandNode(openNode, true, false, true, true);
+    // }
+    // if (idx == 1) {
+    //     var openNode = tree.getNodeByParam('id', nodePath[0].node.id);
+    //     tree.checkNode(openNode, true);
+    //     setTimeout(function () {
+    //         tree.showNodeFocus(openNode);
+    //     }, 100)
+    // }
+
+    //修改过的
+    if (idx > 1) {
         var openNode = tree.getNodeByParam('id', nodePath[idx - 1].node.id);
         tree.expandNode(openNode, true, false, true, true);
-    }
-    if (idx == 1) {
+    }else{
         var openNode = tree.getNodeByParam('id', nodePath[0].node.id);
         tree.checkNode(openNode, true);
         setTimeout(function () {
             tree.showNodeFocus(openNode);
         }, 100)
     }
+
     // var response = JSON.parse(msg);
     // for (var i = nodePath.length - 1; i >= 0; i--) {
     //     var tree = $.fn.zTree.getZTreeObj("orgTree");
