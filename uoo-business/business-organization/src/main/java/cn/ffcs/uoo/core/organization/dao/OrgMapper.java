@@ -136,7 +136,19 @@ public interface OrgMapper extends BaseMapper<Org> {
      * @param orgId
      * @return
      */
-
     public List<OrgVo> getLowOrgsByRefCode(@Param("refCode")String refCode, @Param("orgId")String orgId);
 
+    /**
+     * 渠道标识
+     * @param orgId
+     * @return
+     */
+    public String getChannelSign(@Param("orgId")String orgId);
+
+    /**
+     * 渠道编码
+     * @param orgId
+     * @return
+     */
+    public String getChannelNBR(@Param("orgId")String orgId);
 }

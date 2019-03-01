@@ -140,6 +140,29 @@ public class OrgVo extends BaseVo{
     private List<ExcelOrgImportVo> excelOrgImportVoList;
 
 
+
+    //渠道标识
+    private String isChannel;
+    //渠道编码
+    private String channelNBR;
+
+
+    public String getIsChannel() {
+        return isChannel;
+    }
+
+    public void setIsChannel(String isChannel) {
+        this.isChannel = isChannel;
+    }
+
+    public String getChannelNBR() {
+        return channelNBR;
+    }
+
+    public void setChannelNBR(String channelNBR) {
+        this.channelNBR = channelNBR;
+    }
+
     public String getTabOrgOrgTreeRelParams() {
         return tabOrgOrgTreeRelParams;
     }

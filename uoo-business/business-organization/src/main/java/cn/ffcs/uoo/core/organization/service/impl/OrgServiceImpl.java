@@ -21,10 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Wrapper;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -331,6 +328,9 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
     @Override
     public String moveOrg(Long orgId,Long parentOrgId,Long orgTreeId,Long userId,String batchNumber){
         String str = "";
+        if((StrUtil.strnull(orgId)).equals(StrUtil.strnull(parentOrgId))){
+            return "当前节点不能和移动节点相同";
+        }
         OrgVo parentOrg = selectOrgByOrgId(parentOrgId.toString(),orgTreeId.toString());
         if(StrUtil.isNullOrEmpty(parentOrg)){
             return "移动的父组织不存在";
@@ -341,7 +341,7 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         String fullParentNameSplit = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),parentOrgId.toString(),",");
         fullNameSplit+=",";
         fullParentNameSplit+=",";
-        if(fullParentNameSplit.contains(fullNameSplit)){
+        if(fullParentNameSplit.contains(fullNameSplit) && !fullNameSplit.equals(fullParentNameSplit)){
             return "节点不能移动到该节点的子节点上";
         }
         String fullNameId = orgOrgtreeRelService.getFullBizOrgIdList(orgTreeId.toString(),orgId.toString(),"");
@@ -437,6 +437,20 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
     @Override
     public List<OrgVo> getLowOrgsByRefCode(String refCode, String orgId){
         return baseMapper.getLowOrgsByRefCode(refCode,orgId);
+    }
+
+    @Override
+    public HashMap<String,String> getChannelInfo(String orgId){
+        HashMap<String,String> map = new HashMap<String,String>();
+        //获取标识
+        String isChannel = baseMapper.getChannelSign(orgId);
+        if(!StrUtil.isNullOrEmpty(isChannel)){
+            map.put("isChannel",isChannel);
+            //获取渠道
+            String channelNbr = baseMapper.getChannelNBR(orgId);
+            map.put("channelNbr",channelNbr);
+        }
+        return map;
     }
 
 }
