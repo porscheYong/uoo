@@ -107,7 +107,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
 
                     /*如果增加了从账号*/
                     if(slaveAcctId != null){
-                        String commonRegionId = (String)STAFF.get("COMMON_REGION_ID");
+                        String commonRegionId = String.valueOf(STAFF.get("COMMON_REGION_ID"));
                         hand_STAFF2(slaveAcctId,commonRegionId,rsMap);
                     }
                 }catch (Exception e){
@@ -324,8 +324,8 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                         tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
                                     tbSlaveAcct.setCreateUser(1004040L);
                                     tbSlaveAcct.setUpdateUser(1004040L);
-                                    slaveAcctId = tbSlaveAcct.getSlaveAcctId();
                                     tbSlaveAcctMapper.insert(tbSlaveAcct);
+                                    slaveAcctId = tbSlaveAcct.getSlaveAcctId();
                                     String msg = "{\"type\":\"person\",\"handle\":\"insert\",\"context\":{\"column\":\"slaveAcctId\",\"value\":"+tbSlaveAcct.getSlaveAcctId()+"}}";
                                     send(msg);
                                 }
@@ -365,11 +365,12 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                 //tbContactMapper.deleteByPersonnelId(personnelId);
                                 if (staff.get("MOBILE_PHONE") != null) {
                                     //判断手机号是不是已存在
+                                   ;
                                     if(tbContactMapper.selectCount(new EntityWrapper<TbContact>()
                                             .eq("STATUS_CD","1000")
                                             .eq("CONTACT_TYPE","1")
                                             .eq("PERSONNEL_ID",personnelId)
-                                            .eq("CONTENT",staff.get("MOBILE_PHONE"))) ==0){
+                                            .eq("CONTENT", String.valueOf(staff.get("MOBILE_PHONE")))) ==0){
                                         TbContact tbContact = new TbContact(tbPersonnel.getPersonnelId(), "1",
                                              String.valueOf(staff.get("MOBILE_PHONE")), UUID.randomUUID().toString().replaceAll("-","").toUpperCase(),
                                              "1000", DateUtils.parseDate(DateUtils.getDateTime()), Short.valueOf("0"));
@@ -409,8 +410,8 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                             tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
                                     //tbSlaveAcct.setCreateUser(1004040L);
                                     tbSlaveAcct.setUpdateUser(1004040L);
-                                    slaveAcctId = tbSlaveAcct.getSlaveAcctId();
                                     tbSlaveAcctMapper.insert(tbSlaveAcct);
+                                    slaveAcctId = tbSlaveAcct.getSlaveAcctId();
                                     String msg = "{\"type\":\"person\",\"handle\":\"insert\",\"context\":{\"column\":\"slaveAcctId\",\"value\":"+tbSlaveAcct.getSlaveAcctId()+"}}";
                                     send(msg);
                                 }else{
