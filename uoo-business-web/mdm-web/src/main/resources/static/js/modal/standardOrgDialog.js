@@ -8,15 +8,15 @@ if (!infoFlag && parentNode && parentNode.length > 0) {
 }
 
 var nodePath = orgFrame.nodeArr || parentNode;
-var parent, nodeArr;
+var parentObj, nodeArr;
 
 // 获取父节点路径
 function getParentNodes(parentNode, currentNode) {
     if(parentNode!=null){
-        parent = {node: parentNode, current: false};
+        parentObj = {node: parentNode, current: false};
         var curNode = parentNode.getParentNode();
         nodeArr.push(currentNode);
-        getParentNodes(curNode, parent);
+        getParentNodes(curNode, parentObj);
     }else{
         //根节点
         nodeArr.push(currentNode);
@@ -80,17 +80,31 @@ function onAsyncSuccess (event, treeId, treeNode, msg) {
         }
     }
 
-    if (idx > 0) {
+    //未修改过的
+    // if (idx > 0) {
+    //     var openNode = tree.getNodeByParam('id', nodePath[idx - 1].node.id);
+    //     tree.expandNode(openNode, true, false, true, true);
+    // }
+    // if (idx == 1) {
+    //     var openNode = tree.getNodeByParam('id', nodePath[0].node.id);
+    //     tree.checkNode(openNode, true);
+    //     setTimeout(function () {
+    //         tree.showNodeFocus(openNode);
+    //     }, 100)
+    // }
+
+    //修改过的
+    if (idx > 1) {
         var openNode = tree.getNodeByParam('id', nodePath[idx - 1].node.id);
         tree.expandNode(openNode, true, false, true, true);
-    }
-    if (idx == 1) {
+    }else{
         var openNode = tree.getNodeByParam('id', nodePath[0].node.id);
         tree.checkNode(openNode, true);
         setTimeout(function () {
             tree.showNodeFocus(openNode);
         }, 100)
     }
+
     // var response = JSON.parse(msg);
     // for (var i = nodePath.length - 1; i >= 0; i--) {
     //     var tree = $.fn.zTree.getZTreeObj("orgTree");

@@ -96,13 +96,14 @@ function initAddUserInfo(results){    //初始化用户信息(新增)
   $('#psnName').val(results.psnName);
   $('#psnNum').val(results.psnCode);
   $('#mobile').val(results.mobilePhone);
-  $('#email').val(results.eamil);
+  $('#email').val(results.email);
   $('#cerNo').val(results.certNo);
   $('#acct').val(results.psnCode);
   setDate();
 
   for(var i=0;i<statusCdList.length;i++){
-      $("#statusCd").append("<option value='" + statusCdList[i].itemValue + "'>" + statusCdList[i].itemCnname +"</option>");
+      var selected = i===0 ? "selected":"";
+      $("#statusCd").append("<option value='" + statusCdList[i].itemValue + "'"+selected+">" + statusCdList[i].itemCnname +"</option>");
   }
 
   for(var i=0;i<cerTypeList.length;i++){

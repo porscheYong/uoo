@@ -158,7 +158,7 @@ function initSubInfo(results){  //编辑时初始化信息
     $('#psnName').val(results.psnName);
     $('#psnNum').val(results.psnCode);
     $('#mobile').val(results.mobilePhone);
-    $('#email').val(results.eamil);
+    $('#email').val(results.email);
     $('#cerNo').val(results.certNo);
     $('#acct').val(results.tbSlaveAcct.slaveAcct);
     // $('#defaultPsw').val(results.tbSlaveAcct.password);

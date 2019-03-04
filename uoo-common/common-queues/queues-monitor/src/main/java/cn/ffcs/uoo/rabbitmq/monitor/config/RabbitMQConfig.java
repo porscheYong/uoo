@@ -12,10 +12,10 @@ public class RabbitMQConfig {
     @Value("${rabbitmq.port}")
     private String port;
 
-    //@Value("${rabbitmq.username}")
+    @Value("${rabbitmq.username}")
     private String username;
 
-    //@Value("${rabbitmq.password}")
+    @Value("${rabbitmq.password}")
     private  String password;
 
     public String getIp() {
