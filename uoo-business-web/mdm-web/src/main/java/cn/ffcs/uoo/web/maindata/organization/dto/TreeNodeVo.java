@@ -26,6 +26,51 @@ public class TreeNodeVo {
     //标准组织标识
     private String standardFlag;
 
+
+
+    private String sort;
+    //渠道标识
+    private String isChannel;
+    //渠道编码
+    private String channelNBR;
+    /**
+     * 是否存在账号
+     */
+    private String isExistsAcct;
+
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+    public String getIsChannel() {
+        return isChannel;
+    }
+
+    public void setIsChannel(String isChannel) {
+        this.isChannel = isChannel;
+    }
+
+    public String getChannelNBR() {
+        return channelNBR;
+    }
+
+    public void setChannelNBR(String channelNBR) {
+        this.channelNBR = channelNBR;
+    }
+
+    public String getIsExistsAcct() {
+        return isExistsAcct;
+    }
+
+    public void setIsExistsAcct(String isExistsAcct) {
+        this.isExistsAcct = isExistsAcct;
+    }
+
     public String getStandardFlag() {
         return standardFlag;
     }

@@ -156,6 +156,11 @@ public class OrgVo extends BaseVo{
      * /渠道组织是否已经挂载  1 加载 0 未加载
      */
     private String channelOrgLoadSign;
+    /**
+     * 组织下是否挂有组织
+     */
+    private String isExistsAcct;
+
 
 
     public String getOrgPaths() {

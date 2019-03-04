@@ -34,6 +34,18 @@ public class TreeNodeVo {
     private String isChannel;
     //渠道编码
     private String channelNBR;
+    /**
+     * 是否存在账号
+     */
+    private String isExistsAcct;
+
+    public String getIsExistsAcct() {
+        return isExistsAcct;
+    }
+
+    public void setIsExistsAcct(String isExistsAcct) {
+        this.isExistsAcct = isExistsAcct;
+    }
 
     public String getIsChannel() {
         return isChannel;

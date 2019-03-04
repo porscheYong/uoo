@@ -4,6 +4,7 @@ import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.core.organization.dao.OrgMapper;
 import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.dao.OrgRelMapper;
+import cn.ffcs.uoo.core.organization.service.OrgPersonRelService;
 import cn.ffcs.uoo.core.organization.service.OrgRelService;
 import cn.ffcs.uoo.core.organization.service.OrgRelTypeService;
 import cn.ffcs.uoo.core.organization.service.OrgService;
@@ -43,6 +44,9 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
 
     @Autowired
     private OrgService orgService;
+
+    @Autowired
+    private OrgPersonRelService orgPersonRelService;
 
     @Override
     public Long getId(){
@@ -94,6 +98,10 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
                 if(!StrUtil.isNullOrEmpty(ls) && !ls.isEmpty()){
                     vo.setIsChannel(ls.get("isChannel"));
                     vo.setChannelNBR(ls.get("channelNbr"));
+                }
+                List<OrgPersonRel> oplist = orgPersonRelService.getOrgAcctRel(orgTreeId,vo.getId());
+                if(oplist!=null && oplist.size()>0){
+                    vo.setIsExistsAcct("1");
                 }
             }
         }
