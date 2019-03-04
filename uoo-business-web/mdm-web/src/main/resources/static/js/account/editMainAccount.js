@@ -287,7 +287,7 @@ function initEditUserInfo(results){     //初始化用户信息(编辑)
   $('#psnName').val(results.psnName);
   $('#psnNum').val(results.psnNbr);
   $('#mobile').val(results.mobilePhone);
-  $('#email').val(results.eamil);
+  $('#email').val(results.email);
   $('#cerNo').val(results.certNo);
   $('#acct').val(results.tbAcct.acct);
   // $('#defaultPsw').val(results.tbAcct.password);
@@ -298,7 +298,7 @@ function initEditUserInfo(results){     //初始化用户信息(编辑)
   $('#role').addTag(results.tbRolesList);
 
   for(var i=0;i<statusCdList.length;i++){
-    if(results.tbAcct.statusCd === statusCdList.itemValue){
+    if(results.tbAcct.statusCd === statusCdList[i].itemValue){
         $("#statusCd").append("<option value='" + statusCdList[i].itemValue + "' selected>" + statusCdList[i].itemCnname +"</option>");
     }else{
         $("#statusCd").append("<option value='" + statusCdList[i].itemValue + "'>" + statusCdList[i].itemCnname +"</option>");
@@ -327,7 +327,7 @@ function initAcctInfoCheck(results){     //初始化用户信息(查看)
   
   isNull("#psnNameLable",results.psnName);
   isNull("#mobileLable",results.mobilePhone);
-  isNull("#emailLable",results.eamil);
+  isNull("#emailLable",results.email);
   isNull("#acctLable",results.tbAcct.acct);
   isNull("#psnNumLable",results.psnNbr);
   isNull("#cerNoLable",results.certNo);
