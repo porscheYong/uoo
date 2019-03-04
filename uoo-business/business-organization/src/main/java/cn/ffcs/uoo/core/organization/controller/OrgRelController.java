@@ -125,7 +125,17 @@ public class OrgRelController extends BaseController {
                 return ret;
             }
         }
-
+        OrgRelType ortCur = null;
+        if(StrUtil.isNullOrEmpty(refCode)){
+            List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
+            orgRelTypeListCur = orgRelTypeService.getOrgRelType(orgTreeId);
+            if(orgRelTypeListCur==null && orgRelTypeListCur.size()==0){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("组织类型不存在");
+                return ret;
+            }
+            ortCur = orgRelTypeListCur.get(0);
+        }
         System.out.printf("getOrgRelTree-权限获取时间开始: %tF %<tT%n", System.currentTimeMillis());
         //获取权限
         String orgParams = "";
@@ -167,7 +177,7 @@ public class OrgRelController extends BaseController {
         System.out.printf("getOrgRelTree-权限获取时间结束: %tF %<tT%n", System.currentTimeMillis());
         System.out.printf("getOrgRelTree-查询树开始: %tF %<tT%n", System.currentTimeMillis());
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
-        treeNodeVos = orgRelService.queryOrgTree(orgTree.getOrgTreeId().toString(),orgTree.getOrgId(),refCode,
+        treeNodeVos = orgRelService.queryOrgTree(orgTree.getOrgTreeId().toString(),orgTree.getOrgId(),ortCur.getRefCode(),
                 id,isRoot,orgParams,orgOrgTypeParams,orgOrgTreeRelParams);
         System.out.printf("getOrgRelTree-查询树结束: %tF %<tT%n", System.currentTimeMillis());
         ret.setState(ResponseResult.STATE_OK);

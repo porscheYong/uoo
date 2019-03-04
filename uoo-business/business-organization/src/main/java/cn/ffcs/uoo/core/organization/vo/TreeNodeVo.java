@@ -26,6 +26,38 @@ public class TreeNodeVo {
     private String standardFlag;
     private String extField1;
     private String oper; //delete、add
+    /**
+     * 排序
+     */
+    private String sort;
+    //渠道标识
+    private String isChannel;
+    //渠道编码
+    private String channelNBR;
+
+    public String getIsChannel() {
+        return isChannel;
+    }
+
+    public void setIsChannel(String isChannel) {
+        this.isChannel = isChannel;
+    }
+
+    public String getChannelNBR() {
+        return channelNBR;
+    }
+
+    public void setChannelNBR(String channelNBR) {
+        this.channelNBR = channelNBR;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
 
     public String getOper() {
         return oper;

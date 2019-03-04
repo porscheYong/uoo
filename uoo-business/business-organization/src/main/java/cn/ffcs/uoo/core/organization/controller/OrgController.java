@@ -1266,9 +1266,6 @@ public class OrgController extends BaseController {
                 return ret;
             }
         }
-
-
-
         String batchNumber = modifyHistoryService.getBatchNumber();
 
         Wrapper orgWrapper = Condition.create()
@@ -1494,7 +1491,7 @@ public class OrgController extends BaseController {
             org.setAreaCode(StrUtil.strnull(areaList.get(0).getAreaCode()));
         }
 
-        //营销标识.营销编码
+        //渠道标识.营销编码
         HashMap<String,String> ls = orgService.getChannelInfo(orgId);
         if(!StrUtil.isNullOrEmpty(ls) && !ls.isEmpty()){
             org.setIsChannel(ls.get("isChannel"));
@@ -1775,6 +1772,113 @@ public class OrgController extends BaseController {
 //        }
 //        return ret;
 //    }
+
+
+
+
+    @ApiOperation(value = "获取渠道组织翻页", notes = "获取渠道组织翻页")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "获取渠道组织", key = "getChannelOrgPage")
+    @RequestMapping(value = "/getChannelOrgPage", method = RequestMethod.GET)
+    public ResponseResult<Page<OrgVo>> getChannelOrgPage(String search,
+                                                         String orgTreeId,
+                                                         Integer pageSize,
+                                                         Integer pageNo,
+                                                         Long userId,
+                                                         String accout){
+        ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
+        if(StrUtil.isNullOrEmpty(orgTreeId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树标识不能为空");
+            return ret;
+        }
+        OrgVo orgVo = new OrgVo();
+        List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
+        orgRelTypeListCur = orgRelTypeService.getOrgRelType(orgTreeId);
+        OrgRelType ortCur = null;
+        if (orgRelTypeListCur != null && orgRelTypeListCur.size() > 0) {
+            ortCur = orgRelTypeListCur.get(0);
+        }else{
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织类型不能为空");
+            return ret;
+        }
+
+        orgVo.setRefCode(ortCur.getRefCode());
+        if(!StrUtil.isNullOrEmpty(pageSize)){
+            orgVo.setPageSize(pageSize);
+        }
+        if(!StrUtil.isNullOrEmpty(pageNo)){
+            orgVo.setPageNo(pageNo);
+        }
+        if(!StrUtil.isNullOrEmpty(orgTreeId)){
+            orgVo.setOrgTreeId(new Long(orgTreeId));
+        }
+        if(!StrUtil.isNullOrEmpty(search)){
+            orgVo.setSearch(search);
+            if(StrUtil.isNumeric(search)){
+                orgVo.setIsSearchNum("1");
+            }
+        }
+        Page<OrgVo> page = orgService.getChannelOrgPage(orgVo);
+        ret.setData(page);
+        return ret;
+    }
+
+
+    @ApiOperation(value = "获取渠道组织额外信息", notes = "获取渠道组织额外信息")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "获取渠道组织额外信息", key = "getChannelOrgExtInfo")
+    @RequestMapping(value = "/getChannelOrgExtInfo", method = RequestMethod.GET)
+    public ResponseResult<HashMap<String,String>> getChannelOrgExtInfo(Long orgTreeId){
+        ResponseResult<HashMap<String,String>> ret = new ResponseResult<>();
+        if(StrUtil.isNullOrEmpty(orgTreeId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树标识不能为空");
+            return ret;
+        }
+        List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
+        orgRelTypeListCur = orgRelTypeService.getOrgRelType(orgTreeId.toString());
+        OrgRelType ortCur = null;
+        if (orgRelTypeListCur == null || orgRelTypeListCur.size()<1) {
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树类型不能为空");
+            return ret;
+        }
+        HashMap<String,String> map = new HashMap<String,String>();
+        int total = orgService.getChannelOrgCount();
+        int total1 = orgService.getChannelOrgLoader(orgTreeId,null);
+        map.put("loadCount",Integer.toString(total));
+        map.put("unloadCount",Integer.toString(total1));
+        ret.setData(map);
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setMessage("成功");
+        return ret;
+    }
+
+
+    @ApiOperation(value = "保存渠道组织", notes = "保存渠道组织")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "保存渠道组织", key = "addChannelOrg")
+    @RequestMapping(value = "/addChannelOrg", method = RequestMethod.POST)
+    public ResponseResult<String> addChannelOrg(@RequestBody ChannelOrgVo channelOrgVo){
+        ResponseResult<String> ret = new ResponseResult<>();
+
+        String msg = orgService.JudgeChannelOrgParams(channelOrgVo);
+        if(StrUtil.isNullOrEmpty(msg)){
+            ret.setMessage(msg);
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            return ret;
+        }
+        orgService.addChannelOrg(channelOrgVo);
+        ret.setData("");
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setMessage("成功");
+        return ret;
+    }
 
 
 
