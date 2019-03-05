@@ -267,9 +267,11 @@ public class ExcelOrgImportController {
                             .eq("ORG_ID",exo.getOrgId())
                             .eq("STATUS_CD","1000");
                     Org org = orgService.selectOne(orgWrapper);
-                    org.setOrgName(exo.getOrgName());
-                    org.setUpdateUser(userId);
-                    orgService.update(org);
+                    if(org!=null){
+                        org.setOrgName(exo.getOrgName());
+                        org.setUpdateUser(userId);
+                        orgService.update(org);
+                    }
                 }
                 exo.setUpdateUser(userId);
                 exo.setStatusCd("1100");
