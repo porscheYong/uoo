@@ -144,12 +144,12 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         }else{
             if(slaveAcct.getAcctOrgRelId() == null && slaveAcct.getAcctId() != null){
                 //查询主账号与commonRegionId查询是否存在关系
-
-                Long orgId = tbAcctMapper.getOrgIdByCommonRegionId(commonRegionId);
+                Long orgId =HandleChannelConstant.ORG_ID;
+                /*Long orgId = tbAcctMapper.getOrgIdByCommonRegionId(commonRegionId);
 
                 if(orgId == null){
                     orgId = HandleChannelConstant.ORG_ID;
-                }
+                }*/
 
                 AccountOrgRel accountOrgRel = new AccountOrgRel();
                 accountOrgRel.setAcctId(slaveAcct.getAcctId());
@@ -165,7 +165,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                     accountOrgRel.setUpdateDate(new Date());
                     accountOrgRel.setUpdateUser(HandleChannelConstant.HANDLE_USER);
                     accountOrgRel.setStatusDate(new Date());
-                    accountOrgRel.setRelType("10");
+                    accountOrgRel.setRelType("99");
                     accountOrgRelMapper.insert(accountOrgRel);
                 }
 
