@@ -2,6 +2,8 @@ package cn.ffcs.uoo.web.maindata.organization.service.fallback;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.baomidou.mybatisplus.plugins.Page;
 
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgTree;
@@ -9,7 +11,7 @@ import cn.ffcs.uoo.web.maindata.organization.dto.OrgTreeSynchRule;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgTreeSynchRuleVO;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgTreeSynchRuleService;
-
+@Component
 public class OrgTreeSynchRuleServiceHystrix implements OrgTreeSynchRuleService {
 
     @Override

@@ -42,7 +42,7 @@ public interface OrgTreeSynchRuleService {
      
     @RequestMapping(value="/org/orgTreeSynchRule/update",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<Void> update(@RequestBody OrgTreeSynchRule orgTreeSynchRule);
-    @RequestMapping(value="/org/orgTreeSynchRule/update",method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    @RequestMapping(value="/org/orgTreeSynchRule/delete",method = RequestMethod.POST,headers={"Content-Type=application/json"})
     public ResponseResult<Void> delete(@RequestBody OrgTreeSynchRule orgTreeSynchRule);
 }
 
