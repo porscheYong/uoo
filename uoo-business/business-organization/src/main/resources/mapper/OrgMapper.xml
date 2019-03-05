@@ -379,35 +379,35 @@
     </select>
 
     <select id="getChannelNBR" resultType="java.lang.String">
-        SELECT A.DATA_ FROM TB_EXPANDOVALUE A WHERE A.COLUMN_ID=1061 AND A.STATUS_CD=1000 AND A.RECORD_ID=#{orgId}
+        SELECT to_char(WM_CONCAT(Data_)) FROM TB_EXPANDOVALUE A WHERE A.COLUMN_ID=1061 AND A.STATUS_CD=1000 AND A.RECORD_ID=#{orgId}
     </select>
 
     <select id="selectChannelOrgPage" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
-        SELECT C.ORG_ID ORGID, C.ORG_NAME ORGNAME, CHANNELNBRS
-        FROM (SELECT A.RECORD_ID
-        FROM TB_EXPANDOVALUE A
-        WHERE A.DATA_ = 'Y'
-        AND A.STATUS_CD = 1000
-        AND A.COLUMN_ID = 1060) AA,
-        (SELECT A.RECORD_ID, A.DATA_ CHANNELNBRS
+        SELECT * From (
+        select ORGID,ORGNAME,CHANNELNBR,ISCHANNEL from (
+        SELECT A.RECORD_ID ORGID,A.DATA_ ISCHANNEL,C.ORG_NAME ORGNAME
+        FROM TB_EXPANDOVALUE A, TB_ORG C
+        WHERE  A.STATUS_CD = 1000 and C.STATUS_CD=1000 and A.RECORD_ID = C.ORG_ID AND
+        A.DATA_ = 'Y' AND A.COLUMN_ID = 1060) CC
+        left join
+        (SELECT A.RECORD_ID, A.DATA_ CHANNELNBR
         FROM TB_EXPANDOVALUE A
         WHERE A.COLUMN_ID = 1061
-        AND A.STATUS_CD = 1000) BB,
-        TB_ORG C
-        WHERE AA.RECORD_ID = BB.RECORD_ID
-        AND AA.RECORD_ID = C.ORG_ID
+        AND A.STATUS_CD = 1000) BB on BB.RECORD_ID = CC.ORGID
+        ) where 1=1
         <if test="orgVo.search != null and orgVo.search != ''">
             <if test='orgVo.isSearchNum=="1"'>
-                AND (C.ORG_NAME like '%'||#{orgVo.search}||'%' OR CHANNELNBRS=#{orgVo.search} OR ORG_ID=#{orgVo.search} )
+                AND (ORGNAME like '%'||#{orgVo.search}||'%' OR CHANNELNBR=#{orgVo.search} OR ORGID=#{orgVo.search}
+                )
             </if>
-            <if test='orgVo.isSearchNum!="1"' >
-                AND (C.ORG_NAME like '%'||#{orgVo.search}||'%')
+            <if test='orgVo.isSearchNum!="1"'>
+                AND (ORGNAME like '%'||#{orgVo.search}||'%')
             </if>
         </if>
     </select>
 
     <select id="getChannelOrgCount" resultType="java.lang.Integer">
-        SELECT count(1)
+      <!--  SELECT count(1)
         FROM (SELECT A.RECORD_ID
         FROM TB_EXPANDOVALUE A
         WHERE A.DATA_ = 'Y'
@@ -417,27 +417,59 @@
         FROM TB_EXPANDOVALUE A
         WHERE A.COLUMN_ID = 1061
         AND A.STATUS_CD = 1000) BB
-        WHERE AA.RECORD_ID = BB.RECORD_ID
+        WHERE AA.RECORD_ID = BB.RECORD_ID-->
+       <!-- SELECT count(1)
+        FROM TB_EXPANDOVALUE A,TB_ORG C
+        WHERE A.DATA_ = 'Y'
+        AND A.STATUS_CD = 1000
+        AND C.STATUS_CD = 1000
+        AND A.RECORD_ID=C.ORG_ID
+        AND A.COLUMN_ID = 1060-->
+        SELECT count(1) From (
+        select ORGID,ORGNAME,CHANNELNBR,ISCHANNEL from (
+        SELECT A.RECORD_ID ORGID,A.DATA_ ISCHANNEL,C.ORG_NAME ORGNAME
+        FROM TB_EXPANDOVALUE A, TB_ORG C
+        WHERE  A.STATUS_CD = 1000 and C.STATUS_CD=1000 and A.RECORD_ID = C.ORG_ID AND
+        A.DATA_ = 'Y' AND A.COLUMN_ID = 1060) CC
+        left join
+        (SELECT A.RECORD_ID, A.DATA_ CHANNELNBR
+        FROM TB_EXPANDOVALUE A
+        WHERE A.COLUMN_ID = 1061
+        AND A.STATUS_CD = 1000) BB on BB.RECORD_ID = CC.ORGID
+        )
     </select>
 
     <select id="getChannelOrgLoaderCount" resultType="java.lang.Integer">
+        <!--SELECT COUNT(1)-->
+        <!--FROM TB_ORG_REL A-->
+        <!--WHERE A.STATUS_CD = 1000-->
+        <!--AND A.REF_CODE = #{refCode}-->
+        <!--AND A.ORG_ID IN (SELECT AA.RECORD_ID-->
+        <!--FROM (SELECT A.RECORD_ID-->
+        <!--FROM TB_EXPANDOVALUE A-->
+        <!--WHERE A.DATA_ = 'Y'-->
+        <!--AND A.STATUS_CD = 1000-->
+        <!--AND A.COLUMN_ID = 1060) AA,-->
+        <!--(SELECT A.RECORD_ID, A.DATA_ CHANNELNBRS-->
+        <!--FROM TB_EXPANDOVALUE A-->
+        <!--WHERE A.COLUMN_ID = 1061-->
+        <!--AND A.STATUS_CD = 1000) BB-->
+        <!--WHERE AA.RECORD_ID = BB.RECORD_ID-->
+        <!--<if test="orgId != null and orgId != ''">-->
+           <!--AND AA.RECORD_ID=#{orgId}-->
+        <!--</if>-->
+        <!--)-->
         SELECT COUNT(1)
         FROM TB_ORG_REL A
         WHERE A.STATUS_CD = 1000
-        AND A.REF_CODE = #{refCode}
-        AND A.ORG_ID IN (SELECT AA.RECORD_ID
-        FROM (SELECT A.RECORD_ID
+        AND A.REF_CODE =#{refCode}
+        AND A.ORG_ID IN (SELECT A.RECORD_ID
         FROM TB_EXPANDOVALUE A
         WHERE A.DATA_ = 'Y'
         AND A.STATUS_CD = 1000
-        AND A.COLUMN_ID = 1060) AA,
-        (SELECT A.RECORD_ID, A.DATA_ CHANNELNBRS
-        FROM TB_EXPANDOVALUE A
-        WHERE A.COLUMN_ID = 1061
-        AND A.STATUS_CD = 1000) BB
-        WHERE AA.RECORD_ID = BB.RECORD_ID
+        AND A.COLUMN_ID = 1060
         <if test="orgId != null and orgId != ''">
-           AND AA.RECORD_ID=#{orgId}
+            AND A.RECORD_ID=#{orgId}
         </if>
         )
     </select>

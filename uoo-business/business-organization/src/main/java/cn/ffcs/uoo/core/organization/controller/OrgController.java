@@ -1822,6 +1822,7 @@ public class OrgController extends BaseController {
             }
         }
         Page<OrgVo> page = orgService.getChannelOrgPage(orgVo);
+        ret.setState(ResponseResult.STATE_OK);
         ret.setData(page);
         return ret;
     }

@@ -503,15 +503,15 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
                 OrgRel orgRel = orgRelService.selectOne(orgRelWrapper);
                 if (orgRel != null) {
                     vo.setChannelOrgLoadSign("1");
-                    HashMap<String,String> ls = getChannelInfo(orgRel.getOrgId().toString());
-                    if(!StrUtil.isNullOrEmpty(ls) && !ls.isEmpty()){
-                        vo.setIsChannel(ls.get("isChannel"));
-                        vo.setChannelNBR(ls.get("channelNbr"));
-                    }
                     //全路径
                     String paths = getFullOrgIdList(orgVo.getOrgTreeId().toString(),vo.getOrgId().toString(),",");
                     vo.setOrgPaths(paths);
                 }
+//                HashMap<String,String> ls = getChannelInfo(vo.getOrgId().toString());
+//                if(!StrUtil.isNullOrEmpty(ls) && !ls.isEmpty()){
+//                    vo.setIsChannel(ls.get("isChannel"));
+//                    //vo.setChannelNBR(ls.get("channelNbr"));
+//                }
             }
         }
         page.setRecords(orgVolist);

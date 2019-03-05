@@ -161,7 +161,13 @@ public class OrgVo extends BaseVo{
      */
     private String isExistsAcct;
 
+    public String getIsExistsAcct() {
+        return isExistsAcct;
+    }
 
+    public void setIsExistsAcct(String isExistsAcct) {
+        this.isExistsAcct = isExistsAcct;
+    }
 
     public String getOrgPaths() {
         return orgPaths;
