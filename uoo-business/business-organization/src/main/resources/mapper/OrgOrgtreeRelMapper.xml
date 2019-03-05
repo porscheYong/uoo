@@ -17,11 +17,14 @@
         <result column="UPDATE_DATE" property="updateDate" />
         <result column="UPDATE_USER" property="updateUser" />
         <result column="STATUS_DATE" property="statusDate" />
+        <result column="FROM_ORG_TREE_ID" property="fromOrgTreeId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ORG_ORGTREE_ID, ORG_ID, ORG_TREE_ID,ORG_BIZ_NAME,ORG_BIZ_FULL_NAME,ORG_BIZ_FULL_ID,SORT, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+        ORG_ORGTREE_ID, ORG_ID, ORG_TREE_ID,ORG_BIZ_NAME,ORG_BIZ_FULL_NAME,
+        ORG_BIZ_FULL_ID,SORT, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, 
+        UPDATE_USER, STATUS_DATE,FROM_ORG_TREE_ID
     </sql>
 
 

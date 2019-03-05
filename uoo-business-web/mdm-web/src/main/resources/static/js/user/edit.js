@@ -746,7 +746,8 @@ function updatePersonnel(){
 
     }) ;
     var tbEamilVoList =new Array();
-    $('#tbEamilVoList').find(':input').each(function(){
+    $('#tbEamilVoList').find(':input').each(function(index){
+        var firstFlag = index == 0? 1: 0;
         var obj={};
         if($(this).attr('contactid')!=null&&typeof($(this).attr('contactid')) != "undefined"&&$(this).attr('contactid').length>0){
             obj.contactId=$(this).attr('contactid');
@@ -756,6 +757,7 @@ function updatePersonnel(){
             obj.content=$(this).val();
             obj.personnelId=personalData.personalData.personnelId;
             obj.contactType=2;
+            obj.firstFlag = firstFlag;
             tbEamilVoList.push(obj);
         }
 
@@ -781,7 +783,7 @@ function addMobile (e) {
 }
 // 点击邮箱新增btn
 function addEmail (e) {
-    $("<div style='width: 100%; position: relative; display: inline-block;'><input class='ui-input col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4'><div class='fright del'><a class='icon-del' href='javascript:void(0)'><span class='fa fa-minus-circle'></span></a></div></div>").insertBefore($(e).parent())
+    $("<div class='email-item' style='width: 100%; position: relative; display: inline-block;'><input class='ui-input col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4'><div class='fright del'><a class='icon-del' href='javascript:void(0)'><span class='fa fa-minus-circle'></span></a></div><div class='fright default-set'><a href='javascript:void(0)' onclick='setDefaultEmail(this)'>设为默认</a></div></div>").insertBefore($(e).parent())
     $('.icon-del').on('click', function () {
         $(this).parent().parent().remove();
     });
@@ -792,6 +794,15 @@ function setDefault (e) {
     var temp2 = $(e).parent().siblings('input').val();
     if (temp1 && temp2) {
         $('#mobile').val(temp2);
+        $(e).parent().siblings('input').val(temp1);
+    }
+}
+// 设置默认邮箱
+function setDefaultEmail (e) {
+    var temp1 = $('#email').val();
+    var temp2 = $(e).parent().siblings('input').val();
+    if (temp1 && temp2) {
+        $('#email').val(temp2);
         $(e).parent().siblings('input').val(temp1);
     }
 }

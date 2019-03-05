@@ -1,10 +1,7 @@
 package cn.ffcs.uoo.web.maindata.organization.service;
 
 
-import cn.ffcs.uoo.web.maindata.organization.dto.Org;
-import cn.ffcs.uoo.web.maindata.organization.dto.OrgVo;
-import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
-import cn.ffcs.uoo.web.maindata.organization.dto.TreeNodeVo;
+import cn.ffcs.uoo.web.maindata.organization.dto.*;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgRelTypeServiceHystrix;
 import cn.ffcs.uoo.web.maindata.organization.service.fallback.OrgServiceHystrix;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -68,4 +65,21 @@ public interface OrgService{
                                             @RequestParam(value = "orgId",required = false)String orgId,
                                             @RequestParam(value = "supOrgId",required = false)String supOrgId,
                                             @RequestParam(value = "userId",required = false)Long userId);
+
+
+    @RequestMapping(value = "/org/getChannelOrgPage", method = RequestMethod.GET,headers={"Content-Type=application/json"})
+    public ResponseResult<Page<OrgVo>> getChannelOrgPage(@RequestParam(value = "search",required = false)String search,
+                                                         @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                                         @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                                         @RequestParam(value = "pageNo",required = false)Integer pageNo,
+                                                         @RequestParam(value = "userId",required = false)Long userId,
+                                                         @RequestParam(value = "accout",required = false)String accout);
+
+
+    @RequestMapping(value = "/org/getChannelOrgExtInfo", method = RequestMethod.GET,headers={"Content-Type=application/json"})
+    public ResponseResult<HashMap<String,String>> getChannelOrgExtInfo(@RequestParam(value = "orgTreeId",required = false)Long orgTreeId);
+
+    @RequestMapping(value = "/org/addChannelOrg", method = RequestMethod.POST,headers={"Content-Type=application/json"})
+    public ResponseResult<String> addChannelOrg(@RequestBody ChannelOrgVo channelOrgVo);
+
 }

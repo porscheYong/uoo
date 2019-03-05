@@ -7,8 +7,6 @@ public class DataRuleRequestVO {
     private List<String> tableNames;
     private Long treeId;
 
-
-
     public Long getTreeId() {
         return treeId;
     }

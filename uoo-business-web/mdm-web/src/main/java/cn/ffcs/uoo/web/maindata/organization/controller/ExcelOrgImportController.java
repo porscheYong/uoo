@@ -51,12 +51,13 @@ public class ExcelOrgImportController {
     public ResponseResult<String> importExcelFileData(@RequestPart(value="fileInfo",required = false)MultipartFile fileInfo,
                                                       @RequestParam(value="orgTreeId",required = false)String orgTreeId,
                                                       @RequestParam(value = "userId",required = false)Long userId,
-                                                      @RequestParam(value = "accout",required = false)String accout){
+                                                      @RequestParam(value = "accout",required = false)String accout,
+                                                      @RequestParam(value = "impType",required = false)String impType){
         Subject subject=SecurityUtils.getSubject();
         SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
         userId = currentLoginUser.getUserId();
         accout = currentLoginUser.getAccout();
-        return excelOrgImportService.importExcelFileData(fileInfo,orgTreeId,userId,accout);
+        return excelOrgImportService.importExcelFileData(fileInfo,orgTreeId,userId,accout,impType);
     }
 
 

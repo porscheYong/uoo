@@ -2,10 +2,8 @@ package cn.ffcs.uoo.core.organization.service;
 
 import cn.ffcs.uoo.core.organization.entity.Org;
 import cn.ffcs.uoo.core.organization.entity.PoliticalLocation;
-import cn.ffcs.uoo.core.organization.vo.AreaCodeVo;
-import cn.ffcs.uoo.core.organization.vo.OrgVo;
-import cn.ffcs.uoo.core.organization.vo.PageVo;
-import cn.ffcs.uoo.core.organization.vo.TreeNodeVo;
+import cn.ffcs.uoo.core.organization.util.ResponseResult;
+import cn.ffcs.uoo.core.organization.vo.*;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.baomidou.mybatisplus.service.IService;
@@ -130,6 +128,15 @@ public interface OrgService extends IService<Org> {
      * @return
      */
     public String JudgeMoveOrg(Long orgId,Long parentOrgId,String orgName,Long orgTreeId);
+
+    /**
+     * 组织名称更新
+     * @param orgId
+     * @param orgName
+     * @param orgTreeId
+     * @return
+     */
+    public String JudgeUpdateOrgName(String orgId,String orgName,Long orgTreeId);
     /**
      * 组织移动
      * @param orgId
@@ -170,4 +177,41 @@ public interface OrgService extends IService<Org> {
      * @return
      */
     public HashMap<String,String> getChannelInfo(String orgId);
+
+    /**
+     * 渠道组织翻页
+     * @param orgVo
+     * @return
+     */
+    public Page<OrgVo> getChannelOrgPage(OrgVo orgVo);
+
+    /**
+     * 渠道组织数
+     * @return
+     */
+    public int getChannelOrgCount();
+
+    /**
+     * 渠道组织已经被挂载树
+     * @param orgTreeId
+     * @param orgId
+     * @return
+     */
+    public int getChannelOrgLoader(Long orgTreeId,Long orgId);
+
+    /**
+     * 判断渠道数据有效性
+     * @param channelOrgVo
+     * @return
+     */
+    public String JudgeChannelOrgParams(ChannelOrgVo channelOrgVo);
+
+    /**
+     * 渠道数据保存
+     * @param channelOrgVo
+     * @return
+     */
+    public void addChannelOrg(ChannelOrgVo channelOrgVo);
+
 }
+

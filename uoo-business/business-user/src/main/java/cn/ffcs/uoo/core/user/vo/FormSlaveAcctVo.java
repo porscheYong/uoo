@@ -28,7 +28,7 @@ public class FormSlaveAcctVo {
 
     private String mobilePhone;
 
-    private String eamil;
+    private String email;
 
     private String certType;
 

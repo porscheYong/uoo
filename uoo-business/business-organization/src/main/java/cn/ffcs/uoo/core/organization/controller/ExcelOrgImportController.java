@@ -4,11 +4,9 @@ package cn.ffcs.uoo.core.organization.controller;
 import cn.ffcs.uoo.base.common.annotion.UooLog;
 import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.core.organization.entity.ExcelOrgImport;
+import cn.ffcs.uoo.core.organization.entity.Org;
 import cn.ffcs.uoo.core.organization.entity.OrgOrgtreeRel;
-import cn.ffcs.uoo.core.organization.service.ExcelOrgImportService;
-import cn.ffcs.uoo.core.organization.service.ModifyHistoryService;
-import cn.ffcs.uoo.core.organization.service.OrgOrgtreeRelService;
-import cn.ffcs.uoo.core.organization.service.OrgService;
+import cn.ffcs.uoo.core.organization.service.*;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
 import com.baomidou.mybatisplus.mapper.Condition;
@@ -57,6 +55,8 @@ public class ExcelOrgImportController {
     @Autowired
     private OrgService orgService;
     @Autowired
+    private OrgRelService orgRelService;
+    @Autowired
     private ModifyHistoryService modifyHistoryService;
     @Autowired
     private OrgOrgtreeRelService orgOrgtreeRelService;
@@ -69,11 +69,16 @@ public class ExcelOrgImportController {
     public ResponseResult<String> importExcelFileData(@RequestPart(value="fileInfo") MultipartFile fileInfo,
                                                       @RequestParam("orgTreeId")String orgTreeId,
                                                       @RequestParam("userId")Long userId,
-                                                      @RequestParam("accout")String accout) throws IOException {
+                                                      @RequestParam("accout")String accout,
+                                                      @RequestParam("impType")String impType) throws IOException {
         ResponseResult<String> ret = new ResponseResult<String>();
         if(StrUtil.isNullOrEmpty(orgTreeId)){
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织树标识不能为空");
+        }
+        if(StrUtil.isNullOrEmpty(impType)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("导入类型不能为空");
         }
         String fileName = fileInfo.getOriginalFilename();
         FileInputStream is = (FileInputStream) fileInfo.getInputStream();
@@ -93,72 +98,115 @@ public class ExcelOrgImportController {
         long time = System.currentTimeMillis();
         String t = String.valueOf(time/1000);
         List<ExcelOrgImport> excelList = new ArrayList<>();
-        for(int i=3;i<rowCount+1;i++){
-            Row row = sheet.getRow(i);
-            ExcelOrgImport excelOrgImport = new ExcelOrgImport();
-            for(int j=0;j<row.getLastCellNum();j++){
-                String cellStr = "";
-                if(StrUtil.isNullOrEmpty(row.getCell(j))){
-                    cellStr = "";
-                }else if (!StrUtil.isNullOrEmpty(row.getCell(j)) && row.getCell(j).getCellType() == Cell.CELL_TYPE_NUMERIC) {
-                    Long longVal = Math.round(row.getCell(j).getNumericCellValue());
-                    cellStr = longVal.toString();
-                }else if (!StrUtil.isNullOrEmpty(row.getCell(j)) && row.getCell(j).getCellType() == Cell.CELL_TYPE_STRING) {
-                    cellStr = row.getCell(j).getStringCellValue();
+        /**
+         * 组织上下级移动
+         */
+        if(impType.equals("1")){
+            for(int i=3;i<rowCount+1;i++){
+                Row row = sheet.getRow(i);
+                String errMsg = "";
+                ExcelOrgImport excelOrgImport = new ExcelOrgImport();
+                for(int j=0;j<row.getLastCellNum();j++){
+                    String cellStr = "";
+                    if(StrUtil.isNullOrEmpty(row.getCell(j))){
+                        cellStr = "";
+                    }else if (!StrUtil.isNullOrEmpty(row.getCell(j)) && row.getCell(j).getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                        Long longVal = Math.round(row.getCell(j).getNumericCellValue());
+                        cellStr = longVal.toString();
+                    }else if (!StrUtil.isNullOrEmpty(row.getCell(j)) && row.getCell(j).getCellType() == Cell.CELL_TYPE_STRING) {
+                        cellStr = row.getCell(j).getStringCellValue();
+                    }
+                    if(j==0){
+                        excelOrgImport.setImpSeq(cellStr);
+                    }
+                    if(j==1){
+                        excelOrgImport.setOrgId(cellStr);
+                    }
+                    if(j==2){
+                        excelOrgImport.setParentOrgId(cellStr);
+                    }
+                    if(j==3){
+                        excelOrgImport.setOrgName(cellStr);
+                    }
                 }
-                if(j==0){
-                    excelOrgImport.setImpSeq(cellStr);
-                }
-                if(j==1){
-                    excelOrgImport.setOrgId(cellStr);
-                }
-                if(j==2){
-                    excelOrgImport.setParentOrgId(cellStr);
-                }
-                if(j==3){
-                    excelOrgImport.setOrgName(cellStr);
-                }
-            }
-            System.out.println("orgId:"+excelOrgImport.getOrgId()+",pOrgId:"+excelOrgImport.getParentOrgId()+",OrgName:"+excelOrgImport.getOrgName()
-            +",orgTreeId:"+orgTreeId);
-            Long excelId = excelOrgImportService.getId();
-            excelOrgImport.setFileName(fileName);
-            excelOrgImport.setExcelOrgImportId(excelId);
-            excelOrgImport.setFileSign(t);
-            String errMsg = orgService.JudgeMoveOrg(
+                System.out.println("orgId:"+excelOrgImport.getOrgId()+",pOrgId:"+excelOrgImport.getParentOrgId()+",OrgName:"+excelOrgImport.getOrgName()
+                        +",orgTreeId:"+orgTreeId);
+                Long excelId = excelOrgImportService.getId();
+                excelOrgImport.setFileName(fileName);
+                excelOrgImport.setExcelOrgImportId(excelId);
+                excelOrgImport.setFileSign(t);
+                errMsg = orgService.JudgeMoveOrg(
                         StrUtil.isNullOrEmpty(excelOrgImport.getOrgId())?null:new Long(excelOrgImport.getOrgId()),
                         StrUtil.isNullOrEmpty(excelOrgImport.getParentOrgId())?null:new Long(excelOrgImport.getParentOrgId()),
                         excelOrgImport.getOrgName(),
                         new Long(orgTreeId));
 
-            if(StrUtil.isNullOrEmpty(errMsg) && excelList!=null && excelList.size()>0){
-                for(ExcelOrgImport e : excelList){
-                    if(e.getOrgName().equals(excelOrgImport.getOrgName()) &&
-                            e.getOrgId().equals(excelOrgImport.getOrgId()) &&
-                            e.getParentOrgId().equals(excelOrgImport.getParentOrgId())){
-                        errMsg="数据重复导入";
-                        break;
+                if(StrUtil.isNullOrEmpty(errMsg) && excelList!=null && excelList.size()>0){
+                    for(ExcelOrgImport e : excelList){
+                        if(e.getOrgName().equals(excelOrgImport.getOrgName()) &&
+                                e.getOrgId().equals(excelOrgImport.getOrgId()) &&
+                                e.getParentOrgId().equals(excelOrgImport.getParentOrgId())){
+                            errMsg="数据重复导入";
+                            break;
+                        }
                     }
                 }
+                excelOrgImport.setImpType(impType);
+                excelOrgImport.setSign(StrUtil.isNullOrEmpty(errMsg)?"0":"1");
+                excelOrgImport.setContent(StrUtil.isNullOrEmpty(errMsg)?"":errMsg);
+                excelOrgImport.setOrgTreeId(new Long(orgTreeId));
+                excelOrgImport.setCreateUser(userId);
+                excelOrgImportService.add(excelOrgImport);
+                excelList.add(excelOrgImport);
             }
-//            com.baomidou.mybatisplus.mapper.Wrapper excelWrapper = Condition.create()
-//                    .eq("FILE_SIGN",t)
-//                    .eq("ORG_ID",excelOrgImport.getOrgId())
-//                    .eq("ORG_NAME",excelOrgImport.getOrgName())
-//                    .eq("SIGN","0")
-//                    .eq("STATUS_CD","1000");
-//            int num = excelOrgImportService.selectCount(excelWrapper);
-//            if(num>0){
-//                errMsg="数据重复导入";
-//            }
-            excelOrgImport.setSign(StrUtil.isNullOrEmpty(errMsg)?"0":"1");
-            excelOrgImport.setContent(StrUtil.isNullOrEmpty(errMsg)?"":errMsg);
-            excelOrgImport.setOrgTreeId(new Long(orgTreeId));
-            excelOrgImport.setCreateUser(userId);
-            excelOrgImportService.add(excelOrgImport);
-            excelList.add(excelOrgImport);
+        } else if(impType.equals("2")){
+            for(int i=3;i<rowCount+1;i++){
+                Row row = sheet.getRow(i);
+                String errMsg = "";
+                ExcelOrgImport excelOrgImport = new ExcelOrgImport();
+                for(int j=0;j<row.getLastCellNum();j++){
+                    String cellStr = "";
+                    if(StrUtil.isNullOrEmpty(row.getCell(j))){
+                        cellStr = "";
+                    }else if (!StrUtil.isNullOrEmpty(row.getCell(j)) && row.getCell(j).getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                        Long longVal = Math.round(row.getCell(j).getNumericCellValue());
+                        cellStr = longVal.toString();
+                    }else if (!StrUtil.isNullOrEmpty(row.getCell(j)) && row.getCell(j).getCellType() == Cell.CELL_TYPE_STRING) {
+                        cellStr = row.getCell(j).getStringCellValue();
+                    }
+                    if(j==0){
+                        excelOrgImport.setImpSeq(cellStr);
+                    }
+                    if(j==1){
+                        excelOrgImport.setOrgId(cellStr);
+                    }
+                    if(j==2){
+                        excelOrgImport.setOrgName(cellStr);
+                    }
+                }
+                Long excelId = excelOrgImportService.getId();
+                excelOrgImport.setFileName(fileName);
+                excelOrgImport.setExcelOrgImportId(excelId);
+                excelOrgImport.setFileSign(t);
+                // TODO: 2019/3/1
+                errMsg = orgService.JudgeUpdateOrgName(excelOrgImport.getOrgId(),excelOrgImport.getOrgName(),new Long(orgTreeId));
+                if(StrUtil.isNullOrEmpty(errMsg) && excelList!=null && excelList.size()>0){
+                    for(ExcelOrgImport e : excelList){
+                        if(e.getOrgId().equals(excelOrgImport.getOrgId())){
+                            errMsg="数据重复导入";
+                            break;
+                        }
+                    }
+                }
+                excelOrgImport.setImpType(impType);
+                excelOrgImport.setSign(StrUtil.isNullOrEmpty(errMsg)?"0":"1");
+                excelOrgImport.setContent(StrUtil.isNullOrEmpty(errMsg)?"":errMsg);
+                excelOrgImport.setOrgTreeId(new Long(orgTreeId));
+                excelOrgImport.setCreateUser(userId);
+                excelOrgImportService.add(excelOrgImport);
+                excelList.add(excelOrgImport);
+            }
         }
-
         ret.setState(ResponseResult.STATE_OK);
         ret.setData(t);
         return ret;
@@ -198,20 +246,32 @@ public class ExcelOrgImportController {
         if(excelOrgImportList!=null){
             String batchNumber = modifyHistoryService.getBatchNumber();
             for(ExcelOrgImport exo : excelOrgImportList){
-                orgService.moveOrg(new Long(exo.getOrgId()),new Long(exo.getParentOrgId()),exo.getOrgTreeId(),userId,batchNumber);
-                com.baomidou.mybatisplus.mapper.Wrapper orgOrgTreeRelWrapper = Condition.create()
-                        .eq("ORG_ID",exo.getOrgId())
-                        .eq("STATUS_CD","1000")
-                        .eq("ORG_TREE_ID",exo.getOrgTreeId());
-                OrgOrgtreeRel ootr = orgOrgtreeRelService.selectOne(orgOrgTreeRelWrapper);
-                if(ootr!=null){
-                    String fullName = orgOrgtreeRelService.getFullBizOrgNameList(exo.getOrgTreeId().toString(),ootr.getOrgId().toString(),"");
-                    String fullOrgId = orgOrgtreeRelService.getFullBizOrgIdList(exo.getOrgTreeId().toString(),ootr.getOrgId().toString(),",");
-                    fullOrgId =","+fullOrgId+",";
-                    ootr.setOrgBizFullName(fullName);
-                    ootr.setOrgBizFullId(fullOrgId);
-                    ootr.setUpdateUser(userId);
-                    orgOrgtreeRelService.update(ootr);
+                if(exo.getImpType().equals("1")){
+                    orgService.moveOrg(new Long(exo.getOrgId()),new Long(exo.getParentOrgId()),exo.getOrgTreeId(),userId,batchNumber);
+                    com.baomidou.mybatisplus.mapper.Wrapper orgOrgTreeRelWrapper = Condition.create()
+                            .eq("ORG_ID",exo.getOrgId())
+                            .eq("STATUS_CD","1000")
+                            .eq("ORG_TREE_ID",exo.getOrgTreeId());
+                    OrgOrgtreeRel ootr = orgOrgtreeRelService.selectOne(orgOrgTreeRelWrapper);
+                    if(ootr!=null){
+                        String fullName = orgOrgtreeRelService.getFullBizOrgNameList(exo.getOrgTreeId().toString(),ootr.getOrgId().toString(),"");
+                        String fullOrgId = orgOrgtreeRelService.getFullBizOrgIdList(exo.getOrgTreeId().toString(),ootr.getOrgId().toString(),",");
+                        fullOrgId =","+fullOrgId+",";
+                        ootr.setOrgBizFullName(fullName);
+                        ootr.setOrgBizFullId(fullOrgId);
+                        ootr.setUpdateUser(userId);
+                        orgOrgtreeRelService.update(ootr);
+                    }
+                }else if(exo.getImpType().equals("2")){
+                    com.baomidou.mybatisplus.mapper.Wrapper orgWrapper = Condition.create()
+                            .eq("ORG_ID",exo.getOrgId())
+                            .eq("STATUS_CD","1000");
+                    Org org = orgService.selectOne(orgWrapper);
+                    if(org!=null){
+                        org.setOrgName(exo.getOrgName());
+                        org.setUpdateUser(userId);
+                        orgService.update(org);
+                    }
                 }
                 exo.setUpdateUser(userId);
                 exo.setStatusCd("1100");

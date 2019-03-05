@@ -42,7 +42,8 @@ public interface ExcelOrgImportService {
     public ResponseResult<String> importExcelFileData(@RequestPart(value="fileInfo",required = false)MultipartFile fileInfo,
                                                       @RequestParam(value="orgTreeId",required = false)String orgTreeId,
                                                       @RequestParam(value = "userId",required = false)Long userId,
-                                                      @RequestParam(value = "accout",required = false)String accout);
+                                                      @RequestParam(value = "accout",required = false)String accout,
+                                                      @RequestParam(value = "impType",required = false)String impType);
 
 
 
