@@ -2,12 +2,11 @@ package cn.ffcs.uoo.core.organization.service.impl;
 
 import cn.ffcs.uoo.base.common.tool.util.StringUtils;
 import cn.ffcs.uoo.core.organization.dao.OrgMapper;
-import cn.ffcs.uoo.core.organization.entity.Org;
-import cn.ffcs.uoo.core.organization.entity.OrgRel;
+import cn.ffcs.uoo.core.organization.entity.*;
 import cn.ffcs.uoo.core.organization.dao.OrgRelMapper;
-import cn.ffcs.uoo.core.organization.entity.OrgTree;
-import cn.ffcs.uoo.core.organization.entity.OrgType;
+import cn.ffcs.uoo.core.organization.service.OrgPersonRelService;
 import cn.ffcs.uoo.core.organization.service.OrgRelService;
+import cn.ffcs.uoo.core.organization.service.OrgRelTypeService;
 import cn.ffcs.uoo.core.organization.service.OrgService;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
 import cn.ffcs.uoo.core.organization.vo.OrgRefTypeVo;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,6 +38,15 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
 
     @Autowired
     private OrgMapper orgMapper;
+
+    @Autowired
+    private OrgRelTypeService orgRelTypeService;
+
+    @Autowired
+    private OrgService orgService;
+
+    @Autowired
+    private OrgPersonRelService orgPersonRelService;
 
     @Override
     public Long getId(){
@@ -83,6 +92,18 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
         }
         for(TreeNodeVo vo : volist){
             isLeaf(vo,orgTreeId);
+            // TODO: 2019/3/1 渠道数据 判断是否存在人以及是否是渠道组织
+            if(refCode.equals("0412")){
+                HashMap<String,String> ls = orgService.getChannelInfo(vo.getId());
+                if(!StrUtil.isNullOrEmpty(ls) && !ls.isEmpty()){
+                    vo.setIsChannel(ls.get("isChannel"));
+                    vo.setChannelNBR(ls.get("channelNbr"));
+                }
+                List<OrgPersonRel> oplist = orgPersonRelService.getOrgAcctRel(orgTreeId,vo.getId());
+                if(oplist!=null && oplist.size()>0){
+                    vo.setIsExistsAcct("1");
+                }
+            }
         }
         return volist;
     }
@@ -229,6 +250,14 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
                 }
                 if(!StrUtil.isNullOrEmpty(fullName)){
                     vo.setFullName(fullName.substring(0,fullName.length()-2));
+                }
+                // TODO: 2019/3/4
+                if("0412".equals(orgVo.getRefCode())){
+                    HashMap<String,String> ls = orgService.getChannelInfo(vo.getOrgId().toString());
+                    if(!StrUtil.isNullOrEmpty(ls) && !ls.isEmpty()){
+                        vo.setIsChannel(ls.get("isChannel"));
+                        vo.setChannelNBR(ls.get("channelNbr"));
+                    }
                 }
             }
         }

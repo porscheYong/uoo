@@ -140,12 +140,44 @@ public class OrgVo extends BaseVo{
     private List<ExcelOrgImportVo> excelOrgImportVoList;
 
 
-
-    //渠道标识
+    /**
+     * 渠道标识
+     */
     private String isChannel;
-    //渠道编码
+    /**
+     * 渠道编码
+     */
     private String channelNBR;
+    /**
+     * 组织全路径
+     */
+    private String orgPaths;
+    /**
+     * /渠道组织是否已经挂载  1 加载 0 未加载
+     */
+    private String channelOrgLoadSign;
+    /**
+     * 组织下是否挂有组织
+     */
+    private String isExistsAcct;
 
+
+
+    public String getOrgPaths() {
+        return orgPaths;
+    }
+
+    public void setOrgPaths(String orgPaths) {
+        this.orgPaths = orgPaths;
+    }
+
+    public String getChannelOrgLoadSign() {
+        return channelOrgLoadSign;
+    }
+
+    public void setChannelOrgLoadSign(String channelOrgLoadSign) {
+        this.channelOrgLoadSign = channelOrgLoadSign;
+    }
 
     public String getIsChannel() {
         return isChannel;

@@ -1181,8 +1181,9 @@ function savePersonnel () {
         var firstFlag = index == 0? 1: 0;
         mobileList.push({contactType: 1, content: $(this).val(), firstFlag: firstFlag});
     });
-    $('#tbEamilVoList').find(':input').each(function () {
-        emailList.push({contactType: 2, content: $(this).val()});
+    $('#tbEamilVoList').find(':input').each(function (index) {
+        var firstFlag = index == 0? 1: 0;
+        emailList.push({contactType: 2, content: $(this).val(), firstFlag: firstFlag});
     });
     var tbMobileVoList = mobileList;
     var tbEamilVoList = emailList;

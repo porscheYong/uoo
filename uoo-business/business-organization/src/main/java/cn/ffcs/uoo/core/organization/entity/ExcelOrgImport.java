@@ -53,8 +53,17 @@ public class ExcelOrgImport extends Model<ExcelOrgImport> {
     private Date statusDate;
     @TableField("ORG_TREE_ID")
     private Long orgTreeId;
+    @TableField("IMP_TYPE")
+    private String impType;
 
 
+    public String getImpType() {
+        return impType;
+    }
+
+    public void setImpType(String impType) {
+        this.impType = impType;
+    }
 
     public String getFileSign() {
         return fileSign;

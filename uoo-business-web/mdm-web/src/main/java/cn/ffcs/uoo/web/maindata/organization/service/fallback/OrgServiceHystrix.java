@@ -9,6 +9,7 @@ import cn.ffcs.uoo.web.maindata.organization.service.OrgContactRelService;
 import cn.ffcs.uoo.web.maindata.organization.service.OrgService;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashMap;
 import java.util.List;
@@ -94,5 +95,29 @@ public class OrgServiceHystrix implements OrgService {
         return responseResult;
     }
 
+    @Override
+    public ResponseResult<Page<OrgVo>> getChannelOrgPage(String search,String orgTreeId,Integer pageSize,Integer pageNo,
+                                                         Long userId,String accout){
+        ResponseResult<Page<OrgVo>> responseResult = new ResponseResult<Page<OrgVo>>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
+
+    @Override
+    public ResponseResult<HashMap<String,String>> getChannelOrgExtInfo(Long orgTreeId){
+        ResponseResult<HashMap<String,String>> responseResult = new ResponseResult<HashMap<String,String>>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
+
+    @Override
+    public ResponseResult<String> addChannelOrg(ChannelOrgVo channelOrgVo){
+        ResponseResult<String> responseResult = new ResponseResult<String>();
+        responseResult.setState(ResponseResult.STATE_ERROR);
+        responseResult.setMessage("系统暂时不可用");
+        return responseResult;
+    }
 
 }

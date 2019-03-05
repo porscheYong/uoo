@@ -117,7 +117,7 @@ function initUserInfo(results){   //新增时初始化信息
     $('#psnName').val(results.psnName);
     $('#psnNum').val(results.psnCode);
     $('#mobile').val(results.mobilePhone);
-    $('#email').val(results.eamil);
+    $('#email').val(results.email);
     $('#cerNo').val(results.certNo);
     window.localStorage.setItem('userRoleList',JSON.stringify(''));
 
@@ -129,11 +129,13 @@ function initUserInfo(results){   //新增时初始化信息
     setDate();
 
     for(var i=0;i<statusCdList.length;i++){
-        $("#statusCd").append("<option value='" + statusCdList[i].itemValue + "'>" + statusCdList[i].itemCnname +"</option>");
+        var selected = i===0 ? "selected":"";
+        $("#statusCd").append("<option value='" + statusCdList[i].itemValue + "'"+selected+">" + statusCdList[i].itemCnname +"</option>");
     }
 
     for(var i=0;i<acctTypeList.length;i++){
-        $("#accType").append("<option value='" + acctTypeList[i].itemValue + "'>" + acctTypeList[i].itemCnname +"</option>");
+        var selected = i===0 ? "selected":"";
+        $("#accType").append("<option value='" + acctTypeList[i].itemValue + "'"+selected+">" + acctTypeList[i].itemCnname +"</option>");
     }
 
     for(var i=0;i<cerTypeList.length;i++){
@@ -238,7 +240,7 @@ function getSysSelect(){   //获取应用系统下拉列表
 
 function  hasExtInfo(certType){  //判断是否需要扩展信息
     var tbAcctExt;
-    if($('#extCerNo').val() != "" || $('#extMobile').val() != "" || $('#extName').val() != "" || $('#extEmail').val() != ""){
+    if($('#extCerNo').val() != "" || $('#extMobile').val() != "" || $('#extName').val() != "" || $('#extEmail').val() != "" || $('#extWeChatID').val() != ""){
         tbAcctExt = {
             "acctExtId":acctExtId,
             "certNo": $('#extCerNo').val(),

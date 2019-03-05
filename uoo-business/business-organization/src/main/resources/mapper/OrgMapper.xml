@@ -382,4 +382,64 @@
         SELECT A.DATA_ FROM TB_EXPANDOVALUE A WHERE A.COLUMN_ID=1061 AND A.STATUS_CD=1000 AND A.RECORD_ID=#{orgId}
     </select>
 
+    <select id="selectChannelOrgPage" resultType="cn.ffcs.uoo.core.organization.vo.OrgVo">
+        SELECT C.ORG_ID ORGID, C.ORG_NAME ORGNAME, CHANNELNBRS
+        FROM (SELECT A.RECORD_ID
+        FROM TB_EXPANDOVALUE A
+        WHERE A.DATA_ = 'Y'
+        AND A.STATUS_CD = 1000
+        AND A.COLUMN_ID = 1060) AA,
+        (SELECT A.RECORD_ID, A.DATA_ CHANNELNBRS
+        FROM TB_EXPANDOVALUE A
+        WHERE A.COLUMN_ID = 1061
+        AND A.STATUS_CD = 1000) BB,
+        TB_ORG C
+        WHERE AA.RECORD_ID = BB.RECORD_ID
+        AND AA.RECORD_ID = C.ORG_ID
+        <if test="orgVo.search != null and orgVo.search != ''">
+            <if test='orgVo.isSearchNum=="1"'>
+                AND (C.ORG_NAME like '%'||#{orgVo.search}||'%' OR CHANNELNBRS=#{orgVo.search} OR ORG_ID=#{orgVo.search} )
+            </if>
+            <if test='orgVo.isSearchNum!="1"' >
+                AND (C.ORG_NAME like '%'||#{orgVo.search}||'%')
+            </if>
+        </if>
+    </select>
+
+    <select id="getChannelOrgCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM (SELECT A.RECORD_ID
+        FROM TB_EXPANDOVALUE A
+        WHERE A.DATA_ = 'Y'
+        AND A.STATUS_CD = 1000
+        AND A.COLUMN_ID = 1060) AA,
+        (SELECT A.RECORD_ID, A.DATA_ CHANNELNBRS
+        FROM TB_EXPANDOVALUE A
+        WHERE A.COLUMN_ID = 1061
+        AND A.STATUS_CD = 1000) BB
+        WHERE AA.RECORD_ID = BB.RECORD_ID
+    </select>
+
+    <select id="getChannelOrgLoaderCount" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM TB_ORG_REL A
+        WHERE A.STATUS_CD = 1000
+        AND A.REF_CODE = #{refCode}
+        AND A.ORG_ID IN (SELECT AA.RECORD_ID
+        FROM (SELECT A.RECORD_ID
+        FROM TB_EXPANDOVALUE A
+        WHERE A.DATA_ = 'Y'
+        AND A.STATUS_CD = 1000
+        AND A.COLUMN_ID = 1060) AA,
+        (SELECT A.RECORD_ID, A.DATA_ CHANNELNBRS
+        FROM TB_EXPANDOVALUE A
+        WHERE A.COLUMN_ID = 1061
+        AND A.STATUS_CD = 1000) BB
+        WHERE AA.RECORD_ID = BB.RECORD_ID
+        <if test="orgId != null and orgId != ''">
+           AND AA.RECORD_ID=#{orgId}
+        </if>
+        )
+    </select>
+
 </mapper>

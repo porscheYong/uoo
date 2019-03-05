@@ -101,7 +101,7 @@
             right: 10px;
             line-height: 40px;
         }
-        .mobile-item:hover .default-set {
+        .mobile-item:hover .default-set, .email-item:hover .default-set {
             display: block;
         }
         .default-tag {
@@ -413,12 +413,15 @@
                             </div>
                             {{#each personalData.tbEamilVoList}}
                                 {{#if @index}}
-                                    <div style='width: 100%; position: relative; display: inline-block;'>
+                                    <div class='email-item' style='width: 100%; position: relative; display: inline-block;'>
                                         <input class='ui-input col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4' value="{{content}}" contactid="{{contactId}}">
                                         <div class='fright del'>
                                             <a class='icon-del' href='javascript:void(0)'>
                                                 <span class='fa fa-minus-circle'></span>
                                             </a>
+                                        </div>
+                                        <div class='fright default-set'>
+                                            <a href='javascript:void(0)' onclick='setDefaultEmail(this)'>设为默认</a>
                                         </div>
                                     </div>
                                 {{/if}}
