@@ -183,29 +183,28 @@ public class ExcelOrgImportController {
                     if(j==2){
                         excelOrgImport.setOrgName(cellStr);
                     }
-                    Long excelId = excelOrgImportService.getId();
-                    excelOrgImport.setFileName(fileName);
-                    excelOrgImport.setExcelOrgImportId(excelId);
-                    excelOrgImport.setFileSign(t);
-                    // TODO: 2019/3/1
-                    errMsg = orgService.JudgeUpdateOrgName(excelOrgImport.getOrgId(),excelOrgImport.getOrgName(),new Long(orgTreeId));
-                    if(StrUtil.isNullOrEmpty(errMsg) && excelList!=null && excelList.size()>0){
-                        for(ExcelOrgImport e : excelList){
-                            if(e.getOrgName().equals(excelOrgImport.getOrgName()) &&
-                                    e.getOrgId().equals(excelOrgImport.getOrgId())){
-                                errMsg="数据重复导入";
-                                break;
-                            }
+                }
+                Long excelId = excelOrgImportService.getId();
+                excelOrgImport.setFileName(fileName);
+                excelOrgImport.setExcelOrgImportId(excelId);
+                excelOrgImport.setFileSign(t);
+                // TODO: 2019/3/1
+                errMsg = orgService.JudgeUpdateOrgName(excelOrgImport.getOrgId(),excelOrgImport.getOrgName(),new Long(orgTreeId));
+                if(StrUtil.isNullOrEmpty(errMsg) && excelList!=null && excelList.size()>0){
+                    for(ExcelOrgImport e : excelList){
+                        if(e.getOrgId().equals(excelOrgImport.getOrgId())){
+                            errMsg="数据重复导入";
+                            break;
                         }
                     }
-                    excelOrgImport.setImpType(impType);
-                    excelOrgImport.setSign(StrUtil.isNullOrEmpty(errMsg)?"0":"1");
-                    excelOrgImport.setContent(StrUtil.isNullOrEmpty(errMsg)?"":errMsg);
-                    excelOrgImport.setOrgTreeId(new Long(orgTreeId));
-                    excelOrgImport.setCreateUser(userId);
-                    excelOrgImportService.add(excelOrgImport);
-                    excelList.add(excelOrgImport);
                 }
+                excelOrgImport.setImpType(impType);
+                excelOrgImport.setSign(StrUtil.isNullOrEmpty(errMsg)?"0":"1");
+                excelOrgImport.setContent(StrUtil.isNullOrEmpty(errMsg)?"":errMsg);
+                excelOrgImport.setOrgTreeId(new Long(orgTreeId));
+                excelOrgImport.setCreateUser(userId);
+                excelOrgImportService.add(excelOrgImport);
+                excelList.add(excelOrgImport);
             }
         }
         ret.setState(ResponseResult.STATE_OK);
