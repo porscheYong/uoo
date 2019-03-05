@@ -177,3 +177,6 @@ function cancel () {
 getOrgTree();
 getOrgTreeType();
 // getProperty();
+function addSyncRule(){
+	location.href="/inaction/business/syncRule.html?orgTreeId="+orgTreeId;
+}

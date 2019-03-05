@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ffcs.uoo.core.organization.dao.OrgTreeSynchRuleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.ffcs.uoo.core.organization.entity.OrgTreeSynchRule">
+        <id column="ORG_TREE_SYNCH_RULE_ID" property="orgTreeSynchRuleId" />
+        <result column="TO_ORG_TREE_ID" property="toOrgTreeId" />
+        <result column="FROM_ORG_TREE_ID" property="fromOrgTreeId" />
+        <result column="OPERATE_TYPE" property="operateType" />
+        <result column="SYNCH_MODEL" property="synchModel" />
+        <result column="ENABLE_DATE" property="enableDate" />
+        <result column="DISABLE_DATE" property="disableDate" />
+        <result column="STATUS_CD" property="statusCd" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_USER" property="createUser" />
+        <result column="UPDATE_DATE" property="updateDate" />
+        <result column="UPDATE_USER" property="updateUser" />
+        <result column="STATUS_DATE" property="statusDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ORG_TREE_SYNCH_RULE_ID, TO_ORG_TREE_ID, FROM_ORG_TREE_ID, OPERATE_TYPE, SYNCH_MODEL, ENABLE_DATE, DISABLE_DATE, STATUS_CD, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, STATUS_DATE
+    </sql>
+
+    <select id="getId" resultType="Long">
+        SELECT SEQ_TB_ORG_TREE_SYNCH_RULE_ID.nextval FROM dual
+    </select>
+    <!-- 当前组织树引用了哪些树 -->
+    <select id="getRelTree" resultType="cn.ffcs.uoo.core.organization.entity.OrgTree">
+    select a.* from TB_ORG_TREE a where ORG_TREE_ID in(
+		select DISTINCT(FROM_ORG_TREE_ID) as fori from(
+		select ORG_TREE_ID,FROM_ORG_TREE_ID from TB_ORG_ORGTREE_REL where ORG_TREE_ID=#{orgTreeId}   and  FROM_ORG_TREE_ID is not null and STATUS_CD = '1000'
+		)t  ) and a.STATUS_CD = '1000'
+     
+    </select>
+     <!-- 当前组织树被哪些树引用了 -->
+    <select id="getBeRelTree" resultType="cn.ffcs.uoo.core.organization.entity.OrgTree">
+    select a.* from TB_ORG_TREE a where ORG_TREE_ID in(
+		select DISTINCT(FROM_ORG_TREE_ID) as fori from(
+		select ORG_TREE_ID,FROM_ORG_TREE_ID from TB_ORG_ORGTREE_REL where ORG_TREE_ID=#{orgTreeId}   and  FROM_ORG_TREE_ID is not null and STATUS_CD = '1000'
+		)t  ) and a.STATUS_CD = '1000'
+     
+    </select>
+</mapper>
