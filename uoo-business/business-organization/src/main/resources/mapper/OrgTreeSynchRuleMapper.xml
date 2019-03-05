@@ -27,6 +27,15 @@
     <select id="getId" resultType="Long">
         SELECT SEQ_TB_ORG_TREE_SYNCH_RULE_ID.nextval FROM dual
     </select>
+    <!-- 目标组织树有哪些规则 -->
+    <select id="listByToOrgTreeId" resultType="cn.ffcs.uoo.core.organization.vo.OrgTreeSynchRuleVO">
+        select a.*,b.ORG_TREE_NAME as fromOrgTreeName,c.ORG_TREE_NAME as toOrgTreeName from TB_ORG_TREE_SYNCH_RULE a LEFT JOIN TB_ORG_TREE b
+			on a.FROM_ORG_TREE_ID = b.org_tree_id
+			left join TB_ORG_TREE c
+			on a.TO_ORG_TREE_ID = c.org_tree_id
+			where a.STATUS_CD='1000'
+			and a.TO_ORG_TREE_ID=#{orgTreeId}
+    </select>
     <!-- 当前组织树引用了哪些树 -->
     <select id="getRelTree" resultType="cn.ffcs.uoo.core.organization.entity.OrgTree">
     select a.* from TB_ORG_TREE a where ORG_TREE_ID in(

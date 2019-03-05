@@ -1,11 +1,12 @@
 package cn.ffcs.uoo.core.organization.dao;
 
-import cn.ffcs.uoo.core.organization.entity.OrgTree;
-import cn.ffcs.uoo.core.organization.entity.OrgTreeSynchRule;
-
 import java.util.List;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import cn.ffcs.uoo.core.organization.entity.OrgTree;
+import cn.ffcs.uoo.core.organization.entity.OrgTreeSynchRule;
+import cn.ffcs.uoo.core.organization.vo.OrgTreeSynchRuleVO;
 
 /**
  * <p>
@@ -30,4 +31,5 @@ public interface OrgTreeSynchRuleMapper extends BaseMapper<OrgTreeSynchRule> {
      * @return
      */
     List<OrgTree> getBeRelTree(Long orgTreeId);
+    List<OrgTreeSynchRuleVO> listByToOrgTreeId(Long orgTreeId);
 }

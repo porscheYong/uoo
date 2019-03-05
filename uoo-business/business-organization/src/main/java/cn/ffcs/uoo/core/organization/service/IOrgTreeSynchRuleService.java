@@ -8,6 +8,7 @@ import cn.ffcs.uoo.core.organization.entity.OrgTree;
 import cn.ffcs.uoo.core.organization.entity.OrgTreeSynchRule;
 import cn.ffcs.uoo.core.organization.entity.OrgUpdateCheckResult;
 import cn.ffcs.uoo.core.organization.entity.OrgUpdateCheckResult.OrgOperateType;
+import cn.ffcs.uoo.core.organization.vo.OrgTreeSynchRuleVO;
 
 /**
  * <p>
@@ -25,6 +26,6 @@ public interface IOrgTreeSynchRuleService extends IService<OrgTreeSynchRule> {
      * @return
      */
     public List<OrgTree> getRelTree(Long orgTreeId);
-    
+    List<OrgTreeSynchRuleVO> listByToOrgTreeId(Long orgTreeId);
     public OrgUpdateCheckResult check(OrgOperateType orgOperateType,Long orgId,Long orgTreeId);
 }
