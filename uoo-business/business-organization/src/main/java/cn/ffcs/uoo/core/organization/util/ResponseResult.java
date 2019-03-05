@@ -63,12 +63,14 @@ public class ResponseResult<T> implements Serializable {
     public static <T> ResponseResult<T> createSuccessResult(String message) {
         ResponseResult<T> result = new ResponseResult<T>();
         result.setMessage(message);
+        result.setState(STATE_OK);
         return result;
     }
 
     public static <T> ResponseResult<T> createSuccessResult(T data, String message) {
         ResponseResult<T> result = new ResponseResult<T>();
         result.setData(data);
+        result.setState(STATE_OK);
         result.setMessage(message);
         return result;
     }
@@ -77,6 +79,7 @@ public class ResponseResult<T> implements Serializable {
     public static <T> ResponseResult<Page<T>> createSuccessResult(Page<T> page, String message) {
         ResponseResult<Page<T>> result = new ResponseResult<>();
         result.setData(page);
+        result.setState(STATE_OK);
         result.setMessage(message);
         return result;
     }

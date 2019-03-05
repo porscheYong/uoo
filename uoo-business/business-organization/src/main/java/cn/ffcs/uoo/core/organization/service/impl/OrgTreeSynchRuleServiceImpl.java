@@ -18,6 +18,7 @@ import cn.ffcs.uoo.core.organization.entity.OrgTreeSynchRule;
 import cn.ffcs.uoo.core.organization.entity.OrgUpdateCheckResult;
 import cn.ffcs.uoo.core.organization.entity.OrgUpdateCheckResult.OrgOperateType;
 import cn.ffcs.uoo.core.organization.service.IOrgTreeSynchRuleService;
+import cn.ffcs.uoo.core.organization.vo.OrgTreeSynchRuleVO;
 
 /**
  * <p>
@@ -94,5 +95,10 @@ public class OrgTreeSynchRuleServiceImpl extends ServiceImpl<OrgTreeSynchRuleMap
             break;
         }
         return res;
+    }
+
+    @Override
+    public List<OrgTreeSynchRuleVO> listByToOrgTreeId(Long orgTreeId) {
+        return baseMapper.listByToOrgTreeId(orgTreeId);
     }
 }

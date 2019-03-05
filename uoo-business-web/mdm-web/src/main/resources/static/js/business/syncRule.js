@@ -32,7 +32,7 @@ function initUserRoleTable(results){
 	                return seq;
 	            }
 	        },
-	        { 'data': 'treeName', 'title': '同步的业务树名称', 
+	        { 'data': 'orgTreeName', 'title': '同步的业务树名称', 
 	        },
 	        { 'data': 'operate', 'title': '同步操作', 
 	        },
