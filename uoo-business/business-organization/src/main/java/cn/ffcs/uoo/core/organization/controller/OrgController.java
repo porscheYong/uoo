@@ -1869,7 +1869,7 @@ public class OrgController extends BaseController {
         ResponseResult<String> ret = new ResponseResult<>();
 
         String msg = orgService.JudgeChannelOrgParams(channelOrgVo);
-        if(StrUtil.isNullOrEmpty(msg)){
+        if(!StrUtil.isNullOrEmpty(msg)){
             ret.setMessage(msg);
             ret.setState(ResponseResult.PARAMETER_ERROR);
             return ret;

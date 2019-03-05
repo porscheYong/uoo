@@ -14,9 +14,9 @@ public class HandleChannelConstant {
     public static final String RESOURCE_ID = "1";
 
     /**
-     *  浙江省公司
+     *  CPC无组织
      */
-    public static final Long ORG_ID = 1L;
+    public static final Long ORG_ID = 10007029L;
 
     public static final String VALID_STATE = "1000";
 
