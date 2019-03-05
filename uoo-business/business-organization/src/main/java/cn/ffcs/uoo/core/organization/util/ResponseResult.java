@@ -2,6 +2,8 @@ package cn.ffcs.uoo.core.organization.util;
 
 import java.io.Serializable;
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 /**
  * 封装json格式类
  * Created by liuxiaodong on 2018/9/17.
@@ -41,5 +43,41 @@ public class ResponseResult<T> implements Serializable {
 
     public void setData(T data) {
         this.data = data;
+    }
+    public static <T> ResponseResult<T> createErrorResult(T datas, String message) {
+        ResponseResult<T> result = new ResponseResult<T>();
+        result.setData(datas);
+        result.setMessage(message);
+        result.setState(STATE_ERROR);
+        return result;
+    }
+
+
+    public static <T> ResponseResult<T> createErrorResult(String message) {
+        ResponseResult<T> result = new ResponseResult<T>();
+        result.setMessage(message);
+        result.setState(STATE_ERROR);
+        return result;
+    }
+
+    public static <T> ResponseResult<T> createSuccessResult(String message) {
+        ResponseResult<T> result = new ResponseResult<T>();
+        result.setMessage(message);
+        return result;
+    }
+
+    public static <T> ResponseResult<T> createSuccessResult(T data, String message) {
+        ResponseResult<T> result = new ResponseResult<T>();
+        result.setData(data);
+        result.setMessage(message);
+        return result;
+    }
+
+    
+    public static <T> ResponseResult<Page<T>> createSuccessResult(Page<T> page, String message) {
+        ResponseResult<Page<T>> result = new ResponseResult<>();
+        result.setData(page);
+        result.setMessage(message);
+        return result;
     }
 }

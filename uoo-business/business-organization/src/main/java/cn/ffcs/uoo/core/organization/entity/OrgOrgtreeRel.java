@@ -84,11 +84,21 @@ public class OrgOrgtreeRel extends Model<OrgOrgtreeRel> {
 
     @TableField("ORG_BIZ_FULL_ID")
     private String orgBizFullId;
-
-
+    
     @TableField(exist=false)
     private String lv;
+    @TableField("FROM_ORG_TREE_ID")
+    private Long fromOrgTreeId;
 
+
+
+    public Long getFromOrgTreeId() {
+        return fromOrgTreeId;
+    }
+
+    public void setFromOrgTreeId(Long fromOrgTreeId) {
+        this.fromOrgTreeId = fromOrgTreeId;
+    }
 
     public String getOrgBizFullId() {
         return orgBizFullId;
