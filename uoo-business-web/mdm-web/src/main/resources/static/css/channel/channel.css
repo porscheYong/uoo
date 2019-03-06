@@ -1,0 +1,104 @@
+.BtnBlue {
+    width: 82px;
+    height: 40px;
+    border: 1px solid rgb(53,173,239);
+    background: #FFF !important;
+    border-radius: 4px;
+}
+th {
+    text-align: center;
+    white-space: nowrap;
+}
+#orgTable tbody td {
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.row-select{
+    width: 25px;
+}
+.row-fName{
+    width: 300px;
+}
+.col-sm-7{
+    width: 100%;
+    text-align: center;
+}
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+#treeDiv{
+    overflow-x: hidden;
+}
+#treeDiv:hover{
+    overflow-x: auto;
+}
+#orgTable_filter{
+    float: left;
+    margin-bottom: 2.1%;
+}
+.form-control{
+    box-shadow: none !important;
+    height: 40px;
+    width: 273.23px !important;
+    padding: 0 10px 0 32px;
+    background-position: 7px 7px;
+    color: #5f6c7e;
+    font-family: "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-variant: tabular-nums;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.471;
+    background-image: url(/images/ico_zoomer.png);
+    background-repeat: no-repeat;
+}
+.dataTables_scroll{
+    border: 1px solid #d0d0d5;
+    border-radius: 5px;
+    padding: 5px;
+}
+.curSelectedNode{
+    background: #ddeff9;
+}
+.typeahead-menu {
+    border-radius: 0;
+    width: 94%;
+    padding: 10px;
+    margin-top: 11%;
+}
+#busTable_length{
+    display: none !important;
+}
+.bottom{
+    margin-right: 20px;
+}
+.typeahead{
+    margin-bottom: 1%;
+}
+#busTable th{
+    display: none;
+}
+/* #busTable{
+    table-layout: fixed;
+} */
+table.dataTable {
+    table-layout: fixed;
+}
+#busTable tbody td {
+    text-align: center;
+    overflow: hidden;
+}
+.main-container {
+    background: #FFF;
+    border-radius: 0px;
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.05);
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    overflow: hidden;
+    padding: 0px;
+    left: 0px;
+}

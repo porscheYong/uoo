@@ -6,136 +6,99 @@
 
 <!-- Bootstrap -->
 <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- jquery datatable -->
-<link href="/vendors/datatable/datatables.css" rel="stylesheet">
 <!-- lulu ui -->
 <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
 <!-- ztree -->
 <link rel="stylesheet" href="/vendors/zTree/zTreeStyle.css" type="text/css">
 <!-- Font Awesome -->
 <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<!-- jquery datatable -->
+<link href="/vendors/datatable/datatables.css" rel="stylesheet">
+<!-- typeahead -->
+<link href="/vendors/typeahead/typeahead.css" rel="stylesheet">
 <!-- Custom Theme Style -->
 <link href="/css/reset.css" rel="stylesheet">
 <link href="/css/custom.css" rel="stylesheet"> 
-
+<link href="/css/channel/channel.css" rel="stylesheet"> 
  </HEAD>
- <style>
-	.BtnBlue {
-		width: 82px;
-		height: 40px;
-		border: 1px solid rgb(53,173,239);
-		background: #FFF !important;
-		border-radius: 4px;
-	}
-	th {
-		text-align: center;
-		white-space: nowrap;
-	}
-	table.dataTable tbody td {
-		text-align: center;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	.row-select{
-		width: 10%;
-	}
-	.col-sm-7{
-		width: 100%;
-		text-align: center;
-	}
-	.row {
-		margin-right: 0px;
-		margin-left: 0px;
-	}
-	#treeDiv{
-		overflow-x: hidden;
-	}
-	#treeDiv:hover{
-		overflow-x: auto;
-	}
-	#orgTable_filter{
-		float: left;
-    	margin-bottom: 2.1%;
-	}
-	.form-control{
-		box-shadow: none !important;
-		height: 40px;
-		width: 268px !important;
-		padding: 0 10px 0 32px;
-		background-position: 7px 7px;
-		color: #5f6c7e;
-		font-family: "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-		font-variant: tabular-nums;
-		font-size: 14px;
-		font-weight: 400;
-		line-height: 1.471;
-		background-image: url(/images/ico_zoomer.png);
-		background-repeat: no-repeat;
-	}
-	.dataTables_scroll{
-		border: 1px solid #d0d0d5;
-		border-radius: 5px;
-		padding: 5px;
-	}
- </style>
 
-<body style="background: #fff;height: auto;">
-	<div class="board-title" style="margin-top:1%;margin-bottom:2%;">
-		<span class="name ft18" style="margin-left:1%;">渠道组织</span>   
-	</div>
-	<div class="row" style="margin-bottom: 10px;">
-		<div class="col-md-5 col-sm-5 col-xs-5" style="margin-left:8%;">
-			<div style="font-size:16px;font-weight:600;padding: 6px 0 20px 5px;">渠道组织<span id="orgExtInfo"></span></div>
-			<!-- <div style="overflow: hidden;margin-bottom: 0.5%;">
-				<input class="ui-input ui-input-search col-md-9 col-sm-9 col-xs-9" style="width:59.6%;" id="channelSearch" type="text" placeholder="搜索渠道组织" autocomplete="off"/>
-			</div> -->
-			<div id="table-container" style="width: 100%;height: auto; font-size: 14px; overflow: hidden;">  <!-- margin-top: 1%;border: 1px solid #d0d0d5;border-radius: 5px; -->
-				<table id="orgTable" class="stripe" width="100%"></table>
+<body class="nav-md">
+	<div class="container" id="container">
+		<div class="main-container">
+			<div id="channelDiv" style="width:100%;height:100%;overflow: auto;">
+				<!-- <div class="board-title" style="margin-top:1%;margin-bottom:2%;">
+					<span class="name ft18" style="margin-left:1%;">渠道组织</span>   
+				</div> -->
+				<div class="row" style="margin-bottom: 10px;margin-top: 9px;">
+					<div class="col-md-5 col-sm-5 col-xs-5" style="margin-left:6%;width: 44%;">
+						<div style="font-size:16px;font-weight:600;padding: 6px 0 20px 5px;">渠道组织<span id="orgExtInfo"></span></div>
+						<!-- <div style="overflow: hidden;margin-bottom: 0.5%;">
+							<input class="ui-input ui-input-search col-md-9 col-sm-9 col-xs-9" style="width:59.6%;" id="channelSearch" type="text" placeholder="搜索渠道组织" autocomplete="off"/>
+						</div> -->
+						<div id="table-container" style="width: 100%;height: auto; font-size: 14px; overflow: hidden;">  <!-- margin-top: 1%;border: 1px solid #d0d0d5;border-radius: 5px; -->
+							<table id="orgTable" class="stripe" width="100%"></table>
+						</div>
+					</div>
+					<div class="col-md-1 col-sm-1 col-xs-1" style="height: 40em;">
+						<div style="position:relative;top:50%;">
+							<button class="BtnBlue" id="addBtn" onclick="add()" style="width:100%;"></button>
+						</div>
+					</div>
+					<div class="col-md-4 col-sm-4 col-xs-4">
+						<div style="width: 100%;height: 45px;margin: 0 auto;">
+							<select id="businessOrg" class="col-md-9 col-sm-9 col-xs-11" style="z-index: 100;"></select>
+						</div>
+						<!-- <div style="overflow: hidden;">
+							<input class="ui-input ui-input-search col-md-9 col-sm-9 col-xs-11" id="orgSearch" type="text" placeholder="搜索组织" autocomplete="off"/>
+						</div> -->
+
+						<!-- 新增的搜索部分 -->
+						<div style="margin: 1px 0 3px 0;">
+							<div class="typeahead col-md-9 col-sm-9 col-xs-11" style="padding: 0;width: 75%;">
+								<div>
+									<input class="typeahead-hint" type="text" tabindex="-1" readonly="" dir="ltr">
+									<input class="ui-input typeahead-input tt-input" id="busOrgName" type="text" name="q" placeholder="请输入组织名称/组织标识" autocomplete="off" spellcheck="false" dir="auto">
+								</div>
+							</div>
+							<div class="bus-table typeahead-menu">
+								<table id="busTable" class="stripe" width="100%"></table>
+							</div>
+						</div>
+						
+						<div id="treeDiv" style="width: 100%;height: 32em; font-size: 14px; overflow-y: auto;
+								margin-top:1%;border: 1px solid #d0d0d5;border-radius: 5px;">
+							<ul id="tree" class="ztree" style="width:100%;padding:15px;"></ul>
+						</div>
+					</div>
+				</div>
+				<div class="row" style="margin-bottom: 10px;text-align: center;">
+					<div style="margin-top:3%;">
+						<button class="ui-button ui-button-primary" onclick="saveOrgTree()">保存</button>
+						<button class="ui-button ui-button-cancel" onclick="parent.cancel()" style="margin-left: 10px;">取消</button>
+					</div>
+				</div>
 			</div>
-		</div>
-		<div class="col-md-1 col-sm-1 col-xs-1" style="height: 40em;">
-			<div style="position:relative;top:50%;">
-				<button class="BtnBlue" id="addBtn" onclick="add()" style="width:100%;"></button>
-			</div>
-		</div>
-		<div class="col-md-4 col-sm-4 col-xs-4">
-			<div style="width: 100%;height: 45px;margin: 0 auto;">
-				<select id="businessOrg" class="col-md-9 col-sm-9 col-xs-11" style="z-index: 100;"></select>
-			</div>
-			<div style="overflow: hidden;">
-				<input class="ui-input ui-input-search col-md-9 col-sm-9 col-xs-11" id="orgSearch" type="text" placeholder="搜索组织" autocomplete="off"/>
-				<!-- <button class="ui-button ui-button-primary" id="searchBtn" onclick="search()" style="margin-left:1%;">搜索</button> -->
-			</div>
-			<div id="treeDiv" style="width: 100%;height: 32em; font-size: 14px; overflow-y: auto;
-					 margin-top:1%;border: 1px solid #d0d0d5;border-radius: 5px;">
-				<ul id="tree" class="ztree" style="width:100%;padding:15px;"></ul>
-			</div>
-		</div>
-	</div>
-	<div class="row" style="margin-bottom: 10px;text-align: center;">
-		<div style="margin-top:3%;">
-			<button class="ui-button ui-button-primary" onclick="saveOrgTree()">保存</button>
-			<button class="ui-button ui-button-cancel" onclick="" style="margin-left: 10px;">取消</button>
 		</div>
 	</div>
 
-<!--
-  <script type="text/javascript" src="jquery.ztree.excheck.js"></script>
-  <script type="text/javascript" src="jquery.ztree.exedit.js"></script>
--->
 <!-- jquery -->
 <script type="text/javascript" src="/js/core/jquery.js"></script>
+<!-- <script type="text/javascript" src="/vendors/zTree/jquery-1.4.4.min.js"></script> -->
 <!-- Bootstrap -->
 <script type="text/javascript" src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- layer -->
 <script type="text/javascript" src="/vendors/layer/layer.js"></script>
 <!-- sea js -->
 <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
+<!-- handlebars -->
+<script type="text/javascript" src="/vendors/typeahead/handlebars.js"></script>
+<!-- typeahead -->
+<script type="text/javascript" src="/vendors/typeahead/typeahead.bundle.js"></script>
+<!-- jquery tagsinput -->
+<script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
 <!-- ztree -->
 <script type="text/javascript" src="/vendors/zTree/jquery.ztree.core.js"></script>
 <script type="text/javascript" src="/vendors/zTree/jquery.ztree.excheck.js"></script>
-<script type="text/javascript" src="/vendors/zTree/jquery.ztree.exedit.js"></script>
 <script type="text/javascript" src="/vendors/zTree/jquery.ztree.exedit.js"></script>
 <!-- jquery datatable -->
 <script type="text/javascript" src="/js/channel/datatables.js"></script>
@@ -147,6 +110,7 @@
 <!-- custom -->
 <!-- <script type="text/javascript" src="/js/channel/orgData.js"></script> -->
 <script type="text/javascript" src="/js/channel/index.js"></script>
+<script type="text/javascript" src="/js/channel/channelOrgSearch.js"></script>
 </body>
 
 </HTML>

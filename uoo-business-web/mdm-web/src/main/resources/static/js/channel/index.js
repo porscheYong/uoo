@@ -2,20 +2,23 @@ var orgTable;
 var orgTreeId;
 var addList = [];   //新增的节点,只有id
 var addNodeList = [];  //新增的节点,包含pid
-var delList = [];  //删除的节点
+var delList = [];  //删除的节点,包含pid
+var delNodeList = [];  //删除的节点,只有id
+var deledList = []; //从右边的树删除的节点，又要加到同一个父节点下
 var exNodes = [];
 var isDel = [];
 var isAdd = [];
-
-var addNodes = [];
-var updateNodes = [];
+var dragId;
+var dragList = [];
+var dragNodeList = [];
 
 var unloadCount; //已挂渠道组织数量
 var loadCount; //全部渠道组织数量
 
 var toastr = window.top.toastr;
 
-
+var loading = new Loading();  //loadingMask
+loading.screenMaskEnable('container');
 
 //获取渠道组织扩展信息
 function getChannelOrgExtInfo(orgTreeId){
@@ -26,19 +29,21 @@ function getChannelOrgExtInfo(orgTreeId){
         loadCount = data.loadCount;
         $("#orgExtInfo").text("（已挂 "+data.unloadCount+"/"+data.loadCount+"）");
       }, function (err) {
+        loading.screenMaskDisable('container');
     })
 }
 
 //获取渠道组织数据
 function getChannelOrgPage(orgTreeId){
     $http.get('/org/getChannelOrgPage', {    
-        pageSize : 10000,
+        pageSize : 100000,
         pageNo : 1,
         orgTreeId : orgTreeId,
         search : ""
       }, function (data) {
         initOrgTable(data.records);
       }, function (err) {
+        loading.screenMaskDisable('container');
     })
 }
 
@@ -57,6 +62,12 @@ function initOrgTree(orgTreeId){
         },
         edit: {
             enable: true,
+            drag: {
+                autoExpandTrigger: true,
+                prev: true,
+                inner: false,
+                next: true
+            },
             showRemoveBtn: showRemoveBtn,
             showRenameBtn: false,
             removeTitle: "删除组织"
@@ -81,7 +92,10 @@ function initOrgTree(orgTreeId){
         },
         callback: {
             beforeRemove: zTreeBeforeRemove,
-            onAsyncSuccess: zTreeOnAsyncSuccess
+            onAsyncSuccess: zTreeOnAsyncSuccess,
+            beforeDrag: zTreeBeforeDrag,
+            beforeDrop: zTreeBeforeDrop,
+            onDrop: zTreeOnDrop
         }
     };
     $http.get('/orgRel/getOrgRelTree', {
@@ -93,7 +107,7 @@ function initOrgTree(orgTreeId){
         zTreeObj.selectNode(nodes[0], true);
         // loading.screenMaskDisable('container');
     }, function (err) {
-        // loading.screenMaskDisable('container');
+        loading.screenMaskDisable('container');
     });
 }
 
@@ -115,6 +129,7 @@ function zTreeOnAsyncSuccess(e,treeId, treeNode, msg){
         }
         else {
             var selNode = tree.getNodeByParam('id', exNodes[0]);
+            $("#treeDiv").scrollTop(0);
             tree.selectNode(selNode, false);
             exNodes = [];
             setTimeout(function () {
@@ -172,21 +187,28 @@ function initOrgTable(results){
     inputClick("orgTable");
     $("#orgTable_filter").parent().prev().css("display","none");
     $("#orgTable_filter input").attr("placeholder","搜索渠道组织");
+    loading.screenMaskDisable('container');
 }
 
 //初始化变量值
 function reflashVar(){
     addList = [];   //新增的节点,只有id
     addNodeList = [];  //新增的节点,包含pid
-    delList = [];  //删除的节点
+    delList = [];  //删除的节点,包含pid
+    delNodeList = [];  //删除的节点,只有id
+    deledList = []; //从右边的树删除的节点，又要加到同一个父节点下
     exNodes = [];
     isDel = [];
     isAdd = [];
+    dragId;
+    dragList = [];
+    dragNodeList = [];
 }
 
 // 初始化业务组织列表
 function initBusinessList () {
     $http.get('/orgTree/getOrgTreeList', {}, function (data) {
+        reflashVar();
         var option = '';
         for (var i = 0; i < data.length; i++) {
             var select = i === 0? 'selected' : '';
@@ -197,18 +219,19 @@ function initBusinessList () {
             $('#businessOrg').selectMatch();
         });
         initOrgTree(data[0].orgTreeId);
-        getChannelOrgPage(data[0].orgTreeId);
         getChannelOrgExtInfo(data[0].orgTreeId);
+        getChannelOrgPage(data[0].orgTreeId);
         orgTreeId = data[0].orgTreeId;
         $('#businessOrg').unbind('change').bind('change', function (event) {
             reflashVar();
             orgTreeId = event.target.options[event.target.options.selectedIndex].value;
             initOrgTree(orgTreeId);
-            getChannelOrgPage(orgTreeId);
             getChannelOrgExtInfo(orgTreeId);
+            getChannelOrgPage(orgTreeId);
+            inputClick("orgTable");
         })
     }, function (err) {
-        // loading.screenMaskDisable('container');
+        loading.screenMaskDisable('container');
     })
 }
 
@@ -244,7 +267,12 @@ function zTreeBeforeRemove(treeId, treeNode){
                 if(addList.indexOf(~~treeNode.id) != -1){
                     addList.splice(addList.indexOf(~~treeNode.id),1);
                 }else{
-                    delList.push({"id":~~treeNode.id,"pid":treeNode.pid,"name":treeNode.name});
+                    delNodeList.push({"id":~~treeNode.id,"pid":treeNode.pid,"name":treeNode.name});
+                    delList.push(~~treeNode.id);
+                }
+
+                if(deledList.indexOf(~~treeNode.id) != -1){
+                    deledList.splice(deledList.indexOf(~~treeNode.id),1);
                 }
 
                 for(var i=0;i<addNodeList.length;i++){
@@ -267,6 +295,25 @@ function zTreeBeforeRemove(treeId, treeNode){
     return false;
 }
 
+//判断节点是否可以移动
+function zTreeBeforeDrag(treeId, treeNodes){
+    dragId = treeNodes[0].pid;
+    return treeNodes[0].isChannel == "Y";
+}
+
+//设置节点只能在同级内移动
+function zTreeBeforeDrop(treeId, treeNodes, targetNode, moveType){
+    return ~~targetNode.pid == dragId ? true : false; 
+}
+
+//拖拽成功后保存pid
+function zTreeOnDrop(event, treeId, treeNodes, targetNode, moveType) {
+    if(dragList.indexOf(~~treeNodes[0].id) == -1){
+        dragList.push(~~treeNodes[0].id);
+        dragNodeList.push({"id":~~treeNodes[0].id,"pid":treeNodes[0].pid});
+    }
+};
+
 //复选框点击事件
 function inputClick(tableName){
     $('#'+tableName).delegate('tbody tr td input','click',function(){
@@ -287,6 +334,7 @@ function selectChannelNode(id){
     var zTree = $.fn.zTree.getZTreeObj("tree");
     var curNode = zTree.getNodeByParam('id', id);
     if(curNode != null){
+        $("#treeDiv").scrollTop(0);
         zTree.selectNode(curNode, false);
         setTimeout(function () {
             zTree.showNodeFocus(curNode);
@@ -310,7 +358,7 @@ function getSelectRow (addList) {
     var selectedList = orgTable.rows('.select').data();
     var rList = [];
     for(var j=0;j<selectedList.length;j++){
-        if(addList.indexOf(selectedList[j].orgId) == -1){
+        if(addList.indexOf(selectedList[j].orgId) == -1 && deledList.indexOf(selectedList[j].orgId) == -1){
             rList.push({"id":selectedList[j].orgId,"name":selectedList[j].orgName,"isChannel":selectedList[j].isChannel});
         }
     }
@@ -341,8 +389,15 @@ function add() {
 
     if (treeNode && clist.length != 0 && treeNode.isChannel != "Y") {
         for(var i=0;i<clist.length;i++){
-            addNodeList.push({"id":clist[i].id,"pid":treeNode.id});
-            addList.push(clist[i].id);
+            var dx = delList.indexOf(clist[i].id);
+            if(dx != -1 && delNodeList[dx].pid == treeNode.id){
+                delList.splice(dx,1);
+                delNodeList.splice(dx,1);
+                deledList.push(clist[i].id);
+            }else{
+                addNodeList.push({"id":clist[i].id,"pid":treeNode.id});
+                addList.push(clist[i].id);
+            }
             nodeList.push(clist[i]);
             $("#org_"+clist[i].id).attr("disabled","true");
             if($("#org_"+clist[i].id).length == 0){
@@ -353,16 +408,25 @@ function add() {
         treeNode = zTree.addNodes(treeNode, nodeList);
         $("#orgExtInfo").text("（已挂 "+unloadCount+"/"+loadCount+"）");
     }else if(treeNode == undefined){
-        alert("请先选择上级组织！");
+        toastr.error("请先选择上级组织！");
     }else if(treeNode.isChannel == "Y"){
-        alert("无法在该组织下挂载游离组织！");
+        toastr.error("无法在该组织下挂载渠道组织！");
     }
 };
 
 //保存按钮
 function saveOrgTree(){
+    loading.screenMaskEnable('container');
     var zTree = $.fn.zTree.getZTreeObj("tree");
     var pIdList = [];
+    var addNodes = [];
+    var updateNodes = [];
+
+    for(var i=0;i<dragList.length;i++){
+        if(delList.indexOf(dragList[i]) == -1 && pIdList.indexOf(dragNodeList[i].pid) == -1){
+            pIdList.push(dragNodeList[i].pid);
+        }
+    }
 
     for(var i=0;i<addNodeList.length;i++){
         if(pIdList.indexOf(addNodeList[i].pid) == -1){
@@ -382,18 +446,20 @@ function saveOrgTree(){
     }
     var channelOrgVo = {
         "addNodes":addNodes,
-        "delNodes":delList,
+        "delNodes":delNodeList,
         "updateNodes":updateNodes,
         "orgTreeId":orgTreeId
     };
-    console.log(channelOrgVo);
     $http.post('/org/addChannelOrg', JSON.stringify(  
         channelOrgVo
     ), function (message) {
-        window.location.href = "index.html";
-        toastr.success("创建成功！");
+        // window.location.href = "index.html";
+        $("#channelDiv").scrollTop(0);
+        initBusinessList();
+        inputClick("orgTable");
+        toastr.success("保存成功！");
     }, function (err) {
-        // loading.screenMaskDisable('LAY_app_body');
+        loading.screenMaskDisable('container');
         // toastr.error("保存失败！");
     })
 }
@@ -402,6 +468,6 @@ $("#addBtn").text("添加>>");
 
 initBusinessList();
 
-$(document).ready(function (){
-    window.scrollTo(0,70);
-});
+// $(document).ready(function (){
+//     window.scrollTo(0,70);
+// });
