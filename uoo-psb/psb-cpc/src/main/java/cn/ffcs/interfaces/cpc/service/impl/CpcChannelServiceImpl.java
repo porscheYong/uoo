@@ -60,6 +60,9 @@ public class CpcChannelServiceImpl implements CpcChannelService {
     @Resource
     private AcctCrossRelMapper acctCrossRelMapper;
 
+    @Resource
+    private TbCpcLogMapper tbCpcLogMapper;
+
     @Autowired
     private SystemConstant systemConstant;
 
@@ -127,8 +130,11 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             rsMap.put("message", "处理不了的报文");
         }
 
-
-
+        TbCpcLogWithBLOBs tbCpcLogWithBLOBs = new TbCpcLogWithBLOBs();
+        tbCpcLogWithBLOBs.setReceive(json);
+        tbCpcLogWithBLOBs.setRevert(JSON.toJSONString(rsMap));
+        tbCpcLogWithBLOBs.setStatusCd(String.valueOf (rsMap.get("result_code")));
+        tbCpcLogMapper.insert(tbCpcLogWithBLOBs);
         logger.info("rsMap:{}",rsMap);
         return JSON.toJSONString(rsMap);
     }
