@@ -9,7 +9,8 @@ var orgId, //组织ID
     pid,
     orgName, //组织名
     parent,
-    nodeArr;
+    nodeArr,
+    isChannel;
 loading.screenMaskEnable('container');
 
 // lulu ui select插件
@@ -24,6 +25,7 @@ function onNodeClick(e,treeId, treeNode) {
     pid = treeNode.pid;
     orgName = treeNode.name;
     standardFlag = treeNode.standardFlag;
+    isChannel = treeNode.isChannel;
     var currentNode = {node: treeNode, current: true};//获取当前选中节点
     var parentNode = treeNode.getParentNode();
     nodeArr = [];
@@ -74,7 +76,7 @@ function filter (treeId, parentNode, childNodes) {
 }
 
 function refreshResult () {
-    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + '&pid=' + pid + "&refCode=" + refCode + "&standardFlag=" + standardFlag + "&name=" + encodeURI(orgName);
+    var url = "list.html?id=" + orgId + "&orgTreeId=" + orgTreeId + '&pid=' + pid + "&refCode=" + refCode + "&standardFlag=" + standardFlag + "&name=" + encodeURI(orgName) + "&isChannel=" + isChannel;
     $('#businessFrame').attr("src",url);
 }
 

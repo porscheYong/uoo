@@ -7,6 +7,7 @@ var orgName = getQueryString('name');
 var pName = getQueryString('pName');
 var refCode = getQueryString('refCode');
 var infoFlag = ~~getQueryString('infoFlag');
+var isChannel = getQueryString('isChannel');
 var locationList;
 var orgTypeList;
 var positionList;
@@ -27,6 +28,10 @@ var areaTypeData = window.top.dictionaryData.areaType();
 var countTypeData = window.top.dictionaryData.countType();
 var contractTypeData = window.top.dictionaryData.contractType();
 var vipRuleFlgData = window.top.dictionaryData.vipRuleFlg();
+
+if(isChannel == "Y"){
+    $("#editBtn").css("display","none");
+}
 
 $('.orgName').html(orgName);
 //不可编辑
