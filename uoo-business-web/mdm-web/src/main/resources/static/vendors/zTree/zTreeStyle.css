@@ -300,6 +300,7 @@ ul.ztree.zTreeDragUL {margin:0; padding:0; position:absolute; width:auto; height
 
 .ztree li span.button.remove:before {
     content: "\f014";
+    color: red;
 }
 
 .ztree li span.button.firstPage:before {

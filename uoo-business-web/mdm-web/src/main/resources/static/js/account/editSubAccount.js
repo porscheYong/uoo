@@ -647,6 +647,7 @@ function addTbAcctExt(){
 //更新扩展信息
 function updateTbAcctExt(){
     $http.post('/slaveAcct/updateTbAcctExt', JSON.stringify({  
+        slaveAcctId : acctId,
         acctExtId : acctExtId,
         openid : $('#extWeChatID').val(),
         certNo : $('#extCerNo').val(),
