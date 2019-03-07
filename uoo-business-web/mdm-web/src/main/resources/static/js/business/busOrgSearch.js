@@ -167,7 +167,7 @@ function initRestructOrgRelTree (orgId) {        //初始化树
         nodeArr = [];
 
         for(var i=0;i<data.length;i++){     //获取要显示的节点id pid name
-            zTreeNodes.push({"id":data[i].id,"pid":data[i].pid,"name":data[i].name});
+            zTreeNodes.push({"id":data[i].id,"pid":data[i].pid,"name":data[i].name,"isChannel":data[i].isChannel});
             if(i == data.length-1){
                 nodeArr.push({"node":{"id":data[i].id,"pid":data[i].pid,"name":data[i].name},"current":true});
             }else{

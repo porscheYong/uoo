@@ -155,6 +155,14 @@ function getOrg (orgId) {
         $('#officePhone').html(data.officePhone);
         $('#sort').html(data.sort);
         $('#address').html(data.address);
+        $('#channelNbr').html(data.channelNBR);
+
+        if(data.isChannel == "Y"){
+            $('#isChannel').html('是');
+        }else{
+            $('#isChannel').html('否');
+        }
+        
         if (data.psonOrgVoList && data.psonOrgVoList.length > 0) {
             $('#psonOrgVoList').html(data.psonOrgVoList[0].psnName);
         }
