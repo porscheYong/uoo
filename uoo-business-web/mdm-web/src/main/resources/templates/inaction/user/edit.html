@@ -403,12 +403,18 @@
                                 <a class="button-add" href='javascript:void(0)' onclick="addMobile(this)"><span class="fa fa-plus-circle icon-add"></span>添加</a>
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12" id="tbEamilVoList">
+                        
+                    </div>
+<div class="row" style="margin-bottom: 10px;">
+<div class="col-md-6 col-sm-6 col-xs-12" id="tbEamilVoList">
                             <div style="width: 100%; position: relative; display: inline-block;">
                                 <label for="email" class="form-item-label-required col-md-4 col-sm-4 col-xs-12"
                                        style="padding-right: 20px;line-height: 40px;text-align: right;">邮箱</label>
                                 <div class="ui-input col-md-8 col-sm-8 col-xs-12" style="padding: 0;">
                                     <input id="email" required>
+                                </div>
+                                <div class="fright" style="position: absolute; right: -55px; line-height: 40px;">
+                                    <span class="default-tag">默认</span>
                                 </div>
                             </div>
                             {{#each personalData.tbEamilVoList}}
@@ -430,8 +436,7 @@
                                 <a class="button-add" href='javascript:void(0)' onclick="addEmail(this)"><span class="fa fa-plus-circle icon-add"></span>添加</a>
                             </div>
                         </div>
-                    </div>
-
+</div>
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
                         <label for="psnNbr" class="form-item-label col-md-4 col-sm-4 col-xs-12" style="padding-right: 20px;line-height: 40px;text-align: right;">员工工号</label>
                         <input  class="ui-input col-md-8 col-sm-8 col-xs-12" id="psnNbr" readonly="readonly" value="{{personalData.psnNbr}}" disabled/>

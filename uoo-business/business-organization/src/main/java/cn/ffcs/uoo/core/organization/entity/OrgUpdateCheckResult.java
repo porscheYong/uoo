@@ -12,6 +12,13 @@ import java.util.List;
 public class OrgUpdateCheckResult {
     private boolean vaild;//通过检测 该组织可以数据增删改
     private boolean sync;//需要同步
+    private List<Long> syncOrgTreeIds=new ArrayList<>();
+    public List<Long> getSyncOrgTreeIds() {
+        return syncOrgTreeIds;
+    }
+    public void setSyncOrgTreeIds(List<Long> syncOrgTreeIds) {
+        this.syncOrgTreeIds = syncOrgTreeIds;
+    }
     public boolean isSync() {
         return sync;
     }

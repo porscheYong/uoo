@@ -1,31 +1,7 @@
 var engine;
 var empty;
 var table;
-var Regx = /^[A-Za-z0-9]*$/;
 var isCheckedOrg = 0;
-
-var settingA = {
-    data: {
-        key: {
-            isParent: "parent",
-        },
-        simpleData: {
-            enable:true,
-            idKey: "id",
-            pIdKey: "pid",
-            rootPId: ""
-        }
-    },
-    view: {
-        selectedMulti: false,
-        showLine: false,
-        showIcon: false,
-        dblClickExpand: false
-    },
-    callback: {
-        onClick: onNodeClick
-    }
-};
 
 empty = Handlebars.compile($(".typeahead-menu").html());
 
@@ -67,8 +43,8 @@ function initOrgSearchTable(search) {
             // 'lengthMenu': ' _MENU_ ',  
             'zeroRecords': '没有数据',  
             'paginate': {  
-                'next':       '>',  
-                'previous':   '<'  
+                'next':       '下一页',  
+                'previous':   '上一页'  
             },  
             'info': '总_TOTAL_条',  
             'infoEmpty': '没有数据'
@@ -107,10 +83,6 @@ function engineWithDefaults(q, sync, async) {
     if (q === '') {
         $('#busTable').html('');
         $(".bus-table").removeClass("is-open");
-        if(isCheckedOrg == 1){
-            initTree(orgTreeId);
-            isCheckedOrg = 0;
-        }
     }
     else {
         engine.search(q, sync, async);
@@ -138,7 +110,7 @@ $('#busOrgName').typeahead({
 })
   .on('typeahead:asyncrequest', function() {
         $('.Typeahead-spinner').show();
-        if($("#busOrgName").val() != ''){ // && !Regx.test($("#busOrgName").val())
+        if($("#busOrgName").val() != ''){ 
             initOrgSearchTable($("#busOrgName").val());
         }
     })
@@ -158,44 +130,51 @@ Handlebars.registerHelper("addOne", function (index) {
     return index + 1;
 });
 
-function initRestructOrgRelTree (orgId) {        //初始化树
+//获取查询组织的路径id
+function getRestructOrgRelTree(orgId){
     $http.get('/orgRel/getRestructOrgRelTree', {
         orgId: orgId,
         orgTreeId: orgTreeId
     }, function (data) {
-        var zTreeNodes = [];
-        nodeArr = [];
+        var zTree = $.fn.zTree.getZTreeObj("tree");
+        var curNode = zTree.getNodeByParam('id', orgId);
+        var orgPaths = [];
+        var n = 0;
 
-        for(var i=0;i<data.length;i++){     //获取要显示的节点id pid name
-            zTreeNodes.push({"id":data[i].id,"pid":data[i].pid,"name":data[i].name,"isChannel":data[i].isChannel});
-            if(i == data.length-1){
-                nodeArr.push({"node":{"id":data[i].id,"pid":data[i].pid,"name":data[i].name},"current":true});
-            }else{
-                nodeArr.push({"node":{"id":data[i].id,"pid":data[i].pid,"name":data[i].name},"current":false});
+        if(curNode != null){
+            $("#treeDiv").scrollTop(0);
+            zTree.selectNode(curNode, false);
+            setTimeout(function () {
+                zTree.showNodeFocus(curNode);
+            }, 300)
+        }else{
+            for(var i=0;i<data.length;i++){
+                orgPaths.push(data[i].id);
             }
-            // nodeArr.push(data[i].name);
+    
+            for(var i=orgPaths.length-1;i>=0;i--){
+                var node = zTree.getNodeByParam('id', orgPaths[i]);
+                if(!node.open){
+                    orgPaths.splice(orgPaths.length-1,n);
+                    exNodes = orgPaths;
+                    zTree.expandNode(node, true, false, true, true);
+                    break;
+                }
+                n++;
+            }
         }
-
-        var zTree = $.fn.zTree.init($("#businessTree"), settingA, zTreeNodes);
-        var node = zTree.getNodeByTId("businessTree_"+orgId);
-        var url = "list.html?id=" + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + data[0].pid + "&name=" + encodeURI(data[0].name);
-        zTree.expandAll(true);
-        zTree.selectNode(node);
-        $('.curSelectedNode').trigger('click');
     }, function (err) {
 
     })
-}   
+}
 
 function orgClick(orgId){
-    isCheckedOrg = 1;
     $(".bus-table").removeClass("is-open");
-    initRestructOrgRelTree(orgId);
+    getRestructOrgRelTree(orgId);
 }
 
 $("#busOrgName").focus(function (){     
     if($("#busOrgName").val() == ''){
-        // isCheckedOrg = 0;
         $(".bus-table").removeClass("is-open");
     }
 })

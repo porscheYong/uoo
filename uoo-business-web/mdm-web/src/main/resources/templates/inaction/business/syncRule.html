@@ -64,9 +64,9 @@ th{
      <div class="row" style="margin-bottom: 10px;">
       <div class="col-md-12 col-sm-12 col-xs-12">
        <div class="form-item" style="width: 100%">
-        <label for="permissionName" class="form-item-label-required col-md-3 col-sm-3 col-xs-3"
+        <label for="fromOrgTreeId" class="form-item-label-required col-md-3 col-sm-3 col-xs-3"
          style="padding-right: 20px; line-height: 40px; text-align: right;"> 选择同步的业务树名称</label> 
-         <select id="bizTree" required
+         <select id="fromOrgTreeId" required
          class="ui-input col-md-8 col-sm-8 col-xs-8">
         </select>
        </div>
@@ -75,9 +75,9 @@ th{
      <div class="row" style="margin-bottom: 10px;">
       <div class="col-md-12 col-sm-12 col-xs-12">
        <div class="form-item" style="width: 100%">
-        <label for="permissionName" class="form-item-label-required col-md-3 col-sm-3 col-xs-3"
+        <label for="operateType" class="form-item-label-required col-md-3 col-sm-3 col-xs-3"
          style="padding-right: 20px; line-height: 40px; text-align: right;">同步操作</label> 
-         <select id="operation" required
+         <select id="operateType" required
          class="ui-input col-md-8 col-sm-8 col-xs-8">
          <option value="all">全部</option>
          <option value="insert">新增</option>
@@ -90,9 +90,9 @@ th{
      <div class="row" style="margin-bottom: 10px;">
       <div class="col-md-12 col-sm-12 col-xs-12">
        <div class="form-item" style="width: 100%">
-        <label for="permissionName" class="form-item-label-required col-md-3 col-sm-3 col-xs-3"
+        <label for="synchModel" class="form-item-label-required col-md-3 col-sm-3 col-xs-3"
          style="padding-right: 20px; line-height: 40px; text-align: right;">是否开启双向同步</label> 
-         <select id="bizTree" required
+         <select id="synchModel" required
          class="ui-input col-md-8 col-sm-8 col-xs-8">
          <option value="0">否</option>
         </select>
@@ -133,6 +133,7 @@ th{
  <script type="text/javascript" src="/vendors/tagsinput/jquery.tagsinput.js"></script>
  <!-- jquery datatable -->
  <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+  <script type="text/javascript" src="/vendors/toastr/toastr.js"></script>
  <!-- init -->
  <script type="text/javascript" src="/js/init.js"></script>
  <script type="text/javascript" src="/js/business/syncRule.js"></script>

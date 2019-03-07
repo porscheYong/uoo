@@ -324,9 +324,9 @@ table.dataTable td {
   float: right;
   text-align: right;
 }
-.dataTables_wrapper .dataTables_filter input {
+/* .dataTables_wrapper .dataTables_filter input {
   margin-left: 0.5em;
-}
+} */
 .dataTables_wrapper .dataTables_info {
   padding-left: 0.7em;
   line-height: 2.7em;
