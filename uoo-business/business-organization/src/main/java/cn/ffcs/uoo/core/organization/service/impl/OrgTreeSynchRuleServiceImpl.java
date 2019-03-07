@@ -72,12 +72,16 @@ public class OrgTreeSynchRuleServiceImpl extends ServiceImpl<OrgTreeSynchRuleMap
                     for (OrgTree orgTree : beTree) {
                         List<OrgTreeSynchRule> list = baseMapper.selectList(Condition.create().eq("STATUS_CD", "1000").eq("TO_ORG_TREE_ID", orgTree.getOrgTreeId()).eq("FROM_ORG_TREE_ID", orgTreeId).in("OPERATE_TYPE", new String[]{"insert","all"}));
                         if(list!=null&&!list.isEmpty()){
+                          //同步到哪几个树 也就是现在的树被哪些树引用了
+                            res.getSyncOrgTreeIds().add(orgTree.getOrgTreeId());
                             hasRule=true;
-                            break;   
                         }
                     }
                     //如果这个组织树被其他人引用了  那么就要去同步到被引用的那里，
                     res.setSync(hasRule);
+                    
+                    
+                    
                 }
             }
             break;
@@ -90,7 +94,8 @@ public class OrgTreeSynchRuleServiceImpl extends ServiceImpl<OrgTreeSynchRuleMap
                     List<OrgTreeSynchRule> list = baseMapper.selectList(Condition.create().eq("STATUS_CD", "1000").eq("TO_ORG_TREE_ID", orgTree.getOrgTreeId()).eq("FROM_ORG_TREE_ID", orgTreeId).in("OPERATE_TYPE", new String[]{orgOperateType==OrgOperateType.DELETE?"delete":"update","all"}));
                     if(list!=null&&!list.isEmpty()){
                         hasRule=true;
-                        break;   
+                      //同步到哪几个树 也就是现在的树被哪些树引用了
+                        res.getSyncOrgTreeIds().add(orgTree.getOrgTreeId());
                     }
                 }
                 //如果这个组织树被其他人引用了  那么就要去同步到被引用的那里，
