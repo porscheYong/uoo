@@ -13,6 +13,8 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.ibatis.annotations.Param;
+import org.apache.poi.ss.formula.functions.Today;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,6 +56,10 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
 
     @Autowired
     private OrgLevelService orgLevelService;
+
+    @Autowired
+    private AmqpTemplate template;
+
 
     @Override
     public Long getId() {
@@ -119,18 +125,15 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         Page<OrgVo> page = new Page<OrgVo>(orgVo.getPageNo() == 0 ? 1 : orgVo.getPageNo(),
                 orgVo.getPageSize() == 0 ? 10 : orgVo.getPageSize());
         List<OrgVo> orgVolist = baseMapper.selectOrgRelPage(page, orgVo);
-//        for(OrgVo o : orgVolist){
-//            List<OrgType> orgTypeList = orgTypeService.getOrgTypeByOrgId(o.getOrgId());
-//            String orgTypeSplit = "";
-//            if(orgTypeList!=null && orgTypeList.size()>0){
-//                for(OrgType ot:orgTypeList){
-//                    orgTypeSplit +=ot.getOrgTypeName()+",";
-//                }
-//            }
-//            orgTypeSplit = orgTypeSplit.substring(0,orgTypeSplit.length()-1);
-//            o.setOrgTypeSplit(orgTypeSplit);
-//            //o.setOrgTypeList(orgTypeList);
-//        }
+        if(orgVolist!=null && orgVolist.size()>0){
+            for(OrgVo vo : orgVolist){
+                HashMap<String,String> ls = getChannelInfo(vo.getOrgId().toString());
+                if(!StrUtil.isNullOrEmpty(ls) && !ls.isEmpty()){
+                    vo.setIsChannel(ls.get("isChannel"));
+                    vo.setChannelNBR(ls.get("channelNbr"));
+                }
+            }
+        }
         page.setRecords(orgVolist);
         return page;
     }
@@ -585,7 +588,21 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
                         .eq("ORG_ID", vo.getId());
                 OrgRel orgRel = orgRelService.selectOne(orgRelWrapper);
                 if (!StrUtil.isNullOrEmpty(orgRel)) {
-                    return "组织标识[" + vo.getId() + "]组织名称[" + vo.getName() + "]:组织关系已经存在";
+                    if(orgRel.getOrgId().equals(vo.getId()) && orgRel.getParentOrgId().equals(vo.getPid())){
+                        return "组织标识[" + vo.getId() + "]组织名称[" + vo.getName() + "]:组织关系已经存在";
+                    }
+                    if(!StrUtil.isNullOrEmpty(channelOrgVo.getDelNodes()) || channelOrgVo.getDelNodes().size() > 0){
+                        boolean isErr = true;
+                        for(TreeNodeVo vo1 : channelOrgVo.getDelNodes()){
+                            if(vo1.getId().equals(orgRel.getOrgId().toString())){
+                                isErr = false;
+                                break;
+                            }
+                        }
+                        if(isErr){
+                            return "组织标识[" + vo.getId() + "]组织名称[" + vo.getName() + "]:组织关系已经存在";
+                        }
+                    }
                 }
             }
         }
@@ -606,6 +623,52 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
         orgRelTypeListCur = orgRelTypeService.getOrgRelType(channelOrgVo.getOrgTreeId().toString());
         OrgRelType ortCur = orgRelTypeListCur.get(0);
+        if(!StrUtil.isNullOrEmpty(channelOrgVo.getDelNodes()) && channelOrgVo.getDelNodes().size() > 0){
+            for(TreeNodeVo vo : channelOrgVo.getDelNodes()){
+                com.baomidou.mybatisplus.mapper.Wrapper orgWrapper = Condition.create()
+                        .eq("ORG_ID",vo.getId())
+                        .eq("STATUS_CD","1000");
+                Org org = this.selectOne(orgWrapper);
+                Org oldOrg = new Org();
+                BeanUtils.copyProperties(org,oldOrg);
+                org.setStandardFlag(0L);
+                this.update(org);
+                modifyHistoryService.addModifyHistory(oldOrg,org,channelOrgVo.getUserId(),batchNumber);
+
+
+                List<OrgRel> orgRelList = orgRelService.getOrgRel(channelOrgVo.getOrgTreeId().toString(),vo.getId());
+                for(OrgRel orgRel : orgRelList){
+                    orgRel.setUpdateUser(channelOrgVo.getUserId());
+                    orgRelService.delete(orgRel);
+                    modifyHistoryService.addModifyHistory(orgRel,null,channelOrgVo.getUserId(),batchNumber);
+                    com.baomidou.mybatisplus.mapper.Wrapper orgTreeRelWrapper = Condition.create()
+                            .eq("ORG_ID",org.getOrgId())
+                            .eq("STATUS_CD","1000")
+                            .eq("ORG_TREE_ID",channelOrgVo.getOrgTreeId());
+                    List<OrgOrgtreeRel> orgOrgtreeRelList = orgOrgtreeRelService.selectList(orgTreeRelWrapper);
+                    for(OrgOrgtreeRel ootr : orgOrgtreeRelList){
+                        ootr.setUpdateUser(channelOrgVo.getUserId());
+                        orgOrgtreeRelService.delete(ootr);
+                        modifyHistoryService.addModifyHistory(ootr,null,channelOrgVo.getUserId(),batchNumber);
+                    }
+
+                    com.baomidou.mybatisplus.mapper.Wrapper orgLevelWrapper = Condition.create()
+                            .eq("ORG_TREE_ID",channelOrgVo.getOrgTreeId())
+                            .eq("STATUS_CD","1000")
+                            .eq("ORG_ID",org.getOrgId());
+                    List<OrgLevel> orgLevelList = orgLevelService.selectList(orgLevelWrapper);
+                    for(OrgLevel ol : orgLevelList){
+                        ol.setUpdateUser(channelOrgVo.getUserId());
+                        orgLevelService.delete(ol);
+                        modifyHistoryService.addModifyHistory(ol,null,channelOrgVo.getUserId(),batchNumber);
+                    }
+                    // TODO: 2019/3/7  下发mq
+                    String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+orgRel.getOrgId()+"}}" ;
+                    template.convertAndSend("message_sharing_center_queue",mqmsg);
+                }
+            }
+        }
+
         if (!StrUtil.isNullOrEmpty(channelOrgVo.getAddNodes()) && channelOrgVo.getAddNodes().size() > 0) {
             for(TreeNodeVo vo : channelOrgVo.getAddNodes()){
                 OrgRel orgRef = new OrgRel();
@@ -660,6 +723,10 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
                     orgLevelService.add(orgLevel);
                     modifyHistoryService.addModifyHistory(null,orgLevel,channelOrgVo.getUserId(),batchNumber);
                 }
+
+                // TODO: 2019/3/7  下发mq
+                String mqmsg = "{\"type\":\"org\",\"handle\":\"insert\",\"context\":{\"column\":\"orgId\",\"value\":"+vo.getId()+"}}" ;
+                template.convertAndSend("message_sharing_center_queue",mqmsg);
             }
         }
         if(!StrUtil.isNullOrEmpty(channelOrgVo.getUpdateNodes()) && channelOrgVo.getUpdateNodes().size() > 0){
@@ -678,51 +745,13 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
                     orgOrgtreeRelOne.setUpdateUser(channelOrgVo.getUserId());
                     orgOrgtreeRelService.update(orgOrgtreeRelOne);
                     modifyHistoryService.addModifyHistory(orgOrgtreeRelOLd,orgOrgtreeRelOne,channelOrgVo.getUserId(),batchNumber);
+                    // TODO: 2019/3/7
+                    String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+vo.getId()+"}}" ;
+                    template.convertAndSend("message_sharing_center_queue",mqmsg);
                 }
             }
         }
-        if(!StrUtil.isNullOrEmpty(channelOrgVo.getDelNodes()) && channelOrgVo.getDelNodes().size() > 0){
-            for(TreeNodeVo vo : channelOrgVo.getDelNodes()){
-                com.baomidou.mybatisplus.mapper.Wrapper orgWrapper = Condition.create()
-                        .eq("ORG_ID",vo.getId())
-                        .eq("STATUS_CD","1000");
-                Org org = this.selectOne(orgWrapper);
-                Org oldOrg = new Org();
-                BeanUtils.copyProperties(org,oldOrg);
-                org.setStandardFlag(0L);
-                this.update(org);
-                modifyHistoryService.addModifyHistory(oldOrg,org,channelOrgVo.getUserId(),batchNumber);
 
-
-                List<OrgRel> orgRelList = orgRelService.getOrgRel(channelOrgVo.getOrgTreeId().toString(),vo.getId());
-                for(OrgRel orgRel : orgRelList){
-                    orgRel.setUpdateUser(channelOrgVo.getUserId());
-                    orgRelService.delete(orgRel);
-                    modifyHistoryService.addModifyHistory(orgRel,null,channelOrgVo.getUserId(),batchNumber);
-                    com.baomidou.mybatisplus.mapper.Wrapper orgTreeRelWrapper = Condition.create()
-                            .eq("ORG_ID",org.getOrgId())
-                            .eq("STATUS_CD","1000")
-                            .eq("ORG_TREE_ID",channelOrgVo.getOrgTreeId());
-                    List<OrgOrgtreeRel> orgOrgtreeRelList = orgOrgtreeRelService.selectList(orgTreeRelWrapper);
-                    for(OrgOrgtreeRel ootr : orgOrgtreeRelList){
-                        ootr.setUpdateUser(channelOrgVo.getUserId());
-                        orgOrgtreeRelService.delete(ootr);
-                        modifyHistoryService.addModifyHistory(ootr,null,channelOrgVo.getUserId(),batchNumber);
-                    }
-
-                    com.baomidou.mybatisplus.mapper.Wrapper orgLevelWrapper = Condition.create()
-                            .eq("ORG_TREE_ID",channelOrgVo.getOrgTreeId())
-                            .eq("STATUS_CD","1000")
-                            .eq("ORG_ID",org.getOrgId());
-                    List<OrgLevel> orgLevelList = orgLevelService.selectList(orgLevelWrapper);
-                    for(OrgLevel ol : orgLevelList){
-                        ol.setUpdateUser(channelOrgVo.getUserId());
-                        orgLevelService.delete(ol);
-                        modifyHistoryService.addModifyHistory(ol,null,channelOrgVo.getUserId(),batchNumber);
-                    }
-                }
-            }
-        }
         return ;
     }
 

@@ -132,6 +132,9 @@ public class OrgController extends BaseController {
     @Autowired
     private OrgRelController orgRelController;
 
+    @Autowired
+    private IOrgTreeSynchRuleService iOrgTreeSynchRuleService;
+
     @ApiOperation(value = "新增组织信息-web", notes = "新增组织信息")
     @UooLog(value = "新增组织信息", key = "addOrg")
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
@@ -213,9 +216,13 @@ public class OrgController extends BaseController {
             ret.setMessage("父节点为空");
             return ret;
         }
-
-
         String batchNumber = modifyHistoryService.getBatchNumber();
+        String orgCode = orgService.getGenerateOrgCode();
+        Long orgId = orgService.getId();
+        // TODO: 2019/3/7 是否同步规则
+        OrgUpdateCheckResult syncRet = iOrgTreeSynchRuleService.check(OrgUpdateCheckResult.OrgOperateType.ADD,orgTree.getOrgTreeId(),orgId);
+        
+
 
         String fullName = "";
         if(!StrUtil.isNullOrEmpty(supOrg.getFullName())){
@@ -224,10 +231,7 @@ public class OrgController extends BaseController {
             fullName = org.getOrgName();
         }
         Org newOrg = new Org();
-        String orgCode = orgService.getGenerateOrgCode();
-        Long orgId = orgService.getId();
         newOrg.setOrgId(orgId);
-
         if(!StrUtil.isNullOrEmpty(pl.getLocId())){
             newOrg.setLocId(pl.getLocId());
         }
@@ -478,6 +482,7 @@ public class OrgController extends BaseController {
         //mq
         String mqmsg = "{\"type\":\"org\",\"handle\":\"insert\",\"context\":{\"column\":\"orgId\",\"value\":"+orgId+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);
+
         ret.setState(ResponseResult.STATE_OK);
         ret.setMessage("新增成功");
         ret.setData(vo);
