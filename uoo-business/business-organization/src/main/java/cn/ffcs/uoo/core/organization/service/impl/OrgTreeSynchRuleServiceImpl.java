@@ -63,18 +63,22 @@ public class OrgTreeSynchRuleServiceImpl extends ServiceImpl<OrgTreeSynchRuleMap
         case ADD:
             //当前组织属于哪个树   这个树有没有被其他人引用  , 
             res.setVaild(true);
-            //先查规则 如果新增或者全部情况下要同步 那就同步 否则不用
-            if(beTree!=null&&!beTree.isEmpty()){
-                boolean hasRule=false;
-                for (OrgTree orgTree : beTree) {
-                    List<OrgTreeSynchRule> list = baseMapper.selectList(Condition.create().eq("STATUS_CD", "1000").eq("TO_ORG_TREE_ID", orgTree.getOrgTreeId()).eq("FROM_ORG_TREE_ID", orgTreeId).in("OPERATE_TYPE", new String[]{"insert","all"}));
-                    if(list!=null&&!list.isEmpty()){
-                        hasRule=true;
-                        break;   
+            if(orgTreeId==null||orgTreeId==0){
+                res.setSync(false);
+            }else{
+                //先查规则 如果新增或者全部情况下要同步 那就同步 否则不用
+                if(beTree!=null&&!beTree.isEmpty()){
+                    boolean hasRule=false;
+                    for (OrgTree orgTree : beTree) {
+                        List<OrgTreeSynchRule> list = baseMapper.selectList(Condition.create().eq("STATUS_CD", "1000").eq("TO_ORG_TREE_ID", orgTree.getOrgTreeId()).eq("FROM_ORG_TREE_ID", orgTreeId).in("OPERATE_TYPE", new String[]{"insert","all"}));
+                        if(list!=null&&!list.isEmpty()){
+                            hasRule=true;
+                            break;   
+                        }
                     }
+                    //如果这个组织树被其他人引用了  那么就要去同步到被引用的那里，
+                    res.setSync(hasRule);
                 }
-                //如果这个组织树被其他人引用了  那么就要去同步到被引用的那里，
-                res.setSync(hasRule);
             }
             break;
         default:
