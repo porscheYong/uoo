@@ -94,6 +94,10 @@ public class OrgRelController extends BaseController {
     private JdbcTemplate jdbcTemplate;
 
 
+    @Autowired
+    private IOrgTreeSynchRuleService iOrgTreeSynchRuleService;
+
+
     @ApiOperation(value = "查询组织树信息-web", notes = "查询组织树信息")
     @ApiImplicitParams({
     })
@@ -330,6 +334,14 @@ public class OrgRelController extends BaseController {
             ret.setMessage("组织关系类型不存在");
             return ret;
         }
+        OrgUpdateCheckResult syncRet = new OrgUpdateCheckResult();
+        syncRet = iOrgTreeSynchRuleService.check(OrgUpdateCheckResult.OrgOperateType.DELETE,orgTree.getOrgTreeId(),org.getOrgId());
+        if(!syncRet.isVaild()){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("同步规则不允许删除操作");
+            return ret;
+        }
+
 
         String batchNumber = modifyHistoryService.getBatchNumber();
 
@@ -452,6 +464,15 @@ public class OrgRelController extends BaseController {
         vo.setId(org.getOrgId().toString());
         vo.setPid(orgRefId.toString());
         vo.setName(o.getOrgName());
+
+        // TODO: 2019/3/7 是否同步
+        if(syncRet.isSync() &&
+                syncRet.getSyncOrgTreeIds()!=null &&
+                syncRet.getSyncOrgTreeIds().size()>0){
+            orgService.freeOrgAddSync(syncRet.getSyncOrgTreeIds(),org,org.getUpdateUser(),batchNumber);
+        }
+
+
         String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+org.getOrgId()+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);
         ret.setState(ResponseResult.STATE_OK);

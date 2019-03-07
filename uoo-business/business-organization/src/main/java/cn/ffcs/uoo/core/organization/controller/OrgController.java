@@ -216,14 +216,19 @@ public class OrgController extends BaseController {
             ret.setMessage("父节点为空");
             return ret;
         }
-        String batchNumber = modifyHistoryService.getBatchNumber();
-        String orgCode = orgService.getGenerateOrgCode();
+
         Long orgId = orgService.getId();
         // TODO: 2019/3/7 是否同步规则
         OrgUpdateCheckResult syncRet = iOrgTreeSynchRuleService.check(OrgUpdateCheckResult.OrgOperateType.ADD,orgTree.getOrgTreeId(),orgId);
-        
+        if(!syncRet.isVaild()){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("同步规则不允许操作");
+            return ret;
+        }
 
 
+        String batchNumber = modifyHistoryService.getBatchNumber();
+        String orgCode = orgService.getGenerateOrgCode();
         String fullName = "";
         if(!StrUtil.isNullOrEmpty(supOrg.getFullName())){
             fullName = supOrg.getFullName()+org.getOrgName();
@@ -333,18 +338,6 @@ public class OrgController extends BaseController {
             orgRelService.add(orgRef);
             modifyHistoryService.addModifyHistory(null,orgRef,org.getUpdateUser(),batchNumber);
 
-
-            //组织组织树关系
-//            List<OrgOrgtreeRel> ootrList = orgOrgtreeRelService.getFullBizOrgList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString());
-//            String fullBizName = "";
-//            if(ootrList!=null && ootrList.size()>0){
-//                for(int i=0;i<ootrList.size();i++){
-//                    fullBizName += ootrList.get(i).getOrgBizName();
-//                }
-//                fullBizName+=StrUtil.strnull(org.getOrgName());
-//            }else{
-//                fullBizName+=StrUtil.strnull(org.getOrgName());
-//            }
             // TODO: 2019/1/23 获取组织树ID  组织组织树新增字段 begin
             String fullBizName = "";
             fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),"");
@@ -479,11 +472,20 @@ public class OrgController extends BaseController {
         vo.setId(newOrg.getOrgId().toString());
         vo.setPid(org.getSupOrgId().toString());
         vo.setName(newOrg.getOrgName());
+
+
+        // TODO: 2019/3/7 是否同步
+        if(syncRet.isSync() &&
+                syncRet.getSyncOrgTreeIds()!=null &&
+                syncRet.getSyncOrgTreeIds().size()>0){
+            orgService.orgAddSync(syncRet.getSyncOrgTreeIds(),newOrg.getOrgId(),org.getSupOrgId(),org.getUpdateUser(),batchNumber);
+        }
+
         //mq
         String mqmsg = "{\"type\":\"org\",\"handle\":\"insert\",\"context\":{\"column\":\"orgId\",\"value\":"+orgId+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);
-
-        ret.setState(ResponseResult.STATE_OK);
+        
+        ret.setState(ResponseResult.STATE_OK);  
         ret.setMessage("新增成功");
         ret.setData(vo);
         return ret;
@@ -558,6 +560,7 @@ public class OrgController extends BaseController {
             ret.setMessage("组织关系不存在");
             return ret;
         }
+        OrgUpdateCheckResult syncRet = new OrgUpdateCheckResult();
         if(!"1000".equals(org.getStatusCd())){
             Wrapper orgPer = Condition.create()
                     .eq("ORG_ID",org.getOrgId())
@@ -566,6 +569,21 @@ public class OrgController extends BaseController {
             if(num>0){
                 ret.setState(ResponseResult.STATE_ERROR);
                 ret.setMessage("组织下存在员工无法删除");
+                return ret;
+            }
+            // TODO: 2019/3/7 是否同步规则
+            syncRet = iOrgTreeSynchRuleService.check(OrgUpdateCheckResult.OrgOperateType.DELETE,orgTree.getOrgTreeId(),org.getOrgId());
+            if(!syncRet.isVaild()){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("同步规则不允许删除操作");
+                return ret;
+            }
+        }else{
+            // TODO: 2019/3/7 是否同步规则
+            syncRet = iOrgTreeSynchRuleService.check(OrgUpdateCheckResult.OrgOperateType.ADD,orgTree.getOrgTreeId(),org.getOrgId());
+            if(!syncRet.isVaild()){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("同步规则不允许修改操作");
                 return ret;
             }
         }
@@ -1183,6 +1201,14 @@ public class OrgController extends BaseController {
                 newOrg.setStandardFlag(0L);
                 orgService.update(newOrg);
                 modifyHistoryService.addModifyHistory(o,newOrg,org.getUpdateUser(),batchNumber);
+
+                // TODO: 2019/3/7 是否同步
+                if(syncRet.isSync() &&
+                        syncRet.getSyncOrgTreeIds()!=null &&
+                        syncRet.getSyncOrgTreeIds().size()>0){
+                    orgService.orgDelSync(syncRet.getSyncOrgTreeIds(),org,org.getUpdateUser(),batchNumber);
+                }
+
                 String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+newOrg.getOrgId()+"}}" ;
                 template.convertAndSend("message_sharing_center_queue",mqmsg);
                 ret.setState(ResponseResult.STATE_OK);
@@ -1193,6 +1219,15 @@ public class OrgController extends BaseController {
         newOrg.setStatusCd("1000");
         orgService.update(newOrg);
         modifyHistoryService.addModifyHistory(o,newOrg,org.getUpdateUser(),batchNumber);
+
+        // TODO: 2019/3/7 是否同步
+        if(syncRet.isSync() &&
+                syncRet.getSyncOrgTreeIds()!=null &&
+                syncRet.getSyncOrgTreeIds().size()>0){
+            orgService.orgUpdateSync(syncRet.getSyncOrgTreeIds(),org,org.getUpdateUser(),batchNumber);
+        }
+
+
         String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+newOrg.getOrgId()+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);
         //增加返回数据
@@ -1885,7 +1920,6 @@ public class OrgController extends BaseController {
         ret.setMessage("成功");
         return ret;
     }
-
 
 
 }

@@ -213,5 +213,51 @@ public interface OrgService extends IService<Org> {
      */
     public void addChannelOrg(ChannelOrgVo channelOrgVo);
 
+    /**
+     * 组织新增同步
+     * @param orgTreeIds
+     * @param orgId
+     * @param orgParentId
+     * @param userId
+     * @param batchNumber
+     */
+    public void orgAddSync(List<Long> orgTreeIds,Long orgId,Long orgParentId,Long userId,String batchNumber);
+
+    /**
+     * 游离新增同步
+     * @param orgTreeIds
+     * @param org
+     * @param userId
+     * @param batchNumber
+     */
+    public void freeOrgAddSync(List<Long> orgTreeIds,OrgVo org,Long userId,String batchNumber);
+    /**
+     * 组织更新同步
+     * @param orgTreeIds
+     * @param org
+     * @param userId
+     * @param batchNumber
+     */
+    public void orgUpdateSync(List<Long> orgTreeIds,OrgVo org,Long userId,String batchNumber);
+
+    /**
+     * 删除同步
+     * @param orgTreeIds
+     * @param org
+     * @param userId
+     * @param batchNumber
+     */
+    public void orgDelSync(List<Long> orgTreeIds,OrgVo org,Long userId,String batchNumber);
+
+    /**
+     * excel导入移动
+     * @param orgTreeIds
+     * @param orgId
+     * @param orgParentId
+     * @param userId
+     * @param batchNumber
+     */
+    public void orgExcelMoveSync(List<Long> orgTreeIds,Long orgId,Long orgParentId,Long userId,String batchNumber);
+
 }
 
