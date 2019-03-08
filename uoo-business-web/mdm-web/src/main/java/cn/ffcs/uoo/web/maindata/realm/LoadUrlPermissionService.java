@@ -142,6 +142,9 @@ public class LoadUrlPermissionService {
             filterChainDefinitionMap.put("/v2/api-docs", "anon");
             filterChainDefinitionMap.put("/login", "anon");
             filterChainDefinitionMap.put("/loginPage.html", "anon");
+            filterChainDefinitionMap.put("/forget-password.html", "anon");
+            filterChainDefinitionMap.put("/system/forgetpwd/sendcheckcode", "anon");
+            filterChainDefinitionMap.put("/system/forgetpwd/valid", "anon");
              
             
             if(listPage.getState()==cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult.STATE_OK){

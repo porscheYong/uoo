@@ -37,4 +37,8 @@ public interface SysUserClient {
 
     @RequestMapping(value = "/system/deleteUser", method = RequestMethod.POST, headers={"Content-Type=application/json"})
     public Object deletePrivilege(@RequestBody SysUser sysUser);
+    @RequestMapping(value = "/system/checkMobile", method = RequestMethod.GET)
+    public ResponseResult<Void> checkMobile(@RequestParam("phone")String phone );
+    @RequestMapping(value = "/system/resetPwd", method = RequestMethod.GET)
+    public ResponseResult<Void> resetPwd(@RequestParam("phone")String phone,@RequestParam("passwd")String passwd) ;
 }

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.Condition;
@@ -144,8 +145,37 @@ public class SysUserController extends BaseController {
         result.setState(ResponseResultBean.STATE_OK);
         result.setMessage("密码已修改");
         return result;
-
     }
+    @RequestMapping(value = "/checkMobile", method = RequestMethod.GET)
+    public ResponseResult<Void> checkMobile(@RequestParam("phone")String phone ) {
+        try {
+            SysUser one = sysUserService.selectOne(Condition.create().eq("MOBILE", phone).eq("STATUS_CD", "1000"));
+            if(one==null){
+                return ResponseResult.createErrorResult("手机号码不存在");
+            }
+        } catch (Exception e) {
+            return ResponseResult.createErrorResult("手机号码不存在");
+        }
+        return ResponseResult.createSuccessResult("");
+    }
+        SysUser user=new SysUser();
+    @RequestMapping(value = "/resetPwd", method = RequestMethod.GET)
+    public ResponseResult<Void> resetPwd(@RequestParam("phone")String phone,@RequestParam("passwd")String passwd) {
+        try {
+            SysUser one = sysUserService.selectOne(Condition.create().eq("MOBILE", phone).eq("STATUS_CD", "1000"));
+            if(one==null){
+                return ResponseResult.createErrorResult("手机号码不存在");
+            }
+            one.setPasswd(MD5Util.md5Encoding(passwd, one.getSalt()));
+            sysUserService.updateById(one);
+        } catch (Exception e) {
+            return ResponseResult.createErrorResult("手机号码不存在");
+        }
+        
+        
+        return ResponseResult.createSuccessResult("修改成功");
+    }
+    
     /**
      * 方法只可用来做登陆  不可用作他途
      * @param sysUser

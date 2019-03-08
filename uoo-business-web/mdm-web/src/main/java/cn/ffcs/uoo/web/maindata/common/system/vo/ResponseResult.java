@@ -20,7 +20,7 @@ public class ResponseResult<T> implements Serializable {
     public static final int STATE_SERVICE_ERROR = 1300;
 
 
-    private int state;
+    private int state=STATE_OK;
     private String message;
     private T data;
     /**
