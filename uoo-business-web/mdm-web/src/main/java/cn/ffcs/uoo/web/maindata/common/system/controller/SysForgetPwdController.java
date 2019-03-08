@@ -33,7 +33,7 @@ public class SysForgetPwdController {
             return checkMobile;
         }
         int nextInt = RandomUtils.nextInt(100000, 999999);
-        nextInt=111111;
+        System.out.println("验证码："+nextInt);
         String msg="您正在重置浙江主数据中心平台账号登录密码，验证码："+nextInt+"，请勿泄露给他人";
         try {
             Subject subject = SecurityUtils.getSubject();
