@@ -396,6 +396,23 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         if (StrUtil.isNullOrEmpty(parentOrg)) {
             return "移动的父组织不存在";
         }
+        List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
+        orgRelTypeListCur = orgRelTypeService.getOrgRelType(orgTreeId.toString());
+        OrgRelType ortCur = new OrgRelType();
+        if (orgRelTypeListCur != null && orgRelTypeListCur.size() > 0) {
+            ortCur = orgRelTypeListCur.get(0);
+        }
+        // TODO: 2019/3/8  组织不能移动到渠道组织下级
+        if("0412".equals(ortCur.getRefCode())){
+            HashMap<String, String> map = new HashMap<String, String>();
+            map = getChannelInfo(parentOrgId.toString());
+            if(!map.isEmpty()){
+                String isChannel = map.get("isChannel");
+                if(!StrUtil.isNullOrEmpty(isChannel)){
+                    return "渠道组织下面不能挂组织";
+                }
+            }
+        }
         //当前节点的父节点 全路径
         // TODO: 2019/1/28 组织全程
         String fullNameSplit = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(), orgId.toString(), ",");
@@ -416,12 +433,7 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
 //        if(count>50){
 //            return "移动组织的下级组织数量太大，请联系管理员操作";
 //        }
-        List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
-        orgRelTypeListCur = orgRelTypeService.getOrgRelType(orgTreeId.toString());
-        OrgRelType ortCur = new OrgRelType();
-        if (orgRelTypeListCur != null && orgRelTypeListCur.size() > 0) {
-            ortCur = orgRelTypeListCur.get(0);
-        }
+
         com.baomidou.mybatisplus.mapper.Wrapper orgRelWrapper = Condition.create()
                 .eq("REF_CODE", ortCur.getRefCode())
                 .eq("STATUS_CD", "1000")

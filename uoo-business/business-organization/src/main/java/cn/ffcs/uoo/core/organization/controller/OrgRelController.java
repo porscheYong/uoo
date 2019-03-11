@@ -39,6 +39,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -334,6 +335,33 @@ public class OrgRelController extends BaseController {
             ret.setMessage("组织关系类型不存在");
             return ret;
         }
+        // TODO: 2019/3/8  组织不能移动到渠道组织下级
+        HashMap<String, String> map = new HashMap<String, String>();
+        map = orgService.getChannelInfo(org.getOrgId().toString());
+        if(!map.isEmpty()){
+            String isChannel = map.get("isChannel");
+            if(!StrUtil.isNullOrEmpty(isChannel) && "Y".equals(isChannel) && !"0412".equals(ort.getRefCode())){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("渠道组织只能挂载在渠道树下");
+                return ret;
+            }
+        }
+        // TODO: 2019/3/8  渠道组织下面不能挂载其他组织
+        if("0412".equals(ort.getRefCode())){
+            HashMap<String, String> map1 = new HashMap<String, String>();
+            map1 = orgService.getChannelInfo(org.getSupOrgId().toString());
+            if(!map1.isEmpty()){
+                String isChannel = map1.get("isChannel");
+                if(!StrUtil.isNullOrEmpty(isChannel)){
+                    ret.setState(ResponseResult.PARAMETER_ERROR);
+                    ret.setMessage("渠道组织下面不能挂组织");
+                    return ret;
+                }
+            }
+        }
+
+
+
         OrgUpdateCheckResult syncRet = new OrgUpdateCheckResult();
         syncRet = iOrgTreeSynchRuleService.check(OrgUpdateCheckResult.OrgOperateType.DELETE,orgTree.getOrgTreeId(),org.getOrgId());
         if(!syncRet.isVaild()){
