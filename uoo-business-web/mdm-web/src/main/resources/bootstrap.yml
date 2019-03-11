@@ -2,7 +2,7 @@ server:
   port: 18000
 spring:
   application:
-    name: mdm-web-shortmsg
+    name: mdm-web
   mvc:
     static-path-pattern: /**
   resources:
