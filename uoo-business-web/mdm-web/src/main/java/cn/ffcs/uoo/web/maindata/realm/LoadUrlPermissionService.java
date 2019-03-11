@@ -53,8 +53,8 @@ public class LoadUrlPermissionService {
     private DiscoveryClient discoveryClient;
     @Resource
     private SysMenuClient sysMenuClient;
-    @Value("${spring.application.name}")
-    private String appName;
+    //@Value("${spring.application.name}")
+    private String appName="mdm-web";
     @Autowired
     RestTemplate restTemplate;
     @Resource
