@@ -4,6 +4,7 @@ import cn.ffcs.uoo.web.maindata.common.system.dto.SysUser;
 import cn.ffcs.uoo.web.maindata.mdm.consts.LoginConsts;
 import cn.ffcs.uoo.web.maindata.mdm.logs.OperateLog;
 import cn.ffcs.uoo.web.maindata.mdm.logs.OperateType;
+import cn.ffcs.uoo.web.maindata.organization.dto.ChannelOrgVo;
 import cn.ffcs.uoo.web.maindata.organization.dto.Org;
 import cn.ffcs.uoo.web.maindata.organization.dto.OrgVo;
 import cn.ffcs.uoo.web.maindata.organization.dto.ResponseResult;
@@ -133,5 +134,49 @@ public class OrgController {
         return orgService.deleteOrg(orgTreeId,orgId,supOrgId,userId);
     }
 
+    @ApiOperation(value = "获取渠道组织翻页", notes = "获取渠道组织翻页")
+    @ApiImplicitParams({
+    })
+    @OperateLog(type= OperateType.SELECT, module="渠道查询翻页",methods="getChannelOrgPage",desc="渠道查询翻页")
+    @RequestMapping(value = "/getChannelOrgPage", method = RequestMethod.GET)
+    public ResponseResult<Page<OrgVo>> getChannelOrgPage(@RequestParam(value = "search",required = false)String search,
+                                                         @RequestParam(value = "orgTreeId",required = false)String orgTreeId,
+                                                         @RequestParam(value = "pageSize",required = false)Integer pageSize,
+                                                         @RequestParam(value = "pageNo",required = false)Integer pageNo,
+                                                         @RequestParam(value = "userId",required = false)Long userId,
+                                                         @RequestParam(value = "accout",required = false)String accout){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        userId = currentLoginUser.getUserId();
+        accout = currentLoginUser.getAccout();
+        return orgService.getChannelOrgPage(search,orgTreeId,pageSize,pageNo,userId,accout);
+    }
+
+
+    @ApiOperation(value = "获取渠道组织额外信息", notes = "获取渠道组织额外信息")
+    @ApiImplicitParams({
+    })
+    @OperateLog(type= OperateType.SELECT, module="获取渠道组织额外信息",methods="getChannelOrgExtInfo",desc="获取渠道组织额外信息")
+    @RequestMapping(value = "/getChannelOrgExtInfo", method = RequestMethod.GET)
+    public ResponseResult<HashMap<String,String>> getChannelOrgExtInfo(@RequestParam(value = "orgTreeId",required = false)Long orgTreeId){
+        return orgService.getChannelOrgExtInfo(orgTreeId);
+    }
+
+
+
+    @ApiOperation(value = "保存渠道组织", notes = "保存渠道组织")
+    @ApiImplicitParams({
+    })
+    @OperateLog(type= OperateType.ADD,  module="保存渠道组织",methods="addChannelOrg",desc="保存渠道组织")
+    @RequestMapping(value = "/addChannelOrg", method = RequestMethod.POST)
+    public ResponseResult<String> addChannelOrg(@RequestBody ChannelOrgVo channelOrgVo){
+        Subject subject=SecurityUtils.getSubject();
+        SysUser currentLoginUser = (SysUser) subject.getSession().getAttribute(LoginConsts.LOGIN_KEY);
+        Long userId = currentLoginUser.getUserId();
+        String accout = currentLoginUser.getAccout();
+        channelOrgVo.setUserId(userId);
+        channelOrgVo.setAccout(accout);
+        return orgService.addChannelOrg(channelOrgVo);
+    }
 
 }

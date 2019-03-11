@@ -168,6 +168,13 @@ public class OrgTreeController extends BaseController {
         orgOrgtreeRefv1.setOrgTreeId(orgTreeId);
         orgOrgtreeRefv1.setStatusCd("1000");
         orgOrgtreeRefv1.setCreateUser(orgTree.getUpdateUser());
+        if(!StrUtil.isNullOrEmpty(orgTree.getTarOrgTreeId())){
+            String fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),orgId.toString(),"");
+            String fullBizNameId = orgOrgtreeRelService.getFullBizOrgIdList(orgTree.getOrgTreeId().toString(),orgId.toString(),",");
+            fullBizNameId=","+fullBizNameId+",";
+            orgOrgtreeRefv1.setOrgBizFullName(fullBizName);
+            orgOrgtreeRefv1.setOrgBizFullId(fullBizNameId);
+        }
         orgOrgtreeRelService.add(orgOrgtreeRefv1);
 
 

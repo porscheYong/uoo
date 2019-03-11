@@ -151,4 +151,25 @@ public interface OrgMapper extends BaseMapper<Org> {
      * @return
      */
     public String getChannelNBR(@Param("orgId")String orgId);
+
+    /**
+     * 查询渠道组织翻页
+     * @param page
+     * @param orgVo
+     * @return
+     */
+    public List<OrgVo> selectChannelOrgPage(Pagination page,@Param("orgVo")OrgVo orgVo);
+
+    /**
+     * 渠道组织数量
+     * @return
+     */
+    public int getChannelOrgCount();
+
+    /**
+     * 渠道组织已经挂载数量
+     * @param refCode
+     * @return
+     */
+    public int getChannelOrgLoaderCount(@Param("refCode")String refCode,@Param("orgId")String orgId);
 }

@@ -39,6 +39,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -94,6 +95,10 @@ public class OrgRelController extends BaseController {
     private JdbcTemplate jdbcTemplate;
 
 
+    @Autowired
+    private IOrgTreeSynchRuleService iOrgTreeSynchRuleService;
+
+
     @ApiOperation(value = "查询组织树信息-web", notes = "查询组织树信息")
     @ApiImplicitParams({
     })
@@ -125,7 +130,17 @@ public class OrgRelController extends BaseController {
                 return ret;
             }
         }
-
+        OrgRelType ortCur = null;
+        if(StrUtil.isNullOrEmpty(refCode)){
+            List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
+            orgRelTypeListCur = orgRelTypeService.getOrgRelType(orgTreeId);
+            if(orgRelTypeListCur==null && orgRelTypeListCur.size()==0){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("组织类型不存在");
+                return ret;
+            }
+            ortCur = orgRelTypeListCur.get(0);
+        }
         System.out.printf("getOrgRelTree-权限获取时间开始: %tF %<tT%n", System.currentTimeMillis());
         //获取权限
         String orgParams = "";
@@ -167,7 +182,7 @@ public class OrgRelController extends BaseController {
         System.out.printf("getOrgRelTree-权限获取时间结束: %tF %<tT%n", System.currentTimeMillis());
         System.out.printf("getOrgRelTree-查询树开始: %tF %<tT%n", System.currentTimeMillis());
         List<TreeNodeVo> treeNodeVos = new ArrayList<>();
-        treeNodeVos = orgRelService.queryOrgTree(orgTree.getOrgTreeId().toString(),orgTree.getOrgId(),refCode,
+        treeNodeVos = orgRelService.queryOrgTree(orgTree.getOrgTreeId().toString(),orgTree.getOrgId(),ortCur.getRefCode(),
                 id,isRoot,orgParams,orgOrgTypeParams,orgOrgTreeRelParams);
         System.out.printf("getOrgRelTree-查询树结束: %tF %<tT%n", System.currentTimeMillis());
         ret.setState(ResponseResult.STATE_OK);
@@ -320,6 +335,41 @@ public class OrgRelController extends BaseController {
             ret.setMessage("组织关系类型不存在");
             return ret;
         }
+        // TODO: 2019/3/8  组织不能移动到渠道组织下级
+        HashMap<String, String> map = new HashMap<String, String>();
+        map = orgService.getChannelInfo(org.getOrgId().toString());
+        if(!map.isEmpty()){
+            String isChannel = map.get("isChannel");
+            if(!StrUtil.isNullOrEmpty(isChannel) && "Y".equals(isChannel) && !"0412".equals(ort.getRefCode())){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("渠道组织只能挂载在渠道树下");
+                return ret;
+            }
+        }
+        // TODO: 2019/3/8  渠道组织下面不能挂载其他组织
+        if("0412".equals(ort.getRefCode())){
+            HashMap<String, String> map1 = new HashMap<String, String>();
+            map1 = orgService.getChannelInfo(org.getSupOrgId().toString());
+            if(!map1.isEmpty()){
+                String isChannel = map1.get("isChannel");
+                if(!StrUtil.isNullOrEmpty(isChannel)){
+                    ret.setState(ResponseResult.PARAMETER_ERROR);
+                    ret.setMessage("渠道组织下面不能挂组织");
+                    return ret;
+                }
+            }
+        }
+
+
+
+        OrgUpdateCheckResult syncRet = new OrgUpdateCheckResult();
+        syncRet = iOrgTreeSynchRuleService.check(OrgUpdateCheckResult.OrgOperateType.DELETE,orgTree.getOrgTreeId(),org.getOrgId());
+        if(!syncRet.isVaild()){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("同步规则不允许删除操作");
+            return ret;
+        }
+
 
         String batchNumber = modifyHistoryService.getBatchNumber();
 
@@ -442,6 +492,15 @@ public class OrgRelController extends BaseController {
         vo.setId(org.getOrgId().toString());
         vo.setPid(orgRefId.toString());
         vo.setName(o.getOrgName());
+
+        // TODO: 2019/3/7 是否同步
+        if(syncRet.isSync() &&
+                syncRet.getSyncOrgTreeIds()!=null &&
+                syncRet.getSyncOrgTreeIds().size()>0){
+            orgService.freeOrgAddSync(syncRet.getSyncOrgTreeIds(),org,org.getUpdateUser(),batchNumber);
+        }
+
+
         String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+org.getOrgId()+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);
         ret.setState(ResponseResult.STATE_OK);

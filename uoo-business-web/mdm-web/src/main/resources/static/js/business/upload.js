@@ -49,6 +49,7 @@ function readFile (file) {
         formData = new FormData();
         formData.append('fileInfo', file);
         formData.append("orgTreeId", orgTreeId);
+        formData.append("impType", 1);
     }
 }
 

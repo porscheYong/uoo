@@ -19,7 +19,7 @@ website:	http://code.google.com/p/jquerytree/
 /*.ztree li a:hover {text-decoration:underline}*/
 /*.ztree li a.curSelectedNode {padding-top:0px; color:black; height:16px; opacity:0.8;}*/
 .ztree li a.curSelectedNode {padding-top:0px; color:black; height:16px;}
-.ztree li a.curSelectedNode:before {content:''; background:#ddeff9; position:absolute; left:0; right:0; height:26px;border-left:3px solid #00a8ff; margin-left:-1px}
+.ztree li a.curSelectedNode:before {content:''; background:#ddeff9; position:absolute; left:0; right:0; height:26px;width: 140%;border-left:3px solid #00a8ff; margin-left:-1px}
 .ztree li a.curSelectedNode_Edit {padding-top:0px; background-color:#FFE6B0; color:black; height:16px; border:1px #FFB951 solid; opacity:0.8;}
 .ztree li a.tmpTargetNode_inner {padding-top:0px; background-color:#316AC5; color:white; height:16px; border:1px #316AC5 solid;
 	opacity:0.8; filter:alpha(opacity=80)}
@@ -300,6 +300,7 @@ ul.ztree.zTreeDragUL {margin:0; padding:0; position:absolute; width:auto; height
 
 .ztree li span.button.remove:before {
     content: "\f014";
+    color: red;
 }
 
 .ztree li span.button.firstPage:before {

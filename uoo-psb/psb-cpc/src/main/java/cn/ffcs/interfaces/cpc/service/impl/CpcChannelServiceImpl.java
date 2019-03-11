@@ -60,6 +60,9 @@ public class CpcChannelServiceImpl implements CpcChannelService {
     @Resource
     private AcctCrossRelMapper acctCrossRelMapper;
 
+    @Resource
+    private TbCpcLogMapper tbCpcLogMapper;
+
     @Autowired
     private SystemConstant systemConstant;
 
@@ -127,8 +130,11 @@ public class CpcChannelServiceImpl implements CpcChannelService {
             rsMap.put("message", "处理不了的报文");
         }
 
-
-
+        TbCpcLogWithBLOBs tbCpcLogWithBLOBs = new TbCpcLogWithBLOBs();
+        tbCpcLogWithBLOBs.setReceive(json);
+        tbCpcLogWithBLOBs.setRevert(JSON.toJSONString(rsMap));
+        tbCpcLogWithBLOBs.setStatusCd(String.valueOf (rsMap.get("result_code")));
+        tbCpcLogMapper.insert(tbCpcLogWithBLOBs);
         logger.info("rsMap:{}",rsMap);
         return JSON.toJSONString(rsMap);
     }
@@ -144,12 +150,12 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         }else{
             if(slaveAcct.getAcctOrgRelId() == null && slaveAcct.getAcctId() != null){
                 //查询主账号与commonRegionId查询是否存在关系
-
-                Long orgId = tbAcctMapper.getOrgIdByCommonRegionId(commonRegionId);
+                Long orgId =HandleChannelConstant.ORG_ID;
+                /*Long orgId = tbAcctMapper.getOrgIdByCommonRegionId(commonRegionId);
 
                 if(orgId == null){
                     orgId = HandleChannelConstant.ORG_ID;
-                }
+                }*/
 
                 AccountOrgRel accountOrgRel = new AccountOrgRel();
                 accountOrgRel.setAcctId(slaveAcct.getAcctId());
@@ -165,7 +171,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                     accountOrgRel.setUpdateDate(new Date());
                     accountOrgRel.setUpdateUser(HandleChannelConstant.HANDLE_USER);
                     accountOrgRel.setStatusDate(new Date());
-                    accountOrgRel.setRelType("10");
+                    accountOrgRel.setRelType("99");
                     accountOrgRelMapper.insert(accountOrgRel);
                 }
 
@@ -548,6 +554,9 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         List<CommonRegion> commonRegions = commonRegionMapper.selectList(new EntityWrapper<CommonRegion>().
                 eq("COMMON_REGION_ID", commoinRegionId.substring(0, 5) + "00")
                 .eq("STATUS_CD", "1000"));
+        if (commonRegions == null || commonRegions.size() == 0) {
+            return;
+        }
         tbOrg.setLocId(Long.valueOf(commoinRegionId));
         tbOrg.setAreaCodeId(commonRegions.get(0).getAreaCodeId());
         tbOrg.setOrgName(channel.get("CHANNEL_NAME").toString());
@@ -643,6 +652,9 @@ public class CpcChannelServiceImpl implements CpcChannelService {
         List<CommonRegion> commonRegions = commonRegionMapper.selectList(new EntityWrapper<CommonRegion>().
                 eq("COMMON_REGION_ID", commonRegionId.substring(0, 5) + "00")
                 .eq("STATUS_CD", "1000"));
+        if (commonRegions == null || commonRegions.size() == 0) {
+            return;
+        }
         tbOrg.setAreaCodeId(commonRegions.get(0).getAreaCodeId());
         tbOrg.setUpdateDate(new Date());
         tbOrg.setStatusDate(new Date());
@@ -807,19 +819,28 @@ public class CpcChannelServiceImpl implements CpcChannelService {
      * @param staffChannelRel
      */
     private void delStaffChannelRelas(Map<String, Object> staffChannelRel) throws Exception {
-        AccountOrgRel accountOrgRel = checkAccoutOrgRel(staffChannelRel);
-        if (null != accountOrgRel) {
-            accountOrgRel = accountOrgRelMapper.selectOne(accountOrgRel);
-            if (null != accountOrgRel) {
-                accountOrgRel.setStatusCd(HandleChannelConstant.INVALID_STATE);
-                accountOrgRel.setUpdateDate(new Date());
-                accountOrgRel.setStatusDate(new Date());
-                accountOrgRel.setUpdateUser(HandleChannelConstant.HANDLE_USER);
-                accountOrgRelMapper.updateById(accountOrgRel);
+        String salesCode = (String) staffChannelRel.get("SALES_CODE");
+        AcctCrossRel acctCrossRel = new AcctCrossRel();
+        acctCrossRel.setCrossTran(salesCode);
+        acctCrossRel.setStatusCd(HandleChannelConstant.VALID_STATE);
+        acctCrossRel = acctCrossRelMapper.selectOne(acctCrossRel);
+        //CPC从账号 与销售员编码一一对应
+        if (null != acctCrossRel) {
+            TbSlaveAcct tbSlaveAcct = new TbSlaveAcct();
+            tbSlaveAcct.setStatusCd(HandleChannelConstant.VALID_STATE);
+            tbSlaveAcct.setAcctId(acctCrossRel.getAcctId());
+            tbSlaveAcct = tbSlaveAcctMapper.selectOne(tbSlaveAcct);
+            if (null != tbSlaveAcct) {
+                Long acctOrgRelId = tbSlaveAcct.getAcctOrgRelId();
+                if (null != acctOrgRelId) {
+                    AccountOrgRel accountOrgRel = new AccountOrgRel();
+                    accountOrgRel.setAcctOrgRelId(acctOrgRelId);
+                    accountOrgRel.setStatusCd(HandleChannelConstant.INVALID_STATE);
+                    accountOrgRelMapper.updateById(accountOrgRel);
+                }
+
             }
-
         }
-
 
     }
 

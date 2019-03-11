@@ -132,6 +132,9 @@ public class OrgController extends BaseController {
     @Autowired
     private OrgRelController orgRelController;
 
+    @Autowired
+    private IOrgTreeSynchRuleService iOrgTreeSynchRuleService;
+
     @ApiOperation(value = "新增组织信息-web", notes = "新增组织信息")
     @UooLog(value = "新增组织信息", key = "addOrg")
     @RequestMapping(value = "/addOrg", method = RequestMethod.POST)
@@ -214,9 +217,32 @@ public class OrgController extends BaseController {
             return ret;
         }
 
+        // TODO: 2019/3/8  组织不能移动到渠道组织下级
+        if("0412".equals(ortCur.getRefCode())){
+            HashMap<String, String> map = new HashMap<String, String>();
+            map = orgService.getChannelInfo(org.getSupOrgId().toString());
+            if(!map.isEmpty()){
+                String isChannel = map.get("isChannel");
+                if(!StrUtil.isNullOrEmpty(isChannel)){
+                    ret.setState(ResponseResult.PARAMETER_ERROR);
+                    ret.setMessage("渠道组织下面不能挂组织");
+                    return ret;
+                }
+            }
+        }
+
+        Long orgId = orgService.getId();
+        // TODO: 2019/3/7 是否同步规则
+        OrgUpdateCheckResult syncRet = iOrgTreeSynchRuleService.check(OrgUpdateCheckResult.OrgOperateType.ADD,orgTree.getOrgTreeId(),orgId);
+        if(!syncRet.isVaild()){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("同步规则不允许操作");
+            return ret;
+        }
+
 
         String batchNumber = modifyHistoryService.getBatchNumber();
-
+        String orgCode = orgService.getGenerateOrgCode();
         String fullName = "";
         if(!StrUtil.isNullOrEmpty(supOrg.getFullName())){
             fullName = supOrg.getFullName()+org.getOrgName();
@@ -224,10 +250,7 @@ public class OrgController extends BaseController {
             fullName = org.getOrgName();
         }
         Org newOrg = new Org();
-        String orgCode = orgService.getGenerateOrgCode();
-        Long orgId = orgService.getId();
         newOrg.setOrgId(orgId);
-
         if(!StrUtil.isNullOrEmpty(pl.getLocId())){
             newOrg.setLocId(pl.getLocId());
         }
@@ -329,18 +352,6 @@ public class OrgController extends BaseController {
             orgRelService.add(orgRef);
             modifyHistoryService.addModifyHistory(null,orgRef,org.getUpdateUser(),batchNumber);
 
-
-            //组织组织树关系
-//            List<OrgOrgtreeRel> ootrList = orgOrgtreeRelService.getFullBizOrgList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString());
-//            String fullBizName = "";
-//            if(ootrList!=null && ootrList.size()>0){
-//                for(int i=0;i<ootrList.size();i++){
-//                    fullBizName += ootrList.get(i).getOrgBizName();
-//                }
-//                fullBizName+=StrUtil.strnull(org.getOrgName());
-//            }else{
-//                fullBizName+=StrUtil.strnull(org.getOrgName());
-//            }
             // TODO: 2019/1/23 获取组织树ID  组织组织树新增字段 begin
             String fullBizName = "";
             fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),org.getSupOrgId().toString(),"");
@@ -475,10 +486,20 @@ public class OrgController extends BaseController {
         vo.setId(newOrg.getOrgId().toString());
         vo.setPid(org.getSupOrgId().toString());
         vo.setName(newOrg.getOrgName());
+
+
+        // TODO: 2019/3/7 是否同步
+        if(syncRet.isSync() &&
+                syncRet.getSyncOrgTreeIds()!=null &&
+                syncRet.getSyncOrgTreeIds().size()>0){
+            orgService.orgAddSync(syncRet.getSyncOrgTreeIds(),newOrg.getOrgId(),org.getSupOrgId(),org.getUpdateUser(),batchNumber);
+        }
+
         //mq
         String mqmsg = "{\"type\":\"org\",\"handle\":\"insert\",\"context\":{\"column\":\"orgId\",\"value\":"+orgId+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);
-        ret.setState(ResponseResult.STATE_OK);
+        
+        ret.setState(ResponseResult.STATE_OK);  
         ret.setMessage("新增成功");
         ret.setData(vo);
         return ret;
@@ -553,6 +574,7 @@ public class OrgController extends BaseController {
             ret.setMessage("组织关系不存在");
             return ret;
         }
+        OrgUpdateCheckResult syncRet = new OrgUpdateCheckResult();
         if(!"1000".equals(org.getStatusCd())){
             Wrapper orgPer = Condition.create()
                     .eq("ORG_ID",org.getOrgId())
@@ -561,6 +583,21 @@ public class OrgController extends BaseController {
             if(num>0){
                 ret.setState(ResponseResult.STATE_ERROR);
                 ret.setMessage("组织下存在员工无法删除");
+                return ret;
+            }
+            // TODO: 2019/3/7 是否同步规则
+            syncRet = iOrgTreeSynchRuleService.check(OrgUpdateCheckResult.OrgOperateType.DELETE,orgTree.getOrgTreeId(),org.getOrgId());
+            if(!syncRet.isVaild()){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("同步规则不允许删除操作");
+                return ret;
+            }
+        }else{
+            // TODO: 2019/3/7 是否同步规则
+            syncRet = iOrgTreeSynchRuleService.check(OrgUpdateCheckResult.OrgOperateType.ADD,orgTree.getOrgTreeId(),org.getOrgId());
+            if(!syncRet.isVaild()){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("同步规则不允许修改操作");
                 return ret;
             }
         }
@@ -1178,6 +1215,14 @@ public class OrgController extends BaseController {
                 newOrg.setStandardFlag(0L);
                 orgService.update(newOrg);
                 modifyHistoryService.addModifyHistory(o,newOrg,org.getUpdateUser(),batchNumber);
+
+                // TODO: 2019/3/7 是否同步
+                if(syncRet.isSync() &&
+                        syncRet.getSyncOrgTreeIds()!=null &&
+                        syncRet.getSyncOrgTreeIds().size()>0){
+                    orgService.orgDelSync(syncRet.getSyncOrgTreeIds(),org,org.getUpdateUser(),batchNumber);
+                }
+
                 String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+newOrg.getOrgId()+"}}" ;
                 template.convertAndSend("message_sharing_center_queue",mqmsg);
                 ret.setState(ResponseResult.STATE_OK);
@@ -1188,6 +1233,15 @@ public class OrgController extends BaseController {
         newOrg.setStatusCd("1000");
         orgService.update(newOrg);
         modifyHistoryService.addModifyHistory(o,newOrg,org.getUpdateUser(),batchNumber);
+
+        // TODO: 2019/3/7 是否同步
+        if(syncRet.isSync() &&
+                syncRet.getSyncOrgTreeIds()!=null &&
+                syncRet.getSyncOrgTreeIds().size()>0){
+            orgService.orgUpdateSync(syncRet.getSyncOrgTreeIds(),org,org.getUpdateUser(),batchNumber);
+        }
+
+
         String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+newOrg.getOrgId()+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);
         //增加返回数据
@@ -1266,9 +1320,6 @@ public class OrgController extends BaseController {
                 return ret;
             }
         }
-
-
-
         String batchNumber = modifyHistoryService.getBatchNumber();
 
         Wrapper orgWrapper = Condition.create()
@@ -1494,7 +1545,7 @@ public class OrgController extends BaseController {
             org.setAreaCode(StrUtil.strnull(areaList.get(0).getAreaCode()));
         }
 
-        //营销标识.营销编码
+        //渠道标识.营销编码
         HashMap<String,String> ls = orgService.getChannelInfo(orgId);
         if(!StrUtil.isNullOrEmpty(ls) && !ls.isEmpty()){
             org.setIsChannel(ls.get("isChannel"));
@@ -1776,6 +1827,119 @@ public class OrgController extends BaseController {
 //        return ret;
 //    }
 
+
+
+
+    @ApiOperation(value = "获取渠道组织翻页", notes = "获取渠道组织翻页")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "获取渠道组织", key = "getChannelOrgPage")
+    @RequestMapping(value = "/getChannelOrgPage", method = RequestMethod.GET)
+    public ResponseResult<Page<OrgVo>> getChannelOrgPage(String search,
+                                                         String orgTreeId,
+                                                         Integer pageSize,
+                                                         Integer pageNo,
+                                                         Long userId,
+                                                         String accout){
+        ResponseResult<Page<OrgVo>> ret = new ResponseResult<>();
+        if(StrUtil.isNullOrEmpty(orgTreeId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树标识不能为空");
+            return ret;
+        }
+        OrgVo orgVo = new OrgVo();
+        List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
+        orgRelTypeListCur = orgRelTypeService.getOrgRelType(orgTreeId);
+        OrgRelType ortCur = null;
+        if (orgRelTypeListCur != null && orgRelTypeListCur.size() > 0) {
+            ortCur = orgRelTypeListCur.get(0);
+        }else{
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织类型不能为空");
+            return ret;
+        }
+        if(!"0412".equals(ortCur.getRefCode())){
+            Page<OrgVo> page = new Page<OrgVo>();
+            ret.setState(ResponseResult.STATE_OK);
+            ret.setData(page);
+            return ret;
+        }
+
+        orgVo.setRefCode(ortCur.getRefCode());
+        if(!StrUtil.isNullOrEmpty(pageSize)){
+            orgVo.setPageSize(pageSize);
+        }
+        if(!StrUtil.isNullOrEmpty(pageNo)){
+            orgVo.setPageNo(pageNo);
+        }
+        if(!StrUtil.isNullOrEmpty(orgTreeId)){
+            orgVo.setOrgTreeId(new Long(orgTreeId));
+        }
+        if(!StrUtil.isNullOrEmpty(search)){
+            orgVo.setSearch(search);
+            if(StrUtil.isNumeric(search)){
+                orgVo.setIsSearchNum("1");
+            }
+        }
+        Page<OrgVo> page = orgService.getChannelOrgPage(orgVo);
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setData(page);
+        return ret;
+    }
+
+
+    @ApiOperation(value = "获取渠道组织额外信息", notes = "获取渠道组织额外信息")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "获取渠道组织额外信息", key = "getChannelOrgExtInfo")
+    @RequestMapping(value = "/getChannelOrgExtInfo", method = RequestMethod.GET)
+    public ResponseResult<HashMap<String,String>> getChannelOrgExtInfo(Long orgTreeId){
+        ResponseResult<HashMap<String,String>> ret = new ResponseResult<>();
+        if(StrUtil.isNullOrEmpty(orgTreeId)){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树标识不能为空");
+            return ret;
+        }
+        List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
+        orgRelTypeListCur = orgRelTypeService.getOrgRelType(orgTreeId.toString());
+        OrgRelType ortCur = null;
+        if (orgRelTypeListCur == null || orgRelTypeListCur.size()<1) {
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("组织树类型不能为空");
+            return ret;
+        }
+        HashMap<String,String> map = new HashMap<String,String>();
+        int total = orgService.getChannelOrgCount();
+        int total1 = orgService.getChannelOrgLoader(orgTreeId,null);
+        map.put("loadCount",Integer.toString(total));
+        map.put("unloadCount",Integer.toString(total1));
+        ret.setData(map);
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setMessage("成功");
+        return ret;
+    }
+
+
+    @ApiOperation(value = "保存渠道组织", notes = "保存渠道组织")
+    @ApiImplicitParams({
+    })
+    @UooLog(value = "保存渠道组织", key = "addChannelOrg")
+    @RequestMapping(value = "/addChannelOrg", method = RequestMethod.POST)
+    public ResponseResult<String> addChannelOrg(@RequestBody ChannelOrgVo channelOrgVo){
+        ResponseResult<String> ret = new ResponseResult<>();
+
+        String msg = orgService.JudgeChannelOrgParams(channelOrgVo);
+        if(!StrUtil.isNullOrEmpty(msg)){
+            ret.setMessage(msg);
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            return ret;
+        }
+        orgService.addChannelOrg(channelOrgVo);
+        ret.setData("");
+        ret.setState(ResponseResult.STATE_OK);
+        ret.setMessage("成功");
+        return ret;
+    }
 
 
 }
