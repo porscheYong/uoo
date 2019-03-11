@@ -700,3 +700,9 @@ tags
 # Project-level settings
 /.tgitconfig
 
+
+
+
+
+##tool不提交
+/uoo-business/business-tool/

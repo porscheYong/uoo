@@ -217,6 +217,20 @@ public class OrgController extends BaseController {
             return ret;
         }
 
+        // TODO: 2019/3/8  组织不能移动到渠道组织下级
+        if("0412".equals(ortCur.getRefCode())){
+            HashMap<String, String> map = new HashMap<String, String>();
+            map = orgService.getChannelInfo(org.getSupOrgId().toString());
+            if(!map.isEmpty()){
+                String isChannel = map.get("isChannel");
+                if(!StrUtil.isNullOrEmpty(isChannel)){
+                    ret.setState(ResponseResult.PARAMETER_ERROR);
+                    ret.setMessage("渠道组织下面不能挂组织");
+                    return ret;
+                }
+            }
+        }
+
         Long orgId = orgService.getId();
         // TODO: 2019/3/7 是否同步规则
         OrgUpdateCheckResult syncRet = iOrgTreeSynchRuleService.check(OrgUpdateCheckResult.OrgOperateType.ADD,orgTree.getOrgTreeId(),orgId);
@@ -1842,6 +1856,12 @@ public class OrgController extends BaseController {
         }else{
             ret.setState(ResponseResult.PARAMETER_ERROR);
             ret.setMessage("组织类型不能为空");
+            return ret;
+        }
+        if(!"0412".equals(ortCur.getRefCode())){
+            Page<OrgVo> page = new Page<OrgVo>();
+            ret.setState(ResponseResult.STATE_OK);
+            ret.setData(page);
             return ret;
         }
 
