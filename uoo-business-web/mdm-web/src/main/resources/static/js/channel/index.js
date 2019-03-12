@@ -212,7 +212,9 @@ function initBusinessList () {
         var option = '';
         for (var i = 0; i < data.length; i++) {
             var select = i === 0? 'selected' : '';
-            option += "<option value='" + data[i].orgTreeId + "' " + select + ">" + data[i].orgTreeName +"</option>";
+            if(data[i].orgTreeId == '16040'){
+                option += "<option value='" + data[i].orgTreeId + "' " + select + ">" + data[i].orgTreeName +"</option>";
+            }
         }
         $('#businessOrg').html(option);
         seajs.use('/vendors/lulu/js/common/ui/Select', function () {
@@ -358,7 +360,7 @@ function getSelectRow (addList) {
     var selectedList = orgTable.rows('.select').data();
     var rList = [];
     for(var j=0;j<selectedList.length;j++){
-        if(addList.indexOf(selectedList[j].orgId) == -1 && deledList.indexOf(selectedList[j].orgId) == -1){
+        if(addList.indexOf(selectedList[j].orgId) == -1 && deledList.indexOf(selectedList[j].orgId) == -1 && isDel.indexOf(selectedList[j].orgId) == -1){
             rList.push({"id":selectedList[j].orgId,"name":selectedList[j].orgName,"isChannel":selectedList[j].isChannel});
         }
     }

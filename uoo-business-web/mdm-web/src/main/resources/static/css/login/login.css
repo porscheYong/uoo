@@ -61,10 +61,13 @@ img {
 	border-color: #00a4ff
 	}
 .user {
-	background: url(../images/ico_user.png) no-repeat left center
+	background: url(../images/user.png) no-repeat left center
 	}
 .psw {
-	background: url(../images/ico_psw.png) no-repeat left center
+	background: url(../images/ico_pwd.png) no-repeat left center
+	}
+.psw2 {
+	background: url(../images/ico_pswcheck.png) no-repeat left center
 	}
 .code {
 	background: url(../images/ico_check.png) no-repeat left center;
@@ -76,6 +79,12 @@ img {
 	margin: 0 0 20px 0;
 	display:none;
 	}
+.phone{
+	background: url(../images/icon_phone.png) no-repeat left center
+}
+.msg{
+	background: url(../images/icon_msg.png) no-repeat left center;
+}
 .BtnSubmit {
 	background: #00a4ff;
 	box-shadow: 1px 4px 12px rgba(0,164,255,.4);

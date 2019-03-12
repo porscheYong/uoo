@@ -49,7 +49,7 @@ select[xm-select]{display: none !important;}
 .xm-form-select dl dd.xm-dis-disabled span {color: #C2C2C2}
 .xm-form-select dl dd.xm-dis-disabled .xm-icon-yes {border-color: #C2C2C2}
 .xm-select-parent {position: relative;-moz-user-select: none;-ms-user-select: none;-webkit-user-select: none}
-.xm-select-parent .xm-select {line-height: normal;height: auto;padding: 4px 10px 1px 10px;overflow: hidden;min-height: 40px;border-radius: 4px;left: 0;position: absolute;background: 0 0;padding-right: 20px}
+.xm-select-parent .xm-select {line-height: normal;height: auto;padding: 4px 10px 1px 10px;overflow: hidden;min-height: 40px;border-radius: 4px;left: 0;position: absolute;background: #fff;padding-right: 20px}
 .xm-select-parent .xm-select:hover {border-color: #C0C4CC}
 .xm-select-parent .xm-select .xm-select-label {display: inline-block;margin: 0;vertical-align: middle}
 .xm-select-parent .xm-select-title div.xm-select-label>span i {margin-left: 8px; font-size: 12px; cursor: pointer; line-height: 20px;}
