@@ -306,7 +306,8 @@
             A.ORG_DESC ORGDESC,
             A.ADDRESS ADDRESS,
             TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') CREATEDATE,
-            A.STANDARD_FLAG standardFlag
+            A.STANDARD_FLAG standardFlag,
+            A.ORG_MART_CODE ORGMARTCODE
             FROM TB_ORG A
             WHERE A.STATUS_CD = '1000'
             AND A.ORG_ID = #{orgId}
