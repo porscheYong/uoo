@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>标准组织树</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- jquery datatable -->
+    <link href="/vendors/datatable/datatables.css" rel="stylesheet">
+    <!-- lulu ui -->
+    <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="/js/core/html5shiv.js"></script>
+    <script src="/js/core/respond.js"></script>
+    <script src="/js/core/excanvas.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      table.dataTable {
+        table-layout: fixed;
+      }
+      
+      th {
+          text-align: center;
+          white-space: nowrap;
+      }
+      table.dataTable tbody td {
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+      .org-name {
+        cursor: pointer;
+      }
+      .row-orgId,
+      .row-orgRootId,
+      .row-personnelId{
+        display:none;
+      }
+    </style>
+  </head>
+
+  <body style="background: #fff;">
+    <div>
+      <div>
+        <a class="BoardTitle Back" href="javascript:history.go(-1);"  >返回</a>
+      </div>
+      <div class="board-title">
+        <span class="name ft18"><span id="correctNo" class="highlight"></span> 个移动组织信息将会被导入</span>
+      </div>
+      <div style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
+          <table id="correctTable" class="stripe" width="100%"></table>
+      </div>
+
+      <div class="board-title">
+        <span class="name ft18"><span id="errorNo" class="highlight"></span> 个移动组织信息由于不符合要求，将不会被导入</span>
+      </div>
+      <div style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
+          <table id="errorTable" class="stripe" width="100%"></table>
+      </div>
+      <div class="row btn-fixed">
+        <button class="ui-button ui-button-primary" onclick="uploadConfirm()">确认导入</button>
+        <button class="ui-button ui-button-cancel" style="margin-left: 10px;" onclick="cancel()">取消</button>
+      </div>
+    </div>
+    <!-- jQuery -->
+    <script src="/js/core/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" src="/vendors/datatable/datatables.js"></script>
+    <!-- sea js -->
+    <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
+    <!-- init -->
+    <script src="/js/init.js"></script>
+	<script type="text/javascript" src="/js/business/editUpload-excel.js"></script>
+  </body>
+</html>

@@ -7,8 +7,13 @@ var pid = getQueryString('pid');
 var orgName = getQueryString('name');
 var refCode = getQueryString('refCode');
 var standardFlag = ~~getQueryString('standardFlag');
+var isChannel = getQueryString('isChannel');
 var table;
 var personnelTable;
+
+if(isChannel == "Y"){
+    $("#editBtn").css("display","none");
+}
 
 if (!window.addEventListener) {
     seajs.use('/vendors/lulu/js/common/ui/Radio');
@@ -28,7 +33,7 @@ function initOrgTable (results) {
             { 'data': "orgId", 'title': '组织标识', 'className': 'org-id' },
             { 'data': "orgName", 'title': '部门', 'className': 'row-name',
                 'render': function (data, type, row, meta) {
-                    return '<a href="orgInfo.html?id=' + row.orgId + '&pid=' + orgId + '&ppid=' + pid + '&orgTreeId=' + orgTreeId + '&refCode=' + refCode + '&standardFlag=' + standardFlag + '&infoFlag=1' + '&name=' + encodeURI(row.orgName) + '&pName=' + encodeURI(orgName)  +  '">'+ row.orgName +'</a>'
+                    return '<a href="orgInfo.html?id=' + row.orgId + '&pid=' + orgId + '&ppid=' + pid + '&orgTreeId=' + orgTreeId + '&refCode=' + refCode + '&standardFlag=' + standardFlag + '&infoFlag=1' + '&name=' + encodeURI(row.orgName) + '&pName=' + encodeURI(orgName) + '&isChannel=' + row.isChannel +  '">'+ row.orgName +'</a>'
                 }
             },
             { 'data': "orgTypeSplit",
@@ -225,7 +230,7 @@ initOrgTable();
 initOrgPersonnelTable(0);
 
 function orgInfo() {
-    var url = 'orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&refCode=' + refCode + '&standardFlag=' + standardFlag + '&name=' + encodeURI(orgName);
+    var url = 'orgInfo.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&refCode=' + refCode + '&standardFlag=' + standardFlag + '&name=' + encodeURI(orgName) + "&isChannel=" + isChannel;
     window.location.href = url;
 }
 function orgEdit () {
@@ -242,6 +247,11 @@ function orgSearch () {
 function orgMove () {
     var url = 'upload.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&refCode=' + refCode + '&name=' + encodeURI(orgName);
     // $('#searchBtn').attr('href', url);
+    window.location.href = url;
+}
+
+function orgsEdit(){
+    var url = 'editUpload.html?id=' + orgId + '&orgTreeId=' + orgTreeId + '&pid=' + pid + '&refCode=' + refCode + '&name=' + encodeURI(orgName);
     window.location.href = url;
 }
 

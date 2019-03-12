@@ -18,6 +18,7 @@
     <link href="/vendors/lulu/css/common/ui.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
+    <link href="/css/business/style.css" rel="stylesheet">
     <link href="/css/reset.css" rel="stylesheet">
     <link href="/css/custom.css" rel="stylesheet">
 
@@ -85,10 +86,12 @@
       <div class="board-title">
         <span class="name ft18">下级组织</span>
         <div class="fright">
+          <a class="button-move cf_floatLayer_but" id="moveBtn" data-id="floatObj_2"><span class="fa fa-upload icon-move"></span>批量导入</a>
           <a class="button-add" id="searchBtn" href="javascript:void(0);" onclick="orgSearch()"><span class="fa fa-plus-circle icon-add"></span>新增组织</a>
-          <a class="button-move" id="moveBtn" href="javascript:void(0);" onclick="orgMove()"><span class="fa fa-arrows icon-move"></span>移动</a>
         </div>
       </div>
+      <!-- <div style="background: #fff;border-radius: 4px;width: 50px;height: 50px;position:absolute;border: 1px solid #ccc;">
+      </div> -->
       <div id="table-container" style="width: 100%; font-size: 14px; overflow: hidden; margin-top: 10px;">
           <table id="orgTable" class="stripe" width="100%"></table>
       </div>
@@ -102,6 +105,18 @@
           <table id="personnelTable" class="stripe" width="100%"></table>
       </div>
     </div>
+
+    <!--高级查找-->
+<div class="pa cf_floatLayer" id="floatObj_2"><div class="pr">
+    <div class="pa jt"><div class="pr"><i class="pa icon">◆</i><i class="pa icon b">◆</i></div></div>
+    <div class="pa m B_rad" style="width:165px;">
+      <div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list">
+          <a class="button-move" id="moveBtn" href="javascript:void(0);" onclick="orgMove()"><span class="fa fa-arrows-alt icon-move"></span>移动组织节点</a>
+          <a class="button-move" id="moveBtn" href="javascript:void(0);" style="margin-top:5%;" onclick="orgsEdit()"><span class="fa fa-pencil icon-move"></span>修改组织名称</a>
+      </div>
+  
+    </div>
+  </div></div>
     <!-- jQuery -->
     <script src="/js/core/jquery.js"></script>
     <!-- Bootstrap -->
@@ -112,6 +127,7 @@
     <script type="text/javascript" src="/vendors/lulu/js/plugin/sea.js"></script>
     <!-- init -->
     <script src="/js/init.js"></script>
+    <script src="/js/business/cfkuyu.js"></script>
 	  <script type="text/javascript" src="/js/business/list.js"></script>
   </body>
 </html>

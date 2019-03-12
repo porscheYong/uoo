@@ -75,4 +75,20 @@ public class SysUserClientHystrix implements SysUserClient {
         return rr;
     }
 
+    @Override
+    public ResponseResult<Void> checkMobile(String phone) {
+        ResponseResult<Void> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    }
+
+    @Override
+    public ResponseResult<Void> resetPwd(String phone, String passwd) {
+        ResponseResult<Void> rr=new ResponseResult<>();
+        rr.setState(ResponseResult.STATE_SERVICE_ERROR);
+        rr.setMessage("服务不可用");
+        return rr;
+    }
+
 }

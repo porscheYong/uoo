@@ -49,7 +49,7 @@ function readFile (file) {
         formData = new FormData();
         formData.append('fileInfo', file);
         formData.append("orgTreeId", orgTreeId);
-        formData.append("impType", 1);
+        formData.append("impType", 2);
     }
 }
 
@@ -98,7 +98,7 @@ function upload () {
         }
         else {
             var data = response.data;
-            var url = 'upload-excel.html?fileSign=' + data + '&id=' + orgId + "&orgTreeId=" + orgTreeId + "&refCode=" + refCode + '&pid=' + pid + "&name=" + encodeURI(orgName);
+            var url = 'editUpload-excel.html?fileSign=' + data + '&id=' + orgId + "&orgTreeId=" + orgTreeId + "&refCode=" + refCode + '&pid=' + pid + "&name=" + encodeURI(orgName);
             window.location.href = url;
             loading.screenMaskDisable('container');
         }

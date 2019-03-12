@@ -9,18 +9,24 @@ import cn.ffcs.uoo.core.organization.util.StrUtil;
 import cn.ffcs.uoo.core.organization.vo.*;
 import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.ibatis.annotations.Param;
+import org.apache.poi.ss.formula.functions.Today;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Service;
 import sun.swing.StringUIClientPropertyKey;
 
-import java.sql.Wrapper;
+import java.sql.*;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.Date;
 
 /**
  * <p>
@@ -54,6 +60,28 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
 
     @Autowired
     private OrgLevelService orgLevelService;
+
+    @Autowired
+    private AmqpTemplate template;
+
+    @Autowired
+    private OrgTreeService orgTreeService;
+
+    @Autowired
+    private OgtOrgReltypeConfService ogtOrgReftypeConfService;
+
+    @Autowired
+    private OrgPositionRelService orgPositionRelService;
+
+    @Autowired
+    private OrgCertRelService orgCertRelService;
+
+    @Autowired
+    private OrgContactRelService orgContactRelService;
+
+    @Autowired
+    private IOrgTreeSynchRuleService iOrgTreeSynchRuleService;
+
 
     @Override
     public Long getId() {
@@ -119,18 +147,15 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         Page<OrgVo> page = new Page<OrgVo>(orgVo.getPageNo() == 0 ? 1 : orgVo.getPageNo(),
                 orgVo.getPageSize() == 0 ? 10 : orgVo.getPageSize());
         List<OrgVo> orgVolist = baseMapper.selectOrgRelPage(page, orgVo);
-//        for(OrgVo o : orgVolist){
-//            List<OrgType> orgTypeList = orgTypeService.getOrgTypeByOrgId(o.getOrgId());
-//            String orgTypeSplit = "";
-//            if(orgTypeList!=null && orgTypeList.size()>0){
-//                for(OrgType ot:orgTypeList){
-//                    orgTypeSplit +=ot.getOrgTypeName()+",";
-//                }
-//            }
-//            orgTypeSplit = orgTypeSplit.substring(0,orgTypeSplit.length()-1);
-//            o.setOrgTypeSplit(orgTypeSplit);
-//            //o.setOrgTypeList(orgTypeList);
-//        }
+        if(orgVolist!=null && orgVolist.size()>0){
+            for(OrgVo vo : orgVolist){
+                HashMap<String,String> ls = getChannelInfo(vo.getOrgId().toString());
+                if(!StrUtil.isNullOrEmpty(ls) && !ls.isEmpty()){
+                    vo.setIsChannel(ls.get("isChannel"));
+                    vo.setChannelNBR(ls.get("channelNbr"));
+                }
+            }
+        }
         page.setRecords(orgVolist);
         return page;
     }
@@ -333,6 +358,13 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         if (StrUtil.isNullOrEmpty(parentOrg)) {
             return "移动的父组织不存在";
         }
+        // TODO: 2019/3/7 判断数据同步权限
+        OrgUpdateCheckResult syncRet = new OrgUpdateCheckResult();
+        syncRet = iOrgTreeSynchRuleService.check(OrgUpdateCheckResult.OrgOperateType.UPDATE,orgTreeId,orgId);
+        if(!syncRet.isVaild()){
+            return "同步规则不允许更新操作";
+        }
+
         // TODO: 2019/1/28 组织全程
         String fullNameSplit = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(), orgId.toString(), ",");
         String fullParentNameSplit = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(), parentOrgId.toString(), ",");
@@ -364,6 +396,23 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         if (StrUtil.isNullOrEmpty(parentOrg)) {
             return "移动的父组织不存在";
         }
+        List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
+        orgRelTypeListCur = orgRelTypeService.getOrgRelType(orgTreeId.toString());
+        OrgRelType ortCur = new OrgRelType();
+        if (orgRelTypeListCur != null && orgRelTypeListCur.size() > 0) {
+            ortCur = orgRelTypeListCur.get(0);
+        }
+        // TODO: 2019/3/8  组织不能移动到渠道组织下级
+        if("0412".equals(ortCur.getRefCode())){
+            HashMap<String, String> map = new HashMap<String, String>();
+            map = getChannelInfo(parentOrgId.toString());
+            if(!map.isEmpty()){
+                String isChannel = map.get("isChannel");
+                if(!StrUtil.isNullOrEmpty(isChannel)){
+                    return "渠道组织下面不能挂组织";
+                }
+            }
+        }
         //当前节点的父节点 全路径
         // TODO: 2019/1/28 组织全程
         String fullNameSplit = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(), orgId.toString(), ",");
@@ -384,12 +433,7 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
 //        if(count>50){
 //            return "移动组织的下级组织数量太大，请联系管理员操作";
 //        }
-        List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
-        orgRelTypeListCur = orgRelTypeService.getOrgRelType(orgTreeId.toString());
-        OrgRelType ortCur = new OrgRelType();
-        if (orgRelTypeListCur != null && orgRelTypeListCur.size() > 0) {
-            ortCur = orgRelTypeListCur.get(0);
-        }
+
         com.baomidou.mybatisplus.mapper.Wrapper orgRelWrapper = Condition.create()
                 .eq("REF_CODE", ortCur.getRefCode())
                 .eq("STATUS_CD", "1000")
@@ -585,7 +629,21 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
                         .eq("ORG_ID", vo.getId());
                 OrgRel orgRel = orgRelService.selectOne(orgRelWrapper);
                 if (!StrUtil.isNullOrEmpty(orgRel)) {
-                    return "组织标识[" + vo.getId() + "]组织名称[" + vo.getName() + "]:组织关系已经存在";
+                    if(orgRel.getOrgId().equals(vo.getId()) && orgRel.getParentOrgId().equals(vo.getPid())){
+                        return "组织标识[" + vo.getId() + "]组织名称[" + vo.getName() + "]:组织关系已经存在";
+                    }
+                    if(!StrUtil.isNullOrEmpty(channelOrgVo.getDelNodes()) || channelOrgVo.getDelNodes().size() > 0){
+                        boolean isErr = true;
+                        for(TreeNodeVo vo1 : channelOrgVo.getDelNodes()){
+                            if(vo1.getId().equals(orgRel.getOrgId().toString())){
+                                isErr = false;
+                                break;
+                            }
+                        }
+                        if(isErr){
+                            return "组织标识[" + vo.getId() + "]组织名称[" + vo.getName() + "]:组织关系已经存在";
+                        }
+                    }
                 }
             }
         }
@@ -606,6 +664,52 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         List<OrgRelType> orgRelTypeListCur = new ArrayList<OrgRelType>();
         orgRelTypeListCur = orgRelTypeService.getOrgRelType(channelOrgVo.getOrgTreeId().toString());
         OrgRelType ortCur = orgRelTypeListCur.get(0);
+        if(!StrUtil.isNullOrEmpty(channelOrgVo.getDelNodes()) && channelOrgVo.getDelNodes().size() > 0){
+            for(TreeNodeVo vo : channelOrgVo.getDelNodes()){
+                com.baomidou.mybatisplus.mapper.Wrapper orgWrapper = Condition.create()
+                        .eq("ORG_ID",vo.getId())
+                        .eq("STATUS_CD","1000");
+                Org org = this.selectOne(orgWrapper);
+                Org oldOrg = new Org();
+                BeanUtils.copyProperties(org,oldOrg);
+                org.setStandardFlag(0L);
+                this.update(org);
+                modifyHistoryService.addModifyHistory(oldOrg,org,channelOrgVo.getUserId(),batchNumber);
+
+
+                List<OrgRel> orgRelList = orgRelService.getOrgRel(channelOrgVo.getOrgTreeId().toString(),vo.getId());
+                for(OrgRel orgRel : orgRelList){
+                    orgRel.setUpdateUser(channelOrgVo.getUserId());
+                    orgRelService.delete(orgRel);
+                    modifyHistoryService.addModifyHistory(orgRel,null,channelOrgVo.getUserId(),batchNumber);
+                    com.baomidou.mybatisplus.mapper.Wrapper orgTreeRelWrapper = Condition.create()
+                            .eq("ORG_ID",org.getOrgId())
+                            .eq("STATUS_CD","1000")
+                            .eq("ORG_TREE_ID",channelOrgVo.getOrgTreeId());
+                    List<OrgOrgtreeRel> orgOrgtreeRelList = orgOrgtreeRelService.selectList(orgTreeRelWrapper);
+                    for(OrgOrgtreeRel ootr : orgOrgtreeRelList){
+                        ootr.setUpdateUser(channelOrgVo.getUserId());
+                        orgOrgtreeRelService.delete(ootr);
+                        modifyHistoryService.addModifyHistory(ootr,null,channelOrgVo.getUserId(),batchNumber);
+                    }
+
+                    com.baomidou.mybatisplus.mapper.Wrapper orgLevelWrapper = Condition.create()
+                            .eq("ORG_TREE_ID",channelOrgVo.getOrgTreeId())
+                            .eq("STATUS_CD","1000")
+                            .eq("ORG_ID",org.getOrgId());
+                    List<OrgLevel> orgLevelList = orgLevelService.selectList(orgLevelWrapper);
+                    for(OrgLevel ol : orgLevelList){
+                        ol.setUpdateUser(channelOrgVo.getUserId());
+                        orgLevelService.delete(ol);
+                        modifyHistoryService.addModifyHistory(ol,null,channelOrgVo.getUserId(),batchNumber);
+                    }
+                    // TODO: 2019/3/7  下发mq
+                    String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+orgRel.getOrgId()+"}}" ;
+                    template.convertAndSend("message_sharing_center_queue",mqmsg);
+                }
+            }
+        }
+
         if (!StrUtil.isNullOrEmpty(channelOrgVo.getAddNodes()) && channelOrgVo.getAddNodes().size() > 0) {
             for(TreeNodeVo vo : channelOrgVo.getAddNodes()){
                 OrgRel orgRef = new OrgRel();
@@ -660,6 +764,10 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
                     orgLevelService.add(orgLevel);
                     modifyHistoryService.addModifyHistory(null,orgLevel,channelOrgVo.getUserId(),batchNumber);
                 }
+
+                // TODO: 2019/3/7  下发mq
+                String mqmsg = "{\"type\":\"org\",\"handle\":\"insert\",\"context\":{\"column\":\"orgId\",\"value\":"+vo.getId()+"}}" ;
+                template.convertAndSend("message_sharing_center_queue",mqmsg);
             }
         }
         if(!StrUtil.isNullOrEmpty(channelOrgVo.getUpdateNodes()) && channelOrgVo.getUpdateNodes().size() > 0){
@@ -678,53 +786,459 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
                     orgOrgtreeRelOne.setUpdateUser(channelOrgVo.getUserId());
                     orgOrgtreeRelService.update(orgOrgtreeRelOne);
                     modifyHistoryService.addModifyHistory(orgOrgtreeRelOLd,orgOrgtreeRelOne,channelOrgVo.getUserId(),batchNumber);
+                    // TODO: 2019/3/7
+                    String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+vo.getId()+"}}" ;
+                    template.convertAndSend("message_sharing_center_queue",mqmsg);
                 }
             }
         }
-        if(!StrUtil.isNullOrEmpty(channelOrgVo.getDelNodes()) && channelOrgVo.getDelNodes().size() > 0){
-            for(TreeNodeVo vo : channelOrgVo.getDelNodes()){
-                com.baomidou.mybatisplus.mapper.Wrapper orgWrapper = Condition.create()
-                        .eq("ORG_ID",vo.getId())
-                        .eq("STATUS_CD","1000");
-                Org org = this.selectOne(orgWrapper);
-                Org oldOrg = new Org();
-                BeanUtils.copyProperties(org,oldOrg);
-                org.setStandardFlag(0L);
-                this.update(org);
-                modifyHistoryService.addModifyHistory(oldOrg,org,channelOrgVo.getUserId(),batchNumber);
 
-
-                List<OrgRel> orgRelList = orgRelService.getOrgRel(channelOrgVo.getOrgTreeId().toString(),vo.getId());
-                for(OrgRel orgRel : orgRelList){
-                    orgRel.setUpdateUser(channelOrgVo.getUserId());
-                    orgRelService.delete(orgRel);
-                    modifyHistoryService.addModifyHistory(orgRel,null,channelOrgVo.getUserId(),batchNumber);
-                    com.baomidou.mybatisplus.mapper.Wrapper orgTreeRelWrapper = Condition.create()
-                            .eq("ORG_ID",org.getOrgId())
-                            .eq("STATUS_CD","1000")
-                            .eq("ORG_TREE_ID",channelOrgVo.getOrgTreeId());
-                    List<OrgOrgtreeRel> orgOrgtreeRelList = orgOrgtreeRelService.selectList(orgTreeRelWrapper);
-                    for(OrgOrgtreeRel ootr : orgOrgtreeRelList){
-                        ootr.setUpdateUser(channelOrgVo.getUserId());
-                        orgOrgtreeRelService.delete(ootr);
-                        modifyHistoryService.addModifyHistory(ootr,null,channelOrgVo.getUserId(),batchNumber);
-                    }
-
-                    com.baomidou.mybatisplus.mapper.Wrapper orgLevelWrapper = Condition.create()
-                            .eq("ORG_TREE_ID",channelOrgVo.getOrgTreeId())
-                            .eq("STATUS_CD","1000")
-                            .eq("ORG_ID",org.getOrgId());
-                    List<OrgLevel> orgLevelList = orgLevelService.selectList(orgLevelWrapper);
-                    for(OrgLevel ol : orgLevelList){
-                        ol.setUpdateUser(channelOrgVo.getUserId());
-                        orgLevelService.delete(ol);
-                        modifyHistoryService.addModifyHistory(ol,null,channelOrgVo.getUserId(),batchNumber);
-                    }
-                }
-            }
-        }
         return ;
     }
 
+
+
+    /**
+     * 组织新增同步
+     * @param orgTreeIds
+     * @param orgId
+     * @param orgParentId
+     * @param userId
+     * @param batchNumber
+     */
+    @Override
+    public void orgAddSync(List<Long> orgTreeIds,Long orgId,Long orgParentId,Long userId,String batchNumber){
+        for(Long orgTreeId : orgTreeIds){
+            if(StrUtil.isNullOrEmpty(orgId)){
+                continue;
+            }
+            if(StrUtil.isNullOrEmpty(orgParentId)){
+                continue;
+            }
+            com.baomidou.mybatisplus.mapper.Wrapper orgtreeWrapper = Condition.create().eq("ORG_TREE_ID",orgTreeId)
+                    .eq("STATUS_CD","1000");
+            OrgTree orgTree = orgTreeService.selectOne(orgtreeWrapper);
+            if(orgTree==null){
+                continue;
+            }
+            //判断组织是否需已经下挂在该组织树上
+            com.baomidou.mybatisplus.mapper.Wrapper orgOrgtreeRefWrapper = Condition.create().eq("ORG_ID",orgId)
+                    .eq("ORG_TREE_ID",orgTree.getOrgTreeId())
+                    .eq("STATUS_CD","1000");
+            List<OrgOrgtreeRel> orgOrgtreeRefList = orgOrgtreeRelService.selectList(orgOrgtreeRefWrapper);
+            if(orgOrgtreeRefList != null && orgOrgtreeRefList.size()>0){
+                continue;
+            }
+            //查询组织
+            com.baomidou.mybatisplus.mapper.Wrapper orgWrapper = Condition.create().eq("ORG_ID",orgId)
+                    .eq("STATUS_CD","1000");
+            Org o = selectOne(orgWrapper);
+            if(o==null){
+                continue;
+            }
+            com.baomidou.mybatisplus.mapper.Wrapper ogtOrgReftypeConfWrapper = Condition.create()
+                    .eq("ORG_TREE_ID",orgTree.getOrgTreeId())
+                    .eq("STATUS_CD","1000");
+
+            List<OgtOrgReltypeConf> ogtOrgReftypeConfList =  ogtOrgReftypeConfService.selectList(ogtOrgReftypeConfWrapper);
+            if(ogtOrgReftypeConfList == null || ogtOrgReftypeConfList.size() < 0){
+                continue;
+            }
+            OgtOrgReltypeConf ogtOrgReftypeConf = ogtOrgReftypeConfList.get(0);
+            com.baomidou.mybatisplus.mapper.Wrapper orgReltypeConfWrapper = Condition.create()
+                    .eq("ORG_REL_TYPE_ID",ogtOrgReftypeConf.getOrgRelTypeId())
+                    .eq("STATUS_CD","1000");
+            OrgRelType ort = orgRelTypeService.selectOne(orgReltypeConfWrapper);
+            if(ort==null){
+                continue;
+            }
+
+            if("1".equals(orgTree.getOrgTreeId().toString())){
+                Org oldOrg = new Org();
+                BeanUtils.copyProperties(o,oldOrg);
+                o.setStandardFlag(1L);
+                update(o);
+                modifyHistoryService.addModifyHistory(oldOrg,0,userId,batchNumber);
+            }
+
+            //新增组织关系
+            OrgRel orgRel = new OrgRel();
+            Long orgRefId = orgRelService.getId();
+            orgRel.setOrgRelId(orgRefId);
+            orgRel.setOrgId(orgId);
+            orgRel.setParentOrgId(orgParentId);
+            orgRel.setRefCode(ort.getRefCode());
+            orgRel.setStatusCd("1000");
+            orgRel.setCreateUser(userId);
+            orgRelService.add(orgRel);
+            modifyHistoryService.addModifyHistory(null,orgRel,userId,batchNumber);
+
+
+            //新增组织层级
+            com.baomidou.mybatisplus.mapper.Wrapper orgLevelWrapper = Condition.create().eq("ORG_TREE_ID",orgTreeId)
+                    .eq("STATUS_CD","1000")
+                    .eq("ORG_ID",orgParentId);
+            List<OrgLevel> orgLevelList = orgLevelService.selectList(orgLevelWrapper);
+            if(orgLevelList != null || orgLevelList.size() > 0){
+                OrgLevel orgL = orgLevelList.get(0);
+                int lv = orgL.getOrgLevel()+1;
+                Long  orgLevelId = orgLevelService.getId();
+                OrgLevel orgLevel = new OrgLevel();
+                orgLevel.setOrgLevelId(orgLevelId);
+                orgLevel.setOrgId(orgId);
+                orgLevel.setOrgLevel(lv);
+                orgLevel.setOrgTreeId(orgTree.getOrgTreeId());
+                orgLevel.setStatusCd("1000");
+                orgLevel.setCreateUser(userId);
+                orgLevelService.add(orgLevel);
+                modifyHistoryService.addModifyHistory(null,orgLevel,userId,batchNumber);
+            }
+            //新增组织层级
+            com.baomidou.mybatisplus.mapper.Wrapper orgorgtreerelWrapper = Condition.create().eq("ORG_TREE_ID",orgTreeId)
+                    .eq("STATUS_CD","1000")
+                    .eq("ORG_ID",orgId);
+            OrgOrgtreeRel orgOrgtreeRefv =  orgOrgtreeRelService.selectOne(orgorgtreerelWrapper);
+
+            //组织组织树关系
+            // TODO: 2019/1/23
+            String fullBizName = "";
+            fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTree.getOrgTreeId().toString(),orgParentId.toString(),"");
+            fullBizName+=StrUtil.strnull(StrUtil.isNullOrEmpty(orgOrgtreeRefv.getOrgBizName())?o.getOrgName():orgOrgtreeRefv.getOrgBizName());
+            String fullBizNameId = "";
+            fullBizNameId = orgOrgtreeRelService.getFullBizOrgIdList(orgTree.getOrgTreeId().toString(),orgParentId.toString(),",");
+            fullBizNameId=","+fullBizNameId+","+o.getOrgId()+",";
+
+            Long orgOrgtreeRefId = orgOrgtreeRelService.getId();
+            OrgOrgtreeRel orgOrgtreeRef = new OrgOrgtreeRel();
+            orgOrgtreeRef.setOrgOrgtreeId(orgOrgtreeRefId);
+            orgOrgtreeRef.setOrgId(orgId);
+            orgOrgtreeRef.setOrgTreeId(orgTree.getOrgTreeId());
+            orgOrgtreeRef.setStatusCd("1000");
+            orgOrgtreeRef.setCreateUser(userId);
+            // TODO: 2019/1/23
+            orgOrgtreeRef.setOrgBizName(orgOrgtreeRefv.getOrgBizName());
+            orgOrgtreeRef.setOrgBizFullName(fullBizName);
+            orgOrgtreeRef.setOrgBizFullId(fullBizNameId);
+
+            orgOrgtreeRelService.add(orgOrgtreeRef);
+            modifyHistoryService.addModifyHistory(null,orgOrgtreeRef,userId,batchNumber);
+
+            /*新增化小编码*/
+            //新增营销组织扩展属性
+//            List<ExpandovalueVo> extValueList = org.getExpandovalueVoList();
+//            if(extValueList !=null && extValueList.size()>0){
+//                if(extValueList!=null && extValueList.size()>0){
+//                    ResponseResult<ExpandovalueVo> publicRet = new ResponseResult<ExpandovalueVo>();
+//                    for(ExpandovalueVo extVo : extValueList){
+//                        extVo.setTableName("TB_ORG");
+//                        extVo.setRecordId(org.getOrgId().toString());
+//                        publicRet = expandovalueService.addExpandoInfo(extVo);
+//                    }
+//                }
+//
+//
+//
+//                String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
+//                    @Override
+//                    public String doInConnection(Connection conn) throws SQLException, DataAccessException {
+//                        CallableStatement cstmt = null;
+//                        String result = "";
+//                        try {
+//                            cstmt = conn.prepareCall("{CALL P_ORG_CNTRT_MGMT_GENERATOR (?,?,?)}");
+//                            cstmt.setObject(1, org.getOrgCode());
+//                            cstmt.registerOutParameter(2, Types.VARCHAR);
+//                            cstmt.registerOutParameter(3, Types.VARCHAR);
+//                            cstmt.execute();
+//                            if(!StrUtil.isNullOrEmpty(cstmt.getString(2))){
+//                                result = cstmt.getString(2).toString();
+//                            }
+//
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        } finally {
+//                            if (cstmt != null) {
+//                                cstmt.close();
+//                                cstmt = null;
+//                            }
+//                            if (conn != null) {
+//                                conn.close();
+//                                conn = null;
+//                            }
+//                        }
+//                        return result;
+//                    }
+//                });
+//            }
+
+        }
+        return;
+    }
+
+    /**
+     * 组织更新同步
+     * @param orgTreeIds
+     * @param org
+     * @param userId
+     * @param batchNumber
+     */
+    @Override
+    public void orgUpdateSync(List<Long> orgTreeIds,OrgVo org,Long userId,String batchNumber){
+        for(Long orgTreeId : orgTreeIds){
+            //修改组织关系
+            if(org.getMoveParentOrgId()!=null && org.getSupOrgId()!=null && !org.getMoveParentOrgId().toString().equals(org.getSupOrgId().toString())){
+                String moveMsg = moveOrg(org.getOrgId(),org.getMoveParentOrgId(),orgTreeId,org.getUpdateUser(),batchNumber);
+                if(!StrUtil.isNullOrEmpty(moveMsg)){
+                    continue;
+                }
+            }
+            //更新组织组织树关系
+            Wrapper orgTreeRelOneWrapper = Condition.create()
+                    .eq("ORG_ID",org.getOrgId())
+                    .eq("STATUS_CD","1000")
+                    .eq("ORG_TREE_ID",orgTreeId);
+            OrgOrgtreeRel orgOrgtreeRelOne = orgOrgtreeRelService.selectOne(orgTreeRelOneWrapper);
+            OrgOrgtreeRel orgOrgtreeRelOLd = new OrgOrgtreeRel();
+            BeanUtils.copyProperties(orgOrgtreeRelOne,orgOrgtreeRelOLd);
+            if(orgOrgtreeRelOne!=null){
+                orgOrgtreeRelOne.setOrgBizName(StrUtil.isNullOrEmpty(org.getOrgBizName())?org.getOrgName():org.getOrgBizName());
+                // TODO: 2019/1/23
+                String fullBizName = "";
+                String fullBizNameId = "";
+
+                if(!StrUtil.isNullOrEmpty(org.getMoveParentOrgId())){
+                    fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),org.getMoveParentOrgId().toString(),"");
+                    fullBizNameId = orgOrgtreeRelService.getFullBizOrgIdList(orgTreeId.toString(),org.getMoveParentOrgId().toString(),",");
+                }else if(!StrUtil.isNullOrEmpty(org.getSupOrgId())){
+                    fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),org.getSupOrgId().toString(),"");
+                    fullBizNameId = orgOrgtreeRelService.getFullBizOrgIdList(orgTreeId.toString(),org.getSupOrgId().toString(),",");
+                }
+                fullBizName+=StrUtil.isNullOrEmpty(org.getOrgBizName())?org.getOrgName():org.getOrgBizName();
+                fullBizNameId=","+fullBizNameId+","+org.getOrgId()+",";
+                orgOrgtreeRelOne.setOrgBizFullName(fullBizName);
+                orgOrgtreeRelOne.setOrgBizFullId(fullBizNameId);
+
+
+                if(!StrUtil.isNullOrEmpty(org.getSort())){
+                    orgOrgtreeRelOne.setSort(Integer.valueOf(org.getSort()));
+                }
+                orgOrgtreeRelOne.setUpdateUser(org.getUpdateUser());
+                orgOrgtreeRelService.update(orgOrgtreeRelOne);
+                modifyHistoryService.addModifyHistory(orgOrgtreeRelOLd,orgOrgtreeRelOne,org.getUpdateUser(),batchNumber);
+            }
+        }
+        return;
+    }
+
+    /**
+     *
+     * @param orgTreeIds
+     * @param org
+     * @param userId
+     * @param batchNumber
+     */
+    @Override
+    public void orgDelSync(List<Long> orgTreeIds,OrgVo org,Long userId,String batchNumber){
+        for(Long orgTreeId : orgTreeIds) {
+            List<OrgRel> orList = orgRelService.getOrgRel(orgTreeId.toString(),
+                    org.getOrgId().toString());
+            if(orList==null || orList.size()<1){
+                continue;
+            }
+            OrgRel or = orList.get(0);
+            Wrapper orgTreeRelWrapper = Condition.create()
+                    .eq("ORG_ID", org.getOrgId())
+                    .eq("STATUS_CD", "1000")
+                    .eq("ORG_TREE_ID", orgTreeId);
+            List<OrgOrgtreeRel> orgOrgtreeRelList = orgOrgtreeRelService.selectList(orgTreeRelWrapper);
+            if (orgOrgtreeRelList != null && orgOrgtreeRelList.size() > 0) {
+                for (OrgOrgtreeRel ootr : orgOrgtreeRelList) {
+                    ootr.setUpdateUser(org.getUpdateUser());
+                    orgOrgtreeRelService.delete(ootr);
+                    modifyHistoryService.addModifyHistory(ootr, null, org.getUpdateUser(), batchNumber);
+                }
+            }
+            Wrapper orgLevelWrapper = Condition.create()
+                    .eq("ORG_TREE_ID", orgTreeId)
+                    .eq("STATUS_CD", "1000")
+                    .eq("ORG_ID", org.getOrgId());
+            List<OrgLevel> orgLevelList = orgLevelService.selectList(orgLevelWrapper);
+            if (orgLevelList != null && orgLevelList.size() > 0) {
+                for (OrgLevel ol : orgLevelList) {
+                    ol.setUpdateUser(org.getUpdateUser());
+                    orgLevelService.delete(ol);
+                    modifyHistoryService.addModifyHistory(ol, null, org.getUpdateUser(), batchNumber);
+                }
+            }
+            Wrapper orgPositionWrapper = Condition.create()
+                    .eq("ORG_TREE_ID", orgTreeId)
+                    .eq("STATUS_CD", "1000")
+                    .eq("ORG_ID", org.getOrgId());
+            List<OrgPositionRel> orgPositionRelList = orgPositionRelService.selectList(orgPositionWrapper);
+            if (orgPositionRelList != null && orgPositionRelList.size() > 0) {
+                for (OrgPositionRel opr : orgPositionRelList) {
+                    opr.setUpdateUser(org.getUpdateUser());
+                    orgPositionRelService.delete(opr);
+                    modifyHistoryService.addModifyHistory(opr, null, org.getUpdateUser(), batchNumber);
+                }
+            }
+
+
+            //删除证件组织关系
+            Wrapper orgCertListWrapper = Condition.create()
+                    .eq("STATUS_CD", "1000")
+                    .eq("ORG_ID", org.getOrgId());
+            List<OrgCertRel> orgCertRelList = orgCertRelService.selectList(orgCertListWrapper);
+            if (orgCertRelList != null && orgCertRelList.size() > 0) {
+                for (OrgCertRel vo : orgCertRelList) {
+                    vo.setUpdateUser(org.getUpdateUser());
+                    orgCertRelService.delete(vo);
+                    modifyHistoryService.addModifyHistory(vo, null, org.getUpdateUser(), batchNumber);
+                }
+            }
+
+            //删除组织联系人关系
+            Wrapper orgContactListWrapper = Condition.create()
+                    .eq("STATUS_CD", "1000")
+                    .eq("ORG_ID", org.getOrgId());
+            List<OrgContactRel> orgContactRelList = orgContactRelService.selectList(orgContactListWrapper);
+            if (orgContactRelList != null && orgContactRelList.size() > 0) {
+
+                for (OrgContactRel vo : orgContactRelList) {
+                    vo.setUpdateUser(org.getUpdateUser());
+                    orgContactRelService.delete(vo);
+                    modifyHistoryService.addModifyHistory(vo, null, org.getUpdateUser(), batchNumber);
+                }
+            }
+            or.setUpdateUser(org.getUpdateUser());
+            orgRelService.delete(or);
+            modifyHistoryService.addModifyHistory(or, null, org.getUpdateUser(), batchNumber);
+        }
+        return;
+    }
+
+    /**
+     * 游离组织新增
+     * @param orgTreeIds
+     * @param org
+     * @param userId
+     * @param batchNumber
+     */
+    @Override
+    public void freeOrgAddSync(List<Long> orgTreeIds,OrgVo org,Long userId,String batchNumber){
+
+        for(Long orgTreeId : orgTreeIds) {
+            //查询组织树
+            Wrapper orgWrapper = Condition.create().eq("ORG_ID",org.getOrgId())
+                    .eq("STATUS_CD","1000");
+            Org o = selectOne(orgWrapper);
+            if(o==null){
+                continue;
+            }
+            com.baomidou.mybatisplus.mapper.Wrapper ogtOrgReftypeConfWrapper = Condition.create()
+                    .eq("ORG_TREE_ID",orgTreeId)
+                    .eq("STATUS_CD","1000");
+
+            List<OgtOrgReltypeConf> ogtOrgReftypeConfList =  ogtOrgReftypeConfService.selectList(ogtOrgReftypeConfWrapper);
+            if(ogtOrgReftypeConfList == null || ogtOrgReftypeConfList.size() < 0){
+                continue;
+            }
+            OgtOrgReltypeConf ogtOrgReftypeConf = ogtOrgReftypeConfList.get(0);
+            com.baomidou.mybatisplus.mapper.Wrapper orgReltypeConfWrapper = Condition.create()
+                    .eq("ORG_REL_TYPE_ID",ogtOrgReftypeConf.getOrgRelTypeId())
+                    .eq("STATUS_CD","1000");
+            OrgRelType ort = orgRelTypeService.selectOne(orgReltypeConfWrapper);
+            if(ort==null){
+                continue;
+            }
+            //新增组织关系
+            OrgRel orgRel = new OrgRel();
+            Long orgRefId = orgRelService.getId();
+            orgRel.setOrgRelId(orgRefId);
+            orgRel.setOrgId(org.getOrgId());
+            orgRel.setParentOrgId(org.getSupOrgId());
+            orgRel.setRefCode(ort.getRefCode());
+            orgRel.setStatusCd("1000");
+            orgRel.setCreateUser(org.getUpdateUser());
+            orgRelService.add(orgRel);
+            modifyHistoryService.addModifyHistory(null,orgRel,org.getUpdateUser(),batchNumber);
+
+
+
+            //新增组织层级
+            Wrapper orgLevelWrapper = Condition.create().eq("ORG_TREE_ID",org.getOrgTreeId())
+                    .eq("STATUS_CD","1000")
+                    .eq("ORG_ID",org.getSupOrgId());
+            List<OrgLevel> orgLevelList = orgLevelService.selectList(orgLevelWrapper);
+            if(orgLevelList != null || orgLevelList.size() > 0){
+                OrgLevel orgL = orgLevelList.get(0);
+                int lv = orgL.getOrgLevel()+1;
+                Long  orgLevelId = orgLevelService.getId();
+                OrgLevel orgLevel = new OrgLevel();
+                orgLevel.setOrgLevelId(orgLevelId);
+                orgLevel.setOrgId(org.getOrgId());
+                orgLevel.setOrgLevel(lv);
+                orgLevel.setOrgTreeId(orgTreeId);
+                orgLevel.setStatusCd("1000");
+                orgLevel.setCreateUser(org.getUpdateUser());
+                orgLevelService.add(orgLevel);
+                modifyHistoryService.addModifyHistory(null,orgLevel,org.getUpdateUser(),batchNumber);
+            }
+
+            //组织组织树关系
+            // TODO: 2019/1/23
+            String fullBizName = "";
+            fullBizName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),org.getSupOrgId().toString(),"");
+            fullBizName+=StrUtil.strnull(StrUtil.isNullOrEmpty(org.getOrgBizName())?o.getOrgName():org.getOrgBizName());
+            String fullBizNameId = "";
+            fullBizNameId = orgOrgtreeRelService.getFullBizOrgIdList(orgTreeId.toString(),org.getSupOrgId().toString(),",");
+            fullBizNameId=","+fullBizNameId+","+o.getOrgId()+",";
+
+            Long orgOrgtreeRefId = orgOrgtreeRelService.getId();
+            OrgOrgtreeRel orgOrgtreeRef = new OrgOrgtreeRel();
+            orgOrgtreeRef.setOrgOrgtreeId(orgOrgtreeRefId);
+            orgOrgtreeRef.setOrgId(org.getOrgId());
+            orgOrgtreeRef.setOrgTreeId(orgTreeId);
+            orgOrgtreeRef.setStatusCd("1000");
+            orgOrgtreeRef.setCreateUser(org.getUpdateUser());
+            // TODO: 2019/1/23
+            orgOrgtreeRef.setOrgBizName(StrUtil.isNullOrEmpty(org.getOrgBizName())?o.getOrgName():org.getOrgBizName());
+            orgOrgtreeRef.setOrgBizFullName(fullBizName);
+            orgOrgtreeRef.setOrgBizFullId(fullBizNameId);
+
+            orgOrgtreeRelService.add(orgOrgtreeRef);
+            modifyHistoryService.addModifyHistory(null,orgOrgtreeRef,org.getUpdateUser(),batchNumber);
+        }
+        return;
+    }
+
+    /**
+     * excel组织导入移动
+     * @param orgTreeIds
+     * @param orgId
+     * @param orgParentId
+     * @param userId
+     * @param batchNumber
+     */
+    @Override
+    public void orgExcelMoveSync(List<Long> orgTreeIds,Long orgId,Long orgParentId,Long userId,String batchNumber){
+        for(Long orgTreeId : orgTreeIds) {
+            moveOrg(orgId,orgParentId,orgTreeId,userId,batchNumber);
+            com.baomidou.mybatisplus.mapper.Wrapper orgOrgTreeRelWrapper = Condition.create()
+                    .eq("ORG_ID",orgId)
+                    .eq("STATUS_CD","1000")
+                    .eq("ORG_TREE_ID",orgTreeId);
+            OrgOrgtreeRel ootr = orgOrgtreeRelService.selectOne(orgOrgTreeRelWrapper);
+            if(ootr!=null){
+                String fullName = orgOrgtreeRelService.getFullBizOrgNameList(orgTreeId.toString(),ootr.getOrgId().toString(),"");
+                String fullOrgId = orgOrgtreeRelService.getFullBizOrgIdList(orgTreeId.toString(),ootr.getOrgId().toString(),",");
+                fullOrgId =","+fullOrgId+",";
+                ootr.setOrgBizFullName(fullName);
+                ootr.setOrgBizFullId(fullOrgId);
+                ootr.setUpdateUser(userId);
+                orgOrgtreeRelService.update(ootr);
+            }
+        }
+        return;
+    }
 
 }

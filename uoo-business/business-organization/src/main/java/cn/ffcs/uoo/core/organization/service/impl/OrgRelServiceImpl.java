@@ -214,18 +214,25 @@ public class OrgRelServiceImpl extends ServiceImpl<OrgRelMapper, OrgRel> impleme
                     }else{
                         vo.setParent(false);
                     }
+                    HashMap<String,String> ls = orgService.getChannelInfo(vo.getId());
+                    if(!StrUtil.isNullOrEmpty(ls) && !ls.isEmpty()){
+                        vo.setIsChannel(ls.get("isChannel"));
+                        vo.setChannelNBR(ls.get("channelNbr"));
+                    }
                 }
             }
         }else{
             list = baseMapper.selectFuzzyOrgRelTree(orgId,orgTreeId);
+            if(list!=null && list.size()>0){
+                for(TreeNodeVo vo : list){
+                    HashMap<String,String> ls = orgService.getChannelInfo(vo.getId());
+                    if(!StrUtil.isNullOrEmpty(ls) && !ls.isEmpty()){
+                        vo.setIsChannel(ls.get("isChannel"));
+                        vo.setChannelNBR(ls.get("channelNbr"));
+                    }
+                }
+            }
         }
-//        if(list!=null && list.size()>0){
-//            if(isFull){
-//                return baseMapper.selectFuzzyFullOrgRelTree(orgleafId,orgTreeId);
-//            }else{
-//                return baseMapper.selectFuzzyOrgRelTree(orgleafId,orgTreeId);
-//            }
-//        }
         return list;
     }
 

@@ -6,6 +6,7 @@ import cn.ffcs.uoo.base.common.tool.util.DateUtils;
 import cn.ffcs.uoo.core.organization.entity.ExcelOrgImport;
 import cn.ffcs.uoo.core.organization.entity.Org;
 import cn.ffcs.uoo.core.organization.entity.OrgOrgtreeRel;
+import cn.ffcs.uoo.core.organization.entity.OrgUpdateCheckResult;
 import cn.ffcs.uoo.core.organization.service.*;
 import cn.ffcs.uoo.core.organization.util.ResponseResult;
 import cn.ffcs.uoo.core.organization.util.StrUtil;
@@ -60,6 +61,8 @@ public class ExcelOrgImportController {
     private ModifyHistoryService modifyHistoryService;
     @Autowired
     private OrgOrgtreeRelService orgOrgtreeRelService;
+    @Autowired
+    private IOrgTreeSynchRuleService iOrgTreeSynchRuleService;
 
 
     @ApiOperation(value = "生成excel文件数据", notes = "生成excel文件数据")
@@ -261,6 +264,16 @@ public class ExcelOrgImportController {
                         ootr.setOrgBizFullId(fullOrgId);
                         ootr.setUpdateUser(userId);
                         orgOrgtreeRelService.update(ootr);
+                    }
+                    // TODO: 2019/3/7 判断数据同步权限
+                    OrgUpdateCheckResult syncRet = new OrgUpdateCheckResult();
+                    syncRet = iOrgTreeSynchRuleService.check(OrgUpdateCheckResult.OrgOperateType.UPDATE,exo.getOrgTreeId(),new Long(exo.getOrgId()));
+                    if(syncRet.isVaild()){
+                        if(syncRet.isSync() &&
+                                syncRet.getSyncOrgTreeIds()!=null &&
+                                syncRet.getSyncOrgTreeIds().size()>0){
+                            orgService.orgExcelMoveSync(syncRet.getSyncOrgTreeIds(),new Long(exo.getOrgId()),new Long(exo.getParentOrgId()),userId,batchNumber);
+                        }
                     }
                 }else if(exo.getImpType().equals("2")){
                     com.baomidou.mybatisplus.mapper.Wrapper orgWrapper = Condition.create()

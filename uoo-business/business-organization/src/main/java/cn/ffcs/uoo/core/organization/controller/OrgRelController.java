@@ -39,6 +39,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -92,6 +93,10 @@ public class OrgRelController extends BaseController {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+
+    @Autowired
+    private IOrgTreeSynchRuleService iOrgTreeSynchRuleService;
 
 
     @ApiOperation(value = "查询组织树信息-web", notes = "查询组织树信息")
@@ -330,6 +335,41 @@ public class OrgRelController extends BaseController {
             ret.setMessage("组织关系类型不存在");
             return ret;
         }
+        // TODO: 2019/3/8  组织不能移动到渠道组织下级
+        HashMap<String, String> map = new HashMap<String, String>();
+        map = orgService.getChannelInfo(org.getOrgId().toString());
+        if(!map.isEmpty()){
+            String isChannel = map.get("isChannel");
+            if(!StrUtil.isNullOrEmpty(isChannel) && "Y".equals(isChannel) && !"0412".equals(ort.getRefCode())){
+                ret.setState(ResponseResult.PARAMETER_ERROR);
+                ret.setMessage("渠道组织只能挂载在渠道树下");
+                return ret;
+            }
+        }
+        // TODO: 2019/3/8  渠道组织下面不能挂载其他组织
+        if("0412".equals(ort.getRefCode())){
+            HashMap<String, String> map1 = new HashMap<String, String>();
+            map1 = orgService.getChannelInfo(org.getSupOrgId().toString());
+            if(!map1.isEmpty()){
+                String isChannel = map1.get("isChannel");
+                if(!StrUtil.isNullOrEmpty(isChannel)){
+                    ret.setState(ResponseResult.PARAMETER_ERROR);
+                    ret.setMessage("渠道组织下面不能挂组织");
+                    return ret;
+                }
+            }
+        }
+
+
+
+        OrgUpdateCheckResult syncRet = new OrgUpdateCheckResult();
+        syncRet = iOrgTreeSynchRuleService.check(OrgUpdateCheckResult.OrgOperateType.DELETE,orgTree.getOrgTreeId(),org.getOrgId());
+        if(!syncRet.isVaild()){
+            ret.setState(ResponseResult.PARAMETER_ERROR);
+            ret.setMessage("同步规则不允许删除操作");
+            return ret;
+        }
+
 
         String batchNumber = modifyHistoryService.getBatchNumber();
 
@@ -403,16 +443,15 @@ public class OrgRelController extends BaseController {
         /*新增化小编码*/
         //新增营销组织扩展属性
         List<ExpandovalueVo> extValueList = org.getExpandovalueVoList();
-        if(extValueList !=null && extValueList.size()>0){
-            if(extValueList!=null && extValueList.size()>0){
+        if (extValueList != null && extValueList.size() > 0) {
+            if (extValueList != null && extValueList.size() > 0) {
                 ResponseResult<ExpandovalueVo> publicRet = new ResponseResult<ExpandovalueVo>();
-                for(ExpandovalueVo extVo : extValueList){
+                for (ExpandovalueVo extVo : extValueList) {
                     extVo.setTableName("TB_ORG");
                     extVo.setRecordId(org.getOrgId().toString());
                     publicRet = expandovalueService.addExpandoInfo(extVo);
                 }
             }
-
 
 
             String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
@@ -426,7 +465,7 @@ public class OrgRelController extends BaseController {
                         cstmt.registerOutParameter(2, Types.VARCHAR);
                         cstmt.registerOutParameter(3, Types.VARCHAR);
                         cstmt.execute();
-                        if(!StrUtil.isNullOrEmpty(cstmt.getString(2))){
+                        if (!StrUtil.isNullOrEmpty(cstmt.getString(2))) {
                             result = cstmt.getString(2).toString();
                         }
 
@@ -452,6 +491,15 @@ public class OrgRelController extends BaseController {
         vo.setId(org.getOrgId().toString());
         vo.setPid(orgRefId.toString());
         vo.setName(o.getOrgName());
+
+        // TODO: 2019/3/7 是否同步
+        if(syncRet.isSync() &&
+                syncRet.getSyncOrgTreeIds()!=null &&
+                syncRet.getSyncOrgTreeIds().size()>0){
+            orgService.freeOrgAddSync(syncRet.getSyncOrgTreeIds(),org,org.getUpdateUser(),batchNumber);
+        }
+
+
         String mqmsg = "{\"type\":\"org\",\"handle\":\"update\",\"context\":{\"column\":\"orgId\",\"value\":"+org.getOrgId()+"}}" ;
         template.convertAndSend("message_sharing_center_queue",mqmsg);
         ret.setState(ResponseResult.STATE_OK);
