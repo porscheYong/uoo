@@ -78,7 +78,7 @@
 			<artifactId>spring-boot-starter-amqp</artifactId>
 		</dependency>
 		<!-- 发送短信的jar -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.ztesoft.uccp</groupId>
 			<artifactId>dubbo-interface</artifactId>
 			<version>1</version>
@@ -95,20 +95,73 @@
             </systemPath>
 		</dependency>
 		<dependency>
-            <groupId>org.jboss.netty</groupId>
-            <artifactId>netty</artifactId>
-            <version>3.2.10.Final</version>
-        </dependency>
+			<groupId>org.jboss.netty</groupId>
+			<artifactId>netty</artifactId>
+			<version>3.2.10.Final</version>
+		</dependency> -->
 		<!-- 发送短信的jar end -->
+		<!-- 调用webservice -->
+		<dependency>
+			<groupId>org.apache.axis</groupId>
+			<artifactId>axis</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>axis</groupId>
+			<artifactId>axis-jaxrpc</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>wsdl4j</groupId>
+			<artifactId>wsdl4j</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-discovery</groupId>
+			<artifactId>commons-discovery</artifactId>
+			<version>0.5</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency> 
+
+		<!-- 调用webservice end -->
 	</dependencies>
 
 	<build>
 		<plugins>
+			<!-- <plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+					配置本地jar包在项目的存放路径
+					<compilerArgs>
+						<arg>-extdirs</arg>
+						<arg>${project.basedir}/lib</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin> -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
 		</plugins>
+		<!-- <resources>
+			<resource>
+				<directory>${project.basedir}/lib</directory>
+				<targetPath>BOOT-INF/lib/</targetPath>
+				<includes>
+					<include>**/*.jar</include>
+				</includes>
+			</resource>
+		</resources> -->
+
 	</build>
 
 </project>

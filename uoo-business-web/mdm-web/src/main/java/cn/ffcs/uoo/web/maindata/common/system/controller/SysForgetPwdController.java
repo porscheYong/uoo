@@ -9,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;import ch.qos.logback.core.net.SyslogConstants;
+import org.springframework.web.bind.annotation.RestController;
+
 import cn.ffcs.uoo.web.maindata.common.system.client.SysUserClient;
-import cn.ffcs.uoo.web.maindata.common.system.shortmsg.SmSendUccpService;
+import cn.ffcs.uoo.web.maindata.common.system.shortmsg.SendShortMessageService;
 import cn.ffcs.uoo.web.maindata.common.system.vo.ResponseResult;
 
 @RestController
@@ -21,7 +22,7 @@ public class SysForgetPwdController {
     String sessionTimeEndKey="smstime";
     String sessionPhoneKey="smsphone";
     @Autowired
-    SmSendUccpService smSvc;
+    SendShortMessageService smSvc;
     @Autowired
     SysUserClient userClient;
     @GetMapping("/sendcheckcode")
@@ -40,7 +41,7 @@ public class SysForgetPwdController {
             subject.getSession().setAttribute(sessionCheckKey, nextInt);
             subject.getSession().setAttribute(sessionPhoneKey, phone);
             subject.getSession().setAttribute(sessionTimeEndKey, System.currentTimeMillis()+(60000L));
-            smSvc.sendSms(phone, msg, SmSendUccpService.UCCP_SCENE_ID_CZ);
+            smSvc.sendSms(phone, nextInt+"");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseResult.createErrorResult("发送失败");

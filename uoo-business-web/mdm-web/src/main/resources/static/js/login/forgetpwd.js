@@ -111,8 +111,16 @@ function check(){
         dataType: "json",
 		success:function(result){
             if(result.state == 1000){
-                toastr.success("修改成功，前往登陆页面");
-                window.location.href = "/login";
+            	layer.confirm("修改成功", {
+                    icon: 0,
+                    title: '提示',
+                    btn: ['确定']
+                }, function(index, layero){
+                    layer.close(index);
+                    window.location.href = "/login";
+                }, function(){
+
+                });
             }else{
                 toastr.error(result.message);
             }
