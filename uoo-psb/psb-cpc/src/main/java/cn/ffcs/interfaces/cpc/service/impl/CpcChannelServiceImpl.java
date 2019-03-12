@@ -294,7 +294,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                 TbAcct tbAcct = new TbAcct(String.valueOf(tbPersonnel.getPersonnelId()), psnCode, "1314",
                                         "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1000",
                                         DateUtils.parseDate(DateUtils.getDateTime()), "2",
-                                        DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"), "2");
+                                        DateUtils.parseDate("2019-01-01"), DateUtils.parseDate("2099-01-01"), "2");
                                 tbAcct.setCreateUser(1004040L);
                                 tbAcct.setUpdateUser(1004040L);
                                 tbAcctMapper.insert(tbAcct);
@@ -327,7 +327,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                     TbSlaveAcct tbSlaveAcct = new TbSlaveAcct(String.valueOf(staff.get("ACCOUNT")), "1314",
                                         "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", systemConstant.getCpcSystemId(),
                                         "1000", DateUtils.parseDate(DateUtils.getDateTime()), null,
-                                        tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
+                                        tbAcct.getAcctId(), DateUtils.parseDate("2019-01-01"), DateUtils.parseDate("2099-01-01"));
                                     tbSlaveAcct.setCreateUser(1004040L);
                                     tbSlaveAcct.setUpdateUser(1004040L);
                                     tbSlaveAcctMapper.insert(tbSlaveAcct);
@@ -357,7 +357,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                     tbAcct = new TbAcct(String.valueOf(tbPersonnel.getPersonnelId()), tbPersonnel.getPsnCode(), "1314",
                                             "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1000",
                                             DateUtils.parseDate(DateUtils.getDateTime()), "2",
-                                            DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"), "2");
+                                            DateUtils.parseDate("2019-01-01"), DateUtils.parseDate("2099-01-01"), "2");
                                     //tbAcct.setCreateUser(1004040L);
                                     tbAcct.setUpdateUser(1004040L);
                                     tbAcctMapper.insert(tbAcct);
@@ -413,7 +413,7 @@ public class CpcChannelServiceImpl implements CpcChannelService {
                                      tbSlaveAcct = new TbSlaveAcct(String.valueOf(staff.get("ACCOUNT")), "1314",
                                             "0DB7DBB1F7EAF44CF5C077C9BC699A35", "1", systemConstant.getCpcSystemId(),
                                             "1000", DateUtils.parseDate(DateUtils.getDateTime()), null,
-                                            tbAcct.getAcctId(), DateUtils.parseDate("20190101"), DateUtils.parseDate("20990101"));
+                                            tbAcct.getAcctId(), DateUtils.parseDate("2019-01-01"), DateUtils.parseDate("2099-01-01"));
                                     //tbSlaveAcct.setCreateUser(1004040L);
                                     tbSlaveAcct.setUpdateUser(1004040L);
                                     tbSlaveAcctMapper.insert(tbSlaveAcct);
