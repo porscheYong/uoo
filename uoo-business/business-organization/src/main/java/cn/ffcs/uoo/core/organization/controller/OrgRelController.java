@@ -443,16 +443,15 @@ public class OrgRelController extends BaseController {
         /*新增化小编码*/
         //新增营销组织扩展属性
         List<ExpandovalueVo> extValueList = org.getExpandovalueVoList();
-        if(extValueList !=null && extValueList.size()>0){
-            if(extValueList!=null && extValueList.size()>0){
+        if (extValueList != null && extValueList.size() > 0) {
+            if (extValueList != null && extValueList.size() > 0) {
                 ResponseResult<ExpandovalueVo> publicRet = new ResponseResult<ExpandovalueVo>();
-                for(ExpandovalueVo extVo : extValueList){
+                for (ExpandovalueVo extVo : extValueList) {
                     extVo.setTableName("TB_ORG");
                     extVo.setRecordId(org.getOrgId().toString());
                     publicRet = expandovalueService.addExpandoInfo(extVo);
                 }
             }
-
 
 
             String orgMarkCodeRet = jdbcTemplate.execute(new ConnectionCallback<String>() {
@@ -466,7 +465,7 @@ public class OrgRelController extends BaseController {
                         cstmt.registerOutParameter(2, Types.VARCHAR);
                         cstmt.registerOutParameter(3, Types.VARCHAR);
                         cstmt.execute();
-                        if(!StrUtil.isNullOrEmpty(cstmt.getString(2))){
+                        if (!StrUtil.isNullOrEmpty(cstmt.getString(2))) {
                             result = cstmt.getString(2).toString();
                         }
 
