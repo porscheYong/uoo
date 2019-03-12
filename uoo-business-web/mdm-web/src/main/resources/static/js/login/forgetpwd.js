@@ -48,6 +48,7 @@ function sendCheckCode(){
 		toastr.error("手机号码格式错误");
 		return false;
 	}
+	$("#checkCodeA").attr({"disabled":"disabled"});
 	$.ajax({			//提交表单
         type : "GET",
 		url : "/system/forgetpwd/sendcheckcode",  //接口
@@ -65,6 +66,7 @@ function sendCheckCode(){
         error:function(){
             layer.close(index);  
             toastr.error("网络连接失败！"); 
+            $("#checkCodeA").attr({"disabled":"disabled"});
         }
     });
 	
