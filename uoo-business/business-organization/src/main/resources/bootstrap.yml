@@ -29,7 +29,7 @@ mybatis-plus:
     #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
     #自定义填充策略接口实现
     #meta-object-handler: cn.ffcs.uoo.base.common.tool.util.UooMetaObjectHandler
-    meta-object-handler: cn.ffcs.uoo.core.user.util.MyMetaObjectHandler
+    #meta-object-handler: cn.ffcs.uoo.core.user.util.MyMetaObjectHandler
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
@@ -58,8 +58,8 @@ logging:
     cn.ffcs.uoo: info
 
 # 默认的profile为dev，其他环境通过指定启动参数使用不同的profile，比如：
-#   测试环境：sh spring-boot.sh start business-user-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
-#   生产环境：sh spring-boot.sh start business-user-0.0.1-SNAPSHOT.jar --spring.profiles.active=pro
+#   测试环境：sh spring-boot.sh start business-organization-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
+#   生产环境：sh spring-boot.sh start business-organization-0.0.1-SNAPSHOT.jar --spring.profiles.active=pro
 
 
 ---
@@ -177,7 +177,8 @@ spring:
   profiles: pro
   datasource:
     druid:
-      url: jdbc:oracle:thin:@(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.48)(PORT = 3436))(ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.49)(PORT = 3436))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = ZJ4APRD)))
+      ##url: jdbc:oracle:thin:@(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.48)(PORT = 3436))(ADDRESS = (PROTOCOL = TCP)(HOST = 134.96.248.49)(PORT = 3436))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = ZJ4APRD)))
+      url: jdbc:oracle:thin:@134.96.248.49:3436/ZJ4APRD
       driver-class-name:  oracle.jdbc.OracleDriver
       username: octopus
       password: octopus
